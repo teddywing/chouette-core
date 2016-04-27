@@ -5,9 +5,25 @@ namespace :ci do
     sh "RAILS_ENV=test rake db:migrate"
   end
 
+  def git_branch
+    if ENV['GIT_BRANCH'] =~ %r{/(.*)$}
+      $1
+    else
+      `git rev-parse --abbrev-ref HEAD`.strip
+    end
+  end
+
+  def deploy_envs
+    Dir["config/deploy/*.rb"].map { |f| File.basename(f, ".rb") }
+  end
+
+  def deploy_env
+    git_branch.in?(deploy_envs) ? git_branch : "dev"
+  end
+
   desc "Deploy after CI"
   task :deploy do
-    sh "cap dev deploy"
+    sh "cap #{deploy_env} deploy"
   end
 
   desc "Clean test files"
