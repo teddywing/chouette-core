@@ -55,7 +55,7 @@ namespace :deploy do
 
   desc "Make group writable all deployed files"
   task :group_writable do
-    run "sudo /usr/local/sbin/cap-fix-permissions /var/www/chouette2"
+    run "sudo /usr/local/sbin/cap-fix-permissions #{deploy_to}"
   end
   after "deploy:update", "deploy:group_writable"
 end
