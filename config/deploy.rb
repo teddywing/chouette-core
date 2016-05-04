@@ -58,6 +58,11 @@ namespace :deploy do
     run "sudo /usr/local/sbin/cap-fix-permissions #{deploy_to}"
   end
   after "deploy:update", "deploy:group_writable"
+
+  desc "Run db:seed"
+  task :seed do
+    run "cd #{current_path} && #{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake db:seed RAILS_ENV=#{rails_env}"
+  end
 end
 
 namespace :delayed_job do
