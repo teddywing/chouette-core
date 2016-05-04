@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
+
+stif = Organisation.find_or_create_by(name: "STIF")
+StopAreaReferential.find_or_create_by(name: "Reflex") do |referential|
+  referential.add_member stif, owner: true
+end

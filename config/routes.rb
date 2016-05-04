@@ -42,6 +42,8 @@ ChouetteIhm::Application.routes.draw do
     resources :rule_parameter_sets
   end
 
+  resources :stop_area_referentials
+
   resources :referentials do
     resources :api_keys
     resources :autocomplete_stop_areas

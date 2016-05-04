@@ -1,4 +1,4 @@
-<%= title_tag Referential.model_name.human(:count => 2) %> 
+<%= title_tag Referential.model_name.human(:count => 2) %>
 
 <div class="referentials paginated_content">
   <%= paginated_content @referentials %>
@@ -7,5 +7,10 @@
 <% content_for :sidebar do %>
 <ul class="actions">
   <li><%= link_to t('referentials.actions.new'), new_referential_path, :class => "add" %></li>
+</ul>
+<ul>
+  <!-- FIXME #820 -->
+  <!-- Don't blame me. See #820 -->
+  <li><%= link_to 'Arrêts Reflex', stop_area_referential_path(1) %></li>
 </ul>
 <% end %>
