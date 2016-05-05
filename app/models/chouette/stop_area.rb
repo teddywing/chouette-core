@@ -14,6 +14,9 @@ class Chouette::StopArea < Chouette::TridentActiveRecord
   has_and_belongs_to_many :routing_lines, :class_name => 'Chouette::Line', :foreign_key => "stop_area_id", :association_foreign_key => "line_id", :join_table => "routing_constraints_lines", :order => "lines.number"
   has_and_belongs_to_many :routing_stops, :class_name => 'Chouette::StopArea', :foreign_key => "parent_id", :association_foreign_key => "child_id", :join_table => "stop_areas_stop_areas", :order => "stop_areas.name"
 
+  belongs_to :stop_area_referential
+  validates_presence_of :stop_area_referential_id
+
   acts_as_tree :foreign_key => 'parent_id',:order => "name"
 
   attr_accessor :stop_area_type

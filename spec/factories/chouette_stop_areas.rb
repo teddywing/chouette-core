@@ -1,5 +1,4 @@
 FactoryGirl.define do
-
   factory :stop_area, :class => Chouette::StopArea do
     sequence(:objectid) { |n| "test:StopArea:#{n}" }
     sequence(:name) { |n| "stop_area_#{n}" }
@@ -7,6 +6,7 @@ FactoryGirl.define do
     area_type "CommercialStopPoint"
     latitude {10.0 * rand}
     longitude {10.0 * rand}
-  end
 
+    association :stop_area_referential
+  end
 end

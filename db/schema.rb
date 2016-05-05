@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160504130055) do
+ActiveRecord::Schema.define(version: 20160504160504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -440,10 +440,12 @@ ActiveRecord::Schema.define(version: 20160504130055) do
     t.string   "city_name"
     t.string   "url"
     t.string   "time_zone"
+    t.integer  "stop_area_referential_id"
   end
 
   add_index "stop_areas", ["objectid"], :name => "stop_areas_objectid_key", :unique => true
   add_index "stop_areas", ["parent_id"], :name => "index_stop_areas_on_parent_id"
+  add_index "stop_areas", ["stop_area_referential_id"], :name => "index_stop_areas_on_stop_area_referential_id"
 
   create_table "stop_areas_stop_areas", id: false, force: true do |t|
     t.integer "child_id",  limit: 8
