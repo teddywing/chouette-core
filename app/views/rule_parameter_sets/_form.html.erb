@@ -46,10 +46,10 @@
 
     <%= t("rule_parameter_sets.labels.columns_restrictions") %>
     <table class="table table-bordered table-condensed">
-    <% RuleParameterSet.validable_objects.each do |obj| %>
+    <% RuleParameterSet.validable_object_names.each do |object_name| %>
       <thead>
       <tr>
-         <th> <%= form.check_box "check_#{obj.table_name.singularize}".to_sym, :class => "special" %> <%= t("activerecord.models.#{obj.table_name.singularize}.one") %></th>
+        <th><%= form.check_box "check_#{object_name}".to_sym, :class => "special" %> <%= t("activerecord.models.#{object_name}.one") %></th>
     		<th><%= RuleParameterSet.human_attribute_name("attribute") %></th>
     		<th><%= RuleParameterSet.human_attribute_name("unique") %></th>
     		<th><%= RuleParameterSet.human_attribute_name("string_type") %></th>
@@ -58,9 +58,9 @@
       </tr>
       </thead>
       <tbody>
-      <% RuleParameterSet.validable_columns[obj.table_name.singularize].each do |col| %>
-        <tr class="<%= "columns_for_#{obj.table_name}" %>">
-        <%= render :partial => "column_fields", :locals => { :f => form, :obj => obj, :column => col} %>
+      <% RuleParameterSet.validable_columns[object_name].each do |col| %>
+        <tr class="<%= "columns_for_#{object_name.pluralize}" %>">
+        <%= render :partial => "column_fields", :locals => { :f => form, :object_name => object_name, :column => col} %>
         </tr>
       <% end %>
       </tbody>

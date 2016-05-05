@@ -48,6 +48,18 @@ class RuleParameterSet < ActiveRecord::Base
         'vehicle_journey' => ['objectid','published_journey_name','published_journey_identifier','number'] }
   end
 
+  @@objects_by_name = Hash[[validable_object_names, validable_objects].transpose].freeze
+
+  def self.validable_object_class(object_name)
+    @@objects_by_name[object_name]
+  end
+
+  def self.validable_column_type(object_name, column)
+    if object_class = validable_object_class(object_name)
+      object_class.columns_hash[column].try(:type)
+    end
+  end
+
   def self.column_attribute_prefixes
     %w( unique pattern min_size max_size )
   end
