@@ -9,6 +9,9 @@ class Organisation < ActiveRecord::Base
   has_many :stop_area_referential_memberships
   has_many :stop_area_referentials, through: :stop_area_referential_memberships
 
+  has_many :line_referential_memberships
+  has_many :line_referentials, through: :line_referential_memberships
+
   validates :name, :presence => true, :uniqueness => true
 
   after_create :add_rule_parameter_set
