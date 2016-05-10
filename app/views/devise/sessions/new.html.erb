@@ -21,17 +21,23 @@
             </div>
             <div class="col-md-6 new_password">
               <%= link_to t("devise.links.new_password"), new_password_path(resource_name) %>
-              <% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-                <br>
-                <%= link_to t("devise.links.new_confirmation"), new_confirmation_path(resource_name) %>
-              <% end %>
+                <!-- FIXME ref #819 -->
+                <%- if false %>
+                  <% if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+                    <br>
+                    <%= link_to t("devise.links.new_confirmation"), new_confirmation_path(resource_name) %>
+                  <% end %>
+                <% end %>
             </div>
           </div>
         <% end %>
       </div>
     </div>
-    <%= render partial: 'devise/shared/form_registration', locals: {
+    <!-- FIXME ref #819 -->
+    <%- if false %>
+      <%= render partial: 'devise/shared/form_registration', locals: {
       organisation: (resource.organisation || Organisation.new) } %>
+    <% end %>
 
   </div>
 </div>
