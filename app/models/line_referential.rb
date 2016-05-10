@@ -6,4 +6,6 @@ class LineReferential < ActiveRecord::Base
     attributes = options.merge organisation: organisation
     line_referential_memberships.build attributes
   end
+
+  validates :name, presence: true
 end

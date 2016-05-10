@@ -1,12 +1,18 @@
-<%= title_tag Referential.model_name.human(:count => 2) %>
 
-<div class="referentials paginated_content">
-  <%= paginated_content @referentials %>
-</div>
+<!-- FIXME #823 -->
+<% if false %>
+  <%= title_tag Referential.model_name.human(:count => 2) %>
+  <div class="referentials paginated_content">
+    <%= paginated_content @referentials %>
+  </div>
+<% end %>
 
 <% content_for :sidebar do %>
 <ul class="actions">
-  <li><%= link_to t('referentials.actions.new'), new_referential_path, :class => "add" %></li>
+  <!-- FIXME #823 -->
+  <% if false %>
+    <li><%= link_to t('referentials.actions.new'), new_referential_path, :class => "add" %></li>
+  <% end %>
 </ul>
 <ul>
   <!-- FIXME #820 -->

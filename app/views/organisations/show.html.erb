@@ -48,8 +48,11 @@
 
 <% content_for :sidebar do %>
 <ul class="actions">
+<!-- FIXME ref #819 -->
+<% if false %>
   <li><%= link_to t('organisations.actions.edit'), edit_organisation_path, :class => "edit" %></li>
   <li><%= link_to t('users.actions.new'), new_organisation_user_path, :class => "add" %></li>
+<% end %>
   <li><%= link_to t('rule_parameter_sets.actions.new'), new_organisation_rule_parameter_set_path, :class => "add" %></li>
 </ul>
 <% end %>
