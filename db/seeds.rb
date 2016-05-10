@@ -10,3 +10,4 @@ stif = Organisation.find_or_create_by(name: "STIF")
 StopAreaReferential.find_or_create_by(name: "Reflex") do |referential|
   referential.add_member stif, owner: true
 end
+LineReferential.find_or_create_by(name: 'CodifLigne')

@@ -7,6 +7,9 @@
   </div>
 <% end %>
 
+<!-- FIXME #824 -->
+<%= link_to "Codifligne", line_referential_path(LineReferential.find_by(name: 'CodifLigne')) %>
+
 <% content_for :sidebar do %>
 <ul class="actions">
   <!-- FIXME #823 -->

@@ -43,6 +43,7 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resources :stop_area_referentials
+  resources :line_referentials, :only => [:show]
 
   resources :referentials do
     resources :api_keys
