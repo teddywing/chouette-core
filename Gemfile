@@ -127,6 +127,7 @@ group :development do
 end
 
 group :test, :development do
+  gem 'awesome_print'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.1.0'
   gem 'fakeweb'
