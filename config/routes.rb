@@ -11,7 +11,7 @@ ChouetteIhm::Application.routes.draw do
       root :to => 'referentials#index', as: :authenticated_root
     end
     unauthenticated :user do
-      root :to => 'devise/sessions#new', as: :unauthenticated_root
+      root :to => 'devise/cas_sessions#new', as: :unauthenticated_root
     end
   end
 

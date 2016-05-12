@@ -372,10 +372,10 @@ ActiveRecord::Schema.define(version: 20160512110510) do
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
-    t.float    "distance"
-    t.boolean  "no_processing"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.float    "distance"
+    t.boolean  "no_processing"
   end
 
   create_table "routes", force: true do |t|
@@ -573,11 +573,13 @@ ActiveRecord::Schema.define(version: 20160512110510) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.datetime "invitation_created_at"
+    t.string   "username",                            null: false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["invitation_token"], :name => "index_users_on_invitation_token", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
   create_table "vehicle_journey_at_stops", force: true do |t|
     t.integer "vehicle_journey_id",             limit: 8

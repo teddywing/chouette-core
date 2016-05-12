@@ -1,13 +1,16 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable, :async
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable, :database_authenticatable
+  devise :invitable, :registerable, :validatable,
+         :recoverable, :rememberable, :trackable,
+         :confirmable, :async, :cas_authenticatable
+
+  # FIXME https://github.com/nbudin/devise_cas_authenticatable/issues/53
+  # Work around :validatable, when database_authenticatable is diabled.
+  attr_accessor :password
 
   # Setup accessible (or protected) attributes for your model
   # attr_accessible :email, :password, :current_password, :password_confirmation, :remember_me, :name, :organisation_attributes
-
   belongs_to :organisation
 
   accepts_nested_attributes_for :organisation
@@ -20,8 +23,19 @@ class User < ActiveRecord::Base
     self.password ||= Devise.friendly_token.first(6)
     self.password_confirmation ||= self.password
   end
-
   after_destroy :check_destroy_organisation
+
+  def cas_extra_attributes=(extra_attributes)
+    extra_attributes.each do |name, value|
+      # case name.to_sym
+      # Extra attributes
+      # when :fullname
+      #   self.fullname = value
+      # when :email
+      #   self.email = value
+      # end
+    end
+  end
 
   private
 

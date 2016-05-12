@@ -57,6 +57,7 @@ gem 'polylines'
 
 # Authentication
 gem 'devise', '~> 3.4.0'
+gem 'devise_cas_authenticatable'
 gem 'devise-encryptable'
 gem 'devise_invitable'
 
