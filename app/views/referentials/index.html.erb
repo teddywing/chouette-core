@@ -1,3 +1,9 @@
+<!-- FIXME #827 -->
+<ul>
+  <% current_organisation.offer_workbenches.try(:each) do |offer| %>
+    <li><h2><%= link_to offer.name, offer %></h2></li>
+  <% end %>
+</ul>
 
 <!-- FIXME #823 -->
 <% if false %>

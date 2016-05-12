@@ -12,6 +12,8 @@ class Organisation < ActiveRecord::Base
   has_many :line_referential_memberships
   has_many :line_referentials, through: :line_referential_memberships
 
+  has_many :offer_workbenches
+
   validates :name, :presence => true, :uniqueness => true
 
   after_create :add_rule_parameter_set

@@ -1,5 +1,7 @@
 ChouetteIhm::Application.routes.draw do
 
+  resources :offer_workbenches, :only => [:show]
+
   devise_for :users, :controllers => {
     :registrations => 'users/registrations', :invitations => 'users/invitations'
   }
