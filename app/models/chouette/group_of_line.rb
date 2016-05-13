@@ -1,5 +1,8 @@
-class Chouette::GroupOfLine < Chouette::TridentActiveRecord
+class Chouette::GroupOfLine < Chouette::ActiveRecord
+  include DefaultAttributesSupport
   include GroupOfLineRestrictions
+  include LineReferentialSupport
+
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 
@@ -26,4 +29,3 @@ class Chouette::GroupOfLine < Chouette::TridentActiveRecord
   end
 
 end
-

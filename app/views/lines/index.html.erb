@@ -1,6 +1,6 @@
 <%= title_tag t('lines.index.title') %>
 
-<%= search_form_for @q, :url => referential_lines_path(@referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f| %>
+<%= search_form_for @q, :url => line_referential_lines_path(@line_referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f| %>
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="input-group col-md-9">
@@ -16,9 +16,10 @@
 
   <div id="advanced_search" class="panel-collapse collapse">
     <div class="panel-body">
-      <%= f.select(:network_id_eq, @referential.networks.collect {|n| [ n.name, n.id ] }.unshift([t('.no_networks'), -1]), {include_blank: t('.all_networks')}, { :class => 'form-control' }) %>
-      <%= f.select(:company_id_eq, @referential.companies.collect {|c| [ c.name, c.id ] }.unshift([t('.no_companies'), -1]), { include_blank: t('.all_companies')}, { :class => 'form-control' }) %>
-      <%= f.select(:group_of_lines_id_eq, @referential.group_of_lines.collect {|c| [ c.name, c.id ] }.unshift([t('.no_group_of_lines'), -1]), {include_blank: t('.all_group_of_lines')}, { :class => 'form-control' }) %>
+      <!-- FIXME #825 -->
+      <%#= f.select(:network_id_eq, @line_referential.networks.collect {|n| [ n.name, n.id ] }.unshift([t('.no_networks'), -1]), {include_blank: t('.all_networks')}, { :class => 'form-control' }) %>
+      <%#= f.select(:company_id_eq, @line_referential.companies.collect {|c| [ c.name, c.id ] }.unshift([t('.no_companies'), -1]), { include_blank: t('.all_companies')}, { :class => 'form-control' }) %>
+      <%#= f.select(:group_of_lines_id_eq, @line_referential.group_of_lines.collect {|c| [ c.name, c.id ] }.unshift([t('.no_group_of_lines'), -1]), {include_blank: t('.all_group_of_lines')}, { :class => 'form-control' }) %>
     </div>
   </div>
 </div>
@@ -28,7 +29,7 @@
 
 <% content_for :sidebar do %>
 <ul class="actions">
-  <li><%= link_to t('lines.actions.new'), new_referential_line_path(@referential), :class => "add" %></li>
+  <li><%= link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), :class => "add" %></li>
 </ul>
 
 <div id="multiple_selection_menu">
@@ -41,7 +42,7 @@
     <a class="disable" href="#"><%= t(".multi_selection_disable") %></a>
 
     <ul class="actions">
-      <%= link_to t(".delete_selected"), referential_lines_path(@referential), "data-multiple-method" => "delete", :class => "remove", "confirmation-text" => t("lines.actions.destroy_selection_confirm") %>
+      <%= link_to t(".delete_selected"), line_referential_lines_path(@line_referential), "data-multiple-method" => "delete", :class => "remove", "confirmation-text" => t("lines.actions.destroy_selection_confirm") %>
     </ul>
 
     <a class="select_all" href="#"><%= t(".select_all") %></a> | <a class="deselect_all" href="#"><%= t(".deselect_all") %></a>
@@ -49,5 +50,3 @@
 </div>
 
 <% end %>
-
-

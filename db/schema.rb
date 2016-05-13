@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511094753) do
+ActiveRecord::Schema.define(version: 20160512110510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,8 +200,10 @@ ActiveRecord::Schema.define(version: 20160511094753) do
     t.string   "name"
     t.string   "comment"
     t.string   "registration_number"
+    t.integer  "line_referential_id"
   end
 
+  add_index "group_of_lines", ["line_referential_id"], :name => "index_group_of_lines_on_line_referential_id"
   add_index "group_of_lines", ["objectid"], :name => "group_of_lines_objectid_key", :unique => true
 
   create_table "group_of_lines_lines", id: false, force: true do |t|
@@ -291,8 +293,10 @@ ActiveRecord::Schema.define(version: 20160511094753) do
     t.string   "color",                           limit: 6
     t.string   "text_color",                      limit: 6
     t.string   "stable_id"
+    t.integer  "line_referential_id"
   end
 
+  add_index "lines", ["line_referential_id"], :name => "index_lines_on_line_referential_id"
   add_index "lines", ["objectid"], :name => "lines_objectid_key", :unique => true
   add_index "lines", ["registration_number"], :name => "lines_registration_number_key"
 
@@ -359,10 +363,10 @@ ActiveRecord::Schema.define(version: 20160511094753) do
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
-    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
-    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
     t.float    "distance"
     t.boolean  "no_processing"
+    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
+    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
   end
 
   create_table "routes", force: true do |t|
@@ -433,10 +437,8 @@ ActiveRecord::Schema.define(version: 20160511094753) do
     t.string   "url"
     t.string   "time_zone"
     t.integer  "stop_area_referential_id"
-    t.integer  "line_referential_id"
   end
 
-  add_index "stop_areas", ["line_referential_id"], :name => "index_stop_areas_on_line_referential_id"
   add_index "stop_areas", ["objectid"], :name => "stop_areas_objectid_key", :unique => true
   add_index "stop_areas", ["parent_id"], :name => "index_stop_areas_on_parent_id"
   add_index "stop_areas", ["stop_area_referential_id"], :name => "index_stop_areas_on_stop_area_referential_id"

@@ -4,39 +4,40 @@ require 'spec_helper'
 describe "Lines", :type => :feature do
   login_user
 
+  let(:line_referential) { create :line_referential }
   let!(:network) { create(:network) }
   let!(:company) { create(:company) }
-  let!(:lines) { Array.new(2) { create(:line_with_stop_areas, :network => network, :company => company) } }
-  let!(:group_of_line) { create(:group_of_line) }  
+  let!(:lines) { Array.new(2) { create :line_with_stop_areas, network: network, company: company, line_referential: line_referential } }
+  let!(:group_of_line) { create(:group_of_line) }
   subject { lines.first }
 
   describe "list" do
     it "display lines" do
-      visit referential_lines_path(referential)
+      visit line_referential_lines_path(line_referential)
       expect(page).to have_content(lines.first.name)
       expect(page).to have_content(lines.last.name)
     end
-    
-  end  
 
-  describe "show" do      
+  end
+
+  describe "show" do
     it "display line" do
-      visit referential_lines_path(referential)
+      visit line_referential_lines_path(line_referential)
       click_link "#{lines.first.name}"
       expect(page).to have_content(lines.first.name)
     end
 
     it "display map" do
-      visit referential_lines_path(referential)
+      visit line_referential_lines_path(line_referential)
       click_link "#{lines.first.name}"
       expect(page).to have_selector("#map.line")
     end
-    
+
   end
 
-  describe "new" do      
+  describe "new" do
     it "creates line and return to show" do
-      visit referential_lines_path(referential)
+      visit line_referential_lines_path(line_referential)
       click_link "Ajouter une ligne"
       fill_in "line_name", :with => "Line 1"
       fill_in "Numéro d'enregistrement", :with => "1"
@@ -46,9 +47,9 @@ describe "Lines", :type => :feature do
     end
   end
 
-  describe "new with group of line", :js => true do      
+  describe "new with group of line", :js => true do
     it "creates line and return to show" do
-      visit new_referential_line_path(referential)
+      visit new_line_referential_line_path(line_referential)
       fill_in "line_name", :with => "Line 1"
       fill_in "Numéro d'enregistrement", :with => "1"
       fill_in "Identifiant Neptune", :with => "test:Line:999"
@@ -59,9 +60,9 @@ describe "Lines", :type => :feature do
     end
   end
 
-  describe "edit and return to show" do      
+  describe "edit and return to show" do
     it "edit line" do
-      visit referential_line_path(referential, subject)
+      visit line_referential_line_path(line_referential, subject)
       click_link "Modifier cette ligne"
       fill_in "line_name", :with => "Line Modified"
       fill_in "Numéro d'enregistrement", :with => "test-1"

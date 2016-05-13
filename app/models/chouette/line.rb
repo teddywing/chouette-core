@@ -1,5 +1,9 @@
-class Chouette::Line < Chouette::TridentActiveRecord
+class Chouette::Line < Chouette::ActiveRecord
+  include DefaultAttributesSupport
   include LineRestrictions
+
+  include LineReferentialSupport
+
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 

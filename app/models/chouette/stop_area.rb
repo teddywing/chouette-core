@@ -15,7 +15,6 @@ class Chouette::StopArea < Chouette::TridentActiveRecord
   has_and_belongs_to_many :routing_stops, :class_name => 'Chouette::StopArea', :foreign_key => "parent_id", :association_foreign_key => "child_id", :join_table => "stop_areas_stop_areas", :order => "stop_areas.name"
 
   belongs_to :stop_area_referential
-  belongs_to :line_referential
   validates_presence_of :stop_area_referential_id
 
   acts_as_tree :foreign_key => 'parent_id',:order => "name"

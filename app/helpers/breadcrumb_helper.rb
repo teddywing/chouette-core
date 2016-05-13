@@ -1,3 +1,4 @@
+# coding: utf-8
 module BreadcrumbHelper
 
   def build_breadcrumb(action)
@@ -72,8 +73,8 @@ module BreadcrumbHelper
 
   def group_of_line_breadcrumb(action)
     referential_breadcrumb
-    add_breadcrumb Chouette::GroupOfLine.model_name.human(:count => 2), referential_group_of_lines_path(@referential) unless action == :index
-    add_breadcrumb breadcrumb_label(@group_of_line), referential_group_of_line_path(@referential, @group_of_line),:title => breadcrumb_tooltip(@group_of_line) if action == :edit
+    add_breadcrumb Chouette::GroupOfLine.model_name.human(:count => 2), line_referential_group_of_lines_path(@line_referential) unless action == :index
+    add_breadcrumb breadcrumb_label(@group_of_line), line_referential_group_of_line_path(@line_referential, @group_of_line),:title => breadcrumb_tooltip(@group_of_line) if action == :edit
   end
 
   def stop_area_breadcrumb(action)
@@ -123,8 +124,8 @@ module BreadcrumbHelper
 
   def line_breadcrumb(action)
     referential_breadcrumb
-    add_breadcrumb Chouette::Line.model_name.human(:count => 2), referential_lines_path(@referential) unless action == :index
-    add_breadcrumb breadcrumb_label(@line), referential_line_path(@referential, @line),:title => breadcrumb_tooltip(@line) if action == :edit
+    add_breadcrumb Chouette::Line.model_name.human(:count => 2), line_referential_lines_path(@line.line_referential) unless action == :index
+    add_breadcrumb breadcrumb_label(@line), line_referential_line_path(@line.line_referential, @line),:title => breadcrumb_tooltip(@line) if action == :edit
   end
 
   def route_breadcrumb(action)

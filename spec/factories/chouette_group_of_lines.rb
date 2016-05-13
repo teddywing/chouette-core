@@ -4,6 +4,8 @@ FactoryGirl.define do
     sequence(:name) { |n| "Group Of Line #{n}" }
     sequence(:objectid) { |n| "test:GroupOfLine:#{n}" }
     sequence(:registration_number) { |n| "#{n}" }
+
+    association :line_referential
   end
 
 end
