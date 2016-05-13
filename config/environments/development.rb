@@ -57,11 +57,13 @@ Rails.application.configure do
   config.company_contact = "http://www.chouette.mobi/club-utilisateurs/contact-support/"
   config.accept_user_creation = true
 
-  # CITYWAY
-  # config.company_name = "cityway"
-  # config.company_theme = "#32adb0"
-  # config.company_contact = "http://www.cityway.fr/contact/?rub_code=14"
-  # config.accept_user_creation = false
+  config.chouette_authentication_settings = {
+    type: "database"
+  }
+  # config.chouette_authentication_settings = {
+  #   type: "cas",
+  #   cas_server: "http://stif-portail-dev.af83.priv/sessions"
+  # }
 
   # file to data for demo
   config.demo_data = "tmp/demo.zip"

@@ -5,7 +5,7 @@ Devise.setup do |config|
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
   # config.secret_key =  Rails.env.production? ? ENV['DEVISE_SECRET_KEY'] : 'e9b20cea45078c982c9cd42cc64c484071d582a3d366ad2b51f676d168bccb2e0fd20e87ebe64aff57ad7f8a1a1c50b76cb9dc4039c287a195f9621fdb557993'
-  
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
@@ -95,7 +95,7 @@ Devise.setup do |config|
   # encryptor), the cost increases exponentially with the number of stretches (e.g.
   # a value of 20 is already extremely slow: approx. 60 seconds for 1 calculation).
   config.stretches = Rails.env.test? ? 1 : 10
-  
+
   # Setup a pepper to generate the encrypted password.
   # config.pepper = "0420ef6a1b6b0ac63b9ac1e2b9624b411e331345a1bad99c85986f70aef62e9c7912955ea1616135224fc7c4ac319085a5e33831fb215a5e45043816746a2c2f"
 
@@ -277,7 +277,9 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
-  config.cas_base_url = "http://stif-portail-dev.af83.priv/sessions"
+  if Rails.application.config.chouette_authentication_settings[:type] == "cas"
+    config.cas_base_url = Rails.application.config.chouette_authentication_settings[:cas_server]
+  end
 
   # you can override these if you need to, but cas_base_url is usually enough
   # config.cas_login_url = "https://cas.myorganization.com/login"
@@ -330,6 +332,6 @@ Rails.application.config.to_prepare do
   Devise::RegistrationsController.layout proc{ |controller| ( action_name == "edit" || action_name == "update") ? "application" : "devise" }
   Devise::InvitationsController.layout proc{ |controller| ( action_name == "new") ? "application" : "devise" }
   Devise::ConfirmationsController.layout "devise"
-  Devise::UnlocksController.layout "devise"            
-  Devise::PasswordsController.layout "devise"        
+  Devise::UnlocksController.layout "devise"
+  Devise::PasswordsController.layout "devise"
 end
