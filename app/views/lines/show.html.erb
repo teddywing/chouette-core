@@ -13,14 +13,15 @@
 	    <p>
 	    	<label><%= t('lines.index.color') %>: </label>
 	    	<label class="color" style='<%="#{number_style(@line)}"%>'><%= line_sticker(@line) %></label>
-	    </p>	
+	    </p>
     <% end %>
     <p>
       <label><%= @line.human_attribute_name(:network) %>: </label>
   	<% if @line.network.nil? %>
-  	   <%= t('lines.index.unset') %> 
+  	   <%= t('lines.index.unset') %>
   	<% else %>
-      <%= link_to @line.network.name, [@referential, @line.network] %>
+      <!-- FIXME #825 -->
+      <%#= link_to @line.network.name, [@referential, @line.network] %>
     <% end %>
     </p>
     <p>
@@ -28,7 +29,8 @@
   	<% if @line.company.nil? %>
   	   <%= t('lines.index.unset') %>
   	<% else %>
-      <%= link_to @line.company.name, [@referential, @line.company] %>
+      <!-- FIXME #825 -->
+      <%#= link_to @line.company.name, [@referential, @line.company] %>
     <% end %>
     </p>
     <p>
@@ -69,7 +71,7 @@
       <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_mrs_vj") %> : <%= @line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count %>
       <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_non_mrs_vj") %> : <%= @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count %>
       <br>&nbsp;&nbsp;<%= @line.human_attribute_name("number_of_null_mrs_vj") %> : <%= @line.vehicle_journeys.count -
-										       (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + 
+										       (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count +
 										       @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count) %>
     </p>
     <p>
@@ -87,15 +89,15 @@
       <% if @line.flexible_service.nil? %>
       (<%= @line.human_attribute_name("default_fs_msg") %>)
       <% end %>
-      : <%= @line.vehicle_journeys.count - 
-	    (@line.vehicle_journeys.where("flexible_service = ?", true).count + 
+      : <%= @line.vehicle_journeys.count -
+	    (@line.vehicle_journeys.where("flexible_service = ?", true).count +
 	    @line.vehicle_journeys.where("flexible_service = ?", false).count) %>
     </p>
     <p>
       <label><%= @line.human_attribute_name("footnotes") %>: </label>
       <ul>
         <% @line.footnotes.each do |footnote| %>
-        <li><%= footnote.code %> : <%= footnote.label %></li>          
+        <li><%= footnote.code %> : <%= footnote.label %></li>
       <% end %>
       </ul>
     </p>
@@ -114,7 +116,8 @@
 <p class="after_map" />
 <h3 class="routes"><%= t('.itineraries') %></h3>
 <div class="routes paginated_content">
-  <%= paginated_content @routes, "routes/route" %>
+  <!-- FIXME #825 -->
+  <%#= paginated_content @routes, "routes/route" %>
 </div>
 
 <% if @line.group_of_lines.any? %>
@@ -126,11 +129,12 @@
 
 <% content_for :sidebar do %>
 <ul class="actions">
-  <li><%= link_to t('lines.actions.new'), new_referential_line_path(@referential), :class => "add" %></li>
-  <li><%= link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), :class => "edit" %></li>
-  <li><%= link_to t('lines.actions.destroy'), referential_line_path(@referential, @line), :method => :delete, :data => {:confirm =>  t('lines.actions.destroy_confirm')}, :class => "remove" %></li>
+  <li><%= link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), :class => "add" %></li>
+  <li><%= link_to t('lines.actions.edit'), edit_line_referential_line_path(@line_referential, @line), :class => "edit" %></li>
+  <li><%= link_to t('lines.actions.destroy'), line_referential_line_path(@line_referential, @line), :method => :delete, :data => {:confirm =>  t('lines.actions.destroy_confirm')}, :class => "remove" %></li>
   <% if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2) %>
-    <li><%= link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), :class => "add" %></li>
+     <!-- FIXME #825 -->
+    <li><%#= link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), :class => "add" %></li>
   <% end %>
 </ul>
   <%= creation_tag(@line) %>

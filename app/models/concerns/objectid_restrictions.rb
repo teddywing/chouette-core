@@ -25,4 +25,3 @@ module ObjectidRestrictions
       likes.size.zero? || ( likes.size==1 && likes.first.id==self.id)
     end
 end
-

@@ -16,7 +16,7 @@ describe Chouette::GroupOfLine, :type => :model do
       expect(subject.stop_areas.count).to eq(route.stop_points.count)
     end
   end
-  
+
   context "#line_tokens=" do
     let!(:line1){create(:line)}
     let!(:line2){create(:line)}

@@ -15,7 +15,7 @@ module ApplicationHelper
   end
 
   def format_restriction_for_locales(referential)
-    if referential.data_format.blank?
+    if !referential.respond_to?(:data_format) or referential.data_format.blank?
       ""
     else
       "."+referential.data_format

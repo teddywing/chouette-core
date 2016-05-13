@@ -1,5 +1,9 @@
-class Chouette::Line < Chouette::TridentActiveRecord
+class Chouette::Line < Chouette::ActiveRecord
+  include DefaultAttributesSupport
   include LineRestrictions
+
+  include LineReferentialSupport
+
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 
@@ -17,8 +21,9 @@ class Chouette::Line < Chouette::TridentActiveRecord
   attr_reader :group_of_line_tokens
   attr_accessor :transport_mode
 
-  validates_presence_of :network
-  validates_presence_of :company
+  # FIXME #825
+  #validates_presence_of :network
+  #validates_presence_of :company
 
   validates_format_of :registration_number, :with => %r{\A[\d\w_\-]+\Z}, :allow_nil => true, :allow_blank => true
   validates_format_of :stable_id, :with => %r{\A[\d\w_\-]+\Z}, :allow_nil => true, :allow_blank => true

@@ -10,6 +10,11 @@ stif = Organisation.find_or_create_by(name: "STIF")
 StopAreaReferential.find_or_create_by(name: "Reflex") do |referential|
   referential.add_member stif, owner: true
 end
-LineReferential.find_or_create_by(name: "CodifLigne") do |referential|
+
+line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |referential|
   referential.add_member stif, owner: true
+end
+
+10.times do |n|
+  line_referential.lines.find_or_create_by name: "Ligne Test #{n}"
 end

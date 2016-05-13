@@ -7,38 +7,40 @@ describe "Group of lines", :type => :feature do
   let!(:network) { create(:network) }
   let!(:company) { create(:company) }
   let!(:line) { create(:line_with_stop_areas, :network => network, :company => company) }
-  let!(:group_of_lines) { Array.new(2) { create(:group_of_line) } }
+  let!(:group_of_lines) { Array.new(2) { create(:group_of_line, line_referential: line_referential) } }
   subject { group_of_lines.first }
 
+  let(:line_referential) { create :line_referential }
+
   before :each do
-    subject.lines << line    
+    subject.lines << line
   end
 
   describe "list" do
     it "display group of lines" do
-      visit referential_group_of_lines_path(referential)
+      visit line_referential_group_of_lines_path(line_referential)
       expect(page).to have_content(group_of_lines.first.name)
       expect(page).to have_content(group_of_lines.last.name)
-    end    
+    end
   end
 
-  describe "show" do      
+  describe "show" do
     it "display group of line" do
-      visit referential_group_of_lines_path(referential)
+      visit line_referential_group_of_lines_path(line_referential)
       click_link "#{subject.name}"
       expect(page).to have_content(subject.name)
     end
 
     it "display map" do
-      visit referential_group_of_lines_path(referential)
+      visit line_referential_group_of_lines_path(line_referential)
       click_link "#{subject.name}"
       expect(page).to have_selector("#map.group_of_line")
     end
   end
 
-  describe "new" do      
+  describe "new" do
     it "creates group of line and return to show" do
-      visit referential_group_of_lines_path(referential)
+      visit line_referential_group_of_lines_path(line_referential)
       click_link I18n.t('group_of_lines.actions.new')
       fill_in "group_of_line[name]", :with => "Group of lines 1"
       fill_in "group_of_line[registration_number]", :with => "1"
@@ -48,9 +50,9 @@ describe "Group of lines", :type => :feature do
     end
   end
 
-  describe "edit and return to show" do      
+  describe "edit and return to show" do
     it "edit line" do
-      visit referential_group_of_line_path(referential, subject)
+      visit line_referential_group_of_line_path(line_referential, subject)
       click_link I18n.t('group_of_lines.actions.edit')
       fill_in "group_of_line[name]", :with => "Group of lines Modified"
       fill_in "group_of_line[registration_number]", :with => "test-1"
@@ -58,5 +60,5 @@ describe "Group of lines", :type => :feature do
       expect(page).to have_content("Group of lines Modified")
     end
   end
-  
+
 end

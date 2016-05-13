@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe "/lines/show", :type => :view do
-  
-  assign_referential
+
   let!(:line) { assign :line, create(:line) }
+  let!(:line_referential) { assign :line_referential, line.line_referential }
   let!(:routes) { assign :routes, Array.new(2) { create(:route, :line => line) }.paginate }
   let!(:map) { assign(:map, double(:to_html => '<div id="map"/>'.html_safe)) }
 
@@ -19,13 +19,12 @@ describe "/lines/show", :type => :view do
 
   it "should render a link to edit the line" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_referential_line_path(referential, line)}']")
+    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_line_referential_line_path(line_referential, line)}']")
   end
 
   it "should render a link to remove the line" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.referential_line_path(referential, line)}'][class='remove']")
+    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.line_referential_line_path(line_referential, line)}'][class='remove']")
   end
 
 end
-

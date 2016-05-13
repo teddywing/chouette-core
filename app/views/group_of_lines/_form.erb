@@ -1,7 +1,7 @@
-<%= semantic_form_for [@referential, @group_of_line] do |form| %>
+<%= semantic_form_for [@line_referential, @group_of_line] do |form| %>
   <%= form.inputs do %>
-    <%= form.input :name, :input_html => {  :title => I18n.t("formtastic.titles#{format_restriction_for_locales(@referential)}.group_of_line.name") } %>
-    <%= form.input :registration_number, :input_html => {  :title => I18n.t("formtastic.titles#{format_restriction_for_locales(@referential)}.group_of_line.registration_number") } %>
+    <%= form.input :name, :input_html => {  :title => I18n.t("formtastic.titles#{format_restriction_for_locales(@line_referential)}.group_of_line.name") } %>
+    <%= form.input :registration_number, :input_html => {  :title => I18n.t("formtastic.titles#{format_restriction_for_locales(@line_referential)}.group_of_line.registration_number") } %>
     <%= form.input :comment %>
     <%= form.input :objectid, :required => !@group_of_line.new_record?, :input_html => {  :title => I18n.t("formtastic.titles#{format_restriction_for_locales(@referential)}.group_of_line.objectid") } %>
   <% end %>
@@ -18,7 +18,7 @@
 
 <script>
   $(function() {
-    $( "#group_of_line_line_tokens" ).tokenInput('<%= name_filter_referential_lines_path(@referential, :format => :json) %>', {
+    $( "#group_of_line_line_tokens" ).tokenInput('<%= name_filter_referential_lines_path(@line_referential, :format => :json) %>', {
        crossDomain: false,
        prePopulate: $('#line_tokens').data('pre'),
        minChars: 1,

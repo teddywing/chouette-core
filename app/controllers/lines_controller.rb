@@ -1,4 +1,6 @@
-class LinesController < ChouetteController
+class LinesController < BreadcrumbController
+  include ApplicationHelper
+
   defaults :resource_class => Chouette::Line
   respond_to :html
   respond_to :xml
@@ -6,7 +8,7 @@ class LinesController < ChouetteController
   respond_to :kml, :only => :show
   respond_to :js, :only => :index
 
-  belongs_to :referential
+  belongs_to :line_referential
 
   def index
     index! do |format|
@@ -57,7 +59,7 @@ class LinesController < ChouetteController
   end
 
   def filtered_lines
-    referential.lines.select{ |t| [t.name, t.published_name].find { |e| /#{params[:q]}/i =~ e }  }
+    line_referential.lines.select{ |t| [t.name, t.published_name].find { |e| /#{params[:q]}/i =~ e }  }
   end
 
   def collection
@@ -76,9 +78,11 @@ class LinesController < ChouetteController
       params[:q]["group_of_lines_id_blank"] = "1"
     end
 
-    @q = referential.lines.search(params[:q])
+    @q = line_referential.lines.search(params[:q])
     @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
   end
+
+  alias_method :line_referential, :parent
 
   private
 
