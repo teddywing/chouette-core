@@ -18,3 +18,5 @@ end
 10.times do |n|
   line_referential.lines.find_or_create_by name: "Ligne Test #{n}"
 end
+
+OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: stif)
