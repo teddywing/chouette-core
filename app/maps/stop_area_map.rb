@@ -126,7 +126,7 @@ EOF
   end
 
   def projection_type
-    stop_area.referential.projection_type
+    stop_area.projection
   end
 
   def ready?

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe "/stop_areas/show", :type => :view do
-  
-  assign_referential
+
+  let!(:stop_area_referential) { assign :stop_area_referential, stop_area.stop_area_referential }
   let!(:stop_area) { assign :stop_area, create(:stop_area) }
   let!(:access_points) { assign :access_points, [] }
   let!(:map) { assign(:map, double(:to_html => '<div id="map"/>'.html_safe)) }
@@ -19,13 +19,12 @@ describe "/stop_areas/show", :type => :view do
 
   it "should render a link to edit the stop_area" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_referential_stop_area_path(referential, stop_area)}']")
+    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_stop_area_referential_stop_area_path(stop_area_referential, stop_area)}']")
   end
 
   it "should render a link to remove the stop_area" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.referential_stop_area_path(referential, stop_area)}'][class='remove']")
+    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.stop_area_referential_stop_area_path(stop_area_referential, stop_area)}'][class='remove']")
   end
 
 end
-

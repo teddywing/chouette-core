@@ -44,7 +44,10 @@ ChouetteIhm::Application.routes.draw do
     resources :rule_parameter_sets
   end
 
-  resources :stop_area_referentials
+  resources :stop_area_referentials, :only => [:show] do
+    resources :stop_areas
+  end
+
   resources :line_referentials, :only => [:show] do
     resources :lines
     resources :group_of_lines

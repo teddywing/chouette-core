@@ -1,4 +1,4 @@
-<%= semantic_form_for [@referential, @stop_area] do |form| %>
+<%= semantic_form_for [@stop_area_referential, @stop_area] do |form| %>
   <div class="row">
     <div class="container-fluid">
       <% if !manage_itl && @map %>
@@ -14,7 +14,7 @@
             <label><%= t('.geolocalize') %></label>
             <input class="typeahead form-control input-lg" maxlength="255" type="text" placeholder="<%= t('.address') %>" />
           </div>
-          <% unless @referential.projection_type_label.empty? %>
+          <% unless @stop_area.projection.blank? or @stop_area.projection_type_label.empty? %>
             <%= form.input :projection_xy, :label => t("projection_xy", :projection => @referential.projection_type_label), :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.projection_xy")} %>
           <% end %>
           <%= form.input :coordinates, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.coordinates")} %>
@@ -121,8 +121,9 @@
       },
       limit: 10,
       remote: {
-        url: 'http://nominatim.openstreetmap.org/search?q=%QUERY&format=json&addressdetails=1&bounded=1&viewbox='+
-          '<%= @referential.viewbox_left_top_right_bottom %>',
+          url: 'http://nominatim.openstreetmap.org/search?q=%QUERY&format=json&addressdetails=1&bounded=1&viewbox='+
+          // FIXME #821
+          '<%#= @stop_area_referential.viewbox_left_top_right_bottom %>',
         filter: filtering,
       }
     });
@@ -157,4 +158,3 @@
     })
   });
 </script>
-

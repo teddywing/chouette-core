@@ -4,12 +4,13 @@ require 'spec_helper'
 describe "StopAreas", :type => :feature do
   login_user
 
-  let!(:stop_areas) { Array.new(2) { create(:stop_area) } }
+  let(:stop_area_referential) { create :stop_area_referential }
+  let!(:stop_areas) { Array.new(2) { create :stop_area, stop_area_referential: stop_area_referential } }
   subject { stop_areas.first }
 
   describe "list" do
     it "display stop_areas" do
-      visit referential_stop_areas_path(referential)
+      visit stop_area_referential_stop_areas_path(stop_area_referential)
       expect(page).to have_content(stop_areas.first.name)
       expect(page).to have_content(stop_areas.last.name)
     end
@@ -17,13 +18,13 @@ describe "StopAreas", :type => :feature do
 
   describe "show" do
     it "display stop_area" do
-      visit referential_stop_areas_path(referential)
+      visit stop_area_referential_stop_areas_path(stop_area_referential)
       click_link "#{stop_areas.first.name}"
       expect(page).to have_content(stop_areas.first.name)
     end
 
     it "display map" do
-      visit referential_stop_areas_path(referential)
+      visit stop_area_referential_stop_areas_path(stop_area_referential)
       click_link "#{stop_areas.first.name}"
       expect(page).to have_selector("#map.stop_area")
     end
@@ -33,7 +34,7 @@ describe "StopAreas", :type => :feature do
   # FIXME #822
   # describe "new" do
   #   it "creates stop_area and return to show" do
-  #     visit referential_stop_areas_path(referential)
+  #     visit stop_area_referential_stop_areas_path(stop_area_referential)
   #     click_link "Ajouter un arrêt"
   #     fill_in "stop_area_name", :with => "StopArea 1"
   #     fill_in "Numéro d'enregistrement", :with => "test-1"
@@ -45,7 +46,7 @@ describe "StopAreas", :type => :feature do
 
   describe "edit and return to show" do
     it "edit stop_area" do
-      visit referential_stop_area_path(referential, subject)
+      visit stop_area_referential_stop_area_path(stop_area_referential, subject)
       click_link "Modifier cet arrêt"
       fill_in "stop_area_name", :with => "StopArea Modified"
       fill_in "Numéro d'enregistrement", :with => "test-1"

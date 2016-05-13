@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-class StopAreasController < ChouetteController
+class StopAreasController < BreadcrumbController
+  include ApplicationHelper
+
   defaults :resource_class => Chouette::StopArea
 
-  belongs_to :referential do
-    belongs_to :line, :parent_class => Chouette::Line, :optional => true, :polymorphic => true
-    belongs_to :network, :parent_class => Chouette::Network, :optional => true, :polymorphic => true
-    belongs_to :connection_link, :parent_class => Chouette::ConnectionLink, :optional => true, :polymorphic => true
-  end
+  belongs_to :stop_area_referential
+  # do
+  #   belongs_to :line, :parent_class => Chouette::Line, :optional => true, :polymorphic => true
+  #   belongs_to :network, :parent_class => Chouette::Network, :optional => true, :polymorphic => true
+  #   belongs_to :connection_link, :parent_class => Chouette::ConnectionLink, :optional => true, :polymorphic => true
+  # end
 
   respond_to :html, :kml, :xml, :json
   respond_to :js, :only => :index
@@ -48,7 +51,7 @@ class StopAreasController < ChouetteController
 
   def index
     request.format.kml? ? @per_page = nil : @per_page = 12
-    @zip_codes = referential.stop_areas.collect(&:zip_code).compact.uniq
+    @zip_codes = stop_area_referential.stop_areas.collect(&:zip_code).compact.uniq
     index! do |format|
       format.html {
         if collection.out_of_bounds?
@@ -104,9 +107,9 @@ class StopAreasController < ChouetteController
   end
 
   def default_geometry
-    count = referential.stop_areas.without_geometry.default_geometry!
+    count = stop_area_referential.stop_areas.without_geometry.default_geometry!
     flash[:notice] = I18n.translate("stop_areas.default_geometry_success", :count => count)
-    redirect_to referential_stop_areas_path(@referential)
+    redirect_to stop_area_referential_stop_areas_path(@stop_area_referential)
   end
 
   def zip_codes
@@ -118,6 +121,7 @@ class StopAreasController < ChouetteController
   protected
 
   alias_method :stop_area, :resource
+  alias_method :stop_area_referential, :parent
 
   def map
     @map = StopAreaMap.new(stop_area).with_helpers(self)

@@ -15,10 +15,8 @@ module ProjectionFields
   end
 
   def projection
-    if self.referential.projection_type.nil? || self.referential.projection_type.empty?
-      nil
-    else
-      self.referential.projection_type
+    if referential.respond_to?(:projection_type) && referential.projection_type.present?
+      referential.projection_type
     end
   end
   @point = nil

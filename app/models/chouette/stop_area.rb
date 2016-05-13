@@ -1,12 +1,15 @@
 require 'geokit'
 require 'geo_ruby'
 
-class Chouette::StopArea < Chouette::TridentActiveRecord
+class Chouette::StopArea < Chouette::ActiveRecord
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
   include Geokit::Mappable
   include ProjectionFields
   include StopAreaRestrictions
+
+  include DefaultAttributesSupport
+  include StopAreaReferentialSupport
 
   has_many :stop_points, :dependent => :destroy
   has_many :access_points, :dependent => :destroy
@@ -158,7 +161,7 @@ class Chouette::StopArea < Chouette::TridentActiveRecord
 
   def default_position
     # for first StopArea ... the bounds is nil :(
-      Chouette::StopArea.bounds ? Chouette::StopArea.bounds.center : self.referential.envelope.center
+    Chouette::StopArea.bounds ? Chouette::StopArea.bounds.center : nil # FIXME #821 stop_area_referential.envelope.center
   end
 
   def self.near(origin, distance = 0.3)

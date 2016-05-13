@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 describe "/stop_areas/edit", :type => :view do
-  assign_referential
+
+  let!(:stop_area_referential) { assign :stop_area_referential, stop_area.stop_area_referential }
   let!(:stop_area) { assign(:stop_area, create(:stop_area)) }
   let!(:map) { assign(:map, double(:to_html => '<div id="map"/>'.html_safe)) }
 
   describe "test" do
     it "should render h2 with the group name" do
-      render    
+      render
       expect(rendered).to have_selector("h2", :text => Regexp.new(stop_area.name))
     end
   end
