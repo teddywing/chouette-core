@@ -39,7 +39,12 @@ RSpec.configure do |config|
     Apartment::Tenant.drop('first') rescue nil
     # Create the default tenant for our tests
     organisation = Organisation.create!(:name => "first")
-    Referential.create!(:prefix => "first", :name => "first", :slug => "first", :organisation => organisation)
+
+    line_referential = LineReferential.find_or_create_by(name: "first") do |referential|
+      referential.add_member organisation, owner: true
+    end
+
+    Referential.create! prefix: "first", name: "first", slug: "first", organisation: organisation, line_referential: line_referential
   end
 
   config.before(:each) do

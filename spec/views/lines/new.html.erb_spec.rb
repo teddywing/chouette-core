@@ -4,8 +4,8 @@ describe "/lines/new", :type => :view do
 
   let!(:network) { create(:network) }
   let!(:company) { create(:company) }
-  let!(:line) { assign(:line, build(:line, :network => network, :company => company )) }
-  let!(:line_referential) { assign :line_referential, line.line_referential }
+  let!(:line) { assign(:line, build(:line, :network => network, :company => company, line_referential: referential.line_referential )) }
+  let!(:line_referential) { assign :line_referential, referential.line_referential }
 
   describe "form" do
 

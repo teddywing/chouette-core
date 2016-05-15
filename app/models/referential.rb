@@ -25,6 +25,10 @@ class Referential < ActiveRecord::Base
   belongs_to :organisation
   validates_presence_of :organisation
 
+  belongs_to :line_referential
+  # validates_presence_of :line_referential
+  has_many :lines, through: :line_referential
+
   def slug_excluded_values
     if ! slug.nil?
       if slug.start_with? "pg_"
@@ -45,10 +49,6 @@ class Referential < ActiveRecord::Base
 
   def human_attribute_name(*args)
     self.class.human_attribute_name(*args)
-  end
-
-  def lines
-    Chouette::Line.all
   end
 
   def networks

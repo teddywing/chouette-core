@@ -68,7 +68,7 @@ ChouetteIhm::Application.routes.draw do
     resources :networks
 
     match 'lines' => 'lines#destroy_all', :via => :delete
-    resources :lines do
+    resources :lines, controller: "referential_lines" do
       delete :index, on: :collection, action: :delete_all
       collection do
         get 'name_filter'
