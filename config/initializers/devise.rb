@@ -279,6 +279,7 @@ Devise.setup do |config|
 
   if Rails.application.config.chouette_authentication_settings[:type] == "cas"
     config.cas_base_url = Rails.application.config.chouette_authentication_settings[:cas_server]
+    config.cas_validate_url = Rails.application.config.chouette_authentication_settings[:cas_validate_url]
   end
 
   # you can override these if you need to, but cas_base_url is usually enough
