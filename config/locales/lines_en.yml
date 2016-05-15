@@ -1,5 +1,5 @@
 en:
-  lines:
+  lines: &en_lines
     actions:
       new: "Add a new line"
       edit: "Edit this line"
@@ -112,7 +112,8 @@ en:
       hub:
         line:
           name: "maximum 75 characters"
-          registration_number: "Positif integer, unique key, of no more than 8 digits." 
+          registration_number: "Positif integer, unique key, of no more than 8 digits."
           objectid: "[prefix]:Line:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character. Maximum length of the unique key = 14."
           number: "Only alphanumerical or underscore characters. Maximum length = 6."
-
+  referential_lines:
+    <<: *en_lines
