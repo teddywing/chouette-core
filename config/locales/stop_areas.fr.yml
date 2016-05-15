@@ -1,5 +1,5 @@
 fr:
-  stop_areas:
+  stop_areas: &fr_stop_areas
     default_geometry_success: "%{count} arrêts modifiés"
     stop_area:
       no_position: "Pas de position"
@@ -166,3 +166,5 @@ fr:
           comment: "Longueur maximale = 255."
           coordinates: "Les coordonnées sont obligatoires."
           projection_xy: "x,y dans le référentiel secondaire, le séparateur de décimales est 'point'"
+  referential_stop_areas:
+    <<: *fr_stop_areas
