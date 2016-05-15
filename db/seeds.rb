@@ -33,7 +33,9 @@ end
 
 offer_workbench = OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: stif)
 
-stif.referentials.find_or_create_by(slug: "test", name: "Test") do |referential|
+stif.referentials.find_or_create_by(slug: "test") do |referential|
+  referential.name = "Test"
+  referential.prefix = "test"
   referential.offer_workbench = offer_workbench
   referential.line_referential = line_referential
   referential.stop_area_referential = stop_area_referential
