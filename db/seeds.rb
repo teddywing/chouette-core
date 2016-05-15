@@ -9,6 +9,12 @@
 
 stif = Organisation.find_or_create_by(name: "STIF")
 
+stif.users.find_or_create_by!(username: "admin") do |user|
+  user.email = 'stif-boiv@af83.com'
+  user.name = "STIF Administrateur"
+  user.skip_confirmation!
+end
+
 stop_area_referential = StopAreaReferential.find_or_create_by(name: "Reflex") do |referential|
   referential.add_member stif, owner: true
 end
@@ -26,3 +32,8 @@ end
 end
 
 OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: stif)
+
+stif.referentials.find_or_create_by(slug: "test", name: "Test") do |referential|
+  referential.line_referential = line_referential
+  referential.stop_area_referential = stop_area_referential
+end
