@@ -31,18 +31,17 @@ describe "StopAreas", :type => :feature do
 
   end
 
-  # FIXME #822
-  # describe "new" do
-  #   it "creates stop_area and return to show" do
-  #     visit stop_area_referential_stop_areas_path(stop_area_referential)
-  #     click_link "Ajouter un arrêt"
-  #     fill_in "stop_area_name", :with => "StopArea 1"
-  #     fill_in "Numéro d'enregistrement", :with => "test-1"
-  #     fill_in "Identifiant Neptune", :with => "test:StopArea:1"
-  #     click_button("Créer arrêt")
-  #     expect(page).to have_content("StopArea 1")
-  #   end
-  # end
+  describe "new" do
+    it "creates stop_area and return to show" do
+      visit stop_area_referential_stop_areas_path(stop_area_referential)
+      click_link "Ajouter un arrêt"
+      fill_in "stop_area_name", :with => "StopArea 1"
+      fill_in "Numéro d'enregistrement", :with => "test-1"
+      fill_in "Identifiant Neptune", :with => "test:StopArea:1"
+      click_button("Créer arrêt")
+      expect(page).to have_content("StopArea 1")
+    end
+  end
 
   describe "edit and return to show" do
     it "edit stop_area" do

@@ -155,7 +155,7 @@ ChouetteIhm::Application.routes.draw do
        resources :access_links
     end
 
-    resources :stop_areas do
+    resources :stop_areas, controller: "referential_stop_areas" do
       resources :access_points
       resources :stop_area_copies
       resources :stop_area_routing_lines

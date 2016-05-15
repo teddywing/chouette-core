@@ -29,6 +29,10 @@ class Referential < ActiveRecord::Base
   # validates_presence_of :line_referential
   has_many :lines, through: :line_referential
 
+  belongs_to :stop_area_referential
+  # validates_presence_of :stop_area_referential
+  has_many :stop_areas, through: :stop_area_referential
+
   def slug_excluded_values
     if ! slug.nil?
       if slug.start_with? "pg_"
