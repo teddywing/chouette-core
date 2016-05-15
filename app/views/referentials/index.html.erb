@@ -1,9 +1,8 @@
 <!-- FIXME #827 -->
-<ul>
-  <% current_organisation.offer_workbenches.try(:each) do |offer| %>
-    <li><h2><%= link_to offer.name, offer %></h2></li>
-  <% end %>
-</ul>
+<% current_organisation.offer_workbenches.each do |workbench| %>
+  <h2><%= link_to workbench.name, workbench %></h2>
+  <p><%= workbench.referentials.count %> jeu(x) de données à l'heure actuelle</p>
+<% end %>
 
 <!-- FIXME #823 -->
 <% if false %>
@@ -23,10 +22,10 @@
 <ul>
   <!-- FIXME #820 -->
   <!-- Don't blame me. See #820 -->
-  <li><%= link_to 'Arrêts Reflex', stop_area_referential_path(1) %></li>
+  <li><%= link_to 'Données Reflex', stop_area_referential_path(1) %></li>
 
   <!-- FIXME #824 -->
   <!-- Don't blame me. See #824 -->
-  <li><%= link_to 'Lignes CodifLigne', line_referential_path(1) %></li>
+  <li><%= link_to 'Données CodifLigne', line_referential_path(1) %></li>
 </ul>
 <% end %>
