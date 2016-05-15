@@ -33,6 +33,8 @@ class Referential < ActiveRecord::Base
   # validates_presence_of :stop_area_referential
   has_many :stop_areas, through: :stop_area_referential
 
+  belongs_to :offer_workbench
+
   def slug_excluded_values
     if ! slug.nil?
       if slug.start_with? "pg_"

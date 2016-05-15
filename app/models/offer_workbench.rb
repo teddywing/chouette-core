@@ -4,4 +4,6 @@ class OfferWorkbench < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :organisation, presence: true
 
+  has_many :referentials
+
 end
