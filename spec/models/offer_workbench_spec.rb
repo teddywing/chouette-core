@@ -7,7 +7,6 @@ RSpec.describe OfferWorkbench, :type => :model do
   end
 
   it { should validate_presence_of(:name) }
-  it { should validate_uniqueness_of(:name) }
   it { should validate_presence_of(:organisation) }
 
 end
