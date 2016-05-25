@@ -52,10 +52,10 @@ Rails.application.configure do
 
   # Specific theme for each company
   # AFIMB
-  config.company_name = "afimb"
-  config.company_theme = "#61970b" # AFIMB color
+  config.company_name = "stif"
+  config.company_theme = "#66b4e0"
   config.company_contact = "http://www.chouette.mobi/club-utilisateurs/contact-support/"
-  config.accept_user_creation = true
+  config.accept_user_creation = false
 
   config.chouette_authentication_settings = {
     type: "database"

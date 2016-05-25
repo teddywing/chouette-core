@@ -165,7 +165,7 @@ class Referential < ActiveRecord::Base
 
   before_destroy :destroy_jobs
   def destroy_jobs
-    Ievkit.delete_jobs(slug)
+    #Ievkit.delete_jobs(slug)
     true
   end
 
