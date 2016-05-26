@@ -51,8 +51,7 @@ Rails.application.configure do
   end
 
   # Specific theme for each company
-  # AFIMB
-  config.company_name = "stif"
+  config.company_name = "STIF"
   config.company_theme = "#66b4e0"
   config.company_contact = "http://www.chouette.mobi/club-utilisateurs/contact-support/"
   config.accept_user_creation = false
