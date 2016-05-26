@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   # FIXME https://github.com/nbudin/devise_cas_authenticatable/issues/53
   # Work around :validatable, when database_authenticatable is diabled.
-  attr_accessor :password
+  attr_accessor :password unless authentication_type == :database_authenticatable
 
   # Setup accessible (or protected) attributes for your model
   # attr_accessible :email, :password, :current_password, :password_confirmation, :remember_me, :name, :organisation_attributes
