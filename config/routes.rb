@@ -10,8 +10,15 @@ ChouetteIhm::Application.routes.draw do
     authenticated :user do
       root :to => 'referentials#index', as: :authenticated_root
     end
+    
     unauthenticated :user do
-      root :to => 'devise/cas_sessions#new', as: :unauthenticated_root
+      target = 'devise/sessions#new'
+
+      if Rails.application.config.chouette_authentication_settings[:type] == "cas"
+        target = 'devise/cas_sessions#new'
+      end
+
+      root :to => target, as: :unauthenticated_root
     end
   end
 
