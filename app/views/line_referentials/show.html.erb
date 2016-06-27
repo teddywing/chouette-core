@@ -18,6 +18,27 @@
   </ul>
 </div>
 
+<% unless @line_referential.line_referential_sync.line_sync_operations.empty? %>
+  <%= title_tag "Historique des synchronisations" %>
+  <ul class="list-group"  width="75%">
+    <% @line_referential.line_referential_sync.line_sync_operations.each do |sync| %>
+      <li>
+        <%= sync.created_at %> - <%= sync.status %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= semantic_form_for @line_referential, :url => line_referential_path do |form| %>
+  <%= form.inputs do %>
+    <%= form.input :sync_interval %>
+  <% end %>
+
+  <%= form.actions do %>
+    <%= form.action :submit, :as => :button %>
+  <% end %>
+<% end %>
+
 <% content_for :sidebar do %>
 <ul class="actions">
 </ul>

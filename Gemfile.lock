@@ -1,3 +1,10 @@
+GIT
+  remote: git@github.com:AF83/stif-codifline-api.git
+  revision: 3d44f52aea3aea0cc45291ce0855bbb339f228c6
+  specs:
+    codifligne (0.0.1)
+      nokogiri (~> 1.6)
+
 GEM
   remote: http://rubygems.org/
   remote: http://rails-assets.org/
@@ -487,6 +494,7 @@ DEPENDENCIES
   capistrano-ext
   capybara (~> 2.4.0)
   cocoon
+  codifligne!
   coffee-rails (~> 4.0.0)
   daemons
   database_cleaner
@@ -569,4 +577,4 @@ DEPENDENCIES
   will_paginate-bootstrap (~> 1.0.1)
 
 BUNDLED WITH
-   1.11.2
+   1.12.3

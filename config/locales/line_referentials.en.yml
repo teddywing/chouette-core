@@ -1,0 +1,5 @@
+en:
+  activerecord:
+    attributes:
+      line_referential:
+        sync_interval: "Synchronisation frequency"

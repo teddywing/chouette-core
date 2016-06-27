@@ -55,7 +55,7 @@ ChouetteIhm::Application.routes.draw do
     resources :stop_areas
   end
 
-  resources :line_referentials, :only => [:show] do
+  resources :line_referentials, :only => [:show, :update] do
     resources :lines
     resources :group_of_lines
   end
