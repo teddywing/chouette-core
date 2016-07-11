@@ -11,10 +11,17 @@ require 'capybara/poltergeist'
 require 'georuby-ext'
 require 'will_paginate/array'
 require 'fakeweb'
+
 require 'simplecov'
-SimpleCov.start 'rails' do
-  add_filter "/.bundle"
+
+if ENV['JOB_NAME']
+  require 'simplecov-rcov'
+  SimpleCov.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::RcovFormatter
+  ]
 end
+SimpleCov.start 'rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
