@@ -38,14 +38,6 @@ gem 'spring', group: :development
 gem 'sawyer', '~> 0.6.0'
 gem 'faraday_middleware', '~> 0.9.1'
 
-platforms :jruby do
-  gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.3'
-  gem 'jruby-openssl'
-  gem 'jruby-rack-worker'
-  gem 'warbler'
-  gem 'therubyrhino'
-end
-
 platforms :ruby do
   gem 'therubyracer', '~> 0.12'
   gem 'pg'
@@ -76,6 +68,7 @@ gem 'mimemagic'
 gem 'language_engine', '0.0.6'
 gem 'calendar_helper', '0.2.5'
 gem 'cocoon'
+gem 'slim-rails', '~> 3.1'
 gem 'formtastic', '2.3.1'
 gem 'RedCloth'
 gem 'simple_form', '~> 3.1.0'
