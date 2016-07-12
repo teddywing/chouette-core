@@ -8,9 +8,9 @@ en:
       destroy_selection_confirm: "Are you sure you want destroy those lines?"
       import: "Import lines"
       export_kml: "Export KML line"
-      export__kml_all: "Export KML lines"
+      export_kml_all: "Export KML lines"
       export_hub: "Export HUB line"
-      export__hub_all: "Export HUB lines"
+      export_hub_all: "Export HUB lines"
     new:
       title: "Add a new line"
     edit:

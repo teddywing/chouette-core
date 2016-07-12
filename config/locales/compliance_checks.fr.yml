@@ -62,12 +62,15 @@ fr:
     messages:
       undefined: "%{key} non défini"
       TooMuchDetails: "( %{0} erreurs / warnings supplémentaires )"
+      ONE: "Catégorie 1 : Syntaxe"
     severities:
       uncheck: "Non testé"
       ok: "Ok"
       warning: "Alerte"
       error: "Erreur"
       fatal: "Fatal"
+    import: "Import Report"
+    rule_parameter_set: "Rule Parameter Set"
   activemodel:
     models:
       compliance_check:
@@ -83,6 +86,7 @@ fr:
         resources: "Fichier à valider"
         status: "Status"
         file_name: "Jeu de données"
+        projection_reference: "Système de projection de référence"
       compliance_check_log_message:
         created_at: "Date"
         position: "N."

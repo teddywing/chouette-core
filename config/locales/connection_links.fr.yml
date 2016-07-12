@@ -18,6 +18,7 @@ fr:
       to: "vers"
     index:
       name: "Recherche par nom"
+      advanced_search: "Recherche avancée"
       title: "Correspondances"
       departure: "Arrêt de départ"
       arrival: "Arrêt d'arrivée"

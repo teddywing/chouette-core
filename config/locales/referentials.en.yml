@@ -57,6 +57,7 @@ en:
         access_points: "Access Points"
         time_tables: "Time tables"
         connection_links: "Connection links"
+        route_sections: "Route sections"
         quays: "quays"
         boarding_positions: "boarding positions"
         commercial_stops: "commercial stops"

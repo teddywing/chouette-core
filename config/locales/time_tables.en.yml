@@ -41,12 +41,17 @@ en:
       overlap_date: "Overlap date"
       selected_date: "Date directly included"
       selected_period: "Date included in period"
+    properties_show:
+      resume: "From %{start_date} to %{end_date}"
+      resume_empty: "Empty timetable"
     index:
-      title: "Timetables"
       comment: "Search by name"
       tag_search: "Tags : hollidays,public holliday"
-      from: "From : "
-      to: " to : "
+      from: "From: "
+      to: " to: "
+      start_date: "mm/jj/aaaa"
+      end_date: "mm/jj/aaaa"
+      title: "timetables"
       selection: "Selection"
       selection_all: "All"
       advanced_search: "Advanced Search"
@@ -74,6 +79,7 @@ en:
         creation_time: "Created on"
         creator_id: "Created by "
         calendars: "Calendar view"
+        calendar_details: "Calendar details"
         dates: "Peculiar dates"
         date: "On"
         excluded_dates: "Excluded dates"
@@ -81,6 +87,7 @@ en:
         period_start: "From"
         period_end: "to"
         tag_search: "Tags"
+        tag_list: "Tags"
   formtastic:
     titles:
       time_table:

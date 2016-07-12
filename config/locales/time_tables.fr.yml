@@ -41,6 +41,9 @@ fr:
       overlap_date: "Date en doublon"
       selected_date: "Date incluse directement"
       selected_period: "Date incluse par période"
+    properties_show:
+      resume: "Validité comprise du %{start_date} au %{end_date}" 
+      resume_empty: "Calendrier vide"
     index:
       comment: "Recherche par nom"
       tag_search: "Tags : vacances,jour fériés"

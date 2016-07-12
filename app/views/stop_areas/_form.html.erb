@@ -15,7 +15,7 @@
             <input class="typeahead form-control input-lg" maxlength="255" type="text" placeholder="<%= t('.address') %>" />
           </div>
           <% unless @stop_area.projection.blank? or @stop_area.projection_type_label.empty? %>
-            <%= form.input :projection_xy, :label => t("projection_xy", :projection => @referential.projection_type_label), :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.projection_xy")} %>
+            <%= form.input :projection_xy, :label => t("activerecord.attributes.stop_area.projection_xy", :projection => @referential.projection_type_label), :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.projection_xy")} %>
           <% end %>
           <%= form.input :coordinates, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.coordinates")} %>
           <%= form.input :street_name %>
@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="stop_areas.stop_area.general_info">
-    <h3><%= t("stop_area.general") %></h3>
+    <h3><%= t("stop_areas.stop_area.general") %></h3>
     <%= form.inputs do %>
       <%= form.input :objectid, :required => !@stop_area.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.objectid")} %>
       <%= form.input :registration_number, required: format_restriction_for_locales(@referential) == '.hub', :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.registration_number")} %>

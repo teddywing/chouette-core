@@ -36,6 +36,9 @@ norme Neptune (NFP 99 506)"
         new_password: Nouveau mot de passe
         new_password_confirmation: Confirmation du nouveau mot de passe
         commit: Changer de mot de passe
+    unlock:
+      new:
+        title: "Renvoyer les instructions de déblocage du compte"
     links:
       sign_in: "Se connecter"
       sign_up: "S'inscrire"

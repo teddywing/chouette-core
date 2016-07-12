@@ -13,4 +13,5 @@ fr:
         name: "Nom de la validation"
         references_type: "Sous ensemble"
         reference_ids: "Identifiants du sous ensemble"
+        object_id_prefix: "Préfixe Neptune Id"
         rule_parameter_set_id: "Jeu de paramètres pour validation"

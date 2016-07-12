@@ -20,8 +20,8 @@ fr:
       itineraries: "Liste des séquences d'arrêts de la ligne"
       group_of_lines: "Groupes de lignes"
     index:
-      name_or_number: "Recherche par nom ou indice"
       title: "Lignes"
+      name_or_number: "Recherche par nom ou indice"      
       no_networks: "Aucun réseaux"
       no_companies: "Aucun transporteurs"
       no_group_of_lines: "Aucun groupes de ligne"

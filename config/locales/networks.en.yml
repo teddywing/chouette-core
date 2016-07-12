@@ -14,6 +14,7 @@ en:
     index:
       title: "Networks"
       name: "Search by name"
+      advanced_search: "Advanced search"
   activerecord:
     models:
       network: 

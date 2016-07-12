@@ -12,7 +12,7 @@ module StopAreasHelper
   end
   
   def genealogical_title
-    return t(".stop_areas.genealogical.genealogical_routing") if @stop_area.stop_area_type == 'itl'    
+    return t("stop_areas.genealogical.genealogical_routing") if @stop_area.stop_area_type == 'itl'    
     t("stop_areas.genealogical.genealogical")
   end
  

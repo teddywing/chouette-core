@@ -19,6 +19,7 @@ en:
     index:
       title: "Connection links"
       name: "Search by name"
+      advanced_search: "Advanced search"
       departure: "Start of link"
       arrival: "End of link"
       selection: "Selection"

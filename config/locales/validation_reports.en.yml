@@ -302,6 +302,8 @@ en:
         3-Route-8: "Vérification de l'utilisation des arrêts par les missions"
         3-Route-9: "Vérification de l’existence d’une mission passant par tous les arrêts de la séquence"
         3-JourneyPattern-1: "Vérification de double définition de missions"
+        3-JourneyPattern-2: "Vérification de l’existence d’une mission passant par tous les arrêts de la séquence"
+        3-JourneyPattern-3: "Vérification de double définition de missions"
         3-VehicleJourney-1: "Vérification de la chronologie des horaires de passage à un arrêt"
         3-VehicleJourney-2: "Vérification de la vitesse de transfert entre deux arrêts"
         3-VehicleJourney-3: "Vérification de la cohérence des courses successives desservant deux mêmes arrêts"

@@ -1,4 +1,4 @@
-<h2>Resend unlock instructions</h2>
+<h2><%= t('devise.unlock.new.title') %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
   <%= devise_error_messages! %>
@@ -6,7 +6,7 @@
   <p><%= f.label :email %><br />
   <%= f.text_field :email %></p>
 
-  <p><%= f.submit "Resend unlock instructions" %></p>
+  <p><%= f.submit t('devise.unlock.new.title') %></p>
 <% end %>
 
 <%= render "links" %>

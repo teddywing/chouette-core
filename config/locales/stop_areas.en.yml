@@ -66,9 +66,9 @@ en:
       title: "Manage parent of stop area %{stop_area}"
     add_children:
       title: "Manage children of stop area %{stop_area}"
-    add_lines:
+    add_routing_lines:
       title: "Manage lines of routing constraint %{stop_area}"
-    add_stops:
+    add_routing_stops:
       title: "Manage stop areas of routing constraint %{stop_area}"
   activerecord:
     models:
@@ -80,6 +80,7 @@ en:
       stop_area:
         name: "Name"
         registration_number: "Registration number"
+        published_name: "Published name"
         comment: "Comments"
         stop_area_type: "Area type"
         nearest_topic_name: "Nearest point of interest"
@@ -101,7 +102,7 @@ en:
         objectid: "Neptune identifier"
         object_version: "Version"
         creation_time: "Created on"
-        creatorid: "Created by"
+        creator_id: "Created by"
         children_ids: "Children"
         routing_stop_ids: "Attached stops"
         routing_line_ids: "Attached lines"
