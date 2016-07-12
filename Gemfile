@@ -151,6 +151,7 @@ end
 # I18n
 gem 'rails-i18n', '~> 4.0.0'
 gem 'devise-i18n'
+gem 'i18n-tasks'
 
 # Rails Assets
 source 'http://rails-assets.org' do
