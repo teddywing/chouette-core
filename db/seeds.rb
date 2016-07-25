@@ -39,11 +39,14 @@ end
 line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |referential|
   referential.add_member stif, owner: true
   referential.add_member operator
+  LineReferentialSync.create(line_referential: referential)
 end
 
 10.times do |n|
   line_referential.lines.find_or_create_by name: "Test #{n}"
 end
+
+
 
 offer_workbench = OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: operator)
 
