@@ -1,0 +1,9 @@
+.page_info
+  span.search = t('will_paginate.page_entries_info.search')
+  = page_entries_info @compliance_checks
+
+.compliance_checks.paginated_content
+  = paginated_content @compliance_checks, "compliance_checks/compliance_check"
+
+.pagination
+  = will_paginate @compliance_checks, :container => false, renderer: RemoteBootstrapPaginationLinkRenderer
