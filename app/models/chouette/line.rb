@@ -1,5 +1,5 @@
 class Chouette::Line < Chouette::ActiveRecord
-  include DefaultAttributesSupport
+  include DefaultNetexAttributesSupport
   include LineRestrictions
 
   include LineReferentialSupport
