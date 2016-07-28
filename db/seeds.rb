@@ -43,7 +43,9 @@ line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |ref
 end
 
 10.times do |n|
-  line_referential.lines.find_or_create_by name: "Test #{n}"
+  line_referential.lines.find_or_create_by name: "Test #{n}" do |l|
+    l.objectid = "Chouette:Dummy:Line:00" + n.to_s
+  end
 end
 
 
