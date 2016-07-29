@@ -1,0 +1,10 @@
+= title_tag t('.title')
+
+.warning = t('.warning')
+
+#exports = render 'exports'
+
+- content_for :sidebar do
+  ul.actions
+    li
+      = link_to t('exports.actions.new'), new_referential_export_task_path(@referential), class: 'add'
