@@ -1,0 +1,14 @@
+.col-md-offset-2.col-md-8
+  .panel.panel-default
+    .panel-heading = t('devise.invitations.edit.header')
+    
+    .panel-body
+      = simple_form_for resource, as: resource_name, :url => invitation_path(resource_name), :html => { :method => :put, class: "form-horizontal" } do |form|
+        = form.hidden_field :invitation_token
+
+        = form.input :name
+        = form.input :password, as: :password
+        = form.input :password_confirmation, as: :password
+
+        .submit
+          = form.button :submit, value: t('devise.invitations.edit.submit_button'), class: 'btn-info'
