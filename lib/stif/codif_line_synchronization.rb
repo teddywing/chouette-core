@@ -11,15 +11,16 @@ module Stif
         # TODO Check exceptions and status messages
         begin
           # Fetch Codifline operators and lines
-          client    = Codifligne::API.new
+          client = Codifligne::API.new
           operators = client.operators
-          lines = client.lines
+          # Get last sync date for lines if not first sync
+          date = first_sync ? 0 : last_sync.to_date.strftime("%d%m%Y")
+          lines = client.lines date: date
 
           operators.map{ |o| create_or_update_company(o) }
-          lines.map{ |l| create_or_update_line(l) if first_sync || l.instance_variable_get(:@updated_at).to_date > last_sync.to_date}
+          lines.map{ |l| create_or_update_line(l) }
           
           delete_deprecated_companies(operators)
-          deactivate_deprecated_lines(lines)
 
           LineReferential.first.line_referential_sync.record_status "OK"
         rescue Exception => e
@@ -41,7 +42,7 @@ module Stif
           name: api_line.name,
           objectid: api_line.stif_id,
           number: api_line.short_name,
-          deactivated: false
+          deactivated: (api_line.status == "inactive" ? true : false)
         }
         
         # Find Company
@@ -57,11 +58,6 @@ module Stif
       def delete_deprecated_companies(operators)
         ids = operators.map{ |o| o.stif_id }.to_a
         Chouette::Company.where.not(objectid: ids).destroy_all
-      end
-
-      def deactivate_deprecated_lines(lines)
-        ids = lines.map{ |l| l.stif_id }.to_a
-        Chouette::Line.where.not(objectid: ids).map { |l| l.deactivated = true ; l.save }
       end
 
       def save_or_update(params, klass)
