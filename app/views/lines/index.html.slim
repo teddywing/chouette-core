@@ -1,0 +1,49 @@
+= title_tag t('lines.index.title')
+
+= search_form_for @q, :url => line_referential_lines_path(@line_referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
+  .panel.panel-default
+    .panel-heading
+      .input-group.col-md-9
+        = f.text_field :name_or_number_cont, placeholder: "#{t('.name_or_number')}", class: 'form-control'
+        .input-group-btn
+          button.btn.btn-default type="submit"
+            i.fa.fa-search
+
+      a data-toggle="collapse" data-parent="#search" href="#advanced_search"
+        i.fa.fa-plus
+        = "#{t('.advanced_search')}"
+
+    #advanced_search.panel-collapse.collapse
+      .panel-body
+        / FIXME #825
+        / = f.select(:network_id_eq, @line_referential.networks.collect {|n| [ n.name, n.id ] }.unshift([t('.no_networks'), -1]), {include_blank: t('.all_networks')}, { :class => 'form-control' })
+        / = f.select(:company_id_eq, @line_referential.companies.collect {|c| [ c.name, c.id ] }.unshift([t('.no_companies'), -1]), { include_blank: t('.all_companies')}, { :class => 'form-control' })
+        / = f.select(:group_of_lines_id_eq, @line_referential.group_of_lines.collect {|c| [ c.name, c.id ] }.unshift([t('.no_group_of_lines'), -1]), {include_blank: t('.all_group_of_lines')}, { :class => 'form-control' })
+
+#lines
+  = render 'lines'
+
+- content_for :sidebar do
+  ul.actions
+    li
+      = link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'add'
+
+  #multiple_selection_menu
+    h4 = t('.multi_selection')
+    
+    .disabled
+      a.enable href="#"
+        = t('.multi_selection_enable')
+
+    .enabled style="display: none;"
+      a.disable href="#"
+        = t('.multi_selection_disable')
+
+      ul.actions
+        = link_to t('.delete_selected'), line_referential_lines_path(@line_referential), "data-multiple-method" => "delete", class: 'remove', "confirmation-text" => t("lines.actions.destroy_selection_confirm")
+
+      a.select_all href="#"
+        = t('.select_all')
+      = " | "
+      a.deselect_all href="#"
+        = t('.deselect_all')
