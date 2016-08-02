@@ -1,0 +1,32 @@
+= title_tag t('stop_areas.index.title')
+
+#country_codes
+  = @country_codes.to_json
+
+= search_form_for @q, :url => referential_stop_areas_path(@referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
+  .panel.panel-default
+    .panel-heading
+      .input-group.col-md-9
+        = f.text_field :name_cont, :placeholder => "#{t('.name')}", class: 'form-control'
+        .input-group-btn
+          button.btn.btn-default type="submit"
+            i.fa.fa-search
+
+      a data-toggle="collapse" data-parent="#search" href="#advanced_search"
+        i.fa.fa-plus
+        = "#{t('.advanced_search')}"
+
+    #advanced_search.panel-collapse.collapse
+      .panel-body
+        = f.text_field :zip_code_cont, :placeholder => "#{t('.zip_code')}", class: 'form-control typeahead'
+        = f.select(:area_type_cont, options_from_collection_for_select(Chouette::StopArea.stop_area_types, 'name', Proc.new { |stop_area_type| t("area_types.label.#{stop_area_type}") } ), { :include_blank => "#{t('.area_type')}" }, { :class => 'form-control' })
+
+#stop_areas
+  = render 'stop_areas'
+
+- content_for :sidebar do
+  ul.actions
+    li
+      = link_to t('stop_areas.actions.new'), new_referential_stop_area_path(@referential), class: 'add'
+    li
+      / = link_to t('stop_areas.actions.default_geometry'), default_geometry_referential_stop_areas_path(@referential), :method => :put, :class => "calculator"
