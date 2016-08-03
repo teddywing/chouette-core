@@ -31,13 +31,21 @@ class User < ActiveRecord::Base
 
   def cas_extra_attributes=(extra_attributes)
     extra_attributes.each do |name, value|
-      # case name.to_sym
-      # Extra attributes
-      # when :fullname
-      #   self.fullname = value
-      # when :email
-      #   self.email = value
-      # end
+      case name.to_sym
+      when :full_name
+        self.name = value
+      when :email
+        self.email = value
+      when :username
+        self.username = value
+      end
+    end
+    self.organisation = self.cas_assign_or_create_organisation extra_attributes[:organisation_name]
+  end
+
+  def cas_assign_or_create_organisation name
+    Organisation.find_or_create_by(name: name) do |organisation|
+      organisation.name = name
     end
   end
 

@@ -46,8 +46,12 @@ Rails.application.configure do
   config.company_contact = "http://www.chouette.mobi/club-utilisateurs/contact-support/"
   config.accept_user_creation = true
 
+  # config.chouette_authentication_settings = {
+  #   type: "database"
+  # }
   config.chouette_authentication_settings = {
-    type: "database"
+    type: "cas",
+    cas_server: "http://localhost:3000/sessions"
   }
 
   # file to data for demo
