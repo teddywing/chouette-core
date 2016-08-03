@@ -1,0 +1,13 @@
+/ FIXME #820
+= title_tag "Référentiel d'arrêts #{@stop_area_referential.name}"
+
+.summary
+
+.panel.panel-default
+  ul.list-group width="75%"
+    li.list-group-item
+      span.badge = @stop_area_referential.stop_areas.size
+      = link_to Referential.human_attribute_name("stop_areas"), stop_area_referential_stop_areas_path(@stop_area_referential)
+
+- content_for :sidebar do
+  ul.actions
