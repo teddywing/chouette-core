@@ -39,12 +39,18 @@ class User < ActiveRecord::Base
         self.username = value
       end
     end
-    self.organisation = self.cas_assign_or_create_organisation extra_attributes[:organisation_name]
+    self.organisation = self.cas_assign_or_create_organisation(
+      {
+        code: extra_attributes[:organisation_code], 
+        name: extra_attributes[:organisation_name]
+      }
+    )
   end
 
-  def cas_assign_or_create_organisation name
-    Organisation.find_or_create_by(name: name) do |organisation|
+  def cas_assign_or_create_organisation code:, name:
+    Organisation.find_or_create_by(code: code) do |organisation|
       organisation.name = name
+      organisation.code = code
     end
   end
 

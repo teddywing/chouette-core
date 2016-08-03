@@ -32,7 +32,7 @@ describe User, :type => :model do
 
     it 'should not create a new organisation if organisation is already present' do
       organisation = create :organisation
-      ticket.extra_attributes[:organisation_name] = organisation.name
+      ticket.extra_attributes[:organisation_code] = organisation.code
       expect{User.authenticate_with_cas_ticket(ticket)}.not_to change{ Organisation.count }
     end
   end
