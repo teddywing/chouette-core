@@ -1,0 +1,143 @@
+= title_tag t('rule_parameter_sets.show.title', :rule_parameter_set => @rule_parameter_set.name )
+
+.rule_parameter_set_show
+  .summary
+    p
+      label = "#{RuleParameterSet.human_attribute_name('stop_areas_area')} : "
+      = @rule_parameter_set.stop_areas_area
+    
+    .attributes_group
+      span.title = t(".min_distance")
+      
+      .columns
+        .two_columns
+          label = "#{t('.inter_stop_area_distance_min')} : "
+          span.value = @rule_parameter_set.inter_stop_area_distance_min
+
+        .two_columns
+          label = "#{t('.inter_access_point_distance_min')} : "
+          span.value = @rule_parameter_set.inter_access_point_distance_min
+
+    .attributes_group
+      span.title = t(".max_distance")
+      
+      .columns
+        .two_columns
+          label = "#{t('.parent_stop_area_distance_max')} : "
+          span.value = @rule_parameter_set.parent_stop_area_distance_max
+
+        .two_columns
+          label = "#{t('.inter_connection_link_distance_max')} : "
+          span.value = @rule_parameter_set.inter_connecion_link_distance_max
+
+      .columns
+        .two_columns
+          label = "#{t('.inter_access_link_distance_max')} : "
+          span.value = @rule_parameter_set.inter_access_link_distance_max
+
+        .two_columns
+          label = "#{t('.facility_stop_area_distance_max')} : "
+          span.value = @rule_parameter_set.facility_stop_area_distance_max
+
+    .attributes_group
+      span.title = t(".walk_speed")
+
+      .columns
+        .four_columns
+          label = "#{t('.walk_default_speed_max')} : "
+          span.value = @rule_parameter_set.walk_default_speed_max
+
+        .four_columns
+          label = "#{t('.walk_occasional_traveller_speed_max')} : "
+          span.value = @rule_parameter_set.walk_occasional_traveller_speed_max
+
+        .four_columns
+          label = "#{t('.walk_frequent_traveller_speed_max')} : "
+          span.value = @rule_parameter_set.walk_frequent_traveller_speed_max
+
+        .four_columns
+          label = "#{t('.walk_mobility_restricted_traveller_speed_max')} : "
+          span.value = @rule_parameter_set.walk_mobility_restricted_traveller_speed_max
+
+    p
+      label = "#{t('.inter_stop_duration_max')} :"
+      = @rule_parameter_set.inter_stop_duration_max
+
+    p
+      label = "#{RuleParameterSet.human_attribute_name('check_lines_in_groups')} : "
+      = boolean_value(@rule_parameter_set.check_lines_in_groups)
+
+    p
+      label = "#{RuleParameterSet.human_attribute_name('check_line_routes')} : "
+      = boolean_value(@rule_parameter_set.check_line_routes)
+
+    p
+      label = "#{RuleParameterSet.human_attribute_name('check_stop_parent')} : "
+      = boolean_value(@rule_parameter_set.check_stop_parent)
+
+    p
+      label = "#{RuleParameterSet.human_attribute_name('check_connection_link_on_physical')} : "
+      = boolean_value(@rule_parameter_set.check_connection_link_on_physical)
+
+    p
+      label = "#{RuleParameterSet.human_attribute_name('check_allowed_transport_modes')} : "
+      = boolean_value(@rule_parameter_set.check_allowed_transport_modes)
+
+    .rule_parameter_by_mode
+      label
+        = t(".rule_parameter_by_mode")
+        = t(".modes_allowed") if @rule_parameter_set.check_allowed_transport_modes == "1"
+
+      table.table.table-striped.table-condensed
+        tr
+          th = t("transport_modes.name")
+          
+          - RuleParameterSet.mode_attribute_prefixes.each do |prefix|
+            - unless prefix == "allowed_transport"
+              th = RuleParameterSet.human_attribute_name(prefix)
+
+        - Chouette::Line.transport_modes.map(&:to_s).each do |mode|
+          - if @rule_parameter_set.allowed(mode)
+            tr
+              td = t("transport_modes.label.#{mode}")
+              
+              - RuleParameterSet.mode_attribute_prefixes.each do |prefix|
+                - unless prefix == "allowed_transport"
+                  td = @rule_parameter_set.send  "#{prefix}_mode_#{mode}"
+
+    .rule_parameter_by_object
+      label = t("rule_parameter_sets.labels.columns_restrictions")
+      
+      table.table.table-bordered.table-condensed
+        - RuleParameterSet.validable_object_names.each do |object_name|
+          - if @rule_parameter_set.selected(object_name)
+            thead
+              tr
+                th = t("activerecord.models.#{object_name}.one")
+                th = RuleParameterSet.human_attribute_name("attribute")
+                th = RuleParameterSet.human_attribute_name("unique")
+                th = RuleParameterSet.human_attribute_name("string_type")
+                th = RuleParameterSet.human_attribute_name("min_size")
+                th = RuleParameterSet.human_attribute_name("max_size")
+          
+            tbody
+              - RuleParameterSet.validable_columns[object_name].each do |col|
+                - if @rule_parameter_set.selected_column(object_name,col)
+                  tr
+                    td
+                    td = t("activerecord.attributes.#{object_name}.#{col}")
+                    - suffix = "column_#{col}_object_#{object_name}"
+                    td = unique(@rule_parameter_set.send  "unique_#{suffix}".to_sym)
+                    td = pattern(@rule_parameter_set.send  "pattern_#{suffix}".to_sym)
+                    td = @rule_parameter_set.send  "min_size_#{suffix}".to_sym
+                    td = @rule_parameter_set.send  "max_size_#{suffix}".to_sym
+
+- content_for :sidebar do
+  ul.actions
+    li = link_to t('rule_parameter_sets.actions.new'), new_organisation_rule_parameter_set_path, class: 'add'
+
+    - if @rule_parameter_set.persisted?
+      li = link_to t('rule_parameter_sets.actions.edit'), edit_organisation_rule_parameter_set_path( @rule_parameter_set), class: 'edit'
+
+      - if current_organisation.rule_parameter_sets.size > 1
+        li = link_to  t('rule_parameter_sets.actions.destroy'), organisation_rule_parameter_set_path( @rule_parameter_set), method: :delete, data: { confirm: t('rule_parameter_sets.actions.destroy_confirm') }, class: 'remove'

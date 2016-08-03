@@ -1,0 +1,72 @@
+= semantic_form_for [ :organisation, @rule_parameter_set] do |form|
+  = form.inputs do
+    = form.input :name
+    = form.input :inter_stop_area_distance_min, as: :number
+    = form.input :parent_stop_area_distance_max, as: :number
+    = form.input :stop_areas_area
+    = form.input :inter_access_point_distance_min, as: :number
+    = form.input :inter_connection_link_distance_max, as: :number
+    = form.input :walk_default_speed_max, as: :number
+    = form.input :walk_occasional_traveller_speed_max, as: :number
+    = form.input :walk_frequent_traveller_speed_max, as: :number
+    = form.input :walk_mobility_restricted_traveller_speed_max, as: :number
+
+    = form.input :inter_access_link_distance_max, as: :number
+    = form.input :inter_stop_duration_max, as: :number
+    = form.input :facility_stop_area_distance_max, as: :number
+
+    = form.input :check_lines_in_groups, as: :boolean
+    = form.input :check_line_routes, as: :boolean
+    = form.input :check_stop_parent, as: :boolean
+    = form.input :check_connection_link_on_physical, as: :boolean
+    = form.input :check_allowed_transport_modes, as: :boolean
+
+    table.table.table-striped.table-condensed
+      thead
+      	tr
+          th = t("transport_modes.name")
+          
+          - RuleParameterSet.mode_attribute_prefixes.each do |prefix|
+            - if prefix == "allowed_transport"
+              - hidden = (@rule_parameter_set.check_allowed_transport_modes == "1") ? "" : 'display:none;'
+              th.allowed style="#{hidden}"
+                = RuleParameterSet.human_attribute_name(prefix)
+            - else
+              th = RuleParameterSet.human_attribute_name(prefix)
+
+      tbody
+        - Chouette::Line.transport_modes.map(&:to_s).each do |mode|
+          tr
+            == render partial: "mode_fields", :locals => { f: form, mode: mode }
+
+    = t("rule_parameter_sets.labels.columns_restrictions")
+
+    table.table.table-bordered.table-condensed
+      - RuleParameterSet.validable_object_names.each do |object_name|
+        thead
+          tr
+            th
+              = form.check_box "check_#{object_name}".to_sym, class: 'special'
+              = t("activerecord.models.#{object_name}.one")
+
+        		th = RuleParameterSet.human_attribute_name("attribute")
+        		th = RuleParameterSet.human_attribute_name("unique")
+        		th = RuleParameterSet.human_attribute_name("string_type")
+        		th = RuleParameterSet.human_attribute_name("min_size")
+        		th = RuleParameterSet.human_attribute_name("max_size")
+
+        tbody
+          - RuleParameterSet.validable_columns[object_name].each do |col|
+            tr class="columns_for_#{object_name.pluralize}"
+              == render partial: "column_fields", :locals => { f: form, object_name: object_name, column: col }
+
+  = form.actions do
+    = form.action :submit, as: :button
+    = form.action :cancel, as: :link
+
+javascript:
+	$(function() {
+    $( "#rule_parameter_set_check_allowed_transport_modes").change( function() {
+      $(".allowed").toggle();
+    });
+  });
