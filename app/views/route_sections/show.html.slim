@@ -1,0 +1,26 @@
+= title_tag t('.title')
+
+.route_section
+  = @map.to_html
+
+  .summary
+    p
+      label = "#{@route_section.human_attribute_name('departure')} : "
+      = @route_section.departure.name
+
+    p
+      label = "#{@route_section.human_attribute_name('arrival')} : "
+      = @route_section.arrival.name
+
+    p
+      label = "#{@route_section.human_attribute_name('distance')} : "
+      = "#{@route_section.distance.round}m" if @route_section.distance
+
+- content_for :sidebar do
+  ul.actions
+    li
+      = link_to t('route_sections.actions.edit'), edit_referential_route_section_path(@referential, @route_section), class: 'edit'
+    li
+      = link_to t('route_sections.actions.destroy'), referential_route_section_path(@referential, @route_section), :method => :delete, :data => {:confirm =>  t('route_sections.actions.destroy_confirm')}, class: 'remove'
+
+  = creation_tag(@route_section)
