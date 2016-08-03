@@ -10,14 +10,13 @@ namespace :demo do
 
     organisation = Organisation.create!(:name => "DemoChouette")
     user = organisation.users.create( :name => "Demo", :email => "demo@chouette.mobi", :password => "chouette", :password_confirmation =>"chouette")
-    user.confirm!
     referential = organisation.referentials.create( :name => "Tatrobus", :slug => "tatrobus", :prefix => "TAT")
 
     #resource = Rack::Test::UploadedFile.new( Rails.application.config.demo_data, 'application/zip', false)
     #import_instance = ImportTask.new( :resources => resource, :referential_id => referential.id, :user_name => user.name, :no_save => false, :user_id => user.id, :name => "initialize demo", :data_format => "neptune")
     #import_instance.save
-	 
-	 File.open("/tmp/parameters_demo.json", "w")  { |file| 
+
+	 File.open("/tmp/parameters_demo.json", "w")  { |file|
 	                                           file.write('{
 "parameters" :  {
     "neptune-import": {
@@ -30,10 +29,10 @@ namespace :demo do
         }
 	 }
 }') }
-	 
+
 	 cmd = 'curl -F "file=@'+Rails.application.config.demo_data+';filename=tatrobus.zip" -F "file=@/tmp/parameters_demo.json;filename=parameters.json" http://localhost:8180/chouette_iev/referentials/tatrobus/importer/neptune'
 	 system(cmd)
-	 
+
     puts "Restore demo environment complete"
   end
 end

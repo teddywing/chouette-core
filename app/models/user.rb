@@ -6,8 +6,7 @@ class User < ActiveRecord::Base
   cattr_reader :authentication_type
 
   devise :invitable, :registerable, :validatable,
-         :recoverable, :rememberable, :trackable,
-         :confirmable, :async, authentication_type
+         :recoverable, :rememberable, :trackable, :async, authentication_type
 
   # FIXME https://github.com/nbudin/devise_cas_authenticatable/issues/53
   # Work around :validatable, when database_authenticatable is diabled.
