@@ -51,7 +51,7 @@ Rails.application.configure do
   # }
   config.chouette_authentication_settings = {
     type: "cas",
-    cas_server: "http://localhost:3000/sessions"
+    cas_server: "http://stif-portail-dev.af83.priv/sessions"
   }
 
   # file to data for demo

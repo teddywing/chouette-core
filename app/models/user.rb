@@ -29,20 +29,13 @@ class User < ActiveRecord::Base
   after_destroy :check_destroy_organisation
 
   def cas_extra_attributes=(extra_attributes)
-    extra_attributes.each do |name, value|
-      case name.to_sym
-      when :full_name
-        self.name = value
-      when :email
-        self.email = value
-      when :username
-        self.username = value
-      end
-    end
+    extra      = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+    self.name  = extra[:full_name]
+    self.email = extra[:email]
     self.organisation = self.cas_assign_or_create_organisation(
       {
-        code: extra_attributes[:organisation_code], 
-        name: extra_attributes[:organisation_name]
+        code: extra[:organisation_code],
+        name: extra[:organisation_name]
       }
     )
   end
@@ -51,6 +44,7 @@ class User < ActiveRecord::Base
     Organisation.find_or_create_by(code: code) do |organisation|
       organisation.name = name
       organisation.code = code
+      Rails.logger.debug "Cas auth - creating new organisation name: #{name} code: #{code}"
     end
   end
 

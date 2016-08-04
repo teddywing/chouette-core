@@ -8,32 +8,45 @@ describe User, :type => :model do
     let(:ticket) do
       CASClient::ServiceTicket.new("ST-test", nil).tap do |ticket|
         ticket.extra_attributes = {
-          full_name: 'john doe',
-          username: 'xinhui.xu',
-          email: 'john.doe@af83.com',
-          organisation_code: '0083',
-          organisation_name: 'af83'
+          :full_name         => 'john doe',
+          :username          => 'john.doe',
+          :email             => 'john.doe@af83.com',
+          :organisation_code => '0083',
+          :organisation_name => 'af83'
         }
-        ticket.user    = "xinhui.xu"
+        ticket.user    = "john.doe"
         ticket.success = true
       end
     end
 
-    it 'should create a new user if user is not registered' do
-      expect{User.authenticate_with_cas_ticket(ticket)}.to change{ User.count }
-      user = User.find_by(username: 'xinhui.xu')
-      expect(user.email).to eq(ticket.extra_attributes[:email])
-      expect(user.name).to  eq(ticket.extra_attributes[:full_name])
+    context 'First time sign on' do
+      it 'should create a new user if user is not registered' do
+        expect{User.authenticate_with_cas_ticket(ticket)}.to change{ User.count }
+        user = User.find_by(username: 'john.doe')
+        expect(user.email).to eq(ticket.extra_attributes[:email])
+        expect(user.name).to  eq(ticket.extra_attributes[:full_name])
+      end
+
+      it 'should create a new organisation if organisation is not present' do
+        expect{User.authenticate_with_cas_ticket(ticket)}.to change{ Organisation.count }
+        expect(Organisation.find_by(code: ticket.extra_attributes[:organisation_code])).to be_truthy
+      end
+
+      it 'should not create a new organisation if organisation is already present' do
+        ticket.extra_attributes[:organisation_code] = create(:organisation).code
+        expect{User.authenticate_with_cas_ticket(ticket)}.not_to change{ Organisation.count }
+      end
     end
 
-    it 'should create a new organisation if organisation is not present' do
-      expect{User.authenticate_with_cas_ticket(ticket)}.to change{ Organisation.count }
-    end
+    context 'Update attributes on sign on' do
+      let!(:organisation) { create(:organisation) }
+      let!(:user) { create(:user, username: 'john.doe', name:'fake name' , email: 'test@example.com', :organisation => organisation) }
 
-    it 'should not create a new organisation if organisation is already present' do
-      organisation = create :organisation
-      ticket.extra_attributes[:organisation_code] = organisation.code
-      expect{User.authenticate_with_cas_ticket(ticket)}.not_to change{ Organisation.count }
+      it 'should update user attributes on sign on' do
+        User.authenticate_with_cas_ticket(ticket)
+        expect(user.reload.email).to eq(ticket.extra_attributes[:email])
+        expect(user.reload.name).to  eq(ticket.extra_attributes[:full_name])
+      end
     end
   end
 
