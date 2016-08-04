@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804123044) do
+ActiveRecord::Schema.define(version: 20160804134627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -354,6 +354,7 @@ ActiveRecord::Schema.define(version: 20160804123044) do
     t.datetime "updated_at"
     t.string   "data_format", default: "neptune"
     t.string   "code"
+    t.datetime "synced_at"
   end
 
   create_table "pt_links", force: true do |t|
