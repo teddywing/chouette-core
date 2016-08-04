@@ -516,6 +516,7 @@ DEPENDENCIES
   enumerize (~> 0.10.0)
   factory_girl_rails (~> 4.0)
   fakeweb
+  faraday (~> 0.9.1)
   faraday_middleware (~> 0.9.1)
   font-awesome-sass (~> 4.2.0)
   foreigner (~> 1.7.4)

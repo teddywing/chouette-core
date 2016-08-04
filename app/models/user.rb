@@ -32,20 +32,7 @@ class User < ActiveRecord::Base
     extra      = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
     self.name  = extra[:full_name]
     self.email = extra[:email]
-    self.organisation = self.cas_assign_or_create_organisation(
-      {
-        code: extra[:organisation_code],
-        name: extra[:organisation_name]
-      }
-    )
-  end
-
-  def cas_assign_or_create_organisation code:, name:
-    Organisation.find_or_create_by(code: code) do |organisation|
-      organisation.name = name
-      organisation.code = code
-      Rails.logger.debug "Cas auth - creating new organisation name: #{name} code: #{code}"
-    end
+    self.organisation = Organisation.sync_or_create code: extra[:organisation_code], name: extra[:organisation_name]
   end
 
   private

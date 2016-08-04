@@ -21,4 +21,12 @@ class Organisation < ActiveRecord::Base
   def add_rule_parameter_set
     RuleParameterSet.default_for_all_modes( self).save
   end
+
+  def self.sync_or_create code:, name:
+    find_or_create_by(code: code) do |org|
+      org.name      = name
+      org.code      = code
+      org.synced_at = Time.now
+    end
+  end
 end

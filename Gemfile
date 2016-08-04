@@ -37,6 +37,7 @@ gem 'spring', group: :development
 # API Rest
 gem 'sawyer', '~> 0.6.0'
 gem 'faraday_middleware', '~> 0.9.1'
+gem 'faraday', '~> 0.9.1'
 
 platforms :ruby do
   gem 'therubyracer', '~> 0.12'
