@@ -1,0 +1,18 @@
+#index_item.panel.panel-default.api_key
+  .panel-heading
+    .panel-title.clearfix
+      span.pull-right
+        = link_to edit_referential_api_key_path(@referential, api_key), class: "btn btn-default btn-sm" do
+          span.fa.fa-pencil
+
+        = link_to referential_api_key_path(@referential, api_key), :method => :delete, :data => {:confirm =>  t('api_keys.actions.destroy_confirm')}, class: "btn btn-danger btn-sm" do
+          span.fa.fa-trash-o
+
+      h5
+        = link_to([@referential, api_key], class: "preview", :title => "#{Chouette::StopArea.model_name.human.capitalize} #{api_key.name}") do
+          span.name = truncate(api_key.name, :length => 20)
+
+  .panel-body
+    p = "#{api_key.class.human_attribute_name('token')} #{truncate(api_key.token, :length => 20)}"
+    
+    p = "#{api_key.class.human_attribute_name('updated_at')} #{l(api_key.updated_at)}"
