@@ -21,4 +21,5 @@
 
 every :hour do
   rake "organisations:sync"
+  rake "users:sync"
 end
