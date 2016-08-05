@@ -133,6 +133,7 @@ group :test, :development do
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.1.0'
   gem 'fakeweb'
+  gem 'webmock'
   gem 'capybara', '~> 2.4.0'
   gem 'poltergeist'
   gem 'launchy'
