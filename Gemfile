@@ -102,6 +102,7 @@ gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
 gem 'rabl'
 
 gem 'delayed_job_active_record'
+gem 'whenever', require: false
 gem 'devise-async'
 gem 'apartment', '~> 1.0.0'
 

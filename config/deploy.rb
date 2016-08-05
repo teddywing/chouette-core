@@ -21,6 +21,12 @@ set :copy_exclude, [ '.git' ]
 ssh_options[:forward_agent] = true
 
 require "bundler/capistrano"
+require "whenever/capistrano"
+
+# Whenever
+set :whenever_command, "bundle exec whenever"
+set :whenever_environment, -> { fetch(:stage) }
+set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
 
 namespace :deploy do
   task :start do ; end
