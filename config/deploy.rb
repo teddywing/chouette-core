@@ -27,7 +27,7 @@ require 'whenever/capistrano'
 set :whenever_command, "sudo /usr/local/sbin/whenever-sudo" # use sudo to change www-data crontab
 set :whenever_command_environment_variables, -> { "NEW_RELIC_LOG=stdout" } # avoid log/newrelic.log access
 set :whenever_user, "www-data" # use www-data crontab
-set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=script/bundle exec'" } # invoke script/bundle to use 'correct' ruby environment
+set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec'" } # invoke bin/bundle to use 'correct' ruby environment
 set :whenever_update_flags, ->{ "--update-crontab #{fetch :whenever_identifier} --set #{fetch :whenever_variables} --user #{fetch :whenever_user}" } # user whenever_user
 set :whenever_clear_flags,  ->{ "--clear-crontab #{fetch :whenever_identifier} --user #{fetch :whenever_user}" } # use whenever_user
 
@@ -46,7 +46,7 @@ namespace :deploy do
   end
 
   task :bundle_link do
-    run "ln -fs #{bundle_cmd} #{release_path}/script/bundle"
+    run "ln -fs #{bundle_cmd} #{release_path}/bin/bundle"
   end
   after "bundle:install", "deploy:bundle_link"
 
