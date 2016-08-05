@@ -592,7 +592,7 @@ DEPENDENCIES
   turbolinks
   uglifier (~> 2.7.2)
   webmock
-  whenever
+  whenever (~> 0.8)
   will_paginate (~> 3.0.7)
   will_paginate-bootstrap (~> 1.0.1)
 
