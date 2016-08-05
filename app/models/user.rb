@@ -32,7 +32,11 @@ class User < ActiveRecord::Base
     extra      = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
     self.name  = extra[:full_name]
     self.email = extra[:email]
-    self.organisation = Organisation.sync_or_create code: extra[:organisation_code], name: extra[:organisation_name]
+
+    self.organisation = Organisation.find_or_create_by(code: extra[:organisation_code]).tap do |org|
+      org.name      = extra[:organisation_name]
+      org.synced_at = Time.now
+    end
   end
 
   private

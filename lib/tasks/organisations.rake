@@ -5,7 +5,6 @@ namespace :organisations do
 
     conn = Faraday.new(:url => conf[:url]) do |c|
       c.headers['Authorization'] = "Token token=\"#{conf[:key]}\""
-      c.request  :url_encoded
       c.adapter  Faraday.default_adapter
     end
 
@@ -14,12 +13,12 @@ namespace :organisations do
   end
 
   def sync_organisations data
-    data.each do |org|
-      Organisation.sync_or_create(code: org['code'], name: org['name']).tap do |organisation|
-        organisation.name      = org['name']
-        organisation.synced_at = Time.now
-        organisation.save if organisation.changed?
-        puts "✓ Organisation #{organisation.name} has been updated" unless Rails.env.test?
+    data.each do |el|
+      Organisation.find_or_create_by(code: el['code']).tap do |org|
+        org.name      = el['name']
+        org.synced_at = Time.now
+        org.save if org.changed?
+        puts "✓ Organisation #{org.name} has been updated" unless Rails.env.test?
       end
     end
   end

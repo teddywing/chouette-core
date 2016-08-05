@@ -7,7 +7,7 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 
-stif = Organisation.find_or_create_by(name: "STIF")
+stif = Organisation.find_or_create_by(name: "STIF", code: "STIF")
 
 stif.users.find_or_create_by!(username: "admin") do |user|
   user.email = 'stif-boiv@af83.com'

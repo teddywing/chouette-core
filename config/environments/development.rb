@@ -56,17 +56,17 @@ Rails.application.configure do
   config.company_contact = "http://www.chouette.mobi/club-utilisateurs/contact-support/"
   config.accept_user_creation = false
 
-  config.chouette_authentication_settings = {
-    type: "database"
-  }
   # config.chouette_authentication_settings = {
-  #   type: "cas",
-  #   cas_server: "http://stif-portail-dev.af83.priv/sessions"
+  #   type: "database"
   # }
+  config.chouette_authentication_settings = {
+    type: "cas",
+    cas_server: "http://stif-portail-dev.af83.priv/sessions"
+  }
   config.stif_portail_api =
   {
     key: "411e6b8d259bc9900c0caf9db6072013",
-    url: "http://localhost:3000"
+    url: "http://stif-portail-dev.af83.priv"
   }
 
   # file to data for demo

@@ -21,26 +21,27 @@ describe 'organisations:sync rake task' do
     end
 
     it 'should create new organisations' do
-      run_rake_task
+      expect{run_rake_task}.to change{ Organisation.count }.by(5)
       expect(WebMock).to have_requested(:get, "#{conf[:url]}/api/v1/organizations").
         with(headers: { 'Authorization' => "Token token=\"#{conf[:key]}\"" })
-      expect(Organisation.count).to eq(6)
+
+      expect(Organisation.all.map(&:name)).to include 'ALBATRANS', 'OPTILE', 'SNCF', 'STIF'
     end
 
     it 'should update existing organisations' do
       create :organisation, name: 'dummy_name', code:'RATP', updated_at: 10.days.ago
       run_rake_task
-      organisation = Organisation.find_by(code: 'RATP')
 
-      expect(organisation.name).to eq('RATP')
-      expect(organisation.updated_at.utc).to be_within(1.second).of Time.now
-      expect(organisation.synced_at.utc).to be_within(1.second).of Time.now
+      Organisation.find_by(code: 'RATP').tap do |org|
+        expect(org.name).to eq('RATP')
+        expect(org.updated_at.utc).to be_within(1.second).of Time.now
+        expect(org.synced_at.utc).to be_within(1.second).of Time.now
+      end
     end
 
     it 'should not create organisation if code is already present' do
       create :organisation, code:'RATP'
-      run_rake_task
-      expect(Organisation.count).to eq(6)
+      expect{run_rake_task}.to change{ Organisation.count }.by(4)
     end
   end
 end
