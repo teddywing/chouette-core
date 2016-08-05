@@ -9,7 +9,11 @@ namespace :organisations do
     end
 
     resp = conn.get '/api/v1/organizations'
-    JSON.parse resp.body if resp.status == 200
+    if resp.status == 200
+      JSON.parse resp.body
+    else
+      raise "Error on api request status : #{resp.status} => #{resp.body}"
+    end
   end
 
   def sync_organisations data
