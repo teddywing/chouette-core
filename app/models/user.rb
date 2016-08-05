@@ -6,8 +6,7 @@ class User < ActiveRecord::Base
   cattr_reader :authentication_type
 
   devise :invitable, :registerable, :validatable,
-         :recoverable, :rememberable, :trackable,
-         :confirmable, :async, authentication_type
+         :recoverable, :rememberable, :trackable, :async, authentication_type
 
   # FIXME https://github.com/nbudin/devise_cas_authenticatable/issues/53
   # Work around :validatable, when database_authenticatable is diabled.
@@ -30,15 +29,10 @@ class User < ActiveRecord::Base
   after_destroy :check_destroy_organisation
 
   def cas_extra_attributes=(extra_attributes)
-    extra_attributes.each do |name, value|
-      # case name.to_sym
-      # Extra attributes
-      # when :fullname
-      #   self.fullname = value
-      # when :email
-      #   self.email = value
-      # end
-    end
+    extra      = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+    self.name  = extra[:full_name]
+    self.email = extra[:email]
+    self.organisation = Organisation.sync_or_create code: extra[:organisation_code], name: extra[:organisation_name]
   end
 
   private

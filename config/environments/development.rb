@@ -63,6 +63,11 @@ Rails.application.configure do
   #   type: "cas",
   #   cas_server: "http://stif-portail-dev.af83.priv/sessions"
   # }
+  config.stif_portail_api =
+  {
+    key: "411e6b8d259bc9900c0caf9db6072013",
+    url: "http://localhost:3000"
+  }
 
   # file to data for demo
   config.demo_data = "tmp/demo.zip"

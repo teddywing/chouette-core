@@ -37,6 +37,7 @@ gem 'spring', group: :development
 # API Rest
 gem 'sawyer', '~> 0.6.0'
 gem 'faraday_middleware', '~> 0.9.1'
+gem 'faraday', '~> 0.9.1'
 
 platforms :ruby do
   gem 'therubyracer', '~> 0.12'
@@ -101,6 +102,7 @@ gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
 gem 'rabl'
 
 gem 'delayed_job_active_record'
+gem 'whenever', require: false
 gem 'devise-async'
 gem 'apartment', '~> 1.0.0'
 
@@ -132,6 +134,7 @@ group :test, :development do
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.1.0'
   gem 'fakeweb'
+  gem 'webmock'
   gem 'capybara', '~> 2.4.0'
   gem 'poltergeist'
   gem 'launchy'

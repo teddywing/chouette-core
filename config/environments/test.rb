@@ -46,8 +46,18 @@ Rails.application.configure do
   config.company_contact = "http://www.chouette.mobi/club-utilisateurs/contact-support/"
   config.accept_user_creation = true
 
+  # config.chouette_authentication_settings = {
+  #   type: "database"
+  # }
   config.chouette_authentication_settings = {
-    type: "database"
+    type: "cas",
+    cas_server: "http://stif-portail-dev.af83.priv/sessions"
+  }
+
+  config.stif_portail_api =
+  {
+    key: "411e6b8d259bc9900c0caf9db6072013",
+    url: "http://localhost:3000"
   }
 
   # file to data for demo
