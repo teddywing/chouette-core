@@ -65,7 +65,7 @@ Rails.application.configure do
   }
   config.stif_portail_api =
   {
-    key: "411e6b8d259bc9900c0caf9db6072013",
+    key: "Ohphie1Voo6the5hohpi",
     url: "http://stif-portail-dev.af83.priv"
   }
 

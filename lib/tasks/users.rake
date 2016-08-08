@@ -30,7 +30,7 @@ namespace :users do
         end
 
         user.save if user.changed?
-        puts "✓ user #{user.name} has been updated" unless Rails.env.test?
+        puts "✓ user #{user.username} has been updated" unless Rails.env.test?
       end
     end
   end

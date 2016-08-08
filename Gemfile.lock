@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/af83/whenever.git
+  revision: b7963381a11243affe4f35881c85be0710f434e3
+  specs:
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
+
+GIT
   remote: git@github.com:AF83/stif-codifline-api.git
   revision: 3d44f52aea3aea0cc45291ce0855bbb339f228c6
   specs:
@@ -483,8 +490,6 @@ GEM
     websocket-driver (0.5.3-java)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    whenever (0.9.4)
-      chronic (>= 0.6.3)
     will_paginate (3.0.7)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
@@ -593,7 +598,7 @@ DEPENDENCIES
   turbolinks
   uglifier (~> 2.7.2)
   webmock
-  whenever (~> 0.8)
+  whenever!
   will_paginate (~> 3.0.7)
   will_paginate-bootstrap (~> 1.0.1)
 
