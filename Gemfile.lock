@@ -569,6 +569,7 @@ DEPENDENCIES
   rails-assets-typeahead.js-bootstrap3.less!
   rails-erd
   rails-i18n (~> 4.0.0)
+  rake
   ransack
   rb-fsevent
   rb-inotify
