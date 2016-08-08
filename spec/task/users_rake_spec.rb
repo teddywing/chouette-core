@@ -39,6 +39,12 @@ describe 'users:sync rake task' do
       expect(user.synced_at.utc).to be_within(1.second).of Time.now
     end
 
+    it 'should update organisation assignement' do
+      create :user, username: 'alban.peignier', organisation: create(:organisation)
+      run_rake_task
+      expect(User.find_by(username: 'alban.peignier').organisation.name).to eq("STIF")
+    end
+
     it 'should update locked_at attribute' do
       create :user, username: 'alban.peignier', locked_at: Time.now
       run_rake_task
