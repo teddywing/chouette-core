@@ -21,6 +21,7 @@ namespace :users do
       User.find_or_create_by(username: el['username']).tap do |user|
         user.name         = "#{el['firstname']} #{el['lastname']}"
         user.email        = el['email']
+        user.locked_at    = el['locked_at']
         user.synced_at    = Time.now
 
         # Set organisation

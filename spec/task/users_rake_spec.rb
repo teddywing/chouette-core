@@ -39,6 +39,13 @@ describe 'users:sync rake task' do
       expect(user.synced_at.utc).to be_within(1.second).of Time.now
     end
 
+    it 'should update locked_at attribute' do
+      create :user, username: 'alban.peignier', locked_at: Time.now
+      run_rake_task
+      expect(User.find_by(username: 'alban.peignier').locked_at).to be_nil
+      expect(User.find_by(username: 'jane.doe').locked_at).to eq("2016-08-05T12:34:03.995Z")
+    end
+
     it 'should not create new user if username is already present' do
       create :user, username: 'alban.peignier'
       run_rake_task

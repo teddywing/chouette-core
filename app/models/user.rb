@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   @@authentication_type = "#{Rails.application.config.chouette_authentication_settings[:type]}_authenticatable".to_sym
   cattr_reader :authentication_type
 
-  devise :invitable, :registerable, :validatable,
+  devise :invitable, :registerable, :validatable, :lockable,
          :recoverable, :rememberable, :trackable, :async, authentication_type
 
   # FIXME https://github.com/nbudin/devise_cas_authenticatable/issues/53
