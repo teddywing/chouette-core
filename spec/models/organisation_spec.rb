@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Organisation do
+describe Organisation, :type => :model do
 
   it { should validate_presence_of(:name) }
   it { should validate_uniqueness_of(:name) }
@@ -12,5 +12,40 @@ describe Organisation do
   it "create a rule_parameter_set" do
     organisation = create(:organisation)
     organisation.rule_parameter_sets.size.should == 1
+  end
+
+  describe "Portail sync" do
+    let(:conf) { Rails.application.config.stif_portail_api }
+    before :each do
+      stub_request(:get, "#{conf[:url]}/api/v1/organizations").
+      with(headers: { 'Authorization' => "Token token=\"#{conf[:key]}\"" }).
+      to_return(body: File.open(File.join(Rails.root, 'spec', 'fixtures', 'organizations.json')), status: 200)
+    end
+
+    it 'should retrieve data from portail api' do
+      expect(Organisation.portail_api_request).to be_truthy
+      expect(WebMock).to have_requested(:get, "#{conf[:url]}/api/v1/organizations").
+        with(headers: { 'Authorization' => "Token token=\"#{conf[:key]}\"" })
+    end
+
+    it 'should create new organisations' do
+      expect{Organisation.portail_sync}.to change{ Organisation.count }.by(5)
+      expect(Organisation.all.map(&:name)).to include 'ALBATRANS', 'OPTILE', 'SNCF', 'STIF'
+    end
+
+    it 'should update existing organisations' do
+      create :organisation, name: 'dummy_name', code:'RATP', updated_at: 10.days.ago
+      Organisation.portail_sync
+      Organisation.find_by(code: 'RATP').tap do |org|
+        expect(org.name).to eq('RATP')
+        expect(org.updated_at.utc).to be_within(1.second).of Time.now
+        expect(org.synced_at.utc).to be_within(1.second).of Time.now
+      end
+    end
+
+    it 'should not create organisation if code is already present' do
+      create :organisation, code:'RATP'
+      expect{Organisation.portail_sync}.to change{ Organisation.count }.by(4)
+    end
   end
 end
