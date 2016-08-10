@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20160804134627) do
     t.string   "url"
     t.string   "time_zone"
     t.integer  "line_referential_id"
+    t.text     "import_xml"
   end
 
   add_index "companies", ["line_referential_id"], :name => "index_companies_on_line_referential_id"
@@ -203,6 +204,7 @@ ActiveRecord::Schema.define(version: 20160804134627) do
     t.string   "comment"
     t.string   "registration_number"
     t.integer  "line_referential_id"
+    t.text     "import_xml"
   end
 
   add_index "group_of_lines", ["line_referential_id"], :name => "index_group_of_lines_on_line_referential_id"
@@ -315,6 +317,7 @@ ActiveRecord::Schema.define(version: 20160804134627) do
     t.string   "stable_id"
     t.integer  "line_referential_id"
     t.boolean  "deactivated",                               default: false
+    t.text     "import_xml"
   end
 
   add_index "lines", ["line_referential_id"], :name => "index_lines_on_line_referential_id"
@@ -334,6 +337,7 @@ ActiveRecord::Schema.define(version: 20160804134627) do
     t.string   "source_type"
     t.string   "source_identifier"
     t.string   "comment"
+    t.text     "import_xml"
   end
 
   add_index "networks", ["objectid"], :name => "networks_objectid_key", :unique => true

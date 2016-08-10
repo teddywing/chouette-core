@@ -23,3 +23,7 @@ every :hour do
   rake "organisations:sync"
   rake "users:sync"
 end
+
+every :day do
+  rake "codifligne:sync"
+end
