@@ -39,6 +39,45 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.portail_api_request
+    conf = Rails.application.config.try(:stif_portail_api)
+    raise 'Rails.application.config.stif_portail_api settings is not defined' unless conf
+
+    conn = Faraday.new(:url => conf[:url]) do |c|
+      c.headers['Authorization'] = "Token token=\"#{conf[:key]}\""
+      c.adapter  Faraday.default_adapter
+    end
+
+    resp = conn.get '/api/v1/users'
+    if resp.status == 200
+      JSON.parse resp.body
+    else
+      raise "Error on api request status : #{resp.status} => #{resp.body}"
+    end
+  end
+
+  def self.portail_sync
+    self.portail_api_request.each do |el|
+      User.find_or_create_by(username: el['username']).tap do |user|
+        user.name         = "#{el['firstname']} #{el['lastname']}"
+        user.email        = el['email']
+        user.locked_at    = el['locked_at']
+
+        # Set organisation
+        user.organisation = Organisation.find_or_create_by(code: el['organization_code']).tap do |org|
+          org.name      = el['organization_name']
+          org.synced_at = Time.now
+        end
+
+        if user.changed?
+          user.synced_at = Time.now
+          user.save
+          puts "✓ user #{user.username} has been updated" unless Rails.env.test?
+        end
+      end
+    end
+  end
+
   private
 
   # remove organisation and referentials if last user of it
@@ -47,5 +86,4 @@ class User < ActiveRecord::Base
       organisation.destroy
     end
   end
-
 end
