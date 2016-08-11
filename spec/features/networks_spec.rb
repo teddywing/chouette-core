@@ -24,27 +24,27 @@ describe "Networks", :type => :feature do
       expect(page).to have_content(networks.first.name)
     end
 
-    it "display map" do
-      # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
-      visit referential_networks_path(referential)
-      click_link "#{networks.first.name}"
-      expect(page).to have_selector("#map.network")
-    end
+    # it "display map" do
+    #   # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
+    #   visit referential_networks_path(referential)
+    #   click_link "#{networks.first.name}"
+    #   expect(page).to have_selector("#map.network")
+    # end
     
   end
 
-  # describe "new" do
-  #   it "creates network and return to show" do
-  #     # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
-  #     visit referential_networks_path(referential)
-  #     click_link "Ajouter un réseau"
-  #     fill_in "network_name", :with => "Network 1"
-  #     fill_in "Numéro d'enregistrement", :with => "test-1"
-  #     fill_in "Identifiant Neptune", :with => "chouette:test:GroupOfLine:1"
-  #     click_button("Créer réseau")
-  #     expect(page).to have_content("Network 1")
-  #   end
-  # end
+  describe "new" do
+    it "creates network and return to show" do
+      # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
+      visit referential_networks_path(referential)
+      click_link "Ajouter un réseau"
+      fill_in "network_name", :with => "Network 1"
+      fill_in "Numéro d'enregistrement", :with => "test-1"
+      fill_in "Identifiant Neptune", :with => "chouette:test:GroupOfLine:1"
+      click_button("Créer réseau")
+      expect(page).to have_content("Network 1")
+    end
+  end
 
   describe "edit and return to show" do
     it "edit network" do
