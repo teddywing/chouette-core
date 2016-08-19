@@ -24,6 +24,6 @@ every :hour do
   rake "users:sync"
 end
 
-# every :day do
-#   rake "codifligne:sync"
-# end
+every :day do
+  rake "codifligne:sync"
+end
