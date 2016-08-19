@@ -18,7 +18,7 @@
 
   ul.list-group width="75%"
     - @line_referential.line_referential_sync.line_sync_operations.each do |sync|
-      li = "#{sync.created_at} - #{sync.status}"
+      li = "#{sync.created_at} - #{sync.message}"
 
 = semantic_form_for @line_referential, :url => line_referential_path do |form|
   = form.inputs do

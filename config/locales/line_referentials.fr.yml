@@ -1,4 +1,8 @@
 fr:
+  synchronization:
+    message:
+      success: "Synchronisation réussie après %{time} secondes avec %{imported} éléments importés de Codifligne. %{deleted} éléments ont été supprimés."
+      failure: "Synchronisation interrompue après %{time} secondes."
   activerecord:
     attributes:
       line_referential:

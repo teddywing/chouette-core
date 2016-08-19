@@ -3,8 +3,8 @@ class LineReferentialSync < ActiveRecord::Base
 
   has_many :line_sync_operations, dependent: :destroy
 
-  def record_status status
-    line_sync_operations << LineSyncOperation.new(status: status)
+  def record_status status, message
+    line_sync_operations << LineSyncOperation.new(status: status, message: message)
     line_sync_operations.first.destroy while line_sync_operations.count > 30
   end
 end

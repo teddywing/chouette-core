@@ -1,4 +1,7 @@
 en:
+  synchronization:
+    message: "Synchronization successful in %{time} seconds with %{imported} objects from Codifligne. %{deleted} objects were deleted."
+    failure: "Synchronization interrupted after %{time} seconds."
   activerecord:
     attributes:
       line_referential:

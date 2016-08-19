@@ -1,13 +1,14 @@
 module Stif
   module CodifLineSynchronization
     class << self
-      # Don't check last synchronizations date and lines last update if first_sync
-      def synchronize first_sync = false
+      # Don't check last synchronizations if force_sync
+      def synchronize force_sync = false
         # Check last synchronization and synchronization interval
         date = DateTime.now.to_date - LineReferential.first.sync_interval.days
-        last_sync = LineReferential.first.line_referential_sync.line_sync_operations.where(status: 'ok').last.try(:created_at)
-        return if (last_sync.nil? || last_sync.to_date > date) && !first_sync
+        last_sync = LineReferential.first.line_referential_sync.line_sync_operations.where(status: :ok).last.try(:created_at)
+        return if last_sync.present? && last_sync.to_date > date && !force_sync
         
+        start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
         # TODO Check exceptions and status messages
         begin
           # Fetch Codifline data
@@ -22,15 +23,21 @@ module Stif
           networks.map        { |n| create_or_update_network(n) }
           groups_of_lines.map { |g| create_or_update_group_of_lines(g) }
           
-          delete_deprecated(operators, Chouette::Company)
-          delete_deprecated_lines(lines)
-          delete_deprecated(networks, Chouette::Network)
-          delete_deprecated(groups_of_lines, Chouette::GroupOfLine)
+          total_deleted = delete_deprecated(operators, Chouette::Company)
+          total_deleted += delete_deprecated_lines(lines)
+          total_deleted += delete_deprecated(networks, Chouette::Network)
+          total_deleted += delete_deprecated(groups_of_lines, Chouette::GroupOfLine)
 
-          LineReferential.first.line_referential_sync.record_status "OK"
+          # Building log message
+          total_codifligne_elements = operators.count + lines.count + networks.count + groups_of_lines.count
+          total_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second) - start_time
+
+          LineReferential.first.line_referential_sync.record_status :ok, I18n.t('synchronization.message.success', time: total_time, imported: total_codifligne_elements, deleted: total_deleted)
         rescue Exception => e
-          ap e.message
-          LineReferential.first.line_referential_sync.record_status "Error"
+          Rails.logger.error "#{e} #{e.backtrace}"
+
+          total_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second) - start_time
+          LineReferential.first.line_referential_sync.record_status :ko, I18n.t('synchronization.message.failure', time: total_time)
         end
       end
 
@@ -100,12 +107,18 @@ module Stif
 
       def delete_deprecated(objects, klass)
         ids = objects.map{ |o| o.stif_id }.to_a
-        klass.where.not(objectid: ids).destroy_all
+        deprecated = klass.where.not(objectid: ids)
+        count = deprecated.count
+        deprecated.destroy_all
+        count
       end
 
       def delete_deprecated_lines(lines)
         ids = lines.map{ |l| l.stif_id }.to_a
-        Chouette::Line.where.not(objectid: ids).map { |l| l.deactivated = true ; l.save }
+        deprecated = Chouette::Line.where.not(objectid: ids).where(deactivated: false)
+        count = deprecated.count
+        deprecated.map { |l| l.deactivated = true ; l.save }
+        count
       end
 
       def save_or_update(params, klass)

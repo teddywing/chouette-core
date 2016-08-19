@@ -12,12 +12,12 @@ RSpec.describe LineReferentialSync, :type => :model do
     let!(:line_ref_sync_with_records) { create(:line_referential_sync_with_record, line_sync_operations_count: 30) }
 
     it 'should add a new record' do
-      line_ref_sync.record_status "OK"
+      line_ref_sync.record_status :ok, "message"
       expect(line_ref_sync.line_sync_operations.count).to eq(1)
     end
 
     it 'should not have more than 30 records' do
-      line_ref_sync_with_records.record_status "OK"
+      line_ref_sync_with_records.record_status :ok, "message"
       expect(line_ref_sync_with_records.line_sync_operations.count).to eq(30)
     end
 end
