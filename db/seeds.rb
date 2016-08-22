@@ -39,8 +39,9 @@ end
 line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |referential|
   referential.add_member stif, owner: true
   referential.add_member operator
-  LineReferentialSync.create(line_referential: referential)
 end
+
+LineReferentialSync.find_or_create_by(line_referential: line_referential)
 
 10.times do |n|
   line_referential.lines.find_or_create_by name: "Test #{n}" do |l|
