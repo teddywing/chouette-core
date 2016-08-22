@@ -79,7 +79,7 @@ class LinesController < BreadcrumbController
     end
 
     @q = line_referential.lines.search(params[:q])
-    @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+    @lines ||= @q.result(:distinct => true).where(deactivated: false).order(:number).paginate(:page => params[:page]).includes([:network, :company])
   end
 
   alias_method :line_referential, :parent
