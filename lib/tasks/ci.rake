@@ -23,7 +23,7 @@ namespace :ci do
 
   desc "Deploy after CI"
   task :deploy do
-    sh "cap #{deploy_env} deploy:migrations deploy:seed"
+    sh "cap #{deploy_env} deploy:migrations deploy:seed deploy:cucumber"
   end
 
   desc "Clean test files"
@@ -33,4 +33,4 @@ namespace :ci do
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "spec", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "spec", "cucumber", "ci:deploy", "ci:clean"]

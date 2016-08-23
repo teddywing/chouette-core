@@ -119,6 +119,7 @@ group :development do
   # MetaRequest is incompatible with rgeo-activerecord
   # gem 'meta_request'
   gem 'quiet_assets', '~> 1.0'
+
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
     gem 'binding_of_caller'
@@ -126,8 +127,14 @@ group :development do
 end
 
 group :test do
+  gem 'cucumber-rails', require: false
   gem 'simplecov', :require => false
   gem 'simplecov-rcov', :require => false
+end
+
+group :test, :development, :dev do
+  gem 'fabrication', '~> 2.14.1'
+  gem 'ffaker', '~> 2.1.0'
 end
 
 group :test, :development do
@@ -137,13 +144,13 @@ group :test, :development do
   gem 'fakeweb'
   gem 'webmock'
   gem 'capybara', '~> 2.4.0'
+  gem 'database_cleaner'
   gem 'poltergeist'
   gem 'launchy'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'rb-inotify', require: RUBY_PLATFORM.include?('linux') && 'rb-inotify'
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'transpec'
-  gem 'database_cleaner'
   gem 'shoulda-matchers'
 end
 
