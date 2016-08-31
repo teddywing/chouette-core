@@ -10,31 +10,31 @@ module Stif
         Chouette::StopArea.find_by(objectid: "dummy:StopArea:#{objectid.tr(':', '')}")
       end
 
-      def synchronize_stop_area
+      def synchronize
         client = Reflex::API.new
         ['getOR', 'getOP'].each do |method|
-          results = client.process method
-          results = results[:Quay].merge(results[:StopPlace])
-
+          results   = client.process method
           processed = []
-          results.each do |id, entry|
-            Rails.logger.debug "Reflex - Processing - #{entry.id}"
+
+          results[:StopPlaceEntrance].each do |id, entry|
+            self.create_or_update_access_point entry
+          end
+          results[:Quay].merge(results[:StopPlace]).each do |id, entry|
             processed << self.create_or_update_stop_area(entry)
           end
           processed.each do |entry|
-            Rails.logger.debug "Reflex - Set parent for - #{entry.id}"
-            self.set_parent entry
+            self.stop_area_set_parent entry
           end
         end
       end
 
-      def set_parent entry
+      def stop_area_set_parent entry
         return false unless entry.try(:parent_site_ref) || entry.try(:quays)
         stop = self.find_by_object_id entry.id
 
         if entry.try(:parent_site_ref)
           stop.parent = self.find_by_object_id entry.parent_site_ref
-          stop.save! if stop.changed
+          stop.save if stop.changed
         end
 
         if entry.try(:quays)
@@ -42,9 +42,19 @@ module Stif
             children = self.find_by_object_id(quay[:ref])
             next unless children
             children.parent = stop
-            children.save! if children.changed?
+            children.save if children.changed?
           end
         end
+      end
+
+      def create_or_update_access_point entry
+        access = Chouette::AccessPoint.find_or_create_by(objectid: "dummy:AccessPoint:#{entry.id.tr(':', '')}")
+        access.name           = entry.name
+        # access.object_version = entry.version
+        access.zip_code       = entry.postal_code
+        access.city_name      = entry.city
+        access.access_type    = entry.area_type
+        access.save if access.changed?
       end
 
       def create_or_update_stop_area entry
@@ -54,15 +64,13 @@ module Stif
         stop.name          = entry.name
         stop.creation_time = entry.created
         stop.area_type     = entry.area_type
+        # Todo fixe object_version auto incremented
+        # by DefaultAttributesSupport prepare_auto_columns
         # stop.object_version = entry.version
         stop.zip_code  = entry.postal_code
         stop.city_name = entry.city
-
-        if stop.changed?
-          Rails.logger.debug "Reflex - Updating - #{entry.id}"
-          stop.save!
-          stop
-        end
+        stop.save if stop.changed?
+        stop
       end
     end
   end

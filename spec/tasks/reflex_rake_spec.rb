@@ -14,7 +14,7 @@ describe 'test' do
       # Must have a referential
       create(:stop_area_referential, name: 'Reflex')
 
-      Stif::ReflexSynchronization.synchronize_stop_area
+      Stif::ReflexSynchronization.synchronize
       Rails.logger.debug "Reflex-api sync done in #{Time.now - start} seconds !"
     end
   end
