@@ -24,6 +24,8 @@ unless additionnal_path.empty?
   env :PATH, "#{additionnal_path}:#{ENV['PATH']}"
 end
 
+set :job_template, "/bin/bash -c ':job'"
+
 every :hour do
   rake "organisations:sync"
   rake "users:sync"
