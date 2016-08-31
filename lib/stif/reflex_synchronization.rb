@@ -11,23 +11,36 @@ module Stif
       end
 
       def synchronize
+        start  = Time.now
         client = Reflex::API.new
-        ['getOR', 'getOP'].each do |method|
-          results    = client.process method
-          stop_areas = results[:Quay].merge(results[:StopPlace])
 
+        ['getOR', 'getOP'].each do |method|
+          results = client.process method
+          Rails.logger.info "Reflex:sync - Process #{method} done in #{Time.now - start} seconds"
+          results.each do |type, entries|
+            Rails.logger.info "Reflex:sync - #{entries.count} #{type} retrieved"
+          end
+
+          start = Time.now
           results[:StopPlaceEntrance].each do |id, entry|
             self.create_or_update_access_point entry
           end
-          Rails.logger.debug "Reflex:sync - StopPlaceEntrance sync done !"
+          Rails.logger.info "Reflex:sync - Create or update AccessPoint done in #{Time.now - start} seconds"
+
+          # Create or update stop_area for every quay, stop_place
+          stop_areas = results[:Quay].merge(results[:StopPlace])
+          start = Time.now
           stop_areas.each do |id, entry|
             self.create_or_update_stop_area entry
           end
-          Rails.logger.debug "Reflex:sync - StopAreas sync done !"
+          Rails.logger.info "Reflex:sync - Create or update StopArea done in #{Time.now - start} seconds"
+
+          # Walk through every entry and set parent stop_area
+          start = Time.now
           stop_areas.each do |id, entry|
             self.stop_area_set_parent entry
           end
-          Rails.logger.debug "Reflex:sync - StopAreas : set  parents sync done !"
+          Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
         end
       end
 
