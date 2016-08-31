@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804134627) do
+ActiveRecord::Schema.define(version: 20160831094427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -291,6 +291,7 @@ ActiveRecord::Schema.define(version: 20160804134627) do
     t.integer  "line_referential_sync_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "message"
   end
 
   add_index "line_sync_operations", ["line_referential_sync_id"], :name => "index_line_sync_operations_on_line_referential_sync_id"
@@ -393,6 +394,7 @@ ActiveRecord::Schema.define(version: 20160804134627) do
     t.integer  "line_referential_id"
     t.integer  "stop_area_referential_id"
     t.integer  "offer_workbench_id"
+    t.datetime "archived_at"
   end
 
   create_table "route_sections", force: true do |t|
@@ -603,7 +605,7 @@ ActiveRecord::Schema.define(version: 20160804134627) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.datetime "invitation_created_at"
-    t.string   "username",                            null: false
+    t.string   "username"
     t.datetime "synced_at"
   end
 
