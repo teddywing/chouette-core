@@ -24,6 +24,10 @@ every :hour do
   rake "users:sync"
 end
 
-every :day do
+every :day, :at => '01:00am' do
   rake "codifligne:sync"
+end
+
+every :day, :at => '03:00am' do
+  rake "reflex:sync"
 end
