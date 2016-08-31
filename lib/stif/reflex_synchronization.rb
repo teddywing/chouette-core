@@ -13,18 +13,21 @@ module Stif
       def synchronize
         client = Reflex::API.new
         ['getOR', 'getOP'].each do |method|
-          results   = client.process method
-          processed = []
+          results    = client.process method
+          stop_areas = results[:Quay].merge(results[:StopPlace])
 
           results[:StopPlaceEntrance].each do |id, entry|
             self.create_or_update_access_point entry
           end
-          results[:Quay].merge(results[:StopPlace]).each do |id, entry|
-            processed << self.create_or_update_stop_area(entry)
+          Rails.logger.debug "Reflex:sync - StopPlaceEntrance sync done !"
+          stop_areas.each do |id, entry|
+            self.create_or_update_stop_area entry
           end
-          processed.each do |entry|
+          Rails.logger.debug "Reflex:sync - StopAreas sync done !"
+          stop_areas.each do |id, entry|
             self.stop_area_set_parent entry
           end
+          Rails.logger.debug "Reflex:sync - StopAreas : set  parents sync done !"
         end
       end
 
