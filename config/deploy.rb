@@ -24,7 +24,7 @@ require "bundler/capistrano"
 require 'whenever/capistrano'
 
 # Whenever
-set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec'" } # invoke bin/bundle to use 'correct' ruby environment
+set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec'&additionnal_path=/var/lib/gems/2.2.0/bin" } # invoke bin/bundle to use 'correct' ruby environment
 
 set :whenever_command, "sudo /usr/local/sbin/whenever-sudo" # use sudo to change www-data crontab
 set :whenever_user, "www-data" # use www-data crontab

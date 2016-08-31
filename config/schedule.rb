@@ -19,6 +19,11 @@
 
 # Learn more: http://github.com/javan/whenever
 
+set :additionnal_path, ''
+unless additionnal_path.empty?
+  env :PATH, "#{additionnal_path}:#{ENV['PATH']}"
+end
+
 every :hour do
   rake "organisations:sync"
   rake "users:sync"
