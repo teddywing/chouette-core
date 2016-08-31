@@ -12,6 +12,13 @@ GIT
     codifligne (0.0.2)
       nokogiri (~> 1.6)
 
+GIT
+  remote: git@github.com:AF83/stif-reflex-api.git
+  revision: 41b496bac3398348178da1227975219903a17fa2
+  specs:
+    reflex (0.0.1)
+      nokogiri (~> 1.6)
+
 GEM
   remote: http://rubygems.org/
   remote: http://rails-assets.org/
@@ -604,6 +611,7 @@ DEPENDENCIES
   ransack
   rb-fsevent
   rb-inotify
+  reflex!
   rgeo (~> 0.5.2)
   roo
   rspec-rails (~> 3.1.0)
