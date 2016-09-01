@@ -3,7 +3,7 @@
   = page_entries_info @lines
 
 .lines.paginated_content
-  = paginated_content @lines
+  = paginated_content(@lines)
 
 .pagination
   = will_paginate @lines, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
