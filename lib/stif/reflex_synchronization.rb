@@ -21,12 +21,6 @@ module Stif
             Rails.logger.info "Reflex:sync - #{entries.count} #{type} retrieved"
           end
 
-          start = Time.now
-          results[:StopPlaceEntrance].each do |id, entry|
-            self.create_or_update_access_point entry
-          end
-          Rails.logger.info "Reflex:sync - Create or update AccessPoint done in #{Time.now - start} seconds"
-
           # Create or update stop_area for every quay, stop_place
           stop_areas = results[:Quay].merge(results[:StopPlace])
           start = Time.now
@@ -63,10 +57,12 @@ module Stif
         end
       end
 
-      def create_or_update_access_point entry
+      def create_or_update_access_point entry, stop_area
         access = Chouette::AccessPoint.find_or_create_by(objectid: "dummy:AccessPoint:#{entry.id.tr(':', '')}")
+        entry.version = entry.version.to_i + 1  if access.persisted?
         access.name           = entry.name
-        # access.object_version = entry.version
+        access.stop_area      = stop_area
+        access.object_version = entry.version
         access.zip_code       = entry.postal_code
         access.city_name      = entry.city
         access.access_type    = entry.area_type
@@ -75,17 +71,24 @@ module Stif
 
       def create_or_update_stop_area entry
         stop = Chouette::StopArea.find_or_create_by(objectid: "dummy:StopArea:#{entry.id.tr(':', '')}")
-        stop.stop_area_referential = self.defaut_referential
+        # Hack, on save object_version will be incremented by 1
+        entry.version = entry.version.to_i + 1  if stop.persisted?
 
-        stop.name          = entry.name
-        stop.creation_time = entry.created
-        stop.area_type     = entry.area_type
-        # Todo fixe object_version auto incremented
-        # by DefaultAttributesSupport prepare_auto_columns
-        # stop.object_version = entry.version
-        stop.zip_code  = entry.postal_code
-        stop.city_name = entry.city
+        stop.stop_area_referential = self.defaut_referential
+        stop.name           = entry.name
+        stop.creation_time  = entry.created
+        stop.area_type      = entry.area_type
+        stop.object_version = entry.version
+        stop.zip_code       = entry.postal_code
+        stop.city_name      = entry.city
         stop.save if stop.changed?
+
+        # Create AccessPoint from StopPlaceEntrance
+        if entry.try(:entrances)
+          entry.entrances.each do |entrance|
+            self.create_or_update_access_point entrance, stop
+          end
+        end
         stop
       end
     end
