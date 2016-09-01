@@ -23,6 +23,7 @@ set :additionnal_path, ''
 unless additionnal_path.empty?
   env :PATH, "#{additionnal_path}:#{ENV['PATH']}"
 end
+set :NEW_RELIC_LOG, 'stdout'
 
 set :job_template, "/bin/bash -c ':job'"
 

@@ -30,7 +30,6 @@ set :whenever_command, "sudo /usr/local/sbin/whenever-sudo" # use sudo to change
 set :whenever_user, "www-data" # use www-data crontab
 
 set :whenever_output, "2>&1 | logger -t stif-boiv/cron"
-set :whenever_command_environment_variables, -> { "NEW_RELIC_LOG=stdout" } # avoid log/newrelic.log access
 
 namespace :deploy do
   task :start do ; end
