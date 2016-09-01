@@ -18,25 +18,55 @@ module Stif
           networks        = client.networks
           groups_of_lines = client.groups_of_lines
 
+          Rails.logger.info "Codifligne:sync - Codifligne request processed in #{elapsed_time_since start_time} seconds"
+
+          # Create or update Companies
+          stime = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
           operators.map       { |o| create_or_update_company(o) }
+          log_create_or_update "Companies", operators.count, stime
+
+          # Create or update Lines
+          stime = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
           lines.map           { |l| create_or_update_line(l) }
+          log_create_or_update "Lines", lines.count, stime
+
+          # Create or update Networks
+          stime = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
           networks.map        { |n| create_or_update_network(n) }
+          log_create_or_update "Networks", networks.count, stime
+
+          # Create or update Group of lines
+          stime = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
           groups_of_lines.map { |g| create_or_update_group_of_lines(g) }
+          log_create_or_update "Group of lines", group_of_lines.count, stime
+
           
-          total_deleted = delete_deprecated(operators, Chouette::Company)
-          total_deleted += delete_deprecated_lines(lines)
-          total_deleted += delete_deprecated(networks, Chouette::Network)
-          total_deleted += delete_deprecated(groups_of_lines, Chouette::GroupOfLine)
+          # Delete deprecated Group of lines
+          deleted_gr = delete_deprecated(groups_of_lines, Chouette::GroupOfLine)
+          log_deleted "Group of lines", deleted_gr unless deleted_op == 0
+
+          # Delete deprecated Networks
+          deleted_ne = delete_deprecated(networks, Chouette::Network)
+          log_deleted "Networks", deleted_ne unless deleted_op == 0
+          
+          # Delete deprecated Lines
+          deleted_li = delete_deprecated_lines(lines)
+          log_deleted "Lines", deleted_li unless deleted_op == 0
+          
+          # Delete deprecated Operators
+          deleted_op = delete_deprecated(operators, Chouette::Company)
+          log_deleted "Operators", deleted_op unless deleted_op == 0
 
           # Building log message
           total_codifligne_elements = operators.count + lines.count + networks.count + groups_of_lines.count
-          total_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second) - start_time
+          total_deleted = deleted_op + deleted_li + deleted_ne + deleted_gr
+          total_time = elapsed_time_since start_time
 
           LineReferential.first.line_referential_sync.record_status :ok, I18n.t('synchronization.message.success', time: total_time, imported: total_codifligne_elements, deleted: total_deleted)
         rescue Exception => e
-          Rails.logger.error "#{e} #{e.backtrace}"
+          total_time = elapsed_time_since start_time
 
-          total_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second) - start_time
+          Rails.logger.error "Codifligne:sync - Error: #{e}, ended after #{total_time} seconds"
           LineReferential.first.line_referential_sync.record_status :ko, I18n.t('synchronization.message.failure', time: total_time)
         end
       end
@@ -132,6 +162,20 @@ module Stif
           object.save if object.valid?
         end
         object
+      end
+
+      def elapsed_time_since start_time = 0
+        Process.clock_gettime(Process::CLOCK_MONOTONIC, :second) - start_time
+      end
+
+      def log_create_or_update name, count, start_time
+        time = elapsed_time_since start_time
+        Rails.logger.info "Codifligne:sync - #{count} #{name} retrieved"
+        Rails.logger.info "Codifligne:sync - Create or update #{name} done in #{time} seconds"
+      end
+
+      def log_deleted name, count
+        Rails.logger.info "Codifligne:sync - #{count} #{name} deleted"
       end
     end
   end
