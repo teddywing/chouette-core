@@ -55,6 +55,7 @@ module Stif
       def stop_area_set_parent entry
         return false unless entry.try(:parent_site_ref) || entry.try(:quays)
         stop = self.find_by_object_id entry.id
+        return false unless stop
 
         if entry.try(:parent_site_ref)
           stop.parent = self.find_by_object_id entry.parent_site_ref
