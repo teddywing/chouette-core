@@ -77,3 +77,8 @@ en:
         prefix: "only alphanumerical or underscore characters"
         upper_corner: "latitude,longitude in WGS84 referential, dot for decimal separator"
         lower_corner: "latitude,longitude in WGS84 referential, dot for decimal separator"
+
+  notice:
+    referential:
+      archived: "The data space has been successfully archived"
+      unarchived: "The data space has been successfully unarchived"

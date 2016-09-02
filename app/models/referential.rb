@@ -208,20 +208,18 @@ class Referential < ActiveRecord::Base
     GeoRuby::SimpleFeatures::Geometry.from_ewkt(bounds.present? ? bounds : default_bounds ).envelope
   end
 
+  # Archive
   def archived?
-    true if !archived_at.nil?
-  end
-  alias_method :archived, :archived?
-
-  def archived=(state)
-    state = [true, "1"].include?(state)
-    self.archived_at = (state ? Time.now : nil)
+    archived_at != nil
   end
 
-  def archive
-    self.archived = true
+  def archive!
+    # self.archived = true
+    touch :archived_at
   end
-  def unarchive
-    self.archived = false
+  def unarchive!
+    # self.archived = false
+    update_column :archived_at, nil
   end
+  
 end

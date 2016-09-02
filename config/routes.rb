@@ -72,6 +72,12 @@ ChouetteIhm::Application.routes.draw do
       end
     end
 
+    # Archive/unarchive
+    member do
+      put :archive
+      put :unarchive
+    end
+
     resources :networks
 
     match 'lines' => 'lines#destroy_all', :via => :delete
