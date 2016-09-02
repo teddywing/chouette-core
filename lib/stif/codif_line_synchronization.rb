@@ -38,20 +38,19 @@ module Stif
           # Create or update Group of lines
           stime = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
           groups_of_lines.map { |g| create_or_update_group_of_lines(g) }
-          log_create_or_update "Group of lines", group_of_lines.count, stime
-
+          log_create_or_update "Group of lines", groups_of_lines.count, stime
           
           # Delete deprecated Group of lines
           deleted_gr = delete_deprecated(groups_of_lines, Chouette::GroupOfLine)
-          log_deleted "Group of lines", deleted_gr unless deleted_op == 0
+          log_deleted "Group of lines", deleted_gr unless deleted_gr == 0
 
           # Delete deprecated Networks
           deleted_ne = delete_deprecated(networks, Chouette::Network)
-          log_deleted "Networks", deleted_ne unless deleted_op == 0
+          log_deleted "Networks", deleted_ne unless deleted_ne == 0
           
           # Delete deprecated Lines
           deleted_li = delete_deprecated_lines(lines)
-          log_deleted "Lines", deleted_li unless deleted_op == 0
+          log_deleted "Lines", deleted_li unless deleted_li == 0
           
           # Delete deprecated Operators
           deleted_op = delete_deprecated(operators, Chouette::Company)
