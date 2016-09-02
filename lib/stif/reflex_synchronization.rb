@@ -11,8 +11,9 @@ module Stif
       end
 
       def synchronize
-        start  = Time.now
-        client = Reflex::API.new
+        start      = Time.now
+        client     = Reflex::API.new
+        processed  = []
 
         ['getOR', 'getOP'].each do |method|
           results = client.process method
@@ -25,7 +26,7 @@ module Stif
           stop_areas = results[:Quay].merge(results[:StopPlace])
           start = Time.now
           stop_areas.each do |id, entry|
-            self.create_or_update_stop_area entry
+            processed << self.create_or_update_stop_area(entry).objectid
           end
           Rails.logger.info "Reflex:sync - Create or update StopArea done in #{Time.now - start} seconds"
 
@@ -36,6 +37,19 @@ module Stif
           end
           Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
         end
+        # Purge deleted stop_area
+        self.set_deleted_stop_area processed.uniq
+      end
+
+      def set_deleted_stop_area processed
+        Rails.logger.info "Reflex:sync - StopArea start deleted_stop_area"
+        start   = Time.now
+        deleted = Chouette::StopArea.pluck(:objectid).uniq - processed
+        deleted.each_slice(50) do |object_ids|
+          Chouette::StopArea.where(objectid: object_ids).update_all(deleted_at: Time.now)
+        end
+        Rails.logger.info "Reflex:sync - StopArea #{deleted.size} stop_area deleted since last sync"
+        Rails.logger.info "Reflex:sync - StopArea purge deleted in #{Time.now - start} seconds"
       end
 
       def stop_area_set_parent entry
@@ -60,12 +74,15 @@ module Stif
       def create_or_update_access_point entry, stop_area
         access = Chouette::AccessPoint.find_or_create_by(objectid: "dummy:AccessPoint:#{entry.id.tr(':', '')}")
         entry.version = entry.version.to_i + 1  if access.persisted?
-        access.name           = entry.name
-        access.stop_area      = stop_area
-        access.object_version = entry.version
-        access.zip_code       = entry.postal_code
-        access.city_name      = entry.city
-        access.access_type    = entry.area_type
+        access.stop_area = stop_area
+        {
+          :name           => :name,
+          :access_type    => :area_type,
+          :object_version => :version,
+          :zip_code       => :postal_code,
+          :city_name      => :city,
+          :import_xml     => :xml
+        }.each do |k, v| access[k] = entry.try(v) end
         access.save if access.changed?
       end
 
@@ -73,16 +90,17 @@ module Stif
         stop = Chouette::StopArea.find_or_create_by(objectid: "dummy:StopArea:#{entry.id.tr(':', '')}")
         # Hack, on save object_version will be incremented by 1
         entry.version = entry.version.to_i + 1  if stop.persisted?
-
         stop.stop_area_referential = self.defaut_referential
-        stop.name           = entry.name
-        stop.creation_time  = entry.created
-        stop.area_type      = entry.area_type
-        stop.object_version = entry.version
-        stop.zip_code       = entry.postal_code
-        stop.city_name      = entry.city
+        {
+          :name           => :name,
+          :creation_time  => :created,
+          :area_type      => :area_type,
+          :object_version => :version,
+          :zip_code       => :postal_code,
+          :city_name      => :city,
+          :import_xml     => :xml
+        }.each do |k, v| stop[k] = entry.try(v) end
         stop.save if stop.changed?
-
         # Create AccessPoint from StopPlaceEntrance
         if entry.try(:entrances)
           entry.entrances.each do |entrance|

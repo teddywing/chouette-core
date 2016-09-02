@@ -12,7 +12,7 @@ describe 'reflex:sync' do
     # Must have an stop_area_referential
     create(:stop_area_referential, name: 'Reflex')
     Stif::ReflexSynchronization.synchronize
-    expect(Chouette::StopArea.count).to eq 7928
-    expect(Chouette::AccessPoint.count).to eq 60
+    expect(Chouette::StopArea.count).to eq 4309
+    expect(Chouette::AccessPoint.count).to eq 49
   end
 end

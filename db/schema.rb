@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160831094427) do
+ActiveRecord::Schema.define(version: 20160902093127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160831094427) do
     t.integer  "stop_area_id",                    limit: 8
     t.string   "zip_code"
     t.string   "city_name"
+    t.text     "import_xml"
   end
 
   add_index "access_points", ["objectid"], :name => "access_points_objectid_key", :unique => true
@@ -404,10 +405,10 @@ ActiveRecord::Schema.define(version: 20160831094427) do
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
-    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
-    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
     t.float    "distance"
     t.boolean  "no_processing"
+    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
+    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
   end
 
   create_table "routes", force: true do |t|
@@ -478,6 +479,9 @@ ActiveRecord::Schema.define(version: 20160831094427) do
     t.string   "url"
     t.string   "time_zone"
     t.integer  "stop_area_referential_id"
+    t.string   "status"
+    t.text     "import_xml"
+    t.datetime "deleted_at"
   end
 
   add_index "stop_areas", ["objectid"], :name => "stop_areas_objectid_key", :unique => true
