@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160902093127) do
+ActiveRecord::Schema.define(version: 20160905094930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -340,8 +340,10 @@ ActiveRecord::Schema.define(version: 20160902093127) do
     t.string   "source_identifier"
     t.string   "comment"
     t.text     "import_xml"
+    t.integer  "line_referential_id"
   end
 
+  add_index "networks", ["line_referential_id"], :name => "index_networks_on_line_referential_id"
   add_index "networks", ["objectid"], :name => "networks_objectid_key", :unique => true
   add_index "networks", ["registration_number"], :name => "networks_registration_number_key"
 
