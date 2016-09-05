@@ -16,4 +16,8 @@ class LineReferential < ActiveRecord::Base
   validates :sync_interval, presence: true
   # need to define precise validation rules
   validates_inclusion_of :sync_interval, :in => 1..30
+
+  def operating_lines
+    lines.where(deactivated: false)
+  end
 end
