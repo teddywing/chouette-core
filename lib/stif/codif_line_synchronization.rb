@@ -151,7 +151,7 @@ module Stif
       end
 
       def save_or_update(params, klass)
-        params[:line_referential] = LineReferential.first unless klass == Chouette::Network
+        params[:line_referential] = LineReferential.first
         object = klass.where(objectid: params[:objectid]).first
         if object
           object.assign_attributes(params)
