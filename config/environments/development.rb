@@ -56,6 +56,9 @@ Rails.application.configure do
   config.company_contact = "http://www.chouette.mobi/club-utilisateurs/contact-support/"
   config.accept_user_creation = false
 
+  # Reflex api url
+  config.reflex_api_url = "https://reflex.stif.info/ws/reflex/V1/service=getData"
+
   # config.chouette_authentication_settings = {
   #   type: "database"
   # }
