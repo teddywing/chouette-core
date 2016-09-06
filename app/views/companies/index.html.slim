@@ -1,6 +1,6 @@
 = title_tag t('companies.index.title')
 
-= search_form_for @q, :url => referential_companies_path(@referential), remote: true, :html => {:method => :get, class: 'form-inline', id: 'search', role: "form"} do |f|
+= search_form_for @q, :url => referential_companies_path(@line_referential), remote: true, :html => {:method => :get, class: 'form-inline', id: 'search', role: "form"} do |f|
 
   .panel.panel-default
     .panel-heading
@@ -9,7 +9,7 @@
         .input-group-btn
           button.btn.btn-default type="submit"
             i.fa.fa-search
-      
+
       / <!-- /input-group -->
       / <!-- <a data-toggle="collapse" data-parent="#search" href="#advanced_search"> -->
       / <!--   <i class="fa fa-plus"></i> <%= "#{t('.advanced_search')}" %> -->
@@ -21,5 +21,5 @@
 - content_for :sidebar do
   ul.actions
     li
-      = link_to t('companies.actions.new'), new_referential_company_path(@referential), class: 'add'
+      = link_to t('companies.actions.new'), new_line_referential_company_path(@line_referential), class: 'add'
   br

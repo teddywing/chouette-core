@@ -162,8 +162,8 @@ module BreadcrumbHelper
 
   def company_breadcrumb (action)
     referential_breadcrumb
-    add_breadcrumb Chouette::Company.model_name.human(:count => 2), referential_companies_path(@referential) unless action == :index
-    add_breadcrumb breadcrumb_label(@company), referential_company_path(@referential, @company),:title => breadcrumb_tooltip(@company) if action == :edit
+    add_breadcrumb Chouette::Company.model_name.human(:count => 2), line_referential_companies_path(@line_referential) unless action == :index
+    add_breadcrumb breadcrumb_label(@company), line_referential_company_path(@line_referential, @company),:title => breadcrumb_tooltip(@company) if action == :edit
   end
 
   def import_breadcrumb (action)

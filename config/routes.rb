@@ -10,7 +10,7 @@ ChouetteIhm::Application.routes.draw do
     authenticated :user do
       root :to => 'referentials#index', as: :authenticated_root
     end
-    
+
     unauthenticated :user do
       target = 'devise/sessions#new'
 
@@ -58,6 +58,7 @@ ChouetteIhm::Application.routes.draw do
   resources :line_referentials, :only => [:show, :update] do
     resources :lines
     resources :group_of_lines
+    resources :companies
   end
 
   resources :referentials do
