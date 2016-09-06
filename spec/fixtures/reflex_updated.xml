@@ -58,7 +58,7 @@
      <Description>Frame NETEX_ARRET_STIF</Description>
      <members modificationSet="all">
       <StopPlace version="777416" created="2014-12-29T03:12:51.0Z" changed="2016-07-26T12:07:19.0Z" id="FR:77153:LDA:69325:STIF">
-       <Name>First stopPlace</Name>
+       <Name>First stopPlace edited</Name>
        <placeTypes>
         <TypeOfPlaceRef ref="LDA"/>
        </placeTypes>
@@ -78,7 +78,7 @@
          <Value>REFERENCE_OBJECT</Value>
         </KeyValue>
        </keyList>
-       <Name>First stopPlace children</Name>
+       <Name>First stopPlace children edited</Name>
        <placeTypes>
         <TypeOfPlaceRef ref="ZDL"/>
        </placeTypes>
@@ -124,21 +124,6 @@
        <quays>
         <QuayRef ref="FR:77153:ZDE:38240:STIF" version="782150"/>
        </quays>
-      </StopPlace>
-
-      <StopPlace version="779971" created="2014-12-29T12:12:00.0Z" changed="2016-07-28T03:07:39.0Z" id="FR:95277:LDA:65926:STIF">
-       <Name>Second StopPlace</Name>
-       <placeTypes>
-        <TypeOfPlaceRef ref="LDA"/>
-       </placeTypes>
-       <PostalAddress version="any" id="STIF-REFLEX:PostalAddress:65926">
-        <Town>Gonesse</Town>
-        <PostalRegion>95277</PostalRegion>
-       </PostalAddress>
-       <AccessibilityAssessment version="any" id="STIF-REFLEX:AccessibilityAssessment:65926">
-        <MobilityImpairedAccess>false</MobilityImpairedAccess>
-       </AccessibilityAssessment>
-       <StopPlaceType>onstreetBus</StopPlaceType>
       </StopPlace>
       <StopPlace version="779966" created="2014-12-29T03:12:51.0Z" changed="2016-07-28T03:07:56.0Z" id="FR:95277:ZDL:46738:STIF">
        <keyList>
