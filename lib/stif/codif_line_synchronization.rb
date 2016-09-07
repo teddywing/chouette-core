@@ -7,7 +7,7 @@ module Stif
         date = DateTime.now.to_date - LineReferential.first.sync_interval.days
         last_sync = LineReferential.first.line_referential_sync.line_sync_operations.where(status: :ok).last.try(:created_at)
         return if last_sync.present? && last_sync.to_date > date && !force_sync
-        
+
         start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
         # TODO Check exceptions and status messages
         begin
@@ -39,7 +39,7 @@ module Stif
           stime = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
           groups_of_lines.map { |g| create_or_update_group_of_lines(g) }
           log_create_or_update "Group of lines", groups_of_lines.count, stime
-          
+
           # Delete deprecated Group of lines
           deleted_gr = delete_deprecated(groups_of_lines, Chouette::GroupOfLine)
           log_deleted "Group of lines", deleted_gr unless deleted_gr == 0
@@ -47,11 +47,11 @@ module Stif
           # Delete deprecated Networks
           deleted_ne = delete_deprecated(networks, Chouette::Network)
           log_deleted "Networks", deleted_ne unless deleted_ne == 0
-          
+
           # Delete deprecated Lines
           deleted_li = delete_deprecated_lines(lines)
           log_deleted "Lines", deleted_li unless deleted_li == 0
-          
+
           # Delete deprecated Operators
           deleted_op = delete_deprecated(operators, Chouette::Company)
           log_deleted "Operators", deleted_op unless deleted_op == 0
@@ -87,7 +87,7 @@ module Stif
           deactivated: (api_line.status == "inactive" ? true : false),
           import_xml: api_line.xml
         }
-        
+
         # Find Company
         # TODO Check behavior when operator_codes count is 0 or > 1
         if api_line.operator_codes.any?
@@ -137,17 +137,13 @@ module Stif
       def delete_deprecated(objects, klass)
         ids = objects.map{ |o| o.stif_id }.to_a
         deprecated = klass.where.not(objectid: ids)
-        count = deprecated.count
-        deprecated.destroy_all
-        count
+        deprecated.destroy_all.length
       end
 
       def delete_deprecated_lines(lines)
         ids = lines.map{ |l| l.stif_id }.to_a
         deprecated = Chouette::Line.where.not(objectid: ids).where(deactivated: false)
-        count = deprecated.count
-        deprecated.map { |l| l.deactivated = true ; l.save }
-        count
+        deprecated.update_all desactivated: true
       end
 
       def save_or_update(params, klass)
