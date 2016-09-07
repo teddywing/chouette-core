@@ -44,7 +44,7 @@ module Stif
       def set_deleted_stop_area processed
         Rails.logger.info "Reflex:sync - StopArea start deleted_stop_area"
         start   = Time.now
-        deleted = Chouette::StopArea.pluck(:objectid).uniq - processed
+        deleted = Chouette::StopArea.where(deleted_at: nil).pluck(:objectid).uniq - processed
         deleted.each_slice(50) do |object_ids|
           Chouette::StopArea.where(objectid: object_ids).update_all(deleted_at: Time.now)
         end
@@ -91,6 +91,7 @@ module Stif
         stop = Chouette::StopArea.find_or_create_by(objectid: "dummy:StopArea:#{entry.id.tr(':', '')}")
         # Hack, on save object_version will be incremented by 1
         entry.version = entry.version.to_i + 1  if stop.persisted?
+        stop.deleted_at            = nil
         stop.stop_area_referential = self.defaut_referential
         {
           :name           => :name,
