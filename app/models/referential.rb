@@ -28,6 +28,7 @@ class Referential < ActiveRecord::Base
   belongs_to :line_referential
   # validates_presence_of :line_referential
   has_many :lines, through: :line_referential
+  has_many :companies, through: :line_referential
 
   belongs_to :stop_area_referential
   # validates_presence_of :stop_area_referential
@@ -63,10 +64,6 @@ class Referential < ActiveRecord::Base
 
   def group_of_lines
     Chouette::GroupOfLine.all
-  end
-
-  def companies
-    Chouette::Company.all
   end
 
   def stop_areas
