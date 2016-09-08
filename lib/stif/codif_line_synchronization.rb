@@ -143,7 +143,7 @@ module Stif
       def delete_deprecated_lines(lines)
         ids = lines.map{ |l| l.stif_id }.to_a
         deprecated = Chouette::Line.where.not(objectid: ids).where(deactivated: false)
-        deprecated.update_all desactivated: true
+        deprecated.update_all deactivated: true
       end
 
       def save_or_update(params, klass)
