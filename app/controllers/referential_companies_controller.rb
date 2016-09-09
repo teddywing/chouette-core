@@ -1,5 +1,5 @@
 class ReferentialCompaniesController < ChouetteController
-  defaults :resource_class => Chouette::Company
+  defaults :resource_class => Chouette::Company, :collection_name => 'companies', :instance_name => 'company'
   respond_to :html
   respond_to :xml
   respond_to :json
@@ -19,6 +19,13 @@ class ReferentialCompaniesController < ChouetteController
   end
 
   protected
+
+  def build_resource
+    super.tap do |company|
+      company.line_referential = referential.line_referential
+    end
+  end
+
   def collection
     @q = referential.companies.search(params[:q])
     @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
