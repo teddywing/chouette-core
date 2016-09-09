@@ -1,3 +1,4 @@
+# coding: utf-8
 # Load the Rails application.
 require File.expand_path('../application', __FILE__)
 
@@ -5,4 +6,4 @@ require File.expand_path('../application', __FILE__)
 Rails.application.initialize!
 
 # Fix version
-APP_VERSION = 'Iteration 4'
+APP_VERSION = 'Itération 5'
