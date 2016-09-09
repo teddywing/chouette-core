@@ -51,7 +51,7 @@ en:
         objectid: "Neptune identifier"
         object_version: "Version"
         creation_time: "Created on"
-        creatorid: "Created by" 
+        creator_id: "Created by" 
         coordinates: "Coordinates (lat,lng)"
         zip_code: "Zip code"
         city_name: "City"

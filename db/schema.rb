@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160515163540) do
+ActiveRecord::Schema.define(version: 20160905094930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.integer  "stop_area_id",                    limit: 8
     t.string   "zip_code"
     t.string   "city_name"
+    t.text     "import_xml"
   end
 
   add_index "access_points", ["objectid"], :name => "access_points_objectid_key", :unique => true
@@ -91,8 +92,11 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.string   "registration_number"
     t.string   "url"
     t.string   "time_zone"
+    t.integer  "line_referential_id"
+    t.text     "import_xml"
   end
 
+  add_index "companies", ["line_referential_id"], :name => "index_companies_on_line_referential_id"
   add_index "companies", ["objectid"], :name => "companies_objectid_key", :unique => true
   add_index "companies", ["registration_number"], :name => "companies_registration_number_key"
 
@@ -201,6 +205,7 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.string   "comment"
     t.string   "registration_number"
     t.integer  "line_referential_id"
+    t.text     "import_xml"
   end
 
   add_index "group_of_lines", ["line_referential_id"], :name => "index_group_of_lines_on_line_referential_id"
@@ -209,18 +214,6 @@ ActiveRecord::Schema.define(version: 20160515163540) do
   create_table "group_of_lines_lines", id: false, force: true do |t|
     t.integer "group_of_line_id", limit: 8
     t.integer "line_id",          limit: 8
-  end
-
-  create_table "jobs", force: true do |t|
-    t.string   "action"
-    t.datetime "created"
-    t.string   "filename"
-    t.text     "parameters"
-    t.string   "referential"
-    t.datetime "started"
-    t.string   "status"
-    t.string   "type"
-    t.datetime "updated"
   end
 
   create_table "journey_frequencies", force: true do |t|
@@ -251,7 +244,7 @@ ActiveRecord::Schema.define(version: 20160515163540) do
 
   create_table "journey_patterns", force: true do |t|
     t.integer  "route_id",                limit: 8
-    t.string   "objectid",                                       null: false
+    t.string   "objectid",                                      null: false
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
@@ -261,12 +254,10 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.string   "published_name"
     t.integer  "departure_stop_point_id", limit: 8
     t.integer  "arrival_stop_point_id",   limit: 8
-    t.integer  "route_section_ids",                 default: [],              array: true
-    t.integer  "section_status",                    default: 0,  null: false
+    t.integer  "section_status",                    default: 0, null: false
   end
 
   add_index "journey_patterns", ["objectid"], :name => "journey_patterns_objectid_key", :unique => true
-  add_index "journey_patterns", ["route_section_ids"], :name => "index_journey_patterns_on_route_section_ids"
 
   create_table "journey_patterns_stop_points", id: false, force: true do |t|
     t.integer "journey_pattern_id", limit: 8
@@ -281,16 +272,35 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.boolean "owner"
   end
 
-  create_table "line_referentials", force: true do |t|
-    t.string   "name"
+  create_table "line_referential_syncs", force: true do |t|
+    t.integer  "line_referential_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "line_referential_syncs", ["line_referential_id"], :name => "index_line_referential_syncs_on_line_referential_id"
+
+  create_table "line_referentials", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "sync_interval", default: 1
+  end
+
+  create_table "line_sync_operations", force: true do |t|
+    t.string   "status"
+    t.integer  "line_referential_sync_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "message"
+  end
+
+  add_index "line_sync_operations", ["line_referential_sync_id"], :name => "index_line_sync_operations_on_line_referential_sync_id"
+
   create_table "lines", force: true do |t|
     t.integer  "network_id",                      limit: 8
     t.integer  "company_id",                      limit: 8
-    t.string   "objectid",                                  null: false
+    t.string   "objectid",                                                  null: false
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
@@ -308,17 +318,13 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.string   "text_color",                      limit: 6
     t.string   "stable_id"
     t.integer  "line_referential_id"
+    t.boolean  "deactivated",                               default: false
+    t.text     "import_xml"
   end
 
   add_index "lines", ["line_referential_id"], :name => "index_lines_on_line_referential_id"
   add_index "lines", ["objectid"], :name => "lines_objectid_key", :unique => true
   add_index "lines", ["registration_number"], :name => "lines_registration_number_key"
-
-  create_table "links", id: false, force: true do |t|
-    t.integer "job_id", limit: 8, null: false
-    t.string  "rel"
-    t.string  "type"
-  end
 
   create_table "networks", force: true do |t|
     t.string   "objectid",            null: false
@@ -333,8 +339,11 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.string   "source_type"
     t.string   "source_identifier"
     t.string   "comment"
+    t.text     "import_xml"
+    t.integer  "line_referential_id"
   end
 
+  add_index "networks", ["line_referential_id"], :name => "index_networks_on_line_referential_id"
   add_index "networks", ["objectid"], :name => "networks_objectid_key", :unique => true
   add_index "networks", ["registration_number"], :name => "networks_registration_number_key"
 
@@ -352,6 +361,8 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "data_format", default: "neptune"
+    t.string   "code"
+    t.datetime "synced_at"
   end
 
   create_table "pt_links", force: true do |t|
@@ -386,19 +397,20 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.integer  "line_referential_id"
     t.integer  "stop_area_referential_id"
     t.integer  "offer_workbench_id"
+    t.datetime "archived_at"
   end
 
   create_table "route_sections", force: true do |t|
-    t.integer  "departure_id"
-    t.integer  "arrival_id"
+    t.integer  "departure_id",       limit: 8
+    t.integer  "arrival_id",         limit: 8
     t.string   "objectid",                                                       null: false
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
-    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
-    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
     t.float    "distance"
     t.boolean  "no_processing"
+    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
+    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
   end
 
   create_table "routes", force: true do |t|
@@ -469,6 +481,9 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.string   "url"
     t.string   "time_zone"
     t.integer  "stop_area_referential_id"
+    t.string   "status"
+    t.text     "import_xml"
+    t.datetime "deleted_at"
   end
 
   add_index "stop_areas", ["objectid"], :name => "stop_areas_objectid_key", :unique => true
@@ -597,6 +612,7 @@ ActiveRecord::Schema.define(version: 20160515163540) do
     t.string   "invited_by_type"
     t.datetime "invitation_created_at"
     t.string   "username"
+    t.datetime "synced_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -643,12 +659,44 @@ ActiveRecord::Schema.define(version: 20160515163540) do
   add_index "vehicle_journeys", ["route_id"], :name => "index_vehicle_journeys_on_route_id"
 
   Foreigner.load
+  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
+
+  add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
+
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", name: "journey_frequencies_vehicle_journey_id_fk", dependent: :nullify
 
   add_foreign_key "journey_pattern_sections", "journey_patterns", name: "journey_pattern_sections_journey_pattern_id_fk", dependent: :delete
   add_foreign_key "journey_pattern_sections", "route_sections", name: "journey_pattern_sections_route_section_id_fk", dependent: :delete
 
-  add_foreign_key "links", "jobs", name: "fk_n5ypxycc1stckgkm6ust2l6on"
+  add_foreign_key "journey_patterns", "routes", name: "jp_route_fkey", dependent: :delete
+  add_foreign_key "journey_patterns", "stop_points", name: "arrival_point_fkey", column: "arrival_stop_point_id", dependent: :nullify
+  add_foreign_key "journey_patterns", "stop_points", name: "departure_point_fkey", column: "departure_stop_point_id", dependent: :nullify
+
+  add_foreign_key "journey_patterns_stop_points", "journey_patterns", name: "jpsp_jp_fkey", dependent: :delete
+  add_foreign_key "journey_patterns_stop_points", "stop_points", name: "jpsp_stoppoint_fkey", dependent: :delete
+
+  add_foreign_key "routes", "routes", name: "route_opposite_route_fkey", column: "opposite_route_id", dependent: :nullify
+
+  add_foreign_key "stop_areas", "stop_areas", name: "area_parent_fkey", column: "parent_id", dependent: :nullify
+
+  add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_child_fkey", column: "child_id", dependent: :delete
+  add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_parent_fkey", column: "parent_id", dependent: :delete
+
+  add_foreign_key "stop_points", "routes", name: "stoppoint_route_fkey", dependent: :delete
+
+  add_foreign_key "time_table_dates", "time_tables", name: "tm_date_fkey", dependent: :delete
+
+  add_foreign_key "time_table_periods", "time_tables", name: "tm_period_fkey", dependent: :delete
+
+  add_foreign_key "time_tables_vehicle_journeys", "time_tables", name: "vjtm_tm_fkey", dependent: :delete
+  add_foreign_key "time_tables_vehicle_journeys", "vehicle_journeys", name: "vjtm_vj_fkey", dependent: :delete
+
+  add_foreign_key "vehicle_journey_at_stops", "stop_points", name: "vjas_sp_fkey", dependent: :delete
+  add_foreign_key "vehicle_journey_at_stops", "vehicle_journeys", name: "vjas_vj_fkey", dependent: :delete
+
+  add_foreign_key "vehicle_journeys", "companies", name: "vj_company_fkey", dependent: :nullify
+  add_foreign_key "vehicle_journeys", "journey_patterns", name: "vj_jp_fkey", dependent: :delete
+  add_foreign_key "vehicle_journeys", "routes", name: "vj_route_fkey", dependent: :delete
 
 end

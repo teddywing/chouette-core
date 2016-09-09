@@ -15,6 +15,7 @@ en:
     index:
       title: "Group of Lines"
       name: "Search by name"
+      advanced_search: 'Advanced search'
     form:
       lines: "Associated lines" 
   activerecord:

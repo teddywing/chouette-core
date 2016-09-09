@@ -57,6 +57,7 @@ en:
         access_points: "Access Points"
         time_tables: "Time tables"
         connection_links: "Connection links"
+        route_sections: "Route sections"
         quays: "quays"
         boarding_positions: "boarding positions"
         commercial_stops: "commercial stops"
@@ -76,3 +77,8 @@ en:
         prefix: "only alphanumerical or underscore characters"
         upper_corner: "latitude,longitude in WGS84 referential, dot for decimal separator"
         lower_corner: "latitude,longitude in WGS84 referential, dot for decimal separator"
+
+  notice:
+    referential:
+      archived: "The data space has been successfully archived"
+      unarchived: "The data space has been successfully unarchived"

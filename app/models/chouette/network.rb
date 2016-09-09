@@ -1,5 +1,7 @@
-class Chouette::Network < Chouette::TridentActiveRecord
+class Chouette::Network < Chouette::ActiveRecord
+  include DefaultNetexAttributesSupport
   include NetworkRestrictions
+  include LineReferentialSupport
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 

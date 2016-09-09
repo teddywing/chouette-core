@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "referentials/show.html.erb", :type => :view do
+describe "referentials/show", :type => :view do
   assign_referential
   
   it "should have a title with name" do

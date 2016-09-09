@@ -7,6 +7,8 @@ en:
     actions:
       new: "Create an account"
   activemodel:
+    models:
+      subscription: "account"
     attributes:
       subscription:
         organisation_name: "Organisation"

@@ -1,0 +1,47 @@
+= title_tag t('networks.show.title', network: @network.name)
+
+.network_show
+  = @map.to_html
+
+  .summary
+    p
+      label = "#{Chouette::Network.human_attribute_name('registration_number')} : "
+      = @network.registration_number
+
+    p
+      label = "#{Chouette::Network.human_attribute_name('comment')} : "
+      = @network.comment
+
+    p
+      label = "#{Chouette::Network.human_attribute_name('version_date')} : "
+      - if @network.version_date.present?
+        = l @network.version_date
+
+    p
+      label = "#{Chouette::Network.human_attribute_name('description')} : "
+      = @network.description
+
+    p
+      label = "#{Chouette::Network.human_attribute_name('source_name')} : "
+      = @network.source_name
+
+    p
+      label = "#{Chouette::Network.human_attribute_name('source_type_name')} : "
+      - if @network.source_type_name.present?
+        = t("source_types.label.#{@network.source_type_name}")
+
+    p
+      label = "#{Chouette::Network.human_attribute_name('source_identifier')} : "
+      = @network.source_identifier
+
+- content_for :sidebar do
+  ul.actions
+    li
+      = link_to t('networks.actions.new'), new_referential_network_path(@referential), class: 'add'
+    li
+      = link_to t('networks.actions.edit'), edit_referential_network_path(@referential, @network), class: 'edit'
+    li
+      = link_to t('networks.actions.destroy'), referential_network_path(@referential, @network), method: :delete, data: { :confirm => t('networks.actions.destroy_confirm')}, class: 'remove'
+    br
+  
+  = creation_tag(@network)

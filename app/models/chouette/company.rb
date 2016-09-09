@@ -1,5 +1,8 @@
-class Chouette::Company < Chouette::TridentActiveRecord
+class Chouette::Company < Chouette::ActiveRecord
   include CompanyRestrictions
+  include DefaultNetexAttributesSupport
+  include LineReferentialSupport
+
   has_many :lines
 
   validates_format_of :registration_number, :with => %r{\A[0-9A-Za-z_-]+\Z}, :allow_nil => true, :allow_blank => true

@@ -21,6 +21,15 @@ set :copy_exclude, [ '.git' ]
 ssh_options[:forward_agent] = true
 
 require "bundler/capistrano"
+require 'whenever/capistrano'
+
+# Whenever
+set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/2.2.0/bin'" } # invoke bin/bundle to use 'correct' ruby environment
+
+set :whenever_command, "sudo /usr/local/sbin/whenever-sudo" # use sudo to change www-data crontab
+set :whenever_user, "www-data" # use www-data crontab
+
+set :whenever_output, "2>&1 | logger -t stif-boiv/cron"
 
 namespace :deploy do
   task :start do ; end
@@ -37,7 +46,7 @@ namespace :deploy do
   end
 
   task :bundle_link do
-    run "ln -fs #{bundle_cmd} #{release_path}/script/bundle"
+    run "ln -fs #{bundle_cmd} #{release_path}/bin/bundle"
   end
   after "bundle:install", "deploy:bundle_link"
 

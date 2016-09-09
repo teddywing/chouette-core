@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :line, :class => Chouette::Line do
     sequence(:name) { |n| "Line #{n}" }
-    sequence(:objectid) { |n| "test:Line:#{n}" }
+    sequence(:objectid) { |n| "chouette:test:Line:#{n}" }
     sequence(:transport_mode_name) { |n| "Bus" }
 
     association :network, :factory => :network

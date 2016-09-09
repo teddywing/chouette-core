@@ -56,13 +56,21 @@ Rails.application.configure do
   config.company_contact = "http://www.chouette.mobi/club-utilisateurs/contact-support/"
   config.accept_user_creation = false
 
-  config.chouette_authentication_settings = {
-    type: "database"
-  }
+  # Reflex api url
+  config.reflex_api_url = "https://reflex.stif.info/ws/reflex/V1/service=getData"
+
   # config.chouette_authentication_settings = {
-  #   type: "cas",
-  #   cas_server: "http://stif-portail-dev.af83.priv/sessions"
+  #   type: "database"
   # }
+  config.chouette_authentication_settings = {
+    type: "cas",
+    cas_server: "http://stif-portail-dev.af83.priv/sessions"
+  }
+  config.stif_portail_api =
+  {
+    key: "Ohphie1Voo6the5hohpi",
+    url: "http://stif-portail-dev.af83.priv"
+  }
 
   # file to data for demo
   config.demo_data = "tmp/demo.zip"

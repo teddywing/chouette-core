@@ -10,8 +10,15 @@ ChouetteIhm::Application.routes.draw do
     authenticated :user do
       root :to => 'referentials#index', as: :authenticated_root
     end
+    
     unauthenticated :user do
-      root :to => 'devise/cas_sessions#new', as: :unauthenticated_root
+      target = 'devise/sessions#new'
+
+      if Rails.application.config.chouette_authentication_settings[:type] == "cas"
+        target = 'devise/cas_sessions#new'
+      end
+
+      root :to => target, as: :unauthenticated_root
     end
   end
 
@@ -48,7 +55,7 @@ ChouetteIhm::Application.routes.draw do
     resources :stop_areas
   end
 
-  resources :line_referentials, :only => [:show] do
+  resources :line_referentials, :only => [:show, :update] do
     resources :lines
     resources :group_of_lines
   end
@@ -63,6 +70,12 @@ ChouetteIhm::Application.routes.draw do
       collection do
         get 'name_filter'
       end
+    end
+
+    # Archive/unarchive
+    member do
+      put :archive
+      put :unarchive
     end
 
     resources :networks

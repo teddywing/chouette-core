@@ -15,7 +15,7 @@ describe Chouette::Line, :type => :model do
 
   describe '#objectid' do
     subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::ObjectId) }
+    it { is_expected.to be_kind_of(Chouette::NetexObjectId) }
   end
 
   # it { should validate_numericality_of :objectversion }

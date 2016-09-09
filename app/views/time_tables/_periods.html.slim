@@ -1,0 +1,5 @@
+ul.periods
+  - @time_table.periods.each do |tmp|
+    li.period
+      = "#{('time_tables.show.from')} #{l tmp.period_start}"
+      = "#{t('time_tables.show.to')} #{l tmp.period_end}"

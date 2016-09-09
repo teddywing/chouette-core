@@ -1,0 +1,9 @@
+.page_info
+  span.search = t('will_paginate.page_entries_info.search')
+  = page_entries_info @lines
+
+.lines.paginated_content
+  = paginated_content(@lines)
+
+.pagination
+  = will_paginate @lines, container: false, renderer: RemoteBootstrapPaginationLinkRenderer

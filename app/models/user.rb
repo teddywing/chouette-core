@@ -5,9 +5,8 @@ class User < ActiveRecord::Base
   @@authentication_type = "#{Rails.application.config.chouette_authentication_settings[:type]}_authenticatable".to_sym
   cattr_reader :authentication_type
 
-  devise :invitable, :registerable, :validatable,
-         :recoverable, :rememberable, :trackable,
-         :confirmable, :async, authentication_type
+  devise :invitable, :registerable, :validatable, :lockable,
+         :recoverable, :rememberable, :trackable, :async, authentication_type
 
   # FIXME https://github.com/nbudin/devise_cas_authenticatable/issues/53
   # Work around :validatable, when database_authenticatable is diabled.
@@ -30,14 +29,52 @@ class User < ActiveRecord::Base
   after_destroy :check_destroy_organisation
 
   def cas_extra_attributes=(extra_attributes)
-    extra_attributes.each do |name, value|
-      # case name.to_sym
-      # Extra attributes
-      # when :fullname
-      #   self.fullname = value
-      # when :email
-      #   self.email = value
-      # end
+    extra      = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+    self.name  = extra[:full_name]
+    self.email = extra[:email]
+
+    self.organisation = Organisation.find_or_create_by(code: extra[:organisation_code]).tap do |org|
+      org.name      = extra[:organisation_name]
+      org.synced_at = Time.now
+    end
+  end
+
+  def self.portail_api_request
+    conf = Rails.application.config.try(:stif_portail_api)
+    raise 'Rails.application.config.stif_portail_api settings is not defined' unless conf
+
+    conn = Faraday.new(:url => conf[:url]) do |c|
+      c.headers['Authorization'] = "Token token=\"#{conf[:key]}\""
+      c.adapter  Faraday.default_adapter
+    end
+
+    resp = conn.get '/api/v1/users'
+    if resp.status == 200
+      JSON.parse resp.body
+    else
+      raise "Error on api request status : #{resp.status} => #{resp.body}"
+    end
+  end
+
+  def self.portail_sync
+    self.portail_api_request.each do |el|
+      User.find_or_create_by(username: el['username']).tap do |user|
+        user.name         = "#{el['firstname']} #{el['lastname']}"
+        user.email        = el['email']
+        user.locked_at    = el['locked_at']
+
+        # Set organisation
+        user.organisation = Organisation.find_or_create_by(code: el['organization_code']).tap do |org|
+          org.name      = el['organization_name']
+          org.synced_at = Time.now
+        end
+
+        if user.changed?
+          user.synced_at = Time.now
+          user.save
+          puts "✓ user #{user.username} has been updated" unless Rails.env.test?
+        end
+      end
     end
   end
 
@@ -49,5 +86,4 @@ class User < ActiveRecord::Base
       organisation.destroy
     end
   end
-
 end

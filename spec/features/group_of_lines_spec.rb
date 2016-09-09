@@ -44,7 +44,7 @@ describe "Group of lines", :type => :feature do
       click_link I18n.t('group_of_lines.actions.new')
       fill_in "group_of_line[name]", :with => "Group of lines 1"
       fill_in "group_of_line[registration_number]", :with => "1"
-      fill_in "group_of_line[objectid]", :with => "test:GroupOfLine:999"
+      fill_in "group_of_line[objectid]", :with => "chouette:test:GroupOfLine:999"
       click_button(I18n.t('formtastic.create',model: I18n.t('activerecord.models.group_of_line.one')))
       expect(page).to have_content("Group of lines 1")
     end

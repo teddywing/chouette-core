@@ -39,6 +39,20 @@ en:
           access_points_stats: "Access Points"
           vehicle_journeys_stats: "Vehicle Journeys"
           journey_patterns_stats: "Journey Patterns"
+      table:
+        line:
+          name: "Name"
+          save: "Save"
+          routes: "Routes"
+          connection_links: "Connection links"
+          time_tables: "Time tables"
+          stop_areas: "Stop areas"
+          access_points: "Access points"
+          vehicle_journeys: "Vehicle journeys"
+          journey_patterns: "Journey patterns"
+          not_saved: "Not saved"
+          saved: "Saved"
+          save_error: "Save error"
     statuses:
       created: "Pending ..."
       scheduled: "Processing ..."

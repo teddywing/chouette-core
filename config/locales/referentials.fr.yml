@@ -77,3 +77,8 @@ fr:
         prefix: "caractères autorisés : alphanumériques et 'souligné'"
         upper_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
         lower_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
+
+  notice:
+    referential:
+      archived: "L'espace de données a été correctement archivé"
+      unarchived: "L'espace de données a été correctement désarchivé"

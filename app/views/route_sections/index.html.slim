@@ -1,0 +1,48 @@
+= title_tag t('.title')
+
+= form_for search, url: referential_route_sections_path(@referential), method: :get, class: 'form-inline' do |form|
+  .panel.panel-default
+    .panel-heading
+      .col-md-6
+        = form.text_field :departure_name, class: 'form-control', placeholder: Chouette::RouteSection.human_attribute_name(:departure)
+
+      .input-group.col-md-6
+        = form.text_field :arrival_name, class: 'form-control', placeholder: Chouette::RouteSection.human_attribute_name(:arrival)
+
+        .input-group-btn
+          button.btn.btn-default type="submit"
+            i.fa.fa-search
+
+    .panel-body
+      .col-md-4
+        = form.select :line_id, @referential.lines.order(:name).pluck(:name, :id), { include_blank: t('.all_lines')}, class: 'form-control'
+
+table.table.table-hover.table-striped
+  thead
+    tr
+      th = Chouette::RouteSection.human_attribute_name :departure
+      th = Chouette::RouteSection.human_attribute_name :arrival
+      th.distance = Chouette::RouteSection.human_attribute_name :distance
+      th.points = Chouette::RouteSection.human_attribute_name :points
+      th.points = Chouette::RouteSection.human_attribute_name :quantity
+      th.actions
+
+  tbody
+    - @route_sections.each do |route_section|
+      tr
+        td
+          = route_section.departure.name
+          = link_to content_tag(:i, "", class: "fa fa-external-link"), referential_stop_area_path(@referential, route_section.departure)
+        td
+          = route_section.arrival.name
+          = link_to content_tag(:i, "", class: "fa fa-external-link"), referential_stop_area_path(@referential, route_section.arrival)
+        td.distance = route_section.distance.to_i if route_section.distance
+        td.points = route_section.via_count if route_section.via_count > 0
+        td.journey_patterns = route_section.journey_pattern_sections.count(:journey_pattern_id, distinct: true)
+        td.actions
+          = link_to t('.actions.show'), referential_route_section_path(@referential, route_section), class: 'view'
+          = link_to t('.actions.edit'), edit_referential_route_section_path(@referential, route_section), class: 'edit'
+          = link_to t('.actions.destroy'), referential_route_section_path(@referential, route_section), method: :delete, data: { confirm: t('route_sections.actions.destroy_confirm') }, class: 'remove'
+
+.pagination
+  = will_paginate @route_sections, :container => false, renderer: RemoteBootstrapPaginationLinkRenderer

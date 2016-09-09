@@ -41,7 +41,7 @@ describe "Lines", :type => :feature do
       click_link "Ajouter une ligne"
       fill_in "line_name", :with => "Line 1"
       fill_in "Numéro d'enregistrement", :with => "1"
-      fill_in "Identifiant Neptune", :with => "test:Line:999"
+      fill_in "Identifiant Neptune", :with => "chouette:test:Line:999"
       click_button("Créer ligne")
       expect(page).to have_content("Line 1")
     end

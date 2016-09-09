@@ -14,6 +14,7 @@ fr:
     index:
       title: "Transporteurs"
       name: "Recherche par nom"
+      advanced_search: "Recherche avancée"
   activerecord:
     models:
       company:

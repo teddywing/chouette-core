@@ -1,0 +1,73 @@
+h2
+  = @referential.name
+  em.small = " (archivé)" if @referential.archived?
+
+.summary
+  p
+    label = "#{Referential.human_attribute_name('slug')} : "
+    = @referential.slug
+
+  p
+    label = "#{Referential.human_attribute_name('prefix')} : "
+    = @referential.prefix
+
+  p
+    label = "#{Referential.human_attribute_name('projection_type')} : "
+    - if !@referential.projection_type_label.empty?
+      = "#{@referential.projection_type_label} (epsg:#{@referential.projection_type})"
+
+  p
+    label = "#{Referential.human_attribute_name('time_zone').capitalize} : "
+    = @referential.time_zone
+
+  p
+    label = "#{Referential.human_attribute_name('data_format_restrictions')} : "
+    = @referential.data_format
+
+  p
+    label = "#{Referential.human_attribute_name('validity_period')} : "
+    - if Chouette::TimeTable.start_validity_period.nil?
+      = Referential.human_attribute_name("no_validity_period")
+    - else
+      = Referential.human_attribute_name("start_validity_period")
+      = l Chouette::TimeTable.start_validity_period
+      = Referential.human_attribute_name("end_validity_period")
+      = l Chouette::TimeTable.end_validity_period
+
+  table width="100%"
+    tr
+      td valign="top" width="50%"
+        == render 'counts'
+
+      td valign="top"
+        == render 'validity_out'
+
+  - if @referential.api_keys.present?
+    h3.api_keys = t('.api_keys')
+    
+    .api_keys.paginated_content
+      = paginated_content(@referential.api_keys, "api_keys/api_key")
+
+- content_for :sidebar do
+  ul.actions
+    li = link_to t('referentials.actions.edit'), edit_referential_path(@referential), class: 'edit'
+
+    li
+      - if @referential.archived?
+        = link_to unarchive_referential_path(@referential), method: :put do
+          span.fa-stack
+            span.fa.fa-archive.fa-stack-1x
+            span.fa.fa-ban.fa-stack-2x
+          = " Désarchiver cet espace de données"
+      - else
+        = link_to archive_referential_path(@referential), method: :put do
+          span.fa.fa-archive
+          = " Archiver cet espace de données"
+
+    li = link_to t('referentials.actions.destroy'), referential_path(@referential), method: :delete, data: {:confirm => t('referentials.actions.destroy_confirm')}, class: "remove"
+    li = link_to t('api_keys.actions.new'), new_referential_api_key_path(@referential), class: 'add'
+    br
+
+  h4 = t('.clean_up')
+
+  == render 'clean'

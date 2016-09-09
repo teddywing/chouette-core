@@ -27,6 +27,15 @@ class ReferentialsController < BreadcrumbController
      end
   end
 
+  def archive
+    referential.archive!
+    redirect_to referential_path, notice: t('notice.referential.archived')
+  end
+  def unarchive
+    referential.unarchive!
+    redirect_to referential_path, notice: t('notice.referential.unarchived')
+  end
+
   protected
 
   alias_method :referential, :resource
@@ -53,7 +62,19 @@ class ReferentialsController < BreadcrumbController
 
   private
   def referential_params
-    params.require(:referential).permit( :id, :name, :slug, :prefix, :time_zone, :upper_corner, :lower_corner, :organisation_id, :projection_type, :data_format )
+    params.require(:referential).permit(
+      :id,
+      :name,
+      :slug,
+      :prefix,
+      :time_zone,
+      :upper_corner,
+      :lower_corner,
+      :organisation_id,
+      :projection_type,
+      :data_format,
+      :archived_at
+    )
   end
 
 end

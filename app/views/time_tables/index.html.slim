@@ -1,0 +1,35 @@
+= title_tag t('time_tables.index.title')
+
+= search_form_for @q, :url => referential_time_tables_path(@referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
+  .panel.panel-default
+    .panel-heading
+      .input-group.col-md-9
+        = f.text_field :comment_cont, :placeholder => "#{t('.comment')}", class: 'form-control'
+
+        .input-group-btn
+          button.btn.btn-default type="submit"
+            i.fa.fa-search
+
+      a data-toggle="collapse" data-parent="#search" href="#advanced_search"
+        i.fa.fa-plus
+        = "#{t('.advanced_search')}"
+
+    #advanced_search.panel-collapse.collapse
+      .panel-body
+        div
+          label = "#{t('.from')}"
+          = f.text_field :start_date_gteq, :placeholder => "#{t('.start_date')}", class: 'form-control date_picker', :type => "date"
+
+          label = "#{t('.to')}"
+          = f.text_field :end_date_lteq, :placeholder => "#{t('.end_date')}", class: 'form-control date_picker', :type => "date"
+
+        div
+          = f.text_field :tag_search, :placeholder => "#{t('.tag_search')}", class: 'form-control'
+
+#time_tables
+  == render 'time_tables'
+
+- content_for :sidebar do
+  ul.actions
+    li = link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), class: "add"
+    br

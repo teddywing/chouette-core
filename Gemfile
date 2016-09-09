@@ -37,14 +37,7 @@ gem 'spring', group: :development
 # API Rest
 gem 'sawyer', '~> 0.6.0'
 gem 'faraday_middleware', '~> 0.9.1'
-
-platforms :jruby do
-  gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.3'
-  gem 'jruby-openssl'
-  gem 'jruby-rack-worker'
-  gem 'warbler'
-  gem 'therubyrhino'
-end
+gem 'faraday', '~> 0.9.1'
 
 platforms :ruby do
   gem 'therubyracer', '~> 0.12'
@@ -54,6 +47,11 @@ end
 
 gem 'activerecord-postgis-adapter'
 gem 'polylines'
+
+# Codifligne API
+gem 'codifligne', git: 'git@github.com:AF83/stif-codifline-api.git'
+# Reflex API
+gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git'
 
 # Authentication
 gem 'devise', '~> 3.4.0'
@@ -73,6 +71,7 @@ gem 'mimemagic'
 gem 'language_engine', '0.0.6'
 gem 'calendar_helper', '0.2.5'
 gem 'cocoon'
+gem 'slim-rails', '~> 3.1'
 gem 'formtastic', '2.3.1'
 gem 'RedCloth'
 gem 'simple_form', '~> 3.1.0'
@@ -105,6 +104,8 @@ gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
 gem 'rabl'
 
 gem 'delayed_job_active_record'
+gem 'whenever', github: 'af83/whenever', require: false # '~> 0.9'
+gem 'rake'
 gem 'devise-async'
 gem 'apartment', '~> 1.0.0'
 
@@ -120,11 +121,22 @@ group :development do
   # MetaRequest is incompatible with rgeo-activerecord
   # gem 'meta_request'
   gem 'quiet_assets', '~> 1.0'
-  gem 'simplecov', '~> 0.10.0'
+
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
     gem 'binding_of_caller'
   end
+end
+
+group :test do
+  gem 'cucumber-rails', require: false
+  gem 'simplecov', :require => false
+  gem 'simplecov-rcov', :require => false
+end
+
+group :test, :development, :dev do
+  gem 'fabrication', '~> 2.14.1'
+  gem 'ffaker', '~> 2.1.0'
 end
 
 group :test, :development do
@@ -132,14 +144,15 @@ group :test, :development do
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.1.0'
   gem 'fakeweb'
+  gem 'webmock'
   gem 'capybara', '~> 2.4.0'
+  gem 'database_cleaner'
   gem 'poltergeist'
   gem 'launchy'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'rb-inotify', require: RUBY_PLATFORM.include?('linux') && 'rb-inotify'
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'transpec'
-  gem 'database_cleaner'
   gem 'shoulda-matchers'
 end
 
@@ -151,6 +164,7 @@ end
 # I18n
 gem 'rails-i18n', '~> 4.0.0'
 gem 'devise-i18n'
+gem 'i18n-tasks'
 
 # Rails Assets
 source 'http://rails-assets.org' do

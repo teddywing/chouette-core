@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "referentials/new.html.erb", :type => :view do
+describe "referentials/new", :type => :view do
 
   before(:each) do
     assign(:referential, Referential.new)

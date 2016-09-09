@@ -1,0 +1,6 @@
+doctype XML
+
+kml xmlns="http://www.opengis.net/kml/2.2"
+  document
+    placemark id="route-section-#{@route_section.id}"
+      = @route_section.geometry(params[:mode]).kml_representation.html_safe

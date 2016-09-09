@@ -11,10 +11,17 @@ require 'capybara/poltergeist'
 require 'georuby-ext'
 require 'will_paginate/array'
 require 'fakeweb'
+require 'webmock/rspec'
 require 'simplecov'
-SimpleCov.start 'rails' do
-  add_filter "/.bundle"
+
+if ENV['JOB_NAME']
+  require 'simplecov-rcov'
+  SimpleCov.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::RcovFormatter
+  ]
 end
+SimpleCov.start 'rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -42,7 +49,7 @@ RSpec.configure do |config|
   config.filter_run_excluding :js => true
   config.run_all_when_everything_filtered = true
   config.include TokenInputHelper, :type => :feature
-  
+
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

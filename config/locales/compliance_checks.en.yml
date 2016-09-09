@@ -8,6 +8,8 @@ en:
     show:
       title: "Neptune Validation"
       summary: "Rapport de conformité à la norme NEPTUNE"
+      details: "Details"
+      parameters: "Tests parameters"
       completed: "[ Completed ]"
       failed: "[ Failed ]"
       pending: "[ In the treatment queue ]"
@@ -16,6 +18,7 @@ en:
       export_csv: "CSV format"
     report:
       validation_success: "Validation successfully passed."
+      action_report: "Action report"
     actions:
       destroy_confirm: "Do you confirm to destroy this validation ?"
       destroy: "Destroy this validation"
@@ -33,10 +36,32 @@ en:
       terminated: "Completed"
       canceled: "Canceled"
       aborted: "Failed"
+    uncheck_count:
+      zero: "no unappliable"
+      one: "one unappliable"
+      other: "%{count} unappliables"
+    ok_count:
+      zero: "No successful test"
+      one: "One successful test"
+      other: "%{count} successful tests"
+    warning_count:
+      zero: "no warning"
+      one: "one warning"
+      other: "%{count} warnings"
+    error_count:
+      zero: "no error"
+      one: "one error"
+      other: "%{count} errors"
+    fatal_count:
+      zero: "no fatal error"
+      one: "one fatal error"
+      other: "%{count} fatal errors"
+    import: "Import"
+    rule_parameter_set: "Rule parameter set"
   file_validation_log_messages:
     messages:
       undefined: "%{key} undefined"
-      TooMuchDetails: ( %{0} erreurs / warnings supplémentaires )
+      TooMuchDetails: ( %{0} errors / suppl. warnings )
       ONE: "Catégorie 1 : Syntaxe"
     severities:
       uncheck: "Unchecked"
@@ -48,12 +73,12 @@ en:
     rule_parameter_set: "Rule Parameter Set"
   activemodel:
     models:
-      file_validation:
+      compliance_check:
         zero: "Validation"
         one: "Validation"
         other: "Validation"
     attributes:
-      file_validation:
+      compliance_check:
         created_at: "Executed at"
         references_type: "Associated Data Type"
         reference_ids: "Associated Data"
@@ -62,7 +87,7 @@ en:
         status: "Status"
         file_name: "Tested data"
         projection_reference: "Système de projection de référence"
-      file_validation_log_message:
+      compliance_check_log_message:
         created_at: "Date"
         position: "N."
         full_message: "Message"

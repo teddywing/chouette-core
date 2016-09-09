@@ -1,0 +1,12 @@
+#modal_combine.modal.fade tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal"
+          span aria-hidden="true" &times;
+          span.sr-only Close
+
+        h4.modal-title id="myModalLabel"
+          = t('time_tables.show.combine_form')
+
+      == render "time_table_combinations/combine_form"

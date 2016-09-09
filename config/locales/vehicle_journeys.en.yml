@@ -96,7 +96,7 @@ en:
         published_journey_name: "Published Name"
         published_journey_identifier: "Published Identifier"
         facility: "Facility"
-        vehicletypeidentifier: "Vehicle Type Identifier"
+        vehicle_type_identifier: "Vehicle Type Identifier"
         time_table_ids: "Calendar list"
         vehicle_journey_at_stop_ids: "Time list"
         journey_frequency_ids: "Timeband"

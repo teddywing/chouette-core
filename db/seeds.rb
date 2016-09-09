@@ -7,13 +7,14 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 
-stif = Organisation.find_or_create_by(name: "STIF")
+stif = Organisation.find_or_create_by!(name: "STIF") do |org|
+  org.code = 'STIF'
+end
 
 stif.users.find_or_create_by!(username: "admin") do |user|
   user.email = 'stif-boiv@af83.com'
   user.password = "secret"
   user.name = "STIF Administrateur"
-  user.skip_confirmation!
 end
 
 OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: stif)
@@ -24,7 +25,6 @@ operator.users.find_or_create_by!(username: "transporteur") do |user|
   user.email = 'stif-boiv+transporteur@af83.com'
   user.password = "secret"
   user.name = "Martin Lejeune"
-  user.skip_confirmation!
 end
 
 stop_area_referential = StopAreaReferential.find_or_create_by(name: "Reflex") do |referential|
@@ -41,9 +41,15 @@ line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |ref
   referential.add_member operator
 end
 
+LineReferentialSync.find_or_create_by(line_referential: line_referential)
+
 10.times do |n|
-  line_referential.lines.find_or_create_by name: "Test #{n}"
+  line_referential.lines.find_or_create_by name: "Test #{n}" do |l|
+    l.objectid = "Chouette:Dummy:Line:00" + n.to_s
+  end
 end
+
+
 
 offer_workbench = OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: operator)
 
