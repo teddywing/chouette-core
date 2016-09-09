@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909093322) do
-
+ActiveRecord::Schema.define(version: 20160909125235) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -407,10 +406,10 @@ ActiveRecord::Schema.define(version: 20160909093322) do
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
-    t.float    "distance"
-    t.boolean  "no_processing"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.float    "distance"
+    t.boolean  "no_processing"
   end
 
   create_table "routes", force: true do |t|
@@ -713,7 +712,6 @@ ActiveRecord::Schema.define(version: 20160909093322) do
   add_foreign_key "vehicle_journey_at_stops", "stop_points", name: "vjas_sp_fkey", dependent: :delete
   add_foreign_key "vehicle_journey_at_stops", "vehicle_journeys", name: "vjas_vj_fkey", dependent: :delete
 
-  add_foreign_key "vehicle_journeys", "companies", name: "vj_company_fkey", dependent: :nullify
   add_foreign_key "vehicle_journeys", "journey_patterns", name: "vj_jp_fkey", dependent: :delete
   add_foreign_key "vehicle_journeys", "routes", name: "vj_route_fkey", dependent: :delete
 
