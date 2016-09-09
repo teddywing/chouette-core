@@ -43,7 +43,7 @@ class ReferentialStopAreasController  < ChouetteController
 
   def index
     request.format.kml? ? @per_page = nil : @per_page = 12
-    @zip_codes = referential.stop_areas.collect(&:zip_code).compact.uniq
+    @zip_codes = referential.stop_areas.where("zip_code is NOT null").distinct.pluck(:zip_code)
     index! do |format|
       format.html {
         if collection.out_of_bounds?
