@@ -61,12 +61,12 @@ module Stif
           total_deleted = deleted_op + deleted_li + deleted_ne + deleted_gr
           total_time = elapsed_time_since start_time
 
-          LineReferential.first.line_referential_sync.record_status :ok, I18n.t('synchronization.message.success', time: total_time, imported: total_codifligne_elements, deleted: total_deleted)
+          LineReferential.first.line_referential_sync.record_status :ok, I18n.t('synchronization.codifligne.message.success', time: total_time, imported: total_codifligne_elements, deleted: total_deleted)
         rescue Exception => e
           total_time = elapsed_time_since start_time
 
           Rails.logger.error "Codifligne:sync - Error: #{e}, ended after #{total_time} seconds"
-          LineReferential.first.line_referential_sync.record_status :ko, I18n.t('synchronization.message.failure', time: total_time)
+          LineReferential.first.line_referential_sync.record_status :ko, I18n.t('synchronization.codifligne.message.failure', time: total_time)
         end
       end
 

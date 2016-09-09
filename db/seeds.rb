@@ -42,13 +42,13 @@ line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |ref
 end
 
 LineReferentialSync.find_or_create_by(line_referential: line_referential)
+StopAreaReferentialSync.find_or_create_by(stop_area_referential: stop_area_referential)
 
 10.times do |n|
   line_referential.lines.find_or_create_by name: "Test #{n}" do |l|
     l.objectid = "Chouette:Dummy:Line:00" + n.to_s
   end
 end
-
 
 
 offer_workbench = OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: operator)

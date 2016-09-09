@@ -7,7 +7,9 @@ describe 'reflex:sync' do
         stub_request(:get, "https://reflex.stif.info/ws/reflex/V1/service=getData/?format=xml&idRefa=0&method=#{method}").
         to_return(body: File.open("#{fixture_path}/reflex.zip"), status: 200)
       end
-      create(:stop_area_referential, name: 'Reflex')
+
+      stop_area_ref = create(:stop_area_referential, name: 'Reflex')
+      create(:stop_area_referential_sync, stop_area_referential: stop_area_ref)
       Stif::ReflexSynchronization.synchronize
     end
 
@@ -40,6 +42,11 @@ describe 'reflex:sync' do
           to_return(body: File.open("#{fixture_path}/reflex_updated.zip"), status: 200)
         end
         Stif::ReflexSynchronization.synchronize
+      end
+
+      it 'should log sync operations' do
+        expect(StopAreaSyncOperation.count).to eq 2
+        expect(StopAreaSyncOperation.take.status).to eq "ok"
       end
 
       it 'should not create duplicate stop_area' do
