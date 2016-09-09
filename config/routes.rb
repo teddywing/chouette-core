@@ -58,6 +58,7 @@ ChouetteIhm::Application.routes.draw do
   resources :line_referentials, :only => [:show, :edit, :update] do
     resources :lines
     resources :group_of_lines
+    resources :companies
   end
 
   resources :referentials do
@@ -148,7 +149,7 @@ ChouetteIhm::Application.routes.draw do
       end
     end
 
-    resources :companies
+    resources :companies, controller: "referential_companies"
 
     resources :time_tables do
       collection do

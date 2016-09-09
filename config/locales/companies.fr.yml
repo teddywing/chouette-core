@@ -1,5 +1,5 @@
 fr:
-  companies:
+  companies: &fr_companies
     actions:
       new: "Ajouter un transporteur"
       edit: "Modifier ce transporteur"
@@ -64,3 +64,5 @@ fr:
           name: "maximum 75 caractères"
           registration_number: "Entier positif, clé unique, d'un maximum de 8 chiffres."
           objectid: "[prefixe]:Company:[clé_unique]  caractères autorisés : alphanumériques et 'souligné' pour le préfixe, la clé unique accepte en plus le 'moins'. Longueur maximale de la clé unique = 3."
+  referential_companies:
+    <<: *fr_companies

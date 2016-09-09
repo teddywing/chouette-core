@@ -3,11 +3,13 @@ require 'spec_helper'
 describe VehicleTranslation, :type => :model do
   let!(:company){ create(:company )}
   let!(:journey_pattern){create(:journey_pattern)}
+  # To fix : need to comment :company => company
+  # after adding company to apartment excluded models
   let!(:vehicle_journey){ create(:vehicle_journey,
                                   :objectid => "dummy",
                                   :journey_pattern => journey_pattern,
                                   :route => journey_pattern.route,
-                                  :company => company,
+                                  # :company => company,
                                   :transport_mode => Chouette::TransportMode.new("metro"),
                                   :published_journey_name => "dummy"
                                   )}

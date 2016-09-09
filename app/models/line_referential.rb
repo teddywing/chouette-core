@@ -4,6 +4,7 @@ class LineReferential < ActiveRecord::Base
 
   has_many :lines, class_name: 'Chouette::Line'
   has_many :group_of_lines, class_name: 'Chouette::GroupOfLine'
+  has_many :companies, class_name: 'Chouette::Company'
 
   has_one :line_referential_sync
 

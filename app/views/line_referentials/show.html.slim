@@ -13,6 +13,10 @@
       span.badge = @line_referential.operating_lines.size
       = link_to Referential.human_attribute_name("lines"), line_referential_lines_path(@line_referential)
 
+    li.list-group-item
+      span.badge = @line_referential.companies.size
+      = link_to Referential.human_attribute_name("companies"), line_referential_companies_path(@line_referential)
+
 - unless @line_referential.line_referential_sync.line_sync_operations.empty?
   h3 Historique des synchronisations
 
