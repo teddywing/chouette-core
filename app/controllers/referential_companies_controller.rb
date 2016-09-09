@@ -1,16 +1,13 @@
-class CompaniesController < BreadcrumbController
-  include ApplicationHelper
-
-  defaults :resource_class => Chouette::Company
+class ReferentialCompaniesController < ChouetteController
+  defaults :resource_class => Chouette::Company, :collection_name => 'companies', :instance_name => 'company'
   respond_to :html
   respond_to :xml
   respond_to :json
   respond_to :js, :only => :index
 
-  belongs_to :line_referential
+  belongs_to :referential, :parent_class => Referential
 
   def index
-
     index! do |format|
       format.html {
         if collection.out_of_bounds?
@@ -21,26 +18,28 @@ class CompaniesController < BreadcrumbController
     end
   end
 
-
   protected
+
+  def build_resource
+    super.tap do |company|
+      company.line_referential = referential.line_referential
+    end
+  end
+
   def collection
-    @q = line_referential.companies.search(params[:q])
+    @q = referential.companies.search(params[:q])
     @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
   end
 
-
   def resource_url(company = nil)
-    line_referential_company_path(line_referential, company || resource)
+    referential_company_path(referential, company || resource)
   end
 
   def collection_url
-    line_referential_companies_path(line_referential)
+    referential_companies_path(referential)
   end
-
-  alias_method :line_referential, :parent
 
   def company_params
     params.require(:company).permit( :objectid, :object_version, :creation_time, :creator_id, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
   end
-
 end

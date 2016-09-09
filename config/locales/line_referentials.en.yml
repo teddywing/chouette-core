@@ -1,8 +1,16 @@
 en:
+  line_referentials:
+    actions:
+      edit: "Edit this referential"
+    edit:
+      title: "Edit %{line_referential} referential"
   synchronization:
     message: "Synchronization successful in %{time} seconds with %{imported} objects from Codifligne. %{deleted} objects were deleted."
     failure: "Synchronization interrupted after %{time} seconds."
   activerecord:
+    models:
+      line_referential:
+        one:   "referential"
     attributes:
       line_referential:
         sync_interval: "Synchronisation frequency"

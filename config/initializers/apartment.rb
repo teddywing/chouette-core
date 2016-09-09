@@ -17,7 +17,20 @@ Apartment.configure do |config|
   #
   # config.excluded_models = %w{Tenant}
   #
-  config.excluded_models = ["Referential", "Organisation", "User", "Delayed::Backend::ActiveRecord::Job", "Api::V1::ApiKey", "RuleParameterSet", "StopAreaReferential", "Chouette::StopArea", "LineReferential", "Chouette::Line", "Chouette::GroupOfLine"]
+  config.excluded_models = [
+    "Referential",
+    "Organisation",
+    "User",
+    "Delayed::Backend::ActiveRecord::Job",
+    "Api::V1::ApiKey",
+    "RuleParameterSet",
+    "StopAreaReferential",
+    "Chouette::StopArea",
+    "LineReferential",
+    "Chouette::Line",
+    "Chouette::GroupOfLine",
+    "Chouette::Company"
+  ]
 
   # use postgres schemas?
   config.use_schemas = true

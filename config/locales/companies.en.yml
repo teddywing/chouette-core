@@ -1,12 +1,12 @@
 en:
-  companies:
+  companies: &en_companies
     actions:
       new: "Add a new company"
       edit: "Edit this company"
       destroy: "Remove this company"
       destroy_confirm: "Are you sure you want destroy this company?"
     new:
-      title: "Add a new company"        
+      title: "Add a new company"
     edit:
       title: "Update company  %{company}"
     show:
@@ -62,5 +62,7 @@ en:
       hub:
         company:
           name: "maximum 75 characters"
-          registration_number: "Positif integer, unique key, of no more than 8 digits." 
+          registration_number: "Positif integer, unique key, of no more than 8 digits."
           objectid: "[prefix]:Company:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character. Maximum length of the unique key = 3."
+  referential_companies:
+    <<: *en_companies

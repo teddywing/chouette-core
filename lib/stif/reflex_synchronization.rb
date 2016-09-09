@@ -11,45 +11,52 @@ module Stif
       end
 
       def synchronize
-        start      = Time.now
-        client     = Reflex::API.new
-        processed  = []
+        tstart     = Time.now
+        begin
+          client     = Reflex::API.new
+          processed  = []
 
-        ['getOR', 'getOP'].each do |method|
-          results = client.process method
-          Rails.logger.info "Reflex:sync - Process #{method} done in #{Time.now - start} seconds"
-          results.each do |type, entries|
-            Rails.logger.info "Reflex:sync - #{entries.count} #{type} retrieved"
+          ['getOR', 'getOP'].each do |method|
+            start   = Time.now
+            results = client.process method
+            Rails.logger.info "Reflex:sync - Process #{method} done in #{Time.now - start} seconds"
+            results.each do |type, entries|
+              Rails.logger.info "Reflex:sync - #{entries.count} #{type} retrieved"
+            end
+
+            # Create or update stop_area for every quay, stop_place
+            stop_areas = results[:Quay].merge(results[:StopPlace])
+            start = Time.now
+            stop_areas.each do |id, entry|
+              processed << self.create_or_update_stop_area(entry).objectid
+            end
+            Rails.logger.info "Reflex:sync - Create or update StopArea done in #{Time.now - start} seconds"
+
+            # Walk through every entry and set parent stop_area
+            start = Time.now
+            stop_areas.each do |id, entry|
+              self.stop_area_set_parent entry
+            end
+            Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
           end
 
-          # Create or update stop_area for every quay, stop_place
-          stop_areas = results[:Quay].merge(results[:StopPlace])
-          start = Time.now
-          stop_areas.each do |id, entry|
-            processed << self.create_or_update_stop_area(entry).objectid
-          end
-          Rails.logger.info "Reflex:sync - Create or update StopArea done in #{Time.now - start} seconds"
-
-          # Walk through every entry and set parent stop_area
-          start = Time.now
-          stop_areas.each do |id, entry|
-            self.stop_area_set_parent entry
-          end
-          Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
+          # Purge deleted stop_area
+          deleted = self.set_deleted_stop_area processed.uniq
+          self.defaut_referential.stop_area_referential_sync.record_status :ok, I18n.t('synchronization.reflex.message.success', time: Time.now - tstart, imported: processed.uniq.size, deleted: deleted.size)
+        rescue Exception => e
+          Rails.logger.error "Reflex:sync - Error: #{e}, ended after #{Time.now - tstart} seconds"
+          LineReferential.first.line_referential_sync.record_status :ko, I18n.t('synchronization.reflex.message.failure', time: Time.now - tstart)
         end
-        # Purge deleted stop_area
-        self.set_deleted_stop_area processed.uniq
       end
 
       def set_deleted_stop_area processed
-        Rails.logger.info "Reflex:sync - StopArea start deleted_stop_area"
         start   = Time.now
         deleted = Chouette::StopArea.where(deleted_at: nil).pluck(:objectid).uniq - processed
         deleted.each_slice(50) do |object_ids|
           Chouette::StopArea.where(objectid: object_ids).update_all(deleted_at: Time.now)
         end
-        Rails.logger.info "Reflex:sync - StopArea #{deleted.size} stop_area deleted since last sync"
-        Rails.logger.info "Reflex:sync - StopArea purge deleted in #{Time.now - start} seconds"
+        Rails.logger.info "Reflex:sync - StopArea #{deleted.size} stop_area deleted since last sync in #{Time.now - start} seconds"
+        deleted
       end
 
       def stop_area_set_parent entry

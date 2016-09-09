@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160905094930) do
+ActiveRecord::Schema.define(version: 20160909130810) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -407,10 +407,10 @@ ActiveRecord::Schema.define(version: 20160905094930) do
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
-    t.float    "distance"
-    t.boolean  "no_processing"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.float    "distance"
+    t.boolean  "no_processing"
   end
 
   create_table "routes", force: true do |t|
@@ -449,11 +449,29 @@ ActiveRecord::Schema.define(version: 20160905094930) do
     t.boolean "owner"
   end
 
+  create_table "stop_area_referential_syncs", force: true do |t|
+    t.integer  "stop_area_referential_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "stop_area_referential_syncs", ["stop_area_referential_id"], :name => "index_stop_area_referential_syncs_on_stop_area_referential_id"
+
   create_table "stop_area_referentials", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "stop_area_sync_operations", force: true do |t|
+    t.string   "status"
+    t.integer  "stop_area_referential_sync_id"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "stop_area_sync_operations", ["stop_area_referential_sync_id"], :name => "stop_area_referential_sync_id"
 
   create_table "stop_areas", force: true do |t|
     t.integer  "parent_id",                       limit: 8
@@ -486,6 +504,7 @@ ActiveRecord::Schema.define(version: 20160905094930) do
     t.datetime "deleted_at"
   end
 
+  add_index "stop_areas", ["name"], :name => "index_stop_areas_on_name"
   add_index "stop_areas", ["objectid"], :name => "stop_areas_objectid_key", :unique => true
   add_index "stop_areas", ["parent_id"], :name => "index_stop_areas_on_parent_id"
   add_index "stop_areas", ["stop_area_referential_id"], :name => "index_stop_areas_on_stop_area_referential_id"
@@ -695,7 +714,6 @@ ActiveRecord::Schema.define(version: 20160905094930) do
   add_foreign_key "vehicle_journey_at_stops", "stop_points", name: "vjas_sp_fkey", dependent: :delete
   add_foreign_key "vehicle_journey_at_stops", "vehicle_journeys", name: "vjas_vj_fkey", dependent: :delete
 
-  add_foreign_key "vehicle_journeys", "companies", name: "vj_company_fkey", dependent: :nullify
   add_foreign_key "vehicle_journeys", "journey_patterns", name: "vj_jp_fkey", dependent: :delete
   add_foreign_key "vehicle_journeys", "routes", name: "vj_route_fkey", dependent: :delete
 
