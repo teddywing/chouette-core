@@ -52,6 +52,8 @@ module BreadcrumbHelper
       user_breadcrumb action
     when "Referential"
       referential_breadcrumb action
+    when "LineReferential"
+      line_referential_breadcrumb action
     when "Organisation"
       organisation_breadcrumb action
     when "Api::V1::ApiKey"
@@ -160,10 +162,23 @@ module BreadcrumbHelper
     route_breadcrumb :edit
   end
 
+  def line_referential_breadcrumb(action = :edit)
+    organisation_breadcrumb
+    if @line_referential
+      add_breadcrumb breadcrumb_label(@line_referential), line_referential_path(@line_referential), :title => breadcrumb_tooltip(@line_referential) if action == :edit || action == :show || action == :update
+    end
+  end
+
   def company_breadcrumb (action)
-    referential_breadcrumb
-    add_breadcrumb Chouette::Company.model_name.human(:count => 2), line_referential_companies_path(@line_referential) unless action == :index
-    add_breadcrumb breadcrumb_label(@company), line_referential_company_path(@line_referential, @company),:title => breadcrumb_tooltip(@company) if action == :edit
+    if @line_referential
+      line_referential_breadcrumb
+      add_breadcrumb Chouette::Company.model_name.human(:count => 2), line_referential_companies_path(@line_referential) unless action == :index
+      add_breadcrumb breadcrumb_label(@company), referential_company_path(@line_referential, @company),:title => breadcrumb_tooltip(@company) if action == :edit
+    else
+      referential_breadcrumb
+      add_breadcrumb Chouette::Company.model_name.human(:count => 2), referential_companies_path(@referential) unless action == :index
+      add_breadcrumb breadcrumb_label(@company), referential_company_path(@referential, @company),:title => breadcrumb_tooltip(@company) if action == :edit
+    end
   end
 
   def import_breadcrumb (action)
