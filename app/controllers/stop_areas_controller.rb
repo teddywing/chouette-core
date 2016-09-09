@@ -51,7 +51,7 @@ class StopAreasController < BreadcrumbController
 
   def index
     request.format.kml? ? @per_page = nil : @per_page = 12
-    @zip_codes = stop_area_referential.stop_areas.collect(&:zip_code).compact.uniq
+    @zip_codes = stop_area_referential.stop_areas.where("zip_code is NOT null").distinct.pluck(:zip_code)
     index! do |format|
       format.html {
         if collection.out_of_bounds?
@@ -131,7 +131,7 @@ class StopAreasController < BreadcrumbController
     @q = parent.present? ? parent.stop_areas.search(params[:q]) : referential.stop_areas.search(params[:q])
     @stop_areas ||=
       begin
-        stop_areas = @q.result(:distinct => true).order(:name)
+        stop_areas = @q.result.order(:name)
         stop_areas = stop_areas.paginate(:page => params[:page], :per_page => @per_page) if @per_page.present?
         stop_areas
       end
