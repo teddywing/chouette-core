@@ -29,6 +29,7 @@ class Referential < ActiveRecord::Base
   # validates_presence_of :line_referential
   has_many :lines, through: :line_referential
   has_many :companies, through: :line_referential
+  has_many :group_of_lines, through: :line_referential
 
   belongs_to :stop_area_referential
   # validates_presence_of :stop_area_referential
@@ -60,10 +61,6 @@ class Referential < ActiveRecord::Base
 
   def networks
     Chouette::Network.all
-  end
-
-  def group_of_lines
-    Chouette::GroupOfLine.all
   end
 
   def stop_areas
@@ -218,5 +215,5 @@ class Referential < ActiveRecord::Base
     # self.archived = false
     update_column :archived_at, nil
   end
-  
+
 end
