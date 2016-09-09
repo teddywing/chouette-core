@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe "/networks/edit", :type => :view do
-  assign_referential
+
   let!(:network) { assign(:network, create(:network) ) }
+  let!(:line_referential) { assign :line_referential, network.line_referential }
 
   describe "test" do
     it "should render h2 with the group name" do
-      render    
+      render
       expect(rendered).to have_selector("h2", :text => Regexp.new(network.name))
     end
   end

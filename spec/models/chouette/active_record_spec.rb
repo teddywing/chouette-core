@@ -11,7 +11,7 @@ describe Chouette::ActiveRecord, :type => :model do
     end
 
     it "should return ptnetwork for Chouette::Network" do
-      expect(Chouette::Network.table_name).to eq("networks")
+      expect(Chouette::Network.table_name).to eq("public.networks")
     end
 
     it "should return timetable_date for Chouette::TimeTableDate" do

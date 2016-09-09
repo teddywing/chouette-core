@@ -29,7 +29,8 @@ Apartment.configure do |config|
     "LineReferential",
     "Chouette::Line",
     "Chouette::GroupOfLine",
-    "Chouette::Company"
+    "Chouette::Company",
+    "Chouette::Network"
   ]
 
   # use postgres schemas?
