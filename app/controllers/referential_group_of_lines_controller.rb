@@ -38,6 +38,12 @@ class ReferentialGroupOfLinesController < ChouetteController
 
   protected
 
+  def build_resource
+    super.tap do |resource|
+      resource.line_referential = referential.line_referential
+    end
+  end
+
   def filtered_group_of_lines_maps
     filtered_group_of_lines.collect do |group_of_line|
       { :id => group_of_line.id, :name => group_of_line.name }
