@@ -59,6 +59,7 @@ ChouetteIhm::Application.routes.draw do
     resources :lines
     resources :group_of_lines
     resources :companies
+    resources :networks
   end
 
   resources :referentials do
@@ -79,7 +80,7 @@ ChouetteIhm::Application.routes.draw do
       put :unarchive
     end
 
-    resources :networks
+    resources :networks, controller: "referential_networks"
 
     match 'lines' => 'lines#destroy_all', :via => :delete
     resources :lines, controller: "referential_lines" do

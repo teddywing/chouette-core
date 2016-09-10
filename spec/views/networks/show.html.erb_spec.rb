@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe "/networks/show", :type => :view do
-  
-  assign_referential
+
   let!(:network) { assign(:network, create(:network)) }
   let!(:map) { assign(:map, double(:to_html => '<div id="map"/>'.html_safe)) }
+  let!(:line_referential) { assign :line_referential, network.line_referential }
 
   it "should render h2 with the network name" do
     render
@@ -18,12 +18,12 @@ describe "/networks/show", :type => :view do
 
   it "should render a link to edit the network" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_referential_network_path(referential, network)}']")
+    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_line_referential_network_path(line_referential, network)}']")
   end
 
   it "should render a link to remove the network" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.referential_network_path(referential, network)}'][class='remove']")
+    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.line_referential_network_path(line_referential, network)}'][class='remove']")
   end
 
 end

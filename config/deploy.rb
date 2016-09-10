@@ -13,7 +13,7 @@ set :bundle_cmd, "/var/lib/gems/2.2.0/bin/bundle"
 set :rake, "#{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake"
 
 set :keep_releases, 5
-after "deploy:update", "deploy:cleanup"
+after "deploy:restart", "deploy:cleanup"
 
 set :rails_env, -> { fetch(:stage) }
 set :deploy_via, :remote_cache
@@ -66,7 +66,7 @@ namespace :deploy do
   task :group_writable do
     run "sudo /usr/local/sbin/cap-fix-permissions #{deploy_to}"
   end
-  after "deploy:update", "deploy:group_writable"
+  after "deploy:restart", "deploy:group_writable"
 
   desc "Run db:seed"
   task :seed do

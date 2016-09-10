@@ -4,39 +4,40 @@ require 'spec_helper'
 describe "Networks", :type => :feature do
   login_user
 
-  let!(:networks) { Array.new(2) { create(:network) } }
+  let(:line_referential) { create :line_referential }
+  let!(:networks) { Array.new(2) { create(:network, line_referential: line_referential) } }
   subject { networks.first }
 
   describe "list" do
     it "display networks" do
-      visit referential_networks_path(referential)
+      visit line_referential_networks_path(line_referential)
       expect(page).to have_content(networks.first.name)
       expect(page).to have_content(networks.last.name)
     end
-    
-  end 
+
+  end
 
   describe "show" do
     it "display network" do
       # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
-      visit referential_networks_path(referential)
+      visit line_referential_networks_path(line_referential)
       click_link "#{networks.first.name}"
       expect(page).to have_content(networks.first.name)
     end
 
     # it "display map" do
     #   # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
-    #   visit referential_networks_path(referential)
+    #   visit line_referential_networks_path(line_referential)
     #   click_link "#{networks.first.name}"
     #   expect(page).to have_selector("#map.network")
     # end
-    
+
   end
 
   describe "new" do
     it "creates network and return to show" do
       # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
-      visit referential_networks_path(referential)
+      visit line_referential_networks_path(line_referential)
       click_link "Ajouter un réseau"
       fill_in "network_name", :with => "Network 1"
       fill_in "Numéro d'enregistrement", :with => "test-1"
@@ -49,7 +50,7 @@ describe "Networks", :type => :feature do
   describe "edit and return to show" do
     it "edit network" do
       # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
-      visit referential_network_path(referential, subject)
+      visit line_referential_network_path(line_referential, subject)
       click_link "Modifier ce réseau"
       fill_in "network_name", :with => "Network Modified"
       fill_in "Numéro d'enregistrement", :with => "test-1"
@@ -60,8 +61,8 @@ describe "Networks", :type => :feature do
 
   # describe "delete", :js => true do
   #   it "delete network and return to the list" do
-  #     subject.stub(:stop_areas).and_return(Array.new(2) { create(:stop_area) })     
-  #     visit referential_network_path(referential, subject)
+  #     subject.stub(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
+  #     visit line_referential_network_path(line_referential, subject)
   #     click_link "Supprimer ce réseau"
   #     page.evaluate_script('window.confirm = function() { return true; }')
   #     click_button "Valider"

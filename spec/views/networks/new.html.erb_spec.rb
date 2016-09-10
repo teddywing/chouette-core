@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe "/networks/new", :type => :view do
-  assign_referential
+
   let!(:network) {  assign(:network, build(:network)) }
+  let!(:line_referential) { assign :line_referential, network.line_referential }
 
   describe "form" do
-    
     it "should render input for name" do
       render
       expect(rendered).to have_selector("form") do

@@ -1,14 +1,12 @@
-class NetworksController < BreadcrumbController
-  include ApplicationHelper
-
-  defaults :resource_class => Chouette::Network
+class ReferentialNetworksController < ChouetteController
+  defaults :resource_class => Chouette::Network, :collection_name => 'networks', :instance_name => 'network'
   respond_to :html
   respond_to :xml
   respond_to :json
   respond_to :kml, :only => :show
   respond_to :js, :only => :index
 
-  belongs_to :line_referential
+  belongs_to :referential, :parent_class => Referential
 
   def show
     @map = NetworkMap.new(resource).with_helpers(self)
@@ -30,20 +28,24 @@ class NetworksController < BreadcrumbController
 
   protected
 
+  def build_resource
+    super.tap do |network|
+      network.line_referential = referential.line_referential
+    end
+  end
+
   def collection
-    @q = line_referential.networks.search(params[:q])
+    @q = referential.networks.search(params[:q])
     @networks ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
   end
 
   def resource_url(network = nil)
-    line_referential_network_path(line_referential, network || resource)
+    referential_network_path(referential, network || resource)
   end
 
   def collection_url
-    line_referential_networks_path(line_referential)
+    referential_networks_path(referential)
   end
-
-  alias_method :line_referential, :parent
 
   def network_params
     params.require(:network).permit(:objectid, :object_version, :creation_time, :creator_id, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )

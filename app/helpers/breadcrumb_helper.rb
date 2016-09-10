@@ -74,15 +74,27 @@ module BreadcrumbHelper
   end
 
   def network_breadcrumb(action)
-    referential_breadcrumb
-    add_breadcrumb Chouette::Network.model_name.human(:count => 2), referential_networks_path(@referential) unless action == :index
-    add_breadcrumb breadcrumb_label(@network), referential_line_path(@referential, @network),:title => breadcrumb_tooltip(@network) if action == :edit
+    if @line_referential
+      line_referential_breadcrumb
+      add_breadcrumb Chouette::Network.model_name.human(:count => 2), line_referential_networks_path(@line_referential) unless action == :index
+      add_breadcrumb breadcrumb_label(@network), line_referential_network_path(@line_referential, @network),:title => breadcrumb_tooltip(@network) if action == :edit
+    else
+      referential_breadcrumb
+      add_breadcrumb Chouette::Network.model_name.human(:count => 2), referential_networks_path(@referential) unless action == :index
+      add_breadcrumb breadcrumb_label(@network), referential_network_path(@referential, @network),:title => breadcrumb_tooltip(@network) if action == :edit
+    end
   end
 
   def group_of_line_breadcrumb(action)
-    referential_breadcrumb
-    add_breadcrumb Chouette::GroupOfLine.model_name.human(:count => 2), line_referential_group_of_lines_path(@line_referential) unless action == :index
-    add_breadcrumb breadcrumb_label(@group_of_line), line_referential_group_of_line_path(@line_referential, @group_of_line),:title => breadcrumb_tooltip(@group_of_line) if action == :edit
+    if @line_referential
+      line_referential_breadcrumb
+      add_breadcrumb Chouette::GroupOfLine.model_name.human(:count => 2), line_referential_group_of_lines_path(@line_referential) unless action == :index
+      add_breadcrumb breadcrumb_label(@group_of_line), line_referential_group_of_line_path(@line_referential, @group_of_line),:title => breadcrumb_tooltip(@group_of_line) if action == :edit
+    else
+      referential_breadcrumb
+      add_breadcrumb Chouette::GroupOfLine.model_name.human(:count => 2), referential_group_of_lines_path(@referential) unless action == :index
+      add_breadcrumb breadcrumb_label(@group_of_line), referential_group_of_line_path(@referential, @group_of_line),:title => breadcrumb_tooltip(@group_of_line) if action == :edit
+    end
   end
 
   def stop_area_breadcrumb(action)
@@ -131,9 +143,15 @@ module BreadcrumbHelper
   end
 
   def line_breadcrumb(action)
-    referential_breadcrumb
-    add_breadcrumb Chouette::Line.model_name.human(:count => 2), line_referential_lines_path(@line.line_referential) unless action == :index
-    add_breadcrumb breadcrumb_label(@line), line_referential_line_path(@line.line_referential, @line),:title => breadcrumb_tooltip(@line) if action == :edit
+    if @line_referential
+      line_referential_breadcrumb
+      add_breadcrumb Chouette::Line.model_name.human(:count => 2), line_referential_lines_path(@line_referential) unless action == :index
+      add_breadcrumb breadcrumb_label(@line), line_referential_line_path(@line_referential, @line),:title => breadcrumb_tooltip(@line) if action == :edit
+    else
+      referential_breadcrumb
+      add_breadcrumb Chouette::Line.model_name.human(:count => 2), referential_lines_path(@referential) unless action == :index
+      add_breadcrumb breadcrumb_label(@line), referential_line_path(@referential, @line),:title => breadcrumb_tooltip(@line) if action == :edit
+    end
   end
 
   def route_breadcrumb(action)
@@ -173,7 +191,7 @@ module BreadcrumbHelper
     if @line_referential
       line_referential_breadcrumb
       add_breadcrumb Chouette::Company.model_name.human(:count => 2), line_referential_companies_path(@line_referential) unless action == :index
-      add_breadcrumb breadcrumb_label(@company), referential_company_path(@line_referential, @company),:title => breadcrumb_tooltip(@company) if action == :edit
+      add_breadcrumb breadcrumb_label(@company), line_referential_company_path(@line_referential, @company),:title => breadcrumb_tooltip(@company) if action == :edit
     else
       referential_breadcrumb
       add_breadcrumb Chouette::Company.model_name.human(:count => 2), referential_companies_path(@referential) unless action == :index
