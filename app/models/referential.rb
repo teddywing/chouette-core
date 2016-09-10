@@ -30,6 +30,7 @@ class Referential < ActiveRecord::Base
   has_many :lines, through: :line_referential
   has_many :companies, through: :line_referential
   has_many :group_of_lines, through: :line_referential
+  has_many :networks, through: :line_referential
 
   belongs_to :stop_area_referential
   # validates_presence_of :stop_area_referential
@@ -57,10 +58,6 @@ class Referential < ActiveRecord::Base
 
   def human_attribute_name(*args)
     self.class.human_attribute_name(*args)
-  end
-
-  def networks
-    Chouette::Network.all
   end
 
   def stop_areas

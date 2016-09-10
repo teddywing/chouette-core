@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Api::V1::NetworksController, :type => :controller do
-  let!(:network) { referential.networks.first || create(:network) }
+  let!(:network) { create :network, line_referential: referential.line_referential }
 
   it_behaves_like "api key protected controller" do
     let(:data){network}

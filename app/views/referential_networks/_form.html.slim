@@ -1,7 +1,7 @@
-= semantic_form_for [@line_referential, @network] do |form|
+= semantic_form_for [@referential, @network] do |form|
   = form.inputs do
-    = form.input :name, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@line_referential)}.network.name")}
-    = form.input :registration_number, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@line_referential)}.network.registration_number")}
+    = form.input :name, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.network.name")}
+    = form.input :registration_number, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.network.registration_number")}
     = form.input :comment
     = form.input :version_date, as: :date_picker
     = form.input :description
