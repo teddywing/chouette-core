@@ -50,6 +50,12 @@ class ReferentialLinesController < ChouetteController
 
   protected
 
+  def build_resource
+    super.tap do |resource|
+      resource.line_referential = referential.line_referential
+    end
+  end
+
   def filtered_lines_maps
     filtered_lines.collect do |line|
       { :id => line.id, :name => (line.published_name ? line.published_name : line.name) }

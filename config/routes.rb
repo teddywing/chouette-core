@@ -68,7 +68,7 @@ ChouetteIhm::Application.routes.draw do
     resources :autocomplete_time_tables
     resources :autocomplete_route_sections
     resources :autocomplete_timebands
-    resources :group_of_lines do
+    resources :group_of_lines, controller: "referential_group_of_lines" do
       collection do
         get 'name_filter'
       end
