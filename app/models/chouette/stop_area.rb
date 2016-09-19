@@ -8,7 +8,8 @@ class Chouette::StopArea < Chouette::ActiveRecord
   include ProjectionFields
   include StopAreaRestrictions
 
-  include DefaultAttributesSupport
+  # Refs #1627
+  # include DefaultAttributesSupport
   include StopAreaReferentialSupport
 
   has_many :stop_points, :dependent => :destroy

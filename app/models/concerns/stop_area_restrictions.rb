@@ -23,7 +23,6 @@ module StopAreaRestrictions
   included do
     include ObjectidRestrictions
 
-
     with_options if: :commercial_and_physical_hub_restricted? do |sa|
       # HUB-23
       sa.validate :specific_objectid
