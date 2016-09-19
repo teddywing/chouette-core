@@ -7,10 +7,11 @@ describe Chouette::StopArea, :type => :model do
   let!(:stop_place) { create :stop_area, :area_type => "StopPlace" }
   let!(:itl) { create :stop_area, :area_type => "ITL" }
 
-  describe '#objectid' do
-    subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::ObjectId) }
-  end
+  # Refs #1627
+  # describe '#objectid' do
+  #   subject { super().objectid }
+  #   it { is_expected.to be_kind_of(Chouette::ObjectId) }
+  # end
 
   it { is_expected.to belong_to(:stop_area_referential) }
   it { is_expected.to validate_presence_of :name }
@@ -422,24 +423,25 @@ describe Chouette::StopArea, :type => :model do
     end
   end
 
-  describe "#duplicate" do
-      it "should be a copy of" do
-        stop_place = create :stop_area, :area_type => "StopPlace"
-        subject = create :stop_area, :area_type => "CommercialStopPoint" ,:parent => stop_place, :coordinates => "45.123,120.456"
-        access_point1 = create :access_point, :stop_area => subject
-        access_point2 = create :access_point, :stop_area => subject
-        quay1 = create :stop_area, :parent => subject, :area_type => "Quay"
-        target=subject.duplicate
-        expect(target.id).to be_nil
-        expect(target.name).to eq(I18n.t("activerecord.copy", name: subject.name))
-        expect(target.objectid).to eq(subject.objectid+"_1")
-        expect(target.area_type).to eq(subject.area_type)
-        expect(target.parent).to be_nil
-        expect(target.children.size).to eq(0)
-        expect(target.access_points.size).to eq(0)
-        expect(target.coordinates).to eq("45.123,120.456")
-      end
-  end
+  # Refs #1627
+  # describe "#duplicate" do
+  #     it "should be a copy of" do
+  #       stop_place = create :stop_area, :area_type => "StopPlace"
+  #       subject = create :stop_area, :area_type => "CommercialStopPoint" ,:parent => stop_place, :coordinates => "45.123,120.456"
+  #       access_point1 = create :access_point, :stop_area => subject
+  #       access_point2 = create :access_point, :stop_area => subject
+  #       quay1 = create :stop_area, :parent => subject, :area_type => "Quay"
+  #       target=subject.duplicate
+  #       expect(target.id).to be_nil
+  #       expect(target.name).to eq(I18n.t("activerecord.copy", name: subject.name))
+  #       expect(target.objectid).to eq(subject.objectid+"_1")
+  #       expect(target.area_type).to eq(subject.area_type)
+  #       expect(target.parent).to be_nil
+  #       expect(target.children.size).to eq(0)
+  #       expect(target.access_points.size).to eq(0)
+  #       expect(target.coordinates).to eq("45.123,120.456")
+  #     end
+  # end
 
 
 end

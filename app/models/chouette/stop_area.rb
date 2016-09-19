@@ -7,7 +7,9 @@ class Chouette::StopArea < Chouette::ActiveRecord
   include Geokit::Mappable
   include ProjectionFields
   include StopAreaRestrictions
-
+  def self.model_name
+    ActiveModel::Name.new self, Chouette, self.name.demodulize
+  end
   # Refs #1627
   # include DefaultAttributesSupport
   include StopAreaReferentialSupport
@@ -48,8 +50,15 @@ class Chouette::StopArea < Chouette::ActiveRecord
   end
 
   after_update :clean_invalid_access_links
-
   before_save :coordinates_to_lat_lng
+
+  # Refs #1627
+  before_validation :prepare_auto_columns
+  def prepare_auto_columns
+    self.object_version = 1
+    self.creation_time = Time.now
+    self.creator_id = 'chouette'
+  end
 
   def combine_lat_lng
     if self.latitude.nil? || self.longitude.nil?
