@@ -81,6 +81,7 @@ fr:
         name: "Nom"
         registration_number: "Numéro d'enregistrement"
         published_name: "Nom public"
+        deleted: "Supprimé"
         comment: "Commentaire"
         stop_area_type: "Type d'arrêt"
         nearest_topic_name: "Point d'intérêt le plus proche"

@@ -16,6 +16,9 @@
 
   .panel-body
     p
+      - if stop_area.deleted_at
+        span.warning = stop_area.human_attribute_name('deleted')
+    p
       - unless stop_area.area_type == 'ITL' || stop_area.geometry
         span.warning = t('.no_position')
 
