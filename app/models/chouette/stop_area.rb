@@ -155,8 +155,10 @@ class Chouette::StopArea < Chouette::ActiveRecord
   def position=(position)
     position = nil if String === position && position == ""
     position = Geokit::LatLng.normalize(position), 4326 if String === position
-    self.latitude = position.lat
-    self.longitude = position.lng
+    if position
+      self.latitude  = position.lat
+      self.longitude = position.lng
+    end
   end
 
   def default_position
