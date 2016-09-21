@@ -19,8 +19,8 @@ end
 
 OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: stif)
 
-operator = Organisation.find_or_create_by(code: 'transporteur-a') do |organisation|
-  operator.name = "Transporteur A"
+operator = Organisation.find_or_create_by!(name: 'Transporteur A') do |organisation|
+  organisation.code = "transporteur-a"
 end
 
 operator.users.find_or_create_by!(username: "transporteur") do |user|
@@ -35,7 +35,7 @@ stop_area_referential = StopAreaReferential.find_or_create_by(name: "Reflex") do
 end
 
 10.times do |n|
-  stop_area_referential.stop_areas.find_or_create_by name: "Test #{n}", area_type: "Quay"
+  stop_area_referential.stop_areas.find_or_create_by name: "Test #{n}", area_type: "Quay", objectid: "StopArea: #{n}"
 end
 
 line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |referential|
