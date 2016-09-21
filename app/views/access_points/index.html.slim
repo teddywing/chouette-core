@@ -14,12 +14,12 @@
   = page_entries_info @access_points
 
 .access_points.paginated_content
-  = render partial: 'access_point', collection: @access_points
+  = render partial: 'access_point', collection: @access_points, locals: {referential: @referential}
 
 .pagination
   = will_paginate @access_points, container: false
 
 - content_for :sidebar do
   ul.actions
-    li 
+    li
       = link_to t('access_points.actions.new'), new_referential_stop_area_access_point_path(@referential,@stop_area), class: 'add'

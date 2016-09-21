@@ -116,8 +116,7 @@ p.after_map
     h3 = t('.access_points')
 
     .access_points.paginated_content
-      / FIXME #821
-      = paginated_content @access_points, "access_points/access_point"
+      = paginated_content @access_points, "access_points/access_point", {referential: @stop_area_referential}
 
 - content_for :sidebar do
   table
