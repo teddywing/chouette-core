@@ -9,7 +9,7 @@
   .summary
     - text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}"
     - bg_color = @line.color.blank? ? "white" : "##{@line.color}"
-    
+
     - if colors?(@line)
       p
         label = "#{t('lines.index.color')} : "
@@ -22,17 +22,15 @@
     - if @line.network.nil?
       = t('lines.index.unset')
     - else
-      / FIXME #825
-      / = link_to @line.network.name, [@referential, @line.network]
-    
+      = link_to @line.network.name, [@line_referential, @line.network]
+
     p
       label = "#{@line.human_attribute_name(:company)} : "
-  	
+
     - if @line.company.nil?
       = t('lines.index.unset')
     - else
-      / FIXME #825
-      / = link_to @line.company.name, [@referential, @line.company]
+      = link_to @line.company.name, [@line_referential, @line.company]
 
     p
       label = "#{@line.human_attribute_name('number')} : "
@@ -60,7 +58,7 @@
 
     p
       label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "
-      
+
       - if @line.mobility_restricted_suitability.nil?
         = @line.human_attribute_name("unspecified_mrs")
       - elsif @line.mobility_restricted_suitability?
@@ -79,7 +77,7 @@
 
     p
       label = "#{@line.human_attribute_name('flexible_service')} : "
-      
+
       - if @line.flexible_service.nil?
         = @line.human_attribute_name("unspecified_fs")
       - elsif @line.flexible_service?
@@ -93,10 +91,10 @@
       = "#{@line.human_attribute_name('number_of_non_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', false).count}"
       br
       = @line.human_attribute_name("number_of_null_fs_vj")
-      
+
       - if @line.flexible_service.nil?
         = "(#{@line.human_attribute_name('default_fs_msg')})"
-      
+
       = " : "
       = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("flexible_service = ?", true).count + @line.vehicle_journeys.where("flexible_service = ?", false).count)
 
@@ -135,7 +133,7 @@ h3.routes = t('.itineraries')
       = link_to t('lines.actions.edit'), edit_line_referential_line_path(@line_referential, @line), class: 'edit'
     li
       = link_to t('lines.actions.destroy'), line_referential_line_path(@line_referential, @line), method: :delete, :data => {:confirm =>  t('lines.actions.destroy_confirm')}, class: 'remove'
-    
+
     - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
       / FIXME #825
       li
