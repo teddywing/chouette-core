@@ -1,6 +1,6 @@
 = title_tag t('companies.index.title')
 
-= search_form_for @q, :url => referential_companies_path(@line_referential), remote: true, :html => {:method => :get, class: 'form-inline', id: 'search', role: "form"} do |f|
+= search_form_for @q, :url => line_referential_companies_path(@line_referential), remote: true, :html => {:method => :get, class: 'form-inline', id: 'search', role: "form"} do |f|
 
   .panel.panel-default
     .panel-heading
