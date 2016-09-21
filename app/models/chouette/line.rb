@@ -21,9 +21,8 @@ class Chouette::Line < Chouette::ActiveRecord
   attr_reader :group_of_line_tokens
   attr_accessor :transport_mode
 
-  # FIXME #825
-  #validates_presence_of :network
-  #validates_presence_of :company
+  validates_presence_of :network
+  validates_presence_of :company
 
   validates_format_of :registration_number, :with => %r{\A[\d\w_\-]+\Z}, :allow_nil => true, :allow_blank => true
   validates_format_of :stable_id, :with => %r{\A[\d\w_\-]+\Z}, :allow_nil => true, :allow_blank => true

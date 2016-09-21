@@ -5,9 +5,8 @@ module Stif
         StopAreaReferential.find_by(name: "Reflex")
       end
 
-      # Todo remove dummy objectid
       def find_by_object_id objectid
-        Chouette::StopArea.find_by(objectid: "dummy:StopArea:#{objectid.tr(':', '')}")
+        Chouette::StopArea.find_by(objectid: objectid)
       end
 
       def synchronize
@@ -45,7 +44,7 @@ module Stif
           self.defaut_referential.stop_area_referential_sync.record_status :ok, I18n.t('synchronization.reflex.message.success', time: Time.now - tstart, imported: processed.uniq.size, deleted: deleted.size)
         rescue Exception => e
           Rails.logger.error "Reflex:sync - Error: #{e}, ended after #{Time.now - tstart} seconds"
-          LineReferential.first.line_referential_sync.record_status :ko, I18n.t('synchronization.reflex.message.failure', time: Time.now - tstart)
+          self.defaut_referential.stop_area_referential_sync.record_status :ko, I18n.t('synchronization.reflex.message.failure', time: Time.now - tstart)
         end
       end
 
@@ -81,6 +80,7 @@ module Stif
 
       def create_or_update_access_point entry, stop_area
         access = Chouette::AccessPoint.find_or_create_by(objectid: "dummy:AccessPoint:#{entry.id.tr(':', '')}")
+        # Hack, on save object_version will be incremented by 1
         entry.version = entry.version.to_i + 1  if access.persisted?
         access.stop_area = stop_area
         {
@@ -95,9 +95,7 @@ module Stif
       end
 
       def create_or_update_stop_area entry
-        stop = Chouette::StopArea.find_or_create_by(objectid: "dummy:StopArea:#{entry.id.tr(':', '')}")
-        # Hack, on save object_version will be incremented by 1
-        entry.version = entry.version.to_i + 1  if stop.persisted?
+        stop = Chouette::StopArea.find_or_create_by(objectid: entry.id)
         stop.deleted_at            = nil
         stop.stop_area_referential = self.defaut_referential
         {

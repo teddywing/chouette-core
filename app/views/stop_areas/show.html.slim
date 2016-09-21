@@ -4,6 +4,9 @@
   = @map.to_html if show_map?
 
   .summary
+    - if @stop_area.deleted_at
+      p
+        label = @stop_area.human_attribute_name('deleted')
     p
       label = "#{@stop_area.human_attribute_name('comment')} : "
       = @stop_area.comment
@@ -143,7 +146,7 @@ p.after_map
             - if @stop_area.parent == nil
               li
                 / = link_to t('stop_areas.actions.clone_as_parent'), new_referential_stop_area_stop_area_copy_path(@referential, @stop_area, :hierarchy => "parent"), :class => "clone"
-            
+
             - if manage_children
               li
                 / = link_to t('stop_areas.actions.add_children'), add_children_referential_stop_area_path(@referential, @stop_area), :class => "children"
@@ -159,7 +162,7 @@ p.after_map
                 / = link_to t('access_points.actions.new'), new_referential_stop_area_access_point_path(@referential,@stop_area), :class => "add"
               li
                 / = link_to t('stop_areas.actions.manage_access_links'), access_links_referential_stop_area_path(@referential,@stop_area), :class => "access_link"
-  
+
   br
-  
+
   = creation_tag(@stop_area)

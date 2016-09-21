@@ -3,7 +3,7 @@
     ul.ce-LineBlock-header-list
       li
         = check_box_tag "ids[]", line.id, false, class: "multiple_selection", style: "display: none;"
-        
+
         - if (line.number && line.number.length <= 3)
           span.label.label-default.line_number style="#{number_style(line)}"
             = line.number
@@ -28,9 +28,8 @@
         = line.human_attribute_name('network')
         = t('lines.index.unset')
       - else
-        / FIXME #825
         = line.human_attribute_name('network')
-        / = link_to_if line.network, line.network.name, line_referential_network_path(line.line_referential, line.network), :title => "#{line.human_attribute_name('network')} #{line.network.name}"
+        = link_to_if line.network, line.network.name, line_referential_network_path(line.line_referential, line.network), :title => "#{line.human_attribute_name('network')} #{line.network.name}"
 
     p
       - if line.company.nil?
@@ -38,12 +37,12 @@
         = t('lines.index.unset')
       - else
         = line.human_attribute_name('company')
-        / = link_to_if( line.company, line.company.name, line_referential_company_path(line.line_referential, line.company), :title => "#{line.human_attribute_name('company')} #{line.company.name}" )
+        = link_to_if( line.company, line.company.name, line_referential_company_path(line.line_referential, line.company), :title => "#{line.human_attribute_name('company')} #{line.company.name}" )
 
     p
       - if line.group_of_lines.count == 0
         br
-        / = t('lines.form.no_group_of_line')
+        = t('lines.form.no_group_of_line')
       - elsif line.group_of_lines.count == 1
         = line.human_attribute_name('group_of_line')
         = link_to_if( line.group_of_lines.first, line.group_of_lines.first.name, line_referential_group_of_line_path(line.line_referential, line.group_of_lines.first), :title => "#{line.human_attribute_name('group_of_line')} #{line.group_of_lines.first.name}")

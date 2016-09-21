@@ -81,6 +81,7 @@ en:
         name: "Name"
         registration_number: "Registration number"
         published_name: "Published name"
+        deleted: "Deleted"
         comment: "Comments"
         stop_area_type: "Area type"
         nearest_topic_name: "Nearest point of interest"
