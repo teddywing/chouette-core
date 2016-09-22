@@ -61,7 +61,7 @@
 
 	    p
         label = "#{@stop_area.human_attribute_name('stairs_availability')} : "
-	      
+
         - if !@stop_area.stairs_availability.nil?
           = t((@stop_area.stairs_availability == true).to_s)
         - else
@@ -115,7 +115,7 @@ p.after_map
   div
     h3 = t('.access_points')
     .access_points.paginated_content
-      = paginated_content @access_points, "access_points/access_point"
+      = paginated_content @access_points, "access_points/access_point", {referential: @referential}
 
 - content_for :sidebar do
   table
@@ -146,11 +146,11 @@ p.after_map
           ul.actions
             li
               = link_to t('stop_areas.actions.select_parent'), select_parent_referential_stop_area_path(@referential, @stop_area), class: 'parent'
-            
+
             - if @stop_area.parent == nil
               li
                 = link_to t('stop_areas.actions.clone_as_parent'), new_referential_stop_area_stop_area_copy_path(@referential, @stop_area, hierarchy: 'parent'), class: 'clone'
-            
+
             - if manage_children
               li
                 = link_to t('stop_areas.actions.add_children'), add_children_referential_stop_area_path(@referential, @stop_area), class: 'children'
@@ -168,5 +168,5 @@ p.after_map
                 = link_to t('stop_areas.actions.manage_access_links'), access_links_referential_stop_area_path(@referential,@stop_area), class: 'access_link'
 
   br
-  
+
   = creation_tag(@stop_area)
