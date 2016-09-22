@@ -99,8 +99,8 @@ module BreadcrumbHelper
 
   def stop_area_breadcrumb(action)
     referential_breadcrumb
-    add_breadcrumb Chouette::StopArea.model_name.human(:count => 2), referential_stop_areas_path(@stop_area.stop_area_referential) unless action == :index
-    add_breadcrumb breadcrumb_label(@stop_area), referential_stop_area_path(@stop_area.stop_area_referential, @stop_area),:title => breadcrumb_tooltip(@stop_area) if action == :edit
+    add_breadcrumb Chouette::StopArea.model_name.human(:count => 2), stop_area_referential_stop_areas_path(@stop_area.stop_area_referential) unless action == :index
+    add_breadcrumb breadcrumb_label(@stop_area), stop_area_referential_stop_area_path(@stop_area.stop_area_referential, @stop_area),:title => breadcrumb_tooltip(@stop_area) if action == :edit
   end
 
   def stop_area_copy_breadcrumb(action)
