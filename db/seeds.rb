@@ -19,8 +19,8 @@ end
 
 OfferWorkbench.find_or_create_by(name: "Gestion de l'offre", organisation: stif)
 
-operator = Organisation.find_or_create_by!(name: 'Transporteur A') do |organisation|
-  organisation.code = "transporteur-a"
+operator = Organisation.find_or_create_by!(code: 'transporteur-a') do |organisation|
+  organisation.name = "Transporteur A"
 end
 
 operator.users.find_or_create_by!(username: "transporteur") do |user|
