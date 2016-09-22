@@ -127,13 +127,14 @@ p.after_map
           li = link_to t('stop_areas.actions.edit'), edit_stop_area_referential_stop_area_path(@stop_area_referential, @stop_area), class: 'edit'
           li = link_to t('stop_areas.actions.destroy'), stop_area_referential_stop_area_path(@stop_area_referential, @stop_area), method: :delete, :data => {:confirm =>  t('stop_areas.actions.destroy_confirm')}, class: 'remove'
 
-    - if manage_itl
-      tr
-        td
-          h4 = t(".itl_managment")
-          ul.actions
-            li = link_to t('stop_areas.actions.add_routing_lines'), add_routing_lines_stop_area_referential_stop_area_path(@stop_area_referential, @stop_area), class: 'add_routing_lines'
-            li = link_to t('stop_areas.actions.add_routing_stops'), add_routing_stops_stop_area_referential_stop_area_path(@stop_area_referential, @stop_area), class: 'add_routing_stops'
+    - if manage_itl #Fixme
+
+      / tr
+      /   td
+      /     h4 = t(".itl_managment")
+      /     ul.actions
+      /       li = link_to t('stop_areas.actions.add_routing_lines'), add_routing_lines_stop_area_referential_stop_area_path(@stop_area_referential, @stop_area), class: 'add_routing_lines'
+      /       li = link_to t('stop_areas.actions.add_routing_stops'), add_routing_stops_stop_area_referential_stop_area_path(@stop_area_referential, @stop_area), class: 'add_routing_stops'
 
     - else
       tr
