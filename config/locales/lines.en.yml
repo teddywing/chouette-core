@@ -20,6 +20,7 @@ en:
       itineraries: "Line's route list"
       group_of_lines: "Groups of lines"
     index:
+      deactivated: "Disabled line"
       title: "Lines"
       name_or_number: "Search by name or number"
       no_networks: "No networks"

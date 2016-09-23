@@ -23,6 +23,9 @@
               span.fa.fa-trash-o
 
   .panel-body
+    - if line.deactivated
+      p
+        = t('lines.index.deactivated')
     p
       - if line.network.nil?
         = line.human_attribute_name('network')
