@@ -16,6 +16,10 @@
         label.color style="#{number_style(@line)}"
           = line_sticker(@line)
 
+    - if @line.deactivated
+      p
+        = t('lines.index.deactivated')
+
     p
       label = "#{@line.human_attribute_name(:network)} : "
 
