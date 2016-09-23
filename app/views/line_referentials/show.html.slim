@@ -18,7 +18,7 @@
       = link_to Referential.human_attribute_name("group_of_lines"), line_referential_group_of_lines_path(@line_referential)
 
     li.list-group-item
-      span.badge = @line_referential.operating_lines.size
+      span.badge = @line_referential.lines.size
       = link_to Referential.human_attribute_name("lines"), line_referential_lines_path(@line_referential)
 
 - unless @line_referential.line_referential_sync.line_sync_operations.empty?
