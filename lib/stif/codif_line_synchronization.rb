@@ -109,7 +109,8 @@ module Stif
         params[:lines] = []
         api_network.line_codes.each do |line|
           line_id = "STIF:CODIFLIGNE:Line:" + line
-          params[:lines] << Chouette::Line.find_by(objectid: line_id)
+          chouette_line = Chouette::Line.find_by(objectid: line_id)
+          params[:lines] << chouette_line if chouette_line.present?
         end
 
         save_or_update(params, Chouette::Network)
