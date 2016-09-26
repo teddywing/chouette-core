@@ -85,7 +85,7 @@ module Stif
         access.stop_area = stop_area
         {
           :name           => :name,
-          :access_type    => :area_type,
+          :access_type    => :access_type,
           :object_version => :version,
           :zip_code       => :postal_code,
           :city_name      => :city,

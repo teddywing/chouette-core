@@ -4,7 +4,7 @@ describe 'reflex:sync' do
   context 'On first sync' do
     before(:each) do
       ['getOP', 'getOR'].each do |method|
-        stub_request(:get, "https://reflex.stif.info/ws/reflex/V1/service=getData/?format=xml&idRefa=0&method=#{method}").
+        stub_request(:get, "#{Rails.application.config.reflex_api_url}/?format=xml&idRefa=0&method=#{method}").
         to_return(body: File.open("#{fixture_path}/reflex.zip"), status: 200)
       end
 
@@ -38,7 +38,7 @@ describe 'reflex:sync' do
     context 'On next sync' do
       before(:each) do
         ['getOP', 'getOR'].each do |method|
-          stub_request(:get, "https://reflex.stif.info/ws/reflex/V1/service=getData/?format=xml&idRefa=0&method=#{method}").
+          stub_request(:get, "#{Rails.application.config.reflex_api_url}/?format=xml&idRefa=0&method=#{method}").
           to_return(body: File.open("#{fixture_path}/reflex_updated.zip"), status: 200)
         end
         Stif::ReflexSynchronization.synchronize
