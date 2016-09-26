@@ -103,6 +103,7 @@ gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
 
 gem 'rabl'
 
+gem 'sidekiq'
 gem 'delayed_job_active_record'
 gem 'whenever', github: 'af83/whenever', require: false # '~> 0.9'
 gem 'rake'
