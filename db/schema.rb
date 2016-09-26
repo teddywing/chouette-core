@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909130810) do
+ActiveRecord::Schema.define(version: 20160926134852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -276,6 +276,9 @@ ActiveRecord::Schema.define(version: 20160909130810) do
     t.integer  "line_referential_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.string   "status"
   end
 
   add_index "line_referential_syncs", ["line_referential_id"], :name => "index_line_referential_syncs_on_line_referential_id"
@@ -407,10 +410,10 @@ ActiveRecord::Schema.define(version: 20160909130810) do
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
-    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
-    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
     t.float    "distance"
     t.boolean  "no_processing"
+    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
+    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
   end
 
   create_table "routes", force: true do |t|
