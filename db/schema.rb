@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160926134852) do
+ActiveRecord::Schema.define(version: 20160927085857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
   enable_extension "postgis"
 
   create_table "access_links", force: true do |t|
@@ -290,16 +291,6 @@ ActiveRecord::Schema.define(version: 20160926134852) do
     t.integer  "sync_interval", default: 1
   end
 
-  create_table "line_sync_operations", force: true do |t|
-    t.string   "status"
-    t.integer  "line_referential_sync_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "message"
-  end
-
-  add_index "line_sync_operations", ["line_referential_sync_id"], :name => "index_line_sync_operations_on_line_referential_sync_id"
-
   create_table "lines", force: true do |t|
     t.integer  "network_id",                      limit: 8
     t.integer  "company_id",                      limit: 8
@@ -410,10 +401,10 @@ ActiveRecord::Schema.define(version: 20160926134852) do
     t.integer  "object_version"
     t.datetime "creation_time"
     t.string   "creator_id"
-    t.float    "distance"
-    t.boolean  "no_processing"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.float    "distance"
+    t.boolean  "no_processing"
   end
 
   create_table "routes", force: true do |t|
