@@ -26,6 +26,7 @@ GEM
     RedCloth (4.2.9)
     RedCloth (4.2.9-java)
     SyslogLogger (2.0)
+    aasm (4.5.2)
     actionmailer (4.1.10)
       actionpack (= 4.1.10)
       actionview (= 4.1.10)
@@ -540,6 +541,7 @@ PLATFORMS
 DEPENDENCIES
   RedCloth
   SyslogLogger
+  aasm
   activerecord-postgis-adapter
   acts-as-taggable-on (>= 3)
   acts_as_list (~> 0.6.0)
