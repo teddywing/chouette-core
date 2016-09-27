@@ -1,6 +1,6 @@
 class LineReferentialSync < ActiveRecord::Base
   belongs_to :line_referential
-  after_create :perform_sync
+  after_commit :perform_sync, :on => :create
   validate :multiple_process_validation, :on => :create
 
   private
