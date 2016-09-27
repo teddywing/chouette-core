@@ -1,15 +1,8 @@
 module Stif
   module CodifLineSynchronization
     class << self
-      # Don't check last synchronizations if force_sync
-      def synchronize force_sync = false
-        # Check last synchronization and synchronization interval
-        date = DateTime.now.to_date - LineReferential.first.sync_interval.days
-        last_sync = LineReferential.first.line_referential_sync.line_sync_operations.where(status: :ok).last.try(:created_at)
-        return if last_sync.present? && last_sync.to_date > date && !force_sync
-
+      def synchronize
         start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
-        # TODO Check exceptions and status messages
         begin
           # Fetch Codifline data
           client = Codifligne::API.new
@@ -60,13 +53,9 @@ module Stif
           total_codifligne_elements = operators.count + lines.count + networks.count + groups_of_lines.count
           total_deleted = deleted_op + deleted_li + deleted_ne + deleted_gr
           total_time = elapsed_time_since start_time
-
-          LineReferential.first.line_referential_sync.record_status :ok, I18n.t('synchronization.codifligne.message.success', time: total_time, imported: total_codifligne_elements, deleted: total_deleted)
         rescue Exception => e
           total_time = elapsed_time_since start_time
-
           Rails.logger.error "Codifligne:sync - Error: #{e}, ended after #{total_time} seconds"
-          LineReferential.first.line_referential_sync.record_status :ko, I18n.t('synchronization.codifligne.message.failure', time: total_time)
         end
       end
 
