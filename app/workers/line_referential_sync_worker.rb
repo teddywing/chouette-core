@@ -1,5 +1,6 @@
 class LineReferentialSyncWorker
   include Sidekiq::Worker
+  sidekiq_options :retry => false
 
   def perform(lref_sync_id)
     lref_sync = LineReferentialSync.find lref_sync_id
