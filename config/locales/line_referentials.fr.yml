@@ -4,11 +4,11 @@ fr:
       edit: "Modifier ce référentiel"
     edit:
       title: "Modifier le référentiel %{line_referential}"
-  synchronization:
-    codifligne:
+    synchronization:
       message:
-        success: "Synchronisation réussie après %{time} secondes avec %{imported} éléments importés de Codifligne. %{deleted} éléments ont été supprimés."
-        failure: "Synchronisation interrompue après %{time} secondes."
+        pending: "Synchronisation en attente"
+        successful: "Synchronisation réussie après %{processing_time} secondes avec %{imported} éléments importés. %{deleted} éléments ont été supprimés."
+        failed: "Synchronisation interrompue après %{processing_time} secondes avec l'erreur : %{error}."
   activerecord:
     models:
       line_referential:

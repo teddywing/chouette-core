@@ -1,7 +1,7 @@
 class LineReferentialSync < ActiveRecord::Base
   include AASM
   belongs_to :line_referential
-  has_many :line_referential_sync_messages, :dependent => :destroy
+  has_many :line_referential_sync_messages, -> { order(created_at: :desc) }, :dependent => :destroy
 
   after_commit :perform_sync, :on => :create
   validate :multiple_process_validation, :on => :create
@@ -37,27 +37,27 @@ class LineReferentialSync < ActiveRecord::Base
     end
   end
 
-  def create_sync_message criticity, key, attributes
+  def create_sync_message criticity, key, message_attributs = {}
     params = {
       criticity: criticity,
       message_key: key,
-      message_attributs: attributes
+      message_attributs: message_attributs
     }
     line_referential_sync_messages.create params
   end
 
   def log_pending
     update_attribute(:started_at, Time.now)
-    create_sync_message :info, :pending, self.attributes
+    create_sync_message :info, :pending
   end
 
-  def log_successful
+  def log_successful message_attributs
     update_attribute(:ended_at, Time.now)
-    create_sync_message :info, :successful, self.attributes
+    create_sync_message :info, :successful, message_attributs
   end
 
-  def log_failed error
+  def log_failed message_attributs
     update_attribute(:ended_at, Time.now)
-    create_sync_message :error, :failed, self.attributes.merge(error: error.message)
+    create_sync_message :error, :failed, message_attributs
   end
 end
