@@ -42,10 +42,12 @@ class LineReferentialSync < ActiveRecord::Base
 
   def log_successful
     logger.debug "#{self.class.name} sync - done"
+    update_attribute(:ended_at, Time.now)
   end
 
   def log_failed error
     logger.debug e.message
     logger.debug "#{self.class.name} sync - failed"
+    update_attribute(:ended_at, Time.now)
   end
 end

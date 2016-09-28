@@ -27,6 +27,8 @@ Apartment.configure do |config|
     "StopAreaReferential",
     "Chouette::StopArea",
     "LineReferential",
+    "LineReferentialSync",
+    "LineReferentialSyncMessage",
     "Chouette::Line",
     "Chouette::GroupOfLine",
     "Chouette::Company",

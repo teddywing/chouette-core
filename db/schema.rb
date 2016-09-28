@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927085857) do
+ActiveRecord::Schema.define(version: 20160928084508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
   enable_extension "postgis"
+  enable_extension "hstore"
 
   create_table "access_links", force: true do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -272,6 +272,17 @@ ActiveRecord::Schema.define(version: 20160927085857) do
     t.integer "line_referential_id"
     t.boolean "owner"
   end
+
+  create_table "line_referential_sync_messages", force: true do |t|
+    t.integer  "criticity"
+    t.string   "message_key"
+    t.hstore   "message_attributs"
+    t.integer  "line_referential_sync_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "line_referential_sync_messages", ["line_referential_sync_id"], :name => "line_referential_sync_id"
 
   create_table "line_referential_syncs", force: true do |t|
     t.integer  "line_referential_id"
