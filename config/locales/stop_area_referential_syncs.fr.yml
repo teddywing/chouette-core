@@ -1,0 +1,16 @@
+fr:
+  activerecord:
+    errors:
+      models:
+        stop_area_referential_sync:
+          attributes:
+            base:
+              multiple_process: 'Il y a déja une synchronisation en cours de traitement'
+  stop_area_referential_sync:
+    message:
+      pending: "Synchronisation en attente"
+      successful: "Synchronisation réussie après %{processing_time} secondes avec %{imported} éléments importés. %{deleted} éléments ont été supprimés."
+      failed: "Synchronisation interrompue après %{processing_time} secondes avec l'erreur : %{error}."
+  notice:
+    stop_area_referential_sync:
+      created: 'Votre demande de synchronisation a bien été créée'

@@ -1,4 +1,7 @@
 en:
+  stop_area_referentials:
+    actions:
+      sync: "Launch a new reflex synchronization"
   synchronization:
     reflex:
       message: "Synchronization successful in %{time} seconds with %{imported} objects from Reflex. %{deleted} objects were deleted."
