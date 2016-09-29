@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160928084508) do
+ActiveRecord::Schema.define(version: 20160929131440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -458,6 +458,9 @@ ActiveRecord::Schema.define(version: 20160928084508) do
     t.integer  "stop_area_referential_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "ended_at"
+    t.datetime "started_at"
+    t.string   "status"
   end
 
   add_index "stop_area_referential_syncs", ["stop_area_referential_id"], :name => "index_stop_area_referential_syncs_on_stop_area_referential_id"
