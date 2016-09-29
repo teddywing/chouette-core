@@ -44,11 +44,6 @@ describe 'reflex:sync' do
         Stif::ReflexSynchronization.synchronize
       end
 
-      it 'should log sync operations' do
-        expect(StopAreaSyncOperation.count).to eq 2
-        expect(StopAreaSyncOperation.take.status).to eq "ok"
-      end
-
       it 'should not create duplicate stop_area' do
         expect(Chouette::StopArea.count).to eq 6
         expect(Chouette::AccessPoint.count).to eq 2

@@ -41,10 +41,8 @@ module Stif
 
           # Purge deleted stop_area
           deleted = self.set_deleted_stop_area processed.uniq
-          self.defaut_referential.stop_area_referential_sync.record_status :ok, I18n.t('synchronization.reflex.message.success', time: Time.now - tstart, imported: processed.uniq.size, deleted: deleted.size)
         rescue Exception => e
           Rails.logger.error "Reflex:sync - Error: #{e}, ended after #{Time.now - tstart} seconds"
-          self.defaut_referential.stop_area_referential_sync.record_status :ko, I18n.t('synchronization.reflex.message.failure', time: Time.now - tstart)
         end
       end
 
