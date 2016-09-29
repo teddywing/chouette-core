@@ -26,6 +26,7 @@ Apartment.configure do |config|
     "RuleParameterSet",
     "StopAreaReferential",
     "StopAreaReferentialSync",
+    "StopAreaReferentialSyncMessage",
     "Chouette::StopArea",
     "LineReferential",
     "LineReferentialSync",

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160929131958) do
+ActiveRecord::Schema.define(version: 20160929133436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -453,6 +453,17 @@ ActiveRecord::Schema.define(version: 20160929131958) do
     t.integer "stop_area_referential_id"
     t.boolean "owner"
   end
+
+  create_table "stop_area_referential_sync_messages", force: true do |t|
+    t.integer  "criticity"
+    t.string   "message_key"
+    t.hstore   "message_attributs"
+    t.integer  "stop_area_referential_sync_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "stop_area_referential_sync_messages", ["stop_area_referential_sync_id"], :name => "stop_area_referential_sync_id"
 
   create_table "stop_area_referential_syncs", force: true do |t|
     t.integer  "stop_area_referential_id"
