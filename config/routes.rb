@@ -56,6 +56,7 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resources :line_referentials, :only => [:show, :edit, :update] do
+    post :sync, on: :member
     resources :lines
     resources :group_of_lines
     resources :companies

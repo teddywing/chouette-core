@@ -2,6 +2,7 @@ en:
   line_referentials:
     actions:
       edit: "Edit this referential"
+      sync: "Launch a new codifligne synchronization"
     edit:
       title: "Edit %{line_referential} referential"
   synchronization:

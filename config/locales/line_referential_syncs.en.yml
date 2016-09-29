@@ -1,0 +1,12 @@
+en:
+  activerecord:
+    errors:
+      models:
+        line_referential_sync:
+          attributes:
+            base:
+              multiple_process: 'There is already an synchronisation in progress'
+  notice:
+    line_referential_sync:
+      created: 'Your synchronisation request has been created'
+

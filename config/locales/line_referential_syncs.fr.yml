@@ -1,0 +1,11 @@
+fr:
+  activerecord:
+    errors:
+      models:
+        line_referential_sync:
+          attributes:
+            base:
+              multiple_process: 'Il y a déja une synchronisation en cours de traitement'
+  notice:
+    line_referential_sync:
+      created: 'Votre demande de synchronisation a bien été créée'
