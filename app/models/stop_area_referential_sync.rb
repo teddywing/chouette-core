@@ -1,13 +1,14 @@
 class StopAreaReferentialSync < ActiveRecord::Base
   include AASM
   belongs_to :stop_area_referential
-  has_many :stop_area_referential_sync_messages, -> { order(created_at: :desc) }, :dependent => :destroy
+  has_many :stop_area_referential_sync_messages, :dependent => :destroy
 
   after_commit :perform_sync, :on => :create
   validate :multiple_process_validation, :on => :create
 
   private
   def perform_sync
+    create_sync_message :info, :new
     StopAreaReferentialSyncWorker.perform_async(self.id)
   end
 

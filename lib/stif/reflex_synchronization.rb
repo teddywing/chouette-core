@@ -10,39 +10,37 @@ module Stif
       end
 
       def synchronize
-        tstart     = Time.now
-        begin
-          client     = Reflex::API.new
-          processed  = []
+        tstart        = Time.now
+        client        = Reflex::API.new
+        processed     = []
+        initial_count = Chouette::StopArea.where(deleted_at: nil).count
 
-          ['getOR', 'getOP'].each do |method|
-            start   = Time.now
-            results = client.process method
-            Rails.logger.info "Reflex:sync - Process #{method} done in #{Time.now - start} seconds"
-            results.each do |type, entries|
-              Rails.logger.info "Reflex:sync - #{entries.count} #{type} retrieved"
-            end
-
-            # Create or update stop_area for every quay, stop_place
-            stop_areas = results[:Quay].merge(results[:StopPlace])
-            start = Time.now
-            stop_areas.each do |id, entry|
-              processed << self.create_or_update_stop_area(entry).objectid
-            end
-            Rails.logger.info "Reflex:sync - Create or update StopArea done in #{Time.now - start} seconds"
-
-            # Walk through every entry and set parent stop_area
-            start = Time.now
-            stop_areas.each do |id, entry|
-              self.stop_area_set_parent entry
-            end
-            Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
+        ['getOR', 'getOP'].each do |method|
+          start   = Time.now
+          results = client.process method
+          Rails.logger.info "Reflex:sync - Process #{method} done in #{Time.now - start} seconds"
+          results.each do |type, entries|
+            Rails.logger.info "Reflex:sync - #{entries.count} #{type} retrieved"
           end
 
-          # Purge deleted stop_area
-          deleted = self.set_deleted_stop_area processed.uniq
-        rescue Exception => e
-          Rails.logger.error "Reflex:sync - Error: #{e}, ended after #{Time.now - tstart} seconds"
+          # Create or update stop_area for every quay, stop_place
+          stop_areas = results[:Quay].merge(results[:StopPlace])
+          start = Time.now
+          stop_areas.each do |id, entry|
+            processed << self.create_or_update_stop_area(entry).objectid
+          end
+          Rails.logger.info "Reflex:sync - Create or update StopArea done in #{Time.now - start} seconds"
+
+          # Walk through every entry and set parent stop_area
+          start = Time.now
+          stop_areas.each do |id, entry|
+            self.stop_area_set_parent entry
+          end
+          Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
+          {
+            imported: Chouette::StopArea.where(deleted_at: nil).count - initial_count,
+            deleted: self.set_deleted_stop_area(processed.uniq)
+          }
         end
       end
 

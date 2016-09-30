@@ -8,7 +8,8 @@ fr:
               multiple_process: 'Il y a déja une synchronisation en cours de traitement'
   stop_area_referential_sync:
     message:
-      pending: "Synchronisation en attente"
+      new: "Synchronisation en attente"
+      pending: "Synchronisation en cours"
       successful: "Synchronisation réussie après %{processing_time} secondes avec %{imported} éléments importés. %{deleted} éléments ont été supprimés."
       failed: "Synchronisation interrompue après %{processing_time} secondes avec l'erreur : %{error}."
   notice:

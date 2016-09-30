@@ -1,13 +1,14 @@
 class LineReferentialSync < ActiveRecord::Base
   include AASM
   belongs_to :line_referential
-  has_many :line_referential_sync_messages, -> { order(created_at: :desc) }, :dependent => :destroy
+  has_many :line_referential_sync_messages, :dependent => :destroy
 
   after_commit :perform_sync, :on => :create
   validate :multiple_process_validation, :on => :create
 
   private
   def perform_sync
+    create_sync_message :info, :new
     LineReferentialSyncWorker.perform_async(self.id)
   end
 

@@ -7,7 +7,7 @@ class LineReferential < ActiveRecord::Base
   has_many :companies, class_name: 'Chouette::Company'
   has_many :networks, class_name: 'Chouette::Network'
 
-  has_many :line_referential_syncs, -> { order(created_at: :desc) }
+  has_many :line_referential_syncs
 
   def add_member(organisation, options = {})
     attributes = options.merge organisation: organisation
