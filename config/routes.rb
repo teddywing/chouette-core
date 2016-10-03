@@ -1,5 +1,6 @@
-ChouetteIhm::Application.routes.draw do
+require 'sidekiq/web'
 
+ChouetteIhm::Application.routes.draw do
   resources :offer_workbenches, :only => [:show]
 
   devise_for :users, :controllers => {
@@ -9,6 +10,7 @@ ChouetteIhm::Application.routes.draw do
   devise_scope :user do
     authenticated :user do
       root :to => 'referentials#index', as: :authenticated_root
+      mount Sidekiq::Web => '/sidekiq'
     end
 
     unauthenticated :user do
