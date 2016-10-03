@@ -6,6 +6,10 @@ class StopAreaReferentialSync < ActiveRecord::Base
   after_commit :perform_sync, :on => :create
   validate :multiple_process_validation, :on => :create
 
+  def can_be_canceled?
+    [:new, :pending].include? self.status.to_sym
+  end
+
   private
   def perform_sync
     create_sync_message :info, :new

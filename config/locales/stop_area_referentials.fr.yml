@@ -2,3 +2,5 @@ fr:
   stop_area_referentials:
     actions:
       sync: "Lancer une synchronisation reflex"
+      cancel_sync: "Anuller la synchronization reflex"
+

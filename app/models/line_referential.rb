@@ -22,4 +22,8 @@ class LineReferential < ActiveRecord::Base
   def operating_lines
     lines.where(deactivated: false)
   end
+
+  def last_sync
+    line_referential_syncs.last
+  end
 end

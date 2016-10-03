@@ -10,4 +10,7 @@ class StopAreaReferential < ActiveRecord::Base
     stop_area_referential_memberships.build attributes
   end
 
+  def last_sync
+    stop_area_referential_syncs.last
+  end
 end

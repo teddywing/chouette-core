@@ -13,7 +13,8 @@
   h3 Historique des synchronisations
 
   ul.list-group width="75%"
-  - @stop_area_referential.stop_area_referential_syncs.last.stop_area_referential_sync_messages.last.tap do |log|
+  - if @stop_area_referential.last_sync.stop_area_referential_sync_messages.empty?
+  - @stop_area_referential.last_sync.stop_area_referential_sync_messages.last.tap do |log|
     li
       = log.criticity
       br
@@ -25,3 +26,5 @@
 - content_for :sidebar do
   ul.actions
     li = link_to t('stop_area_referentials.actions.sync'), sync_stop_area_referential_path(@stop_area_referential), class: 'sync', method: :post
+  - if @stop_area_referential.last_sync
+    li = link_to t('stop_area_referentials.actions.cancel_sync'), cancel_sync_stop_area_referential_path(@stop_area_referential), class: 'cancel_sync', method: :post

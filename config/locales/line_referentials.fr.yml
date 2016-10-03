@@ -3,13 +3,9 @@ fr:
     actions:
       edit: "Modifier ce référentiel"
       sync: "Lancer une synchronisation codifligne"
+      cancel_sync: "Annuler la synchronisation codifligne"
     edit:
       title: "Modifier le référentiel %{line_referential}"
-    synchronization:
-      message:
-        pending: "Synchronisation en attente"
-        successful: "Synchronisation réussie après %{processing_time} secondes avec %{imported} éléments importés. %{deleted} éléments ont été supprimés."
-        failed: "Synchronisation interrompue après %{processing_time} secondes avec l'erreur : %{error}."
   activerecord:
     models:
       line_referential:
