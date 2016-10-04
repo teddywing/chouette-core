@@ -37,11 +37,11 @@ module Stif
             self.stop_area_set_parent entry
           end
           Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
-          {
-            imported: Chouette::StopArea.where(deleted_at: nil).count - initial_count,
-            deleted: self.set_deleted_stop_area(processed.uniq)
-          }
         end
+        {
+          imported: Chouette::StopArea.where(deleted_at: nil).count - initial_count,
+          deleted: self.set_deleted_stop_area(processed.uniq)
+        }
       end
 
       def set_deleted_stop_area processed
