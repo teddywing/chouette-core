@@ -10,10 +10,11 @@ module Stif
       end
 
       def synchronize
-        tstart        = Time.now
-        client        = Reflex::API.new
-        processed     = []
-        initial_count = Chouette::StopArea.where(deleted_at: nil).count
+        tstart           = Time.now
+        client           = Reflex::API.new
+        processed        = []
+        initial_count    = Chouette::StopArea.where(deleted_at: nil).count
+        existing_records = Hash[Chouette::StopArea.pluck(:import_xml, :objectid).map{|xml, id| [id, xml]}]
 
         ['getOR', 'getOP'].each do |method|
           start   = Time.now
@@ -25,15 +26,18 @@ module Stif
 
           # Create or update stop_area for every quay, stop_place
           stop_areas = results[:Quay].merge(results[:StopPlace])
-          start = Time.now
+          start      = Time.now
           stop_areas.each do |id, entry|
-            processed << self.create_or_update_stop_area(entry).objectid
+            processed << entry.id
+            next unless need_update_or_create?(existing_records, entry)
+            self.create_or_update_stop_area entry
           end
           Rails.logger.info "Reflex:sync - Create or update StopArea done in #{Time.now - start} seconds"
 
           # Walk through every entry and set parent stop_area
           start = Time.now
           stop_areas.each do |id, entry|
+            next unless need_update_or_create?(existing_records, entry)
             self.stop_area_set_parent entry
           end
           Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
@@ -42,6 +46,10 @@ module Stif
           imported: Chouette::StopArea.where(deleted_at: nil).count - initial_count,
           deleted: self.set_deleted_stop_area(processed.uniq)
         }
+      end
+
+      def need_update_or_create? existing_records, entry
+        return true unless existing_records.key?(entry.id) && entry.xml == existing_records[entry.id]
       end
 
       def set_deleted_stop_area processed
@@ -61,7 +69,7 @@ module Stif
 
         if entry.try(:parent_site_ref)
           stop.parent = self.find_by_object_id entry.parent_site_ref
-          stop.save if stop.changed
+          stop.save! if stop.changed
         end
 
         if entry.try(:quays)
@@ -69,7 +77,7 @@ module Stif
             children = self.find_by_object_id(quay[:ref])
             next unless children
             children.parent = stop
-            children.save if children.changed?
+            children.save! if children.changed?
           end
         end
       end
@@ -103,7 +111,7 @@ module Stif
           :city_name      => :city,
           :import_xml     => :xml
         }.each do |k, v| stop[k] = entry.try(v) end
-        stop.save if stop.changed?
+        stop.save! if stop.changed?
         # Create AccessPoint from StopPlaceEntrance
         if entry.try(:entrances)
           entry.entrances.each do |entrance|
