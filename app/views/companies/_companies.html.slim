@@ -2,8 +2,8 @@
   span.search = t('will_paginate.page_entries_info.search')
   = page_entries_info(@companies)
 
-.companies.paginated_content
-  = paginated_content(@companies)
+.companies.paginated_content style="margin-top:20px;"
+  = table_builder @companies, [:name, :edited_at, :published_at, :validity_period, :lines, :transporter, :status], 'table table-bordered'
 
 .pagination
   = will_paginate @companies, :container => false, renderer: RemoteBootstrapPaginationLinkRenderer
