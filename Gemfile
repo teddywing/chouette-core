@@ -51,7 +51,7 @@ gem 'polylines'
 # Codifligne API
 gem 'codifligne', git: 'git@github.com:AF83/stif-codifline-api.git'
 # Reflex API
-gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git'
+gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git', branch: 'sax_refactoring'
 
 # Authentication
 gem 'devise', '~> 3.4.0'
