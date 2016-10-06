@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git@github.com:AF83/stif-reflex-api.git
-  revision: b4c983e94f3177fb05d28ab84299c0e5e5b1defb
+  revision: 5b24a3b20a2dd19475eafb1d3db50b9379d0109a
   branch: sax_refactoring
   specs:
     reflex (0.0.1)
