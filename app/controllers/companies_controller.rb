@@ -25,6 +25,7 @@ class CompaniesController < BreadcrumbController
   protected
   def collection
     @q = line_referential.companies.search(params[:q])
+    # @companies ||= CompanyDecorator.decorate_collection(@q.result(:distinct => true).order(:name).paginate(:page => params[:page]))
     @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
   end
 

@@ -93,6 +93,8 @@ gem 'will_paginate', '~> 3.0.7'
 gem 'ransack'
 gem 'squeel'
 
+gem 'draper'
+
 gem 'enumerize', '~> 0.10.0'
 gem 'foreigner', '~> 1.7.4'
 gem 'deep_cloneable', '~> 2.0.0'

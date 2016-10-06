@@ -167,6 +167,11 @@ GEM
     docile (1.1.5)
     dr-ffi-proj4 (0.0.3)
       ffi (>= 1.0.0)
+    draper (2.1.0)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      request_store (~> 1.0)
     easy_translate (0.5.0)
       json
       thread
@@ -398,6 +403,7 @@ GEM
       json (~> 1.4)
     redis (3.3.1)
     ref (2.0.0)
+    request_store (1.3.1)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
     rgeo (0.5.2)
@@ -575,6 +581,7 @@ DEPENDENCIES
   devise-i18n
   devise_cas_authenticatable
   devise_invitable
+  draper
   enumerize (~> 0.10.0)
   fabrication (~> 2.14.1)
   factory_girl_rails (~> 4.0)
