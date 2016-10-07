@@ -59,6 +59,9 @@ gem 'devise_cas_authenticatable'
 gem 'devise-encryptable'
 gem 'devise_invitable'
 
+# Authorization
+gem 'pundit'
+
 # Map, Geolocalization
 gem 'map_layers', '0.0.4'
 gem 'rgeo', '~> 0.5.2'
