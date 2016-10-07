@@ -32,17 +32,17 @@ module RefobjectsHelper
 
     actions.each do |action|
       if action == "show"
-        showlink = link_to({controller: params[:controller].to_s, action: action, id: item.id}, class: 'btn btn-default') do
+        showlink = link_to({controller: params[:controller], action: action, id: item.id}, class: 'btn btn-default') do
           content_tag :span, "", class: 'fa fa-eye'
         end
         link << showlink
       elsif action == "edit"
-        editlink = link_to({controller: params[:controller].to_s, action: action, id: item.id}, class: 'btn btn-default') do
+        editlink = link_to({controller: params[:controller], action: action, id: item.id}, class: 'btn btn-default') do
           content_tag :span, "", class: 'fa fa-pencil'
         end
         link << editlink
       elsif action == "delete"
-        deletelink = link_to({controller: params[:controller].to_s, action: "show", id: item.id}, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-default') do
+        deletelink = link_to({controller: params[:controller], action: "show", id: item.id}, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-default') do
           content_tag :span, "", class: 'fa fa-trash-o'
         end
         link << deletelink
