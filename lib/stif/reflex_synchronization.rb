@@ -107,13 +107,14 @@ module Stif
         stop.stop_area_referential = self.defaut_referential
         {
           :name           => 'Name',
-          :creation_time  => 'created',
           :area_type      => 'type',
           :object_version => 'version',
           :zip_code       => 'PostalRegion',
           :city_name      => 'Town'
         }.each do |k, v| stop[k] = entry[v] end
+
         if stop.changed?
+          stop.creation_time = entry[:created]
           stop.import_xml = entry[:xml]
           stop.save!
         end
