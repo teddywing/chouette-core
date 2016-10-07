@@ -4,7 +4,8 @@
 
 .companies.paginated_content style="margin-top:20px;"
   = table_builder CompanyDecorator.decorate_collection(@companies),
-                  [:name, :edited_at, :published_at, :validity_period, :linecount, :transporter, :status] ["show", "delete"],
+                  [:name, :edited_at, :published_at, :validity_period, :linecount, :transporter, :status],
+                  ["show", "delete"],
                   'table table-bordered'
 
 .pagination
