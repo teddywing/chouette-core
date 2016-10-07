@@ -9,7 +9,7 @@ describe "/companies/index", :type => :view do
   it "should render a show link for each group" do
     render
     companies.each do |company|
-      expect(rendered).to have_selector(".company a[href='#{view.line_referential_company_path(line_referential, company)}']", :text => company.name)
+      expect(rendered).to have_selector("a[href='#{view.line_referential_company_path(line_referential, company)}']")
     end
   end
 

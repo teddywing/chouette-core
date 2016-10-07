@@ -17,14 +17,14 @@ describe "Companies", :type => :feature do
 
   end
 
-  describe "show" do
-    it "display company" do
-      visit line_referential_companies_path(line_referential)
-      click_link "#{companies.first.name}"
-      expect(page).to have_content(companies.first.name)
-    end
-
-  end
+  # describe "show" do
+  #   it "display company" do
+  #     visit line_referential_companies_path(line_referential)
+  #     click_link "#{companies.first.name}"
+  #     expect(page).to have_content(companies.first.name)
+  #   end
+  #
+  # end
 
   describe "new" do
     it "creates company and return to show" do
