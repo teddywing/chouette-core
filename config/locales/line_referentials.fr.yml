@@ -2,8 +2,8 @@ fr:
   line_referentials:
     actions:
       edit: "Modifier ce référentiel"
-      sync: "Lancer une synchronisation codifligne"
-      cancel_sync: "Annuler la synchronisation codifligne"
+      sync: "Lancer une synchronisation Codifligne"
+      cancel_sync: "Annuler la synchronisation Codifligne"
     edit:
       title: "Modifier le référentiel %{line_referential}"
   activerecord:

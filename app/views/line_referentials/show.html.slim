@@ -25,21 +25,17 @@
   h3 Historique des synchronisations
 
   ul.list-group width="75%"
-  - unless @line_referential.last_sync.line_referential_sync_messages.empty?
-    - @line_referential.last_sync.line_referential_sync_messages.last.tap do |log|
-      li
-        = log.criticity
-        br
-        = log.created_at
-        br
-        = t("line_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!)
-        hr
-    end
-  end
+  - @line_referential.line_referential_syncs.each do |sync|
+    - unless sync.line_referential_sync_messages.empty?
+      - sync.line_referential_sync_messages.last.tap do |log|
+        - if log.criticity = log.criticity
+          li.alert class="alert-#{log.criticity}"
+            strong = l(log.created_at, format: :short) + " : "
+            = t("line_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!)
 
 - content_for :sidebar do
   ul.actions
     li = link_to t('line_referentials.actions.edit'), edit_line_referential_path(@line_referential), class: 'edit'
     li = link_to t('line_referentials.actions.sync'), sync_line_referential_path(@line_referential), class: 'sync', method: :post
-  - if @line_referential.last_sync && @line_referential.last_sync.can_be_canceled?
-    li = link_to t('line_referentials.actions.cancel_sync'), cancel_sync_line_referential_path(@line_referential), class: 'cancel_sync', method: :post
+    - if @line_referential.last_sync && @line_referential.last_sync.can_be_canceled?
+      li = link_to t('line_referentials.actions.cancel_sync'), cancel_sync_line_referential_path(@line_referential), class: 'cancel_sync', method: :post
