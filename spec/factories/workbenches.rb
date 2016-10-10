@@ -1,7 +1,7 @@
 FactoryGirl.define do
-  factory :offer_workbench do
-    sequence(:name) { |n| "Offer workbench #{n}" }
-    
+  factory :workbench do
+    sequence(:name) { |n| "Workbench #{n}" }
+
     association :organisation, :factory => :organisation
   end
 end

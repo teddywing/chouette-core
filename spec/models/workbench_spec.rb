@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe OfferWorkbench, :type => :model do
+RSpec.describe Workbench, :type => :model do
 
   it 'should have a valid factory' do
-    expect(FactoryGirl.build(:offer_workbench)).to be_valid
+    expect(FactoryGirl.build(:workbench)).to be_valid
   end
 
   it { should validate_presence_of(:name) }

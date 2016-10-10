@@ -1,4 +1,4 @@
-class OfferWorkbench < ActiveRecord::Base
+class Workbench < ActiveRecord::Base
   belongs_to :organisation
 
   validates :name, presence: true

@@ -1,6 +1,6 @@
-class OfferWorkbenchesController < BreadcrumbController
+class WorkbenchesController < BreadcrumbController
 
-  defaults :resource_class => OfferWorkbench
+  defaults :resource_class => Workbench
   respond_to :html, :only => [:show]
 
   def show
