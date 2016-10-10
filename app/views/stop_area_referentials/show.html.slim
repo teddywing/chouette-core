@@ -19,6 +19,10 @@
         - if log.criticity = log.criticity
           li.alert class="alert-#{log.criticity}"
             strong = l(log.created_at, format: :short) + " : "
+            / [:processing_time] unit conversion
+            - data = log.message_attributs.symbolize_keys!
+            - data[:processing_time] = distance_of_time_in_words(data[:processing_time].to_i)
+            
             = t("stop_area_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!)
 
 - content_for :sidebar do
