@@ -28,6 +28,7 @@ module Stif
 
           start = Time.now
           stop_areas.each do |entry|
+            next unless is_valid_type_of_place_ref?(method, entry)
             processed << entry['id']
             self.create_or_update_stop_area entry
           end
@@ -42,8 +43,13 @@ module Stif
         end
         {
           imported: Chouette::StopArea.where(deleted_at: nil).count - initial_count,
-          deleted: self.set_deleted_stop_area(processed.uniq)
+          deleted: self.set_deleted_stop_area(processed.uniq).size
         }
+      end
+
+      def is_valid_type_of_place_ref? method, entry
+        return true if method == 'getOR' && ['ZDL', 'ZDE'].include?(entry["TypeOfPlaceRef"])
+        return true if method == 'getOP' && ['LDA', 'ZDE'].include?(entry["TypeOfPlaceRef"])
       end
 
       def set_deleted_stop_area processed

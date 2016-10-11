@@ -14,7 +14,7 @@ describe 'reflex:sync' do
     end
 
     it 'should create stopArea on successfull request' do
-      expect(Chouette::StopArea.count).to eq 6
+      expect(Chouette::StopArea.count).to eq 4
       expect(Chouette::AccessPoint.count).to eq 2
     end
 
@@ -44,7 +44,7 @@ describe 'reflex:sync' do
       end
 
       it 'should not create duplicate stop_area' do
-        expect(Chouette::StopArea.count).to eq 6
+        expect(Chouette::StopArea.count).to eq 4
         expect(Chouette::AccessPoint.count).to eq 2
       end
 
