@@ -11,6 +11,11 @@ class StopAreaReferentialsController < BreadcrumbController
     redirect_to resource
   end
 
+  def cancel_sync
+    resource.last_sync.destroy
+    redirect_to resource
+  end
+
   protected
   def begin_of_chain
     current_organisation
