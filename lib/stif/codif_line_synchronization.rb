@@ -8,7 +8,7 @@ module Stif
         operators       = client.operators
         lines           = client.lines
         networks        = client.networks
-        groups_of_lines = client.groups_of_lines
+        # groups_of_lines = client.groups_of_lines
 
         Rails.logger.info "Codifligne:sync - Codifligne request processed in #{elapsed_time_since start_time} seconds"
 
@@ -27,14 +27,14 @@ module Stif
         networks.map        { |n| create_or_update_network(n) }
         log_create_or_update "Networks", networks.count, stime
 
-        # Create or update Group of lines
-        stime = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
-        groups_of_lines.map { |g| create_or_update_group_of_lines(g) }
-        log_create_or_update "Group of lines", groups_of_lines.count, stime
+        # # Create or update Group of lines
+        # stime = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
+        # groups_of_lines.map { |g| create_or_update_group_of_lines(g) }
+        # log_create_or_update "Group of lines", groups_of_lines.count, stime
 
-        # Delete deprecated Group of lines
-        deleted_gr = delete_deprecated(groups_of_lines, Chouette::GroupOfLine)
-        log_deleted "Group of lines", deleted_gr unless deleted_gr == 0
+        # # Delete deprecated Group of lines
+        # deleted_gr = delete_deprecated(groups_of_lines, Chouette::GroupOfLine)
+        # log_deleted "Group of lines", deleted_gr unless deleted_gr == 0
 
         # Delete deprecated Networks
         deleted_ne = delete_deprecated(networks, Chouette::Network)
@@ -48,8 +48,8 @@ module Stif
         deleted_op = delete_deprecated(operators, Chouette::Company)
         log_deleted "Operators", deleted_op unless deleted_op == 0
         {
-          imported: operators.count + lines.count + networks.count + groups_of_lines.count,
-          deleted: deleted_op + deleted_li + deleted_ne + deleted_gr
+          imported: operators.count + lines.count + networks.count,
+          deleted: deleted_op + deleted_li + deleted_ne
         }
       end
 
