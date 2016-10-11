@@ -55,13 +55,11 @@ ChouetteIhm::Application.routes.draw do
 
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
-    post :cancel_sync, on: :member
     resources :stop_areas
   end
 
   resources :line_referentials, :only => [:show, :edit, :update] do
     post :sync, on: :member
-    post :cancel_sync, on: :member
     resources :lines
     resources :group_of_lines
     resources :companies

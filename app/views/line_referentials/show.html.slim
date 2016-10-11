@@ -41,5 +41,3 @@
   ul.actions
     li = link_to t('line_referentials.actions.edit'), edit_line_referential_path(@line_referential), class: 'edit'
     li = link_to t('line_referentials.actions.sync'), sync_line_referential_path(@line_referential), class: 'sync', method: :post
-    - if @line_referential.last_sync && @line_referential.last_sync.can_be_canceled?
-      li = link_to t('line_referentials.actions.cancel_sync'), cancel_sync_line_referential_path(@line_referential), class: 'cancel_sync', method: :post
