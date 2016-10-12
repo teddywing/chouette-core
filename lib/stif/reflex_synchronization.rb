@@ -48,8 +48,9 @@ module Stif
       end
 
       def is_valid_type_of_place_ref? method, entry
-        return true if method == 'getOR' && ['ZDL', 'ZDE'].include?(entry["TypeOfPlaceRef"])
-        return true if method == 'getOP' && ['LDA', 'ZDE'].include?(entry["TypeOfPlaceRef"])
+        return true if entry["TypeOfPlaceRef"].nil?
+        return true if method == 'getOR' && ['ZDL', 'LDA', 'ZDE'].include?(entry["TypeOfPlaceRef"])
+        return true if method == 'getOP' && ['ZDE'].include?(entry["TypeOfPlaceRef"])
       end
 
       def set_deleted_stop_area processed
