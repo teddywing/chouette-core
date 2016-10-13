@@ -10,7 +10,6 @@ ChouetteIhm::Application.routes.draw do
   devise_scope :user do
     authenticated :user do
       root :to => 'referentials#index', as: :authenticated_root
-      mount Sidekiq::Web => '/sidekiq'
     end
 
     unauthenticated :user do
