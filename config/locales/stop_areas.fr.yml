@@ -55,8 +55,8 @@ fr:
       access_link_legend_1: "Les flêches grises représentent des liens non définis"
       access_link_legend_2: "cliquer sur les flêches pour créer/éditer un lien"
     index:
-      name: "Recherche par nom"
-      name_or_objectid: "Recherche par nom ou par objectid"
+      name: "Recherche par nom..."
+      name_or_objectid: "Recherche par nom ou par objectid..."
       zip_code: "Code Postal"
       title: "Arrêts"
       selection: "Filtrer sur"
