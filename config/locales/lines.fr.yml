@@ -23,6 +23,7 @@ fr:
       deactivated: "Ligne désactivée"
       title: "Lignes"
       name_or_number: "Recherche par nom ou indice"
+      name_or_number_or_objectid: "Recherche par nom, indice ou objectid"
       no_networks: "Aucun réseaux"
       no_companies: "Aucun transporteurs"
       no_group_of_lines: "Aucun groupes de ligne"

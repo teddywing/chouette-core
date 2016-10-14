@@ -14,6 +14,7 @@ en:
     index:
       title: "Companies"
       name: "Search by name"
+      name_or_objectid: "Search by name or by objectid"
       advanced_search: "Advanced search"
   activerecord:
     models:

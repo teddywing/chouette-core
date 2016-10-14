@@ -51,6 +51,7 @@ en:
     index:
       title: "Stop areas"
       name: "Search by name"
+      name_or_objectid: "Search by name or by objectid"
       zip_code: "Zip Code"
       selection: "Filter on"
       selection_all: "All"
