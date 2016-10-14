@@ -24,12 +24,13 @@
 
 - content_for :sidebar do
   ul.actions
-    li
-      = link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'add'
+    - if policy(Chouette::Line).create?
+      li
+        = link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'add'
 
   #multiple_selection_menu
     h4 = t('.multi_selection')
-    
+
     .disabled
       a.enable href="#"
         = t('.multi_selection_enable')
