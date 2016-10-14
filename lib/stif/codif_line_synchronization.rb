@@ -71,13 +71,9 @@ module Stif
           import_xml: api_line.xml
         }
 
-        # Find Company
-        # TODO Check behavior when operator_codes count is 0 or > 1
-        if api_line.operator_codes.any?
-          company_id = "STIF:CODIFLIGNE:Operator:" + api_line.operator_codes.first
-          params[:company] = Chouette::Company.find_by(objectid: company_id)
+        unless api_line.operator_ref.nil?
+          params[:company] = Chouette::Company.find_by(objectid: api_line.operator_ref)
         end
-
         save_or_update(params, Chouette::Line)
       end
 
