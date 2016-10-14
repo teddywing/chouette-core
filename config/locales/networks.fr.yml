@@ -13,7 +13,8 @@ fr:
       title: "Réseau %{network}"
     index:
       title: "Réseaux"
-      name: "Recherche par nom"
+      name: "Recherche par nom..."
+      name_or_objectid: "Recherche par nom ou objectid..."
       advanced_search: "Recherche avancée"
   activerecord:
     models:

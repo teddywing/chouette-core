@@ -6,7 +6,7 @@ module RefobjectsHelper
     head = content_tag :thead do
       content_tag :tr do
         columns.each do |col|
-          concat content_tag(:th, collection.first.respond_to?(col) ? col.to_s.titleize : "Doesn't exist")
+          concat content_tag :th, col.to_s.titleize
         end
         concat content_tag :th, "Actions" if actions.any?
       end
@@ -32,7 +32,7 @@ module RefobjectsHelper
 
     actions.each do |action|
       if action == "show"
-        showlink = link_to({controller: params[:controller], action: action, id: item.id}, class: 'btn btn-default') do
+        showlink = link_to({controller: params[:controller], action: action, id: item}, class: 'btn btn-default') do
           content_tag :span, "", class: 'fa fa-eye'
         end
         link << showlink

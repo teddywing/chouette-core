@@ -22,7 +22,8 @@ en:
     index:
       deactivated: "Disabled line"
       title: "Lines"
-      name_or_number: "Search by name or number"
+      name_or_number: "Search by name or number..."
+      name_or_number_or_objectid: "Search by name, number or objectid..."
       no_networks: "No networks"
       no_companies: "No companies"
       no_group_of_lines: "No group of lines"

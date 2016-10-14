@@ -39,5 +39,4 @@
 
 - content_for :sidebar do
   ul.actions
-    li = link_to t('line_referentials.actions.edit'), edit_line_referential_path(@line_referential), class: 'edit'
     li = link_to t('line_referentials.actions.sync'), sync_line_referential_path(@line_referential), class: 'sync', method: :post

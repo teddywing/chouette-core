@@ -3,27 +3,30 @@
 #country_codes
   = @country_codes.to_json
 
-= search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), remote: true, html: { method: :get, class: "form-inline", id: "search", role: "form"} do |f|
-  .panel.panel-default
-    .panel-heading
-      .input-group.col-md-9
-        = f.text_field :name_cont, placeholder: "#{t('.name')}", class: 'form-control'
+= search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), remote: true, html: { method: :get, class: "form", id: "search", role: "form"} do |f|
+  .well.well-sm
+    .input-group
+      = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
 
-        .input-group-btn
-          button.btn.btn-default type="submit"
-            i.fa.fa-search
+      .input-group-btn
+        button.btn.btn-primary type="submit"
+          span.fa.fa-search
 
-      a data-toggle="collapse" data-parent="#search" href="#advanced_search"
-        i.fa.fa-plus
-        = "#{t('.advanced_search')}"
-
-    #advanced_search.panel-collapse.collapse
-      .panel-body
-        = f.text_field :zip_code_cont, placeholder: "#{t('.zip_code')}", class: 'form-control typeahead'
-        = f.select(:area_type_cont, options_from_collection_for_select(Chouette::StopArea.stop_area_types, 'name', Proc.new { |stop_area_type| t("area_types.label.#{stop_area_type}") } ), { :include_blank => "#{t('.area_type')}" }, { :class => 'form-control' })
+= search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), remote: true, html: { method: :get, class: "form", id: "search", role: "form"} do |f|
+  .well.well-sm
+    .row
+      .col-md-10.col-sm-9
+        .row
+          .col-md-3.col-sm-3
+            = f.text_field :zip_code_cont, placeholder: "#{t('.zip_code')}", class: 'form-control typeahead'
+          .col-md-5.col-sm-5
+            = f.select(:area_type_cont, options_from_collection_for_select(Chouette::StopArea.stop_area_types, 'name', Proc.new { |stop_area_type| t("area_types.label.#{stop_area_type}") } ), { include_blank: t('.area_type') }, { class: 'form-control' })
+            
+      .col-md-2.col-sm-3
+        button.btn.btn-primary.btn-block type="submit" Filtrer        
 
 #stop_areas
-  == render 'stop_areas'
+  = render 'stop_areas'
 
 - content_for :sidebar do
   ul.actions
