@@ -1,11 +1,11 @@
-.page_info
-  span.search = t('will_paginate.page_entries_info.search')
-  = page_entries_info @companies
+/ .page_info
+/   span.search = t('will_paginate.page_entries_info.search')
+/   = page_entries_info @companies
 
 .companies.paginated_content style="margin-top:20px;"
-  = table_builder CompanyDecorator.decorate_collection(@companies),
+  = table_builder @decoratedcompanies,
                   [:name, :edited_at, :published_at, :validity_period, :linecount, :transporter, :status],
-                  ["show"],
+                  ["show", "delete"],
                   'table table-bordered'
 
 .pagination

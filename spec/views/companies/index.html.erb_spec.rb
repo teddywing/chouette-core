@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "/companies/index", :type => :view do
 
   let!(:line_referential) { assign :line_referential, create(:line_referential) }
-  let!(:companies) { assign :companies, Array.new(2) { create(:company, line_referential: line_referential) }.paginate  }
+  let!(:companies) { assign :companies, CompanyDecorator.decorate_collection(Array.new(2) { create(:company, line_referential: line_referential) }.paginate) }
   let!(:search) { assign :q, Ransack::Search.new(Chouette::Company) }
 
   # Fixme #1795
