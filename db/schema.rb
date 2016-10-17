@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010135256) do
+ActiveRecord::Schema.define(version: 20161017091304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -356,9 +356,10 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "data_format", default: "neptune"
+    t.string   "data_format",    default: "neptune"
     t.string   "code"
     t.datetime "synced_at"
+    t.hstore   "sso_attributes"
   end
 
   create_table "pt_links", force: true do |t|

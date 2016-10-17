@@ -43,6 +43,10 @@ class Organisation < ActiveRecord::Base
     self.portail_api_request.each do |el|
       Organisation.find_or_create_by(code: el['code']).tap do |org|
         org.name = el['name']
+        if el['functional_scope']
+          org.sso_attributes ||= {}
+          org.sso_attributes[:functional_scope] = el['functional_scope'].delete('\\"')
+        end
         if org.changed?
           org.synced_at = Time.now
           org.save

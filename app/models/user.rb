@@ -35,7 +35,9 @@ class User < ActiveRecord::Base
     self.username = extra[:username]
 
     self.organisation = Organisation.find_or_create_by(code: extra[:organisation_code]).tap do |org|
-      org.name      = extra[:organisation_name]
+      org.name = extra[:organisation_name]
+      org.sso_attributes ||= {}
+      org.sso_attributes[:functional_scope] = extra[:functional_scope].delete('\\"') if extra[:functional_scope]
       org.synced_at = Time.now
     end
   end
@@ -66,7 +68,9 @@ class User < ActiveRecord::Base
 
         # Set organisation
         user.organisation = Organisation.find_or_create_by(code: el['organization_code']).tap do |org|
-          org.name      = el['organization_name']
+          org.name = el['organization_name']
+          org.sso_attributes ||= {}
+          org.sso_attributes[:functional_scope] = el['functional_scope'].delete('\\"') if el['functional_scope']
           org.synced_at = Time.now
         end
 

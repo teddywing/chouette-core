@@ -33,6 +33,12 @@ describe Organisation, :type => :model do
       expect(Organisation.all.map(&:name)).to include 'ALBATRANS', 'OPTILE', 'SNCF', 'STIF'
     end
 
+    it 'should retrieve functional scope' do
+      Organisation.portail_sync
+      org = Organisation.find_by(code: 'RATP')
+      expect(org.sso_attributes['functional_scope']).to eq "[STIF:CODIFLIGNE:Line:C00840, STIF:CODIFLIGNE:Line:C00086]"
+    end
+
     it 'should update existing organisations' do
       create :organisation, name: 'dummy_name', code:'RATP', updated_at: 10.days.ago
       Organisation.portail_sync
