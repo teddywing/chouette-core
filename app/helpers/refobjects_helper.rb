@@ -5,26 +5,31 @@ module RefobjectsHelper
 
     head = content_tag :thead do
       content_tag :tr do
-        columns.each do |col|
-          concat content_tag :th, col.to_s.titleize
-        end
-        concat content_tag :th, "Actions" if actions.any?
+        attributes_head = columns.collect do |col|
+          content_tag :th, col.to_s.titleize
+        end.join.html_safe
+        links_head = content_tag :th, "Actions" if actions.any?
+        attributes_head + links_head
       end
     end
 
     body = content_tag :tbody do
       collection.collect { |item|
         content_tag :tr do
-          columns.collect { |col|
-            concat content_tag(:td, item.try(col))
-          }.to_s.html_safe
+          attributes = columns.collect { |col|
+            content_tag(:td, item.try(col))
+          }.join.html_safe
+
           # Build links
-          concat content_tag :td, autolinks_builder(item, actions, :xs) if actions.any?
+          links = content_tag :td, autolinks_builder(item, actions, :xs), class: 'text-center' if actions.any?
+
+          attributes + links
         end
-      }.join().html_safe
+      }.join.html_safe
     end
 
-    content_tag :table, head.concat(body), class: cls
+    # content_tag :table, head + body, class: cls
+    content_tag :table, "pouet"
   end
 
   def autolinks_builder(item, actions, cls)
@@ -32,17 +37,17 @@ module RefobjectsHelper
 
     actions.each do |action|
       if action == "show"
-        showlink = link_to({controller: params[:controller], action: action, id: item}, class: 'btn btn-default') do
+        showlink = link_to(company_path(item), class: 'btn btn-default') do
           content_tag :span, "", class: 'fa fa-eye'
         end
         link << showlink
       elsif action == "edit"
-        editlink = link_to({controller: params[:controller], action: action, id: item.id}, class: 'btn btn-default') do
+        editlink = link_to(edit_company_path(item), class: 'btn btn-default') do
           content_tag :span, "", class: 'fa fa-pencil'
         end
         link << editlink
       elsif action == "delete"
-        deletelink = link_to({controller: params[:controller], action: "show", id: item.id}, method: :delete, data: { confirm: 'Are you sure?'}, class: 'btn btn-default') do
+        deletelink = link_to(company_path(item), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default') do
           content_tag :span, "", class: 'fa fa-trash-o'
         end
         link << deletelink
