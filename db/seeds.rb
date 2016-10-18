@@ -17,7 +17,6 @@ stif.users.find_or_create_by!(username: "admin") do |user|
   user.name = "STIF Administrateur"
 end
 
-Workbench.find_or_create_by(name: "Gestion de l'offre", organisation: stif)
 
 operator = Organisation.find_or_create_by!(code: 'transporteur-a') do |organisation|
   organisation.name = "Transporteur A"
@@ -43,6 +42,12 @@ line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |ref
   referential.add_member operator
 end
 
+Workbench.find_or_create_by(name: "Gestion de l'offre", organisation: stif) do |workbench|
+  workbench.line_referential      = line_referential
+  workbench.stop_area_referential = stop_area_referential
+end
+
+
 LineReferentialSync.find_or_create_by(line_referential: line_referential)
 StopAreaReferentialSync.find_or_create_by(stop_area_referential: stop_area_referential)
 
@@ -52,16 +57,16 @@ StopAreaReferentialSync.find_or_create_by(stop_area_referential: stop_area_refer
   end
 end
 
-
-workbench = Workbench.find_or_create_by(name: "Gestion de l'offre", organisation: operator)
+workbench = Workbench.find_or_create_by(name: "Gestion de l'offre", organisation: operator) do |workbench|
+  workbench.line_referential      = line_referential
+  workbench.stop_area_referential = stop_area_referential
+end
 
 [["parissudest201604", "Paris Sud-Est Avril 2016"],
  ["parissudest201605", "Paris Sud-Est Mai 2016"]].each do |slug, name|
   operator.referentials.find_or_create_by!(slug: slug) do |referential|
-    referential.name = name
-    referential.prefix = slug
+    referential.name      = name
+    referential.prefix    = slug
     referential.workbench = workbench
-    referential.line_referential = line_referential
-    referential.stop_area_referential = stop_area_referential
   end
 end

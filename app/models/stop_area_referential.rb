@@ -4,6 +4,7 @@ class StopAreaReferential < ActiveRecord::Base
 
   has_many :stop_areas, class_name: 'Chouette::StopArea'
   has_many :stop_area_referential_syncs, -> {order created_at: :desc}
+  has_many :workbenches
 
   def add_member(organisation, options = {})
     attributes = options.merge organisation: organisation

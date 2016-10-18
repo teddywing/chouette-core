@@ -43,8 +43,12 @@ RSpec.configure do |config|
     line_referential = LineReferential.find_or_create_by(name: "first") do |referential|
       referential.add_member organisation, owner: true
     end
+    stop_area_referential = StopAreaReferential.find_or_create_by(name: "first") do |referential|
+      referential.add_member organisation, owner: true
+    end
 
-    Referential.create! prefix: "first", name: "first", slug: "first", organisation: organisation, line_referential: line_referential
+    workbench = Workbench.create!(:name => "first", organisation: organisation, line_referential: line_referential, stop_area_referential: stop_area_referential)
+    Referential.create! prefix: "first", name: "first", slug: "first", organisation: organisation, workbench: workbench
   end
 
   config.before(:each) do

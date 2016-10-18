@@ -8,6 +8,8 @@ class Referential < ActiveRecord::Base
   validates_presence_of :time_zone
   validates_presence_of :upper_corner
   validates_presence_of :lower_corner
+  validates_presence_of :workbench
+
   validates_uniqueness_of :slug
   validates_uniqueness_of :name
   validates_format_of :slug, :with => %r{\A[a-z][0-9a-z_]+\Z}
@@ -26,16 +28,15 @@ class Referential < ActiveRecord::Base
   validates_presence_of :organisation
 
   belongs_to :line_referential
-  # validates_presence_of :line_referential
+  validates_presence_of :line_referential
   has_many :lines, through: :line_referential
   has_many :companies, through: :line_referential
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
 
   belongs_to :stop_area_referential
-  # validates_presence_of :stop_area_referential
+  validates_presence_of :stop_area_referential
   has_many :stop_areas, through: :stop_area_referential
-
   belongs_to :workbench
 
   def slug_excluded_values
@@ -147,6 +148,14 @@ class Referential < ActiveRecord::Base
   before_create :create_schema
   def create_schema
     Apartment::Tenant.create slug
+  end
+
+  before_validation :assign_line_and_stop_area_referential, :on => :create
+  def assign_line_and_stop_area_referential
+    if workbench
+      self.line_referential = workbench.line_referential
+      self.stop_area_referential = workbench.stop_area_referential
+    end
   end
 
   before_destroy :destroy_schema

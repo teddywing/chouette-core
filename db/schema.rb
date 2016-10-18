@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161017091304) do
+ActiveRecord::Schema.define(version: 20161018121647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -683,9 +683,13 @@ ActiveRecord::Schema.define(version: 20161017091304) do
     t.integer  "organisation_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "line_referential_id"
+    t.integer  "stop_area_referential_id"
   end
 
+  add_index "workbenches", ["line_referential_id"], :name => "index_workbenches_on_line_referential_id"
   add_index "workbenches", ["organisation_id"], :name => "index_workbenches_on_organisation_id"
+  add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
