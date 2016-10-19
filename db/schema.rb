@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161018121647) do
+ActiveRecord::Schema.define(version: 20161019090255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -376,6 +376,19 @@ ActiveRecord::Schema.define(version: 20161018121647) do
   end
 
   add_index "pt_links", ["objectid"], :name => "pt_links_objectid_key", :unique => true
+
+  create_table "referential_metadata", force: true do |t|
+    t.integer   "referential_id"
+    t.daterange "periode"
+    t.integer   "line_ids",              array: true
+    t.integer   "referential_source_id"
+    t.datetime  "created_at"
+    t.datetime  "updated_at"
+  end
+
+  add_index "referential_metadata", ["line_ids"], :name => "index_referential_metadata_on_line_ids"
+  add_index "referential_metadata", ["referential_id"], :name => "index_referential_metadata_on_referential_id"
+  add_index "referential_metadata", ["referential_source_id"], :name => "index_referential_metadata_on_referential_source_id"
 
   create_table "referentials", force: true do |t|
     t.string   "name"

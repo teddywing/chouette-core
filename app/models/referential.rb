@@ -8,7 +8,6 @@ class Referential < ActiveRecord::Base
   validates_presence_of :time_zone
   validates_presence_of :upper_corner
   validates_presence_of :lower_corner
-  validates_presence_of :workbench
 
   validates_uniqueness_of :slug
   validates_uniqueness_of :name
@@ -33,6 +32,7 @@ class Referential < ActiveRecord::Base
   has_many :companies, through: :line_referential
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
+  has_many :referential_metadatas
 
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential
