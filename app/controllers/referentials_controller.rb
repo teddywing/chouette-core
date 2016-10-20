@@ -73,7 +73,8 @@ class ReferentialsController < BreadcrumbController
       :organisation_id,
       :projection_type,
       :data_format,
-      :archived_at
+      :archived_at,
+      referential_metadata_attributes: [:referential_source_id, :line_ids => []]
     )
   end
 

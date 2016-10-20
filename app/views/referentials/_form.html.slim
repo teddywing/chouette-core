@@ -1,7 +1,7 @@
 = semantic_form_for @referential, class: 'form-horizontal' do |form|
   = form.inputs do
     = form.input :name
-    
+
     - if @referential.new_record?
       = form.input :slug, :input_html => { title: t("formtastic.titles.referential.slug") }
     - else
@@ -15,6 +15,9 @@
     = form.input :upper_corner, input_html: { title: t("formtastic.titles.referential.upper_corner") }
     = form.input :lower_corner, input_html: { title: t("formtastic.titles.referential.lower_corner") }
     = form.input :data_format, label: true, include_blank: false
+
+    = form.inputs for: [:referential_metadata, @referential.referential_metadata] do |meta|
+      = meta.inputs :referential_source
 
   = form.actions do
     = form.action :submit, as: :button

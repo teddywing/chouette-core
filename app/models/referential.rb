@@ -28,11 +28,14 @@ class Referential < ActiveRecord::Base
 
   belongs_to :line_referential
   validates_presence_of :line_referential
+
   has_many :lines, through: :line_referential
   has_many :companies, through: :line_referential
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
-  has_many :referential_metadatas
+
+  has_one :referential_metadata
+  accepts_nested_attributes_for :referential_metadata
 
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential
@@ -143,6 +146,11 @@ class Referential < ActiveRecord::Base
       end
     end
     projection_type || ""
+  end
+
+  after_create :autocreate_referential_metadata
+  def autocreate_referential_metadata
+    self.create_referential_metadata if workbench
   end
 
   before_create :create_schema

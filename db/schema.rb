@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161019090255) do
+ActiveRecord::Schema.define(version: 20161020093344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -379,7 +379,7 @@ ActiveRecord::Schema.define(version: 20161019090255) do
 
   create_table "referential_metadata", force: true do |t|
     t.integer   "referential_id"
-    t.daterange "periode"
+    t.daterange "periodes",              array: true
     t.integer   "line_ids",              array: true
     t.integer   "referential_source_id"
     t.datetime  "created_at"

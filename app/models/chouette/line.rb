@@ -18,8 +18,6 @@ class Chouette::Line < Chouette::ActiveRecord
   has_many :footnotes, :inverse_of => :line, :validate => :true, :dependent => :destroy
   accepts_nested_attributes_for :footnotes, :reject_if => :all_blank, :allow_destroy => true
 
-  belongs_to_array_in_many :referential_metadatas
-
   attr_reader :group_of_line_tokens
   attr_accessor :transport_mode
 
