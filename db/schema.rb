@@ -379,11 +379,11 @@ ActiveRecord::Schema.define(version: 20161020093344) do
 
   create_table "referential_metadata", force: true do |t|
     t.integer   "referential_id"
-    t.daterange "periodes",              array: true
     t.integer   "line_ids",              array: true
     t.integer   "referential_source_id"
     t.datetime  "created_at"
     t.datetime  "updated_at"
+    t.daterange "periodes",              array: true
   end
 
   add_index "referential_metadata", ["line_ids"], :name => "index_referential_metadata_on_line_ids"

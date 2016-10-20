@@ -1,10 +1,12 @@
 class ChangePeriodeFromReferentialMetadata < ActiveRecord::Migration
   def up
-    change_column :referential_metadata, :periode, :daterange, array: true
-    rename_column :referential_metadata, :periode, :periodes
+    if column_exists? :referential_metadata, :periode
+      remove_column :referential_metadata, :periode, :daterange
+    end
+    add_column :referential_metadata, :periodes, :daterange, array: true
   end
 
   def down
-    rename_column :referential_metadata, :periodes, :periode
+    remove_column :referential_metadata, :periodes, :daterange
   end
 end

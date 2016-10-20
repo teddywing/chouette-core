@@ -7,6 +7,6 @@ describe Referential, :type => :model do
     #expect(referential.rule_parameter_sets.size).to eq(1)
   end
 
-  it { should have_many(:referential_metadatas) }
+  it { should have_one(:referential_metadata) }
   it { should belong_to(:workbench) }
 end
