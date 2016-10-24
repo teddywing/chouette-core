@@ -7,6 +7,7 @@ class ReferentialsController < BreadcrumbController
   respond_to :js, :only => :show
 
   def new
+    @referential = Referential.new_from(Referential.find(params[:from])) if params[:from]
     new! do
       @referential.data_format = current_organisation.data_format
     end
@@ -56,7 +57,11 @@ class ReferentialsController < BreadcrumbController
   end
 
   def create_resource(referential)
-    referential.organisation = current_organisation
+    if referential.created_from
+      referential.clone_association referential.created_from
+    else
+      referential.organisation = current_organisation
+    end
     super
   end
 
@@ -74,6 +79,7 @@ class ReferentialsController < BreadcrumbController
       :projection_type,
       :data_format,
       :archived_at,
+      :created_from_id,
       referential_metadata_attributes: [:referential_source_id, :line_ids => []]
     )
   end

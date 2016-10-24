@@ -29,6 +29,7 @@ class Referential < ActiveRecord::Base
   belongs_to :line_referential
   validates_presence_of :line_referential
 
+  belongs_to :created_from, class_name: 'Referential'
   has_many :lines, through: :line_referential
   has_many :companies, through: :line_referential
   has_many :group_of_lines, through: :line_referential
@@ -110,6 +111,28 @@ class Referential < ActiveRecord::Base
     raise "Referential not created" if new_record?
     Apartment::Tenant.switch!(slug)
     self
+  end
+
+  def self.new_from from
+    Referential.new({
+      name: "Copie de #{from.name}",
+      slug: "#{from.slug}_clone",
+      prefix: from.prefix,
+      time_zone: from.time_zone,
+      bounds: from.bounds,
+      organisation: from.organisation,
+      line_referential: from.line_referential,
+      stop_area_referential: from.stop_area_referential,
+      workbench: from.workbench,
+      created_from: from,
+    })
+  end
+
+  def clone_association from
+    self.organisation          = from.organisation
+    self.line_referential      = from.line_referential
+    self.stop_area_referential = from.stop_area_referential
+    self.workbench             = from.workbench
   end
 
   def self.available_srids
