@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024123819) do
+ActiveRecord::Schema.define(version: 20161024135931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -376,6 +376,19 @@ ActiveRecord::Schema.define(version: 20161024123819) do
   end
 
   add_index "pt_links", ["objectid"], :name => "pt_links_objectid_key", :unique => true
+
+  create_table "referential_clonings", force: true do |t|
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.integer  "source_referential_id"
+    t.integer  "target_referential_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "referential_clonings", ["source_referential_id"], :name => "index_referential_clonings_on_source_referential_id"
+  add_index "referential_clonings", ["target_referential_id"], :name => "index_referential_clonings_on_target_referential_id"
 
   create_table "referential_metadata", force: true do |t|
     t.integer   "referential_id"
