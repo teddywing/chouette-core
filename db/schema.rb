@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161020093344) do
+ActiveRecord::Schema.define(version: 20161024123819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -408,7 +408,10 @@ ActiveRecord::Schema.define(version: 20161020093344) do
     t.integer  "stop_area_referential_id"
     t.integer  "workbench_id"
     t.datetime "archived_at"
+    t.integer  "created_from_id"
   end
+
+  add_index "referentials", ["created_from_id"], :name => "index_referentials_on_created_from_id"
 
   create_table "route_sections", force: true do |t|
     t.integer  "departure_id",       limit: 8
