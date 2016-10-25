@@ -1,15 +1,15 @@
 class AutocompleteStopAreasController < InheritedResources::Base
   respond_to :json, :only => [:index, :children, :parent, :physicals]
-  
+
   before_action :switch_referential
-  
+
   def switch_referential
     Apartment::Tenant.switch!(referential.slug)
   end
 
   def referential
-    @referential ||= current_organisation.referentials.find params[:referential_id]  
-  end 
+    @referential ||= current_organisation.referentials.find params[:referential_id]
+  end
 
   protected
 
@@ -26,7 +26,11 @@ class AutocompleteStopAreasController < InheritedResources::Base
     else
       result = referential.stop_areas
     end
-    @stop_areas = result.select{ |p| [p.name, p.registration_number, p.objectid].grep(/#{params[:q]}/i).any?  }
+
+    query = "#{params[:q].downcase}%"
+    @stop_areas = @stop_areas = result.where(
+      'lower(name) LIKE ? OR lower(registration_number) LIKE ? OR lower(objectid) LIKE ?', query, query, query
+    )
     @stop_areas
   end
 
