@@ -171,14 +171,22 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
-  after_create :autocreate_referential_metadata
+  after_create :autocreate_referential_metadata, :clone_schema
   def autocreate_referential_metadata
     self.create_referential_metadata if workbench
   end
 
+  def clone_schema
+    if self.created_from
+      ReferentialCloning.create(source_referential: self.created_from, target_referential: self)
+    end
+  end
+
   before_create :create_schema
   def create_schema
-    Apartment::Tenant.create slug
+    if self.created_from.nil?
+      Apartment::Tenant.create slug
+    end
   end
 
   before_validation :assign_line_and_stop_area_referential, :on => :create
