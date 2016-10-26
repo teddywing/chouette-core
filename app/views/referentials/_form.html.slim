@@ -18,7 +18,7 @@
     - if @referential.created_from
       = form.input :created_from
 
-    = form.inputs for: [:referential_metadata, @referential.referential_metadata] do |meta|
+    = form.inputs for: [:referential_metadatas, @referential.referential_metadatas] do |meta|
       = meta.inputs :referential_source
 
   = form.actions do

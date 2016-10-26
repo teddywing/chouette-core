@@ -35,8 +35,8 @@ class Referential < ActiveRecord::Base
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
 
-  has_one :referential_metadata
-  accepts_nested_attributes_for :referential_metadata
+  has_many :referential_metadatas
+  accepts_nested_attributes_for :referential_metadatas
 
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential
@@ -171,38 +171,44 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
-  after_create :autocreate_referential_metadata, :clone_schema
-  def autocreate_referential_metadata
-    self.create_referential_metadata if workbench
+  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
+  before_create :create_schema, unless: :created_from
+
+  after_create :create_referential_metadata, if: :workbench, unless: :created_from
+  after_create :clone_referential_metadatas, if: :created_from
+  after_create :clone_schema, if: :created_from
+
+  before_destroy :destroy_schema
+  before_destroy :destroy_jobs
+
+  def create_referential_metadata
+    self.referential_metadatas.create
+  end
+
+  def clone_referential_metadatas
+    self.created_from.referential_metadatas.each do |meta|
+      self.referential_metadatas << ReferentialMetadata.new_from(meta)
+    end
+    self.save
   end
 
   def clone_schema
-    if self.created_from
-      ReferentialCloning.create(source_referential: self.created_from, target_referential: self)
-    end
+    ReferentialCloning.create(source_referential: self.created_from, target_referential: self)
   end
 
-  before_create :create_schema
   def create_schema
-    if self.created_from.nil?
-      Apartment::Tenant.create slug
-    end
+    Apartment::Tenant.create slug
   end
 
-  before_validation :assign_line_and_stop_area_referential, :on => :create
   def assign_line_and_stop_area_referential
-    if workbench
-      self.line_referential = workbench.line_referential
-      self.stop_area_referential = workbench.stop_area_referential
-    end
+    self.line_referential = workbench.line_referential
+    self.stop_area_referential = workbench.stop_area_referential
   end
 
-  before_destroy :destroy_schema
   def destroy_schema
     Apartment::Tenant.drop slug
   end
 
-  before_destroy :destroy_jobs
   def destroy_jobs
     #Ievkit.delete_jobs(slug)
     true
