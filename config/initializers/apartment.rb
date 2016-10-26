@@ -34,7 +34,8 @@ Apartment.configure do |config|
     "Chouette::Line",
     "Chouette::GroupOfLine",
     "Chouette::Company",
-    "Chouette::Network"
+    "Chouette::Network",
+    "ReferentialCloning"
   ]
 
   # use postgres schemas?
