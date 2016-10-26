@@ -115,7 +115,7 @@ class Referential < ActiveRecord::Base
 
   def self.new_from from
     Referential.new({
-      name: "Copie de #{from.name}",
+      name: I18n.t("activerecord.copy", :name => from.name),
       slug: "#{from.slug}_clone",
       prefix: from.prefix,
       time_zone: from.time_zone,
