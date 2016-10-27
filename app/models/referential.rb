@@ -35,7 +35,7 @@ class Referential < ActiveRecord::Base
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
 
-  has_many :referential_metadatas
+  has_many :referential_metadatas,:dependent => :destroy
   accepts_nested_attributes_for :referential_metadatas
 
   belongs_to :stop_area_referential
@@ -172,7 +172,7 @@ class Referential < ActiveRecord::Base
   end
 
   before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
-  before_create :create_schema, unless: :created_from
+  before_create :create_schema
 
   after_create :create_referential_metadata, if: :workbench, unless: :created_from
   after_create :clone_referential_metadatas, if: :created_from
