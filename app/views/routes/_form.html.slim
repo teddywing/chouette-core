@@ -11,7 +11,9 @@
 
   #stop_points
     = form.semantic_fields_for :stop_points, :include_id => false do |p|
-      == render "stop_point_fields",  f: p
+      / == render "stop_point_fields",  f: p
+      // TEST ES6
+      = render 'test', f: p
 
     .links
       = link_to_add_association t("routes.actions.add_stop_point"), form, :stop_points, class: 'add_stop_point add'
