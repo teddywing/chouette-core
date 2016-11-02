@@ -10,6 +10,9 @@ gem 'uglifier', '~> 2.7.2'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 
+# ES6 powa
+gem 'browserify-rails'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
