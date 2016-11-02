@@ -1,7 +1,9 @@
+// get json statham
+
 class Welcome {
   constructor() {
-    alert('Yo bitch');
+    console.log('Welcome');
   }
 }
 
-// new Welcome();
+new Welcome();
