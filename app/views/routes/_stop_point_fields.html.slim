@@ -1,19 +1,4 @@
-.nested-fields.stop_point.row
-  = f.inputs do
-    .col-md-1.resize
-      = link_to_remove_association "<i class='fa fa-trash-o'></i>".html_safe, f
-      
-      span.handle alt="#{t('stop_points.index.move')}" title="#{t('stop_points.index.move')}"
-        i.fa.fa-arrows
+= f.input :stop_area_id
 
-    .col-md-11
-      - if f.object.stop_area.nil? || f.object.new_record?
-        = f.input :id, as: :hidden, :input_html => { :class => "stop_point_id added_stop_point", :value => "" }
-        = f.input :position, as: :hidden, :input_html => { :class => "position" }
-        
-        = f.input :stop_area_id, :label => false, as: :search_stop_area, :json => referential_autocomplete_stop_areas_path(@referential, :format => :json)+"?filter=physical", :hint_text => t('search_hint'), :no_result_text => t('no_result_text'),:searching_text => t('searching_term'), :tokenLimit => 1, :input_html => { :class => "new_stop_point stop_area_id", :"data-pre" => Rabl::Renderer.new('autocomplete_stop_areas/index', [f.object.stop_area].compact, :view_path => 'app/views', :format => :json, :scope => self ).render }
-      - else
-        = f.input :id, as: :hidden, :input_html => { class: 'stop_point_id' }
-        = f.input :position, as: :hidden, :input_html => { class: 'position' }
-        
-        = f.input :stop_area_id, label: false, as: :search_stop_area, :json => referential_autocomplete_stop_areas_path(@referential, :format => :json)+"?filter=physical", :hint_text => t('search_hint'), :no_result_text => t('no_result_text'),:searching_text => t('searching_term'), :tokenLimit => 1, :input_html => { :class => "stop_area_id", :"data-pre" => Rabl::Renderer.new('autocomplete_stop_areas/index', [f.object.stop_area].compact, :view_path => 'app/views', :format => :json, :scope => self ).render }
+/ = link_to_add_association t("routes.actions.add_stop_point"), f, :stop_points
+/ = link_to t('routes.actions.new_stop_point'), new_referential_stop_area_path(@referential), target: '_blank'
