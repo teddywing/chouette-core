@@ -28,6 +28,6 @@ module ChouetteIhm
     config.i18n.default_locale = :fr
 
     # Configure Browserify to use babelify to compile ES6
-    config.browserify_rails.commandline_options = "-t [ babelify --presets [ es2015 ] ]"
+    config.browserify_rails.commandline_options = "-t [ babelify --presets [ es2015 react ] ]"
   end
 end
