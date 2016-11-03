@@ -1,96 +1,36 @@
-= semantic_form_for [@referential, @line, @route] do |form|
-  = form.inputs do
-    = form.input :name
-    = form.input :published_name
-    = form.input :number
-    = form.input :comment
-    = form.input :opposite_route, as: :select, :collection => @line.routes.select { |r| r.id != @route.id }
-    = form.input :direction_code, as: :select, :collection => Chouette::Route.directions, :include_blank => false, :member_label => Proc.new { |mode| t("directions.label.#{mode}") }
-    = form.input :wayback_code, as: :select, :collection => Chouette::Route.waybacks, :include_blank => false, :member_label => Proc.new { |mode| t("waybacks.label.#{mode}") }
-    = form.input :objectid, :required => !@route.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.route.objectid")}
+= simple_form_for [@referential, @line, @route] do |f|
+  .row
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+      = f.input :name
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+      = f.input :published_name
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+      = f.input :number
+  
+  .row
+    .col-lg-5.col-md-5.col-sm-5.col-xs-5
+      = f.input :comment
+    .col-lg-7.col-md-7.col-sm-7.col-xs-7
+      = f.input :opposite_route, collection: @line.routes.select { |r| r.id != @route.id }
+  
+  .row
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+      = f.input :direction_code, collection: Chouette::Route.directions, include_blank: false, member_label: Proc.new { |mode| t("directions.label.#{mode}") }
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+      = f.input :wayback_code, collection: Chouette::Route.waybacks, include_blank: false, member_label: Proc.new { |mode| t("waybacks.label.#{mode}") }
+    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+      = f.input :objectid, required: !@route.new_record?, input_html: { title: t("formtastic.titles#{format_restriction_for_locales(@referential)}.route.objectid") }
+      
+  .row
+    .col-lg-12.col-md-12.col-sm-12.col-xs-12
+      = f.simple_fields_for :stop_points do |point|
+        = render 'stop_point_fields', f: point
 
-  #stop_points
-    .list-group
-      = form.semantic_fields_for :stop_points, :include_id => false do |p|
-        = render 'test', f: p
+  .row
+    .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
+      = link_to 'Annuler', :back, class: 'btn btn-link'
+      = f.button :submit, class: 'btn btn-danger'
 
-    .links
-      = link_to_add_association t("routes.actions.add_stop_point"), form, :stop_points, class: 'add_stop_point add'
-      br
-      = link_to t('routes.actions.new_stop_point'), new_referential_stop_area_path(@referential), { class: 'add', target: '_blank' }
-
-  = form.actions do
-    = form.action :submit, as: :button
-    = form.action :cancel, as: :link
 
 // TEST ES6
 = javascript_include_tag 'es6_browserified/test.js'
-
-// OLD JS
-/ javascript:
-/   $(document).ready(function() {
-/     var stop_point_ids = [];
-/ 
-/     var order_position = function() {
-/       $('#stop_points input[type="hidden"][id$="position"]').each(function(index) {
-/         $(this).val(index);
-/       });
-/     };
-/ 
-/     var write_stop_point_ids = function(){
-/       $('#stop_points input[type="hidden"][class~="stop_point_id"]').each(function(index,element) {
-/         // soit le parent a la classe added_stop_point
-/           if ( $(element).hasClass("added_stop_point") ){
-/             $(this).attr("value", "");
-/           } else {
-/             $(this).attr("value", stop_point_ids.shift());
-/           }
-/       });
-/     }
-/ 
-/     var empty_stop_point_ids = function() {
-/       stop_point_ids = $.map($('#stop_points input[type="hidden"][class="stop_point_id"]'), function(element, index) {
-/         return $(element).val();
-/       });
-/       // console.log(  "before-remove");
-/       // console.log(  stop_point_ids);
-/     };
-/ 
-/     $('#stop_points').sortable({
-/       axis: 'y',
-/       dropOnEmpty: false,
-/       handle: '.handle',
-/       cursor: 'crosshair',
-/       items: '.stop_point',
-/       opacity: 0.4,
-/       scroll: true,
-/       start: function( event, ui ) {
-/         empty_stop_point_ids();
-/       },
-/       update: function( event, ui ) {
-/         write_stop_point_ids();
-/         order_position();
-/       }
-/     });
-/ 
-/     $('#stop_points').bind("cocoon:after-insert", function(event, insertedItem) {
-/       var new_stop_count = $('div.nested-fields.stop_point').size();
-/       var cocoonId = insertedItem.find("input.new_stop_point").attr("id").match( /route_stop_points_attributes_(\d+)_stop_area_id/)[1];
-/       insertedItem.find('input').each( function(index,e){
-/         var old = $(e).attr("name");
-/         if (old!=undefined) {
-/           $(e).attr("name", old.replace( cocoonId, new_stop_count - 1));
-/         }
-/       });
-/ 
-/       //console.log( "cocoonId="+cocoonId+", new_stop_count="+new_stop_count);
-/       order_position();
-/     });
-/ 
-/     $('#stop_points').on("cocoon:before-remove", empty_stop_point_ids);
-/ 
-/     $('#stop_points').on("cocoon:after-remove", function() {
-/       write_stop_point_ids();
-/       order_position();
-/     });
-/   });
