@@ -15,8 +15,10 @@
     = form.input :upper_corner, input_html: { title: t("formtastic.titles.referential.upper_corner") }
     = form.input :lower_corner, input_html: { title: t("formtastic.titles.referential.lower_corner") }
     = form.input :data_format, label: true, include_blank: false
+    - if @referential.created_from
+      = form.input :created_from
 
-    = form.inputs for: [:referential_metadata, @referential.referential_metadata] do |meta|
+    = form.inputs for: [:referential_metadatas, @referential.referential_metadatas] do |meta|
       = meta.inputs :referential_source
 
   = form.actions do

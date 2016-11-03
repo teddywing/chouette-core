@@ -29,13 +29,14 @@ class Referential < ActiveRecord::Base
   belongs_to :line_referential
   validates_presence_of :line_referential
 
+  belongs_to :created_from, class_name: 'Referential'
   has_many :lines, through: :line_referential
   has_many :companies, through: :line_referential
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
 
-  has_one :referential_metadata
-  accepts_nested_attributes_for :referential_metadata
+  has_many :referential_metadatas,:dependent => :destroy
+  accepts_nested_attributes_for :referential_metadatas
 
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential
@@ -112,6 +113,28 @@ class Referential < ActiveRecord::Base
     self
   end
 
+  def self.new_from from
+    Referential.new({
+      name: I18n.t("activerecord.copy", :name => from.name),
+      slug: "#{from.slug}_clone",
+      prefix: from.prefix,
+      time_zone: from.time_zone,
+      bounds: from.bounds,
+      organisation: from.organisation,
+      line_referential: from.line_referential,
+      stop_area_referential: from.stop_area_referential,
+      workbench: from.workbench,
+      created_from: from,
+    })
+  end
+
+  def clone_association from
+    self.organisation          = from.organisation
+    self.line_referential      = from.line_referential
+    self.stop_area_referential = from.stop_area_referential
+    self.workbench             = from.workbench
+  end
+
   def self.available_srids
     [
       [ "RGF 93 Lambert 93 (2154)", 2154 ],
@@ -148,30 +171,44 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
-  after_create :autocreate_referential_metadata
-  def autocreate_referential_metadata
-    self.create_referential_metadata if workbench
+  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
+  before_create :create_schema
+
+  after_create :create_referential_metadata, if: :workbench, unless: :created_from
+  after_create :clone_referential_metadatas, if: :created_from
+  after_create :clone_schema, if: :created_from
+
+  before_destroy :destroy_schema
+  before_destroy :destroy_jobs
+
+  def create_referential_metadata
+    self.referential_metadatas.create
   end
 
-  before_create :create_schema
+  def clone_referential_metadatas
+    self.created_from.referential_metadatas.each do |meta|
+      self.referential_metadatas << ReferentialMetadata.new_from(meta)
+    end
+    self.save
+  end
+
+  def clone_schema
+    ReferentialCloning.create(source_referential: self.created_from, target_referential: self)
+  end
+
   def create_schema
     Apartment::Tenant.create slug
   end
 
-  before_validation :assign_line_and_stop_area_referential, :on => :create
   def assign_line_and_stop_area_referential
-    if workbench
-      self.line_referential = workbench.line_referential
-      self.stop_area_referential = workbench.stop_area_referential
-    end
+    self.line_referential = workbench.line_referential
+    self.stop_area_referential = workbench.stop_area_referential
   end
 
-  before_destroy :destroy_schema
   def destroy_schema
     Apartment::Tenant.drop slug
   end
 
-  before_destroy :destroy_jobs
   def destroy_jobs
     #Ievkit.delete_jobs(slug)
     true
