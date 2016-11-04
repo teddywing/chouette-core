@@ -45,3 +45,10 @@ div#root
     .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
       = link_to 'Annuler', :back, class: 'btn btn-link'
       = f.button :submit, class: 'btn btn-danger'
+
+
+      
+= javascript_tag do
+  | window.itinerary_stop = "#{URI.escape(@route.stop_areas.all.to_json)}"
+
+= javascript_include_tag 'es6_browserified/getJSON.js'

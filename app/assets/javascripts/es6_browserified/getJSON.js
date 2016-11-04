@@ -1,1 +1,4 @@
-console.log(window.itinerary_stop);
+data = decodeURIComponent(window.itinerary_stop)
+JSONobject = JSON.parse(data)
+
+console.log(JSONobject)
