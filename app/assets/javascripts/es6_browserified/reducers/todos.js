@@ -1,19 +1,10 @@
 const todo = (state = {}, action) => {
+  console.log('action', action)
   switch (action.type) {
-    case 'ADD_TODO':
+    case 'ADD_STOP':
       return {
-        id: action.id,
-        text: action.text,
-        completed: false
+        id: action.id
       }
-    case 'TOGGLE_TODO':
-      if (state.id !== action.id) {
-        return state
-      }
-
-      return Object.assign({}, state, {
-        completed: !state.completed
-      })
 
     default:
       return state
@@ -22,15 +13,30 @@ const todo = (state = {}, action) => {
 
 const todos = (state = [], action) => {
   switch (action.type) {
-    case 'ADD_TODO':
+    case 'ADD_STOP':
       return [
         ...state,
         todo(undefined, action)
       ]
-    case 'TOGGLE_TODO':
-      return state.map(t =>
-        todo(t, action)
-      )
+    case 'MOVE_STOP_UP':
+      return [
+        ...state.slice(0, action.index - 1),
+        state[action.index],
+        state[action.index - 1],
+        ...state.slice(action.index + 1)
+      ]
+    case 'MOVE_STOP_DOWN':
+      return [
+        ...state.slice(0, action.index),
+        state[action.index + 1],
+        state[action.index],
+        ...state.slice(action.index + 2)
+      ]
+    case 'DELETE_STOP':
+      return [
+        ...state.slice(0, action.index),
+        ...state.slice(action.index + 1)
+      ]
     default:
       return state
   }
