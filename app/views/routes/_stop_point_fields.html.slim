@@ -1,4 +1,22 @@
-= f.input :stop_area_id
-
-/ = link_to_add_association t("routes.actions.add_stop_point"), f, :stop_points
-/ = link_to t('routes.actions.new_stop_point'), new_referential_stop_area_path(@referential), target: '_blank'
+.list-group-item
+  div style="display:inline-block;vertical-align:middle;width:75%;"
+    - if f.object.stop_area.nil? || f.object.new_record?
+        = f.input :stop_area_id, label: false
+      
+    - else
+      = "#{@route.stop_areas.find(f.object.stop_area_id).name} "
+      em.small
+        = "#{@route.stop_areas.find(f.object.stop_area_id).zip_code} #{@route.stop_areas.find(f.object.stop_area_id).city_name}"
+    
+  div.text-right style="display:inline-block;vertical-align:middle;width:25%;"
+    .btn-group.btn-group-sm style="padding:0;"
+      .btn.btn-default
+        span.fa.fa-times
+      .btn.btn-primary
+        span.fa.fa-arrow-up
+      .btn.btn-primary
+        span.fa.fa-arrow-down
+      .btn.btn-danger
+        span.fa.fa-trash
+      / = link_to_remove_association f, class: 'btn btn-danger', data: {confirm: 'Are you sure?'} do
+      /   span.fa.fa-trash
