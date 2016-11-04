@@ -1,25 +1,31 @@
 let nextTodoId = 0
 module.exports = {
 
-  addTodo : (text) => {
+  addStop : () => {
     return {
-      type: 'ADD_TODO',
-      id: nextTodoId++,
-      text
+      type: 'ADD_STOP',
+      id: nextTodoId++
     }
   },
 
-  setVisibilityFilter : (filter) => {
+  moveStopUp : (index) => {
     return {
-      type: 'SET_VISIBILITY_FILTER',
-      filter
+      type: 'MOVE_STOP_UP',
+      index
     }
   },
 
-  toggleTodo : (id) => {
+  moveStopDown : (index) => {
     return {
-      type: 'TOGGLE_TODO',
-      id
+      type: 'MOVE_STOP_DOWN',
+      index
     }
   },
+
+  deleteStop: (index) => {
+    return {
+      type: 'DELETE_STOP',
+      index
+    }
+  }
 }

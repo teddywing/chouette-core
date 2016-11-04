@@ -1,6 +1,6 @@
 var React = require('react')
 var connect = require('react-redux').connect
-var addTodo = require('../actions').addTodo
+var addTodo = require('../actions').addStop
 
 let AddTodo = ({ dispatch }) => {
   let input
@@ -9,15 +9,8 @@ let AddTodo = ({ dispatch }) => {
     <div>
       <form onSubmit={e => {
         e.preventDefault()
-        if (!input.value.trim()) {
-          return
-        }
-        dispatch(addTodo(input.value))
-        input.value = ''
+        dispatch(addTodo())
       }}>
-        <input ref={node => {
-          input = node
-        }} />
         <button type="submit">
           Add Todo
         </button>
