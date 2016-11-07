@@ -47,7 +47,7 @@ div#root
       = f.button :submit, class: 'btn btn-danger'
 
 
-      
+
 = javascript_tag do
   | window.itinerary_stop = "#{URI.escape(@route.stop_areas.all.to_json)}"
 
