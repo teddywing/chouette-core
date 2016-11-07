@@ -27,5 +27,12 @@ module.exports = {
       type: 'DELETE_STOP',
       index
     }
+  },
+  updateInputValue: (index, text) => {
+    return {
+      type : "UPDATE_INPUT_VALUE",
+      index,
+      text
+    }
   }
 }

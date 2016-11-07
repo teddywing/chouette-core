@@ -3,8 +3,6 @@ var connect = require('react-redux').connect
 var addTodo = require('../actions').addStop
 
 let AddTodo = ({ dispatch }) => {
-  let input
-
   return (
     <div className="clearfix" style={{marginBottom: 10}}>
       <form onSubmit={e => {

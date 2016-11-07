@@ -2,7 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var Todo = require('./Todo')
 
-const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick }) => (
+const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange }) => (
   <div className='list-group'>
     {todos.map((todo, index) =>
       <Todo
@@ -11,6 +11,7 @@ const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick }) => (
         onDeleteClick={() => onDeleteClick(index)}
         onMoveUpClick={() => onMoveUpClick(index)}
         onMoveDownClick={() => onMoveDownClick(index)}
+        onChange={(event) => onChange(index, event.currentTarget.value)}
         first={ index === 0 }
         last={ index === (todos.length - 1) }
       />
