@@ -2,7 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 
 const firstBlock = {display: 'inline-block', verticalAlign: 'middle', width: '75%'}
-const secondBlock = {display: 'inline-block', verticalAlign: 'middle', width: '25%',  textAlign: 'right'}
+const secondBlock = {display: 'inline-block', verticalAlign: 'middle', width: '25%', textAlign: 'right'}
 
 const Todo = (props)  => (
   <div className="list-group-item">
@@ -15,13 +15,13 @@ const Todo = (props)  => (
           <span className="fa fa-times"></span>
         </div>
         <div
-          className="btn btn-primary"
+          className={"btn btn-primary" + (props.first ? " disabled" : "")}
           onClick={props.onMoveUpClick}
         >
           <span className="fa fa-arrow-up"></span>
         </div>
         <div
-          className="btn btn-primary"
+          className={"btn btn-primary" + (props.last ? " disabled" : "")}
           onClick={props.onMoveDownClick}
         >
           <span className="fa fa-arrow-down"></span>
@@ -40,7 +40,9 @@ const Todo = (props)  => (
 Todo.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,
-  onMoveDownClick: PropTypes.func.isRequired
+  onMoveDownClick: PropTypes.func.isRequired,
+  first: PropTypes.bool,
+  last: PropTypes.bool
 }
 
 module.exports = Todo

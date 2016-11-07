@@ -6,11 +6,13 @@ const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick }) => (
   <div className='list-group'>
     {todos.map((todo, index) =>
       <Todo
-        key={todo.id}
+        key={'item-' + index}
         {...todo}
         onDeleteClick={() => onDeleteClick(index)}
         onMoveUpClick={() => onMoveUpClick(index)}
         onMoveDownClick={() => onMoveDownClick(index)}
+        first={ index === 0 }
+        last={ index === (todos.length - 1) }
       />
     )}
   </div>
