@@ -9,10 +9,10 @@ const Todo = (props)  => (
   <div className='list-group-item' style={Container}>
     <div style={firstBlock}>
       <div style={{display: 'inline-block', width: '9%'}}>
-        <span className='strong'>Id: {props.id}</span>
+        <span className='strong'>Id: {props.index}</span>
       </div>
       <div style={{display: 'inline-block', width: '91%'}}>
-        <input type='text' className='form-control' id={'route_stop_points_' + props.id} value={props.text} onChange={props.onChange}/>
+        <input type='text' className='form-control' id={'route_stop_points_' + props.index} value={props.text} onChange={props.onChange}/>
       </div>
     </div>
 

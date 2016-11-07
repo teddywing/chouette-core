@@ -21,7 +21,7 @@ const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChan
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    index: PropTypes.number.isRequired,
   }).isRequired).isRequired,
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,

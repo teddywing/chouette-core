@@ -1,10 +1,8 @@
-let nextTodoId = 0
 module.exports = {
 
   addStop : () => {
     return {
-      type: 'ADD_STOP',
-      id: nextTodoId++
+      type: 'ADD_STOP'
     }
   },
 

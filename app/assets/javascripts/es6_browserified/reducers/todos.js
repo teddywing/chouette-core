@@ -1,17 +1,15 @@
-const todo = (state = {}, action) => {
+const todo = (state = {}, action, length) => {
   switch (action.type) {
     case 'ADD_STOP':
       return {
         text: '',
-        id: action.id
+        index: length
       }
     case 'UPDATE_INPUT_VALUE':
-      if (state.id !== action.index) {
+      if (state.index !== action.index) {
         return state
       }
 
-      // console.log('action', action)
-      // console.log('state', state)
       return Object.assign(
         {},
         state,
@@ -27,9 +25,11 @@ const todos = (state = [], action) => {
     case 'ADD_STOP':
       return [
         ...state,
-        todo(undefined, action)
+        todo(undefined, action, state.length)
       ]
     case 'MOVE_STOP_UP':
+      state[action.index].index = state[action.index - 1].index
+      state[action.index - 1].index = state[action.index].index + 1
       return [
         ...state.slice(0, action.index - 1),
         state[action.index],
@@ -37,6 +37,8 @@ const todos = (state = [], action) => {
         ...state.slice(action.index + 1)
       ]
     case 'MOVE_STOP_DOWN':
+      state[action.index + 1].index = state[action.index].index
+      state[action.index].index = state[action.index + 1].index + 1
       return [
         ...state.slice(0, action.index),
         state[action.index + 1],
@@ -46,7 +48,10 @@ const todos = (state = [], action) => {
     case 'DELETE_STOP':
       return [
         ...state.slice(0, action.index),
-        ...state.slice(action.index + 1)
+        ...state.slice(action.index + 1).map((todo)=>{
+          todo.index--
+          return todo
+        })
       ]
     case 'UPDATE_INPUT_VALUE':
       return state.map(t =>
