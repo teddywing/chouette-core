@@ -1,4 +1,3 @@
-div#root
 = simple_form_for [@referential, @line, @route] do |f|
   .row
     .col-lg-4.col-md-4.col-sm-4.col-xs-4
@@ -25,11 +24,12 @@ div#root
   .row style="margin-top:20px"
     .col-lg-12.col-md-12.col-sm-12.col-xs-12
       #stop_points
-        div.clearfix style="margin-bottom:5px"
-          label style="margin:0" Arrêts
-          .btn.btn-primary.btn-xs.pull-right data-event="add_stop_point"
-            span.fa.fa-plus
-            = " #{t('routes.actions.add_stop_point')}"
+      / #stop_points
+      /   div.clearfix style="margin-bottom:5px"
+      /     label style="margin:0" Arrêts
+      /     .btn.btn-primary.btn-xs.pull-right data-event="add_stop_point"
+      /       span.fa.fa-plus
+      /       = " #{t('routes.actions.add_stop_point')}"
             
           / = link_to_add_association f, :stop_points, class: 'btn btn-primary btn-xs pull-right' do
           /   span.fa.fa-plus
@@ -37,9 +37,9 @@ div#root
           / THIS IS BROKEN
           / = link_to t('routes.actions.new_stop_point'), new_referential_stop_area_path(@referential), target: '_blank'
         
-        .list-group
-          = f.simple_fields_for :stop_points do |point|
-            = render 'stop_point_fields', f: point
+        / .list-group
+        /   = f.simple_fields_for :stop_points do |point|
+        /     = render 'stop_point_fields', f: point
 
   .row
     .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
@@ -47,7 +47,7 @@ div#root
       = f.button :submit, class: 'btn btn-danger'
 
 
-
+// Get JSON data for route stop points
 = javascript_tag do
   | window.itinerary_stop = "#{URI.escape(@route.stop_areas.all.to_json)}"
 
