@@ -128,13 +128,6 @@ class Referential < ActiveRecord::Base
     })
   end
 
-  def clone_association from
-    self.organisation          = from.organisation
-    self.line_referential      = from.line_referential
-    self.stop_area_referential = from.stop_area_referential
-    self.workbench             = from.workbench
-  end
-
   def self.available_srids
     [
       [ "RGF 93 Lambert 93 (2154)", 2154 ],
@@ -171,7 +164,8 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
-  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
+  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench, unless: :created_from
+  before_validation :clone_associations, :on => :create, if: :created_from
   before_create :create_schema
 
   after_create :create_referential_metadata, if: :workbench, unless: :created_from
@@ -183,6 +177,13 @@ class Referential < ActiveRecord::Base
 
   def create_referential_metadata
     self.referential_metadatas.create
+  end
+
+  def clone_associations
+    self.organisation          = created_from.organisation
+    self.line_referential      = created_from.line_referential
+    self.stop_area_referential = created_from.stop_area_referential
+    self.workbench             = created_from.workbench
   end
 
   def clone_referential_metadatas
