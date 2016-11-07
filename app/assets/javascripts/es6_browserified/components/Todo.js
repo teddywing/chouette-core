@@ -1,14 +1,15 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
 
+const firstBlock = {display: 'inline-block', verticalAlign: 'middle', width: '75%'}
+const secondBlock = {display: 'inline-block', verticalAlign: 'middle', width: '25%',  textAlign: 'right'}
+
 const Todo = (props)  => (
-  <div
-    className="list-group-item"
-  >
-    <div>
+  <div className="list-group-item">
+    <div style={firstBlock}>
       <em className="small">{props.id}</em>
     </div>
-    <div className="text-right">
+    <div style={secondBlock}>
       <div className="btn-group btn-group-sm">
         <div className="btn btn-default">
           <span className="fa fa-times"></span>
