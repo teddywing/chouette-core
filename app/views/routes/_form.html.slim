@@ -50,7 +50,6 @@
 // Get JSON data for route stop points
 = javascript_tag do
   | window.itinerary_stop = "#{URI.escape(@route.stop_areas.all.to_json)}"
-
 = javascript_include_tag 'es6_browserified/getJSON.js'
 
 / StopPoints Reactux component
