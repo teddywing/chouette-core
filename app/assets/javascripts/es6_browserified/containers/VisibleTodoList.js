@@ -3,6 +3,7 @@ var toggleTodo = require('../actions').toggleTodo
 var deleteStop = require('../actions').deleteStop
 var moveStopUp = require('../actions').moveStopUp
 var moveStopDown = require('../actions').moveStopDown
+var handleChange = require('../actions').updateInputValue
 var TodoList = require('../components/TodoList')
 
 const mapStateToProps = (state) => {
@@ -21,6 +22,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onMoveDownClick: (index) =>{
       dispatch(moveStopDown(index))
+    },
+    onChange: (index, text) =>{
+      dispatch(handleChange(index, text))
     }
   }
 }

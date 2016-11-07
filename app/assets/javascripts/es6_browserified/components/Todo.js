@@ -12,7 +12,7 @@ const Todo = (props)  => (
         <span className='strong'>Id: {props.id}</span>
       </div>
       <div style={{display: 'inline-block', width: '91%'}}>
-        <input type='text' className='form-control' id={'route_stop_points_' + props.id}/>
+        <input type='text' className='form-control' id={'route_stop_points_' + props.id} value={props.text} onChange={props.onChange}/>
       </div>
     </div>
 
@@ -48,6 +48,7 @@ Todo.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,
   onMoveDownClick: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   first: PropTypes.bool,
   last: PropTypes.bool
 }
