@@ -5,7 +5,7 @@ h3 = genealogical_title
     = link_to([@referential, @stop_area.parent], :title => t("area_types.label.#{@stop_area.parent.stop_area_type}") + "#{@stop_area.parent.name}") do
       = image_tag "map/" + @stop_area.parent.stop_area_type + ".png"
       = @stop_area.parent.name
-    
+
   .link
     = image_tag "icons/link.png"
 
@@ -18,7 +18,7 @@ h3 = genealogical_title
 
   .link = image_tag "icons/link.png"
 - else
-  .no_parent = &nbsp;
+  .no_parent
 
 .target
   = image_tag "map/" + @stop_area.stop_area_type + ".png"

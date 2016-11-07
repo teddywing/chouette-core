@@ -26,7 +26,8 @@
 
 - content_for :sidebar do
   ul.actions
-    li
-      = link_to t('stop_areas.actions.new'), new_referential_stop_area_path(@referential), class: 'add'
+    - if policy(Chouette::StopArea).create?
+      li
+        = link_to t('stop_areas.actions.new'), new_referential_stop_area_path(@referential), class: 'add'
     li
       / = link_to t('stop_areas.actions.default_geometry'), default_geometry_referential_stop_areas_path(@referential), :method => :put, :class => "calculator"
