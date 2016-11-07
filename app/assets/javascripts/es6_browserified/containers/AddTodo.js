@@ -6,14 +6,13 @@ let AddTodo = ({ dispatch }) => {
   let input
 
   return (
-    <div>
+    <div className="clearfix" style={{marginBottom: 10}}>
       <form onSubmit={e => {
         e.preventDefault()
         dispatch(addTodo())
       }}>
         <button type="submit" className="btn btn-primary btn-xs pull-right">
-          <span className="fa fa-plus"></span>
-          Ajouter un arrêt // i18N?
+          <span className="fa fa-plus"></span> Ajouter un arrêt
         </button>
       </form>
     </div>
