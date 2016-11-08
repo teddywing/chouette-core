@@ -36,7 +36,7 @@ describe Organisation, :type => :model do
     it 'should retrieve functional scope' do
       Organisation.portail_sync
       org = Organisation.find_by(code: 'RATP')
-      expect(org.sso_attributes['functional_scope']).to eq "[STIF:CODIFLIGNE:Line:C00840, STIF:CODIFLIGNE:Line:C00086]"
+      expect(org.sso_attributes['functional_scope']).to eq "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]"
     end
 
     it 'should update existing organisations' do

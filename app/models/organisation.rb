@@ -43,7 +43,7 @@ class Organisation < ActiveRecord::Base
     org = Organisation.find_or_initialize_by(code: code)
     if scope
       org.sso_attributes ||= {}
-      org.sso_attributes[:functional_scope] = scope.delete('\\"')
+      org.sso_attributes[:functional_scope] = scope
     end
     org.name      = name
     org.synced_at = Time.now
