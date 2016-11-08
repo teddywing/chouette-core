@@ -13,14 +13,20 @@ const getInitialState = () => {
   let state = []
   let datas = JSON.parse(decodeURIComponent(window.itinerary_stop))
   for (let [index, value] of datas.entries()){
+
+    let fancyText = value.name
+    if(value.zip_code && value.city_name)
+      fancyText += ", " + value.zip_code + " " + value.city_name
+
     state.push({
-      index: index,
-      text: value.name,
+      id: value.id,
+      name: value.name,
       city_name: value.city_name,
-      zip_code: value.zip_code
+      zip_code: value.zip_code,
+      text: fancyText
     })
   }
-  console.log(state)
+  // console.log(state)
   return state
 }
 
@@ -32,7 +38,7 @@ let store = createStore(
   // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 
-console.log(store.getState())
+// console.log(store.getState())
 
 render(
   <Provider store={store}>
