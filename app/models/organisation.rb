@@ -39,20 +39,22 @@ class Organisation < ActiveRecord::Base
     end
   end
 
+  def self.sync_update code, name, scope
+    org = Organisation.find_or_initialize_by(code: code)
+    if scope
+      org.sso_attributes ||= {}
+      org.sso_attributes[:functional_scope] = scope.delete('\\"')
+    end
+    org.name      = name
+    org.synced_at = Time.now
+    org.save
+    org
+  end
+
   def self.portail_sync
     self.portail_api_request.each do |el|
-      Organisation.find_or_create_by(code: el['code']).tap do |org|
-        org.name = el['name']
-        if el['functional_scope']
-          org.sso_attributes ||= {}
-          org.sso_attributes[:functional_scope] = el['functional_scope'].delete('\\"')
-        end
-        if org.changed?
-          org.synced_at = Time.now
-          org.save
-          puts "✓ Organisation #{org.name} has been updated" unless Rails.env.test?
-        end
-      end
+      org = self.sync_update el['code'], el['name'], el['functional_scope']
+      puts "✓ Organisation #{org.name} has been updated" unless Rails.env.test?
     end
   end
 end
