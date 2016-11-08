@@ -128,6 +128,7 @@ gem 'letter_opener'
 group :development do
   gem 'capistrano', '2.13.5'
   gem 'capistrano-ext'
+  gem 'capistrano-npm'
   gem 'guard'
   gem 'guard-rspec'
   gem 'rails-erd'
