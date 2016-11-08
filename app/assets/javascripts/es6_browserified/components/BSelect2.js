@@ -27,18 +27,14 @@ class BSelect3 extends React.Component{
       return (
         <div>
           <BSelect2 {...this.props} onSelect={ this.onChange.bind(this) }/>
+          <span className='fa fa-undo' onClick={this.onToggleEdit.bind(this)}></span>
         </div>
       )
     else
       return (
         <div>
-          <span
-            title="Cliquez pour changer l'arrêt"
-            style={{cursor: 'pointer', display: 'block'}}
-            onClick={this.onToggleEdit.bind(this)}
-          >
-            {this.props.value.text}
-          </span>
+          <span>{this.props.value.text} </span>
+          <span className='fa fa-pencil' onClick={this.onToggleEdit.bind(this)}></span>
         </div>
       )
   }
@@ -47,7 +43,7 @@ class BSelect3 extends React.Component{
 const BSelect2 = (props) => {
   return (
     <Select2
-      value={props.value.id}
+      value={ props.value.id }
       onSelect={ props.onSelect }
       options={{
         placeholder: 'Sélectionnez un arrêt existant...',

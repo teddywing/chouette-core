@@ -15,15 +15,12 @@ const Todo = (props) => {
         </div>
 
         <div style={{display: 'inline-block', width: '91%', verticalAlign: 'middle'}}>
-          <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} defaultData={props.defaultData}/>
+          <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} />
         </div>
       </div>
 
       <div style={secondBlock}>
         <div className='btn-group btn-group-sm'>
-          <div className='btn btn-default'>
-            <span className='fa fa-times'></span>
-          </div>
           <div
             className={'btn btn-primary' + (props.first ? ' disabled' : '')}
             onClick={props.onMoveUpClick}
@@ -56,7 +53,7 @@ Todo.propTypes = {
   first: PropTypes.bool,
   last: PropTypes.bool,
   index: PropTypes.number,
-  defaultData: PropTypes.array
+  value: PropTypes.object
 }
 
 module.exports = Todo

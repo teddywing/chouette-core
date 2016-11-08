@@ -3,7 +3,6 @@ var PropTypes = require('react').PropTypes
 var Todo = require('./Todo')
 
 const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange }) => {
-  console.log(todos)
   return (
     <div className='list-group'>
       {todos.map((todo, index) =>
@@ -19,7 +18,6 @@ const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChan
           first={ index === 0 }
           last={ index === (todos.length - 1) }
           index={ index }
-          defaultData={ todos }
           value={ todo }
         />
       )}
