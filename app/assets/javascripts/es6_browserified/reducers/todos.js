@@ -6,6 +6,7 @@ const todo = (state = {}, action, length) => {
         index: length
       }
     case 'UPDATE_INPUT_VALUE':
+      console.log('reducer', action)
       if (state.index !== action.index) {
         return state
       }
@@ -13,7 +14,7 @@ const todo = (state = {}, action, length) => {
       return Object.assign(
         {},
         state,
-        {text: action.text}
+        {text: action.text.text, id: action.text.id}
       )
     default:
       return state
@@ -28,8 +29,6 @@ const todos = (state = [], action) => {
         todo(undefined, action, state.length)
       ]
     case 'MOVE_STOP_UP':
-      state[action.index].index = state[action.index - 1].index
-      state[action.index - 1].index = state[action.index].index + 1
       return [
         ...state.slice(0, action.index - 1),
         state[action.index],
@@ -37,8 +36,6 @@ const todos = (state = [], action) => {
         ...state.slice(action.index + 1)
       ]
     case 'MOVE_STOP_DOWN':
-      state[action.index + 1].index = state[action.index].index
-      state[action.index].index = state[action.index + 1].index + 1
       return [
         ...state.slice(0, action.index),
         state[action.index + 1],
@@ -54,9 +51,10 @@ const todos = (state = [], action) => {
         })
       ]
     case 'UPDATE_INPUT_VALUE':
-      return state.map(t =>
-        todo(t, action)
-      )
+      return state.map((t, i) => (i === action.index) ? action.text : t)
+      // return state.map(t =>
+      //   todo(t, action)
+      // )
     default:
       return state
   }

@@ -24,7 +24,6 @@
   .row style="margin-top:20px"
     .col-lg-12.col-md-12.col-sm-12.col-xs-12
       #stop_points
-      / #stop_points
       /   div.clearfix style="margin-bottom:5px"
       /     label style="margin:0" Arrêts
       /     .btn.btn-primary.btn-xs.pull-right data-event="add_stop_point"
@@ -45,7 +44,6 @@
     .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
       = link_to 'Annuler', :back, class: 'btn btn-link'
       = f.button :submit, class: 'btn btn-danger'
-
 
 // Get JSON data for route stop points
 = javascript_tag do
