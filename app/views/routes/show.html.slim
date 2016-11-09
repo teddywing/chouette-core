@@ -43,17 +43,15 @@
 
 p.after_map
 
-#accordion.panel-group
-  .panel.panel-default
-    .panel-heading
-      h4.panel-title
-        a data-toggle="collapse" data-parent="#accordion" href="#stop_points"
-          = t('.stop_points')
-
-    #stop_points.panel-collapse.collapse
-      .panel-body
-        .stop_points.paginated_content
-          = paginated_content(@route.stop_points, "stop_points/stop_point")
+h3 = t('.stop_points')
+#stop_points.list-group
+  - @route.stop_points.each do |stop|
+    .list-group-item style='display: table;width: 100%;'
+      div style='display: table-cell;vertical-align: middle;'
+        div style='display: inline-block;width: 9%; vertical-align: middle;'
+          = "##{stop.stop_area.id}"
+        div style='display: inline-block;width: 91%; vertical-align: middle;'
+          = stop.stop_area.inspect
 
 #accordion.panel-group
   .panel.panel-default

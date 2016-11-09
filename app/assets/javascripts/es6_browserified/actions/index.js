@@ -23,7 +23,6 @@ module.exports = {
     }
   },
   updateInputValue: (index, text) => {
-    console.log('action',index, text)
     return {
       type : "UPDATE_INPUT_VALUE",
       index,

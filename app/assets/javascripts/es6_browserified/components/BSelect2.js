@@ -18,40 +18,56 @@ class BSelect3 extends React.Component{
     this.setState({edit: !this.state.edit})
   }
   onChange(e) {
-    console.log(e.currentTarget.value, e.currentTarget.textContent)
-    this.props.onChange(this.props.index, {text: e.currentTarget.textContent, id: e.currentTarget.value})
+    this.props.onChange(this.props.index, {
+      text: e.currentTarget.textContent, id: e.currentTarget.value
+    })
     this.setState({edit: false})
   }
   render() {
     if(this.state.edit)
       return (
-        <div>
+        <div className='input-group select2-bootstrap-append'>
           <BSelect2 {...this.props} onSelect={ this.onChange.bind(this) }/>
-        </div>
-      )
-    else
-      return (
-        <div>
-          <span
-            title="Cliquez pour changer l'arrêt"
-            style={{cursor: 'pointer', display: 'block'}}
-            onClick={this.onToggleEdit.bind(this)}
-          >
-            {this.props.value.text}
+
+          <span className='input-group-btn'>
+            <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
+              <span className='fa fa-undo'></span>
+            </button>
           </span>
         </div>
       )
+    else
+      if(!this.props.value.id)
+        return (
+          <div>
+            <BSelect2 {...this.props} onSelect={ this.onChange.bind(this) }/>
+          </div>
+        )
+      else
+        return (
+          <div className='input-group'>
+            <span className='form-control'>{this.props.value.text} </span>
+            <span className='input-group-btn'>
+              <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
+                <span className='fa fa-pencil'></span>
+              </button>
+            </span>
+          </div>
+        )
   }
 }
 
 const BSelect2 = (props) => {
   return (
     <Select2
-      value={props.value.id}
+      value={ props.value.id }
       onSelect={ props.onSelect }
       options={{
         placeholder: 'Sélectionnez un arrêt existant...',
+        allowClear: true,
+        language: 'fr', /* Doesn't seem to work... :( */
         theme: 'bootstrap',
+        width: '100%',
         ajax: {
           url: origin + path + '/autocomplete_stop_areas.json',
           dataType: 'json',
