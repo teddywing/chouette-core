@@ -34,8 +34,8 @@ describe "Routes", :type => :feature do
       click_link "Ajouter une séquence d'arrêts"
       fill_in "route_name", :with => "A to B"
       fill_in "Indice", :with => "AB"
-      select 'aller', :from => "route_direction_code"
-      select 'aller', :from => "route_wayback_code"
+      select 'Aller', :from => "route_direction"
+      select 'Aller', :from => "route_wayback"
       click_button("Créer séquence d'arrêts")
       expect(page).to have_content("A to B")
     end

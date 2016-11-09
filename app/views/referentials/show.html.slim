@@ -44,7 +44,7 @@ h2
 
   - if @referential.api_keys.present?
     h3.api_keys = t('.api_keys')
-    
+
     .api_keys.paginated_content
       = paginated_content(@referential.api_keys, "api_keys/api_key")
 

@@ -33,3 +33,20 @@ en:
       netex: "Experimental"
       hub: "Specific Transdev Format"
       kml: "line, route, ... drawings on Keyhole Markup Language format"
+    route:
+      direction:
+        straight_forward: 'Straight Forward'
+        backward: 'Backward'
+        clockwise: 'ClockWise'
+        counter_clockwise: 'Counter Clockwise'
+        north: 'North'
+        north_west: 'North West'
+        west: 'West'
+        south_west: 'South West'
+        south: 'South'
+        south_east: 'South East'
+        east: 'East'
+        north_east: 'North East'
+      wayback:
+        straight_forward: 'Straight Forward'
+        backward: 'Backward'

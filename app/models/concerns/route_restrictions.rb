@@ -8,7 +8,7 @@ module RouteRestrictions
     # HUB-37
     def wayback_code_limitation
       return unless hub_restricted?
-      errors.add( :wayback_code, I18n.t('hub.routes.wayback_code_exclusive')) if line.routes.reject {|r| r.id==id}.map(&:wayback_code).include?( wayback_code)
+      errors.add( :wayback, I18n.t('hub.routes.wayback_code_exclusive')) if line.routes.reject {|r| r.id==id}.map(&:wayback).include?( wayback)
     end
 
     # HUB-37

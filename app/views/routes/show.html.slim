@@ -21,16 +21,16 @@
       = @route.comment
 
     p
-      label = "#{@route.human_attribute_name(:direction_code)} : "
-      - if @route.direction_code
-        = t("directions.label.#{@route.direction_code}").capitalize
+      label = "#{@route.human_attribute_name(:direction)} : "
+      - if @route.direction
+        = @route.direction_text
       - else
         = t(".undefined")
 
     p
-      label = "#{@route.human_attribute_name(:wayback_code)} : "
-      - if @route.wayback_code
-        = t("waybacks.label.#{@route.wayback_code}").capitalize
+      label = "#{@route.human_attribute_name(:wayback)} : "
+      - if @route.wayback
+        = @route.wayback_text
       - else
         = t(".undefined")
 
@@ -76,10 +76,10 @@ p.after_map
   ul.actions
     - if @route.stop_points.size >= 2
       li = link_to t('journey_patterns.actions.new'), new_referential_line_route_journey_pattern_path(@referential, @line, @route), class: 'add'
-    
+
     - if @route.stop_points.present?
       li = link_to t('routes.actions.edit_boarding_alighting'), edit_boarding_alighting_referential_line_route_path(@referential, @line, @route), class: 'edit'
-    
+
     - if @route.journey_patterns.size > 0
       li = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'clock'
 

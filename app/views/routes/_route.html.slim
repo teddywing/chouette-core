@@ -11,9 +11,9 @@
       h5
         = link_to [@referential, @line, route], class: 'preview', title: "#{Chouette::Route.model_name.human.capitalize} #{route.name}" do
           span.name
-            - if route.wayback_code
+            - if route.wayback
               = fonticon_wayback(route.wayback)
-            
+
             = truncate(route.name, length: 20)
 
   .panel-body
@@ -38,6 +38,6 @@
 
     p
       - if !route.direction.blank?
-        = "#{route.human_attribute_name('direction_code')} : #{t('directions.label.'+route.direction_code)}"
+        => "#{route.human_attribute_name('direction')} : #{route.direction_text}"
       - else
         br

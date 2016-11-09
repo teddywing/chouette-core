@@ -6,11 +6,11 @@ module RoutesHelper
   end
 
   def fonticon_wayback(wayback)
-    if wayback == "A"
+    if wayback == 'straight_forward'
       return '<i class="fa fa-arrow-right"></i>'.html_safe
     else
-      return '<i class="fa fa-arrow-left"></i>'.html_safe  
+      return '<i class="fa fa-arrow-left"></i>'.html_safe
     end
   end
-  
+
 end

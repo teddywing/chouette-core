@@ -1,14 +1,17 @@
 class Chouette::Route < Chouette::TridentActiveRecord
   include RouteRestrictions
 
+  extend Enumerize
+  extend ActiveModel::Naming
+
+  enumerize :direction, in: %i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)
+  enumerize :wayback, in: %i(straight_forward backward)
+
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 
-  attr_accessor :wayback_code
-  attr_accessor :direction_code
-
   def self.nullable_attributes
-    [:published_name, :comment, :number, :name]
+    [:published_name, :comment, :number, :name, :direction, :wayback]
   end
 
   belongs_to :line
@@ -61,8 +64,11 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   # validates_presence_of :name
   validates_presence_of :line
-  # validates_presence_of :direction_code
-  # validates_presence_of :wayback_code
+  # validates_presence_of :direction
+  # validates_presence_of :wayback
+
+  validates :direction, inclusion: { in: self.direction.values }
+  validates :wayback, inclusion: { in: self.wayback.values }
 
   before_destroy :dereference_opposite_route
 
@@ -94,52 +100,6 @@ class Chouette::Route < Chouette::TridentActiveRecord
         .joins(:journey_pattern, :vehicle_journey_at_stops)
         .where("vehicle_journey_at_stops.stop_point_id=journey_patterns.departure_stop_point_id")
         .order( "vehicle_journey_at_stops.departure_time")
-  end
-
-  def self.direction_binding
-    { "A" => "straight_forward",
-      "R" => "backward",
-      "ClockWise" => "clock_wise",
-      "CounterClockWise" => "counter_clock_wise",
-      "North" => "north",
-      "NorthWest" => "north_west",
-      "West" => "west",
-      "SouthWest" => "south_west",
-      "South" => "south",
-      "SouthEast" => "south_east",
-      "East" => "east",
-      "NorthEast" => "north_east"}
-  end
-  def direction_code
-    return nil if self.class.direction_binding[direction].nil?
-    Chouette::Direction.new( self.class.direction_binding[direction])
-  end
-  def direction_code=(direction_code)
-    self.direction = nil
-    self.class.direction_binding.each do |k,v|
-      self.direction = k if v==direction_code
-    end
-  end
-  @@directions = nil
-  def self.directions
-    @@directions ||= Chouette::Direction.all
-  end
-  def self.wayback_binding
-    { "A" => "straight_forward", "R" => "backward"}
-  end
-  def wayback_code
-    return nil if self.class.wayback_binding[wayback].nil?
-    Chouette::Wayback.new( self.class.wayback_binding[wayback])
-  end
-  def wayback_code=(wayback_code)
-    self.wayback = nil
-    self.class.wayback_binding.each do |k,v|
-      self.wayback = k if v==wayback_code
-    end
-  end
-  @@waybacks = nil
-  def self.waybacks
-    @@waybacks ||= Chouette::Wayback.all
   end
 
   def stop_point_permutation?( stop_point_ids)
