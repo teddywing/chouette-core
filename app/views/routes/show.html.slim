@@ -43,15 +43,20 @@
 
 p.after_map
 
-h3 = t('.stop_points')
-#stop_points.list-group
-  - @route.stop_points.each do |stop|
-    .list-group-item style='display: table;width: 100%;'
-      div style='display: table-cell;vertical-align: middle;'
-        div style='display: inline-block;width: 9%; vertical-align: middle;'
-          = "##{stop.stop_area.id}"
-        div style='display: inline-block;width: 91%; vertical-align: middle;'
-          = stop.stop_area.inspect
+#stop_points.panel.panel-default
+  .panel-heading = t('.stop_points')
+  
+  .list-group
+    - @route.stop_points.each do |point|
+      .list-group-item style='display: table;width: 100%;'
+        div style='display: table-cell;vertical-align: middle;'
+          div style='display: inline-block;width: 9%; vertical-align: middle;'
+            = "##{point.stop_area.id}"
+          div style='display: inline-block;width: 91%; vertical-align: middle;'
+            - if point.stop_area.zip_code && point.stop_area.city_name
+              = "#{point.stop_area.name}, #{point.stop_area.zip_code} #{point.stop_area.city_name}"
+            - else
+              = "#{point.stop_area.name}"
 
 #accordion.panel-group
   .panel.panel-default
