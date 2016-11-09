@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024135931) do
+ActiveRecord::Schema.define(version: 20161109160857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -361,6 +361,8 @@ ActiveRecord::Schema.define(version: 20161024135931) do
     t.datetime "synced_at"
     t.hstore   "sso_attributes"
   end
+
+  add_index "organisations", ["code"], :name => "index_organisations_on_code", :unique => true
 
   create_table "pt_links", force: true do |t|
     t.integer  "start_of_link_id", limit: 8
