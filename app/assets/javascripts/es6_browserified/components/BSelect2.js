@@ -18,8 +18,9 @@ class BSelect3 extends React.Component{
     this.setState({edit: !this.state.edit})
   }
   onChange(e) {
-    console.log(e.currentTarget.value, e.currentTarget.textContent)
-    this.props.onChange(this.props.index, {text: e.currentTarget.textContent, id: e.currentTarget.value})
+    this.props.onChange(this.props.index, {
+      text: e.currentTarget.textContent, id: e.currentTarget.value
+    })
     this.setState({edit: false})
   }
   render() {
@@ -56,7 +57,10 @@ const BSelect2 = (props) => {
       onSelect={ props.onSelect }
       options={{
         placeholder: 'Sélectionnez un arrêt existant...',
+        allowClear: true,
+        language: 'fr', /* Doesn't seem to work... :( */
         theme: 'bootstrap',
+        width: '100%',
         ajax: {
           url: origin + path + '/autocomplete_stop_areas.json',
           dataType: 'json',

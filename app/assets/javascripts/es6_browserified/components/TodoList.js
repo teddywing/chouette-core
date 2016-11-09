@@ -10,7 +10,6 @@ const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChan
           key={'item-' + index}
           onDeleteClick={() => onDeleteClick(index)}
           onMoveUpClick={() => {
-            console.log(index, todos)
             onMoveUpClick(index)}
           }
           onMoveDownClick={() => onMoveDownClick(index)}
