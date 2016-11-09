@@ -10,11 +10,11 @@ const Todo = (props) => {
   return (
     <div className='list-group-item' style={Container}>
       <div style={firstBlock}>
-        <div style={{display: 'inline-block', width: '9%', verticalAlign: 'middle'}}>
-          <span className='strong'>#{props.index}</span>
+        <div style={{display: 'inline-block', width: '10%', verticalAlign: 'middle', textAlign: 'right'}}>
+          <span className='label label-default' style={{marginRight: '10'}}>{props.value.stoparea_id}</span>
         </div>
 
-        <div style={{display: 'inline-block', width: '91%', verticalAlign: 'middle'}}>
+        <div style={{display: 'inline-block', width: '90%', verticalAlign: 'middle'}}>
           <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} />
         </div>
       </div>
