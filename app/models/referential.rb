@@ -30,7 +30,7 @@ class Referential < ActiveRecord::Base
   validates_presence_of :line_referential
 
   belongs_to :created_from, class_name: 'Referential'
-  has_many :lines, through: :line_referential
+  has_many :associated_lines, through: :line_referential, source: :lines
   has_many :companies, through: :line_referential
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
@@ -42,6 +42,10 @@ class Referential < ActiveRecord::Base
   validates_presence_of :stop_area_referential
   has_many :stop_areas, through: :stop_area_referential
   belongs_to :workbench
+
+  def lines
+    workbench ? workbench.lines : associated_lines
+  end
 
   def slug_excluded_values
     if ! slug.nil?

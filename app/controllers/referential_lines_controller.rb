@@ -82,7 +82,7 @@ class ReferentialLinesController < ChouetteController
       params[:q]["group_of_lines_id_blank"] = "1"
     end
 
-    @q = referential.workbench.lines.search(params[:q])
+    @q = referential.lines.search(params[:q])
     @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
   end
 

@@ -63,7 +63,7 @@ nav.navbar.navbar-default.navbar-fixed-top role="navigation"
 
               li
                 = link_to referential_lines_path(@referential) do
-                  span.badge.pull-right = @referential.workbench.lines.size
+                  span.badge.pull-right = @referential.lines.size
                   = Referential.human_attribute_name("lines")
 
               li
