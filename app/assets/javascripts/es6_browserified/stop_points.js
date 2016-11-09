@@ -8,6 +8,7 @@ var App = require('./components/App')
 // var createLogger = require('redux-logger').default
 // var thunkMiddleware = require('redux-thunk').default
 // var promise = require('redux-promise')
+var addInput = require('./form_helper').addInput
 
 const getInitialState = () => {
   let state = []
@@ -48,6 +49,9 @@ render(
 document.querySelector('input[name=commit]').addEventListener('click', (event)=>{
   let state = store.getState()
   for (let [i, todo] of state.todos.entries()){
+    if (todo.stoppoint_id == undefined){
+      todo.stoppoint_id = ""
+    }
     addInput('id',todo.stoppoint_id, i)
     addInput('stop_area_id',todo.stoparea_id, i)
   }

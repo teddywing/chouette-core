@@ -16,7 +16,7 @@ const todo = (state = {}, action, length) => {
       return Object.assign(
         {},
         state,
-        {text: action.text.text, id: action.text.stoparea_id}
+        {text: action.text.text, stoparea_id: action.text.stoparea_id}
       )
     default:
       return state

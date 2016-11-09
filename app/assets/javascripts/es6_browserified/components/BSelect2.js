@@ -19,7 +19,7 @@ class BSelect3 extends React.Component{
   }
   onChange(e) {
     this.props.onChange(this.props.index, {
-      text: e.currentTarget.textContent, id: e.currentTarget.value
+      text: e.currentTarget.textContent, stoparea_id: e.currentTarget.value
     })
     this.setState({edit: false})
   }
@@ -37,7 +37,7 @@ class BSelect3 extends React.Component{
         </div>
       )
     else
-      if(!this.props.value.id)
+      if(!this.props.value.stoparea_id)
         return (
           <div>
             <BSelect2 {...this.props} onSelect={ this.onChange.bind(this) }/>
