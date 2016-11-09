@@ -2,7 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var BSelect2 = require('./BSelect2')
 
-const Container = {display: 'table',  width: '100%'}
+const Container = {display: 'table', width: '100%'}
 const firstBlock = {display: 'table-cell', verticalAlign: 'middle'}
 const secondBlock = {display: 'table-cell', verticalAlign: 'middle', width: '150px', textAlign: 'right'}
 
