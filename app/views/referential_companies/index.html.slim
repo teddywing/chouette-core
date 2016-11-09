@@ -19,6 +19,7 @@
 
 - content_for :sidebar do
   ul.actions
-    li
-      = link_to t('companies.actions.new'), new_referential_company_path(@referential), class: 'add'
-  br
+    - if policy(Chouette::Company).create?
+      li
+        = link_to t('companies.actions.new'), new_referential_company_path(@referential), class: 'add'
+    br

@@ -41,39 +41,6 @@ describe "Routes", :type => :feature do
     end
   end
 
-  describe "from line's page, select a route and edit it" do
-    it "return to line's page with changed name" do
-      visit referential_line_path(referential,line)
-      click_link "#{route.name}"
-      click_link "Modifier cette séquence d'arrêts"
-      fill_in "route_name", :with => "#{route.name}-changed"
-      click_button("Modifier séquence d'arrêts")
-      expect(page).to have_content("#{route.name}-changed")
-    end
-  end
-
-  describe "from line's page, select a route and delete it" do
-    it "return to line's page without route name" do
-      visit referential_line_path(referential,line)
-      click_link "#{route.name}"
-      click_link "Supprimer cette séquence d'arrêts"
-      expect(page).not_to have_content(route.name)
-    end
-  end
-
-  describe "from route's page, select edit boarding/alighting and update it" do
-    it "Edits boarding/alighting properties on route stops" do
-      visit referential_line_route_path(referential, line, route)
-      click_link I18n.t('routes.actions.edit_boarding_alighting')
-      expect(page).to have_content(I18n.t('routes.edit_boarding_alighting.title'))
-      stop_points.each do |sp|
-        expect(page).to have_content(sp.stop_area.name)
-        expect(page).to have_content(sp.for_boarding)
-        expect(page).to have_content(sp.for_alighting)
-      end
-    end
-  end
-
   describe "Modifies boarding/alighting properties on route stops" do
     it "Puts (http) an update request" do
       #visit edit_boarding_alighting_referential_line_route_path(referential, line, route)

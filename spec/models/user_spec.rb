@@ -36,7 +36,7 @@ describe User, :type => :model do
       it 'should store organisation functional_scope' do
         User.authenticate_with_cas_ticket(ticket)
         org = Organisation.find_by(code: ticket.extra_attributes[:organisation_code])
-        expect(org.sso_attributes['functional_scope']).to eq "[STIF:CODIFLIGNE:Line:C00840, STIF:CODIFLIGNE:Line:C00086]"
+        expect(org.sso_attributes['functional_scope']).to eq "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]"
       end
 
       it 'should not create a new organisation if organisation is already present' do
