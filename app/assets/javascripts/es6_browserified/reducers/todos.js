@@ -1,3 +1,5 @@
+var addInput = require('../form_helper').addInput
+
 const todo = (state = {}, action, length) => {
   switch (action.type) {
     case 'ADD_STOP':
@@ -14,10 +16,17 @@ const todo = (state = {}, action, length) => {
       return Object.assign(
         {},
         state,
-        {text: action.text.text, id: action.text.id}
+        {text: action.text.text, id: action.text.stoparea_id}
       )
     default:
       return state
+  }
+}
+const updateFormForDeletion = (stop) =>{
+  if (stop.stoppoint_id !== undefined){
+    let now = Date.now()
+    addInput('id', stop.stoppoint_id, now)
+    addInput('_destroy', 'true', now)
   }
 }
 
@@ -43,6 +52,7 @@ const todos = (state = [], action) => {
         ...state.slice(action.index + 2)
       ]
     case 'DELETE_STOP':
+      updateFormForDeletion(state[action.index])
       return [
         ...state.slice(0, action.index),
         ...state.slice(action.index + 1).map((todo)=>{

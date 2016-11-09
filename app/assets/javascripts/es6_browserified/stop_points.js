@@ -19,14 +19,14 @@ const getInitialState = () => {
       fancyText += ", " + value.zip_code + " " + value.city_name
 
     state.push({
-      id: value.id,
-      name: value.name,
+      stoppoint_id: value.stoppoint_id,
+      stoparea_id: value.stoparea_id,
+      index: index,
       city_name: value.city_name,
       zip_code: value.zip_code,
       text: fancyText
     })
   }
-  // console.log(state)
   return state
 }
 
@@ -38,11 +38,17 @@ let store = createStore(
   // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 
-// console.log(store.getState())
-
 render(
   <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('stop_points')
 )
+
+document.querySelector('input[name=commit]').addEventListener('click', (event)=>{
+  let state = store.getState()
+  for (let [i, todo] of state.todos.entries()){
+    addInput('id',todo.stoppoint_id, i)
+    addInput('stop_area_id',todo.stoparea_id, i)
+  }
+})

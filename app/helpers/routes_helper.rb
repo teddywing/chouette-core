@@ -13,4 +13,8 @@ module RoutesHelper
     end
   end
 
+  def route_json_for_edit(route)
+    route.stop_points.includes(:stop_area).map { |s| s.stop_area.attributes.slice("name","city_name", "zip_code").merge(stoppoint_id: s.id, stoparea_id: s.stop_area.id) }.to_json
+  end
+
 end

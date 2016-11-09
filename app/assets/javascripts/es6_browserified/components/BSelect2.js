@@ -60,7 +60,7 @@ class BSelect3 extends React.Component{
 const BSelect2 = (props) => {
   return (
     <Select2
-      value={ props.value.id }
+      value={props.value.stoparea_id}
       onSelect={ props.onSelect }
       options={{
         placeholder: 'Sélectionnez un arrêt existant...',
