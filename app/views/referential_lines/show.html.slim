@@ -117,7 +117,7 @@ h3.routes = t('.itineraries')
 - if @line.group_of_lines.any?
   h3.line_group_of_lines = t('.group_of_lines')
   .group_of_lines.paginated_content
-    = paginated_content @group_of_lines, "group_of_lines/group_of_line", :delete => false
+    = paginated_content @group_of_lines, "referential_group_of_lines/group_of_line", :delete => false
 
 - content_for :sidebar do
   ul.actions
@@ -134,6 +134,6 @@ h3.routes = t('.itineraries')
     - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
         / FIXME #825
         li
-        / = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
+        = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
 
   = creation_tag(@line)
