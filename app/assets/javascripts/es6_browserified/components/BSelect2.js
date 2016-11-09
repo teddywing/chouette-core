@@ -28,6 +28,7 @@ class BSelect3 extends React.Component{
       return (
         <div className='input-group select2-bootstrap-append'>
           <BSelect2 {...this.props} onSelect={ this.onChange.bind(this) }/>
+
           <span className='input-group-btn'>
             <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
               <span className='fa fa-undo'></span>
@@ -36,17 +37,23 @@ class BSelect3 extends React.Component{
         </div>
       )
     else
-      return (
-        <div className='input-group'>
-          <span className='form-control'>{this.props.value.text} </span>
-
-          <span className='input-group-btn'>
-            <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
-              <span className='fa fa-pencil'></span>
-            </button>
-          </span>
-        </div>
-      )
+      if(!this.props.value.id)
+        return (
+          <div>
+            <BSelect2 {...this.props} onSelect={ this.onChange.bind(this) }/>
+          </div>
+        )
+      else
+        return (
+          <div className='input-group'>
+            <span className='form-control'>{this.props.value.text} </span>
+            <span className='input-group-btn'>
+              <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
+                <span className='fa fa-pencil'></span>
+              </button>
+            </span>
+          </div>
+        )
   }
 }
 
