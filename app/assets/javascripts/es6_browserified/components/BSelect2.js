@@ -6,6 +6,7 @@ var Select2 = require('react-select2')
 var origin = window.location.origin
 var path = window.location.pathname.split('/', 3).join('/')
 
+
 class BSelect3 extends React.Component{
   constructor(props) {
     super(props)
@@ -104,7 +105,6 @@ const BSelect2 = (props) => {
   )
 }
 
-// to fix: this is for custom results return
 const formatRepo = (props) => {
   if(props.text) return props.text
   // console.log(props)
