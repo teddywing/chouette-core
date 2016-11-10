@@ -48,16 +48,19 @@ p.after_map
   
   .list-group
     - @route.stop_points.each do |point|
-      .list-group-item style='display: table;width: 100%;'
+      - if point.stop_area.zip_code && point.stop_area.city_name
+        - linktxt = "#{point.stop_area.name}, #{point.stop_area.zip_code} #{point.stop_area.city_name}"
+      - else
+        - linktxt = "#{point.stop_area.name}"
+      
+      = link_to [@referential, point.stop_area], { style: 'display: table;width: 100%;', class: 'list-group-item', title: "Voir l'arrêt '#{linktxt}'" } do
         div style='display: table-cell;vertical-align: middle;'
           div style='display: inline-block;width: 10%;vertical-align: middle;text-align: right;'
             span.label.label-default style='margin-right: 10px;'
               = "#{point.stop_area.id}"
           div style='display: inline-block;width: 90%;vertical-align: middle;'
-            - if point.stop_area.zip_code && point.stop_area.city_name
-              = "#{point.stop_area.name}, #{point.stop_area.zip_code} #{point.stop_area.city_name}"
-            - else
-              = "#{point.stop_area.name}"
+            = linktxt
+            
 
 #accordion.panel-group
   .panel.panel-default

@@ -4,14 +4,14 @@ var BSelect2 = require('./BSelect2')
 
 const Container = {display: 'table', width: '100%'}
 const firstBlock = {display: 'table-cell', verticalAlign: 'middle'}
-const secondBlock = {display: 'table-cell', verticalAlign: 'middle', width: '150px', textAlign: 'right'}
+const secondBlock = {display: 'table-cell', verticalAlign: 'middle', width: 150, textAlign: 'right'}
 
 const Todo = (props) => {
   return (
     <div className='list-group-item' style={Container}>
       <div style={firstBlock}>
         <div style={{display: 'inline-block', width: '10%', verticalAlign: 'middle', textAlign: 'right'}}>
-          <span className='label label-default' style={{marginRight: '10'}}>{props.value.stoparea_id}</span>
+          <span className='label label-default' style={{marginRight: 10}}>{props.value.stoparea_id}</span>
         </div>
 
         <div style={{display: 'inline-block', width: '90%', verticalAlign: 'middle'}}>
