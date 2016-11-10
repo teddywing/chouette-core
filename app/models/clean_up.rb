@@ -18,24 +18,12 @@ class CleanUp
     false
   end
 
-  def vehicle_journeys
-    Chouette::VehicleJourney.where "id not in (select distinct vehicle_journey_id from time_tables_vehicle_journeys)"
-  end
-
-  def journey_patterns
-    Chouette::JourneyPattern.where "id not in (select distinct journey_pattern_id from vehicle_journeys)"
-  end
-
-  def routes
-    Chouette::Route.where "id not in (select distinct route_id from journey_patterns)"
-  end
-
-  def lines
-    Chouette::Line.where "id not in (select distinct line_id from routes)"
-  end
-
   def physical_stop_areas
-    Chouette::StopArea.physical
+    Chouette::StopArea.physical.includes(:stop_points).where(:stop_points => {id: nil})
+  end
+
+  def clean_physical_stop_areas
+     Chouette::StopArea.where(id: self.physical_stop_areas.pluck(:id)).delete_all
   end
 
   def commercial_stop_areas
@@ -50,6 +38,34 @@ class CleanUp
     Chouette::StopArea.itl
   end
 
+  def vehicle_journeys
+    Chouette::VehicleJourney.includes(:time_tables).where(:time_tables => {id: nil})
+  end
+  def clean_vehicle_journeys
+    Chouette::VehicleJourney.where(id: self.vehicle_journeys.pluck(:id)).delete_all
+  end
+
+  def lines
+    Chouette::Line.includes(:routes).where(:routes => {id: nil})
+  end
+  def clean_lines
+    Chouette::Line.where(id: self.lines.pluck(:id)).delete_all
+  end
+
+  def routes
+    Chouette::Route.includes(:journey_patterns).where(:journey_patterns => {id: nil})
+  end
+  def clean_routes
+    Chouette::Route.where(id: self.routes.pluck(:id)).delete_all
+  end
+
+  def journey_patterns
+    Chouette::JourneyPattern.includes(:vehicle_journeys).where(:vehicle_journeys => {id: nil})
+  end
+  def clean_journey_patterns
+    Chouette::JourneyPattern.where(id: self.journey_patterns.pluck(:id)).delete_all
+  end
+
   def clean
     # as foreign keys are presents , delete method can be used for faster performance
     result = CleanUpResult.new
@@ -59,44 +75,15 @@ class CleanUp
     tms.each do |tm|
       tm.delete
     end
-    # remove vehiclejourneys without timetables
-    vehicle_journeys.find_each do |vj|
-      if vj.time_tables.size == 0
-        result.vehicle_journey_count += 1
-        vj.delete
-      end
-    end
-    # remove journeypatterns without vehicle journeys
-    journey_patterns.find_each do |jp|
-      if jp.vehicle_journeys.size == 0
-        result.journey_pattern_count += 1
-        jp.delete
-      end
-    end
-    # remove routes without journeypatterns
-    routes.find_each do |r|
-      if r.journey_patterns.size == 0
-        result.route_count += 1
-        r.delete
-      end
-    end
-    # if asked remove lines without routes
-    if keep_lines == "0"
-      lines.find_each do |l|
-        if l.routes.size == 0
-          result.line_count += 1
-          l.delete
-        end
-      end
-    end
-    # if asked remove stops without children (recurse)
+
+    result.vehicle_journey_count = self.clean_vehicle_journeys
+    result.journey_pattern_count = self.clean_journey_patterns
+    result.route_count           = self.clean_routes
+
+    result.line_count = self.clean_lines if keep_lines == "0"
+    result.stop_count = self.clean_physical_stop_areas if keep_stops == "0"
+
     if keep_stops == "0"
-      physical_stop_areas.find_each do |bp|
-        if bp.stop_points.size == 0
-          result.stop_count += 1
-          bp.delete
-        end
-      end
       commercial_stop_areas.find_each do |csp|
         if csp.children.size == 0
           result.stop_count += 1
