@@ -21,7 +21,6 @@ Apartment.configure do |config|
     "Referential",
     "Organisation",
     "User",
-    "Delayed::Backend::ActiveRecord::Job",
     "Api::V1::ApiKey",
     "RuleParameterSet",
     "StopAreaReferential",

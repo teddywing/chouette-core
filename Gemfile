@@ -115,7 +115,6 @@ gem 'rabl'
 
 gem 'sidekiq'
 gem 'sinatra'
-gem 'delayed_job_active_record'
 gem 'whenever', github: 'af83/whenever', require: false # '~> 0.9'
 gem 'rake'
 gem 'devise-async'

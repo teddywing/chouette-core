@@ -78,10 +78,3 @@ namespace :deploy do
     run "cd #{current_path} && #{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake db:seed RAILS_ENV=#{rails_env}"
   end
 end
-
-namespace :delayed_job do
-  task :restart do
-    run "sudo /etc/init.d/stif-boiv restart"
-  end
-  # after "deploy:restart", "delayed_job:restart"
-end
