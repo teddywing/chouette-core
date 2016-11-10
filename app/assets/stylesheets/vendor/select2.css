@@ -482,3 +482,17 @@
 
 .select2-container--classic.select2-container--open .select2-dropdown {
   border-color: #5897fb; }
+
+/* Do the shit, dude */
+.select2-container .select2-results__options .select2-results__option.select2-results__message {
+  display: none;
+}
+.select2-container .select2-results__options .select2-results__option.loading-results {
+  font-size: 0;
+}
+.select2-container .select2-results__options .select2-results__option.loading-results::before {
+  content: "Recherche en cours...";
+  font-size: 14px;
+  font-style: italic;
+  display: inline;
+}
