@@ -2,6 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var Select2 = require('react-select2')
 
+
 // get JSON full path
 var origin = window.location.origin
 var path = window.location.pathname.split('/', 3).join('/')
@@ -65,44 +66,51 @@ class BSelect3 extends React.Component{
   }
 }
 
-const BSelect2 = (props) => {
-  return (
-    <Select2
-      value={props.value.stoparea_id}
-      onSelect={ props.onSelect }
-      options={{
-        placeholder: 'Sélectionnez un arrêt existant...',
-        allowClear: true,
-        language: 'fr', /* Doesn't seem to work... :( */
-        theme: 'bootstrap',
-        width: '100%',
-        ajax: {
-          url: origin + path + '/autocomplete_stop_areas.json',
-          dataType: 'json',
-          delay: '500',
-          data: function(params) {
-            return {
-              q: params.term
-            };
-          },
-          processResults: function(data, params) {
-            return {
-              results: data.map(
-                item => Object.assign(
-                  {},
-                  item,
-                  { text: item.name + ", " + item.zip_code + " " + item.short_city_name }
+class BSelect2 extends React.Component{
+  componentDidMount() {
+    this.refs.newSelect.el.select2('open')
+  }
+
+  render() {
+    return (
+      <Select2
+        value={ this.props.value.stoparea_id }
+        onSelect={ this.props.onSelect }
+        ref='newSelect'
+        options={{
+          placeholder: 'Sélectionnez un arrêt existant...',
+          allowClear: true,
+          language: 'fr', /* Doesn't seem to work... :( */
+          theme: 'bootstrap',
+          width: '100%',
+          ajax: {
+            url: origin + path + '/autocomplete_stop_areas.json',
+            dataType: 'json',
+            delay: '500',
+            data: function(params) {
+              return {
+                q: params.term
+              };
+            },
+            processResults: function(data, params) {
+              return {
+                results: data.map(
+                  item => Object.assign(
+                    {},
+                    item,
+                    { text: item.name + ", " + item.zip_code + " " + item.short_city_name }
+                  )
                 )
-              )
-            };
+              };
+            },
+            cache: true
           },
-          cache: true
-        },
-        minimumInputLength: 3,
-        templateResult: formatRepo
-      }}
-    />
-  )
+          minimumInputLength: 3,
+          templateResult: formatRepo
+        }}
+      />
+    )
+  }
 }
 
 const formatRepo = (props) => {
