@@ -47,7 +47,13 @@ class BSelect3 extends React.Component{
       else
         return (
           <div className='input-group'>
-            <a className='form-control' href={origin + path + '/stop_areas/' + this.props.value.stoparea_id}>{this.props.value.text}</a>
+            <a
+              className='form-control form-control-link'
+              href={origin + path + '/stop_areas/' + this.props.value.stoparea_id}
+              title={"Voir l'arrêt '" + this.props.value.text + "'"}
+            >
+              {this.props.value.text}
+            </a>
             <span className='input-group-btn'>
               <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
                 <span className='fa fa-pencil'></span>
