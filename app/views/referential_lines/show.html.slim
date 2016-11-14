@@ -54,51 +54,51 @@
       label = "#{@line.human_attribute_name('url')} : "
       = @line.url
 
-    p
-      label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "
-
-      - if @line.mobility_restricted_suitability.nil?
-        = @line.human_attribute_name("unspecified_mrs")
-      - elsif @line.mobility_restricted_suitability?
-        = @line.human_attribute_name("accessible")
-      - else
-        = @line.human_attribute_name("not_accessible")
-
-      br
-      = "#{@line.human_attribute_name('number_of_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', true).count}"
-      br
-      = "#{@line.human_attribute_name('number_of_non_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', false).count}"
-      br
-      = "#{@line.human_attribute_name('number_of_null_mrs_vj')} : "
-      = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count)
-
-    p
-      label = "#{@line.human_attribute_name('flexible_service')} : "
-
-      - if @line.flexible_service.nil?
-        = @line.human_attribute_name("unspecified_fs")
-      - elsif @line.flexible_service?
-        = @line.human_attribute_name("on_demaond_fs")
-      - else
-        = @line.human_attribute_name("regular_fs")
-
-      br
-      = "#{@line.human_attribute_name('number_of_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', true).count}"
-      br
-      = "#{@line.human_attribute_name('number_of_non_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', false).count}"
-      br
-      = @line.human_attribute_name("number_of_null_fs_vj")
-
-      - if @line.flexible_service.nil?
-        = "(#{@line.human_attribute_name('default_fs_msg')})"
-
-      = ": #{@line.vehicle_journeys.count - (@line.vehicle_journeys.where('flexible_service = ?', true).count + @line.vehicle_journeys.where('flexible_service = ?', false).count)}"
-
-    p
-      label = "#{@line.human_attribute_name('footnotes')} : "
-      ul
-        - @line.footnotes.each do |footnote|
-          li = "#{footnote.code} : #{footnote.label}"
+    / p
+    /   label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "
+    / 
+    /   - if @line.mobility_restricted_suitability.nil?
+    /     = @line.human_attribute_name("unspecified_mrs")
+    /   - elsif @line.mobility_restricted_suitability?
+    /     = @line.human_attribute_name("accessible")
+    /   - else
+    /     = @line.human_attribute_name("not_accessible")
+    / 
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', true).count}"
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_non_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', false).count}"
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_null_mrs_vj')} : "
+    /   = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count)
+    / 
+    / p
+    /   label = "#{@line.human_attribute_name('flexible_service')} : "
+    / 
+    /   - if @line.flexible_service.nil?
+    /     = @line.human_attribute_name("unspecified_fs")
+    /   - elsif @line.flexible_service?
+    /     = @line.human_attribute_name("on_demaond_fs")
+    /   - else
+    /     = @line.human_attribute_name("regular_fs")
+    / 
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', true).count}"
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_non_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', false).count}"
+    /   br
+    /   = @line.human_attribute_name("number_of_null_fs_vj")
+    / 
+    /   - if @line.flexible_service.nil?
+    /     = "(#{@line.human_attribute_name('default_fs_msg')})"
+    / 
+    /   = ": #{@line.vehicle_journeys.count - (@line.vehicle_journeys.where('flexible_service = ?', true).count + @line.vehicle_journeys.where('flexible_service = ?', false).count)}"
+    / 
+    / p
+    /   label = "#{@line.human_attribute_name('footnotes')} : "
+    /   ul
+    /     - @line.footnotes.each do |footnote|
+    /       li = "#{footnote.code} : #{footnote.label}"
 
     p
       label = "#{@line.human_attribute_name('comment')} : "
@@ -109,10 +109,12 @@
     #flexible_service.col-md-6
 
 p.after_map
-h3.routes = t('.itineraries')
+h3.routes
+  = t('.itineraries')
 
 .routes.paginated_content
-  = paginated_content @routes, "routes/route"
+  / = paginated_content @routes, "routes/route"
+  = render 'reflines_routes'
 
 - if @line.group_of_lines.any?
   h3.line_group_of_lines = t('.group_of_lines')
