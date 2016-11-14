@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addStop } from '../actions'
+import actions from '../actions'
 
 let AddTodo = ({ dispatch }) => {
   return (
     <div className="clearfix" style={{marginBottom: 10}}>
       <form onSubmit={e => {
         e.preventDefault()
-        dispatch(addStop())
+        dispatch(actions.addStop())
       }}>
         <button type="submit" className="btn btn-primary btn-xs pull-right">
           <span className="fa fa-plus"></span> Ajouter un arrêt
