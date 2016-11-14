@@ -3,7 +3,6 @@
 |   update_infos = function(json) {
 |     var info, update_info;
 |     info = $('#referential_' + json.referential_id);
-|     console.log(info)
 |     update_info = function(key, value) {
 |       if (key.match(/_count$/)) {
 |         return $(info.find('.' + key)[0]).text(value);
@@ -16,5 +15,5 @@
 |   };
 |   _results = [];
 |   _results.push(update_referential_details());
-|   return _results; 
+|   return _results;
 | });

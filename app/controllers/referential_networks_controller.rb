@@ -35,7 +35,7 @@ class ReferentialNetworksController < ChouetteController
   end
 
   def collection
-    @q = referential.networks.search(params[:q])
+    @q = referential.workbench.networks.search(params[:q])
     @networks ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
   end
 

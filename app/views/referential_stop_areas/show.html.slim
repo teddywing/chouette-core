@@ -109,7 +109,7 @@
 p.after_map
 
 .genealogical.clearfix
-  = render "stop_areas/genealogical"
+  = render "referential_stop_areas/genealogical"
 
 - if manage_access_points
   div
@@ -122,22 +122,25 @@ p.after_map
     tr
       td
         ul.actions
-          li
-            = link_to t('stop_areas.actions.new'), new_referential_stop_area_path(@referential), class: 'add'
-      	  li
-            = link_to t('stop_areas.actions.edit'), edit_referential_stop_area_path(@referential, @stop_area), class: 'edit'
-      	  li
-            = link_to t('stop_areas.actions.destroy'), referential_stop_area_path(@referential, @stop_area), method: :delete, data: { :confirm => t('stop_areas.actions.destroy_confirm') }, class: 'remove'
+          - if policy(Chouette::StopArea).new?
+            li
+              = link_to t('stop_areas.actions.new'), new_referential_stop_area_path(@referential), class: 'add'
+          - if policy(@stop_area).update?
+        	  li
+              = link_to t('stop_areas.actions.edit'), edit_referential_stop_area_path(@referential, @stop_area), class: 'edit'
+          - if policy(@stop_area).destroy?
+        	  li
+              = link_to t('stop_areas.actions.destroy'), referential_stop_area_path(@referential, @stop_area), method: :delete, data: { :confirm => t('stop_areas.actions.destroy_confirm') }, class: 'remove'
 
     - if manage_itl
-      tr
-        td
-          h4 = t('.itl_managment')
-          ul.actions
-            li
-              = link_to t('stop_areas.actions.add_routing_lines'), add_routing_lines_referential_stop_area_path(@referential, @stop_area), class: 'add_routing_lines'
-            li
-              = link_to t('stop_areas.actions.add_routing_stops'), add_routing_stops_referential_stop_area_path(@referential, @stop_area), class: 'add_routing_stops'
+      / tr
+      /   td
+      /     h4 = t('.itl_managment')
+      /     ul.actions
+      /       li
+      /         = link_to t('stop_areas.actions.add_routing_lines'), add_routing_lines_referential_stop_area_path(@referential, @stop_area), class: 'add_routing_lines'
+      /       li
+      /         = link_to t('stop_areas.actions.add_routing_stops'), add_routing_stops_referential_stop_area_path(@referential, @stop_area), class: 'add_routing_stops'
 
     - else
       tr
@@ -145,17 +148,17 @@ p.after_map
           h4 = t('.stop_managment')
           ul.actions
             li
-              = link_to t('stop_areas.actions.select_parent'), select_parent_referential_stop_area_path(@referential, @stop_area), class: 'parent'
+              / = link_to t('stop_areas.actions.select_parent'), select_parent_referential_stop_area_path(@referential, @stop_area), class: 'parent'
 
             - if @stop_area.parent == nil
               li
-                = link_to t('stop_areas.actions.clone_as_parent'), new_referential_stop_area_stop_area_copy_path(@referential, @stop_area, hierarchy: 'parent'), class: 'clone'
+                / = link_to t('stop_areas.actions.clone_as_parent'), new_referential_stop_area_stop_area_copy_path(@referential, @stop_area, hierarchy: 'parent'), class: 'clone'
 
             - if manage_children
               li
-                = link_to t('stop_areas.actions.add_children'), add_children_referential_stop_area_path(@referential, @stop_area), class: 'children'
+                / = link_to t('stop_areas.actions.add_children'), add_children_referential_stop_area_path(@referential, @stop_area), class: 'children'
               li
-                = link_to t('stop_areas.actions.clone_as_child'), new_referential_stop_area_stop_area_copy_path(@referential, @stop_area, hierarchy: 'child'), class: 'clone'
+                / = link_to t('stop_areas.actions.clone_as_child'), new_referential_stop_area_stop_area_copy_path(@referential, @stop_area, hierarchy: 'child'), class: 'clone'
 
       - if manage_access_points
         tr
@@ -163,9 +166,9 @@ p.after_map
             h4 = t(".access_managment")
             ul.actions
               li
-                = link_to t('access_points.actions.new'), new_referential_stop_area_access_point_path(@referential,@stop_area), class: 'add'
+                / = link_to t('access_points.actions.new'), new_referential_stop_area_access_point_path(@referential,@stop_area), class: 'add'
               li
-                = link_to t('stop_areas.actions.manage_access_links'), access_links_referential_stop_area_path(@referential,@stop_area), class: 'access_link'
+                / = link_to t('stop_areas.actions.manage_access_links'), access_links_referential_stop_area_path(@referential,@stop_area), class: 'access_link'
 
   br
 

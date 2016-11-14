@@ -1,6 +1,6 @@
 fr:
-  simple_form:  
-    include_blanks:     
+  simple_form:
+    include_blanks:
       defaults:
         for_boarding: "Non défini"
         for_alighting: "Non défini"
@@ -9,7 +9,7 @@ fr:
       normal: "Montée autorisée"
       forbidden: "Montée interdite"
       request_stop: "Montée sur demande au conducteur"
-      is_flexible: "Montée sur réservation"                
+      is_flexible: "Montée sur réservation"
     for_alighting:
       normal: "Descente autorisée"
       forbidden: "Descente interdite"
@@ -32,4 +32,21 @@ fr:
       gtfs: "General Transit Feed Specification défini par Google"
       netex: "Expérimental"
       hub: "Format spécifique Transdev"
-      kml: "Tracés de lignes, séquences d'arrêts, ...  en 'Keyhole Markup Language'"  
+      kml: "Tracés de lignes, séquences d'arrêts, ...  en 'Keyhole Markup Language'"
+    route:
+      direction:
+        straight_forward: 'Aller'
+        backward: 'Retour'
+        clockwise: 'Sens horaire'
+        counter_clockwise: 'Sens anti horaire'
+        north: 'Nord'
+        north_west: 'Nord Ouest'
+        west: 'Ouest'
+        south_west: 'Sud Ouest'
+        south: 'Sud'
+        south_east: 'Sud Est'
+        east: 'Est'
+        north_east: 'Nord Est'
+      wayback:
+        straight_forward: 'Aller'
+        backward: 'Retour'

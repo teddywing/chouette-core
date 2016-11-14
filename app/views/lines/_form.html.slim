@@ -6,7 +6,7 @@
     = form.input :published_name
     = form.input :registration_number, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@line_referential)}.line.registration_number")}
     = form.input :number, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@line_referential)}.line.number") }
-    = form.input :transport_mode, as: :select, :collection => Chouette::Line.transport_modes, :include_blank => false, :member_label => Proc.new { |mode| t("transport_modes.label.#{mode}") }
+    = form.input :transport_mode, as: :select, :collection => @line.line_referential.transport_modes, :include_blank => false, :member_label => Proc.new { |mode| t("transport_modes.label.#{mode}") }
     = form.input :color, as: :string
     = form.input :text_color
     = form.input :stable_id
@@ -19,11 +19,11 @@
 
     .footnotes_block
       h3 = t("footnotes.index.title")
-      
+
       #footnotes
         = form.semantic_fields_for :footnotes do |f|
           = render "footnotes/footnote_fields",  :f => f
-        
+
       .add_footnote
         = link_to_add_association t("footnotes.actions.add_footnote"), form, :footnotes , :partial => "footnotes/footnote_fields", :"data-association-insertion-method" => "append", :"data-association-insertion-node" => "div#footnotes", class: 'add'
 
@@ -32,7 +32,7 @@
     = form.action :cancel, as: :link
 
 javascript:
-	$(function() {
+  $(function() {
     $("#line_group_of_line_tokens").tokenInput("#{name_filter_referential_group_of_lines_path(@line_referential, format: :json)}", {
       crossDomain: false,
       prePopulate: $('#group_of_line_tokens').data('pre'),
@@ -42,4 +42,4 @@ javascript:
       noResultsText: "#{I18n.t('no_result_text')}",
       searchingText: "#{I18n.t('searching_term')}"
     });
-	});
+  });

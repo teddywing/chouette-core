@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024135931) do
+ActiveRecord::Schema.define(version: 20161114134518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,23 @@ ActiveRecord::Schema.define(version: 20161024135931) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "clean_ups", force: true do |t|
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.integer  "referential_id"
+    t.boolean  "keep_lines"
+    t.boolean  "keep_stops"
+    t.boolean  "keep_companies"
+    t.boolean  "keep_networks"
+    t.boolean  "keep_group_of_lines"
+    t.datetime "expected_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "clean_ups", ["referential_id"], :name => "index_clean_ups_on_referential_id"
 
   create_table "companies", force: true do |t|
     t.string   "objectid",                  null: false
@@ -361,6 +378,8 @@ ActiveRecord::Schema.define(version: 20161024135931) do
     t.datetime "synced_at"
     t.hstore   "sso_attributes"
   end
+
+  add_index "organisations", ["code"], :name => "index_organisations_on_code", :unique => true
 
   create_table "pt_links", force: true do |t|
     t.integer  "start_of_link_id", limit: 8
@@ -721,8 +740,6 @@ ActiveRecord::Schema.define(version: 20161024135931) do
   add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
-  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
-
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify

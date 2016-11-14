@@ -57,11 +57,7 @@ class ReferentialsController < BreadcrumbController
   end
 
   def create_resource(referential)
-    if referential.created_from
-      referential.clone_association referential.created_from
-    else
-      referential.organisation = current_organisation
-    end
+    referential.organisation = current_organisation unless referential.created_from
     super
   end
 

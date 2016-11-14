@@ -6,11 +6,15 @@ module RoutesHelper
   end
 
   def fonticon_wayback(wayback)
-    if wayback == "A"
+    if wayback == 'straight_forward'
       return '<i class="fa fa-arrow-right"></i>'.html_safe
     else
-      return '<i class="fa fa-arrow-left"></i>'.html_safe  
+      return '<i class="fa fa-arrow-left"></i>'.html_safe
     end
   end
-  
+
+  def route_json_for_edit(route)
+    route.stop_points.includes(:stop_area).map { |s| s.stop_area.attributes.slice("name","city_name", "zip_code").merge(stoppoint_id: s.id, stoparea_id: s.stop_area.id) }.to_json
+  end
+
 end

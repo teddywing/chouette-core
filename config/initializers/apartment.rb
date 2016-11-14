@@ -21,7 +21,6 @@ Apartment.configure do |config|
     "Referential",
     "Organisation",
     "User",
-    "Delayed::Backend::ActiveRecord::Job",
     "Api::V1::ApiKey",
     "RuleParameterSet",
     "StopAreaReferential",
@@ -36,7 +35,8 @@ Apartment.configure do |config|
     "Chouette::Company",
     "Chouette::Network",
     "ReferentialCloning",
-    "Workbench"
+    "Workbench",
+    "CleanUp"
   ]
 
   # use postgres schemas?

@@ -26,6 +26,7 @@ class StopAreasController < BreadcrumbController
   end
 
   def add_children
+    authorize stop_area
     @stop_area = stop_area
     @children = stop_area.children
     build_breadcrumb :edit

@@ -24,6 +24,7 @@ fr:
       destroy_confirm: "Etes vous sûr de vouloir supprimer cet espace de données ?"
       destroy: "Supprimer cet espace de données"
       edit: "Modifier cet espace de données"
+      clone: "Cloner cet espace de données"
     errors:
       pg_excluded: "ne peut pas commencer par pg_ (valeurs réservées)"
       public_excluded: "public est une valeur réservée"

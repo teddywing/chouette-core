@@ -3,17 +3,21 @@ require 'spec_helper'
 describe Chouette::Route, :type => :model do
   subject { create(:route) }
 
-  it { is_expected.to validate_uniqueness_of :objectid }
-
   describe '#objectid' do
     subject { super().objectid }
     it { is_expected.to be_kind_of(Chouette::ObjectId) }
   end
 
+  it { is_expected.to enumerize(:direction).in(:straight_forward, :backward, :clockwise, :counter_clockwise, :north, :north_west, :west, :south_west, :south, :south_east, :east, :north_east) }
+  it { is_expected.to enumerize(:wayback).in(:straight_forward, :backward) }
+
   #it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :line }
+  it { is_expected.to validate_uniqueness_of :objectid }
   #it { is_expected.to validate_presence_of :wayback_code }
   #it { is_expected.to validate_presence_of :direction_code }
+  it { is_expected.to validate_inclusion_of(:direction).in_array(%i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)) }
+  it { is_expected.to validate_inclusion_of(:wayback).in_array(%i(straight_forward backward)) }
 
   context "reordering methods" do
     let( :bad_stop_point_ids){subject.stop_points.map { |sp| sp.id + 1}}
@@ -162,76 +166,6 @@ describe Chouette::Route, :type => :model do
 
         expect(route_loop.stop_areas.size).to eq(6)
         expect(route_loop.stop_areas.select {|s| s.id == first_stop.stop_area.id}.size).to eq(2)
-      end
-    end
-  end
-
-  describe "#direction_code" do
-    def self.legacy_directions
-      %w{A R ClockWise CounterClockWise North NorthWest West SouthWest
-        South SouthEast East NorthEast}
-    end
-    legacy_directions.each do |direction|
-      context "when direction is #{direction}" do
-        direction_code = Chouette::Direction.new( Chouette::Route.direction_binding[ direction])
-        it "should be #{direction_code}" do
-          subject.direction = direction
-          expect(subject.direction_code).to eq(direction_code)
-        end
-      end
-    end
-    context "when direction is nil" do
-      it "should be nil" do
-        subject.direction = nil
-        expect(subject.direction_code).to be_nil
-      end
-    end
-  end
-  describe "#direction_code=" do
-    context "when unknown direction is provided" do
-      it "should change direction to nil" do
-        subject.direction_code = "dummy"
-        expect(subject.direction).to be_nil
-      end
-    end
-    context "when an existing direction (west) is provided" do
-      it "should change direction Direction.west" do
-        subject.direction_code = "west"
-        expect(subject.direction).to eq("West")
-      end
-    end
-  end
-  describe "#wayback_code" do
-    def self.legacy_waybacks
-      %w{A R}
-    end
-    legacy_waybacks.each do |wayback|
-      context "when wayback is #{wayback}" do
-        wayback_code = Chouette::Wayback.new( Chouette::Route.wayback_binding[ wayback])
-        it "should be #{wayback_code}" do
-          subject.wayback = wayback
-          expect(subject.wayback_code).to eq(wayback_code)
-        end
-      end
-    end
-    context "when wayback is nil" do
-      it "should be nil" do
-        subject.wayback = nil
-        expect(subject.wayback_code).to be_nil
-      end
-    end
-  end
-  describe "#wayback_code=" do
-    context "when unknown wayback is provided" do
-      it "should change wayback to nil" do
-        subject.wayback_code = "dummy"
-        expect(subject.wayback).to be_nil
-      end
-    end
-    context "when an existing wayback (straight_forward) is provided" do
-      it "should change wayback Wayback.straight_forward" do
-        subject.wayback_code = "straight_forward"
-        expect(subject.wayback).to eq("A")
       end
     end
   end

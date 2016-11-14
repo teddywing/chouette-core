@@ -10,6 +10,9 @@ gem 'uglifier', '~> 2.7.2'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 
+# ES6 powa
+gem 'browserify-rails'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -53,7 +56,7 @@ gem 'polylines'
 # Codifligne API
 gem 'codifligne', git: 'git@github.com:AF83/stif-codifline-api.git'
 # Reflex API
-gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git', branch: 'sax_refactoring'
+gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git'
 
 # Authentication
 gem 'devise', '~> 3.4.0'
@@ -112,7 +115,6 @@ gem 'rabl'
 
 gem 'sidekiq'
 gem 'sinatra'
-gem 'delayed_job_active_record'
 gem 'whenever', github: 'af83/whenever', require: false # '~> 0.9'
 gem 'rake'
 gem 'devise-async'
@@ -125,6 +127,7 @@ gem 'letter_opener'
 group :development do
   gem 'capistrano', '2.13.5'
   gem 'capistrano-ext'
+  gem 'capistrano-npm', require: false
   gem 'guard'
   gem 'guard-rspec'
   gem 'rails-erd'

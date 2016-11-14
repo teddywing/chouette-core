@@ -27,7 +27,7 @@ class ReferentialCompaniesController < ChouetteController
   end
 
   def collection
-    @q = referential.companies.search(params[:q])
+    @q = referential.workbench.companies.search(params[:q])
     @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
   end
 
