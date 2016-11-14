@@ -61,7 +61,14 @@ const todos = (state = [], action) => {
         })
       ]
     case 'UPDATE_INPUT_VALUE':
-      return state.map((t, i) => (i === action.index) ? action.text : t)
+      return state.map( (t, i) => {
+        if (i === action.index) {
+          updateFormForDeletion(t)
+          return action.text
+        } else {
+          return t
+        }
+      })
       // return state.map(t =>
       //   todo(t, action)
       // )
