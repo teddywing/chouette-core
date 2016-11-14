@@ -35,7 +35,8 @@ Apartment.configure do |config|
     "Chouette::Company",
     "Chouette::Network",
     "ReferentialCloning",
-    "Workbench"
+    "Workbench",
+    "CleanUp"
   ]
 
   # use postgres schemas?

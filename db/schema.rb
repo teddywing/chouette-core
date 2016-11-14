@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161109160857) do
+ActiveRecord::Schema.define(version: 20161114134518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,23 @@ ActiveRecord::Schema.define(version: 20161109160857) do
     t.datetime "updated_at"
   end
 
+  create_table "clean_ups", force: true do |t|
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.integer  "referential_id"
+    t.boolean  "keep_lines"
+    t.boolean  "keep_stops"
+    t.boolean  "keep_companies"
+    t.boolean  "keep_networks"
+    t.boolean  "keep_group_of_lines"
+    t.datetime "expected_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "clean_ups", ["referential_id"], :name => "index_clean_ups_on_referential_id"
+
   create_table "companies", force: true do |t|
     t.string   "objectid",                  null: false
     t.integer  "object_version"
@@ -123,6 +140,22 @@ ActiveRecord::Schema.define(version: 20161109160857) do
   end
 
   add_index "connection_links", ["objectid"], :name => "connection_links_objectid_key", :unique => true
+
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0
+    t.integer  "attempts",   default: 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "exports", force: true do |t|
     t.integer  "referential_id",  limit: 8
