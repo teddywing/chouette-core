@@ -6,45 +6,47 @@
   .summary
     p
       label = "#{@route.human_attribute_name(:name)} : "
-      = @route.name
+      = " #{@route.name}"
 
     p
       label = "#{@route.human_attribute_name(:published_name)} : "
-      = @route.published_name
+      = " #{@route.published_name}"
 
-    p
-      label = "#{@route.human_attribute_name(:number)} : "
-      = @route.number
-
-    p
-      label = "#{@route.human_attribute_name(:comment)} : "
-      = @route.comment
-
-    p
-      label = "#{@route.human_attribute_name(:direction)} : "
-      - if @route.direction
-        = @route.direction_text
-      - else
-        = t(".undefined")
+    / p
+    /   label = "#{@route.human_attribute_name(:number)} : "
+    /   = " #{@route.number}"
+    / 
+    / p
+    /   label = "#{@route.human_attribute_name(:comment)} : "
+    /   = " #{@route.comment}"
+    / 
+    / p
+    /   label = "#{@route.human_attribute_name(:direction)} : "
+    /   - if @route.direction
+    /     = " #{@route.direction_text}"
+    /   - else
+    /     = " #{t('.undefined')}"
 
     p
       label = "#{@route.human_attribute_name(:wayback)} : "
       - if @route.wayback
-        = @route.wayback_text
+        = " #{@route.wayback_text}"
       - else
-        = t(".undefined")
+        = " #{t('.undefined')}"
 
     p
       label = "#{@route.human_attribute_name(:opposite_route)} : "
       - if @route.opposite_route
         = link_to @route.opposite_route.name, [@referential, @line, @route.opposite_route]
       - else
-        = t(".no_opposite_route")
+        = " #{t('.no_opposite_route')}"
 
 p.after_map
 
 #stop_points.panel.panel-default
-  .panel-heading = t('.stop_points')
+  .panel-heading
+    h4.panel-title
+      strong = t('.stop_points')
   
   .list-group
     - @route.stop_points.each do |point|
@@ -62,17 +64,14 @@ p.after_map
             = linktxt
             
 
-#accordion.panel-group
-  .panel.panel-default
-    .panel-heading
-      h4.panel-title
-        a data-toggle="collapse" data-parent="#accordion" href="#journey_patterns"
-          = t('.journey_patterns')
-
-    #journey_patterns.panel-collapse.collapse
-      .panel-body
-        .journey_patterns.paginated_content
-          = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
+/ .panel.panel-default
+/   .panel-heading
+/     h4.panel-title
+/       strong = t('.journey_patterns')
+/ 
+/   .panel-body
+/     .journey_patterns.paginated_content
+/       = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
 
 - content_for :sidebar do
   ul.actions
