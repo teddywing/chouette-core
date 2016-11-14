@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Organisation, :type => :model do
-
   it { should validate_presence_of(:name) }
   it { should validate_uniqueness_of(:code) }
 
@@ -40,13 +39,13 @@ describe Organisation, :type => :model do
     end
 
     it 'should update existing organisations' do
-      create :organisation, name: 'dummy_name', code:'RATP', updated_at: 10.days.ago
+      create :organisation, name: 'dummy_name', code:'RATP', updated_at: 10.days.ago, sso_attributes: {functional_scope: "[\"STIF:CODIFLIGNE:Line:C00840\"]"}
       Organisation.portail_sync
-      Organisation.find_by(code: 'RATP').tap do |org|
-        expect(org.name).to eq('RATP')
-        expect(org.updated_at.utc).to be_within(1.second).of Time.now
-        expect(org.synced_at.utc).to be_within(1.second).of Time.now
-      end
+      org = Organisation.find_by(code: 'RATP')
+      expect(org.name).to eq('RATP')
+      expect(org.updated_at.utc).to be_within(1.second).of Time.now
+      expect(org.synced_at.utc).to be_within(1.second).of Time.now
+      expect(org.sso_attributes['functional_scope']).to eq "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]"
     end
 
     it 'should not create organisation if code is already present' do
