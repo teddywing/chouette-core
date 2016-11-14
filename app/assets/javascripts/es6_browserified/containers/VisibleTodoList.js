@@ -1,4 +1,4 @@
-import {toggleTodo, deleteStop, moveStopUp, moveStopDown, updateInputValue} from '../actions'
+import actions from '../actions'
 import { connect } from 'react-redux'
 import TodoList from '../components/TodoList'
 
@@ -11,16 +11,16 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onDeleteClick: (index) =>{
-      dispatch(deleteStop(index))
+      dispatch(actions.deleteStop(index))
     },
     onMoveUpClick: (index) =>{
-      dispatch(moveStopUp(index))
+      dispatch(actions.moveStopUp(index))
     },
     onMoveDownClick: (index) =>{
-      dispatch(moveStopDown(index))
+      dispatch(actions.moveStopDown(index))
     },
     onChange: (index, text) =>{
-      dispatch(updateInputValue(index, text))
+      dispatch(actions.updateInputValue(index, text))
     }
   }
 }
