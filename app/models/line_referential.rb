@@ -26,4 +26,8 @@ class LineReferential < ActiveRecord::Base
   def last_sync
     line_referential_syncs.last
   end
+
+  def transport_modes
+    Chouette::TransportMode.all.select { |tm| tm.positive? }
+  end
 end

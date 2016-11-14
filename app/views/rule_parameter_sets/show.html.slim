@@ -5,10 +5,10 @@
     p
       label = "#{RuleParameterSet.human_attribute_name('stop_areas_area')} : "
       = @rule_parameter_set.stop_areas_area
-    
+
     .attributes_group
       span.title = t(".min_distance")
-      
+
       .columns
         .two_columns
           label = "#{t('.inter_stop_area_distance_min')} : "
@@ -20,7 +20,7 @@
 
     .attributes_group
       span.title = t(".max_distance")
-      
+
       .columns
         .two_columns
           label = "#{t('.parent_stop_area_distance_max')} : "
@@ -91,23 +91,23 @@
       table.table.table-striped.table-condensed
         tr
           th = t("transport_modes.name")
-          
+
           - RuleParameterSet.mode_attribute_prefixes.each do |prefix|
             - unless prefix == "allowed_transport"
               th = RuleParameterSet.human_attribute_name(prefix)
-
+        / To be removed, see #1936
         - Chouette::Line.transport_modes.map(&:to_s).each do |mode|
           - if @rule_parameter_set.allowed(mode)
             tr
               td = t("transport_modes.label.#{mode}")
-              
+
               - RuleParameterSet.mode_attribute_prefixes.each do |prefix|
                 - unless prefix == "allowed_transport"
                   td = @rule_parameter_set.send  "#{prefix}_mode_#{mode}"
 
     .rule_parameter_by_object
       label = t("rule_parameter_sets.labels.columns_restrictions")
-      
+
       table.table.table-bordered.table-condensed
         - RuleParameterSet.validable_object_names.each do |object_name|
           - if @rule_parameter_set.selected(object_name)
@@ -119,7 +119,7 @@
                 th = RuleParameterSet.human_attribute_name("string_type")
                 th = RuleParameterSet.human_attribute_name("min_size")
                 th = RuleParameterSet.human_attribute_name("max_size")
-          
+
             tbody
               - RuleParameterSet.validable_columns[object_name].each do |col|
                 - if @rule_parameter_set.selected_column(object_name,col)
