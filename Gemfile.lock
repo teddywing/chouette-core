@@ -313,6 +313,7 @@ GEM
     parser (2.2.0.3)
       ast (>= 1.1, < 3.0)
     pg (0.18.1)
+    phantomjs (2.1.1.0)
     poltergeist (1.6.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -509,6 +510,10 @@ GEM
       activerecord (>= 3.0)
       activesupport (>= 3.0)
       polyamorous (~> 1.1.0)
+    teaspoon (1.1.5)
+      railties (>= 3.2.5, < 6)
+    teaspoon-jasmine (2.3.4)
+      teaspoon (>= 1.0.0)
     temple (0.7.7)
     term-ansicolor (1.3.2)
       tins (~> 1.0)
@@ -620,6 +625,7 @@ DEPENDENCIES
   mimemagic
   newrelic_rpm
   pg
+  phantomjs
   poltergeist
   polylines
   pry-rails
@@ -663,6 +669,7 @@ DEPENDENCIES
   spring
   sqlite3
   squeel
+  teaspoon-jasmine
   therubyracer (~> 0.12)
   transpec
   turbolinks

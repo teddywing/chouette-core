@@ -150,6 +150,8 @@ end
 group :test, :development, :dev do
   gem 'fabrication', '~> 2.14.1'
   gem 'ffaker', '~> 2.1.0'
+  gem "teaspoon-jasmine"
+  gem "phantomjs"
 end
 
 group :test, :development do
