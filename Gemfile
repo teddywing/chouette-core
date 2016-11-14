@@ -150,8 +150,6 @@ end
 group :test, :development, :dev do
   gem 'fabrication', '~> 2.14.1'
   gem 'ffaker', '~> 2.1.0'
-  gem "teaspoon-jasmine"
-  gem "phantomjs"
 end
 
 group :test, :development do
@@ -169,6 +167,8 @@ group :test, :development do
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'transpec'
   gem 'shoulda-matchers'
+  gem "teaspoon-jasmine"
+  gem "phantomjs"
 end
 
 group :production do
