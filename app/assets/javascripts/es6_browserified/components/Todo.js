@@ -1,6 +1,5 @@
-var React = require('react')
-var PropTypes = require('react').PropTypes
-var BSelect2 = require('./BSelect2')
+import React, {PropTypes} from 'react'
+import BSelect2 from './BSelect2'
 
 const Container = {display: 'table', width: '100%'}
 const firstBlock = {display: 'table-cell', verticalAlign: 'middle'}
@@ -56,4 +55,4 @@ Todo.propTypes = {
   value: PropTypes.object
 }
 
-module.exports = Todo
+export default Todo
