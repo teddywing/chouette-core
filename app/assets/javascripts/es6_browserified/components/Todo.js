@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react'
 import BSelect2 from './BSelect2'
 
-const Container = {display: 'table', width: '100%'}
-const firstBlock = {display: 'table-cell', verticalAlign: 'middle'}
-const secondBlock = {display: 'table-cell', verticalAlign: 'middle', width: 150, textAlign: 'right'}
+const Container = {display: 'table', tableLayout: 'fixed', width: '100%'}
+const firstBlock = {display: 'table-cell', verticalAlign: 'middle', width: '55%'}
+const secondBlock = {display: 'table-cell', verticalAlign: 'middle', textAlign: 'right'}
+const thirdBlock = {display: 'table-cell', verticalAlign: 'middle', width: 125, textAlign: 'right'}
 
 const Todo = (props) => {
   return (
@@ -17,8 +18,28 @@ const Todo = (props) => {
           <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} />
         </div>
       </div>
-
       <div style={secondBlock}>
+        <div style={{display: 'inline-block', width: '100%', verticalAlign: 'middle'}}>
+          <select id="1">
+            <option value="" disabled="disabled" selected="selected">Select...</option>
+            <option value="opt1">option #1</option>
+            <option value="opt2">option #2</option>
+            <option value="opt3">option #3</option>
+          </select>
+        </div>
+      </div>
+      <div style={secondBlock}>
+        <div style={{display: 'inline-block', width: '100%', verticalAlign: 'middle'}}>
+          <select id="2">
+            <option value="" disabled="disabled" selected="selected">Select...</option>
+            <option value="opt1">option #1</option>
+            <option value="opt2">option #2</option>
+            <option value="opt3">option #3</option>
+          </select>
+        </div>
+      </div>
+
+      <div style={thirdBlock}>
         <div className='btn-group btn-group-sm'>
           <div
             className={'btn btn-primary' + (props.first ? ' disabled' : '')}
