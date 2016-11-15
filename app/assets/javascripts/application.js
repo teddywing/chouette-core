@@ -13,6 +13,7 @@
 //= require morrisjs
 //= require bootstrap-sass-official
 //= require select2
+//= require select2_locale_fr
 //= require typeahead.js
 //= require jquery-tokeninput
 //= require moment
