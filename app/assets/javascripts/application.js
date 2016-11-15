@@ -12,6 +12,7 @@
 //= require raphael
 //= require morrisjs
 //= require bootstrap-sass-official
+//= require select2
 //= require typeahead.js
 //= require jquery-tokeninput
 //= require moment

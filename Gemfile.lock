@@ -461,6 +461,8 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    select2-rails (4.0.3)
+      thor (~> 0.14)
     shellany (0.0.1)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
@@ -653,6 +655,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   sawyer (~> 0.6.0)
   sdoc (~> 0.4.0)
+  select2-rails (~> 4.0, >= 4.0.3)
   shoulda-matchers
   sidekiq
   simple_form (~> 3.1.0)
