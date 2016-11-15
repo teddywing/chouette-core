@@ -54,5 +54,6 @@ document.querySelector('input[name=commit]').addEventListener('click', (event)=>
     }
     addInput('id',todo.stoppoint_id, i)
     addInput('stop_area_id',todo.stoparea_id, i)
+    addInput('position',i, i)
   }
 })
