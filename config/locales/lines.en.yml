@@ -23,7 +23,7 @@ en:
       deactivated: "Disabled line"
       title: "Lines"
       name_or_number: "Search by name or number..."
-      name_or_number_or_objectid: "Search by name, number or objectid..."
+      name_or_number_or_objectid_or_comment: "Search by name, number, objectid or comment..."
       no_networks: "No networks"
       no_companies: "No companies"
       no_group_of_lines: "No group of lines"

@@ -3,7 +3,7 @@
 = search_form_for @q, url: line_referential_lines_path(@line_referential), remote: true, html: {method: :get, class: "form", id: "search", role: "form"} do |f|
   .well.well-sm
     .input-group
-      = f.text_field :name_or_number_or_objectid_cont, placeholder: t('.name_or_number_or_objectid'), class: 'form-control'
+      = f.text_field :name_or_number_or_objectid_or_comment_cont, placeholder: t('.name_or_number_or_objectid_or_comment'), class: 'form-control'
 
       .input-group-btn
         button.btn.btn-primary type="submit"
