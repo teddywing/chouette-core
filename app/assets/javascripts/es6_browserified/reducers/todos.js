@@ -1,4 +1,4 @@
-var addInput = require('../form_helper').addInput
+import addInput from '../form_helper'
 
 const todo = (state = {}, action, length) => {
   switch (action.type) {
@@ -61,7 +61,14 @@ const todos = (state = [], action) => {
         })
       ]
     case 'UPDATE_INPUT_VALUE':
-      return state.map((t, i) => (i === action.index) ? action.text : t)
+      return state.map( (t, i) => {
+        if (i === action.index) {
+          updateFormForDeletion(t)
+          return action.text
+        } else {
+          return t
+        }
+      })
       // return state.map(t =>
       //   todo(t, action)
       // )
@@ -70,4 +77,4 @@ const todos = (state = [], action) => {
   }
 }
 
-module.exports = todos
+export default todos

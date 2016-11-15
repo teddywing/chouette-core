@@ -1,14 +1,14 @@
-var React = require('react')
-var render = require('react-dom').render
-var Provider = require('react-redux').Provider
-var createStore = require('redux').createStore
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import todoApp from './reducers'
+import App from './components/App'
+import addInput from './form_helper'
 // var applyMiddleware = require('redux').applyMiddleware
-var todoApp = require('./reducers')
-var App = require('./components/App')
 // var createLogger = require('redux-logger').default
 // var thunkMiddleware = require('redux-thunk').default
 // var promise = require('redux-promise')
-var addInput = require('./form_helper').addInput
 
 const getInitialState = () => {
   let state = []

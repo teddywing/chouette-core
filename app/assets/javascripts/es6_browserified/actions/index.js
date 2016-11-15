@@ -1,4 +1,4 @@
-module.exports = {
+const actions = {
   addStop : () => {
     return {
       type: 'ADD_STOP'
@@ -16,13 +16,13 @@ module.exports = {
       index
     }
   },
-  deleteStop: (index) => {
+  deleteStop : (index) => {
     return {
       type: 'DELETE_STOP',
       index
     }
   },
-  updateInputValue: (index, text) => {
+  updateInputValue : (index, text) => {
     return {
       type : "UPDATE_INPUT_VALUE",
       index,
@@ -30,3 +30,5 @@ module.exports = {
     }
   }
 }
+
+export default actions

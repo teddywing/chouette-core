@@ -170,6 +170,8 @@ group :test, :development do
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'transpec'
   gem 'shoulda-matchers'
+  gem "teaspoon-jasmine"
+  gem "phantomjs"
 end
 
 group :production do
