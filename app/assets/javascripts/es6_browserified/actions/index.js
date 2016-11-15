@@ -24,11 +24,19 @@ const actions = {
   },
   updateInputValue : (index, text) => {
     return {
-      type : "UPDATE_INPUT_VALUE",
+      type : 'UPDATE_INPUT_VALUE',
       index,
       text
+    }
+  },
+  updateSelectValue: (e, index) => {
+    return {
+      type :'UPDATE_SELECT_VALUE',
+      select_id: e.currentTarget.id,
+      select_value: e.currentTarget.value,
+      index
     }
   }
 }
 
-export default actions
+module.exports = actions

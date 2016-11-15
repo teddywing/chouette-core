@@ -20,21 +20,17 @@ const Todo = (props) => {
       </div>
       <div style={secondBlock}>
         <div style={{display: 'inline-block', width: '100%', verticalAlign: 'middle'}}>
-          <select id="1">
-            <option value="" disabled="disabled" selected="selected">Select...</option>
-            <option value="opt1">option #1</option>
-            <option value="opt2">option #2</option>
-            <option value="opt3">option #3</option>
+          <select value={props.value.for_boarding} id="for_boarding" onChange={props.onSelectChange}>
+            <option value="forbidden">interdit</option>
+            <option value="normal">normal</option>
           </select>
         </div>
       </div>
       <div style={secondBlock}>
         <div style={{display: 'inline-block', width: '100%', verticalAlign: 'middle'}}>
-          <select id="2">
-            <option value="" disabled="disabled" selected="selected">Select...</option>
-            <option value="opt1">option #1</option>
-            <option value="opt2">option #2</option>
-            <option value="opt3">option #3</option>
+          <select value={props.value.for_alighting} id="for_alighting" onChange={props.onSelectChange}>
+            <option value="forbidden">interdit</option>
+            <option value="normal">normal</option>
           </select>
         </div>
       </div>
@@ -70,6 +66,7 @@ Todo.propTypes = {
   onMoveUpClick: PropTypes.func.isRequired,
   onMoveDownClick: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  onSelectChange: PropTypes.func.isRequired,
   first: PropTypes.bool,
   last: PropTypes.bool,
   index: PropTypes.number,

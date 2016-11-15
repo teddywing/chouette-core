@@ -19,7 +19,7 @@ describe('actions', () => {
   })
 })
 describe('actions', () => {
-  it('should create an action to add a stop', () => {
+  it('should create an action to move down a stop', () => {
     const index = 1
     const expectedAction = {
       type: 'MOVE_STOP_DOWN',
@@ -29,7 +29,7 @@ describe('actions', () => {
   })
 })
 describe('actions', () => {
-  it('should create an action to add a stop', () => {
+  it('should create an action to delete a stop', () => {
     const index = 1
     const expectedAction = {
       type: 'DELETE_STOP',
@@ -39,7 +39,7 @@ describe('actions', () => {
   })
 })
 describe('actions', () => {
-  it('should create an action to add a stop', () => {
+  it('should create an action to update the value of a stop', () => {
     const text = 'updated text'
     const index = 1
     const expectedAction = {
@@ -48,5 +48,24 @@ describe('actions', () => {
       text
     }
     expect(actions.updateInputValue(index, text)).toEqual(expectedAction)
+  })
+})
+
+describe('actions', () => {
+  it('should create an action to update the up select of a stop', () => {
+    const event = {
+      currentTarget: {
+        value: 'forbidden',
+        id: 'up'
+      }
+    }
+    const index = 1
+    const expectedAction = {
+      type :'UPDATE_SELECT_VALUE',
+      select_id: 'up',
+      select_value: 'forbidden',
+      index
+    }
+    expect(actions.updateSelectValue(event, index)).toEqual(expectedAction)
   })
 })
