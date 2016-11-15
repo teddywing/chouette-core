@@ -1,6 +1,8 @@
 class CleanUp < ActiveRecord::Base
   include AASM
   belongs_to :referential
+  has_one :clean_up_result
+
   validates :expected_date, presence: true
   after_commit :perform_cleanup, :on => :create
 
@@ -8,41 +10,14 @@ class CleanUp < ActiveRecord::Base
     CleanUpWorker.perform_async(self.id)
   end
 
-  aasm column: :status do
-    state :new, :initial => true
-    state :pending
-    state :successful
-    state :failed
-
-    event :run, after: :update_started_at do
-      transitions :from => [:new, :failed], :to => :pending
-    end
-
-    event :successful, after: :update_ended_at do
-      transitions :from => [:pending, :failed], :to => :successful
-    end
-
-    event :failed, after: :update_ended_at do
-      transitions :from => :pending, :to => :failed
-    end
-  end
-
-  def update_started_at
-    update_attribute(:started_at, Time.now)
-  end
-
-  def update_ended_at
-    update_attribute(:ended_at, Time.now)
-  end
-
   def clean
-    result = CleanUpResult.new
+    result = {}
     tms = Chouette::TimeTable.validity_out_from_on?(expected_date)
-    result.time_table_count = tms.size
     tms.each.map(&:delete)
 
-    result.vehicle_journey_count = self.clean_vehicle_journeys
-    result.journey_pattern_count = self.clean_journey_patterns
+    result['time_table_count']      = tms.size
+    result['vehicle_journey_count'] = self.clean_vehicle_journeys
+    result['journey_pattern_count'] = self.clean_journey_patterns
     result
   end
 
@@ -54,5 +29,38 @@ class CleanUp < ActiveRecord::Base
   def clean_journey_patterns
     ids = Chouette::JourneyPattern.includes(:vehicle_journeys).where(:vehicle_journeys => {id: nil}).pluck(:id)
     Chouette::JourneyPattern.where(id: ids).delete_all
+  end
+
+  aasm column: :status do
+    state :new, :initial => true
+    state :pending
+    state :successful
+    state :failed
+
+    event :run, after: :log_pending do
+      transitions :from => [:new, :failed], :to => :pending
+    end
+
+    event :successful, after: :log_successful do
+      transitions :from => [:pending, :failed], :to => :successful
+    end
+
+    event :failed, after: :log_failed do
+      transitions :from => :pending, :to => :failed
+    end
+  end
+
+  def log_pending
+    update_attribute(:started_at, Time.now)
+  end
+
+  def log_successful message_attributs
+    update_attribute(:ended_at, Time.now)
+    CleanUpResult.create(clean_up: self, message_key: :successfull, message_attributs: message_attributs)
+  end
+
+  def log_failed message_attributs
+    update_attribute(:ended_at, Time.now)
+    # self.clean_up_result.create(message_key: :failed, message_attributs: message_attributs)
   end
 end

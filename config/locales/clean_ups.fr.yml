@@ -3,12 +3,6 @@ fr:
     success_tm: "%{count} calendrier(s) supprimé(s)"
     success_vj: "%{count} course(s) supprimée(s)"
     success_jp: "%{count} mission(s) supprimée(s)"
-    success_r: "%{count} séquence(s) d'arrêt supprimée(s)"
-    success_l: "%{count} ligne(s) supprimée(s)"
-    success_sa: "%{count} arrêt(s) supprimé(s)"
-    success_c: "%{count} transporteur(s) supprimé(s)"
-    success_n: "%{count} réseau(x) supprimé(s)"
-    success_g: "%{count} groupe(s) de lignes supprimé(s)"
     failure: "Echec de la purge : %{error_message}"
     actions:
       clean_up: "Purger"
@@ -17,11 +11,6 @@ fr:
     attributes:
       clean_up:
         expected_date: "Date limite : "
-        keep_lines: "conserver les lignes"
-        keep_stops: "conserver les arrêts"
-        keep_companies: "conserver les transporteurs"
-        keep_networks: "conserver les réseaux"
-        keep_group_of_lines: "conserver les groupes de lignes"
   titles:
     clean_up:
       expected_date: "valeur incluse dans la purge"

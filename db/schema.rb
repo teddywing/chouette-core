@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115141625) do
+ActiveRecord::Schema.define(version: 20161115142708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,16 @@ ActiveRecord::Schema.define(version: 20161115141625) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "clean_up_results", force: true do |t|
+    t.string   "message_key"
+    t.hstore   "message_attributs"
+    t.integer  "clean_up_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "clean_up_results", ["clean_up_id"], :name => "index_clean_up_results_on_clean_up_id"
 
   create_table "clean_ups", force: true do |t|
     t.string   "status"
