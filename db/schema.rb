@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161114134518) do
+ActiveRecord::Schema.define(version: 20161115141625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,11 +82,6 @@ ActiveRecord::Schema.define(version: 20161114134518) do
     t.datetime "started_at"
     t.datetime "ended_at"
     t.integer  "referential_id"
-    t.boolean  "keep_lines"
-    t.boolean  "keep_stops"
-    t.boolean  "keep_companies"
-    t.boolean  "keep_networks"
-    t.boolean  "keep_group_of_lines"
     t.datetime "expected_date"
     t.datetime "created_at"
     t.datetime "updated_at"

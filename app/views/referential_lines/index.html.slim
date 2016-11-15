@@ -3,7 +3,7 @@
 = search_form_for @q, url: referential_lines_path(@referential), remote: true, html: { method: :get, class: 'form-inline', id: 'search', role: 'form' } do |f|
   .panel.panel-default
     .panel-heading
-      .input-group.col-md-9
+      .input-group.col-lg-9.col-md-9
         = f.search_field :name_or_number_cont, placeholder: "#{t('.name_or_number')}", class: 'form-control'
         .input-group-btn
           button.btn.btn-primary type="submit"
@@ -16,12 +16,10 @@
     #advanced_search.panel-collapse.collapse
       .panel-body
         .row
-          .col-lg-4.col-md-4.col-sm-4.col-xs-4
-            = f.select(:network_id_eq, @referential.networks.collect {|n| [ n.name, n.id ] }.unshift([t('.no_networks'), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t('.all_networks') } )
-          .col-lg-4.col-md-4.col-sm-4.col-xs-4
-            = f.select(:company_id_eq, @referential.companies.collect {|c| [ c.name, c.id ] }.unshift([t('.no_companies'), -1]), {  include_blank: '' }, { class: 'form-control', style: 'width: 100%',  'data-select2ed': 'true', 'data-select2ed-placeholder': t('.all_companies') })
-          .col-lg-4.col-md-4.col-sm-4.col-xs-4
-            = f.select(:group_of_lines_id_eq, @referential.group_of_lines.collect {|c| [ c.name, c.id ] }.unshift([t('.no_group_of_lines'), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t('.all_group_of_lines') })
+          - %w(networks companies group_of_lines).each do |filter|
+            - if @referential.send(filter).any?
+              .col-lg-4.col-md-4.col-sm-4.col-xs-4
+                = f.select(:"#{filter.singularize unless filter == 'group_of_lines'}_id_eq", @referential.send(filter).collect { |f| [f.name, f.id] }.unshift([t(".no_#{filter}"), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t(".all_#{filter}") })
 
 #lines
   = render 'lines'
