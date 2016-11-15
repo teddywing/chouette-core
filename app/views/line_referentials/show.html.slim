@@ -31,7 +31,7 @@
       - unless sync.line_referential_sync_messages.empty?
         - sync.line_referential_sync_messages.last.tap do |log|
           - if log.criticity = log.criticity
-            li.alert class="alert-#{log.criticity}"
+            li.alert class="alert-#{criticity_class(log.criticity)}"
               strong = l(log.created_at, format: :short) + " : "
               / [:processing_time] unit conversion
               - data = log.message_attributs.symbolize_keys!
