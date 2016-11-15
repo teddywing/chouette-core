@@ -735,6 +735,8 @@ ActiveRecord::Schema.define(version: 20161115141625) do
   add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
+  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
+
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify
