@@ -1,10 +1,6 @@
-var connect = require('react-redux').connect
-var toggleTodo = require('../actions').toggleTodo
-var deleteStop = require('../actions').deleteStop
-var moveStopUp = require('../actions').moveStopUp
-var moveStopDown = require('../actions').moveStopDown
-var handleChange = require('../actions').updateInputValue
-var TodoList = require('../components/TodoList')
+import actions from '../actions'
+import { connect } from 'react-redux'
+import TodoList from '../components/TodoList'
 
 const mapStateToProps = (state) => {
   return {
@@ -15,16 +11,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onDeleteClick: (index) =>{
-      dispatch(deleteStop(index))
+      dispatch(actions.deleteStop(index))
     },
     onMoveUpClick: (index) =>{
-      dispatch(moveStopUp(index))
+      dispatch(actions.moveStopUp(index))
     },
     onMoveDownClick: (index) =>{
-      dispatch(moveStopDown(index))
+      dispatch(actions.moveStopDown(index))
     },
     onChange: (index, text) =>{
-      dispatch(handleChange(index, text))
+      dispatch(actions.updateInputValue(index, text))
+    },
+    onSelectChange: (e, index) =>{
+      dispatch(actions.updateSelectValue(e, index))
     }
   }
 }
@@ -34,4 +33,4 @@ const VisibleTodoList = connect(
   mapDispatchToProps
 )(TodoList)
 
-module.exports = VisibleTodoList
+export default VisibleTodoList

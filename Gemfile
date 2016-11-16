@@ -22,6 +22,9 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# Select2 for pretty select boxes w. autocomplete
+gem 'select2-rails', '~> 4.0', '>= 4.0.3'
+
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
 # ActiveRecord associations on top of PostgreSQL arrays
@@ -167,6 +170,8 @@ group :test, :development do
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'transpec'
   gem 'shoulda-matchers'
+  gem "teaspoon-jasmine"
+  gem "phantomjs"
 end
 
 group :production do

@@ -1,14 +1,16 @@
-var React = require('react')
-var render = require('react-dom').render
-var Provider = require('react-redux').Provider
-var createStore = require('redux').createStore
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import todoApp from './reducers'
+import App from './components/App'
+import addInput from './form_helper'
+
+// logger, DO NOT REMOVE
 // var applyMiddleware = require('redux').applyMiddleware
-var todoApp = require('./reducers')
-var App = require('./components/App')
-// var createLogger = require('redux-logger').default
+// var createLogger = require('redux-logger')
 // var thunkMiddleware = require('redux-thunk').default
 // var promise = require('redux-promise')
-var addInput = require('./form_helper').addInput
 
 const getInitialState = () => {
   let state = []
@@ -25,7 +27,9 @@ const getInitialState = () => {
       index: index,
       city_name: value.city_name,
       zip_code: value.zip_code,
-      text: fancyText
+      text: fancyText,
+      for_boarding: value.for_boarding || "normal",
+      for_alighting: value.for_alighting || "normal"
     })
   }
   return state
@@ -54,5 +58,8 @@ document.querySelector('input[name=commit]').addEventListener('click', (event)=>
     }
     addInput('id',todo.stoppoint_id, i)
     addInput('stop_area_id',todo.stoparea_id, i)
+    addInput('position',i, i)
+    addInput('for_boarding',todo.for_boarding, i)
+    addInput('for_alighting',todo.for_alighting, i)
   }
 })

@@ -1,23 +1,6 @@
 = title_tag t('lines.index.title')
 
-= search_form_for @q, :url => referential_lines_path(@referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
-  .panel.panel-default
-    .panel-heading
-      .input-group.col-md-9
-        = f.text_field :name_or_number_cont, :placeholder => "#{t('.name_or_number')}", :class => 'form-control'
-        .input-group-btn
-        button.btn.btn-default type="submit"
-          i.fa.fa-search
-
-      a data-toggle="collapse" data-parent="#search" href="#advanced_search"
-        i.fa.fa-plus
-        = "#{t('.advanced_search')}"
-
-    #advanced_search.panel-collapse.collapse
-      .panel-body
-        = f.select(:network_id_eq, @referential.networks.collect {|n| [ n.name, n.id ] }.unshift([t('.no_networks'), -1]), {include_blank: t('.all_networks')}, { :class => 'form-control' })
-        = f.select(:company_id_eq, @referential.companies.collect {|c| [ c.name, c.id ] }.unshift([t('.no_companies'), -1]), { include_blank: t('.all_companies')}, { :class => 'form-control' })
-        = f.select(:group_of_lines_id_eq, @referential.group_of_lines.collect {|c| [ c.name, c.id ] }.unshift([t('.no_group_of_lines'), -1]), {include_blank: t('.all_group_of_lines')}, { :class => 'form-control' })
+= render partial: 'shared/lines_search_form', locals: { referential_type: 'referential' }
 
 #lines
   = render 'lines'

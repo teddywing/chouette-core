@@ -1,8 +1,7 @@
-var React = require('react')
-var PropTypes = require('react').PropTypes
-var Todo = require('./Todo')
+import React, {PropTypes} from 'react'
+import Todo from './Todo'
 
-const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange }) => {
+const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange }) => {
   return (
     <div className='list-group'>
       {todos.map((todo, index) =>
@@ -14,6 +13,7 @@ const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChan
           }}
           onMoveDownClick={() => onMoveDownClick(index)}
           onChange={ onChange }
+          onSelectChange={ (e) => onSelectChange(e, index) }
           first={ index === 0 }
           last={ index === (todos.length - 1) }
           index={ index }
@@ -28,7 +28,8 @@ TodoList.propTypes = {
   todos: PropTypes.array.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,
-  onMoveDownClick: PropTypes.func.isRequired
+  onMoveDownClick: PropTypes.func.isRequired,
+  onSelectChange: PropTypes.func.isRequired
 }
 
-module.exports = TodoList
+export default TodoList

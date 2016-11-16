@@ -14,6 +14,6 @@ class CleanUpsController < ChouetteController
   end
 
   def clean_up_params
-    params.require(:clean_up).permit(:keep_lines, :keep_stops, :keep_companies, :keep_networks, :keep_group_of_lines, :expected_date)
+    params.require(:clean_up).permit(:keep_lines, :keep_stops, :keep_companies, :keep_networks, :keep_group_of_lines, :begin_date, :end_date)
   end
 end

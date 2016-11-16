@@ -1,23 +1,14 @@
-var addInput = require('../form_helper').addInput
+import addInput from '../form_helper'
 
 const todo = (state = {}, action, length) => {
   switch (action.type) {
     case 'ADD_STOP':
       return {
         text: '',
-        index: length
+        index: length,
+        for_boarding: 'normal',
+        for_alighting: 'normal'
       }
-    case 'UPDATE_INPUT_VALUE':
-      console.log('reducer', action)
-      if (state.index !== action.index) {
-        return state
-      }
-
-      return Object.assign(
-        {},
-        state,
-        {text: action.text.text, stoparea_id: action.text.stoparea_id}
-      )
     default:
       return state
   }
@@ -61,13 +52,34 @@ const todos = (state = [], action) => {
         })
       ]
     case 'UPDATE_INPUT_VALUE':
-      return state.map((t, i) => (i === action.index) ? action.text : t)
+      return state.map( (t, i) => {
+        if (i === action.index) {
+          updateFormForDeletion(t)
+          return Object.assign(
+            {},
+            t,
+            {text: action.text.text, stoparea_id: action.text.stoparea_id}
+          )
+        } else {
+          return t
+        }
+      })
       // return state.map(t =>
       //   todo(t, action)
       // )
+    case 'UPDATE_SELECT_VALUE':
+      return state.map( (t,i) => {
+        if (i === action.index) {
+          let stopState = Object.assign({}, t)
+          stopState[action.select_id] = action.select_value
+          return stopState
+        } else {
+          return t
+        }
+      })
     default:
       return state
   }
 }
 
-module.exports = todos
+export default todos

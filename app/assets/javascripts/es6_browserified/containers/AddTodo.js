@@ -1,13 +1,13 @@
-var React = require('react')
-var connect = require('react-redux').connect
-var addTodo = require('../actions').addStop
+import React from 'react'
+import { connect } from 'react-redux'
+import actions from '../actions'
 
 let AddTodo = ({ dispatch }) => {
   return (
     <div className="clearfix" style={{marginBottom: 10}}>
       <form onSubmit={e => {
         e.preventDefault()
-        dispatch(addTodo())
+        dispatch(actions.addStop())
       }}>
         <button type="submit" className="btn btn-primary btn-xs pull-right">
           <span className="fa fa-plus"></span> Ajouter un arrêt
@@ -18,4 +18,4 @@ let AddTodo = ({ dispatch }) => {
 }
 AddTodo = connect()(AddTodo)
 
-module.exports = AddTodo
+export default AddTodo
