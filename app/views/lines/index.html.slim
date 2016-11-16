@@ -1,26 +1,6 @@
 = title_tag t('lines.index.title')
 
-= search_form_for @q, url: line_referential_lines_path(@line_referential), remote: true, html: {method: :get, class: "form", id: "search", role: "form"} do |f|
-  .well.well-sm
-    .input-group
-      = f.text_field :name_or_number_or_objectid_or_comment_cont, placeholder: t('.name_or_number_or_objectid_or_comment'), class: 'form-control'
-
-      .input-group-btn
-        button.btn.btn-primary type="submit"
-          span.fa.fa-search
-
-= search_form_for @q, url: line_referential_lines_path(@line_referential), remote: true, html: {method: :get, class: "form", id: "search", role: "form"} do |f|
-  .well.well-sm
-    .row
-      .col-md-10.col-sm-9
-        .row
-          - %w(networks companies group_of_lines).each do |filter|
-            .col-md-4.col-sm-4
-              - if @referential && @referential.send(filter).any?
-                = f.select(:"#{filter.singularize unless filter == 'group_of_lines'}_id_eq", @referential.send(filter).collect { |f| [f.name, f.id] }.unshift([t(".no_#{filter}"), -1]), { include_blank: t(".all_#{filter}") }, { class: 'form-control' })
-
-      .col-md-2.col-sm-3
-        button.btn.btn-primary.btn-block type="submit" Filtrer
+= render partial: 'shared/lines_search_form', locals: { referential_type: 'line_referential' }
 
 #lines
   = render 'lines'

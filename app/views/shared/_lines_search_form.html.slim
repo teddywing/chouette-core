@@ -1,0 +1,21 @@
+- referential = instance_variable_get("@#{referential_type}")
+= search_form_for @q, url: eval("#{referential_type}_lines_path(referential)"), remote: true, html: { method: :get, class: 'form-inline', id: 'search', role: 'form' } do |f|
+  .panel.panel-default
+    .panel-heading
+      .input-group.col-lg-9.col-md-9
+        = f.search_field :name_or_number_or_objectid_or_comment_cont, placeholder: t('lines.index.name_or_number_or_objectid_or_comment'), class: 'form-control'
+        .input-group-btn
+          button.btn.btn-primary type='submit'
+            i.fa.fa-search
+
+      a data-toggle='collapse' data-parent='#search' href='#advanced_search'
+        i.fa.fa-plus
+        = " #{t('lines.index.advanced_search')}"
+
+    #advanced_search.panel-collapse.collapse
+      .panel-body
+        .row
+          - %w(networks companies group_of_lines).each do |filter|
+            - if referential&.send(filter).any?
+              .col-lg-4.col-md-4.col-sm-4.col-xs-4
+                = f.select(:"#{filter.singularize unless filter == 'group_of_lines'}_id_eq", referential.send(filter).collect { |f| [f.name, f.id] }.unshift([t("lines.index.no_#{filter}"), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t("lines.index.all_#{filter}") })

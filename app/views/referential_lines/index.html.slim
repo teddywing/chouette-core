@@ -1,25 +1,6 @@
 = title_tag t('lines.index.title')
 
-= search_form_for @q, url: referential_lines_path(@referential), remote: true, html: { method: :get, class: 'form-inline', id: 'search', role: 'form' } do |f|
-  .panel.panel-default
-    .panel-heading
-      .input-group.col-lg-9.col-md-9
-        = f.search_field :name_or_number_cont, placeholder: "#{t('.name_or_number')}", class: 'form-control'
-        .input-group-btn
-          button.btn.btn-primary type="submit"
-            i.fa.fa-search
-
-      a data-toggle="collapse" data-parent="#search" href="#advanced_search"
-        i.fa.fa-plus
-        = " #{t('.advanced_search')}"
-
-    #advanced_search.panel-collapse.collapse
-      .panel-body
-        .row
-          - %w(networks companies group_of_lines).each do |filter|
-            - if @referential.send(filter).any?
-              .col-lg-4.col-md-4.col-sm-4.col-xs-4
-                = f.select(:"#{filter.singularize unless filter == 'group_of_lines'}_id_eq", @referential.send(filter).collect { |f| [f.name, f.id] }.unshift([t(".no_#{filter}"), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t(".all_#{filter}") })
+= render partial: 'shared/lines_search_form', locals: { referential_type: 'referential' }
 
 #lines
   = render 'lines'
