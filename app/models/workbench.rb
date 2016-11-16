@@ -13,5 +13,5 @@ class Workbench < ActiveRecord::Base
   validates :organisation, presence: true
 
   has_many :referentials
-
+  has_many :referential_metadatas, through: :referentials
 end
