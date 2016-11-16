@@ -10,7 +10,9 @@ en:
   activemodel:
     attributes:
       clean_up:
-        expected_date: "Final date : "
+        begin_date: "Begin date : "
+        end_date: "End date : "
   titles:
     clean_up:
-      expected_date: "value included in clean up"
+      begin_date: "Begin date of clean up"
+      end_date: "End date of clean up"

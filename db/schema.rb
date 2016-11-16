@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161115142708) do
+ActiveRecord::Schema.define(version: 20161116130958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,9 +92,10 @@ ActiveRecord::Schema.define(version: 20161115142708) do
     t.datetime "started_at"
     t.datetime "ended_at"
     t.integer  "referential_id"
-    t.datetime "expected_date"
+    t.datetime "begin_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "end_date"
   end
 
   add_index "clean_ups", ["referential_id"], :name => "index_clean_ups_on_referential_id"
@@ -145,6 +146,22 @@ ActiveRecord::Schema.define(version: 20161115142708) do
   end
 
   add_index "connection_links", ["objectid"], :name => "connection_links_objectid_key", :unique => true
+
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0
+    t.integer  "attempts",   default: 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "exports", force: true do |t|
     t.integer  "referential_id",  limit: 8
@@ -729,8 +746,6 @@ ActiveRecord::Schema.define(version: 20161115142708) do
   add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
-  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
-
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify

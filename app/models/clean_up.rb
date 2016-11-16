@@ -3,7 +3,7 @@ class CleanUp < ActiveRecord::Base
   belongs_to :referential
   has_one :clean_up_result
 
-  validates :expected_date, presence: true
+  validates :begin_date, presence: true
   after_commit :perform_cleanup, :on => :create
 
   def perform_cleanup
@@ -12,13 +12,14 @@ class CleanUp < ActiveRecord::Base
 
   def clean
     result = {}
-    tms = Chouette::TimeTable.validity_out_from_on?(expected_date)
-    tms.each.map(&:delete)
-
-    result['time_table_count']      = tms.size
+    result['time_table_count']      = self.clean_time_tables
     result['vehicle_journey_count'] = self.clean_vehicle_journeys
     result['journey_pattern_count'] = self.clean_journey_patterns
     result
+  end
+
+  def clean_time_tables
+    Chouette::TimeTable.validity_out_between?(begin_date, end_date).delete_all
   end
 
   def clean_vehicle_journeys
@@ -61,6 +62,6 @@ class CleanUp < ActiveRecord::Base
 
   def log_failed message_attributs
     update_attribute(:ended_at, Time.now)
-    # self.clean_up_result.create(message_key: :failed, message_attributs: message_attributs)
+    CleanUpResult.create(clean_up: self, message_key: :failed, message_attributs: message_attributs)
   end
 end

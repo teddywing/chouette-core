@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CleanUp, :type => :model do
   let(:cleaner) { CleanUp.new }
 
-  it { should validate_presence_of(:expected_date) }
+  it { should validate_presence_of(:begin_date) }
   it { should belong_to(:referential) }
 
   it 'should delete vehiclejourneys without timetables' do

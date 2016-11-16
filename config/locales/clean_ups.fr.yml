@@ -10,7 +10,9 @@ fr:
   activemodel:
     attributes:
       clean_up:
-        expected_date: "Date limite : "
+        begin_date: "Début date limite : "
+        end_date: "Fin date limite : "
   titles:
     clean_up:
-      expected_date: "valeur incluse dans la purge"
+      begin_date: "Début date de la purge"
+      end_date: "Fin date de la purge"
