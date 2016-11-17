@@ -63,7 +63,7 @@ class ReferentialLinesController < ChouetteController
   end
 
   def filtered_lines
-    referential.lines.select{ |t| [t.name, t.published_name].find { |e| /#{params[:q]}/i =~ e }  }
+    referential.lines.by_text(params[:q])
   end
 
   def collection

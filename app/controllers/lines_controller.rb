@@ -69,7 +69,7 @@ class LinesController < BreadcrumbController
   end
 
   def filtered_lines
-    line_referential.lines.select{ |t| [t.name, t.published_name].find { |e| /#{params[:q]}/i =~ e }  }
+    line_referential.lines.by_text(params[:q])
   end
 
   def collection
