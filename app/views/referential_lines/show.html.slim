@@ -1,7 +1,10 @@
 - text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}"
 - bg_color = @line.color.blank? ? "white" : "##{@line.color}"
 
-= title_tag t('lines.show.title', line: @line.name)
+h2
+  = t('lines.show.title', line: @line.name)
+  - if @line.deactivated?
+    small = " (désactivé)"
 
 .line_show
   = @map.to_html
