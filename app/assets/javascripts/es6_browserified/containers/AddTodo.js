@@ -1,6 +1,6 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import actions from '../actions'
+var React = require('react')
+var connect = require('react-redux').connect
+var actions = require('../actions')
 
 let AddTodo = ({ dispatch }) => {
   return (
@@ -18,4 +18,4 @@ let AddTodo = ({ dispatch }) => {
 }
 AddTodo = connect()(AddTodo)
 
-export default AddTodo
+module.exports = AddTodo

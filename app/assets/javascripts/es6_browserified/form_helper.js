@@ -7,4 +7,4 @@ const addInput = (name, value, index) => {
   form.appendChild(input)
 }
 
-export default addInput
+module.exports = addInput

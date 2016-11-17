@@ -1,6 +1,6 @@
-import React from 'react'
-import AddTodo from '../containers/AddTodo'
-import VisibleTodoList from '../containers/VisibleTodoList'
+var React = require('react')
+var AddTodo = require('../containers/Addtodo')
+var VisibleTodoList = require('../containers/VisibleTodoList')
 
 const App = () => (
   <div>
@@ -9,4 +9,4 @@ const App = () => (
   </div>
 )
 
-export default App
+module.exports = App

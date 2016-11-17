@@ -1,5 +1,6 @@
-import React, {PropTypes} from 'react'
-import Select2 from 'react-select2'
+var React = require('react')
+var PropTypes = require('react').PropTypes
+var Select2 = require('react-select2')
 
 
 // get JSON full path
@@ -123,4 +124,4 @@ const formatRepo = (props) => {
   // )
 }
 
-export default BSelect3
+module.exports = BSelect3

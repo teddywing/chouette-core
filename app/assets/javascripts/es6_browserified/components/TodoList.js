@@ -1,5 +1,6 @@
-import React, {PropTypes} from 'react'
-import Todo from './Todo'
+var React = require('react')
+var PropTypes = require('react').PropTypes
+var Todo = require('./Todo')
 
 const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange }) => {
   return (
@@ -32,4 +33,4 @@ TodoList.propTypes = {
   onSelectChange: PropTypes.func.isRequired
 }
 
-export default TodoList
+module.exports = TodoList

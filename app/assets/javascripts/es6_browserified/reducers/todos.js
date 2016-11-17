@@ -1,4 +1,4 @@
-import addInput from '../form_helper'
+var addInput = require('../form_helper')
 
 const todo = (state = {}, action, length) => {
   switch (action.type) {
@@ -82,4 +82,4 @@ const todos = (state = [], action) => {
   }
 }
 
-export default todos
+module.exports = todos

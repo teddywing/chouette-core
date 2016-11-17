@@ -1,6 +1,6 @@
-import actions from '../actions'
-import { connect } from 'react-redux'
-import TodoList from '../components/TodoList'
+var actions = require('../actions')
+var connect = require('react-redux').connect
+var TodoList = require('../components/TodoList')
 
 const mapStateToProps = (state) => {
   return {
@@ -33,4 +33,4 @@ const VisibleTodoList = connect(
   mapDispatchToProps
 )(TodoList)
 
-export default VisibleTodoList
+module.exports = VisibleTodoList
