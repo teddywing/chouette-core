@@ -3,7 +3,7 @@ h2
   em.small = " (archivé)" if @referential.archived?
 
 .summary
-  - if @refential.created_from
+  - if @referential.created_from
     p
       label = "#{Referential.human_attribute_name('created_from')} : "
       = " #{@referential.created_from.name}"
