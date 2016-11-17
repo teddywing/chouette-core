@@ -4,32 +4,36 @@ h2
 
 .summary
   p
+    label = "#{Referential.human_attribute_name('created_from')} : "
+    = " #{@referential.created_from.name}"
+  
+  p
     label = "#{Referential.human_attribute_name('slug')} : "
-    = @referential.slug
+    = " #{@referential.slug}"
 
   p
     label = "#{Referential.human_attribute_name('prefix')} : "
-    = @referential.prefix
+    = " #{@referential.prefix}"
 
   p
     label = "#{Referential.human_attribute_name('projection_type')} : "
     - if !@referential.projection_type_label.empty?
-      = "#{@referential.projection_type_label} (epsg:#{@referential.projection_type})"
+      = " #{@referential.projection_type_label} (epsg:#{@referential.projection_type})"
 
   p
     label = "#{Referential.human_attribute_name('time_zone').capitalize} : "
-    = @referential.time_zone
+    = " #{@referential.time_zone}"
 
   p
     label = "#{Referential.human_attribute_name('data_format_restrictions')} : "
-    = @referential.data_format
+    = " #{@referential.data_format}"
 
   p
     label = "#{Referential.human_attribute_name('validity_period')} : "
     - if Chouette::TimeTable.start_validity_period.nil?
-      = Referential.human_attribute_name("no_validity_period")
+      = " #{Referential.human_attribute_name('no_validity_period')}"
     - else
-      = Referential.human_attribute_name("start_validity_period")
+      = " #{Referential.human_attribute_name('start_validity_period')}"
       = l Chouette::TimeTable.start_validity_period
       = Referential.human_attribute_name("end_validity_period")
       = l Chouette::TimeTable.end_validity_period
