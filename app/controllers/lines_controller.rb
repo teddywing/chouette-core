@@ -78,7 +78,7 @@ class LinesController < BreadcrumbController
         params[:q]["#{filter}_eq"] = ''
         params[:q]["#{filter}_blank"] = '1'
       end
-
+    end
     @q = line_referential.lines.search(params[:q])
     @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
   end
