@@ -71,6 +71,7 @@ module Stif
           import_xml: api_line.xml
         }
 
+        params[:transport_submode] = api_line.transport_submode.to_s
         unless api_line.operator_ref.nil?
           params[:company] = Chouette::Company.find_by(objectid: api_line.operator_ref)
         end
