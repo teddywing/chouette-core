@@ -67,19 +67,11 @@ class ReferentialLinesController < ChouetteController
   end
 
   def collection
-    if params[:q] && params[:q]["network_id_eq"] == "-1"
-      params[:q]["network_id_eq"] = ""
-      params[:q]["network_id_blank"] = "1"
-    end
-
-    if params[:q] && params[:q]["company_id_eq"] == "-1"
-      params[:q]["company_id_eq"] = ""
-      params[:q]["company_id_blank"] = "1"
-    end
-
-    if params[:q] && params[:q]["group_of_lines_id_eq"] == "-1"
-      params[:q]["group_of_lines_id_eq"] = ""
-      params[:q]["group_of_lines_id_blank"] = "1"
+    %w(network_id company_id group_of_lines_id comment_id transport_mode_name).each do |filter|
+      if params[:q] && params[:q]["#{filter}_eq"] == '-1'
+        params[:q]["#{filter}_eq"] = ''
+        params[:q]["#{filter}_blank"] = '1'
+      end
     end
 
     @q = referential.lines.search(params[:q])

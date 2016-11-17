@@ -28,6 +28,6 @@ class LineReferential < ActiveRecord::Base
   end
 
   def transport_modes
-    Chouette::TransportMode.all.select { |tm| tm.positive? }
+    Chouette::TransportMode.all.select { |tm| tm.to_i.positive? }
   end
 end

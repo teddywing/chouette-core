@@ -27,9 +27,11 @@ fr:
       no_networks: "Aucun réseaux"
       no_companies: "Aucun transporteurs"
       no_group_of_lines: "Aucun groupes de ligne"
+      no_transport_modes: Aucun mode de transport
       all_networks: "Tous les réseaux"
       all_companies: "Tous les transporteurs"
       all_group_of_lines: "Tous les groupes de ligne"
+      all_transport_modes: Tous les modes de transport
       multi_selection: "Sélection multiple"
       multi_selection_enable: "Activer la sélection multiple"
       multi_selection_disable: "Désactiver la sélection multiple"
