@@ -1,5 +1,5 @@
 var React = require('react')
-var AddTodo = require('../containers/Addtodo')
+var AddTodo = require('../containers/AddTodo')
 var VisibleTodoList = require('../containers/VisibleTodoList')
 
 const App = () => (
