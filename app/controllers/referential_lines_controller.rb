@@ -67,7 +67,7 @@ class ReferentialLinesController < ChouetteController
   end
 
   def collection
-    %w(network_id company_id group_of_lines_id comment_id transport_mode_name).each do |filter|
+    %w(network_id company_id group_of_lines_id comment_id transport_mode).each do |filter|
       if params[:q] && params[:q]["#{filter}_eq"] == '-1'
         params[:q]["#{filter}_eq"] = ''
         params[:q]["#{filter}_blank"] = '1'
@@ -92,7 +92,7 @@ class ReferentialLinesController < ChouetteController
       :creator_id,
       :name, :number,
       :published_name,
-      :transport_mode_name,
+      :transport_mode,
       :registration_number,
       :comment,
       :mobility_restricted_suitability,

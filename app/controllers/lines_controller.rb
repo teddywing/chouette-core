@@ -73,7 +73,7 @@ class LinesController < BreadcrumbController
   end
 
   def collection
-    %w(network_id company_id group_of_lines_id comment_id transport_mode_name).each do |filter|
+    %w(network_id company_id group_of_lines_id comment_id transport_mode).each do |filter|
       if params[:q] && params[:q]["#{filter}_eq"] == '-1'
         params[:q]["#{filter}_eq"] = ''
         params[:q]["#{filter}_blank"] = '1'
@@ -91,7 +91,7 @@ class LinesController < BreadcrumbController
   end
 
   def line_params
-    params.require(:line).permit( :transport_mode, :network_id, :company_id, :objectid, :object_version, :creation_time, :creator_id, :name, :number, :published_name, :transport_mode_name, :registration_number, :comment, :mobility_restricted_suitability, :int_user_needs, :flexible_service, :group_of_lines, :group_of_line_ids, :group_of_line_tokens, :url, :color, :text_color, :stable_id, { footnotes_attributes: [ :code, :label, :_destroy, :id ] } )
+    params.require(:line).permit( :transport_mode, :network_id, :company_id, :objectid, :object_version, :creation_time, :creator_id, :name, :number, :published_name, :transport_mode, :registration_number, :comment, :mobility_restricted_suitability, :int_user_needs, :flexible_service, :group_of_lines, :group_of_line_ids, :group_of_line_tokens, :url, :color, :text_color, :stable_id, { footnotes_attributes: [ :code, :label, :_destroy, :id ] } )
   end
 
 end
