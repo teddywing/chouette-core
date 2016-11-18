@@ -83,3 +83,4 @@ en:
     referential:
       archived: "The data space has been successfully archived"
       unarchived: "The data space has been successfully unarchived"
+      deleted: "The data space has been successfully destroyed"
