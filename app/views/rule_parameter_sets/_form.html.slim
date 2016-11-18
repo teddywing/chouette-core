@@ -36,7 +36,7 @@
 
       tbody
         / To be removed, see #1936
-        - Chouette::Line.transport_modes.map(&:to_s).each do |mode|
+        - Chouette::Line.transport_mode.values.each do |mode|
           tr
             == render partial: "mode_fields", :locals => { f: form, mode: mode }
 

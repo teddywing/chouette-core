@@ -6,7 +6,7 @@
     = form.input :published_name
     = form.input :registration_number, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.line.registration_number") }
     = form.input :number, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.line.number") }
-    = form.input :transport_mode, as: :select, :collection => @line.line_referential.transport_modes, :include_blank => false, :member_label => Proc.new { |mode| t("transport_modes.label.#{mode}") }
+    = form.input :transport_mode, include_blank: false
     = form.input :color, as: :string
     = form.input :text_color
     = form.input :stable_id

@@ -2,6 +2,7 @@ class Chouette::Line < Chouette::ActiveRecord
   include DefaultNetexAttributesSupport
   include LineRestrictions
   include LineReferentialSupport
+  include StifTransportModeEnumerations
 
   extend Enumerize
   extend ActiveModel::Naming
@@ -35,6 +36,7 @@ class Chouette::Line < Chouette::ActiveRecord
   validates_format_of :text_color, :with => %r{\A[0-9a-fA-F]{6}\Z}, :allow_nil => true, :allow_blank => true
 
   validates_presence_of :name
+  validates :transport_mode, inclusion: { in: self.transport_mode.values }
 
   scope :by_text, ->(text) { where('lower(name) LIKE :t or lower(published_name) LIKE :t or lower(objectid) LIKE :t or lower(comment) LIKE :t or lower(number) LIKE :t',
     t: "%#{text.downcase}%") }
@@ -45,22 +47,6 @@ class Chouette::Line < Chouette::ActiveRecord
 
   def geometry_presenter
     Chouette::Geometry::LinePresenter.new self
-  end
-
-  def transport_mode
-    # return nil if transport_mode_name is nil
-    transport_mode_name && Chouette::TransportMode.new( transport_mode_name.underscore)
-  end
-
-  def transport_mode=(transport_mode)
-    self.transport_mode_name = (transport_mode ? transport_mode.camelcase : nil)
-  end
-
-  @@transport_modes = nil
-  def self.transport_modes
-    @@transport_modes ||= Chouette::TransportMode.all.select do |transport_mode|
-      transport_mode.to_i > 0
-    end
   end
 
   def commercial_stop_areas

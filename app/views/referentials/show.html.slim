@@ -45,18 +45,6 @@ h2
   ul.actions
     li = link_to t('referentials.actions.edit'), edit_referential_path(@referential), class: 'edit'
 
-    li
-      - if @referential.archived?
-        = link_to unarchive_referential_path(@referential), method: :put do
-          span.fa-stack
-            span.fa.fa-archive.fa-stack-1x
-            span.fa.fa-ban.fa-stack-2x
-          = " Désarchiver cet espace de données"
-      - else
-        = link_to archive_referential_path(@referential), method: :put do
-          span.fa.fa-archive
-          = " Archiver cet espace de données"
-
     li = link_to t('referentials.actions.destroy'), referential_path(@referential), method: :delete, data: {:confirm => t('referentials.actions.destroy_confirm')}, class: "remove"
     / li = link_to t('api_keys.actions.new'), new_referential_api_key_path(@referential), class: 'add'
     li = link_to t('referentials.actions.clone'), new_referential_path(from: @referential.id), class: 'add'

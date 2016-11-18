@@ -15,10 +15,9 @@ class ReferentialsController < BreadcrumbController
     end
   end
 
-  def create
-
-    create!
-  end
+  # def create
+  #   create!
+  # end
 
   def show
      resource.switch
@@ -34,13 +33,20 @@ class ReferentialsController < BreadcrumbController
      end
   end
 
+  def destroy
+    workbench = referential.workbench_id
+
+    referential.destroy!
+    redirect_to workbench_path(workbench), notice: t('notice.referential.deleted')
+  end
+
   def archive
     referential.archive!
-    redirect_to referential_path, notice: t('notice.referential.archived')
+    redirect_to workbench_path(referential.workbench_id), notice: t('notice.referential.archived')
   end
   def unarchive
     referential.unarchive!
-    redirect_to referential_path, notice: t('notice.referential.unarchived')
+    redirect_to workbench_path(referential.workbench_id), notice: t('notice.referential.unarchived')
   end
 
   protected

@@ -44,8 +44,11 @@ class Organisation < ActiveRecord::Base
     org = Organisation.find_or_initialize_by(code: code)
     if scope
       org.sso_attributes ||= {}
-      org.sso_attributes['functional_scope'] = scope
-      org.sso_attributes_will_change!
+      if org.sso_attributes['functional_scope'] != scope
+        org.sso_attributes['functional_scope'] = scope
+        # FIXME see #1941
+        org.sso_attributes_will_change!
+      end
     end
     org.name      = name
     org.synced_at = Time.now

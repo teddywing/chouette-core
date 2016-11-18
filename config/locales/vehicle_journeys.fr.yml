@@ -84,7 +84,7 @@ fr:
         number: "Numéro"
         comment: "Commentaires"
         status_value: "Etat de trafic"
-        transport_mode_name: "Mode de transport"
+        transport_mode: "Mode de transport"
         mobility_restricted_suitability: "Accessibilité PMR"
         flexible_service: "Transport à la demande"
         unspecified_mrs: "Non spécifié"

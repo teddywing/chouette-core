@@ -47,51 +47,6 @@ describe Chouette::Line, :type => :model do
     end
   end
 
-  describe "#transport_mode" do
-
-    def self.legacy_transport_mode_names
-      %w{Air Train LongDistanceTrain LocalTrain RapidTransit Metro Tramway Coach Bus Ferry Waterborne PrivateVehicle Walk Trolleybus Bicycle Shuttle Taxi VAL Other}
-    end
-
-    legacy_transport_mode_names.each do |transport_mode_name|
-      context "when transport_mode_name is #{transport_mode_name}" do
-        transport_mode = Chouette::TransportMode.new(transport_mode_name.underscore)
-        it "should be #{transport_mode}" do
-          subject.transport_mode_name = transport_mode_name
-          expect(subject.transport_mode).to eq(transport_mode)
-        end
-      end
-    end
-    context "when transport_mode_name is nil" do
-      it "should be nil" do
-        subject.transport_mode_name = nil
-        expect(subject.transport_mode).to be_nil
-      end
-    end
-
-  end
-
-  describe "#transport_mode=" do
-
-    it "should change transport_mode_name with TransportMode#name" do
-      subject.transport_mode = "Test"
-      expect(subject.transport_mode_name).to eq("Test")
-    end
-
-  end
-
-  describe ".transport_modes" do
-
-    it "should not include unknown transport_mode" do
-      expect(Chouette::Line.transport_modes).not_to include(Chouette::TransportMode.new("unknown"))
-    end
-
-    it "should not include interchange transport_mode" do
-      expect(Chouette::Line.transport_modes).not_to include(Chouette::TransportMode.new("interchange"))
-    end
-
-  end
-
   context "#group_of_line_tokens=" do
     let!(:group_of_line1){create(:group_of_line)}
     let!(:group_of_line2){create(:group_of_line)}

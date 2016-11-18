@@ -19,6 +19,6 @@
             - options_container = (referential_type == 'referential' && filter == 'transport_modes') ? referential.line_referential : referential
             - if options_container && options_container.send(filter).any?
               - options = options_container.send(filter).collect { |f| [f.name, filter == 'transport_modes' ? f.name : f.id] }.unshift([t("lines.index.no_#{filter}"), -1])
-              - matcher = filter == 'transport_modes' ? :transport_mode_name_eq : :"#{filter == 'group_of_lines' ? filter : filter.singularize}_id_eq"
+              - matcher = filter == 'transport_modes' ? :transport_mode_eq : :"#{filter == 'group_of_lines' ? filter : filter.singularize}_id_eq"
               .col-xs-3
                 = f.select(matcher, options, { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t("lines.index.all_#{filter}") })

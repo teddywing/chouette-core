@@ -96,7 +96,7 @@
             - unless prefix == "allowed_transport"
               th = RuleParameterSet.human_attribute_name(prefix)
         / To be removed, see #1936
-        - Chouette::Line.transport_modes.map(&:to_s).each do |mode|
+        - Chouette::Line.transport_mode.values.each do |mode|
           - if @rule_parameter_set.allowed(mode)
             tr
               td = t("transport_modes.label.#{mode}")

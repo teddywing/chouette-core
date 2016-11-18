@@ -83,3 +83,4 @@ fr:
     referential:
       archived: "L'espace de données a été correctement archivé"
       unarchived: "L'espace de données a été correctement désarchivé"
+      deleted: "L'espace de données a été correctement supprimé"
