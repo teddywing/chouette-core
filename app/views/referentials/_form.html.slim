@@ -23,6 +23,7 @@
     = form.input :upper_corner, input_html: { title: t("formtastic.titles.referential.upper_corner") }
     = form.input :lower_corner, input_html: { title: t("formtastic.titles.referential.lower_corner") }
     = form.input :data_format, label: true, include_blank: false
+    = form.input :workbench_id, as: :hidden
     
   = form.actions do
     = form.action :submit, as: :button

@@ -1,6 +1,31 @@
 module Stif
   module ReflexSynchronization
     class << self
+      attr_accessor :imported_count, :updated_count, :deleted_count, :processed
+
+      def reset_counts
+        self.imported_count = 0
+        self.updated_count  = 0
+        self.deleted_count  = 0
+        self.processed      = []
+      end
+
+      def processed_counts
+        {
+          imported: self.imported_count,
+          updated: self.updated_count,
+          deleted: self.deleted_count
+        }
+      end
+
+      def log_processing_time message, time
+        Rails.logger.info "Reflex:sync - #{message} done in #{time} seconds"
+      end
+
+      def increment_counts prop_name, value
+        self.send("#{prop_name}=", self.send(prop_name) + value)
+      end
+
       def defaut_referential
         StopAreaReferential.find_by(name: "Reflex")
       end
@@ -10,41 +35,32 @@ module Stif
       end
 
       def synchronize
-        tstart           = Time.now
-        client           = Reflex::API.new
-        processed        = []
-        initial_count    = Chouette::StopArea.where(deleted_at: nil).count
-
+        self.reset_counts
         ['getOR', 'getOP'].each do |method|
           start   = Time.now
-          results = client.process method
-          Rails.logger.info "Reflex:sync - Process #{method} done in #{Time.now - start} seconds"
-          results.each do |type, entries|
-            Rails.logger.info "Reflex:sync - #{entries.count} #{type} retrieved"
-          end
-
-          # Create or update stop_area for every quay, stop_place
+          results = Reflex::API.new().process(method)
+          log_processing_time("Process #{method}", Time.now - start)
           stop_areas = results[:Quay] | results[:StopPlace]
 
-          start = Time.now
-          stop_areas.each do |entry|
-            next unless is_valid_type_of_place_ref?(method, entry)
-            processed << entry['id']
-            self.create_or_update_stop_area entry
+          time = Benchmark.measure do
+            stop_areas.each do |entry|
+              next unless is_valid_type_of_place_ref?(method, entry)
+              self.processed << entry['id']
+              self.create_or_update_stop_area entry
+            end
           end
-          Rails.logger.info "Reflex:sync - Create or update StopArea done in #{Time.now - start} seconds"
+          log_processing_time("Create or update StopArea", time.real)
 
-          # Walk through every entry and set parent stop_area
-          start = Time.now
-          stop_areas.each do |entry|
-            self.stop_area_set_parent entry
+          time = Benchmark.measure do
+            stop_areas.map{|entry| self.stop_area_set_parent(entry)}
           end
-          Rails.logger.info "Reflex:sync - StopArea set parent done in #{Time.now - start} seconds"
+          log_processing_time("StopArea set parent", time.real)
         end
-        {
-          imported: Chouette::StopArea.where(deleted_at: nil).count - initial_count,
-          deleted: self.set_deleted_stop_area(processed.uniq).size
-        }
+
+        # Set deleted_at for item not returned by api since last sync
+        time = Benchmark.measure { self.set_deleted_stop_area }
+        log_processing_time("StopArea #{self.deleted_count} deleted", time.real)
+        self.processed_counts
       end
 
       def is_valid_type_of_place_ref? method, entry
@@ -53,14 +69,12 @@ module Stif
         return true if method == 'getOP' && ['ZDE'].include?(entry["TypeOfPlaceRef"])
       end
 
-      def set_deleted_stop_area processed
-        start   = Time.now
-        deleted = Chouette::StopArea.where(deleted_at: nil).pluck(:objectid).uniq - processed
+      def set_deleted_stop_area
+        deleted = Chouette::StopArea.where(deleted_at: nil).pluck(:objectid).uniq - self.processed.uniq
         deleted.each_slice(50) do |object_ids|
           Chouette::StopArea.where(objectid: object_ids).update_all(deleted_at: Time.now)
         end
-        Rails.logger.info "Reflex:sync - StopArea #{deleted.size} stop_area deleted since last sync in #{Time.now - start} seconds"
-        deleted
+        increment_counts :deleted_count, deleted.size
       end
 
       def stop_area_set_parent entry
@@ -122,7 +136,9 @@ module Stif
 
         if stop.changed?
           stop.creation_time = entry[:created]
-          stop.import_xml = entry[:xml]
+          stop.import_xml    = entry[:xml]
+          prop = stop.new_record? ? :imported_count : :updated_count
+          increment_counts prop, 1
           stop.save!
         end
         # Create AccessPoint from StopPlaceEntrance
