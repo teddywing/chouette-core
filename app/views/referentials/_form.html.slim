@@ -1,7 +1,7 @@
 = semantic_form_for @referential, class: 'form-horizontal' do |form|
   = form.inputs do
     = form.input :name
-    
+    / = form.select( [], @referential.workbench.lines, { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': "Sélection de lignes" })
     - if @referential.new_record?
       - if @referential.created_from
         = form.input :created_from
@@ -22,7 +22,7 @@
     = form.input :time_zone
     = form.input :upper_corner, input_html: { title: t("formtastic.titles.referential.upper_corner") }
     = form.input :lower_corner, input_html: { title: t("formtastic.titles.referential.lower_corner") }
-    = form.input :data_format, label: true, include_blank: false
+    / = form.input :data_format, label: true, include_blank: false
     = form.input :workbench_id, as: :hidden
     
   = form.actions do
