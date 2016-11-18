@@ -48,6 +48,10 @@ h2
     p
       label = "#{@line.human_attribute_name('transport_mode')} : "
       = t("transport_modes.label.#{@line.transport_mode}")
+    
+    p
+      label = "#{@line.human_attribute_name('transport_submode')} : "
+      = t("enumerize.linereferential.transport_submode.#{@line.transport_submode}")
 
     p
       label = "#{@line.human_attribute_name('stable_id')} : "

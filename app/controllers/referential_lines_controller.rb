@@ -83,6 +83,7 @@ class ReferentialLinesController < ChouetteController
   def line_params
     params.require(:line).permit(
       :transport_mode,
+      :transport_submode,
       :network_id,
       :company_id,
       :objectid,

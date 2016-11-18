@@ -1,7 +1,6 @@
 class LineReferential < ActiveRecord::Base
   has_many :line_referential_memberships
   has_many :organisations, through: :line_referential_memberships
-
   has_many :lines, class_name: 'Chouette::Line'
   has_many :group_of_lines, class_name: 'Chouette::GroupOfLine'
   has_many :companies, class_name: 'Chouette::Company'
