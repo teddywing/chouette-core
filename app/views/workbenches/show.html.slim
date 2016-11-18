@@ -2,4 +2,63 @@
 
 .referentials.paginated_content
   h4 Liste des jeux de données
-  = paginated_content @workbench.referentials
+  
+  / = paginated_content @workbench.referentials
+
+  table.table.table-bordered.table-hover
+    thead
+      tr
+        th = Referential.human_attribute_name(:name)
+        th = Referential.human_attribute_name(:updated_at)
+        th = "Publié le"
+        th = Referential.human_attribute_name(:validity_period)
+        th = Referential.human_attribute_name(:lines)
+        th = Referential.human_attribute_name(:organisation)
+        th = "Etat"
+        th = "Actions"
+
+    tbody
+      - @workbench.referentials.each do |referential|
+        tr
+          td = referential.name
+          td = l referential.updated_at, format: :long
+          td
+          td
+            - if Chouette::TimeTable.start_validity_period.nil?
+              = "#{Referential.human_attribute_name('no_validity_period')}"
+            - else
+              = " #{Referential.human_attribute_name('start_validity_period')}"
+              = l Chouette::TimeTable.start_validity_period, format: :long
+              = Referential.human_attribute_name("end_validity_period")
+              = l Chouette::TimeTable.end_validity_period, format: :long
+            
+          td = referential.lines.count
+          td = referential.organisation.name
+          
+          / Status (archived?)
+          td.text-center
+            - if referential.archived?
+              span.fa.fa-archive title="Archivé"
+            - else
+              = "-"
+          
+          / Actions
+          td.text-center
+            .btn-group.btn-group-xs
+              = link_to referential_path(referential), class: 'btn btn-default' do
+                span.fa.fa-eye
+
+              = link_to edit_referential_path(referential), class: 'btn btn-default' do
+                span.fa.fa-pencil
+                
+              - if referential.archived?
+                = link_to unarchive_referential_path(referential), class: 'btn btn-default', method: :put do
+                  span.fa-stack title="Désarchiver"
+                    span.fa.fa-archive.fa-stack-1x
+                    span.fa.fa-ban.fa-stack-2x
+              - else
+                = link_to archive_referential_path(referential), class: 'btn btn-default', method: :put do
+                  span.fa.fa-archive title="Archiver"
+
+              = link_to referential_path(referential), method: :delete, :data => {:confirm => t('referentials.actions.destroy_confirm')}, class: 'btn btn-danger' do
+                span.fa.fa-trash-o
