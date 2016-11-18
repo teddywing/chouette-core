@@ -3,8 +3,6 @@
 .referentials.paginated_content
   h4 Liste des jeux de données
   
-  / = paginated_content @workbench.referentials
-
   table.table.table-bordered.table-hover
     thead
       tr
@@ -18,7 +16,7 @@
         th = "Actions"
 
     tbody
-      - @workbench.referentials.each do |referential|
+      - @wbench_refs.each do |referential|
         tr
           td = referential.name
           td = l referential.updated_at, format: :long
@@ -62,3 +60,12 @@
 
               = link_to referential_path(referential), method: :delete, :data => {:confirm => t('referentials.actions.destroy_confirm')}, class: 'btn btn-danger' do
                 span.fa.fa-trash-o
+
+  .text-center
+    = will_paginate @wbench_refs, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
+    
+- content_for :sidebar do
+  ul.actions
+    li = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'add'
+
+      

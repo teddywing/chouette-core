@@ -8,9 +8,16 @@ class ReferentialsController < BreadcrumbController
 
   def new
     @referential = Referential.new_from(Referential.find(params[:from])) if params[:from]
+
     new! do
       @referential.data_format = current_organisation.data_format
+      @referential.workbench_id = params[:workbench_id] if params[:workbench_id]
     end
+  end
+
+  def create
+
+    create!
   end
 
   def show
@@ -24,7 +31,6 @@ class ReferentialsController < BreadcrumbController
                 :referential_id => resource.id}
        }
        format.html { build_breadcrumb :show}
-
      end
   end
 
@@ -76,6 +82,7 @@ class ReferentialsController < BreadcrumbController
       :data_format,
       :archived_at,
       :created_from_id,
+      :workbench_id,
       referential_metadata_attributes: [:referential_source_id, :line_ids => []]
     )
   end
