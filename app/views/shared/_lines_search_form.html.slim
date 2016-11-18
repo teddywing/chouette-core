@@ -2,7 +2,7 @@
 = search_form_for @q, url: eval("#{referential_type}_lines_path(referential)"), remote: true, html: { method: :get, class: 'form-inline', id: 'search', role: 'form' } do |f|
   .panel.panel-default
     .panel-heading
-      .input-group.col-lg-9.col-md-9
+      .input-group.col-md-9
         = f.search_field :name_or_number_or_objectid_or_comment_cont, placeholder: t('lines.index.name_or_number_or_objectid_or_comment'), class: 'form-control'
         .input-group-btn
           button.btn.btn-primary type='submit'
@@ -15,7 +15,10 @@
     #advanced_search.panel-collapse.collapse
       .panel-body
         .row
-          - %w(networks companies group_of_lines).each do |filter|
-            - if referential&.send(filter).any?
-              .col-lg-4.col-md-4.col-sm-4.col-xs-4
-                = f.select(:"#{filter.singularize unless filter == 'group_of_lines'}_id_eq", referential.send(filter).collect { |f| [f.name, f.id] }.unshift([t("lines.index.no_#{filter}"), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t("lines.index.all_#{filter}") })
+          - %w(networks companies group_of_lines transport_modes).each do |filter|
+            - options_container = (referential_type == 'referential' && filter == 'transport_modes') ? referential.line_referential : referential
+            - if options_container && options_container.send(filter).any?
+              - options = options_container.send(filter).collect { |f| [f.name, filter == 'transport_modes' ? f.name : f.id] }.unshift([t("lines.index.no_#{filter}"), -1])
+              - matcher = filter == 'transport_modes' ? :transport_mode_name_eq : :"#{filter == 'group_of_lines' ? filter : filter.singularize}_id_eq"
+              .col-xs-3
+                = f.select(matcher, options, { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t("lines.index.all_#{filter}") })

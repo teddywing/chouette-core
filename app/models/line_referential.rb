@@ -1,7 +1,6 @@
 class LineReferential < ActiveRecord::Base
   has_many :line_referential_memberships
   has_many :organisations, through: :line_referential_memberships
-
   has_many :lines, class_name: 'Chouette::Line'
   has_many :group_of_lines, class_name: 'Chouette::GroupOfLine'
   has_many :companies, class_name: 'Chouette::Company'
@@ -28,6 +27,6 @@ class LineReferential < ActiveRecord::Base
   end
 
   def transport_modes
-    Chouette::TransportMode.all.select { |tm| tm.positive? }
+    Chouette::TransportMode.all.select { |tm| tm.to_i > 0 }
   end
 end

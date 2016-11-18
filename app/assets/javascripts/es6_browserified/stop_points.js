@@ -1,10 +1,10 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import todoApp from './reducers'
-import App from './components/App'
-import addInput from './form_helper'
+var React = require('react')
+var render = require('react-dom').render
+var Provider = require('react-redux').Provider
+var createStore = require('redux').createStore
+var todoApp = require('./reducers')
+var App = require('./components/App')
+var addInput = require('./form_helper')
 
 // logger, DO NOT REMOVE
 // var applyMiddleware = require('redux').applyMiddleware

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116130958) do
+ActiveRecord::Schema.define(version: 20161117104301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,22 +146,6 @@ ActiveRecord::Schema.define(version: 20161116130958) do
   end
 
   add_index "connection_links", ["objectid"], :name => "connection_links_objectid_key", :unique => true
-
-  create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0
-    t.integer  "attempts",   default: 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "exports", force: true do |t|
     t.integer  "referential_id",  limit: 8
@@ -348,6 +332,7 @@ ActiveRecord::Schema.define(version: 20161116130958) do
     t.integer  "line_referential_id"
     t.boolean  "deactivated",                               default: false
     t.text     "import_xml"
+    t.string   "transport_submode"
   end
 
   add_index "lines", ["line_referential_id"], :name => "index_lines_on_line_referential_id"

@@ -5,5 +5,7 @@
       theme: 'bootstrap'
       language: 'fr'
       placeholder: target.data('select2ed-placeholder')
+      allowClear: true
+
 
 $(document).on 'ready page:load', select_2

@@ -1,8 +1,12 @@
 class Chouette::Line < Chouette::ActiveRecord
   include DefaultNetexAttributesSupport
   include LineRestrictions
-
   include LineReferentialSupport
+
+  extend Enumerize
+  extend ActiveModel::Naming
+
+  enumerize :transport_submode, in: %i(unknown undefined internationalFlight domesticFlight intercontinentalFlight domesticScheduledFlight shuttleFlight intercontinentalCharterFlight internationalCharterFlight roundTripCharterFlight sightseeingFlight helicopterService domesticCharterFlight SchengenAreaFlight airshipService shortHaulInternationalFlight canalBarge localBus regionalBus expressBus nightBus postBus specialNeedsBus mobilityBus mobilityBusForRegisteredDisabled sightseeingBus shuttleBus highFrequencyBus dedicatedLaneBus schoolBus schoolAndPublicServiceBus railReplacementBus demandAndResponseBus airportLinkBus internationalCoach nationalCoach shuttleCoach regionalCoach specialCoach schoolCoach sightseeingCoach touristCoach commuterCoach metro tube urbanRailway local highSpeedRail suburbanRailway regionalRail interregionalRail longDistance intermational sleeperRailService nightRail carTransportRailService touristRailway railShuttle replacementRailService specialTrain crossCountryRail rackAndPinionRailway cityTram localTram regionalTram sightseeingTram shuttleTram trainTram internationalCarFerry nationalCarFerry regionalCarFerry localCarFerry internationalPassengerFerry nationalPassengerFerry regionalPassengerFerry localPassengerFerry postBoat trainFerry roadFerryLink airportBoatLink highSpeedVehicleService highSpeedPassengerService sightseeingService schoolBoat cableFerry riverBus scheduledFerry shuttleFerryService telecabin cableCar lift chairLift dragLift telecabinLink funicular streetCableCar allFunicularServices undefinedFunicular)
 
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -31,6 +35,9 @@ class Chouette::Line < Chouette::ActiveRecord
   validates_format_of :text_color, :with => %r{\A[0-9a-fA-F]{6}\Z}, :allow_nil => true, :allow_blank => true
 
   validates_presence_of :name
+
+  scope :by_text, ->(text) { where('lower(name) LIKE :t or lower(published_name) LIKE :t or lower(objectid) LIKE :t or lower(comment) LIKE :t or lower(number) LIKE :t',
+    t: "%#{text.downcase}%") }
 
   def self.nullable_attributes
     [:published_name, :number, :comment, :url, :color, :text_color, :stable_id]

@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux'
-import todos from './todos'
+var combineReducers = require('redux').combineReducers
+var todos = require('./todos')
 
 const todoApp = combineReducers({
   todos
 })
 
-export default todoApp
+module.exports = todoApp

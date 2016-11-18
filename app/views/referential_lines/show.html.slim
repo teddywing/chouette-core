@@ -1,7 +1,10 @@
 - text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}"
 - bg_color = @line.color.blank? ? "white" : "##{@line.color}"
 
-= title_tag t('lines.show.title', line: @line.name)
+h2
+  = t('lines.show.title', line: @line.name)
+  - if @line.deactivated?
+    small = " (désactivé)"
 
 .line_show
   = @map.to_html
@@ -45,6 +48,10 @@
     p
       label = "#{@line.human_attribute_name('transport_mode')} : "
       = t("transport_modes.label.#{@line.transport_mode}")
+    
+    p
+      label = "#{@line.human_attribute_name('transport_submode')} : "
+      = t("enumerize.linereferential.transport_submode.#{@line.transport_submode}")
 
     p
       label = "#{@line.human_attribute_name('stable_id')} : "
@@ -56,14 +63,14 @@
 
     / p
     /   label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "
-    / 
+    /
     /   - if @line.mobility_restricted_suitability.nil?
     /     = @line.human_attribute_name("unspecified_mrs")
     /   - elsif @line.mobility_restricted_suitability?
     /     = @line.human_attribute_name("accessible")
     /   - else
     /     = @line.human_attribute_name("not_accessible")
-    / 
+    /
     /   br
     /   = "#{@line.human_attribute_name('number_of_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', true).count}"
     /   br
@@ -71,29 +78,29 @@
     /   br
     /   = "#{@line.human_attribute_name('number_of_null_mrs_vj')} : "
     /   = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count)
-    / 
+    /
     / p
     /   label = "#{@line.human_attribute_name('flexible_service')} : "
-    / 
+    /
     /   - if @line.flexible_service.nil?
     /     = @line.human_attribute_name("unspecified_fs")
     /   - elsif @line.flexible_service?
     /     = @line.human_attribute_name("on_demaond_fs")
     /   - else
     /     = @line.human_attribute_name("regular_fs")
-    / 
+    /
     /   br
     /   = "#{@line.human_attribute_name('number_of_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', true).count}"
     /   br
     /   = "#{@line.human_attribute_name('number_of_non_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', false).count}"
     /   br
     /   = @line.human_attribute_name("number_of_null_fs_vj")
-    / 
+    /
     /   - if @line.flexible_service.nil?
     /     = "(#{@line.human_attribute_name('default_fs_msg')})"
-    / 
+    /
     /   = ": #{@line.vehicle_journeys.count - (@line.vehicle_journeys.where('flexible_service = ?', true).count + @line.vehicle_journeys.where('flexible_service = ?', false).count)}"
-    / 
+    /
     / p
     /   label = "#{@line.human_attribute_name('footnotes')} : "
     /   ul
