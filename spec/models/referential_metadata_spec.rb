@@ -36,6 +36,51 @@ RSpec.describe ReferentialMetadata, :type => :model do
 
   end
 
+  describe "#first_period" do
+
+    let(:referential_metadata) { create :referential_metadata }
+
+    describe "begin" do
+      it "should return first period begin" do
+        expect(referential_metadata.first_period_begin).to eq(referential_metadata.first_period.begin)
+      end
+    end
+
+    describe "begin=" do
+      let(:date) { Date.today }
+      it "should change the first period begin" do
+        referential_metadata.first_period_begin = date
+        expect(referential_metadata.first_period_begin).to eq(date)
+      end
+    end
+
+    describe "end" do
+      it "should return first period end" do
+        expect(referential_metadata.first_period_end).to eq(referential_metadata.first_period.end)
+      end
+    end
+
+    describe "end=" do
+      let(:date) { Date.today }
+      it "should change the first period end" do
+        referential_metadata.first_period_end = date
+        expect(referential_metadata.first_period_end).to eq(date)
+      end
+    end
+
+    describe "after_validation" do
+      it "should define first_period with first_period_begin and first_period_end" do
+        referential_metadata.first_period_begin = Date.today
+        referential_metadata.first_period_end = Date.tomorrow
+
+        referential_metadata.valid?
+
+        expect(referential_metadata.first_period).to eq(Range.new(referential_metadata.first_period_begin, referential_metadata.first_period_end))
+      end
+    end
+
+  end
+
   describe "#includes_lines" do
 
     let(:referential_metadata) { create :referential_metadata }

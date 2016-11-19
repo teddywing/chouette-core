@@ -35,8 +35,8 @@ class Referential < ActiveRecord::Base
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
 
-  has_many :referential_metadatas,:dependent => :destroy
-  accepts_nested_attributes_for :referential_metadatas
+  has_many :metadatas, class_name: "ReferentialMetadata", inverse_of: :referential, dependent: :destroy
+  accepts_nested_attributes_for :metadatas
 
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential
@@ -44,7 +44,11 @@ class Referential < ActiveRecord::Base
   belongs_to :workbench
 
   def lines
-    workbench ? workbench.lines : associated_lines
+    if metadatas.blank?
+      workbench ? workbench.lines : associated_lines
+    else
+      metadatas_lines
+    end
   end
 
   def slug_excluded_values
@@ -172,15 +176,18 @@ class Referential < ActiveRecord::Base
   before_validation :clone_associations, :on => :create, if: :created_from
   before_create :create_schema
 
-  after_create :create_referential_metadata, if: :workbench, unless: :created_from
-  after_create :clone_referential_metadatas, if: :created_from
+  before_validation :clone_metadatas, on: :create, if: :created_from
   after_create :clone_schema, if: :created_from
 
   before_destroy :destroy_schema
   before_destroy :destroy_jobs
 
-  def create_referential_metadata
-    self.referential_metadatas.create
+  def in_workbench?
+    workbench_id.present?
+  end
+
+  def init_metadatas(attributes = {})
+    metadatas.build attributes if metadatas.blank?
   end
 
   def clone_associations
@@ -190,11 +197,23 @@ class Referential < ActiveRecord::Base
     self.workbench             = created_from.workbench
   end
 
-  def clone_referential_metadatas
-    self.created_from.referential_metadatas.each do |meta|
-      self.referential_metadatas << ReferentialMetadata.new_from(meta)
+  def clone_metadatas
+    created_from.metadatas.each do |meta|
+      self.metadatas << ReferentialMetadata.new_from(meta)
     end
-    self.save
+  end
+
+  def metadatas_period
+    # FIXME
+    if metadatas.present?
+      metadatas.first.periodes.first
+    end
+  end
+  alias_method :validity_period, :metadatas_period
+
+  def metadatas_lines
+    # FIXME
+    metadatas.present? ? metadatas.first.lines : []
   end
 
   def clone_schema
@@ -258,7 +277,7 @@ class Referential < ActiveRecord::Base
     GeoRuby::SimpleFeatures::Geometry.from_ewkt(bounds.present? ? bounds : default_bounds ).envelope
   end
 
-  # Archive
+  # Archive
   def archived?
     archived_at != nil
   end
