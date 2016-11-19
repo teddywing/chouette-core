@@ -1,17 +1,16 @@
 = semantic_form_for @referential, class: 'form-horizontal' do |form|
   = form.inputs do
     = form.input :name
-    / = form.select( [], @referential.workbench.lines, { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': "Sélection de lignes" })
     - if @referential.new_record?
       - if @referential.created_from
         = form.input :created_from
-      
+
       = form.input :slug, :input_html => { title: t("formtastic.titles.referential.slug") }
     - else
       li.input
         label.label = @referential.human_attribute_name('slug')
         = @referential.slug
-        
+
       - if @referential.created_from
         li.input
           label.label = @referential.human_attribute_name('created_from')
@@ -23,8 +22,16 @@
     = form.input :upper_corner, input_html: { title: t("formtastic.titles.referential.upper_corner") }
     = form.input :lower_corner, input_html: { title: t("formtastic.titles.referential.lower_corner") }
     / = form.input :data_format, label: true, include_blank: false
+
+    = form.semantic_fields_for :metadatas do |subform|
+      = subform.input :first_period_begin, as: :date_select
+      = subform.input :first_period_end, as: :date_select
+
+      = subform.input :lines, as: :check_boxes, collection: @referential.workbench.lines.first(5)
+      / = form.select( [], @referential.workbench.lines, { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': "Sélection de lignes" })
+
     = form.input :workbench_id, as: :hidden
-    
+
   = form.actions do
     = form.action :submit, as: :button
     = form.action :cancel, as: :link

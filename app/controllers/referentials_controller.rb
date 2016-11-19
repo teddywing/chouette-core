@@ -11,13 +11,13 @@ class ReferentialsController < BreadcrumbController
 
     new! do
       @referential.data_format = current_organisation.data_format
-      @referential.workbench_id = params[:workbench_id] if params[:workbench_id]
+      @referential.workbench_id = params[:workbench_id]
+
+      if @referential.in_workbench?
+        @referential.init_metadatas first_period_begin: Date.today, first_period_end: Date.today.advance(months: 1)
+      end
     end
   end
-
-  # def create
-  #   create!
-  # end
 
   def show
      resource.switch
@@ -89,7 +89,7 @@ class ReferentialsController < BreadcrumbController
       :archived_at,
       :created_from_id,
       :workbench_id,
-      referential_metadata_attributes: [:referential_source_id, :line_ids => []]
+      metadatas_attributes: [:id, :first_period_begin, :first_period_end, :lines => []]
     )
   end
 
