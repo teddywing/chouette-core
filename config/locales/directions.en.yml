@@ -3,7 +3,7 @@ en:
     label:
       straight_forward: "straight forward"
       backward: "backward"
-      clockwise: "clockwise"
+      clock_wise: "clockwise"
       counter_clock_wise: "counterclockwise"
       north: "north"
       north_west: "north west"
