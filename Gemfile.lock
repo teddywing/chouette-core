@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git@github.com:AF83/has_array_of.git
-  revision: 6ca3dfe03f2b8986d35df4263f7d5d3bff121c29
+  revision: 1f4a75b18cab97cc3815ece0272cc68ff99e9b8e
   specs:
     has_array_of (0.0.1)
       activerecord (>= 4.0)
