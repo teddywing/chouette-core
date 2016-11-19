@@ -1,7 +1,11 @@
 module ReferentialHelper
 
   def first_referential
-    Referential.where(:slug => "first").take!
+    Referential.find_by!(:slug => "first")
+  end
+
+  def first_organisation
+    Organisation.find_by!(code: "first")
   end
 
   def self.included(base)
@@ -38,7 +42,7 @@ RSpec.configure do |config|
     # Truncating doesn't drop schemas, ensure we're clean here, first *may not* exist
     Apartment::Tenant.drop('first') rescue nil
     # Create the default tenant for our tests
-    organisation = Organisation.create!(:name => "first")
+    organisation = Organisation.create!(code: "first", name: "first")
 
     line_referential = LineReferential.find_or_create_by(name: "first") do |referential|
       referential.add_member organisation, owner: true
@@ -48,7 +52,7 @@ RSpec.configure do |config|
     end
 
     workbench = Workbench.create!(:name => "first", organisation: organisation, line_referential: line_referential, stop_area_referential: stop_area_referential)
-    Referential.create! prefix: "first", name: "first", slug: "first", organisation: organisation, workbench: workbench
+    referential = Referential.create! prefix: "first", name: "first", slug: "first", organisation: organisation, workbench: workbench
   end
 
   config.before(:each) do
