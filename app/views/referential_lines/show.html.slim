@@ -48,20 +48,20 @@ h2
     p
       label = "#{@line.human_attribute_name('transport_mode')} : "
       - if @line.transport_mode
-        = " " + t("transport_modes.label.#{@line.transport_mode}")
+        = " " + t("enumerize.line.transport_mode.#{@line.transport_mode}")
       - else
         = " -"
-    
+        
     p
       label = "#{@line.human_attribute_name('transport_submode')} : "
       - if @line.transport_submode
-        = " " + t("enumerize.linereferential.transport_submode.#{@line.transport_submode}")
+        = " " + t("enumerize.line.transport_submode.#{@line.transport_submode}")
       - else
         = " -"
 
-    p
-      label = "#{@line.human_attribute_name('stable_id')} : "
-      = " #{@line.stable_id}"
+    / p
+    /   label = "#{@line.human_attribute_name('stable_id')} : "
+    /   = " #{@line.stable_id}"
 
     p
       label = "#{@line.human_attribute_name('url')} : "
@@ -113,9 +113,9 @@ h2
     /     - @line.footnotes.each do |footnote|
     /       li = "#{footnote.code} : #{footnote.label}"
 
-    p
-      label = "#{@line.human_attribute_name('comment')} : "
-      = @line.comment
+    / p
+    /   label = "#{@line.human_attribute_name('comment')} : "
+    /   = @line.comment
 
   .row
     #mobility_restricted_suitability.col-md-6
@@ -128,11 +128,6 @@ h3.routes
 .routes.paginated_content
   / = paginated_content @routes, "routes/route"
   = render 'reflines_routes'
-
-- if @line.group_of_lines.any?
-  h3.line_group_of_lines = t('.group_of_lines')
-  .group_of_lines.paginated_content
-    = paginated_content @group_of_lines, "referential_group_of_lines/group_of_line", :delete => false
 
 - content_for :sidebar do
   ul.actions

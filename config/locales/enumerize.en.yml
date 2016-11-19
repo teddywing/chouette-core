@@ -50,7 +50,7 @@ en:
       wayback:
         straight_forward: 'Straight Forward'
         backward: 'Backward'
-    defaults:
+    vehicle_journey:
       transport_mode:
         interchange: Interchange
         unknown: "unknown"
@@ -86,7 +86,41 @@ en:
         funicular: Funicular
         other: Other
 
-    linereferential:
+    line:
+      transport_mode:
+        interchange: Interchange
+        unknown: "unknown"
+        air: "Air"
+        train: "Train"
+        long_distance_train: "Long distance train"
+        local_train: "Local train"
+        rapid_transit: "Rapid transit"
+        metro: "Metro"
+        tramway: "Tramway"
+        coach: "Coach"
+        bus: "Bus"
+        ferry: "Ferry"
+        waterborne: "Waterborne"
+        private_vehicle: "Private vehicle"
+        walk: "Walk"
+        trolleybus: "Trolleybus"
+        bicycle: "Bicycle"
+        shuttle: "Shuttle"
+        taxi: "Taxi"
+        val: "VAL"
+        other: "Other"
+        air: Air
+        bus: Bus
+        coach: Coach
+        ferry: Ferry
+        metro: Metro
+        rail: Rail
+        trolleybus: Trolleybus
+        tram: Tramway
+        water: Water
+        cableway: Cableway
+        funicular: Funicular
+        other: Other
       transport_submode:
         unknown: 'Unknown'
         undefined: 'Undefined'

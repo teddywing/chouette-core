@@ -61,6 +61,7 @@ en:
         published_name: "Published name"
         number: "Number"
         transport_mode: "Transport mode"
+        transport_submode: "Transport Submode"
         url: "Web page"
         color: "Line color"
         text_color: "Text color"

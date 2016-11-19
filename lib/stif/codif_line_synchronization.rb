@@ -89,7 +89,7 @@ module Stif
           deactivated: (api_line.status == "inactive" ? true : false),
           import_xml: api_line.xml
         }
-
+        params[:transport_mode] = api_line.transport_mode.to_s
         params[:transport_submode] = api_line.transport_submode.to_s
         unless api_line.operator_ref.nil?
           params[:company] = Chouette::Company.find_by(objectid: api_line.operator_ref)

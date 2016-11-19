@@ -24,7 +24,6 @@ class Chouette::Line < Chouette::ActiveRecord
   accepts_nested_attributes_for :footnotes, :reject_if => :all_blank, :allow_destroy => true
 
   attr_reader :group_of_line_tokens
-  attr_accessor :transport_mode
 
   # validates_presence_of :network
   # validates_presence_of :company
@@ -36,7 +35,6 @@ class Chouette::Line < Chouette::ActiveRecord
   validates_format_of :text_color, :with => %r{\A[0-9a-fA-F]{6}\Z}, :allow_nil => true, :allow_blank => true
 
   validates_presence_of :name
-  validates :transport_mode, inclusion: { in: self.transport_mode.values }
 
   scope :by_text, ->(text) { where('lower(name) LIKE :t or lower(published_name) LIKE :t or lower(objectid) LIKE :t or lower(comment) LIKE :t or lower(number) LIKE :t',
     t: "%#{text.downcase}%") }
