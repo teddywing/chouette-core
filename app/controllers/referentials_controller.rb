@@ -33,6 +33,14 @@ class ReferentialsController < BreadcrumbController
      end
   end
 
+  def edit
+    edit! do
+      if @referential.in_workbench?
+        @referential.init_metadatas first_period_begin: Date.today, first_period_end: Date.today.advance(months: 1)
+      end
+    end
+  end
+
   def destroy
     workbench = referential.workbench_id
 
