@@ -47,19 +47,25 @@ h2
 
     p
       label = "#{@line.human_attribute_name('transport_mode')} : "
-      = t("transport_modes.label.#{@line.transport_mode}")
+      - if @line.transport_mode
+        = " " + t("transport_modes.label.#{@line.transport_mode}")
+      - else
+        = " -"
     
     p
       label = "#{@line.human_attribute_name('transport_submode')} : "
-      = t("enumerize.linereferential.transport_submode.#{@line.transport_submode}")
+      - if @line.transport_submode
+        = " " + t("enumerize.linereferential.transport_submode.#{@line.transport_submode}")
+      - else
+        = " -"
 
     p
       label = "#{@line.human_attribute_name('stable_id')} : "
-      = @line.stable_id
+      = " #{@line.stable_id}"
 
     p
       label = "#{@line.human_attribute_name('url')} : "
-      = @line.url
+      = " #{@line.url}"
 
     / p
     /   label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "

@@ -2,7 +2,7 @@
 = search_form_for @q, url: eval("#{referential_type}_lines_path(referential)"), remote: true, html: { method: :get, class: 'form-inline', id: 'search', role: 'form' } do |f|
   .panel.panel-default
     .panel-heading
-      .input-group.col-md-9
+      .input-group.col-md-9.col-sm-9
         = f.search_field :name_or_number_or_objectid_or_comment_cont, placeholder: t('lines.index.name_or_number_or_objectid_or_comment'), class: 'form-control'
         .input-group-btn
           button.btn.btn-primary type='submit'

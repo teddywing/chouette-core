@@ -27,7 +27,7 @@ en:
       no_networks: "No networks"
       no_companies: "No companies"
       no_group_of_lines: "No group of lines"
-      no_transport_mode: No transport mode
+      no_transport_modes: No transport mode
       all_networks: "All networks"
       all_companies: "All companies"
       all_group_of_lines: "All group of lines"
