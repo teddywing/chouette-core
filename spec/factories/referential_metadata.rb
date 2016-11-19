@@ -1,9 +1,12 @@
 FactoryGirl.define do
-  factory :referential_metadatum, :class => 'ReferentialMetadata' do
-    referential nil
-periode ""
-line_ids 1
-referential_source nil
+  factory :referential_metadata, :class => 'ReferentialMetadata' do
+    referential
+    periodes { [ generate(:period) ] }
+    lines { create_list(:line, 3) }
   end
 
+  sequence :period do |n|
+    date = Date.today + 2*n
+    date..(date+1)
+  end
 end
