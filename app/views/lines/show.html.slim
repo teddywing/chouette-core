@@ -4,8 +4,6 @@
 = title_tag t('lines.show.title', line: @line.name)
 
 .line_show
-  = @map.to_html
-
   .summary
     - text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}"
     - bg_color = @line.color.blank? ? "white" : "##{@line.color}"
@@ -23,18 +21,17 @@
     p
       label = "#{@line.human_attribute_name(:network)} : "
 
-    - if @line.network.nil?
-      = t('lines.index.unset')
-    - else
-      = link_to @line.network.name, [@line_referential, @line.network]
+      - if @line.network.nil?
+        = t('lines.index.unset')
+      - else
+        = link_to @line.network.name, [@line_referential, @line.network]
 
     p
       label = "#{@line.human_attribute_name(:company)} : "
-
-    - if @line.company.nil?
-      = t('lines.index.unset')
-    - else
-      = link_to @line.company.name, [@line_referential, @line.company]
+      - if @line.company.nil?
+        = t('lines.index.unset')
+      - else
+        = link_to @line.company.name, [@line_referential, @line.company]
 
     p
       label = "#{@line.human_attribute_name('number')} : "
@@ -54,7 +51,7 @@
         = " " + t("enumerize.line.transport_mode.#{@line.transport_mode}")
       - else
         = " -"
-        
+
     p
       label = "#{@line.human_attribute_name('transport_submode')} : "
       - if @line.transport_submode
@@ -72,14 +69,14 @@
 
     / p
     /   label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "
-    / 
+    /
     /   - if @line.mobility_restricted_suitability.nil?
     /     = @line.human_attribute_name("unspecified_mrs")
     /   - elsif @line.mobility_restricted_suitability?
     /     = @line.human_attribute_name("accessible")
     /   - else
     /     = @line.human_attribute_name("not_accessible")
-    / 
+    /
     /   br
     /   = "#{@line.human_attribute_name('number_of_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', true).count}"
     /   br
@@ -88,27 +85,27 @@
     /   = @line.human_attribute_name("number_of_null_mrs_vj")
     /   = " : "
     /   = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count)
-    / 
+    /
     / p
     /   label = "#{@line.human_attribute_name('flexible_service')} : "
-    / 
+    /
     /   - if @line.flexible_service.nil?
     /     = @line.human_attribute_name("unspecified_fs")
     /   - elsif @line.flexible_service?
     /     = @line.human_attribute_name("on_demaond_fs")
     /   - else
     /     = @line.human_attribute_name("regular_fs")
-    / 
+    /
     /   br
     /   = "#{@line.human_attribute_name('number_of_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', true).count}"
     /   br
     /   = "#{@line.human_attribute_name('number_of_non_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', false).count}"
     /   br
     /   = @line.human_attribute_name("number_of_null_fs_vj")
-    / 
+    /
     /   - if @line.flexible_service.nil?
     /     = "(#{@line.human_attribute_name('default_fs_msg')})"
-    / 
+    /
     /   = " : "
     /   = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("flexible_service = ?", true).count + @line.vehicle_journeys.where("flexible_service = ?", false).count)
 
