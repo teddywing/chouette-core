@@ -1,46 +1,21 @@
 = simple_form_for [@referential, @line, @route] do |f|
   .row
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
       = f.input :name
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
       = f.input :published_name
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
-      = f.input :number
 
   .row
-    .col-lg-6.col-md-6.col-sm-5.col-xs-5
-      = f.input :comment
-    .col-lg-6.col-md-6.col-sm-7.col-xs-7
+    .col-lg-4.col-md-6.col-sm-8.col-xs-8
       = f.input :opposite_route, collection: @line.routes.select { |r| r.id != @route.id }
-
-  .row
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
-      = f.input :direction, include_blank: false
     .col-lg-4.col-md-4.col-sm-4.col-xs-4
       = f.input :wayback, include_blank: false
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
-      = f.input :objectid, required: !@route.new_record?, input_html: { title: t("formtastic.titles#{format_restriction_for_locales(@referential)}.route.objectid") }
 
   .row style="margin-top:20px"
     .col-lg-12.col-md-12.col-sm-12.col-xs-12
       #stop_points
-        / div.clearfix style="margin-bottom:5px"
-        /   label style="margin:0" Arrêts
-        /   .btn.btn-primary.btn-xs.pull-right data-event="add_stop_point"
-        /     span.fa.fa-plus
-        /     = " #{t('routes.actions.add_stop_point')}"
-        / 
-        /   = link_to_add_association f, :stop_points, class: 'btn btn-primary btn-xs pull-right' do
-        /     span.fa.fa-plus
-        /     = " #{t('routes.actions.add_stop_point')}"
-        /   THIS IS BROKEN
-        /   = link_to t('routes.actions.new_stop_point'), new_referential_stop_area_path(@referential), target: '_blank'
-        / 
-        / .list-group
-        /   = f.simple_fields_for :stop_points do |point|
-        /     = render 'stop_point_fields', f: point
 
-  .row
+  .row style="margin-top:20px"
     .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
       = link_to 'Annuler', :back, class: 'btn btn-link'
       = f.button :submit, class: 'btn btn-danger'

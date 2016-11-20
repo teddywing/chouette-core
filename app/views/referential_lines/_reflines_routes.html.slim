@@ -1,30 +1,33 @@
-table.table.table-bordered.table-hover
-  thead
-    tr
-      th.text-center = @routes.human_attribute_name(:name)
-      th.text-center = @routes.human_attribute_name(:published_name)
-      th.text-center = @routes.human_attribute_name(:wayback)
-      th.text-center = @routes.human_attribute_name(:opposite_route)
-      th.text-center = "Actions"
-        
-  - @routes.each do |route|
-    tr
-      td = truncate(route.name, length: 20)
-      td = route.published_name
-      td = route.wayback_text
-      td
-        - if route.opposite_route
-          = route.opposite_route.name
-        - else
-          = "Aucune séquence d'arrêts associée en sens opposé"
-        
-      td.text-center
-        .btn.btn-group.btn-group-sm
-          = link_to [@referential, @line, route], class: 'btn btn-default preview', title: "#{Chouette::Route.model_name.human.capitalize} #{route.name}" do
-            span.fa.fa-eye
-          
-          = link_to edit_referential_line_route_path(@referential, @line, route), class: 'btn btn-default' do
-            span.fa.fa-pencil
+- if @routes.any?
+  h3 = t('.itineraries')
 
-          = link_to referential_line_route_path(@referential, @line, route), method: :delete, :data => {:confirm =>  t('routes.actions.destroy_confirm')}, class: 'btn btn-danger' do
-            span.fa.fa-trash-o
+  table.table.table-bordered.table-hover
+    thead
+      tr
+        th.text-center = @routes.human_attribute_name(:name)
+        th.text-center = @routes.human_attribute_name(:published_name)
+        th.text-center = @routes.human_attribute_name(:wayback)
+        th.text-center = @routes.human_attribute_name(:opposite_route)
+        th.text-center = "Actions"
+          
+    - @routes.each do |route|
+      tr
+        td = truncate(route.name, length: 20)
+        td = route.published_name
+        td = route.wayback_text
+        td
+          - if route.opposite_route
+            = route.opposite_route.name
+          - else
+            = "Aucune séquence d'arrêts associée en sens opposé"
+          
+        td.text-center
+          .btn.btn-group.btn-group-sm
+            = link_to [@referential, @line, route], class: 'btn btn-default preview', title: "#{Chouette::Route.model_name.human.capitalize} #{route.name}" do
+              span.fa.fa-eye
+            
+            = link_to edit_referential_line_route_path(@referential, @line, route), class: 'btn btn-default' do
+              span.fa.fa-pencil
+
+            = link_to referential_line_route_path(@referential, @line, route), method: :delete, :data => {:confirm =>  t('routes.actions.destroy_confirm')}, class: 'btn btn-danger' do
+              span.fa.fa-trash-o
