@@ -67,7 +67,6 @@ class Chouette::Route < Chouette::TridentActiveRecord
   # validates_presence_of :direction
   # validates_presence_of :wayback
 
-  validates :direction, inclusion: { in: self.direction.values }
   validates :wayback, inclusion: { in: self.wayback.values }
 
   before_destroy :dereference_opposite_route
