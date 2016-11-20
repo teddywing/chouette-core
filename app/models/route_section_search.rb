@@ -13,8 +13,7 @@ class RouteSectionSearch
     attributes.each { |k,v| send "#{k}=", v } if attributes
   end
 
-  def collection()
-    Rails.logger.debug "Search RouteSections with #{inspect}"
+  def collection
     collection = scope
 
     [:departure, :arrival].each do |endpoint|

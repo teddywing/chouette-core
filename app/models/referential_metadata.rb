@@ -52,7 +52,6 @@ class ReferentialMetadata < ActiveRecord::Base
       self.periodes ||= []
       self.periodes[0] = Range.new @first_period_begin, @first_period_end
     end
-    Rails.logger.debug "set_first_period : #{periodes.inspect}"
   end
 
   def column_for_attribute(name)
