@@ -80,6 +80,14 @@ fr:
         upper_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
         lower_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
 
+  simple_form:
+    labels:
+      referential:
+        metadatas:
+          first_period_begin: 'Première période de départ'
+          first_period_end: 'Première période de fin'
+          lines: Lignes
+
   notice:
     referential:
       archived: "L'espace de données a été correctement archivé"

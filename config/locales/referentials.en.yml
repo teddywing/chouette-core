@@ -79,6 +79,14 @@ en:
         upper_corner: "latitude,longitude in WGS84 referential, dot for decimal separator"
         lower_corner: "latitude,longitude in WGS84 referential, dot for decimal separator"
 
+  simple_form:
+    labels:
+      referential:
+        metadatas:
+          first_period_begin: 'First period begin'
+          first_period_end: 'First period end'
+          lines: Lines
+
   notice:
     referential:
       archived: "The data space has been successfully archived"
