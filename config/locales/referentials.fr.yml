@@ -29,6 +29,7 @@ fr:
       pg_excluded: "ne peut pas commencer par pg_ (valeurs réservées)"
       public_excluded: "public est une valeur réservée"
       user_excluded: "%{user} est une valeur réservée"
+      overlapped_referential: "%{referential} couvre le même périmètre d'offre"
   activerecord:
     models:
       referential:

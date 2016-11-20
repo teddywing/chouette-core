@@ -216,6 +216,32 @@ class Referential < ActiveRecord::Base
     metadatas.present? ? metadatas.first.lines : []
   end
 
+  def overlapped_referential_ids
+    return [] unless metadatas.present?
+
+    line_ids = metadatas.first.line_ids
+    period = metadatas.first.periodes.first
+
+    not_myself = "and referential_id != #{id}" if persisted?
+
+    query = "SELECT distinct(referential_id) FROM
+    (SELECT unnest(public.referential_metadata.line_ids) as line, unnest(public.referential_metadata.periodes) as period, public.referential_metadata.referential_id
+     FROM public.referential_metadata
+     INNER JOIN public.referentials ON public.referential_metadata.referential_id = public.referentials.id
+     WHERE public.referentials.workbench_id = 1 and public.referentials.archived_at is null) as metadatas
+    WHERE line in (#{line_ids.join(',')}) and period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(period)}' #{not_myself};"
+
+    self.class.connection.select_values(query).map(&:to_i)
+  end
+
+  validate :detect_overlapped_referentials
+
+  def detect_overlapped_referentials
+    self.class.where(id: overlapped_referential_ids).each do |referential|
+      errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", :referential => referential.name)
+    end
+  end
+
   def clone_schema
     ReferentialCloning.create(source_referential: self.created_from, target_referential: self)
   end
