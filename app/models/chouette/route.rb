@@ -69,17 +69,31 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   validates :wayback, inclusion: { in: self.wayback.values }
 
-  before_destroy :dereference_opposite_route
-
   after_commit :journey_patterns_control_route_sections
 
   def geometry_presenter
     Chouette::Geometry::RoutePresenter.new self
   end
 
-  def dereference_opposite_route
-    self.line.routes.each do |r|
-      r.update_attributes( :opposite_route => nil) if r.opposite_route == self
+  @@opposite_waybacks = { straight_forward: :backward, backward: :straight_forward}
+  def opposite_wayback
+    @@opposite_waybacks[wayback.to_sym]
+  end
+
+  def opposite_route_candidates
+    if opposite_wayback
+      line.routes.where(opposite_route: [nil, self], wayback: opposite_wayback)
+    else
+      self.class.none
+    end
+  end
+
+  validate :check_opposite_route
+  def check_opposite_route
+    return unless opposite_route && opposite_wayback
+
+    unless opposite_route_candidates.include?(opposite_route)
+      errors.add(:opposite_route_id, :invalid)
     end
   end
 
