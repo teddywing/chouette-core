@@ -40,18 +40,18 @@ describe "Routes", :type => :feature do
     end
   end
 
-  # describe "Modifies boarding/alighting properties on route stops" do
-  #   it "Puts (http) an update request" do
-  #     #visit edit_boarding_alighting_referential_line_route_path(referential, line, route)
-  #     visit referential_line_route_path(referential, line, route)
-  #     click_link I18n.t('routes.actions.edit_boarding_alighting')
-  #     #select('', :from => '')
-  #     # Changes the boarding of the first stop
-  #     # Changes the alighting of the last stop
-  #     # save
-  #     #click_button(I18n.t('helpers.submit.update', model: I18n.t('activerecord.models.route.one')))
-  #     click_button(I18n.t('helpers.submit.update', model: I18n.t('activerecord.models.route.one')))
-  #   end
-  # end
+  describe "Modifies boarding/alighting properties on route stops" do
+    xit "Puts (http) an update request" do
+      #visit edit_boarding_alighting_referential_line_route_path(referential, line, route)
+      visit referential_line_route_path(referential, line, route)
+      click_link I18n.t('routes.actions.edit_boarding_alighting')
+      #select('', :from => '')
+      # Changes the boarding of the first stop
+      # Changes the alighting of the last stop
+      # save
+      #click_button(I18n.t('helpers.submit.update', model: I18n.t('activerecord.models.route.one')))
+      click_button(I18n.t('helpers.submit.update', model: I18n.t('activerecord.models.route.one')))
+    end
+  end
 
 end
