@@ -133,6 +133,7 @@ class Referential < ActiveRecord::Base
       stop_area_referential: from.stop_area_referential,
       workbench: from.workbench,
       created_from: from,
+      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m) }
     })
   end
 
@@ -176,7 +177,6 @@ class Referential < ActiveRecord::Base
   before_validation :clone_associations, :on => :create, if: :created_from
   before_create :create_schema
 
-  before_validation :clone_metadatas, on: :create, if: :created_from
   after_create :clone_schema, if: :created_from
 
   before_destroy :destroy_schema
@@ -214,6 +214,36 @@ class Referential < ActiveRecord::Base
   def metadatas_lines
     # FIXME
     metadatas.present? ? metadatas.first.lines : []
+  end
+
+  def overlapped_referential_ids
+    return [] unless metadatas.present?
+
+    line_ids = metadatas.first.line_ids
+    period = metadatas.first.periodes.first
+
+    not_myself = "and referential_id != #{id}" if persisted?
+
+    query = "SELECT distinct(referential_id) FROM
+    (SELECT unnest(public.referential_metadata.line_ids) as line, unnest(public.referential_metadata.periodes) as period, public.referential_metadata.referential_id
+     FROM public.referential_metadata
+     INNER JOIN public.referentials ON public.referential_metadata.referential_id = public.referentials.id
+     WHERE public.referentials.workbench_id = 1 and public.referentials.archived_at is null) as metadatas
+    WHERE line in (#{line_ids.join(',')}) and period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(period)}' #{not_myself};"
+
+    self.class.connection.select_values(query).map(&:to_i)
+  end
+
+  def metadatas_overlap?
+    overlapped_referential_ids.present?
+  end
+
+  validate :detect_overlapped_referentials
+
+  def detect_overlapped_referentials
+    self.class.where(id: overlapped_referential_ids).each do |referential|
+      errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", :referential => referential.name)
+    end
   end
 
   def clone_schema
@@ -287,8 +317,13 @@ class Referential < ActiveRecord::Base
     touch :archived_at
   end
   def unarchive!
+    return false unless can_unarchive?
     # self.archived = false
     update_column :archived_at, nil
+  end
+
+  def can_unarchive?
+    not metadatas_overlap?
   end
 
 end

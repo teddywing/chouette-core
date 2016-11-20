@@ -52,9 +52,14 @@
 
                 li = link_to "Editer", edit_referential_path(referential)
 
+                li = link_to "Cloner", new_referential_path(from: referential)
+
                 li
                   - if referential.archived?
-                    = link_to "Désarchiver", unarchive_referential_path(referential), method: :put
+                    - if referential.can_unarchive?
+                      = link_to "Désarchiver", unarchive_referential_path(referential), method: :put
+                    - else
+                      = link_to "Désarchiver", "#"
                   - else
                     = link_to "Archiver", archive_referential_path(referential), method: :put
 

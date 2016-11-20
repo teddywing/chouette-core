@@ -23,6 +23,12 @@
     = form.input :lower_corner, input_html: { title: t("formtastic.titles.referential.lower_corner") }
     / = form.input :data_format, label: true, include_blank: false
 
+
+    - if @referential.errors.has_key? :metadatas
+      ul.errors
+        - @referential.errors[:metadatas].each do |message|
+          li = message
+
     = form.semantic_fields_for :metadatas do |subform|
       = subform.input :first_period_begin, as: :date_select
       = subform.input :first_period_end, as: :date_select
