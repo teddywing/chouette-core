@@ -11,7 +11,7 @@ class ReferentialsController < BreadcrumbController
 
     new! do
       @referential.data_format = current_organisation.data_format
-      @referential.workbench_id = params[:workbench_id]
+      @referential.workbench_id ||= params[:workbench_id]
 
       if @referential.in_workbench?
         @referential.init_metadatas first_period_begin: Date.today, first_period_end: Date.today.advance(months: 1)

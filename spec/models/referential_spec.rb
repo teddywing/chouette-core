@@ -12,7 +12,7 @@ describe Referential, :type => :model do
   it { should belong_to(:workbench) }
 
   context "Cloning referential" do
-    let(:cloned) { create(:referential, created_from: ref) }
+    let(:cloned) { Referential.new_from(ref).tap(&:save!) }
 
     it 'should create a ReferentialCloning' do
       expect { cloned }.to change{ReferentialCloning.count}.by(1)

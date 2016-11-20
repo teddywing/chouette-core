@@ -63,17 +63,6 @@ class ReferentialMetadata < ActiveRecord::Base
     end
   end
 
-  # def lines_with_ids_support=(values)
-  #   if String === values.first
-  #     self.line_values = values
-  #   else
-  #     self.lines_without_values_support = values
-  #   end
-  # end
-  # alias_method_chain :lines, :ids_support
-
-  #delegate :begin, :begin=, :end, :end=, to: :first_period, prefix: :first_period
-
   def self.new_from from
     from.dup.tap do |metadata|
       metadata.referential_id = nil

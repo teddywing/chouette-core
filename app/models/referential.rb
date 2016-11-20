@@ -133,6 +133,7 @@ class Referential < ActiveRecord::Base
       stop_area_referential: from.stop_area_referential,
       workbench: from.workbench,
       created_from: from,
+      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m) }
     })
   end
 
@@ -176,7 +177,6 @@ class Referential < ActiveRecord::Base
   before_validation :clone_associations, :on => :create, if: :created_from
   before_create :create_schema
 
-  before_validation :clone_metadatas, on: :create, if: :created_from
   after_create :clone_schema, if: :created_from
 
   before_destroy :destroy_schema
