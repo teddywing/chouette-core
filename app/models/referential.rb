@@ -234,6 +234,10 @@ class Referential < ActiveRecord::Base
     self.class.connection.select_values(query).map(&:to_i)
   end
 
+  def metadatas_overlap?
+    overlapped_referential_ids.present?
+  end
+
   validate :detect_overlapped_referentials
 
   def detect_overlapped_referentials
@@ -313,8 +317,13 @@ class Referential < ActiveRecord::Base
     touch :archived_at
   end
   def unarchive!
+    return false unless can_unarchive?
     # self.archived = false
     update_column :archived_at, nil
+  end
+
+  def can_unarchive?
+    not metadatas_overlap?
   end
 
 end

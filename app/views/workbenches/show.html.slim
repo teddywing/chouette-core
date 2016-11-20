@@ -56,7 +56,10 @@
 
                 li
                   - if referential.archived?
-                    = link_to "Désarchiver", unarchive_referential_path(referential), method: :put
+                    - if referential.can_unarchive?
+                      = link_to "Désarchiver", unarchive_referential_path(referential), method: :put
+                    - else
+                      = link_to "Désarchiver", "#"
                   - else
                     = link_to "Archiver", archive_referential_path(referential), method: :put
 

@@ -53,8 +53,13 @@ class ReferentialsController < BreadcrumbController
     redirect_to workbench_path(referential.workbench_id), notice: t('notice.referential.archived')
   end
   def unarchive
-    referential.unarchive!
-    redirect_to workbench_path(referential.workbench_id), notice: t('notice.referential.unarchived')
+    if referential.unarchive!
+      flash[:notice] = t('notice.referential.unarchived')
+    else
+      flash[:alert] = t('notice.referential.unarchived_failed')
+    end
+
+    redirect_to workbench_path(referential.workbench_id)
   end
 
   protected
