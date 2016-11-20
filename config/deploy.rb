@@ -23,6 +23,11 @@ ssh_options[:forward_agent] = true
 require "bundler/capistrano"
 require 'whenever/capistrano'
 
+require 'capistrano/npm'
+set :npm_options, '--production --silent --no-progress'
+
+after 'deploy:finalize_update', 'npm:install'
+
 # Whenever
 set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/2.2.0/bin'" } # invoke bin/bundle to use 'correct' ruby environment
 
@@ -72,11 +77,4 @@ namespace :deploy do
   task :seed do
     run "cd #{current_path} && #{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake db:seed RAILS_ENV=#{rails_env}"
   end
-end
-
-namespace :delayed_job do
-  task :restart do
-    run "sudo /etc/init.d/stif-boiv restart"
-  end
-  # after "deploy:restart", "delayed_job:restart"
 end

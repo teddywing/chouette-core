@@ -25,7 +25,7 @@
       thead
       	tr
           th = t("transport_modes.name")
-          
+
           - RuleParameterSet.mode_attribute_prefixes.each do |prefix|
             - if prefix == "allowed_transport"
               - hidden = (@rule_parameter_set.check_allowed_transport_modes == "1") ? "" : 'display:none;'
@@ -35,7 +35,8 @@
               th = RuleParameterSet.human_attribute_name(prefix)
 
       tbody
-        - Chouette::Line.transport_modes.map(&:to_s).each do |mode|
+        / To be removed, see #1936
+        - Chouette::Line.transport_mode.values.each do |mode|
           tr
             == render partial: "mode_fields", :locals => { f: form, mode: mode }
 

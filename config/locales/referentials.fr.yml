@@ -24,10 +24,12 @@ fr:
       destroy_confirm: "Etes vous sûr de vouloir supprimer cet espace de données ?"
       destroy: "Supprimer cet espace de données"
       edit: "Modifier cet espace de données"
+      clone: "Cloner cet espace de données"
     errors:
       pg_excluded: "ne peut pas commencer par pg_ (valeurs réservées)"
       public_excluded: "public est une valeur réservée"
       user_excluded: "%{user} est une valeur réservée"
+      overlapped_referential: "%{referential} couvre le même périmètre d'offre"
   activerecord:
     models:
       referential:
@@ -78,7 +80,17 @@ fr:
         upper_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
         lower_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
 
+  simple_form:
+    labels:
+      referential:
+        metadatas:
+          first_period_begin: 'Première période de départ'
+          first_period_end: 'Première période de fin'
+          lines: Lignes
+
   notice:
     referential:
       archived: "L'espace de données a été correctement archivé"
       unarchived: "L'espace de données a été correctement désarchivé"
+      unarchived_failed: "L'espace de données ne peut être désarchivé"
+      deleted: "L'espace de données a été correctement supprimé"

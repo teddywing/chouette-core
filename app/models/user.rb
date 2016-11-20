@@ -29,15 +29,10 @@ class User < ActiveRecord::Base
   after_destroy :check_destroy_organisation
 
   def cas_extra_attributes=(extra_attributes)
-    extra         = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
-    self.name     = extra[:full_name]
-    self.email    = extra[:email]
-    self.username = extra[:username]
-
-    self.organisation = Organisation.find_or_create_by(code: extra[:organisation_code]).tap do |org|
-      org.name      = extra[:organisation_name]
-      org.synced_at = Time.now
-    end
+    extra             = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+    self.name         = extra[:full_name]
+    self.email        = extra[:email]
+    self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
   end
 
   def self.portail_api_request
@@ -59,23 +54,14 @@ class User < ActiveRecord::Base
 
   def self.portail_sync
     self.portail_api_request.each do |el|
-      User.find_or_create_by(username: el['username']).tap do |user|
-        user.name         = "#{el['firstname']} #{el['lastname']}"
-        user.email        = el['email']
-        user.locked_at    = el['locked_at']
-
-        # Set organisation
-        user.organisation = Organisation.find_or_create_by(code: el['organization_code']).tap do |org|
-          org.name      = el['organization_name']
-          org.synced_at = Time.now
-        end
-
-        if user.changed?
-          user.synced_at = Time.now
-          user.save
-          puts "✓ user #{user.username} has been updated" unless Rails.env.test?
-        end
-      end
+      user              = User.find_or_initialize_by(username: el['username'])
+      user.name         = "#{el['firstname']} #{el['lastname']}"
+      user.email        = el['email']
+      user.locked_at    = el['locked_at']
+      user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
+      user.synced_at    = Time.now
+      user.save
+      puts "✓ user #{user.username} has been updated" unless Rails.env.test?
     end
   end
 

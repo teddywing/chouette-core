@@ -25,17 +25,19 @@
   h3 Historique des synchronisations
 
   ul.list-group width="75%"
-  - @line_referential.line_referential_syncs.each do |sync|
-    - unless sync.line_referential_sync_messages.empty?
-      - sync.line_referential_sync_messages.last.tap do |log|
-        - if log.criticity = log.criticity
-          li.alert class="alert-#{log.criticity}"
-            strong = l(log.created_at, format: :short) + " : "
-            / [:processing_time] unit conversion
-            - data = log.message_attributs.symbolize_keys!
-            - data[:processing_time] = distance_of_time_in_words(data[:processing_time].to_i)
+  - @line_referential.line_referential_syncs.each_with_index do |sync, i|
+    / Display only 10 msgs
+    - if i < 10
+      - unless sync.line_referential_sync_messages.empty?
+        - sync.line_referential_sync_messages.last.tap do |log|
+          - if log.criticity = log.criticity
+            li.alert class="alert-#{criticity_class(log.criticity)}"
+              strong = l(log.created_at, format: :short) + " : "
+              / [:processing_time] unit conversion
+              - data = log.message_attributs.symbolize_keys!
+              - data[:processing_time] = distance_of_time_in_words(data[:processing_time].to_i)
 
-            = t("line_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!)
+              = t("line_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!)
 
 - content_for :sidebar do
   ul.actions

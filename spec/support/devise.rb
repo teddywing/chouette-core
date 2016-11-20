@@ -2,7 +2,7 @@ module DeviseRequestHelper
   include Warden::Test::Helpers
 
   def login_user
-    organisation = Organisation.where(:name => "first").first_or_create(attributes_for(:organisation))
+    organisation = Organisation.where(:code => "first").first_or_create(attributes_for(:organisation))
     @user ||= create(:user, :organisation => organisation)
     login_as @user, :scope => :user
     # post_via_redirect user_session_path, 'user[email]' => @user.email, 'user[password]' => @user.password
@@ -33,7 +33,7 @@ module DeviseControllerHelper
   def login_user
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      organisation = Organisation.where(:name => "first").first_or_create(attributes_for(:organisation))
+      organisation = Organisation.where(:code => "first").first_or_create(attributes_for(:organisation))
       user = create(:user, :organisation => organisation)
       sign_in user
     end

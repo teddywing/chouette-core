@@ -1,7 +1,28 @@
 module Stif
   module CodifLineSynchronization
     class << self
+      attr_accessor :imported_count, :updated_count, :deleted_count
+
+      def reset_counts
+        self.imported_count = 0
+        self.updated_count  = 0
+        self.deleted_count  = 0
+      end
+
+      def processed_counts
+        {
+          imported: self.imported_count,
+          updated: self.updated_count,
+          deleted: self.deleted_count
+        }
+      end
+
+      def increment_counts prop_name, value
+        self.send("#{prop_name}=", self.send(prop_name) + value)
+      end
+
       def synchronize
+        self.reset_counts
         start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
         # Fetch Codifline data
         client = Codifligne::API.new
@@ -47,10 +68,8 @@ module Stif
         # Delete deprecated Operators
         deleted_op = delete_deprecated(operators, Chouette::Company)
         log_deleted "Operators", deleted_op unless deleted_op == 0
-        {
-          imported: operators.count + lines.count + networks.count,
-          deleted: deleted_op + deleted_li + deleted_ne
-        }
+
+        self.processed_counts
       end
 
       def create_or_update_company(api_operator)
@@ -70,7 +89,8 @@ module Stif
           deactivated: (api_line.status == "inactive" ? true : false),
           import_xml: api_line.xml
         }
-
+        params[:transport_mode] = api_line.transport_mode.to_s
+        params[:transport_submode] = api_line.transport_submode.to_s
         unless api_line.operator_ref.nil?
           params[:company] = Chouette::Company.find_by(objectid: api_line.operator_ref)
         end
@@ -117,13 +137,14 @@ module Stif
       def delete_deprecated(objects, klass)
         ids = objects.map{ |o| o.stif_id }.to_a
         deprecated = klass.where.not(objectid: ids)
-        deprecated.destroy_all.length
+        increment_counts :deleted_count, deprecated.destroy_all.length
       end
 
       def delete_deprecated_lines(lines)
         ids = lines.map{ |l| l.stif_id }.to_a
         deprecated = Chouette::Line.where.not(objectid: ids).where(deactivated: false)
         deprecated.update_all deactivated: true
+        increment_counts :deleted_count, deprecated.update_all(deactivated: true)
       end
 
       def save_or_update(params, klass)
@@ -131,10 +152,16 @@ module Stif
         object = klass.where(objectid: params[:objectid]).first
         if object
           object.assign_attributes(params)
-          object.save if object.changed?
+          if object.changed?
+            object.save
+            increment_counts :updated_count, 1
+          end
         else
           object = klass.new(params)
-          object.save if object.valid?
+          if object.valid?
+            object.save
+            increment_counts :imported_count, 1
+          end
         end
         object
       end

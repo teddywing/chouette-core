@@ -7,8 +7,15 @@ class ReferentialsController < BreadcrumbController
   respond_to :js, :only => :show
 
   def new
+    @referential = Referential.new_from(Referential.find(params[:from])) if params[:from]
+
     new! do
       @referential.data_format = current_organisation.data_format
+      @referential.workbench_id ||= params[:workbench_id]
+
+      if @referential.in_workbench?
+        @referential.init_metadatas first_period_begin: Date.today, first_period_end: Date.today.advance(months: 1)
+      end
     end
   end
 
@@ -23,17 +30,36 @@ class ReferentialsController < BreadcrumbController
                 :referential_id => resource.id}
        }
        format.html { build_breadcrumb :show}
-
      end
+  end
+
+  def edit
+    edit! do
+      if @referential.in_workbench?
+        @referential.init_metadatas first_period_begin: Date.today, first_period_end: Date.today.advance(months: 1)
+      end
+    end
+  end
+
+  def destroy
+    workbench = referential.workbench_id
+
+    referential.destroy!
+    redirect_to workbench_path(workbench), notice: t('notice.referential.deleted')
   end
 
   def archive
     referential.archive!
-    redirect_to referential_path, notice: t('notice.referential.archived')
+    redirect_to workbench_path(referential.workbench_id), notice: t('notice.referential.archived')
   end
   def unarchive
-    referential.unarchive!
-    redirect_to referential_path, notice: t('notice.referential.unarchived')
+    if referential.unarchive!
+      flash[:notice] = t('notice.referential.unarchived')
+    else
+      flash[:alert] = t('notice.referential.unarchived_failed')
+    end
+
+    redirect_to workbench_path(referential.workbench_id)
   end
 
   protected
@@ -56,7 +82,7 @@ class ReferentialsController < BreadcrumbController
   end
 
   def create_resource(referential)
-    referential.organisation = current_organisation
+    referential.organisation = current_organisation unless referential.created_from
     super
   end
 
@@ -73,7 +99,10 @@ class ReferentialsController < BreadcrumbController
       :organisation_id,
       :projection_type,
       :data_format,
-      :archived_at
+      :archived_at,
+      :created_from_id,
+      :workbench_id,
+      metadatas_attributes: [:id, :first_period_begin, :first_period_end, :lines => []]
     )
   end
 

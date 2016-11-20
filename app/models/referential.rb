@@ -8,6 +8,7 @@ class Referential < ActiveRecord::Base
   validates_presence_of :time_zone
   validates_presence_of :upper_corner
   validates_presence_of :lower_corner
+
   validates_uniqueness_of :slug
   validates_uniqueness_of :name
   validates_format_of :slug, :with => %r{\A[a-z][0-9a-z_]+\Z}
@@ -26,17 +27,29 @@ class Referential < ActiveRecord::Base
   validates_presence_of :organisation
 
   belongs_to :line_referential
-  # validates_presence_of :line_referential
-  has_many :lines, through: :line_referential
+  validates_presence_of :line_referential
+
+  belongs_to :created_from, class_name: 'Referential'
+  has_many :associated_lines, through: :line_referential, source: :lines
   has_many :companies, through: :line_referential
   has_many :group_of_lines, through: :line_referential
   has_many :networks, through: :line_referential
 
-  belongs_to :stop_area_referential
-  # validates_presence_of :stop_area_referential
-  has_many :stop_areas, through: :stop_area_referential
+  has_many :metadatas, class_name: "ReferentialMetadata", inverse_of: :referential, dependent: :destroy
+  accepts_nested_attributes_for :metadatas
 
+  belongs_to :stop_area_referential
+  validates_presence_of :stop_area_referential
+  has_many :stop_areas, through: :stop_area_referential
   belongs_to :workbench
+
+  def lines
+    if metadatas.blank?
+      workbench ? workbench.lines : associated_lines
+    else
+      metadatas_lines
+    end
+  end
 
   def slug_excluded_values
     if ! slug.nil?
@@ -108,6 +121,22 @@ class Referential < ActiveRecord::Base
     self
   end
 
+  def self.new_from from
+    Referential.new({
+      name: I18n.t("activerecord.copy", :name => from.name),
+      slug: "#{from.slug}_clone",
+      prefix: from.prefix,
+      time_zone: from.time_zone,
+      bounds: from.bounds,
+      organisation: from.organisation,
+      line_referential: from.line_referential,
+      stop_area_referential: from.stop_area_referential,
+      workbench: from.workbench,
+      created_from: from,
+      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m) }
+    })
+  end
+
   def self.available_srids
     [
       [ "RGF 93 Lambert 93 (2154)", 2154 ],
@@ -144,17 +173,98 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
+  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench, unless: :created_from
+  before_validation :clone_associations, :on => :create, if: :created_from
   before_create :create_schema
+
+  after_create :clone_schema, if: :created_from
+
+  before_destroy :destroy_schema
+  before_destroy :destroy_jobs
+
+  def in_workbench?
+    workbench_id.present?
+  end
+
+  def init_metadatas(attributes = {})
+    metadatas.build attributes if metadatas.blank?
+  end
+
+  def clone_associations
+    self.organisation          = created_from.organisation
+    self.line_referential      = created_from.line_referential
+    self.stop_area_referential = created_from.stop_area_referential
+    self.workbench             = created_from.workbench
+  end
+
+  def clone_metadatas
+    created_from.metadatas.each do |meta|
+      self.metadatas << ReferentialMetadata.new_from(meta)
+    end
+  end
+
+  def metadatas_period
+    # FIXME
+    if metadatas.present?
+      metadatas.first.periodes.first
+    end
+  end
+  alias_method :validity_period, :metadatas_period
+
+  def metadatas_lines
+    # FIXME
+    metadatas.present? ? metadatas.first.lines : []
+  end
+
+  def overlapped_referential_ids
+    return [] unless metadatas.present?
+
+    line_ids = metadatas.first.line_ids
+    period = metadatas.first.periodes.first
+
+    return [] unless line_ids.present? && period
+
+    not_myself = "and referential_id != #{id}" if persisted?
+
+    query = "SELECT distinct(referential_id) FROM
+    (SELECT unnest(public.referential_metadata.line_ids) as line, unnest(public.referential_metadata.periodes) as period, public.referential_metadata.referential_id
+     FROM public.referential_metadata
+     INNER JOIN public.referentials ON public.referential_metadata.referential_id = public.referentials.id
+     WHERE public.referentials.workbench_id = 1 and public.referentials.archived_at is null) as metadatas
+    WHERE line in (#{line_ids.join(',')}) and period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(period)}' #{not_myself};"
+
+    self.class.connection.select_values(query).map(&:to_i)
+  end
+
+  def metadatas_overlap?
+    overlapped_referential_ids.present?
+  end
+
+  validate :detect_overlapped_referentials
+
+  def detect_overlapped_referentials
+    self.class.where(id: overlapped_referential_ids).each do |referential|
+      errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", :referential => referential.name)
+    end
+  end
+
+  def clone_schema
+    ReferentialCloning.create(source_referential: self.created_from, target_referential: self)
+  end
+
   def create_schema
     Apartment::Tenant.create slug
   end
 
-  before_destroy :destroy_schema
+  def assign_line_and_stop_area_referential
+    self.line_referential = workbench.line_referential
+    self.stop_area_referential = workbench.stop_area_referential
+  end
+
   def destroy_schema
     Apartment::Tenant.drop slug
   end
 
-  before_destroy :destroy_jobs
   def destroy_jobs
     #Ievkit.delete_jobs(slug)
     true
@@ -199,7 +309,7 @@ class Referential < ActiveRecord::Base
     GeoRuby::SimpleFeatures::Geometry.from_ewkt(bounds.present? ? bounds : default_bounds ).envelope
   end
 
-  # Archive
+  # Archive
   def archived?
     archived_at != nil
   end
@@ -209,8 +319,13 @@ class Referential < ActiveRecord::Base
     touch :archived_at
   end
   def unarchive!
+    return false unless can_unarchive?
     # self.archived = false
     update_column :archived_at, nil
+  end
+
+  def can_unarchive?
+    not metadatas_overlap?
   end
 
 end

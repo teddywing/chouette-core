@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010135256) do
+ActiveRecord::Schema.define(version: 20161118101544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,29 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.datetime "updated_at"
   end
 
+  create_table "clean_up_results", force: true do |t|
+    t.string   "message_key"
+    t.hstore   "message_attributs"
+    t.integer  "clean_up_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "clean_up_results", ["clean_up_id"], :name => "index_clean_up_results_on_clean_up_id"
+
+  create_table "clean_ups", force: true do |t|
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.integer  "referential_id"
+    t.datetime "begin_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "end_date"
+  end
+
+  add_index "clean_ups", ["referential_id"], :name => "index_clean_ups_on_referential_id"
+
   create_table "companies", force: true do |t|
     t.string   "objectid",                  null: false
     t.integer  "object_version"
@@ -123,22 +146,6 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   end
 
   add_index "connection_links", ["objectid"], :name => "connection_links_objectid_key", :unique => true
-
-  create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0
-    t.integer  "attempts",   default: 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "exports", force: true do |t|
     t.integer  "referential_id",  limit: 8
@@ -312,7 +319,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "name"
     t.string   "number"
     t.string   "published_name"
-    t.string   "transport_mode_name"
+    t.string   "transport_mode"
     t.string   "registration_number"
     t.string   "comment"
     t.boolean  "mobility_restricted_suitability"
@@ -325,6 +332,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "line_referential_id"
     t.boolean  "deactivated",                               default: false
     t.text     "import_xml"
+    t.string   "transport_submode"
   end
 
   add_index "lines", ["line_referential_id"], :name => "index_lines_on_line_referential_id"
@@ -356,10 +364,13 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "data_format", default: "neptune"
+    t.string   "data_format",    default: "neptune"
     t.string   "code"
     t.datetime "synced_at"
+    t.hstore   "sso_attributes"
   end
+
+  add_index "organisations", ["code"], :name => "index_organisations_on_code", :unique => true
 
   create_table "pt_links", force: true do |t|
     t.integer  "start_of_link_id", limit: 8
@@ -375,6 +386,32 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   end
 
   add_index "pt_links", ["objectid"], :name => "pt_links_objectid_key", :unique => true
+
+  create_table "referential_clonings", force: true do |t|
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.integer  "source_referential_id"
+    t.integer  "target_referential_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "referential_clonings", ["source_referential_id"], :name => "index_referential_clonings_on_source_referential_id"
+  add_index "referential_clonings", ["target_referential_id"], :name => "index_referential_clonings_on_target_referential_id"
+
+  create_table "referential_metadata", force: true do |t|
+    t.integer   "referential_id"
+    t.integer   "line_ids",              array: true
+    t.integer   "referential_source_id"
+    t.datetime  "created_at"
+    t.datetime  "updated_at"
+    t.daterange "periodes",              array: true
+  end
+
+  add_index "referential_metadata", ["line_ids"], :name => "index_referential_metadata_on_line_ids"
+  add_index "referential_metadata", ["referential_id"], :name => "index_referential_metadata_on_referential_id"
+  add_index "referential_metadata", ["referential_source_id"], :name => "index_referential_metadata_on_referential_source_id"
 
   create_table "referentials", force: true do |t|
     t.string   "name"
@@ -394,7 +431,10 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "stop_area_referential_id"
     t.integer  "workbench_id"
     t.datetime "archived_at"
+    t.integer  "created_from_id"
   end
+
+  add_index "referentials", ["created_from_id"], :name => "index_referentials_on_created_from_id"
 
   create_table "route_sections", force: true do |t|
     t.integer  "departure_id",       limit: 8
@@ -682,13 +722,15 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "organisation_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "line_referential_id"
+    t.integer  "stop_area_referential_id"
   end
 
+  add_index "workbenches", ["line_referential_id"], :name => "index_workbenches_on_line_referential_id"
   add_index "workbenches", ["organisation_id"], :name => "index_workbenches_on_organisation_id"
+  add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
-  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
-
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify

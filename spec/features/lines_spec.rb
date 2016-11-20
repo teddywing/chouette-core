@@ -26,13 +26,6 @@ describe "Lines", :type => :feature do
       click_link "#{lines.first.name}"
       expect(page).to have_content(lines.first.name)
     end
-
-    it "display map" do
-      visit line_referential_lines_path(line_referential)
-      click_link "#{lines.first.name}"
-      expect(page).to have_selector("#map.line")
-    end
-
   end
 
   # Fixme #1780

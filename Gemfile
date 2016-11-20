@@ -1,3 +1,4 @@
+# coding: utf-8
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -10,6 +11,9 @@ gem 'uglifier', '~> 2.7.2'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 
+# ES6 powa
+gem 'browserify-rails'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -19,8 +23,15 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# Select2 for pretty select boxes w. autocomplete
+gem 'select2-rails', '~> 4.0', '>= 4.0.3'
+
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
+# ActiveRecord associations on top of PostgreSQL arrays
+gem 'has_array_of', git: 'git@github.com:AF83/has_array_of.git'
+
+gem 'rails-observers'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -51,7 +62,7 @@ gem 'polylines'
 # Codifligne API
 gem 'codifligne', git: 'git@github.com:AF83/stif-codifline-api.git'
 # Reflex API
-gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git', branch: 'sax_refactoring'
+gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git'
 
 # Authentication
 gem 'devise', '~> 3.4.0'
@@ -110,7 +121,6 @@ gem 'rabl'
 
 gem 'sidekiq'
 gem 'sinatra'
-gem 'delayed_job_active_record'
 gem 'whenever', github: 'af83/whenever', require: false # '~> 0.9'
 gem 'rake'
 gem 'devise-async'
@@ -123,6 +133,7 @@ gem 'letter_opener'
 group :development do
   gem 'capistrano', '2.13.5'
   gem 'capistrano-ext'
+  gem 'capistrano-npm', require: false
   gem 'guard'
   gem 'guard-rspec'
   gem 'rails-erd'
@@ -162,6 +173,8 @@ group :test, :development do
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'transpec'
   gem 'shoulda-matchers'
+  gem "teaspoon-jasmine"
+  gem "phantomjs"
 end
 
 group :production do

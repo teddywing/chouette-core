@@ -6,6 +6,15 @@ GIT
       chronic (>= 0.6.3)
 
 GIT
+  remote: git@github.com:AF83/has_array_of.git
+  revision: e00963f9599035ffa11bf412e6923d7ff74a32f8
+  specs:
+    has_array_of (0.0.1)
+      activerecord (>= 4.0)
+      pg
+      railties (>= 4.0)
+
+GIT
   remote: git@github.com:AF83/stif-codifline-api.git
   revision: 72d53d7666736523b5cbef41a2de7e466d58ea1a
   specs:
@@ -15,7 +24,6 @@ GIT
 GIT
   remote: git@github.com:AF83/stif-reflex-api.git
   revision: 2c01010dce3a6cb39339995c373faf89ae00f3f3
-  branch: sax_refactoring
   specs:
     reflex (0.0.1)
       nokogiri (~> 1.6)
@@ -81,6 +89,8 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     breadcrumbs_on_rails (2.3.0)
+    browserify-rails (1.1.0)
+      railties (>= 4.0.0, < 5.0)
     builder (3.2.2)
     calendar_helper (0.2.5)
       open4
@@ -92,6 +102,8 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
+    capistrano-npm (0.0.2)
+      capistrano (>= 2.5.5)
     capybara (2.4.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -140,11 +152,6 @@ GEM
     debug_inspector (0.0.2)
     deep_cloneable (2.0.2)
       activerecord (>= 3.1.0, < 5.0.0)
-    delayed_job (4.0.6)
-      activesupport (>= 3.0, < 5.0)
-    delayed_job_active_record (4.0.3)
-      activerecord (>= 3.0, < 5.0)
-      delayed_job (>= 3.0, < 4.1)
     devise (3.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -282,7 +289,7 @@ GEM
     mime-types (2.4.3)
     mimemagic (0.3.0)
     mini_portile2 (2.1.0)
-    minitest (5.8.3)
+    minitest (5.9.1)
     multi_json (1.11.2)
     multi_test (0.1.2)
     multipart-post (2.0.0)
@@ -305,7 +312,8 @@ GEM
     orm_adapter (0.5.0)
     parser (2.2.0.3)
       ast (>= 1.1, < 3.0)
-    pg (0.18.1)
+    pg (0.19.0)
+    phantomjs (2.1.1.0)
     poltergeist (1.6.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -331,7 +339,7 @@ GEM
       railties (>= 3.1, < 5.0)
     rabl (0.11.6)
       activesupport (>= 2.3.14)
-    rack (1.5.3)
+    rack (1.5.5)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -385,13 +393,15 @@ GEM
     rails-i18n (4.0.4)
       i18n (~> 0.6)
       railties (~> 4.0)
+    rails-observers (0.1.2)
+      activemodel (~> 4.0)
     railties (4.1.10)
       actionpack (= 4.1.10)
       activesupport (= 4.1.10)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
-    rake (10.4.2)
+    rake (11.3.0)
     ransack (1.6.3)
       actionpack (>= 3.0)
       activerecord (>= 3.0)
@@ -454,6 +464,8 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    select2-rails (4.0.3)
+      thor (~> 0.14)
     shellany (0.0.1)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
@@ -502,6 +514,10 @@ GEM
       activerecord (>= 3.0)
       activesupport (>= 3.0)
       polyamorous (~> 1.1.0)
+    teaspoon (1.1.5)
+      railties (>= 3.2.5, < 6)
+    teaspoon-jasmine (2.3.4)
+      teaspoon (>= 1.0.0)
     temple (0.7.7)
     term-ansicolor (1.3.2)
       tins (~> 1.0)
@@ -565,9 +581,11 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   breadcrumbs_on_rails
+  browserify-rails
   calendar_helper (= 0.2.5)
   capistrano (= 2.13.5)
   capistrano-ext
+  capistrano-npm
   capybara (~> 2.4.0)
   cocoon
   codifligne!
@@ -576,7 +594,6 @@ DEPENDENCIES
   daemons
   database_cleaner
   deep_cloneable (~> 2.0.0)
-  delayed_job_active_record
   devise (~> 3.4.0)
   devise-async
   devise-encryptable
@@ -599,6 +616,7 @@ DEPENDENCIES
   google-analytics-rails
   guard
   guard-rspec
+  has_array_of!
   i18n-tasks
   inherited_resources
   jbuilder (~> 2.0)
@@ -611,6 +629,7 @@ DEPENDENCIES
   mimemagic
   newrelic_rpm
   pg
+  phantomjs
   poltergeist
   polylines
   pry-rails
@@ -632,6 +651,7 @@ DEPENDENCIES
   rails-assets-typeahead.js-bootstrap3.less!
   rails-erd
   rails-i18n (~> 4.0.0)
+  rails-observers
   rake
   ransack
   rb-fsevent
@@ -644,6 +664,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   sawyer (~> 0.6.0)
   sdoc (~> 0.4.0)
+  select2-rails (~> 4.0, >= 4.0.3)
   shoulda-matchers
   sidekiq
   simple_form (~> 3.1.0)
@@ -654,6 +675,7 @@ DEPENDENCIES
   spring
   sqlite3
   squeel
+  teaspoon-jasmine
   therubyracer (~> 0.12)
   transpec
   turbolinks
@@ -664,4 +686,4 @@ DEPENDENCIES
   will_paginate-bootstrap (~> 1.0.1)
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

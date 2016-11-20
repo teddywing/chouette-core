@@ -155,51 +155,6 @@ describe Chouette::VehicleJourney, :type => :model do
 
   end
 
-    describe "#transport_mode_name" do
-
-    def self.legacy_transport_modes
-      %w{Air Train LongDistanceTrain LocalTrain RapidTransit Metro Tramway Coach Bus Ferry Waterborne PrivateVehicle Walk Trolleybus Bicycle Shuttle Taxi VAL Other}
-    end
-
-    legacy_transport_modes.each do |transport_mode|
-      context "when transport_mode is #{transport_mode}" do
-        transport_mode_name = Chouette::TransportMode.new(transport_mode.underscore)
-        it "should be #{transport_mode_name}" do
-          subject.transport_mode = transport_mode
-          expect(subject.transport_mode_name).to eq(transport_mode_name)
-        end
-      end
-    end
-    context "when transport_mode is nil" do
-      it "should be nil" do
-        subject.transport_mode = nil
-        expect(subject.transport_mode_name).to be_nil
-      end
-    end
-
-  end
-
-  describe "#transport_mode_name=" do
-
-    it "should change transport_mode with TransportMode#name" do
-      subject.transport_mode_name = "Test"
-      expect(subject.transport_mode).to eq("Test")
-    end
-
-  end
-
-  describe ".transport_mode_names" do
-
-    it "should not include unknown transport_mode_name" do
-      expect(Chouette::VehicleJourney.transport_mode_names).not_to include(Chouette::TransportMode.new("unknown"))
-    end
-
-    it "should not include interchange transport_mode" do
-      expect(Chouette::VehicleJourney.transport_mode_names).not_to include(Chouette::TransportMode.new("interchange"))
-    end
-
-  end
-
   describe "#footnote_ids=" do
     context "when line have footnotes, " do
       let!( :route) { create( :route ) }

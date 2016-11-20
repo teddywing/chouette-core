@@ -23,7 +23,7 @@
             = f.select(:area_type_cont, options_from_collection_for_select(Chouette::StopArea.stop_area_types, 'name', Proc.new { |stop_area_type| t("area_types.label.#{stop_area_type}") } ), { include_blank: t('.area_type') }, { class: 'form-control' })
             
       .col-md-2.col-sm-3
-        button.btn.btn-primary.btn-block type="submit" Filtrer        
+        button.btn.btn-primary.btn-block type="submit" Filtrer
 
 #stop_areas
   = render 'stop_areas'

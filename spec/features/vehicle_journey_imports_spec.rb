@@ -4,7 +4,7 @@ require 'csv'
 
 describe "VehicleJourneyImports", :type => :feature do
   login_user
-  
+
   let!(:route) { create :route }
 
   let(:valid_file_path) {
@@ -24,16 +24,16 @@ describe "VehicleJourneyImports", :type => :feature do
         if counter == 0
           row2 = []
           row.each do |cell|
-            cell = "" if cell == "import:VehicleJourney:1" 
-            cell = "" if cell == "import:VehicleJourney:2" 
-            cell = "" if cell == "import:VehicleJourney:3" 
+            cell = "" if cell == "import:VehicleJourney:1"
+            cell = "" if cell == "import:VehicleJourney:2"
+            cell = "" if cell == "import:VehicleJourney:3"
             row2 << cell
           end
           csv << row2
         elsif  counter < 8
           csv << row
         else
-          csv << ( row[0] = route.stop_points[counter - 8].id; row)          
+          csv << ( row[0] = route.stop_points[counter - 8].id; row)
         end
         counter += 1
       end
@@ -42,14 +42,14 @@ describe "VehicleJourneyImports", :type => :feature do
 
     File.open("/tmp/#{filename}")
   end
-  
-  describe "new" do      
+
+  describe "new" do
     it "should create vehicle journey file and return to route show page" do
       visit new_referential_line_route_vehicle_journey_import_path(referential, route.line, route)
       attach_file('Fichier', valid_file_path)
       click_button "Lancer l'import"
       expect(page).to have_content(I18n.t("vehicle_journey_imports.new.success"))
-      expect(page).to have_content("Séquence d'arrêts #{route.name}")
+      expect(page).to have_content("Itinéraire #{route.name}")
     end
 
     it "should return error messages when file is invalid" do
@@ -58,12 +58,12 @@ describe "VehicleJourneyImports", :type => :feature do
       click_button "Lancer l'import"
       expect(page).to have_content(I18n.t("vehicle_journey_imports.errors.import_aborted"))
     end
-    
+
     it "should return error message when file missing on upload" do
       visit new_referential_line_route_vehicle_journey_import_path(referential, route.line, route)
       click_button "Lancer l'import"
-      expect(page).to have_content(I18n.t("vehicle_journey_imports.errors.import_aborted"))     
-    end    
+      expect(page).to have_content(I18n.t("vehicle_journey_imports.errors.import_aborted"))
+    end
   end
-  
+
 end

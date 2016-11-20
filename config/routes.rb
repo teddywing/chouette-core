@@ -23,6 +23,8 @@ ChouetteIhm::Application.routes.draw do
     end
   end
 
+  mount Sidekiq::Web => '/sidekiq'
+
   namespace :api do
     namespace :v1 do
       resources :time_tables, :only => [:index, :show]

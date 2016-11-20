@@ -28,3 +28,8 @@ coverage
 
 # IDE
 .idea
+
+bin/
+
+# Ignore node modules
+/node_modules

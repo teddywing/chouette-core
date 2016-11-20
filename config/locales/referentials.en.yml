@@ -24,6 +24,7 @@ en:
       destroy_confirm: "Do you confirm to destroy this data space ?"
       destroy: "Destroy this data space"
       edit: "Edit this data space"
+      clone: "Clone this data space"
     errors:
       pg_excluded: "can't begins with pg_"
       public_excluded: "public is a reserved value"
@@ -78,7 +79,16 @@ en:
         upper_corner: "latitude,longitude in WGS84 referential, dot for decimal separator"
         lower_corner: "latitude,longitude in WGS84 referential, dot for decimal separator"
 
+  simple_form:
+    labels:
+      referential:
+        metadatas:
+          first_period_begin: 'First period begin'
+          first_period_end: 'First period end'
+          lines: Lines
+
   notice:
     referential:
       archived: "The data space has been successfully archived"
       unarchived: "The data space has been successfully unarchived"
+      deleted: "The data space has been successfully destroyed"

@@ -1,8 +1,13 @@
 class Chouette::Line < Chouette::ActiveRecord
   include DefaultNetexAttributesSupport
   include LineRestrictions
-
   include LineReferentialSupport
+  include StifTransportModeEnumerations
+
+  extend Enumerize
+  extend ActiveModel::Naming
+
+  enumerize :transport_submode, in: %i(unknown undefined internationalFlight domesticFlight intercontinentalFlight domesticScheduledFlight shuttleFlight intercontinentalCharterFlight internationalCharterFlight roundTripCharterFlight sightseeingFlight helicopterService domesticCharterFlight SchengenAreaFlight airshipService shortHaulInternationalFlight canalBarge localBus regionalBus expressBus nightBus postBus specialNeedsBus mobilityBus mobilityBusForRegisteredDisabled sightseeingBus shuttleBus highFrequencyBus dedicatedLaneBus schoolBus schoolAndPublicServiceBus railReplacementBus demandAndResponseBus airportLinkBus internationalCoach nationalCoach shuttleCoach regionalCoach specialCoach schoolCoach sightseeingCoach touristCoach commuterCoach metro tube urbanRailway local highSpeedRail suburbanRailway regionalRail interregionalRail longDistance intermational sleeperRailService nightRail carTransportRailService touristRailway railShuttle replacementRailService specialTrain crossCountryRail rackAndPinionRailway cityTram localTram regionalTram sightseeingTram shuttleTram trainTram internationalCarFerry nationalCarFerry regionalCarFerry localCarFerry internationalPassengerFerry nationalPassengerFerry regionalPassengerFerry localPassengerFerry postBoat trainFerry roadFerryLink airportBoatLink highSpeedVehicleService highSpeedPassengerService sightseeingService schoolBoat cableFerry riverBus scheduledFerry shuttleFerryService telecabin cableCar lift chairLift dragLift telecabinLink funicular streetCableCar allFunicularServices undefinedFunicular)
 
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -19,7 +24,6 @@ class Chouette::Line < Chouette::ActiveRecord
   accepts_nested_attributes_for :footnotes, :reject_if => :all_blank, :allow_destroy => true
 
   attr_reader :group_of_line_tokens
-  attr_accessor :transport_mode
 
   # validates_presence_of :network
   # validates_presence_of :company
@@ -32,28 +36,15 @@ class Chouette::Line < Chouette::ActiveRecord
 
   validates_presence_of :name
 
+  scope :by_text, ->(text) { where('lower(name) LIKE :t or lower(published_name) LIKE :t or lower(objectid) LIKE :t or lower(comment) LIKE :t or lower(number) LIKE :t',
+    t: "%#{text.downcase}%") }
+
   def self.nullable_attributes
     [:published_name, :number, :comment, :url, :color, :text_color, :stable_id]
   end
 
   def geometry_presenter
     Chouette::Geometry::LinePresenter.new self
-  end
-
-  def transport_mode
-    # return nil if transport_mode_name is nil
-    transport_mode_name && Chouette::TransportMode.new( transport_mode_name.underscore)
-  end
-
-  def transport_mode=(transport_mode)
-    self.transport_mode_name = (transport_mode ? transport_mode.camelcase : nil)
-  end
-
-  @@transport_modes = nil
-  def self.transport_modes
-    @@transport_modes ||= Chouette::TransportMode.all.select do |transport_mode|
-      transport_mode.to_i > 0
-    end
   end
 
   def commercial_stop_areas

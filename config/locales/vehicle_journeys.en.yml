@@ -1,7 +1,7 @@
 en:
   vehicle_journeys:
     vehicle_journeys_matrix:
-      line_routes: "Line's routes"      
+      line_routes: "Line's routes"
     vehicle_journey:
       title_stopless: "Vehicle journey %{name}"
       title: "Vehicle journey leaving from %{stop} at %{time}"
@@ -84,7 +84,7 @@ en:
         number: "Number"
         comment: "Comments"
         status_value: "Status Value"
-        transport_mode_name: "Transport Mode"
+        transport_mode: "Transport Mode"
         mobility_restricted_suitability: "PRM accessibility"
         flexible_service: "On demond transportation"
         unspecified_mrs: "Not specified"

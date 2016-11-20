@@ -55,7 +55,7 @@ class ReferentialGroupOfLinesController < ChouetteController
   end
 
   def collection
-    @q = referential.group_of_lines.search(params[:q])
+    @q = referential.workbench.group_of_lines.search(params[:q])
     @group_of_lines ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
   end
 

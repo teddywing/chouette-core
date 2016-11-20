@@ -237,6 +237,10 @@ module BreadcrumbHelper
   def referential_breadcrumb (action = :edit)
     organisation_breadcrumb
     if @referential
+      if workbench = @referential.workbench
+        add_breadcrumb breadcrumb_label(workbench), workbench_path(workbench), :title => breadcrumb_tooltip(workbench)
+      end
+
       add_breadcrumb breadcrumb_label(@referential), referential_path(@referential),:title => breadcrumb_tooltip(@referential) if action == :edit || action == :show || action == :update
     end
   end

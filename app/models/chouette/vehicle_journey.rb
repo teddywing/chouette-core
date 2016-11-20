@@ -1,6 +1,7 @@
 module Chouette
   class VehicleJourney < TridentActiveRecord
     include VehicleJourneyRestrictions
+    include StifTransportModeEnumerations
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
 
@@ -8,7 +9,6 @@ module Chouette
 
     default_scope { where(journey_category: journey_categories[:timed]) }
 
-    attr_accessor :transport_mode_name
     attr_reader :time_table_tokens
 
     def self.nullable_attributes
@@ -43,25 +43,8 @@ module Chouette
 
     accepts_nested_attributes_for :vehicle_journey_at_stops, :allow_destroy => true
 
-
     def presenter
       @presenter ||= ::VehicleJourneyPresenter.new( self)
-    end
-
-    def transport_mode_name
-      # return nil if transport_mode is nil
-      transport_mode && Chouette::TransportMode.new( transport_mode.underscore)
-    end
-
-    def transport_mode_name=(transport_mode_name)
-      self.transport_mode = (transport_mode_name ? transport_mode_name.camelcase : nil)
-    end
-
-    @@transport_mode_names = nil
-    def self.transport_mode_names
-      @@transport_mode_names ||= Chouette::TransportMode.all.select do |transport_mode_name|
-        transport_mode_name.to_i > 0
-      end
     end
 
     def increasing_times

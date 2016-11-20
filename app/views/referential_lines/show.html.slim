@@ -1,7 +1,10 @@
 - text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}"
 - bg_color = @line.color.blank? ? "white" : "##{@line.color}"
 
-= title_tag t('lines.show.title', line: @line.name)
+h2
+  = t('lines.show.title', line: @line.name)
+  - if @line.deactivated?
+    small = " (désactivé)"
 
 .line_show
   = @map.to_html
@@ -14,122 +17,130 @@
       p
         label = "#{t('lines.index.color')} : "
         label.color style="#{number_style(@line)}"
-          = line_sticker(@line)
+          = " #{line_sticker(@line)}"
 
     p
       label = "#{@line.human_attribute_name(:network)} : "
       - if @line.network.nil?
-        = t('lines.index.unset')
+        = " #{t('lines.index.unset')}"
       - else
-        = link_to @line.network.name, [@referential, @line.network]
+        = link_to " #{@line.network.name}", [@referential, @line.network]
 
     p
       label = "#{@line.human_attribute_name(:company)} : "
       - if @line.company.nil?
-        = t('lines.index.unset')
+        = " #{t('lines.index.unset')}"
       - else
-        = link_to @line.company.name, [@referential, @line.company]
+        = link_to " #{@line.company.name}", [@referential, @line.company]
 
     p
       label = "#{@line.human_attribute_name('number')} : "
-      = @line.number
+      = " #{@line.number}"
 
     p
       label = "#{@line.human_attribute_name('published_name')} : "
-      = @line.published_name
+      = " #{@line.published_name}"
 
     p
       label = "#{@line.human_attribute_name('registration_number')} : "
-      = @line.registration_number
+      = " #{@line.registration_number}"
 
     p
       label = "#{@line.human_attribute_name('transport_mode')} : "
-      = t("transport_modes.label.#{@line.transport_mode}")
+      - if @line.transport_mode
+        = " " + t("enumerize.line.transport_mode.#{@line.transport_mode}")
+      - else
+        = " -"
 
     p
-      label = "#{@line.human_attribute_name('stable_id')} : "
-      = @line.stable_id
+      label = "#{@line.human_attribute_name('transport_submode')} : "
+      - if @line.transport_submode
+        = " " + t("enumerize.line.transport_submode.#{@line.transport_submode}")
+      - else
+        = " -"
+
+    / p
+    /   label = "#{@line.human_attribute_name('stable_id')} : "
+    /   = " #{@line.stable_id}"
 
     p
       label = "#{@line.human_attribute_name('url')} : "
-      = @line.url
+      = " #{@line.url}"
 
-    p
-      label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "
-
-      - if @line.mobility_restricted_suitability.nil?
-        = @line.human_attribute_name("unspecified_mrs")
-      - elsif @line.mobility_restricted_suitability?
-        = @line.human_attribute_name("accessible")
-      - else
-        = @line.human_attribute_name("not_accessible")
-
-      br
-      = "#{@line.human_attribute_name('number_of_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', true).count}"
-      br
-      = "#{@line.human_attribute_name('number_of_non_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', false).count}"
-      br
-      = "#{@line.human_attribute_name('number_of_null_mrs_vj')} : "
-      = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count)
-
-    p
-      label = "#{@line.human_attribute_name('flexible_service')} : "
-
-      - if @line.flexible_service.nil?
-        = @line.human_attribute_name("unspecified_fs")
-      - elsif @line.flexible_service?
-        = @line.human_attribute_name("on_demaond_fs")
-      - else
-        = @line.human_attribute_name("regular_fs")
-
-      br
-      = "#{@line.human_attribute_name('number_of_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', true).count}"
-      br
-      = "#{@line.human_attribute_name('number_of_non_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', false).count}"
-      br
-      = @line.human_attribute_name("number_of_null_fs_vj")
-
-      - if @line.flexible_service.nil?
-        = "(#{@line.human_attribute_name('default_fs_msg')})"
-
-      = ": #{@line.vehicle_journeys.count - (@line.vehicle_journeys.where('flexible_service = ?', true).count + @line.vehicle_journeys.where('flexible_service = ?', false).count)}"
-
+    / p
+    /   label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "
+    /
+    /   - if @line.mobility_restricted_suitability.nil?
+    /     = @line.human_attribute_name("unspecified_mrs")
+    /   - elsif @line.mobility_restricted_suitability?
+    /     = @line.human_attribute_name("accessible")
+    /   - else
+    /     = @line.human_attribute_name("not_accessible")
+    /
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', true).count}"
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_non_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', false).count}"
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_null_mrs_vj')} : "
+    /   = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count)
+    /
+    / p
+    /   label = "#{@line.human_attribute_name('flexible_service')} : "
+    /
+    /   - if @line.flexible_service.nil?
+    /     = @line.human_attribute_name("unspecified_fs")
+    /   - elsif @line.flexible_service?
+    /     = @line.human_attribute_name("on_demaond_fs")
+    /   - else
+    /     = @line.human_attribute_name("regular_fs")
+    /
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', true).count}"
+    /   br
+    /   = "#{@line.human_attribute_name('number_of_non_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', false).count}"
+    /   br
+    /   = @line.human_attribute_name("number_of_null_fs_vj")
+    /
+    /   - if @line.flexible_service.nil?
+    /     = "(#{@line.human_attribute_name('default_fs_msg')})"
+    /
+    /   = ": #{@line.vehicle_journeys.count - (@line.vehicle_journeys.where('flexible_service = ?', true).count + @line.vehicle_journeys.where('flexible_service = ?', false).count)}"
+    /
     p
       label = "#{@line.human_attribute_name('footnotes')} : "
       ul
         - @line.footnotes.each do |footnote|
           li = "#{footnote.code} : #{footnote.label}"
 
-    p
-      label = "#{@line.human_attribute_name('comment')} : "
-      = @line.comment
+    / p
+    /   label = "#{@line.human_attribute_name('comment')} : "
+    /   = @line.comment
 
   .row
     #mobility_restricted_suitability.col-md-6
     #flexible_service.col-md-6
 
 p.after_map
-h3.routes = t('.itineraries')
 
-.routes.paginated_content
-  = paginated_content @routes, "routes/route"
-
-- if @line.group_of_lines.any?
-  h3.line_group_of_lines = t('.group_of_lines')
-  .group_of_lines.paginated_content
-    = paginated_content @group_of_lines, "group_of_lines/group_of_line", :delete => false
+.routes
+  = render 'reflines_routes'
 
 - content_for :sidebar do
   ul.actions
-    li
-      = link_to t('lines.actions.new'), new_referential_line_path(@referential), class: 'add'
-    li
-      = link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), class: 'edit'
-    li
-      = link_to t('lines.actions.destroy'), referential_line_path(@referential, @line), method: :delete, :data => {:confirm => t('lines.actions.destroy_confirm')}, class: 'remove'
+    - if policy(Chouette::Line).create?
+      li
+        = link_to t('lines.actions.new'), new_referential_line_path(@referential), class: 'add'
+    - if policy(@line).update?
+      li
+        = link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), class: 'edit'
+    - if policy(@line).destroy?
+      li
+        = link_to t('lines.actions.destroy'), referential_line_path(@referential, @line), method: :delete, :data => {:confirm => t('lines.actions.destroy_confirm')}, class: 'remove'
 
     - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
-      li
+        / FIXME #825
+        li
         = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
 
   = creation_tag(@line)

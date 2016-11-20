@@ -1,28 +1,6 @@
 = title_tag t('lines.index.title')
 
-= search_form_for @q, url: line_referential_lines_path(@line_referential), remote: true, html: {method: :get, class: "form", id: "search", role: "form"} do |f|
-  .well.well-sm
-    .input-group
-      = f.text_field :name_or_number_or_objectid_cont, placeholder: t('.name_or_number_or_objectid'), class: 'form-control'
-      
-      .input-group-btn
-        button.btn.btn-primary type="submit"
-          span.fa.fa-search
-
-= search_form_for @q, url: line_referential_lines_path(@line_referential), remote: true, html: {method: :get, class: "form", id: "search", role: "form"} do |f|
-  .well.well-sm
-    .row
-      .col-md-10.col-sm-9
-        .row
-          .col-md-4.col-sm-4
-            = f.select(:network_id_eq, @line_referential.networks.collect {|n| [ n.name, n.id ] }.unshift([t('.no_networks'), -1]), {include_blank: t('.all_networks')}, {class: 'form-control'})
-          .col-md-4.col-sm-4
-            = f.select(:company_id_eq, @line_referential.companies.collect {|c| [ c.name, c.id ] }.unshift([t('.no_companies'), -1]), {include_blank: t('.all_companies')}, {class: 'form-control'})
-          .col-md-4.col-sm-4
-            = f.select(:group_of_lines_id_eq, @line_referential.group_of_lines.collect {|c| [ c.name, c.id ] }.unshift([t('.no_group_of_lines'), -1]), {include_blank: t('.all_group_of_lines')}, {class: 'form-control'})
-        
-      .col-md-2.col-sm-3
-        button.btn.btn-primary.btn-block type="submit" Filtrer
+= render partial: 'shared/lines_search_form', locals: { referential_type: 'line_referential' }
 
 #lines
   = render 'lines'
@@ -33,22 +11,23 @@
       li
         = link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'add'
 
-  #multiple_selection_menu
-    h4 = t('.multi_selection')
+  - if policy(Chouette::Line).destroy?
+    #multiple_selection_menu
+      h4 = t('.multi_selection')
 
-    .disabled
-      a.enable href="#"
-        = t('.multi_selection_enable')
+      .disabled
+        a.enable href="#"
+          = t('.multi_selection_enable')
 
-    .enabled style="display: none;"
-      a.disable href="#"
-        = t('.multi_selection_disable')
+      .enabled style="display: none;"
+        a.disable href="#"
+          = t('.multi_selection_disable')
 
-      ul.actions
-        = link_to t('.delete_selected'), line_referential_lines_path(@line_referential), "data-multiple-method" => "delete", class: 'remove', "confirmation-text" => t("lines.actions.destroy_selection_confirm")
+        ul.actions
+          = link_to t('.delete_selected'), line_referential_lines_path(@line_referential), "data-multiple-method" => "delete", class: 'remove', "confirmation-text" => t("lines.actions.destroy_selection_confirm")
 
-      a.select_all href="#"
-        = t('.select_all')
-      = " | "
-      a.deselect_all href="#"
-        = t('.deselect_all')
+        a.select_all href="#"
+          = t('.select_all')
+        = " | "
+        a.deselect_all href="#"
+          = t('.deselect_all')
