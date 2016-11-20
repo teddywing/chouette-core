@@ -107,11 +107,11 @@ h2
     /
     /   = ": #{@line.vehicle_journeys.count - (@line.vehicle_journeys.where('flexible_service = ?', true).count + @line.vehicle_journeys.where('flexible_service = ?', false).count)}"
     /
-    / p
-    /   label = "#{@line.human_attribute_name('footnotes')} : "
-    /   ul
-    /     - @line.footnotes.each do |footnote|
-    /       li = "#{footnote.code} : #{footnote.label}"
+    p
+      label = "#{@line.human_attribute_name('footnotes')} : "
+      ul
+        - @line.footnotes.each do |footnote|
+          li = "#{footnote.code} : #{footnote.label}"
 
     / p
     /   label = "#{@line.human_attribute_name('comment')} : "

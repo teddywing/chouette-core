@@ -8,8 +8,8 @@ class LinePolicy < ApplicationPolicy
   def create?
     false
   end
-  def update?  ; create? end
+  def update?  ; true end
   def new?     ; create? end
-  def edit?    ; create? end
+  def edit?    ; true end
   def destroy? ; create? end
 end
