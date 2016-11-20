@@ -22,7 +22,7 @@ class ReferentialLinesController < ChouetteController
 
   def show
     @map = LineMap.new(resource).with_helpers(self)
-    @routes = @line.routes
+    @routes = @line.routes.order(:name)
     @group_of_lines = @line.group_of_lines
     show! do
       build_breadcrumb :show
