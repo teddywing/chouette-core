@@ -5,15 +5,21 @@
       
     - if @referential.new_record?
       - if @referential.created_from
-        = form.input :created_from
-
-      = form.input :slug, :input_html => { title: t("formtastic.titles.referential.slug") }
+        .col-lg-2.col-md-2.col-sm-2.col-xs-2
+          = form.input :created_from
+        .col-lg-2.col-md-2.col-sm-2.col-xs-2
+          = form.input :slug, :input_html => { title: t("formtastic.titles.referential.slug") }
+      - else
+        .col-lg-4.col-md-4.col-sm-4.col-xs-4
+          = form.input :slug, :input_html => { title: t("formtastic.titles.referential.slug") }
+      
     - else
       - if @referential.created_from
         .col-lg-2.col-md-2.col-sm-2.col-xs-2
           label.control-label = @referential.human_attribute_name('slug')
           br
           = @referential.slug
+          
         .col-lg-2.col-md-2.col-sm-2.col-xs-2
           label.control-label = @referential.human_attribute_name('created_from')
           = @referential.created_from.name
