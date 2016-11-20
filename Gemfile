@@ -31,6 +31,8 @@ gem 'spring', group: :development
 # ActiveRecord associations on top of PostgreSQL arrays
 gem 'has_array_of', git: 'git@github.com:AF83/has_array_of.git'
 
+gem 'rails-observers'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

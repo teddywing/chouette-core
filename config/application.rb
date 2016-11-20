@@ -29,6 +29,9 @@ module ChouetteIhm
 
     # Configure Browserify to use babelify to compile ES6
     config.browserify_rails.commandline_options = "-t [ babelify --presets [ react es2015 ] ]"
+
+    config.active_record.observers = :route_observer
+
     unless Rails.env.production?
         # Work around sprockets+teaspoon mismatch:
         Rails.application.config.assets.precompile += %w(spec_helper.js)

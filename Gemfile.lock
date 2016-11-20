@@ -393,6 +393,8 @@ GEM
     rails-i18n (4.0.4)
       i18n (~> 0.6)
       railties (~> 4.0)
+    rails-observers (0.1.2)
+      activemodel (~> 4.0)
     railties (4.1.10)
       actionpack (= 4.1.10)
       activesupport (= 4.1.10)
@@ -649,6 +651,7 @@ DEPENDENCIES
   rails-assets-typeahead.js-bootstrap3.less!
   rails-erd
   rails-i18n (~> 4.0.0)
+  rails-observers
   rake
   ransack
   rb-fsevent

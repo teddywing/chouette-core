@@ -222,6 +222,8 @@ class Referential < ActiveRecord::Base
     line_ids = metadatas.first.line_ids
     period = metadatas.first.periodes.first
 
+    return [] unless line_ids.present? && period
+
     not_myself = "and referential_id != #{id}" if persisted?
 
     query = "SELECT distinct(referential_id) FROM
