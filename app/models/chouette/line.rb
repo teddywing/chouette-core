@@ -67,4 +67,8 @@ class Chouette::Line < Chouette::ActiveRecord
     self.vehicle_journeys.unscoped.where(journey_category: 1).count > 0
   end
 
+  def display_name
+    [name, company.try(:name)].compact.join(' - ')
+  end
+
 end
