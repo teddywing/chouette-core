@@ -7,14 +7,14 @@
 
   .row
     .col-lg-4.col-md-6.col-sm-8.col-xs-8
-      = f.input :opposite_route, collection: @line.routes.select { |r| r.id != @route.id }
-    
+      = f.input :opposite_route_id, collection: @line.routes.where("id <> ?", @route)
+
     / .col-lg-4.col-md-4.col-sm-4.col-xs-4
     /   = f.input :direction, include_blank: false
-    
+
     .col-lg-4.col-md-4.col-sm-4.col-xs-4
       = f.input :wayback, include_blank: false
-    
+
   .row style="margin-top:20px"
     .col-lg-12.col-md-12.col-sm-12.col-xs-12
       #stop_points
