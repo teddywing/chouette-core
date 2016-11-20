@@ -28,7 +28,7 @@
           label.control-label = @referential.human_attribute_name('slug')
           br
           = @referential.slug
-          
+
   .row
     .col-lg-5.col-md-5.col-sm-5.col-xs-5
       = form.input :prefix, input_html: { title: t("formtastic.titles.referential.prefix") }
@@ -36,7 +36,7 @@
       = form.input :projection_type, as: :select, :collection => Referential.available_srids
   
   .row
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
+    .col-lg-6.col-md-6.col-sm-6.col-xs-6
       = form.input :time_zone
   
   .row
@@ -58,7 +58,7 @@
         = subform.input :first_period_end, as: :date, html5: true, input_html: { style: 'width: 100%' }
     .row
       .col-lg-8.col-md-12.col-sm-12.col-xs-12
-        = subform.input :lines, as: :select, collection: @referential.workbench.lines, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
+        = subform.input :lines, as: :select, collection: @referential.workbench.lines, selected: @referential.metadatas.first.line_ids, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
 
   = form.input :workbench_id, as: :hidden
 
