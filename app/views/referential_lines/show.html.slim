@@ -17,33 +17,33 @@ h2
       p
         label = "#{t('lines.index.color')} : "
         label.color style="#{number_style(@line)}"
-          = line_sticker(@line)
+          = " #{line_sticker(@line)}"
 
     p
       label = "#{@line.human_attribute_name(:network)} : "
       - if @line.network.nil?
-        = t('lines.index.unset')
+        = " #{t('lines.index.unset')}"
       - else
-        = link_to @line.network.name, [@referential, @line.network]
+        = link_to " #{@line.network.name}", [@referential, @line.network]
 
     p
       label = "#{@line.human_attribute_name(:company)} : "
       - if @line.company.nil?
-        = t('lines.index.unset')
+        = " #{t('lines.index.unset')}"
       - else
-        = link_to @line.company.name, [@referential, @line.company]
+        = link_to " #{@line.company.name}", [@referential, @line.company]
 
     p
       label = "#{@line.human_attribute_name('number')} : "
-      = @line.number
+      = " #{@line.number}"
 
     p
       label = "#{@line.human_attribute_name('published_name')} : "
-      = @line.published_name
+      = " #{@line.published_name}"
 
     p
       label = "#{@line.human_attribute_name('registration_number')} : "
-      = @line.registration_number
+      = " #{@line.registration_number}"
 
     p
       label = "#{@line.human_attribute_name('transport_mode')} : "
@@ -122,11 +122,8 @@ h2
     #flexible_service.col-md-6
 
 p.after_map
-h3.routes
-  = t('.itineraries')
 
-.routes.paginated_content
-  / = paginated_content @routes, "routes/route"
+.routes
   = render 'reflines_routes'
 
 - content_for :sidebar do

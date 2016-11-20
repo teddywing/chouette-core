@@ -1,29 +1,29 @@
 fr:
   routes:
     actions:
-      new: "Ajouter une séquence d'arrêts"
-      edit: "Modifier cette séquence d'arrêts"
+      new: "Ajouter un itinéraire"
+      edit: "Modifier cet itinéraire"
       edit_boarding_alighting: "Contraintes de montée - descente"
-      destroy: "Supprimer cette séquence d'arrêts"
-      destroy_confirm: "Etes vous sûr de supprimer cette séquence d'arrêts ?"
-      export_kml: "Export KML de la séquence d'arrêts"
-      export_kml_all: "Export KML des séquences d'arrêts"
-      export_hub: "Export HUB de la séquence d'arrêts"
-      export_hub_all: "Export HUB des séquences d'arrêts"
+      destroy: "Supprimer cet itinéraire"
+      destroy_confirm: "Etes vous sûr de supprimer cet itinéraire ?"
+      export_kml: "Export KML de l'itinéraire"
+      export_kml_all: "Export KML des itinéraires"
+      export_hub: "Export HUB de l'itinéraire"
+      export_hub_all: "Export HUB des itinéraires"
       add_stop_point: "Ajouter un arrêt"
       new_stop_point: "Créer un arrêt pour l'ajouter"
     new:
-      title: "Ajouter une séquence d'arrêts"
+      title: "Ajouter un itinéraire"
     edit:
-      title: "Modifier la séquence d'arrêts %{route}"
+      title: "Modifier l'itinéraire %{route}"
     show:
-      title: "Séquence d'arrêts %{route} de la ligne %{line}"
-      stop_points: "Liste des arrêts de la séquence d'arrêts"
+      title: "Itinéraire %{route} de la ligne %{line}"
+      stop_points: "Liste des arrêts de l'itinéraire'"
       journey_patterns: "Liste des missions"
-      no_opposite_route: "Aucune séquence d'arrêts associée en sens opposé"
+      no_opposite_route: "Aucun itinéraire associé en sens opposé"
       undefined: "Non défini"
     index:
-      title: "Séquences d'arrêts"
+      title: "Itinéraires"
       selection: "Sélection"
       selection_all: "Tous"
     edit_boarding_alighting:
@@ -36,14 +36,14 @@ fr:
       wayback:
         positive: "Aller"
         negative: "Retour"
-      opposite: "Séquence opposée"
-      no_opposite: "Pas de séquence opposée"
+      opposite: "Itinéraire opposé"
+      no_opposite: "Pas d'itinéraire opposé"
   activerecord:
     models:
       route:
-        zero:  "séquence d'arrêts"
-        one:   "séquence d'arrêts"
-        other: "séquences d'arrêts"
+        zero:  "itinéraire"
+        one:   "itinéraire"
+        other: "itinéraires"
     attributes:
       route:
         wayback:
@@ -58,7 +58,7 @@ fr:
         comment: "Commentaire"
         direction: "Direction"
         wayback: "Sens"
-        opposite_route: "Séquence d'arrêts associée en sens opposé"
+        opposite_route: "Itinéraire associé en sens opposé"
         objectid: "Identifiant Neptune"
         object_version: "Version"
         creation_time: "Créé le"
@@ -80,3 +80,9 @@ fr:
       hub:
         route:
           objectid: "[prefixe]:Route:[clé_unique]  caractères autorisés : alphanumériques et 'souligné' pour le préfixe, la clé unique accepte en plus le 'moins'. Longueur maximale de la clé unique = 8."
+
+  # simpleform
+  helpers:
+    submit:
+      route:
+        create: 'Créer un itinéraire'

@@ -16,3 +16,9 @@ fr:
     clean_up:
       begin_date: "Début date de la purge"
       end_date: "Fin date de la purge"
+
+  formtastic:
+    titles:
+      clean_up:
+        begin_date: "Début date de la purge"
+        end_date: "Fin date de la purge"

@@ -1,7 +1,7 @@
 #clean_up
   = semantic_form_for [@referential, CleanUp.new] do |form|
     = form.inputs do
-      = form.input :begin_date, as: :date_picker, :wrapper_html => { class: 'date', title: t('titles.clean_up.begin_date') }
-      = form.input :end_date, as: :date_picker, :wrapper_html => { class: 'date', title: t('titles.clean_up.end_date') }
+      = form.input :begin_date, as: :date_picker, label: t('titles.clean_up.begin_date'),:wrapper_html => { class: 'date', title: t('titles.clean_up.begin_date') }
+      = form.input :end_date, as: :date_picker, label: t('titles.clean_up.end_date'), :wrapper_html => { class: 'date', title: t('titles.clean_up.end_date') }
     = form.actions do
       = form.action :submit, as: :button, label: t('clean_ups.actions.clean_up') , :button_html => { data: { confirm: t('clean_ups.actions.confirm') } }

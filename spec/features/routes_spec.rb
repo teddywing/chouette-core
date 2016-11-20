@@ -31,12 +31,11 @@ describe "Routes", :type => :feature do
   describe "from line's page, create a new route" do
     it "return to line's page that display new route" do
       visit referential_line_path(referential,line)
-      click_link "Ajouter une séquence d'arrêts"
+      click_link "Ajouter un itinéraire"
       fill_in "route_name", :with => "A to B"
-      fill_in "Indice", :with => "AB"
-      select 'Aller', :from => "route_direction"
+      # select 'Aller', :from => "route_direction"
       select 'Aller', :from => "route_wayback"
-      click_button("Créer un(e) séquence d'arrêts")
+      click_button("Créer un itinéraire")
       expect(page).to have_content("A to B")
     end
   end

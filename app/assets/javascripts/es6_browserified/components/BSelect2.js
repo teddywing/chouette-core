@@ -53,6 +53,7 @@ class BSelect3 extends React.Component{
               className='form-control form-control-link'
               href={origin + path + '/stop_areas/' + this.props.value.stoparea_id}
               title={"Voir l'arrêt '" + this.props.value.text + "'"}
+              style={{lineHeight: '22px', overflow: 'hidden'}}
             >
               {this.props.value.text}
             </a>

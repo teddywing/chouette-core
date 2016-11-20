@@ -9,6 +9,7 @@ let AddTodo = ({ dispatch }) => {
         e.preventDefault()
         dispatch(actions.addStop())
       }}>
+        <label>Séquence d'arrêts</label>
         <button type="submit" className="btn btn-primary btn-xs pull-right">
           <span className="fa fa-plus"></span> Ajouter un arrêt
         </button>

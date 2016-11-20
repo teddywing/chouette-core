@@ -16,3 +16,9 @@ en:
     clean_up:
       begin_date: "Begin date of clean up"
       end_date: "End date of clean up"
+
+  formtastic:
+    titles:
+      clean_up:
+        begin_date: "Begin date of clean up"
+        end_date: "End date of clean up"
