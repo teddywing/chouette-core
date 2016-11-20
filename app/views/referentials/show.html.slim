@@ -37,19 +37,21 @@ h2
 
   / - if @referential.api_keys.present?
   /   h3.api_keys = t('.api_keys')
-  / 
+  /
   /   .api_keys.paginated_content
   /     = paginated_content(@referential.api_keys, "api_keys/api_key")
 
 - content_for :sidebar do
   ul.actions
-    li = link_to t('referentials.actions.edit'), edit_referential_path(@referential), class: 'edit'
+    - unless @referential.archived? # FIXME
+      li = link_to t('referentials.actions.edit'), edit_referential_path(@referential), class: 'edit'
 
     li = link_to t('referentials.actions.destroy'), referential_path(@referential), method: :delete, data: {:confirm => t('referentials.actions.destroy_confirm')}, class: "remove"
     / li = link_to t('api_keys.actions.new'), new_referential_api_key_path(@referential), class: 'add'
     li = link_to t('referentials.actions.clone'), new_referential_path(from: @referential.id), class: 'add'
     br
 
-  h4 = t('.clean_up')
+  - unless @referential.archived? # FIXME
+    h4 = t('.clean_up')
 
-  == render 'clean'
+    == render 'clean'
