@@ -18,6 +18,7 @@ class ReferentialMetadata < ActiveRecord::Base
     @first_period_begin or first_period.try(:begin)
   end
   def first_period_begin=(date)
+    date = Date.parse(date) if String === date
     periodes_will_change! unless @first_period_begin == date
     @first_period_begin = date
   end
@@ -33,6 +34,7 @@ class ReferentialMetadata < ActiveRecord::Base
     end
   end
   def first_period_end=(date)
+    date = Date.parse(date) if String === date
     periodes_will_change! unless @first_period_end == date
     @first_period_end = date
   end
