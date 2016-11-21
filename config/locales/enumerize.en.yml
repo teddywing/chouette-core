@@ -103,7 +103,7 @@ en:
         waterborne: "Waterborne"
         private_vehicle: "Private vehicle"
         walk: "Walk"
-        trolleybus: "Trolleybus"
+        trolleyBus: "Trolleybus"
         bicycle: "Bicycle"
         shuttle: "Shuttle"
         taxi: "Taxi"

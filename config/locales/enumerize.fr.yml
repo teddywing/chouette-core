@@ -102,7 +102,7 @@ fr:
         waterborne: Bac
         private_vehicle: Voiture particulière
         walk: Marche à pied
-        trolleybus: Trolleybus
+        trolleyBus: Trolleybus
         bicycle: Vélo
         shuttle: Navette
         taxi: Taxi

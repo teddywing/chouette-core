@@ -1,5 +1,4 @@
-- referential = instance_variable_get("@#{referential_type}")
-= search_form_for @q, url: eval("#{referential_type}_lines_path(referential)"), remote: true, html: { method: :get, class: 'form-inline', id: 'search', role: 'form' } do |f|
+= search_form_for @q, url: eval("#{referential.class.name.underscore}_lines_path(referential)"), remote: true, html: { method: :get, class: 'form-inline', id: 'search', role: 'form' } do |f|
   .panel.panel-default
     .panel-heading
       .input-group.col-md-9.col-sm-9
@@ -15,10 +14,9 @@
     #advanced_search.panel-collapse.collapse
       .panel-body
         .row
-          - %w(networks companies group_of_lines transport_modes).each do |filter|
-            - options_container = (referential_type == 'referential' && filter == 'transport_modes') ? referential.line_referential : referential
-            - if options_container && options_container.send(filter).any?
-              - options = options_container.send(filter).collect { |f| [f.name, filter == 'transport_modes' ? f.name : f.id] }.unshift([t("lines.index.no_#{filter}"), -1])
-              - matcher = filter == 'transport_modes' ? :transport_mode_eq : :"#{filter == 'group_of_lines' ? filter : filter.singularize}_id_eq"
-              .col-xs-3
-                = f.select(matcher, options, { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t("lines.index.all_#{filter}") })
+          .col-xs-3
+            = f.select(:network_id_eq, referential.networks.collect { |n| [n.name, n.id] }.unshift([t("lines.index.no_networks"), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t("lines.index.all_networks") })
+          .col-xs-3
+            = f.select(:company_id_eq, referential.companies.collect { |c| [c.name, c.id] }.unshift([t("lines.index.no_networks"), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t("lines.index.all_companies") })
+          .col-xs-3
+            = f.select(:transport_mode_eq, Chouette::Line.transport_mode.values.collect { |v| [ I18n.t("enumerize.line.transport_mode.#{v}"), v] }.unshift([t("lines.index.no_transport_modes"), -1]), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t("lines.index.all_transport_modes") })            

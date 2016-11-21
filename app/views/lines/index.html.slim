@@ -1,6 +1,6 @@
 = title_tag t('lines.index.title')
 
-= render partial: 'shared/lines_search_form', locals: { referential_type: 'line_referential' }
+= render partial: 'shared/lines_search_form', locals: { referential: @line_referential }
 
 #lines
   = render 'lines'
