@@ -206,7 +206,7 @@ class Referential < ActiveRecord::Base
   def metadatas_period
     # FIXME
     if metadatas.present?
-      metadatas.first.periodes.first
+      metadatas.first.periodes.try :first
     end
   end
   alias_method :validity_period, :metadatas_period
