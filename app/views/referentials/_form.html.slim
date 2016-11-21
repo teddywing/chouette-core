@@ -59,7 +59,7 @@
         = subform.input :first_period_end, as: :date, html5: true, input_html: { style: 'width: 100%' }
     .row
       .col-lg-8.col-md-12.col-sm-12.col-xs-12
-        = subform.input :lines, as: :select, collection: @referential.workbench.lines.order(:name), selected: subform.object.line_ids, label_method: :display_name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
+        = subform.input :lines, as: :select, collection: @referential.workbench.lines.includes(:company).order(:name), selected: subform.object.line_ids, label_method: :display_name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
 
   = form.input :workbench_id, as: :hidden
 
