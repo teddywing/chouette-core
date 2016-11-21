@@ -2,7 +2,7 @@
   table.table.table-bordered.table-hover
     thead
       tr
-        th = @networks.human_attribute_name(:name)
+        th = Chouette::Network.human_attribute_name(:name)
         th.text-center = "Actions"
         
     tbody

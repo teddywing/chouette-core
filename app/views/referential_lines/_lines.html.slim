@@ -3,6 +3,8 @@
   = page_entries_info @lines
 
 .lines.paginated_content
+  = paginated_content(@lines)
+  
   table.table.table-bordered.table-hover
     thead
       tr
@@ -10,7 +12,6 @@
         th = @lines.human_attribute_name(:network)
         th = @lines.human_attribute_name(:company)
         
-    / = paginated_content(@lines)
 
   .text-center
     = will_paginate @lines, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
