@@ -55,14 +55,14 @@
 
                 li = link_to "Cloner", new_referential_path(from: referential)
 
-                li
-                  - if referential.archived?
-                    - if referential.can_unarchive?
-                      = link_to "Désarchiver", unarchive_referential_path(referential), method: :put
-                    - else
-                      = link_to "Désarchiver", "#"
+                - if referential.archived?
+                  - if referential.can_unarchive?
+                    li = link_to "Désarchiver", unarchive_referential_path(referential), method: :put
                   - else
-                    = link_to "Archiver", archive_referential_path(referential), method: :put
+                    li.disabled title="L'action est impossible pour ce référentiel"
+                      = link_to "Désarchiver", "#"
+                - else
+                  li = link_to "Archiver", archive_referential_path(referential), method: :put
 
                 li = link_to "Supprimer", referential_path(referential), method: :delete, :data => {:confirm => t('referentials.actions.destroy_confirm')}
 

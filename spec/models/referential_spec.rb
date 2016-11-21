@@ -12,10 +12,21 @@ describe Referential, :type => :model do
   it { should belong_to(:workbench) }
 
   context "Cloning referential" do
-    let(:cloned) { Referential.new_from(ref).tap(&:save!) }
+    let(:clone) do
+      Referential.new_from(ref)
+    end
+
+    let(:saved_clone) do
+      clone.tap do |clone|
+        clone.metadatas.each do |metadata|
+          metadata.periodes = metadata.periodes.map { |period| Range.new(period.end+1, period.end+10) }
+        end
+        clone.save!
+      end
+    end
 
     it 'should create a ReferentialCloning' do
-      expect { cloned }.to change{ReferentialCloning.count}.by(1)
+      expect { saved_clone }.to change{ReferentialCloning.count}.by(1)
     end
 
     def metadatas_attributes(referential)
@@ -23,7 +34,7 @@ describe Referential, :type => :model do
     end
 
     it 'should clone referential_metadatas' do
-      expect(metadatas_attributes(cloned)).to eq(metadatas_attributes(ref))
+      expect(metadatas_attributes(clone)).to eq(metadatas_attributes(ref))
     end
   end
 

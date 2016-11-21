@@ -7,6 +7,8 @@ class ReferentialMetadata < ActiveRecord::Base
   validates :lines, presence: true
   validates :periodes, presence: true
 
+  validates :first_period_begin, :first_period_end, presence: true
+
   scope :include_lines, -> (line_ids) { where('line_ids && ARRAY[?]', line_ids) }
   scope :include_dateranges, -> (dateranges) { where('periodes && ARRAY[?]', dateranges) }
 
@@ -18,6 +20,7 @@ class ReferentialMetadata < ActiveRecord::Base
     @first_period_begin or first_period.try(:begin)
   end
   def first_period_begin=(date)
+    date = (Date.parse(date) rescue nil) if String === date
     periodes_will_change! unless @first_period_begin == date
     @first_period_begin = date
   end
@@ -33,6 +36,7 @@ class ReferentialMetadata < ActiveRecord::Base
     end
   end
   def first_period_end=(date)
+    date = (Date.parse(date) rescue nil) if String === date
     periodes_will_change! unless @first_period_end == date
     @first_period_end = date
   end
