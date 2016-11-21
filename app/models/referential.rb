@@ -220,7 +220,7 @@ class Referential < ActiveRecord::Base
     return [] unless metadatas.present?
 
     line_ids = metadatas.first.line_ids
-    period = metadatas.first.periodes.first
+    period = metadatas.first.periodes.try :first
 
     return [] unless line_ids.present? && period
 
