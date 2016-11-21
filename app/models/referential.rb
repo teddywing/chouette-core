@@ -230,7 +230,7 @@ class Referential < ActiveRecord::Base
     (SELECT unnest(public.referential_metadata.line_ids) as line, unnest(public.referential_metadata.periodes) as period, public.referential_metadata.referential_id
      FROM public.referential_metadata
      INNER JOIN public.referentials ON public.referential_metadata.referential_id = public.referentials.id
-     WHERE public.referentials.workbench_id = 1 and public.referentials.archived_at is null) as metadatas
+     WHERE public.referentials.workbench_id = #{workbench_id} and public.referentials.archived_at is null) as metadatas
     WHERE line in (#{line_ids.join(',')}) and period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(period)}' #{not_myself};"
 
     self.class.connection.select_values(query).map(&:to_i)
