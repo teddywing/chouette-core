@@ -112,7 +112,7 @@ class Referential < ActiveRecord::Base
   after_initialize :define_default_attributes
 
   def define_default_attributes
-    self.time_zone ||= Time.zone.tzinfo.name
+    self.time_zone ||= Time.zone.name
   end
 
   def switch
@@ -206,7 +206,7 @@ class Referential < ActiveRecord::Base
   def metadatas_period
     # FIXME
     if metadatas.present?
-      metadatas.first.periodes.first
+      metadatas.first.periodes.try :first
     end
   end
   alias_method :validity_period, :metadatas_period
@@ -220,7 +220,7 @@ class Referential < ActiveRecord::Base
     return [] unless metadatas.present?
 
     line_ids = metadatas.first.line_ids
-    period = metadatas.first.periodes.first
+    period = metadatas.first.periodes.try :first
 
     return [] unless line_ids.present? && period
 
@@ -230,7 +230,7 @@ class Referential < ActiveRecord::Base
     (SELECT unnest(public.referential_metadata.line_ids) as line, unnest(public.referential_metadata.periodes) as period, public.referential_metadata.referential_id
      FROM public.referential_metadata
      INNER JOIN public.referentials ON public.referential_metadata.referential_id = public.referentials.id
-     WHERE public.referentials.workbench_id = 1 and public.referentials.archived_at is null) as metadatas
+     WHERE public.referentials.workbench_id = #{workbench_id} and public.referentials.archived_at is null) as metadatas
     WHERE line in (#{line_ids.join(',')}) and period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(period)}' #{not_myself};"
 
     self.class.connection.select_values(query).map(&:to_i)
