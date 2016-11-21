@@ -6,7 +6,8 @@
     - if @referential.new_record?
       - if @referential.created_from
         .col-lg-2.col-md-2.col-sm-3.col-xs-2
-          = form.input :created_from_id, input_html: { value: @referential.created_from.name}
+          = form.input :created_from, disabled: true, input_html: { value: Referential.find(@referential.created_from_id).name }
+          = form.input :created_from_id, as: :hidden
 
         .col-lg-2.col-md-2.col-sm-2.col-xs-2
           = form.input :slug, :input_html => { title: t("formtastic.titles.referential.slug") }
@@ -46,10 +47,10 @@
     .col-lg-6.col-md-6.col-sm-6.col-xs-6
       = form.input :lower_corner, input_html: {title: t("formtastic.titles.referential.lower_corner")}
 
-  .row
-    .col-lg-12
-      .alert.alert-danger
-        - if @referential.errors.has_key? :metadatas
+  - if @referential.errors.has_key? :metadatas
+    .row
+      .col-lg-12
+        .alert.alert-danger
           - @referential.errors[:metadatas].each do |message|
             p.small = "- #{message}"
 
