@@ -1,6 +1,6 @@
 class ReferentialsController < BreadcrumbController
-
   defaults :resource_class => Referential
+  before_action :check_policy, :only => [:edit, :update]
 
   respond_to :html
   respond_to :json, :only => :show
@@ -87,6 +87,10 @@ class ReferentialsController < BreadcrumbController
   end
 
   private
+  def check_policy
+    authorize resource
+  end
+
   def referential_params
     params.require(:referential).permit(
       :id,

@@ -50,7 +50,7 @@
               ul.dropdown-menu
                 li = link_to "Voir", referential_path(referential)
 
-                - unless referential.archived? # FIXME
+                - if policy(referential).update?
                   li = link_to "Editer", edit_referential_path(referential)
 
                 li = link_to "Cloner", new_referential_path(from: referential)
