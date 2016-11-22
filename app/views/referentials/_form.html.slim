@@ -49,13 +49,6 @@
 
   = form.simple_fields_for :metadatas do |subform|
     = subform.simple_fields_for :periods do |period_form|
-      - if period_form.object.errors.has_key? :base
-        .row
-          .col-lg-12
-            .alert.alert-danger
-              - period_form.object.errors[:base].each do |message|
-                p.small = message
-      
       .row
         = render 'period_fields', f: period_form
 
