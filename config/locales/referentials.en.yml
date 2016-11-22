@@ -86,6 +86,9 @@ en:
           first_period_begin: 'First period begin'
           first_period_end: 'First period end'
           lines: Lines
+          periods:
+            begin: 'Period beginning'
+            end: 'Period end'
 
   notice:
     referential:

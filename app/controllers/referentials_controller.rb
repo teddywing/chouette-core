@@ -102,7 +102,7 @@ class ReferentialsController < BreadcrumbController
       :archived_at,
       :created_from_id,
       :workbench_id,
-      metadatas_attributes: [:id, :first_period_begin, :first_period_end, :lines => []]
+      metadatas_attributes: [:id, :first_period_begin, :first_period_end, periods_attributes: [:begin, :end, :id, :_destroy], :lines => []]
     )
   end
 
