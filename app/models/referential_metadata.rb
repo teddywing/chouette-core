@@ -87,17 +87,21 @@ class ReferentialMetadata < ActiveRecord::Base
   validate :validate_periods
 
   def validate_periods
-    Rails.logger.debug "Validate periods"
+    periods_are_valid = true
+
     unless periods.all?(&:valid?)
-      errors.add(:periods, :invalid)
+      periods_are_valid = false
     end
 
     periods.each do |period|
-      Rails.logger.debug "Validate period #{period.inspect} : #{period.intersect?(periods)}"
       if period.intersect?(periods)
-        period.errors.add(:base, :invalid)
-        Rails.logger.debug "period errors #{period.errors}"
+        period.errors.add(:base, I18n.t("referentials.errors.overlapped_period"))
+        periods_are_valid = false
       end
+    end
+
+    unless periods_are_valid
+      errors.add(:periods, :invalid)
     end
   end
 
