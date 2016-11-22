@@ -16,8 +16,8 @@ describe "/lines/show", :type => :view do
   #   render
   #   rendered.should have_selector("#map", :class => 'line')
   # end
-
-  it "should render a link to edit the line" do
+  # FIXME #2018
+  xit "should render a link to edit the line" do
     render
     expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_line_referential_line_path(line_referential, line)}']")
   end

@@ -128,7 +128,8 @@
     - if policy(Chouette::Line).create?
       li
         = link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'add'
-    - if policy(@line).update?
+    / FIXME #2018
+    - if false && policy(@line).update?
       li
         = link_to t('lines.actions.edit'), edit_line_referential_line_path(@line_referential, @line), class: 'edit'
     - if policy(@line).destroy?
