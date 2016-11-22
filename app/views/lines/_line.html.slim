@@ -14,7 +14,8 @@
 
       li
         .btn-group
-          - if edit && policy(Chouette::Line).update?
+          / FIXME #2018
+          - if false && edit && policy(Chouette::Line).update?
             = link_to edit_line_referential_line_path(line.line_referential, line), class: 'btn btn-default btn-sm' do
               span.fa.fa-pencil
 
