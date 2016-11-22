@@ -49,7 +49,10 @@ module NewfrontHelper
       actions.collect do |action|
         polymorph_url = []
 
-        polymorph_url << action if action != :show
+        unless [:show, :delete].include? action
+          polymorph_url << action
+        end
+
         if current_referential
           polymorph_url << current_referential
         elsif item.respond_to? :referential
@@ -58,7 +61,11 @@ module NewfrontHelper
 
         polymorph_url << item
 
-        content_tag :li, link_to(action, polymorph_url)
+        if action == :delete
+          content_tag :li, link_to(t("table.#{action}"), polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' })
+        else
+          content_tag :li, link_to(t("table.#{action}"), polymorph_url)
+        end
       end.join.html_safe
     end
 
