@@ -106,6 +106,7 @@ gem 'google-analytics-rails'
 gem 'will_paginate', '~> 3.0.7'
 gem 'ransack'
 gem 'squeel'
+gem 'active_attr'
 
 gem 'draper'
 

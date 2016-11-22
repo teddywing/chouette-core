@@ -1,0 +1,6 @@
+.nested-fields
+  .col-lg-6.col-md-6.col-sm-6.col-xs-6
+    = f.input :begin, as: :date, html5: true, input_html: { style: 'width: 100%' }
+  .col-lg-6.col-md-6.col-sm-6.col-xs-6
+    = f.input :end, as: :date, html5: true, input_html: { style: 'width: 100%' }
+  = link_to_remove_association "Supprimer", f

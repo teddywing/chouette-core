@@ -204,34 +204,44 @@ class Referential < ActiveRecord::Base
   end
 
   def metadatas_period
-    # FIXME
-    if metadatas.present?
-      metadatas.first.periodes.try :first
+    query = "select min(lower), max(upper) from (select lower(unnest(periodes)) as lower, upper(unnest(periodes)) as upper from public.referential_metadata where public.referential_metadata.referential_id = #{id}) bounds;"
+
+    row = self.class.connection.select_one(query)
+    lower, upper = row["min"], row["max"]
+
+    if lower and upper
+      Range.new(Date.parse(lower), Date.parse(upper)-1)
     end
   end
   alias_method :validity_period, :metadatas_period
 
   def metadatas_lines
-    # FIXME
-    metadatas.present? ? metadatas.first.lines : []
+    if metadatas.present?
+      scope = workbench ? workbench.lines : associated_lines
+      scope.where(id: metadatas.pluck(:line_ids).flatten)
+    else
+      Chouete::Line.none
+    end
   end
 
   def overlapped_referential_ids
     return [] unless metadatas.present?
 
     line_ids = metadatas.first.line_ids
-    period = metadatas.first.periodes.try :first
+    periodes = metadatas.first.periodes
 
-    return [] unless line_ids.present? && period
+    return [] unless line_ids.present? && periodes.present?
 
     not_myself = "and referential_id != #{id}" if persisted?
 
-    query = "SELECT distinct(referential_id) FROM
-    (SELECT unnest(public.referential_metadata.line_ids) as line, unnest(public.referential_metadata.periodes) as period, public.referential_metadata.referential_id
-     FROM public.referential_metadata
-     INNER JOIN public.referentials ON public.referential_metadata.referential_id = public.referentials.id
-     WHERE public.referentials.workbench_id = #{workbench_id} and public.referentials.archived_at is null) as metadatas
-    WHERE line in (#{line_ids.join(',')}) and period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(period)}' #{not_myself};"
+    periods_query = periodes.map do |periode|
+      "period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(periode)}'"
+    end.join(" OR ")
+
+    query = "select distinct(public.referential_metadata.referential_id) FROM public.referential_metadata, unnest(line_ids) line, LATERAL unnest(periodes) period
+    WHERE public.referential_metadata.referential_id
+    IN (SELECT public.referentials.id FROM public.referentials WHERE referentials.workbench_id = #{workbench_id} and referentials.archived_at is null #{not_myself})
+    AND line in (#{line_ids.join(',')}) and (#{periods_query});"
 
     self.class.connection.select_values(query).map(&:to_i)
   end

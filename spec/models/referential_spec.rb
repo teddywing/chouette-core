@@ -52,12 +52,16 @@ describe Referential, :type => :model do
           "data_format"=>"neptune",
           "metadatas_attributes"=> {
             "0"=> {
-              "first_period_begin(3i)"=>"19",
-              "first_period_begin(2i)"=>"11",
-              "first_period_begin(1i)"=>"2016",
-              "first_period_end(3i)"=>"19",
-              "first_period_end(2i)"=>"12",
-              "first_period_end(1i)"=>"2016",
+              "periods_attributes" => {
+                "0" => {
+                  "begin"=>"2016-09-19",
+                  "end" => "2016-10-19",
+                },
+                "15918593" => {
+                  "begin"=>"2016-11-19",
+                  "end" => "2016-12-19",
+                },
+              },
               "lines"=> [""] + lines.map { |l| l.id.to_s }
             }
           },
@@ -70,21 +74,24 @@ describe Referential, :type => :model do
       let(:new_referential) { Referential.new(attributes) }
       let(:first_metadata) { new_referential.metadatas.first }
 
+      let(:expected_ranges) do
+        [
+          Range.new(Date.new(2016,9,19), Date.new(2016,10,19)),
+          Range.new(Date.new(2016,11,19), Date.new(2016,12,19)),
+        ]
+      end
+
       it "should create a metadata" do
         expect(new_referential.metadatas.size).to eq(1)
       end
 
-      it "should define first_period_begin" do
-        expect(first_metadata.first_period_begin).to eq(Date.new(2016,11,19))
+      it "should define metadata periods" do
+        expect(first_metadata.periods.map(&:range)).to eq(expected_ranges)
       end
 
-      it "should define first_period_end" do
-        expect(first_metadata.first_period_end).to eq(Date.new(2016,12,19))
-      end
-
-      it "should define period" do
+      it "should define periodes" do
         new_referential.save!
-        expect(first_metadata.first_period).to eq(Range.new(Date.new(2016,11,19), Date.new(2016,12,19)))
+        expect(first_metadata.periodes).to eq(expected_ranges)
       end
 
       it "should define period" do
