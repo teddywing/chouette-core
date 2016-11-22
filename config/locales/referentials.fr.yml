@@ -87,6 +87,9 @@ fr:
           first_period_begin: 'Première période de départ'
           first_period_end: 'Première période de fin'
           lines: Lignes
+          periods:
+            begin: 'Début de période'
+            end: 'Fin de période'
 
   notice:
     referential:
