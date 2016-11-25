@@ -140,6 +140,7 @@ group :development do
   # MetaRequest is incompatible with rgeo-activerecord
   # gem 'meta_request'
   gem 'quiet_assets', '~> 1.0'
+  gem 'license_finder'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
