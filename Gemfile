@@ -1,4 +1,4 @@
-# coding: utf-8
+# coding: iso-8859-1
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -141,6 +141,7 @@ group :development do
   # gem 'meta_request'
   gem 'quiet_assets', '~> 1.0'
   gem 'license_finder'
+  gem 'bundler-audit'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
