@@ -9,6 +9,8 @@ class RoutesController < ChouetteController
     belongs_to :line, :parent_class => Chouette::Line, :optional => true, :polymorphic => true
   end
 
+  before_action :define_candidate_opposite_routes, only: [:new, :edit, :create, :update]
+
   def index
     index! do |format|
       format.html { redirect_to referential_line_path(@referential,@line) }
@@ -74,6 +76,15 @@ class RoutesController < ChouetteController
       end
   end
 
+  def define_candidate_opposite_routes
+    @candidate_opposite_routes =
+      if params[:id]
+        resource.line.routes.where("id <> ?", resource)
+      else
+        parent.routes
+      end
+  end
+
   private
 
   def route_params
@@ -81,4 +92,3 @@ class RoutesController < ChouetteController
   end
 
 end
-
