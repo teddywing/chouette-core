@@ -108,8 +108,8 @@ class ReferentialLinesController < ChouetteController
       :url,
       :color,
       :text_color,
-      :stable_id,
-      { footnotes_attributes: [ :code, :label, :_destroy, :id ] } )
+      :stable_id
+      )
   end
 
 end
