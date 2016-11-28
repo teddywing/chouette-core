@@ -119,7 +119,7 @@ module Stif
           :zip_code       => 'PostalRegion',
           :city_name      => 'Town'
         }.each do |k, v| access[k] = entry[v] end
-        access.save! if access.changed?
+        access.save if access.changed? && access.valid?
       end
 
       def create_or_update_stop_area entry
