@@ -11,6 +11,7 @@ class LinesController < BreadcrumbController
   belongs_to :line_referential
 
   def index
+    @hide_group_of_line = line_referential.group_of_lines.empty?
     index! do |format|
       format.html {
         if collection.out_of_bounds?

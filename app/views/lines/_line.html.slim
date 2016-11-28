@@ -43,12 +43,13 @@
         = line.human_attribute_name('company')
         = link_to_if( line.company, line.company.name, line_referential_company_path(line.line_referential, line.company), :title => "#{line.human_attribute_name('company')} #{line.company.name}" )
 
-    p
-      - if line.group_of_lines.count == 0
-        br
-        = t('lines.form.no_group_of_line')
-      - elsif line.group_of_lines.count == 1
-        = line.human_attribute_name('group_of_line')
-        = link_to_if( line.group_of_lines.first, line.group_of_lines.first.name, line_referential_group_of_line_path(line.line_referential, line.group_of_lines.first), :title => "#{line.human_attribute_name('group_of_line')} #{line.group_of_lines.first.name}")
-      - else
-        = t('lines.form.several_group_of_lines', :count => line.group_of_lines.count)
+    - unless @hide_group_of_line
+      p
+        - if line.group_of_lines.count == 0
+          br
+          = t('lines.form.no_group_of_line')
+        - elsif line.group_of_lines.count == 1
+          = line.human_attribute_name('group_of_line')
+          = link_to_if( line.group_of_lines.first, line.group_of_lines.first.name, line_referential_group_of_line_path(line.line_referential, line.group_of_lines.first), :title => "#{line.human_attribute_name('group_of_line')} #{line.group_of_lines.first.name}")
+        - else
+          = t('lines.form.several_group_of_lines', :count => line.group_of_lines.count)
