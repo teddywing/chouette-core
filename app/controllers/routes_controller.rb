@@ -81,7 +81,7 @@ class RoutesController < ChouetteController
       if params[:id]
         resource.line.routes.where("id <> ?", resource)
       else
-        parent.routes
+        parent.routes.select(&:persisted?)
       end
   end
 
