@@ -14,7 +14,7 @@ class ReferentialsController < BreadcrumbController
       @referential.workbench_id ||= params[:workbench_id]
 
       if @referential.in_workbench?
-        @referential.init_metadatas first_period_begin: Date.today, first_period_end: Date.today.advance(months: 1)
+        @referential.init_metadatas default_date_range: Range.new(Date.today, Date.today.advance(months: 1))
       end
     end
   end
@@ -36,7 +36,7 @@ class ReferentialsController < BreadcrumbController
   def edit
     edit! do
       if @referential.in_workbench?
-        @referential.init_metadatas first_period_begin: Date.today, first_period_end: Date.today.advance(months: 1)
+        @referential.init_metadatas default_date_range: Range.new(Date.today, Date.today.advance(months: 1))
       end
     end
   end

@@ -187,7 +187,11 @@ class Referential < ActiveRecord::Base
   end
 
   def init_metadatas(attributes = {})
-    metadatas.build attributes if metadatas.blank?
+    if metadatas.blank?
+      date_range = attributes.delete :default_date_range
+      metadata = metadatas.build attributes
+      metadata.periodes = [date_range] if date_range
+    end
   end
 
   def clone_associations
