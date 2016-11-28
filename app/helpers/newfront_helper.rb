@@ -62,7 +62,22 @@ module NewfrontHelper
         polymorph_url << item
 
         if action == :delete
-          content_tag :li, link_to(t("table.#{action}"), polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' })
+          if policy(item).present?
+            if policy(item).destroy?
+              content_tag :li, link_to(t("table.#{action}"), polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' })
+            end
+          else
+            content_tag :li, link_to(t("table.#{action}"), polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' })
+          end
+
+        elsif action == :edit
+          if policy(item).present?
+            if policy(item).update?
+              content_tag :li, link_to(t("table.#{action}"), polymorph_url)
+            end
+          else
+            content_tag :li, link_to(t("table.#{action}"), polymorph_url)
+          end
         else
           content_tag :li, link_to(t("table.#{action}"), polymorph_url)
         end
