@@ -2,11 +2,18 @@
 /   span.search = t('will_paginate.page_entries_info.search')
 /   = page_entries_info @companies
 
-.companies.paginated_content style="margin-top:20px;"
-  = table_builder @decoratedcompanies,
-                  [:name, :edited_at, :published_at, :validity_period, :linecount, :transporter, :status],
-                  ["show", "delete"],
-                  'table table-bordered'
+.companies.paginated_content
+  = paginated_content(@companies)
 
 .pagination
-  = will_paginate @companies, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
+  = will_paginate @companies, :container => false, renderer: RemoteBootstrapPaginationLinkRenderer
+
+
+/ .companies.paginated_content style="margin-top:20px;"
+/   = table_builder @decoratedcompanies,
+/     { Chouette::Company.human_attribute_name(:name) => 'name', Chouette::Company.human_attribute_name(:edited_at) => 'edited_at', Chouette::Company.human_attribute_name(:published_at) => 'published_at', Chouette::Company.human_attribute_name(:validity_period) => 'validity_period', Chouette::Company.human_attribute_name(:linecount) => 'linecount', Chouette::Company.human_attribute_name(:transporter) => 'transporter', Chouette::Company.human_attribute_name(:status) => 'status' },
+/     [:show, :delete],
+/     'table table-bordered'
+/ 
+/ .pagination
+/   = will_paginate @companies, container: false, renderer: RemoteBootstrapPaginationLinkRenderer

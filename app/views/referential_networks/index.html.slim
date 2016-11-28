@@ -14,7 +14,13 @@
       / <!-- </a> -->
 
 #networks
-  = render 'networks'
+  = table_builder @networks,
+    { 'Oid' => Proc.new { |n| n.objectid.local_id }, Chouette::Network.human_attribute_name(:name) => 'name' },
+    [:show, :edit, :delete],
+    'table table-bordered'
+
+  .text-center
+    = will_paginate @networks, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
 
 - content_for :sidebar do
   ul.actions
