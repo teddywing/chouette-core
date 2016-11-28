@@ -1,16 +1,23 @@
 class LineFootnotesController < ChouetteController
-  before_action :set_line
+  defaults :resource_class => Chouette::Line, :instance_name => 'line'
   before_action :check_policy, :only => [:edit, :update]
+  belongs_to :referential
 
   def show
+    show! do
+      build_breadcrumb :show
+    end
   end
 
   def edit
+    edit! do
+      build_breadcrumb :edit
+    end
   end
 
   def update
     if @line.update(line_params)
-      redirect_to referential_line_path(@referential, @line) , notice: t('notice.footnotes.updated')
+      redirect_to referential_line_footnotes_path(@referential, @line) , notice: t('notice.footnotes.updated')
     else
       render :edit
     end
@@ -18,10 +25,10 @@ class LineFootnotesController < ChouetteController
 
   private
   def check_policy
-    authorize @line, :update_footnote?
+    authorize resource, :update_footnote?
   end
 
-  def set_line
+  def resource
     @referential = Referential.find params[:referential_id]
     @line = @referential.lines.find params[:line_id]
   end

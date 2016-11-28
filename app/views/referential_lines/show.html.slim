@@ -108,11 +108,7 @@ h2
     /   = ": #{@line.vehicle_journeys.count - (@line.vehicle_journeys.where('flexible_service = ?', true).count + @line.vehicle_journeys.where('flexible_service = ?', false).count)}"
     /
     p
-      label = "#{@line.human_attribute_name('footnotes')} : "
-      ul
-        - @line.footnotes.each do |footnote|
-          li = "#{footnote.code} : #{footnote.label}"
-
+      label = link_to @line.human_attribute_name('footnotes'), referential_line_footnotes_path(@referential, @line)
     / p
     /   label = "#{@line.human_attribute_name('comment')} : "
     /   = @line.comment
@@ -134,9 +130,6 @@ p.after_map
     - if policy(@line).update?
       li
         = link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), class: 'edit'
-    - if policy(@line).update_footnote?
-      li
-        = link_to t('lines.actions.edit_footnotes'), edit_referential_line_footnotes_path(@referential, @line), class: 'edit'
     - if policy(@line).destroy?
       li
         = link_to t('lines.actions.destroy'), referential_line_path(@referential, @line), method: :delete, :data => {:confirm => t('lines.actions.destroy_confirm')}, class: 'remove'
