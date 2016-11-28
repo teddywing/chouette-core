@@ -134,6 +134,9 @@ p.after_map
     - if policy(@line).update?
       li
         = link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), class: 'edit'
+    - if policy(@line).update_footnote?
+      li
+        = link_to t('lines.actions.edit_footnotes'), edit_referential_line_footnotes_path(@referential, @line), class: 'edit'
     - if policy(@line).destroy?
       li
         = link_to t('lines.actions.destroy'), referential_line_path(@referential, @line), method: :delete, :data => {:confirm => t('lines.actions.destroy_confirm')}, class: 'remove'

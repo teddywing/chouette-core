@@ -12,4 +12,5 @@ class LinePolicy < ApplicationPolicy
   def new?     ; create? end
   def edit?    ; true end
   def destroy? ; create? end
+  def update_footnote?; true end
 end

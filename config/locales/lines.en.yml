@@ -3,6 +3,7 @@ en:
     actions:
       new: "Add a new line"
       edit: "Edit this line"
+      edit_footnotes: "Edit line footnotes"
       destroy: "Remove this line"
       destroy_confirm: "Are you sure you want destroy this line?"
       destroy_selection_confirm: "Are you sure you want destroy those lines?"

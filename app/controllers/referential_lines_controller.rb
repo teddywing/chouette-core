@@ -1,4 +1,5 @@
 class ReferentialLinesController < ChouetteController
+  before_action :check_policy, :only => [:edit, :update, :destroy]
 
   defaults :resource_class => Chouette::Line, :collection_name => 'lines', :instance_name => 'line'
   respond_to :html
@@ -79,6 +80,9 @@ class ReferentialLinesController < ChouetteController
   end
 
   private
+  def check_policy
+    authorize resource
+  end
 
   def line_params
     params.require(:line).permit(
