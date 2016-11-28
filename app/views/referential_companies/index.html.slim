@@ -16,14 +16,6 @@
       / <!-- </a> -->
 
 #companies
-  / = table_builder @companies,
-  /   { 'Oid' => Proc.new { |n| n.objectid.local_id }, Chouette::Company.human_attribute_name(:name) => 'name', Chouette::Company.human_attribute_name(:code) => 'code' },
-  /   [:show, :edit, :delete],
-  /   'table table-bordered'
-  / 
-  / .text-center
-  /   = will_paginate @companies, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
-
   = render partial: 'companies', object: @companies
 
 - content_for :sidebar do
