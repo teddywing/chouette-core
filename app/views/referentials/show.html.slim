@@ -27,13 +27,13 @@ h2
 
   p
     label = "#{Referential.human_attribute_name('validity_period')} : "
-    - if Chouette::TimeTable.start_validity_period.nil?
+    - unless period = @referential.metadatas_period
       = " #{Referential.human_attribute_name('no_validity_period')}"
     - else
-      = " #{Referential.human_attribute_name('start_validity_period')}"
-      = l Chouette::TimeTable.start_validity_period
-      = Referential.human_attribute_name("end_validity_period")
-      = l Chouette::TimeTable.end_validity_period
+      => " #{Referential.human_attribute_name('start_validity_period')}"
+      => l period.begin
+      => Referential.human_attribute_name("end_validity_period")
+      = l period.end
 
   / - if @referential.api_keys.present?
   /   h3.api_keys = t('.api_keys')

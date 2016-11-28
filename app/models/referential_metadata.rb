@@ -7,68 +7,138 @@ class ReferentialMetadata < ActiveRecord::Base
   validates :lines, presence: true
   validates :periodes, presence: true
 
-  validates :first_period_begin, :first_period_end, presence: true
-
   scope :include_lines, -> (line_ids) { where('line_ids && ARRAY[?]', line_ids) }
   scope :include_dateranges, -> (dateranges) { where('periodes && ARRAY[?]', dateranges) }
 
-  def first_period
-    periodes.first if periodes
+  class Period
+    include ActiveAttr::Model
+
+    attribute :id, type: Integer
+    attribute :begin, type: Date
+    attribute :end, type: Date
+
+    validates :begin, :end, presence: true
+    validate :check_end_greather_than_begin
+
+    def check_end_greather_than_begin
+      if self.begin and self.end and self.begin > self.end
+        errors.add(:end, :invalid)
+      end
+    end
+
+    def self.from_range(index, range)
+      Period.new id: index, begin: range.begin, end: range.end
+    end
+
+    def range
+      if self.begin and self.end and self.begin <= self.end
+        Range.new self.begin, self.end
+      end
+    end
+
+    def intersect?(*other)
+      return false if range.nil?
+
+      other = other.flatten
+      other = other.delete_if { |o| o.id == id } if id
+
+      other.any? do |period|
+        if other_range = period.range
+          (range & other_range).present?
+        end
+      end
+    end
+
+    # Stuff required for coocon
+    def new_record?
+      !persisted?
+    end
+    def persisted?
+      id.present?
+    end
+
+
+    def mark_for_destruction
+      self._destroy = true
+    end
+
+    attribute :_destroy, type: Boolean
+    alias_method :marked_for_destruction?, :_destroy
   end
 
-  def first_period_begin
-    @first_period_begin or first_period.try(:begin)
+  # Required by coocon
+  def build_period
+    Period.new
   end
-  def first_period_begin=(date)
-    date = (Date.parse(date) rescue nil) if String === date
-    periodes_will_change! unless @first_period_begin == date
-    @first_period_begin = date
+
+  def periods
+    @periods ||= init_periods
   end
-  def first_period_end
-    if @first_period_end
-      @first_period_end
+
+  def init_periods
+    if periodes
+      periodes.each_with_index.map { |r, index| Period.from_range(index, r) }
     else
-      if first_period
-        date = first_period.end
-        date -= 1 if first_period.exclude_end?
-        date
+      []
+    end
+  end
+  private :init_periods
+
+  validate :validate_periods
+
+  def validate_periods
+    Rails.logger.debug "Validate periods"
+    unless periods.all?(&:valid?)
+      errors.add(:periods, :invalid)
+    end
+
+    periods.each do |period|
+      Rails.logger.debug "Validate period #{period.inspect} : #{period.intersect?(periods)}"
+      if period.intersect?(periods)
+        period.errors.add(:base, :invalid)
+        Rails.logger.debug "period errors #{period.errors}"
       end
     end
   end
-  def first_period_end=(date)
-    date = (Date.parse(date) rescue nil) if String === date
-    periodes_will_change! unless @first_period_end == date
-    @first_period_end = date
+
+  def periods_attributes=(attributes = {})
+    @periods = []
+    attributes.each do |index, period_attribute|
+      period = Period.new(period_attribute.merge(id: index))
+      @periods << period unless period.marked_for_destruction?
+    end
+
+    # if self.periodes != @periods.map(&:range).compact
+      periodes_will_change!
+    # end
   end
 
-  validate :check_first_period_end
+  before_validation :fill_periodes
 
-  def check_first_period_end
-    if @first_period_begin and @first_period_end and @first_period_begin > @first_period_end
-      errors.add(:first_period_end, :invalid)
+  def fill_periodes
+    if @periods
+      self.periodes = @periods.map(&:range).compact.sort_by(&:begin)
     end
   end
 
-  before_validation :set_first_period
+  after_save :clear_periods
 
-  def set_first_period
-    if @first_period_begin and @first_period_end and @first_period_begin <= @first_period_end
-      self.periodes ||= []
-      self.periodes[0] = Range.new @first_period_begin, @first_period_end
-    end
+  def clear_periods
+    @periods = nil
   end
-
-  def column_for_attribute(name)
-    if %i{first_period_begin first_period_end}.include?(name.to_sym)
-      ActiveRecord::ConnectionAdapters::Column.new(name, nil, "date")
-    else
-      super name
-    end
-  end
+  private :clear_periods
 
   def self.new_from from
     from.dup.tap do |metadata|
       metadata.referential_id = nil
     end
   end
+end
+
+class Range
+  def intersection(other)
+    return nil if (self.max < other.begin or other.max < self.begin)
+    [self.begin, other.begin].max..[self.max, other.max].min
+  end
+  alias_method :&, :intersection
 end

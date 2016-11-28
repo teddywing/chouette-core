@@ -36,49 +36,94 @@ RSpec.describe ReferentialMetadata, :type => :model do
 
   end
 
-  describe "#first_period" do
+  describe "Period" do
 
-    let(:referential_metadata) { create :referential_metadata }
+    subject { period }
 
-    describe "begin" do
-      it "should return first period begin" do
-        expect(referential_metadata.first_period_begin).to eq(referential_metadata.first_period.begin)
+    def period(attributes = {})
+      return @period if attributes.empty? and @period
+      ReferentialMetadata::Period.new(attributes).tap do |period|
+        @period = period if attributes.empty?
       end
     end
 
-    describe "begin=" do
-      let(:date) { Date.today }
-      it "should change the first period begin" do
-        referential_metadata.first_period_begin = date
-        expect(referential_metadata.first_period_begin).to eq(date)
+    it "should support mark_for_destruction (required by cocoon)" do
+      period.mark_for_destruction
+      expect(period).to be_marked_for_destruction
+    end
+
+    it "should support _destroy attribute (required by coocon)" do
+      period._destroy = true
+      expect(period).to be_marked_for_destruction
+    end
+
+    it "should support new_record? (required by cocoon)" do
+      expect(ReferentialMetadata::Period.new).to be_new_record
+      expect(period(id: 42)).not_to be_new_record
+    end
+
+    it "should cast begin as date attribute" do
+      expect(period(begin: "2016-11-22").begin).to eq(Date.new(2016,11,22))
+    end
+
+    it "should cast end as date attribute" do
+      expect(period(end: "2016-11-22").end).to eq(Date.new(2016,11,22))
+    end
+
+    it { is_expected.to validate_presence_of(:begin) }
+    it { is_expected.to validate_presence_of(:end) }
+
+    it "should validate that end is greather than or equlals to begin" do
+      expect(period(begin: "2016-11-21", end: "2016-11-22")).to be_valid
+      expect(period(begin: "2016-11-21", end: "2016-11-21")).to be_valid
+      expect(period(begin: "2016-11-22", end: "2016-11-21")).to_not be_valid
+    end
+
+    describe "intersect?" do
+
+      it "should detect date in common with other periods" do
+        november = period(begin: "2016-11-01", end: "2016-11-30")
+        mid_november_mid_december = period(begin: "2016-11-15", end: "2016-12-15")
+        expect(november.intersect?(mid_november_mid_december)).to be(true)
+      end
+
+      it "should not intersect when no date is in common" do
+        november = period(begin: "2016-11-01", end: "2016-11-30")
+        december = period(begin: "2016-12-01", end: "2016-12-31")
+
+        expect(november.intersect?(december)).to be(false)
+
+        january = period(begin: "2017-01-01", end: "2017-01-31")
+        expect(november.intersect?(december, january)).to be(false)
+      end
+
+      it "should not intersect itself" do
+        period = period(id: 42, begin: "2016-11-01", end: "2016-11-30")
+        expect(period.intersect?(period)).to be(false)
+      end
+
+    end
+
+  end
+
+  describe "before_validation" do
+    let(:referential_metadata) do
+      create(:referential_metadata).tap do |metadata|
+        metadata.periodes = []
       end
     end
 
-    describe "end" do
-      it "should return first period end" do
-        expect(referential_metadata.first_period_end).to eq(referential_metadata.first_period.end)
+    it "shoud fill periodes with period ranges" do
+      expected_ranges = [
+        Range.new(Date.today, Date.tomorrow)
+      ]
+      expected_ranges.each_with_index do |range, index|
+        referential_metadata.periods << ReferentialMetadata::Period.from_range(index, range)
       end
+      referential_metadata.valid?
+
+      expect(referential_metadata.periodes).to eq(expected_ranges)
     end
-
-    describe "end=" do
-      let(:date) { Date.today }
-      it "should change the first period end" do
-        referential_metadata.first_period_end = date
-        expect(referential_metadata.first_period_end).to eq(date)
-      end
-    end
-
-    describe "after_validation" do
-      it "should define first_period with first_period_begin and first_period_end" do
-        referential_metadata.first_period_begin = Date.today
-        referential_metadata.first_period_end = Date.tomorrow
-
-        referential_metadata.valid?
-
-        expect(referential_metadata.first_period).to eq(Range.new(referential_metadata.first_period_begin, referential_metadata.first_period_end))
-      end
-    end
-
   end
 
   describe "#includes_lines" do
