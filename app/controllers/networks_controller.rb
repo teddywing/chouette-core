@@ -57,7 +57,11 @@ class NetworksController < BreadcrumbController
     authorize resource
   end
 
+  alias_method :current_referential, :line_referential
+  helper_method :current_referential
+
   def network_params
     params.require(:network).permit(:objectid, :object_version, :creation_time, :creator_id, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )
   end
+
 end
