@@ -19,13 +19,15 @@ describe "StopAreas", :type => :feature do
   describe "show" do
     it "display stop_area" do
       visit stop_area_referential_stop_areas_path(stop_area_referential)
-      click_link "#{stop_areas.first.name}"
+      # click_link "#{stop_areas.first.name}"
+      visit stop_area_referential_stop_area_path(stop_area_referential, stop_areas.first)
       expect(page).to have_content(stop_areas.first.name)
     end
 
     it "display map" do
       visit stop_area_referential_stop_areas_path(stop_area_referential)
-      click_link "#{stop_areas.first.name}"
+      # click_link "#{stop_areas.first.name}"
+      visit stop_area_referential_stop_area_path(stop_area_referential, stop_areas.first)
       expect(page).to have_selector("#map.stop_area")
     end
 
