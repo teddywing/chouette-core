@@ -7,6 +7,10 @@ class Chouette::StopArea < Chouette::ActiveRecord
   include Geokit::Mappable
   include ProjectionFields
   include StopAreaRestrictions
+
+  extend Enumerize
+  enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
+
   def self.model_name
     ActiveModel::Name.new self, Chouette, self.name.demodulize
   end
