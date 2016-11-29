@@ -57,6 +57,8 @@ module NewfrontHelper
           polymorph_url << current_referential
         elsif item.respond_to? :referential
           polymorph_url << item.referential
+        elsif item.respond_to? :line_referential
+          polymorph_url << item.line_referential
         end
 
         polymorph_url << item

@@ -57,4 +57,7 @@ class CompaniesController < BreadcrumbController
     params.require(:company).permit( :objectid, :object_version, :creation_time, :creator_id, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
   end
 
+  alias_method :current_referential, :line_referential
+  helper_method :current_referential
+
 end
