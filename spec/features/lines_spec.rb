@@ -23,7 +23,8 @@ describe "Lines", :type => :feature do
   describe "show" do
     it "display line" do
       visit line_referential_lines_path(line_referential)
-      click_link "#{lines.first.name}"
+      # click_link "Voir"
+      visit line_referential_line_path(line_referential, lines.first)
       expect(page).to have_content(lines.first.name)
     end
   end
