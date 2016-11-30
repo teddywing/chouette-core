@@ -15,12 +15,6 @@ class JourneyPatternsController < ChouetteController
   alias_method :route, :parent
   alias_method :journey_pattern, :resource
 
-  def index
-    index! do |format|
-      format.html { redirect_to referential_line_route_path(@referential,@line,@route) }
-    end
-  end
-
   def create_resource(object)
     object.special_update
   end

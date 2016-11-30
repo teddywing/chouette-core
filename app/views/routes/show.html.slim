@@ -64,14 +64,14 @@ p.after_map
             = linktxt
             
 
-/ .panel.panel-default
-/   .panel-heading
-/     h4.panel-title
-/       strong = t('.journey_patterns')
-/ 
-/   .panel-body
-/     .journey_patterns.paginated_content
-/       = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
+.panel.panel-default
+  .panel-heading
+    h4.panel-title
+      strong = t('.journey_patterns')
+ 
+  .panel-body
+    .journey_patterns.paginated_content
+      = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
 
 - content_for :sidebar do
   ul.actions
