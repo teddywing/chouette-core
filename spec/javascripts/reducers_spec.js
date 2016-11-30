@@ -1,4 +1,4 @@
-var reducer = require('es6_browserified/reducers/todos')
+var reducer = require('es6_browserified/itineraries/reducers/todos')
 let state = []
 describe('stops reducer', () => {
   beforeEach(()=>{

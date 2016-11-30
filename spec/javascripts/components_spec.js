@@ -1,8 +1,8 @@
 var React = require('react');
 var Provider = require('react-redux').Provider;
-var actions = require('es6_browserified/actions/index');
-var App = require('es6_browserified/components/TodoList');
-var ConnectedApp = require('es6_browserified/containers/VisibleTodoList');
+var actions = require('es6_browserified/itineraries/actions/index');
+var App = require('es6_browserified/itineraries/components/TodoList');
+var ConnectedApp = require('es6_browserified/itineraries/containers/VisibleTodoList');
 var TestUtils = require('react-addons-test-utils');
 
 xdescribe('ConnectedApp', function() {
