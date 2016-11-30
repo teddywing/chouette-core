@@ -23,7 +23,7 @@
           .col-sm-3
             = f.text_field :zip_code_cont, placeholder: "#{t('.zip_code')}", class: 'form-control typeahead'
           .col-md-5.col-sm-5
-            = f.select(:area_type_cont, options_from_collection_for_select(Chouette::StopArea.stop_area_types, 'name', Proc.new { |stop_area_type| t("area_types.label.#{stop_area_type}") } ), { include_blank: t('.area_type') }, { class: 'form-control' })
+            = f.select(:area_type_cont, Chouette::StopArea.area_type.options, { include_blank: t('.area_type') }, { class: 'form-control' })
 #stop_areas
   = render 'stop_areas'
 
