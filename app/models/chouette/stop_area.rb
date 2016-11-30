@@ -83,6 +83,14 @@ class Chouette::StopArea < Chouette::ActiveRecord
     end
   end
 
+  def user_objectid
+    if objectid =~ /^.*:([0-9A-Za-z_-]+):STIF$/
+      $1
+    else
+      id.to_s
+    end
+  end
+
   def children_in_depth
     return [] if self.children.empty?
 
