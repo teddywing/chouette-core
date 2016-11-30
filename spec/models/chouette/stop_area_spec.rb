@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Chouette::StopArea, :type => :model do
-  let!(:quay) { create :stop_area, :area_type => "Quay" }
+  # FIXME !!!!!!!!
+  let!(:quay) { create :stop_area, :area_type => "zdep" }
   let!(:boarding_position) { create :stop_area, :area_type => "BoardingPosition" }
-  let!(:commercial_stop_point) { create :stop_area, :area_type => "CommercialStopPoint" }
-  let!(:stop_place) { create :stop_area, :area_type => "StopPlace" }
-  let!(:itl) { create :stop_area, :area_type => "ITL" }
+  let!(:commercial_stop_point) { create :stop_area, :area_type => "lda" }
+  let!(:stop_place) { create :stop_area, :area_type => "zdlp" }
 
   # Refs #1627
   # describe '#objectid' do
@@ -127,10 +127,6 @@ describe Chouette::StopArea, :type => :model do
       subject = create :stop_area, :stop_area_type => "stop_place"
       expect(subject.area_type).to eq("StopPlace")
     end
-    it "should have area_type of ITL when stop_area_type is set to itl" do
-      subject = create :stop_area, :stop_area_type => "itl"
-      expect(subject.area_type).to eq("ITL")
-    end
   end
 
   describe ".parent" do
@@ -161,12 +157,6 @@ describe Chouette::StopArea, :type => :model do
       subject = create :stop_area, :area_type => "StopPlace"
       expect(subject.possible_children).to match_array([stop_place, commercial_stop_point])
     end
-
-    it "should find no children of type ITL for stop area type ITL" do
-      subject = create :stop_area, :area_type => "ITL"
-      expect(subject.possible_children).to match_array([stop_place, commercial_stop_point, quay, boarding_position])
-    end
-
   end
 
   describe ".possible_parents" do

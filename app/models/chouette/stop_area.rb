@@ -101,7 +101,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
       when "Quay" then []
       when "CommercialStopPoint" then Chouette::StopArea.where(:area_type => ['Quay', 'BoardingPosition']) - [self]
       when "StopPlace" then Chouette::StopArea.where(:area_type => ['StopPlace', 'CommercialStopPoint']) - [self]
-      when "ITL" then Chouette::StopArea.where(:area_type => ['Quay', 'BoardingPosition', 'StopPlace', 'CommercialStopPoint'])
     end
 
   end
@@ -143,9 +142,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
     where :area_type => [ "BoardingPosition", "Quay" ]
   end
 
-  def self.itl
-    where :area_type => "ITL"
-  end
 
   def to_lat_lng
     Geokit::LatLng.new(latitude, longitude) if latitude and longitude
@@ -206,22 +202,12 @@ class Chouette::StopArea < Chouette::ActiveRecord
   end
 
   def stop_area_type
-    area_type
+    area_type ? area_type : " "
   end
 
   def stop_area_type=(stop_area_type)
     self.area_type = (stop_area_type ? stop_area_type.camelcase : nil)
-    if self.area_type == 'Itl'
-      self.area_type = 'ITL'
-    end
   end
-
-  # @@stop_area_types = nil
-  # def self.stop_area_types
-  #   @@stop_area_types ||= Chouette::AreaType.all.select do |stop_area_type|
-  #     stop_area_type.to_i >= 0
-  #   end
-  # end
 
   def children_ids=(children_ids)
     children = children_ids.split(',').uniq
