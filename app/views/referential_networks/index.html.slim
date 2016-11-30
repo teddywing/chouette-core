@@ -4,14 +4,11 @@
   .panel.panel-default
     .panel-heading
       .input-group.col-md-12
-        = f.text_field :name_cont, placeholder: "#{t('.name')}", class: 'form-control'
+        = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
+        
         .input-group-btn
-          button.btn.btn-default type="submit"
-            i.fa.fa-search
-
-      / <!-- <a data-toggle="collapse" data-parent="#search" href="#advanced_search"> -->
-      / <!--   <i class="fa fa-plus"></i> <%= "#{t('.advanced_search')}" %> -->
-      / <!-- </a> -->
+          button.btn.btn-primary type="submit"
+            span.fa.fa-search
 
 #networks
   = render partial: 'networks', object: @networks

@@ -1,13 +1,14 @@
 = title_tag t('networks.index.title')
 
 = search_form_for @q, url: line_referential_networks_path(@line_referential), remote: true, html: {method: :get, class: "form", id: "search", role: "form"} do |f|
-  .well.well-sm
-    .input-group
-      = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
-      
-      .input-group-btn
-        button.btn.btn-primary type="submit"
-          span.fa.fa-search
+  .panel.panel-default
+    .panel-heading
+      .input-group.col-md-12
+        = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
+        
+        .input-group-btn
+          button.btn.btn-primary type="submit"
+            span.fa.fa-search
 
 #networks
   = render partial: 'networks', object: @networks

@@ -4,14 +4,15 @@
   .panel.panel-default
     .panel-heading
       .input-group.col-md-9.col-sm-9
-        = f.text_field :name_cont, :placeholder => "#{t('.name')}", class: 'form-control'
+        = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
+        
         .input-group-btn
           button.btn.btn-default type="submit"
-            i.fa.fa-search
+            span.fa.fa-search
 
       a data-toggle="collapse" data-parent="#search" href="#advanced_search"
-        i.fa.fa-plus
-        = "#{t('.advanced_search')}"
+        span.fa.fa-plus
+        = " #{t('.advanced_search')}"
 
     #advanced_search.panel-collapse.collapse
       .panel-body
