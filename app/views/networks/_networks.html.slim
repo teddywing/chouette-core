@@ -1,11 +1,14 @@
-= table_builder @networks,
-  { 'Oid' => Proc.new { |n| n.objectid.local_id }, @networks.human_attribute_name(:name) => 'name' },
-  [:show, :edit, :delete],
-  'table table-bordered'
+- if @networks.any?
+  = table_builder @networks,
+    { 'Oid' => Proc.new { |n| n.objectid.local_id }, @networks.human_attribute_name(:name) => 'name' },
+    [:show, :edit, :delete],
+    'table table-bordered'
 
-.text-center
-  = will_paginate @networks, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
+  .text-center
+    = will_paginate @networks, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
 
+- else
+  = replacement_msg t('networks.search_no_results')
 
 / .networks
 /   table.table.table-bordered.table-hover

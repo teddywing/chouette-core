@@ -1,5 +1,6 @@
 en:
   lines: &en_lines
+    search_no_results: "No line matching your query"
     actions:
       new: "Add a new line"
       edit: "Edit this line"

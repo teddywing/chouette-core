@@ -1,5 +1,6 @@
 en:
   networks: &en_networks
+    search_no_results: "No network matching your query"
     actions:
       new: "Add a new network"
       edit: "Edit this network"

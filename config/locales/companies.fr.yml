@@ -1,5 +1,6 @@
 fr:
   companies: &fr_companies
+    search_no_results: "Aucun transporteur ne correspond à votre recherche"
     actions:
       new: "Ajouter un transporteur"
       edit: "Modifier ce transporteur"

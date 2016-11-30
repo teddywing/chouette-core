@@ -1,5 +1,6 @@
 fr:
   lines: &fr_lines
+    search_no_results: "Aucune ligne ne correspond à votre recherche"
     actions:
       new: "Ajouter une ligne"
       edit: "Modifier cette ligne"

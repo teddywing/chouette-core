@@ -1,5 +1,6 @@
 en:
   stop_areas: &en_stop_areas
+    search_no_results: "No stop area matching your query"
     default_geometry_success: "%{count} modified stop areas"
     stop_area:
       no_position: "No Position"

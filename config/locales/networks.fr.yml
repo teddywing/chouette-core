@@ -1,5 +1,6 @@
 fr:
   networks: &fr_networks
+    search_no_results: "Aucun réseau ne correspond à votre recherche"
     actions:
       new: "Ajouter un réseau"
       edit: "Modifier ce réseau"

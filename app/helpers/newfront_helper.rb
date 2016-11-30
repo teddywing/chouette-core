@@ -1,5 +1,6 @@
 module NewfrontHelper
 
+  # Table Builder
   def table_builder collection, columns, actions, cls = nil
     return unless collection.present?
 
@@ -88,6 +89,16 @@ module NewfrontHelper
 
     content_tag :div, trigger + menu, class: 'btn-group btn-group-xs'
 
+  end
+
+
+  # Replacement message
+  def replacement_msg text
+    content_tag :div, '', class: 'alert alert-warning' do
+      icon = content_tag :span, '', class: 'fa fa-lg fa-info-circle', style: 'margin-right:7px;'
+
+      icon + text
+    end
   end
 
 end
