@@ -26,7 +26,8 @@ class AutocompleteStopAreasController < InheritedResources::Base
     else
       result = referential.stop_areas
     end
-    @stop_areas = result.where("name LIKE '%#{params[:q]}%' OR registration_number LIKE '%#{params[:q]}%' OR objectid LIKE '%#{params[:q]}%' ").limit(50)
+    args = [].tap{|arg| 3.times{arg << "%#{params[:q]}%"}}
+    @stop_areas = result.where("name ILIKE ? OR registration_number ILIKE ? OR objectid ILIKE ?", *args).limit(50)
     @stop_areas
   end
 
