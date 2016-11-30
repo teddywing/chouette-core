@@ -206,7 +206,7 @@ class Chouette::StopArea < Chouette::ActiveRecord
   end
 
   def stop_area_type
-    area_type && Chouette::AreaType.new(area_type.underscore)
+    area_type
   end
 
   def stop_area_type=(stop_area_type)
@@ -216,12 +216,12 @@ class Chouette::StopArea < Chouette::ActiveRecord
     end
   end
 
-  @@stop_area_types = nil
-  def self.stop_area_types
-    @@stop_area_types ||= Chouette::AreaType.all.select do |stop_area_type|
-      stop_area_type.to_i >= 0
-    end
-  end
+  # @@stop_area_types = nil
+  # def self.stop_area_types
+  #   @@stop_area_types ||= Chouette::AreaType.all.select do |stop_area_type|
+  #     stop_area_type.to_i >= 0
+  #   end
+  # end
 
   def children_ids=(children_ids)
     children = children_ids.split(',').uniq
