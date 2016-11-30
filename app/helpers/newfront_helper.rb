@@ -8,7 +8,8 @@ module NewfrontHelper
       content_tag :tr do
         hcont = []
         columns.map do |k, v|
-          hcont << content_tag(:th, k.to_s.titleize)
+          # hcont << content_tag(:th, k.to_s.titleize)
+          hcont << content_tag(:th, sortable_columns(collection, k))
         end
         hcont << content_tag(:th, 'Actions', class: 'text-center') if actions.any?
 
@@ -91,12 +92,22 @@ module NewfrontHelper
 
   end
 
+  def sortable_columns collection, key
+    direction = (key == params[:sort] && params[:direction] == 'desc') ? 'asc' : 'desc'
+
+    icon = 'sort-desc' if direction == 'asc'
+    icon = 'sort-asc' if direction == 'desc'
+
+    link_to({sort: key, direction: direction}) do
+      pic = content_tag :span, '', class: "fa fa-#{icon}", style: 'margin-left:5px'
+      (key.to_s.titleize + pic).html_safe
+    end
+  end
 
   # Replacement message
   def replacement_msg text
     content_tag :div, '', class: 'alert alert-warning' do
       icon = content_tag :span, '', class: 'fa fa-lg fa-info-circle', style: 'margin-right:7px;'
-
       icon + text
     end
   end
