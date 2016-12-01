@@ -21,7 +21,9 @@ class BSelect3 extends React.Component{
   }
   onChange(e) {
     this.props.onChange(this.props.index, {
-      text: e.currentTarget.textContent, stoparea_id: e.currentTarget.value
+      text: e.currentTarget.textContent,
+      stoparea_id: e.currentTarget.value,
+      user_objectid: e.params.data.user_objectid
     })
     this.setState({edit: false})
   }

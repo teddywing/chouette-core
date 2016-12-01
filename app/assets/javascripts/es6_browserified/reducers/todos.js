@@ -58,7 +58,7 @@ const todos = (state = [], action) => {
           return Object.assign(
             {},
             t,
-            {text: action.text.text, stoparea_id: action.text.stoparea_id}
+            {stoppoint_id: "", text: action.text.text, stoparea_id: action.text.stoparea_id, user_objectid: action.text.user_objectid}
           )
         } else {
           return t
