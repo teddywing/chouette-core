@@ -24,6 +24,7 @@ const getInitialState = () => {
     state.push({
       stoppoint_id: value.stoppoint_id,
       stoparea_id: value.stoparea_id,
+      user_objectid: value.user_objectid,
       index: index,
       city_name: value.city_name,
       zip_code: value.zip_code,

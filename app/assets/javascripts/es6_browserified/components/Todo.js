@@ -8,7 +8,7 @@ const Todo = (props) => {
       <div className='row'>
         <div className='col-lg-5 col-md-5 col-sm-4 col-xs-5'>
           <div style={{display: 'inline-block', width: '20%', verticalAlign: 'middle', textAlign: 'right', marginTop: 24}}>
-            <span className='label label-default' style={{marginRight: 10}}>{props.value.stoparea_id}</span>
+            <span className='label label-default' style={{marginRight: 10}}>{props.value.user_objectid}</span>
           </div>
 
           <div style={{display: 'inline-block', width: '80%', verticalAlign: 'middle'}}>
