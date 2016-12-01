@@ -30,10 +30,12 @@ en:
       no_companies: "No companies"
       no_group_of_lines: "No group of lines"
       no_transport_modes: No transport mode
+      no_transport_submodes: No transport sub mode
       all_networks: "All networks"
       all_companies: "All companies"
       all_group_of_lines: "All group of lines"
       all_transport_modes: All transport modes
+      all_transport_submodes: All transport sub modes
       multi_selection: "Multiple selection"
       multi_selection_enable: "Enable multiple selection"
       multi_selection_disable: "Disable multiple selection"
