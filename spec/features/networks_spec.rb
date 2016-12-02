@@ -8,20 +8,34 @@ describe "Networks", :type => :feature do
   let!(:networks) { Array.new(2) { create(:network, line_referential: line_referential) } }
   subject { networks.first }
 
-  describe "list" do
-    it "display networks" do
-      visit line_referential_networks_path(line_referential)
+  describe "index" do
+    before(:each) { visit line_referential_networks_path(line_referential) }
+
+    it "displays networks" do
       expect(page).to have_content(networks.first.name)
       expect(page).to have_content(networks.last.name)
     end
 
+    context 'fitering' do
+      it 'supports filtering by name' do
+        fill_in 'q[name_or_objectid_cont]', with: networks.first.name
+        click_button 'search-btn'
+        expect(page).to have_content(networks.first.name)
+        expect(page).not_to have_content(networks.last.name)
+      end
+
+      it 'supports filtering by objectid' do
+        fill_in 'q[name_or_objectid_cont]', with: networks.first.objectid
+        click_button 'search-btn'
+        expect(page).to have_content(networks.first.name)
+        expect(page).not_to have_content(networks.last.name)
+      end
+    end
   end
 
   describe "show" do
-    it "display network" do
-      # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
-      visit line_referential_networks_path(line_referential)
-      # click_link "#{networks.first.name}"
+    it "displays network" do
+      visit line_referential_network_path(line_referential, networks.first)
       expect(page).to have_content(networks.first.name)
     end
 

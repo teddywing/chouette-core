@@ -11,19 +11,40 @@ describe "Lines", :type => :feature do
   let!(:group_of_line) { create(:group_of_line) }
   subject { lines.first }
 
-  describe "list" do
-    it "display lines" do
-      visit line_referential_lines_path(line_referential)
+  describe "index" do
+    before(:each) { visit line_referential_lines_path(line_referential) }
+
+    it "displays lines" do
       expect(page).to have_content(lines.first.name)
       expect(page).to have_content(lines.last.name)
     end
 
+    context 'fitering' do
+      it 'supports filtering by name' do
+        fill_in 'q[name_or_number_or_objectid_cont]', with: lines.first.name
+        click_button 'search-btn'
+        expect(page).to have_content(lines.first.name)
+        expect(page).not_to have_content(lines.last.name)
+      end
+
+      it 'supports filtering by number' do
+        fill_in 'q[name_or_number_or_objectid_cont]', with: lines.first.number
+        click_button 'search-btn'
+        expect(page).to have_content(lines.first.name)
+        expect(page).not_to have_content(lines.last.name)
+      end
+
+      it 'supports filtering by objectid' do
+        fill_in 'q[name_or_number_or_objectid_cont]', with: lines.first.objectid
+        click_button 'search-btn'
+        expect(page).to have_content(lines.first.name)
+        expect(page).not_to have_content(lines.last.name)
+      end
+    end
   end
 
   describe "show" do
-    it "display line" do
-      visit line_referential_lines_path(line_referential)
-      # click_link "Voir"
+    it "displays line" do
       visit line_referential_line_path(line_referential, lines.first)
       expect(page).to have_content(lines.first.name)
     end

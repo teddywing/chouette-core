@@ -4,6 +4,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "Line #{n}" }
     sequence(:objectid) { |n| "chouette:test:Line:#{n}" }
     sequence(:transport_mode) { |n| "bus" }
+    sequence(:number, 1)
 
     association :network, :factory => :network
     association :company, :factory => :company
