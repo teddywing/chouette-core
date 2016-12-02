@@ -28,7 +28,12 @@ class ReferentialCompaniesController < ChouetteController
 
   def collection
     @q = referential.workbench.companies.search(params[:q])
-    @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
+
+    if sort_column && sort_direction
+      @companies ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])
+    else
+      @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
+    end
   end
 
   def resource_url(company = nil)
@@ -42,4 +47,14 @@ class ReferentialCompaniesController < ChouetteController
   def company_params
     params.require(:company).permit( :objectid, :object_version, :creation_time, :creator_id, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
   end
+
+  private
+
+  def sort_column
+    referential.lines.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
 end
