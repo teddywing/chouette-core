@@ -5,7 +5,7 @@ title: Exports
 
 h3(#rol). Rôle
 
-p. L'export permet d'extraire de la base un ensemble de données selon un format
+p. L'export permet d'extraire de la base un ensemble de données selon un format 
 
 
 
@@ -15,12 +15,12 @@ Les options des différents formats apparaissent en fonction de celui qui a ét�
 
 !2015-07-23_162747.png! Formulaire pour un nouvel export Neptune
 
-* *tout format* :
+* *tout format* : 
 
-- Type de données incluses :=
+- Type de données incluses := 
 sélection des lignes exportées
 le choix porte sur toutes, les lignes d'une sélection de réseaux, de transporteurs ou directement sélectionnées =:
-- Données incluses :=
+- Données incluses := 
 liste des données selon le type choisi; ce champs n'apparait pas pour le choix 'toutes'
 la sélection propose dès le premier caractère saisi la liste des objets dont le nom contient le texte =:
 - Début de période := permet d'exporter uniquement les courses circulant à partir de cette date
@@ -30,10 +30,10 @@ la sélection propose dès le premier caractère saisi la liste des objets dont 
 
 * *GTFS* :
 
-- Fuseau horaire :=
+- Fuseau horaire := 
 fixe le fuseau horaire (paramètre obligatoire des données GTFS)
- la valeur proposée par défaut est celle du jeu de données =:
-- Données incluses (complément) :=
+ la valeur proposée par défaut est celle de l'espace de données =:
+- Données incluses (complément) := 
 le choix des arrêts permet de n'exporter que les fichiers d'arrêts (stops.txt) et de correspondances (transfers.txt)
  3 champs sont alors ajoutés : l'adresse, la localité et le code postal; ceux-ci seront exploités en retour sur l'Export GTFS d'arrêts =:
 
@@ -45,11 +45,11 @@ le choix des arrêts permet de n'exporter que les fichiers d'arrêts (stops.txt)
 
 h3. Consultation des résultats
 
-p. L’Export est lancé en différé, son état d'avancement est affiché dans la page de résultats pendant le déroulement du processus.
+p. L’Export est lancé en différé, son état d'avancement est affiché dans la page de résultats pendant le déroulement du processus. 
 
 p=. !2015-07-23_162942.png!
 
-p. Le résultat d'Export fournit 2 synthèses :
+p. Le résultat d'Export fournit 2 synthèses : 
 
 *Synthèse des lignes (onglet lignes)
 *Synthèse des fichiers analysés (onglet fichiers)
@@ -76,3 +76,6 @@ p(border_image). !2015-07-23_165157.png!
 p. _2 - La synthèse des fichiers analysés affiche la liste des fichiers Exportés ainsi que les erreurs constatées_
 
 p(border_image). !2015-07-23_165644.png!
+
+
+

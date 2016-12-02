@@ -4,7 +4,7 @@ title: Import massif d'arrêt en GTFS
 ---
 Lors de l'intialisation d'un réseau dans CHOUETTE, la saisie manuelle de tous les arrêts est une tâche très laborieuse. Le format GTFS est relativement simple à éditer dans un tableur et permet de copier massivement les éléments pour les importer ensuite et s'épargner ainsi de longues heures de saisie et les erreurs qui peuvent en résulter.
 
-Le format GTFS se présente sous la forme d'un ensemble de fichier texte (.txt). Ils contiennent en réalité des données de type CSV. La principale difficulté que représente de l'édition d'un fichier GTFS réside dans son séparateur qui correspond à une norme américaine. En effet, c'est la virgule "," qui fait office de séparateur alors que la norme en cours chez nous est le point virgule, voire la tabluation.
+Le format GTFS se présente sous la forme d'un ensemble de fichier texte (.txt). Ils contiennent en réalité des données de type CSV. La principale difficulté que représente de l'édition d'un fichier GTFS réside dans son séparateur qui correspond à une norme américaine. En effet, c'est la virgule "," qui fait office de séparateur alors que la norme en cours chez nous est le point virgule, voire la tabluation. 
 
 Certaines version d'Excel ne permettent pas de choisir la virgule comme séparateur. Il faut donc contourner cette lacune fonctionnelle par des opérations manuelles. Le tableur de Libre Office n'a en revanche pas ces problèmes de gestion des séparateurs, l'opération est bien plus simple en l'utilisant. Les consignes pour Excel proposées ici correspondent à la version 2010.
 
@@ -12,7 +12,7 @@ L'import des arrêts par GTFS comporte également une limite par rapport au Pôl
 
 h3. Ouvrir les modèles de fichiers GTFS dans un tableur
 
-Télécharger dans l'aide en ligne de CHOUETTE les fichiers stops.txt et transfers.txt. Le premier est le fichier des arrêts, le second le fichier des correspondances.
+Télécharger dans l'aide en ligne de CHOUETTE les fichiers stops.txt et transfers.txt. Le premier est le fichier des arrêts, le second le fichier des correspondances. 
 
 h4. Ouverture dans Excel
 
@@ -61,7 +61,7 @@ h4. Fichier des arrêts (stops.txt)
 * address_line : Ce champ faculatif est une extentions rajouté par CHOUETTE, il n'existe pas dans le GTFS au sens strict. Il s'agit du n° de voirie pour l'adresse postale.
 * locality : Ce champ faculatif est une extentions rajouté par CHOUETTE, il n'existe pas dans le GTFS au sens strict. Commune d'appartenance de l'arrêt.
 * postal_code : Ce champ faculatif est une extentions rajouté par CHOUETTE, il n'existe pas dans le GTFS au sens strict. Le code postal de la commune d'appartenance de l'arrêt.
-* stop_timezone : ce champ facultatif est à remplir si l'arrêt est dans un fuseau horaire différent de celui défini par défaut dans le jeu de données. 
+* stop_timezone : ce champ facultatif est à remplir si l'arrêt est dans un fuseau horaire différent de celui défini par défaut dans l'espace de données. 
 
 h4. Fichier des correspondances (transfers.txt)
 
@@ -70,13 +70,13 @@ h4. Fichier des correspondances (transfers.txt)
 * transfer_type : Ce champ obligatoire permet de définir le type de correspondance entre les deux arrêts.
 ** 0 (ou vide) : correspondance possible entre deux arrêts sans délai.
 ** 1 : la correspondance est possible et garantie (attente du véhicule en correspondance)
-** 2 : la correspondance est possible mais requiert un temps de trajet à pied défini dans le champ suivant.
+** 2 : la correspondance est possible mais requiert un temps de trajet à pied défini dans le champ suivant. 
 ** 3 : la correspondance entre ces deux arrêts n'est pas possible. Cette valeur ne sera probablement pas nécessaire, sauf à ce que les systèmes exploitants la base issue de CHOUETTE créent des correspondances automatiquement.
 * min_transfer_time : ce champ est optionnel, il précise le temps de correspondance dans le cas où le "transfer_type" est fixé à "2".
 
 h3. Enregistrement des fichiers
 
-Une fois les informations saisies dans les tableaux, il est nécessaire de les enregistrer dans un format identique au format initial. L'opération risque d'être plus complexe que l'ouverture avec Excel.
+Une fois les informations saisies dans les tableaux, il est nécessaire de les enregistrer dans un format identique au format initial. L'opération risque d'être plus complexe que l'ouverture avec Excel. 
 
 h4. Enregistrement avec Excel
 
@@ -87,7 +87,7 @@ h4. Enregistrement avec Excel
 
 h4.Enregistrement avec Libre Office
 
-Les modifications de préférences windows ne sont pas nécessaires avec Libre office.
+Les modifications de préférences windows ne sont pas nécessaires avec Libre office. 
 # Faire enregistrer sous, séléctionner le format CSV
 # Au moment de l'enregistrement ou après, changer l'extension .csv en .txt
 !2015-09-16_180707.png!
@@ -100,3 +100,5 @@ Les fichiers doivent être zippés, qu'il y'en ai un ou deux. Ensuite au niveau 
 * Sélectionner "arrêts" dans la liste déroulante sous ensemble
 * Sélectionner le fichier .zip contenant les fichier arrêts et/ou correspondance
 !2015-09-16_181027.png!
+
+

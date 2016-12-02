@@ -13,7 +13,7 @@ fr:
     edit:
       title: "Modifier le jeu de paramètres %{rule_parameter_set}"
     destroy:
-      last_rps_protected: "Suppresion impossible. Le jeu de données doit compter au minimum un jeu de paramètres."
+      last_rps_protected: "Suppresion impossible. L'espace de données doit compter au minimum un jeu de paramètres."
     show:
       title: "Jeu de paramètres %{rule_parameter_set}"
       max_distance: "Distance maximum entre : "

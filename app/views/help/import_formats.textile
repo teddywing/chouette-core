@@ -8,10 +8,10 @@ h3(#fmt). Formats disponibles
 * Neptune : format d'échange de données de transport en commun pour la France (cf ["Normalisation":http://www.normes-donnees-tc.org/format-dechange/donnees-theoriques/])
 * NeTEx : format d'échange de données de transport en commun expérimental sur la future norme européenne ["NeTEx":http://www.normes-donnees-tc.org/format-dechange/donnees-theoriques/] mais limité au sous-ensemble des données définies dans le format Neptune
 * GTFS : format originaire de ["Google Transit":https://support.google.com/transitpartners/], à condition que le fichier soit préalablement validé avec l'outil Feed Validator =:
-** les données exportées en GTFS sont explicités ["ICI":http://www.normes-donnees-tc.org/format-dechange/autres-normes/]
+** les données exportées en GTFS sont explicités ["ICI":http://www.normes-donnees-tc.org/format-dechange/autres-normes/] 
 ** l'import limité au sous ensemble des arrêts permet de n'importer que les arrêts et les correspondances
 
-p. Note : le format CSV de Chouette a été supprimé, en effet, celui-ci était limité à des lignes définissant un unique aller simple ou aller/retour. Ce format est remplacé par l'import/export d'horaires disponible dans les formulaires de séquences d'arrêt. Il convient de se reporter à la rubrique "Exporter et importer des horaires en .csv":vehicle_journeys_import_export pour plus de détails.
+p. Note : le format CSV de Chouette a été supprimé, en effet, celui-ci était limité à des lignes définissant un unique aller simple ou aller/retour. Ce format est remplacé par l'import/export d'horaires disponible dans les formulaires de séquences d'arrêt. Il convient de se reporter à la rubrique "Exporter et importer des horaires en .csv":vehicle_journeys_import_export pour plus de détails. 
 
 h3(#com). Paramètres communs
 
@@ -31,8 +31,8 @@ Les options des différents formats apparaissent en fonction de celui qui a ét�
 
 * *Neptune* : pas d'option particulière
 * *NeTex* : pas d'option particulière
-* *GTFS* :
-** Préfixe d'identifiants : préfixe à utiliser pour générer les identifiants Neptune des objets importés, initialisé à la valeur définie pour le jeu de données.
+* *GTFS* :  
+** Préfixe d'identifiants : préfixe à utiliser pour générer les identifiants Neptune des objets importés, initialisé à la valeur définie pour l'espace de données.
 ** Distance max pour créer les zones : distance maximale entre deux arrêts homonymes pour les regrouper au sein d'un arrêt commercial de même nom, ces zones viennent en supplément de celles définies dans GTFS, une distance de 0 ne génère aucune zone.
 ** ignorer le dernier mot : lors de la comparaison des noms d'arrêts, cette option permet de ne pas prendre en compte le dernier mot du nom de l'arrêt (sauf si celui-ci n'est composé que d'un seul mot).
 ** ignorer les n derniers caractères : lors de la comparaison des noms d'arrêts, cette option permet de ne pas prendre en compte les derniers caractères du nom de l'arrêt (sauf si celui-ci n'a pas assez de caractères pour cela)
