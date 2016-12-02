@@ -124,15 +124,11 @@ class Chouette::StopArea < Chouette::ActiveRecord
   end
 
   def lines
-    if (area_type == 'CommercialStopPoint')
-      self.children.collect(&:stop_points).flatten.collect(&:route).flatten.collect(&:line).flatten.uniq
-    else
-      self.stop_points.collect(&:route).flatten.collect(&:line).flatten.uniq
-    end
+    []
   end
 
   def routes
-    self.stop_points.collect(&:route).flatten.uniq
+     []
   end
 
   def self.commercial
