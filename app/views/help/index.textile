@@ -40,7 +40,7 @@ h4. Version 3.1.0
 
 * Améliorations
 ** Simplification des rapports d'import/export et validation
-** Mise en adéquation de Chouette sur la norme Neptune 
+** Mise en adéquation de Chouette sur la norme Neptune
 ** compléments d'aide
 
 * Corrections des anomalies suivantes :
@@ -191,4 +191,4 @@ h4. Version 2.0.0
 * refonte de l'interface graphique
 * ajout d'une gestion simplifiée d'utilisateurs :
 ** ajout d'une notion d'organisation
-** ajout d'une notion d'espace de données
+** ajout d'une notion de jeu de données

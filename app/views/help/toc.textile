@@ -16,7 +16,7 @@ h3. Sommaire
 ## "Édition et suppression d'un élément":edit
 ## "Métadonnées":metadata
 # Données
-## "Espace de données":dataspaces
+## "Jeu de données":dataspaces
 ## "Réseaux":networks
 ## "Transporteurs":companies
 ## "Arrêts":stop_areas

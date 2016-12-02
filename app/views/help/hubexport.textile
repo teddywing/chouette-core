@@ -3,26 +3,26 @@ layout: default
 title: Contraintes de l'export HUB
 ---
 
-CHOUETTE est en mesure d'exporter la base au format HUB qui est un format spécifique aux outils métiers Transdev. Le format HUB comprend des contraintes plus importantes que les formats Neptune, notamment sur la longueur de certains noms. Pour que la base puisse être exportée sans difficulté, il faut donc se conformer à ces contraintes de longueur de noms, ainsi que utiliser certaines fonctions comme les groupes de lignes qui sont facultatives pour leur seul format Neptune mais qui sont obligatoire dans le format HUB. 
+CHOUETTE est en mesure d'exporter la base au format HUB qui est un format spécifique aux outils métiers Transdev. Le format HUB comprend des contraintes plus importantes que les formats Neptune, notamment sur la longueur de certains noms. Pour que la base puisse être exportée sans difficulté, il faut donc se conformer à ces contraintes de longueur de noms, ainsi que utiliser certaines fonctions comme les groupes de lignes qui sont facultatives pour leur seul format Neptune mais qui sont obligatoire dans le format HUB.
 
-CHOUETTE contrôle le respect de ces contraintes lors de l'export. Il listera les anomalies dans le log de l'export mais ne les signalera pas lors de la saisie proprement dite. Il est donc nécessaire de se référer à ce document avant de commencer la saisie de la base, certaines contraintes ayant des conséquences sur la façon dont les données doivent être structurées. 
+CHOUETTE contrôle le respect de ces contraintes lors de l'export. Il listera les anomalies dans le log de l'export mais ne les signalera pas lors de la saisie proprement dite. Il est donc nécessaire de se référer à ce document avant de commencer la saisie de la base, certaines contraintes ayant des conséquences sur la façon dont les données doivent être structurées.
 
 L'un des points essentiels est la nécessite de renseigner manuellement l'identifiant Neptune. Pour rappel, celui-ci est composé de trois éléments :
 
-* Le préfixe qui est toujours identique au sein d'un même espace de données.
-* Le type d'information qui est déterminé par le type d'objet (réseau, arrêt, ligne...) actuellement défini. 
+* Le préfixe qui est toujours identique au sein d'un même jeu de données.
+* Le type d'information qui est déterminé par le type d'objet (réseau, arrêt, ligne...) actuellement défini.
 * Le suffixe qui est un élément identifiant unique qui peut être contraint en taille et en type de caractères pour l'export au format HUB
 
 Le type d'information ainsi que la syntaxe à respecter sont rappelés dans une infobulle contextuelle qui apparaît lorsqu'on place le curseur au-dessus du champ _'''Identifiant Neptune'''_
 
 h3. Réseaux
 * Nom du réseau : 75 caractères maximum
-* Numéro d’enregistrement : 8 chiffres maximum 
+* Numéro d’enregistrement : 8 chiffres maximum
 * Identifiant Neptune : 3 caractères maximum
 
 h3. Transporteur
 * Nom du transporteur : 75 caractères maximum
-* Numéro d’enregistrement : 8 chiffres maximum 
+* Numéro d’enregistrement : 8 chiffres maximum
 * Identifiant Neptune : 3 caractères maximum
 
 h3. Calendriers
@@ -34,11 +34,11 @@ h3. Arrêts
 
 h4. Arrêt commercial et arrêt physique
 
-Un arrêt physique (quai ou point d'embarquement) doit nécessairement dépendre d'un arrêt commercial. Dans le cas où il existe plusieurs arrêts physiques, typiquement dans le cas d'un arrêt dans le sens aller et un arrêt dans le sens retour, les deux arrêts physiques seront regroupés au sein d'un même arrêt commercial. 
+Un arrêt physique (quai ou point d'embarquement) doit nécessairement dépendre d'un arrêt commercial. Dans le cas où il existe plusieurs arrêts physiques, typiquement dans le cas d'un arrêt dans le sens aller et un arrêt dans le sens retour, les deux arrêts physiques seront regroupés au sein d'un même arrêt commercial.
 
 h4. Pôle d'échange
 
-Les arrêts de type pôle d'échange ne sont pas pris en charge par le format HUB. 
+Les arrêts de type pôle d'échange ne sont pas pris en charge par le format HUB.
 
 h4. Contraintes sur les champs :
 
@@ -54,7 +54,7 @@ h4. Contraintes sur les champs :
 
 h3. Correspondances
 
-CHOUETTE permet de faire des correspondances entre différents types d'arrêts. Dans le format HUB en revanche, seules les correspondances entre les arrêts physiques sont prises en compte. Il convient donc de vérifier que les correspondances sont bien paramétrées entre les arrêts de type _"point d'arrêt"_ et _"quai"_. 
+CHOUETTE permet de faire des correspondances entre différents types d'arrêts. Dans le format HUB en revanche, seules les correspondances entre les arrêts physiques sont prises en compte. Il convient donc de vérifier que les correspondances sont bien paramétrées entre les arrêts de type _"point d'arrêt"_ et _"quai"_.
 
 h4. Contraintes sur les champs :
 
@@ -64,7 +64,7 @@ h4. Contraintes sur les champs :
 
 h3. Groupe de lignes
 
-Les lignes à exporter  en HUB doivent impérativement faire partie d'un groupe de lignes. 
+Les lignes à exporter  en HUB doivent impérativement faire partie d'un groupe de lignes.
 
 h4. Contraintes sur les champs :
 
@@ -75,8 +75,8 @@ h3. Lignes, séquences d'arrêts et missions
 
 Lors de la création de lignes et des séquences d'arrêts, il est nécessaire de respecter deux contraintes pour permettre la compatibilité de l'export HUB :
 
-* Ne pas créer plus de deux séquences d'arrêts pour une même ligne. 
-* Renseigner impérativement le sens de la ligne : 
+* Ne pas créer plus de deux séquences d'arrêts pour une même ligne.
+* Renseigner impérativement le sens de la ligne :
 **Dans le cas où il n'existe qu'une séquence d'arrêts, choisir le sens aller
 **Dans le cas où il existe deux séquences d'arrêts, définir un sens aller et un sens retour
 
@@ -91,7 +91,7 @@ h4. Contraintes sur les champs :
 
 * Identifiant Neptune du schéma de ligne: 8 caractères maximum
 * Identifiant Neptune de la mission : 30 caractères maximum
-* Nom d'une mission : 75 caractères maximum 
+* Nom d'une mission : 75 caractères maximum
 * Numéro d'enregistrement d'une mission : 8 chiffres maximum
 
 h3. Courses
@@ -99,6 +99,3 @@ h3. Courses
 * Troisième composante de l'identifiant Neptune : 8 caractères maximum
 * Identifiant public : 8 caractères maximum
 * Commentaire : Facultatif, 75 caractères maximum
-
-
-
