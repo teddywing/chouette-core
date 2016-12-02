@@ -16,7 +16,7 @@ describe "Networks", :type => :feature do
       expect(page).to have_content(networks.last.name)
     end
 
-    context 'fitering' do
+    context 'filtering' do
       it 'supports filtering by name' do
         fill_in 'q[name_or_objectid_cont]', with: networks.first.name
         click_button 'search-btn'

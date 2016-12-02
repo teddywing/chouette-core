@@ -24,7 +24,7 @@ describe "Group of lines", :type => :feature do
       expect(page).to have_content(group_of_lines.last.name)
     end
 
-    context 'fitering' do
+    context 'filtering' do
       it 'supports filtering by name' do
         fill_in 'q[name_cont]', with: group_of_lines.first.name
         click_button 'search-btn'

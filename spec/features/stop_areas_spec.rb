@@ -16,7 +16,7 @@ describe "StopAreas", :type => :feature do
       expect(page).to have_content(stop_areas.last.name)
     end
 
-    context 'fitering' do
+    context 'filtering' do
       it 'supports filtering by name' do
         fill_in 'q[name_or_objectid_cont]', with: stop_areas.first.name
         click_button 'search-btn'

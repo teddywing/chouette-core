@@ -16,7 +16,7 @@ describe 'ReferentialLines', type: :feature do
       expect(page).to have_content(referential.lines.last.name)
     end
 
-    context 'fitering' do
+    context 'filtering' do
       it 'supports filtering by name' do
         fill_in 'q[name_or_number_or_objectid_cont]', with: referential.lines.first.name
         click_button 'search-btn'

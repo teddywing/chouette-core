@@ -16,7 +16,7 @@ describe "Companies", :type => :feature do
       expect(page).to have_content(companies.last.short_name)
     end
 
-    context 'fitering' do
+    context 'filtering' do
       it 'supports filtering by name' do
         fill_in 'q[name_or_objectid_cont]', with: companies.first.name
         click_button 'search-btn'
