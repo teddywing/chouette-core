@@ -5,8 +5,7 @@ describe 'ReferentialNetworks', type: :feature do
   login_user
 
   let(:referential) { Referential.first }
-  let(:networks) { Array.new(2) { create :network, line_referential: referential.line_referential } }
-
+  let!(:networks) { Array.new(2) { create :network, line_referential: referential.line_referential } }
 
   describe 'index' do
     before(:each) { visit referential_networks_path(referential) }

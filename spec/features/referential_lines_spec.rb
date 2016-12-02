@@ -4,9 +4,9 @@ require 'spec_helper'
 describe 'ReferentialLines', type: :feature do
   login_user
 
-  before(:all) { create :referential_metadata, referential: Referential.first }
-
   let(:referential) { Referential.first }
+
+  before(:all) { create :referential_metadata, referential: Referential.first }
 
   describe 'index' do
     before(:each) { visit referential_lines_path(referential) }

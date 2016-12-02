@@ -5,7 +5,7 @@ describe 'ReferentialCompanies', type: :feature do
   login_user
 
   let(:referential) { Referential.first }
-  let(:companies) { Array.new(2) { create :company, line_referential: referential.line_referential } }
+  let!(:companies) { Array.new(2) { create :company, line_referential: referential.line_referential } }
 
   describe 'index' do
     before(:each) { visit referential_companies_path(referential) }
@@ -24,10 +24,10 @@ describe 'ReferentialCompanies', type: :feature do
       end
 
       it 'supports filtering by objectid' do
-        fill_in 'q[name_or_objectid_cont]', with: referential.companies.first.objectid
+        fill_in 'q[name_or_objectid_cont]', with: companies.first.objectid
         click_button 'search-btn'
-        expect(page).to have_content(referential.companies.first.name)
-        expect(page).not_to have_content(referential.companies.last.name)
+        expect(page).to have_content(companies.first.name)
+        expect(page).not_to have_content(companies.last.name)
       end
     end
   end
@@ -35,7 +35,7 @@ describe 'ReferentialCompanies', type: :feature do
   describe 'show' do
     it 'displays referential company' do
       visit referential_company_path(referential, companies.first)
-      expect(page).to have_content(referential.companies.first.name)
+      expect(page).to have_content(companies.first.name)
     end
   end
 end

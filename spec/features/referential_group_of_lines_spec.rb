@@ -5,10 +5,10 @@ describe 'ReferentialLines', type: :feature do
   login_user
 
   let(:referential) { Referential.first }
-  let(:group_of_lines) { Array.new(2) { create(:group_of_line, line_referential: Referential.first.line_referential) } }
+  let!(:group_of_lines) { Array.new(2) { create(:group_of_line, line_referential: Referential.first.line_referential) } }
 
   describe 'index' do
-    before(:each) { visit referential_group_of_lines_path(referentialre) }
+    before(:each) { visit referential_group_of_lines_path(referential) }
 
     it 'displays referential groups of lines' do
       expect(page).to have_content(group_of_lines.first.name)
