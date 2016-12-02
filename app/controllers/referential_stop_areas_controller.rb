@@ -141,7 +141,11 @@ class ReferentialStopAreasController  < ChouetteController
   private
 
   def sort_column
-    referential.lines.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+    if parent.present?
+      parent.stop_areas.include?(params[:sort]) ? params[:sort] : 'name'
+    else
+      referential.stop_areas.include?(params[:sort]) ? params[:sort] : 'name'
+    end
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'

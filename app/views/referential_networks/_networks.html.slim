@@ -1,6 +1,6 @@
 - if @networks.any?
   = table_builder @networks,
-    { 'Oid' => Proc.new { |n| n.objectid.local_id }, Chouette::Network.human_attribute_name(:name) => 'name' },
+    { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, Chouette::Network.human_attribute_name(:name) => 'name' },
     [:show, :edit, :delete],
     'table table-bordered'
 

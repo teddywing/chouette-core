@@ -1,6 +1,6 @@
 - if @companies.any?
   = table_builder @companies,
-    { 'Oid' => Proc.new { |n| n.objectid.local_id }, Chouette::Company.human_attribute_name(:name) => 'name', Chouette::Company.human_attribute_name(:code) => 'code' },
+    { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, Chouette::Company.human_attribute_name(:name) => 'name', Chouette::Company.human_attribute_name(:code) => 'code' },
     [:show, :edit, :delete],
     'table table-bordered'
 

@@ -1,7 +1,7 @@
 - if @lines.any?
   = table_builder @lines,
     { 'Oid' => Proc.new { |n| n.objectid.local_id }, @lines.human_attribute_name(:id) => 'id',
-    @lines.human_attribute_name(:number) => 'number', @lines.human_attribute_name(:name) => 'name', @lines.human_attribute_name(:network) => Proc.new { |n| n.network.name }, @lines.human_attribute_name(:company) => Proc.new { |n| n.company.name }, @lines.human_attribute_name(:group_of_lines) => Proc.new { |n| n.group_of_lines.count } },
+    @lines.human_attribute_name(:number) => 'number', @lines.human_attribute_name(:name) => 'name', @lines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) }, @lines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) } },
     [:show, :edit, :delete],
     'table table-bordered'
 
