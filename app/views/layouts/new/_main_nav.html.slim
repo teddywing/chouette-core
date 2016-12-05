@@ -1,0 +1,28 @@
+nav#main_nav
+  .nav-menu
+    span.toggleMenu title='Toggle menu'
+
+    ul.menu-content
+      li
+        = link_to '#' do
+          span.fa.fa-lg.fa-paw
+          = " Le premier lien"
+      li
+        = link_to '#' do
+          span.fa.fa-lg.fa-paw
+          = " Le deuxième lien"
+
+  div
+    |Breadcrumb to go
+
+  ul.nav-right
+    li
+      = link_to '#' do
+        span.fa.fa-lg.fa-user
+
+    li
+      = link_to '#' do
+        span.fa.fa-lg.fa-search
+    li
+      = link_to '#' do
+        span.fa.fa-lg.fa-bell-o

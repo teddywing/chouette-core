@@ -1,0 +1,79 @@
+#main_nav
+  display: table
+  height: 50px
+  width: 100%
+  background-color: #fafafa
+  border-bottom: 1px solid darken(#fafafa, 10%)
+
+  > *
+    display: table-cell
+    vertical-align: middle
+    height: 50px
+    padding: 15px
+
+  .nav-menu
+    width: 50px
+    text-align: center
+    background-color: #fff
+    border-right: 1px solid darken(#fafafa, 10%)
+
+  .nav-right
+    padding: 0
+    width: 150px
+
+    > li
+      display: inline-block
+      text-align: center
+
+      > a
+        display: block
+        border-left: 1px solid darken(#fafafa, 10%)
+        padding: 15px
+        width: 50px
+        height: 50px
+
+#main_nav .nav-menu
+  .toggleMenu
+    display: inline-block
+    cursor: pointer
+    transform: rotate(0deg)
+    transition: 0.3s
+    font: normal normal normal 14px/1 FontAwesome
+    text-rendering: auto
+    -webkit-font-smoothing: antialiased
+    font-size: 1.3333em
+    list-style: 0.75em
+    visibility: -15%
+
+    &:before
+      content: '\f0c9'
+
+  .menu-content
+    display: block
+    text-align: left
+    width: 280px
+    margin: 0 0 0 -280px
+    padding: 0
+    position: fixed
+    z-index: 999
+    top: 51px
+    left: 0
+    bottom: 0
+    border-right: 1px solid darken(#fafafa, 10%)
+    background-color: #fff
+    transition: 0.3s
+
+    > li > a
+      display: block
+      padding: 15px
+      border-top: 1px solid darken(#fafafa, 10%)
+
+    > li:first-child > a
+      border-top: none
+
+  &.open
+    .toggleMenu
+      transform: rotate(-90deg)
+
+    .menu-content
+      margin-left: 0
