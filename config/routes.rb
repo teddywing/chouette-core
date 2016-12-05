@@ -100,9 +100,9 @@ ChouetteIhm::Application.routes.draw do
           put 'save_boarding_alighting'
         end
         resources :journey_patterns do
-          member do
-            get 'new_vehicle_journey'
-          end
+          get 'new_vehicle_journey', on: :member
+          post 'bulk_update', on: :collection
+
           resource :route_sections_selector, path: 'sections' do
             post 'selection'
           end
