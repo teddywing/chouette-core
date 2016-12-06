@@ -1,14 +1,30 @@
 #main_nav
-  display: table
+  display: block
+  // To avoid white spaces between childrend inline-block
+  letter-spacing: -0.31em
+  text-rendering: optimizespeed
+  font-weight: 300
   height: 50px
   width: 100%
   background-color: #fafafa
   border-bottom: 1px solid darken(#fafafa, 10%)
+  // Main nav is fixed to top
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  z-index: 999
 
   > *
-    display: table-cell
+    display: inline-block
+    // To avoid white spaces between children inline-block
+    letter-spacing: normal
+    word-spacing: normal
+    text-rendering: auto
+    overflow: hidden
     vertical-align: middle
-    height: 50px
+    height: 49px
+    width: calc(100% - 200px)
     padding: 15px
 
   .nav-menu
@@ -20,6 +36,7 @@
 
   .nav-right
     padding: 0
+    margin: 0
     width: 150px
 
     > li
@@ -58,8 +75,8 @@
     margin: 0 0 0 -280px
     padding: 0
     position: fixed
-    z-index: 999
-    top: 51px
+    z-index: 998
+    top: 50px
     left: 0
     bottom: 0
     border-right: 1px solid darken(#fafafa, 10%)
