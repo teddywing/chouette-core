@@ -16,6 +16,7 @@
     text-align: center
     background-color: #fff
     border-right: 1px solid darken(#fafafa, 10%)
+    cursor: pointer
 
   .nav-right
     padding: 0
@@ -33,9 +34,11 @@
         height: 50px
 
 #main_nav .nav-menu
+  padding: 0
+
   .toggleMenu
     display: inline-block
-    cursor: pointer
+    padding: 15px
     transform: rotate(0deg)
     transition: 0.3s
     font: normal normal normal 14px/1 FontAwesome
@@ -65,11 +68,7 @@
 
     > li > a
       display: block
-      padding: 15px
-      border-top: 1px solid darken(#fafafa, 10%)
-
-    > li:first-child > a
-      border-top: none
+      border-bottom: 1px solid darken(#fafafa, 10%)
 
   &.open
     .toggleMenu
@@ -77,3 +76,33 @@
 
     .menu-content
       margin-left: 0
+
+  // Details of menu-content list items
+  .menu-content
+    .brand
+      padding: 15px
+      border-bottom: 1px solid darken(#fafafa, 10%)
+
+      .brandname
+        font-size: 1.5em
+
+    .mc-item
+      .mci-icon
+        display: inline-block
+        vertical-align: middle
+        padding: 15px
+        width: 50px
+
+      .mci-desc
+        display: inline-block
+        vertical-align: middle
+        padding: 15px
+        width: calc(100% - 50px)
+        border-left: 1px solid darken(#fafafa, 10%)
+
+        h4
+          margin: 0
+
+          + *
+            display: inline-block
+            margin-top: 0.5em
