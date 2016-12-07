@@ -3,10 +3,7 @@ require 'spec_helper'
 
 describe 'ReferentialLines', type: :feature do
   login_user
-
-  let(:referential) { Referential.first }
-
-  before(:all) { create :referential_metadata, referential: Referential.first }
+  let!(:referential_metadata) { create :referential_metadata, referential: referential }
 
   describe 'index' do
     before(:each) { visit referential_lines_path(referential) }
