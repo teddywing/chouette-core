@@ -16,6 +16,7 @@ html lang=I18n.locale
 
   body
     = render 'layouts/new/main_nav'
+    = render 'layouts/new/widget_bar'
     
     .container-fluid
       .row
@@ -25,8 +26,6 @@ html lang=I18n.locale
       .row
         .col-lg-12
           #workspace class=("#{controller_name} #{action_name}") 
-            = render 'shared/breadcrumb'
-
             = yield
 
           #sidebar class=("#{content_for?(:sidebar) ? 'col-md-3' : ''}") 

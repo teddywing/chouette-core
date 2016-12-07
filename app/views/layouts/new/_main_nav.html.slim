@@ -5,7 +5,7 @@ nav#main_nav
     ul.menu-content
       li.brand
         span.brandname Stif BOIV
-      
+
       li
         = link_to '#', class: 'mc-item' do
           span.mci-icon
@@ -32,7 +32,7 @@ nav#main_nav
             h4 = "Portail"
 
   div
-    |Breadcrumb to go
+    = render 'layouts/new/breadcrumb'
 
   ul.nav-right
     li
