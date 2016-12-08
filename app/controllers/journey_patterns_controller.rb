@@ -19,11 +19,6 @@ class JourneyPatternsController < ChouetteController
     object.special_update
   end
 
-  def bulk_update
-    ap "--------call to bulk_update action ------------"
-    ap params
-  end
-
   def show
     @map = JourneyPatternMap.new(journey_pattern).with_helpers(self)
     @stop_points = journey_pattern.stop_points.paginate(:page => params[:page])
