@@ -1,6 +1,34 @@
+var React = require('react')
+var Component = require('react').Component
+var PropTypes = require('react').PropTypes
 var actions = require('../actions')
 var connect = require('react-redux').connect
-var JourneyPatterns = require('../components/JourneyPatterns')
+var JourneyPattern = require('../components/JourneyPattern')
+
+class JourneyPatternList extends Component{
+  constructor(props) {
+    super(props)
+  }
+
+  componentDidMount() {
+    const dispatch = this.props.dispatch
+    const journeyPatterns = this.props.journeyPatterns
+    actions.fetchJourneyPatterns(dispatch)
+  }
+
+  render() {
+    return (
+      <div className='list-group'>
+        {this.props.journeyPatterns.map((journeyPattern, index) =>
+          <JourneyPattern
+            value={ journeyPattern }
+            key={ index }
+          />
+        )}
+      </div>
+    )
+  }
+}
 
 const mapStateToProps = (state) => {
   return {
@@ -8,13 +36,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {}
+JourneyPatternList.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  journeyPatterns: PropTypes.array.isRequired
 }
 
-const JourneyPatternList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(JourneyPatterns)
+JourneyPatternList = connect(mapStateToProps)(JourneyPatternList)
 
 module.exports = JourneyPatternList
