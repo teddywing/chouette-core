@@ -192,8 +192,8 @@ gem 'i18n-tasks'
 
 # Rails Assets
 source 'http://rails-assets.org' do
-  gem 'rails-assets-morrisjs', '~> 0.5.1'
-  gem 'rails-assets-raphael', '~> 2.1.3'
+  # gem 'rails-assets-morrisjs', '~> 0.5.1'
+  # gem 'rails-assets-raphael', '~> 2.1.3'
   gem 'rails-assets-footable', '~> 2.0.3'
 
   # Use twitter bootstrap resources

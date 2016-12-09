@@ -9,8 +9,6 @@
 //= require jquery-ui
 //= require modernizr
 //= require cocoon
-//= require raphael
-//= require morrisjs
 //= require bootstrap-sass-official
 //= require select2-full
 //= require select2_locale_fr
@@ -32,7 +30,6 @@
 //= require_directory ./vehicle_journey_frequencies
 //= require_directory ./import_tasks
 //= require_directory ./compliance_check_tasks
-//= require_directory ./compliance_checks
 //= require_directory ./export_tasks
 //= require_directory ./exports
 //= require_directory ./lines
