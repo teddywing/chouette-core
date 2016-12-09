@@ -1,5 +1,5 @@
 p.lead
-  p.caption = t('.title_default',  job=job.class.model_name.human extension=job.filename_extension  )
+  p.caption = t('.title_default', job: job.class.model_name.human, extension: job.filename_extension)
 
 .report.results data-refresh-interval="#{job_refresh_interval(job)}" 
   p
@@ -27,7 +27,7 @@ p.lead
           td data-value="#{file.status.downcase}"
             = t(".table.#{file.status.downcase}")
           td = file.name
-          td = file.errors.map |e| "#{e.code} : #{e.description}" .join(' | ') if file.errors.present?
+          td = file.errors.map{ |e| "#{e.code} : #{e.description}" }.join(' | ') if file.errors.present?
     tfoot
       tr
         td colspan="5" 

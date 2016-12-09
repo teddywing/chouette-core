@@ -10,7 +10,7 @@
 
   .panel-body
     p
-      = link_to font_awesome_classic_tag("fa-external-link") + t("compliance_checks.actions.report"), report_referential_compliance_check_path(@referential, compliance_check.id)) if compliance_check.report?
+      = link_to( font_awesome_classic_tag("fa-external-link") + t("compliance_checks.actions.report"), report_referential_compliance_check_path(@referential, compliance_check.id)) if compliance_check.report?
   .panel-footer
     .history
       = l compliance_check.created_at, :format => "%d/%m/%Y %H:%M"
