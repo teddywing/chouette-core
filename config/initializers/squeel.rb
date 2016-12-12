@@ -1,8 +1,8 @@
-Squeel.configure do |config|
+# Squeel.configure do |config|
   # To load hash extensions (to allow for AND (&), OR (|), and NOT (-) against
   # hashes of conditions):
   #
-  config.load_core_extensions :hash
+  # config.load_core_extensions :hash
 
   # To load symbol extensions (for a subset of the old MetaWhere functionality,
   # via Arel predicate methods on Symbols: :name.matches, etc):
@@ -21,4 +21,4 @@ Squeel.configure do |config|
   # "less_than_any" and "less_than_all" as well:
   #
   # config.alias_predicate :less_than, :lt
-end
+# end
