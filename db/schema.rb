@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161118101544) do
+ActiveRecord::Schema.define(version: 20161208120132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -465,6 +465,20 @@ ActiveRecord::Schema.define(version: 20161118101544) do
   end
 
   add_index "routes", ["objectid"], :name => "routes_objectid_key", :unique => true
+
+  create_table "routing_constraint_zones", force: true do |t|
+    t.string   "name"
+    t.integer  "stop_area_ids",               array: true
+    t.integer  "line_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "objectid",       null: false
+    t.integer  "object_version"
+    t.datetime "creation_time"
+    t.string   "creator_id"
+  end
+
+  add_index "routing_constraint_zones", ["line_id"], :name => "index_routing_constraint_zones_on_line_id"
 
   create_table "routing_constraints_lines", id: false, force: true do |t|
     t.integer "stop_area_id", limit: 8

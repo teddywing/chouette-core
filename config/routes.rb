@@ -115,6 +115,7 @@ ChouetteIhm::Application.routes.draw do
         resources :vehicle_journey_imports
         resources :vehicle_journey_exports
       end
+      resources :routing_constraint_zones
     end
 
     resources :import_tasks, :only => [:new, :create]

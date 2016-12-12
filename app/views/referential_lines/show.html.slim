@@ -112,6 +112,8 @@ h2
     / p
     /   label = "#{@line.human_attribute_name('comment')} : "
     /   = @line.comment
+    p
+      label = link_to Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr), referential_line_routing_constraint_zones_path(@referential, @line)
 
   .row
     #mobility_restricted_suitability.col-md-6

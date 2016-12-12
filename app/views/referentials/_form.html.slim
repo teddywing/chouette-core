@@ -71,7 +71,7 @@
         .alert.alert-danger
           - @referential.errors[:metadatas].each do |msg|
             p.small = "- #{msg}"
-  
+
   = form.simple_fields_for :metadatas do |subform|
     = subform.simple_fields_for :periods do |period_form|
       .row
