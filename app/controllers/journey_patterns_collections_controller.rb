@@ -13,7 +13,7 @@ class JourneyPatternsCollectionsController < ChouetteController
 
   def show
     @q = route.journey_patterns.search(params[:q])
-    @journey_patterns ||= @q.result(:distinct => true).order(:name)
+    @journey_patterns ||= @q.result(:distinct => true).paginate(:page => params[:page]).order(:name)
   end
 
   def update
