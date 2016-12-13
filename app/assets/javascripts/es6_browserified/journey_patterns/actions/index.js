@@ -1,11 +1,20 @@
 const actions = {
-  receiveJourneyPatterns : (state) => ({
+  receiveJourneyPatterns : (json) => ({
     type: "RECEIVE_JOURNEY_PATTERNS",
-    state
+    json
   }),
-
+  loadFirstPage: (dispatch) => ({
+    type: 'LOAD_FIRST_PAGE',
+    dispatch
+  }),
+  goToPreviousPage : () => ({
+    type: 'GO_TO_PREVIOUS_PAGE'
+  }),
+  goToNextPage : () => ({
+    type: 'GO_TO_NEXT_PAGE'
+  }),
   fetchJourneyPatterns : (dispatch) => {
-    let state = []
+    let journeyPatterns = []
     let urlJSON = window.location.pathname + '.json'
     let req = new Request(urlJSON, {
       credentials: 'same-origin'
@@ -23,14 +32,14 @@ const actions = {
           for (let stopArea of val.stop_area_short_descriptions){
             stop_points[stopArea.stop_area_short_description.object_id].checked = true
           }
-          state.push({
+          journeyPatterns.push({
             name: val.name,
             object_id: val.object_id,
             published_name: val.published_name,
             stop_points: stop_points
           })
         }
-        dispatch(actions.receiveJourneyPatterns(state))
+        dispatch(actions.receiveJourneyPatterns(journeyPatterns))
       })
   }
 }

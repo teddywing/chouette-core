@@ -11,7 +11,10 @@ var createLogger = require('redux-logger')
 var thunkMiddleware = require('redux-thunk').default
 var promise = require('redux-promise')
 
-var initialState = {journeyPatterns: []}
+var initialState = {
+  journeyPatterns: [],
+  pagination: 0
+}
 const loggerMiddleware = createLogger()
 
 let store = createStore(

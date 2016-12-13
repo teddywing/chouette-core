@@ -13,7 +13,7 @@ class JourneyPatternList extends Component{
   componentDidMount() {
     const dispatch = this.props.dispatch
     const journeyPatterns = this.props.journeyPatterns
-    actions.fetchJourneyPatterns(dispatch)
+    dispatch(actions.loadFirstPage(dispatch))
   }
 
   render() {
@@ -35,6 +35,17 @@ const mapStateToProps = (state) => {
     journeyPatterns: state.journeyPatterns
   }
 }
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     onPreviousClick: (index) =>{
+//       dispatch(actions.fetchNextPage(index))
+//     },
+//     onNextClick: (index) =>{
+//       dispatch(actions.fetchPreviousPage(index))
+//     }
+//   }
+// }
 
 JourneyPatternList.propTypes = {
   dispatch: PropTypes.func.isRequired,
