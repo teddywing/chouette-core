@@ -87,7 +87,7 @@ p.after_map
     /   li = link_to t('routes.actions.edit_boarding_alighting'), edit_boarding_alighting_referential_line_route_path(@referential, @line, @route), class: 'edit'
 
     - if @route.journey_patterns.size > 0
-      li = link_to t('journey_patterns.actions.edit_journey_patterns_collection'), [@referential, @line, @route, :journey_patterns_collection]
+      li = link_to t('journey_patterns.actions.edit_journey_patterns_collection'), [@referential, @line, @route, :journey_patterns_collection], class: 'edit'
       li = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'clock'
 
   / ul.actions
