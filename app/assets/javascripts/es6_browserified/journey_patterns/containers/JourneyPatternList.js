@@ -32,20 +32,10 @@ class JourneyPatternList extends Component{
 
 const mapStateToProps = (state) => {
   return {
-    journeyPatterns: state.journeyPatterns
+    journeyPatterns: state.journeyPatterns,
+    page: state.pagination
   }
 }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onPreviousClick: (index) =>{
-//       dispatch(actions.fetchNextPage(index))
-//     },
-//     onNextClick: (index) =>{
-//       dispatch(actions.fetchPreviousPage(index))
-//     }
-//   }
-// }
 
 JourneyPatternList.propTypes = {
   dispatch: PropTypes.func.isRequired,

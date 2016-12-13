@@ -7,17 +7,46 @@ const actions = {
     type: 'LOAD_FIRST_PAGE',
     dispatch
   }),
-  goToPreviousPage : () => ({
-    type: 'GO_TO_PREVIOUS_PAGE'
+  goToPreviousPage : (dispatch, currentPage) => {
+    return {
+      type: 'GO_TO_PREVIOUS_PAGE',
+      dispatch,
+      currentPage,
+      nextPage : false
+    }
+  },
+  goToNextPage : (dispatch, currentPage) => ({
+    type: 'GO_TO_NEXT_PAGE',
+    dispatch,
+    currentPage,
+    nextPage : true
   }),
-  goToNextPage : () => ({
-    type: 'GO_TO_NEXT_PAGE'
-  }),
-  fetchJourneyPatterns : (dispatch) => {
+  fetchJourneyPatterns : (dispatch, currentPage, nextPage) => {
+    if(currentPage == undefined){
+      currentPage = 1
+    }
     let journeyPatterns = []
-    let urlJSON = window.location.pathname + '.json'
+    let page
+    switch (nextPage) {
+      case true:
+        page = currentPage + 1
+        break
+      case false:
+        if(currentPage > 1){
+          page = currentPage - 1
+        }
+        break
+      default:
+        page = currentPage
+        break
+    }
+    let str = ".json"
+    if(page > 1){
+      str = '.json?page=' + page.toString()
+    }
+    let urlJSON = window.location.pathname + str
     let req = new Request(urlJSON, {
-      credentials: 'same-origin'
+      credentials: 'same-origin',
     });
     fetch(req)
       .then(response => response.json())

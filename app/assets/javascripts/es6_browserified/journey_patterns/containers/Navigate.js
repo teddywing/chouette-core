@@ -11,7 +11,7 @@ let Navigate = ({ dispatch, journeyPatterns, page }) => {
         <button
           onClick={e => {
             e.preventDefault()
-            dispatch(actions.goToNextPage())
+            dispatch(actions.goToNextPage(dispatch, page))
           }}
           type="submit"
           className="btn btn-primary btn-xs pull-right">
@@ -20,7 +20,7 @@ let Navigate = ({ dispatch, journeyPatterns, page }) => {
         <button
           onClick={e => {
             e.preventDefault()
-            dispatch(actions.goToPreviousPage())
+            dispatch(actions.goToPreviousPage(dispatch, page))
           }}
           type="submit"
           className="btn btn-primary btn-xs pull-right">
@@ -30,6 +30,14 @@ let Navigate = ({ dispatch, journeyPatterns, page }) => {
     </div>
   )
 }
-Navigate = connect()(Navigate)
+
+const mapStateToProps = (state) => {
+  return {
+    journeyPatterns: state.journeyPatterns,
+    page: state.pagination
+  }
+}
+
+Navigate = connect(mapStateToProps)(Navigate)
 
 module.exports = Navigate
