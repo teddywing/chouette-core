@@ -111,7 +111,6 @@ gem 'active_attr'
 gem 'draper'
 
 gem 'enumerize', '~> 0.10.0'
-gem 'foreigner', '~> 1.7.4'
 gem 'deep_cloneable', '~> 2.0.0'
 gem 'acts-as-taggable-on', '~> 4.0.0'
 

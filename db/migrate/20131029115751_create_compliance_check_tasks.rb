@@ -11,9 +11,9 @@ class CreateComplianceCheckTasks < ActiveRecord::Migration
         t.string :user_name     # name of the user who has requested this task
         t.text :progress_info # percentage of progress and step code
         t.timestamps
-        t.foreign_key :referentials, :dependent => :delete
-        t.foreign_key :import_tasks, :dependent => :delete
       end
+      add_foreign_key :compliance_check_tasks, :referentials, :on_delete => :cascade
+      add_foreign_key :compliance_check_tasks, :import_tasks, :on_delete => :cascade
     end
   end
 

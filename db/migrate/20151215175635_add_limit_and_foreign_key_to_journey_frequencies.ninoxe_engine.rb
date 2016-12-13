@@ -3,8 +3,8 @@ class AddLimitAndForeignKeyToJourneyFrequencies < ActiveRecord::Migration
   def up
     change_column :journey_frequencies, :vehicle_journey_id, :integer, limit: 8
     change_column :journey_frequencies, :timeband_id, :integer, limit: 8
-    add_foreign_key :journey_frequencies, :vehicle_journeys, dependent: :nullify
-    add_foreign_key :journey_frequencies, :timebands, dependent: :nullify
+    add_foreign_key :journey_frequencies, :vehicle_journeys, on_delete: :nullify
+    add_foreign_key :journey_frequencies, :timebands, on_delete: :nullify
   end
 
   def down

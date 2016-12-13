@@ -13,8 +13,8 @@ class CreateImportTasks < ActiveRecord::Migration
         t.text :result          # import report : objects statistics
         t.text :progress_info   # percentage of progress and step code
         t.timestamps
-        t.foreign_key :referentials, :dependent => :delete
       end
+      add_foreign_key :import_tasks, :referentials, :on_delete => :cascade
     end
   end
 

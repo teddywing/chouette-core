@@ -9,8 +9,8 @@ class CreateComplianceCheckResults < ActiveRecord::Migration
         t.integer :violation_count # number of violation occurences
         t.text :detail # detail of violation location
         t.timestamps
-        t.foreign_key :compliance_check_tasks, :dependent => :delete
       end
+      add_foreign_key :compliance_check_results, :compliance_check_tasks, :on_delete => :cascade
     end
   end
 
