@@ -1,10 +1,12 @@
 var combineReducers = require('redux').combineReducers
-var journeyPatterns = require('./journey_patterns')
+var journeyPatterns = require('./journeyPatterns')
 var pagination = require('./pagination')
+var totalCount = require('./totalCount')
 
 const journeyPatternsApp = combineReducers({
   journeyPatterns,
-  pagination
+  pagination,
+  totalCount
 })
 
 module.exports = journeyPatternsApp
