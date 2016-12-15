@@ -7,14 +7,12 @@ const actions = {
     type: 'LOAD_FIRST_PAGE',
     dispatch
   }),
-  goToPreviousPage : (dispatch, currentPage) => {
-    return {
-      type: 'GO_TO_PREVIOUS_PAGE',
-      dispatch,
-      currentPage,
-      nextPage : false
-    }
-  },
+  goToPreviousPage : (dispatch, currentPage) => ({
+    type: 'GO_TO_PREVIOUS_PAGE',
+    dispatch,
+    currentPage,
+    nextPage : false
+  }),
   goToNextPage : (dispatch, currentPage) => ({
     type: 'GO_TO_NEXT_PAGE',
     dispatch,
@@ -72,6 +70,5 @@ const actions = {
       })
   }
 }
-
 
 module.exports = actions

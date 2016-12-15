@@ -13,7 +13,8 @@ const JourneyPattern = (props) => {
 }
 
 JourneyPattern.propTypes = {
-  value: PropTypes.object
+  value: PropTypes.object,
+  index: PropTypes.number
 }
 
 module.exports = JourneyPattern

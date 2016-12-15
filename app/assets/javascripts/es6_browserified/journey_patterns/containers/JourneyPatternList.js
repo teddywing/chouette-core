@@ -32,8 +32,7 @@ class JourneyPatternList extends Component{
 
 const mapStateToProps = (state) => {
   return {
-    journeyPatterns: state.journeyPatterns,
-    page: state.pagination
+    journeyPatterns: state.journeyPatterns
   }
 }
 
