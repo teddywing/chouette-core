@@ -71,11 +71,9 @@ module Stif
       end
 
       def stop_area_area_type entry, method
-        type = entry['TypeOfPlaceRef']
-        if type
-          type = "#{type}#{method.last}" unless type == 'LDA'
-          type.downcase
-        end
+        type = entry['type'] == 'Quay' ? 'zde' : entry['TypeOfPlaceRef']
+        type = "#{type.to_s}#{method.last}" unless type == 'LDA'
+        type.downcase
       end
 
       def set_deleted_stop_area
