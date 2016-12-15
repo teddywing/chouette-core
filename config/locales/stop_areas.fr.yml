@@ -58,6 +58,7 @@ fr:
       name: "Recherche par nom..."
       name_or_objectid: "Recherche par nom ou par objectid..."
       zip_code: "Code Postal"
+      city_name: "Commune"
       title: "Arrêts"
       selection: "Filtrer sur"
       selection_all: "Tous"

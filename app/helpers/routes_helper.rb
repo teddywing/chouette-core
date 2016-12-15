@@ -17,7 +17,7 @@ module RoutesHelper
     route.stop_points.includes(:stop_area).map do |stop_point|
       stop_area_attributes = stop_point.stop_area.attributes.slice("name","city_name", "zip_code")
       stop_point_attributes = stop_point.attributes.slice("for_boarding","for_alighting")
-      stop_area_attributes.merge(stop_point_attributes).merge(stoppoint_id: stop_point.id, stoparea_id: stop_point.stop_area.id)
+      stop_area_attributes.merge(stop_point_attributes).merge(stoppoint_id: stop_point.id, stoparea_id: stop_point.stop_area.id).merge(user_objectid: stop_point.stop_area.user_objectid)
     end.to_json
   end
 

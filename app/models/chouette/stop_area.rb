@@ -87,6 +87,14 @@ class Chouette::StopArea < Chouette::ActiveRecord
     end
   end
 
+  def user_objectid
+    if objectid =~ /^.*:([0-9A-Za-z_-]+):STIF$/
+      $1
+    else
+      id.to_s
+    end
+  end
+
   def children_in_depth
     return [] if self.children.empty?
 
@@ -119,15 +127,11 @@ class Chouette::StopArea < Chouette::ActiveRecord
   end
 
   def lines
-    if (area_type == 'CommercialStopPoint')
-      self.children.collect(&:stop_points).flatten.collect(&:route).flatten.collect(&:line).flatten.uniq
-    else
-      self.stop_points.collect(&:route).flatten.collect(&:line).flatten.uniq
-    end
+    []
   end
 
   def routes
-    self.stop_points.collect(&:route).flatten.uniq
+     []
   end
 
   def self.commercial
