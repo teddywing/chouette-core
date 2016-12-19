@@ -11,15 +11,17 @@ const JourneyPattern = (props) => {
 
       <p className='small'><strong>Stop points: </strong></p>
       <ul className='list-group'>
-        {props.value.stop_points.map((stopPoint, index) =>
+        {props.value.stop_points.map((stopPoint, i) =>
           <li
-            key={ index }
+            key={ i }
             className='list-group-item clearfix'
           >
             <span className='label label-default' style={{marginRight: 5}}>{stopPoint.id}</span>
             <span>{stopPoint.name}</span>
             <span className='pull-right'>
-              <input type='checkbox' id={stopPoint.id} checked={stopPoint.checked}></input>
+              <input
+              onClick = {(e) => props.onCheckboxChange(e)}
+              type='checkbox' id={stopPoint.id} defaultChecked={stopPoint.checked}></input>
             </span>
           </li>
         )}
@@ -30,7 +32,8 @@ const JourneyPattern = (props) => {
 
 JourneyPattern.propTypes = {
   value: PropTypes.object,
-  index: PropTypes.number
+  index: PropTypes.number,
+  onCheckboxChange: PropTypes.func.isRequired
 }
 
 module.exports = JourneyPattern
