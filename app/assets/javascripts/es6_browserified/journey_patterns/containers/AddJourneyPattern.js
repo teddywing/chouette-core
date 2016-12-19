@@ -4,15 +4,13 @@ var actions = require('../actions')
 
 let AddJourneyPattern = ({ dispatch }) => {
   return (
-    <div className="clearfix" style={{marginBottom: 10}}>
-      <form onSubmit={e => {
-        e.preventDefault()
-      }}>
-        <button type="submit" className="btn btn-primary btn-xs pull-right">
-          <span className="fa fa-plus"></span> Ajouter une mission
-        </button>
-      </form>
-    </div>
+    <form onSubmit={e => {
+      e.preventDefault()
+    }}>
+      <button type="submit" className="btn btn-primary btn-sm pull-right">
+        <span className="fa fa-plus"></span> Ajouter une mission
+      </button>
+    </form>
   )
 }
 AddJourneyPattern = connect()(AddJourneyPattern)

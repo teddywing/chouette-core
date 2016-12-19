@@ -4,30 +4,28 @@ var actions = require('../actions')
 
 let Navigate = ({ dispatch, journeyPatterns, page }) => {
   return (
-    <div className="clearfix" style={{marginBottom: 10}}>
-      <form onSubmit={e => {
+    <form className='btn-group btn-group-sm' onSubmit={e => {
+      e.preventDefault()
+    }}>
+    <button
+      onClick={e => {
         e.preventDefault()
-      }}>
-        <button
-          onClick={e => {
-            e.preventDefault()
-            dispatch(actions.goToNextPage(dispatch, page))
-          }}
-          type="submit"
-          className="btn btn-primary btn-xs pull-right">
-          <span className="fa fa-plus"></span> Suivant
-        </button>
-        <button
-          onClick={e => {
-            e.preventDefault()
-            dispatch(actions.goToPreviousPage(dispatch, page))
-          }}
-          type="submit"
-          className="btn btn-primary btn-xs pull-right">
-          <span className="fa fa-plus"></span> Précédent
-        </button>
-      </form>
-    </div>
+        dispatch(actions.goToPreviousPage(dispatch, page))
+      }}
+      type="submit"
+      className="btn btn-default">
+      <span className="fa fa-chevron-left"></span>
+      </button>
+      <button
+        onClick={e => {
+          e.preventDefault()
+          dispatch(actions.goToNextPage(dispatch, page))
+        }}
+        type="submit"
+        className="btn btn-default">
+        <span className="fa fa-chevron-right"></span>
+      </button>
+    </form>
   )
 }
 

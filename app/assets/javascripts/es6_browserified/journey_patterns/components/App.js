@@ -5,8 +5,10 @@ var JourneyPatternList = require('../containers/JourneyPatternList')
 
 const App = () => (
   <div>
-    <AddJourneyPattern />
-    <Navigate />
+    <div classNam='clearfix' style={{ marginBottom: 10 }}>
+      <AddJourneyPattern />
+      <Navigate />
+    </div>
     <JourneyPatternList />
   </div>
 )
