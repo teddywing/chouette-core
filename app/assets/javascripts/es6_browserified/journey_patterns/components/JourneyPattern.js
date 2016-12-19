@@ -11,7 +11,13 @@ const JourneyPattern = (props) => {
 
       <p className='small'><strong>Stop points: </strong></p>
       <ul>
-        <li>{props.value.stop_points}</li>
+        {props.value.stop_points.map((stopPoint, index) =>
+          <li
+            key={ index }
+          >
+            <span>{stopPoint.id}</span><span>{stopPoint.name}</span><span>{stopPoint.checked.toString()}</span>
+          </li>
+        )}
       </ul>
     </div>
   )

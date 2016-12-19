@@ -51,19 +51,19 @@ const actions = {
       .then((json) => {
         let val
         for (val of json){
-          let stop_points = []
           for (let stop_point of val.route_short_description.stop_points){
             stop_point.checked = false
-            stop_points[stop_point.object_id] = stop_point
-          }
-          for (let stopArea of val.stop_area_short_descriptions){
-            stop_points[stopArea.stop_area_short_description.object_id].checked = true
+            val.stop_area_short_descriptions.map((element) => {
+              if(element.stop_area_short_description.id === stop_point.id){
+                stop_point.checked = true
+              }
+            })
           }
           journeyPatterns.push({
             name: val.name,
             object_id: val.object_id,
             published_name: val.published_name,
-            stop_points: stop_points
+            stop_points: val.route_short_description.stop_points
           })
         }
         dispatch(actions.receiveJourneyPatterns(journeyPatterns))
