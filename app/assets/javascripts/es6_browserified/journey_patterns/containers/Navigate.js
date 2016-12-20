@@ -2,7 +2,10 @@ var React = require('react')
 var connect = require('react-redux').connect
 var actions = require('../actions')
 
-let Navigate = ({ dispatch, journeyPatterns, page }) => {
+let Navigate = ({ dispatch, journeyPatterns, page, length }) => {
+  let firstPage = 1
+  let lastPage = Math.round(length / 12)
+
   return (
     <form className='btn-group btn-group-sm' onSubmit={e => {
       e.preventDefault()
@@ -13,7 +16,7 @@ let Navigate = ({ dispatch, journeyPatterns, page }) => {
         dispatch(actions.goToPreviousPage(dispatch, page))
       }}
       type="submit"
-      className="btn btn-default">
+      className={ (page == firstPage ? "hidden" : "") + " btn btn-default" }>
       <span className="fa fa-chevron-left"></span>
       </button>
       <button
@@ -22,7 +25,7 @@ let Navigate = ({ dispatch, journeyPatterns, page }) => {
           dispatch(actions.goToNextPage(dispatch, page))
         }}
         type="submit"
-        className="btn btn-default">
+        className={ (page == lastPage ? "hidden" : "") + " btn btn-default" }>
         <span className="fa fa-chevron-right"></span>
       </button>
     </form>
@@ -32,7 +35,8 @@ let Navigate = ({ dispatch, journeyPatterns, page }) => {
 const mapStateToProps = (state) => {
   return {
     journeyPatterns: state.journeyPatterns,
-    page: state.pagination
+    page: state.pagination,
+    length: state.totalCount
   }
 }
 
