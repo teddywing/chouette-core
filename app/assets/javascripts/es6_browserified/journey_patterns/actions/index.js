@@ -19,13 +19,11 @@ const actions = {
     currentPage,
     nextPage : true
   }),
-  updateCheckboxValue : (e, index) => {
-    return {
-      type : 'UPDATE_CHECKBOX_VALUE',
-      id : e.currentTarget.id,
-      index
-    }
-  },
+  updateCheckboxValue : (e, index) => ({
+    type : 'UPDATE_CHECKBOX_VALUE',
+    id : e.currentTarget.id,
+    index
+  }),
   fetchJourneyPatterns : (dispatch, currentPage, nextPage) => {
     if(currentPage == undefined){
       currentPage = 1

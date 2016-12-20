@@ -3,23 +3,6 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var JourneyPattern = require('./JourneyPattern')
 
-
-// const JourneyPatterns = ({journeyPatterns, onLoadFirstPage, onCheckboxChange}) => {
-//   {onLoadFirstPage()}
-//   return (
-//     <div className='list-group'>
-//       {journeyPatterns.map((journeyPattern, index) =>
-//         <JourneyPattern
-//           value={ journeyPattern }
-//           key={ index }
-//           onLoadFirstPage= {onLoadFirstPage()}
-//           onCheckboxChange= {onCheckboxChange(index)}
-//         />
-//       )}
-//     </div>
-//   )
-// }
-
 class JourneyPatterns extends Component{
 
   constructor(props){

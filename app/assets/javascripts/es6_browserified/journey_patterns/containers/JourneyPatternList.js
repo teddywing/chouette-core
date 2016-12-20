@@ -1,6 +1,3 @@
-var React = require('react')
-var Component = require('react').Component
-var PropTypes = require('react').PropTypes
 var actions = require('../actions')
 var connect = require('react-redux').connect
 var JourneyPatterns = require('../components/JourneyPatterns')
