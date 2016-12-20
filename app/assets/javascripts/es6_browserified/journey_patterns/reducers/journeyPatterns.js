@@ -3,7 +3,7 @@ var actions = require("../actions")
 const journeyPattern = (state = {}, action) => {
   switch (action.type) {
     case 'UPDATE_CHECKBOX_VALUE':
-      var updatedStopPoints = state.stop_points.map((s, index) => {
+      var updatedStopPoints = state.stop_points.map((s) => {
         if (s.id.toString() == action.id) {
           return Object.assign({}, s, {checked : !s.checked})
         }else {

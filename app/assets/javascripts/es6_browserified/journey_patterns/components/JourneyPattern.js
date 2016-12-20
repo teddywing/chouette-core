@@ -20,8 +20,8 @@ const JourneyPattern = (props) => {
             <span>{stopPoint.name}</span>
             <span className='pull-right'>
               <input
-              onClick = {(e) => props.onCheckboxChange(e)}
-              type='checkbox' id={stopPoint.id} defaultChecked={stopPoint.checked}></input>
+              onChange = {(e) => props.onCheckboxChange(e)}
+              type='checkbox' id={stopPoint.id} checked={stopPoint.checked}></input>
             </span>
           </li>
         )}
