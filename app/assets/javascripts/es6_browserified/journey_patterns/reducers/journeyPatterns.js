@@ -41,7 +41,7 @@ const journeyPatterns = (state = {}, action) => {
         }
       })
     case 'SAVE_PAGE':
-      // do things
+      actions.savePage(action.dispatch, action.currentPage)
     default:
       return state
   }
