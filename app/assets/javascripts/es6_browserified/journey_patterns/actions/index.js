@@ -28,6 +28,25 @@ const actions = {
     type: 'SAVE_PAGE',
     dispatch
   }),
+  submitJourneyPattern : (dispatch, state) => {
+    let urlJSON = window.location.pathname + ".json"
+    let req = new Request(urlJSON, {
+      credentials: 'same-origin',
+      method: 'PATCH',
+      contentType: 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      body: JSON.stringify(state),
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      }
+    })
+    fetch(req)
+      .then(response => response.json())
+      .then((json) => {
+        console.log('ton papa')
+        // dispatch(actions.receiveJourneyPatterns(journeyPatterns))
+      })
+  },
   fetchJourneyPatterns : (dispatch, currentPage, nextPage) => {
     if(currentPage == undefined){
       currentPage = 1
@@ -54,7 +73,7 @@ const actions = {
     let urlJSON = window.location.pathname + str
     let req = new Request(urlJSON, {
       credentials: 'same-origin',
-    });
+    })
     fetch(req)
       .then(response => response.json())
       .then((json) => {

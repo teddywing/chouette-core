@@ -41,7 +41,7 @@ const journeyPatterns = (state = {}, action) => {
         }
       })
     case 'SAVE_PAGE':
-      actions.savePage(action.dispatch, action.currentPage)
+      actions.submitJourneyPattern(action.dispatch, state)
     default:
       return state
   }
