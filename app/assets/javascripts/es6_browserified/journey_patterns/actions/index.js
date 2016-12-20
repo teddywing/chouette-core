@@ -24,6 +24,10 @@ const actions = {
     id : e.currentTarget.id,
     index
   }),
+  savePage : (dispatch, currentPage) => ({
+    type: 'SAVE_PAGE',
+    dispatch
+  }),
   fetchJourneyPatterns : (dispatch, currentPage, nextPage) => {
     if(currentPage == undefined){
       currentPage = 1

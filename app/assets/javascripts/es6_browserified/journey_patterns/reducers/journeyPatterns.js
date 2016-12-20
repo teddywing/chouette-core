@@ -40,6 +40,8 @@ const journeyPatterns = (state = {}, action) => {
           return j
         }
       })
+    case 'SAVE_PAGE':
+      // do things
     default:
       return state
   }
