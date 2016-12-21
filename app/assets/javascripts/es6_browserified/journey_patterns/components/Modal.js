@@ -25,7 +25,13 @@ const ModalComponent = (props) => {
 
               <ul className='dropdown-menu'>
                 <li><a href='#'>Horaires des courses</a></li>
-                <li><a href='#'>Supprimer la mission</a></li>
+                <li>
+                  <a
+                    href='#'
+                  >
+                    Supprimer la mission
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -42,25 +48,31 @@ const ModalComponent = (props) => {
                   />
                 </div>
 
-                <div className='form-group'>
-                  <label>Nom public</label>
-                  <input
-                    type='text'
-                    className='form-control'
-                    id={props.modal.modalProps.index}
-                    defaultValue={props.modal.modalProps.journeyPattern.published_name}
-                  />
+                <div className='row'>
+                  <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                    <div className='form-group'>
+                      <label>Nom public</label>
+                      <input
+                        type='text'
+                        className='form-control'
+                        id={props.modal.modalProps.index}
+                        defaultValue={props.modal.modalProps.journeyPattern.published_name}
+                        />
+                    </div>
+                  </div>
+                  <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                    <div className='form-group'>
+                      <label>N° d'enregistrement</label>
+                      <input
+                        type='text'
+                        className='form-control'
+                        id={props.modal.modalProps.index}
+                        defaultValue={props.modal.modalProps.journeyPattern.registration_number}
+                        />
+                    </div>
+                  </div>
                 </div>
 
-                <div className='form-group'>
-                  <label>N° d'enregistrement</label>
-                  <input
-                    type='text'
-                    className='form-control'
-                    id={props.modal.modalProps.index}
-                    defaultValue={props.modal.modalProps.journeyPattern.registration_number}
-                  />
-                </div>
               </form>
             )}
           </div>
