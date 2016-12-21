@@ -24,6 +24,11 @@ const actions = {
     id : e.currentTarget.id,
     index
   }),
+  openUpdateModalOpen : (index, journeyPattern) => ({
+    type : 'UPDATE_JOURNEYPATTERN_MODAL',
+    index,
+    journeyPattern
+  }),
   savePage : (dispatch, currentPage) => ({
     type: 'SAVE_PAGE',
     dispatch

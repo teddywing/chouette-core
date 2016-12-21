@@ -14,7 +14,11 @@ var promise = require('redux-promise')
 var initialState = {
   journeyPatterns: [],
   pagination: 1,
-  totalCount: window.journeyPatternLength
+  totalCount: window.journeyPatternLength,
+  modal: {
+    open: false,
+    modalProps: {}
+  }
 }
 const loggerMiddleware = createLogger()
 

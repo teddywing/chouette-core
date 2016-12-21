@@ -4,6 +4,12 @@ var PropTypes = require('react').PropTypes
 const JourneyPattern = (props) => {
   return (
     <div className='list-group-item'>
+      <p
+        onClick= {props.onUpdateModalOpen}
+        className='big'
+      >
+        <strong>MODAL</strong>
+      </p>
       <p className='small'><strong>Index: </strong>{props.index}</p>
       <p className='small'><strong>Name: </strong>{props.value.name}</p>
       <p className='small'><strong>ObjectID: </strong>{props.value.object_id}</p>
@@ -33,7 +39,8 @@ const JourneyPattern = (props) => {
 JourneyPattern.propTypes = {
   value: PropTypes.object,
   index: PropTypes.number,
-  onCheckboxChange: PropTypes.func.isRequired
+  onCheckboxChange: PropTypes.func.isRequired,
+  onUpdateModalOpen: PropTypes.func.isRequired
 }
 
 module.exports = JourneyPattern

@@ -16,6 +16,9 @@ const mapDispatchToProps = (dispatch) => {
     onCheckboxChange: (e, index) =>{
       dispatch(actions.updateCheckboxValue(e, index))
     },
+    onUpdateModalOpen: (index, journeyPattern) =>{
+      dispatch(actions.openUpdateModalOpen(index, journeyPattern))
+    },
   }
 }
 

@@ -21,6 +21,7 @@ class JourneyPatterns extends Component{
             value={ journeyPattern }
             key={ index }
             onCheckboxChange= {(e) => this.props.onCheckboxChange(e, index)}
+            onUpdateModalOpen= {() => this.props.onUpdateModalOpen(index, journeyPattern)}
           />
         )}
       </div>
@@ -31,7 +32,8 @@ class JourneyPatterns extends Component{
 JourneyPatterns.propTypes = {
   journeyPatterns: PropTypes.array.isRequired,
   onCheckboxChange: PropTypes.func.isRequired,
-  onLoadFirstPage: PropTypes.func.isRequired
+  onLoadFirstPage: PropTypes.func.isRequired,
+  onUpdateModalOpen: PropTypes.func.isRequired
 }
 
 module.exports = JourneyPatterns
