@@ -20,8 +20,8 @@ const ModalComponent = (props) => {
                 <strong>Name: </strong>
                 {props.modal.modalProps.journeyPattern.name}
                 <br/>
-                <strong>Published name: </strong>
-                {props.modal.modalProps.journeyPattern.published_name}
+                <strong>Registration number: </strong>
+                {props.modal.modalProps.journeyPattern.registration_number}
               </p>
             )}
           </div>

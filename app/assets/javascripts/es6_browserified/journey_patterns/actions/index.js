@@ -96,6 +96,7 @@ const actions = {
             name: val.name,
             object_id: val.object_id,
             published_name: val.published_name,
+            registration_number: val.registration_number,
             stop_points: val.route_short_description.stop_points
           })
         }
