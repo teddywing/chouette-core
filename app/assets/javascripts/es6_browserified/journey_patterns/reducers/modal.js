@@ -8,8 +8,11 @@ const modal = (state = {}, action) => {
           journeyPattern: action.journeyPattern
         }
       }
-    case 'HIDE_MODAL':
-      return {}
+    case 'CLOSE_MODAL':
+      return {
+        open: false,
+        modalProps: {}
+      }
     default:
       return state
   }

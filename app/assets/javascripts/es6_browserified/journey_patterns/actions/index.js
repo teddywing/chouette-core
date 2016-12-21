@@ -29,6 +29,9 @@ const actions = {
     index,
     journeyPattern
   }),
+  closeModal : () => ({
+    type : 'CLOSE_MODAL'
+  }),
   savePage : (dispatch, currentPage) => ({
     type: 'SAVE_PAGE',
     dispatch

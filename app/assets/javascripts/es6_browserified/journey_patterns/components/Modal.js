@@ -6,29 +6,72 @@ const ModalComponent = (props) => {
     <div className={ (props.modal.open ? 'in' : '') + ' modal fade' } id='JourneyPatternModal'>
       <div className='modal-dialog'>
         <div className='modal-content'>
-          <div className='modal-header'>
-            <h4>
+          <div className='modal-header clearfix'>
+            <h4 className='pull-left'>
               Modifier la mission
               {props.modal.open && (
                 <em> "{props.modal.modalProps.journeyPattern.name}"</em>
               )}
             </h4>
+            <div className='btn-group btn-group-sm pull-right'>
+              <button
+                type='button'
+                className='btn btn-primary dropdown-toggle'
+                data-toggle='dropdown'
+              >
+                <span className='fa fa-bars'></span>
+                <span className='caret'></span>
+              </button>
+
+              <ul className='dropdown-menu'>
+                <li><a href='#'>Horaires des courses</a></li>
+                <li><a href='#'>Supprimer la mission</a></li>
+              </ul>
+            </div>
           </div>
           <div className='modal-body'>
             {props.modal.open && (
-              <p>
-                <strong>Name: </strong>
-                {props.modal.modalProps.journeyPattern.name}
-                <br/>
-                <strong>Registration number: </strong>
-                {props.modal.modalProps.journeyPattern.registration_number}
-              </p>
+              <form>
+                <div className='form-group'>
+                  <label>Nom</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id={props.modal.modalProps.index}
+                    value={props.modal.modalProps.journeyPattern.name}
+                    onChange={(e) => props.onInputChange(e)}
+                  />
+                </div>
+
+                <div className='form-group'>
+                  <label>Nom public</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id={props.modal.modalProps.index}
+                    value={props.modal.modalProps.journeyPattern.published_name}
+                    onChange={(e) => props.onInputChange(e)}
+                  />
+                </div>
+
+                <div className='form-group'>
+                  <label>N° d'enregistrement</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id={props.modal.modalProps.index}
+                    value={props.modal.modalProps.journeyPattern.registration_number}
+                    onChange={(e) => props.onInputChange(e)}
+                  />
+                </div>
+              </form>
             )}
           </div>
           <div className='modal-footer'>
             <button
               className='btn btn-default'
               data-dismiss='modal'
+              onClick={props.onModalClose}
             >
               Annuler
             </button>
@@ -46,7 +89,9 @@ const ModalComponent = (props) => {
 
 ModalComponent.propTypes = {
   index: PropTypes.number,
-  modal: PropTypes.object
+  modal: PropTypes.object,
+  onModalClose: PropTypes.func.isRequired,
+  onInputChange: PropTypes.func.isRequired
 }
 
 module.exports = ModalComponent

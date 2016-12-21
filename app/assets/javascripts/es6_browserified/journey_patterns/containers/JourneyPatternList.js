@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUpdateModalOpen: (index, journeyPattern) =>{
       dispatch(actions.openUpdateModalOpen(index, journeyPattern))
-    },
+    }
   }
 }
 
