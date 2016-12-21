@@ -1,5 +1,5 @@
 var connect = require('react-redux').connect
-var ModalComponent = require('../components/modal')
+var ModalComponent = require('../components/Modal')
 
 const mapStateToProps = (state) => {
   return {
