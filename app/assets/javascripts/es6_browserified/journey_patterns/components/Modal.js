@@ -38,8 +38,7 @@ const ModalComponent = (props) => {
                     type='text'
                     className='form-control'
                     id={props.modal.modalProps.index}
-                    value={props.modal.modalProps.journeyPattern.name}
-                    onChange={(e) => props.onInputChange(e)}
+                    defaultValue={props.modal.modalProps.journeyPattern.name}
                   />
                 </div>
 
@@ -49,8 +48,7 @@ const ModalComponent = (props) => {
                     type='text'
                     className='form-control'
                     id={props.modal.modalProps.index}
-                    value={props.modal.modalProps.journeyPattern.published_name}
-                    onChange={(e) => props.onInputChange(e)}
+                    defaultValue={props.modal.modalProps.journeyPattern.published_name}
                   />
                 </div>
 
@@ -60,8 +58,7 @@ const ModalComponent = (props) => {
                     type='text'
                     className='form-control'
                     id={props.modal.modalProps.index}
-                    value={props.modal.modalProps.journeyPattern.registration_number}
-                    onChange={(e) => props.onInputChange(e)}
+                    defaultValue={props.modal.modalProps.journeyPattern.registration_number}
                   />
                 </div>
               </form>
@@ -90,8 +87,7 @@ const ModalComponent = (props) => {
 ModalComponent.propTypes = {
   index: PropTypes.number,
   modal: PropTypes.object,
-  onModalClose: PropTypes.func.isRequired,
-  onInputChange: PropTypes.func.isRequired
+  onModalClose: PropTypes.func.isRequired
 }
 
 module.exports = ModalComponent
