@@ -3,7 +3,7 @@ var ModalComponent = require('../components/Modal')
 
 const mapStateToProps = (state) => {
   return {
-    modal: state.modal,
+    modal: state.modal
   }
 }
 

@@ -4,16 +4,21 @@ var PropTypes = require('react').PropTypes
 const JourneyPattern = (props) => {
   return (
     <div className='list-group-item'>
-      <p
-        onClick= {props.onUpdateModalOpen}
-        className='big'
-      >
-        <strong>MODAL</strong>
-      </p>
-      <p className='small'><strong>Index: </strong>{props.index}</p>
-      <p className='small'><strong>Name: </strong>{props.value.name}</p>
-      <p className='small'><strong>ObjectID: </strong>{props.value.object_id}</p>
-      <p className='small'><strong>Published name: </strong>{props.value.published_name}</p>
+      <div style={{display: 'inline-block', verticalAlign: 'top', width: '40%'}}>
+        <p className='small'><strong>Index: </strong>{props.index}</p>
+        <p className='small'><strong>Name: </strong>{props.value.name}</p>
+      </div>
+
+      <div style={{display: 'inline-block', verticalAlign: 'top', width: '40%'}}>
+        <p className='small'><strong>ObjectID: </strong>{props.value.object_id}</p>
+        <p className='small'><strong>Published name: </strong>{props.value.published_name}</p>
+      </div>
+
+      <div className='clearfix' style={{display: 'inline-block', verticalAlign: 'top', width: '20%'}}>
+        <button className='btn btn-xs btn-danger pull-right' onClick={props.onUpdateModalOpen} data-toggle='modal' data-target='#JourneyPatternModal'>
+          <span className='fa fa-pencil'></span>
+        </button>
+      </div>
 
       <p className='small'><strong>Stop points: </strong></p>
       <ul className='list-group'>
