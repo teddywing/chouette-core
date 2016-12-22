@@ -12,6 +12,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onModalClose: () =>{
       dispatch(actions.closeModal())
+    },
+    onDeleteJourneyPattern: (index, journeyPattern) =>{
+      dispatch(actions.deleteJourneyPattern(index, journeyPattern))
     }
   }
 }

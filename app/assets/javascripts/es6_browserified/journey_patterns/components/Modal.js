@@ -28,12 +28,19 @@ const ModalComponent = (props) => {
                 <li>
                   <a
                     href='#'
+                    onClick={() => props.onDeleteJourneyPattern(props.modal.modalProps.index, props.modal.modalProps.journeyPattern)}
                   >
                     Supprimer la mission
                   </a>
                 </li>
               </ul>
             </div>
+            {props.modal.open && (
+              props.modal.modalProps.journeyPattern.deletable ?
+              <div className='alert alert-danger' style={{clear: 'both', marginBottom: 0}}>La mission a été supprimée. Cette action sera effective après validation.</div>
+              :
+              ''
+            )}
           </div>
           <div className='modal-body'>
             {props.modal.open && (
@@ -99,7 +106,8 @@ const ModalComponent = (props) => {
 ModalComponent.propTypes = {
   index: PropTypes.number,
   modal: PropTypes.object,
-  onModalClose: PropTypes.func.isRequired
+  onModalClose: PropTypes.func.isRequired,
+  onDeleteJourneyPattern: PropTypes.func.isRequired
 }
 
 module.exports = ModalComponent

@@ -29,6 +29,11 @@ const actions = {
     index,
     journeyPattern
   }),
+  deleteJourneyPattern : (index, journeyPattern) => ({
+    type : 'DELETE_JOURNEYPATTERN_MODAL',
+    index,
+    journeyPattern
+  }),
   closeModal : () => ({
     type : 'CLOSE_MODAL'
   }),
@@ -51,7 +56,7 @@ const actions = {
     fetch(req)
       .then(response => response.json())
       .then((json) => {
-        console.log('ton papa')
+        console.log('request for submit')
         // dispatch(actions.receiveJourneyPatterns(journeyPatterns))
       })
   },
@@ -100,7 +105,8 @@ const actions = {
             object_id: val.object_id,
             published_name: val.published_name,
             registration_number: val.registration_number,
-            stop_points: val.route_short_description.stop_points
+            stop_points: val.route_short_description.stop_points,
+            deletable: false
           })
         }
         dispatch(actions.receiveJourneyPatterns(journeyPatterns))
