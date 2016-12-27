@@ -19,6 +19,13 @@ describe "Lines", :type => :feature do
       expect(page).to have_content(lines.last.name)
     end
 
+    it 'allows only R in CRUD' do
+      expect(page).to have_content(I18n.t('actions.show'))
+      expect(page).not_to have_content(I18n.t('actions.edit'))
+      expect(page).not_to have_content(I18n.t('actions.destroy'))
+      expect(page).not_to have_content(I18n.t('actions.add'))
+    end
+
     context 'filtering' do
       it 'supports filtering by name' do
         fill_in 'q[name_or_number_or_objectid_cont]', with: lines.first.name
