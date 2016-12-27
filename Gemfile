@@ -119,6 +119,7 @@ gem 'acts_as_list', '~> 0.6.0'
 gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
 
 gem 'rabl'
+gem 'carrierwave', '~> 1.0'
 
 gem 'sidekiq'
 gem 'sinatra'
