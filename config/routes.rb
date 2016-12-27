@@ -119,14 +119,15 @@ ChouetteIhm::Application.routes.draw do
     end
 
     resources :import_tasks, :only => [:new, :create]
-    resources :imports, :only => [:index, :show, :destroy] do
-      member do
-        get "imported_file"
-        get "rule_parameter_set"
-        get "compliance_check"
-        get 'export', defaults: { format: 'zip' }
-      end
-    end
+    resources :imports
+    # fixme #2261
+      # member do
+      #   get "imported_file"
+      #   get "rule_parameter_set"
+      #   get "compliance_check"
+      #   get 'export', defaults: { format: 'zip' }
+      # end
+    # end
 
     resources :export_tasks, :only => [:new, :create] do
       collection do

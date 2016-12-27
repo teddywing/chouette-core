@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208120132) do
+ActiveRecord::Schema.define(version: 20161227104741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,6 +223,21 @@ ActiveRecord::Schema.define(version: 20161208120132) do
     t.integer "group_of_line_id", limit: 8
     t.integer "line_id",          limit: 8
   end
+
+  create_table "imports", force: true do |t|
+    t.string   "status"
+    t.string   "current_step_id"
+    t.float    "current_step_progress"
+    t.integer  "workbench_id"
+    t.integer  "referential_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "file"
+  end
+
+  add_index "imports", ["referential_id"], :name => "index_imports_on_referential_id"
+  add_index "imports", ["workbench_id"], :name => "index_imports_on_workbench_id"
 
   create_table "journey_frequencies", force: true do |t|
     t.integer  "vehicle_journey_id",         limit: 8
