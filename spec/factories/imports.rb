@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :import do
+    name "MyString"
+    current_step_id "MyString"
+    current_step_progress 1.5
+    association :workbench
+    association :referential
+    file {File.open(File.join(Rails.root, 'spec', 'fixtures', 'terminated_job.json'))}
     status "MyString"
-current_step_id "MyString"
-current_step_progress 1.5
-workbench nil
-referential nil
-name "MyString"
   end
-
 end

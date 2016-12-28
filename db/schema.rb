@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227104741) do
+ActiveRecord::Schema.define(version: 20161228103628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,6 +223,28 @@ ActiveRecord::Schema.define(version: 20161227104741) do
     t.integer "group_of_line_id", limit: 8
     t.integer "line_id",          limit: 8
   end
+
+  create_table "import_messages", force: true do |t|
+    t.integer  "criticity"
+    t.string   "message_key"
+    t.hstore   "message_attributs"
+    t.integer  "import_id"
+    t.integer  "resource_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "import_messages", ["import_id"], :name => "index_import_messages_on_import_id"
+  add_index "import_messages", ["resource_id"], :name => "index_import_messages_on_resource_id"
+
+  create_table "import_resources", force: true do |t|
+    t.integer  "import_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "import_resources", ["import_id"], :name => "index_import_resources_on_import_id"
 
   create_table "imports", force: true do |t|
     t.string   "status"
