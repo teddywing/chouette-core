@@ -1,1 +1,14 @@
-h1 = @import.inspect
+.title.row
+  .col-md-8
+    = title_tag job_status_title(@import)
+
+.import_show
+  .links
+    = link_to font_awesome_classic_tag("fa-file-#{@import.file.file.extension}-o") + t("imports.show.imported_file"), @import.file.url
+
+- content_for :sidebar do
+  ul.actions
+    li
+      = link_to t('imports.actions.destroy'), workbench_import_path(@workbench, @import.id), method: :delete, data: {confirm: t('imports.actions.destroy_confirm')}, class: 'remove'
+
+  = history_tag(@import)

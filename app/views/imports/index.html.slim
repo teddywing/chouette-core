@@ -1,5 +1,12 @@
 = title_tag t('.title')
+- @imports.each do |import|
+  .import
+    li = link_to import.name, workbench_import_path(@workbench, import)
+    li = import.referential.name
+    li = link_to import.file.file.filename, import.file.url, target: :_blank
+    hr
 
 .warning = t('.warning')
 - content_for :sidebar do
   ul.actions
+    li = link_to t('imports.actions.new'), new_workbench_import_path(workbench_id: @workbench), class: 'add'

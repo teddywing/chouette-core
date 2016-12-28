@@ -3,22 +3,27 @@ class ImportsController < BreadcrumbController
   respond_to :html
   belongs_to :workbench
 
-  # def show
-  #   show! do
-  #     build_breadcrumb :show
-  #   end
-  # end
+  def show
+    show! do
+      build_breadcrumb :show
+    end
+  end
 
-  # def index
-  #   index! do
-  #     build_breadcrumb :index
-  #   end
-  # end
+  def index
+    index! do
+      build_breadcrumb :index
+    end
+  end
 
   def new
-    ap params
-    ap @workbench
-    ap '------------'
-    @import = Import.new
+    new! do
+      build_breadcrumb :new
+    end
+  end
+
+  private
+
+  def import_params
+    params.require(:import).permit(:name, :file, :referential_id)
   end
 end

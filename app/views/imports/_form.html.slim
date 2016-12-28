@@ -1,5 +1,5 @@
-= simple_form_for import do |f|
+= simple_form_for [workbench, import] do |f|
   = f.input :name
   = f.input :file
-  = f.input :workbench
+  = f.association :referential
   = f.button :submit

@@ -72,4 +72,5 @@
 - content_for :sidebar do
   ul.actions
     li = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'add'
-    li = link_to t('referentials.actions.import'), new_workbench_import_path(workbench_id: @workbench), class: 'add'
+    li = link_to t('imports.actions.new'), new_workbench_import_path(workbench_id: @workbench), class: 'add'
+    li = link_to t('workbenches.actions.imports_list'), workbench_imports_path(workbench_id: @workbench)
