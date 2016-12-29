@@ -1,3 +1,18 @@
+const updatedJourneyPattern = (state = {}, action) => {
+  switch (action.type) {
+    case 'DELETE_JOURNEYPATTERN_MODAL':
+      return Object.assign({}, state, { deletable: true })
+    case 'SAVE_MODAL':
+      return Object.assign({}, state, {
+        name: action.data.name.value,
+        published_name: action.data.published_name.value,
+        registration_number: action.data.registration_number.value
+      })
+    default:
+      return state
+  }
+}
+
 const modal = (state = {}, action) => {
   switch (action.type) {
     case 'UPDATE_JOURNEYPATTERN_MODAL':
@@ -11,17 +26,18 @@ const modal = (state = {}, action) => {
     case 'DELETE_JOURNEYPATTERN_MODAL':
       return Object.assign({}, state, {
         modalProps: {
-          index: action.index,
-          journeyPattern: {
-            name: action.journeyPattern.name,
-            object_id: action.journeyPattern.object_id,
-            published_name: action.journeyPattern.published_name,
-            registration_number: action.journeyPattern.registration_number,
-            stop_points: action.journeyPattern.stop_points,
-            deletable: true
-          }
+          index: state.modalProps.index,
+          journeyPattern: updatedJourneyPattern(state.modalProps.journeyPattern, action)
         }
       })
+    case 'SAVE_MODAL':
+      return Object.assign({}, state, {
+        modalProps: {
+          index: state.modalProps.index,
+          journeyPattern: updatedJourneyPattern(state.modalProps.journeyPattern, action)
+        }
+      })
+
     case 'CLOSE_MODAL':
       return {
         open: false,

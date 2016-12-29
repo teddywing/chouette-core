@@ -37,6 +37,10 @@ const actions = {
   closeModal : () => ({
     type : 'CLOSE_MODAL'
   }),
+  saveModal : (data) => ({
+    type: 'SAVE_MODAL',
+    data
+  }),
   savePage : (dispatch, currentPage) => ({
     type: 'SAVE_PAGE',
     dispatch

@@ -15,6 +15,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onDeleteJourneyPattern: (index, journeyPattern) =>{
       dispatch(actions.deleteJourneyPattern(index, journeyPattern))
+    },
+    saveModal: (data) =>{
+      dispatch(actions.saveModal(data))
     }
   }
 }
