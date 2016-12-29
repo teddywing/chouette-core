@@ -1,0 +1,16 @@
+= title_tag t('.title')
+
+= search_form_for @q, url: calendars_path, remote: true, html: { method: :get, class: 'form', id: 'search', role: 'form' } do |f|
+
+  .panel.panel-default
+    .panel-heading
+      .input-group.col-md-12
+        = f.search_field :short_name_cont, placeholder: t('.short_name_cont'), class: 'form-control'
+
+        .input-group-btn
+          button.btn.btn-primary#search-btn type='submit'
+            span.fa.fa-search
+
+#calendars
+  = render 'calendars'
+

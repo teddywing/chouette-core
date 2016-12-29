@@ -38,6 +38,8 @@ module BreadcrumbHelper
       timeband_breadcrumb action
     when 'Chouette::RoutingConstraintZone'
       routing_constraint_zone_breadcrumb action
+    when 'Calendar'
+      calendar_breadcrumb action
     when "StopAreaCopy"
       stop_area_copy_breadcrumb action
     when "Import"
@@ -68,6 +70,11 @@ module BreadcrumbHelper
       Rails.logger.info "---------"
       organisation_breadcrumb :index
     end
+  end
+
+  def calendar_breadcrumb(action)
+    add_breadcrumb Calendar.model_name.human.pluralize
+    add_breadcrumb @calendar.name if %i(show edit).include? action
   end
 
   def workbench_breadcrumb(action)

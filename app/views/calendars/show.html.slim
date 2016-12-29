@@ -1,0 +1,28 @@
+= title_tag t('.title', calendar: @calendar.name)
+
+p
+  label => "#{Calendar.human_attribute_name('name')} : "
+  = @calendar.name
+p
+  label => "#{Calendar.human_attribute_name('short_name')} : "
+  = @calendar.short_name
+p
+  label => "#{Calendar.human_attribute_name('date_ranges')} : "
+  = @calendar.date_ranges
+p
+  label => "#{Calendar.human_attribute_name('dates')} : "
+  = @calendar.dates
+p
+  label => "#{Calendar.human_attribute_name('shared')} : "
+  = @calendar.shared
+p
+  label => "#{Organisation.model_name.human} : "
+  = @calendar.organisation.name
+
+
+- content_for(:sidebar) do
+  ul.actions
+    li
+      = link_to t('calendars.actions.edit'), edit_calendar_path(@calendar), class: 'edit'
+    li
+      = link_to t('calendars.actions.destroy'), calendar_path(@calendar), method: :delete, data: { confirm: t('calendars.actions.destroy_confirm') }, class: 'remove'

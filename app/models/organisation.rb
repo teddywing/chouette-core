@@ -13,6 +13,7 @@ class Organisation < ActiveRecord::Base
   has_many :line_referentials, through: :line_referential_memberships
 
   has_many :workbenches
+  has_many :calendars
 
   validates_presence_of :name
   validates_uniqueness_of :code

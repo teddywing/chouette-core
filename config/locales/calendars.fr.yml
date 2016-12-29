@@ -1,0 +1,47 @@
+fr:
+  calendars:
+    search_no_results: "Aucun calendrier ne correspond à votre recherche"
+    actions:
+      new: Ajouter un calendrier
+      edit: Modifier cet calendrier
+      destroy: Supprimer cet calendrier
+      destroy_confirm: Etes vous sûr de supprimer cet calendrier ?
+    activerecord:
+      models:
+        calendar: Calendrier
+      attributes:
+        calendar:
+          name: Nom
+          short_name: Nom court
+          date_ranges: Intervalles de dates
+          dates: Dates
+          shared: Partagé
+    index:
+      title: Calendriers
+      short_name_cont: Recherche par nom court
+    new:
+      title: "Ajouter un calendrier"
+    edit:
+      title: "Modifier le calendrier %{calendar}"
+    show:
+      title: "Calendrier %{calendar}"
+  simple_form:
+    labels:
+      calendar:
+        name: Nom
+        short_name: Nom court
+        dates: Dates
+        shared: Partagé
+        date_ranges: Intervalles de dates
+        ranges:
+          begin: Début
+          end: Fin
+  activerecord:
+    errors:
+      models:
+        calendar:
+          attributes:
+            dates:
+              date_in_date_ranges: 'Une même date ne peut pas être à la fois dans Dates et dans Intervalles de dates.'
+
+

@@ -55,13 +55,15 @@ module NewfrontHelper
           polymorph_url << action
         end
 
-        if current_referential
-          polymorph_url << current_referential
-          polymorph_url << item.line if item.respond_to? :line
-        elsif item.respond_to? :referential
-          polymorph_url << item.referential
-        elsif item.respond_to? :line_referential
-          polymorph_url << item.line_referential
+        unless item.class.to_s == 'Calendar'
+          if current_referential
+            polymorph_url << current_referential
+            polymorph_url << item.line if item.respond_to? :line
+          elsif item.respond_to? :referential
+            polymorph_url << item.referential
+          elsif item.respond_to? :line_referential
+            polymorph_url << item.line_referential
+          end
         end
 
         polymorph_url << item

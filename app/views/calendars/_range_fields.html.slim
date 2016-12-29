@@ -1,0 +1,6 @@
+.nested-fields
+  = f.input :begin, as: :date, html5: true, label: t('simple_form.labels.calendar.ranges.begin')
+  = f.input :end, as: :date, html5: true, label: t('simple_form.labels.calendar.ranges.end')
+  /= link_to_remove_association f, data: { confirm: t('are_you_sure') } do
+    span.fa.fa-trash
+

@@ -67,6 +67,8 @@ ChouetteIhm::Application.routes.draw do
     resources :networks
   end
 
+  resources :calendars
+
   resources :referentials do
     resources :api_keys
     resources :autocomplete_stop_areas

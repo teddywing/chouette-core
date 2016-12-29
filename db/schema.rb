@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161208120132) do
+ActiveRecord::Schema.define(version: 20161228092957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,20 @@ ActiveRecord::Schema.define(version: 20161208120132) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "calendars", force: true do |t|
+    t.string    "name"
+    t.string    "short_name"
+    t.daterange "date_ranges",     array: true
+    t.date      "dates",           array: true
+    t.boolean   "shared"
+    t.integer   "organisation_id"
+    t.datetime  "created_at"
+    t.datetime  "updated_at"
+  end
+
+  add_index "calendars", ["organisation_id"], :name => "index_calendars_on_organisation_id"
+  add_index "calendars", ["short_name"], :name => "index_calendars_on_short_name", :unique => true
 
   create_table "clean_up_results", force: true do |t|
     t.string   "message_key"

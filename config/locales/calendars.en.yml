@@ -1,0 +1,46 @@
+en:
+  calendars:
+    search_no_results: No calendar matching your query
+    actions:
+      new: Add a new calendar
+      edit: Edit this calendar
+      destroy: Remove this calendar
+      destroy_confirm: Are you sure you want destroy this calendar?
+    activerecord:
+      models:
+        calendar: Calendar
+      attributes:
+        calendar:
+          name: Name
+          short_name: Short name
+          date_ranges: Date ranges
+          dates: Dates
+          shared: Shared
+  activerecord:
+    errors:
+      models:
+        calendar:
+          attributes:
+            dates:
+              date_in_date_ranges: A date can not be in Dates and in Date ranges.
+    index:
+      title: Calendars
+      short_name_cont: Search by short name
+    new:
+      title: "Add a new calendar"
+    edit:
+      title: "Update calendar %{calendar}"
+    show:
+      title: "Calendar %{calendar}"
+  simple_form:
+    labels:
+      calendar:
+        name: Name
+        short_name: Short name
+        dates: Dates
+        shared: Shared
+        date_ranges: Date ranges
+        ranges:
+          begin: Beginning
+          end: End
+
