@@ -32,12 +32,12 @@ const modal = (state = {}, action) => {
       })
     case 'SAVE_MODAL':
       return Object.assign({}, state, {
+        open: false,
         modalProps: {
           index: state.modalProps.index,
           journeyPattern: updatedJourneyPattern(state.modalProps.journeyPattern, action)
         }
       })
-
     case 'CLOSE_MODAL':
       return {
         open: false,

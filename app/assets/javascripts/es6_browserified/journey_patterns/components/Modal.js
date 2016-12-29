@@ -38,7 +38,10 @@ class ModalComponent extends Component {
                   <li>
                     <a
                       href='#'
-                      onClick={() => this.props.onDeleteJourneyPattern(this.props.modal.modalProps.index, this.props.modal.modalProps.journeyPattern)}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        this.props.onDeleteJourneyPattern(this.props.modal.modalProps.index, this.props.modal.modalProps.journeyPattern)}
+                      }
                       >
                       Supprimer la mission
                     </a>
@@ -107,6 +110,7 @@ class ModalComponent extends Component {
               </button>
               <button
                 className='btn btn-danger'
+                data-dismiss='modal'
                 type='button'
                 onClick={this.handleSubmit.bind(this)}
                 >
