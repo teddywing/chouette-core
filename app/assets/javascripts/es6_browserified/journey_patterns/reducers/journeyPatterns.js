@@ -40,6 +40,14 @@ const journeyPatterns = (state = {}, action) => {
           return j
         }
       })
+    case 'DELETE_JOURNEYPATTERN':
+      return state.map((j, i) =>{
+        if( i == action.index){
+          return Object.assign({}, j, {deletable: true})
+        }else{
+          return j
+        }
+      })
     case 'SAVE_PAGE':
       actions.submitJourneyPattern(action.dispatch, state)
     default:

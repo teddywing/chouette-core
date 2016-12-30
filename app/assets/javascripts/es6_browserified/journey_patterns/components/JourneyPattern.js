@@ -3,7 +3,7 @@ var PropTypes = require('react').PropTypes
 
 const JourneyPattern = (props) => {
   return (
-    <div className='list-group-item'>
+    <div className={(props.value.deletable ? 'disabled' : '') + ' list-group-item'}>
       <div style={{display: 'inline-block', verticalAlign: 'top', width: '40%'}}>
         <p className='small'><strong>Index: </strong>{props.index}</p>
         <p className='small'><strong>Name: </strong>{props.value.name}</p>
@@ -15,7 +15,7 @@ const JourneyPattern = (props) => {
       </div>
 
       <div className='clearfix' style={{display: 'inline-block', verticalAlign: 'top', width: '20%'}}>
-        <button className='btn btn-xs btn-danger pull-right' onClick={props.onUpdateModalOpen} data-toggle='modal' data-target='#JourneyPatternModal'>
+        <button className={(props.value.deletable ? 'disabled' : '') + ' btn btn-xs btn-danger pull-right'} onClick={props.onUpdateModalOpen} data-toggle='modal' data-target='#JourneyPatternModal'>
           <span className='fa fa-pencil'></span>
         </button>
       </div>
@@ -31,8 +31,12 @@ const JourneyPattern = (props) => {
             <span>{stopPoint.name}</span>
             <span className='pull-right'>
               <input
-              onChange = {(e) => props.onCheckboxChange(e)}
-              type='checkbox' id={stopPoint.id} checked={stopPoint.checked}></input>
+                onChange = {(e) => props.onCheckboxChange(e)}
+                type='checkbox'
+                id={stopPoint.id}
+                checked={stopPoint.checked}
+                disabled={props.value.deletable ? 'true' : 'false'}
+              ></input>
             </span>
           </li>
         )}

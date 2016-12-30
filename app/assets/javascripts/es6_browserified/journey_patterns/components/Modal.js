@@ -38,6 +38,7 @@ class ModalComponent extends Component {
                   <li>
                     <a
                       href='#'
+                      data-dismiss='modal'
                       onClick={(e) => {
                         e.preventDefault()
                         this.props.onDeleteJourneyPattern(this.props.modal.modalProps.index, this.props.modal.modalProps.journeyPattern)}
@@ -48,12 +49,6 @@ class ModalComponent extends Component {
                   </li>
                 </ul>
               </div>
-              {this.props.modal.open && (
-                this.props.modal.modalProps.journeyPattern.deletable ?
-                <div className='alert alert-danger' style={{clear: 'both', marginBottom: 0}}>La mission a été supprimée. Cette action sera effective après validation.</div>
-                :
-                ''
-              )}
             </div>
             <div className='modal-body'>
               {this.props.modal.open && (

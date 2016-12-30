@@ -4,7 +4,8 @@ var actions = require('../actions')
 
 const mapStateToProps = (state) => {
   return {
-    modal: state.modal
+    modal: state.modal,
+    journeyPattern: state.journeyPattern
   }
 }
 

@@ -30,7 +30,7 @@ const actions = {
     journeyPattern
   }),
   deleteJourneyPattern : (index, journeyPattern) => ({
-    type : 'DELETE_JOURNEYPATTERN_MODAL',
+    type : 'DELETE_JOURNEYPATTERN',
     index,
     journeyPattern
   }),

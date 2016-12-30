@@ -23,13 +23,8 @@ const modal = (state = {}, action) => {
           journeyPattern: action.journeyPattern
         }
       }
-    case 'DELETE_JOURNEYPATTERN_MODAL':
-      return Object.assign({}, state, {
-        modalProps: {
-          index: state.modalProps.index,
-          journeyPattern: updatedJourneyPattern(state.modalProps.journeyPattern, action)
-        }
-      })
+    case 'DELETE_JOURNEYPATTERN':
+      return Object.assign({}, state, { open: false })
     case 'SAVE_MODAL':
       return Object.assign({}, state, {
         open: false,
