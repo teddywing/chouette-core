@@ -7,7 +7,10 @@ let AddJourneyPattern = ({ dispatch }) => {
     <form onSubmit={e => {
       e.preventDefault()
     }}>
-      <button type="submit" className="btn btn-primary btn-sm pull-right">
+      <button
+        type='button'
+        className="btn btn-primary btn-sm pull-right"
+      >
         <span className="fa fa-plus"></span> Ajouter une mission
       </button>
     </form>

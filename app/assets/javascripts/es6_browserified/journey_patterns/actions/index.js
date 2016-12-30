@@ -24,8 +24,8 @@ const actions = {
     id : e.currentTarget.id,
     index
   }),
-  openUpdateModalOpen : (index, journeyPattern) => ({
-    type : 'UPDATE_JOURNEYPATTERN_MODAL',
+  openEditModal : (index, journeyPattern) => ({
+    type : 'EDIT_JOURNEYPATTERN_MODAL',
     index,
     journeyPattern
   }),

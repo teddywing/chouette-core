@@ -15,7 +15,7 @@ const JourneyPattern = (props) => {
       </div>
 
       <div className='clearfix' style={{display: 'inline-block', verticalAlign: 'top', width: '20%'}}>
-        <button className={(props.value.deletable ? 'disabled' : '') + ' btn btn-xs btn-danger pull-right'} onClick={props.onUpdateModalOpen} data-toggle='modal' data-target='#JourneyPatternModal'>
+        <button className={(props.value.deletable ? 'disabled' : '') + ' btn btn-xs btn-danger pull-right'} onClick={props.onOpenEditModal} data-toggle='modal' data-target='#JourneyPatternModal'>
           <span className='fa fa-pencil'></span>
         </button>
       </div>
@@ -49,7 +49,7 @@ JourneyPattern.propTypes = {
   value: PropTypes.object,
   index: PropTypes.number,
   onCheckboxChange: PropTypes.func.isRequired,
-  onUpdateModalOpen: PropTypes.func.isRequired
+  onOpenEditModal: PropTypes.func.isRequired
 }
 
 module.exports = JourneyPattern
