@@ -2,7 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 
-class ModalComponent extends Component {
+class EditModal extends Component {
   constructor(props) {
     super(props)
   }
@@ -119,7 +119,7 @@ class ModalComponent extends Component {
   }
 }
 
-ModalComponent.propTypes = {
+EditModal.propTypes = {
   index: PropTypes.number,
   modal: PropTypes.object,
   onModalClose: PropTypes.func.isRequired,
@@ -127,4 +127,4 @@ ModalComponent.propTypes = {
   onDeleteJourneyPattern: PropTypes.func.isRequired
 }
 
-module.exports = ModalComponent
+module.exports = EditModal

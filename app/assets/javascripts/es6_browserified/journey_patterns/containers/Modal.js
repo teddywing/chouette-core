@@ -1,5 +1,6 @@
 var connect = require('react-redux').connect
-var ModalComponent = require('../components/Modal')
+var EditModal = require('../components/EditModal')
+var CreateModal = require('../components/CreateModal')
 var actions = require('../actions')
 
 const mapStateToProps = (state) => {
@@ -14,15 +15,15 @@ const mapDispatchToProps = (dispatch) => {
     onModalClose: () =>{
       dispatch(actions.closeModal())
     },
-    onDeleteJourneyPattern: (index, journeyPattern) =>{
-      dispatch(actions.deleteJourneyPattern(index, journeyPattern))
-    },
     saveModal: (index, data) =>{
       dispatch(actions.saveModal(index, data))
+    },
+    onDeleteJourneyPattern: (index, journeyPattern) =>{
+      dispatch(actions.deleteJourneyPattern(index, journeyPattern))
     }
   }
 }
 
-const ModalContainer = connect(mapStateToProps, mapDispatchToProps)(ModalComponent)
+const ModalContainer = connect(mapStateToProps, mapDispatchToProps)(EditModal, CreateModal)
 
 module.exports = ModalContainer
