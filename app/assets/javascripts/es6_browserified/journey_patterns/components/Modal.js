@@ -8,7 +8,7 @@ class ModalComponent extends Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    this.props.saveModal(this.refs)
+    this.props.saveModal(this.props.modal.modalProps.index, this.refs)
   }
 
   render() {

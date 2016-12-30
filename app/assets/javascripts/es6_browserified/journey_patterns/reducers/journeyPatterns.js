@@ -42,9 +42,21 @@ const journeyPatterns = (state = {}, action) => {
       })
     case 'DELETE_JOURNEYPATTERN':
       return state.map((j, i) =>{
-        if( i == action.index){
+        if(i == action.index) {
           return Object.assign({}, j, {deletable: true})
-        }else{
+        } else {
+          return j
+        }
+      })
+    case 'SAVE_MODAL':
+      return state.map((j, i) =>{
+        if(i == action.index) {
+          return Object.assign({}, j, {
+            name: action.data.name.value,
+            published_name: action.data.published_name.value,
+            registration_number: action.data.registration_number.value
+          })
+        } else {
           return j
         }
       })
