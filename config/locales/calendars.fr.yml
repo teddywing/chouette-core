@@ -1,6 +1,5 @@
 fr:
   calendars:
-    search_no_results: "Aucun calendrier ne correspond à votre recherche"
     actions:
       new: Ajouter un calendrier
       edit: Modifier cet calendrier
@@ -16,9 +15,15 @@ fr:
           date_ranges: Intervalles de dates
           dates: Dates
           shared: Partagé
+    errors:
+      overlapped_periods: Une autre période chevauche cette période
     index:
       title: Calendriers
-      short_name_cont: Recherche par nom court
+      all: Tous
+      shared: Partagées
+      not_shared: Non partagées
+      search_no_results: "Aucun calendrier ne correspond à votre recherche"
+      date: Date
     new:
       title: "Ajouter un calendrier"
     edit:

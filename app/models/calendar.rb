@@ -5,6 +5,13 @@ class Calendar < ActiveRecord::Base
   validates_uniqueness_of :short_name
   validate :date_not_in_date_ranges
 
+  after_initialize :init_dates_and_date_ranges
+
+  def init_dates_and_date_ranges
+    self.dates ||= []
+    self.date_ranges ||= []
+  end
+
   private
   def date_not_in_date_ranges
     errors.add(:dates, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_date_ranges')) if dates && date_ranges && dates_and_date_ranges_overlap?
@@ -20,14 +27,14 @@ class Calendar < ActiveRecord::Base
     overlap
   end
 
-  class DateRange
+  class Period
     include ActiveAttr::Model
 
     attribute :id, type: Integer
     attribute :begin, type: Date
     attribute :end, type: Date
 
-    validates_presence_of :begin, :end
+    validates :begin, :end, presence: true
     validate :check_end_greather_than_begin
 
     def check_end_greather_than_begin
@@ -37,7 +44,7 @@ class Calendar < ActiveRecord::Base
     end
 
     def self.from_range(index, range)
-      DateRange.new id: index, begin: range.begin, end: range.end
+      Period.new id: index, begin: range.begin, end: range.end
     end
 
     def range
@@ -52,8 +59,8 @@ class Calendar < ActiveRecord::Base
       other = other.flatten
       other = other.delete_if { |o| o.id == id } if id
 
-      other.any? do |date_range|
-        if other_range = date_range.range
+      other.any? do |period|
+        if other_range = period.range
           (range & other_range).present?
         end
       end
@@ -71,6 +78,7 @@ class Calendar < ActiveRecord::Base
       id.present?
     end
 
+
     def mark_for_destruction
       self._destroy = true
     end
@@ -80,47 +88,49 @@ class Calendar < ActiveRecord::Base
   end
 
   # Required by coocon
-  def build_date_range
-    DateRange.new
+  def build_period
+    Period.new
   end
 
-  def ranges
-    @ranges ||= init_ranges
+  def periods
+    @periods ||= init_periods
   end
 
-  def init_ranges
+  def init_periods
     if date_ranges
-      date_ranges.each_with_index.map { |r, index| DateRange.from_range(index, r) }
+      date_ranges.each_with_index.map { |r, index| Period.from_range(index, r) }
     else
       []
     end
   end
-  private :init_ranges
+  private :init_periods
 
-  validate :validate_ranges
+  validate :validate_periods
 
-  def validate_ranges
-    ranges_are_valid = true
+  def validate_periods
+    periods_are_valid = true
 
-    unless ranges.all?(&:valid?)
-      ranges_are_valid = false
+    unless periods.all?(&:valid?)
+      periods_are_valid = false
     end
 
-    ranges.each do |range|
-      if range.intersect?(ranges)
-        range.errors.add(:base, I18n.t("referentials.errors.overlapped_period"))
-        ranges_are_valid = false
+    periods.each do |period|
+      if period.intersect?(periods)
+        period.errors.add(:base, I18n.t('calendars.errors.overlapped_period'))
+        periods_are_valid = false
       end
     end
 
-    errors.add(:ranges, :invalid) unless ranges_are_valid
+    unless periods_are_valid
+      errors.add(:periods, :invalid)
+    end
   end
 
-  def ranges_attributes=(attributes = {})
-    @ranges = []
-    attributes.each do |index, range_attribute|
-      range = DateRange.new(range_attribute.merge(id: index))
-      @ranges << range unless range.marked_for_destruction?
+  def periods_attributes=(attributes = {})
+    @periods = []
+    attributes.each do |index, period_attribute|
+      period = Period.new(period_attribute.merge(id: index))
+      @periods << period unless period.marked_for_destruction?
     end
 
     date_ranges_will_change!
@@ -129,17 +139,23 @@ class Calendar < ActiveRecord::Base
   before_validation :fill_date_ranges
 
   def fill_date_ranges
-    if @ranges
-      self.date_ranges = @ranges.map(&:range).compact.sort_by(&:begin)
+    if @periods
+      self.date_ranges = @periods.map(&:range).compact.sort_by(&:begin)
     end
   end
 
-  after_save :clear_ranges
+  after_save :clear_periods
 
-  def clear_ranges
-    @ranges = nil
+  def clear_periods
+    @periods = nil
   end
-  private :clear_ranges
+  private :clear_periods
+
+  def self.new_from from
+    from.dup.tap do |metadata|
+      metadata.referential_id = nil
+    end
+  end
 end
 
 class Range
@@ -149,4 +165,3 @@ class Range
   end
   alias_method :&, :intersection
 end
-

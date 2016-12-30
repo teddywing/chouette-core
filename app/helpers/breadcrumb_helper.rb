@@ -73,7 +73,7 @@ module BreadcrumbHelper
   end
 
   def calendar_breadcrumb(action)
-    add_breadcrumb Calendar.model_name.human.pluralize
+    add_breadcrumb I18n.t('calendars.index.title')
     add_breadcrumb @calendar.name if %i(show edit).include? action
   end
 

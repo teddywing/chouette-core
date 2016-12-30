@@ -1,6 +1,5 @@
 en:
   calendars:
-    search_no_results: No calendar matching your query
     actions:
       new: Add a new calendar
       edit: Edit this calendar
@@ -16,6 +15,8 @@ en:
           date_ranges: Date ranges
           dates: Dates
           shared: Shared
+    errors:
+      overlapped_periods: Another period is overlapped with this period
   activerecord:
     errors:
       models:
@@ -25,7 +26,11 @@ en:
               date_in_date_ranges: A date can not be in Dates and in Date ranges.
     index:
       title: Calendars
-      short_name_cont: Search by short name
+      all: All
+      shared: Shared
+      not_shared: Not shared
+      search_no_results: No calendar matching your query
+      date: Date
     new:
       title: "Add a new calendar"
     edit:
