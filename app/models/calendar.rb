@@ -3,7 +3,7 @@ class Calendar < ActiveRecord::Base
 
   validates_presence_of :name, :short_name, :organisation
   validates_uniqueness_of :short_name
-  validate :date_not_in_date_ranges
+  validate :date_not_in_date_ranges, :dates_uniqueness
 
   after_initialize :init_dates_and_date_ranges
 
@@ -25,6 +25,10 @@ class Calendar < ActiveRecord::Base
       end
     end
     overlap
+  end
+
+  def dates_uniqueness
+    errors.add(:dates, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_dates')) if dates && dates.length > dates.uniq.length
   end
 
   class Period

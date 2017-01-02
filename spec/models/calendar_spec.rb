@@ -17,6 +17,14 @@ RSpec.describe Calendar, :type => :model do
       }.to raise_error(ActiveRecord::RecordInvalid)
       expect(calendar.errors.messages[:dates]).to eq([I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_date_ranges')])
     end
+
+    it 'validates that there are no duplicates in dates' do
+      calendar = build(:calendar, dates: [Date.yesterday, Date.yesterday], date_ranges: [Date.today..Date.tomorrow])
+      expect {
+        calendar.save!
+      }.to raise_error(ActiveRecord::RecordInvalid)
+      expect(calendar.errors.messages[:dates]).to eq([I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_dates')])
+    end
   end
 
   describe 'Period' do
@@ -86,7 +94,6 @@ RSpec.describe Calendar, :type => :model do
       end
 
     end
-
   end
 
   describe 'before_validation' do
