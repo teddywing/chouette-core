@@ -34,9 +34,9 @@ const journeyPatterns = (state = {}, action) => {
       return state
     case 'UPDATE_CHECKBOX_VALUE':
       return state.map((j, i) =>{
-        if( i == action.index){
+        if(i == action.index) {
           return journeyPattern(j, action)
-        }else{
+        } else {
           return j
         }
       })
@@ -49,17 +49,30 @@ const journeyPatterns = (state = {}, action) => {
         }
       })
     case 'SAVE_MODAL':
-      return state.map((j, i) =>{
-        if(i == action.index) {
-          return Object.assign({}, j, {
-            name: action.data.name.value,
-            published_name: action.data.published_name.value,
-            registration_number: action.data.registration_number.value
-          })
-        } else {
-          return j
+      if(action.index > 12) {
+        // Save new item
+        const newJourneyPattern = {
+          name: action.data.name.value,
+          published_name: action.data.published_name.value,
+          registration_number: action.data.registration_number.value,
+          stop_points: [],
+          deletable: false
         }
-      })
+        return state.concat(newJourneyPattern)
+      } else {
+        // Save existing item
+        return state.map((j, i) =>{
+          if(i == action.index) {
+            return Object.assign({}, j, {
+              name: action.data.name.value,
+              published_name: action.data.published_name.value,
+              registration_number: action.data.registration_number.value
+            })
+          } else {
+            return j
+          }
+        })
+      }
     case 'SAVE_PAGE':
       actions.submitJourneyPattern(action.dispatch, state)
     default:

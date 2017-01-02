@@ -13,7 +13,7 @@ class EditModal extends Component {
 
   render() {
     return (
-      <div className={ (this.props.modal.edit ? 'in' : '') + ' modal fade' } id='JourneyPatternModal'>
+      <div className={ 'modal fade ' + (this.props.modal.edit ? 'in' : '') } id='JourneyPatternModal'>
         <div className='modal-dialog'>
           <div className='modal-content'>
             <div className='modal-header clearfix'>

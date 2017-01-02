@@ -3,7 +3,7 @@ var PropTypes = require('react').PropTypes
 
 const JourneyPattern = (props) => {
   return (
-    <div className={(props.value.deletable ? 'disabled' : '') + ' list-group-item'}>
+    <div className={'list-group-item ' + (props.value.deletable ? 'disabled' : '') + (props.value.object_id ? '' : 'to_record')}>
       <div style={{display: 'inline-block', verticalAlign: 'top', width: '40%'}}>
         <p className='small'><strong>Index: </strong>{props.index}</p>
         <p className='small'><strong>Name: </strong>{props.value.name}</p>

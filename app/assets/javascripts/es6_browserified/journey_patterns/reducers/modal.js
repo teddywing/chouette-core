@@ -13,7 +13,7 @@ const modal = (state = {}, action) => {
       return {
         create: true,
         edit: false,
-        modalProps: {}
+        modalProps: { index: action.index }
       }
     case 'DELETE_JOURNEYPATTERN':
       return Object.assign({}, state, { edit: false, create: false })

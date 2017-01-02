@@ -8,7 +8,7 @@ class CreateModal extends Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    this.props.saveModal(this.props.modal.modalProps.index, this.refs)
+    this.props.saveModal((this.props.journeyPatterns.length + 1), this.refs)
   }
 
   render() {
@@ -24,15 +24,50 @@ class CreateModal extends Component {
           <span className='fa fa-plus'></span> Ajouter une mission
         </button>
 
-        <div className={ (this.props.modal.create ? 'in' : '') + ' modal fade' } id='NewJourneyPatternModal'>
+        <div className={ 'modal fade ' + (this.props.modal.create ? 'in' : '') } id='NewJourneyPatternModal'>
           <div className='modal-dialog'>
             <div className='modal-content'>
               <div className='modal-header clearfix'>
                 <h4>Ajouter une mission</h4>
               </div>
+
               <div className='modal-body'>
-                le formulaire arrive...
+                {this.props.modal.create && (
+                  <form>
+                    <div className='form-group'>
+                      <label>Nom</label>
+                      <input
+                        type='text'
+                        ref='name'
+                        className='form-control'
+                        />
+                    </div>
+                    <div className='row'>
+                      <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                        <div className='form-group'>
+                          <label>Nom public</label>
+                          <input
+                            type='text'
+                            ref='published_name'
+                            className='form-control'
+                          />
+                        </div>
+                      </div>
+                      <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                        <div className='form-group'>
+                          <label>N° d'enregistrement</label>
+                          <input
+                            type='text'
+                            ref='registration_number'
+                            className='form-control'
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                )}
               </div>
+
               <div className='modal-footer'>
                 <button
                   className='btn btn-default'
