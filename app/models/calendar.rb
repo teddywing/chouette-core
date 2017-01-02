@@ -7,6 +7,8 @@ class Calendar < ActiveRecord::Base
 
   after_initialize :init_dates_and_date_ranges
 
+  scope :contains_date, ->(date) { where('date ? = any (dates) OR date ? <@ any (date_ranges)', date, date) }
+
   def init_dates_and_date_ranges
     self.dates ||= []
     self.date_ranges ||= []
@@ -29,6 +31,10 @@ class Calendar < ActiveRecord::Base
 
   def dates_uniqueness
     errors.add(:dates, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_dates')) if dates && dates.length > dates.uniq.length
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    [:contains_date]
   end
 
   class Period
@@ -78,10 +84,10 @@ class Calendar < ActiveRecord::Base
     def new_record?
       !persisted?
     end
+
     def persisted?
       id.present?
     end
-
 
     def mark_for_destruction
       self._destroy = true
@@ -153,6 +159,7 @@ class Calendar < ActiveRecord::Base
   def clear_periods
     @periods = nil
   end
+
   private :clear_periods
 
   def self.new_from from

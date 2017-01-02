@@ -4,7 +4,7 @@ class CalendarsController < BreadcrumbController
 
   private
   def calendar_params
-    params.require(:calendar).permit(:id, :name, :short_name, :shared, ranges_attributes: [:id, :begin, :end, :_destroy], dates: [])
+    params.require(:calendar).permit(:id, :name, :short_name, :shared, periods_attributes: [:id, :begin, :end, :_destroy], dates: [])
   end
 
   def sort_column
@@ -35,6 +35,7 @@ class CalendarsController < BreadcrumbController
 
     @q = current_organisation.calendars.search(params[:q])
     calendars = @q.result(distinct: true)
+    ap "FILTERED COLLECTION LENGTH : #{@q.result.length}"
     calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
     @calendars = calendars.paginate(page: params[:page])
   end

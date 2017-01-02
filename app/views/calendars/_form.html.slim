@@ -9,8 +9,8 @@
         /   = render 'date_fields', f: date
         /   .links
         /     = link_to_add_association '+', f, :dates
-        /= f.label :date_ranges
-        /= f.simple_fields_for :periods do |period|
+        = f.label :date_ranges
+        = f.simple_fields_for :periods do |period|
           = render 'period_fields', f: period
           .links
             /= link_to_add_association '+', f, :periods
