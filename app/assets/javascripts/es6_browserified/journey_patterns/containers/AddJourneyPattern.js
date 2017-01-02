@@ -16,10 +16,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     saveModal: (index, data) =>{
       dispatch(actions.saveModal(index, data))
+    },
+    onOpenCreateModal: () =>{
+      dispatch(actions.openCreateModal())
     }
-    // onOpenCreateModal: (index, journeyPattern) =>{
-    //   dispatch(actions.openCreateModal(index, journeyPattern))
-    // }
   }
 }
 

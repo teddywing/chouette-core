@@ -2,19 +2,27 @@ const modal = (state = {}, action) => {
   switch (action.type) {
     case 'EDIT_JOURNEYPATTERN_MODAL':
       return {
-        open: true,
+        edit: true,
+        create: false,
         modalProps: {
           index: action.index,
           journeyPattern: action.journeyPattern
         }
       }
+    case 'CREATE_JOURNEYPATTERN_MODAL':
+      return {
+        create: true,
+        edit: false,
+        modalProps: {}
+      }
     case 'DELETE_JOURNEYPATTERN':
-      return Object.assign({}, state, { open: false })
+      return Object.assign({}, state, { edit: false, create: false })
     case 'SAVE_MODAL':
-      return Object.assign({}, state, { open: false })
+      return Object.assign({}, state, { edit: false, create: false })
     case 'CLOSE_MODAL':
       return {
-        open: false,
+        edit: false,
+        create: false,
         modalProps: {}
       }
     default:

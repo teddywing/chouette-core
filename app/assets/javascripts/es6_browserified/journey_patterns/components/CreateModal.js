@@ -19,10 +19,12 @@ class CreateModal extends Component {
           className='btn btn-primary btn-sm'
           data-toggle='modal'
           data-target='#NewJourneyPatternModal'
+          onClick={this.props.onOpenCreateModal}
         >
           <span className='fa fa-plus'></span> Ajouter une mission
         </button>
-        <div className={ (this.props.modal.open ? 'in' : '') + ' modal fade' } id='NewJourneyPatternModal'>
+
+        <div className={ (this.props.modal.create ? 'in' : '') + ' modal fade' } id='NewJourneyPatternModal'>
           <div className='modal-dialog'>
             <div className='modal-content'>
               <div className='modal-header clearfix'>
@@ -60,6 +62,7 @@ class CreateModal extends Component {
 CreateModal.propTypes = {
   index: PropTypes.number,
   modal: PropTypes.object,
+  onOpenCreateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   saveModal: PropTypes.func.isRequired
 }
