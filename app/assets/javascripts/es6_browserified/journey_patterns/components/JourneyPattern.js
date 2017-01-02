@@ -35,7 +35,7 @@ const JourneyPattern = (props) => {
                 type='checkbox'
                 id={stopPoint.id}
                 checked={stopPoint.checked}
-                disabled={props.value.deletable ? 'true' : 'false'}
+                disabled={props.value.deletable ? 'disabled' : ''}
               ></input>
             </span>
           </li>
