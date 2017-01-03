@@ -99,7 +99,7 @@ CreateModal.propTypes = {
   modal: PropTypes.object,
   onOpenCreateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  addJourneyPattern: PropTypes.func.isRequired
+  onAddJourneyPattern: PropTypes.func.isRequired
 }
 
 module.exports = CreateModal
