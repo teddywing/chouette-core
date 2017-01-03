@@ -12,12 +12,14 @@
         = f.label :date_ranges
         = f.simple_fields_for :periods do |period|
           = render 'period_fields', f: period
-          .links
-            /= link_to_add_association '+', f, :periods
+        .links
+          = link_to_add_association '+', f, :periods
 
         .form-actions
           = f.button :submit, as: :button, class: 'btn btn-info'
           = link_to t('cancel'), calendars_path, class: 'btn btn-default'
+
+        = f.input :shared
 
 
 / TODO : cocoon

@@ -6,20 +6,28 @@ class CalendarPolicy < ApplicationPolicy
   end
 
   def show?
-    organisation_match? || share?
+    organisation_match? || record.shared
   end
 
-  def create?  ; true end
-  def update?  ; true end
-  def new?     ; true end
-  def edit?    ; true end
-  def destroy? ; true end
+  def new?     ; modify?  end
+  def create?  ; new? end
+
+  def edit?    ; modify? end
+  def update?  ; edit? end
+
+  def destroy? ; modify? end
 
   def share?
-    record.shared
+    # something like current_user.has_permission(:shared_calendar)
+    true
+  end
+
+  def modify?
+    organisation_match?
   end
 
   def organisation_match?
-    current_organisation == record.organisation
+    true
+    #current_organisation == record.organisation
   end
 end

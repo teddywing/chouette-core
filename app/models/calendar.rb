@@ -14,28 +14,7 @@ class Calendar < ActiveRecord::Base
     self.date_ranges ||= []
   end
 
-  private
-  def date_not_in_date_ranges
-    errors.add(:dates, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_date_ranges')) if dates && date_ranges && dates_and_date_ranges_overlap?
-  end
 
-  def dates_and_date_ranges_overlap?
-    overlap = false
-    dates.each do |date|
-      date_ranges.each do |date_range|
-        overlap = true if date_range.cover? date
-      end
-    end
-    overlap
-  end
-
-  def dates_uniqueness
-    errors.add(:dates, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_dates')) if dates && dates.length > dates.uniq.length
-  end
-
-  def self.ransackable_scopes(auth_object = nil)
-    [:contains_date]
-  end
 
   class Period
     include ActiveAttr::Model
@@ -166,6 +145,29 @@ class Calendar < ActiveRecord::Base
     from.dup.tap do |metadata|
       metadata.referential_id = nil
     end
+  end
+
+  private
+  def date_not_in_date_ranges
+    errors.add(:dates, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_date_ranges')) if dates && date_ranges && dates_and_date_ranges_overlap?
+  end
+
+  def dates_and_date_ranges_overlap?
+    overlap = false
+    dates.each do |date|
+      date_ranges.each do |date_range|
+        overlap = true if date_range.cover? date
+      end
+    end
+    overlap
+  end
+
+  def dates_uniqueness
+    errors.add(:dates, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_dates')) if dates && dates.length > dates.uniq.length
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    [:contains_date]
   end
 end
 

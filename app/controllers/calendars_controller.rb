@@ -2,6 +2,9 @@ class CalendarsController < BreadcrumbController
   defaults resource_class: Calendar
   before_action :check_policy, only: [:edit, :update, :destroy]
 
+  respond_to :html
+  respond_to :js, only: :index
+
   private
   def calendar_params
     params.require(:calendar).permit(:id, :name, :short_name, :shared, periods_attributes: [:id, :begin, :end, :_destroy], dates: [])
@@ -34,8 +37,7 @@ class CalendarsController < BreadcrumbController
     end
 
     @q = current_organisation.calendars.search(params[:q])
-    calendars = @q.result(distinct: true)
-    ap "FILTERED COLLECTION LENGTH : #{@q.result.length}"
+    calendars = @q.result
     calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
     @calendars = calendars.paginate(page: params[:page])
   end
