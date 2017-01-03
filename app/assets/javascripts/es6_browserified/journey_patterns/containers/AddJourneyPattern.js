@@ -14,8 +14,8 @@ const mapDispatchToProps = (dispatch) => {
     onModalClose: () =>{
       dispatch(actions.closeModal())
     },
-    saveModal: (index, data) =>{
-      dispatch(actions.saveModal(index, data))
+    onAddJourneyPattern: (index, data) =>{
+      dispatch(actions.addJourneyPattern(index, data))
     },
     onOpenCreateModal: () =>{
       dispatch(actions.openCreateModal())

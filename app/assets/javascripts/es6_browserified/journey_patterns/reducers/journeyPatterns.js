@@ -2,6 +2,18 @@ var actions = require("../actions")
 
 const journeyPattern = (state = {}, action) => {
   switch (action.type) {
+    case 'ADD_JOURNEYPATTERN':
+      const stop_points = state[0].stop_points.map((s)=>{
+        s.checked = false
+        return s
+      })
+      return {
+        name: action.data.name.value,
+        published_name: action.data.published_name.value,
+        registration_number: action.data.registration_number.value,
+        stop_points: stop_points,
+        deletable: false
+      }
     case 'UPDATE_CHECKBOX_VALUE':
       var updatedStopPoints = state.stop_points.map((s) => {
         if (s.id.toString() == action.id) {
@@ -48,31 +60,23 @@ const journeyPatterns = (state = {}, action) => {
           return j
         }
       })
+    case 'ADD_JOURNEYPATTERN':
+      return [
+        ...state,
+        journeyPattern(state, action)
+      ]
     case 'SAVE_MODAL':
-      if(action.index > 12) {
-        // Save new item
-        const newJourneyPattern = {
-          name: action.data.name.value,
-          published_name: action.data.published_name.value,
-          registration_number: action.data.registration_number.value,
-          stop_points: [],
-          deletable: false
+      return state.map((j, i) =>{
+        if(i == action.index) {
+          return Object.assign({}, j, {
+            name: action.data.name.value,
+            published_name: action.data.published_name.value,
+            registration_number: action.data.registration_number.value
+          })
+        } else {
+          return j
         }
-        return state.concat(newJourneyPattern)
-      } else {
-        // Save existing item
-        return state.map((j, i) =>{
-          if(i == action.index) {
-            return Object.assign({}, j, {
-              name: action.data.name.value,
-              published_name: action.data.published_name.value,
-              registration_number: action.data.registration_number.value
-            })
-          } else {
-            return j
-          }
-        })
-      }
+      })
     case 'SAVE_PAGE':
       actions.submitJourneyPattern(action.dispatch, state)
     default:

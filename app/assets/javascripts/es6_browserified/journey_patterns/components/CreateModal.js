@@ -8,7 +8,7 @@ class CreateModal extends Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    this.props.saveModal((this.props.journeyPatterns.length + 1), this.refs)
+    this.props.onAddJourneyPattern((this.props.journeyPatterns.length + 1), this.refs)
   }
 
   render() {
@@ -99,7 +99,7 @@ CreateModal.propTypes = {
   modal: PropTypes.object,
   onOpenCreateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  saveModal: PropTypes.func.isRequired
+  addJourneyPattern: PropTypes.func.isRequired
 }
 
 module.exports = CreateModal
