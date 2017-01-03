@@ -8,7 +8,7 @@ class Calendar < ActiveRecord::Base
 
   scope :contains_date, ->(date) { where('date ? = any (dates) OR date ? <@ any (date_ranges)', date, date) }
   scope :shared, -> { where(shared: true) }
-  scope :by_organisation(org_id), -> { where(organisation_id: org_id) }
+  scope :by_organisation, ->(org_id) { where(organisation_id: org_id) }
 
   def init_dates_and_date_ranges
     self.dates ||= []
@@ -18,8 +18,6 @@ class Calendar < ActiveRecord::Base
   def self.ransackable_scopes(auth_object = nil)
     [:contains_date]
   end
-
-  private_class_method :ransackable_scopes
 
   class Period
     include ActiveAttr::Model

@@ -1,6 +1,6 @@
 class CalendarsController < BreadcrumbController
   defaults resource_class: Calendar
-  before_action :check_policy, only: [:edit, :update, :destroy]
+  before_action :check_policy, except: [:index, :new, :create]
 
   respond_to :html
   respond_to :js, only: :index
