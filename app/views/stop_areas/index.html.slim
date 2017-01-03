@@ -1,11 +1,10 @@
 = title_tag t('stop_areas.index.title')
 
-= search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), remote: true, html: { method: :get, class: "form-inline", id: "search", role: "form"} do |f|
+= search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), remote: true, html: { method: :get, class: "form", id: "search", role: "form"} do |f|
   .panel.panel-default
     .panel-heading
       .input-group.col-md-9.col-sm-9
         = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
-
         .input-group-btn
           button.btn.btn-primary#search-btn type="submit"
             span.fa.fa-search
@@ -13,7 +12,6 @@
       a data-toggle="collapse" data-parent="#search" href="#advanced_search"
         span.fa.fa-plus
         = " #{t('.advanced_search')}"
-
       #advanced_search.panel-collapse.collapse
         .panel-body
           .row
@@ -22,7 +20,7 @@
             .col-sm-3
               = f.text_field :city_name_cont, placeholder: "#{t('.city_name')}", class: 'form-control typeahead', style: 'width: 100%'
             .col-sm-3
-              = f.select(:area_type_cont, options_from_collection_for_select(Chouette::StopArea.stop_area_types, 'name', Proc.new { |stop_area_type| t("area_types.label.#{stop_area_type}") } ), { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t(".area_type") })
+              = f.select(:area_type_cont, Chouette::StopArea.area_type.options, { include_blank: t('.area_type') }, { class: 'form-control' })
 #stop_areas
   = render 'stop_areas'
 
