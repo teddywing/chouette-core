@@ -38,6 +38,9 @@ en:
         dates: Dates
         shared: Shared
         date_ranges: Date ranges
+        date_value: Date
+        add_a_date: Add a date
+        add_a_date_range: Add a date range
         ranges:
           begin: Beginning
           end: End

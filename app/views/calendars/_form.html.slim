@@ -4,22 +4,23 @@
       = simple_form_for @calendar, html: { class: 'form-horizontal' } do |f|
         = f.input :name
         = f.input :short_name
-        / = f.label :dates
-        / = f.simple_fields_for :dates do |date|
-        /   = render 'date_fields', f: date
-        /   .links
-        /     = link_to_add_association '+', f, :dates
-        = f.label :date_ranges
-        = f.simple_fields_for :periods do |period|
-          = render 'period_fields', f: period
-        .links
-          = link_to_add_association '+', f, :periods
-
+        .form-group
+          = f.label :dates
+        .well
+          = f.simple_fields_for :date_values do |date_value|
+            = render 'date_value_fields', f: date_value
+          .links
+            = link_to_add_association t('simple_form.labels.calendar.add_a_date'), f, :date_values, class: 'btn btn-primary btn-xs'
+        .form-group
+          = f.label :date_ranges
+        .well
+          = f.simple_fields_for :periods do |period|
+            = render 'period_fields', f: period
+          .links
+            = link_to_add_association t('simple_form.labels.calendar.add_a_date_range'), f, :periods, class: 'btn btn-primary btn-xs'
+        = f.input :shared
         .form-actions
           = f.button :submit, as: :button, class: 'btn btn-info'
           = link_to t('cancel'), calendars_path, class: 'btn btn-default'
 
-        = f.input :shared
 
-
-/ TODO : cocoon

@@ -6,12 +6,28 @@ p
 p
   label => "#{Calendar.human_attribute_name('short_name')} : "
   = @calendar.short_name
-p
-  label => "#{Calendar.human_attribute_name('date_ranges')} : "
-  = @calendar.date_ranges
-p
-  label => "#{Calendar.human_attribute_name('dates')} : "
-  = @calendar.dates
+
+.row
+  .col-xs-4
+    p
+      label => "#{Calendar.human_attribute_name('dates')} : "
+      table.table.table-condensed
+        tbody
+          - @calendar.dates.each do |date|
+            tr
+              td= l date
+    p
+      label => "#{Calendar.human_attribute_name('date_ranges')} : "
+      table.table.table-condensed
+        thead
+          th= t('simple_form.labels.calendar.ranges.begin')
+          th= t('simple_form.labels.calendar.ranges.end')
+        tbody
+          - @calendar.date_ranges.each do |date_range|
+            tr
+              td= l date_range.begin
+              td= l date_range.end
+
 p
   label => "#{Calendar.human_attribute_name('shared')} : "
   = @calendar.shared

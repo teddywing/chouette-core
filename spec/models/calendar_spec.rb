@@ -15,7 +15,6 @@ RSpec.describe Calendar, :type => :model do
       expect {
         calendar.save!
       }.to raise_error(ActiveRecord::RecordInvalid)
-      expect(calendar.errors.messages[:dates]).to eq([I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_date_ranges')])
     end
 
     it 'validates that there are no duplicates in dates' do
@@ -23,7 +22,6 @@ RSpec.describe Calendar, :type => :model do
       expect {
         calendar.save!
       }.to raise_error(ActiveRecord::RecordInvalid)
-      expect(calendar.errors.messages[:dates]).to eq([I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_dates')])
     end
   end
 
@@ -110,6 +108,40 @@ RSpec.describe Calendar, :type => :model do
 
       expect(calendar.date_ranges.map { |period| period.begin..period.end }).to eq(expected_ranges)
     end
+  end
+
+  describe 'DateValue' do
+
+    subject { date_value }
+
+    def date_value(attributes = {})
+      return @date_value if attributes.empty? and @date_value
+      Calendar::DateValue.new(attributes).tap do |date_value|
+        @date_value = date_value if attributes.empty?
+      end
+    end
+
+    it 'should support mark_for_destruction (required by cocoon)' do
+      date_value.mark_for_destruction
+      expect(date_value).to be_marked_for_destruction
+    end
+
+    it 'should support _destroy attribute (required by coocon)' do
+      date_value._destroy = true
+      expect(date_value).to be_marked_for_destruction
+    end
+
+    it 'should support new_record? (required by cocoon)' do
+      expect(Calendar::DateValue.new).to be_new_record
+      expect(date_value(id: 42)).not_to be_new_record
+    end
+
+    it 'should cast value as date attribute' do
+      expect(date_value(value: '2017-01-03').value).to eq(Date.new(2017,01,03))
+    end
+
+    it { is_expected.to validate_presence_of(:value) }
+
   end
 
 end

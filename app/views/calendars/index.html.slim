@@ -21,3 +21,10 @@
 
 #calendars
   = render 'calendars'
+
+- content_for :sidebar do
+  ul.actions
+    li
+    - if policy(Calendar).create?
+      = link_to t('calendars.actions.new'), new_calendar_path, class: 'add'
+    br

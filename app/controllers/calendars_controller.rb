@@ -7,7 +7,7 @@ class CalendarsController < BreadcrumbController
 
   private
   def calendar_params
-    params.require(:calendar).permit(:id, :name, :short_name, :shared, periods_attributes: [:id, :begin, :end, :_destroy], dates: [])
+    params.require(:calendar).permit(:id, :name, :short_name, :shared, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy])
   end
 
   def sort_column
@@ -31,10 +31,6 @@ class CalendarsController < BreadcrumbController
 
   def collection
     return @calendars if @calendars
-    if params[:q]
-      params[:q].delete(:shared_eq) if params[:q][:shared_eq] == ''
-      params[:q].delete(:short_name_cont) if params[:q][:short_name_cont] == ''
-    end
 
     @q = current_organisation.calendars.search(params[:q])
     calendars = @q.result
