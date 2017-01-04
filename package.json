@@ -16,5 +16,8 @@
   "license": "MIT",
   "engines": {
     "node": ">= 0.10"
+  },
+  "devDependencies": {
+    "es6-object-assign": "^1.0.3"
   }
 }
