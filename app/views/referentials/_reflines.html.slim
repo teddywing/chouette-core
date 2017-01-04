@@ -1,7 +1,7 @@
-- if @reflines.any?
+- if @reflines && @reflines.any?
   p
     strong Lignes :
-  
+
   = table_builder @reflines,
     { 'Oid' => Proc.new { |n| n.objectid.local_id }, @reflines.human_attribute_name(:id) => 'id',
     @reflines.human_attribute_name(:number) => 'number', @reflines.human_attribute_name(:name) => 'name', @reflines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) }, @reflines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) } },
