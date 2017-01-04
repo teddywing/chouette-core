@@ -1,4 +1,4 @@
-var reducer = require('es6_browserified/reducers/todos')
+var reducer = require('es6_browserified/itineraries/reducers/todos')
 let state = []
 describe('stops reducer', () => {
   beforeEach(()=>{
@@ -120,7 +120,7 @@ describe('stops reducer', () => {
   })
 
   //TODO unskip when es6 is properly functionnal
-  xit('should handle UPDATE_INPUT_VALUE', () => {
+  it('should handle UPDATE_INPUT_VALUE', () => {
     expect(
       reducer(state, {
         type: 'UPDATE_INPUT_VALUE',
@@ -149,7 +149,7 @@ describe('stops reducer', () => {
     )
   })
 
-  xit('should handle UPDATE_SELECT_VALUE', () => {
+  it('should handle UPDATE_SELECT_VALUE', () => {
     expect(
       reducer(state, {
           type :'UPDATE_SELECT_VALUE',
@@ -160,9 +160,8 @@ describe('stops reducer', () => {
     ).toEqual(
       [
         {
-          text: 'new value',
+          text: 'first',
           index: 0,
-          stoparea_id: 1,
           for_boarding: 'prohibited',
           for_alighting: 'normal'
         },
