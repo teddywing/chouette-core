@@ -7,8 +7,6 @@ class Calendar < ActiveRecord::Base
   after_initialize :init_dates_and_date_ranges
 
   scope :contains_date, ->(date) { where('date ? = any (dates) OR date ? <@ any (date_ranges)', date, date) }
-  scope :shared, -> { where(shared: true) }
-  scope :by_organisation, ->(org_id) { where(organisation_id: org_id) }
 
   def init_dates_and_date_ranges
     self.dates ||= []
