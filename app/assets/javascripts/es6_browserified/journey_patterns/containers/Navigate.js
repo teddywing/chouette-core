@@ -4,7 +4,7 @@ var actions = require('../actions')
 
 let Navigate = ({ dispatch, journeyPatterns, page, length }) => {
   let firstPage = 1
-  let lastPage = Math.round(length / 12)
+  let lastPage = Math.ceil(length / 12)
 
   return (
     <form className='btn-group btn-group-sm' onSubmit={e => {
