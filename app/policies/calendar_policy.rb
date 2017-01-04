@@ -18,8 +18,7 @@ class CalendarPolicy < ApplicationPolicy
   def destroy? ; modify? end
 
   def share?
-    # something like current_user.has_permission(:shared_calendar)
-    true
+    user.organisation_id == 1 # FIXME
   end
 
   def modify?

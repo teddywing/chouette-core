@@ -1,13 +1,15 @@
 class CalendarsController < BreadcrumbController
   defaults resource_class: Calendar
-  before_action :check_policy, except: [:index, :new, :create]
+  before_action :check_policy, only: [:edit, :update, :destroy]
 
   respond_to :html
   respond_to :js, only: :index
 
   private
   def calendar_params
-    params.require(:calendar).permit(:id, :name, :short_name, :shared, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy])
+    permitted_params = [:id, :name, :short_name, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]
+    permitted_params << :shared if policy(Calendar).share?
+    params.require(:calendar).permit(*permitted_params)
   end
 
   def sort_column
@@ -20,7 +22,7 @@ class CalendarsController < BreadcrumbController
 
   protected
   def resource
-    @calendar = current_organisation.calendars.find_by_id(params[:id])
+    @calendar = Calendar.where('organisation_id = ? OR shared = true', current_organisation.id).find_by_id(params[:id])
   end
 
   def build_resource
@@ -32,7 +34,7 @@ class CalendarsController < BreadcrumbController
   def collection
     return @calendars if @calendars
 
-    @q = current_organisation.calendars.search(params[:q])
+    @q = Calendar.where('organisation_id = ? OR shared = true', current_organisation.id).search(params[:q])
     calendars = @q.result
     calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
     @calendars = calendars.paginate(page: params[:page])

@@ -5,13 +5,16 @@ describe 'Calendars', type: :feature do
   login_user
 
   let!(:calendars) { Array.new(2) { create :calendar, organisation_id: 1 } }
+  let!(:shared_calendar_other_org) { create :calendar, shared: true }
+  let!(:unshared_calendar_other_org) { create :calendar }
 
   describe 'index' do
     before(:each) { visit calendars_path }
 
-    it 'displays calendars' do
+    it 'displays calendars of the current organisation and shared calendars' do
       expect(page).to have_content(calendars.first.short_name)
-      expect(page).to have_content(calendars.last.short_name)
+      expect(page).to have_content(shared_calendar_other_org.short_name)
+      expect(page).not_to have_content(unshared_calendar_other_org.short_name)
     end
 
     context 'filtering' do

@@ -38,7 +38,9 @@ p
 
 - content_for(:sidebar) do
   ul.actions
-    li
-      = link_to t('calendars.actions.edit'), edit_calendar_path(@calendar), class: 'edit'
-    li
-      = link_to t('calendars.actions.destroy'), calendar_path(@calendar), method: :delete, data: { confirm: t('calendars.actions.destroy_confirm') }, class: 'remove'
+    - if policy(@calendar).edit?
+      li
+        = link_to t('calendars.actions.edit'), edit_calendar_path(@calendar), class: 'edit'
+    - if policy(@calendar).destroy?
+      li
+        = link_to t('calendars.actions.destroy'), calendar_path(@calendar), method: :delete, data: { confirm: t('calendars.actions.destroy_confirm') }, class: 'remove'

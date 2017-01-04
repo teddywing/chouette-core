@@ -18,7 +18,8 @@
             = render 'period_fields', f: period
           .links
             = link_to_add_association t('simple_form.labels.calendar.add_a_date_range'), f, :periods, class: 'btn btn-primary btn-xs'
-        = f.input :shared
+        - if policy(@calendar).share?
+          = f.input :shared
         .form-actions
           = f.button :submit, as: :button, class: 'btn btn-info'
           = link_to t('cancel'), calendars_path, class: 'btn btn-default'
