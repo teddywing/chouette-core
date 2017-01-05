@@ -1,0 +1,29 @@
+= title_tag t('.title')
+
+#calendar_search_form
+  = search_form_for @q, url: calendars_path, remote: true, html: { method: :get, class: 'form', id: 'search', role: 'form' } do |f|
+    .panel.panel-default
+      .panel-heading
+        .row
+          .col-md-3
+            = f.label Calendar.human_attribute_name(:short_name)
+            = f.search_field :short_name_cont, class: 'form-control'
+          .col-md-3
+            = f.label Calendar.human_attribute_name(:shared)
+            = f.select :shared_eq, [[t('.shared'), true], [t('.not_shared'), false]], { include_blank: '' }, { class: 'form-control', style: 'width: 100%', 'data-select2ed': 'true', 'data-select2ed-placeholder': t('.all') }
+          .col-md-3
+            = f.label Calendar.human_attribute_name(:date)
+            = f.date_field :contains_date, class: 'form-control'
+
+          .col-md-3
+            button.btn.btn-primary#search-btn type='submit'
+              span.fa.fa-search
+
+#calendars
+  = render 'calendars'
+
+- content_for :sidebar do
+  ul.actions
+    li
+      = link_to t('calendars.actions.new'), new_calendar_path, class: 'add'
+    br

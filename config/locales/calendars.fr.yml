@@ -1,0 +1,49 @@
+fr:
+  calendars:
+    actions:
+      new: Ajouter un calendrier
+      edit: Modifier cet calendrier
+      destroy: Supprimer cet calendrier
+      destroy_confirm: Etes vous sûr de supprimer cet calendrier ?
+    errors:
+      overlapped_periods: Une autre période chevauche cette période
+    index:
+      title: Calendriers
+      all: Tous
+      shared: Partagées
+      not_shared: Non partagées
+      search_no_results: Aucun calendrier ne correspond à votre recherche
+      date: Date
+    new:
+      title: Ajouter un calendrier
+    edit:
+      title: Modifier le calendrier %{calendar}
+    show:
+      title: Calendrier %{calendar}
+  simple_form:
+    labels:
+      calendar:
+        date_value: Date
+        add_a_date: Ajouter une date
+        add_a_date_range: Ajouter un intervalle de dates
+        ranges:
+          begin: Début
+          end: Fin
+  activerecord:
+    models:
+      calendar: Calendrier
+    attributes:
+      calendar:
+        name: Nom
+        short_name: Nom court
+        date_ranges: Intervalles de dates
+        dates: Dates
+        shared: Partagé
+    errors:
+      models:
+        calendar:
+          attributes:
+            dates:
+              date_in_date_ranges: Une même date ne peut pas être incluse à la fois dans la liste et dans les intervalles de dates.
+              date_in_dates: Une même date ne peut pas être incluse plusieurs fois dans la liste.
+
