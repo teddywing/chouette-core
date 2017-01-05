@@ -4,8 +4,7 @@ var ConfirmModal = require('../components/ConfirmModal')
 
 const mapStateToProps = (state) => {
   return {
-    modal: state.modal,
-    modalActions: state.confirmModal.confirmActions
+    modal: state.modal
   }
 }
 

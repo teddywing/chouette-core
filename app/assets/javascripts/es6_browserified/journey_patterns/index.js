@@ -20,10 +20,7 @@ var initialState = {
     create: false,
     confirm: false,
     modalProps: {},
-    confirmActions: {
-      accept : {},
-      cancel : {}
-    }
+    confirmModal: {}
   }
 }
 // const loggerMiddleware = createLogger()
