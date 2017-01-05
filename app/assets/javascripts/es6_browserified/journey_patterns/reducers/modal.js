@@ -2,18 +2,15 @@ const modal = (state = {}, action) => {
   switch (action.type) {
     case 'OPEN_CONFIRM_MODAL':
       return Object.assign({}, state, {
-        confirm: true,
+        type: 'confirm',
         confirmModal: {
-          confirmActions: {
-            accept: action.accept,
-            cancel: action.cancel
-          }
+          accept: action.accept,
+          cancel: action.cancel
         }
       })
     case 'EDIT_JOURNEYPATTERN_MODAL':
       return {
-        edit: true,
-        create: false,
+        type: 'edit',
         modalProps: {
           index: action.index,
           journeyPattern: action.journeyPattern
@@ -21,19 +18,16 @@ const modal = (state = {}, action) => {
       }
     case 'CREATE_JOURNEYPATTERN_MODAL':
       return {
-        create: true,
-        edit: false,
+        type: 'create',
         modalProps: { index: action.index }
       }
     case 'DELETE_JOURNEYPATTERN':
-      return Object.assign({}, state, { edit: false, create: false, confirm: false })
+      return Object.assign({}, state, { type :'' })
     case 'SAVE_MODAL':
-      return Object.assign({}, state, { edit: false, create: false, confirm: false })
+      return Object.assign({}, state, { type :''  })
     case 'CLOSE_MODAL':
       return {
-        edit: false,
-        create: false,
-        confirm: false,
+        type: '',
         modalProps: {}
       }
     default:

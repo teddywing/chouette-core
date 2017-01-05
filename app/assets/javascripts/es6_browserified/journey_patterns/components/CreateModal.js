@@ -24,7 +24,7 @@ class CreateModal extends Component {
           <span className='fa fa-plus'></span> Ajouter une mission
         </button>
 
-        <div className={ 'modal fade ' + (this.props.modal.create ? 'in' : '') } id='NewJourneyPatternModal'>
+        <div className={ 'modal fade ' + ((this.props.modal.type == 'create') ? 'in' : '') } id='NewJourneyPatternModal'>
           <div className='modal-dialog'>
             <div className='modal-content'>
               <div className='modal-header clearfix'>
@@ -32,7 +32,7 @@ class CreateModal extends Component {
               </div>
 
               <div className='modal-body'>
-                {this.props.modal.create && (
+                {(this.props.modal.type == 'create') && (
                   <form>
                     <div className='form-group'>
                       <label>Nom</label>

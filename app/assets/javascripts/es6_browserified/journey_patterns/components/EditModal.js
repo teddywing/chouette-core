@@ -13,13 +13,13 @@ class EditModal extends Component {
 
   render() {
     return (
-      <div className={ 'modal fade ' + (this.props.modal.edit ? 'in' : '') } id='JourneyPatternModal'>
+      <div className={ 'modal fade ' + ((this.props.modal.type == 'edit') ? 'in' : '') } id='JourneyPatternModal'>
         <div className='modal-dialog'>
           <div className='modal-content'>
             <div className='modal-header clearfix'>
               <h4 className='pull-left'>
                 Modifier la mission
-                {this.props.modal.open && (
+                {(this.props.modal.type == 'edit') && (
                   <em> "{this.props.modal.modalProps.journeyPattern.name}"</em>
                 )}
               </h4>
@@ -51,7 +51,7 @@ class EditModal extends Component {
               </div>
             </div>
             <div className='modal-body'>
-              {this.props.modal.edit && (
+              {(this.props.modal.type == 'edit') && (
                 <form>
                   <div className='form-group'>
                     <label>Nom</label>

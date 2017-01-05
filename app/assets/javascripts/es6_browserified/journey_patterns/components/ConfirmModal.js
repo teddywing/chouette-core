@@ -3,7 +3,7 @@ var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 
 const ConfirmModal = ({modal, onModal}) => (
-  <div className={ 'modal fade ' + (modal.confirm ? 'in' : '') } id='ConfirmModal'>
+  <div className={ 'modal fade ' + ((modal.type == 'confirm') ? 'in' : '') } id='ConfirmModal'>
     <div className='modal-dialog'>
       <div className='modal-content'>
         <div className='modal-body'>
@@ -14,7 +14,7 @@ const ConfirmModal = ({modal, onModal}) => (
             className='btn btn-default'
             data-dismiss='modal'
             type='button'
-            onClick= {() => {onModal(modal.confirmModal.confirmActions.cancel)}}
+            onClick= {() => {onModal(modal.confirmModal.cancel)}}
             >
             Annuler
           </button>
@@ -22,7 +22,7 @@ const ConfirmModal = ({modal, onModal}) => (
             className='btn btn-danger'
             data-dismiss='modal'
             type='button'
-            onClick = {() => {onModal(modal.confirmModal.confirmActions.accept)}}
+            onClick = {() => {onModal(modal.confirmModal.accept)}}
             >
             Valider
           </button>
