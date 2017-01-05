@@ -24,6 +24,13 @@ const actions = {
     id : e.currentTarget.id,
     index
   }),
+  openConfirmModal : (accept, cancel) => {
+    return {
+      type : 'OPEN_CONFIRM_MODAL',
+      accept,
+      cancel
+    }
+  },
   openEditModal : (index, journeyPattern) => ({
     type : 'EDIT_JOURNEYPATTERN_MODAL',
     index,
