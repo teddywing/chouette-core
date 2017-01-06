@@ -38,7 +38,8 @@ Apartment.configure do |config|
     "ReferentialCloning",
     "Workbench",
     "CleanUp",
-    "CleanUpResult"
+    "CleanUpResult",
+    "Calendar"
   ]
 
   # use postgres schemas?

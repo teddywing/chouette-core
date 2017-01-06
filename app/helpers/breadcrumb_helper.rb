@@ -73,6 +73,7 @@ module BreadcrumbHelper
   end
 
   def calendar_breadcrumb(action)
+    add_breadcrumb I18n.t('breadcrumbs.referentials'), referentials_path
     add_breadcrumb I18n.t('calendars.index.title'), calendars_path
     add_breadcrumb @calendar.name if %i(show edit).include? action
   end
