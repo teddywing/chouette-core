@@ -37,10 +37,9 @@ const actions = {
   openCreateModal : () => ({
     type : 'CREATE_JOURNEYPATTERN_MODAL'
   }),
-  deleteJourneyPattern : (index, journeyPattern) => ({
+  deleteJourneyPattern : (index) => ({
     type : 'DELETE_JOURNEYPATTERN',
     index,
-    journeyPattern
   }),
   closeModal : () => ({
     type : 'CLOSE_MODAL'

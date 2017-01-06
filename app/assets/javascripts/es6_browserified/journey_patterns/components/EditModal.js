@@ -41,7 +41,7 @@ class EditModal extends Component {
                       data-dismiss='modal'
                       onClick={(e) => {
                         e.preventDefault()
-                        this.props.onDeleteJourneyPattern(this.props.modal.modalProps.index, this.props.modal.modalProps.journeyPattern)}
+                        this.props.onDeleteJourneyPattern(this.props.modal.modalProps.index)}
                       }
                       >
                       Supprimer la mission

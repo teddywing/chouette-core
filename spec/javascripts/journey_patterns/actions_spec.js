@@ -93,13 +93,11 @@ describe('when clicking on close button inside edit or add modal', () => {
 describe('when clicking on a journey pattern delete button', () => {
   it('should create an action to delete journey pattern', () => {
     const index = 1
-    const journeyPattern = {}
     const expectedAction = {
       type: 'DELETE_JOURNEYPATTERN',
-      index,
-      journeyPattern
+      index
     }
-    expect(actions.deleteJourneyPattern(index, journeyPattern)).toEqual(expectedAction)
+    expect(actions.deleteJourneyPattern(index)).toEqual(expectedAction)
   })
 })
 describe('when clicking on validate button inside edit modal', () => {
