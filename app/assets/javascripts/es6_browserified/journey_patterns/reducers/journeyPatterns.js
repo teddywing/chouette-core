@@ -28,7 +28,7 @@ const journeyPattern = (state = {}, action) => {
   }
 }
 
-const journeyPatterns = (state = {}, action) => {
+const journeyPatterns = (state = [], action) => {
   switch (action.type) {
     case 'RECEIVE_JOURNEY_PATTERNS':
       return [...action.json]
