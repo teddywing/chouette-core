@@ -135,6 +135,7 @@ describe('stops reducer', () => {
         {
           text: 'new value',
           index: 0,
+          stoppoint_id: '',
           stoparea_id: 1,
           for_boarding: 'normal',
           for_alighting: 'normal'
