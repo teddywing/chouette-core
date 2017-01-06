@@ -16,7 +16,7 @@ const journeyPattern = (state = {}, action) => {
       }
     case 'UPDATE_CHECKBOX_VALUE':
       var updatedStopPoints = state.stop_points.map((s) => {
-        if (s.id.toString() == action.id) {
+        if (String(s.id) == action.id) {
           return Object.assign({}, s, {checked : !s.checked})
         }else {
           return s
