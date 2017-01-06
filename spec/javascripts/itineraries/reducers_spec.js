@@ -119,7 +119,6 @@ describe('stops reducer', () => {
     )
   })
 
-  //TODO unskip when es6 is properly functionnal
   it('should handle UPDATE_INPUT_VALUE', () => {
     expect(
       reducer(state, {
@@ -127,7 +126,8 @@ describe('stops reducer', () => {
         index: 0,
         text: {
           text: "new value",
-          stoparea_id: 1
+          stoparea_id: 1,
+          user_objectid: "1234"
         }
       })
     ).toEqual(
@@ -138,7 +138,8 @@ describe('stops reducer', () => {
           stoppoint_id: '',
           stoparea_id: 1,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          user_objectid: "1234"
         },
         {
           text: 'second',
