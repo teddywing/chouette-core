@@ -5,9 +5,11 @@
     = form.input :tag_search, as: :tags, :input_html => { :id => "tag_search",:placeholder => t("formtastic.placeholders.time_table.tag_search") }
     = form.input :tag_list, as: :hidden, :input_html => { :id => "tag_list" }
     = form.input :objectid, :required => !@time_table.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.objectid")}
-  
+    - if @time_table.new_record?
+      = form.input :calendar, as: :select, collection: current_organisation.calendars
+
   h3.time_table_periods = @time_table.human_attribute_name("periods")
-  
+
   #periods_content
     = form.inputs class: 'day_type' do
       label.day_type_label = @time_table.human_attribute_name("day_types")
@@ -24,7 +26,7 @@
         == render "period_fields",  :f => p
 
     = link_to_add_association t("time_tables.actions.add_period"), form, :periods , :"data-association-insertion-method" => "append", :"data-association-insertion-node" => "div#periods"
-  
+
   h3.time_table_dates = @time_table.human_attribute_name("dates")
 
   #dates_content
@@ -53,9 +55,9 @@ javascript:
   $("#tag_search").tagsManager({
     prefilled: items,
     output: '#tag_list',
-    tagsContainer: '#tagsContainer' 
+    tagsContainer: '#tagsContainer'
   });
-  
+
   var time_tables_tag_list = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,

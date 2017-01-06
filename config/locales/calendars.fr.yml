@@ -1,6 +1,7 @@
 fr:
   calendars:
     standard_calendars: Calendriers standards
+    standard_calendar: Calendrier standard
     actions:
       new: Ajouter un calendrier
       edit: Modifier cet calendrier

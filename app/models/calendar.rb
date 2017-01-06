@@ -1,5 +1,6 @@
 class Calendar < ActiveRecord::Base
   belongs_to :organisation
+  has_many :time_tables
 
   validates_presence_of :name, :short_name, :organisation
   validates_uniqueness_of :short_name

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161228092957) do
+ActiveRecord::Schema.define(version: 20170106135000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -644,8 +644,10 @@ ActiveRecord::Schema.define(version: 20161228092957) do
     t.integer  "int_day_types",  default: 0
     t.date     "start_date"
     t.date     "end_date"
+    t.integer  "calendar_id"
   end
 
+  add_index "time_tables", ["calendar_id"], :name => "index_time_tables_on_calendar_id"
   add_index "time_tables", ["objectid"], :name => "time_tables_objectid_key", :unique => true
 
   create_table "time_tables_vehicle_journeys", id: false, force: true do |t|
