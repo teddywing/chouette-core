@@ -18,7 +18,7 @@ class CalendarPolicy < ApplicationPolicy
   def destroy? ; modify? end
 
   def share?
-    user.organisation_id == 1 # FIXME
+    user.organisation.name == 'STIF' # FIXME
   end
 
   def modify?
