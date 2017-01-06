@@ -8,7 +8,7 @@ class CreateModal extends Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    this.props.onAddJourneyPattern((this.props.journeyPatterns.length + 1), this.refs)
+    this.props.onAddJourneyPattern(this.refs)
   }
 
   render() {

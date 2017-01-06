@@ -50,10 +50,9 @@ const actions = {
     data,
     index
   }),
-  addJourneyPattern : (index, data) => ({
+  addJourneyPattern : (data) => ({
     type: 'ADD_JOURNEYPATTERN',
     data,
-    index
   }),
   savePage : (dispatch, currentPage) => ({
     type: 'SAVE_PAGE',
