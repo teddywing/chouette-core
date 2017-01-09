@@ -11,7 +11,8 @@ let fakeJourneyPattern = {
   deletable: false
 }
 
-const accept = cancel = function(){}
+const accept = function(){}
+const cancel = function(){}
 
 describe('modal reducer', () => {
   beforeEach(() => {
