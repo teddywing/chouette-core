@@ -2,29 +2,29 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 
-const ConfirmModal = ({modal, onModal}) => (
+const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, journeyPatterns}) => (
   <div className={ 'modal fade ' + ((modal.type == 'confirm') ? 'in' : '') } id='ConfirmModal'>
     <div className='modal-dialog'>
       <div className='modal-content'>
         <div className='modal-body'>
-          <p> Voulez-vous sauver vos modifications avant de blabblabla? </p>
+          <p> Voulez-vous enregistrer vos modifications avant de changer de page? </p>
         </div>
         <div className='modal-footer'>
           <button
             className='btn btn-default'
             data-dismiss='modal'
             type='button'
-            onClick= {() => {onModal(modal.confirmModal.cancel)}}
+            onClick= {() => {onModalCancel(modal.confirmModal.cancel)}}
             >
-            Annuler
+            Ne pas enregistrer
           </button>
           <button
             className='btn btn-danger'
             data-dismiss='modal'
             type='button'
-            onClick = {() => {onModal(modal.confirmModal.accept)}}
+            onClick = {() => {onModalAccept(modal.confirmModal.accept, journeyPatterns)}}
             >
-            Valider
+            Enregistrer
           </button>
         </div>
       </div>
@@ -34,7 +34,8 @@ const ConfirmModal = ({modal, onModal}) => (
 
 ConfirmModal.propTypes = {
   modal: PropTypes.object.isRequired,
-  onModal: PropTypes.func.isRequired
+  onModalAccept: PropTypes.func.isRequired,
+  onModalCancel: PropTypes.func.isRequired
 }
 
 module.exports = ConfirmModal

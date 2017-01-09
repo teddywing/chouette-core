@@ -57,7 +57,7 @@ const actions = {
     type: 'SAVE_PAGE',
     dispatch
   }),
-  submitJourneyPattern : (dispatch, state) => {
+  submitJourneyPattern : (dispatch, state, next) => {
     let urlJSON = window.location.pathname + ".json"
     let req = new Request(urlJSON, {
       credentials: 'same-origin',
@@ -72,8 +72,11 @@ const actions = {
     fetch(req)
       .then(response => response.json())
       .then((json) => {
-        console.log('request for submit')
-        // dispatch(actions.receiveJourneyPatterns(journeyPatterns))
+        if(next){
+          dispatch(next)
+        }else{
+          dispatch(actions.receiveJourneyPatterns(json))
+        }
       })
   },
   fetchJourneyPatterns : (dispatch, currentPage, nextPage) => {

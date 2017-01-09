@@ -3,7 +3,8 @@ var actions = require("../actions")
 const journeyPattern = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_JOURNEYPATTERN':
-      const stop_points = state[0].stop_points.map((s)=>{
+      let stopPoints = JSON.parse(JSON.stringify(state[0].stop_points))
+      stopPoints.map((s)=>{
         s.checked = false
         return s
       })
@@ -11,7 +12,7 @@ const journeyPattern = (state = {}, action) => {
         name: action.data.name.value,
         published_name: action.data.published_name.value,
         registration_number: action.data.registration_number.value,
-        stop_points: stop_points,
+        stop_points: stopPoints,
         deletable: false
       }
     case 'UPDATE_CHECKBOX_VALUE':
