@@ -8,8 +8,9 @@ class LinePolicy < ApplicationPolicy
   def create?
     false
   end
-  def update?  ; true end
+  def update?  ; false end
   def new?     ; create? end
-  def edit?    ; true end
+  def edit?    ; false end
   def destroy? ; create? end
+  def update_footnote?; true end
 end

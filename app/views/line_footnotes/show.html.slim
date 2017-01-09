@@ -1,0 +1,15 @@
+h2
+  = t('lines.show.title', line: @line.name)
+.line_show
+    p
+      label = "#{@line.human_attribute_name('footnotes')} : "
+      ul
+        - @line.footnotes.each do |footnote|
+          li = "#{footnote.code} : #{footnote.label}"
+
+
+- content_for :sidebar do
+  ul.actions
+    - if policy(@line).update_footnote?
+      li
+        = link_to t('lines.actions.edit_footnotes'), edit_referential_line_footnotes_path(@referential, @line), class: 'edit'

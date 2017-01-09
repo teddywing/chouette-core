@@ -1,0 +1,10 @@
+= title_tag Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr)
+
+= link_to t('routing_constraint_zones.actions.new'), new_referential_line_routing_constraint_zone_path
+
+- if @routing_constraint_zones.any?
+  = table_builder @routing_constraint_zones,
+    { @routing_constraint_zones.human_attribute_name(:name) => 'name' },
+    [:show, :edit, :delete],
+    'table table-bordered'
+

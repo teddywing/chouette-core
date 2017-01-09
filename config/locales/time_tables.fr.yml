@@ -42,7 +42,7 @@ fr:
       selected_date: "Date incluse directement"
       selected_period: "Date incluse par période"
     properties_show:
-      resume: "Validité comprise du %{start_date} au %{end_date}" 
+      resume: "Validité comprise du %{start_date} au %{end_date}"
       resume_empty: "Calendrier vide"
     index:
       comment: "Recherche par nom"
@@ -88,6 +88,7 @@ fr:
         period_end: "au"
         tag_search: "Etiquettes"
         tag_list: "Etiquettes"
+        calendar: Calendrier
   formtastic:
     titles:
       time_table:

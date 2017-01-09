@@ -23,6 +23,8 @@ class Chouette::Line < Chouette::ActiveRecord
   has_many :footnotes, :inverse_of => :line, :validate => :true, :dependent => :destroy
   accepts_nested_attributes_for :footnotes, :reject_if => :all_blank, :allow_destroy => true
 
+  has_many :routing_constraint_zones
+
   attr_reader :group_of_line_tokens
 
   # validates_presence_of :network

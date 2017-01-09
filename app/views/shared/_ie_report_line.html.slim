@@ -40,7 +40,7 @@ p.lead
       - line_items.each_with_index do |line_item, index|
         tr
           td data-value="#{line_item.status}"
-            = line_item.status ? font_awesome_classic_tag(fa-check) : font_awesome_classic_tag(fa-times)
+            = line_item.status ? font_awesome_classic_tag('fa-check') : font_awesome_classic_tag('fa-times')
 
           td = line_item.name
           td

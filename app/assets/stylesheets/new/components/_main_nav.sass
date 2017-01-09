@@ -1,0 +1,132 @@
+#main_nav
+  display: block
+  // To avoid white spaces between childrend inline-block
+  letter-spacing: -0.31em
+  text-rendering: optimizespeed
+  font-weight: 300
+  height: 50px
+  width: 100%
+  background-color: #fafafa
+  border-bottom: 1px solid darken(#fafafa, 10%)
+  // Main nav is fixed to top
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  z-index: 999
+
+  > *
+    display: inline-block
+    // To avoid white spaces between children inline-block
+    letter-spacing: normal
+    word-spacing: normal
+    text-rendering: auto
+    overflow: hidden
+    vertical-align: middle
+    height: 49px
+    width: calc(100% - 200px)
+    padding: 15px
+
+  .nav-menu
+    width: 50px
+    text-align: center
+    background-color: #fff
+    border-right: 1px solid darken(#fafafa, 10%)
+    cursor: pointer
+
+  .nav-right
+    padding: 0
+    margin: 0
+    width: 150px
+
+    > li
+      display: inline-block
+      text-align: center
+
+      > a
+        display: block
+        border-left: 1px solid darken(#fafafa, 10%)
+        padding: 15px
+        width: 50px
+        height: 50px
+
+#main_nav .nav-menu
+  padding: 0
+
+  .toggleMenu
+    display: inline-block
+    padding: 15px
+    transform: rotate(0deg)
+    transition: 0.3s
+    font: normal normal normal 14px/1 FontAwesome
+    text-rendering: auto
+    -webkit-font-smoothing: antialiased
+    font-size: 1.3333em
+    list-style: 0.75em
+    visibility: -15%
+
+    &:before
+      content: '\f0c9'
+
+  .menu-content
+    display: block
+    text-align: left
+    width: 280px
+    margin: 0 0 0 -280px
+    padding: 0
+    position: fixed
+    z-index: 998
+    top: 50px
+    left: 0
+    bottom: 0
+    border-right: 1px solid darken(#fafafa, 10%)
+    background-color: #fff
+    transition: 0.3s
+
+    > li > a
+      display: block
+      border-bottom: 1px solid darken(#fafafa, 10%)
+
+  &.open
+    .toggleMenu
+      transform: rotate(-90deg)
+
+    .menu-content
+      margin-left: 0
+
+  // Details of menu-content list items
+  .menu-content
+    .brand
+      display: block
+      padding: 15px
+      border-bottom: 1px solid darken(#fafafa, 10%)
+
+      .brandname
+        font-size: 1.5em
+
+    .mc-item
+      .mci-icon
+        display: inline-block
+        vertical-align: middle
+        padding: 15px
+        width: 50px
+
+      .mci-desc
+        display: inline-block
+        vertical-align: middle
+        padding: 15px
+        width: calc(100% - 50px)
+        border-left: 1px solid darken(#fafafa, 10%)
+
+        h4
+          margin: 0
+
+          + *
+            display: inline-block
+            margin-top: 0.5em
+
+#main_nav .breadcrumb
+  padding: 0
+  margin: 0
+  background-color: transparent
+  border-radius: none

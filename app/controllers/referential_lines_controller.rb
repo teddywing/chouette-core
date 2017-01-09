@@ -1,4 +1,5 @@
 class ReferentialLinesController < ChouetteController
+  before_action :check_policy, :only => [:edit, :update, :destroy]
 
   defaults :resource_class => Chouette::Line, :collection_name => 'lines', :instance_name => 'line'
   respond_to :html
@@ -76,10 +77,27 @@ class ReferentialLinesController < ChouetteController
     end
 
     @q = referential.lines.search(params[:q])
-    @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+
+    if sort_column && sort_direction
+      @lines ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page]).includes([:network, :company])
+    else
+      @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+    end
+
   end
 
   private
+
+  def sort_column
+    referential.lines.column_names.include?(params[:sort]) ? params[:sort] : 'number'
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  def check_policy
+    authorize resource
+  end
 
   def line_params
     params.require(:line).permit(
@@ -105,8 +123,8 @@ class ReferentialLinesController < ChouetteController
       :url,
       :color,
       :text_color,
-      :stable_id,
-      { footnotes_attributes: [ :code, :label, :_destroy, :id ] } )
+      :stable_id
+      )
   end
 
 end

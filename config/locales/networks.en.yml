@@ -1,5 +1,6 @@
 en:
   networks: &en_networks
+    search_no_results: "No network matching your query"
     actions:
       new: "Add a new network"
       edit: "Edit this network"
@@ -62,5 +63,11 @@ en:
           name: "maximum 75 characters"
           registration_number: "Positif integer, unique key, of no more than 8 digits."
           objectid: "[prefix]:PTNetwork:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character. Maximum length of the unique key = 3."
+
+  table:
+    show: Show
+    edit: Edit
+    delete: Delete
+
   referential_networks:
     <<: *en_networks

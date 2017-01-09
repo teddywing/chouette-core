@@ -1,9 +1,11 @@
-.page_info
-  span.search = t("will_paginate.page_entries_info.search")
-  = page_entries_info @stop_areas
+- if @stop_areas.any?
+  = table_builder @stop_areas,
+    { 'Object_id' => 'objectid', @stop_areas.human_attribute_name(:name) => 'name', @stop_areas.human_attribute_name(:registration_number) => 'registration_number', @stop_areas.human_attribute_name(:city_name) => 'city_name', @stop_areas.human_attribute_name(:zip_code) => 'zip_code' },
+    [:show, :edit, :delete],
+    'table table-bordered'
 
-.stop_areas.paginated_content
-  = paginated_content(@stop_areas)
+  .text-center
+    = will_paginate @stop_areas, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
 
-.pagination
-  = will_paginate @stop_areas, :container => false, renderer: RemoteBootstrapPaginationLinkRenderer
+- else
+  = replacement_msg t('stop_areas.search_no_results')

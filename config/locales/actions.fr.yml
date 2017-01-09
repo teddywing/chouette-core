@@ -4,8 +4,10 @@ fr:
     destroy: "Supprimer"
     search: "Chercher"
     add: "Ajouter"
+    show: "Voir"
   or: "ou"
   cancel: "Annuler"
   search_hint: "Entrez un texte à rechercher"
   no_result_text: "Aucun résultat"
   searching_term: "Recherche en cours..."
+  are_you_sure: Etes vous sûr ?

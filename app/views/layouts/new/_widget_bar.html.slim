@@ -1,0 +1,36 @@
+#widget_bar
+  .toggleWidgets title='Toggle widget bar'
+
+  #widgets.panel-group.widget-list
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title
+          = link_to '#widgetOne', data: { toggle: 'collapse', parent: '#widgets' }, 'aria-expanded' => 'true' do
+            |Item #1
+
+      #widgetOne.panel-collapse.collapse.in
+        .panel-body
+          p
+            |Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title
+          = link_to '#widgetTwo', data: { toggle: 'collapse', parent: '#widgets' }, 'aria-expanded' => 'false' do
+            |Item #2
+
+      #widgetTwo.panel-collapse.collapse
+        .panel-body
+          p
+            |Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title
+          = link_to '#widgetThree', data: { toggle: 'collapse', parent: '#widgets' }, 'aria-expanded' => 'false' do
+            |Item #3
+
+      #widgetThree.panel-collapse.collapse
+        .panel-body
+          p
+            |Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

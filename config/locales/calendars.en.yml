@@ -1,0 +1,50 @@
+en:
+  calendars:
+    standard_calendars: Standard calendars
+    standard_calendar: Standard calendar
+    actions:
+      new: Add a new calendar
+      edit: Edit this calendar
+      destroy: Remove this calendar
+      destroy_confirm: Are you sure you want destroy this calendar?
+    errors:
+      overlapped_periods: Another period is overlapped with this period
+    index:
+      title: Calendars
+      all: All
+      shared: Shared
+      not_shared: Not shared
+      search_no_results: No calendar matching your query
+      date: Date
+    new:
+      title: Add a new calendar
+    edit:
+      title: Update calendar %{calendar}
+    show:
+      title: Calendar %{calendar}
+  simple_form:
+    labels:
+      calendar:
+        date_value: Date
+        add_a_date: Add a date
+        add_a_date_range: Add a date range
+        ranges:
+          begin: Beginning
+          end: End
+  activerecord:
+    models:
+      calendar: Calendar
+    attributes:
+      calendar:
+        name: Name
+        short_name: Short name
+        date_ranges: Date ranges
+        dates: Dates
+        shared: Shared
+    errors:
+      models:
+        calendar:
+          attributes:
+            dates:
+              date_in_date_ranges: A date can not be in Dates and in Date ranges.
+              date_in_dates: A date can appear only once in the list of dates.

@@ -1,0 +1,18 @@
+= title_tag @routing_constraint_zone.name
+
+p
+  label => "#{@routing_constraint_zone.human_attribute_name(:name)} : "
+  = @routing_constraint_zone.name
+
+p
+  label => "#{Chouette::Line.model_name.human.capitalize} : "
+  = link_to @routing_constraint_zone.line.name, referential_line_path(@referential, @line)
+
+p
+  label => "#{Chouette::StopArea.model_name.human.pluralize.capitalize} : "
+  br
+  - @routing_constraint_zone.stop_areas.each do |stop_area|
+    = link_to stop_area.name, referential_stop_area_path(@referential, stop_area)
+    br
+
+

@@ -67,6 +67,8 @@ ChouetteIhm::Application.routes.draw do
     resources :networks
   end
 
+  resources :calendars
+
   resources :referentials do
     resources :api_keys
     resources :autocomplete_stop_areas
@@ -89,6 +91,7 @@ ChouetteIhm::Application.routes.draw do
 
     match 'lines' => 'lines#destroy_all', :via => :delete
     resources :lines, controller: "referential_lines" do
+      resource :footnotes, controller: "line_footnotes"
       delete :index, on: :collection, action: :delete_all
       collection do
         get 'name_filter'
@@ -98,10 +101,9 @@ ChouetteIhm::Application.routes.draw do
           get 'edit_boarding_alighting'
           put 'save_boarding_alighting'
         end
+        resource :journey_patterns_collection, :only => [:show, :update]
         resources :journey_patterns do
-          member do
-            get 'new_vehicle_journey'
-          end
+          get 'new_vehicle_journey', on: :member
           resource :route_sections_selector, path: 'sections' do
             post 'selection'
           end
@@ -114,6 +116,7 @@ ChouetteIhm::Application.routes.draw do
         resources :vehicle_journey_imports
         resources :vehicle_journey_exports
       end
+      resources :routing_constraint_zones
     end
 
     resources :import_tasks, :only => [:new, :create]

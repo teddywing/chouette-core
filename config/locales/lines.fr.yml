@@ -1,8 +1,10 @@
 fr:
   lines: &fr_lines
+    search_no_results: "Aucune ligne ne correspond à votre recherche"
     actions:
       new: "Ajouter une ligne"
       edit: "Modifier cette ligne"
+      edit_footnotes: "Modifier notes en bas de page"
       destroy: "Supprimer cette ligne"
       destroy_confirm: "Etes vous sûr de supprimer cette ligne ?"
       destroy_selection_confirm: "Etes vous sûr de supprimer cette sélection de lignes ?"

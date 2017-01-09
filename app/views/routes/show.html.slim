@@ -63,14 +63,32 @@ p.after_map
           div style='display: inline-block;width: 90%;vertical-align: middle;'
             = linktxt
 
-/ .panel.panel-default
-/   .panel-heading
-/     h4.panel-title
-/       strong = t('.journey_patterns')
-/ 
-/   .panel-body
-/     .journey_patterns.paginated_content
-/       = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
+.panel.panel-default#journey_patterns
+  .panel-heading
+    h4.panel-title
+      strong = t('.journey_patterns')
+ 
+  .list-group
+    - @route.journey_patterns.each do |journey_pattern|
+      .list-group-item.clearfix title="#{t('journey_patterns.journey_pattern.stop_count', count: journey_pattern.stop_points.count, route_count: @route.stop_points.count)} | #{t('journey_patterns.journey_pattern.vehicle_journeys_count', count: journey_pattern.vehicle_journeys.count)}"
+        span.label.label-default style='margin-right: 10px;' = journey_pattern.objectid.local_id
+        strong = "#{journey_name(journey_pattern)} "
+
+        - unless journey_pattern.stop_points.empty?
+          em.small
+            = t('journey_patterns.journey_pattern.from_to', departure: journey_pattern.stop_points.first.stop_area.name, arrival: journey_pattern.stop_points.last.stop_area.name)
+
+        .btn-group.btn-group-xs.pull-right
+          .btn.btn-primary.dropdown-toggle data-toggle='dropdown'
+            span.fa.fa-bars
+            span.caret
+          ul.dropdown-menu
+            li = link_to 'Voir', [@referential, @line, @route, journey_pattern], title: "#{Chouette::JourneyPattern.model_name.human.capitalize} #{journey_name(journey_pattern)}"
+            li = link_to 'Supprimer', referential_line_route_journey_pattern_path(@referential, @line, @route, journey_pattern), method: :delete, data: {confirm: t('journey_patterns.actions.destroy_confirm')}
+      
+  / .panel-body
+  /   .journey_patterns.paginated_content
+  /     = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
 
 - content_for :sidebar do
   ul.actions
@@ -86,6 +104,7 @@ p.after_map
     /   li = link_to t('routes.actions.edit_boarding_alighting'), edit_boarding_alighting_referential_line_route_path(@referential, @line, @route), class: 'edit'
 
     - if @route.journey_patterns.size > 0
+      li = link_to t('journey_patterns.actions.edit_journey_patterns_collection'), [@referential, @line, @route, :journey_patterns_collection], class: 'edit'
       li = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'clock'
 
   / ul.actions

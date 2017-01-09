@@ -4,9 +4,11 @@ en:
     destroy: "Destroy"
     search: "Search"
     add: "Add new"
+    show: "See"
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"
   no_result_text: "No Results"
   searching_term: "Searching..."
+  are_you_sure: Are you sure?
 

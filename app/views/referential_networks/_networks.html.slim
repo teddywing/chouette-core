@@ -1,9 +1,11 @@
-.page_info
-  span.search = t('will_paginate.page_entries_info.search')
-  = page_entries_info @networks
+- if @networks.any?
+  = table_builder @networks,
+    { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, Chouette::Network.human_attribute_name(:name) => 'name' },
+    [:show, :edit, :delete],
+    'table table-bordered'
 
-.networks.paginated_content
-  = paginated_content(@networks)
+  .text-center
+    = will_paginate @networks, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
 
-.pagination
-  = will_paginate @networks, :container => false, renderer: RemoteBootstrapPaginationLinkRenderer
+- else
+  = replacement_msg t('networks.search_no_results')

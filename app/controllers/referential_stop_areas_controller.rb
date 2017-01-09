@@ -120,15 +120,36 @@ class ReferentialStopAreasController  < ChouetteController
 
   def collection
     @q = parent.present? ? parent.stop_areas.search(params[:q]) : referential.stop_areas.search(params[:q])
-    @stop_areas ||=
-      begin
-        stop_areas = @q.result(:distinct => true).order(:name)
-        stop_areas = stop_areas.paginate(:page => params[:page], :per_page => @per_page) if @per_page.present?
-        stop_areas
-      end
+
+    if sort_column && sort_direction
+      @stop_areas ||=
+        begin
+          stop_areas = @q.result(:distinct => true).order(sort_column + ' ' + sort_direction)
+          stop_areas = stop_areas.paginate(:page => params[:page], :per_page => @per_page) if @per_page.present?
+          stop_areas
+        end
+    else
+      @stop_areas ||=
+        begin
+          stop_areas = @q.result(:distinct => true).order(:name)
+          stop_areas = stop_areas.paginate(:page => params[:page], :per_page => @per_page) if @per_page.present?
+          stop_areas
+        end
+    end
   end
 
   private
+
+  def sort_column
+    if parent.present?
+      parent.stop_areas.include?(params[:sort]) ? params[:sort] : 'name'
+    else
+      referential.stop_areas.include?(params[:sort]) ? params[:sort] : 'name'
+    end
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
 
   def stop_area_params
     params.require(:stop_area).permit( :routing_stop_ids, :routing_line_ids, :children_ids, :stop_area_type, :parent_id, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :area_type, :registration_number, :nearest_topic_name, :fare_code, :longitude, :latitude, :long_lat_type, :country_code, :street_name, :zip_code, :city_name, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :coordinates, :url, :time_zone )

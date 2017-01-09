@@ -1,0 +1,16 @@
+.nested-fields
+  - if f.object.errors.has_key? :base
+    .row
+      .col-lg-12
+        .alert.alert-danger
+          - f.object.errors[:base].each do |message|
+            p.small = message
+  .row
+    .col-xs-4
+      = f.input :begin, as: :date, html5: true, label: t('simple_form.labels.calendar.ranges.begin')
+    .col-xs-3
+      = f.input :end, as: :date, html5: true, label: t('simple_form.labels.calendar.ranges.end')
+    .col-xs-1.text-right#delete-btn
+      = link_to_remove_association f, class: 'btn btn-danger', data: { confirm: t('are_you_sure') } do
+        span.fa.fa-trash
+

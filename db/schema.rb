@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161118101544) do
+ActiveRecord::Schema.define(version: 20170106135000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,20 @@ ActiveRecord::Schema.define(version: 20161118101544) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "calendars", force: true do |t|
+    t.string    "name"
+    t.string    "short_name"
+    t.daterange "date_ranges",     array: true
+    t.date      "dates",           array: true
+    t.boolean   "shared"
+    t.integer   "organisation_id"
+    t.datetime  "created_at"
+    t.datetime  "updated_at"
+  end
+
+  add_index "calendars", ["organisation_id"], :name => "index_calendars_on_organisation_id"
+  add_index "calendars", ["short_name"], :name => "index_calendars_on_short_name", :unique => true
 
   create_table "clean_up_results", force: true do |t|
     t.string   "message_key"
@@ -146,6 +160,22 @@ ActiveRecord::Schema.define(version: 20161118101544) do
   end
 
   add_index "connection_links", ["objectid"], :name => "connection_links_objectid_key", :unique => true
+
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0
+    t.integer  "attempts",   default: 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "exports", force: true do |t|
     t.integer  "referential_id",  limit: 8
@@ -466,6 +496,20 @@ ActiveRecord::Schema.define(version: 20161118101544) do
 
   add_index "routes", ["objectid"], :name => "routes_objectid_key", :unique => true
 
+  create_table "routing_constraint_zones", force: true do |t|
+    t.string   "name"
+    t.integer  "stop_area_ids",               array: true
+    t.integer  "line_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "objectid",       null: false
+    t.integer  "object_version"
+    t.datetime "creation_time"
+    t.string   "creator_id"
+  end
+
+  add_index "routing_constraint_zones", ["line_id"], :name => "index_routing_constraint_zones_on_line_id"
+
   create_table "routing_constraints_lines", id: false, force: true do |t|
     t.integer "stop_area_id", limit: 8
     t.integer "line_id",      limit: 8
@@ -616,8 +660,10 @@ ActiveRecord::Schema.define(version: 20161118101544) do
     t.integer  "int_day_types",  default: 0
     t.date     "start_date"
     t.date     "end_date"
+    t.integer  "calendar_id"
   end
 
+  add_index "time_tables", ["calendar_id"], :name => "index_time_tables_on_calendar_id"
   add_index "time_tables", ["objectid"], :name => "time_tables_objectid_key", :unique => true
 
   create_table "time_tables_vehicle_journeys", id: false, force: true do |t|
@@ -731,6 +777,8 @@ ActiveRecord::Schema.define(version: 20161118101544) do
   add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
+  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
+
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify

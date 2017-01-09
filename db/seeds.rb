@@ -7,19 +7,30 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 
+
+stop_area_referential = StopAreaReferential.find_or_create_by(name: "Reflex")
+line_referential      = LineReferential.find_or_create_by(name: "CodifLigne")
+
 stif = Organisation.find_or_create_by!(name: "STIF") do |org|
   org.code = 'STIF'
 end
+operator = Organisation.find_or_create_by!(code: 'transporteur-a') do |organisation|
+  organisation.name = "Transporteur A"
+end
+
+line_referential.add_member stif, owner: true
+line_referential.add_member operator
+
+stop_area_referential.add_member stif, owner: true
+stop_area_referential.add_member operator
+
+line_referential.save
+stop_area_referential.save
 
 stif.users.find_or_create_by!(username: "admin") do |user|
   user.email = 'stif-boiv@af83.com'
   user.password = "secret"
   user.name = "STIF Administrateur"
-end
-
-
-operator = Organisation.find_or_create_by!(code: 'transporteur-a') do |organisation|
-  organisation.name = "Transporteur A"
 end
 
 operator.users.find_or_create_by!(username: "transporteur") do |user|
@@ -28,18 +39,8 @@ operator.users.find_or_create_by!(username: "transporteur") do |user|
   user.name = "Martin Lejeune"
 end
 
-stop_area_referential = StopAreaReferential.find_or_create_by(name: "Reflex") do |referential|
-  referential.add_member stif, owner: true
-  referential.add_member operator
-end
-
 10.times do |n|
   stop_area_referential.stop_areas.find_or_create_by name: "Test #{n}", area_type: "Quay", objectid: "StopArea: #{n}"
-end
-
-line_referential = LineReferential.find_or_create_by(name: "CodifLigne") do |referential|
-  referential.add_member stif, owner: true
-  referential.add_member operator
 end
 
 LineReferentialSync.find_or_create_by(line_referential: line_referential)

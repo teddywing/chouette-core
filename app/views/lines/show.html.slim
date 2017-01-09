@@ -25,7 +25,6 @@
         = t('lines.index.unset')
       - else
         = link_to @line.network.name, [@line_referential, @line.network]
-
     p
       label = "#{@line.human_attribute_name(:company)} : "
       - if @line.company.nil?
@@ -113,9 +112,9 @@
     /   label = "#{@line.human_attribute_name('comment')} : "
     /   = @line.comment
 
-  / .row
-  /   #mobility_restricted_suitability.col-md-6
-  /   #flexible_service.col-md-6
+    / .row
+    /   #mobility_restricted_suitability.col-md-6
+    /   #flexible_service.col-md-6
 
 - content_for :sidebar do
   ul.actions
@@ -129,10 +128,5 @@
     - if policy(@line).destroy?
       li
         = link_to t('lines.actions.destroy'), line_referential_line_path(@line_referential, @line), method: :delete, :data => {:confirm =>  t('lines.actions.destroy_confirm')}, class: 'remove'
-
-    - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
-      / FIXME #825
-      li
-        / = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
 
   = creation_tag(@line)

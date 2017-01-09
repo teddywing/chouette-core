@@ -36,6 +36,10 @@ module BreadcrumbHelper
       route_section_breadcrumb action
     when "Chouette::Timeband"
       timeband_breadcrumb action
+    when 'Chouette::RoutingConstraintZone'
+      routing_constraint_zone_breadcrumb action
+    when 'Calendar'
+      calendar_breadcrumb action
     when "StopAreaCopy"
       stop_area_copy_breadcrumb action
     when "Import"
@@ -66,6 +70,12 @@ module BreadcrumbHelper
       Rails.logger.info "---------"
       organisation_breadcrumb :index
     end
+  end
+
+  def calendar_breadcrumb(action)
+    add_breadcrumb I18n.t('breadcrumbs.referentials'), referentials_path
+    add_breadcrumb I18n.t('calendars.index.title'), calendars_path
+    add_breadcrumb @calendar.name if %i(show edit).include? action
   end
 
   def workbench_breadcrumb(action)
@@ -157,6 +167,12 @@ module BreadcrumbHelper
   def route_breadcrumb(action)
     line_breadcrumb :edit
     add_breadcrumb breadcrumb_label(@route), referential_line_route_path(@referential, @line,@route),:title => breadcrumb_tooltip(@route) if action == :edit
+  end
+
+  def routing_constraint_zone_breadcrumb(action)
+    line_breadcrumb :edit
+    add_breadcrumb Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr), referential_line_routing_constraint_zones_path(@referential, @line) unless action == :index
+    add_breadcrumb breadcrumb_label(@routing_constraint_zone), referential_line_routing_constraint_zone_path(@referential, @line, @routing_constraint_zone), title: breadcrumb_tooltip(@routing_constraint_zone) if %i(show edit).include? action
   end
 
   def journey_pattern_breadcrumb(action)

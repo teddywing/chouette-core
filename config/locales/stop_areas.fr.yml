@@ -1,5 +1,6 @@
 fr:
   stop_areas: &fr_stop_areas
+    search_no_results: "Aucun arrêt ne correspond à votre recherche"
     default_geometry_success: "%{count} arrêts modifiés"
     stop_area:
       no_position: "Pas de position"

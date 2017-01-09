@@ -1,4 +1,4 @@
-# coding: utf-8
+# coding: iso-8859-1
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -65,7 +65,7 @@ gem 'codifligne', git: 'git@github.com:AF83/stif-codifline-api.git'
 gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git'
 
 # Authentication
-gem 'devise', '~> 3.4.0'
+gem 'devise', '~> 3.5.4'
 gem 'devise_cas_authenticatable'
 gem 'devise-encryptable'
 gem 'devise_invitable'
@@ -87,7 +87,7 @@ gem 'calendar_helper', '0.2.5'
 gem 'cocoon'
 gem 'slim-rails', '~> 3.1'
 gem 'formtastic', '2.3.1'
-gem 'RedCloth'
+gem 'RedCloth', '~> 4.3.0'
 gem 'simple_form', '~> 3.1.0'
 gem 'font-awesome-sass', '~> 4.2.0'
 gem 'will_paginate-bootstrap', '~> 1.0.1'
@@ -141,6 +141,8 @@ group :development do
   # MetaRequest is incompatible with rgeo-activerecord
   # gem 'meta_request'
   gem 'quiet_assets', '~> 1.0'
+  gem 'license_finder'
+  gem 'bundler-audit'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
@@ -190,8 +192,6 @@ gem 'i18n-tasks'
 
 # Rails Assets
 source 'http://rails-assets.org' do
-  gem 'rails-assets-morrisjs', '~> 0.5.1'
-  gem 'rails-assets-raphael', '~> 2.1.3'
   gem 'rails-assets-footable', '~> 2.0.3'
 
   # Use twitter bootstrap resources

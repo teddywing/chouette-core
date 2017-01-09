@@ -5,15 +5,12 @@
   .panel.panel-default
     .panel-heading
       .input-group.col-md-12
-        = f.text_field :name_cont, placeholder: t('.name'), class: 'form-control'
-        .input-group-btn
-          button.btn.btn-default type="submit"
-            i.fa.fa-search
+        = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
 
-      / <!-- /input-group -->
-      / <!-- <a data-toggle="collapse" data-parent="#search" href="#advanced_search"> -->
-      / <!--   <i class="fa fa-plus"></i> <%= "#{t('.advanced_search')}" %> -->
-      / <!-- </a> -->
+        .input-group-btn
+          button.btn.btn-primary#search-btn type="submit"
+            span.fa.fa-search
+
 #companies
   = render partial: 'companies', object: @companies
 

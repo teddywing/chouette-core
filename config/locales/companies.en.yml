@@ -1,5 +1,6 @@
 en:
   companies: &en_companies
+    search_no_results: "No company matching your query"
     actions:
       new: "Add a new company"
       edit: "Edit this company"

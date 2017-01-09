@@ -34,6 +34,9 @@ h2
       => l period.begin
       => Referential.human_attribute_name("end_validity_period")
       = l period.end
+      
+  #reflines
+    = render partial: 'reflines'
 
   / - if @referential.api_keys.present?
   /   h3.api_keys = t('.api_keys')
@@ -43,7 +46,7 @@ h2
 
 - content_for :sidebar do
   ul.actions
-    - unless @referential.archived? # FIXME
+    - if policy(@referential).update?
       li = link_to t('referentials.actions.edit'), edit_referential_path(@referential), class: 'edit'
 
     li = link_to t('referentials.actions.destroy'), referential_path(@referential), method: :delete, data: {:confirm => t('referentials.actions.destroy_confirm')}, class: "remove"
@@ -51,7 +54,6 @@ h2
     li = link_to t('referentials.actions.clone'), new_referential_path(from: @referential.id), class: 'add'
     br
 
-  - unless @referential.archived? # FIXME
+  - if policy(@referential).update?
     h4 = t('.clean_up')
-
     == render 'clean'

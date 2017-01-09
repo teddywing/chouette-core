@@ -1,0 +1,47 @@
+nav#main_nav
+  .nav-menu
+    span.toggleMenu title='Toggle menu'
+
+    ul.menu-content
+      li.brand
+        span.brandname Stif BOIV
+
+      li
+        = link_to '#', class: 'mc-item' do
+          span.mci-icon
+            span.fa.fa-lg.fa-paw
+          span.mci-desc
+            h4 = "Espace de données"
+            em.small
+              = "Accès à mes offres de transport"
+              br
+              = "Détail des opérations en cours"
+      li
+        = link_to '#', class: 'mc-item' do
+          span.mci-icon
+            span.fa.fa-lg.fa-paw
+          span.mci-desc
+            h4 = "Organisation"
+            em.small = "Consulter mon profil et la liste des membres de mon organisation"
+            
+      li
+        = link_to '#', class: 'mc-item' do
+          span.mci-icon
+            span.fa.fa-lg.fa-paw
+          span.mci-desc
+            h4 = "Portail"
+
+  div
+    = render 'layouts/new/breadcrumb'
+
+  ul.nav-right
+    li
+      = link_to '#', title: 'Mon compte' do
+        span.fa.fa-lg.fa-user
+
+    li
+      = link_to '#', title: 'Rechercher' do
+        span.fa.fa-lg.fa-search
+    li
+      = link_to '#', title: 'Notifications' do
+        span.fa.fa-lg.fa-bell-o

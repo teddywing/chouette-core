@@ -17,6 +17,8 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   has_many :dates, -> {order(:date)}, inverse_of: :time_table, :validate => :true, :class_name => "Chouette::TimeTableDate", :dependent => :destroy
   has_many :periods, -> {order(:period_start)}, inverse_of: :time_table, :validate => :true, :class_name => "Chouette::TimeTablePeriod", :dependent => :destroy
 
+  belongs_to :calendar
+
   after_save :save_shortcuts
 
   def self.object_id_key

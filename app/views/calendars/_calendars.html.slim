@@ -1,0 +1,12 @@
+- if @calendars.any?
+  = table_builder @calendars,
+    { @calendars.human_attribute_name(:name) => 'name', @calendars.human_attribute_name(:short_name) => 'short_name', @calendars.human_attribute_name(:shared) => 'shared' },
+    [:show, :edit, :delete],
+    'table table-bordered'
+
+  .text-center
+    = will_paginate @calendars, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
+
+- else
+  = replacement_msg t('.search_no_results')
+

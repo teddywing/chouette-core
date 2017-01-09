@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  include RefobjectsHelper
+  include NewfrontHelper
 
   def font_awesome_classic_tag(name)
     name = "fa-file-text-o" if name == "fa-file-csv-o"

@@ -79,15 +79,31 @@ class LinesController < BreadcrumbController
       end
     end
     @q = line_referential.lines.search(params[:q])
-    @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+
+    if sort_column && sort_direction
+      @lines ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page]).includes([:network, :company])
+    else
+      @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+    end
   end
 
   alias_method :line_referential, :parent
 
   private
+
+  def sort_column
+    line_referential.lines.column_names.include?(params[:sort]) ? params[:sort] : 'number'
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
   def check_policy
     authorize resource
   end
+
+  alias_method :current_referential, :line_referential
+  helper_method :current_referential
 
   def line_params
     params.require(:line).permit( :transport_mode, :network_id, :company_id, :objectid, :object_version, :creation_time, :creator_id, :name, :number, :published_name, :transport_mode, :registration_number, :comment, :mobility_restricted_suitability, :int_user_needs, :flexible_service, :group_of_lines, :group_of_line_ids, :group_of_line_tokens, :url, :color, :text_color, :stable_id, { footnotes_attributes: [ :code, :label, :_destroy, :id ] } )

@@ -1,16 +1,18 @@
 = title_tag t('companies.index.title')
 
 = search_form_for @q, url: line_referential_companies_path(@line_referential), remote: true, html: { method: :get, class: 'form', id: 'search', role: "form"} do |f|
-  .well.well-sm
-    .input-group
-      = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
-      
-      .input-group-btn
-        button.btn.btn-primary type="submit"
-          span.fa.fa-search
+
+  .panel.panel-default
+    .panel-heading
+      .input-group.col-md-12
+        = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
+
+        .input-group-btn
+          button.btn.btn-primary#search-btn type="submit"
+            span.fa.fa-search
 
 #companies
-  = render partial: 'companies'
+  = render partial: 'companies', object: @companies
 
 - content_for :sidebar do
   ul.actions

@@ -34,8 +34,12 @@ class CompaniesController < BreadcrumbController
   protected
   def collection
     @q = line_referential.companies.search(params[:q])
-    @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
-    @decoratedcompanies = CompanyDecorator.decorate_collection(@companies)
+
+    if sort_column && sort_direction
+      @companies ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])
+    else
+      @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
+    end
   end
 
 
@@ -53,8 +57,20 @@ class CompaniesController < BreadcrumbController
     authorize resource
   end
 
+  alias_method :current_referential, :line_referential
+  helper_method :current_referential
+
   def company_params
     params.require(:company).permit( :objectid, :object_version, :creation_time, :creator_id, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
+  end
+
+  private
+
+  def sort_column
+    line_referential.companies.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end
 
 end

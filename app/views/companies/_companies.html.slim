@@ -1,12 +1,11 @@
-/ .page_info
-/   span.search = t('will_paginate.page_entries_info.search')
-/   = page_entries_info @companies
+- if @companies.any?
+  = table_builder @companies,
+    { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @companies.human_attribute_name(:name) => 'name', @companies.human_attribute_name(:code) => 'code' },
+    [:show, :edit, :delete],
+    'table table-bordered'
 
-.companies.paginated_content style="margin-top:20px;"
-  = table_builder @decoratedcompanies,
-                  [:name, :edited_at, :published_at, :validity_period, :linecount, :transporter, :status],
-                  ["show", "delete"],
-                  'table table-bordered'
+  .text-center
+    = will_paginate @companies, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
 
-.pagination
-  = will_paginate @companies, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
+- else
+  = replacement_msg t('companies.search_no_results')
