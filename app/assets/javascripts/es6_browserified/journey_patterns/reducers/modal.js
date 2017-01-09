@@ -14,21 +14,24 @@ const modal = (state = {}, action) => {
         modalProps: {
           index: action.index,
           journeyPattern: action.journeyPattern
-        }
+        },
+        confirmModal: {}
       }
     case 'CREATE_JOURNEYPATTERN_MODAL':
       return {
         type: 'create',
-        modalProps: { index: action.index }
+        modalProps: {},
+        confirmModal: {}
       }
     case 'DELETE_JOURNEYPATTERN':
-      return Object.assign({}, state, { type :'' })
+      return Object.assign({}, state, { type: '' })
     case 'SAVE_MODAL':
-      return Object.assign({}, state, { type :''  })
+      return Object.assign({}, state, { type: '' })
     case 'CLOSE_MODAL':
       return {
         type: '',
-        modalProps: {}
+        modalProps: {},
+        confirmModal: {}
       }
     default:
       return state
