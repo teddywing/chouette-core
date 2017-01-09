@@ -10,13 +10,18 @@ class JourneyPatternsCollectionsController < ChouetteController
   alias_method :route, :parent
 
   def show
-    journey_patterns_state
+    jps_state
   end
 
   def update
     state = JSON.parse request.raw_post
     state.each do |item|
-      jp = journey_pattern_by_objectid(item['object_id']) || create_journey_pattern(item)
+      jp = jp_by_objectid(item['object_id']) || create_jp(item)
+      if item['deletable']
+        state.delete(item) if jp.destroy
+        next
+      end
+
       raise "Unable to find or create journey_pattern !!" unless jp
       update_journey_pattern(jp, item)
     end
@@ -39,7 +44,7 @@ class JourneyPatternsCollectionsController < ChouetteController
     }
   end
 
-  def create_journey_pattern item
+  def create_jp item
     jp = route.journey_patterns.create(fetch_jp_attributes(item))
     item['object_id'] = jp.objectid
     jp
@@ -63,12 +68,12 @@ class JourneyPatternsCollectionsController < ChouetteController
     update_jp(jp, item)
   end
 
-  def journey_patterns_state
+  def jps_state
     @q = route.journey_patterns.includes(:stop_points)
     @journey_patterns ||= @q.paginate(:page => params[:page]).order(:name)
   end
 
-  def journey_pattern_by_objectid objectid
+  def jp_by_objectid objectid
     Chouette::JourneyPattern.find_by(objectid: objectid)
   end
 end
