@@ -4,14 +4,18 @@ var ConfirmModal = require('../components/ConfirmModal')
 
 const mapStateToProps = (state) => {
   return {
-    modal: state.modal
+    modal: state.modal,
+    journeyPatterns: state.journeyPatterns
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onModal: (action) =>{
-      dispatch(action)
+    onModalAccept: (next, state) =>{
+      actions.submitJourneyPattern(dispatch, state, next)
+    },
+    onModalCancel: (next) =>{
+      dispatch(next)
     },
     onModalClose: () =>{
       dispatch(actions.closeModal())
