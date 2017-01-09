@@ -21,13 +21,12 @@ class JourneyPatternsCollectionsController < ChouetteController
         state.delete(item) if jp.destroy
         next
       end
-
-      raise "Unable to find or create journey_pattern !!" unless jp
       update_journey_pattern(jp, item)
     end
+    errors = state.any? {|item| item['errors']}
 
     respond_to do |format|
-      format.json { render json: state }
+      format.json { render json: state, status: errors ? :unprocessable_entity : :ok }
     end
   end
 
@@ -46,7 +45,11 @@ class JourneyPatternsCollectionsController < ChouetteController
 
   def create_jp item
     jp = route.journey_patterns.create(fetch_jp_attributes(item))
-    item['object_id'] = jp.objectid
+    if jp.persisted?
+      item['object_id'] = jp.objectid
+    else
+      item['errors'] = jp.errors
+    end
     jp
   end
 
@@ -58,11 +61,9 @@ class JourneyPatternsCollectionsController < ChouetteController
       stop_point = route.stop_points.find_by(stop_area_id: sp['id'])
       if !exist && sp['checked']
         jp.stop_points << stop_point
-        ap "adding stop_points to jp #{jp.objectid}"
       end
       if exist && !sp['checked']
         jp.stop_points.delete(stop_point)
-        ap "deleting stop_points from jp #{jp.objectid}"
       end
     end
     update_jp(jp, item)
