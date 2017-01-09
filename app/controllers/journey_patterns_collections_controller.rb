@@ -48,14 +48,14 @@ class JourneyPatternsCollectionsController < ChouetteController
   def update_journey_pattern jp, item
     item['stop_points'].each do |sp|
       exist = jp.stop_area_ids.include?(sp['id'])
-      ap "exist value #{exist}"
       next if exist && sp['checked']
-      stop_point = route.stop_points.find_by(stop_area_id: sp['id'])
 
-      if sp['checked'] && !exist
+      stop_point = route.stop_points.find_by(stop_area_id: sp['id'])
+      if !exist && sp['checked']
         jp.stop_points << stop_point
         ap "adding stop_points to jp #{jp.objectid}"
-      else
+      end
+      if exist && !sp['checked']
         jp.stop_points.delete(stop_point)
         ap "deleting stop_points from jp #{jp.objectid}"
       end
