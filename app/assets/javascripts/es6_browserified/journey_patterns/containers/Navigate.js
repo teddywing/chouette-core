@@ -38,8 +38,8 @@ let Navigate = ({ dispatch, journeyPatterns, page, length, onOpenConfirmModal })
 const mapStateToProps = (state) => {
   return {
     journeyPatterns: state.journeyPatterns,
-    page: state.pagination,
-    length: state.totalCount,
+    page: state.pagination.page,
+    length: state.pagination.totalCount,
     confirmModalActions: state.modal.confirmActions
   }
 }

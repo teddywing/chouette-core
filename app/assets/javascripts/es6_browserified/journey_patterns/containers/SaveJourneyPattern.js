@@ -22,7 +22,7 @@ let SaveJourneyPattern = ({ dispatch, journeyPatterns, page }) => {
 const mapStateToProps = (state) => {
   return {
     journeyPatterns: state.journeyPatterns,
-    page: state.pagination
+    page: state.pagination.page
   }
 }
 

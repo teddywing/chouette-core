@@ -13,8 +13,10 @@ var App = require('./components/App')
 
 var initialState = {
   journeyPatterns: [],
-  pagination: 1,
-  totalCount: window.journeyPatternLength,
+  pagination: {
+    page : 1,
+    totalCount: window.journeyPatternLength
+  },
   modal: {
     type: '',
     modalProps: {},
