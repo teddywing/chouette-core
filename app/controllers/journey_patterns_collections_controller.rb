@@ -16,28 +16,51 @@ class JourneyPatternsCollectionsController < ChouetteController
   def update
     state = JSON.parse request.raw_post
     state.each do |item|
-      journey_pattern = journey_pattern_by_objectid(item['object_id'])
-      journey_pattern_update_stop_points(journey_pattern, item['stop_points']) if journey_pattern
+      jp = journey_pattern_by_objectid(item['object_id']) || create_journey_pattern(item)
+      raise "Unable to find or create journey_pattern !!" unless jp
+      update_journey_pattern(jp, item)
     end
 
-    journey_patterns_state
+    respond_to do |format|
+      format.json { render json: state }
+    end
   end
 
   protected
+  def update_jp jp, item
+    jp.update_attributes(fetch_jp_attributes(item))
+  end
 
-  def journey_pattern_update_stop_points journey_pattern, stop_points
-    stop_points.each do |sp|
-      stop_id = sp['id']
-      exist   = journey_pattern.stop_area_ids.include?(stop_id)
+  def fetch_jp_attributes item
+    {
+      name: item['name'],
+      published_name: item['published_name'],
+      registration_number: item['registration_number']
+    }
+  end
+
+  def create_journey_pattern item
+    jp = route.journey_patterns.create(fetch_jp_attributes(item))
+    item['object_id'] = jp.objectid
+    jp
+  end
+
+  def update_journey_pattern jp, item
+    item['stop_points'].each do |sp|
+      exist = jp.stop_area_ids.include?(sp['id'])
+      ap "exist value #{exist}"
       next if exist && sp['checked']
+      stop_point = route.stop_points.find_by(stop_area_id: sp['id'])
 
-      stop_point = route.stop_points.find_by(stop_area_id: stop_id)
       if sp['checked'] && !exist
-        journey_pattern.stop_points << stop_point
+        jp.stop_points << stop_point
+        ap "adding stop_points to jp #{jp.objectid}"
       else
-        journey_pattern.stop_points.delete(stop_point)
+        jp.stop_points.delete(stop_point)
+        ap "deleting stop_points from jp #{jp.objectid}"
       end
     end
+    update_jp(jp, item)
   end
 
   def journey_patterns_state
