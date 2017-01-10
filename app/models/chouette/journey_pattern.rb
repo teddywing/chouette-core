@@ -19,6 +19,51 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   attr_accessor  :control_checked
   after_update :control_route_sections, :unless => "control_checked"
 
+
+  def self.state_update route, state
+    state.each do |item|
+      jp = find_by(objectid: item['object_id']) || state_create_instance(route, item)
+      if item['deletable']
+        state.delete(item) if jp.destroy
+        next
+      end
+
+      # Update attributes and stop_points associations
+      jp.update_attributes(state_permited_attributes(item))
+      jp.state_stop_points_update(item) if !jp.errors.any? && jp.persisted?
+      item['errors'] = jp.errors.any? ? jp.errors : nil
+    end
+  end
+
+  def self.state_permited_attributes item
+    {
+      name: item['name'],
+      published_name: item['published_name'],
+      registration_number: item['registration_number']
+    }
+  end
+
+  def self.state_create_instance route, item
+    jp = route.journey_patterns.create(state_permited_attributes(item))
+    item['object_id'] = jp.objectid if jp.persisted?
+    jp
+  end
+
+  def state_stop_points_update item
+    item['stop_points'].each do |sp|
+      exist = stop_area_ids.include?(sp['id'])
+      next if exist && sp['checked']
+
+      stop_point = route.stop_points.find_by(stop_area_id: sp['id'])
+      if !exist && sp['checked']
+        stop_points << stop_point
+      end
+      if exist && !sp['checked']
+        stop_points.delete(stop_point)
+      end
+    end
+  end
+
   # TODO: this a workarround
   # otherwise, we loose the first stop_point
   # when creating a new journey_pattern
