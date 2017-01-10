@@ -28,10 +28,16 @@ const actions = {
     id : e.currentTarget.id,
     index
   }),
-  openConfirmModal : (accept, cancel) => ({
+  checkConfirmModal : (event, callback, stateChanged) => {
+    if(stateChanged === true){
+      return actions.openConfirmModal(callback)
+    }else{
+      return callback
+    }
+  },
+  openConfirmModal : (callback) => ({
     type : 'OPEN_CONFIRM_MODAL',
-    accept,
-    cancel
+    callback
   }),
   openEditModal : (index, journeyPattern) => ({
     type : 'EDIT_JOURNEYPATTERN_MODAL',

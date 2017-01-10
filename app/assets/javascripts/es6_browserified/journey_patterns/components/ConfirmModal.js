@@ -14,7 +14,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, journeyPat
             className='btn btn-default'
             data-dismiss='modal'
             type='button'
-            onClick= {() => {onModalCancel(modal.confirmModal.cancel)}}
+            onClick= {() => {onModalCancel(modal.confirmModal.callback)}}
             >
             Ne pas enregistrer
           </button>
@@ -22,7 +22,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, journeyPat
             className='btn btn-danger'
             data-dismiss='modal'
             type='button'
-            onClick = {() => {onModalAccept(modal.confirmModal.accept, journeyPatterns)}}
+            onClick = {() => {onModalAccept(modal.confirmModal.callback, journeyPatterns)}}
             >
             Enregistrer
           </button>

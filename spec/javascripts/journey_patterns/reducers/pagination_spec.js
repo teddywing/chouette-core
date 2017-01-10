@@ -22,7 +22,7 @@ describe('pagination reducer, given parameters allowing page change', () => {
         currentPage,
         nextPage : true
       })
-    ).toEqual(Object.assign({}, state, {page : state.page + 1}))
+    ).toEqual(Object.assign({}, state, {page : state.page + 1, stateChanged: false}))
   })
 
   it('should return GO_TO_PREVIOUS_PAGE and change state', () => {
@@ -33,7 +33,7 @@ describe('pagination reducer, given parameters allowing page change', () => {
         currentPage,
         nextPage : false
       })
-    ).toEqual(Object.assign({}, state, {page : state.page - 1}))
+    ).toEqual(Object.assign({}, state, {page : state.page - 1, stateChanged: false}))
   })
 })
 

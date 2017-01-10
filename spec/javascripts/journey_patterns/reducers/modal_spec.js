@@ -11,8 +11,7 @@ let fakeJourneyPattern = {
   deletable: false
 }
 
-const accept = function(){}
-const cancel = function(){}
+const cb = function(){}
 
 describe('modal reducer', () => {
   beforeEach(() => {
@@ -33,15 +32,13 @@ describe('modal reducer', () => {
     let newState = Object.assign({}, state, {
       type: 'confirm',
       confirmModal: {
-        accept: accept,
-        cancel: cancel
+        callback: cb
       }
     })
     expect(
       modalReducer(state, {
         type: 'OPEN_CONFIRM_MODAL',
-        accept,
-        cancel
+        callback: cb
       })
     ).toEqual(newState)
   })

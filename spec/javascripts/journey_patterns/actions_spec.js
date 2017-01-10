@@ -53,13 +53,12 @@ describe('when clicking on a journey pattern checkbox', () => {
 })
 describe('when clicking on next button', () => {
   it('should create an action to open a confirm modal', () => {
-    const accept = {}, cancel = {}
+    const callback = function(){}
     const expectedAction = {
       type: 'OPEN_CONFIRM_MODAL',
-      accept,
-      cancel,
+      callback
     }
-    expect(actions.openConfirmModal(accept, cancel)).toEqual(expectedAction)
+    expect(actions.openConfirmModal(callback)).toEqual(expectedAction)
   })
 })
 describe('when clicking on edit button', () => {
