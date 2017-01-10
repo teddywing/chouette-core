@@ -5,8 +5,21 @@ const JourneyPattern = (props) => {
   return (
     <div className={'list-group-item ' + (props.value.deletable ? 'disabled' : '') + (props.value.object_id ? '' : 'to_record')}>
       <div style={{display: 'inline-block', verticalAlign: 'top', width: '40%'}}>
-        <p className='small'><strong>Index: </strong>{props.index}</p>
-        <p className='small'><strong>Name: </strong>{props.value.name}</p>
+        <p className='jp_name'>
+          <span className={'small ' + (props.value.errors ? 'text-danger' : '')}>
+            <strong>Name: </strong>{props.value.name}
+          </span>
+          <br/>
+          {(props.value.errors) && (
+            <span className='errors small'>
+              {props.value.errors.name.map(function(msg, i){
+                return (
+                  <em key={i} className='text-danger'>{msg}</em>
+                )
+              })}
+            </span>
+          )}
+        </p>
       </div>
 
       <div style={{display: 'inline-block', verticalAlign: 'top', width: '40%'}}>

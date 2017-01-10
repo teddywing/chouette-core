@@ -3,6 +3,10 @@ const actions = {
     type: "RECEIVE_JOURNEY_PATTERNS",
     json
   }),
+  receiveErrors : (json) => ({
+    type: "RECEIVE_ERRORS",
+    json
+  }),
   loadFirstPage: (dispatch) => ({
     type: 'LOAD_FIRST_PAGE',
     dispatch
@@ -69,13 +73,22 @@ const actions = {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
       }
     })
+    let hasError = false
     fetch(req)
-      .then(response => response.json())
-      .then((json) => {
-        if(next){
-          dispatch(next)
-        }else{
-          dispatch(actions.receiveJourneyPatterns(json))
+      .then(response => {
+        if(!response.ok) {
+          hasError = true
+        }
+        return response.json()
+      }).then((json) => {
+        if(hasError == true) {
+          dispatch(actions.receiveErrors(json))
+        } else {
+          if(next) {
+            dispatch(next)
+          } else {
+            dispatch(actions.receiveJourneyPatterns(json))
+          }
         }
       })
   },

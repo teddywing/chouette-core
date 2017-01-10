@@ -33,6 +33,8 @@ const journeyPatterns = (state = [], action) => {
   switch (action.type) {
     case 'RECEIVE_JOURNEY_PATTERNS':
       return [...action.json]
+    case 'RECEIVE_ERRORS':
+      return [...action.json]
     case 'LOAD_FIRST_PAGE':
       actions.fetchJourneyPatterns(action.dispatch)
     case 'GO_TO_PREVIOUS_PAGE':
