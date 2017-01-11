@@ -35,9 +35,6 @@ const journeyPatterns = (state = [], action) => {
       return [...action.json]
     case 'RECEIVE_ERRORS':
       return [...action.json]
-    case 'LOAD_FIRST_PAGE':
-      actions.fetchJourneyPatterns(action.dispatch)
-      return state
     case 'GO_TO_PREVIOUS_PAGE':
       $('#ConfirmModal').modal('hide')
       if(action.pagination.page > 1){

@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoadFirstPage: () =>{
-      dispatch(actions.loadFirstPage(dispatch))
+      actions.fetchJourneyPatterns(dispatch)
     },
     onCheckboxChange: (e, index) =>{
       dispatch(actions.updateCheckboxValue(e, index))

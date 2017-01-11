@@ -7,10 +7,6 @@ const actions = {
     type: "RECEIVE_ERRORS",
     json
   }),
-  loadFirstPage: (dispatch) => ({
-    type: 'LOAD_FIRST_PAGE',
-    dispatch
-  }),
   goToPreviousPage : (dispatch, pagination) => ({
     type: 'GO_TO_PREVIOUS_PAGE',
     dispatch,

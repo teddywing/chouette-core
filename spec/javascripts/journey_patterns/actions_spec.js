@@ -14,15 +14,6 @@ describe('when receiveJourneyPatterns is triggered', () => {
   })
 })
 
-describe('when landing on page', () => {
-  it('should create an action to load the n first missions', () => {
-    const expectedAction = {
-      type: 'LOAD_FIRST_PAGE',
-      dispatch
-    }
-    expect(actions.loadFirstPage(dispatch)).toEqual(expectedAction)
-  })
-})
 describe('when previous navigation button is clicked', () => {
   it('should create an action to go to previous page', () => {
     const nextPage = false
