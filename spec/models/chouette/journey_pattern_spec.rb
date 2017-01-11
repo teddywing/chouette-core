@@ -33,7 +33,7 @@ describe Chouette::JourneyPattern, :type => :model do
       expect(journey_pattern.reload.stop_points.count).to eq(5)
     end
 
-    it 'should create now instance' do
+    it 'should create journey_pattern' do
       new_state = journey_pattern_to_state(build(:journey_pattern, objectid: nil, route: route))
       Chouette::JourneyPattern.state_create_instance route, new_state
       expect(new_state['object_id']).to be_truthy
@@ -48,6 +48,15 @@ describe Chouette::JourneyPattern, :type => :model do
       }.to change{Chouette::JourneyPattern.count}.from(1).to(0)
 
       expect(collection).to be_empty
+    end
+
+    it 'should delete multiple journey_pattern' do
+      collection = 5.times.collect{journey_pattern_to_state(create(:journey_pattern, route: route))}
+      collection.map{|i| i['deletable'] = true}
+
+      expect {
+        Chouette::JourneyPattern.state_update route, collection
+      }.to change{Chouette::JourneyPattern.count}.from(5).to(0)
     end
 
     it 'should validate journey_pattern on update' do
