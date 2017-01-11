@@ -134,3 +134,13 @@ describe('when clicking on validate button at the bottom of the page', () => {
     expect(actions.savePage(dispatch)).toEqual(expectedAction)
   })
 })
+describe('when submitting new journeyPatterns', () => {
+  it('should create an action to update pagination totalCount', () => {
+    const diff = 1
+    const expectedAction = {
+      type: 'UPDATE_TOTAL_COUNT',
+      diff
+    }
+    expect(actions.updateTotalCount(diff)).toEqual(expectedAction)
+  })
+})
