@@ -67,10 +67,34 @@ const actions = {
     type: 'SAVE_PAGE',
     dispatch
   }),
-  updateTotalCount: (diff) =>({
+  updateTotalCount: (diff) => ({
     type: 'UPDATE_TOTAL_COUNT',
     diff
   }),
+  resetValidation: (target) => {
+    $(target).parent().removeClass('has-error').children('.help-block').remove()
+  },
+  validateFields : (fields) => {
+    const test = []
+
+    Object.keys(fields).map(function(key) {
+      test.push(fields[key].validity.valid)
+    })
+    if(test.indexOf(false) >= 0) {
+      // Form is invalid
+      test.map(function(item, i) {
+        if(item == false) {
+          const k = Object.keys(fields)[i]
+          $(fields[k]).parent().addClass('has-error').children('.help-block').remove()
+          $(fields[k]).parent().append("<span class='small help-block'>" + fields[k].validationMessage + "</span>")
+        }
+      })
+      return false
+    } else {
+      // Form is valid
+      return true
+    }
+  },
   submitJourneyPattern : (dispatch, state, next) => {
     let urlJSON = window.location.pathname + ".json"
     let req = new Request(urlJSON, {

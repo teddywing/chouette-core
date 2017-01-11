@@ -1,14 +1,18 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
+var actions = require('../actions')
 
 class CreateModal extends Component {
   constructor(props) {
     super(props)
   }
-  handleSubmit(e) {
-    e.preventDefault()
-    this.props.onAddJourneyPattern(this.refs)
+
+  handleSubmit() {
+    if(actions.validateFields(this.refs) == true) {
+      this.props.onAddJourneyPattern(this.refs)
+      $('#NewJourneyPatternModal').modal('hide')
+    }
   }
 
   render() {
@@ -31,61 +35,65 @@ class CreateModal extends Component {
                 <h4>Ajouter une mission</h4>
               </div>
 
-              <div className='modal-body'>
-                {(this.props.modal.type == 'create') && (
-                  <form>
+              {(this.props.modal.type == 'create') && (
+                <form>
+                  <div className='modal-body'>
                     <div className='form-group'>
-                      <label>Nom</label>
+                      <label className='control-label'>Nom</label>
                       <input
                         type='text'
                         ref='name'
                         className='form-control'
+                        onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                        required
                         />
                     </div>
                     <div className='row'>
                       <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                         <div className='form-group'>
-                          <label>Nom public</label>
+                          <label className='control-label'>Nom public</label>
                           <input
                             type='text'
                             ref='published_name'
                             className='form-control'
+                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                            required
                           />
                         </div>
                       </div>
                       <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                         <div className='form-group'>
-                          <label>N° d'enregistrement</label>
+                          <label className='control-label'>N° d'enregistrement</label>
                           <input
                             type='text'
                             ref='registration_number'
                             className='form-control'
+                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                            required
                           />
                         </div>
                       </div>
                     </div>
-                  </form>
-                )}
-              </div>
-
-              <div className='modal-footer'>
-                <button
-                  className='btn btn-default'
-                  data-dismiss='modal'
-                  type='button'
-                  onClick={this.props.onModalClose}
-                  >
-                  Annuler
-                </button>
-                <button
-                  className='btn btn-danger'
-                  data-dismiss='modal'
-                  type='button'
-                  onClick={this.handleSubmit.bind(this)}
-                  >
-                  Valider
-                </button>
-              </div>
+                  </div>
+                  <div className='modal-footer'>
+                    <button
+                      className='btn btn-default'
+                      data-dismiss='modal'
+                      type='button'
+                      onClick={this.props.onModalClose}
+                      >
+                      Annuler
+                    </button>
+                    <button
+                      className='btn btn-danger'
+                      type='button'
+                      onClick={this.handleSubmit.bind(this)}
+                      >
+                      Valider
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>
