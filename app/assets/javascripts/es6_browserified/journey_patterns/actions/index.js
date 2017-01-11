@@ -11,18 +11,16 @@ const actions = {
     type: 'LOAD_FIRST_PAGE',
     dispatch
   }),
-  goToPreviousPage : (dispatch, currentPage) => ({
+  goToPreviousPage : (dispatch, pagination) => ({
     type: 'GO_TO_PREVIOUS_PAGE',
     dispatch,
-    currentPage,
+    pagination,
     nextPage : false
   }),
-  goToNextPage : (dispatch, currentPage, totalCount, perPage) => ({
+  goToNextPage : (dispatch, pagination) => ({
     type: 'GO_TO_NEXT_PAGE',
     dispatch,
-    currentPage,
-    totalCount,
-    perPage,
+    pagination,
     nextPage : true
   }),
   updateCheckboxValue : (e, index) => ({

@@ -3,9 +3,9 @@ var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../actions')
 
-let Navigate = ({ dispatch, journeyPatterns, page, stateChanged, totalCount, perPage }) => {
+let Navigate = ({ dispatch, journeyPatterns, pagination }) => {
   let firstPage = 1
-  let lastPage = Math.ceil(totalCount / window.journeyPatternsPerPage)
+  let lastPage = Math.ceil(pagination.totalCount / window.journeyPatternsPerPage)
 
   return (
     <form className='btn-group btn-group-sm' onSubmit={e => {
@@ -14,23 +14,23 @@ let Navigate = ({ dispatch, journeyPatterns, page, stateChanged, totalCount, per
     <button
       onClick={e => {
         e.preventDefault()
-        dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, page), stateChanged))
+        dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged))
       }}
       type="submit"
       data-toggle=''
       data-target='#ConfirmModal'
-      className={ (page == firstPage ? "hidden" : "") + " btn btn-default" }>
+      className={ (pagination.page == firstPage ? "hidden" : "") + " btn btn-default" }>
       <span className="fa fa-chevron-left"></span>
       </button>
       <button
         onClick={e => {
           e.preventDefault()
-          dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, page, totalCount, perPage), stateChanged))
+          dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged))
         }}
         type="submit"
         data-toggle=''
         data-target='#ConfirmModal'
-        className={ (page == lastPage ? "hidden" : "") + " btn btn-default" }>
+        className={ (pagination.page == lastPage ? "hidden" : "") + " btn btn-default" }>
         <span className="fa fa-chevron-right"></span>
       </button>
     </form>
@@ -38,11 +38,8 @@ let Navigate = ({ dispatch, journeyPatterns, page, stateChanged, totalCount, per
 }
 
 Navigate.propTypes = {
-  page: PropTypes.number.isRequired,
-  totalCount: PropTypes.number.isRequired,
-  stateChanged: PropTypes.bool.isRequired,
   journeyPatterns: PropTypes.array.isRequired,
-  perPage: PropTypes.number.isRequired,
+  pagination: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 }
 

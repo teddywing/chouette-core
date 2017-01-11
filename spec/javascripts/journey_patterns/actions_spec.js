@@ -23,20 +23,38 @@ describe('when landing on page', () => {
     expect(actions.loadFirstPage(dispatch)).toEqual(expectedAction)
   })
 })
+describe('when previous navigation button is clicked', () => {
+  it('should create an action to go to previous page', () => {
+    const nextPage = false
+    const pagination = {
+      totalCount: 25,
+      perPage: 12,
+      page:1
+    }
+    const expectedAction = {
+      type: 'GO_TO_PREVIOUS_PAGE',
+      dispatch,
+      pagination,
+      nextPage
+    }
+    expect(actions.goToPreviousPage(dispatch, pagination)).toEqual(expectedAction)
+  })
+})
 describe('when next navigation button is clicked', () => {
   it('should create an action to go to next page', () => {
     const nextPage = true
-    const totalCount = 25
-    const perPage = 12
+    const pagination = {
+      totalCount: 25,
+      perPage: 12,
+      page:1
+    }
     const expectedAction = {
       type: 'GO_TO_NEXT_PAGE',
       dispatch,
-      currentPage,
-      totalCount,
-      perPage,
+      pagination,
       nextPage
     }
-    expect(actions.goToNextPage(dispatch, currentPage, totalCount, perPage)).toEqual(expectedAction)
+    expect(actions.goToNextPage(dispatch, pagination)).toEqual(expectedAction)
   })
 })
 describe('when clicking on a journey pattern checkbox', () => {

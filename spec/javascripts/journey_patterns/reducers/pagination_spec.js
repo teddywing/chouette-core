@@ -1,14 +1,13 @@
 var reducer = require('es6_browserified/journey_patterns/reducers/pagination')
 
-const totalCount = 25
 const diff = 1
-const perPage = 12
 let state = {
   page : 2,
-  totalCount : totalCount,
-  stateChanged: false
+  totalCount : 25,
+  stateChanged: false,
+  perPage: 12
 }
-let currentPage = 2
+let pagination = Object.assign({}, state)
 const dispatch = function(){}
 
 describe('pagination reducer, given parameters allowing page change', () => {
@@ -24,9 +23,7 @@ describe('pagination reducer, given parameters allowing page change', () => {
       reducer(state, {
         type: 'GO_TO_NEXT_PAGE',
         dispatch,
-        currentPage,
-        totalCount,
-        perPage,
+        pagination,
         nextPage : true
       })
     ).toEqual(Object.assign({}, state, {page : state.page + 1, stateChanged: false}))
@@ -37,7 +34,7 @@ describe('pagination reducer, given parameters allowing page change', () => {
       reducer(state, {
         type: 'GO_TO_PREVIOUS_PAGE',
         dispatch,
-        currentPage,
+        pagination,
         nextPage : false
       })
     ).toEqual(Object.assign({}, state, {page : state.page - 1, stateChanged: false}))
@@ -49,7 +46,7 @@ describe('pagination reducer, given parameters not allowing to go to previous pa
 
   beforeEach(()=>{
     state.page = 1
-    currentPage = 1
+    pagination.page = 1
   })
 
   it('should return GO_TO_PREVIOUS_PAGE and not change state', () => {
@@ -57,7 +54,7 @@ describe('pagination reducer, given parameters not allowing to go to previous pa
       reducer(state, {
         type: 'GO_TO_PREVIOUS_PAGE',
         dispatch,
-        currentPage,
+        pagination,
         nextPage : false
       })
     ).toEqual(state)
@@ -68,7 +65,7 @@ describe('pagination reducer, given parameters not allowing to go to next page',
 
   beforeEach(()=>{
     state.page = 3
-    currentPage = 3
+    pagination.page = 3
   })
 
   it('should return GO_TO_NEXT_PAGE and not change state', () => {
@@ -76,9 +73,8 @@ describe('pagination reducer, given parameters not allowing to go to next page',
       reducer(state, {
         type: 'GO_TO_NEXT_PAGE',
         dispatch,
-        currentPage,
-        totalCount,
-        nextPage : false
+        pagination,
+        nextPage : true
       })
     ).toEqual(state)
   })
@@ -92,6 +88,6 @@ describe('pagination reducer, given parameters changing totalCount', () => {
         type: 'UPDATE_TOTAL_COUNT',
         diff
       })
-    ).toEqual(Object.assign({}, state, {totalCount: totalCount - diff}))
+    ).toEqual(Object.assign({}, state, {totalCount: state.totalCount - diff}))
   })
 })
