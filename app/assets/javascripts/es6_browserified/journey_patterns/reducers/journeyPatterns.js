@@ -45,7 +45,7 @@ const journeyPatterns = (state = [], action) => {
       return state
     case 'GO_TO_NEXT_PAGE':
       $('#ConfirmModal').modal('hide')
-      if (window.journeyPatternLength - (action.currentPage * 12) > 0){
+      if (action.totalCount - (action.currentPage * window.journeyPatternsPerPage) > 0){
         actions.fetchJourneyPatterns(action.dispatch, action.currentPage, action.nextPage)
       }
       return state

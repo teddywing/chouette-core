@@ -1,7 +1,11 @@
 var reducer = require('es6_browserified/journey_patterns/reducers/pagination')
+
+const totalCount = 25
+const perPage = 12
 let state = {
   page : 2,
-  totalCount : 25
+  totalCount : totalCount,
+  stateChanged: false
 }
 let currentPage = 2
 const dispatch = function(){}
@@ -20,6 +24,8 @@ describe('pagination reducer, given parameters allowing page change', () => {
         type: 'GO_TO_NEXT_PAGE',
         dispatch,
         currentPage,
+        totalCount,
+        perPage,
         nextPage : true
       })
     ).toEqual(Object.assign({}, state, {page : state.page + 1, stateChanged: false}))
@@ -70,6 +76,7 @@ describe('pagination reducer, given parameters not allowing to go to next page',
         type: 'GO_TO_NEXT_PAGE',
         dispatch,
         currentPage,
+        totalCount,
         nextPage : false
       })
     ).toEqual(state)

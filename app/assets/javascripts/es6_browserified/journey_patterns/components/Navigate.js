@@ -3,9 +3,9 @@ var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../actions')
 
-let Navigate = ({ dispatch, journeyPatterns, page, length, stateChanged }) => {
+let Navigate = ({ dispatch, journeyPatterns, page, stateChanged, totalCount, perPage }) => {
   let firstPage = 1
-  let lastPage = Math.ceil(length / 12)
+  let lastPage = Math.ceil(totalCount / window.journeyPatternsPerPage)
 
   return (
     <form className='btn-group btn-group-sm' onSubmit={e => {
@@ -25,7 +25,7 @@ let Navigate = ({ dispatch, journeyPatterns, page, length, stateChanged }) => {
       <button
         onClick={e => {
           e.preventDefault()
-          dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, page), stateChanged))
+          dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, page, totalCount, perPage), stateChanged))
         }}
         type="submit"
         data-toggle=''
@@ -39,9 +39,10 @@ let Navigate = ({ dispatch, journeyPatterns, page, length, stateChanged }) => {
 
 Navigate.propTypes = {
   page: PropTypes.number.isRequired,
-  length: PropTypes.number.isRequired,
+  totalCount: PropTypes.number.isRequired,
   stateChanged: PropTypes.bool.isRequired,
   journeyPatterns: PropTypes.array.isRequired,
+  perPage: PropTypes.number.isRequired,
   dispatch: PropTypes.func.isRequired
 }
 

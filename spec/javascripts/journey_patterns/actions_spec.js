@@ -26,13 +26,17 @@ describe('when landing on page', () => {
 describe('when next navigation button is clicked', () => {
   it('should create an action to go to next page', () => {
     const nextPage = true
+    const totalCount = 25
+    const perPage = 12
     const expectedAction = {
       type: 'GO_TO_NEXT_PAGE',
       dispatch,
       currentPage,
+      totalCount,
+      perPage,
       nextPage
     }
-    expect(actions.goToNextPage(dispatch, currentPage)).toEqual(expectedAction)
+    expect(actions.goToNextPage(dispatch, currentPage, totalCount, perPage)).toEqual(expectedAction)
   })
 })
 describe('when clicking on a journey pattern checkbox', () => {

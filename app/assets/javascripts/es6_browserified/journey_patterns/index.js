@@ -16,6 +16,7 @@ var initialState = {
   pagination: {
     page : 1,
     totalCount: window.journeyPatternLength,
+    perPage: window.journeyPatternsPerPage,
     stateChanged: false
   },
   modal: {

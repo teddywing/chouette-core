@@ -7,7 +7,8 @@ const mapStateToProps = (state) => {
   return {
     journeyPatterns: state.journeyPatterns,
     page: state.pagination.page,
-    length: state.pagination.totalCount,
+    totalCount: state.pagination.totalCount,
+    perPage: state.pagination.perPage,
     stateChanged: state.pagination.stateChanged
   }
 }

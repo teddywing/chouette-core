@@ -17,10 +17,12 @@ const actions = {
     currentPage,
     nextPage : false
   }),
-  goToNextPage : (dispatch, currentPage) => ({
+  goToNextPage : (dispatch, currentPage, totalCount, perPage) => ({
     type: 'GO_TO_NEXT_PAGE',
     dispatch,
     currentPage,
+    totalCount,
+    perPage,
     nextPage : true
   }),
   updateCheckboxValue : (e, index) => ({
@@ -66,6 +68,10 @@ const actions = {
   savePage : (dispatch, currentPage) => ({
     type: 'SAVE_PAGE',
     dispatch
+  }),
+  updateTotalCount: (diff) =>({
+    type: 'UPDATE_TOTAL_COUNT',
+    diff
   }),
   submitJourneyPattern : (dispatch, state, next) => {
     let urlJSON = window.location.pathname + ".json"
@@ -146,6 +152,9 @@ const actions = {
             stop_points: val.route_short_description.stop_points,
             deletable: false
           })
+        }
+        if(journeyPatterns.length != window.journeyPatternsPerPage){
+          dispatch(actions.updateTotalCount(journeyPatterns.length - window.journeyPatternsPerPage))
         }
         dispatch(actions.receiveJourneyPatterns(journeyPatterns))
       })

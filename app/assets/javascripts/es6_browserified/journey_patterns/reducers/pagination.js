@@ -9,7 +9,7 @@ const pagination = (state = {}, action) => {
       }
       return state
     case 'GO_TO_NEXT_PAGE':
-      if (state.totalCount - (action.currentPage * 12) > 0){
+      if (state.totalCount - (action.currentPage * action.perPage) > 0){
         toggleOnConfirmModal()
         return Object.assign({}, state, {page : action.currentPage + 1, stateChanged: false})
       }
@@ -19,6 +19,8 @@ const pagination = (state = {}, action) => {
     case 'SAVE_MODAL':
       toggleOnConfirmModal('modal')
       return Object.assign({}, state, {stateChanged: true})
+    case 'UPDATE_TOTAL_COUNT':
+      return Object.assign({}, state, {totalCount : state.totalCount - action.diff })
     default:
       return state
   }
