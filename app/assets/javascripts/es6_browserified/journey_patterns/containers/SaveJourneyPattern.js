@@ -10,7 +10,7 @@ let SaveJourneyPattern = ({ dispatch, journeyPatterns, page }) => {
         type='submit'
         onClick={e => {
           e.preventDefault()
-          dispatch(actions.savePage(dispatch, page))
+          actions.submitJourneyPattern(dispatch, journeyPatterns)
         }}
       >
         Valider

@@ -143,15 +143,6 @@ describe('when clicking on validate button inside create modal', () => {
     expect(actions.addJourneyPattern(data)).toEqual(expectedAction)
   })
 })
-describe('when clicking on validate button at the bottom of the page', () => {
-  it('should create an action to post data and save it into db', () => {
-    const expectedAction = {
-      type: 'SAVE_PAGE',
-      dispatch
-    }
-    expect(actions.savePage(dispatch)).toEqual(expectedAction)
-  })
-})
 describe('when submitting new journeyPatterns', () => {
   it('should create an action to update pagination totalCount', () => {
     const diff = 1
