@@ -12,9 +12,9 @@ describe Chouette::JourneyPattern, :type => :model do
       end
     end
 
-    let(:journey_pattern) { create(:journey_pattern) }
-    let(:route)           { journey_pattern.route }
-    let(:state)           { journey_pattern_to_state(journey_pattern) }
+    let(:route) { create :route }
+    let(:journey_pattern) { create :journey_pattern, route: route }
+    let(:state) { journey_pattern_to_state(journey_pattern) }
 
     it 'should delete unchecked stop_points' do
       # Of 5 stop_points 2 are checked
@@ -33,11 +33,52 @@ describe Chouette::JourneyPattern, :type => :model do
       expect(journey_pattern.reload.stop_points.count).to eq(5)
     end
 
-    it 'should do create now instance' do
-      new_state = journey_pattern_to_state(build(:journey_pattern, objectid: nil))
+    it 'should create now instance' do
+      new_state = journey_pattern_to_state(build(:journey_pattern, objectid: nil, route: route))
       Chouette::JourneyPattern.state_create_instance route, new_state
       expect(new_state['object_id']).to be_truthy
       expect(new_state['new_record']).to be_truthy
+    end
+
+    it 'should delete journey_pattern' do
+      state['deletable'] = true
+      collection = [state]
+      expect {
+        Chouette::JourneyPattern.state_update route, collection
+      }.to change{Chouette::JourneyPattern.count}.from(1).to(0)
+
+      expect(collection).to be_empty
+    end
+
+    it 'should validate journey_pattern on update' do
+      journey_pattern.name = ''
+      collection = [state]
+      Chouette::JourneyPattern.state_update route, collection
+      expect(collection.first['errors']).to have_key(:name)
+    end
+
+    it 'should validate journey_pattern on create' do
+      new_state  = journey_pattern_to_state(build(:journey_pattern, name: '', objectid: nil, route: route))
+      collection = [new_state]
+      expect {
+        Chouette::JourneyPattern.state_update route, collection
+      }.to_not change{Chouette::JourneyPattern.count}
+
+      expect(collection.first['errors']).to have_key(:name)
+      expect(collection.first).to_not have_key('object_id')
+    end
+
+    it 'should not save any journey_pattern of collection if one is invalid' do
+      journey_pattern.name = ''
+      valid_state   = journey_pattern_to_state(build(:journey_pattern, objectid: nil, route: route))
+      invalid_state = journey_pattern_to_state(journey_pattern)
+      collection    = [valid_state, invalid_state]
+
+      expect {
+        Chouette::JourneyPattern.state_update route, collection
+      }.to_not change{Chouette::JourneyPattern.count}
+
+      expect(collection.first).to_not have_key('object_id')
     end
   end
 
