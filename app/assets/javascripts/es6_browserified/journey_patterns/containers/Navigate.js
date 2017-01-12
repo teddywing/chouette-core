@@ -6,6 +6,7 @@ var NavigateComponent = require('../components/Navigate')
 const mapStateToProps = (state) => {
   return {
     journeyPatterns: state.journeyPatterns,
+    status: state.status,
     pagination: state.pagination
   }
 }

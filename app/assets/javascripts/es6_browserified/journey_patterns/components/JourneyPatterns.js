@@ -7,7 +7,6 @@ class JourneyPatterns extends Component{
   constructor(props){
     super(props)
   }
-
   componentDidMount() {
     this.props.onLoadFirstPage()
   }
@@ -15,6 +14,12 @@ class JourneyPatterns extends Component{
   render() {
     return (
       <div className='list-group'>
+        {(this.props.status.fetchSuccess == false) && (
+          <div className="alert alert-danger">
+            <strong>Erreur : </strong>
+            la récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème
+          </div>
+        )}
         {this.props.journeyPatterns.map((journeyPattern, index) =>
           <JourneyPattern
             value={ journeyPattern }
@@ -30,6 +35,7 @@ class JourneyPatterns extends Component{
 
 JourneyPatterns.propTypes = {
   journeyPatterns: PropTypes.array.isRequired,
+  status: PropTypes.object.isRequired,
   onCheckboxChange: PropTypes.func.isRequired,
   onLoadFirstPage: PropTypes.func.isRequired,
   onOpenEditModal: PropTypes.func.isRequired

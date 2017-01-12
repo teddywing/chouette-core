@@ -12,6 +12,10 @@ var App = require('./components/App')
 // var promise = require('redux-promise')
 
 var initialState = {
+  status: {
+    fetchSuccess: false,
+    isFetching: false
+  },
   journeyPatterns: [],
   pagination: {
     page : 1,

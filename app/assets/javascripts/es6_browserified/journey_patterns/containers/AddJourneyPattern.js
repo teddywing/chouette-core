@@ -5,7 +5,8 @@ var CreateModal = require('../components/CreateModal')
 const mapStateToProps = (state) => {
   return {
     modal: state.modal,
-    journeyPatterns: state.journeyPatterns
+    journeyPatterns: state.journeyPatterns,
+    status: state.status
   }
 }
 
