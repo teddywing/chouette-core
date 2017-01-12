@@ -43,7 +43,7 @@ class CreateModal extends Component {
                     <form>
                       <div className='modal-body'>
                         <div className='form-group'>
-                          <label className='control-label'>Nom</label>
+                          <label className='control-label is-required'>Nom</label>
                           <input
                             type='text'
                             ref='name'
@@ -55,7 +55,7 @@ class CreateModal extends Component {
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                             <div className='form-group'>
-                              <label className='control-label'>Nom public</label>
+                              <label className='control-label is-required'>Nom public</label>
                               <input
                                 type='text'
                                 ref='published_name'
@@ -67,7 +67,7 @@ class CreateModal extends Component {
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                             <div className='form-group'>
-                              <label className='control-label'>N° d'enregistrement</label>
+                              <label className='control-label is-required'>N° d'enregistrement</label>
                               <input
                                 type='text'
                                 ref='registration_number'

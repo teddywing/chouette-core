@@ -13,6 +13,13 @@
       background-color: #f5f5f5
 
 // Validations
+.control-label
+  &.is-required
+    &:after
+      content: ' *'
+      display: inline
+      color: #a94442
+
 .form-control
   &:required
     &:focus:invalid
