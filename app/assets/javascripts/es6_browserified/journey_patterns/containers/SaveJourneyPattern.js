@@ -3,6 +3,9 @@ var connect = require('react-redux').connect
 var actions = require('../actions')
 
 let SaveJourneyPattern = ({ dispatch, journeyPatterns, page, status }) => {
+  if(status.isFetching == true) {
+    return false
+  }
   if(status.fetchSuccess == true) {
     return (
       <form className='clearfix' onSubmit={e => {e.preventDefault()}}>

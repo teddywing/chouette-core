@@ -14,6 +14,11 @@ class JourneyPatterns extends Component{
   render() {
     return (
       <div className='list-group'>
+        {(this.props.status.isFetching == true) && (
+          <div className="alert alert-info">
+            Is fetching...
+          </div>
+        )}
         {(this.props.status.fetchSuccess == false) && (
           <div className="alert alert-danger">
             <strong>Erreur : </strong>

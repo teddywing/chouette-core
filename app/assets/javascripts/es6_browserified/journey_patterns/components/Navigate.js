@@ -7,6 +7,9 @@ let Navigate = ({ dispatch, journeyPatterns, pagination, status }) => {
   let firstPage = 1
   let lastPage = Math.ceil(pagination.totalCount / window.journeyPatternsPerPage)
 
+  if(status.isFetching == true) {
+    return false
+  }
   if(status.fetchSuccess == true) {
     return (
       <form className='btn-group btn-group-sm' onSubmit={e => {

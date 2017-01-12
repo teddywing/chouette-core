@@ -16,7 +16,10 @@ class CreateModal extends Component {
   }
 
   render() {
-    if(status.fetchSuccess == true) {
+    if(this.props.status.isFetching == true) {
+      return false
+    }
+    if(this.props.status.fetchSuccess == true) {
       return (
         <div className='pull-right'>
           <button
