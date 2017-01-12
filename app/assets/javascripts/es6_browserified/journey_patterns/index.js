@@ -13,7 +13,7 @@ var App = require('./components/App')
 
 var initialState = {
   status: {
-    fetchSuccess: false,
+    fetchSuccess: true,
     isFetching: false
   },
   journeyPatterns: [],

@@ -5,7 +5,7 @@ let state = {}
 describe('status reducer', () => {
   beforeEach(() => {
     state = {
-      fetchSuccess: false,
+      fetchSuccess: true,
       isFetching: false
     }
   })
