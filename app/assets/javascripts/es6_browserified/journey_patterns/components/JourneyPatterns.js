@@ -15,8 +15,8 @@ class JourneyPatterns extends Component{
     return (
       <div className='list-group'>
         {(this.props.status.isFetching == true) && (
-          <div className="alert alert-info">
-            Is fetching...
+          <div className="isLoading" style={{marginTop: 80, marginBottom: 80}}>
+            <div className="loader"></div>
           </div>
         )}
         {(this.props.status.fetchSuccess == false) && (
