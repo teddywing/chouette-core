@@ -15,7 +15,7 @@ let Navigate = ({ dispatch, journeyPatterns, pagination, status }) => {
         <button
           onClick={e => {
             e.preventDefault()
-            dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged))
+            dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
           }}
           type="submit"
           data-toggle=''
@@ -26,7 +26,7 @@ let Navigate = ({ dispatch, journeyPatterns, pagination, status }) => {
         <button
           onClick={e => {
             e.preventDefault()
-            dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged))
+            dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
           }}
           type="submit"
           data-toggle=''

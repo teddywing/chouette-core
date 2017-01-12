@@ -27,10 +27,11 @@ const actions = {
     id : e.currentTarget.id,
     index
   }),
-  checkConfirmModal : (event, callback, stateChanged) => {
+  checkConfirmModal : (event, callback, stateChanged,dispatch) => {
     if(stateChanged === true){
       return actions.openConfirmModal(callback)
     }else{
+      dispatch(actions.fetchingApi())
       return callback
     }
   },
@@ -70,6 +71,9 @@ const actions = {
     type: 'UPDATE_TOTAL_COUNT',
     diff
   }),
+  fetchingApi: () =>({
+      type: 'FETCH_API'
+  }),
   resetValidation: (target) => {
     $(target).parent().removeClass('has-error').children('.help-block').remove()
   },
@@ -95,6 +99,7 @@ const actions = {
     }
   },
   submitJourneyPattern : (dispatch, state, next) => {
+    dispatch(actions.fetchingApi())
     let urlJSON = window.location.pathname + ".json"
     let req = new Request(urlJSON, {
       credentials: 'same-origin',

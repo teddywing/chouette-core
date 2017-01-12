@@ -2,6 +2,14 @@ var statusReducer = require('es6_browserified/journey_patterns/reducers/status')
 
 let state = {}
 
+let pagination = {
+  page : 2,
+  totalCount : 25,
+  stateChanged: false,
+  perPage: 12
+}
+const dispatch = function(){}
+
 describe('status reducer', () => {
   beforeEach(() => {
     state = {
@@ -29,6 +37,15 @@ describe('status reducer', () => {
       statusReducer(state, {
         type: 'RECEIVE_JOURNEY_PATTERNS'
       })
-    ).toEqual(Object.assign({}, state, {fetchSuccess: true}))
+    ).toEqual(Object.assign({}, state, {fetchSuccess: true, isFetching: false}))
   })
+
+  it('should handle FETCH_API', () => {
+    expect(
+      statusReducer(state, {
+        type: 'FETCH_API'
+      })
+    ).toEqual(Object.assign({}, state, {isFetching: true}))
+  })
+
 })

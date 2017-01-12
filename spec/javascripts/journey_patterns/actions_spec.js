@@ -144,3 +144,11 @@ describe('when submitting new journeyPatterns', () => {
     expect(actions.updateTotalCount(diff)).toEqual(expectedAction)
   })
 })
+describe('when fetching api', () => {
+  it('should create an action to fetch api', () => {
+    const expectedAction = {
+      type: 'FETCH_API',
+    }
+    expect(actions.fetchingApi()).toEqual(expectedAction)
+  })
+})
