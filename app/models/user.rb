@@ -77,11 +77,8 @@ class User < ActiveRecord::Base
 
   def permissions_unique_and_nonempty
     if permissions && permissions.any?
-      if permissions.uniq.length != permissions.length
-        errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_unique'))
-      elsif permissions.include? ''
-        errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_nonempty'))
-      end
+      errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_unique')) if permissions.uniq.length != permissions.length
+      errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_nonempty')) if permissions.include? ''
     end
   end
 end
