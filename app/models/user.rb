@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
   validates :organisation, :presence => true
   validates :email, :presence => true, :uniqueness => true
   validates :name, :presence => true
+  validate :permissions_unique_and_nonempty
 
   before_validation(:on => :create) do
     self.password ||= Devise.friendly_token.first(6)
@@ -71,6 +72,16 @@ class User < ActiveRecord::Base
   def check_destroy_organisation
     if organisation.users.empty?
       organisation.destroy
+    end
+  end
+
+  def permissions_unique_and_nonempty
+    if permissions && permissions.any?
+      if permissions.uniq.length != permissions.length
+        errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_unique'))
+      elsif permissions.include? ''
+        errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_nonempty'))
+      end
     end
   end
 end
