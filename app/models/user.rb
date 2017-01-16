@@ -66,6 +66,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def has_permission?(permission)
+    permissions && permissions.include?(permission)
+  end
+
   private
 
   # remove organisation and referentials if last user of it

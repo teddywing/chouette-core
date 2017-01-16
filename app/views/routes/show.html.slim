@@ -15,11 +15,11 @@
     / p
     /   label = "#{@route.human_attribute_name(:number)} : "
     /   = " #{@route.number}"
-    / 
+    /
     / p
     /   label = "#{@route.human_attribute_name(:comment)} : "
     /   = " #{@route.comment}"
-    / 
+    /
     / p
     /   label = "#{@route.human_attribute_name(:direction)} : "
     /   - if @route.direction
@@ -47,14 +47,14 @@ p.after_map
   .panel-heading
     h4.panel-title
       strong = t('.stop_points')
-  
+
   .list-group
     - @route.stop_points.each do |point|
       - if point.stop_area.zip_code && point.stop_area.city_name
         - linktxt = "#{point.stop_area.name}, #{point.stop_area.zip_code} #{point.stop_area.city_name}"
       - else
         - linktxt = "#{point.stop_area.name}"
-      
+
       = link_to [@referential, point.stop_area], { style: 'display: table;width: 100%;', class: 'list-group-item', title: "Voir l'arrêt '#{linktxt}'" } do
         div style='display: table-cell;vertical-align: middle;'
           div style='display: inline-block;width: 10%;vertical-align: middle;text-align: right;'
@@ -67,7 +67,7 @@ p.after_map
   .panel-heading
     h4.panel-title
       strong = t('.journey_patterns')
- 
+
   .list-group
     - @route.journey_patterns.each do |journey_pattern|
       .list-group-item.clearfix title="#{t('journey_patterns.journey_pattern.stop_count', count: journey_pattern.stop_points.count, route_count: @route.stop_points.count)} | #{t('journey_patterns.journey_pattern.vehicle_journeys_count', count: journey_pattern.vehicle_journeys.count)}"
@@ -85,16 +85,22 @@ p.after_map
           ul.dropdown-menu
             li = link_to 'Voir', [@referential, @line, @route, journey_pattern], title: "#{Chouette::JourneyPattern.model_name.human.capitalize} #{journey_name(journey_pattern)}"
             li = link_to 'Supprimer', referential_line_route_journey_pattern_path(@referential, @line, @route, journey_pattern), method: :delete, data: {confirm: t('journey_patterns.actions.destroy_confirm')}
-      
+
   / .panel-body
   /   .journey_patterns.paginated_content
   /     = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
 
 - content_for :sidebar do
   ul.actions
-    li = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
-    li = link_to t('routes.actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'edit'
-    li = link_to t('routes.actions.destroy'), referential_line_route_path(@referential, @line, @route), method: :delete, :data => {:confirm =>  t('routes.actions.destroy_confirm')}, class: 'remove'
+    li
+      - if policy(@route).create?
+        = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
+    li
+      - if policy(@route).edit?
+        = link_to t('routes.actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'edit'
+    li
+      - if policy(@route).destroy?
+        = link_to t('routes.actions.destroy'), referential_line_route_path(@referential, @line, @route), method: :delete, :data => {:confirm =>  t('routes.actions.destroy_confirm')}, class: 'remove'
 
   ul.actions
     - if @route.stop_points.size >= 2

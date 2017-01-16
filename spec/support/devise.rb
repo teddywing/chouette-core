@@ -3,7 +3,7 @@ module DeviseRequestHelper
 
   def login_user
     organisation = Organisation.where(:code => "first").first_or_create(attributes_for(:organisation))
-    @user ||= create(:user, :organisation => organisation)
+    @user ||= create(:user, :organisation => organisation, :permissions => ['routes.create', 'routes.edit', 'routes.destroy'])
     login_as @user, :scope => :user
     # post_via_redirect user_session_path, 'user[email]' => @user.email, 'user[password]' => @user.password
   end
@@ -34,7 +34,7 @@ module DeviseControllerHelper
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
       organisation = Organisation.where(:code => "first").first_or_create(attributes_for(:organisation))
-      user = create(:user, :organisation => organisation)
+      user = create(:user, :organisation => organisation, :permissions => ['routes.create', 'routes.edit', 'routes.destroy'])
       sign_in user
     end
   end

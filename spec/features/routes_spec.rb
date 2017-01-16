@@ -54,4 +54,92 @@ describe "Routes", :type => :feature do
     end
   end
 
+  describe 'referential line show' do
+    context 'user has permission to edit routes' do
+      it 'shows edit buttons for routes' do
+        visit referential_line_path(referential, line)
+        expect(page).to have_css('span.fa.fa-pencil')
+      end
+    end
+
+    context 'user does not have permission to edit routes' do
+      it 'does not show edit buttons for routes' do
+        @user.update_attribute(:permissions, ['routes.create', 'routes.destroy'])
+        visit referential_line_path(referential, line)
+        expect(page).not_to have_css('span.fa.fa-pencil')
+      end
+    end
+
+    context 'user has permission to create routes' do
+      it 'shows link to a create route page' do
+        visit referential_line_path(referential, line)
+        expect(page).to have_content(I18n.t('routes.actions.new'))
+      end
+    end
+
+    context 'user does not have permission to create routes' do
+      it 'does not show link to a create route page' do
+        @user.update_attribute(:permissions, ['routes.edit', 'routes.destroy'])
+        visit referential_line_path(referential, line)
+        expect(page).not_to have_content(I18n.t('routes.actions.new'))
+      end
+    end
+
+    context 'user has permission to destroy routes' do
+      it 'shows destroy buttons for routes' do
+        visit referential_line_path(referential, line)
+        expect(page).to have_css('span.fa.fa-trash-o')
+      end
+    end
+
+    context 'user does not have permission to destroy routes' do
+      it 'does not show destroy buttons for routes' do
+        @user.update_attribute(:permissions, ['routes.edit', 'routes.create'])
+        visit referential_line_path(referential, line)
+        expect(page).not_to have_css('span.fa.fa-trash-o')
+      end
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
