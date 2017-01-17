@@ -7,13 +7,16 @@ const StopPoint = (props) => {
     <div className='list-group-item'>
       <div className='row'>
         <div className='col-lg-5 col-md-5 col-sm-4 col-xs-5'>
-          <div style={{display: 'inline-block', width: '20%', verticalAlign: 'middle', textAlign: 'right', marginTop: 24}}>
+          <div style={{display: 'inline-block', width: '17%', verticalAlign: 'middle', textAlign: 'right', marginTop: 24}}>
             <span className='label label-default' style={{marginRight: 10}}>{props.value.user_objectid}</span>
           </div>
 
-          <div style={{display: 'inline-block', width: '80%', verticalAlign: 'middle'}}>
+          <div style={{display: 'inline-block', width: '66%', verticalAlign: 'middle'}}>
             <label>Arrêt</label>
             <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} />
+          </div>
+
+          <div style={{display: 'inline-block', width: '17%', verticalAlign: 'middle', textAlign: 'right', marginTop: 24}}>
             <div
               className={'btn btn-primary'}
               onClick={props.onToggleMap}
