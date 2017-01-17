@@ -9,7 +9,7 @@ class OlMap extends Component{
   componentDidUpdate(prev, next) {
     if(prev.value.olMap.isOpened == false){
       var map = new ol.Map({
-       target: 'CUSTOM_map' + this.props.index,
+       target: 'stoppoint_map' + this.props.index,
        layers: [
          new ol.layer.Tile({
            source: new ol.source.OSM()
@@ -25,7 +25,7 @@ class OlMap extends Component{
 
   render() {
     if (this.props.value.olMap.isOpened){
-      return <div id={"CUSTOM_map" + this.props.index}></div>
+      return <div id={"stoppoint_map" + this.props.index} className='map'></div>
     }else{
       return false
     }

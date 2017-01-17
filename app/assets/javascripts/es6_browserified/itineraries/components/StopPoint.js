@@ -69,11 +69,13 @@ const StopPoint = (props) => {
           </div>
         </div>
       </div>
-      <div>
-        <OlMap
-          value = {props.value}
-          index = {props.index}
-        />
+      <div className="row">
+        <div className='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+          <OlMap
+            value = {props.value}
+            index = {props.index}
+            />
+        </div>
       </div>
     </div>
   )
