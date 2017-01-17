@@ -1,6 +1,7 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
 var BSelect2 = require('./BSelect2')
+var OlMap = require('./OlMap')
 
 const StopPoint = (props) => {
   return (
@@ -67,6 +68,9 @@ const StopPoint = (props) => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <OlMap />
       </div>
     </div>
   )
