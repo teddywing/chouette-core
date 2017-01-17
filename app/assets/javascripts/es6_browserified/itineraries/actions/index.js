@@ -36,7 +36,11 @@ const actions = {
       select_value: e.currentTarget.value,
       index
     }
-  }
+  },
+  toggleMap: (index) =>({
+    type: 'TOGGLE_MAP',
+    index
+  })
 }
 
 module.exports = actions

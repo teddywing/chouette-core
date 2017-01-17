@@ -77,6 +77,8 @@ const stopPoints = (state = [], action) => {
           return t
         }
       })
+    case 'TOGGLE_MAP':
+      return state
     default:
       return state
   }

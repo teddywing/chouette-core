@@ -14,6 +14,12 @@ const StopPoint = (props) => {
           <div style={{display: 'inline-block', width: '80%', verticalAlign: 'middle'}}>
             <label>Arrêt</label>
             <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} />
+            <div
+              className={'btn btn-primary'}
+              onClick={props.onToggleMap}
+              >
+              <span className='fa fa-map-marker'></span>
+            </div>
           </div>
         </div>
 
@@ -64,6 +70,7 @@ const StopPoint = (props) => {
 }
 
 StopPoint.propTypes = {
+  onToggleMap: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,
   onMoveDownClick: PropTypes.func.isRequired,

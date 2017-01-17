@@ -2,7 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var StopPoint = require('./StopPoint')
 
-const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange }) => {
+const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap }) => {
   return (
     <div className='list-group'>
       {stopPoints.map((stopPoint, index) =>
@@ -15,6 +15,7 @@ const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownCli
           onMoveDownClick={() => onMoveDownClick(index)}
           onChange={ onChange }
           onSelectChange={ (e) => onSelectChange(e, index) }
+          onToggleMap={() => onToggleMap(index)}
           first={ index === 0 }
           last={ index === (stopPoints.length - 1) }
           index={ index }

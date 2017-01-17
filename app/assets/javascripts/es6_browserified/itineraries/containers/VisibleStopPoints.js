@@ -24,6 +24,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelectChange: (e, index) =>{
       dispatch(actions.updateSelectValue(e, index))
+    },
+    onToggleMap: (index) =>{
+      dispatch(actions.toggleMap(index))
     }
   }
 }
