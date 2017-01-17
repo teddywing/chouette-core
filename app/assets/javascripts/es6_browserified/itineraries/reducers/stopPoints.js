@@ -1,6 +1,6 @@
 var addInput = require('../form_helper')
 
-const todo = (state = {}, action, length) => {
+const stopPoint = (state = {}, action, length) => {
   switch (action.type) {
     case 'ADD_STOP':
       return {
@@ -21,12 +21,12 @@ const updateFormForDeletion = (stop) =>{
   }
 }
 
-const todos = (state = [], action) => {
+const stopPoints = (state = [], action) => {
   switch (action.type) {
     case 'ADD_STOP':
       return [
         ...state,
-        todo(undefined, action, state.length)
+        stopPoint(undefined, action, state.length)
       ]
     case 'MOVE_STOP_UP':
       return [
@@ -46,9 +46,9 @@ const todos = (state = [], action) => {
       updateFormForDeletion(state[action.index])
       return [
         ...state.slice(0, action.index),
-        ...state.slice(action.index + 1).map((todo)=>{
-          todo.index--
-          return todo
+        ...state.slice(action.index + 1).map((stopPoint)=>{
+          stopPoint.index--
+          return stopPoint
         })
       ]
     case 'UPDATE_INPUT_VALUE':
@@ -65,7 +65,7 @@ const todos = (state = [], action) => {
         }
       })
       // return state.map(t =>
-      //   todo(t, action)
+      //   stopPoint(t, action)
       // )
     case 'UPDATE_SELECT_VALUE':
       return state.map( (t,i) => {
@@ -82,4 +82,4 @@ const todos = (state = [], action) => {
   }
 }
 
-module.exports = todos
+module.exports = stopPoints

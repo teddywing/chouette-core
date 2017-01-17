@@ -2,7 +2,7 @@ var React = require('react')
 var render = require('react-dom').render
 var Provider = require('react-redux').Provider
 var createStore = require('redux').createStore
-var todoApp = require('./reducers')
+var reducers = require('./reducers')
 var App = require('./components/App')
 var addInput = require('./form_helper')
 
@@ -36,10 +36,10 @@ const getInitialState = () => {
   return state
 }
 
-var initialState = {todos: getInitialState()}
+var initialState = {stopPoints: getInitialState()}
 // const loggerMiddleware = createLogger()
 let store = createStore(
-  todoApp,
+  reducers,
   initialState
   // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
@@ -53,14 +53,14 @@ render(
 
 document.querySelector('input[name=commit]').addEventListener('click', (event)=>{
   let state = store.getState()
-  for (let [i, todo] of state.todos.entries()){
-    if (todo.stoppoint_id == undefined){
-      todo.stoppoint_id = ""
+  for (let [i, stopPoint] of state.stopPoints.entries()){
+    if (stopPoint.stoppoint_id == undefined){
+      stopPoint.stoppoint_id = ""
     }
-    addInput('id',todo.stoppoint_id, i)
-    addInput('stop_area_id',todo.stoparea_id, i)
+    addInput('id',stopPoint.stoppoint_id, i)
+    addInput('stop_area_id',stopPoint.stoparea_id, i)
     addInput('position',i, i)
-    addInput('for_boarding',todo.for_boarding, i)
-    addInput('for_alighting',todo.for_alighting, i)
+    addInput('for_boarding',stopPoint.for_boarding, i)
+    addInput('for_alighting',stopPoint.for_alighting, i)
   }
 })

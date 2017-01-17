@@ -2,7 +2,7 @@ var React = require('react')
 var connect = require('react-redux').connect
 var actions = require('../actions')
 
-let AddTodo = ({ dispatch }) => {
+let AddStopPoint = ({ dispatch }) => {
   return (
     <div className="clearfix" style={{marginBottom: 10}}>
       <form onSubmit={e => {
@@ -17,6 +17,6 @@ let AddTodo = ({ dispatch }) => {
     </div>
   )
 }
-AddTodo = connect()(AddTodo)
+AddStopPoint = connect()(AddStopPoint)
 
-module.exports = AddTodo
+module.exports = AddStopPoint

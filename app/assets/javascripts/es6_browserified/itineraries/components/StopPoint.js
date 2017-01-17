@@ -2,7 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var BSelect2 = require('./BSelect2')
 
-const Todo = (props) => {
+const StopPoint = (props) => {
   return (
     <div className='list-group-item'>
       <div className='row'>
@@ -63,7 +63,7 @@ const Todo = (props) => {
   )
 }
 
-Todo.propTypes = {
+StopPoint.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,
   onMoveDownClick: PropTypes.func.isRequired,
@@ -75,4 +75,4 @@ Todo.propTypes = {
   value: PropTypes.object
 }
 
-module.exports = Todo
+module.exports = StopPoint

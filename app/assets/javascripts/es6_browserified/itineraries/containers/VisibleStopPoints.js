@@ -1,10 +1,10 @@
 var actions = require('../actions')
 var connect = require('react-redux').connect
-var TodoList = require('../components/TodoList')
+var StopPointList = require('../components/StopPointList')
 
 const mapStateToProps = (state) => {
   return {
-    todos: state.todos
+    stopPoints: state.stopPoints
   }
 }
 
@@ -28,9 +28,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const VisibleTodoList = connect(
+const VisibleStopPoints = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TodoList)
+)(StopPointList)
 
-module.exports = VisibleTodoList
+module.exports = VisibleStopPoints

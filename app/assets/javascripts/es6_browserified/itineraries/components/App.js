@@ -1,11 +1,11 @@
 var React = require('react')
-var AddTodo = require('../containers/AddTodo')
-var VisibleTodoList = require('../containers/VisibleTodoList')
+var AddStopPoint = require('../containers/AddStopPoint')
+var VisibleStopPoints = require('../containers/VisibleStopPoints')
 
 const App = () => (
   <div>
-    <AddTodo />
-    <VisibleTodoList />
+    <AddStopPoint />
+    <VisibleStopPoints />
   </div>
 )
 

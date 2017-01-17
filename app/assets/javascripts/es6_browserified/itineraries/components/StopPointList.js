@@ -1,12 +1,12 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
-var Todo = require('./Todo')
+var StopPoint = require('./StopPoint')
 
-const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange }) => {
+const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange }) => {
   return (
     <div className='list-group'>
-      {todos.map((todo, index) =>
-        <Todo
+      {stopPoints.map((stopPoint, index) =>
+        <StopPoint
           key={'item-' + index}
           onDeleteClick={() => onDeleteClick(index)}
           onMoveUpClick={() => {
@@ -16,21 +16,21 @@ const TodoList = ({ todos, onDeleteClick, onMoveUpClick, onMoveDownClick, onChan
           onChange={ onChange }
           onSelectChange={ (e) => onSelectChange(e, index) }
           first={ index === 0 }
-          last={ index === (todos.length - 1) }
+          last={ index === (stopPoints.length - 1) }
           index={ index }
-          value={ todo }
+          value={ stopPoint }
         />
       )}
     </div>
   )
 }
 
-TodoList.propTypes = {
-  todos: PropTypes.array.isRequired,
+StopPointList.propTypes = {
+  stopPoints: PropTypes.array.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,
   onMoveDownClick: PropTypes.func.isRequired,
   onSelectChange: PropTypes.func.isRequired
 }
 
-module.exports = TodoList
+module.exports = StopPointList
