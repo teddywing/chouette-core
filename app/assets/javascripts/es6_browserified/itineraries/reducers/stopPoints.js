@@ -78,7 +78,16 @@ const stopPoints = (state = [], action) => {
         }
       })
     case 'TOGGLE_MAP':
-      return state
+      return state.map( (t,i) => {
+        if (i === action.index){
+          let val = !t.olMap.isOpened
+          let stateMap = Object.assign({},t.olMap, {isOpened: val})
+          return Object.assign({}, t, {olMap: stateMap})
+        }else {
+          let emptyMap = Object.assign({}, t.olMap, {isOpened: false, json : {}})
+          return Object.assign({}, t, {olMap: emptyMap})
+        }
+      })
     default:
       return state
   }
