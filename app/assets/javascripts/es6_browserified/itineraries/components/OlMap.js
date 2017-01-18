@@ -26,7 +26,6 @@ class OlMap extends Component{
           projection: 'EPSG:4326'
         })
       });
-      debugger
       // TODO when fetching, use extent value in EPSG 4326
       // var extent = map.getView().calculateExtent(map.getSize());
       // ol.proj.transformExtent(a,"EPSG:3857",'EPSG:4326')
