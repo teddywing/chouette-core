@@ -15,9 +15,13 @@ class OlMap extends Component{
            source: new ol.source.OSM()
          })
        ],
+      controls: [],
+      interactions: ol.interaction.defaults({
+        dragPan: false
+      }),
        view: new ol.View({
-         center: ol.proj.fromLonLat([37.41, 8.82]),
-         zoom: 4
+         center: ol.proj.fromLonLat([2.349014, 48.864716]),
+         zoom: 18
        })
       });
     }
