@@ -1,5 +1,7 @@
-var reducer = require('es6_browserified/itineraries/reducers/stopPoints')
+var stopPointsReducer = require('es6_browserified/itineraries/reducers/stopPoints')
+
 let state = []
+
 describe('stops reducer', () => {
   beforeEach(()=>{
     state = [
@@ -7,26 +9,34 @@ describe('stops reducer', () => {
         text: 'first',
         index: 0,
         for_boarding: 'normal',
-        for_alighting: 'normal'
+        for_alighting: 'normal',
+        olMap: {
+          isOpened: false,
+          json: {}
+        }
       },
       {
         text: 'second',
         index: 1,
         for_boarding: 'normal',
-        for_alighting: 'normal'
+        for_alighting: 'normal',
+        olMap: {
+          isOpened: false,
+          json: {}
+        }
       }
     ]
   })
 
   it('should return the initial state', () => {
     expect(
-      reducer(undefined, {})
+      stopPointsReducer(undefined, {})
     ).toEqual([])
   })
 
   it('should handle ADD_STOP', () => {
     expect(
-      reducer(state, {
+      stopPointsReducer(state, {
         type: 'ADD_STOP'
       })
     ).toEqual(
@@ -35,19 +45,31 @@ describe('stops reducer', () => {
           text: 'first',
           index: 0,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         },
         {
           text: 'second',
           index: 1,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         },
         {
           text: '',
           index: 2,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         }
       ]
     )
@@ -55,7 +77,7 @@ describe('stops reducer', () => {
 
   it('should handle MOVE_UP_STOP', () => {
     expect(
-      reducer(state, {
+      stopPointsReducer(state, {
         type: 'MOVE_STOP_UP',
         index: 1
       })
@@ -65,13 +87,21 @@ describe('stops reducer', () => {
           text: 'second',
           index: 1,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         },
         {
           text: 'first',
           index: 0,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         }
       ]
     )
@@ -79,7 +109,7 @@ describe('stops reducer', () => {
 
   it('should handle MOVE_DOWN_STOP', () => {
     expect(
-      reducer(state, {
+      stopPointsReducer(state, {
         type: 'MOVE_STOP_DOWN',
         index: 0
       })
@@ -89,13 +119,21 @@ describe('stops reducer', () => {
           text: 'second',
           index: 1,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         },
         {
           text: 'first',
           index: 0,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         }
       ]
     )
@@ -103,7 +141,7 @@ describe('stops reducer', () => {
 
   it('should handle DELETE_STOP', () => {
     expect(
-      reducer(state, {
+      stopPointsReducer(state, {
         type: 'DELETE_STOP',
         index: 1
       })
@@ -113,7 +151,11 @@ describe('stops reducer', () => {
           text: 'first',
           index: 0,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         }
       ]
     )
@@ -121,7 +163,7 @@ describe('stops reducer', () => {
 
   it('should handle UPDATE_INPUT_VALUE', () => {
     expect(
-      reducer(state, {
+      stopPointsReducer(state, {
         type: 'UPDATE_INPUT_VALUE',
         index: 0,
         text: {
@@ -139,13 +181,21 @@ describe('stops reducer', () => {
           stoparea_id: 1,
           for_boarding: 'normal',
           for_alighting: 'normal',
-          user_objectid: "1234"
+          user_objectid: "1234",
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         },
         {
           text: 'second',
           index: 1,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         }
       ]
     )
@@ -153,7 +203,7 @@ describe('stops reducer', () => {
 
   it('should handle UPDATE_SELECT_VALUE', () => {
     expect(
-      reducer(state, {
+      stopPointsReducer(state, {
           type :'UPDATE_SELECT_VALUE',
           select_id: 'for_boarding',
           select_value: 'prohibited',
@@ -165,13 +215,53 @@ describe('stops reducer', () => {
           text: 'first',
           index: 0,
           for_boarding: 'prohibited',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         },
         {
           text: 'second',
           index: 1,
           for_boarding: 'normal',
-          for_alighting: 'normal'
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
+        }
+      ]
+    )
+  })
+
+  it('should handle TOGGLE_MAP', () => {
+    expect(
+      stopPointsReducer(state, {
+        type: 'TOGGLE_MAP',
+        index: 0
+      })
+    ).toEqual(
+      [
+        {
+          text: 'first',
+          index: 0,
+          for_boarding: 'normal',
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: true,
+            json: {}
+          }
+        },
+        {
+          text: 'second',
+          index: 1,
+          for_boarding: 'normal',
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
         }
       ]
     )

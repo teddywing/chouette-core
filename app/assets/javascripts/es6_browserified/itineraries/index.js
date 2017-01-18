@@ -31,9 +31,9 @@ const getInitialState = () => {
       text: fancyText,
       for_boarding: value.for_boarding || "normal",
       for_alighting: value.for_alighting || "normal",
-      olMap:{
+      olMap: {
         isOpened: false,
-        json: {},
+        json: {}
       }
     })
   }

@@ -7,7 +7,11 @@ const stopPoint = (state = {}, action, length) => {
         text: '',
         index: length,
         for_boarding: 'normal',
-        for_alighting: 'normal'
+        for_alighting: 'normal',
+        olMap: {
+          isOpened: false,
+          json: {}
+        }
       }
     default:
       return state
