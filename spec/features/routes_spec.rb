@@ -54,6 +54,38 @@ describe "Routes", :type => :feature do
     end
   end
 
+  describe 'show' do
+    context 'user has permission to edit journey patterns' do
+      it 'shows edit links for journey patterns' do
+        visit referential_line_route_path(referential, line, route)
+        expect(page).to have_content(I18n.t('actions.edit'))
+      end
+    end
+
+    context 'user does not have permission to edit journey patterns' do
+      it 'does not show edit links for journey patterns' do
+        @user.update_attribute(:permissions, ['journey_patterns.create', 'journey_patterns.destroy'])
+        visit referential_line_route_path(referential, line, route)
+        expect(page).not_to have_content(I18n.t('actions.edit'))
+      end
+    end
+
+    context 'user has permission to destroy journey patterns' do
+      it 'shows destroy links for journey patterns' do
+        visit referential_line_route_path(referential, line, route)
+        expect(page).to have_content(I18n.t('actions.destroy'))
+      end
+    end
+
+    context 'user does not have permission to edit journey patterns' do
+      it 'does not show destroy links for journey patterns' do
+        @user.update_attribute(:permissions, ['journey_patterns.create', 'journey_patterns.edit'])
+        visit referential_line_route_path(referential, line, route)
+        expect(page).not_to have_content(I18n.t('actions.destroy'))
+      end
+    end
+  end
+
   describe 'referential line show' do
     context 'user has permission to edit routes' do
       it 'shows edit buttons for routes' do
@@ -101,45 +133,3 @@ describe "Routes", :type => :feature do
     end
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
