@@ -13,7 +13,8 @@ describe User, :type => :model do
           :email             => 'john.doe@af83.com',
           :organisation_code => '0083',
           :organisation_name => 'af83',
-          :functional_scope  => "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]"
+          :functional_scope  => "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]",
+          :permissions       => nil
         }
         ticket.user    = "john.doe"
         ticket.success = true
@@ -112,6 +113,22 @@ describe User, :type => :model do
       create :user, username: 'alban.peignier'
       User.portail_sync
       expect(User.count).to eq(11)
+    end
+  end
+
+  describe 'validations' do
+    it 'validates uniqueness of pemissions' do
+      user = build :user, permissions: Array.new(2, 'calendars.shared')
+      expect {
+        user.save!
+      }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it 'validates no pemission is an empty string' do
+      user = build :user, permissions: ['']
+      expect {
+        user.save!
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 

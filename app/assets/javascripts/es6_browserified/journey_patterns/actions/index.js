@@ -3,20 +3,23 @@ const actions = {
     type: "RECEIVE_JOURNEY_PATTERNS",
     json
   }),
-  loadFirstPage: (dispatch) => ({
-    type: 'LOAD_FIRST_PAGE',
-    dispatch
+  receiveErrors : (json) => ({
+    type: "RECEIVE_ERRORS",
+    json
   }),
-  goToPreviousPage : (dispatch, currentPage) => ({
+  unavailableServer : () => ({
+    type: 'UNAVAILABLE_SERVER'
+  }),
+  goToPreviousPage : (dispatch, pagination) => ({
     type: 'GO_TO_PREVIOUS_PAGE',
     dispatch,
-    currentPage,
+    pagination,
     nextPage : false
   }),
-  goToNextPage : (dispatch, currentPage) => ({
+  goToNextPage : (dispatch, pagination) => ({
     type: 'GO_TO_NEXT_PAGE',
     dispatch,
-    currentPage,
+    pagination,
     nextPage : true
   }),
   updateCheckboxValue : (e, index) => ({
@@ -24,10 +27,17 @@ const actions = {
     id : e.currentTarget.id,
     index
   }),
-  openConfirmModal : (accept, cancel) => ({
+  checkConfirmModal : (event, callback, stateChanged,dispatch) => {
+    if(stateChanged === true){
+      return actions.openConfirmModal(callback)
+    }else{
+      dispatch(actions.fetchingApi())
+      return callback
+    }
+  },
+  openConfirmModal : (callback) => ({
     type : 'OPEN_CONFIRM_MODAL',
-    accept,
-    cancel
+    callback
   }),
   openEditModal : (index, journeyPattern) => ({
     type : 'EDIT_JOURNEYPATTERN_MODAL',
@@ -57,7 +67,39 @@ const actions = {
     type: 'SAVE_PAGE',
     dispatch
   }),
+  updateTotalCount: (diff) => ({
+    type: 'UPDATE_TOTAL_COUNT',
+    diff
+  }),
+  fetchingApi: () =>({
+      type: 'FETCH_API'
+  }),
+  resetValidation: (target) => {
+    $(target).parent().removeClass('has-error').children('.help-block').remove()
+  },
+  validateFields : (fields) => {
+    const test = []
+
+    Object.keys(fields).map(function(key) {
+      test.push(fields[key].validity.valid)
+    })
+    if(test.indexOf(false) >= 0) {
+      // Form is invalid
+      test.map(function(item, i) {
+        if(item == false) {
+          const k = Object.keys(fields)[i]
+          $(fields[k]).parent().addClass('has-error').children('.help-block').remove()
+          $(fields[k]).parent().append("<span class='small help-block'>" + fields[k].validationMessage + "</span>")
+        }
+      })
+      return false
+    } else {
+      // Form is valid
+      return true
+    }
+  },
   submitJourneyPattern : (dispatch, state, next) => {
+    dispatch(actions.fetchingApi())
     let urlJSON = window.location.pathname + ".json"
     let req = new Request(urlJSON, {
       credentials: 'same-origin',
@@ -69,13 +111,22 @@ const actions = {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
       }
     })
+    let hasError = false
     fetch(req)
-      .then(response => response.json())
-      .then((json) => {
-        if(next){
-          dispatch(next)
-        }else{
-          dispatch(actions.receiveJourneyPatterns(json))
+      .then(response => {
+        if(!response.ok) {
+          hasError = true
+        }
+        return response.json()
+      }).then((json) => {
+        if(hasError == true) {
+          dispatch(actions.receiveErrors(json))
+        } else {
+          if(next) {
+            dispatch(next)
+          } else {
+            dispatch(actions.receiveJourneyPatterns(json))
+          }
         }
       })
   },
@@ -106,29 +157,41 @@ const actions = {
     let req = new Request(urlJSON, {
       credentials: 'same-origin',
     })
+    let hasError = false
     fetch(req)
-      .then(response => response.json())
-      .then((json) => {
-        let val
-        for (val of json){
-          for (let stop_point of val.route_short_description.stop_points){
-            stop_point.checked = false
-            val.stop_area_short_descriptions.map((element) => {
-              if(element.stop_area_short_description.id === stop_point.id){
-                stop_point.checked = true
-              }
+      .then(response => {
+        if(response.status == 500) {
+          hasError = true
+        }
+        return response.json()
+      }).then((json) => {
+        if(hasError == true) {
+          dispatch(actions.unavailableServer())
+        } else {
+          let val
+          for (val of json){
+            for (let stop_point of val.route_short_description.stop_points){
+              stop_point.checked = false
+              val.stop_area_short_descriptions.map((element) => {
+                if(element.stop_area_short_description.id === stop_point.id){
+                  stop_point.checked = true
+                }
+              })
+            }
+            journeyPatterns.push({
+              name: val.name,
+              object_id: val.object_id,
+              published_name: val.published_name,
+              registration_number: val.registration_number,
+              stop_points: val.route_short_description.stop_points,
+              deletable: false
             })
           }
-          journeyPatterns.push({
-            name: val.name,
-            object_id: val.object_id,
-            published_name: val.published_name,
-            registration_number: val.registration_number,
-            stop_points: val.route_short_description.stop_points,
-            deletable: false
-          })
+          if(journeyPatterns.length != window.journeyPatternsPerPage){
+            dispatch(actions.updateTotalCount(journeyPatterns.length - window.journeyPatternsPerPage))
+          }
+          dispatch(actions.receiveJourneyPatterns(journeyPatterns))
         }
-        dispatch(actions.receiveJourneyPatterns(journeyPatterns))
       })
   }
 }

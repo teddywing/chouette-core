@@ -20,5 +20,11 @@ fr:
       user:
         name: "Nom complet"
         username: "Nom d'utilisateur"
-
-
+        permissions: Permissions
+    errors:
+      models:
+        calendar:
+          attributes:
+            permissions:
+              must_be_unique: Une permission ne peut pas apparaître deux fois chez un même utilisateur.
+              must_be_nonempty: Une permission ne peut pas être une chaine vide.

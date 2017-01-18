@@ -20,3 +20,11 @@ en:
       user:
         name: "Full name"
         username: "Username"
+        permissions: Permissions
+    errors:
+      models:
+        calendar:
+          attributes:
+            permissions:
+              must_be_unique: User's permissions must be unique.
+              must_be_nonempty: A permission can't be empty.

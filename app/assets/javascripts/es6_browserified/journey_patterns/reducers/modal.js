@@ -1,11 +1,11 @@
 const modal = (state = {}, action) => {
   switch (action.type) {
     case 'OPEN_CONFIRM_MODAL':
+      $('#ConfirmModal').modal('show')
       return Object.assign({}, state, {
         type: 'confirm',
         confirmModal: {
-          accept: action.accept,
-          cancel: action.cancel
+          callback: action.callback,
         }
       })
     case 'EDIT_JOURNEYPATTERN_MODAL':

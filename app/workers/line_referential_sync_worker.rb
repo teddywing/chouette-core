@@ -1,5 +1,7 @@
 class LineReferentialSyncWorker
   include Sidekiq::Worker
+  sidekiq_options :retry => false
+
   def process_time
     Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
   end

@@ -139,6 +139,7 @@ p.after_map
     - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
         / FIXME #825
         li
-        = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
+        - if policy(Chouette::Route).create?
+          = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
 
   = creation_tag(@line)

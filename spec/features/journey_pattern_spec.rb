@@ -8,6 +8,53 @@ describe "JourneyPatterns", :type => :feature do
   let!(:route) { create(:route, :line => line) }
   let!(:journey_pattern) { create(:journey_pattern, :route => route) }
 
+  describe 'show' do
+    context 'user has permission to create journey patterns' do
+      it 'shows the create link for journey pattern' do
+        visit referential_line_route_journey_pattern_path(referential, line, route, journey_pattern)
+        expect(page).to have_content(I18n.t('journey_patterns.actions.new'))
+      end
+    end
+
+    context 'user does not have permission to create journey patterns' do
+      it 'does not show the create link for journey pattern' do
+        @user.update_attribute(:permissions, ['journey_patterns.edit', 'journey_patterns.destroy'])
+        visit referential_line_route_journey_pattern_path(referential, line, route, journey_pattern)
+        expect(page).not_to have_content(I18n.t('journey_patterns.actions.new'))
+      end
+    end
+
+    context 'user has permission to edit journey patterns' do
+      it 'shows the edit link for journey pattern' do
+        visit referential_line_route_journey_pattern_path(referential, line, route, journey_pattern)
+        expect(page).to have_content(I18n.t('journey_patterns.actions.edit'))
+      end
+    end
+
+    context 'user does not have permission to edit journey patterns' do
+      it 'does not show the edit link for journey pattern' do
+        @user.update_attribute(:permissions, ['journey_patterns.create', 'journey_patterns.destroy'])
+        visit referential_line_route_journey_pattern_path(referential, line, route, journey_pattern)
+        expect(page).not_to have_content(I18n.t('journey_patterns.actions.edit'))
+      end
+    end
+
+    context 'user has permission to destroy journey patterns' do
+      it 'shows the destroy link for journey pattern' do
+        visit referential_line_route_journey_pattern_path(referential, line, route, journey_pattern)
+        expect(page).to have_content(I18n.t('journey_patterns.actions.destroy'))
+      end
+    end
+
+    context 'user does not have permission to edit journey patterns' do
+      it 'does not show the destroy link for journey pattern' do
+        @user.update_attribute(:permissions, ['journey_patterns.create', 'journey_patterns.edit'])
+        visit referential_line_route_journey_pattern_path(referential, line, route, journey_pattern)
+        expect(page).not_to have_content(I18n.t('journey_patterns.actions.destroy'))
+      end
+    end
+  end
+
   # describe "from routes page to a journey_pattern page" do
   #   it "display route's journey_patterns" do
   #     visit referential_line_route_path(referential,line,route)

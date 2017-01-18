@@ -4,14 +4,16 @@ var JourneyPatterns = require('../components/JourneyPatterns')
 
 const mapStateToProps = (state) => {
   return {
-    journeyPatterns: state.journeyPatterns
+    journeyPatterns: state.journeyPatterns,
+    status: state.status
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoadFirstPage: () =>{
-      dispatch(actions.loadFirstPage(dispatch))
+      dispatch(actions.fetchingApi())
+      actions.fetchJourneyPatterns(dispatch)
     },
     onCheckboxChange: (e, index) =>{
       dispatch(actions.updateCheckboxValue(e, index))

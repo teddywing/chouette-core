@@ -10,10 +10,11 @@ class RoutesController < ChouetteController
   end
 
   before_action :define_candidate_opposite_routes, only: [:new, :edit, :create, :update]
+  before_action :check_policy, only: [:edit, :update, :destroy]
 
   def index
     index! do |format|
-      format.html { redirect_to referential_line_path(@referential,@line) }
+      format.html { redirect_to referential_line_path(@referential, @line) }
     end
   end
 
@@ -83,6 +84,10 @@ class RoutesController < ChouetteController
       else
         parent.routes.select(&:persisted?)
       end
+  end
+
+  def check_policy
+    authorize resource
   end
 
   private

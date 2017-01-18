@@ -12,9 +12,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onModalAccept: (next, state) =>{
+      dispatch(actions.fetchingApi())
       actions.submitJourneyPattern(dispatch, state, next)
     },
     onModalCancel: (next) =>{
+      dispatch(actions.fetchingApi())
       dispatch(next)
     },
     onModalClose: () =>{

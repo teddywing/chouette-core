@@ -33,16 +33,18 @@ const journeyPatterns = (state = [], action) => {
   switch (action.type) {
     case 'RECEIVE_JOURNEY_PATTERNS':
       return [...action.json]
-    case 'LOAD_FIRST_PAGE':
-      actions.fetchJourneyPatterns(action.dispatch)
+    case 'RECEIVE_ERRORS':
+      return [...action.json]
     case 'GO_TO_PREVIOUS_PAGE':
-      if(action.currentPage > 1){
-        actions.fetchJourneyPatterns(action.dispatch, action.currentPage, action.nextPage)
+      $('#ConfirmModal').modal('hide')
+      if(action.pagination.page > 1){
+        actions.fetchJourneyPatterns(action.dispatch, action.pagination.page, action.nextPage)
       }
       return state
     case 'GO_TO_NEXT_PAGE':
-      if (window.journeyPatternLength - (action.currentPage * 12) > 0){
-        actions.fetchJourneyPatterns(action.dispatch, action.currentPage, action.nextPage)
+      $('#ConfirmModal').modal('hide')
+      if (action.pagination.totalCount - (action.pagination.page * action.pagination.perPage) > 0){
+        actions.fetchJourneyPatterns(action.dispatch, action.pagination.page, action.nextPage)
       }
       return state
     case 'UPDATE_CHECKBOX_VALUE':
@@ -78,8 +80,6 @@ const journeyPatterns = (state = [], action) => {
           return j
         }
       })
-    case 'SAVE_PAGE':
-      actions.submitJourneyPattern(action.dispatch, state)
     default:
       return state
   }

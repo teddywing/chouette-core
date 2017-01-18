@@ -14,25 +14,38 @@ describe('when receiveJourneyPatterns is triggered', () => {
   })
 })
 
-describe('when landing on page', () => {
-  it('should create an action to load the n first missions', () => {
-    const expectedAction = {
-      type: 'LOAD_FIRST_PAGE',
-      dispatch
+describe('when previous navigation button is clicked', () => {
+  it('should create an action to go to previous page', () => {
+    const nextPage = false
+    const pagination = {
+      totalCount: 25,
+      perPage: 12,
+      page:1
     }
-    expect(actions.loadFirstPage(dispatch)).toEqual(expectedAction)
+    const expectedAction = {
+      type: 'GO_TO_PREVIOUS_PAGE',
+      dispatch,
+      pagination,
+      nextPage
+    }
+    expect(actions.goToPreviousPage(dispatch, pagination)).toEqual(expectedAction)
   })
 })
 describe('when next navigation button is clicked', () => {
   it('should create an action to go to next page', () => {
     const nextPage = true
+    const pagination = {
+      totalCount: 25,
+      perPage: 12,
+      page:1
+    }
     const expectedAction = {
       type: 'GO_TO_NEXT_PAGE',
       dispatch,
-      currentPage,
+      pagination,
       nextPage
     }
-    expect(actions.goToNextPage(dispatch, currentPage)).toEqual(expectedAction)
+    expect(actions.goToNextPage(dispatch, pagination)).toEqual(expectedAction)
   })
 })
 describe('when clicking on a journey pattern checkbox', () => {
@@ -53,13 +66,12 @@ describe('when clicking on a journey pattern checkbox', () => {
 })
 describe('when clicking on next button', () => {
   it('should create an action to open a confirm modal', () => {
-    const accept = {}, cancel = {}
+    const callback = function(){}
     const expectedAction = {
       type: 'OPEN_CONFIRM_MODAL',
-      accept,
-      cancel,
+      callback
     }
-    expect(actions.openConfirmModal(accept, cancel)).toEqual(expectedAction)
+    expect(actions.openConfirmModal(callback)).toEqual(expectedAction)
   })
 })
 describe('when clicking on edit button', () => {
@@ -122,12 +134,21 @@ describe('when clicking on validate button inside create modal', () => {
     expect(actions.addJourneyPattern(data)).toEqual(expectedAction)
   })
 })
-describe('when clicking on validate button at the bottom of the page', () => {
-  it('should create an action to post data and save it into db', () => {
+describe('when submitting new journeyPatterns', () => {
+  it('should create an action to update pagination totalCount', () => {
+    const diff = 1
     const expectedAction = {
-      type: 'SAVE_PAGE',
-      dispatch
+      type: 'UPDATE_TOTAL_COUNT',
+      diff
     }
-    expect(actions.savePage(dispatch)).toEqual(expectedAction)
+    expect(actions.updateTotalCount(diff)).toEqual(expectedAction)
+  })
+})
+describe('when fetching api', () => {
+  it('should create an action to fetch api', () => {
+    const expectedAction = {
+      type: 'FETCH_API',
+    }
+    expect(actions.fetchingApi()).toEqual(expectedAction)
   })
 })
