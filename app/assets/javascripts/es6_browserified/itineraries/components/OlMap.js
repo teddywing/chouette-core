@@ -9,28 +9,28 @@ class OlMap extends Component{
   componentDidUpdate(prev, next) {
     if(prev.value.olMap.isOpened == false){
       var map = new ol.Map({
-       target: 'stoppoint_map' + this.props.index,
-       layers: [
-         new ol.layer.Tile({
-           source: new ol.source.OSM()
-         })
-       ],
-      controls: [],
-      interactions: ol.interaction.defaults({
-        dragPan: false
-      }),
-       view: new ol.View({
-         center: ol.proj.fromLonLat([2.349014, 48.864716]),
-         zoom: 18
-       })
+        target: 'stoppoint_map' + this.props.index,
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        controls: [ new ol.control.ScaleLine() ],
+        interactions: ol.interaction.defaults({
+          dragPan: false
+        }),
+        view: new ol.View({
+          center: ol.proj.fromLonLat([2.349014, 48.864716]),
+          zoom: 18
+        })
       });
     }
   }
 
   render() {
-    if (this.props.value.olMap.isOpened){
+    if (this.props.value.olMap.isOpened) {
       return <div id={"stoppoint_map" + this.props.index} className='map'></div>
-    }else{
+    } else {
       return false
     }
   }
