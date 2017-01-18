@@ -12,7 +12,6 @@ class OlMap extends Component{
         target: 'stoppoint_map' + this.props.index,
         layers: [
         new ol.layer.Tile({
-          projection: 'EPSG:4326',
           source: new ol.source.OSM()
         })
         ],
@@ -27,7 +26,6 @@ class OlMap extends Component{
       });
       // TODO when fetching, use extent value in EPSG 4326
       // var extent = map.getView().calculateExtent(map.getSize());
-      // ol.proj.transformExtent(a,"EPSG:3857",'EPSG:4326')
     }
   }
 
