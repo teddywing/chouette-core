@@ -11,8 +11,12 @@ class AutocompleteStopAreasController < InheritedResources::Base
     @referential ||= current_organisation.referentials.find params[:referential_id]
   end
 
-  protected
+  def around
+    stop_area = referential.stop_areas.find params[:id]
+    @stop_areas = referential.stop_areas.limit(10)
+  end
 
+  protected
   def collection
     scope = referential.stop_areas
     scope = scope.physical if physical_filter?
