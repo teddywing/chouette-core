@@ -43,8 +43,9 @@ class OlMap extends Component{
           style: new ol.style.Style({
               image: new ol.style.Circle(({
                   radius: 4,
-                  fill: new ol.style.Fill({
-                      color: '#000000'
+                  stroke: new ol.style.Stroke({
+                      color: '#000000',
+                      width: 2
                   })
               }))
           })
