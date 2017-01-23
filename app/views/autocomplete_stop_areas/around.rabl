@@ -1,19 +1,14 @@
-collection @stop_areas
+object false
+node(:type) { "FeatureCollection" }
 
-node do |stop_area|
-  {
-  :id => stop_area.id,
-  :registration_number => stop_area.registration_number || "",
-  :short_registration_number => truncate(stop_area.registration_number, :length => 10) || "",
-  :name => stop_area.name || "",
-  :short_name => truncate(stop_area.name, :length => 30) || "",
-  :zip_code => stop_area.zip_code || "",
-  :city_name => stop_area.city_name || "",
-  :short_city_name => truncate(stop_area.city_name, :length => 15) || "",
-  :user_objectid => stop_area.user_objectid
-  }
+child @stop_areas, root: :features, object_root: false do
+  node(:type) { "Feature" }
+  attributes :id
+  node :geometry do |s|
+    { coordinates: [2.345841, 48.869193], type: "Point" }
+  end
+
+  node :properties do |s|
+    { name: s.name }
+  end
 end
-
-node(:stop_area_path) { |stop_area|
-  stop_area_picture_url(stop_area) || ""
-}
