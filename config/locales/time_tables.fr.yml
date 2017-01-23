@@ -51,7 +51,7 @@ fr:
       to: " à : "
       start_date: "jj/mm/aaaa"
       end_date: "jj/mm/aaaa"
-      title: "calendriers"
+      title: "Calendriers"
       selection: "Sélection"
       selection_all: "Tous"
       advanced_search: "Recherche avancée"

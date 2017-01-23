@@ -5,7 +5,7 @@
     .panel-heading
       = f.label :journey_pattern_id_eq, "Missions"
       = f.text_field(:journey_pattern_id_eq, class: "form-control")
-      
+
       button.btn.btn-default type="submit"
         i.fa.fa-search
 
@@ -22,20 +22,20 @@
           span.time_tables_id_eq
             = f.label :time_tables_id_eq, "Sélectionner calendriers"
             = f.text_field :time_tables_id_eq, :input_html => { :"data-pre" => [].to_json}
-          
-        - if controller_name != 'vehicle_journey_frequencies'
-          div
-            = f.label :vehicle_journey_at_stops_departure_time_not_eq, "Sans horaire"
-            = f.check_box :vehicle_journey_at_stops_departure_time_not_eq
 
-            span.vehicle_journey_at_stops_departure_time_gt
-              input name="#{q[vehicle_journey_at_stops_departure_time_gt(3i)]}" type="hidden" value="1"
-              input name="#{q[vehicle_journey_at_stops_departure_time_gt(2i)]}" type="hidden" value="1"
-              input name="#{q[vehicle_journey_at_stops_departure_time_gt(1i)]}" type="hidden" value="2000"
-              
-              = f.label :vehicle_journey_at_stops_departure_time_gt, t('.time_range')
-              = select_hour(@q.send( "vehicle_journey_at_stops_departure_time_gt") ? @q.send( "vehicle_journey_at_stops_departure_time_gt").hour : 0, :prefix => "q", :field_name => "vehicle_journey_at_stops_departure_time_gt(4i)")
-              = select_minute(@q.send( "vehicle_journey_at_stops_departure_time_gt") ? @q.send( "vehicle_journey_at_stops_departure_time_gt").min : 0, :prefix => "q", :field_name => "vehicle_journey_at_stops_departure_time_gt(5i)")
+        / - if controller_name != 'vehicle_journey_frequencies'
+        /   div
+        /     = f.label :vehicle_journey_at_stops_departure_time_not_eq, "Sans horaire"
+        /     = f.check_box :vehicle_journey_at_stops_departure_time_not_eq
+
+        /     span.vehicle_journey_at_stops_departure_time_gt
+        /       input name="#{q[vehicle_journey_at_stops_departure_time_gt(3i)]}" type="hidden" value="1"
+        /       input name="#{q[vehicle_journey_at_stops_departure_time_gt(2i)]}" type="hidden" value="1"
+        /       input name="#{q[vehicle_journey_at_stops_departure_time_gt(1i)]}" type="hidden" value="2000"
+
+        /       = f.label :vehicle_journey_at_stops_departure_time_gt, t('.time_range')
+        /       = select_hour(@q.send( "vehicle_journey_at_stops_departure_time_gt") ? @q.send( "vehicle_journey_at_stops_departure_time_gt").hour : 0, :prefix => "q", :field_name => "vehicle_journey_at_stops_departure_time_gt(4i)")
+        /       = select_minute(@q.send( "vehicle_journey_at_stops_departure_time_gt") ? @q.send( "vehicle_journey_at_stops_departure_time_gt").min : 0, :prefix => "q", :field_name => "vehicle_journey_at_stops_departure_time_gt(5i)")
 
 #vehicle_journeys
   == render "vehicle_journeys"

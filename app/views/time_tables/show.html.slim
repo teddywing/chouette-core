@@ -9,14 +9,19 @@
 - content_for :sidebar do
   ul.actions
     li
-      = link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), class: 'add'
+      - if policy(@time_table).create?
+        = link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), class: 'add'
     li
-      = link_to t('time_tables.actions.edit'), edit_referential_time_table_path(@referential, @time_table), class: "edit"
+      - if policy(@time_table).edit?
+        = link_to t('time_tables.actions.edit'), edit_referential_time_table_path(@referential, @time_table), class: "edit"
     li
-      = link_to t('time_tables.actions.destroy'), referential_time_table_path(@referential, @time_table), :method => :delete, :data => {:confirm =>  t('time_tables.actions.destroy_confirm')}, class: "remove"
+      - if policy(@time_table).destroy?
+        = link_to t('time_tables.actions.destroy'), referential_time_table_path(@referential, @time_table), :method => :delete, :data => {:confirm =>  t('time_tables.actions.destroy_confirm')}, class: "remove"
     li
-      = link_to t('time_tables.actions.duplicate'), duplicate_referential_time_table_path(@referential, @time_table), class: "clone"
+      - if policy(@time_table).create?
+        = link_to t('time_tables.actions.duplicate'), duplicate_referential_time_table_path(@referential, @time_table), class: "clone"
     li
+      /- if policy(@time_table).create?
       = link_to t('time_tables.actions.combine'), new_referential_time_table_time_table_combination_path(@referential, @time_table), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_combine', class: "merge"}
 
   = creation_tag(@time_table)

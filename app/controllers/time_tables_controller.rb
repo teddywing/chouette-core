@@ -8,6 +8,8 @@ class TimeTablesController < ChouetteController
 
   belongs_to :referential
 
+  before_action :check_policy, only: [:edit, :update, :destroy]
+
   def show
     @year = params[:year] ? params[:year].to_i : Date.today.cwyear
     @time_table_combination = TimeTableCombination.new
@@ -110,6 +112,10 @@ class TimeTablesController < ChouetteController
 
   def collection_url
     referential_time_tables_path(referential)
+  end
+
+  def check_policy
+    authorize resource
   end
 
   private

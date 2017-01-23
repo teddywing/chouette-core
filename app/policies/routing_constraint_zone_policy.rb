@@ -5,9 +5,18 @@ class RoutingConstraintZonePolicy < ApplicationPolicy
     end
   end
 
-  def create?  ; true end
-  def update?  ; true end
-  def new?     ; true end
-  def edit?    ; true end
-  def destroy? ; true end
+  def create?
+    user.has_permission?('routing_constraint_zones.create')
+  end
+
+  def edit?
+    user.has_permission?('routing_constraint_zones.edit')
+  end
+
+  def destroy?
+    user.has_permission?('routing_constraint_zones.destroy')
+  end
+
+  def update?  ; edit? end
+  def new?     ; create? end
 end
