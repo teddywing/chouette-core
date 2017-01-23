@@ -59,7 +59,10 @@ class OlMap extends Component{
         ],
         controls: [ new ol.control.ScaleLine() ],
         interactions: ol.interaction.defaults({
-          dragPan: false
+          dragPan: false,
+          doubleClickZoom: false,
+          shiftDragZoom: false,
+          mouseWheelZoom: false
         }),
         view: new ol.View({
           center: ol.proj.fromLonLat([2.3477774, 48.869183, ]),
