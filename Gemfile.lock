@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git@github.com:AF83/stif-reflex-api.git
-  revision: 2c01010dce3a6cb39339995c373faf89ae00f3f3
+  revision: 152d1b48ec0792bf086e731d099a1d8954369b85
   specs:
     reflex (0.0.1)
       nokogiri (~> 1.6)
@@ -316,9 +316,9 @@ GEM
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     newrelic_rpm (3.11.2.286)
-    nokogiri (1.6.8.1)
+    nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
-    nokogiri (1.6.8.1-java)
+    nokogiri (1.7.0.1-java)
     notiffany (0.0.6)
       nenv (~> 0.1)
       shellany (~> 0.0)
