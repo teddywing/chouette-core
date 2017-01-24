@@ -16,15 +16,16 @@ const StopPoint = (props) => {
             <label>Arrêt</label>
             <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} />
           </div>
-
-          <div style={{display: 'inline-block', width: '17%', verticalAlign: 'middle', textAlign: 'right', marginTop: 24}}>
-            <div
-              className={'btn btn-primary'}
-              onClick={props.onToggleMap}
-              >
-              <span className='fa fa-map-marker'></span>
+          {props.value.stoparea_id &&
+            <div style={{display: 'inline-block', width: '17%', verticalAlign: 'middle', textAlign: 'right', marginTop: 24}}>
+              <div
+                className={'btn btn-primary'}
+                onClick={props.onToggleMap}
+                >
+                <span className='fa fa-map-marker'></span>
+              </div>
             </div>
-          </div>
+          }
         </div>
 
         <div className='col-lg-2 col-md-2 col-sm-2 col-xs-2'>
