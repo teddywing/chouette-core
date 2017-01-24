@@ -11,25 +11,6 @@ class OlMap extends Component{
     const origin = window.location.origin
     const path = window.location.pathname.split('/', 3).join('/')
     return origin + path + "/autocomplete_stop_areas/" + id + "/around"
-
-    // let req = new Request(urlJSON, {
-    //   credentials: 'same-origin',
-    //   method: 'GET',
-    //   contentType: 'application/json; charset=utf-8',
-    //   Accept: 'application/json',
-    //   headers: {
-    //     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-    //   }
-    // })
-    // fetch(req)
-    //   .then(response => {
-    //     if(!response.ok) {
-    //       return false
-    //     }
-    //     return response.json()
-    //   }).then((json) => {
-    //     console.log(json)
-    //   })
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -84,18 +65,14 @@ class OlMap extends Component{
       });
       map.addInteraction(select);
       select.on('select', function(e) {
-        var data = e.target.getFeatures().getArray()[0];
-        console.log('Selected item');
-        console.log('id:' + data.getId());
-        console.log('LonLat:' + data.getGeometry().getCoordinates());
+        if(e.selected.length != 0){
+          var data = e.selected[0];
+          console.log('Selected item');
+          console.log('id:' + data.getId());
+          console.log('LonLat:' + data.getGeometry().getCoordinates());
+        }
       });
 
-      // let extent = map.getView().calculateExtent(map.getSize())
-      // setTimeout(()=>{
-      //   that.fetchApiForMap(extent, that.props.value.stoparea_id)
-      // }, 1000)
-      // TODO when fetching, use extent value in EPSG 4326
-      // var extent = map.getView().calculateExtent(map.getSize());
     }
   }
 
