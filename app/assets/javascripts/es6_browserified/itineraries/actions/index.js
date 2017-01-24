@@ -40,6 +40,11 @@ const actions = {
   toggleMap: (index) =>({
     type: 'TOGGLE_MAP',
     index
+  }),
+  selectMarker: (index, data) =>({
+    type: 'SELECT_MARKER',
+    index,
+    data
   })
 }
 

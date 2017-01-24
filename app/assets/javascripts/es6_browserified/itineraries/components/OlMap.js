@@ -19,7 +19,7 @@ class OlMap extends Component{
       var vectorLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
           format: new ol.format.GeoJSON(),
-          url: 'https://gist.githubusercontent.com/ThomasHaddad/7dcc32af24feea2fc4a329445c91af17/raw/4346a71a37326f055ff4fe576eaeb0040596c916/5.geojson'
+          url: 'https://gist.githubusercontent.com/ThomasHaddad/d9373a76675d630ba98a6fccb51e12b2/raw/d3356d4dbbcd42942d1b3d36518c014a1ca688b0/itineraries_test.geojson'
         }),
         style: new ol.style.Style({
           image: new ol.style.Circle(({
@@ -66,12 +66,13 @@ class OlMap extends Component{
       map.addInteraction(select);
       select.on('select', function(e) {
         if(e.selected.length != 0){
-          var data = e.selected[0];
-          console.log('Selected item');
-          console.log('id:' + data.getId());
-          console.log('LonLat:' + data.getGeometry().getCoordinates());
+          let data = Object.assign({}, e.selected[0].getProperties(), {geometry: undefined});
+          this.props.onSelectMarker(this.props.index, data)
+          // console.log('Selected item');
+          // console.log('id:' + data.getId());
+          // console.log('LonLat:' + data.getGeometry().getCoordinates());
         }
-      });
+      }, this);
 
     }
   }
@@ -81,7 +82,7 @@ class OlMap extends Component{
       return (
         <div className='row'>
           <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4" style={{marginTop: 15}}>
-            <p><strong>Nom de l'arrêt : </strong>XXX</p>
+            <p><strong>Nom de l'arrêt : </strong>{this.props.value.olMap.json.text}</p>
             <p className='small'><strong>Nom public : </strong>XXX</p>
             <p className='small'><strong>N° d'enregistrement : </strong>XXX</p>
             <p className='small'><strong>Réseau : </strong>XXX</p>

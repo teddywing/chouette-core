@@ -72,7 +72,7 @@ const stopPoints = (state = [], action) => {
       //   stopPoint(t, action)
       // )
     case 'UPDATE_SELECT_VALUE':
-      return state.map( (t,i) => {
+      return state.map( (t, i) => {
         if (i === action.index) {
           let stopState = Object.assign({}, t)
           stopState[action.select_id] = action.select_value
@@ -82,14 +82,23 @@ const stopPoints = (state = [], action) => {
         }
       })
     case 'TOGGLE_MAP':
-      return state.map( (t,i) => {
+      return state.map( (t, i) => {
         if (i === action.index){
           let val = !t.olMap.isOpened
-          let stateMap = Object.assign({},t.olMap, {isOpened: val})
+          let stateMap = Object.assign({}, t.olMap, {isOpened: val})
           return Object.assign({}, t, {olMap: stateMap})
         }else {
           let emptyMap = Object.assign({}, t.olMap, {isOpened: false, json : {}})
           return Object.assign({}, t, {olMap: emptyMap})
+        }
+      })
+    case 'SELECT_MARKER':
+      return state.map( (t, i) => {
+        if (i === action.index){
+          let stateMap = Object.assign({}, t.olMap, {json: action.data})
+          return Object.assign({}, t, {olMap: stateMap})
+        }else {
+          return t
         }
       })
     default:
