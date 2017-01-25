@@ -93,11 +93,20 @@ const stopPoints = (state = [], action) => {
         }
       })
     case 'SELECT_MARKER':
-      return state.map( (t, i) => {
+      return state.map((t, i) => {
         if (i === action.index){
           let stateMap = Object.assign({}, t.olMap, {json: action.data})
           return Object.assign({}, t, {olMap: stateMap})
-        }else {
+        } else {
+          return t
+        }
+      })
+    case 'UNSELECT_MARKER':
+      return state.map((t, i) => {
+        if (i === action.index){
+          let stateMap = Object.assign({}, t.olMap, {json: {}})
+          return Object.assign({}, t, {olMap: stateMap})
+        } else {
           return t
         }
       })

@@ -30,6 +30,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelectMarker: (index, data) =>{
       dispatch(actions.selectMarker(index, data))
+    },
+    onUnselectMarker: (index) =>{
+      dispatch(actions.unselectMarker(index))
     }
 
   }

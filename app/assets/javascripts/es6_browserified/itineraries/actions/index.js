@@ -45,6 +45,10 @@ const actions = {
     type: 'SELECT_MARKER',
     index,
     data
+  }),
+  unselectMarker: (index) => ({
+    type: 'UNSELECT_MARKER',
+    index
   })
 }
 

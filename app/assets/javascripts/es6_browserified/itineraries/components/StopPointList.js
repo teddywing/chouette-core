@@ -2,7 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var StopPoint = require('./StopPoint')
 
-const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onSelectMarker }) => {
+const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onSelectMarker, onUnselectMarker }) => {
   return (
     <div className='list-group'>
       {stopPoints.map((stopPoint, index) =>
@@ -17,6 +17,7 @@ const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownCli
           onSelectChange={ (e) => onSelectChange(e, index) }
           onToggleMap={() => onToggleMap(index)}
           onSelectMarker={onSelectMarker}
+          onUnselectMarker={onUnselectMarker}
           first={ index === 0 }
           last={ index === (stopPoints.length - 1) }
           index={ index }
@@ -33,7 +34,8 @@ StopPointList.propTypes = {
   onMoveUpClick: PropTypes.func.isRequired,
   onMoveDownClick: PropTypes.func.isRequired,
   onSelectChange: PropTypes.func.isRequired,
-  onSelectMarker: PropTypes.func.isRequired
+  onSelectMarker: PropTypes.func.isRequired,
+  onUnselectMarker : PropTypes.func.isRequired
 }
 
 module.exports = StopPointList

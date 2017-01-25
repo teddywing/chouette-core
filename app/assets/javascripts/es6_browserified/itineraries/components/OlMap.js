@@ -71,6 +71,8 @@ class OlMap extends Component{
           // console.log('Selected item');
           // console.log('id:' + data.getId());
           // console.log('LonLat:' + data.getGeometry().getCoordinates());
+        } else {
+          this.props.onUnselectMarker(this.props.index)
         }
       }, this);
 
