@@ -2,6 +2,14 @@ var stopPointsReducer = require('es6_browserified/itineraries/reducers/stopPoint
 
 let state = []
 
+let fakeData = {
+  geometry: undefined,
+  registration_number: 'rn_test',
+  stoparea_id: 'sid_test',
+  text: 't_test',
+  user_objectid: 'uoid_test'
+}
+
 describe('stops reducer', () => {
   beforeEach(()=>{
     state = [
@@ -239,6 +247,116 @@ describe('stops reducer', () => {
     expect(
       stopPointsReducer(state, {
         type: 'TOGGLE_MAP',
+        index: 0
+      })
+    ).toEqual(
+      [
+        {
+          text: 'first',
+          index: 0,
+          for_boarding: 'normal',
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: true,
+            json: {}
+          }
+        },
+        {
+          text: 'second',
+          index: 1,
+          for_boarding: 'normal',
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
+        }
+      ]
+    )
+  })
+
+  it('should handle SELECT_MARKER', () => {
+    let openedMapState = [
+      {
+        text: 'first',
+        index: 0,
+        for_boarding: 'normal',
+        for_alighting: 'normal',
+        olMap: {
+          isOpened: true,
+          json: {}
+        }
+      },
+      {
+        text: 'second',
+        index: 1,
+        for_boarding: 'normal',
+        for_alighting: 'normal',
+        olMap: {
+          isOpened: false,
+          json: {}
+        }
+      }
+    ]
+    expect(
+      stopPointsReducer(openedMapState, {
+        type: 'SELECT_MARKER',
+        index: 0,
+        data: fakeData
+      })
+    ).toEqual(
+      [
+        {
+          text: 'first',
+          index: 0,
+          for_boarding: 'normal',
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: true,
+            json: fakeData
+          }
+        },
+        {
+          text: 'second',
+          index: 1,
+          for_boarding: 'normal',
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
+        }
+      ]
+    )
+  })
+
+  it('should handle UNSELECT_MARKER', () => {
+    let openedMapState = [
+      {
+        text: 'first',
+        index: 0,
+        for_boarding: 'normal',
+        for_alighting: 'normal',
+        olMap: {
+          isOpened: true,
+          json: {}
+        }
+      },
+      {
+        text: 'second',
+        index: 1,
+        for_boarding: 'normal',
+        for_alighting: 'normal',
+        olMap: {
+          isOpened: false,
+          json: {}
+        }
+      }
+    ]
+
+    expect(
+      stopPointsReducer(openedMapState, {
+        type: 'UNSELECT_MARKER',
         index: 0
       })
     ).toEqual(
