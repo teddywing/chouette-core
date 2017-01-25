@@ -131,6 +131,10 @@ module Stif
           :zip_code       => 'PostalRegion',
           :city_name      => 'Town'
         }.each do |k, v| access[k] = entry[v] end
+        if entry['gml:pos']
+          access['longitude'] = entry['gml:pos'][:lng]
+          access['latitude']  = entry['gml:pos'][:lat]
+        end
         access.save if access.valid? && access.changed?
       end
 
@@ -145,6 +149,11 @@ module Stif
           :zip_code       => 'PostalRegion',
           :city_name      => 'Town'
         }.each do |k, v| stop[k] = entry[v] end
+
+        if entry['gml:pos']
+          stop['longitude'] = entry['gml:pos'][:lng]
+          stop['latitude']  = entry['gml:pos'][:lat]
+        end
 
         if stop.changed?
           stop.creation_time = entry[:created]
