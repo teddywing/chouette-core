@@ -68,9 +68,6 @@ const stopPoints = (state = [], action) => {
           return t
         }
       })
-      // return state.map(t =>
-      //   stopPoint(t, action)
-      // )
     case 'UPDATE_SELECT_VALUE':
       return state.map( (t, i) => {
         if (i === action.index) {

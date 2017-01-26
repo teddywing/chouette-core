@@ -68,9 +68,6 @@ class OlMap extends Component{
         if(e.selected.length != 0){
           let data = Object.assign({}, e.selected[0].getProperties(), {geometry: undefined});
           this.props.onSelectMarker(this.props.index, data)
-          // console.log('Selected item');
-          // console.log('id:' + data.getId());
-          // console.log('LonLat:' + data.getGeometry().getCoordinates());
         } else {
           this.props.onUnselectMarker(this.props.index)
         }
@@ -101,7 +98,9 @@ class OlMap extends Component{
               {this.props.value.olMap.json.user_objectid}
             </p>
 
-            <div className='btn btn-primary btn-sm'>Sélectionner</div>
+            <div className='btn btn-primary btn-sm'
+              onClick= {() => {this.props.onUpdateViaOlMap(this.props.index, this.props.value.olMap.json)}}
+            >Sélectionner</div>
           </div>
           <div className='col-lg-8 col-md-8 col-sm-8 col-xs-8'>
             <div id={"stoppoint_map" + this.props.index} className='map'></div>

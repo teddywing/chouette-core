@@ -33,8 +33,11 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUnselectMarker: (index) =>{
       dispatch(actions.unselectMarker(index))
+    },
+    onUpdateViaOlMap: (index, data) =>{
+      dispatch(actions.updateInputValue(index, data))
+      dispatch(actions.toggleMap(index))
     }
-
   }
 }
 

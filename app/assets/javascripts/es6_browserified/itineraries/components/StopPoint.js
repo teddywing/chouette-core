@@ -76,6 +76,7 @@ const StopPoint = (props) => {
         index = {props.index}
         onSelectMarker = {props.onSelectMarker}
         onUnselectMarker = {props.onUnselectMarker}
+        onUpdateViaOlMap = {props.onUpdateViaOlMap}
       />
     </div>
   )
