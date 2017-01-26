@@ -84,10 +84,22 @@ class OlMap extends Component{
       return (
         <div className='row'>
           <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4" style={{marginTop: 15}}>
-            <p><strong>Nom de l'arrêt : </strong>{this.props.value.olMap.json.text}</p>
-            <p className='small'><strong>Nom public : </strong>XXX</p>
-            <p className='small'><strong>N° d'enregistrement : </strong>XXX</p>
-            <p className='small'><strong>Réseau : </strong>XXX</p>
+            <p>
+              <strong>Nom de l'arrêt : </strong>
+              {this.props.value.olMap.json.text}
+            </p>
+            <p className='small'>
+              <strong>ID de l'arrêt : </strong>
+              {this.props.value.olMap.json.stoparea_id}
+            </p>
+            <p className='small'>
+              <strong>N° d'enregistrement : </strong>
+              {this.props.value.olMap.json.registration_number}
+            </p>
+            <p className='small'>
+              <strong>OiD de l'utilisateur : </strong>
+              {this.props.value.olMap.json.user_objectid}
+            </p>
 
             <div className='btn btn-primary btn-sm'>Sélectionner</div>
           </div>
