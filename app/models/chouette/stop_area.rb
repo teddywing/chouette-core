@@ -181,7 +181,7 @@ class Chouette::StopArea < Chouette::ActiveRecord
   def around(scope, distance)
     db   = "ST_GeomFromEWKB(ST_MakePoint(longitude, latitude, 4326))"
     from = "ST_GeomFromText('POINT(#{self.longitude} #{self.latitude})', 4326)"
-    sql  =  "SELECT * FROM public.stop_areas WHERE ST_DWithin(#{db}, #{from}, ?, false)"
+    sql  = "SELECT * FROM public.stop_areas WHERE ST_DWithin(#{db}, #{from}, ?, false)"
     scope.find_by_sql [sql, distance]
   end
 
