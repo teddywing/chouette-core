@@ -82,7 +82,7 @@ const stopPoints = (state = [], action) => {
       return state.map( (t, i) => {
         if (i === action.index){
           let val = !t.olMap.isOpened
-          let stateMap = Object.assign({}, t.olMap, {isOpened: val})
+          let stateMap = Object.assign({}, t.olMap, {isOpened: val, json: {}})
           return Object.assign({}, t, {olMap: stateMap})
         }else {
           let emptyMap = Object.assign({}, t.olMap, {isOpened: false, json : {}})
@@ -106,6 +106,11 @@ const stopPoints = (state = [], action) => {
         } else {
           return t
         }
+      })
+    case 'CLOSE_MAP':
+      return state.map( (t, i) => {
+        let emptyMap = Object.assign({}, t.olMap, {isOpened: false, json: {}})
+        return Object.assign({}, t, {olMap: emptyMap})
       })
     default:
       return state

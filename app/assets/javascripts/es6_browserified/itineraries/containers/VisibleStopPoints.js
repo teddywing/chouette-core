@@ -12,18 +12,23 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onDeleteClick: (index) =>{
       dispatch(actions.deleteStop(index))
+      dispatch(actions.closeMaps())
     },
     onMoveUpClick: (index) =>{
       dispatch(actions.moveStopUp(index))
+      dispatch(actions.closeMaps())
     },
     onMoveDownClick: (index) =>{
       dispatch(actions.moveStopDown(index))
+      dispatch(actions.closeMaps())
     },
     onChange: (index, text) =>{
       dispatch(actions.updateInputValue(index, text))
+      dispatch(actions.closeMaps())
     },
     onSelectChange: (e, index) =>{
       dispatch(actions.updateSelectValue(e, index))
+      dispatch(actions.closeMaps())
     },
     onToggleMap: (index) =>{
       dispatch(actions.toggleMap(index))

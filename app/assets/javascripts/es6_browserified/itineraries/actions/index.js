@@ -41,6 +41,9 @@ const actions = {
     type: 'TOGGLE_MAP',
     index
   }),
+  closeMaps: () => ({
+    type : 'CLOSE_MAP'
+  }),
   selectMarker: (index, data) =>({
     type: 'SELECT_MARKER',
     index,
