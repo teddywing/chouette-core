@@ -10,7 +10,9 @@ node do |stop_area|
   :zip_code => stop_area.zip_code || "",
   :city_name => stop_area.city_name || "",
   :short_city_name => truncate(stop_area.city_name, :length => 15) || "",
-  :user_objectid => stop_area.user_objectid
+  :user_objectid => stop_area.user_objectid,
+  :longitude => stop_area.longitude,
+  :latitude => stop_area.latitude
   }
 end
 

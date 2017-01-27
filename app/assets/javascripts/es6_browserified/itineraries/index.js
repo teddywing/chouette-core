@@ -31,6 +31,8 @@ const getInitialState = () => {
       text: fancyText,
       for_boarding: value.for_boarding || "normal",
       for_alighting: value.for_alighting || "normal",
+      longitude: value.longitude || 0,
+      latitude: value.latitude || 0,
       olMap: {
         isOpened: false,
         json: {}

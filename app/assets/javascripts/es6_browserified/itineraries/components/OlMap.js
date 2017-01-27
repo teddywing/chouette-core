@@ -7,7 +7,7 @@ class OlMap extends Component{
     super(props)
   }
 
-  fetchApiForMap(extent, id){
+  fetchApiURL(id){
     const origin = window.location.origin
     const path = window.location.pathname.split('/', 3).join('/')
     return origin + path + "/autocomplete_stop_areas/" + id + "/around"
@@ -15,11 +15,10 @@ class OlMap extends Component{
 
   componentDidUpdate(prevProps, prevState){
     if(prevProps.value.olMap.isOpened == false && this.props.value.olMap.isOpened == true){
-      var that = this
       var vectorLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
           format: new ol.format.GeoJSON(),
-          url: 'https://gist.githubusercontent.com/ThomasHaddad/d9373a76675d630ba98a6fccb51e12b2/raw/d3356d4dbbcd42942d1b3d36518c014a1ca688b0/itineraries_test.geojson'
+          url: this.fetchApiURL(this.props.value.stoparea_id)
         }),
         style: new ol.style.Style({
           image: new ol.style.Circle(({
@@ -32,7 +31,7 @@ class OlMap extends Component{
         })
       });
       var map = new ol.Map({
-        target: 'stoppoint_map' + that.props.index,
+        target: 'stoppoint_map' + this.props.index,
         layers: [
         new ol.layer.Tile({
           source: new ol.source.OSM()
@@ -47,7 +46,7 @@ class OlMap extends Component{
           mouseWheelZoom: false
         }),
         view: new ol.View({
-          center: ol.proj.fromLonLat([2.3477774, 48.869183, ]),
+          center: ol.proj.fromLonLat([this.props.value.longitude, this.props.value.latitude ]),
           zoom: 18
         })
       });
