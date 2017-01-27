@@ -177,7 +177,9 @@ describe('stops reducer', () => {
         text: {
           text: "new value",
           stoparea_id: 1,
-          user_objectid: "1234"
+          user_objectid: "1234",
+          longitude: 123,
+          latitude: 123
         }
       })
     ).toEqual(
@@ -190,6 +192,8 @@ describe('stops reducer', () => {
           for_boarding: 'normal',
           for_alighting: 'normal',
           user_objectid: "1234",
+          longitude: 123,
+          latitude: 123,
           olMap: {
             isOpened: false,
             json: {}
