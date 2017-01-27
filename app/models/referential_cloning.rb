@@ -20,6 +20,9 @@ class ReferentialCloning < ActiveRecord::Base
     end
 
     event :successful, after: :update_ended_at do
+      after do
+        target_referential.update_attribute(:ready, true)
+      end
       transitions :from => [:pending, :failed], :to => :successful
     end
 

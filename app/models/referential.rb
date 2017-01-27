@@ -43,6 +43,8 @@ class Referential < ActiveRecord::Base
   has_many :stop_areas, through: :stop_area_referential
   belongs_to :workbench
 
+  scope :ready, -> { where(ready: true) }
+
   def lines
     if metadatas.blank?
       workbench ? workbench.lines : associated_lines

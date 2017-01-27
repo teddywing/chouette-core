@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170123131243) do
+ActiveRecord::Schema.define(version: 20170127092058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -446,6 +446,7 @@ ActiveRecord::Schema.define(version: 20170123131243) do
     t.integer  "workbench_id"
     t.datetime "archived_at"
     t.integer  "created_from_id"
+    t.boolean  "ready",                              default: false
   end
 
   add_index "referentials", ["created_from_id"], :name => "index_referentials_on_created_from_id"

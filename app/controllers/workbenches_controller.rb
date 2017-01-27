@@ -4,7 +4,7 @@ class WorkbenchesController < BreadcrumbController
   respond_to :html, :only => [:show]
 
   def show
-    @wbench_refs = Workbench.find(params[:id]).referentials.paginate(page: params[:page], per_page: 20)
+    @wbench_refs = Workbench.find(params[:id]).referentials.ready.paginate(page: params[:page], per_page: 20)
 
     show! do
       build_breadcrumb :show

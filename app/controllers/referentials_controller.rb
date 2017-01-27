@@ -105,6 +105,7 @@ class ReferentialsController < BreadcrumbController
 
   def create_resource(referential)
     referential.organisation = current_organisation unless referential.created_from
+    referential.ready = true
     super
   end
 
