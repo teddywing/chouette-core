@@ -62,7 +62,7 @@ const stopPoints = (state = [], action) => {
           return Object.assign(
             {},
             t,
-            {stoppoint_id: "", text: action.text.text, stoparea_id: action.text.stoparea_id, user_objectid: action.text.user_objectid}
+            {stoppoint_id: "", text: action.text.text, stoparea_id: action.text.stoparea_id, user_objectid: action.text.user_objectid, latitude: action.text.latitude, longitude: action.text.longitude}
           )
         } else {
           return t
