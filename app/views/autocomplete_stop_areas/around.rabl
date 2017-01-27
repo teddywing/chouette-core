@@ -4,7 +4,7 @@ node(:type) { "FeatureCollection" }
 child @stop_areas, root: :features, object_root: false do
   node(:type) { "Feature" }
   node :geometry do |s|
-    { coordinates: [s.longitude, s.latitude], type: "Point" }
+    { coordinates: [s.longitude.to_f, s.latitude.to_f], type: "Point" }
   end
 
   node :properties do |s|

@@ -46,7 +46,7 @@ class OlMap extends Component{
           mouseWheelZoom: false
         }),
         view: new ol.View({
-          center: ol.proj.fromLonLat([this.props.value.longitude, this.props.value.latitude ]),
+          center: ol.proj.fromLonLat([parseFloat(this.props.value.longitude), parseFloat(this.props.value.latitude)]),
           zoom: 18
         })
       });
