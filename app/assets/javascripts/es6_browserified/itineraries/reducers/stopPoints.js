@@ -62,7 +62,16 @@ const stopPoints = (state = [], action) => {
           return Object.assign(
             {},
             t,
-            {stoppoint_id: "", text: action.text.text, stoparea_id: action.text.stoparea_id, user_objectid: action.text.user_objectid, latitude: action.text.latitude, longitude: action.text.longitude}
+            {
+              stoppoint_id: "",
+              text: action.text.text,
+              stoparea_id: action.text.stoparea_id,
+              user_objectid: action.text.user_objectid,
+              latitude: action.text.latitude,
+              longitude: action.text.longitude,
+              name: action.text.name,
+              registration_number: action.text.registration_number
+            }
           )
         } else {
           return t
@@ -82,7 +91,8 @@ const stopPoints = (state = [], action) => {
       return state.map( (t, i) => {
         if (i === action.index){
           let val = !t.olMap.isOpened
-          let stateMap = Object.assign({}, t.olMap, {isOpened: val, json: {}})
+          let jsonData = val ? Object.assign({}, t, {olMap: undefined}) : {}
+          let stateMap = Object.assign({}, t.olMap, {isOpened: val, json: jsonData})
           return Object.assign({}, t, {olMap: stateMap})
         }else {
           let emptyMap = Object.assign({}, t.olMap, {isOpened: false, json : {}})

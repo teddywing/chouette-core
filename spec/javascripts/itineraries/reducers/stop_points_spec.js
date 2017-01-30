@@ -176,16 +176,19 @@ describe('stops reducer', () => {
         index: 0,
         text: {
           text: "new value",
+          name: 'new',
           stoparea_id: 1,
           user_objectid: "1234",
           longitude: 123,
-          latitude: 123
+          latitude: 123,
+          registration_number: '0'
         }
       })
     ).toEqual(
       [
         {
           text: 'new value',
+          name: 'new',
           index: 0,
           stoppoint_id: '',
           stoparea_id: 1,
@@ -194,6 +197,7 @@ describe('stops reducer', () => {
           user_objectid: "1234",
           longitude: 123,
           latitude: 123,
+          registration_number: '0',
           olMap: {
             isOpened: false,
             json: {}
@@ -262,7 +266,13 @@ describe('stops reducer', () => {
           for_alighting: 'normal',
           olMap: {
             isOpened: true,
-            json: {}
+            json: {
+              text: 'first',
+              index: 0,
+              for_boarding: 'normal',
+              for_alighting: 'normal',
+              olMap: undefined
+            }
           }
         },
         {

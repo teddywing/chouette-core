@@ -12,7 +12,7 @@ child @stop_areas, root: :features, object_root: false do
       name: s.name,
       registration_number: s.registration_number,
       stoparea_id: s.id,
-      text: "#{s.name} #{s.zip_code} #{s.city_name}",
+      text: "#{s.name}, #{s.zip_code} #{s.city_name}",
       user_objectid: s.user_objectid,
       latitude: s.latitude,
       longitude: s.longitude

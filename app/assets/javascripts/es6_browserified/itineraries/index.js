@@ -28,6 +28,8 @@ const getInitialState = () => {
       index: index,
       city_name: value.city_name,
       zip_code: value.zip_code,
+      name: value.name,
+      registration_number: value.registration_number,
       text: fancyText,
       for_boarding: value.for_boarding || "normal",
       for_alighting: value.for_alighting || "normal",

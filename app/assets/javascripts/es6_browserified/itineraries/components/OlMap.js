@@ -15,11 +15,29 @@ class OlMap extends Component{
 
   componentDidUpdate(prevProps, prevState){
     if(prevProps.value.olMap.isOpened == false && this.props.value.olMap.isOpened == true){
-      var vectorLayer = new ol.layer.Vector({
+      var source= new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        url: this.fetchApiURL(this.props.value.stoparea_id)
+      })
+      var feature = new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(this.props.value.longitude), parseFloat(this.props.value.latitude)])),
+        style: new ol.style.Style({
+          image: new ol.style.Circle(({
+            radius: 6,
+            stroke: new ol.style.Stroke({
+              color: '#cccccc',
+              width: 6
+            })
+          }))
+        })
+      })
+      var centerLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-          format: new ol.format.GeoJSON(),
-          url: this.fetchApiURL(this.props.value.stoparea_id)
-        }),
+          features: [feature]
+        })
+      })
+      var vectorLayer = new ol.layer.Vector({
+        source: source,
         style: new ol.style.Style({
           image: new ol.style.Circle(({
             radius: 4,
@@ -36,6 +54,7 @@ class OlMap extends Component{
         new ol.layer.Tile({
           source: new ol.source.OSM()
         }),
+        centerLayer,
         vectorLayer
         ],
         controls: [ new ol.control.ScaleLine() ],
@@ -50,7 +69,6 @@ class OlMap extends Component{
           zoom: 18
         })
       });
-
       // Selectable marker
       var select = new ol.interaction.Select({
         style: new ol.style.Style({
@@ -82,11 +100,7 @@ class OlMap extends Component{
           <div className="col-lg-4 col-md-4 col-sm-4 col-xs-4" style={{marginTop: 15}}>
             <p>
               <strong>Nom de l'arrêt : </strong>
-              {this.props.value.olMap.json.text}
-            </p>
-            <p className='small'>
-              <strong>ID de l'arrêt : </strong>
-              {this.props.value.olMap.json.stoparea_id}
+              {this.props.value.olMap.json.name}
             </p>
             <p className='small'>
               <strong>N° d'enregistrement : </strong>
@@ -97,13 +111,16 @@ class OlMap extends Component{
               {this.props.value.olMap.json.user_objectid}
             </p>
 
-            <div className='btn btn-primary btn-sm'
-              onClick= {() => {this.props.onUpdateViaOlMap(this.props.index, this.props.value.olMap.json)}}
-            >Sélectionner</div>
+            {/* TODO change text to stoparea_id */}
+            {(this.props.value.text != this.props.value.olMap.json.text) &&(
+              <div className='btn btn-primary btn-sm'
+                onClick= {() => {this.props.onUpdateViaOlMap(this.props.index, this.props.value.olMap.json)}}
+              >Sélectionner</div>
+            )}
           </div>
-          <div className='col-lg-8 col-md-8 col-sm-8 col-xs-8'>
-            <div id={"stoppoint_map" + this.props.index} className='map'></div>
-          </div>
+            <div className='col-lg-8 col-md-8 col-sm-8 col-xs-8'>
+              <div id={"stoppoint_map" + this.props.index} className='map'></div>
+            </div>
         </div>
       )
     } else {
