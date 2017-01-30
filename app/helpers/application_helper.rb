@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def stop_area_picture_url(stop_area)
-    image_path("map/#{stop_area.area_type.underscore}.png")
+    image_path("map/#{(stop_area.area_type || 'zdep').underscore}.png")
   end
 
   def selected_referential?
