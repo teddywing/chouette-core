@@ -1,7 +1,13 @@
 = title_tag "#{@workbench.name} - Tableau de bord"
 
 .referentials.paginated_content
-  h4 Liste des jeux de données
+  h4 = "Liste des jeux de données#{' (tous)' if params[:show_all]}"
+
+  h5
+    - if params[:show_all]
+      = link_to t('referentials.show.from_this_workbench'), workbench_path(@workbench.id), class: 'button', disabled: params[:archived]
+    - else
+      = link_to t('referentials.show.show_all_referentials'), workbench_path(@workbench.id, show_all: true), class: 'button'
 
   table.table.table-bordered.table-hover
     thead

@@ -10,6 +10,8 @@ fr:
       title: "Espace de données"
       clean_up: "Purge des données obsolètes"
       api_keys: "Clés d'authentification pour un accès à l'API REST"
+      show_all_referentials: Voir tous les espaces de données
+      from_this_workbench: Vour les espaces de données de cet gestion de l'offre
     counts:
       objects: "Eléments"
       count: "Qté"
