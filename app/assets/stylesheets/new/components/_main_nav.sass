@@ -1,5 +1,5 @@
 $menuH: 40px
-$menuW: 310px
+$menuW: 300px
 
 #main_nav
   display: block
@@ -9,9 +9,21 @@ $menuW: 310px
   top: 0
   left: 0
   right: 0
-  z-index: 998
+  z-index: 1040
 
-  .nav-menu
+  .brandname
+    font-size: $h2-size
+    font-weight: 700
+    line-height: $menuH
+    padding-left: 10px
+    opacity: 0.6
+
+  #menu_left
+    position: absolute
+    top: 0
+    left: 0
+    z-index: 1
+
     .openMenu, .closeMenu
       display: inline-block
       width: $menuH
@@ -38,11 +50,6 @@ $menuW: 310px
 
       + .brandname
         display: inline-block
-        font-size: $h2-size
-        font-weight: 700
-        line-height: $menuH
-        padding-left: 10px
-        opacity: 0.6
 
     .menu-content
       display: block
@@ -55,7 +62,7 @@ $menuW: 310px
       top: 0
       left: 0
       bottom: 0
-      z-index: 999
+      z-index: 1050
 
     &.open .menu-content
       margin-left: 0
@@ -185,3 +192,88 @@ $menuW: 310px
 
               > span > .fa:first-child
                 padding-right: 1em
+
+  #menu_top
+    display: block
+    letter-spacing: -0.31em
+    text-rendering: optimizespeed
+    font-weight: 400
+    height: $menuH
+    padding-left: $menuH
+    background-color: $blue
+    color: #fff
+
+    > *
+      display: inline-block
+      letter-spacing: normal
+      word-spacing: normal
+      text-rendering: auto
+      vertical-align: top
+      overflow: hidden
+
+      &.brandname
+        width: 65px
+        padding-right: 10px
+
+      &.menu-content
+        position: relative
+        width: calc(100% - 65px)
+        height: $menuH
+        line-height: $menuH
+        // padding: 0 10px
+
+        &:before
+          content: ''
+          display: block
+          position: absolute
+          height: 14px
+          width: 1px
+          background-color: rgba(#fff, 0.8)
+          left: 0
+          top: 13px
+
+        .menu-item
+          padding: 0 10px
+
+          .fa
+            padding-left: 0.5em
+
+            &:first-child
+              padding-left: 0
+
+        > *, .menu-item
+          display: inline-block
+          color: #fff
+
+        .menu-item-group
+          > .menu-item
+            background-color: rgba(#fff, 0)
+
+            &:hover, &:focus
+              text-decoration: none
+              background-color: rgba(#fff, 0.2)
+
+  // Breadcrumb in nav
+  .breadcrumb
+    padding: 0
+    margin: 0
+    background-color: transparent
+    border-radius: 0
+
+    > li
+      > a
+        color: rgba(#fff, 0.9)
+        transition: 0.2s
+
+        &:hover, &:focus
+          text-decoration: none
+          color: rgba(#fff, 1)
+          transition: 0.2s
+
+      &.active
+        color: #fff
+
+      + li:before
+        content: '\003e'
+        color: #fff
+        padding: 0 0.5em
