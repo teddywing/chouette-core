@@ -4,7 +4,6 @@ $menuW: 300px
 #main_nav
   display: block
   height: $menuH
-  // Main nav is fixed to top
   position: fixed
   top: 0
   left: 0
@@ -99,7 +98,7 @@ $menuW: 300px
                 color: rgba(#fff, 0.75)
                 transition: 0.2s
 
-                &:hover, &:focus
+                &:hover
                   text-decoration: none
                   color: rgba(#fff, 1)
                   transition: 0.2s
@@ -203,7 +202,7 @@ $menuW: 300px
     background-color: $blue
     color: #fff
 
-    > *
+    > .brandname, > .menu-content
       display: inline-block
       letter-spacing: normal
       word-spacing: normal
@@ -220,7 +219,6 @@ $menuW: 300px
         width: calc(100% - 65px)
         height: $menuH
         line-height: $menuH
-        // padding: 0 10px
 
         &:before
           content: ''
@@ -248,8 +246,9 @@ $menuW: 300px
         .menu-item-group
           > .menu-item
             background-color: rgba(#fff, 0)
+            text-decoration: none
 
-            &:hover, &:focus
+            &:hover, &.active
               text-decoration: none
               background-color: rgba(#fff, 0.2)
 
@@ -265,7 +264,7 @@ $menuW: 300px
         color: rgba(#fff, 0.9)
         transition: 0.2s
 
-        &:hover, &:focus
+        &:hover
           text-decoration: none
           color: rgba(#fff, 1)
           transition: 0.2s
@@ -277,3 +276,30 @@ $menuW: 300px
         content: '\003e'
         color: #fff
         padding: 0 0.5em
+
+  // Nav panels
+  .nav_panel
+    display: none
+    letter-spacing: normal
+    word-spacing: normal
+    text-rendering: auto
+    width: $menuW
+    float: right
+    background-color: #fff
+    color: $darkgrey
+    box-shadow: 0 0 3px $darkgrey
+
+    &.open
+      display: block
+
+    .panel-title
+      margin: 0
+      padding: 15px 20px
+      font-size: inherit
+      border-bottom: 1px solid $grey
+
+      > h1, > h2, h3
+        margin: 0
+
+    .panel-body
+      padding: 15px 20px
