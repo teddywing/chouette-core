@@ -1,47 +1,97 @@
 nav#main_nav
   .nav-menu
-    span.toggleMenu title='Toggle menu'
+    .openMenu title='Ouvrir le menu'
 
-    ul.menu-content
-      li.brand
-        span.brandname Stif BOIV
+    .menu-content
+      .closeMenu title='Fermer le menu'
+      .brandname IBOO
 
-      li
-        = link_to '#', class: 'mc-item' do
-          span.mci-icon
-            span.fa.fa-lg.fa-paw
-          span.mci-desc
-            h4 = "Espace de données"
-            em.small
-              = "Accès à mes offres de transport"
-              br
-              = "Détail des opérations en cours"
-      li
-        = link_to '#', class: 'mc-item' do
-          span.mci-icon
-            span.fa.fa-lg.fa-paw
-          span.mci-desc
-            h4 = "Organisation"
-            em.small = "Consulter mon profil et la liste des membres de mon organisation"
-            
-      li
-        = link_to '#', class: 'mc-item' do
-          span.mci-icon
-            span.fa.fa-lg.fa-paw
-          span.mci-desc
-            h4 = "Portail"
+      #menu-items.panel-group
+        .menu-item.panel
+          .list-group
+            a.list-group-item href='#'
+              span Tableau de bord
 
-  div
-    = render 'layouts/new/breadcrumb'
+        .menu-item.panel
+          .panel-heading
+            h4.panel-title
+              = link_to '#miOne', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'true' do
+                |Espace de travail
 
-  ul.nav-right
-    li
-      = link_to '#', title: 'Mon compte' do
-        span.fa.fa-lg.fa-user
+          #miOne.panel-collapse.collapse.in
+            .list-group
+              a.list-group-item.active href='#'
+                span Jeux de données
+              a.list-group-item href='#'
+                span Importations
+              a.list-group-item href='#'
+                span Modèles de calendrier
+              a.list-group-item href='#'
+                span Jeux de contrôle
 
-    li
-      = link_to '#', title: 'Rechercher' do
-        span.fa.fa-lg.fa-search
-    li
-      = link_to '#', title: 'Notifications' do
-        span.fa.fa-lg.fa-bell-o
+        .menu-item.panel
+          .panel-heading
+            h4.panel-title
+              = link_to '#miTwo', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+                |Offres
+
+          #miTwo.panel-collapse.collapse
+            .list-group
+              a.list-group-item href='#'
+                span Mon offre courante
+              a.list-group-item href='#'
+                span Liste de mes offres
+
+              .list-group-item.separator
+
+              a.list-group-item href='#'
+                span Offre courante Île-de-France
+              a.list-group-item href='#'
+                span Liste offre Île-de-France
+
+        .menu-item.panel
+          .panel-heading
+            h4.panel-title
+              = link_to '#miThree', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+                |Données
+
+          #miThree.panel-collapse.collapse
+            .panel-body
+              em.text-muted
+                = "Sélectionnez un jeu de données pour accéder à plus de fonctionnalités"
+
+        .menu-item.panel
+          .panel-heading
+            h4.panel-title
+              = link_to '#miFour', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+                |Synchronisation
+
+          #miFour.panel-collapse.collapse
+            .list-group
+              a.list-group-item href='#'
+                span Synchronisation iCAR
+              a.list-group-item href='#'
+                span Synchronisation iLLICO
+
+      .panel-group
+        .menu-item.panel
+          .list-group
+            a.list-group-item href='#'
+              span
+                span.fa.fa-circle
+                |Portail (POSTIF)
+
+            a.list-group-item href='#'
+              span
+                span.fa.fa-circle
+                |Codifligne (iLLICO)
+
+            a.list-group-item href='#'
+              span
+                span.fa.fa-circle
+                |Reflex (iCAR)
+
+            a.list-group-item href='#'
+              span
+                span.fa.fa-circle
+                |Support
