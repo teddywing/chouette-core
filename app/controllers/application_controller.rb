@@ -2,9 +2,6 @@ class ApplicationController < ActionController::Base
   include Pundit
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  # Comment to activate the new layout
-  # layout 'application_new'
-
   # TODO : Delete hack to authorize Cross Request for js and json get request from javascript
   protect_from_forgery unless: -> { request.get? && (request.format.json? || request.format.js?) }
   before_action :authenticate_user!
