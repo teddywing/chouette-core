@@ -1,24 +1,12 @@
-.page_header
-  .container-fluid
-    .row
-      .col-lg-9.col-md-8.col-sm-8.col-xs-7
-        .page-icon
-          span.fa.fa-map-marker
-        .page-title
-          h1
-            |Jeux de données
-            span.small.fa.fa-info-circle title='Description'
-      
-      .col-lg-3.col-md-4.col-sm-4.col-xs-5.text-right
-        .page-action
-          .small
-            = "Dernière mise à jour "
-            br
-            = "le #{l @workbench.updated_at, format: '%d/%m/%Y'} par Prenom NOM"
+= pageheader 'map-marker',
+               'Jeux de données',
+               'Lorem ipsum dolor sit amet',
+               'Dernière mise à jour <br> le 22/12/2016' do
 
-    .row
-      .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
-        = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-default btn-primary'
+  / Below is secundary actions & optional contents (filters, ...)
+  .row
+    .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
+      = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-default btn-primary'
 
 .page_content
   .container-fluid
