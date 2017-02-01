@@ -4,6 +4,7 @@ $menuW: 300px
 #main_nav
   display: block
   height: $menuH
+  transition: 0.3s
   position: fixed
   top: 0
   left: 0
@@ -42,6 +43,9 @@ $menuW: 300px
       &:before
         content: '\f0c9'
         line-height: $menuH
+
+    .openMenu
+      transition: 0.3s
 
     .closeMenu
       &:before
@@ -199,16 +203,19 @@ $menuW: 300px
     text-rendering: optimizespeed
     font-weight: 400
     height: $menuH
+    transition: 0.3s
     padding-left: $menuH
     background-color: $blue
     color: #fff
 
-    > .brandname, > .menu-content
-      display: inline-block
+    > *
       letter-spacing: normal
       word-spacing: normal
       text-rendering: auto
       vertical-align: top
+
+    > .brandname, > .menu-content
+      display: inline-block
       overflow: hidden
 
       &.brandname
@@ -304,3 +311,41 @@ $menuW: 300px
 
     .panel-body
       padding: 15px 20px
+
+  // Sticky behavior
+  &.sticky
+    &, #menu_left .openMenu, #menu_top
+      height: $menuH * 2
+      transition: 0.3s
+
+    #menu_top > .menu-content > .menu-item-group
+      display: none
+
+    .sticky-content
+      padding: 0 50px 0 75px
+      margin-top: -4px
+
+      > *
+        display: inline-block
+
+        &.sticky-ptitle
+          width: 60%
+
+          h1
+            margin: 0
+
+            .small.fa
+              color: #fff
+              margin-left: 0.5em
+
+        &.sticky-paction
+          width: 40%
+          text-align: right
+          vertical-align: top
+
+          > *
+            display: inline-block
+            vertical-align: middle
+
+            + .btn
+              margin-left: 10px

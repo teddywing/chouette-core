@@ -1,13 +1,23 @@
 .page_header
   .container-fluid
     .row
-      .col-lg-9.col-md-8.col-sm-8
-        h1
-          |Jeux de données
-          span.small.fa.fa-info-circle title='Description'
+      .col-lg-9.col-md-8.col-sm-8.col-xs-7
+        .page-icon
+          span.fa.fa-map-marker
+        .page-title
+          h1
+            |Jeux de données
+            span.small.fa.fa-info-circle title='Description'
       
-      .col-lg-3.col-md-4.col-sm-4.text-right
-        .btn-helper-txt = 'Dernière mise à jour le 12/12/2016 par Prenom NOM'
+      .col-lg-3.col-md-4.col-sm-4.col-xs-5.text-right
+        .page-action
+          .small
+            = "Dernière mise à jour "
+            br
+            = "le #{l @workbench.updated_at, format: '%d/%m/%Y'} par Prenom NOM"
+
+    .row
+      .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
         = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-default btn-primary'
 
 .page_content
@@ -15,13 +25,12 @@
     .row
       .col-lg-12
         .referentials.paginated_content
-          h4 = "Liste des jeux de données#{' (tous)' if params[:show_all]}"
-          
-          h5
-            - if params[:show_all]
-              = link_to t('referentials.show.from_this_workbench'), workbench_path(@workbench.id), class: 'button', disabled: params[:archived]
-            - else
-              = link_to t('referentials.show.show_all_referentials'), workbench_path(@workbench.id, show_all: true), class: 'btn btn-default'
+          / h4 = "Liste des jeux de données#{' (tous)' if params[:show_all]}"
+          / h5
+          /   - if params[:show_all]
+          /     = link_to t('referentials.show.from_this_workbench'), workbench_path(@workbench.id), class: 'button', disabled: params[:archived]
+          /   - else
+          /     = link_to t('referentials.show.show_all_referentials'), workbench_path(@workbench.id, show_all: true), class: 'btn btn-default'
 
           table.table.table-bordered.table-hover
             thead
