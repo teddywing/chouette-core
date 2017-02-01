@@ -9,9 +9,7 @@
 
     # Sticky behavior
     toStick = $('.page_header')
-    limit = toStick.outerHeight() - 33
-
-    console.log limit
+    limit = 51
 
     stickyContent = '<div class="sticky-content">'
     stickyContent += '<div class="sticky-ptitle">' + $(".page-title").html() + '</div>'
@@ -20,14 +18,12 @@
 
     $(document).on 'scroll', ->
       if $(window).scrollTop() >= limit
-        $('body').addClass 'has-sticky'
         $('#main_nav').addClass 'sticky'
 
         if $('#menu_top').find('.sticky-content').length == 0
           $('#menu_top').children('.menu-content').after(stickyContent)
 
       else
-        $('body').removeClass 'has-sticky'
         $('#main_nav').removeClass 'sticky'
 
         if $('#menu_top').find('.sticky-content').length > 0
