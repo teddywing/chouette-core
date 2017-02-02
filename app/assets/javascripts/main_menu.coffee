@@ -2,6 +2,7 @@
   $('#main_nav').each ->
     # Opening/closing left-side menu
     $(this).on 'click', '.openMenu', (e) ->
+      console.log 'clicked'
       $(this).parent().addClass 'open'
 
     $(this).on 'click', '.closeMenu', (e) ->
@@ -29,4 +30,4 @@
         if $('#menu_top').find('.sticky-content').length > 0
           $('.sticky-content').remove()
 
-$(document).on 'ready turbolinks:load', mainmenu
+$(document).on 'ready page:load', mainmenu
