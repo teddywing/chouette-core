@@ -1,5 +1,6 @@
 en:
   referentials:
+    search_no_results: 'No data space matching your query'
     edit:
       title: "Edit the data space"
     show:

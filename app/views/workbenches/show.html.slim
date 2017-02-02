@@ -2,7 +2,7 @@
 = pageheader 'map-marker',
              'Jeux de données',
              'Lorem ipsum dolor sit amet',
-             'Dernière mise à jour <br> le 22/12/2016' do
+             t('last_update', time: l(@workbench.updated_at, format: :short)) do
 
   / Below is secundary actions & optional contents (filters, ...)
   .row
@@ -19,70 +19,84 @@
   .container-fluid
     .row
       .col-lg-12
-        .referentials.paginated_content
+        - if @wbench_refs.any?
           = new_pagination @wbench_refs, 'pull-right'
 
-          table.table.table-bordered.table-hover
-            thead
-              tr
-                th = Referential.human_attribute_name(:name)
-                th = Referential.human_attribute_name(:updated_at)
-                th = "Publié le"
-                th = Referential.human_attribute_name(:validity_period)
-                th = Referential.human_attribute_name(:lines)
-                th = Referential.human_attribute_name(:organisation)
-                th = "Etat"
-                th = "Actions"
+          = table_builder @wbench_refs,
+            { 'Nom du JDD' => 'name', 'Etat' => 'status',
+              'Organisation' => Proc.new {|w| Organisation.find(w.organisation_id).name},
+              'Nb lignes' => Proc.new {|w| w.lines.count},
+              'Plage de validité' => Proc.new {|w| w.validity_period.nil? ? '-' : t('validity_range', debut: l(w.try(:validity_period).try(:begin), format: :short), end: l(w.try(:validity_period).try(:end), format: :short))},
+              @wbench_refs.human_attribute_name(:updated_at) => Proc.new {|w| l(w.updated_at, format: :short)},
+              'Publié le' => ''},
+            [:edit],
+            'table'
 
-            tbody
-              - @wbench_refs.each do |referential|
-                tr
-                  td = referential.name
-                  td = l referential.updated_at, format: :long
-                  td
-                  td
-                    - if referential.validity_period.nil?
-                      = Referential.human_attribute_name('no_validity_period')
-                    - else
-                      => Referential.human_attribute_name('start_validity_period')
-                      => l referential.validity_period.begin, format: :long
-                      => Referential.human_attribute_name('end_validity_period')
-                      => l referential.validity_period.end, format: :long
-
-                  td = referential.lines.count
-                  td = referential.organisation.name
-
-                  / Status (archived?)
-                  td.text-center
-                    - if referential.archived?
-                      span.fa.fa-archive title="Archivé"
-                    - else
-                      = "-"
-
-                  / Actions
-                  td.text-center
-                    .btn-group.btn-group-xs
-                      .btn-primary.btn.dropdown-toggle data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                        span.fa.fa-bars
-                        span.caret
-
-                      ul.dropdown-menu
-                        li = link_to "Voir", referential_path(referential)
-
-                        - if policy(referential).update?
-                          li = link_to "Editer", edit_referential_path(referential)
-
-                        li = link_to "Cloner", new_referential_path(from: referential)
-
-                        - if referential.archived?
-                          - if referential.can_unarchive?
-                            li = link_to "Désarchiver", unarchive_referential_path(referential), method: :put
-                          - else
-                            li.disabled title="L'action est impossible pour ce référentiel"
-                              = link_to "Désarchiver", "#"
-                        - else
-                          li = link_to "Archiver", archive_referential_path(referential), method: :put
-
-                        li = link_to "Supprimer", referential_path(referential), method: :delete, :data => {:confirm => t('referentials.actions.destroy_confirm')}
+          / Old one
+          / table.table
+          /   thead
+          /     tr
+          /       th = Referential.human_attribute_name(:name)
+          /       th = Referential.human_attribute_name(:updated_at)
+          /       th = "Publié le"
+          /       th = Referential.human_attribute_name(:validity_period)
+          /       th = Referential.human_attribute_name(:lines)
+          /       th = Referential.human_attribute_name(:organisation)
+          /       th = "Etat"
+          /       th = "Actions"
+          / 
+          /   tbody
+          /     - @wbench_refs.each do |referential|
+          /       tr
+          /         td = referential.name
+          /         td = l referential.updated_at, format: :long
+          /         td
+          /         td
+          /           - if referential.validity_period.nil?
+          /             = Referential.human_attribute_name('no_validity_period')
+          /           - else
+          /             => Referential.human_attribute_name('start_validity_period')
+          /             => l referential.validity_period.begin, format: :long
+          /             => Referential.human_attribute_name('end_validity_period')
+          /             => l referential.validity_period.end, format: :long
+          / 
+          /         td = referential.lines.count
+          /         td = referential.organisation.name
+          / 
+          /         / Status (archived?)
+          /         td.text-center
+          /           - if referential.archived?
+          /             span.fa.fa-archive title="Archivé"
+          /           - else
+          /             = "-"
+          / 
+          /         / Actions
+          /         td.text-center
+          /           .btn-group.btn-group-xs
+          /             .btn-primary.btn.dropdown-toggle data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+          /               span.fa.fa-bars
+          /               span.caret
+          / 
+          /             ul.dropdown-menu
+          /               li = link_to "Voir", referential_path(referential)
+          / 
+          /               - if policy(referential).update?
+          /                 li = link_to "Editer", edit_referential_path(referential)
+          / 
+          /               li = link_to "Cloner", new_referential_path(from: referential)
+          / 
+          /               - if referential.archived?
+          /                 - if referential.can_unarchive?
+          /                   li = link_to "Désarchiver", unarchive_referential_path(referential), method: :put
+          /                 - else
+          /                   li.disabled title="L'action est impossible pour ce référentiel"
+          /                     = link_to "Désarchiver", "#"
+          /               - else
+          /                 li = link_to "Archiver", archive_referential_path(referential), method: :put
+          / 
+          /               li = link_to "Supprimer", referential_path(referential), method: :delete, :data => {:confirm => t('referentials.actions.destroy_confirm')}
 
           = new_pagination @wbench_refs, 'pull-right'
+
+        - else
+          = replacement_msg t('referentials.search_no_results')

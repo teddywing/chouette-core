@@ -16,3 +16,49 @@
 
   + .btn
     margin-left: 12px
+
+// Table btn-groups
+table, .table
+  tbody > tr > td.actions
+    text-align: center
+    padding: 0
+
+    > .btn-group
+      height: 100%
+      width: 100%
+      min-height: 28px
+      min-width: 28px
+      color: $blue
+      background-color: #fff
+      transition: 0.2s
+      position: relative
+      cursor: pointer
+
+      &:hover, &:focus, &.open
+        background-color: rgba($blue, 0.5)
+        color: #fff
+        transition: 0.2s
+
+      &.open .dropdown-toggle
+        box-shadow: none
+
+      > .btn
+        position: absolute
+        top: 50%
+        left: 50%
+        margin: -13px 0 0 -15px
+        padding: 3px 7px
+        box-shadow: none
+
+        &:hover, &:focus, &.focus
+          color: inherit
+
+      .dropdown-menu
+        left: auto
+        right: 0
+        margin: 0
+        border-radius: 0
+        box-shadow: 0 0 3px rgba($darkgrey, 0.25)
+
+        > li > a
+          padding: 3px 15px

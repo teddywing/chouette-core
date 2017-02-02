@@ -1,0 +1,49 @@
+//----------//
+//  Tables  //
+//----------//
+
+.table
+  > thead
+    > tr > th
+      font-size: $h2-size
+      font-weight: 700
+      border-bottom: 2px solid $darkgrey
+
+      > a
+        position: relative
+        color: $darkgrey
+        padding-right: 18px
+
+        &:hover, &:focus
+          text-decoration: none
+
+        > .orderers
+          font-size: $base-font-size
+          position: absolute
+          display: block
+          height: 14px
+          width: 8px
+          right: 0
+          top: 50%
+          margin-top: -7px
+
+          > *
+            position: absolute
+            right: 0
+            top: 0
+            bottom: auto
+            color: $grey
+
+            &:last-child
+              bottom: 0
+              top: auto
+
+            &.active
+              color: $blue
+
+    + tbody
+      > tr > td
+        border-top: none
+        border-bottom: 1px solid $grey
+        padding: 4px 8px
+        vertical-align: middle

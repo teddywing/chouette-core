@@ -1,5 +1,6 @@
 fr:
   referentials:
+    search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
     edit:
       title: "Modifier l'espace de données"
     show:
@@ -11,7 +12,7 @@ fr:
       clean_up: "Purge des données obsolètes"
       api_keys: "Clés d'authentification pour un accès à l'API REST"
       show_all_referentials: Voir tous les espaces de données
-      from_this_workbench: Vour les espaces de données de cet gestion de l'offre
+      from_this_workbench: Voir les espaces de données de cet gestion de l'offre
     counts:
       objects: "Eléments"
       count: "Qté"

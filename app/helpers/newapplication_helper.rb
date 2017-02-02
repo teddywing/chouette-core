@@ -8,10 +8,9 @@ module NewapplicationHelper
       content_tag :tr do
         hcont = []
         columns.map do |k, v|
-          # hcont << content_tag(:th, k.to_s.titleize)
           hcont << content_tag(:th, sortable_columns(collection, k))
         end
-        hcont << content_tag(:th, 'Actions', class: 'text-center') if actions.any?
+        hcont << content_tag(:th, '') if actions.any?
 
         hcont.join.html_safe
       end
@@ -30,7 +29,7 @@ module NewapplicationHelper
               end
             bcont << content_tag(:td, value)
           end
-          bcont << content_tag(:td, links_builder(item, actions), class: 'text-center') if actions.any?
+          bcont << content_tag(:td, links_builder(item, actions), class: 'actions') if actions.any?
 
           bcont.join.html_safe
         end
@@ -41,10 +40,8 @@ module NewapplicationHelper
   end
 
   def links_builder(item, actions)
-    trigger = content_tag :div, class: 'btn btn-primary dropdown-toggle', data: { toggle: 'dropdown' } do
-      a = content_tag :span, '', class: 'fa fa-bars'
-      b = content_tag :span, '', class: 'caret'
-      a + b
+    trigger = content_tag :div, class: 'btn dropdown-toggle', data: { toggle: 'dropdown' } do
+      content_tag :span, '', class: 'fa fa-cog'
     end
 
     menu = content_tag :ul, class: 'dropdown-menu' do
@@ -55,8 +52,8 @@ module NewapplicationHelper
           polymorph_url << action
         end
 
-        unless item.class.to_s == 'Calendar'
-          if current_referential
+        unless item.class.to_s == 'Calendar' or item.class.to_s == 'Referential'
+          if item.respond_to? :current_referential
             polymorph_url << current_referential
             polymorph_url << item.line if item.respond_to? :line
           elsif item.respond_to? :referential
@@ -91,19 +88,19 @@ module NewapplicationHelper
       end.join.html_safe
     end
 
-    content_tag :div, trigger + menu, class: 'btn-group btn-group-xs'
+    content_tag :div, trigger + menu, class: 'btn-group'
 
   end
 
   def sortable_columns collection, key
     direction = (key == params[:sort] && params[:direction] == 'desc') ? 'asc' : 'desc'
 
-    icon = 'sort-desc' if direction == 'asc'
-    icon = 'sort-asc' if direction == 'desc'
-
     link_to({sort: key, direction: direction}) do
-      pic = content_tag :span, '', class: "fa fa-#{icon}", style: 'margin-left:5px'
-      (key.to_s.titleize + pic).html_safe
+      pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
+      pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
+
+      pics = content_tag :span, pic1 + pic2, class: 'orderers'
+      (key.to_s + pics).html_safe
     end
   end
 
