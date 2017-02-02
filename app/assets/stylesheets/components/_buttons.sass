@@ -61,4 +61,23 @@ table, .table
         box-shadow: 0 0 3px rgba($darkgrey, 0.25)
 
         > li > a
-          padding: 3px 15px
+          padding: 5px 15px
+
+        > li.delete-action
+
+          > a
+            position: relative
+            margin-top: 11px
+
+            &:before
+              content: ''
+              display: block
+              position: absolute
+              left: 15px
+              right: 15px
+              top: -6px
+              height: 1px
+              background-color: $grey
+
+            .fa:first-child
+              margin-right: 0.5em

@@ -53,7 +53,7 @@ module NewapplicationHelper
         end
 
         unless item.class.to_s == 'Calendar' or item.class.to_s == 'Referential'
-          if item.respond_to? :current_referential
+          if current_referential
             polymorph_url << current_referential
             polymorph_url << item.line if item.respond_to? :line
           elsif item.respond_to? :referential
@@ -68,10 +68,22 @@ module NewapplicationHelper
         if action == :delete
           if policy(item).present?
             if policy(item).destroy?
-              content_tag :li, link_to(t("table.#{action}"), polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' })
+              content_tag :li, '', class: 'delete-action' do
+                link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
+                  txt = t("table.#{action}")
+                  pic = content_tag :span, '', class: 'fa fa-trash'
+                  pic + txt
+                end
+              end
             end
           else
-            content_tag :li, link_to(t("table.#{action}"), polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' })
+            content_tag :li, '', class: 'delete-action' do
+              link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
+                txt = t("table.#{action}")
+                pic = content_tag :span, '', class: 'fa fa-trash'
+                pic + txt
+              end
+            end
           end
 
         elsif action == :edit

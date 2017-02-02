@@ -29,7 +29,7 @@
               'Plage de validité' => Proc.new {|w| w.validity_period.nil? ? '-' : t('validity_range', debut: l(w.try(:validity_period).try(:begin), format: :short), end: l(w.try(:validity_period).try(:end), format: :short))},
               @wbench_refs.human_attribute_name(:updated_at) => Proc.new {|w| l(w.updated_at, format: :short)},
               'Publié le' => ''},
-            [:edit],
+            [:show, :edit, :archive, :unarchive, :delete],
             'table'
 
           / Old one
