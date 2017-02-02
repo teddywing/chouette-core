@@ -62,7 +62,7 @@ const StopPoint = (props) => {
               <span className='fa fa-arrow-down'></span>
             </div>
             <div
-              className='btn btn-danger'
+              className='btn btn-danger delete'
               onClick={props.onDeleteClick}
             >
               <span className='fa fa-trash'></span>
