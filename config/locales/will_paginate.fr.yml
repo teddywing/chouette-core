@@ -16,5 +16,5 @@ fr:
         one:   "<b>1</b> %{model} affiché(e)"
         other: "<b>%{count}</b> %{model} affiché(e)s"
 
-      multi_page: "%{model} %{from} - %{to} sur %{count} au total"
-      multi_page_html: "%{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> sur <b>%{count}</b> au total"
+      multi_page: "Liste des %{model} %{from} à %{to} sur %{count}"
+      multi_page_html: "Liste des %{model} <b>%{from}&nbsp;à&nbsp;%{to}</b> sur <b>%{count}</b>"

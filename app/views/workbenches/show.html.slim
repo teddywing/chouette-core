@@ -1,24 +1,26 @@
+/ PageHeader
 = pageheader 'map-marker',
-               'Jeux de données',
-               'Lorem ipsum dolor sit amet',
-               'Dernière mise à jour <br> le 22/12/2016' do
+             'Jeux de données',
+             'Lorem ipsum dolor sit amet',
+             'Dernière mise à jour <br> le 22/12/2016' do
 
   / Below is secundary actions & optional contents (filters, ...)
   .row
     .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
-      = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-default btn-primary'
+      - if params[:show_all]
+        = link_to t('referentials.show.from_this_workbench'), workbench_path(@workbench.id), class: 'btn btn-primary', disabled: params[:archived]
+      - else
+        = link_to t('referentials.show.show_all_referentials'), workbench_path(@workbench.id, show_all: true), class: 'btn btn-primary'
 
+      = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
+
+/ PageContent
 .page_content
   .container-fluid
     .row
       .col-lg-12
         .referentials.paginated_content
-          h4 = "Liste des jeux de données#{' (tous)' if params[:show_all]}"
-          h5
-            - if params[:show_all]
-              = link_to t('referentials.show.from_this_workbench'), workbench_path(@workbench.id), class: 'button', disabled: params[:archived]
-            - else
-              = link_to t('referentials.show.show_all_referentials'), workbench_path(@workbench.id, show_all: true), class: 'btn btn-default'
+          = new_pagination @wbench_refs, 'pull-right'
 
           table.table.table-bordered.table-hover
             thead
@@ -83,5 +85,4 @@
 
                         li = link_to "Supprimer", referential_path(referential), method: :delete, :data => {:confirm => t('referentials.actions.destroy_confirm')}
 
-          .text-center
-            = will_paginate @wbench_refs, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
+          = new_pagination @wbench_refs, 'pull-right'
