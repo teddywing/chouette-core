@@ -6,13 +6,26 @@
 
   / Below is secundary actions & optional contents (filters, ...)
   .row
-    .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
+    .col-lg-12.text-right
       - if params[:show_all]
         = link_to t('referentials.show.from_this_workbench'), workbench_path(@workbench.id), class: 'btn btn-primary', disabled: params[:archived]
       - else
         = link_to t('referentials.show.show_all_referentials'), workbench_path(@workbench.id, show_all: true), class: 'btn btn-primary'
 
       = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
+
+  .row.mt-xs
+    .col-lg-5.col-md-6.col-sm-6.col-xs-8
+      = search_form_for @q, url: workbench_path(@workbench.id), html: { method: :get, class: 'form'} do |f|
+        .input-group.search_bar
+          = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de JDD ou transporteur'
+
+          span.input-group-btn
+            button.btn.btn-default type='submit'
+              span.fa.fa-search
+
+      / br
+      / = "filtres par: etat, orga, nb lignes, plage de validité, date publi. btns: clear filter et filtrer"
 
 / PageContent
 .page_content
