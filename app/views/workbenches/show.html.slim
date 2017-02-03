@@ -18,7 +18,7 @@
     .col-lg-5.col-md-6.col-sm-6.col-xs-8
       = search_form_for @q, url: workbench_path(@workbench.id), html: { method: :get, class: 'form'} do |f|
         .input-group.search_bar
-          = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de JDD ou transporteur'
+          = f.search_field :name_or_organisation_name_cont, class: 'form-control', placeholder: 'Indiquez un nom de JDD ou transporteur'
 
           span.input-group-btn
             button.btn.btn-default type='submit'
@@ -37,7 +37,7 @@
 
           = table_builder @wbench_refs,
             { 'Nom du JDD' => 'name', 'Etat' => 'status',
-              'Organisation' => Proc.new {|w| Organisation.find(w.organisation_id).name},
+              'Organisation' => Proc.new {|w| w.organisation.name},
               'Nb lignes' => Proc.new {|w| w.lines.count},
               'Plage de validité' => Proc.new {|w| w.validity_period.nil? ? '-' : t('validity_range', debut: l(w.try(:validity_period).try(:begin), format: :short), end: l(w.try(:validity_period).try(:end), format: :short))},
               @wbench_refs.human_attribute_name(:updated_at) => Proc.new {|w| l(w.updated_at, format: :short)},
