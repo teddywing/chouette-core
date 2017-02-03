@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170127092058) do
+ActiveRecord::Schema.define(version: 20170203094212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,22 +160,6 @@ ActiveRecord::Schema.define(version: 20170127092058) do
   end
 
   add_index "connection_links", ["objectid"], :name => "connection_links_objectid_key", :unique => true
-
-  create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0
-    t.integer  "attempts",   default: 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "exports", force: true do |t|
     t.integer  "referential_id",  limit: 8
@@ -363,11 +347,13 @@ ActiveRecord::Schema.define(version: 20170127092058) do
     t.boolean  "deactivated",                               default: false
     t.text     "import_xml"
     t.string   "transport_submode"
+    t.integer  "secondary_companies_ids",                                                array: true
   end
 
   add_index "lines", ["line_referential_id"], :name => "index_lines_on_line_referential_id"
   add_index "lines", ["objectid"], :name => "lines_objectid_key", :unique => true
   add_index "lines", ["registration_number"], :name => "lines_registration_number_key"
+  add_index "lines", ["secondary_companies_ids"], :name => "index_lines_on_secondary_companies_ids"
 
   create_table "networks", force: true do |t|
     t.string   "objectid",            null: false
@@ -779,8 +765,6 @@ ActiveRecord::Schema.define(version: 20170127092058) do
   add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
-  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
-
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify
