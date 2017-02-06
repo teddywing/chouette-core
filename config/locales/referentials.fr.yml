@@ -44,7 +44,8 @@ fr:
         other: "Jeux de Données"
     attributes:
       referential:
-        name: "Nom"
+        name: "Nom du JDD"
+        status: "Etat"
         slug: "Code"
         prefix: "Préfixe des identifiants Neptune"
         projection_type: "Système de référence spatiale (SRID) optionnel"
@@ -78,6 +79,9 @@ fr:
         data_format_restrictions: "Format d'export privilégié"
         data_format: "Format d'export privilégié"
         timebands: "Créneaux horaires"
+        validity_period: "Période de validité englobante"
+        updated_at: "Modifié"
+        published_at: "Intégré"
   formtastic:
     titles:
       referential:

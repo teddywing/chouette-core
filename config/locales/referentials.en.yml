@@ -42,7 +42,8 @@ en:
         other: "Data spaces"
     attributes:
       referential:
-        name: "Name"
+        name: "Data space name"
+        status: "Status"
         slug: "Code"
         prefix: "Neptune Object Id prefix"
         projection_type: "Optional spatial reference system code (SRID)"
@@ -77,6 +78,9 @@ en:
         data_format: "Favorite format for export"
         timebands: "Time bands"
         routing_constraint_zone: Zone de contrainte
+        validity_period: "Validity period"
+        updated_at: "Updated"
+        published_at: "Integrated"
   formtastic:
     titles:
       referential:
