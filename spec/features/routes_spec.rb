@@ -4,12 +4,14 @@ require 'spec_helper'
 describe "Routes", :type => :feature do
   login_user
 
-  let!(:line) { create(:line) }
+  let(:line) { create :line }
   let!(:route) { create(:route, :line => line) }
   let!(:route2) { create(:route, :line => line) }
   #let!(:stop_areas) { Array.new(4) { create(:stop_area) } }
   let!(:stop_points) { Array.new(4) { create(:stop_point, :route => route) } }
   let!(:journey_pattern) { create(:journey_pattern, route: route) }
+
+  before { @user.update(organisation: referential.organisation) }
 
   describe "from lines page to a line page" do
     it "display line's routes" do
@@ -22,7 +24,7 @@ describe "Routes", :type => :feature do
 
   describe "from line's page to route's page" do
     it "display route properties" do
-      visit referential_line_path(referential,line)
+      visit referential_line_path(referential, line)
       click_link "#{route.name}"
       expect(page).to have_content(route.name)
       expect(page).to have_content(route.number)
@@ -31,7 +33,7 @@ describe "Routes", :type => :feature do
 
   describe "from line's page, create a new route" do
     it "return to line's page that display new route" do
-      visit referential_line_path(referential,line)
+      visit referential_line_path(referential, line)
       click_link "Ajouter un itinéraire"
       fill_in "route_name", :with => "A to B"
       # select 'Aller', :from => "route_direction"
@@ -107,6 +109,12 @@ describe "Routes", :type => :feature do
     context 'user has permission to create routes' do
       it 'shows link to a create route page' do
         expect(page).to have_content(I18n.t('routes.actions.new'))
+      end
+    end
+
+    context 'user belongs to another organisation' do
+      xit 'does not show link to a create route page' do
+        expect(page).not_to have_content(I18n.t('routes.actions.new'))
       end
     end
 

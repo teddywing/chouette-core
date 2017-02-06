@@ -20,4 +20,5 @@
 - content_for :sidebar do
   ul.actions
     li
-      = link_to t('connection_links.actions.new'), new_referential_connection_link_path(@referential), class: 'add'
+      - if policy(Chouette::ConnectionLink).create? && @referential.organisation == current_organisation
+        = link_to t('connection_links.actions.new'), new_referential_connection_link_path(@referential), class: 'add'

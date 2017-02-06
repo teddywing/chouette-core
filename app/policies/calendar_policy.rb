@@ -24,8 +24,4 @@ class CalendarPolicy < ApplicationPolicy
   def modify?
     organisation_match?
   end
-
-  def organisation_match?
-    user.organisation == record.organisation
-  end
 end

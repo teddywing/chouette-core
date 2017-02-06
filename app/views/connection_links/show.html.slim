@@ -2,7 +2,7 @@
 
 .connection_link_show
   = @map.to_html
-  
+
   .summary
     p
       label = "#{@connection_link.human_attribute_name(:departure)} : "
@@ -24,7 +24,7 @@
         = t("unknown")
       - else
         = t("connection_link_types.label.#{@connection_link.connection_link_type}")
-      
+
     p
       label = "#{@connection_link.human_attribute_name('comment')} : "
       = @connection_link.comment
@@ -40,12 +40,12 @@
       label.duration = "#{@connection_link.human_attribute_name('default_duration')} : "
       - if @connection_link.default_duration.present?
         = @connection_link.default_duration.strftime('%Hh %Mm %Ss')
-      
+
     p
       label.duration = "#{@connection_link.human_attribute_name('frequent_traveller_duration')} : "
       - if @connection_link.frequent_traveller_duration.present?
         = @connection_link.frequent_traveller_duration.strftime('%Hh %Mm %Ss')
-      
+
     p
       label.duration = "#{@connection_link.human_attribute_name('occasional_traveller_duration')} : "
       - if @connection_link.occasional_traveller_duration.present?
@@ -79,14 +79,18 @@
 
 - content_for :sidebar do
   ul.actions
-    li
-      = link_to t('connection_links.actions.new'), new_referential_connection_link_path(@referential), class: 'add'
-    li
-      = link_to t('connection_links.actions.edit'), edit_referential_connection_link_path(@referential, @connection_link), class: 'edit'
-    li
-      = link_to t('connection_links.actions.destroy'), referential_connection_link_path(@referential, @connection_link), :method => :delete,  :data => {:confirm =>  t('connection_links.actions.destroy_confirm')}, class: 'remove'
-    li
-      = link_to t('connection_links.actions.select_areas'), select_areas_referential_connection_link_path(@referential, @connection_link), class: 'select'
+    - if policy(Chouette::ConnectionLink).create? && @referential.organisation == current_organisation
+      li
+        = link_to t('connection_links.actions.new'), new_referential_connection_link_path(@referential), class: 'add'
+    - if policy(@connection_link).edit?
+      li
+        = link_to t('connection_links.actions.edit'), edit_referential_connection_link_path(@referential, @connection_link), class: 'edit'
+    - if policy(@connection_link).destroy?
+      li
+        = link_to t('connection_links.actions.destroy'), referential_connection_link_path(@referential, @connection_link), :method => :delete,  :data => {:confirm =>  t('connection_links.actions.destroy_confirm')}, class: 'remove'
+    - if policy(@connection_link).edit?
+      li
+        = link_to t('connection_links.actions.select_areas'), select_areas_referential_connection_link_path(@referential, @connection_link), class: 'select'
     br
 
   = creation_tag(@connection_link)

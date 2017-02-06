@@ -15,7 +15,7 @@ class JourneyPatternsController < ChouetteController
   alias_method :route, :parent
   alias_method :journey_pattern, :resource
 
-  before_action :check_policy, only: [:edit, :update, :destroy]
+  include PolicyChecker
 
   def index
     index! do |format|
@@ -54,10 +54,6 @@ class JourneyPatternsController < ChouetteController
   end
 
   private
-
-  def check_policy
-    authorize resource
-  end
 
   def journey_pattern_params
     params.require(:journey_pattern).permit(:route_id, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :registration_number, :published_name, :departure_stop_point_id, :arrival_stop_point_id, {:stop_point_ids => []})

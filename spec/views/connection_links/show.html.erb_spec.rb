@@ -1,10 +1,14 @@
 require 'spec_helper'
 
 describe "/connection_links/show", :type => :view do
-  
+
   assign_referential
   let!(:connection_link) { assign(:connection_link, create(:connection_link)) }
   let!(:map) { assign(:map, double(:to_html => '<div id="map"/>'.html_safe)) }
+
+  before do
+    allow(view).to receive_messages(current_organisation: referential.organisation)
+  end
 
   it "should render h2 with the connection_link name" do
     render

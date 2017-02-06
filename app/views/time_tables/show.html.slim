@@ -9,7 +9,7 @@
 - content_for :sidebar do
   ul.actions
     li
-      - if policy(@time_table).create?
+      - if policy(@time_table).create? && @referential.organisation == current_organisation
         = link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), class: 'add'
     li
       - if policy(@time_table).edit?
@@ -18,10 +18,10 @@
       - if policy(@time_table).destroy?
         = link_to t('time_tables.actions.destroy'), referential_time_table_path(@referential, @time_table), :method => :delete, :data => {:confirm =>  t('time_tables.actions.destroy_confirm')}, class: "remove"
     li
-      - if policy(@time_table).create?
+      - if policy(@time_table).create? && @referential.organisation == current_organisation
         = link_to t('time_tables.actions.duplicate'), duplicate_referential_time_table_path(@referential, @time_table), class: "clone"
     li
-      /- if policy(@time_table).create?
+      /- if policy(@time_table).create? && @referential.organisation == current_organisation
       = link_to t('time_tables.actions.combine'), new_referential_time_table_time_table_combination_path(@referential, @time_table), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_combine', class: "merge"}
 
   = creation_tag(@time_table)
