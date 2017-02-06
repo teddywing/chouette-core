@@ -52,3 +52,41 @@
           text-decoration: none
           font-weight: 700
           color: inherit
+
+// select_toolbox
+.select_toolbox
+  padding: 10px
+  background-color: #fff
+  box-shadow: 0 0 3px $darkgrey
+  position: fixed
+  z-index: 999
+  right: 50px
+  bottom: 15px
+
+  > ul
+    display: block
+    margin: 0
+    padding: 0
+    text-align: center
+
+    > .st_action
+      display: inline-block
+      width: 35px
+      height: 35px
+      margin: 5px
+
+      > a
+        display: block
+        height: 35px
+        text-align: center
+        line-height: 35px
+        border-radius: 50%
+        background-color: $blue
+        color: #fff
+
+        &:hover
+          background-color: rgba($blue, 0.5)
+
+  > .info-msg
+    font-style: italic
+    font-size: 0.85em

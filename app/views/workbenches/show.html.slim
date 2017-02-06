@@ -46,6 +46,8 @@
             :selectable,
             'table'
 
+          = select_toolbox [:edit, :delete]
+
           = new_pagination @wbench_refs, 'pull-right'
 
         - else

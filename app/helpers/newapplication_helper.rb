@@ -150,6 +150,28 @@ module NewapplicationHelper
     end
   end
 
+  # Actions on select toolbox
+  def select_toolbox collection, actions
+    tools = content_tag :ul do
+      actions.collect do |action|
+
+        actitem = link_to '#', title: t("table.#{action}") do
+          if action == :edit
+            content_tag :span, '', class: 'fa fa-pencil'
+          elsif action == :delete
+            content_tag :span, '', class: 'fa fa-trash'
+          end
+        end
+
+        content_tag :li, actitem, class: 'st_action'
+      end.join.html_safe
+
+    end
+    content_tag :div, '', class: 'select_toolbox' do
+      tools.concat(content_tag(:span, "n élément(s) sélectionné(s)", class: 'info-msg'))
+    end
+  end
+
   # Replacement message
   def replacement_msg text
     content_tag :div, '', class: 'alert alert-warning' do
