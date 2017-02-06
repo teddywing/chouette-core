@@ -7,12 +7,7 @@ class RoutingConstraintZonesController < ChouetteController
     belongs_to :line, parent_class: Chouette::Line
   end
 
-  before_action :check_policy, only: [:edit, :update, :destroy]
-
-  protected
-  def check_policy
-    authorize resource
-  end
+  include PolicyChecker
 
   private
   def routing_constraint_zone_params

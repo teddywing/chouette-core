@@ -30,7 +30,7 @@ h3.journey_pattern_stop_points = t('.stop_points')
 - content_for :sidebar do
   ul.actions
     li
-      - if policy(@journey_pattern).create?
+      - if policy(@journey_pattern).create? && @journey_pattern.referential.organisation == current_organisation
         = link_to t('journey_patterns.actions.new'), new_referential_line_route_journey_pattern_path(@referential, @line, @route), class: 'add'
     li
       - if policy(@journey_pattern).edit?

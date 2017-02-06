@@ -1,5 +1,5 @@
 class ReferentialLinesController < ChouetteController
-  before_action :check_policy, :only => [:edit, :update, :destroy]
+  include PolicyChecker
 
   defaults :resource_class => Chouette::Line, :collection_name => 'lines', :instance_name => 'line'
   respond_to :html
@@ -93,10 +93,6 @@ class ReferentialLinesController < ChouetteController
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
-  end
-
-  def check_policy
-    authorize resource
   end
 
   def line_params

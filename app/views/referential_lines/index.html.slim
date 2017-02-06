@@ -7,7 +7,7 @@
 
 - content_for :sidebar do
   ul.actions
-    - if policy(Chouette::Line).create?
+    - if policy(Chouette::Line).create? && @referential.organisation == current_organisation
       li
         = link_to t('lines.actions.new'), new_referential_line_path(@referential), class: 'add'
 

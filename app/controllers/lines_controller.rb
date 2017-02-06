@@ -1,6 +1,6 @@
 class LinesController < BreadcrumbController
   include ApplicationHelper
-  before_action :check_policy, :only => [:edit, :update, :destroy]
+  include PolicyChecker
   defaults :resource_class => Chouette::Line
   respond_to :html
   respond_to :xml
@@ -96,10 +96,6 @@ class LinesController < BreadcrumbController
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
-  end
-
-  def check_policy
-    authorize resource
   end
 
   alias_method :current_referential, :line_referential

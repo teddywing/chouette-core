@@ -1,4 +1,5 @@
 class RoutesController < ChouetteController
+  include PolicyChecker
   defaults :resource_class => Chouette::Route
 
   respond_to :html, :xml, :json
@@ -10,7 +11,6 @@ class RoutesController < ChouetteController
   end
 
   before_action :define_candidate_opposite_routes, only: [:new, :edit, :create, :update]
-  before_action :check_policy, only: [:edit, :update, :destroy]
 
   def index
     index! do |format|
@@ -84,10 +84,6 @@ class RoutesController < ChouetteController
       else
         parent.routes.select(&:persisted?)
       end
-  end
-
-  def check_policy
-    authorize resource
   end
 
   private

@@ -1,6 +1,7 @@
 class ReferentialsController < BreadcrumbController
   defaults :resource_class => Referential
-  before_action :check_policy, :only => [:edit, :update]
+  include PolicyChecker
+  before_action :check_policy, :only => [:edit, :update] # overrides default
 
   respond_to :html
   respond_to :json, :only => :show
@@ -115,10 +116,6 @@ class ReferentialsController < BreadcrumbController
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
-  end
-
-  def check_policy
-    authorize resource
   end
 
   def referential_params

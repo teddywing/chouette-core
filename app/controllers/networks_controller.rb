@@ -1,6 +1,6 @@
 class NetworksController < BreadcrumbController
   include ApplicationHelper
-  before_action :check_policy, :only => [:edit, :update, :destroy]
+  include PolicyChecker
   defaults :resource_class => Chouette::Network
   respond_to :html
   respond_to :xml
@@ -57,10 +57,6 @@ class NetworksController < BreadcrumbController
   end
 
   alias_method :line_referential, :parent
-
-  def check_policy
-    authorize resource
-  end
 
   alias_method :current_referential, :line_referential
   helper_method :current_referential

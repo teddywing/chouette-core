@@ -6,15 +6,15 @@ class VehicleJourneyPolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_permission?('vehicle_journeys.create')
+    user.has_permission?('vehicle_journeys.create') # organisation match via referential is checked in the view
   end
 
   def edit?
-    user.has_permission?('vehicle_journeys.edit')
+    organisation_match?(via_referential: true) && user.has_permission?('vehicle_journeys.edit')
   end
 
   def destroy?
-    user.has_permission?('vehicle_journeys.destroy')
+    organisation_match?(via_referential: true) && user.has_permission?('vehicle_journeys.destroy')
   end
 
   def update?  ; edit? end
