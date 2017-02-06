@@ -43,6 +43,7 @@
               @wbench_refs.human_attribute_name(:updated_at) => Proc.new {|w| l(w.updated_at, format: :short)},
               @wbench_refs.human_attribute_name(:published_at) => ''},
             [:show, :edit, :archive, :unarchive, :delete],
+            :selectable,
             'table'
 
           / Old one

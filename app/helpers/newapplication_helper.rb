@@ -1,12 +1,20 @@
 module NewapplicationHelper
 
   # Table Builder
-  def table_builder collection, columns, actions, cls = nil
+  def table_builder collection, columns, actions, selectable, cls = nil
     return unless collection.present?
 
     head = content_tag :thead do
       content_tag :tr do
         hcont = []
+
+        if selectable.to_s == 'selectable'
+          cbx = content_tag :div, '', class: 'checkbox' do
+            check_box_tag('0', 'all').concat(content_tag(:label, '', for: '0'))
+          end
+          hcont << content_tag(:th, cbx)
+        end
+
         columns.map do |k, v|
           hcont << content_tag(:th, sortable_columns(collection, k))
         end
@@ -20,6 +28,14 @@ module NewapplicationHelper
       collection.collect do |item|
         content_tag :tr do
           bcont = []
+
+          if selectable.to_s == 'selectable'
+            cbx = content_tag :div, '', class: 'checkbox' do
+              check_box_tag(item.try(:id), item.try(:id)).concat(content_tag(:label, '', for: item.try(:id)))
+            end
+            bcont << content_tag(:td, cbx)
+          end
+
           columns.map do |k, attribute|
             value =
               if Proc === attribute
