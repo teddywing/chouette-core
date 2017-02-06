@@ -7,11 +7,6 @@
 
     #menu-items.panel-group
       .menu-item.panel
-        .list-group
-          = link_to '#', class: 'list-group-item' do
-            span Tableau de bord
-
-      .menu-item.panel
         .panel-heading
           h4.panel-title
             = link_to '#miOne', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'true' do
@@ -22,7 +17,7 @@
             = link_to '#', class: 'list-group-item active' do
               span Jeux de données
             = link_to '#', class: 'list-group-item' do
-              span Importations
+              span Rapports d'import
             = link_to '#', class: 'list-group-item' do
               span Modèles de calendrier
             = link_to '#', class: 'list-group-item' do
@@ -32,29 +27,9 @@
         .panel-heading
           h4.panel-title
             = link_to '#miTwo', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
-              |Offres
-
-        #miTwo.panel-collapse.collapse
-          .list-group
-            = link_to '#', class: 'list-group-item' do
-              span Mon offre courante
-            = link_to '#', class: 'list-group-item' do
-              span Liste de mes offres
-
-            .list-group-item.separator
-
-            = link_to '#', class: 'list-group-item' do
-              span Offre courante Île-de-France
-            = link_to '#', class: 'list-group-item' do
-              span Liste offre Île-de-France
-
-      .menu-item.panel
-        .panel-heading
-          h4.panel-title
-            = link_to '#miThree', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
               |Données
 
-        #miThree.panel-collapse.collapse
+        #miTwo.panel-collapse.collapse
           .panel-body
             em.text-muted
               = "Sélectionnez un jeu de données pour accéder à plus de fonctionnalités"
@@ -62,35 +37,40 @@
       .menu-item.panel
         .panel-heading
           h4.panel-title
-            = link_to '#miFour', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+            = link_to '#miThree', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
               |Synchronisation
 
-        #miFour.panel-collapse.collapse
+        #miThree.panel-collapse.collapse
           .list-group
             = link_to '#', class: 'list-group-item' do
-              span Synchronisation iCAR
-            = link_to '#', class: 'list-group-item' do
               span Synchronisation iLLICO
+            = link_to '#', class: 'list-group-item' do
+              span Synchronisation iCAR
 
-    .panel-group
       .menu-item.panel
-        .list-group
-          = link_to '#', target: '_blank', class: 'list-group-item' do
-            span
-              span.fa.fa-circle
-              |Portail (POSTIF)
+        .panel-heading
+          h4.panel-title
+            = link_to '#miFour', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'true' do
+              |Outils
+              
+        #miFour.panel-collapse.collapse.in
+          .list-group
+            = link_to '#', target: '_blank', class: 'list-group-item' do
+              span
+                span.fa.fa-2x.fa-circle
+                |Portail (POSTIF)
 
-          = link_to '#', target: '_blank', class: 'list-group-item' do
-            span
-              span.fa.fa-circle
-              |Codifligne (iLLICO)
+            = link_to '#', target: '_blank', class: 'list-group-item' do
+              span
+                span.fa.fa-2x.fa-circle
+                |Codifligne (iLLICO)
 
-          = link_to '#', target: '_blank', class: 'list-group-item' do
-            span
-              span.fa.fa-circle
-              |Reflex (iCAR)
+            = link_to '#', target: '_blank', class: 'list-group-item' do
+              span
+                span.fa.fa-2x.fa-circle
+                |Reflex (iCAR)
 
-          = link_to '#', target: '_blank', class: 'list-group-item' do
-            span
-              span.fa.fa-circle
-              |Support
+            = link_to '#', target: '_blank', class: 'list-group-item' do
+              span
+                span.fa.fa-2x.fa-circle
+                |Support
