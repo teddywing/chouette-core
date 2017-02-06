@@ -3,6 +3,7 @@
     selection = []
     $(this).on 'click', "[type='checkbox']", (e)->
       if e.currentTarget.id == '0'
+        selection = []
         if e.currentTarget.checked
           $("[type='checkbox']").each ->
             $(this).prop('checked', true)
