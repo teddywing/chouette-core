@@ -59,6 +59,7 @@ en:
         direction: "Direction"
         wayback: "Wayback"
         opposite_route: "Reversed route"
+        opposite_route_id: "Reversed route"
         objectid: "Neptune identifier"
         object_version: "Version"
         creation_time: "Created on"

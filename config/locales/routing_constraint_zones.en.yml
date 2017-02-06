@@ -19,5 +19,3 @@ en:
       title: "Update routing constraint zone %{routing_constraint_zone}"
     show:
       title: "Routing constraint zone %{routing_constraint_zone}"
-    index:
-

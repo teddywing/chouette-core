@@ -5,6 +5,8 @@ fr:
       attributes:
         routing_constraint_zone:
           name: Nom
+          stop_areas: Arrêts
+          line: Ligne
   routing_constraint_zones:
     actions:
       new: Ajouter une zone de contrainte
@@ -17,4 +19,3 @@ fr:
       title: "Modifier la zone de contrainte %{routing_constraint_zone}"
     show:
       title: "Zone de contrainte %{routing_constraint_zone}"
-    index:

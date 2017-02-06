@@ -34,6 +34,8 @@ en:
       pg_excluded: "can't begins with pg_"
       public_excluded: "public is a reserved value"
       user_excluded: "%{user} is a reserved value"
+      overlapped_referential: "%{referential} cover the same perimeter"
+      overlapped_period: "Another period is on the same period"
   activerecord:
     models:
       referential:
@@ -77,7 +79,7 @@ en:
         data_format_restrictions: "Data format constraint"
         data_format: "Favorite format for export"
         timebands: "Time bands"
-        routing_constraint_zone: Zone de contrainte
+        routing_constraint_zone: Routing constraint zone
         validity_period: "Validity period"
         updated_at: "Updated"
         published_at: "Integrated"
@@ -104,4 +106,5 @@ en:
     referential:
       archived: "The data space has been successfully archived"
       unarchived: "The data space has been successfully unarchived"
+      unarchived_failed: "The data space cannot be unarchived"
       deleted: "The data space has been successfully destroyed"
