@@ -27,7 +27,11 @@ module NewapplicationHelper
               else
                 item.try(attribute)
               end
-            bcont << content_tag(:td, value)
+            if attribute == "name"
+              bcont << content_tag(:td, link_to(value, item), title: 'Voir')
+            else
+              bcont << content_tag(:td, value)
+            end
           end
           bcont << content_tag(:td, links_builder(item, actions), class: 'actions') if actions.any?
 
