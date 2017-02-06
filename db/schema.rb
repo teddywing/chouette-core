@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170127092058) do
+ActiveRecord::Schema.define(version: 20170203144307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -347,11 +347,13 @@ ActiveRecord::Schema.define(version: 20170127092058) do
     t.boolean  "deactivated",                               default: false
     t.text     "import_xml"
     t.string   "transport_submode"
+    t.integer  "secondary_company_ids",                                                  array: true
   end
 
   add_index "lines", ["line_referential_id"], :name => "index_lines_on_line_referential_id"
   add_index "lines", ["objectid"], :name => "lines_objectid_key", :unique => true
   add_index "lines", ["registration_number"], :name => "lines_registration_number_key"
+  add_index "lines", ["secondary_company_ids"], :name => "index_lines_on_secondary_company_ids"
 
   create_table "networks", force: true do |t|
     t.string   "objectid",            null: false

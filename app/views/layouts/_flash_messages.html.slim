@@ -1,0 +1,9 @@
+- flash.each do |name, msg|
+  - if msg.is_a?(String)
+    - if name == 'notice'
+      .notice.alert class="alert-success" role="alert"
+        = content_tag :span, msg
+
+    - if name == 'error' || name == 'alert'
+      .notice.alert class="alert-danger" role="alert"
+        = content_tag :span, msg

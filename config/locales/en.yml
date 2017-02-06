@@ -2,7 +2,16 @@ en:
   "true": "Yes"
   "false": "No"
   "unknown": "Unknown"
+
   time:
     formats:
       hour: "%Hh%M"
       minute: "%M min"
+      short: "%Y/%m/%d"
+
+  date:
+    formats:
+      short: "%Y/%m/%d"
+
+  last_update: 'Last update on<br>%{time}'
+  validity_range: '%{debut} > %{end}'

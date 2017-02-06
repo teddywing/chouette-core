@@ -36,7 +36,23 @@ const actions = {
       select_value: e.currentTarget.value,
       index
     }
-  }
+  },
+  toggleMap: (index) =>({
+    type: 'TOGGLE_MAP',
+    index
+  }),
+  closeMaps: () => ({
+    type : 'CLOSE_MAP'
+  }),
+  selectMarker: (index, data) =>({
+    type: 'SELECT_MARKER',
+    index,
+    data
+  }),
+  unselectMarker: (index) => ({
+    type: 'UNSELECT_MARKER',
+    index
+  })
 }
 
 module.exports = actions

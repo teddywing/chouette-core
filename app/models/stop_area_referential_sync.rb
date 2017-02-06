@@ -36,7 +36,7 @@ class StopAreaReferentialSync < ActiveRecord::Base
     end
 
     event :failed, after: :log_failed do
-      transitions :from => :pending, :to => :failed
+      transitions :from => [:new, :pending], :to => :failed
     end
   end
 

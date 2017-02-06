@@ -1,5 +1,5 @@
-# coding: utf-8
 module PaginationHelper
+
   def paginated_content(models, default_partial_name = nil, options = {})
     default_options = {:delete => true, :edit => true}
     options = default_options.merge(options)
@@ -18,4 +18,19 @@ module PaginationHelper
 
     return html.html_safe unless models.blank?
   end
+
+  def new_pagination collection, cls = nil
+    pinfos = page_entries_info collection, model: t("will_paginate.page_entries_info.#{collection.first.class.name.downcase}"), html: false
+
+    if collection.total_pages > 1
+      links = content_tag :div, '', class: 'page_links' do
+        will_paginate collection, container: false, page_links: false, previous_label: '', next_label: ''
+      end
+
+      content_tag :div, pinfos.concat(links).html_safe, class: "pagination #{cls}"
+    else
+      content_tag :div, pinfos, class: "pagination #{cls}"
+    end
+  end
+
 end

@@ -31,7 +31,10 @@
         = t('lines.index.unset')
       - else
         = link_to @line.company.name, [@line_referential, @line.company]
-
+    p
+      label = "#{@line.human_attribute_name(:secondary_companies)} : "
+      - @line.secondary_companies.each do |company|
+        = link_to @company.name, [@line_referential, @company]
     p
       label = "#{@line.human_attribute_name('number')} : "
       = @line.number

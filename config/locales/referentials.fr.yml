@@ -1,17 +1,20 @@
 fr:
   referentials:
+    search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
+    index:
+      title: 'Jeux de données'
     edit:
-      title: "Modifier l'espace de données"
+      title: "Modifier le jeu de données"
     show:
       lines: "lignes"
       networks: "réseaux"
       vehicle_journeys: "courses"
       time_tables: "calendriers"
-      title: "Espace de données"
+      title: "Jeu de données"
       clean_up: "Purge des données obsolètes"
       api_keys: "Clés d'authentification pour un accès à l'API REST"
-      show_all_referentials: Voir tous les espaces de données
-      from_this_workbench: Vour les espaces de données de cet gestion de l'offre
+      show_all_referentials: Voir tous les jeux de données
+      from_this_workbench: Voir les jeux de données de cet gestion de l'offre
     counts:
       objects: "Eléments"
       count: "Qté"
@@ -19,14 +22,14 @@ fr:
       validity_out_time_tables: "Calendriers échus"
       validity_out_soon_time_tables: "Calendriers à échoir dans %{count} jours"
     new:
-      title: "Créer un nouvel espace de données"
-      submit: "Créer un espace de données"
+      title: "Créer un nouveau jeu de données"
+      submit: "Créer un jeu de données"
     actions:
-      new: "Ajouter un espace de données"
-      destroy_confirm: "Etes vous sûr de vouloir supprimer cet espace de données ?"
-      destroy: "Supprimer cet espace de données"
-      edit: "Modifier cet espace de données"
-      clone: "Cloner cet espace de données"
+      new: "Ajouter un jeu de données"
+      destroy_confirm: "Etes vous sûr de vouloir supprimer ce jeu de données ?"
+      destroy: "Supprimer ce jeu de données"
+      edit: "Modifier ce jeu de données"
+      clone: "Cloner ce jeu de données"
     errors:
       pg_excluded: "ne peut pas commencer par pg_ (valeurs réservées)"
       public_excluded: "public est une valeur réservée"
@@ -36,12 +39,13 @@ fr:
   activerecord:
     models:
       referential:
-        zero: "Espace de Données"
-        one: "Espace de Données"
-        other: "Espaces de Données"
+        zero: "Jeu de Données"
+        one: "Jeu de Données"
+        other: "Jeux de Données"
     attributes:
       referential:
-        name: "Nom"
+        name: "Nom du JDD"
+        status: "Etat"
         slug: "Code"
         prefix: "Préfixe des identifiants Neptune"
         projection_type: "Système de référence spatiale (SRID) optionnel"
@@ -75,6 +79,9 @@ fr:
         data_format_restrictions: "Format d'export privilégié"
         data_format: "Format d'export privilégié"
         timebands: "Créneaux horaires"
+        validity_period: "Période de validité englobante"
+        updated_at: "Modifié"
+        published_at: "Intégré"
   formtastic:
     titles:
       referential:
@@ -96,7 +103,7 @@ fr:
 
   notice:
     referential:
-      archived: "L'espace de données a été correctement archivé"
-      unarchived: "L'espace de données a été correctement désarchivé"
-      unarchived_failed: "L'espace de données ne peut être désarchivé"
-      deleted: "L'espace de données a été correctement supprimé"
+      archived: "Le jeu de données a été correctement archivé"
+      unarchived: "Le jeu de données a été correctement désarchivé"
+      unarchived_failed: "Le jeu de données ne peut être désarchivé"
+      deleted: "Le jeu de données a été correctement supprimé"

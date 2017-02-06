@@ -14,6 +14,9 @@ class Chouette::Line < Chouette::ActiveRecord
 
   belongs_to :company
   belongs_to :network
+
+  has_array_of :secondary_companies, class_name: 'Chouette::Company'
+
   has_many :routes, :dependent => :destroy
   has_many :journey_patterns, :through => :routes
   has_many :vehicle_journeys, :through => :journey_patterns
