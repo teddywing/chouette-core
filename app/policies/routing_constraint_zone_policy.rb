@@ -6,15 +6,15 @@ class RoutingConstraintZonePolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_permission?('routing_constraint_zones.create')
+    user.has_permission?('routing_constraint_zones.create') # organisation match via referential is checked in the view
   end
 
   def edit?
-    user.has_permission?('routing_constraint_zones.edit')
+    organisation_match?(via_referential: true) && user.has_permission?('routing_constraint_zones.edit')
   end
 
   def destroy?
-    user.has_permission?('routing_constraint_zones.destroy')
+    organisation_match?(via_referential: true) && user.has_permission?('routing_constraint_zones.destroy')
   end
 
   def update?  ; edit? end

@@ -9,6 +9,8 @@ class AccessLinksController < ChouetteController
   respond_to :html, :xml, :json
   respond_to :kml, :only => :show
 
+  include PolicyChecker
+
   def index
     request.format.kml? ? @per_page = nil : @per_page = 12
     index!
@@ -85,7 +87,6 @@ class AccessLinksController < ChouetteController
         access_links
       end
   end
-
 
   private
 

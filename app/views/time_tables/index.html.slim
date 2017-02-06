@@ -32,6 +32,6 @@
 - content_for :sidebar do
   ul.actions
     li
-      - if policy(Chouette::TimeTable).create?
+      - if policy(Chouette::TimeTable).create? && @referential.organisation == current_organisation
         = link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), class: "add"
     br

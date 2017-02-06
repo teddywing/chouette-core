@@ -126,7 +126,7 @@ p.after_map
 
 - content_for :sidebar do
   ul.actions
-    - if policy(Chouette::Line).create?
+    - if policy(Chouette::Line).create? && @referential.organisation == current_organisation
       li
         = link_to t('lines.actions.new'), new_referential_line_path(@referential), class: 'add'
     - if policy(@line).update?
@@ -139,7 +139,7 @@ p.after_map
     - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
         / FIXME #825
         li
-        - if policy(Chouette::Route).create?
+        - if policy(Chouette::Route).create? && @referential.organisation == current_organisation
           = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
 
   = creation_tag(@line)

@@ -2,10 +2,15 @@ require 'spec_helper'
 
 describe "/lines/show", :type => :view do
 
+  assign_referential
   let!(:line) { assign :line, create(:line) }
   let!(:line_referential) { assign :line_referential, line.line_referential }
   let!(:routes) { assign :routes, Array.new(2) { create(:route, :line => line) }.paginate }
   let!(:map) { assign(:map, double(:to_html => '<div id="map"/>'.html_safe)) }
+
+  before do
+    allow(view).to receive_messages(current_organisation: referential.organisation)
+  end
 
   it "should render h2 with the line name" do
     render

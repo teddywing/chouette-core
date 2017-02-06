@@ -6,15 +6,15 @@ class RoutePolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_permission?('routes.create')
+    user.has_permission?('routes.create') # organisation match via referential is checked in the view
   end
 
   def edit?
-    user.has_permission?('routes.edit')
+    organisation_match?(via_referential: true) && user.has_permission?('routes.edit')
   end
 
   def destroy?
-    user.has_permission?('routes.destroy')
+    organisation_match?(via_referential: true) && user.has_permission?('routes.destroy')
   end
 
   def update?  ; edit? end

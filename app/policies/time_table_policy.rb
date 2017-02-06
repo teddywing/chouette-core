@@ -6,15 +6,15 @@ class TimeTablePolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_permission?('time_tables.create')
+    user.has_permission?('time_tables.create') # organisation match via referential is checked in the view
   end
 
   def edit?
-    user.has_permission?('time_tables.edit')
+    organisation_match?(via_referential: true) && user.has_permission?('time_tables.edit')
   end
 
   def destroy?
-    user.has_permission?('time_tables.destroy')
+    organisation_match?(via_referential: true) && user.has_permission?('time_tables.destroy')
   end
 
   def update?  ; edit? end

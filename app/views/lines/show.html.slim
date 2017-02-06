@@ -118,7 +118,7 @@
 
 - content_for :sidebar do
   ul.actions
-    - if policy(Chouette::Line).create?
+    - if policy(Chouette::Line).create? && @line_referential.organisations.include?(current_organisation)
       li
         = link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'add'
     / FIXME #2018

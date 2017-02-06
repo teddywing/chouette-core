@@ -2,7 +2,7 @@
 
 .access_link_show
   = @map.to_html
-  
+
   .summary
     p
       label = "#{@access_link.human_attribute_name('access_link_type')} : "
@@ -44,12 +44,12 @@
 
     p
       label = "#{@access_link.human_attribute_name('mobility_restricted_suitability')}: "
-      - if !@access_link.mobility_restricted_suitability.nil?)
+      - if !@access_link.mobility_restricted_suitability.nil?
         = t((@access_link.mobility_restricted_suitability == true).to_s)
       - else
         = t('unknown')
 
-    p   
+    p
       label = "#{@access_link.human_attribute_name('stairs_availability')} : "
       - if !@access_link.stairs_availability.nil?
         = t((@access_link.stairs_availability == true).to_s)
@@ -66,9 +66,11 @@
 - content_for :sidebar do
   ul.actions
     li
-      = link_to t('access_links.actions.edit'), edit_referential_access_point_access_link_path(@referential, @access_link.access_point, @access_link), class: 'edit'
+      - if policy(@access_link).edit?
+        = link_to t('access_links.actions.edit'), edit_referential_access_point_access_link_path(@referential, @access_link.access_point, @access_link), class: 'edit'
     li
-      = link_to t('access_links.actions.destroy'), referential_access_point_access_link_path(@referential, @access_link.access_point, @access_link), method: :delete, data: {:confirm =>  t('access_links.actions.destroy_confirm')}, class: 'remove'
+      - if policy(@access_link).destroy?
+        = link_to t('access_links.actions.destroy'), referential_access_point_access_link_path(@referential, @access_link.access_point, @access_link), method: :delete, data: {:confirm =>  t('access_links.actions.destroy_confirm')}, class: 'remove'
     br
 
   = creation_tag(@access_link)

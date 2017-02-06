@@ -1,6 +1,6 @@
 class CalendarsController < BreadcrumbController
+  include PolicyChecker
   defaults resource_class: Calendar
-  before_action :check_policy, only: [:edit, :update, :destroy]
 
   respond_to :html
   respond_to :js, only: :index
@@ -38,10 +38,6 @@ class CalendarsController < BreadcrumbController
     calendars = @q.result
     calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
     @calendars = calendars.paginate(page: params[:page])
-  end
-
-  def check_policy
-    authorize resource
   end
 end
 

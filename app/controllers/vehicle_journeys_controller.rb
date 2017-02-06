@@ -9,7 +9,7 @@ class VehicleJourneysController < ChouetteController
     end
   end
 
-  before_action :check_policy, only: [:edit, :update, :destroy]
+  include PolicyChecker
 
   def select_journey_pattern
     if params[:journey_pattern_id]
@@ -77,12 +77,6 @@ class VehicleJourneysController < ChouetteController
 
   def matrix
     @matrix = resource_class.matrix(@vehicle_journeys)
-  end
-
-  protected
-
-  def check_policy
-    authorize resource
   end
 
   private
