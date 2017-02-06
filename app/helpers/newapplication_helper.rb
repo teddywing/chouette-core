@@ -27,8 +27,22 @@ module NewapplicationHelper
               else
                 item.try(attribute)
               end
-            if attribute == "name"
-              bcont << content_tag(:td, link_to(value, item), title: 'Voir')
+            if attribute == 'name'
+              lnk = []
+              unless item.class.to_s == 'Calendar' or item.class.to_s == 'Referential'
+                if current_referential
+                  lnk << current_referential
+                  lnk << item.line if item.respond_to? :line
+                elsif item.respond_to? :referential
+                  lnk << item.referential
+                elsif item.respond_to? :line_referential
+                  lnk << item.line_referential
+                end
+              end
+
+              lnk << item
+
+              bcont << content_tag(:td, link_to(value, lnk), title: 'Voir')
             else
               bcont << content_tag(:td, value)
             end
