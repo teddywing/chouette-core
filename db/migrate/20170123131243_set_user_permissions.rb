@@ -5,4 +5,3 @@ class SetUserPermissions < ActiveRecord::Migration
       'footnotes.edit', 'footnotes.create', 'footnotes.destroy', 'routing_constraint_zones.create', 'routing_constraint_zones.edit', 'routing_constraint_zones.destroy'])
   end
 end
-
