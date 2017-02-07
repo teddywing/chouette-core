@@ -68,6 +68,9 @@ class ReferentialsController < BreadcrumbController
   protected
 
   alias_method :referential, :resource
+  alias_method :current_referential, :referential
+  helper_method :current_referential
+
 
   def resource
     @referential ||= current_organisation.referentials.find_by_id(params[:id])
