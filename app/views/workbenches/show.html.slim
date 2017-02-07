@@ -24,8 +24,9 @@
             button.btn.btn-default type='submit'
               span.fa.fa-search
 
-      / br
-      / = "filtres par: etat, orga, nb lignes, plage de validité, date publi. btns: clear filter et filtrer"
+  .row
+    .col-lg-12
+      = render 'filters'
 
 / PageContent
 .page_content
@@ -35,6 +36,7 @@
         - if @wbench_refs.any?
           = new_pagination @wbench_refs, 'pull-right'
 
+          / actions for table: controler+integrer, consulter, modifier, controler, dupliquer, conserver, purger, supprimer
           = table_builder @wbench_refs,
             { @wbench_refs.human_attribute_name(:name) => 'name', @wbench_refs.human_attribute_name(:status) => Proc.new {|w| w.archived? ? ("<span class='fa fa-archive'></span> Conservé").html_safe : '-'},
               'Organisation' => Proc.new {|w| w.organisation.name},

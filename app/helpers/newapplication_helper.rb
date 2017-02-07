@@ -104,7 +104,7 @@ module NewapplicationHelper
             if policy(item).destroy?
               content_tag :li, '', class: 'delete-action' do
                 link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
-                  txt = t("table.#{action}")
+                  txt = t("actions.#{action}")
                   pic = content_tag :span, '', class: 'fa fa-trash'
                   pic + txt
                 end
@@ -113,7 +113,7 @@ module NewapplicationHelper
           else
             content_tag :li, '', class: 'delete-action' do
               link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
-                txt = t("table.#{action}")
+                txt = t("actions.#{action}")
                 pic = content_tag :span, '', class: 'fa fa-trash'
                 pic + txt
               end
@@ -123,13 +123,13 @@ module NewapplicationHelper
         elsif action == :edit
           if policy(item).present?
             if policy(item).update?
-              content_tag :li, link_to(t("table.#{action}"), polymorph_url)
+              content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
             end
           else
-            content_tag :li, link_to(t("table.#{action}"), polymorph_url)
+            content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
           end
         else
-          content_tag :li, link_to(t("table.#{action}"), polymorph_url)
+          content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
         end
       end.join.html_safe
     end
@@ -155,7 +155,7 @@ module NewapplicationHelper
     tools = content_tag :ul do
       actions.collect do |action|
 
-        actitem = link_to '#', title: t("table.#{action}") do
+        actitem = link_to '#', title: t("actions.#{action}") do
           if action == :edit
             content_tag :span, '', class: 'fa fa-pencil'
           elsif action == :delete

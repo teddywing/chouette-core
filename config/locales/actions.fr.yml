@@ -1,10 +1,13 @@
 fr:
   actions:
-    edit: "Modifier"
-    destroy: "Supprimer"
+    edit: 'Modifier'
+    destroy: 'Supprimer'
+    delete: 'Supprimer'
     search: "Chercher"
-    add: "Ajouter"
-    show: "Voir"
+    add: 'Ajouter'
+    show: 'Consulter'
+    archive: 'Archiver'
+    unarchive: 'Désarchiver'
   or: "ou"
   cancel: "Annuler"
   search_hint: "Entrez un texte à rechercher"
