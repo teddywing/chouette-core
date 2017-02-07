@@ -3,33 +3,52 @@
 
   .menu-content
     .closeMenu title='Fermer le menu'
-    .brandname IBOO
+    .brandname
+      = "IBOO"
+      small = "#{params[:controller]}, #{params[:action]}"
 
     #menu-items.panel-group
       .menu-item.panel
         .panel-heading
           h4.panel-title
-            = link_to '#miOne', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'true' do
+            = link_to '#miOne', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+              |Offres courantes
+
+        #miOne.panel-collapse.collapse
+          .list-group
+            = link_to root_path, class: "list-group-item #{(params[:controller] == 'referentials' && params[:action] == 'index') ? 'active' : ''}" do
+              span Tableau de bord
+            = link_to '#', class: 'list-group-item' do
+              span Offre de mon organisation
+            = link_to '#', class: 'list-group-item' do
+              span Offre IDF
+
+      .menu-item.panel
+        .panel-heading
+          h4.panel-title
+            = link_to '#miTwo', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
               |Espace de travail
 
-        #miOne.panel-collapse.collapse.in
+        #miTwo.panel-collapse.collapse
           .list-group
-            = link_to '#', class: 'list-group-item active' do
+            = link_to '#', class: "list-group-item #{params[:controller] == 'workbenches' ? 'active' : ''}" do
               span Jeux de données
             = link_to '#', class: 'list-group-item' do
               span Rapports d'import
             = link_to '#', class: 'list-group-item' do
               span Modèles de calendrier
             = link_to '#', class: 'list-group-item' do
+              span Rapports de contrôle
+            = link_to '#', class: 'list-group-item' do
               span Jeux de contrôle
 
       .menu-item.panel
         .panel-heading
           h4.panel-title
-            = link_to '#miTwo', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+            = link_to '#miThree', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
               |Données
 
-        #miTwo.panel-collapse.collapse
+        #miThree.panel-collapse.collapse
           .panel-body
             em.text-muted
               = "Sélectionnez un jeu de données pour accéder à plus de fonctionnalités"
@@ -37,10 +56,10 @@
       .menu-item.panel
         .panel-heading
           h4.panel-title
-            = link_to '#miThree', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+            = link_to '#miFour', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
               |Synchronisation
 
-        #miThree.panel-collapse.collapse
+        #miFour.panel-collapse.collapse
           .list-group
             = link_to line_referential_path(1), class: 'list-group-item' do
               span Synchronisation iLLICO
@@ -50,10 +69,10 @@
       .menu-item.panel
         .panel-heading
           h4.panel-title
-            = link_to '#miFour', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'true' do
+            = link_to '#miFive', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
               |Outils
               
-        #miFour.panel-collapse.collapse.in
+        #miFive.panel-collapse.collapse
           .list-group
             = link_to '#', target: '_blank', class: 'list-group-item' do
               span

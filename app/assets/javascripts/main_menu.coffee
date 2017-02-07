@@ -7,6 +7,12 @@
     $(this).on 'click', '.closeMenu', (e) ->
       $(this).closest('.nav-menu').removeClass 'open'
 
+    # Opening menu panel according to current url
+    selectedItem = $(this).find('.active')
+
+    selectedItem.closest('.panel-collapse').addClass 'in'
+    selectedItem.closest('.panel-title').children('a').attr('aria-expanded') == true
+
     # Sticky behavior
     toStick = $('.page_header')
     limit = 51
@@ -28,5 +34,6 @@
 
         if $('#menu_top').find('.sticky-content').length > 0
           $('.sticky-content').remove()
+
 
 $(document).on 'ready page:load', mainmenu
