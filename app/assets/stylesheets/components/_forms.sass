@@ -219,6 +219,7 @@ $cbx-size: 20px
       background-color: #fff
       color: $darkgrey
       box-shadow: 0 0 3px $darkgrey
+      white-space: nowrap
 
       $cbx-size-xs: 14px
       > .checkbox
@@ -242,11 +243,16 @@ $cbx-size: 20px
               margin: 0
 
               + span
+                display: block
                 padding-left: $cbx-size-xs + 10
+                padding-right: $cbx-size-xs + 10
                 position: relative
 
                 > .fa:last-child
-                  margin-left: 5px
+                  position: absolute
+                  top: 50%
+                  right: 0
+                  margin-top: -7px
 
                 &:before
                   content: ''
