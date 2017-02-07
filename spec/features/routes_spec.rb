@@ -16,7 +16,7 @@ describe "Routes", :type => :feature do
   describe "from lines page to a line page" do
     it "display line's routes" do
       visit referential_lines_path(referential)
-      first(:link, 'Voir').click
+      first(:link, 'Consulter').click
       expect(page).to have_content(route.name)
       expect(page).to have_content(route2.name)
     end
