@@ -151,7 +151,7 @@ module NewapplicationHelper
   end
 
   # Actions on select toolbox
-  def select_toolbox collection, actions
+  def select_toolbox actions
     tools = content_tag :ul do
       actions.collect do |action|
 
