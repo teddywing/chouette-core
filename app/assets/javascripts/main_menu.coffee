@@ -2,7 +2,6 @@
   $('#main_nav').each ->
     # Opening/closing left-side menu
     $(this).on 'click', '.openMenu', (e) ->
-      # console.log 'clicked'
       $(this).parent().addClass 'open'
 
     $(this).on 'click', '.closeMenu', (e) ->
