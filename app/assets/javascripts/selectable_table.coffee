@@ -5,7 +5,7 @@
       if e.currentTarget.id == '0'
         selection = []
         if e.currentTarget.checked
-          $("[type='checkbox']").each ->
+          $(this).closest('.table').find("[type='checkbox']").each ->
             $(this).prop('checked', true)
             # Add each element to selection
             selection.push($(this).attr('id'))
@@ -14,7 +14,7 @@
           selection.splice(0, 1)
 
         else
-          $("[type='checkbox']").each ->
+          $(this).closest('.table').find("[type='checkbox']").each ->
             $(this).prop('checked', false)
           # Empty selection
           selection = []
