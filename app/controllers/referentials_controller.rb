@@ -32,8 +32,8 @@ class ReferentialsController < BreadcrumbController
        }
        format.html { build_breadcrumb :show}
      end
-     @q = lines_collection.ransack(params[:q])
-     @reflines = @q.result(distinct: true).paginate(page: params[:page], per_page: 10)
+     p "test"
+     @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
   end
 
   def edit

@@ -24,7 +24,8 @@
         .pm-col
           .pm-item
             strong = "#{@referential.human_attribute_name(:validity_period)} : "
-            = t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short))
+            - if @referential.validity_period
+              = t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short))
 
           .pm-item
             strong = "Organisation : "
@@ -41,7 +42,7 @@
 
   .row.mt-xs
     .col-lg-5.col-md-6.col-sm-6.col-xs-8
-      = search_form_for @q, url: referential_path(@referential.id), html: { method: :get, class: 'form'} do |f|
+      = search_form_for @q, url: referential_path(@referential.id) do |f|
         .input-group.search_bar
           = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de ligne'
 
