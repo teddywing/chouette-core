@@ -4,7 +4,7 @@ object @vehicle_journey
   attributes attr, :unless => lambda { |m| m.send( attr).nil?}
 end
 
-child(:time_tables) do |time_tables|
+child(:time_tables, :object_root => false) do |time_tables|
   node do |tt|
     [:objectid, :start_date, :end_date].map do |att|
       node(att) { tt.send(att) }
@@ -21,13 +21,17 @@ child(:time_tables) do |time_tables|
   end
 end
 
-child :footnotes do |footnotes|
+child :footnotes, :object_root => false do |footnotes|
   node do |footnote|
-    node(:id) { footnote.id }
+    {
+      id: footnote.id,
+      code: footnote.code,
+      label: footnote.label
+    }
   end
 end
 
-child :vehicle_journey_at_stops do |vehicle_stops|
+child :vehicle_journey_at_stops, :object_root => false do |vehicle_stops|
   node do |vehicle_stop|
     node(:stop_area_object_id) { vehicle_stop.stop_point.stop_area.objectid }
     [ :connecting_service_id, :arrival_time, :departure_time, :boarding_alighting_possibility].each do |attr|

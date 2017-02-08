@@ -44,6 +44,11 @@
   == render "sidebar"
 
 #vehicle_journeys_wip
+
+= javascript_tag do
+  | window.vehicleJourneysLength = #{@vehicle_journeys.total_entries()};
+  | window.vehicleJourneysPerPage = 20
+
 = javascript_include_tag 'es6_browserified/vehicle_journeys/index.js'
 
 javascript:

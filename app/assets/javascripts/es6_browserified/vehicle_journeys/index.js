@@ -19,8 +19,8 @@ var initialState = {
   vehicleJourneys: [],
   pagination: {
     page : 1,
-    totalCount: window.journeyPatternLength,
-    perPage: window.journeyPatternsPerPage,
+    totalCount: window.vehicleJourneysLength,
+    perPage: window.vehicleJourneysPerPage,
     stateChanged: false
   },
   modal: {
