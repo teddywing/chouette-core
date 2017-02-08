@@ -5,6 +5,7 @@ class WorkbenchesController < BreadcrumbController
   def show
     scope = Workbench.find(params[:id])
     scope = params[:show_all] ? scope.all_referentials : scope.referentials.ready
+    # scope = scope.referentials
     @q = scope.ransack(params[:q])
 
     @collection = @q.result(distinct: true)

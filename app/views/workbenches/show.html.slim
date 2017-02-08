@@ -13,8 +13,17 @@
         = link_to t('referentials.show.show_all_referentials'), workbench_path(@workbench.id, show_all: true), class: 'btn btn-primary'
 
       = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
+      
+  .row.mt-xs
+    .col-lg-5.col-md-6.col-sm-6.col-xs-8
+      = search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder do |f|
+        .input-group.search_bar
+          = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de référentiel'
+          span.input-group-btn
+            button.btn.btn-default type='submit'
+              span.fa.fa-search
 
-  .row
+  .row.mt-xs
     .col-lg-12
       = render 'filters'
 

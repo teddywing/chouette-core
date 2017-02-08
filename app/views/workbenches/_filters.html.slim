@@ -1,15 +1,14 @@
-= search_form_for @q, url: workbench_path(@workbench.id), :builder => SimpleForm::FormBuilder do |f|
-  .form.form-group
-    .input-group.search_bar
-      = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de referentiel'
+= search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder, class: 'form form-filter' do |f|
+  .form-group.togglable
+    = f.label 'Etat', required: false, class: 'control-label'
+    = f.input :archived_at_not_null, label: ("<span>Conservé<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox_list' }, input_html: { class: 'check_boxes' }
 
-  .form.form-group
-    = f.label 'Etat', required: false
-    = f.input :archived_at_not_null, label: 'Archive', as: :boolean
-
-  .form.form-group
-    = f.input :organisation_name_eq_any, collection: Organisation.all.pluck(:name), as: :check_boxes, label: 'Organisation(s)', required: false
+  .form-group.togglable
+    = f.label 'Organisation(s)', required: false, class: 'control-label'
+    = f.input :organisation_name_eq_any, collection: Organisation.all.pluck(:name), as: :check_boxes, label: false, label_method: lambda{|w| ("<span>#{w}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .actions
-    .btn.btn-link = link_to 'Effacer', @workbench
-    = f.submit 'Filtrer'
+    = link_to 'Effacer', @workbench, class: 'btn btn-link'
+    = f.submit 'Filtrer', class: 'btn btn-default'
+
+/ filtres par: etat, orga, plage de validité, date publi.
