@@ -2,6 +2,7 @@
   = table_builder @stop_areas,
     { 'Object_id' => 'objectid', @stop_areas.human_attribute_name(:name) => 'name', @stop_areas.human_attribute_name(:registration_number) => 'registration_number', @stop_areas.human_attribute_name(:city_name) => 'city_name', @stop_areas.human_attribute_name(:zip_code) => 'zip_code' },
     [:show, :edit, :delete],
+    [],
     'table table-bordered'
 
   .text-center

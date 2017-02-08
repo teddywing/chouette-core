@@ -2,6 +2,7 @@
   = table_builder @networks,
     { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @networks.human_attribute_name(:name) => 'name' },
     [:show, :edit, :delete],
+    [],
     'table table-bordered'
 
   .text-center

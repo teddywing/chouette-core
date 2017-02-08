@@ -2,6 +2,7 @@
   = table_builder @companies,
     { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @companies.human_attribute_name(:name) => 'name', @companies.human_attribute_name(:code) => 'code' },
     [:show, :edit, :delete],
+    [],
     'table table-bordered'
 
   .text-center
