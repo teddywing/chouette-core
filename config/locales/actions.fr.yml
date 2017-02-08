@@ -6,8 +6,8 @@ fr:
     search: "Chercher"
     add: 'Ajouter'
     show: 'Consulter'
-    archive: 'Archiver'
-    unarchive: 'Désarchiver'
+    archive: 'Conserver'
+    unarchive: 'Déconserver'
   or: "ou"
   cancel: "Annuler"
   search_hint: "Entrez un texte à rechercher"

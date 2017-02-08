@@ -1,6 +1,8 @@
 @selectTable = ->
-  $('.table').each ->
+  $('.select_table').each ->
     selection = []
+    toolbox = $(this).children('.select_toolbox')
+
     $(this).on 'click', "[type='checkbox']", (e)->
       if e.currentTarget.id == '0'
         selection = []
@@ -26,7 +28,14 @@
           elm = selection.indexOf(e.currentTarget.id)
           selection.splice(elm, 1)
 
-      # We log the selection (for now)
-      console.log selection
+      # Updating toolbox, according to selection
+      if selection.length > 0
+        toolbox
+          .removeClass 'noselect'
+          .children('.info-msg').children('span').text(selection.length)
+      else
+        toolbox
+          .addClass 'noselect'
+          .children('.info-msg').children('span').text(selection.length)
 
 $(document).on 'ready page:load', selectTable

@@ -1,14 +1,14 @@
 module NewapplicationHelper
 
   # Table Builder
-  def table_builder collection, columns, actions, selectable, cls = nil
+  def table_builder collection, columns, actions, selectable = [], cls = nil
     return unless collection.present?
 
     head = content_tag :thead do
       content_tag :tr do
         hcont = []
 
-        if selectable.to_s == 'selectable'
+        unless selectable.empty?
           cbx = content_tag :div, '', class: 'checkbox' do
             check_box_tag('0', 'all').concat(content_tag(:label, '', for: '0'))
           end
@@ -29,7 +29,7 @@ module NewapplicationHelper
         content_tag :tr do
           bcont = []
 
-          if selectable.to_s == 'selectable'
+          unless selectable.empty?
             cbx = content_tag :div, '', class: 'checkbox' do
               check_box_tag(item.try(:id), item.try(:id)).concat(content_tag(:label, '', for: item.try(:id)))
             end
@@ -70,7 +70,15 @@ module NewapplicationHelper
       end.join.html_safe
     end
 
-    content_tag :table, head + body, class: cls
+    if selectable.empty?
+      content_tag :table, head + body, class: cls
+    else
+      content_tag :div, '', class: 'select_table' do
+        table = content_tag :table, head + body, class: cls
+        toolbox = select_toolbox(selectable)
+        table + toolbox
+      end
+    end
   end
 
   def links_builder(item, actions)
@@ -150,8 +158,8 @@ module NewapplicationHelper
     end
   end
 
-  # Actions on select toolbox
-  def select_toolbox actions
+  # Actions on select toolbox (for selectables tables)
+  def select_toolbox(actions)
     tools = content_tag :ul do
       actions.collect do |action|
 
@@ -167,8 +175,8 @@ module NewapplicationHelper
       end.join.html_safe
 
     end
-    content_tag :div, '', class: 'select_toolbox' do
-      tools.concat(content_tag(:span, "n élément(s) sélectionné(s)", class: 'info-msg'))
+    content_tag :div, '', class: 'select_toolbox noselect' do
+      tools.concat(content_tag(:span, ("<span>0</span> élément(s) sélectionné(s)").html_safe, class: 'info-msg'))
     end
   end
 

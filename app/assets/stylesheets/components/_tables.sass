@@ -87,6 +87,12 @@
         &:hover
           background-color: rgba($blue, 0.5)
 
+  &.noselect
+    .st_action > a
+      &, &:hover, &:focus
+        background-color: rgba($grey, 0.65)
+        cursor: not-allowed
+
   > .info-msg
     font-style: italic
     font-size: 0.85em
