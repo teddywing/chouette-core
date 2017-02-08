@@ -21,6 +21,9 @@
     "enzyme": "2.7.1",
     "es6-object-assign": "1.0.3",
     "react-addons-test-utils": "15.3.2",
-    "sinon": "1.17.7"
+    "sinon": "1.17.7",
+    "redux-logger": "2.7.4",
+    "redux-thunk": "2.1.0",
+    "redux-promise": "0.5.3"
   }
 }
