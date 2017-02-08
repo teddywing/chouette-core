@@ -43,6 +43,9 @@
 - content_for :sidebar do
   == render "sidebar"
 
+#vehicle_journeys_wip
+= javascript_include_tag 'es6_browserified/vehicle_journeys/index.js'
+
 javascript:
   $(function() {
     var time_tables_url = function(){

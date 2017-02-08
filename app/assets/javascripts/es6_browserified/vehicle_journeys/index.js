@@ -16,7 +16,7 @@ var initialState = {
     fetchSuccess: true,
     isFetching: false
   },
-  journeyPatterns: [],
+  vehicleJourneys: [],
   pagination: {
     page : 1,
     totalCount: window.journeyPatternLength,
@@ -41,5 +41,5 @@ render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('vehicle_journeys')
+  document.getElementById('vehicle_journeys_wip')
 )

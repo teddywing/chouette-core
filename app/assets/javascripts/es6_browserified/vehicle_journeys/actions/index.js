@@ -1,4 +1,4 @@
 const actions = {
 }
 
-modules.export = actions
+module.exports = actions

@@ -1,6 +1,14 @@
 var combineReducers = require('redux').combineReducers
+var vehicleJourneys = require('./vehicleJourneys')
+var pagination = require('./pagination')
+var modal = require('./modal')
+var status = require('./status')
 
-const journeyPatternsApp = combineReducers({
+const vehicleJourneysApp = combineReducers({
+  vehicleJourneys,
+  pagination,
+  modal,
+  status
 })
 
-module.exports = journeyPatternsApp
+module.exports = vehicleJourneysApp
