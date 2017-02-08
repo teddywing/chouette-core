@@ -1,38 +1,15 @@
-.form.form-filter
-  .form-group.togglable
-    .control-label Etat
-    .checkbox_list
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |1
-            span.fa.fa-paw
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |2
-            span.fa.fa-paw
+= search_form_for @q, url: workbench_path(@workbench.id), :builder => SimpleForm::FormBuilder do |f|
+  .form.form-group
+    .input-group.search_bar
+      = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de referentiel'
 
-  .form-group.togglable
-    .control-label Organisation(s)
-    .checkbox_list
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |1
-            span.fa.fa-paw
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |2
-            span.fa.fa-paw
+  .form.form-group
+    = f.label 'Etat', required: false
+    = f.input :archived_at_not_null, label: 'Archive', as: :boolean
+
+  .form.form-group
+    = f.input :organisation_name_eq_any, collection: Organisation.all.pluck(:name), as: :check_boxes, label: 'Organisation(s)', required: false
 
   .actions
-    .btn.btn-link Effacer
-    .btn.btn-default Filtrer
-
-/ = "filtres par: etat, orga, nb lignes, plage de validité, date publi. btns: clear filter et filtrer"
+    .btn.btn-link = link_to 'Effacer', @workbench
+    = f.submit 'Filtrer'

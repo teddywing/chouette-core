@@ -1,15 +1,11 @@
 class WorkbenchesController < BreadcrumbController
-
   defaults :resource_class => Workbench
   respond_to :html, :only => [:show]
 
   def show
-    if params[:show_all]
-      @q = Workbench.find(params[:id]).all_referentials.ransack(params[:q])
-    else
-      @q = Workbench.find(params[:id]).referentials.ready.ransack(params[:q])
-      # @q = Workbench.find(params[:id]).referentials.ransack(params[:q])
-    end
+    scope = Workbench.find(params[:id])
+    scope = params[:show_all] ? scope.all_referentials : scope.referentials.ready
+    @q = scope.ransack(params[:q])
 
     @collection = @q.result(distinct: true)
     @wbench_refs = @collection.order(sort_column + ' ' + sort_direction).paginate(page: params[:page], per_page: 30)
