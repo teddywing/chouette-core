@@ -8,6 +8,7 @@ en:
     show: "See"
     archive: "Archive"
     unarchive: "Unarchive"
+    clone: 'Clone'
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"

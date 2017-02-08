@@ -36,4 +36,32 @@
       line-height: $line-height
 
       + .btn
-        margin-left: 10px
+        margin-left: 15px
+
+  .page_metalist
+    margin: 0 0 25px 0
+    padding: 0 0 0 65px
+    font-size: 0.85em
+
+    .pm-col
+      display: inline-block
+
+      + .pm-col
+        margin-left: 15px
+        padding-left: 15px
+        border-left: 1px solid rgba(#fff, 0.5)
+
+    .pm-item
+      margin-top: 0.5em
+
+      &:first-child
+        margin-top: 0
+
+      &::before
+        content: '\f054'
+        font: normal normal normal 14px/1 FontAwesome
+        font-size: inherit
+        text-rendering: auto
+        -webkit-font-smoothing: antialiased
+        display: inline
+        margin-right: 0.5em

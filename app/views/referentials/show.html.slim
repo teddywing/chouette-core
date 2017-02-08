@@ -1,59 +1,107 @@
-h2
-  = @referential.name
-  em.small = " (archivé)" if @referential.archived?
+/ PageHeader
+= pageheader 'map-marker',
+             @referential.name,
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@referential.updated_at, format: :short)),
+             link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default') do
 
-.summary
-  - if @referential.created_from
-    p
-      label = "#{Referential.human_attribute_name('created_from')} : "
-      = " #{@referential.created_from.name}"
+  / Below is secundary actions & optional contents (filters, ...)
+  .row
+    .col-lg-12.text-right
+      / Actions are: controler, rapport de controle, dupliquer, purger, conserver, supprimer
+      = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
 
-  p
-    label = "#{Referential.human_attribute_name('slug')} : "
-    = " #{@referential.slug}"
+      - if @referential.archived?
+        = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), class: 'btn btn-primary'
+      - else
+        = link_to t('actions.archive'), archive_referential_path(@referential.id), class: 'btn btn-primary'
 
-  p
-    label = "#{Referential.human_attribute_name('prefix')} : "
-    = " #{@referential.prefix}"
+      = link_to t('actions.destroy'), referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary'
 
-  p
-    label = "#{Referential.human_attribute_name('projection_type')} : "
-    - if !@referential.projection_type_label.empty?
-      = " #{@referential.projection_type_label} (epsg:#{@referential.projection_type})"
+  .row.mt-xs
+    .col-lg-12
+      .page_metalist
+        .pm-col
+          .pm-item
+            strong = "#{@referential.human_attribute_name(:validity_period)} : "
+            = t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short))
 
-  p
-    label = "#{Referential.human_attribute_name('time_zone').capitalize} : "
-    = " #{@referential.time_zone}"
+          .pm-item
+            strong = "Organisation : "
+            = @referential.organisation.name
 
-  p
-    label = "#{Referential.human_attribute_name('validity_period')} : "
-    - unless period = @referential.metadatas_period
-      = " #{Referential.human_attribute_name('no_validity_period')}"
-    - else
-      => " #{Referential.human_attribute_name('start_validity_period')}"
-      => l period.begin
-      => Referential.human_attribute_name("end_validity_period")
-      = l period.end
-      
-  #reflines
-    = render partial: 'reflines'
+        .pm-col
+          .pm-item
+            strong = "#{@referential.human_attribute_name(:published_at)} : "
+            = ""
 
-  / - if @referential.api_keys.present?
-  /   h3.api_keys = t('.api_keys')
-  /
-  /   .api_keys.paginated_content
-  /     = paginated_content(@referential.api_keys, "api_keys/api_key")
+          .pm-item
+            strong = "#{@referential.human_attribute_name(:archived_at)} : "
+            = l(@referential.archived_at, format: :short) if @referential.archived?
 
-- content_for :sidebar do
-  ul.actions
-    - if policy(@referential).update?
-      li = link_to t('referentials.actions.edit'), edit_referential_path(@referential), class: 'edit'
+  .row.mt-xs
+    .col-lg-5.col-md-6.col-sm-6.col-xs-8
+      = search_form_for @q, url: referential_path(@referential.id), html: { method: :get, class: 'form'} do |f|
+        .input-group.search_bar
+          = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de ligne'
 
-    li = link_to t('referentials.actions.destroy'), referential_path(@referential), method: :delete, data: {:confirm => t('referentials.actions.destroy_confirm')}, class: "remove"
-    / li = link_to t('api_keys.actions.new'), new_referential_api_key_path(@referential), class: 'add'
-    li = link_to t('referentials.actions.clone'), new_referential_path(from: @referential.id), class: 'add'
-    br
+          span.input-group-btn
+            button.btn.btn-default type='submit'
+              span.fa.fa-search
 
-  - if policy(@referential).update?
-    h4 = t('.clean_up')
-    == render 'clean'
+  .row.mt-xs
+    .col-lg-12
+      = render 'filters'
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-12
+        - if @reflines.any?
+          = new_pagination @reflines, 'pull-right'
+
+          = table_builder @reflines,
+            { 'Oid' => Proc.new { |n| n.objectid.local_id }, @reflines.human_attribute_name(:id) => 'id',
+            @reflines.human_attribute_name(:number) => 'number', @reflines.human_attribute_name(:name) => 'name', @reflines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) }, @reflines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) } },
+            [],
+            [],
+            'table'
+
+          = new_pagination @reflines, 'pull-right'
+
+        - else
+          = replacement_msg t('referential_lines.search_no_results')
+
+        / - if @referential.created_from
+        /   p
+        /     label = "#{Referential.human_attribute_name('created_from')} : "
+        /     = " #{@referential.created_from.name}"
+        / 
+        / p
+        /   label = "#{Referential.human_attribute_name('slug')} : "
+        /   = " #{@referential.slug}"
+        / 
+        / p
+        /   label = "#{Referential.human_attribute_name('prefix')} : "
+        /   = " #{@referential.prefix}"
+        / 
+        / p
+        /   label = "#{Referential.human_attribute_name('projection_type')} : "
+        /   - if !@referential.projection_type_label.empty?
+        /     = " #{@referential.projection_type_label} (epsg:#{@referential.projection_type})"
+        / 
+        / p
+        /   label = "#{Referential.human_attribute_name('time_zone').capitalize} : "
+        /   = " #{@referential.time_zone}"
+
+        / - if @referential.api_keys.present?
+        /   h3.api_keys = t('.api_keys')
+        /
+        /   .api_keys.paginated_content
+        /     = paginated_content(@referential.api_keys, "api_keys/api_key")
+
+      - content_for :sidebar do
+        - if policy(@referential).update?
+          h4 = t('.clean_up')
+          == render 'clean'

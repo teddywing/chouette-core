@@ -20,3 +20,4 @@ en:
       multi_page_html: "%{model} %{from} to %{to} of %{count}"
 
       referential: 'data spaces'
+      line: 'lines'

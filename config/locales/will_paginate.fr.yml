@@ -20,3 +20,4 @@ fr:
       multi_page_html: "Liste des %{model} %{from}&nbsp;à&nbsp;%{to} sur %{count}"
 
       referential: 'jeux de données'
+      line: 'lignes'

@@ -83,6 +83,7 @@ fr:
         validity_period: "Période de validité englobante"
         updated_at: "Modifié"
         published_at: "Intégré"
+        archived_at: "Conservé"
   formtastic:
     titles:
       referential:

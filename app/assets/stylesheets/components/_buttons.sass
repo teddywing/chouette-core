@@ -3,6 +3,17 @@
 //-----------//
 
 .btn
+  font-weight: 700
+
+  &.btn-default
+    background-color: #fff
+    border-color: rgba(#fff, 0.5)
+    color: $blue
+
+    &:hover, &:focus, &.focus, &:active, &.active,
+    .open > .btn-primary.dropdown-toggle
+      background-color: darken(#fff, 2.5%)
+
   &.btn-primary
     background-color: $darkblue
     border-color: darken($darkblue, 2.5%)
@@ -15,7 +26,7 @@
       color: #fff
 
   + .btn
-    margin-left: 12px
+    margin-left: 15px
 
 // Table btn-groups
 table, .table

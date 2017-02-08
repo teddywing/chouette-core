@@ -83,6 +83,7 @@ en:
         validity_period: "Validity period"
         updated_at: "Updated"
         published_at: "Integrated"
+        archived_at: "Archived"
   formtastic:
     titles:
       referential:
