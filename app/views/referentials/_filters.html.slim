@@ -1,57 +1,18 @@
 = search_form_for @q, url: referential_path(@referential.id), class: 'form form-filter' do |f|
-  
-
-.form.form-filter
   .form-group.togglable
-    .control-label Mode(s)
-    .checkbox_list
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |1
-            span.fa.fa-paw
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |2
-            span.fa.fa-paw
+    = f.label @reflines.human_attribute_name(:transport_mode), required: false, class: 'control-label'
+    = f.input :transport_mode_eq_any, collection: LineReferential.first.transport_modes, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("transport_modes.label.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .form-group.togglable
-    .control-label Réseau(x)
-    .checkbox_list
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |1
-            span.fa.fa-paw
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |2
-            span.fa.fa-paw
+    = f.label @reflines.human_attribute_name(:network), required: false, class: 'control-label'
+    = f.input :network_id_eq_any, collection: LineReferential.first.networks.pluck(:id), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>#{LineReferential.first.networks.find(l).name}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .form-group.togglable
-    .control-label Transporteur(s) principal(aux)
-    .checkbox_list
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |1
-            span.fa.fa-paw
-      .checkbox
-        label
-          input.check_boxes type='checkbox'
-          span
-            |2
-            span.fa.fa-paw
+    = f.label @reflines.human_attribute_name(:company), required: false, class: 'control-label'
+    = f.input :company_id_eq_any, collection: LineReferential.first.companies.pluck(:id), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>#{LineReferential.first.companies.find(l).name}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .actions
-    .btn.btn-link Effacer
-    .btn.btn-default Filtrer
+    = link_to 'Effacer', @workbench, class: 'btn btn-link'
+    = f.submit 'Filtrer', class: 'btn btn-default'
 
 / filtres par: modes, reseaux, transporteurs principaux
