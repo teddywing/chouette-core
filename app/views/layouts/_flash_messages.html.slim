@@ -1,9 +1,15 @@
 - flash.each do |name, msg|
   - if msg.is_a?(String)
     - if name == 'notice'
-      .notice.alert class="alert-success" role="alert"
-        = content_tag :span, msg
+      .alert.alert-success.alert-dismissible role="alert"
+        button.close type='button' data-dismiss='alert' aria-label='Fermer'
+          span.fa.fa-times-circle aria-hidden='true'
+        span.fa.fa-lg.fa-info-circle
+        span = msg
 
     - if name == 'error' || name == 'alert'
-      .notice.alert class="alert-danger" role="alert"
-        = content_tag :span, msg
+      .alert.alert-danger.alert-dismissible role="alert"
+        button.close type='button' data-dismiss='alert' aria-label='Fermer'
+          span.fa.fa-times-circle aria-hidden='true'
+        span.fa.fa-lg.fa-exclamation-circle
+        span = msg

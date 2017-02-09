@@ -14,9 +14,9 @@
       button.btn.btn-primary type='button' data-toggle='modal' data-target='#purgeModal' Purger
 
       - if @referential.archived?
-        = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), class: 'btn btn-primary'
+        = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
       - else
-        = link_to t('actions.archive'), archive_referential_path(@referential.id), class: 'btn btn-primary'
+        = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
 
       = link_to t('actions.destroy'), referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary'
 

@@ -1,0 +1,42 @@
+//----------//
+//  Alerts  //
+//----------//
+
+.alert
+  margin: 0
+  padding: 10px 50px
+  border-radius: 0
+  border: none
+
+  .fa + span
+    margin-left: 10px
+
+  &.alert-dismissible
+    padding-right: 70px
+
+    .close
+      font-size: 1em
+      text-shadow: none
+      top: 3px
+      opacity: 1
+      font-weight: 300
+
+  &.alert-success
+    background-color: $green
+    color: #fff
+
+    .close
+      color: darken($green, 5%)
+
+      &:hover, &:focus
+        color: darken($green, 10%)
+
+  &.alert-danger
+    background-color: $red
+    color: #fff
+
+    .close
+      color: darken($red, 5%)
+
+      &:hover, &:focus
+        color: darken($red, 10%)
