@@ -7,6 +7,32 @@
 
   / Below is secundary actions & optional contents (filters, ...)
   .row
+    .col-lg-12
+      .page_metalist
+        .pm-col
+          - if @referential.archived?
+            .pm-item
+              span.label.label-default
+                strong = "#{@referential.human_attribute_name(:archived_at)} : "
+                = l(@referential.archived_at, format: :short)
+          - else
+            .pm-item
+              strong = "#{@referential.human_attribute_name(:archived_at)} : "
+
+          .pm-item
+            strong = "#{@referential.human_attribute_name(:validity_period)} : "
+            - if @referential.validity_period
+              = t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short))
+
+        .pm-col
+          .pm-item
+            strong = "Organisation : "
+            = @referential.organisation.name
+          .pm-item
+            strong = "#{@referential.human_attribute_name(:published_at)} : "
+            = ""
+
+  .row
     .col-lg-12.text-right
       / Actions are: controler, rapport de controle, dupliquer, purger, conserver, supprimer
       = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
@@ -19,28 +45,6 @@
         = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
 
       = link_to t('actions.destroy'), referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary'
-
-  .row.mt-xs
-    .col-lg-12
-      .page_metalist
-        .pm-col
-          .pm-item
-            strong = "#{@referential.human_attribute_name(:validity_period)} : "
-            - if @referential.validity_period
-              = t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short))
-
-          .pm-item
-            strong = "Organisation : "
-            = @referential.organisation.name
-
-        .pm-col
-          .pm-item
-            strong = "#{@referential.human_attribute_name(:published_at)} : "
-            = ""
-
-          .pm-item
-            strong = "#{@referential.human_attribute_name(:archived_at)} : "
-            = l(@referential.archived_at, format: :short) if @referential.archived?
 
   .row.mt-xs
     .col-lg-5.col-md-6.col-sm-6.col-xs-8

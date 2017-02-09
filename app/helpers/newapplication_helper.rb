@@ -206,9 +206,7 @@ module NewapplicationHelper
           content_tag :span, '', class: "fa fa-lg fa-#{pageicon}"
         end
         ptitle = content_tag :div, '', class: 'page-title' do
-          info = content_tag :span, '', class: 'small fa fa-info-circle', title: desc
-
-          content_tag :h1, pagetitle.concat(info).html_safe
+          content_tag :h1, pagetitle, title: desc
         end
 
         picon + ptitle

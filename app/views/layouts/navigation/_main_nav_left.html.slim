@@ -1,9 +1,11 @@
+- @localizationUrl = "#{params[:controller]}##{params[:action]}"
+
 .nav-menu#menu_left
   .openMenu title='Ouvrir le menu'
 
   .menu-content
     .closeMenu title='Fermer le menu'
-    .brandname IBOO
+    .brandname = "IBOO"
 
     #menu-items.panel-group
       .menu-item.panel
@@ -14,7 +16,7 @@
 
         #miOne.panel-collapse.collapse
           .list-group
-            = link_to root_path, class: "list-group-item #{(params[:controller] == 'referentials' && params[:action] == 'index') ? 'active' : ''}" do
+            = link_to root_path, class: "list-group-item #{(@localizationUrl == 'referentials#index') ? 'active' : ''}" do
               span Tableau de bord
             = link_to '#', class: 'list-group-item' do
               span Offre de mon organisation
@@ -59,9 +61,9 @@
 
         #miFour.panel-collapse.collapse
           .list-group
-            = link_to line_referential_path(1), class: 'list-group-item' do
+            = link_to line_referential_path(1), class: "list-group-item #{(@localizationUrl == 'line_referentials#show') ? 'active' : ''}" do
               span Synchronisation iLLICO
-            = link_to stop_area_referential_path(1), class: 'list-group-item' do
+            = link_to stop_area_referential_path(1), class: "list-group-item #{(@localizationUrl == 'stop_area_referentials#show') ? 'active' : ''}" do
               span Synchronisation iCAR
 
       .menu-item.panel
