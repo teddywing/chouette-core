@@ -9,6 +9,26 @@ const actions = {
   unavailableServer : () => ({
     type: 'UNAVAILABLE_SERVER'
   }),
+  goToPreviousPage : (dispatch, pagination) => ({
+    type: 'GO_TO_PREVIOUS_PAGE',
+    dispatch,
+    pagination,
+    nextPage : false
+  }),
+  goToNextPage : (dispatch, pagination) => ({
+    type: 'GO_TO_NEXT_PAGE',
+    dispatch,
+    pagination,
+    nextPage : true
+  }),
+  checkConfirmModal : (event, callback, stateChanged, dispatch) => {
+    if(stateChanged === true){
+      return actions.openConfirmModal(callback)
+    }else{
+      dispatch(actions.fetchingApi())
+      return callback
+    }
+  },
   fetchVehicleJourneys : (dispatch, currentPage, nextPage) => {
     if(currentPage == undefined){
       currentPage = 1

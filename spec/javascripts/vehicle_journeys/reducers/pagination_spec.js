@@ -1,11 +1,11 @@
-var reducer = require('es6_browserified/journey_patterns/reducers/pagination')
+var reducer = require('es6_browserified/vehicle_journeys/reducers/pagination')
 
 const diff = 1
 let state = {
   page : 2,
-  totalCount : 50,
+  totalCount : 25,
   stateChanged: false,
-  perPage: 20
+  perPage: 12
 }
 let pagination = Object.assign({}, state)
 const dispatch = function(){}
@@ -77,17 +77,5 @@ describe('pagination reducer, given parameters not allowing to go to next page',
         nextPage : true
       })
     ).toEqual(state)
-  })
-})
-
-describe('pagination reducer, given parameters changing totalCount', () => {
-
-  it('should return UPDATE_TOTAL_COUNT and update totalCount', () => {
-    expect(
-      reducer(state, {
-        type: 'UPDATE_TOTAL_COUNT',
-        diff
-      })
-    ).toEqual(Object.assign({}, state, {totalCount: state.totalCount - diff}))
   })
 })
