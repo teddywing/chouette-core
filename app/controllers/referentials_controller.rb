@@ -32,7 +32,7 @@ class ReferentialsController < BreadcrumbController
        }
        format.html { build_breadcrumb :show}
      end
-     p "test"
+
      @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
   end
 

@@ -60,7 +60,7 @@ fr:
       line:
         network: "Réseau"
         company: "Transporteur principal"
-        registration_number: "Numéro d'enregistrement"
+        registration_number: "Nom court"
         name: "Nom de la ligne"
         published_name: "Nom public"
         number: "Indice"
