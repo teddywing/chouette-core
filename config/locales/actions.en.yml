@@ -9,6 +9,7 @@ en:
     archive: "Archive"
     unarchive: "Unarchive"
     clone: 'Clone'
+    clean_up: 'Clean up'
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"

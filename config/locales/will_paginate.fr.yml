@@ -19,5 +19,5 @@ fr:
       multi_page: "Liste des %{model} %{from} à %{to} sur %{count}"
       multi_page_html: "Liste des %{model} %{from}&nbsp;à&nbsp;%{to} sur %{count}"
 
-      referential: 'jeux de données'
-      line: 'lignes'
+      referential: 'jeu(x) de données'
+      line: 'ligne(s)'

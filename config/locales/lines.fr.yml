@@ -59,12 +59,12 @@ fr:
     attributes:
       line:
         network: "Réseau"
-        company: "Transporteur"
+        company: "Transporteur principal"
         registration_number: "Numéro d'enregistrement"
-        name: "Nom"
+        name: "Nom de la ligne"
         published_name: "Nom public"
         number: "Indice"
-        transport_mode: "Mode de transport"
+        transport_mode: "Mode"
         transport_submode: "Sous mode de transport"
         url: "Page web associée"
         color: "Couleur du tracé"
