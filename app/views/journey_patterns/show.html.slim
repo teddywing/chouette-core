@@ -45,6 +45,6 @@ h3.journey_pattern_stop_points = t('.stop_points')
           i.fa.fa-exclamation-triangle
 
     li
-      = link_to t('journey_patterns.journey_pattern.vehicle_journey_at_stops'), referential_line_route_vehicle_journeys_path(@referential, @line, @route, :q => {:journey_pattern_id_eq => @journey_pattern.id}), class: 'clock'
+      = link_to t('journey_patterns.journey_pattern.vehicle_journey_at_stops'), referential_line_route_vehicle_journeys_path(@referential, @line, @route, :q => {:journey_pattern_id_eq => @journey_pattern.id, :journey_pattern_object_id => @journey_pattern.objectid}), class: 'clock'
 
   = creation_tag(@journey_pattern)

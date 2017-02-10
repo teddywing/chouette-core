@@ -13,9 +13,9 @@ let Navigate = ({ dispatch, vehicleJourneys, pagination, status }) => {
   }
   if(status.fetchSuccess == true) {
     return (
-      <div class="vj_wrapper">
-        <div class="page_info">
-          <span class="search">Résultats : {minVJ} - {maxVJ} sur {pagination.totalCount}</span>
+      <div className="vj_wrapper">
+        <div className="page_info">
+          <span className="search">Résultats : {minVJ} - {maxVJ} sur {pagination.totalCount}</span>
         </div>
         <form className='btn-group btn-group-sm' onSubmit={e => {
             e.preventDefault()

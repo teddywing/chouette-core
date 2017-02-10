@@ -45,7 +45,7 @@
 
 #vehicle_journeys_wip
 = javascript_tag do
-  | window.journeyPatternId = #{params[:q].present? ? params[:q].values[0].to_s : false};
+  | window.journeyPatternId = #{params[:q].present? ? ('"' + params[:q].values[1] + '"').html_safe : false};
   | window.vehicleJourneysLength = #{@vehicle_journeys.total_entries()};
   | window.vehicleJourneysPerPage = 20;
 
