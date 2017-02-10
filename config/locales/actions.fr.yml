@@ -10,6 +10,7 @@ fr:
     unarchive: 'Déconserver'
     clone: 'Dupliquer'
     clean_up: 'Purger'
+    sync: 'Synchroniser'
   or: "ou"
   cancel: "Annuler"
   search_hint: "Entrez un texte à rechercher"

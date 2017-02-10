@@ -226,7 +226,11 @@ module NewapplicationHelper
 
     content_tag :div, '', class: 'page_header' do
       content_tag :div, '', class: 'container-fluid' do
-        firstRow + capture(&block)
+        if block_given?
+          firstRow + capture(&block)
+        else
+          firstRow
+        end
       end
     end
   end
