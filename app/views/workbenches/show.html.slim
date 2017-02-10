@@ -7,11 +7,6 @@
   / Below is secundary actions & optional contents (filters, ...)
   .row
     .col-lg-12.text-right
-      - if params[:show_all]
-        = link_to t('referentials.show.from_this_workbench'), workbench_path(@workbench.id), class: 'btn btn-primary', disabled: params[:archived]
-      - else
-        = link_to t('referentials.show.show_all_referentials'), workbench_path(@workbench.id, show_all: true), class: 'btn btn-primary'
-
       = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
       
   .row.mt-xs
