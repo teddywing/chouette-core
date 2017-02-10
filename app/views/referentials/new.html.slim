@@ -1,5 +1,10 @@
-= title_tag t('.title')
+/ PageHeader
+= pageheader 'map-marker',
+             t('.title')
 
-.row
-  .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
-    == render 'form'
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2
+        == render 'form'

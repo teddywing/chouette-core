@@ -1,69 +1,31 @@
-= simple_form_for @referential, class: 'form' do |form|
-  .row
-    .col-lg-8.col-md-8.col-sm-8.col-xs-8
-      = form.input :name
+= simple_form_for @referential, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |form|
 
-    - if @referential.new_record?
-      - if @referential.created_from
-        .col-lg-4.col-md-4.col-sm-4.col-xs-4
-          = form.input :slug, :input_html => { title: t("formtastic.titles.referential.slug") }
+  = form.input :name
 
-      - else
-        .col-lg-4.col-md-4.col-sm-4.col-xs-4
-          = form.input :slug, :input_html => { title: t("formtastic.titles.referential.slug") }
+  - if @referential.new_record?
+    = form.input :slug, input_html: { title: t('formtastic.titles.referential.slug') }
+  - else
+    = form.input :slug, disabled: true, input_html: { title: t('formtastic.titles.referential.slug') }
 
-    - else
-      - if @referential.created_from
-        .col-lg-4.col-md-4.col-sm-4.col-xs-4
-          label.control-label = @referential.human_attribute_name('slug')
-          br
-          = @referential.slug
+  - if @referential.new_record?
+    - if @referential.created_from
+      = form.input :created_from, disabled: true, input_html: { value: Referential.find(@referential.created_from_id).name }
+      .hidden = form.input :created_from_id, as: :hidden
 
-      - else
-        .col-lg-4.col-md-4.col-sm-4.col-xs-4
-          label.control-label = @referential.human_attribute_name('slug')
-          br
-          = @referential.slug
+    = form.input :prefix, input_html: { title: t("formtastic.titles.referential.prefix") }
 
-  .row
-    - if @referential.new_record?
-      - if @referential.created_from
-        .col-lg-6.col-md-6.col-sm-6.col-xs-6
-          = form.input :created_from, disabled: true, input_html: { value: Referential.find(@referential.created_from_id).name }
-          = form.input :created_from_id, as: :hidden
+  - else
+    - if @referential.created_from
+      = form.input :created_from, disabled: true, input_html: { value: Referential.find(@referential.created_from_id).name }
 
-        .col-lg-6.col-md-6.col-sm-6.col-xs-6
-          = form.input :prefix, input_html: { title: t("formtastic.titles.referential.prefix") }
+    = form.input :prefix, input_html: { title: t("formtastic.titles.referential.prefix") }
 
-      - else
-        .col-lg-12.col-md-12.col-sm-12.col-xs-12
-          = form.input :prefix, input_html: { title: t("formtastic.titles.referential.prefix") }
+  = form.input :projection_type, as: :select, collection: Referential.available_srids
+  = form.input :time_zone
 
-    - else
-      - if @referential.created_from
-        .col-lg-6.col-md-6.col-sm-6.col-xs-6
-          label.control-label = @referential.human_attribute_name('created_from')
-          br
-          = @referential.created_from.name
 
-        .col-lg-6.col-md-6.col-sm-6.col-xs-6
-          = form.input :prefix, input_html: { title: t("formtastic.titles.referential.prefix") }
-
-      - else
-        .col-lg-12.col-md-12.col-sm-12.col-xs-12
-          = form.input :prefix, input_html: { title: t("formtastic.titles.referential.prefix") }
-
-  .row
-    .col-lg-6.col-md-6.col-sm-6.col-xs-6
-      = form.input :projection_type, as: :select, collection: Referential.available_srids
-    .col-lg-6.col-md-6.col-sm-6.col-xs-6
-      = form.input :time_zone
-
-  .row style='margin-bottom:20px'
-    .col-lg-6.col-md-6.col-sm-6.col-xs-6
-      = form.input :upper_corner, input_html: {title: t("formtastic.titles.referential.upper_corner")}
-    .col-lg-6.col-md-6.col-sm-6.col-xs-6
-      = form.input :lower_corner, input_html: {title: t("formtastic.titles.referential.lower_corner")}
+  = form.input :upper_corner, input_html: {title: t("formtastic.titles.referential.upper_corner")}
+  = form.input :lower_corner, input_html: {title: t("formtastic.titles.referential.lower_corner")}
 
   - if @referential.errors.has_key? :metadatas
     .row
@@ -71,23 +33,18 @@
         .alert.alert-danger
           - @referential.errors[:metadatas].each do |msg|
             p.small = "- #{msg}"
+
   = form.simple_fields_for :metadatas do |subform|
     = subform.simple_fields_for :periods do |period_form|
-      .row
-        = render 'period_fields', f: period_form
+      = render 'period_fields', f: period_form
 
-    .row style='margin-top:20px'
-      .links.pull-right style='margin-right:15px'
-        = link_to_add_association 'Ajouter une période', subform, :periods, class: 'btn btn-primary'
+    .links.nested-linker
+      = link_to_add_association 'Ajouter une période', subform, :periods, class: 'btn btn-primary'
 
-    .row style='margin-top:20px'
-      .col-lg-8.col-md-12.col-sm-12.col-xs-12
-        = subform.input :lines, as: :select, collection: @referential.workbench.lines.includes(:company).order(:name), selected: subform.object.line_ids, label_method: :display_name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
+    = subform.input :lines, as: :select, collection: @referential.workbench.lines.includes(:company).order(:name), selected: subform.object.line_ids, label_method: :display_name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
 
-  = form.input :workbench_id, as: :hidden
+  .hidden = form.input :workbench_id, as: :hidden
 
-  / Actions
-  .row
-    .col-lg-12.text-center
-      = link_to 'Annuler', @referential,  class: 'btn btn-link'
-      = form.button :submit, class: 'btn btn-danger'
+
+  / = link_to 'Annuler', @referential,  class: 'btn btn-link'
+  = form.button :submit, 'Enregistrer', class: 'btn btn-default formSubmitr'

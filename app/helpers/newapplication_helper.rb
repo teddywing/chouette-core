@@ -197,7 +197,7 @@ module NewapplicationHelper
   end
 
   # PageHeader builder
-  def pageheader pageicon, pagetitle, desc, meta, mainaction = nil, &block
+  def pageheader pageicon, pagetitle, desc = nil, meta = nil, mainaction = nil, &block
 
     firstRow = content_tag :div, '', class: 'row' do
       # Left part with pageicon & pagetitle & desc
@@ -214,7 +214,7 @@ module NewapplicationHelper
       # Right part with meta & mainaction
       right = content_tag :div, '', class: 'col-lg-3 col-md-4 col-sm-5 col-xs-5 text-right' do
         content_tag :div, '', class: 'page-action' do
-          a = content_tag :div, meta.html_safe, class: 'small'
+          a = content_tag :div, meta.try(:html_safe), class: 'small'
           b = mainaction.try(:html_safe)
 
           a + b

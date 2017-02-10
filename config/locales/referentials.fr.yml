@@ -22,8 +22,8 @@ fr:
       validity_out_time_tables: "Calendriers échus"
       validity_out_soon_time_tables: "Calendriers à échoir dans %{count} jours"
     new:
-      title: "Créer un nouveau jeu de données"
-      submit: "Créer un jeu de données"
+      title: "Créer un nouveau JDD"
+      submit: "Enregistrer"
     actions:
       new: "Ajouter un jeu de données"
       destroy_confirm: "Etes vous sûr de vouloir supprimer ce jeu de données ?"
