@@ -3,7 +3,13 @@ class WorkbenchesController < BreadcrumbController
   respond_to :html, :only => [:show]
 
   def show
-    scope = Workbench.find(params[:id]).all_referentials
+    scope = Workbench.find(params[:id])
+    if params[:q] and params[:q][:organisation_name_eq_any].include? current_organisation.name
+      scope = scope.referentials.ready
+    else
+      scope = scope.all_referentials
+    end
+
     @q = scope.ransack(params[:q])
 
     @collection = @q.result(distinct: true)
