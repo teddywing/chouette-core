@@ -44,10 +44,10 @@
   == render "sidebar"
 
 #vehicle_journeys_wip
-
 = javascript_tag do
+  | window.journeyPatternId = #{params[:q].present? ? params[:q].values[0].to_s : false};
   | window.vehicleJourneysLength = #{@vehicle_journeys.total_entries()};
-  | window.vehicleJourneysPerPage = 20
+  | window.vehicleJourneysPerPage = 20;
 
 = javascript_include_tag 'es6_browserified/vehicle_journeys/index.js'
 

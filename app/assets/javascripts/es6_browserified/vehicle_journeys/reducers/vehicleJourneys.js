@@ -1,6 +1,6 @@
 var actions = require("../actions")
 
-const status = (state = [], action) => {
+const vehicleJourneys = (state = [], action) => {
   switch (action.type) {
     case 'RECEIVE_VEHICLE_JOURNEYS':
       return [...action.json]
@@ -19,4 +19,4 @@ const status = (state = [], action) => {
   }
 }
 
-module.exports = status
+module.exports = vehicleJourneys

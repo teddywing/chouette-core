@@ -11,7 +11,17 @@ var createLogger = require('redux-logger')
 var thunkMiddleware = require('redux-thunk').default
 var promise = require('redux-promise')
 
+var selectedJP = []
+
+if (window.journeyPatternId)
+  selectedJP.push(window.journeyPatternId)
+
 var initialState = {
+  filters: {
+    selectedJourneyPatterns : selectedJP,
+    // TODO retrieve policy from controller
+    policy: true
+  },
   status: {
     fetchSuccess: true,
     isFetching: false
