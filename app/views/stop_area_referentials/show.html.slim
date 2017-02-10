@@ -1,32 +1,41 @@
-/ FIXME #820
-= title_tag "Référentiel d'arrêts #{@stop_area_referential.name}"
+/ PageHeader
+= pageheader 'map-marker',
+             t('.title'),
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@stop_area_referential.updated_at, format: :short)),
+             link_to(t('actions.sync'), sync_stop_area_referential_path(@stop_area_referential), method: :post, class: 'btn btn-default') do
+ 
+  .row.mb-md
+    .col-lg-12.text-right
+      = link_to stop_area_referential_stop_areas_path(@stop_area_referential), class: 'btn btn-primary' do
+        = Referential.human_attribute_name(:stop_areas)
+        em.small = " (#{@stop_area_referential.stop_areas.size})"
 
-.summary
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-12
+        - unless @stop_area_referential.stop_area_referential_syncs.empty?
+          table.table
+            thead
+              tr
+                th Synchronisé
+                th Message
+                th Statut
 
-.panel.panel-default
-  ul.list-group width="75%"
-    li.list-group-item
-      span.badge = @stop_area_referential.stop_areas.size
-      = link_to Referential.human_attribute_name("stop_areas"), stop_area_referential_stop_areas_path(@stop_area_referential)
-
-- unless @stop_area_referential.stop_area_referential_syncs.empty?
-  h3 Historique des synchronisations
-
-  ul.list-group width="75%"
-  - @stop_area_referential.stop_area_referential_syncs.each_with_index do |sync, i|
-    / Display only 10 msgs
-    - if i < 10
-      - unless sync.stop_area_referential_sync_messages.empty?
-        - sync.stop_area_referential_sync_messages.last.tap do |log|
-          - if log.criticity = log.criticity
-            li.alert class="alert-#{criticity_class(log.criticity)}"
-              strong = l(log.created_at, format: :short) + " : "
-              / [:processing_time] unit conversion
-              - data = log.message_attributs.symbolize_keys!
-              - data[:processing_time] = distance_of_time_in_words(data[:processing_time].to_i)
-
-              = t("stop_area_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!)
-
-- content_for :sidebar do
-  ul.actions
-    li = link_to t('stop_area_referentials.actions.sync'), sync_stop_area_referential_path(@stop_area_referential), class: 'sync', method: :post
+            tbody
+              - @stop_area_referential.stop_area_referential_syncs.each_with_index do |sync, i|
+                / Display only 10 msgs
+                - if i < 10
+                  - unless sync.stop_area_referential_sync_messages.empty?
+                    - sync.stop_area_referential_sync_messages.last.tap do |log|
+                      - if log.criticity = log.criticity
+                        tr
+                          td = l(log.created_at, format: :short)
+                          td
+                            - data = log.message_attributs.symbolize_keys!
+                            - data[:processing_time] = distance_of_time_in_words(data[:processing_time].to_i)
+                            = t("stop_area_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!).html_safe
+                          td
+                            .fa.fa-circle class="text-#{criticity_class(log.criticity)}"
