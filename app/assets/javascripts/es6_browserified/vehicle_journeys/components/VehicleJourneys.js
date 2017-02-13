@@ -29,8 +29,9 @@ class VehicleJourneys extends Component{
           )}
           {this.props.vehicleJourneys.map((vj, index) =>
             <VehicleJourney
-              value={ vj }
-              key={ index }
+              value = {vj}
+              key = {index}
+              filters = {this.props.filters}
               />
           )}
         </div>
@@ -42,6 +43,7 @@ class VehicleJourneys extends Component{
 VehicleJourneys.propTypes = {
   status: PropTypes.object.isRequired,
   onLoadFirstPage: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired
 }
 
 module.exports = VehicleJourneys

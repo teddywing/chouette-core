@@ -29,6 +29,9 @@ const actions = {
       return callback
     }
   },
+  toggleArrivals : () => ({
+    type: 'TOGGLE_ARRIVALS',
+  }),
   fetchVehicleJourneys : (dispatch, currentPage, nextPage) => {
     if(currentPage == undefined){
       currentPage = 1

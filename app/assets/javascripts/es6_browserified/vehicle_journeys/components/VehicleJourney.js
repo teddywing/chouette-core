@@ -1,33 +1,35 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
 
-const VehicleJourney = (props) => {
+const VehicleJourney = ({value, filters}) => {
   return (
     <div className={'list-group-item'}>
 
       <div style={{display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 25px)'}}>
         {/* Name */}
         <p className='small'>
-          <strong>Id: </strong>{props.value.journey_pattern_id}
+          <strong>Id: </strong>{value.journey_pattern_id}
         </p>
 
         {/* Published name */}
         <p className='small'>
-          <strong>Objectid: </strong>{props.value.objectid}
+          <strong>Objectid: </strong>{value.objectid}
         </p>
 
         {/* Registration number */}
         <p className='small'>
-          <strong>Registration number: </strong>{props.value.registration_number}
+          <strong>Registration number: </strong>{value.registration_number}
         </p>
         <ul className='list-group'>
-          {props.value.vehicle_journey_at_stops.map((vj, i) =>
+          {value.vehicle_journey_at_stops.map((vj, i) =>
             <li
               key={i}
             >
               <input type='text' defaultValue={vj.arrival_time}/>
               <span></span>
-              <input type='text' defaultValue={vj.departure_time}/>
+              {filters.toggleArrivals &&
+                <input type='text' defaultValue={vj.departure_time}/>
+              }
             </li>
           )}
         </ul>
@@ -38,8 +40,8 @@ const VehicleJourney = (props) => {
 }
 
 VehicleJourney.propTypes = {
-  value: PropTypes.object,
-  index: PropTypes.number,
+  value: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired
 }
 
 module.exports = VehicleJourney

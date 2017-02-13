@@ -29,3 +29,11 @@ describe('when receiveJourneyPatterns is triggered', () => {
     expect(actions.receiveVehicleJourneys()).toEqual(expectedAction)
   })
 })
+describe('when toggling arrivals', () => {
+  it('should create an action to toggleArrivals', () => {
+    const expectedAction = {
+      type: 'TOGGLE_ARRIVALS',
+    }
+    expect(actions.toggleArrivals()).toEqual(expectedAction)
+  })
+})

@@ -5,7 +5,8 @@ var VehicleJourneys = require('../components/VehicleJourneys')
 const mapStateToProps = (state) => {
   return {
     vehicleJourneys: state.vehicleJourneys,
-    status: state.status
+    status: state.status,
+    filters: state.filters
   }
 }
 
