@@ -20,7 +20,17 @@ const VehicleJourney = (props) => {
         <p className='small'>
           <strong>Registration number: </strong>{props.value.registration_number}
         </p>
-
+        <ul className='list-group'>
+          {props.value.vehicle_journey_at_stops.map((vj, i) =>
+            <li
+              key={i}
+            >
+              <input type='text' defaultValue={vj.arrival_time}/>
+              <span></span>
+              <input type='text' defaultValue={vj.departure_time}/>
+            </li>
+          )}
+        </ul>
       </div>
 
     </div>
