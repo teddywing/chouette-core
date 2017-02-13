@@ -6,7 +6,7 @@ end
 
 child(:time_tables, :object_root => false) do |time_tables|
   node do |tt|
-    [:objectid, :start_date, :end_date].map do |att|
+    [:objectid, :comment].map do |att|
       node(att) { tt.send(att) }
     end
     node :calendar do |tt|
