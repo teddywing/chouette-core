@@ -63,7 +63,8 @@ fr:
         opposite_route_id: "Itinéraire associé en sens opposé"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
         creator_id: "Créé par"
         no_journey_pattern: "Pas de mission"
   formtastic:

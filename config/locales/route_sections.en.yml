@@ -46,3 +46,5 @@ en:
         arrival: "Arrival point"
         points: "Via"
         distance: "Distance"
+        created_at: Created at
+        updated_at: Updated at

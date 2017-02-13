@@ -4,9 +4,7 @@ module HistoryHelper
     field_set_tag t("layouts.history_tag.title"), :class => "history_tag" do
       content_tag :ul do
         [(content_tag :li do
-          if object.has_attribute?(:creation_time)
-            object.human_attribute_name('creation_time') + ' : ' + l(object.creation_time, :format => :short)
-          else
+          if object.has_attribute?(:created_at)
             object.class.human_attribute_name('created_at') + ' : ' + l(object.created_at, :format => :short)
           end
         end),

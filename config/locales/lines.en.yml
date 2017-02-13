@@ -91,7 +91,8 @@ en:
         comment: "Comments"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by"
         footnotes: "Footnotes"
         stable_id: External permanent idenifier"

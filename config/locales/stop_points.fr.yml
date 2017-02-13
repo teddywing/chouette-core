@@ -33,6 +33,8 @@ fr:
     attributes:
       stop_point:
         lines: "Lignes"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
   simple_form:
     labels:
       stop_point:

@@ -57,7 +57,7 @@ class ConnectionLinksController < ChouetteController
   private
 
   def connection_link_params
-    params.require(:connection_link).permit( :connection_link_type,:departure_id, :arrival_id, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :link_distance, :link_type, :default_duration, :frequent_traveller_duration, :occasional_traveller_duration, :mobility_restricted_traveller_duration, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs )
+    params.require(:connection_link).permit( :connection_link_type,:departure_id, :arrival_id, :objectid, :object_version, :creator_id, :name, :comment, :link_distance, :link_type, :default_duration, :frequent_traveller_duration, :occasional_traveller_duration, :mobility_restricted_traveller_duration, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs )
   end
 
 end

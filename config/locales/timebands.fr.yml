@@ -24,3 +24,5 @@ fr:
         name: "Titre"
         start_time: "Heure de début"
         end_time: "Heure de fin"
+        created_at: "Créé le"
+        updated_at: "Modifié le"

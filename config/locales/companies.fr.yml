@@ -38,7 +38,8 @@ fr:
         url: "Page web associée"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
         creator_id: "Créé par"
   formtastic:
     titles:

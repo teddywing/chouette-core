@@ -35,7 +35,8 @@ en:
         source_identifier: "Source identifier"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by "
   formtastic:
     titles:
