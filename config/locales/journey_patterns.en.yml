@@ -18,14 +18,14 @@ en:
       title: "Update journey pattern %{journey_pattern}"
     show:
       title: "Journey Pattern %{journey_pattern}"
-      stop_points: "Stop point on journey pattern list" 
+      stop_points: "Stop point on journey pattern list"
     index:
       title: "Journey Patterns"
     form:
       warning: "Be careful, selection is also applied to the %{count} vehicle journeys associated to this journey pattern"
-  activerecord:        
-    models:        
-      journey_pattern: 
+  activerecord:
+    models:
+      journey_pattern:
         zero:  "journey pattern"
         one:   "journey pattern"
         other: "journey patterns"
@@ -33,37 +33,38 @@ en:
       journey_pattern:
         route: "Route"
         name: "Name"
-        published_name: "Published name"      
+        published_name: "Published name"
         comment: "Comments"
         registration_number: "Registration number"
         stop_point_ids: "Route's stop selection"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by"
   formtastic:
     titles:
       journey_pattern:
         name: ""
-        registration_number: "Positif integer." 
+        registration_number: "Positif integer."
         objectid: "[prefix]:JourneyPattern:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character"
       neptune:
         journey_pattern:
           name: ""
-          registration_number: "Positif integer." 
+          registration_number: "Positif integer."
           objectid: "[prefix]:JourneyPattern:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character"
       netex:
         journey_pattern:
           name: ""
-          registration_number: "Positif integer." 
+          registration_number: "Positif integer."
           objectid: "[prefix]:JourneyPattern:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character"
       gtfs:
         journey_pattern:
           name: ""
-          registration_number: "Positif integer." 
+          registration_number: "Positif integer."
           objectid: "[prefix]:JourneyPattern:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character"
       hub:
         journey_pattern:
           name: "Maximum length = 75."
-          registration_number: "Positif integer, unique key, of no more than 8 digits." 
+          registration_number: "Positif integer, unique key, of no more than 8 digits."
           objectid: "[prefix]:JourneyPattern:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character. Maximum length of the unique key = 30."

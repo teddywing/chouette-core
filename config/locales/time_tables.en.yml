@@ -76,7 +76,8 @@ en:
         sunday: "Sunday"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by "
         calendars: "Calendar view"
         calendar_details: "Calendar details"

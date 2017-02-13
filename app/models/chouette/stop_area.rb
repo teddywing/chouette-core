@@ -58,7 +58,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
   before_validation :prepare_auto_columns
   def prepare_auto_columns
     self.object_version = 1
-    self.creation_time = Time.now
     self.creator_id = 'chouette'
   end
 

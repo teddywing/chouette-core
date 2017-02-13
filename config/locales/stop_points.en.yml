@@ -24,15 +24,17 @@ en:
       no_object: "Nothing"
       lines: "Lines"
       address: "Address"
-  activerecord:        
-    models:        
-      stop_point: 
+  activerecord:
+    models:
+      stop_point:
         zero:  "stop point on route"
         one:   "stop point on route"
         other: "stop points on route"
     attributes:
       stop_point:
         lines: "lines"
+        created_at: Created at
+        updated_at: Updated at
   simple_form:
     labels:
       stop_point:

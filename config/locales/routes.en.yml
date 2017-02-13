@@ -62,7 +62,8 @@ en:
         opposite_route_id: "Reversed route"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by"
         no_journey_pattern: "No journey pattern"
   formtastic:

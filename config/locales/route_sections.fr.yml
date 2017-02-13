@@ -46,3 +46,5 @@ fr:
         arrival: "Arrêt d'arrivée"
         points: "Via"
         distance: "Distance"
+        created_at: "Créé le"
+        updated_at: "Modifié le"

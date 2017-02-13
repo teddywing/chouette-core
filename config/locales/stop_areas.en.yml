@@ -105,7 +105,8 @@ en:
         url: "Web page"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by"
         children_ids: "Children"
         routing_stop_ids: "Attached stops"

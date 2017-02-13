@@ -107,7 +107,6 @@ class ReferentialLinesController < ChouetteController
       :company_id,
       :objectid,
       :object_version,
-      :creation_time,
       :creator_id,
       :name, :number,
       :published_name,

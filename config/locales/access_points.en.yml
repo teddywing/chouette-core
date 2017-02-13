@@ -1,7 +1,7 @@
 en:
   access_points:
     access_point:
-      no_position: "No Position" 
+      no_position: "No Position"
     actions:
       new: "Add a new access point"
       edit: "Edit this access point"
@@ -22,9 +22,9 @@ en:
     index:
       title: "Access points"
       name_or_country_code: "Name"
-  activerecord:        
-    models:        
-      access_point: 
+  activerecord:
+    models:
+      access_point:
         zero:  "access point"
         one:   "access point"
         other: "access points"
@@ -50,8 +50,9 @@ en:
         lift_availability: "Lift"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
-        creator_id: "Created by" 
+        created_at: Created at
+        updated_at: Updated at
+        creator_id: "Created by"
         coordinates: "Coordinates (lat,lng)"
         zip_code: "Zip code"
         city_name: "City"

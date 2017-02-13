@@ -80,7 +80,7 @@ class GroupOfLinesController < BreadcrumbController
   end
 
   def group_of_line_params
-    params.require(:group_of_line).permit( :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :lines, :registration_number, :line_tokens)
+    params.require(:group_of_line).permit( :objectid, :object_version, :creator_id, :name, :comment, :lines, :registration_number, :line_tokens)
   end
 
 end
