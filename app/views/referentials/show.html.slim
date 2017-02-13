@@ -32,7 +32,7 @@
             strong = "#{@referential.human_attribute_name(:published_at)} : "
             = ""
 
-  .row
+  .row.mb-sm
     .col-lg-12.text-right
       / Actions are: controler, rapport de controle, dupliquer, purger, conserver, supprimer
       = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
@@ -46,27 +46,25 @@
 
       = link_to t('actions.destroy'), referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary'
 
-  .row.mt-xs
-    .col-lg-5.col-md-6.col-sm-6.col-xs-8
-      = search_form_for @q, url: referential_path(@referential.id) do |f|
-        .input-group.search_bar
-          = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de ligne'
-
-          span.input-group-btn
-            button.btn.btn-default type='submit'
-              span.fa.fa-search
-
-  .row.mt-xs
-    .col-lg-12
-      = render 'filters'
-
 / PageContent
 .page_content
   .container-fluid
-    .row
-      .col-lg-12
-        - if @reflines.any?
-          = new_pagination @reflines, 'pull-right'
+    - if @reflines.any?
+      .row
+        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+          = search_form_for @q, url: referential_path(@referential.id) do |f|
+            .input-group.search_bar
+              = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de ligne'
+
+              span.input-group-btn
+                button.btn.btn-default type='submit'
+                  span.fa.fa-search
+        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
+          = new_pagination @reflines
+
+      .row.mt-sm
+        .col-lg-12
+          = render 'filters'
 
           / ID Codif, nom court, nom de la ligne, réseau, mode, transporteur principal, actions = [show, edit_notes]
           = table_builder @reflines,
@@ -80,8 +78,9 @@
 
           = new_pagination @reflines, 'pull-right'
 
-        - else
-          = replacement_msg t('referential_lines.search_no_results')
+    - else
+      = replacement_msg t('referential_lines.search_no_results')
+
 
 / Modal(s)
 = modalbox 'purgeModal' do

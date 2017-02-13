@@ -8,27 +8,25 @@
   .row
     .col-lg-12.text-right
       = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
-      
-  .row.mt-xs
-    .col-lg-5.col-md-6.col-sm-6.col-xs-8
-      = search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder do |f|
-        .input-group.search_bar
-          = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de référentiel'
-          span.input-group-btn
-            button.btn.btn-default type='submit'
-              span.fa.fa-search
-
-  .row.mt-xs
-    .col-lg-12
-      = render 'filters'
 
 / PageContent
 .page_content
   .container-fluid
-    .row
-      .col-lg-12
-        - if @wbench_refs.any?
-          = new_pagination @wbench_refs, 'pull-right'
+    - if @wbench_refs.any?
+      .row
+        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+          = search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder do |f|
+            .input-group.search_bar
+              = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de référentiel'
+              span.input-group-btn
+                button.btn.btn-default type='submit'
+                  span.fa.fa-search
+        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
+          = new_pagination @wbench_refs
+
+      .row.mt-sm
+        .col-lg-12
+          = render 'filters'
 
           / actions for table: controler+integrer, consulter, modifier, controler, dupliquer, conserver, purger, supprimer
           = table_builder @wbench_refs,
@@ -44,5 +42,5 @@
 
           = new_pagination @wbench_refs, 'pull-right'
 
-        - else
-          = replacement_msg t('referentials.search_no_results')
+    - else
+      = replacement_msg t('referentials.search_no_results')
