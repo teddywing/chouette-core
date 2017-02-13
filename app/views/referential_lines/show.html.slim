@@ -1,145 +1,80 @@
-- text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}"
-- bg_color = @line.color.blank? ? "white" : "##{@line.color}"
+/ PageHeader
+= pageheader 'map-marker',
+             @line.name,
+             'Lorem ipsum dolor sit amet' do
 
-h2
-  = t('lines.show.title', line: @line.name)
-  - if @line.deactivated?
-    small = " (désactivé)"
+  / t('last_update', time: l(@line.updated_at, format: :short)),
+  / Below is secundary actions & optional contents (filters, ...)
+  .row
+    .col-lg-12
+      .page_metalist
+        .pm-col
+          .pm-item
+            span.label.label-default
+              = @line.deactivated? ? 'Désactivée' : 'Activée'
 
-.line_show
-  = @map.to_html
+          .pm-item
+            strong = "#{@line.human_attribute_name(:network)} : "
+            = @line.network.nil? ? t('lines.index.unset') : @line.network.name
 
-  .summary
-    - text_color = @line.text_color.blank? ? "black" : "##{@line.text_color}"
-    - bg_color = @line.color.blank? ? "white" : "##{@line.color}"
-
-    - if colors?(@line)
-      p
-        label = "#{t('lines.index.color')} : "
-        label.color style="#{number_style(@line)}"
-          = " #{line_sticker(@line)}"
-
-    p
-      label = "#{@line.human_attribute_name(:network)} : "
-      - if @line.network.nil?
-        = " #{t('lines.index.unset')}"
-      - else
-        = link_to " #{@line.network.name}", [@referential, @line.network]
-
-    p
-      label = "#{@line.human_attribute_name(:company)} : "
-      - if @line.company.nil?
-        = " #{t('lines.index.unset')}"
-      - else
-        = link_to " #{@line.company.name}", [@referential, @line.company]
-
-    p
-      label = "#{@line.human_attribute_name('number')} : "
-      = " #{@line.number}"
-
-    p
-      label = "#{@line.human_attribute_name('published_name')} : "
-      = " #{@line.published_name}"
-
-    p
-      label = "#{@line.human_attribute_name('registration_number')} : "
-      = " #{@line.registration_number}"
-
-    p
-      label = "#{@line.human_attribute_name('transport_mode')} : "
-      - if @line.transport_mode
-        = " " + t("enumerize.line.transport_mode.#{@line.transport_mode}")
-      - else
-        = " -"
-
-    p
-      label = "#{@line.human_attribute_name('transport_submode')} : "
-      - if @line.transport_submode
-        = " " + t("enumerize.line.transport_submode.#{@line.transport_submode}")
-      - else
-        = " -"
-
-    / p
-    /   label = "#{@line.human_attribute_name('stable_id')} : "
-    /   = " #{@line.stable_id}"
-
-    p
-      label = "#{@line.human_attribute_name('url')} : "
-      = " #{@line.url}"
-
-    / p
-    /   label = "#{@line.human_attribute_name('mobility_restricted_suitability')} : "
-    /
-    /   - if @line.mobility_restricted_suitability.nil?
-    /     = @line.human_attribute_name("unspecified_mrs")
-    /   - elsif @line.mobility_restricted_suitability?
-    /     = @line.human_attribute_name("accessible")
-    /   - else
-    /     = @line.human_attribute_name("not_accessible")
-    /
-    /   br
-    /   = "#{@line.human_attribute_name('number_of_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', true).count}"
-    /   br
-    /   = "#{@line.human_attribute_name('number_of_non_mrs_vj')} : #{@line.vehicle_journeys.where('mobility_restricted_suitability = ?', false).count}"
-    /   br
-    /   = "#{@line.human_attribute_name('number_of_null_mrs_vj')} : "
-    /   = @line.vehicle_journeys.count - (@line.vehicle_journeys.where("mobility_restricted_suitability = ?", true).count + @line.vehicle_journeys.where("mobility_restricted_suitability = ?", false).count)
-    /
-    / p
-    /   label = "#{@line.human_attribute_name('flexible_service')} : "
-    /
-    /   - if @line.flexible_service.nil?
-    /     = @line.human_attribute_name("unspecified_fs")
-    /   - elsif @line.flexible_service?
-    /     = @line.human_attribute_name("on_demaond_fs")
-    /   - else
-    /     = @line.human_attribute_name("regular_fs")
-    /
-    /   br
-    /   = "#{@line.human_attribute_name('number_of_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', true).count}"
-    /   br
-    /   = "#{@line.human_attribute_name('number_of_non_fs_vj')} : #{@line.vehicle_journeys.where('flexible_service = ?', false).count}"
-    /   br
-    /   = @line.human_attribute_name("number_of_null_fs_vj")
-    /
-    /   - if @line.flexible_service.nil?
-    /     = "(#{@line.human_attribute_name('default_fs_msg')})"
-    /
-    /   = ": #{@line.vehicle_journeys.count - (@line.vehicle_journeys.where('flexible_service = ?', true).count + @line.vehicle_journeys.where('flexible_service = ?', false).count)}"
-    /
-    p
-      label = link_to @line.human_attribute_name('footnotes'), referential_line_footnotes_path(@referential, @line)
-    / p
-    /   label = "#{@line.human_attribute_name('comment')} : "
-    /   = @line.comment
-    p
-      label = link_to Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr), referential_line_routing_constraint_zones_path(@referential, @line)
+          .pm-item
+            strong = "#{@line.human_attribute_name(:company)} : "
+            = @line.company.nil? ? t('lines.index.unset') : @line.company.name
+        
+        .pm-col
+          .pm-item
+            strong = "#{@line.human_attribute_name(:number)} : "
+            = @line.number
+          .pm-item
+            strong = "#{@line.human_attribute_name(:published_name)} : "
+            = @line.published_name
+          .pm-item
+            strong = "#{@line.human_attribute_name(:registration_number)} : "
+            = @line.registration_number
+        .pm-col
+          .pm-item
+            strong = "#{@line.human_attribute_name(:transport_mode)} : "
+            = t("enumerize.line.transport_mode.#{@line.transport_mode}") if @line.transport_mode
+          .pm-item
+            strong = "#{@line.human_attribute_name(:transport_submode)} : "
+            = t("enumerize.line.transport_submode.#{@line.transport_submode}") if @line.transport_submode
+          .pm-item
+            strong = "#{@line.human_attribute_name(:url)} : "
+            = @line.try(:url)
 
   .row
-    #mobility_restricted_suitability.col-md-6
-    #flexible_service.col-md-6
+    .col-lg-12.text-right.mb-sm
+      = link_to t('lines.actions.show_network'), [@referential, @line.network], class: 'btn btn-primary'
+      = link_to t('lines.actions.show_company'), [@referential, @line.company], class: 'btn btn-primary'
 
-p.after_map
+      = link_to @line.human_attribute_name(:footnotes), referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary'
+      = link_to Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr), referential_line_routing_constraint_zones_path(@referential, @line), class: 'btn btn-primary'
 
-.routes
-  = render 'reflines_routes'
-
-- content_for :sidebar do
-  ul.actions
-    - if policy(Chouette::Line).create? && @referential.organisation == current_organisation
-      li
-        = link_to t('lines.actions.new'), new_referential_line_path(@referential), class: 'add'
-    - if policy(@line).update?
-      li
-        = link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), class: 'edit'
-    - if policy(@line).destroy?
-      li
-        = link_to t('lines.actions.destroy'), referential_line_path(@referential, @line), method: :delete, :data => {:confirm => t('lines.actions.destroy_confirm')}, class: 'remove'
-
-    - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
-        / FIXME #825
-        li
+      - if policy(Chouette::Line).create? && @referential.organisation == current_organisation
+        = link_to t('lines.actions.new'), new_referential_line_path(@referential), class: 'btn btn-primary'
+      - if policy(@line).update?
+        = link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), class: 'btn btn-primary'
+      - if policy(@line).destroy?
+        = link_to t('lines.actions.destroy'), referential_line_path(@referential, @line), method: :delete, data: {confirm: t('lines.actions.destroy_confirm')}, class: 'btn btn-primary'
+      - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
         - if policy(Chouette::Route).create? && @referential.organisation == current_organisation
-          = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
+          = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'btn btn-primary'
 
-  = creation_tag(@line)
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-12
+        - if @routes.any?
+          = new_pagination @routes, 'pull-right'
+
+          = table_builder @routes,
+            { @routes.human_attribute_name(:name) => 'name', @routes.human_attribute_name(:published_name) => 'published_name', @routes.human_attribute_name(:wayback) => Proc.new{|r| r.try(:wayback_text)}, @routes.human_attribute_name(:opposite_route) => Proc.new{|r| r.try(:opposite_route).try(:name)} },
+            [:show, :edit, :delete],
+            [],
+            'table'
+
+          = new_pagination @routes, 'pull-right'
+
+        - else
+          = replacement_msg t('routes.search_no_results')

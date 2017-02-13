@@ -94,7 +94,7 @@ describe "Routes", :type => :feature do
 
     context 'user has permission to edit routes' do
       it 'shows edit buttons for routes' do
-        expect(page).to have_css('span.fa.fa-pencil')
+        expect(page).to have_content(I18n.t('actions.edit'))
       end
     end
 
@@ -102,7 +102,7 @@ describe "Routes", :type => :feature do
       it 'does not show edit buttons for routes' do
         @user.update_attribute(:permissions, [])
         visit referential_line_path(referential, line)
-        expect(page).not_to have_css('span.fa.fa-pencil')
+        expect(page).not_to have_content(I18n.t('actions.edit'))
       end
     end
 
@@ -128,7 +128,7 @@ describe "Routes", :type => :feature do
 
     context 'user has permission to destroy routes' do
       it 'shows destroy buttons for routes' do
-        expect(page).to have_css('span.fa.fa-trash-o')
+        expect(page).to have_content(I18n.t('actions.edit'))
       end
     end
 
@@ -136,7 +136,7 @@ describe "Routes", :type => :feature do
       it 'does not show destroy buttons for routes' do
         @user.update_attribute(:permissions, [])
         visit referential_line_path(referential, line)
-        expect(page).not_to have_css('span.fa.fa-trash-o')
+        expect(page).not_to have_content(I18n.t('actions.destroy'))
       end
     end
   end

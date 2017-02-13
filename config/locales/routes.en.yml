@@ -1,5 +1,6 @@
 en:
   routes:
+    search_no_results: "No route matching your query"
     actions:
       new: "Add a new route"
       edit: "Edit this route"

@@ -20,4 +20,5 @@ fr:
       multi_page_html: "Liste des %{model} %{from}&nbsp;à&nbsp;%{to} sur %{count}"
 
       referential: 'jeu(x) de données'
-      line: 'ligne(s)'
+      line: 'ligne'
+      route: 'itinéraire'
