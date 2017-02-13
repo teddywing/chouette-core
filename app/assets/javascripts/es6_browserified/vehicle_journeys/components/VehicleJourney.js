@@ -1,42 +1,63 @@
 var React = require('react')
+var Component = require('react').Component
 var PropTypes = require('react').PropTypes
+var moment = require('moment')
 
-const VehicleJourney = ({value, filters}) => {
-  return (
-    <div className={'list-group-item'}>
+class VehicleJourney extends Component {
+  constructor(props) {
+    super(props)
+  }
 
-      <div style={{display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 25px)'}}>
-        {/* Name */}
-        <p className='small'>
-          <strong>Id: </strong>{value.journey_pattern_id}
-        </p>
+  format(e){
+    if(e.target.value < 10 && e.target.value.length == 1){
+      e.target.value = '0' + e.target.value;
+    }
+  }
 
-        {/* Published name */}
-        <p className='small'>
-          <strong>Objectid: </strong>{value.objectid}
-        </p>
+  render() {
+    return (
+      <div className={'list-group-item'}>
 
-        {/* Registration number */}
-        <p className='small'>
-          <strong>Registration number: </strong>{value.registration_number}
-        </p>
-        <ul className='list-group'>
-          {value.vehicle_journey_at_stops.map((vj, i) =>
-            <li
-              key={i}
-            >
-              <input type='text' defaultValue={vj.arrival_time}/>
-              <span></span>
-              {filters.toggleArrivals &&
-                <input type='text' defaultValue={vj.departure_time}/>
-              }
-            </li>
-          )}
-        </ul>
+        <div style={{display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 25px)'}}>
+          {/* Name */}
+          <p className='small'>
+            <strong>Id: </strong>{this.props.value.journey_pattern_id}
+          </p>
+
+          {/* Published name */}
+          <p className='small'>
+            <strong>Objectid: </strong>{this.props.value.objectid}
+          </p>
+
+          {/* Registration number */}
+          <p className='small'>
+            <strong>Registration number: </strong>{this.props.value.registration_number}
+          </p>
+          <ul className='list-group'>
+            {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
+              <li
+                key={i}
+              >
+                <span>
+                  <input type='number' min='00' max='23' onInput={(e) => {this.format(e)}} defaultValue={moment(vj.arrival_time).format('hh')}/>
+                  <span>:</span>
+                  <input type='number' min='00' max='59' onInput={(e) => {this.format(e)}} defaultValue={moment(vj.arrival_time).format('mm')}/>
+                </span>
+                {this.props.filters.toggleArrivals &&
+                  <span>
+                    <input type='number' min='00' max='23' onInput={(e) => {this.format(e)}} defaultValue={moment(vj.departure_time).format('hh')}/>
+                    <span>:</span>
+                    <input type='number' min='00' max='59' onInput={(e) => {this.format(e)}} defaultValue={moment(vj.departure_time).format('mm')}/>
+                  </span>
+                }
+              </li>
+            )}
+          </ul>
+        </div>
+
       </div>
-
-    </div>
-  )
+    )
+  }
 }
 
 VehicleJourney.propTypes = {
