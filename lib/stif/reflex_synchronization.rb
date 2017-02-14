@@ -156,7 +156,7 @@ module Stif
         end
 
         if stop.changed?
-          stop.creation_time = entry[:created]
+          stop.created_at = entry[:created]
           stop.import_xml    = entry[:xml]
           prop = stop.new_record? ? :imported_count : :updated_count
           increment_counts prop, 1

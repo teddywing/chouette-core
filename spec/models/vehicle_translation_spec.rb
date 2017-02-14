@@ -76,8 +76,8 @@ describe VehicleTranslation, :type => :model do
       subject.translate
       expect(last_created_vehicle.vehicle_journey_at_stops.count).to eq(vehicle_journey.vehicle_journey_at_stops.count)
     end
-    #todo : fix
-    xit "should add vehicle where vehicle_journey_at_stops are translated with #duration" do
+
+    it "should add vehicle journey where vehicle_journey_at_stops are translated with #duration" do
       read_vehicle = Chouette::VehicleJourney.find(vehicle_journey.id)  # read from bd, change time values
       delta = subject.first_delta
       subject.translate
