@@ -1,6 +1,6 @@
 class AddTimestampsToSomeModels < ActiveRecord::Migration
   def change
-    models = %i(vehicle_journeys timebands time_tables stop_points routing_constraint_zones routes route_sections pt_links networks lines
+    models = %i(vehicle_journeys timebands time_tables stop_points stop_areas routing_constraint_zones routes route_sections pt_links networks lines
     journey_patterns group_of_lines connection_links companies access_points access_links)
 
     models.each do |table|
