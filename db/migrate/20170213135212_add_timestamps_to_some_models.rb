@@ -6,7 +6,7 @@ class AddTimestampsToSomeModels < ActiveRecord::Migration
     models.each do |table|
       if !column_exists?(table, :created_at) && column_exists?(table, :creation_time)
         add_timestamps table
-        Object.const_get("Chouette::#{table.to_s.classify}").record_class.update_all 'created_at = creation_time'
+        Object.const_get("Chouette::#{table.to_s.classify}").update_all 'created_at = creation_time'
       end
       remove_column table, :creation_time if column_exists?(table, :creation_time)
     end
