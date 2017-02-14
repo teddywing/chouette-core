@@ -12,7 +12,9 @@
       - if policy(@company).update?
         = link_to t('companies.actions.edit'), edit_referential_company_path(@referential, @company), class: 'btn btn-primary'
       - if policy(@company).destroy?
-        = link_to t('companies.actions.destroy'), referential_company_path(@referential, @company), method: :delete, data: {confirm: t('companies.actions.destroy_confirm')}, class: 'btn btn-primary'
+        = link_to referential_company_path(@referential, @company), method: :delete, data: {confirm: t('companies.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('companies.actions.destroy')
 
 / PageContent
 .page_content

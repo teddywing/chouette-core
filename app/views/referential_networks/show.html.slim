@@ -12,7 +12,9 @@
       - if policy(@network).update?
         = link_to t('networks.actions.edit'), edit_referential_network_path(@referential, @network), class: 'btn btn-primary'
       - if policy(@network).destroy?
-        = link_to t('networks.actions.destroy'), referential_network_path(@referential, @network), method: :delete, data: { confirm: t('networks.actions.destroy_confirm')}, class: 'btn btn-primary'
+        = link_to referential_network_path(@referential, @network), method: :delete, data: { confirm: t('networks.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('networks.actions.destroy')
 
 / PageContent
 .page_content

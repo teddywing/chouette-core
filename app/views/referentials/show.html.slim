@@ -18,7 +18,9 @@
       - else
         = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
 
-      = link_to t('actions.destroy'), referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary'
+      = link_to referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary' do
+        span.fa.fa-trash
+        span = t('actions.destroy')
 
 / PageContent
 .page_content
