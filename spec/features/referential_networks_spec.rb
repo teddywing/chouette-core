@@ -18,14 +18,14 @@ describe 'ReferentialNetworks', type: :feature do
     context 'filtering' do
       it 'supports filtering by name' do
         fill_in 'q[name_or_objectid_cont]', with: networks.first.name
-        click_button 'search-btn'
+        click_button 'search_btn'
         expect(page).to have_content(networks.first.name)
         expect(page).not_to have_content(networks.last.name)
       end
 
       it 'supports filtering by objectid' do
         fill_in 'q[name_or_objectid_cont]', with: networks.first.objectid
-        click_button 'search-btn'
+        click_button 'search_btn'
         expect(page).to have_content(networks.first.name)
         expect(page).not_to have_content(networks.last.name)
       end
