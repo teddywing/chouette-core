@@ -36,7 +36,11 @@ child :vehicle_journey_at_stops, :object_root => false do |vehicle_stops|
     node(:stop_area_object_id) { vehicle_stop.stop_point.stop_area.objectid }
     [ :connecting_service_id, :arrival_time, :departure_time, :boarding_alighting_possibility].each do |attr|
       node( attr) do
-        vehicle_stop.send(attr)
+        if vehicle_stop.send(attr).is_a? Time
+          vehicle_stop.send(attr).iso8601()
+        else
+          vehicle_stop.send(attr)
+        end
       end unless vehicle_stop.send(attr).nil?
     end
   end

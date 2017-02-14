@@ -1,4 +1,5 @@
 var vjReducer = require('es6_browserified/vehicle_journeys/reducers/vehicleJourneys')
+
 let state = []
 let fakeFootnotes = [{
   id: 1,
@@ -11,7 +12,11 @@ let fakeFootnotes = [{
 }]
 
 let fakeTimeTables = []
-let fakeVJAS = []
+let fakeVJAS = [{
+  arrival_time : "2000-01-01T00:00:00+01:00",
+  departure_time : "2000-01-01T00:00:00+01:00",
+  stop_area_object_id : "FR:92024:ZDE:420553:STIF"
+}]
 
 describe('vehicleJourneys reducer', () => {
   beforeEach(()=>{
@@ -52,4 +57,25 @@ describe('vehicleJourneys reducer', () => {
       })
     ).toEqual(state)
   })
+
+  it('should handle UPDATE_TIME', () => {
+    const val = 33, subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true
+    let newVJAS = [{
+      arrival_time : "2000-01-01T00:00:00+01:00",
+      departure_time : "2000-01-01T00:33:00+01:00",
+      stop_area_object_id : "FR:92024:ZDE:420553:STIF"
+    }]
+    let newVJ = Object.assign({}, state[0], {vehicle_journey_at_stops: newVJAS})
+    expect(
+      vjReducer(state, {
+        type: 'UPDATE_TIME',
+        val,
+        subIndex,
+        index,
+        timeUnit,
+        isDeparture
+      })
+    ).toEqual([newVJ, state[1]])
+  })
+
 })

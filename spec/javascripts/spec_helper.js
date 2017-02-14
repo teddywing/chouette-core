@@ -6,6 +6,7 @@
 // require support/your-support-file
 //= require jquery
 //= require bootstrap-sass-official
+//= require moment
 require('es6-object-assign').polyfill();
 //
 // PhantomJS (Teaspoons default driver) doesn't have support for Function.prototype.bind, which has caused confusion.

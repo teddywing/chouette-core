@@ -47,15 +47,39 @@ class VehicleJourney extends Component {
                 key={i}
               >
                 <span>
-                  <input type='number' min='00' max='23' onInput={(e) => {this.format(e)}} defaultValue={moment(vj.arrival_time).format('hh')}/>
+                  <input
+                    type='number'
+                    min='00'
+                    max='23'
+                    onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true)}}
+                    onInput={(e) => {this.format(e)}} defaultValue={moment(vj.arrival_time).utc().format('HH')}
+                  />
                   <span>:</span>
-                  <input type='number' min='00' max='59' onInput={(e) => {this.format(e)}} defaultValue={moment(vj.arrival_time).format('mm')}/>
+                  <input
+                    type='number'
+                    min='00'
+                    max='59'
+                    onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true)}}
+                    onInput={(e) => {this.format(e)}} defaultValue={moment(vj.arrival_time).utc().format('mm')}
+                  />
                 </span>
                 {this.props.filters.toggleArrivals &&
                   <span>
-                    <input type='number' min='00' max='23' onInput={(e) => {this.format(e)}} defaultValue={moment(vj.departure_time).format('hh')}/>
+                    <input
+                      type='number'
+                      min='00'
+                      max='23'
+                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false)}}
+                      onInput={(e) => {this.format(e)}} defaultValue={moment(vj.departure_time).utc().format('HH')}
+                    />
                     <span>:</span>
-                    <input type='number' min='00' max='59' onInput={(e) => {this.format(e)}} defaultValue={moment(vj.departure_time).format('mm')}/>
+                    <input
+                      type='number'
+                      min='00'
+                      max='59'
+                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false)}}
+                      onInput={(e) => {this.format(e)}} defaultValue={moment(vj.departure_time).utc().format('mm')}
+                    />
                   </span>
                 }
               </li>
@@ -70,7 +94,9 @@ class VehicleJourney extends Component {
 
 VehicleJourney.propTypes = {
   value: PropTypes.object.isRequired,
-  filters: PropTypes.object.isRequired
+  filters: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  onUpdateTime: PropTypes.func.isRequired,
 }
 
 module.exports = VehicleJourney
