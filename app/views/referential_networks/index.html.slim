@@ -1,21 +1,38 @@
-= title_tag t('networks.index.title')
+/ PageHeader
+= pageheader 'map-marker',
+             t('networks.index.title'),
+             'Lorem ipsum dolor sit amet',
+             '',
+             (policy(Chouette::Network).create? ? link_to(t('networks.actions.new'), new_referential_network_path(@referential), class: 'btn btn-default') : '')
 
-= search_form_for @q, :url => referential_networks_path(@referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
-  .panel.panel-default
-    .panel-heading
-      .input-group.col-md-12
-        = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
+/PageContent
+.page_content
+  .container-fluid
+    - if @networks.any?
+      .row
+        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+          = search_form_for @q, url: referential_networks_path(@referential), html: {method: :get} do |f|
+            .input-group.search_bar
+              = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
 
-        .input-group-btn
-          button.btn.btn-primary#search-btn type="submit"
-            span.fa.fa-search
+              span.input-group-btn
+                button.btn.btn-default type="submit"
+                  span.fa.fa-search
 
-#networks
-  = render partial: 'networks', object: @networks
+        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
+          = new_pagination @networks
 
-- content_for :sidebar do
-  ul.actions
-    li
-    - if policy(Chouette::Network).create?
-      = link_to t('networks.actions.new'), new_referential_network_path(@referential), class: 'add'
-    br
+      .row.mt-sm
+        .col-lg-12
+          = table_builder @networks,
+            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @networks.human_attribute_name(:name) => 'name', @networks.human_attribute_name(:description) => 'description', @networks.human_attribute_name(:comment) => 'comment' },
+            [:show, :edit, :delete],
+            [],
+            'table'
+
+          = new_pagination @networks, 'pull-right'
+
+    - else
+      .row
+        .col-lg-12
+          = replacement_msg t('networks.search_no_results')
