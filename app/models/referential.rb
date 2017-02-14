@@ -226,7 +226,7 @@ class Referential < ActiveRecord::Base
       scope = workbench ? workbench.lines : associated_lines
       scope.where(id: metadatas.pluck(:line_ids).flatten)
     else
-      Chouete::Line.none
+      Chouette::Line.none
     end
   end
 
