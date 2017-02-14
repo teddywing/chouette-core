@@ -72,12 +72,20 @@ const actions = {
         } else {
           let val
           for (val of json){
+            var timeTables = []
+            let tt
+            for (tt of val.time_tables){
+              timeTables.push({
+                objectid: tt.objectid,
+                comment: tt.comment
+              })
+            }
             vehicleJourneys.push({
               journey_pattern_id: val.journey_pattern_id,
               published_journey_name: val.published_journey_name,
               objectid: val.objectid,
               footnotes: val.footnotes,
-              time_tables: val.time_tables,
+              time_tables: timeTables,
               vehicle_journey_at_stops: val.vehicle_journey_at_stops,
               deletable: false
             })

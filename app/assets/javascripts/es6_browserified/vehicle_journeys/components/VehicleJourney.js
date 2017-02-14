@@ -33,6 +33,14 @@ class VehicleJourney extends Component {
           <p className='small'>
             <strong>Registration number: </strong>{this.props.value.registration_number}
           </p>
+
+          <p className='small'>
+            <strong>Calendars: </strong>
+            {this.props.value.time_tables.map((tt, i)=>
+              <span key = {i}>{tt.objectid}</span>
+            )}
+          </p>
+
           <ul className='list-group'>
             {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
               <li
