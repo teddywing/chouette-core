@@ -1,6 +1,10 @@
 / PageHeader
-= pageheader 'map-marker',
-             t('.title')
+- if @referential.created_from.present?
+  = pageheader 'map-marker',
+               t('.duplicated.title')
+- else
+  = pageheader 'map-marker',
+               t('.title')
 
 / PageContent
 .page_content

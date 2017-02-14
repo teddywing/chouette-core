@@ -23,6 +23,8 @@ fr:
       validity_out_soon_time_tables: "Calendriers à échoir dans %{count} jours"
     new:
       title: "Créer un nouveau JDD"
+      duplicated:
+        title: 'Dupliquer un JDD'
       submit: "Enregistrer"
     actions:
       new: "Ajouter un jeu de données"
@@ -84,6 +86,7 @@ fr:
         updated_at: "Modifié"
         published_at: "Intégré"
         archived_at: "Conservé"
+        created_from: 'Créé à partir de'
   formtastic:
     titles:
       referential:

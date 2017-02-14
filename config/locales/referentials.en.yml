@@ -23,6 +23,8 @@ en:
       validity_out_soon_time_tables: "Timetables closed in %{count} days"
     new:
       title: "Create a new data space"
+      duplicated:
+        title: 'Clone a data space'
       submit: "Create a data space"
     actions:
       new: "Add a data space"
@@ -84,6 +86,7 @@ en:
         updated_at: "Updated"
         published_at: "Integrated"
         archived_at: "Archived"
+        created_from: 'Created from'
   formtastic:
     titles:
       referential:

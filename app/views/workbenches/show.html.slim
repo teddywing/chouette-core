@@ -5,7 +5,7 @@
              t('last_update', time: l(@workbench.updated_at, format: :short)) do
 
   / Below is secundary actions & optional contents (filters, ...)
-  .row
+  .row.mb-sm
     .col-lg-12.text-right
       = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
 
