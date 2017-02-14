@@ -6,43 +6,6 @@
   / t('last_update', time: l(@line.updated_at, format: :short)),
   / Below is secundary actions & optional contents (filters, ...)
   .row
-    .col-lg-12
-      .page_metalist
-        .pm-col
-          .pm-item
-            span.label.label-default
-              = @line.deactivated? ? 'Désactivée' : 'Activée'
-
-          .pm-item
-            strong = "#{@line.human_attribute_name(:network)} : "
-            = @line.network.nil? ? t('lines.index.unset') : @line.network.name
-
-          .pm-item
-            strong = "#{@line.human_attribute_name(:company)} : "
-            = @line.company.nil? ? t('lines.index.unset') : @line.company.name
-        
-        .pm-col
-          .pm-item
-            strong = "#{@line.human_attribute_name(:number)} : "
-            = @line.number
-          .pm-item
-            strong = "#{@line.human_attribute_name(:published_name)} : "
-            = @line.published_name
-          .pm-item
-            strong = "#{@line.human_attribute_name(:registration_number)} : "
-            = @line.registration_number
-        .pm-col
-          .pm-item
-            strong = "#{@line.human_attribute_name(:transport_mode)} : "
-            = t("enumerize.line.transport_mode.#{@line.transport_mode}") if @line.transport_mode
-          .pm-item
-            strong = "#{@line.human_attribute_name(:transport_submode)} : "
-            = t("enumerize.line.transport_submode.#{@line.transport_submode}") if @line.transport_submode
-          .pm-item
-            strong = "#{@line.human_attribute_name(:url)} : "
-            = @line.try(:url)
-
-  .row
     .col-lg-12.text-right.mb-sm
       = link_to t('lines.actions.show_network'), [@referential, @line.network], class: 'btn btn-primary'
       = link_to t('lines.actions.show_company'), [@referential, @line.company], class: 'btn btn-primary'
@@ -63,6 +26,44 @@
 / PageContent
 .page_content
   .container-fluid
+    .row
+      .col-lg-12
+        / = definition_list t('metadatas'),
+        /   {  }
+        .page_metalist
+          .pm-col
+            .pm-item
+              span.label.label-default
+                = @line.deactivated? ? 'Désactivée' : 'Activée'
+
+            .pm-item
+              strong = "#{@line.human_attribute_name(:network)} : "
+              = @line.network.nil? ? t('lines.index.unset') : @line.network.name
+
+            .pm-item
+              strong = "#{@line.human_attribute_name(:company)} : "
+              = @line.company.nil? ? t('lines.index.unset') : @line.company.name
+          
+          .pm-col
+            .pm-item
+              strong = "#{@line.human_attribute_name(:number)} : "
+              = @line.number
+            .pm-item
+              strong = "#{@line.human_attribute_name(:published_name)} : "
+              = @line.published_name
+            .pm-item
+              strong = "#{@line.human_attribute_name(:registration_number)} : "
+              = @line.registration_number
+          .pm-col
+            .pm-item
+              strong = "#{@line.human_attribute_name(:transport_mode)} : "
+              = t("enumerize.line.transport_mode.#{@line.transport_mode}") if @line.transport_mode
+            .pm-item
+              strong = "#{@line.human_attribute_name(:transport_submode)} : "
+              = t("enumerize.line.transport_submode.#{@line.transport_submode}") if @line.transport_submode
+            .pm-item
+              strong = "#{@line.human_attribute_name(:url)} : "
+              = @line.try(:url)
     .row
       .col-lg-12
         - if @routes.any?

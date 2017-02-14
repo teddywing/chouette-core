@@ -15,3 +15,4 @@ en:
 
   last_update: 'Last update on<br>%{time}'
   validity_range: '%{debut} > %{end}'
+  metadatas: 'Metadatas'

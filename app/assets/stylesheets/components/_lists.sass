@@ -3,9 +3,49 @@
 //-------//
 
 // Definition lists
-dl.definition-list
+$dlWidth: 40%
+
+.definition-list
+  > .dl-body
+    display: block
+    position: relative
+    letter-spacing: -0.31em
+    text-rendering: optimizespeed
+    font-weight: 300
+    margin-bottom: 20px
+
+  .dl-head
+    display: block
+    font-size: $h2-size
+    font-weight: 700
+    border-bottom: 2px solid $darkgrey
+    padding: 5px 15px 6px 15px
+
+  .dl-term, .dl-def
+    display: inline-block
+    letter-spacing: normal
+    word-spacing: normal
+    text-rendering: auto
+    // overflow: hidden
+    vertical-align: middle
+    padding: 5px 15px 6px 15px
+
   // Definition term
-  dt
+  .dl-term
+    position: relative
+    width: $dlWidth
+    font-weight: 700
+
+    &:after
+      content: ''
+      display: block
+      position: absolute
+      z-index: 1
+      bottom: 0
+      left: 0
+      width: (100 / ($dlWidth / 1%)) * 100 * 1%
+      border-bottom: 1px solid rgba($grey, 0.5)
 
   // Definition
-  dd
+  .dl-def
+    width: 100% - $dlWidth

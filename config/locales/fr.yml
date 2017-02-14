@@ -15,3 +15,4 @@ fr:
 
   last_update: 'Dernière mise à jour<br>le %{time}'
   validity_range: '%{debut} > %{end}'
+  metadatas: 'Métadonnées'
