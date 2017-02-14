@@ -6,32 +6,6 @@
              link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default') do
 
   / Below is secundary actions & optional contents (filters, ...)
-  .row
-    .col-lg-12
-      .page_metalist
-        .pm-col
-          - if @referential.archived?
-            .pm-item
-              span.label.label-default
-                strong = "#{@referential.human_attribute_name(:archived_at)} : "
-                = l(@referential.archived_at, format: :short)
-          - else
-            .pm-item
-              strong = "#{@referential.human_attribute_name(:archived_at)} : "
-
-          .pm-item
-            strong = "#{@referential.human_attribute_name(:validity_period)} : "
-            - if @referential.validity_period
-              = t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short))
-
-        .pm-col
-          .pm-item
-            strong = "Organisation : "
-            = @referential.organisation.name
-          .pm-item
-            strong = "#{@referential.human_attribute_name(:published_at)} : "
-            = ""
-
   .row.mb-sm
     .col-lg-12.text-right
       / Actions are: controler, rapport de controle, dupliquer, purger, conserver, supprimer
@@ -49,6 +23,32 @@
 / PageContent
 .page_content
   .container-fluid
+    .row
+      .col-lg-12
+        .page_metalist
+          .pm-col
+            - if @referential.archived?
+              .pm-item
+                span.label.label-default
+                  strong = "#{@referential.human_attribute_name(:archived_at)} : "
+                  = l(@referential.archived_at, format: :short)
+            - else
+              .pm-item
+                strong = "#{@referential.human_attribute_name(:archived_at)} : "
+
+            .pm-item
+              strong = "#{@referential.human_attribute_name(:validity_period)} : "
+              - if @referential.validity_period
+                = t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short))
+
+          .pm-col
+            .pm-item
+              strong = "Organisation : "
+              = @referential.organisation.name
+            .pm-item
+              strong = "#{@referential.human_attribute_name(:published_at)} : "
+              = ""
+  
     - if @reflines.any?
       .row
         .col-lg-5.col-md-6.col-sm-6.col-xs-8

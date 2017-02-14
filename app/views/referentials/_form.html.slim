@@ -29,7 +29,9 @@
       = form.input :upper_corner, input_html: {title: t("formtastic.titles.referential.upper_corner")}
       = form.input :lower_corner, input_html: {title: t("formtastic.titles.referential.lower_corner")}
 
-  .row.mt-md
+  .separator
+
+  .row
     .col-lg-12
       - if @referential.errors.has_key? :metadatas
         .row
@@ -58,13 +60,12 @@
             = render 'period_fields', f: period_form
 
           .links.nested-linker
-            = link_to_add_association 'Ajouter une période', subform, :periods, class: 'btn btn-primary'
+            = link_to_add_association 'Ajouter une période', subform, :periods, class: 'btn btn-outline-primary'
 
-  .row.mt-md
-    .col-lg-12
-      .subform
-        = form.simple_fields_for :metadatas do |subform|
-          = subform.input :lines, as: :select, collection: @referential.workbench.lines.includes(:company).order(:name), selected: subform.object.line_ids, label_method: :display_name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
+  .separator
+
+  = form.simple_fields_for :metadatas do |subform|
+    = subform.input :lines, as: :select, collection: @referential.workbench.lines.includes(:company).order(:name), selected: subform.object.line_ids, label_method: :display_name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
 
   .hidden = form.input :workbench_id, as: :hidden
 

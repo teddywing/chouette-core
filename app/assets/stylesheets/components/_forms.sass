@@ -380,6 +380,9 @@ $cbx-size: 20px
   margin: 0
   padding: 0 5px
 
+  + .nested-fields
+    border-top: 2px solid $darkgrey
+
   .wrapper
     display: table
     table-layout: fixed
@@ -387,7 +390,7 @@ $cbx-size: 20px
 
     > div
       display: table-cell
-      padding: 10px
+      padding: 0 10px 10px 10px
 
       &:last-child
         width: 34px
@@ -401,15 +404,13 @@ $cbx-size: 20px
           padding: 0
 
 .nested-linker
-  margin: 0
-  padding: 10px 15px
+  padding: 10px 15px 0 15px
   text-align: right
   border-top: 1px solid rgba($grey, 0.5)
 
 // Subforms
 .subform
   margin: 0 0 15px 0
-  border: 1px solid rgba($grey, 0.5)
 
   > .form-group
     margin: 0
