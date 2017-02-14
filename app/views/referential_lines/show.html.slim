@@ -1,9 +1,9 @@
 / PageHeader
 = pageheader 'map-marker',
              @line.name,
-             'Lorem ipsum dolor sit amet' do
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@line.updated_at, format: :short)) do
 
-  / t('last_update', time: l(@line.updated_at, format: :short)),
   / Below is secundary actions & optional contents (filters, ...)
   .row
     .col-lg-12.text-right.mb-sm
