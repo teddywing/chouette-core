@@ -20,8 +20,8 @@ module PaginationHelper
   end
 
   def new_pagination collection, cls = nil
-    k = collection.first.class.name.split('::').last.downcase
-    pinfos = page_entries_info collection, model: t("will_paginate.page_entries_info.#{k}"), html: false
+    k = collection.first.class
+    pinfos = page_entries_info collection, model: k, html: false
 
     if collection.total_pages > 1
       links = content_tag :div, '', class: 'page_links' do

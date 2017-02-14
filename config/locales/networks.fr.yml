@@ -20,8 +20,8 @@ fr:
   activerecord:
     models:
       network:
-        zero:  "réseau"
-        one:   "réseau"
+        zero: "réseaux"
+        one: "réseau"
         other: "réseaux"
     attributes:
       network:
