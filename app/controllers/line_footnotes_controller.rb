@@ -1,7 +1,6 @@
 class LineFootnotesController < ChouetteController
   defaults :resource_class => Chouette::Line, :instance_name => 'line'
   before_action :check_policy, only: [:edit, :update, :destroy]
-
   respond_to :json, :only => :show
 
   belongs_to :referential
