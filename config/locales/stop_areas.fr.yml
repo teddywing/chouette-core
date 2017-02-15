@@ -30,6 +30,10 @@ fr:
       export_hub_place: "Export HUB des pôles d'échange"
       export_hub_commercial: "Export HUB des arrêts commerciaux"
       export_hub_physical: "Export HUB des arrêts physiques"
+    filters:
+      zip_code: Indiquez un code postal...
+      city_name: Indiquez un nom de commune...
+      area_type: Indiquez un type d'arrêt...
     new:
       title: "Ajouter un arrêt"
     form:
@@ -87,6 +91,7 @@ fr:
         deleted: "Supprimé"
         comment: "Commentaire"
         stop_area_type: "Type d'arrêt"
+        area_type: "Type d'arrêt"
         nearest_topic_name: "Point d'intérêt le plus proche"
         street_name: "Nom de la rue"
         country_code: "Code INSEE"
@@ -171,5 +176,6 @@ fr:
           comment: "Longueur maximale = 255."
           coordinates: "Les coordonnées sont obligatoires."
           projection_xy: "x,y dans le référentiel secondaire, le séparateur de décimales est 'point'"
+
   referential_stop_areas:
     <<: *fr_stop_areas

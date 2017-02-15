@@ -64,7 +64,9 @@
           = new_pagination @reflines, 'pull-right'
 
     - else
-      = replacement_msg t('referential_lines.search_no_results')
+      .row
+        .col-lg-12
+          = replacement_msg t('referential_lines.search_no_results')
 
 
 / Modal(s)

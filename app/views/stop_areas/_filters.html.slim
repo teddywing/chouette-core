@@ -1,0 +1,10 @@
+= search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), class: 'form form-filter', html: {method: :get} do |f|
+  = f.input :zip_code_cont, placeholder: t('.zip_code'), label: @stop_areas.human_attribute_name(:zip_code), required: false
+
+  = f.input :city_name_cont, placeholder: t('.city_name'), label: @stop_areas.human_attribute_name(:city_name), required: false
+
+  = f.input :area_type_cont, placeholder: t('.area_type'), label: @stop_areas.human_attribute_name(:area_type), required: false
+
+  .actions
+    = link_to 'Effacer', @workbench, class: 'btn btn-link'
+    = f.submit 'Filtrer', class: 'btn btn-default'
