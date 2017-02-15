@@ -22,13 +22,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { Chouette::Company.human_attribute_name(:short_name) => @company.short_name,
-            Chouette::Company.human_attribute_name(:organizational_unit) => @company.organizational_unit,
-            Chouette::Company.human_attribute_name(:operating_department_name) => @company.operating_department_name,
-            Chouette::Company.human_attribute_name(:code) => @company.code,
+          { 'ID Codif' => @company.try(:objectid).try(:local_id),
             Chouette::Company.human_attribute_name(:phone) => @company.phone,
-            Chouette::Company.human_attribute_name(:fax) => @company.fax,
             Chouette::Company.human_attribute_name(:email) => @company.email,
-            Chouette::Company.human_attribute_name(:time_zone) => @company.time_zone,
-            Chouette::Company.human_attribute_name(:url) => @company.url,
-            Chouette::Company.human_attribute_name(:registration_number) => @company.registration_number }
+            Chouette::Company.human_attribute_name(:url) => @company.url }

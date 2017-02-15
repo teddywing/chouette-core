@@ -22,10 +22,4 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { Chouette::Network.human_attribute_name(:registration_number) => @network.registration_number,
-            Chouette::Network.human_attribute_name(:comment) => @network.comment,
-            Chouette::Network.human_attribute_name(:version_date) => (@network.version_date.present? ? l(@network.version_date, format: :short) : '-'),
-            Chouette::Network.human_attribute_name(:description) => @network.description,
-            Chouette::Network.human_attribute_name(:source_name) => @network.source_name,
-            Chouette::Network.human_attribute_name(:source_type_name) => (@network.source_type_name.present? ? t("source_types.label.#{@network.source_type_name}") : '-'),
-            Chouette::Network.human_attribute_name(:source_identifier) => @network.source_identifier }
+          { 'ID Codif' => @network.try(:objectid).try(:local_id) }
