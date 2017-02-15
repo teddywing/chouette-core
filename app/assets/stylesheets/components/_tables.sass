@@ -99,9 +99,15 @@
         &:hover
           background-color: rgba($blue, 0.5)
 
+        &[title='Supprimer']
+          background-color: $red
+
+          &:hover
+            background-color: darken($red, 5%)
+
   &.noselect
     .st_action > a
-      &, &:hover, &:focus
+      &, &[title='Supprimer'], &:hover, &:focus
         background-color: rgba($grey, 0.65)
         cursor: not-allowed
 

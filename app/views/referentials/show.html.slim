@@ -28,13 +28,13 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { @referential.human_attribute_name(:archived_at) => (@referential.archived? ? l(@referential.archived_at, format: :short) : '-'),
+          { 'Statut' => (@referential.archived? ? 'Conservé' : '-'),
             @referential.human_attribute_name(:validity_period) => (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-'),
             @referential.human_attribute_name(:organisation) => @referential.organisation.name,
             @referential.human_attribute_name(:published_at) => '-' }
-  
-    - if @reflines.any?
-      .row.mt-lg
+
+    - if params[:q].present? or @reflines.any?
+      .row.mb-sm
         .col-lg-5.col-md-6.col-sm-6.col-xs-8
           = search_form_for @q, url: referential_path(@referential.id) do |f|
             .input-group.search_bar
@@ -47,6 +47,7 @@
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @reflines
 
+    - if @reflines.any?
       .row.mt-sm
         .col-lg-12
           = render 'filters'
@@ -63,7 +64,7 @@
 
           = new_pagination @reflines, 'pull-right'
 
-    - else
+    - unless @reflines.any?
       .row
         .col-lg-12
           = replacement_msg t('referential_lines.search_no_results')
