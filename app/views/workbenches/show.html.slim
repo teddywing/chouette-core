@@ -12,8 +12,8 @@
 / PageContent
 .page_content
   .container-fluid
-    - if @wbench_refs.any?
-      .row
+    - if params[:q].present? or @wbench_refs.any?
+      .row.mb-sm
         .col-lg-5.col-md-6.col-sm-6.col-xs-8
           = search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder do |f|
             .input-group.search_bar
@@ -24,7 +24,8 @@
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @wbench_refs
 
-      .row.mt-sm
+    - if @wbench_refs.any?
+      .row
         .col-lg-12
           = render 'filters'
 
@@ -42,5 +43,7 @@
 
           = new_pagination @wbench_refs, 'pull-right'
 
-    - else
-      = replacement_msg t('referentials.search_no_results')
+    - unless @wbench_refs.any?
+      .row
+        .col-lg-12
+          = replacement_msg t('referentials.search_no_results')

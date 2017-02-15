@@ -4,7 +4,7 @@ class WorkbenchesController < BreadcrumbController
 
   def show
     scope = Workbench.find(params[:id])
-    if params[:q] and params[:q][:organisation_name_eq_any].include? current_organisation.name
+    if params[:q] and params[:q][:organisation_name_eq_any] and params[:q][:organisation_name_eq_any].include? current_organisation.name
       scope = scope.referentials.ready
     else
       scope = scope.all_referentials
