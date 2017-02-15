@@ -16,8 +16,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.fetchingApi())
       actions.fetchVehicleJourneys(dispatch)
     },
-    onUpdateTime: (e, subIndex, index, timeUnit, isDeparture) => {
-      dispatch(actions.updateTime(e.target.value, subIndex, index, timeUnit, isDeparture))
+    onUpdateTime: (e, subIndex, index, timeUnit, isDeparture, isArrivalsToggled) => {
+      dispatch(actions.updateTime(e.target.value, subIndex, index, timeUnit, isDeparture, isArrivalsToggled))
     }
   }
 }

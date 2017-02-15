@@ -36,13 +36,14 @@ const actions = {
   toggleArrivals : () => ({
     type: 'TOGGLE_ARRIVALS',
   }),
-  updateTime : (val, subIndex, index, timeUnit, isDeparture) => ({
+  updateTime : (val, subIndex, index, timeUnit, isDeparture, isArrivalsToggled) => ({
     type: 'UPDATE_TIME',
     val,
     subIndex,
     index,
     timeUnit,
-    isDeparture
+    isDeparture,
+    isArrivalsToggled
   }),
   fetchVehicleJourneys : (dispatch, currentPage, nextPage) => {
     if(currentPage == undefined){

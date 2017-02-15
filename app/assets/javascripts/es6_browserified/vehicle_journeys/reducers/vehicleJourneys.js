@@ -7,7 +7,10 @@ const vehicleJourney= (state = {}, action) => {
       vjasArray = state.vehicle_journey_at_stops.map((vjas, i) =>{
         if(i == action.subIndex){
           if (action.isDeparture){
-            return Object.assign({}, state.vehicle_journey_at_stops[action.subIndex],  {departure_time: moment(state.vehicle_journey_at_stops[action.subIndex].departure_time).set(action.timeUnit, action.val).format()})
+            let newSchedule = {departure_time: moment(state.vehicle_journey_at_stops[action.subIndex].departure_time).set(action.timeUnit, action.val).format()}
+            if(!action.isArrivalsToggled)
+              newSchedule.arrival_time = moment(state.vehicle_journey_at_stops[action.subIndex].arrival_time).set(action.timeUnit, action.val).format()
+            return Object.assign({}, state.vehicle_journey_at_stops[action.subIndex], newSchedule)
           }else{
             return Object.assign({}, state.vehicle_journey_at_stops[action.subIndex],  {arrival_time: moment(state.vehicle_journey_at_stops[action.subIndex].arrival_time).set(action.timeUnit, action.val).format()})
           }

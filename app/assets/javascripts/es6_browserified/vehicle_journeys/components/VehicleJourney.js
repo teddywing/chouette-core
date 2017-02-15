@@ -46,7 +46,7 @@ class VehicleJourney extends Component {
                       type='number'
                       min='00'
                       max='23'
-                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false)}}
+                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
                       defaultValue={moment(vj.arrival_time).utc().hours()}
                     />
                     <span>:</span>
@@ -54,7 +54,7 @@ class VehicleJourney extends Component {
                       type='number'
                       min='00'
                       max='59'
-                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false)}}
+                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
                       defaultValue={moment(vj.arrival_time).utc().minutes()}
                     />
                   </span>
@@ -64,7 +64,7 @@ class VehicleJourney extends Component {
                     type='number'
                     min='00'
                     max='23'
-                    onBlur={(e) => {e.preventDefault(); this.props.onUpdateTime(e, i, this.props.index, 'hour', true)}}
+                    onBlur={(e) => {e.preventDefault(); this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
                     defaultValue={moment(vj.departure_time).utc().hours()}
                   />
                   <span>:</span>
@@ -72,7 +72,7 @@ class VehicleJourney extends Component {
                     type='number'
                     min='00'
                     max='59'
-                    onBlur={(e) => {e.preventDefault(); this.props.onUpdateTime(e, i, this.props.index, "minute", true)}}
+                    onBlur={(e) => {e.preventDefault(); this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
                     defaultValue={moment(vj.departure_time).utc().minutes()}
                   />
                 </span>
