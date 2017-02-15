@@ -3,7 +3,9 @@
 
   = f.input :city_name_cont, placeholder: t('.city_name'), label: @stop_areas.human_attribute_name(:city_name), required: false
 
-  = f.input :area_type_cont, placeholder: t('.area_type'), label: @stop_areas.human_attribute_name(:area_type), required: false
+  .form-group.togglable
+    = f.label @stop_areas.human_attribute_name(:area_type), required: false, class: 'control-label'
+    = f.input :area_type_eq_any, collection: Chouette::StopArea.area_type.options.sort, as: :check_boxes, label: false, label_method: lambda{|w| ("<span>" + t("enumerize.stop_area.area_type.#{w[1]}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .actions
     = link_to 'Effacer', @workbench, class: 'btn btn-link'

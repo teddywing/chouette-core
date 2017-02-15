@@ -8,8 +8,8 @@
 / PageContent
 .page_content
   .container-fluid
-    - if @stop_areas.any?
-      .row
+    - if params[:q].present? or @stop_areas.any?
+      .row.mb-sm
         .col-lg-5.col-md-6.col-sm-6.col-xs-8
           = search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), html: {method: :get} do |f|
             .input-group.search_bar
@@ -21,20 +21,22 @@
 
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @stop_areas
-          
-      .row.mt-sm
+
+    - if @stop_areas.any?
+      .row
         .col-lg-12
           = render 'filters'
 
           = table_builder @stop_areas,
-            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @stop_areas.human_attribute_name(:name) => 'name', @stop_areas.human_attribute_name(:registration_number) => 'registration_number', @stop_areas.human_attribute_name(:city_name) => 'city_name', @stop_areas.human_attribute_name(:zip_code) => 'zip_code' },
+            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @stop_areas.human_attribute_name(:name) => 'name', @stop_areas.human_attribute_name(:registration_number) => 'registration_number', @stop_areas.human_attribute_name(:zip_code) => 'zip_code',
+            @stop_areas.human_attribute_name(:city_name) => 'city_name', @stop_areas.human_attribute_name(:area_type) => Proc.new{|s| t("enumerize.stop_area.area_type.#{s.try(:area_type)}")} },
             [:show, :edit, :delete],
             [],
             'table'
           
           = new_pagination @stop_areas, 'pull-right'
 
-    - else
+    - unless @stop_areas.any?
       .row
         .col-lg-12
           = replacement_msg t('stop_areas.search_no_results')

@@ -28,8 +28,8 @@
             thead
               tr
                 th Synchronisé
-                th Message
                 th Statut
+                th Message
 
             tbody
               - @line_referential.line_referential_syncs.each_with_index do |sync, i|
@@ -41,8 +41,8 @@
                         tr
                           td = l(log.created_at, format: :short)
                           td
+                            .fa.fa-circle class="text-#{criticity_class(log.criticity)}"
+                          td
                             - data = log.message_attributs.symbolize_keys!
                             - data[:processing_time] = distance_of_time_in_words(data[:processing_time].to_i)
                             = t("line_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!).html_safe
-                          td
-                            .fa.fa-circle class="text-#{criticity_class(log.criticity)}"
