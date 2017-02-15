@@ -120,6 +120,8 @@ fr:
         coordinates: "Coordonnées (lat,lng) WGS84"
         zip_code: "Code postal"
         city_name: "Commune"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
   formtastic:
     titles:
       stop_area:

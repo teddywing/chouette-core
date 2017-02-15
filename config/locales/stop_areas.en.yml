@@ -119,6 +119,8 @@ en:
         coordinates: "Coordinates (lat,lng) WGS84"
         zip_code: "Zip code"
         city_name: "City"
+        created_at: Created at
+        updated_at: Updated at
   formtastic:
     titles:
       stop_area:
