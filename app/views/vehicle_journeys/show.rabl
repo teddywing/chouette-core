@@ -34,14 +34,13 @@ end
 child :vehicle_journey_at_stops, :object_root => false do |vehicle_stops|
   node do |vehicle_stop|
     node(:stop_area_object_id) { vehicle_stop.stop_point.stop_area.objectid }
-    [ :connecting_service_id, :arrival_time, :departure_time, :boarding_alighting_possibility].each do |attr|
-      node( attr) do
-        if vehicle_stop.send(attr).is_a? Time
-          vehicle_stop.send(attr).iso8601()
-        else
-          vehicle_stop.send(attr)
-        end
-      end unless vehicle_stop.send(attr).nil?
+    [:connecting_service_id, :boarding_alighting_possibility].map do |att|
+      node(att) { vehicle_stop.send(att) } unless vehicle_stop.send(att).nil?
+    end
+
+    [:arrival_time, :departure_time].map do |att|
+      node("#{att}_hour".to_sym)   { vehicle_stop.send(att).strftime('%H') }
+      node("#{att}_minute".to_sym) { vehicle_stop.send(att).strftime('%M') }
     end
   end
 end
