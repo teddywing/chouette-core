@@ -59,7 +59,7 @@ describe('vehicleJourneys reducer', () => {
   })
 
   it('should handle UPDATE_TIME', () => {
-    const val = 33, subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true
+    const val = 33, subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true
     let newVJAS = [{
       arrival_time : "2000-01-01T00:00:00+01:00",
       departure_time : "2000-01-01T00:33:00+01:00",
@@ -73,7 +73,8 @@ describe('vehicleJourneys reducer', () => {
         subIndex,
         index,
         timeUnit,
-        isDeparture
+        isDeparture,
+        isArrivalsToggled
       })
     ).toEqual([newVJ, state[1]])
   })

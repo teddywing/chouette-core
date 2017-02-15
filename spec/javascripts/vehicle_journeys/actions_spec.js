@@ -39,15 +39,16 @@ describe('when toggling arrivals', () => {
 })
 describe('when updating vjas time', () => {
   it('should create an action to update time', () => {
-    const val = 33, subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true
+    const val = 33, subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true
     const expectedAction = {
       type: 'UPDATE_TIME',
       val,
       subIndex,
       index,
       timeUnit,
-      isDeparture
+      isDeparture,
+      isArrivalsToggled
     }
-    expect(actions.updateTime(val, subIndex, index, timeUnit, isDeparture)).toEqual(expectedAction)
+    expect(actions.updateTime(val, subIndex, index, timeUnit, isDeparture, isArrivalsToggled)).toEqual(expectedAction)
   })
 })
