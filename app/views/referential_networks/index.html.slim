@@ -25,7 +25,7 @@
       .row.mt-sm
         .col-lg-12
           = table_builder @networks,
-            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @networks.human_attribute_name(:name) => 'name', @networks.human_attribute_name(:description) => 'description', @networks.human_attribute_name(:comment) => 'comment' },
+            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @networks.human_attribute_name(:name) => 'name', @networks.human_attribute_name(:description) => 'description', @networks.human_attribute_name(:registration_number) => 'registration_number' },
             [:show, :edit, :delete],
             [],
             'table'
