@@ -3,16 +3,21 @@ var actions = require("../actions")
 const vehicleJourney= (state = {}, action) => {
   switch (action.type) {
     case 'UPDATE_TIME':
-      let vj, vjas, vjasArray
+      let vj, vjas, vjasArray, newSchedule
       vjasArray = state.vehicle_journey_at_stops.map((vjas, i) =>{
         if(i == action.subIndex){
+          newSchedule = {
+            departure_time: Object.assign({}, vjas.departure_time),
+            arrival_time: Object.assign({}, vjas.arrival_time)
+          }
           if (action.isDeparture){
-            let newSchedule = {departure_time: moment(state.vehicle_journey_at_stops[action.subIndex].departure_time).set(action.timeUnit, action.val).format()}
+            newSchedule.departure_time[action.timeUnit] = action.val
             if(!action.isArrivalsToggled)
-              newSchedule.arrival_time = moment(state.vehicle_journey_at_stops[action.subIndex].arrival_time).set(action.timeUnit, action.val).format()
+              newSchedule.arrival_time[action.timeUnit] = action.val
             return Object.assign({}, state.vehicle_journey_at_stops[action.subIndex], newSchedule)
           }else{
-            return Object.assign({}, state.vehicle_journey_at_stops[action.subIndex],  {arrival_time: moment(state.vehicle_journey_at_stops[action.subIndex].arrival_time).set(action.timeUnit, action.val).format()})
+            newSchedule.arrival_time[action.timeUnit] = action.val
+            return Object.assign({}, state.vehicle_journey_at_stops[action.subIndex],  {arrival_time: newArr})
           }
         }else{
           return vjas

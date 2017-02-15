@@ -13,8 +13,14 @@ let fakeFootnotes = [{
 
 let fakeTimeTables = []
 let fakeVJAS = [{
-  arrival_time : "2000-01-01T00:00:00+01:00",
-  departure_time : "2000-01-01T00:00:00+01:00",
+  arrival_time : {
+    hour: '11',
+    minute: '11'
+  },
+  departure_time : {
+    hour: '22',
+    minute: '22'
+  },
   stop_area_object_id : "FR:92024:ZDE:420553:STIF"
 }]
 
@@ -59,10 +65,16 @@ describe('vehicleJourneys reducer', () => {
   })
 
   it('should handle UPDATE_TIME', () => {
-    const val = 33, subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true
+    const val = '33', subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true
     let newVJAS = [{
-      arrival_time : "2000-01-01T00:00:00+01:00",
-      departure_time : "2000-01-01T00:33:00+01:00",
+      arrival_time : {
+        hour: '11',
+        minute: '11'
+      },
+      departure_time : {
+        hour: '22',
+        minute: '33'
+      },
       stop_area_object_id : "FR:92024:ZDE:420553:STIF"
     }]
     let newVJ = Object.assign({}, state[0], {vehicle_journey_at_stops: newVJAS})

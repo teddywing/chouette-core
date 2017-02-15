@@ -46,16 +46,16 @@ class VehicleJourney extends Component {
                       type='number'
                       min='00'
                       max='23'
-                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
-                      defaultValue={moment(vj.arrival_time).utc().hours()}
+                      onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
+                      value={vj.arrival_time['hour']}
                     />
                     <span>:</span>
                     <input
                       type='number'
                       min='00'
                       max='59'
-                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
-                      defaultValue={moment(vj.arrival_time).utc().minutes()}
+                      onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
+                      value={vj.arrival_time['minute']}
                     />
                   </span>
                 }
@@ -64,16 +64,16 @@ class VehicleJourney extends Component {
                     type='number'
                     min='00'
                     max='23'
-                    onBlur={(e) => {e.preventDefault(); this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
-                    defaultValue={moment(vj.departure_time).utc().hours()}
+                    onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
+                    value={vj.departure_time['hour']}
                   />
                   <span>:</span>
                   <input
                     type='number'
                     min='00'
                     max='59'
-                    onBlur={(e) => {e.preventDefault(); this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
-                    defaultValue={moment(vj.departure_time).utc().minutes()}
+                    onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
+                    value={vj.departure_time['minute']}
                   />
                 </span>
               </li>
