@@ -1,6 +1,9 @@
 class LineFootnotesController < ChouetteController
   defaults :resource_class => Chouette::Line, :instance_name => 'line'
   before_action :check_policy, only: [:edit, :update, :destroy]
+
+  respond_to :json, :only => :show
+
   belongs_to :referential
 
   def show
@@ -32,6 +35,7 @@ class LineFootnotesController < ChouetteController
   def resource
     @referential = Referential.find params[:referential_id]
     @line = @referential.lines.find params[:line_id]
+    @footnotes = @line.footnotes
   end
 
   def line_params
