@@ -25,6 +25,8 @@ const vehicleJourneys = (state = [], action) => {
   switch (action.type) {
     case 'RECEIVE_VEHICLE_JOURNEYS':
       return [...action.json]
+    case 'RECEIVE_ERRORS':
+      return [...action.json]
     case 'GO_TO_PREVIOUS_PAGE':
       if(action.pagination.page > 1){
         actions.fetchVehicleJourneys(action.dispatch, action.pagination.page, action.nextPage)

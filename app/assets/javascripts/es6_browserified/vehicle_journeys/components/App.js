@@ -2,6 +2,7 @@ var React = require('react')
 var VehicleJourneysList = require('../containers/vehicleJourneysList')
 var Navigate = require('../containers/Navigate')
 var FiltersList = require('../containers/FiltersList')
+var SaveVehicleJourneys = require('../containers/SaveVehicleJourneys')
 
 const App = () => (
   <div>
@@ -10,6 +11,7 @@ const App = () => (
       <Navigate />
     </div>
     <VehicleJourneysList />
+    <SaveVehicleJourneys />
   </div>
 )
 

@@ -3,6 +3,10 @@ const actions = {
     type: "RECEIVE_VEHICLE_JOURNEYS",
     json
   }),
+  receiveErrors : (json) => ({
+    type: "RECEIVE_ERRORS",
+    json
+  }),
   fetchingApi: () =>({
       type: 'FETCH_API'
   }),
@@ -104,7 +108,39 @@ const actions = {
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
         }
       })
-  }
+  },
+  submitVehicleJourneys : (dispatch, state, next) => {
+    dispatch(actions.fetchingApi())
+    let urlJSON = window.location.pathname + ".json"
+    let req = new Request(urlJSON, {
+      credentials: 'same-origin',
+      method: 'PATCH',
+      contentType: 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      body: JSON.stringify(state),
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      }
+    })
+    let hasError = false
+    fetch(req)
+      .then(response => {
+        if(!response.ok) {
+          hasError = true
+        }
+        return response.json()
+      }).then((json) => {
+        if(hasError == true) {
+          dispatch(actions.receiveErrors(json))
+        } else {
+          if(next) {
+            dispatch(next)
+          } else {
+            dispatch(actions.receiveVehicleJourneys(json))
+          }
+        }
+      })
+  },
 }
 
 module.exports = actions
