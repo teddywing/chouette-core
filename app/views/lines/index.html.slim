@@ -8,8 +8,8 @@
 / PageContent
 .page_content
   .container-fluid
-    - if @lines.any?
-      .row
+    - if params[:q].present? or @lines.any?
+      .row.mb-sm
         .col-lg-5.col-md-6.col-sm-6.col-xs-8
           = search_form_for @q, url: line_referential_lines_path(@line_referential), html: {method: :get} do |f|
             .input-group.search_bar
@@ -22,13 +22,14 @@
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @lines
 
-      .row.mt-sm
+    - if @lines.any?
+      .row
         .col-lg-12
           = render 'filters'
 
           = table_builder @lines,
-            { 'Oid' => Proc.new { |n| n.objectid.local_id }, @lines.human_attribute_name(:id) => 'id',
-            @lines.human_attribute_name(:number) => 'number', @lines.human_attribute_name(:name) => 'name', @lines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) },
+            { 'Oid' => Proc.new { |n| n.objectid.local_id },
+            @lines.human_attribute_name(:name) => 'name', @lines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) },
             @lines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) },
             @lines.human_attribute_name(:transport_mode) => Proc.new { |n| n.transport_mode.nil? ? '-' :  t("enumerize.line.transport_mode.#{n.try(:transport_mode)}") },
             @lines.human_attribute_name(:transport_submode) => Proc.new { |n| n.transport_submode.nil? ? '-' :  t("enumerize.line.transport_submode.#{n.try(:transport_submode)}") } },
@@ -38,7 +39,7 @@
 
           = new_pagination @lines, 'pull-right'
 
-    - else
+    - unless @lines.any?
       .row
         .col-lg-12
           = replacement_msg t('referential_lines.search_no_results')

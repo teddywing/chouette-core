@@ -8,8 +8,8 @@
 / PageContent
 .page_content
   .container-fluid
-    - if @networks.any?
-      .row
+    - if params[:q].present? or @networks.any?
+      .row.mb-sm
         .col-lg-5.col-md-6.col-sm-6.col-xs-8
           = search_form_for @q, url: line_referential_networks_path(@line_referential), html: {method: :get} do |f|
             .input-group.search_bar
@@ -22,7 +22,8 @@
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @networks
 
-      .row.mt-sm
+    - if @networks.any?
+      .row
         .col-lg-12
           = table_builder @networks,
             { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @networks.human_attribute_name(:name) => 'name' },
@@ -32,7 +33,7 @@
 
           = new_pagination @networks, 'pull-right'
 
-    - else
+    - unless @networks.any?
       .row
         .col-lg-12
           = replacement_msg t('networks.search_no_results')
