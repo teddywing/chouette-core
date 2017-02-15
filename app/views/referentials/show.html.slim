@@ -1,59 +1,88 @@
-h2
-  = @referential.name
-  em.small = " (archivé)" if @referential.archived?
+/ PageHeader
+= pageheader 'map-marker',
+             @referential.name,
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@referential.updated_at, format: :short)),
+             link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default') do
 
-.summary
-  - if @referential.created_from
-    p
-      label = "#{Referential.human_attribute_name('created_from')} : "
-      = " #{@referential.created_from.name}"
+  / Below is secundary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      / Actions are: controler, rapport de controle, dupliquer, purger, conserver, supprimer
+      = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
 
-  p
-    label = "#{Referential.human_attribute_name('slug')} : "
-    = " #{@referential.slug}"
+      button.btn.btn-primary type='button' data-toggle='modal' data-target='#purgeModal' Purger
 
-  p
-    label = "#{Referential.human_attribute_name('prefix')} : "
-    = " #{@referential.prefix}"
+      - if @referential.archived?
+        = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
+      - else
+        = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
 
-  p
-    label = "#{Referential.human_attribute_name('projection_type')} : "
-    - if !@referential.projection_type_label.empty?
-      = " #{@referential.projection_type_label} (epsg:#{@referential.projection_type})"
+      = link_to referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary' do
+        span.fa.fa-trash
+        span = t('actions.destroy')
 
-  p
-    label = "#{Referential.human_attribute_name('time_zone').capitalize} : "
-    = " #{@referential.time_zone}"
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { 'Statut' => (@referential.archived? ? 'Conservé' : '-'),
+            @referential.human_attribute_name(:validity_period) => (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-'),
+            @referential.human_attribute_name(:organisation) => @referential.organisation.name,
+            @referential.human_attribute_name(:published_at) => '-' }
 
-  p
-    label = "#{Referential.human_attribute_name('validity_period')} : "
-    - unless period = @referential.metadatas_period
-      = " #{Referential.human_attribute_name('no_validity_period')}"
-    - else
-      => " #{Referential.human_attribute_name('start_validity_period')}"
-      => l period.begin
-      => Referential.human_attribute_name("end_validity_period")
-      = l period.end
-      
-  #reflines
-    = render partial: 'reflines'
+    - if params[:q].present? or @reflines.any?
+      .row.mb-sm
+        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+          = search_form_for @q, url: referential_path(@referential.id) do |f|
+            .input-group.search_bar
+              = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de ligne'
 
-  / - if @referential.api_keys.present?
-  /   h3.api_keys = t('.api_keys')
-  /
-  /   .api_keys.paginated_content
-  /     = paginated_content(@referential.api_keys, "api_keys/api_key")
+              span.input-group-btn
+                button.btn.btn-default type='submit'
+                  span.fa.fa-search
 
-- content_for :sidebar do
-  ul.actions
-    - if policy(@referential).update?
-      li = link_to t('referentials.actions.edit'), edit_referential_path(@referential), class: 'edit'
+        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
+          = new_pagination @reflines
 
-    li = link_to t('referentials.actions.destroy'), referential_path(@referential), method: :delete, data: {:confirm => t('referentials.actions.destroy_confirm')}, class: "remove"
-    / li = link_to t('api_keys.actions.new'), new_referential_api_key_path(@referential), class: 'add'
-    li = link_to t('referentials.actions.clone'), new_referential_path(from: @referential.id), class: 'add'
-    br
+    - if @reflines.any?
+      .row.mt-sm
+        .col-lg-12
+          = render 'filters'
 
-  - if policy(@referential).update?
-    h4 = t('.clean_up')
-    == render 'clean'
+          / ID Codif, nom court, nom de la ligne, réseau, mode, transporteur principal, actions = [show, edit_notes]
+          = table_builder @reflines,
+            { 'ID Codif' => Proc.new { |n| n.objectid.local_id }, @reflines.human_attribute_name(:registration_number) => 'registration_number',
+            @reflines.human_attribute_name(:name) => 'name',
+            @reflines.human_attribute_name(:transport_mode) => 'transport_mode',
+            @reflines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) },
+            @reflines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) } },
+            [:show],
+            [],
+            'table'
+
+          = new_pagination @reflines, 'pull-right'
+
+    - unless @reflines.any?
+      .row
+        .col-lg-12
+          = replacement_msg t('referential_lines.search_no_results')
+
+
+/ Modal(s)
+= modalbox 'purgeModal' do
+  = simple_form_for [@referential, CleanUp.new] do |f|
+    .modal-header
+      h4.modal-title Purger le JDD
+    .modal-body
+      .container-fluid
+        .row
+          .col-lg-8.col-ld-offset-2.col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2.col-xs-12
+            = f.input :begin_date, as: :date, label: t('titles.clean_up.begin_date'),:wrapper_html => { class: 'date', title: t('titles.clean_up.begin_date') }
+            = f.input :end_date, as: :date, label: t('titles.clean_up.end_date'), :wrapper_html => { class: 'date', title: t('titles.clean_up.end_date') }
+
+    .modal-footer
+      button.btn.btn-link type='button' data-dismiss='modal' Annuler
+      = f.button :submit, t('actions.clean_up') , class: 'btn btn-primary'

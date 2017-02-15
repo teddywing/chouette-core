@@ -1,6 +1,6 @@
 class GroupOfLinesController < BreadcrumbController
   include ApplicationHelper
-  before_action :check_policy, :only => [:edit, :update, :destroy]
+  include PolicyChecker
   defaults :resource_class => Chouette::GroupOfLine
   respond_to :html
   respond_to :xml
@@ -75,12 +75,8 @@ class GroupOfLinesController < BreadcrumbController
 
   private
 
-  def check_policy
-    authorize resource
-  end
-
   def group_of_line_params
-    params.require(:group_of_line).permit( :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :lines, :registration_number, :line_tokens)
+    params.require(:group_of_line).permit( :objectid, :object_version, :creator_id, :name, :comment, :lines, :registration_number, :line_tokens)
   end
 
 end

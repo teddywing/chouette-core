@@ -14,4 +14,14 @@ class Workbench < ActiveRecord::Base
 
   has_many :referentials
   has_many :referential_metadatas, through: :referentials, source: :metadatas
+
+
+  def all_referentials
+    if line_ids.empty?
+      Referential.none
+    else
+      Referential.joins(:metadatas).where(['referential_metadata.line_ids && ARRAY[?]', line_ids]).ready
+    end
+  end
+
 end

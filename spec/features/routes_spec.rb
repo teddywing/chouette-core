@@ -4,16 +4,19 @@ require 'spec_helper'
 describe "Routes", :type => :feature do
   login_user
 
-  let!(:line) { create(:line) }
+  let(:line) { create :line }
   let!(:route) { create(:route, :line => line) }
   let!(:route2) { create(:route, :line => line) }
   #let!(:stop_areas) { Array.new(4) { create(:stop_area) } }
   let!(:stop_points) { Array.new(4) { create(:stop_point, :route => route) } }
+  let!(:journey_pattern) { create(:journey_pattern, route: route) }
+
+  before { @user.update(organisation: referential.organisation) }
 
   describe "from lines page to a line page" do
     it "display line's routes" do
       visit referential_lines_path(referential)
-      first(:link, 'Voir').click
+      first(:link, 'Consulter').click
       expect(page).to have_content(route.name)
       expect(page).to have_content(route2.name)
     end
@@ -21,7 +24,7 @@ describe "Routes", :type => :feature do
 
   describe "from line's page to route's page" do
     it "display route properties" do
-      visit referential_line_path(referential,line)
+      visit referential_line_path(referential, line)
       click_link "#{route.name}"
       expect(page).to have_content(route.name)
       expect(page).to have_content(route.number)
@@ -30,7 +33,7 @@ describe "Routes", :type => :feature do
 
   describe "from line's page, create a new route" do
     it "return to line's page that display new route" do
-      visit referential_line_path(referential,line)
+      visit referential_line_path(referential, line)
       click_link "Ajouter un itinéraire"
       fill_in "route_name", :with => "A to B"
       # select 'Aller', :from => "route_direction"
@@ -55,63 +58,69 @@ describe "Routes", :type => :feature do
   end
 
   describe 'show' do
+    before(:each) { visit referential_line_route_path(referential, line, route) }
+
     context 'user has permission to edit journey patterns' do
       it 'shows edit links for journey patterns' do
-        visit referential_line_route_path(referential, line, route)
         expect(page).to have_content(I18n.t('actions.edit'))
       end
     end
 
     context 'user does not have permission to edit journey patterns' do
       it 'does not show edit links for journey patterns' do
-        @user.update_attribute(:permissions, ['journey_patterns.create', 'journey_patterns.destroy'])
+        @user.update_attribute(:permissions, [])
         visit referential_line_route_path(referential, line, route)
-        expect(page).not_to have_content(I18n.t('actions.edit'))
+        expect(page).not_to have_link(I18n.t('actions.edit'), href: edit_referential_line_route_journey_pattern_path(referential, line, route, journey_pattern))
       end
     end
 
     context 'user has permission to destroy journey patterns' do
       it 'shows destroy links for journey patterns' do
-        visit referential_line_route_path(referential, line, route)
         expect(page).to have_content(I18n.t('actions.destroy'))
       end
     end
 
-    context 'user does not have permission to edit journey patterns' do
+    context 'user does not have permission to destroy journey patterns' do
       it 'does not show destroy links for journey patterns' do
-        @user.update_attribute(:permissions, ['journey_patterns.create', 'journey_patterns.edit'])
+        @user.update_attribute(:permissions, [])
         visit referential_line_route_path(referential, line, route)
-        expect(page).not_to have_content(I18n.t('actions.destroy'))
+        expect(page).not_to have_link(I18n.t('actions.destroy'), href: referential_line_route_journey_pattern_path(referential, line, route, journey_pattern))
       end
     end
   end
 
   describe 'referential line show' do
+    before(:each) { visit referential_line_path(referential, line) }
+
     context 'user has permission to edit routes' do
       it 'shows edit buttons for routes' do
-        visit referential_line_path(referential, line)
-        expect(page).to have_css('span.fa.fa-pencil')
+        expect(page).to have_content(I18n.t('actions.edit'))
       end
     end
 
     context 'user does not have permission to edit routes' do
       it 'does not show edit buttons for routes' do
-        @user.update_attribute(:permissions, ['routes.create', 'routes.destroy'])
+        @user.update_attribute(:permissions, [])
         visit referential_line_path(referential, line)
-        expect(page).not_to have_css('span.fa.fa-pencil')
+        expect(page).not_to have_content(I18n.t('actions.edit'))
       end
     end
 
     context 'user has permission to create routes' do
       it 'shows link to a create route page' do
-        visit referential_line_path(referential, line)
         expect(page).to have_content(I18n.t('routes.actions.new'))
+      end
+    end
+
+    context 'user belongs to another organisation' do
+      xit 'does not show link to a create route page' do
+        expect(page).not_to have_content(I18n.t('routes.actions.new'))
       end
     end
 
     context 'user does not have permission to create routes' do
       it 'does not show link to a create route page' do
-        @user.update_attribute(:permissions, ['routes.edit', 'routes.destroy'])
+        @user.update_attribute(:permissions, [])
         visit referential_line_path(referential, line)
         expect(page).not_to have_content(I18n.t('routes.actions.new'))
       end
@@ -119,16 +128,15 @@ describe "Routes", :type => :feature do
 
     context 'user has permission to destroy routes' do
       it 'shows destroy buttons for routes' do
-        visit referential_line_path(referential, line)
-        expect(page).to have_css('span.fa.fa-trash-o')
+        expect(page).to have_content(I18n.t('actions.edit'))
       end
     end
 
     context 'user does not have permission to destroy routes' do
       it 'does not show destroy buttons for routes' do
-        @user.update_attribute(:permissions, ['routes.edit', 'routes.create'])
+        @user.update_attribute(:permissions, [])
         visit referential_line_path(referential, line)
-        expect(page).not_to have_css('span.fa.fa-trash-o')
+        expect(page).not_to have_content(I18n.t('actions.destroy'))
       end
     end
   end

@@ -1,6 +1,6 @@
 class VehicleJourneysController < ChouetteController
   defaults :resource_class => Chouette::VehicleJourney
-
+  respond_to :json, :only => :index
   respond_to :js, :only => [:select_journey_pattern, :edit, :new, :index]
 
   belongs_to :referential do
@@ -8,6 +8,8 @@ class VehicleJourneysController < ChouetteController
       belongs_to :route, :parent_class => Chouette::Route
     end
   end
+
+  include PolicyChecker
 
   def select_journey_pattern
     if params[:journey_pattern_id]

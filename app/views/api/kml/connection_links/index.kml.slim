@@ -1,6 +1,6 @@
 doctype XML
 
-kml xmlns="http://www.opengis.net/kml/2.2" 
+kml xmlns="http://www.opengis.net/kml/2.2"
   document
     name = h(Chouette::ConnectionLink.model_name.human)
 
@@ -8,7 +8,7 @@ kml xmlns="http://www.opengis.net/kml/2.2"
       placemark id="#{connection_link.objectid}"
         name = h(connection_link.name)
         extendeddata
-          - [ :connection_link_type, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :link_distance, :link_type, :default_duration, :frequent_traveller_duration, :occasional_traveller_duration, :mobility_restricted_traveller_duration, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs].each do |prop|
+          - [ :connection_link_type, :objectid, :object_version, :creator_id, :created_at, :updated_at, :name, :comment, :link_distance, :link_type, :default_duration, :frequent_traveller_duration, :occasional_traveller_duration, :mobility_restricted_traveller_duration, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs].each do |prop|
             data name="#{prop.to_s}"
               value = h(connection_link.send( prop))
 

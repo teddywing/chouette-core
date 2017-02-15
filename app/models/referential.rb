@@ -43,6 +43,8 @@ class Referential < ActiveRecord::Base
   has_many :stop_areas, through: :stop_area_referential
   belongs_to :workbench
 
+  scope :ready, -> { where(ready: true) }
+
   def lines
     if metadatas.blank?
       workbench ? workbench.lines : associated_lines
@@ -224,7 +226,7 @@ class Referential < ActiveRecord::Base
       scope = workbench ? workbench.lines : associated_lines
       scope.where(id: metadatas.pluck(:line_ids).flatten)
     else
-      Chouete::Line.none
+      Chouette::Line.none
     end
   end
 

@@ -5,13 +5,11 @@
         .alert.alert-danger
           - f.object.errors[:base].each do |message|
             p.small = message
-  .row
-    .col-lg-5.col-md-5.col-sm-5.col-xs-5
-      = f.input :begin, as: :date, html5: true, input_html: { style: 'width: 100%' }
-    .col-lg-5.col-md-5.col-sm-5.col-xs-5
-      = f.input :end, as: :date, html5: true, input_html: { style: 'width: 100%' }
 
-    .col-lg-2.col-md-2.col-sm-2.col-xs-2.text-right style='margin-top:23px'
-      = link_to_remove_association f, class: 'btn btn-danger', data: { confirm: 'Etes-vous sûr(e) ?' } do
-        span.fa.fa-trash
-
+  .wrapper
+    div
+      = f.input :begin, as: :date, label: false, wrapper_html: { class: 'date' }
+    div
+      = f.input :end, as: :date, label: false, wrapper_html: { class: 'date' }
+    div
+      = link_to_remove_association '', f, class: 'fa fa-trash', data: { confirm: 'Etes-vous sûr(e) ?' }, title: t('actions.delete')

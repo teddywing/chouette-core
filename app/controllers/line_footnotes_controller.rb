@@ -1,6 +1,6 @@
 class LineFootnotesController < ChouetteController
   defaults :resource_class => Chouette::Line, :instance_name => 'line'
-  before_action :check_policy, :only => [:edit, :update]
+  include PolicyChecker
   belongs_to :referential
 
   def show
@@ -23,11 +23,14 @@ class LineFootnotesController < ChouetteController
     end
   end
 
-  private
+  protected
+
+  # overrides default
   def check_policy
-    authorize resource, :update_footnote?
+    authorize resource, "#{action_name}_footnote?".to_sym
   end
 
+  private
   def resource
     @referential = Referential.find params[:referential_id]
     @line = @referential.lines.find params[:line_id]

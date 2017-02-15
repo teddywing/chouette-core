@@ -1,4 +1,5 @@
 class RoutesController < ChouetteController
+  include PolicyChecker
   defaults :resource_class => Chouette::Route
 
   respond_to :html, :xml, :json
@@ -10,7 +11,6 @@ class RoutesController < ChouetteController
   end
 
   before_action :define_candidate_opposite_routes, only: [:new, :edit, :create, :update]
-  before_action :check_policy, only: [:edit, :update, :destroy]
 
   def index
     index! do |format|
@@ -86,14 +86,10 @@ class RoutesController < ChouetteController
       end
   end
 
-  def check_policy
-    authorize resource
-  end
-
   private
 
   def route_params
-    params.require(:route).permit( :line_id, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :opposite_route_id, :published_name, :number, :direction, :wayback, { stop_points_attributes: [ :id, :_destroy, :position, :stop_area_id, :for_boarding, :for_alighting ] } )
+    params.require(:route).permit( :line_id, :objectid, :object_version, :creator_id, :name, :comment, :opposite_route_id, :published_name, :number, :direction, :wayback, { stop_points_attributes: [ :id, :_destroy, :position, :stop_area_id, :for_boarding, :for_alighting ] } )
   end
 
 end

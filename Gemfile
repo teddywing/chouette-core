@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.1.10'
+gem 'i18n-active_record', :require => 'i18n/active_record'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'

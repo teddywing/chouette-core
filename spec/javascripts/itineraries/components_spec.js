@@ -1,40 +1,53 @@
-// var React = require('react');
-// var Provider = require('react-redux').Provider;
-// var actions = require('es6_browserified/itineraries/actions/index');
-// var App = require('es6_browserified/itineraries/components/TodoList');
-// var ConnectedApp = require('es6_browserified/itineraries/containers/VisibleTodoList');
-// var TestUtils = require('react-addons-test-utils');
+var React = require('react');
+var shallow = require('enzyme').shallow;
+var mount = require('enzyme').mount;
+var StopPointList = require('es6_browserified/itineraries/components/StopPointList');
+var StopPoint = require('es6_browserified/itineraries/components/StopPoint');
+var sinon = require('sinon')
 
-// xdescribe('ConnectedApp', function() {
-//   var connectedApp, store, initialItems;
-//   var state;
-//   state = [
-//     {
-//       text: 'first',
-//       index: 0,
-//       for_boarding: 'normal',
-//       for_alighting: 'normal'
-//     },
-//     {
-//       text: 'second',
-//       index: 1,
-//       for_boarding: 'normal',
-//       for_alighting: 'normal'
-//     }
-//   ]
+describe('(Component) StopPointList', () => {
+  it('renders without exploding', () => {
+    const wrapper = shallow(<StopPointList
+      stopPoints = {[]}
+      onChange = {() => {}}
+      onMoveDownClick={() => {}}
+      onMoveUpClick={() => {}}
+      onDeleteClick={() => {}}
+      onSelectChange={() => {}}
+      onSelectMarker={() => {}}
+      onUnselectMarker={() => {}}
+    />);
+    expect(wrapper.length).toEqual(1);
+  });
 
-//   beforeEach(function() {
-//     store = state
-//   });
-
-//   describe('state provided by the store', function() {
-//     beforeEach(function() {
-//       connectedApp = TestUtils.renderIntoDocument(<Provider store={store}><ConnectedApp/></Provider>);
-//     });
-
-//     it('passes down items', function() {
-//           app = TestUtils.findRenderedComponentWithType(connectedApp, App);
-//           expect(app.props.items).toEqual(initialItems);
-//         });
-//       });
-// });
+  it('simulates click events', () => {
+    const state = {
+      text: 'first',
+      index: 0,
+      for_boarding: 'normal',
+      for_alighting: 'normal',
+      user_objectid: '',
+      olMap: {
+        isOpened: false,
+        json: {}
+      }
+    }
+    const onButtonClick = sinon.spy();
+    const wrapper = mount(<StopPoint
+      value = {state}
+      onChange = {() => {}}
+      onMoveDownClick={() => {}}
+      onMoveUpClick={() => {}}
+      onDeleteClick={onButtonClick}
+      onSelectChange={() => {}}
+      onSelectMarker={() => {}}
+      onToggleMap={() => {}}
+      onUnselectMarker={() => {}}
+      first= {true}
+      last= {true}
+      index= {0}
+    />);
+    wrapper.find('.delete').simulate('click');
+    expect(onButtonClick.calledOnce).toEqual(true);
+  });
+});

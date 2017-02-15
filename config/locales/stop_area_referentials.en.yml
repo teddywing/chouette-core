@@ -3,3 +3,5 @@ en:
     actions:
       sync: "Launch a new reflex synchronization"
       cancel_sync: "Cancel reflex synchronization"
+    show:
+      title: 'Synchronization iCAR'

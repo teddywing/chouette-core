@@ -1,0 +1,20 @@
+= search_form_for @q, url: line_referential_lines_path(@line_referential), html: { method: :get}, class: 'form form-filter' do |f|
+  .form-group.togglable
+    = f.label @lines.human_attribute_name(:network), required: false, class: 'control-label'
+    = f.input :network_id_eq_any, collection: @line_referential.networks.order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+
+  .form-group.togglable
+    = f.label @lines.human_attribute_name(:company), required: false, class: 'control-label'
+    = f.input :company_id_eq_any, collection: @line_referential.companies.order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+
+  .form-group.togglable
+    = f.label @lines.human_attribute_name(:transport_mode), required: false, class: 'control-label'
+    = f.input :transport_mode_eq_any, collection: Chouette::Line.transport_mode.values, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("enumerize.line.transport_mode.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+
+  .form-group.togglable
+    = f.label @lines.human_attribute_name(:transport_submode), required: false, class: 'control-label'
+    = f.input :transport_submode_eq_any, collection: Chouette::Line.transport_submode.values, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("enumerize.line.transport_submode.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+
+  .actions
+    = link_to 'Effacer', @workbench, class: 'btn btn-link'
+    = f.submit 'Filtrer', class: 'btn btn-default'

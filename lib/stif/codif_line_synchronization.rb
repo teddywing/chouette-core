@@ -91,6 +91,10 @@ module Stif
         }
         params[:transport_mode] = api_line.transport_mode.to_s
         params[:transport_submode] = api_line.transport_submode.to_s
+        api_line.secondary_operator_ref.each do |id|
+          params[:secondary_companies] ||= []
+          params[:secondary_companies] << Chouette::Company.find_by(objectid: id)
+        end
         unless api_line.operator_ref.nil?
           params[:company] = Chouette::Company.find_by(objectid: api_line.operator_ref)
         end

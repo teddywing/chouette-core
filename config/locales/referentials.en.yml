@@ -1,5 +1,8 @@
 en:
   referentials:
+    search_no_results: 'No data space matching your query'
+    index:
+      title: 'Data spaces'
     edit:
       title: "Edit the data space"
     show:
@@ -10,6 +13,8 @@ en:
       title: "Data space"
       clean_up: "Clean up"
       api_keys: "Authentification keys for an API REST access"
+      show_all_referentials: Show all referentials
+      from_this_workbench: Show referentials from this workbench
     counts:
       objects: "Data space elements"
       count: "count"
@@ -18,6 +23,8 @@ en:
       validity_out_soon_time_tables: "Timetables closed in %{count} days"
     new:
       title: "Create a new data space"
+      duplicated:
+        title: 'Clone a data space'
       submit: "Create a data space"
     actions:
       new: "Add a data space"
@@ -29,6 +36,8 @@ en:
       pg_excluded: "can't begins with pg_"
       public_excluded: "public is a reserved value"
       user_excluded: "%{user} is a reserved value"
+      overlapped_referential: "%{referential} cover the same perimeter"
+      overlapped_period: "Another period is on the same period"
   activerecord:
     models:
       referential:
@@ -37,7 +46,8 @@ en:
         other: "Data spaces"
     attributes:
       referential:
-        name: "Name"
+        name: "Data space name"
+        status: "Status"
         slug: "Code"
         prefix: "Neptune Object Id prefix"
         projection_type: "Optional spatial reference system code (SRID)"
@@ -71,7 +81,12 @@ en:
         data_format_restrictions: "Data format constraint"
         data_format: "Favorite format for export"
         timebands: "Time bands"
-        routing_constraint_zone: Zone de contrainte
+        routing_constraint_zone: Routing constraint zone
+        validity_period: "Validity period"
+        updated_at: "Updated"
+        published_at: "Integrated"
+        archived_at: "Archived"
+        created_from: 'Created from'
   formtastic:
     titles:
       referential:
@@ -95,4 +110,5 @@ en:
     referential:
       archived: "The data space has been successfully archived"
       unarchived: "The data space has been successfully unarchived"
+      unarchived_failed: "The data space cannot be unarchived"
       deleted: "The data space has been successfully destroyed"

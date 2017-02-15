@@ -2,13 +2,18 @@ en:
   actions:
     edit: "Edit"
     destroy: "Destroy"
+    delete: "Delete"
     search: "Search"
     add: "Add new"
     show: "See"
+    archive: "Archive"
+    unarchive: "Unarchive"
+    clone: 'Clone'
+    clean_up: 'Clean up'
+    sync: 'Synchronize'
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"
   no_result_text: "No Results"
   searching_term: "Searching..."
   are_you_sure: Are you sure?
-

@@ -58,7 +58,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
   before_validation :prepare_auto_columns
   def prepare_auto_columns
     self.object_version = 1
-    self.creation_time = Time.now
     self.creator_id = 'chouette'
   end
 
@@ -176,6 +175,13 @@ class Chouette::StopArea < Chouette::ActiveRecord
   def default_position
     # for first StopArea ... the bounds is nil :(
     Chouette::StopArea.bounds ? Chouette::StopArea.bounds.center : nil # FIXME #821 stop_area_referential.envelope.center
+  end
+
+  def around(scope, distance)
+    db   = "ST_GeomFromEWKB(ST_MakePoint(longitude, latitude, 4326))"
+    from = "ST_GeomFromText('POINT(#{self.longitude} #{self.latitude})', 4326)"
+    sql  = "SELECT * FROM public.stop_areas WHERE ST_DWithin(#{db}, #{from}, ?, false)"
+    scope.find_by_sql [sql, distance]
   end
 
   def self.near(origin, distance = 0.3)

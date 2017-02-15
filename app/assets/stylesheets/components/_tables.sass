@@ -1,0 +1,116 @@
+//----------//
+//  Tables  //
+//----------//
+
+.table
+  > thead
+    > tr > th
+      font-size: $h2-size
+      font-weight: 700
+      border-bottom: 2px solid $darkgrey
+
+      > a
+        position: relative
+        color: $darkgrey
+        padding-right: 18px
+
+        &:hover, &:focus
+          text-decoration: none
+
+        > .orderers
+          font-size: $base-font-size
+          position: absolute
+          display: block
+          height: 14px
+          width: 8px
+          right: 0
+          top: 50%
+          margin-top: -7px
+
+          > *
+            position: absolute
+            right: 0
+            top: 0
+            bottom: auto
+            color: $grey
+
+            &:last-child
+              bottom: 0
+              top: auto
+
+            &.active
+              color: $blue
+
+    + tbody
+      > tr > td
+        border-top: none
+        border-bottom: 1px solid rgba($grey, 0.5)
+        padding: 6px 8px
+        vertical-align: middle
+
+        > a
+          display: block
+          margin: -6px -8px
+          padding: 6px 8px
+          text-decoration: none
+          font-weight: 700
+          color: inherit
+
+        > .fa
+          &:first-child
+            margin-right: 3px
+
+      > tr:hover
+        cursor: default
+        > td
+          background-color: whitesmoke
+
+// select_toolbox
+.select_toolbox
+  padding: 10px
+  background-color: #fff
+  box-shadow: 0 0 3px $darkgrey
+  position: fixed
+  z-index: 999
+  right: 50px
+  bottom: 15px
+
+  > ul
+    display: block
+    margin: 0
+    padding: 0
+    text-align: center
+
+    > .st_action
+      display: inline-block
+      width: 35px
+      height: 35px
+      margin: 5px
+
+      > a
+        display: block
+        height: 35px
+        text-align: center
+        line-height: 35px
+        border-radius: 50%
+        background-color: $blue
+        color: #fff
+
+        &:hover
+          background-color: rgba($blue, 0.5)
+
+        &[title='Supprimer']
+          background-color: $red
+
+          &:hover
+            background-color: darken($red, 5%)
+
+  &.noselect
+    .st_action > a
+      &, &[title='Supprimer'], &:hover, &:focus
+        background-color: rgba($grey, 0.65)
+        cursor: not-allowed
+
+  > .info-msg
+    font-style: italic
+    font-size: 0.85em

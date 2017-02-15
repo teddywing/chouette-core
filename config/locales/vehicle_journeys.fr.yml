@@ -102,7 +102,8 @@ fr:
         journey_frequency_ids: "Créneau horaire"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
         creator_id: "Créé par"
         footnote_ids: "Notes de bas de page"
     errors:

@@ -3,6 +3,7 @@
     { 'Oid' => Proc.new { |n| n.objectid.local_id }, @lines.human_attribute_name(:id) => 'id',
     @lines.human_attribute_name(:number) => 'number', @lines.human_attribute_name(:name) => 'name', @lines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) }, @lines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) } },
     [:show],
+    [],
     'table table-bordered'
 
   .text-center

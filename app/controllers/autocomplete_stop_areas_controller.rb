@@ -1,18 +1,14 @@
 class AutocompleteStopAreasController < InheritedResources::Base
   respond_to :json, :only => [:index, :children, :parent, :physicals]
 
-  before_action :switch_referential
+  include ReferentialSupport
 
-  def switch_referential
-    Apartment::Tenant.switch!(referential.slug)
-  end
-
-  def referential
-    @referential ||= current_organisation.referentials.find params[:referential_id]
+  def around
+    stop_area   = referential.stop_areas.find params[:id]
+    @stop_areas = stop_area.around(referential.stop_areas, 100)
   end
 
   protected
-
   def collection
     scope = referential.stop_areas
     scope = scope.physical if physical_filter?

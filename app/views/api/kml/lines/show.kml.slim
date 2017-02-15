@@ -1,13 +1,13 @@
 doctype XML
 
-kml xmlns="http://www.opengis.net/kml/2.2" 
+kml xmlns="http://www.opengis.net/kml/2.2"
   document
     name = "#{h(Chouette::Line.model_name.human)} : #{h(@line.name)}"
-    
+
     placemark id="#{@line.objectid}"
       name = h(@line.name)
       extendeddata
-        - [ :transport_mode, :objectid, :object_version, :creation_time, :creator_id, :name, :number, :published_name, :registration_number, :comment, :mobility_restricted_suitability, :int_user_needs].each do |prop|
+        - [ :transport_mode, :objectid, :created_at, :updated_at, :object_version, :creator_id, :name, :number, :published_name, :registration_number, :comment, :mobility_restricted_suitability, :int_user_needs].each do |prop|
           data name="#{prop.to_s}"
             value = h(@line.send( prop))
 

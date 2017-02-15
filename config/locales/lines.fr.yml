@@ -13,6 +13,8 @@ fr:
       export_kml_all: "Export KML des lignes"
       export_hub: "Export HUB de la ligne"
       export_hub_all: "Export HUB des lignes"
+      show_network: 'Voir le réseau'
+      show_company: 'Voir le transporteur principal'
     new:
       title: "Ajouter une ligne"
     edit:
@@ -59,12 +61,12 @@ fr:
     attributes:
       line:
         network: "Réseau"
-        company: "Transporteur"
-        registration_number: "Numéro d'enregistrement"
-        name: "Nom"
+        company: "Transporteur principal"
+        registration_number: "Nom court"
+        name: "Nom de la ligne"
         published_name: "Nom public"
         number: "Indice"
-        transport_mode: "Mode de transport"
+        transport_mode: "Mode"
         transport_submode: "Sous mode de transport"
         url: "Page web associée"
         color: "Couleur du tracé"
@@ -89,7 +91,8 @@ fr:
         comment: "Commentaire"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
         creator_id: "Créé par"
         footnotes: "Notes de bas de page"
         stable_id: "Identifiant externe pérenne"

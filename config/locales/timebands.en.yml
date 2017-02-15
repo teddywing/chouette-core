@@ -24,3 +24,5 @@ en:
         name: "Title"
         start_time: "Start time"
         end_time: "End time"
+        created_at: Created at
+        updated_at: Updated at

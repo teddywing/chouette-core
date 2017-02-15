@@ -33,13 +33,14 @@ fr:
       journey_pattern:
         route: "Séquence d'arrêts"
         name: "Nom"
-        published_name: "Nom public"       
+        published_name: "Nom public"
         comment: "Commentaire"
         registration_number: "Numéro d'enregistrement"
         stop_point_ids: "Sélection des arrêts desservis"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
         creator_id: "Créé par"
   formtastic:
     titles:

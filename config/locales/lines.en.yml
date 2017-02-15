@@ -13,6 +13,8 @@ en:
       export_kml_all: "Export KML lines"
       export_hub: "Export HUB line"
       export_hub_all: "Export HUB lines"
+      show_network: 'Show network'
+      show_company: 'Show company'
     new:
       title: "Add a new line"
     edit:
@@ -89,7 +91,8 @@ en:
         comment: "Comments"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by"
         footnotes: "Footnotes"
         stable_id: External permanent idenifier"

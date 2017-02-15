@@ -1,5 +1,5 @@
 class ReferentialLinesController < ChouetteController
-  before_action :check_policy, :only => [:edit, :update, :destroy]
+  include PolicyChecker
 
   defaults :resource_class => Chouette::Line, :collection_name => 'lines', :instance_name => 'line'
   respond_to :html
@@ -24,7 +24,7 @@ class ReferentialLinesController < ChouetteController
 
   def show
     @map = LineMap.new(resource).with_helpers(self)
-    @routes = @line.routes.order(:name)
+    @routes = @line.routes.order(:name).paginate(page: params[:page], per_page: 10)
     @group_of_lines = @line.group_of_lines
     show! do
       build_breadcrumb :show
@@ -79,10 +79,11 @@ class ReferentialLinesController < ChouetteController
     @q = referential.lines.search(params[:q])
 
     if sort_column && sort_direction
-      @lines ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page]).includes([:network, :company])
+      @lines ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction)
     else
-      @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+      @lines ||= @q.result(:distinct => true).order(:number)
     end
+    @lines = @lines.paginate(page: params[:page], per_page: 10).includes([:network, :company])
 
   end
 
@@ -95,10 +96,6 @@ class ReferentialLinesController < ChouetteController
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end
 
-  def check_policy
-    authorize resource
-  end
-
   def line_params
     params.require(:line).permit(
       :transport_mode,
@@ -107,7 +104,6 @@ class ReferentialLinesController < ChouetteController
       :company_id,
       :objectid,
       :object_version,
-      :creation_time,
       :creator_id,
       :name, :number,
       :published_name,

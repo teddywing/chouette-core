@@ -1,22 +1,39 @@
-= title_tag t('companies.index.title')
+/ PageHeader
+= pageheader 'map-marker',
+             t('companies.index.title'),
+             'Lorem ipsum dolor sit amet',
+             '',
+             (policy(Chouette::Company).create? ? link_to(t('companies.actions.new'), new_line_referential_company_path(@line_referential), class: 'btn btn-primary') : '')
 
-= search_form_for @q, url: line_referential_companies_path(@line_referential), remote: true, html: { method: :get, class: 'form', id: 'search', role: "form"} do |f|
+/ PageContent
+.page_content
+  .container-fluid
+    - if params[:q].present? or @companies.any?
+      .row.mb-sm
+        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+          = search_form_for @q, url: line_referential_companies_path(@line_referential), html: {method: :get} do |f|
+            .input-group.search_bar
+              = f.search_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
 
-  .panel.panel-default
-    .panel-heading
-      .input-group.col-md-12
-        = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
+              span.input-group-btn
+                button.btn.btn-default#search-btn type='submit'
+                  span.fa.fa-search
 
-        .input-group-btn
-          button.btn.btn-primary#search-btn type="submit"
-            span.fa.fa-search
+        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
+          = new_pagination @companies
 
-#companies
-  = render partial: 'companies', object: @companies
+    - if @companies.any?
+      .row
+        .col-lg-12
+          = table_builder @companies,
+            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @companies.human_attribute_name(:name) => 'name' },
+            [:show, :edit, :delete],
+            [],
+            'table'
 
-- content_for :sidebar do
-  ul.actions
-    - if policy(Chouette::Company).create?
-      li
-        = link_to t('companies.actions.new'), new_line_referential_company_path(@line_referential), class: 'add'
-    br
+          = new_pagination @companies, 'pull-right'
+
+    - unless @companies.any?
+      .row
+        .col-lg-12
+          = replacement_msg t('companies.search_no_results')

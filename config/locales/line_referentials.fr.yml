@@ -6,6 +6,8 @@ fr:
       cancel_sync: "Annuler la synchronisation Codifligne"
     edit:
       title: "Modifier le référentiel %{line_referential}"
+    show:
+      title: 'Synchronisation iLLICO'
   activerecord:
     models:
       line_referential:

@@ -7,9 +7,11 @@ class RoutingConstraintZonesController < ChouetteController
     belongs_to :line, parent_class: Chouette::Line
   end
 
+  include PolicyChecker
+
   private
   def routing_constraint_zone_params
-    params.require(:routing_constraint_zone).permit(:name, { stop_area_ids: [] }, :line_id, :objectid, :object_version, :creation_time, :creator_id)
+    params.require(:routing_constraint_zone).permit(:name, { stop_area_ids: [] }, :line_id, :objectid, :object_version, :creator_id)
   end
 
 end

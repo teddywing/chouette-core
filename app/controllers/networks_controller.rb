@@ -1,6 +1,6 @@
 class NetworksController < BreadcrumbController
   include ApplicationHelper
-  before_action :check_policy, :only => [:edit, :update, :destroy]
+  include PolicyChecker
   defaults :resource_class => Chouette::Network
   respond_to :html
   respond_to :xml
@@ -58,15 +58,11 @@ class NetworksController < BreadcrumbController
 
   alias_method :line_referential, :parent
 
-  def check_policy
-    authorize resource
-  end
-
   alias_method :current_referential, :line_referential
   helper_method :current_referential
 
   def network_params
-    params.require(:network).permit(:objectid, :object_version, :creation_time, :creator_id, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )
+    params.require(:network).permit(:objectid, :object_version, :creator_id, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )
   end
 
   private

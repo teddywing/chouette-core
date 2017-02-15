@@ -69,3 +69,33 @@ describe('actions', () => {
     expect(actions.updateSelectValue(event, index)).toEqual(expectedAction)
   })
 })
+
+describe('actions', () => {
+  it('should create an action to toggle the map', () => {
+    const index = 1
+    const expectedAction = {
+      type: 'TOGGLE_MAP',
+      index
+    }
+    expect(actions.toggleMap(index)).toEqual(expectedAction)
+  })
+})
+
+describe('actions', () => {
+  it('should create an action to select a marker on the map', () => {
+    const index = 1
+    const data = {
+      geometry: undefined,
+      registration_number: 'rn_test',
+      stoparea_id: 'sid_test',
+      text: 't_test',
+      user_objectid: 'uoid_test'
+    }
+    const expectedAction = {
+      type: 'SELECT_MARKER',
+      index,
+      data
+    }
+    expect(actions.selectMarker(index, data)).toEqual(expectedAction)
+  })
+})

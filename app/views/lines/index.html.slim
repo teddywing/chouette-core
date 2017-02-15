@@ -1,33 +1,45 @@
-= title_tag t('lines.index.title')
+/ PageHeader
+= pageheader 'map-marker',
+             t('lines.index.title'),
+             'Lorem ipsum dolor sit amet',
+             '',
+             ((policy(Chouette::Line).create? && @line_referential.organisations.include?(current_organisation)) ? link_to(t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'btn btn-primary') : '')
 
-= render partial: 'shared/lines_search_form', locals: { referential: @line_referential }
+/ PageContent
+.page_content
+  .container-fluid
+    - if params[:q].present? or @lines.any?
+      .row.mb-sm
+        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+          = search_form_for @q, url: line_referential_lines_path(@line_referential), html: {method: :get} do |f|
+            .input-group.search_bar
+              = f.search_field :name_or_number_or_objectid_cont, placeholder: t('lines.index.name_or_number_or_objectid'), class: 'form-control'
 
-#lines
-  = render 'lines'
+              span.input-group-btn
+                button.btn.btn-default#search-btn type='submit'
+                  span.fa.fa-search
 
-- content_for :sidebar do
-  ul.actions
-    - if policy(Chouette::Line).create?
-      li
-        = link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'add'
+        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
+          = new_pagination @lines
 
-  - if policy(Chouette::Line).destroy?
-    #multiple_selection_menu
-      h4 = t('.multi_selection')
+    - if @lines.any?
+      .row
+        .col-lg-12
+          = render 'filters'
 
-      .disabled
-        a.enable href="#"
-          = t('.multi_selection_enable')
+          = table_builder @lines,
+            { 'Oid' => Proc.new { |n| n.objectid.local_id },
+            @lines.human_attribute_name(:name) => 'name', @lines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) },
+            @lines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) },
+            @lines.human_attribute_name(:transport_mode) => Proc.new { |n| n.transport_mode.nil? ? '-' :  t("enumerize.line.transport_mode.#{n.try(:transport_mode)}") },
+            @lines.human_attribute_name(:transport_submode) => Proc.new { |n| n.transport_submode.nil? ? '-' :  t("enumerize.line.transport_submode.#{n.try(:transport_submode)}") } },
+            [:show],
+            [:delete],
+            'table'
 
-      .enabled style="display: none;"
-        a.disable href="#"
-          = t('.multi_selection_disable')
+          = new_pagination @lines, 'pull-right'
 
-        ul.actions
-          = link_to t('.delete_selected'), line_referential_lines_path(@line_referential), "data-multiple-method" => "delete", class: 'remove', "confirmation-text" => t("lines.actions.destroy_selection_confirm")
-
-        a.select_all href="#"
-          = t('.select_all')
-        = " | "
-        a.deselect_all href="#"
-          = t('.deselect_all')
+    - unless @lines.any?
+      .row
+        .col-lg-12
+          = replacement_msg t('referential_lines.search_no_results')

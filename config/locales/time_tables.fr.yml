@@ -51,7 +51,7 @@ fr:
       to: " à : "
       start_date: "jj/mm/aaaa"
       end_date: "jj/mm/aaaa"
-      title: "calendriers"
+      title: "Calendriers"
       selection: "Sélection"
       selection_all: "Tous"
       advanced_search: "Recherche avancée"
@@ -76,10 +76,12 @@ fr:
         sunday: "Dimanche"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
         creator_id: "Créé par"
         calendars: "Calendrier"
         calendar_details: "Données du calendrier"
+        calendar: Calendrier
         dates: "Dates particulières"
         date: "Le"
         excluded_dates: "Dates exclues"
@@ -88,7 +90,6 @@ fr:
         period_end: "au"
         tag_search: "Etiquettes"
         tag_list: "Etiquettes"
-        calendar: Calendrier
   formtastic:
     titles:
       time_table:

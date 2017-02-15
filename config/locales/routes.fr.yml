@@ -1,5 +1,6 @@
 fr:
   routes:
+    search_no_results: "Aucun itinéraire ne correspond à votre recherche"
     actions:
       new: "Ajouter un itinéraire"
       edit: "Modifier cet itinéraire"
@@ -62,7 +63,8 @@ fr:
         opposite_route_id: "Itinéraire associé en sens opposé"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Modifié le"
         creator_id: "Créé par"
         no_journey_pattern: "Pas de mission"
   formtastic:

@@ -1,6 +1,7 @@
 class ReferentialsController < BreadcrumbController
   defaults :resource_class => Referential
-  before_action :check_policy, :only => [:edit, :update]
+  include PolicyChecker
+  before_action :check_policy, :only => [:edit, :update] # overrides default
 
   respond_to :html
   respond_to :json, :only => :show
@@ -31,8 +32,8 @@ class ReferentialsController < BreadcrumbController
        }
        format.html { build_breadcrumb :show}
      end
+
      @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
-    #  resource.lines.paginate(page: params[:page], per_page: 10)
   end
 
   def edit
@@ -67,6 +68,9 @@ class ReferentialsController < BreadcrumbController
   protected
 
   alias_method :referential, :resource
+  alias_method :current_referential, :referential
+  helper_method :current_referential
+
 
   def resource
     @referential ||= current_organisation.referentials.find_by_id(params[:id])
@@ -105,6 +109,7 @@ class ReferentialsController < BreadcrumbController
 
   def create_resource(referential)
     referential.organisation = current_organisation unless referential.created_from
+    referential.ready = true
     super
   end
 
@@ -114,10 +119,6 @@ class ReferentialsController < BreadcrumbController
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
-  end
-
-  def check_policy
-    authorize resource
   end
 
   def referential_params

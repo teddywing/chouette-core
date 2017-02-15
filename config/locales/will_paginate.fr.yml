@@ -4,17 +4,39 @@ fr:
     next_label: "Suivant &#8594;"
     page_gap: "&hellip;"
 
+    models:
+      referential:
+        zero: 'jeux de données'
+        one: 'jeu de données'
+        few: 'jeux de données'
+        other: 'jeux de données'
+      line:
+        zero: 'lignes'
+        one: 'ligne'
+        few: 'lignes'
+        other: 'lignes'
+      route:
+        zero: 'itinéraires'
+        one: 'itinéraire'
+        few: 'itinéraires'
+        other: 'itinéraires'
+      network:
+        zero: 'réseaux'
+        one: 'réseau'
+        few: 'réseaux'
+        other: 'réseaux'
+
     page_entries_info:
       search: "Résultats :"
       list: "Liste paginée"
       single_page:
         zero:  "Aucun élément trouvé"
         one:   "1 %{model} affiché(e)"
-        other: "%{count} %{model} affiché(e)s"
+        other: "Liste des %{model} 1 à %{count} sur %{count}"
       single_page_html:
         zero:  "Aucun élément trouvé"
-        one:   "<b>1</b> %{model} affiché(e)"
-        other: "<b>%{count}</b> %{model} affiché(e)s"
+        one:   "1 %{model} affiché(e)"
+        other: "Liste des %{model} 1 à %{count} sur %{count}"
 
-      multi_page: "%{model} %{from} - %{to} sur %{count} au total"
-      multi_page_html: "%{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> sur <b>%{count}</b> au total"
+      multi_page: "Liste des %{model} %{from} à %{to} sur %{count}"
+      multi_page_html: "Liste des %{model} %{from}&nbsp;à&nbsp;%{to} sur %{count}"

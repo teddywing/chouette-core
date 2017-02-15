@@ -16,14 +16,14 @@ GIT
 
 GIT
   remote: git@github.com:AF83/stif-codifline-api.git
-  revision: 72d53d7666736523b5cbef41a2de7e466d58ea1a
+  revision: 9afe38cce298165765d98936f6d63f8d3cc33bce
   specs:
     codifligne (0.0.2)
       nokogiri (~> 1.6)
 
 GIT
   remote: git@github.com:AF83/stif-reflex-api.git
-  revision: 152d1b48ec0792bf086e731d099a1d8954369b85
+  revision: e3841486efc2218aa2fcbc4d53f85c06e41094a8
   specs:
     reflex (0.0.1)
       nokogiri (~> 1.6)
@@ -253,6 +253,8 @@ GEM
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    i18n-active_record (0.1.2)
+      i18n (>= 0.5.0)
     i18n-tasks (0.8.6)
       activesupport
       easy_translate (>= 0.5.0)
@@ -628,6 +630,7 @@ DEPENDENCIES
   guard
   guard-rspec
   has_array_of!
+  i18n-active_record
   i18n-tasks
   inherited_resources
   jbuilder (~> 2.0)

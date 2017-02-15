@@ -1,32 +1,42 @@
-= title_tag t('stop_areas.index.title')
+/ PageHeader
+= pageheader 'map-marker',
+             t('stop_areas.index.title'),
+             'Lorem ipsum dolor sit amet',
+             '',
+             (policy(Chouette::StopArea).create? ? link_to(t('stop_areas.actions.new'), new_stop_area_referential_stop_area_path(@stop_area_referential), class: 'btn btn-primary') : '')
 
-= search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), remote: true, html: { method: :get, class: "form", id: "search", role: "form"} do |f|
-  .panel.panel-default
-    .panel-heading
-      .input-group.col-md-9.col-sm-9
-        = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
-        .input-group-btn
-          button.btn.btn-primary#search-btn type="submit"
-            span.fa.fa-search
+/ PageContent
+.page_content
+  .container-fluid
+    - if params[:q].present? or @stop_areas.any?
+      .row.mb-sm
+        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+          = search_form_for @q, url: stop_area_referential_stop_areas_path(@stop_area_referential), html: {method: :get} do |f|
+            .input-group.search_bar
+              = f.search_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
 
-      a data-toggle="collapse" data-parent="#search" href="#advanced_search"
-        span.fa.fa-plus
-        = " #{t('.advanced_search')}"
-      #advanced_search.panel-collapse.collapse
-        .panel-body
-          .row
-            .col-sm-3
-              = f.text_field :zip_code_cont, placeholder: "#{t('.zip_code')}", class: 'form-control typeahead', style: 'width: 100%'
-            .col-sm-3
-              = f.text_field :city_name_cont, placeholder: "#{t('.city_name')}", class: 'form-control typeahead', style: 'width: 100%'
-            .col-sm-3
-              = f.select(:area_type_cont, Chouette::StopArea.area_type.options, { include_blank: t('.area_type') }, { class: 'form-control' })
-#stop_areas
-  = render 'stop_areas'
+              span.input-group-btn
+                button.btn.btn-default#search-btn type='submit'
+                  span.fa.fa-search
 
-- content_for :sidebar do
-  ul.actions
-    - if policy(Chouette::StopArea).create?
-      li = link_to t('stop_areas.actions.new'), new_stop_area_referential_stop_area_path(@stop_area_referential), class: 'add'
+        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
+          = new_pagination @stop_areas
 
-      / = link_to t('stop_areas.actions.default_geometry'), default_geometry_referential_stop_areas_path(@stop_area_referential), :method => :put, :class => "calculator"
+    - if @stop_areas.any?
+      .row
+        .col-lg-12
+          = render 'filters'
+
+          = table_builder @stop_areas,
+            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @stop_areas.human_attribute_name(:name) => 'name', @stop_areas.human_attribute_name(:registration_number) => 'registration_number', @stop_areas.human_attribute_name(:zip_code) => 'zip_code',
+            @stop_areas.human_attribute_name(:city_name) => 'city_name', @stop_areas.human_attribute_name(:area_type) => Proc.new{|s| t("enumerize.stop_area.area_type.#{s.try(:area_type)}")} },
+            [:show, :edit, :delete],
+            [],
+            'table'
+          
+          = new_pagination @stop_areas, 'pull-right'
+
+    - unless @stop_areas.any?
+      .row
+        .col-lg-12
+          = replacement_msg t('stop_areas.search_no_results')
