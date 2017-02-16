@@ -39,7 +39,6 @@ ChouetteIhm::Application.routes.draw do
         resources :journey_patterns, :only => [:index, :show]
         resources :routes, :only => [:index, :show] do
           resources :vehicle_journeys, :only => [:index, :show]
-          resource :vehicle_journeys_collection, :only => [:show, :update]
           resources :journey_patterns, :only => [:index, :show]
           resources :stop_areas, :only => [:index, :show]
         end
@@ -111,6 +110,7 @@ ChouetteIhm::Application.routes.draw do
             post 'selection'
           end
         end
+        resource :vehicle_journeys_collection, :only => [:show, :update]
         resources :vehicle_journeys, :vehicle_journey_frequencies do
           get 'select_journey_pattern', :on => :member
           resources :vehicle_translations

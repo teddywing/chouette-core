@@ -1,4 +1,4 @@
-class VehicleJourneysCollectionsController < ApplicationController
+class VehicleJourneysCollectionsController < ChouetteController
   respond_to :json
   belongs_to :referential do
     belongs_to :line, :parent_class => Chouette::Line do
@@ -12,5 +12,9 @@ class VehicleJourneysCollectionsController < ApplicationController
     ap '-----------------'
     ap state
     ap '-----------------'
+    errors = false
+    respond_to do |format|
+      format.json { render json: state, status: errors ? :unprocessable_entity : :ok }
+    end
   end
 end
