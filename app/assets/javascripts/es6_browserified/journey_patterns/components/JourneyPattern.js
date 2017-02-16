@@ -25,7 +25,7 @@ const JourneyPattern = (props) => {
 
         {/* Published name */}
         <p className='small'>
-          <strong>Published name: </strong>{props.value.published_name}
+          <strong>Published name: </strong>{props.value.comment}
         </p>
 
         {/* Registration number */}

@@ -12,9 +12,14 @@ class VehicleJourney extends Component {
       <div className={'list-group-item'}>
 
         <div style={{display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 25px)'}}>
-          {/* Name */}
+          {/* Nom */}
           <p className='small'>
-            <strong>Id: </strong>{this.props.value.journey_pattern_id}
+            <strong>Nom: </strong>{this.props.value.comment}
+          </p>
+
+          {/* Id mission */}
+          <p className='small'>
+            <strong>Id Mission: </strong>{this.props.value.journey_pattern_id}
           </p>
 
           {/* Published name */}
