@@ -3,6 +3,7 @@ var VehicleJourneysList = require('../containers/vehicleJourneysList')
 var Navigate = require('../containers/Navigate')
 var FiltersList = require('../containers/FiltersList')
 var SaveVehicleJourneys = require('../containers/SaveVehicleJourneys')
+var ConfirmModal = require('../containers/ConfirmModal')
 
 const App = () => (
   <div>
@@ -12,6 +13,7 @@ const App = () => (
     </div>
     <VehicleJourneysList />
     <SaveVehicleJourneys />
+    <ConfirmModal />
   </div>
 )
 

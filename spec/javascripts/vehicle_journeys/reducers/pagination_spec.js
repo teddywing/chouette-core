@@ -39,6 +39,23 @@ describe('pagination reducer, given parameters allowing page change', () => {
       })
     ).toEqual(Object.assign({}, state, {page : state.page - 1, stateChanged: false}))
   })
+
+  it('should handle UPDATE_TIME', () => {
+    const val = '33', subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true
+    expect(
+      reducer(state, {
+        type: 'UPDATE_TIME',
+        val,
+        subIndex,
+        index,
+        timeUnit,
+        isDeparture,
+        isArrivalsToggled
+      })
+    ).toEqual(Object.assign({}, state, {stateChanged: true})
+)
+  })
+
 })
 
 

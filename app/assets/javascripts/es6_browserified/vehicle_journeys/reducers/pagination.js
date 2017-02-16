@@ -12,9 +12,18 @@ const pagination = (state = {}, action) => {
         return Object.assign({}, state, {page : action.pagination.page + 1, stateChanged: false})
       }
       return state
+    case 'UPDATE_TIME':
+      toggleOnConfirmModal('modal')
+      return Object.assign({}, state, {stateChanged: true})
     default:
       return state
   }
+}
+
+const toggleOnConfirmModal = (arg = '') =>{
+  $('.confirm').each(function(){
+    $(this).data('toggle','')
+  })
 }
 
 module.exports = pagination

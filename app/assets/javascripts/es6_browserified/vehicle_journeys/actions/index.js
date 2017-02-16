@@ -33,6 +33,10 @@ const actions = {
       return callback
     }
   },
+  openConfirmModal : (callback) => ({
+    type : 'OPEN_CONFIRM_MODAL',
+    callback
+  }),
   toggleArrivals : () => ({
     type: 'TOGGLE_ARRIVALS',
   }),
