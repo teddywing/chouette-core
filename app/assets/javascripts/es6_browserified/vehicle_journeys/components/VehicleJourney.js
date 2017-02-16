@@ -1,7 +1,6 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
-var moment = require('moment')
 
 class VehicleJourney extends Component {
   constructor(props) {
