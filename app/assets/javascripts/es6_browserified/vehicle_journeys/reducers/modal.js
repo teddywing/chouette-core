@@ -8,6 +8,12 @@ const modal = (state = {}, action) => {
           callback: action.callback,
         }
       })
+    case 'CREATE_VEHICLEJOURNEY_MODAL':
+      return {
+        type: 'create',
+        modalProps: {},
+        confirmModal: {}
+      }
     case 'CLOSE_MODAL':
       return {
         type: '',

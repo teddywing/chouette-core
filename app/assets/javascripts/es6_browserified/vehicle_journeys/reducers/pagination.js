@@ -12,6 +12,7 @@ const pagination = (state = {}, action) => {
         return Object.assign({}, state, {page : action.pagination.page + 1, stateChanged: false})
       }
       return state
+    case 'ADD_VEHICLEJOURNEY':
     case 'UPDATE_TIME':
       toggleOnConfirmModal('modal')
       return Object.assign({}, state, {stateChanged: true})

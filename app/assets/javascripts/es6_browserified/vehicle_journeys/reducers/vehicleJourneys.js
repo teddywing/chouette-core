@@ -2,6 +2,16 @@ var actions = require("../actions")
 
 const vehicleJourney= (state = {}, action) => {
   switch (action.type) {
+    case 'ADD_VEHICLEJOURNEY':
+      return {
+        journey_pattern_id: parseInt(action.data.journey_pattern_id.value),
+        comment: action.data.comment.value,
+        objectid: '',
+        footnotes: [],
+        time_tables: [],
+        vehicle_journey_at_stops: [],
+        deletable: false
+      }
     case 'UPDATE_TIME':
       let vj, vjas, vjasArray, newSchedule
       vjasArray = state.vehicle_journey_at_stops.map((vjas, i) =>{
@@ -45,6 +55,11 @@ const vehicleJourneys = (state = [], action) => {
         actions.fetchVehicleJourneys(action.dispatch, action.pagination.page, action.nextPage)
       }
       return state
+    case 'ADD_VEHICLEJOURNEY':
+      return [
+        vehicleJourney(state, action),
+        ...state
+      ]
     case 'UPDATE_TIME':
       return state.map((vj, i) =>{
         if (i == action.index){

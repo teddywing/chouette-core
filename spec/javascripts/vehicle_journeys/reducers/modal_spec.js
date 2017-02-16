@@ -34,6 +34,14 @@ describe('modal reducer', () => {
     ).toEqual(newState)
   })
 
+  it('should handle CREATE_VEHICLEJOURNEY_MODAL', () => {
+    expect(
+      modalReducer(state, {
+        type: 'CREATE_VEHICLEJOURNEY_MODAL'
+      })
+    ).toEqual(Object.assign({}, state, { type: 'create' }))
+  })
+
   it('should handle CLOSE_MODAL', () => {
     expect(
       modalReducer(state, {

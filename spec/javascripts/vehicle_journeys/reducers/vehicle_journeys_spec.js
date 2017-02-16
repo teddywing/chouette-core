@@ -55,6 +55,27 @@ describe('vehicleJourneys reducer', () => {
   })
 
 
+  it('should handle ADD_VEHICLEJOURNEY', () => {
+    let fakeData = {
+      journey_pattern_id: {value : '1'},
+      comment: {value: 'test'}
+    }
+    expect(
+      vjReducer(state, {
+        type: 'ADD_VEHICLEJOURNEY',
+        data: fakeData
+      })
+    ).toEqual([{
+      journey_pattern_id: 1,
+      comment: 'test',
+      objectid: '',
+      footnotes: [],
+      time_tables: [],
+      vehicle_journey_at_stops: [],
+      deletable: false
+    }, ...state])
+  })
+
   it('should handle RECEIVE_VEHICLE_JOURNEYS', () => {
     expect(
       vjReducer(state, {

@@ -33,10 +33,44 @@ const actions = {
       return callback
     }
   },
+  openCreateModal : () => ({
+    type : 'CREATE_VEHICLEJOURNEY_MODAL'
+  }),
+  addVehicleJourney : (data) => ({
+    type: 'ADD_VEHICLEJOURNEY',
+    data,
+  }),
   openConfirmModal : (callback) => ({
     type : 'OPEN_CONFIRM_MODAL',
     callback
   }),
+  closeModal : () => ({
+    type : 'CLOSE_MODAL'
+  }),
+  resetValidation: (target) => {
+    $(target).parent().removeClass('has-error').children('.help-block').remove()
+  },
+  validateFields : (fields) => {
+    const test = []
+
+    Object.keys(fields).map(function(key) {
+      test.push(fields[key].validity.valid)
+    })
+    if(test.indexOf(false) >= 0) {
+      // Form is invalid
+      test.map(function(item, i) {
+        if(item == false) {
+          const k = Object.keys(fields)[i]
+          $(fields[k]).parent().addClass('has-error').children('.help-block').remove()
+          $(fields[k]).parent().append("<span class='small help-block'>" + fields[k].validationMessage + "</span>")
+        }
+      })
+      return false
+    } else {
+      // Form is valid
+      return true
+    }
+  },
   toggleArrivals : () => ({
     type: 'TOGGLE_ARRIVALS',
   }),
