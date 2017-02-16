@@ -112,7 +112,7 @@ const actions = {
   },
   submitVehicleJourneys : (dispatch, state, next) => {
     dispatch(actions.fetchingApi())
-    let urlJSON = window.location.pathname + ".json"
+    let urlJSON = window.location.pathname + "_collections.json"
     let req = new Request(urlJSON, {
       credentials: 'same-origin',
       method: 'PATCH',
