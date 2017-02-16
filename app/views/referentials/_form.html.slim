@@ -1,4 +1,4 @@
-= simple_form_for @referential, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |form|
+= simple_form_for @referential, html: {class: 'form-horizontal', id: 'referential_form'}, wrapper: :horizontal_form do |form|
 
   .row
     .col-lg-12
@@ -30,45 +30,44 @@
       = form.input :lower_corner, input_html: {title: t("formtastic.titles.referential.lower_corner")}
 
   .separator
-
-  .row
-    .col-lg-12
-      - if @referential.errors.has_key? :metadatas
-        .row
-          .col-lg-12
-            .alert.alert-danger
-              - @referential.errors[:metadatas].each do |msg|
-                p.small = "- #{msg}"
-
-      .subform
-        .nested-head
-          .wrapper
-            div
-              .form-group
-                label.control-label.required
-                  = t('simple_form.labels..referential.metadatas.periods.begin')
-                  abbr title='requis' *
-            div
-              .form-group
-                label.control-label.required
-                  = t('simple_form.labels..referential.metadatas.periods.end')
-                  abbr title='requis' *
-            div
-
-        = form.simple_fields_for :metadatas do |subform|
+  
+  = form.simple_fields_for :metadatas do |subform|
+    .row
+      .col-lg-12
+        - if @referential.errors.has_key? :metadatas
+          .row
+            .col-lg-12
+              .alert.alert-danger
+                - @referential.errors[:metadatas].each do |msg|
+                  p.small = "- #{msg}"
+    
+        .subform
+          .nested-head
+            .wrapper
+              div
+                .form-group
+                  label.control-label.required
+                    = t('simple_form.labels.referential.metadatas.periods.begin')
+                    abbr title='requis' *
+              div
+                .form-group
+                  label.control-label.required
+                    = t('simple_form.labels.referential.metadatas.periods.end')
+                    abbr title='requis' *
+              div
+    
           = subform.simple_fields_for :periods do |period_form|
             = render 'period_fields', f: period_form
-
+  
           .links.nested-linker
             = link_to_add_association 'Ajouter une période', subform, :periods, class: 'btn btn-outline-primary'
 
-  .separator
+    .separator
 
-  = form.simple_fields_for :metadatas do |subform|
     = subform.input :lines, as: :select, collection: @referential.workbench.lines.includes(:company).order(:name), selected: subform.object.line_ids, label_method: :display_name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de lignes', 'multiple': 'multiple', style: 'width: 100%' }
 
   .hidden = form.input :workbench_id, as: :hidden
 
 
   / = link_to 'Annuler', @referential,  class: 'btn btn-link'
-  = form.button :submit, 'Enregistrer', class: 'btn btn-default formSubmitr'
+  = form.button :submit, 'Enregistrer', class: 'btn btn-default formSubmitr', form: 'referential_form'
