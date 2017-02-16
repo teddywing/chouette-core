@@ -1,4 +1,4 @@
-= simple_form_for @referential, html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |form|
+= simple_form_for @referential, html: {class: 'form-horizontal', id: 'referential_form'}, wrapper: :horizontal_form do |form|
 
   .row
     .col-lg-12
@@ -71,4 +71,4 @@
 
 
   / = link_to 'Annuler', @referential,  class: 'btn btn-link'
-  = form.button :submit, 'Enregistrer', class: 'btn btn-default formSubmitr'
+  = form.button :submit, 'Enregistrer', class: 'btn btn-default formSubmitr', form: 'referential_form'
