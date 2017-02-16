@@ -2,7 +2,7 @@ var React = require('react')
 var connect = require('react-redux').connect
 var actions = require('../actions')
 
-let SaveVehicleJourneys = ({ dispatch, journeyPatterns, page, status }) => {
+let SaveVehicleJourneys = ({ dispatch, vehicleJourneys, page, status }) => {
   if(status.isFetching == true) {
     return false
   }
@@ -14,7 +14,7 @@ let SaveVehicleJourneys = ({ dispatch, journeyPatterns, page, status }) => {
           type='submit'
           onClick={e => {
             e.preventDefault()
-            actions.submitVehicleJourneys(dispatch, journeyPatterns)
+            actions.submitVehicleJourneys(dispatch, vehicleJourneys)
           }}
           >
           Valider
@@ -28,7 +28,7 @@ let SaveVehicleJourneys = ({ dispatch, journeyPatterns, page, status }) => {
 
 const mapStateToProps = (state) => {
   return {
-    journeyPatterns: state.journeyPatterns,
+    vehicleJourneys: state.vehicleJourneys,
     page: state.pagination.page,
     status: state.status
   }
