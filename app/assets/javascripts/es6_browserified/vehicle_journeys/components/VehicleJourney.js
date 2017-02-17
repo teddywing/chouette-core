@@ -12,6 +12,16 @@ class VehicleJourney extends Component {
       <div className={'list-group-item'}>
 
         <div style={{display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 25px)'}}>
+          {/* selected */}
+          <p className='small'>
+            <label>Sélectionné</label>
+            <input
+              onChange = {(e) => this.props.onSelectVehicleJourney(this.props.index)}
+              type = 'checkbox'
+              checked = {this.props.value.selected}
+            ></input>
+          </p>
+
           {/* Nom */}
           <p className='small'>
             <strong>Nom: </strong>{this.props.value.comment}
@@ -95,6 +105,7 @@ VehicleJourney.propTypes = {
   filters: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   onUpdateTime: PropTypes.func.isRequired,
+  onSelectVehicleJourney: PropTypes.func.isRequired
 }
 
 module.exports = VehicleJourney

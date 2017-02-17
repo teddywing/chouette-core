@@ -18,6 +18,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUpdateTime: (e, subIndex, index, timeUnit, isDeparture, isArrivalsToggled) => {
       dispatch(actions.updateTime(e.target.value, subIndex, index, timeUnit, isDeparture, isArrivalsToggled))
+    },
+    onSelectVehicleJourney: (index) => {
+      dispatch(actions.selectVehicleJourney(index))
     }
   }
 }

@@ -81,6 +81,16 @@ describe('when next navigation button is clicked', () => {
     expect(actions.goToNextPage(dispatch, pagination)).toEqual(expectedAction)
   })
 })
+describe('when checking a vehicleJourney', () => {
+  it('should create an action to select vj', () => {
+    const index = 1
+    const expectedAction = {
+      type: 'SELECT_VEHICLEJOURNEY',
+      index
+    }
+    expect(actions.selectVehicleJourney(index)).toEqual(expectedAction)
+  })
+})
 describe('when toggling arrivals', () => {
   it('should create an action to toggleArrivals', () => {
     const expectedAction = {

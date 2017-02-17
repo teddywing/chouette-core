@@ -34,6 +34,7 @@ class VehicleJourneys extends Component{
               index = {index}
               filters = {this.props.filters}
               onUpdateTime = {this.props.onUpdateTime}
+              onSelectVehicleJourney = {this.props.onSelectVehicleJourney}
               />
           )}
         </div>
@@ -44,9 +45,10 @@ class VehicleJourneys extends Component{
 
 VehicleJourneys.propTypes = {
   status: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired,
   onLoadFirstPage: PropTypes.func.isRequired,
   onUpdateTime: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
+  onSelectVehicleJourney: PropTypes.func.isRequired
 }
 
 module.exports = VehicleJourneys

@@ -32,6 +32,7 @@ describe('vehicleJourneys reducer', () => {
         published_journey_name: "vj1",
         objectid: 11,
         deletable: false,
+        selected: false,
         footnotes: fakeFootnotes,
         time_tables: fakeTimeTables,
         vehicle_journey_at_stops: fakeVJAS
@@ -40,6 +41,7 @@ describe('vehicleJourneys reducer', () => {
         journey_pattern_id: 2,
         published_journey_name: "vj2",
         objectid: 22,
+        selected: false,
         deletable: false,
         footnotes: fakeFootnotes,
         time_tables: fakeTimeTables,
@@ -108,6 +110,17 @@ describe('vehicleJourneys reducer', () => {
         timeUnit,
         isDeparture,
         isArrivalsToggled
+      })
+    ).toEqual([newVJ, state[1]])
+  })
+
+  it('should handle SELECT_VEHICLEJOURNEY', () => {
+    const index = 0
+    const newVJ = Object.assign({}, state[0], {selected: true})
+    expect(
+      vjReducer(state, {
+        type: 'SELECT_VEHICLEJOURNEY',
+        index
       })
     ).toEqual([newVJ, state[1]])
   })

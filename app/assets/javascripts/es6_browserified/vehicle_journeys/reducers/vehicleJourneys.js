@@ -2,6 +2,8 @@ var actions = require("../actions")
 
 const vehicleJourney= (state = {}, action) => {
   switch (action.type) {
+    case 'SELECT_VEHICLEJOURNEY':
+      return Object.assign({}, state, {selected: !state.selected})
     case 'ADD_VEHICLEJOURNEY':
       return {
         journey_pattern_id: parseInt(action.data.journey_pattern_id.value),
@@ -60,6 +62,14 @@ const vehicleJourneys = (state = [], action) => {
         vehicleJourney(state, action),
         ...state
       ]
+    case 'SELECT_VEHICLEJOURNEY':
+      return state.map((vj, i) =>{
+        if (i == action.index){
+          return vehicleJourney(vj, action)
+        } else {
+          return vj
+        }
+      })
     case 'UPDATE_TIME':
       return state.map((vj, i) =>{
         if (i == action.index){

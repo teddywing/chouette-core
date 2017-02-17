@@ -36,6 +36,10 @@ const actions = {
   openCreateModal : () => ({
     type : 'CREATE_VEHICLEJOURNEY_MODAL'
   }),
+  selectVehicleJourney : (index) => ({
+    type : 'SELECT_VEHICLEJOURNEY',
+    index
+  }),
   addVehicleJourney : (data) => ({
     type: 'ADD_VEHICLEJOURNEY',
     data,
@@ -138,7 +142,8 @@ const actions = {
               footnotes: val.footnotes,
               time_tables: timeTables,
               vehicle_journey_at_stops: val.vehicle_journey_at_stops,
-              deletable: false
+              deletable: false,
+              selected: false
             })
           }
           // if(vehicleJourneys.length != window.vehicleJourneysPerPage){
