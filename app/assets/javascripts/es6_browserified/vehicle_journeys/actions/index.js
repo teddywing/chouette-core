@@ -44,6 +44,9 @@ const actions = {
     type: 'ADD_VEHICLEJOURNEY',
     data,
   }),
+  deleteVehicleJourneys : () => ({
+    type: 'DELETE_VEHICLEJOURNEYS'
+  }),
   openConfirmModal : (callback) => ({
     type : 'OPEN_CONFIRM_MODAL',
     callback

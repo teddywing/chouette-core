@@ -91,6 +91,14 @@ describe('when checking a vehicleJourney', () => {
     expect(actions.selectVehicleJourney(index)).toEqual(expectedAction)
   })
 })
+describe('when clicking on delete button', () => {
+  it('should create an action to delete vj', () => {
+    const expectedAction = {
+      type: 'DELETE_VEHICLEJOURNEYS',
+    }
+    expect(actions.deleteVehicleJourneys()).toEqual(expectedAction)
+  })
+})
 describe('when toggling arrivals', () => {
   it('should create an action to toggleArrivals', () => {
     const expectedAction = {

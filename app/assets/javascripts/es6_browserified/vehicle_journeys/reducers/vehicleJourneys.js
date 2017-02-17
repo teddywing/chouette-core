@@ -62,6 +62,14 @@ const vehicleJourneys = (state = [], action) => {
         vehicleJourney(state, action),
         ...state
       ]
+    case 'DELETE_VEHICLEJOURNEYS':
+      return state.map((vj, i) =>{
+        if (vj.selected){
+          return Object.assign({}, vj, {deletable: true})
+        } else {
+          return vj
+        }
+      })
     case 'SELECT_VEHICLEJOURNEY':
       return state.map((vj, i) =>{
         if (i == action.index){

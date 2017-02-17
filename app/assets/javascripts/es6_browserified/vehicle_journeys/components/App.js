@@ -5,6 +5,7 @@ var FiltersList = require('../containers/FiltersList')
 var SaveVehicleJourneys = require('../containers/SaveVehicleJourneys')
 var ConfirmModal = require('../containers/ConfirmModal')
 var AddVehicleJourney = require('../containers/AddVehicleJourney')
+var DeleteVehicleJourneys = require('../containers/DeleteVehicleJourneys')
 
 const App = () => (
   <div>
@@ -12,6 +13,7 @@ const App = () => (
       <FiltersList />
       <Navigate />
       <AddVehicleJourney />
+      <DeleteVehicleJourneys />
     </div>
     <VehicleJourneysList />
     <SaveVehicleJourneys />

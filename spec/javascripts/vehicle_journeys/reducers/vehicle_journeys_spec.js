@@ -41,7 +41,7 @@ describe('vehicleJourneys reducer', () => {
         journey_pattern_id: 2,
         published_journey_name: "vj2",
         objectid: 22,
-        selected: false,
+        selected: true,
         deletable: false,
         footnotes: fakeFootnotes,
         time_tables: fakeTimeTables,
@@ -125,4 +125,12 @@ describe('vehicleJourneys reducer', () => {
     ).toEqual([newVJ, state[1]])
   })
 
+  it('should handle DELETE_VEHICLEJOURNEYS', () => {
+    const newVJ = Object.assign({}, state[1], {deletable: true})
+    expect(
+      vjReducer(state, {
+        type: 'DELETE_VEHICLEJOURNEYS'
+      })
+    ).toEqual([state[0], newVJ])
+  })
 })
