@@ -6,11 +6,11 @@ describe 'Workbenches', type: :feature do
   let!(:organisations) { Array.new(2) { create :organisation } }
   let!(:referentials) { Array.new(2) { create :referential, ready: true } }
   let!(:line_referential) { create :line_referential }
-  let!(:workbenches) { Array.new(2) { create :workbench, line_referential: line_referential } }
+  let!(:workbenches) { Array.new(2) { create :workbench, line_referential: line_referential, organisation: @user.organisation } }
   let!(:line) { create :line, line_referential: line_referential }
   let!(:referential_metadatas) { Array.new(2) { |i| create :referential_metadata, lines: [line], referential: referentials[i] } }
 
-  let!(:ready_referential) { create(:referential, workbench: workbenches.first, metadatas: referential_metadatas, ready: true) }
+  let!(:ready_referential) { create(:referential, workbench: workbenches.first, metadatas: referential_metadatas, ready: true, organisation: @user.organisation) }
   let!(:unready_referential) { create(:referential, workbench: workbenches.first) }
 
   describe 'show' do
