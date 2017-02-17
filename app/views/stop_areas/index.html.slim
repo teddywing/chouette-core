@@ -22,14 +22,16 @@
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @stop_areas
 
-    - if @stop_areas.any?
       .row
         .col-lg-12
           = render 'filters'
 
+    - if @stop_areas.any?
+      .row
+        .col-lg-12
           = table_builder @stop_areas,
             { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @stop_areas.human_attribute_name(:name) => 'name', @stop_areas.human_attribute_name(:registration_number) => 'registration_number', @stop_areas.human_attribute_name(:zip_code) => 'zip_code',
-            @stop_areas.human_attribute_name(:city_name) => 'city_name', @stop_areas.human_attribute_name(:area_type) => Proc.new{|s| t("enumerize.stop_area.area_type.#{s.try(:area_type)}")} },
+            @stop_areas.human_attribute_name(:city_name) => 'city_name', @stop_areas.human_attribute_name(:area_type) => Proc.new{|s| (s.area_type.nil? ? '-' : t("enumerize.stop_area.area_type.#{s.try(:area_type)}"))} },
             [:show, :edit, :delete],
             [],
             'table'
@@ -37,6 +39,6 @@
           = new_pagination @stop_areas, 'pull-right'
 
     - unless @stop_areas.any?
-      .row
+      .row.mt-xs
         .col-lg-12
           = replacement_msg t('stop_areas.search_no_results')

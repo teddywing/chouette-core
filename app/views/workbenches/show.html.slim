@@ -24,11 +24,13 @@
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @wbench_refs
 
-    - if @wbench_refs.any?
       .row
         .col-lg-12
           = render 'filters'
 
+    - if @wbench_refs.any?
+      .row
+        .col-lg-12
           / actions for table: controler+integrer, consulter, modifier, controler, dupliquer, conserver, purger, supprimer
           = table_builder @wbench_refs,
             { @wbench_refs.human_attribute_name(:name) => 'name', @wbench_refs.human_attribute_name(:status) => Proc.new {|w| w.archived? ? ("<span class='fa fa-archive'></span> Conservé").html_safe : '-'},
@@ -44,6 +46,6 @@
           = new_pagination @wbench_refs, 'pull-right'
 
     - unless @wbench_refs.any?
-      .row
+      .row.mt-xs
         .col-lg-12
           = replacement_msg t('referentials.search_no_results')

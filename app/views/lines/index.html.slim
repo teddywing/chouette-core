@@ -22,11 +22,13 @@
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @lines
 
-    - if @lines.any?
       .row
         .col-lg-12
           = render 'filters'
 
+    - if @lines.any?
+      .row
+        .col-lg-12
           = table_builder @lines,
             { 'Oid' => Proc.new { |n| n.objectid.local_id },
             @lines.human_attribute_name(:name) => 'name', @lines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) },
@@ -40,6 +42,6 @@
           = new_pagination @lines, 'pull-right'
 
     - unless @lines.any?
-      .row
+      .row.mt-xs
         .col-lg-12
           = replacement_msg t('referential_lines.search_no_results')
