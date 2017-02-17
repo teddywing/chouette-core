@@ -47,11 +47,13 @@
         .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
           = new_pagination @reflines
 
-    - if @reflines.any?
-      .row.mt-sm
+      .row
         .col-lg-12
           = render 'filters'
 
+    - if @reflines.any?
+      .row
+        .col-lg-12
           / ID Codif, nom court, nom de la ligne, réseau, mode, transporteur principal, actions = [show, edit_notes]
           = table_builder @reflines,
             { 'ID Codif' => Proc.new { |n| n.objectid.local_id }, @reflines.human_attribute_name(:registration_number) => 'registration_number',
@@ -66,7 +68,7 @@
           = new_pagination @reflines, 'pull-right'
 
     - unless @reflines.any?
-      .row
+      .row.mt-xs
         .col-lg-12
           = replacement_msg t('referential_lines.search_no_results')
 
