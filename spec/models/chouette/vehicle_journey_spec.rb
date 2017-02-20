@@ -1,6 +1,55 @@
 require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
+  describe "state_update" do
+    def vehicle_journey_to_state vj
+      vj.attributes.slice('objectid', 'published_journey_name', 'journey_pattern_id').tap do |item|
+        item['vehicle_journey_at_stops'] = []
+
+        vj.vehicle_journey_at_stops.each do |vs|
+          at_stops = {'stop_area_object_id' => vs.stop_point.stop_area.objectid }
+          [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
+            at_stops[att.to_s] = vs.send(att) unless vs.send(att).nil?
+          end
+
+          [:arrival_time, :departure_time].map do |att|
+            at_stops[att.to_s] = {
+              'hour'   => vs.send(att).strftime('%H'),
+              'minute' => vs.send(att).strftime('%M'),
+            }
+          end
+          item['vehicle_journey_at_stops'] << at_stops
+        end
+      end
+    end
+
+    let(:route) { create :route }
+    let(:vehicle_journey) { create :vehicle_journey, route: route }
+    let(:state) { vehicle_journey_to_state(vehicle_journey) }
+
+    it 'should update arrival_time' do
+      stop = state['vehicle_journey_at_stops'].first
+      stop['arrival_time']['hour']   = "10"
+      stop['arrival_time']['minute'] = "10"
+
+      vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+      stop = vehicle_journey.vehicle_journey_at_stops.find(stop['id'])
+      expect(stop.arrival_time).to eq('2000-01-01 10:10:00 UTC')
+    end
+
+    it 'should update departure_time' do
+      stop = state['vehicle_journey_at_stops'].first
+      stop['departure_time']['hour']   = "12"
+      stop['departure_time']['minute'] = "12"
+
+      vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+      stop = vehicle_journey.vehicle_journey_at_stops.find(stop['id'])
+      expect(stop.departure_time).to eq('2000-01-01 12:12:00 UTC')
+    end
+  end
+
+
+
   subject { create(:vehicle_journey_odd) }
 
   describe "in_relation_to_a_journey_pattern methods" do

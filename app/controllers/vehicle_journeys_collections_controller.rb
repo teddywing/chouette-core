@@ -9,10 +9,9 @@ class VehicleJourneysCollectionsController < ChouetteController
 
   def update
     state  = JSON.parse request.raw_post
-    ap '-----------------'
-    ap state
-    ap '-----------------'
-    errors = false
+    Chouette::VehicleJourney.state_update route, state
+    errors = state.any? {|item| item['errors']}
+
     respond_to do |format|
       format.json { render json: state, status: errors ? :unprocessable_entity : :ok }
     end
