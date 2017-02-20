@@ -9,7 +9,7 @@ class VehicleJourney extends Component {
 
   render() {
     return (
-      <div className={'list-group-item'}>
+      <div className={'list-group-item ' + (this.props.value.deletable ? 'disabled' : '')} >
 
         <div style={{display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 25px)'}}>
           {/* selected */}
@@ -60,6 +60,7 @@ class VehicleJourney extends Component {
                       type='number'
                       min='00'
                       max='23'
+                      disabled = {this.props.value.deletable}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
                       value={vj.arrival_time['hour']}
                     />
@@ -68,6 +69,7 @@ class VehicleJourney extends Component {
                       type='number'
                       min='00'
                       max='59'
+                      disabled = {this.props.value.deletable}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
                       value={vj.arrival_time['minute']}
                     />
@@ -78,6 +80,7 @@ class VehicleJourney extends Component {
                     type='number'
                     min='00'
                     max='23'
+                    disabled = {this.props.value.deletable}
                     onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
                     value={vj.departure_time['hour']}
                   />
@@ -86,6 +89,7 @@ class VehicleJourney extends Component {
                     type='number'
                     min='00'
                     max='59'
+                    disabled = {this.props.value.deletable}
                     onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
                     value={vj.departure_time['minute']}
                   />
