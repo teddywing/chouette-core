@@ -406,6 +406,11 @@ $cbx-size: 20px
   &:first-child
     border-top: none
 
+  &[class*='col']
+    border: none
+    padding: 0 15px
+    margin: 0
+
   .wrapper
     display: table
     table-layout: fixed
@@ -433,6 +438,21 @@ $cbx-size: 20px
     &:hover, &:focus
       text-decoration: none
       color: darken($red, 10%)
+
+    &.btn-danger
+      color: #fff
+      line-height: 1.42857
+
+    &.btn-outline-danger
+      line-height: 1.42857
+      background-color: transparent
+      border-color: $red
+      color: $red
+
+      &:hover, &:focus, &.focus, &:active, &.active,
+      .open > .btn-primary.dropdown-toggle
+        background-color: $red
+        color: #fff
 
 .nested-head
   margin: 0
@@ -466,6 +486,11 @@ $cbx-size: 20px
   padding: 10px 15px 0 15px
   text-align: right
   border-top: 1px solid rgba($grey, 0.5)
+  clear: both
+
+  [class*='col'] ~ &
+    padding: 20px 0 0 0
+    margin: 0 15px
 
 // Subforms
 .subform

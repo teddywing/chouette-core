@@ -1,8 +1,10 @@
-.nested-fields
-  .wrapper
-    div
-      = f.input :code
-    div
-      = f.input :label
-    div
-      = link_to_remove_association '', f, class: 'fa fa-trash', data: { confirm: 'Etes-vous sûr(e) ?' }, title: t('actions.delete')
+.nested-fields.col-lg-4.col-md-4.col-sm-6.col-xs-12
+  .panel.panel-default
+    .panel-body
+      = f.input :code, label: 'Titre'
+      = f.input :label, label: 'Texte'
+      
+      .text-right
+        = link_to_remove_association f, class: 'btn btn-outline-danger', data: { confirm: 'Etes-vous sûr(e) ?' }, title: t('actions.delete') do
+          span.fa.fa-trash
+          / span = t('actions.delete')
