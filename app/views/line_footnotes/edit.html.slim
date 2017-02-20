@@ -1,3 +1,20 @@
-= title_tag t('lines.edit.title', line: @line.name)
+/ PageHeader
+= pageheader 'map-marker',
+             "Notes sur la ligne #{@line.name}",
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@line.footnotes.last.updated_at, format: :short))
 
-= render 'form'
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-12
+        = simple_form_for [@referential, @line], url: referential_line_footnotes_path, html: {id: 'notes_form'} do |form|
+
+          = form.simple_fields_for :footnotes do |f|
+            = render 'footnote_fields', f: f
+
+          .links.nested-linker
+            = link_to_add_association t('footnotes.actions.add_footnote'), form, :footnotes, class: 'btn btn-outline-primary'
+
+          = form.button :submit, 'Enregistrer', class: 'btn btn-default formSubmitr', form: 'notes_form'

@@ -1,0 +1,8 @@
+.nested-fields
+  .wrapper
+    div
+      = f.input :code
+    div
+      = f.input :label
+    div
+      = link_to_remove_association '', f, class: 'fa fa-trash', data: { confirm: 'Etes-vous sûr(e) ?' }, title: t('actions.delete')
