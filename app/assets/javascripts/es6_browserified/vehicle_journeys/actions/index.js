@@ -138,13 +138,16 @@ const actions = {
                 comment: tt.comment
               })
             }
+            let vjasWithDelta = val.vehicle_journey_at_stops.map((vjas, i) => {
+              return actions.getDelta(vjas)
+            })
             vehicleJourneys.push({
               journey_pattern_id: val.journey_pattern_id,
               published_journey_name: val.published_journey_name,
               objectid: val.objectid,
               footnotes: val.footnotes,
               time_tables: timeTables,
-              vehicle_journey_at_stops: val.vehicle_journey_at_stops,
+              vehicle_journey_at_stops: vjasWithDelta,
               deletable: false,
               selected: false
             })
@@ -155,6 +158,14 @@ const actions = {
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
         }
       })
+  },
+  getDelta: (vjas) => {
+    let delta = 0
+    if (vjas.departure_time.hour != '' && vjas.departure_time.minute != '' && vjas.arrival_time.hour != '' && vjas.departure_time.minute != ''){
+      delta = (vjas.departure_time.hour - vjas.arrival_time.hour) * 60 + (vjas.departure_time.minute - vjas.arrival_time.minute)
+    }
+    vjas.delta = delta
+    return vjas
   },
   submitVehicleJourneys : (dispatch, state, next) => {
     dispatch(actions.fetchingApi())

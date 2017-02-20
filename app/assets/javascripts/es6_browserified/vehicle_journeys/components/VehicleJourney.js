@@ -75,6 +75,9 @@ class VehicleJourney extends Component {
                     />
                   </span>
                 }
+                {(vj.delta != 0) &&
+                  <span>Delta: {vj.delta}</span>
+                }
                 <span>
                   <input
                     type='number'

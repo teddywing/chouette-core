@@ -13,6 +13,7 @@ let fakeFootnotes = [{
 
 let fakeTimeTables = []
 let fakeVJAS = [{
+  delta : '671',
   arrival_time : {
     hour: '11',
     minute: '11'
@@ -90,6 +91,7 @@ describe('vehicleJourneys reducer', () => {
   it('should handle UPDATE_TIME', () => {
     const val = '33', subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true
     let newVJAS = [{
+      delta: 682,
       arrival_time : {
         hour: '11',
         minute: '11'
