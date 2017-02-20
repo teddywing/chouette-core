@@ -1,7 +1,8 @@
 @togglableFilter = ->
-  $('.form-group.togglable').on 'click', ->
-    $(this).siblings().removeClass 'open'
-    $(this).toggleClass 'open'
+  $('.form-filter').on 'click', '.form-group.togglable', (e)->
+    if $(e.target).hasClass('togglable') || $(e.target).parent().hasClass('togglable')
+      $(this).siblings().removeClass 'open'
+      $(this).toggleClass 'open'
 
 @submitMover = ->
   $('.formSubmitr').appendTo('.page-action')
