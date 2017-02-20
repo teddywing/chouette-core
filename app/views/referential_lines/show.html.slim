@@ -24,7 +24,7 @@
 
       - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
         - if policy(Chouette::Route).create? && @referential.organisation == current_organisation
-          = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'btn btn-primary disabled'
+          = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'btn btn-primary'
 
 / PageContent
 .page_content
@@ -62,7 +62,10 @@
           .row
             .col-lg-12
               = table_builder @routes,
-                { @routes.human_attribute_name(:name) => 'name', @routes.human_attribute_name(:published_name) => 'published_name', @routes.human_attribute_name(:wayback) => Proc.new{|r| r.try(:wayback_text)}, @routes.human_attribute_name(:opposite_route) => Proc.new{|r| r.try(:opposite_route).try(:name)} },
+                { @routes.human_attribute_name(:number) => 'number', @routes.human_attribute_name(:name) => 'name',
+                'Arrêt de départ' => Proc.new{|r| r.try(:stop_points).first.try(:stop_area).try(:name)},
+                "Arrêt d'arrivée" => Proc.new{|r| r.try(:stop_points).last.try(:stop_area).try(:name)},
+                'Nb arrêts' => Proc.new{|r| r.try(:stop_points).count}, 'Nb missions' => Proc.new{|r| r.try(:journey_patterns).count} },
                 [:show, :edit, :delete],
                 [],
                 'table'
