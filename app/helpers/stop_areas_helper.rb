@@ -62,17 +62,13 @@ module StopAreasHelper
 
   def geo_data(sa, sar)
     if sa.long_lat_type.nil?
-      content_tag :span, I18n.t('stop_areas.show.no_geographic_data')
+      content_tag :span, '-'
     else
       if !sa.projection.nil?
-        p = content_tag :span, "#{sa.human_attribute_name(:projection)} : #{sar.projection_type_label}"
-        px = content_tag :span, "#{sa.human_attribute_name(:projection_x)} : #{sa.projection_x}"
-        py = content_tag :span, "#{sa.human_attribute_name(:projection_y)} : #{sa.projection_y}"
+        content_tag :span, "#{sa.projection_x}, #{sa.projection_y}"
 
       elsif !sa.long_lat_type.nil?
-        lonlat = content_tag :span, "#{sa.human_attribute_name(:long_lat_type)} : #{sa.long_lat_type}"
-        lon = content_tag :span, "#{sa.human_attribute_name(:longitude)} : #{sa.longitude}"
-        lat = content_tag :span, "#{sa.human_attribute_name(:latitude)} : #{sa.latitude}"
+        content_tag :span, "#{sa.long_lat_type} : #{sa.longitude}, #{sa.latitude}"
       end
     end
   end
