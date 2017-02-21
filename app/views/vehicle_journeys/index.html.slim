@@ -1,5 +1,6 @@
 = title_tag t('vehicle_journeys.index.title', route: @route.name )
 
+= @perms.inspect
 = search_form_for @q, :url => referential_line_route_vehicle_journeys_path(@referential,@line,@route), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
   .panel.panel-default
     .panel-heading

@@ -10,6 +10,7 @@ class VehicleJourneysController < ChouetteController
   end
 
   before_action :check_policy, only: [:edit, :update, :destroy]
+  before_action :user_permissions, only: :index
 
   def select_journey_pattern
     if params[:journey_pattern_id]
@@ -85,8 +86,15 @@ class VehicleJourneysController < ChouetteController
     authorize resource
   end
 
-  private
+  def user_permissions
+    @perms = {}.tap do |perm|
+      ['vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy'].each do |name|
+        perm[name] = current_user.permissions.include?(name)
+      end
+    end
+  end
 
+  private
   def vehicle_journey_params
     params.require(:vehicle_journey).permit( { footnote_ids: [] } , :journey_pattern_id, :number, :published_journey_name,
                                              :published_journey_identifier, :comment, :transport_mode,
@@ -98,5 +106,4 @@ class VehicleJourneysController < ChouetteController
                                                                                                       :stop_point_id,
                                                                                                       :departure_time] } )
   end
-
 end
