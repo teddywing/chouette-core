@@ -1,125 +1,47 @@
-= title_tag t('routes.show.title', route: @route.name, line: @route.line.name )
+/ PageHeader
+= pageheader 'map-marker',
+             @route.name,
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@route.updated_at, format: :short)),
+             (policy(@route).edit? ? link_to(t('actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'btn btn-default') : '') do
 
-.route_show
-  = @map.to_html
+  / Below is secundary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      - if @route.journey_patterns.present?
+        = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], class: 'btn btn-primary'
+        = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'btn btn-primary'
+        
+      = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'btn btn-primary'
 
-  .summary
-    p
-      label = "#{@route.human_attribute_name(:name)} : "
-      = " #{@route.name}"
-
-    p
-      label = "#{@route.human_attribute_name(:published_name)} : "
-      = " #{@route.published_name}"
-
-    / p
-    /   label = "#{@route.human_attribute_name(:number)} : "
-    /   = " #{@route.number}"
-    /
-    / p
-    /   label = "#{@route.human_attribute_name(:comment)} : "
-    /   = " #{@route.comment}"
-    /
-    / p
-    /   label = "#{@route.human_attribute_name(:direction)} : "
-    /   - if @route.direction
-    /     = " #{@route.direction_text}"
-    /   - else
-    /     = " #{t('.undefined')}"
-
-    p
-      label = "#{@route.human_attribute_name(:wayback)} : "
-      - if @route.wayback
-        = " #{@route.wayback_text}"
-      - else
-        = " #{t('.undefined')}"
-
-    p
-      label = "#{@route.human_attribute_name(:opposite_route)} : "
-      - if @route.opposite_route
-        = link_to @route.opposite_route.name, [@referential, @line, @route.opposite_route]
-      - else
-        = " #{t('.no_opposite_route')}"
-
-p.after_map
-
-#stop_points.panel.panel-default
-  .panel-heading
-    h4.panel-title
-      strong = t('.stop_points')
-
-  .list-group
-    - @route.stop_points.each do |point|
-      - if point.stop_area.zip_code && point.stop_area.city_name
-        - linktxt = "#{point.stop_area.name}, #{point.stop_area.zip_code} #{point.stop_area.city_name}"
-      - else
-        - linktxt = "#{point.stop_area.name}"
-
-      = link_to [@referential, point.stop_area], { style: 'display: table;width: 100%;', class: 'list-group-item', title: "Voir l'arrêt '#{linktxt}'" } do
-        div style='display: table-cell;vertical-align: middle;'
-          div style='display: inline-block;width: 10%;vertical-align: middle;text-align: right;'
-            span.label.label-default style='margin-right: 10px;'
-              = "#{point.stop_area.user_objectid}"
-          div style='display: inline-block;width: 90%;vertical-align: middle;'
-            = linktxt
-
-.panel.panel-default#journey_patterns
-  .panel-heading
-    h4.panel-title
-      strong = t('.journey_patterns')
-
-  .list-group
-    - @route.journey_patterns.each do |journey_pattern|
-      .list-group-item.clearfix title="#{t('journey_patterns.journey_pattern.stop_count', count: journey_pattern.stop_points.count, route_count: @route.stop_points.count)} | #{t('journey_patterns.journey_pattern.vehicle_journeys_count', count: journey_pattern.vehicle_journeys.count)}"
-        span.label.label-default style='margin-right: 10px;' = journey_pattern.objectid.local_id
-        strong = "#{journey_name(journey_pattern)} "
-
-        - unless journey_pattern.stop_points.empty?
-          em.small
-            = t('journey_patterns.journey_pattern.from_to', departure: journey_pattern.stop_points.first.stop_area.name, arrival: journey_pattern.stop_points.last.stop_area.name)
-
-        .btn-group.btn-group-xs.pull-right
-          .btn.btn-primary.dropdown-toggle data-toggle='dropdown'
-            span.fa.fa-bars
-            span.caret
-          ul.dropdown-menu
-            li = link_to 'Voir', [@referential, @line, @route, journey_pattern], title: "#{Chouette::JourneyPattern.model_name.human.capitalize} #{journey_name(journey_pattern)}"
-            li
-              - if policy(journey_pattern).edit?
-                = link_to t('actions.edit'), edit_referential_line_route_journey_pattern_path(@referential, @line, @route, journey_pattern)
-            li
-              - if policy(journey_pattern).destroy?
-                = link_to t('actions.destroy'), referential_line_route_journey_pattern_path(@referential, @line, @route, journey_pattern), method: :delete, data: {confirm: t('journey_patterns.actions.destroy_confirm')}
-
-  / .panel-body
-  /   .journey_patterns.paginated_content
-  /     = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
-
-- content_for :sidebar do
-  ul.actions
-    li
-      - if policy(@route).create?
-        = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
-    li
-      - if policy(@route).edit?
-        = link_to t('routes.actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'edit'
-    li
       - if policy(@route).destroy?
-        = link_to t('routes.actions.destroy'), referential_line_route_path(@referential, @line, @route), method: :delete, :data => {:confirm =>  t('routes.actions.destroy_confirm')}, class: 'remove'
+        = link_to referential_line_route_path(@referential, @line, @route), method: :delete, data: {confirm: t('routes.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('actions.destroy')
 
-  ul.actions
-    - if @route.stop_points.size >= 2
-      li = link_to t('journey_patterns.actions.new'), new_referential_line_route_journey_pattern_path(@referential, @line, @route), class: 'add'
+/ PägeContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { @route.human_attribute_name(:direction) => (@route.direction ? @route.direction_text : '-'),
+            @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
+            @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }
 
-    / - if @route.stop_points.present?
-    /   li = link_to t('routes.actions.edit_boarding_alighting'), edit_boarding_alighting_referential_line_route_path(@referential, @line, @route), class: 'edit'
+    .row
+      .col-lg-12
+        - if @route.stop_points.any?
+          = table_builder @route.stop_points,
+            { 'ID Reflex' => Proc.new {|s| s.try(:stop_area).try(:user_objectid)},
+              Chouette::StopArea.human_attribute_name(:name) => Proc.new {|s| s.try(:stop_area).try(:name)},
+              Chouette::StopArea.human_attribute_name(:zip_code) => Proc.new {|s| s.try(:stop_area).try(:zip_code)},
+              Chouette::StopArea.human_attribute_name(:city_name) => Proc.new {|s| s.try(:stop_area).try(:city_name)},
+              Chouette::StopArea.human_attribute_name(:area_type) => Proc.new {|s| t("area_types.label.#{s.try(:stop_area).try(:area_type)}")},
+              Chouette::StopArea.human_attribute_name(:for_boarding) => Proc.new {|s| t("stop_points.stop_point.for_boarding.#{s.for_boarding}")}, Chouette::StopArea.human_attribute_name(:for_alighting) => Proc.new {|s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}")}, 'Position' => 'position' },
+            [:show],
+            [],
+            'table'
 
-    - if @route.journey_patterns.size > 0
-      li = link_to t('journey_patterns.actions.edit_journey_patterns_collection'), [@referential, @line, @route, :journey_patterns_collection], class: 'edit'
-      li = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'clock'
-
-  / ul.actions
-  /   li = link_to t('vehicle_journey_imports.new.title'), new_referential_line_route_vehicle_journey_import_path( @referential, @line, @route ), class: 'import'
-  /   li = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'export'
-
-  = creation_tag(@route)
+        - else
+          = replacement_msg t('stop_areas.search_no_results')

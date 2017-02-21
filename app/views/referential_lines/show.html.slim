@@ -24,7 +24,7 @@
 
       - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
         - if policy(Chouette::Route).create? && @referential.organisation == current_organisation
-          = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'btn btn-primary disabled'
+          = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'btn btn-primary'
 
 / PageContent
 .page_content
