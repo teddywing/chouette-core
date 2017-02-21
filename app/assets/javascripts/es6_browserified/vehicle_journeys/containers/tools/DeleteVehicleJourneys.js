@@ -1,6 +1,6 @@
-var actions = require('../actions')
+var actions = require('../../actions')
 var connect = require('react-redux').connect
-var DeleteVJComponent = require('../components/DeleteVehicleJourneys')
+var DeleteVJComponent = require('../../components/tools/DeleteVehicleJourneys')
 
 const mapStateToProps = (state) => {
   return {

@@ -13,10 +13,10 @@ let fakeFootnotes = [{
 
 let fakeTimeTables = []
 let fakeVJAS = [{
-  delta : '671',
+  delta : 627,
   arrival_time : {
     hour: '11',
-    minute: '11'
+    minute: '55'
   },
   departure_time : {
     hour: '22',
@@ -31,7 +31,7 @@ describe('vehicleJourneys reducer', () => {
       {
         journey_pattern_id: 1,
         published_journey_name: "vj1",
-        objectid: 11,
+        objectid: '11',
         deletable: false,
         selected: false,
         footnotes: fakeFootnotes,
@@ -41,7 +41,7 @@ describe('vehicleJourneys reducer', () => {
       {
         journey_pattern_id: 2,
         published_journey_name: "vj2",
-        objectid: 22,
+        objectid: '22',
         selected: true,
         deletable: false,
         footnotes: fakeFootnotes,
@@ -91,10 +91,10 @@ describe('vehicleJourneys reducer', () => {
   it('should handle UPDATE_TIME', () => {
     const val = '33', subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true
     let newVJAS = [{
-      delta: 682,
+      delta: 638,
       arrival_time : {
         hour: '11',
-        minute: '11'
+        minute: '55'
       },
       departure_time : {
         hour: '22',
@@ -134,5 +134,31 @@ describe('vehicleJourneys reducer', () => {
         type: 'DELETE_VEHICLEJOURNEYS'
       })
     ).toEqual([state[0], newVJ])
+  })
+
+  it('should handle SHIFT_VEHICLEJOURNEY', () => {
+    let newVJAS = [{
+      delta: 627,
+      arrival_time : {
+        hour: '12',
+        minute: '00'
+      },
+      departure_time : {
+        hour: '22',
+        minute: '27'
+      },
+      stop_area_object_id : "FR:92024:ZDE:420553:STIF"
+    }]
+    let fakeData = {
+      objectid: {value : '11'},
+      additional_time: {value: '5'}
+    }
+    let newVJ = Object.assign({}, state[0], {vehicle_journey_at_stops: newVJAS})
+    expect(
+      vjReducer(state, {
+        type: 'SHIFT_VEHICLEJOURNEY',
+        data: fakeData
+      })
+    ).toEqual([newVJ, state[1]])
   })
 })

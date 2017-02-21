@@ -1,6 +1,6 @@
-var actions = require('../actions')
+var actions = require('../../actions')
 var connect = require('react-redux').connect
-var CreateModal = require('../components/CreateModal')
+var CreateModal = require('../../components/tools/CreateModal')
 
 const mapStateToProps = (state) => {
   return {

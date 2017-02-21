@@ -38,7 +38,7 @@ describe('when clicking on add button', () => {
   })
 })
 describe('when clicking on validate button inside create modal', () => {
-  it('should create an action to create a new journey pattern', () => {
+  it('should create an action to create a new vehicle journey', () => {
     const data = {}
     const expectedAction = {
       type: 'ADD_VEHICLEJOURNEY',
@@ -120,5 +120,15 @@ describe('when updating vjas time', () => {
       isArrivalsToggled
     }
     expect(actions.updateTime(val, subIndex, index, timeUnit, isDeparture, isArrivalsToggled)).toEqual(expectedAction)
+  })
+})
+describe('when clicking on validate button inside shifting modal', () => {
+  it('should create an action to shift a vehiclejourney schedule', () => {
+    const data = {}
+    const expectedAction = {
+      type: 'SHIFT_VEHICLEJOURNEY',
+      data
+    }
+    expect(actions.shiftVehicleJourney(data)).toEqual(expectedAction)
   })
 })

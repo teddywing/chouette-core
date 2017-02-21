@@ -1,17 +1,17 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
-var actions = require('../actions')
+var actions = require('../../actions')
 
-class CreateModal extends Component {
+class ShiftVehicleJourney extends Component {
   constructor(props) {
     super(props)
   }
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
-      this.props.onAddVehicleJourney(this.refs)
-      $('#NewVehicleJourneyModal').modal('hide')
+      this.props.onShiftVehicleJourney(this.refs)
+      $('#ShiftVehicleJourneyModal').modal('hide')
     }
   }
 
@@ -26,39 +26,48 @@ class CreateModal extends Component {
             type='button'
             className='btn btn-primary btn-sm'
             data-toggle='modal'
-            data-target='#NewVehicleJourneyModal'
-            onClick={this.props.onOpenCreateModal}
+            data-target='#ShiftVehicleJourneyModal'
+            onClick={this.props.onOpenShiftModal}
             >
-            <span className='fa fa-plus'></span> Ajouter une mission
+            <span className='fa fa-refresh'></span>
             </button>
 
-            <div className={ 'modal fade ' + ((this.props.modal.type == 'create') ? 'in' : '') } id='NewVehicleJourneyModal'>
+            <div className={ 'modal fade ' + ((this.props.modal.type == 'shift') ? 'in' : '') } id='ShiftVehicleJourneyModal'>
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header clearfix'>
-                    <h4>Ajouter une mission</h4>
+                    <h4>Mettre à jour une course</h4>
                   </div>
 
-                  {(this.props.modal.type == 'create') && (
+                  {(this.props.modal.type == 'shift') && (
                     <form>
                       <div className='modal-body'>
                         <div className='form-group'>
-                          <label className='control-label is-required'>Nom de la course</label>
-                          <input
-                            type='text'
-                            ref='comment'
+                          <label className='control-label is-required'>Mettre à jour les horaires de la course</label>
+                          <select
+                            ref='objectid'
                             className='form-control'
                             onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                             required
-                            />
+                            >
+                            {this.props.vehicleJourneys.map((vj, i) =>
+                              <option
+                                key = {i}
+                                value = {vj.objectid}>
+                                {vj.objectid}
+                              </option>
+                            )}
+                          </select>
                         </div>
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                             <div className='form-group'>
-                              <label className='control-label is-required'>ID de la mission</label>
+                              <label className='control-label is-required'>Avec un décalage de</label>
                               <input
-                                type='text'
-                                ref='journey_pattern_id'
+                                type='number'
+                                ref='additional_time'
+                                min='0'
+                                max='59'
                                 className='form-control'
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                 required
@@ -97,13 +106,9 @@ class CreateModal extends Component {
   }
 }
 
-CreateModal.propTypes = {
-  index: PropTypes.number,
-  modal: PropTypes.object.isRequired,
-  status: PropTypes.object.isRequired,
-  onOpenCreateModal: PropTypes.func.isRequired,
+ShiftVehicleJourney.propTypes = {
+  onOpenShiftModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  onAddVehicleJourney: PropTypes.func.isRequired
 }
 
-module.exports = CreateModal
+module.exports = ShiftVehicleJourney

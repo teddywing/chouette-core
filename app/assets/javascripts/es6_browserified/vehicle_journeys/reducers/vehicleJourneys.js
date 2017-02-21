@@ -14,6 +14,24 @@ const vehicleJourney= (state = {}, action) => {
         vehicle_journey_at_stops: [],
         deletable: false
       }
+    case 'SHIFT_VEHICLEJOURNEY':
+      let shiftedArray, shiftedSchedule, shiftedVjas
+      shiftedArray = state.vehicle_journey_at_stops.map((vjas, i) => {
+        shiftedSchedule = {
+          departure_time: {
+            hour: vjas.departure_time.hour,
+            minute: String(parseInt(vjas.departure_time.minute) + parseInt(action.data.additional_time.value))
+          },
+          arrival_time: {
+            hour: vjas.arrival_time.hour,
+            minute: String(parseInt(vjas.arrival_time.minute) + parseInt(action.data.additional_time.value))
+          }
+        }
+        actions.checkSchedules(shiftedSchedule)
+        shiftedVjas =  Object.assign({}, state.vehicle_journey_at_stops[i], shiftedSchedule)
+        return Object.assign({}, state.vehicle_journey_at_stops[i], shiftedVjas)
+      })
+      return Object.assign({}, state, {vehicle_journey_at_stops: shiftedArray})
     case 'UPDATE_TIME':
       let vj, vjas, vjasArray, newSchedule
       vjasArray = state.vehicle_journey_at_stops.map((vjas, i) =>{
@@ -64,6 +82,14 @@ const vehicleJourneys = (state = [], action) => {
         vehicleJourney(state, action),
         ...state
       ]
+    case 'SHIFT_VEHICLEJOURNEY':
+      return state.map((vj, i) => {
+        if (vj.objectid == action.data.objectid.value){
+          return vehicleJourney(vj, action)
+        }else{
+          return vj
+        }
+      })
     case 'DELETE_VEHICLEJOURNEYS':
       return state.map((vj, i) =>{
         if (vj.selected){

@@ -4,8 +4,9 @@ var Navigate = require('../containers/Navigate')
 var FiltersList = require('../containers/FiltersList')
 var SaveVehicleJourneys = require('../containers/SaveVehicleJourneys')
 var ConfirmModal = require('../containers/ConfirmModal')
-var AddVehicleJourney = require('../containers/AddVehicleJourney')
-var DeleteVehicleJourneys = require('../containers/DeleteVehicleJourneys')
+var AddVehicleJourney = require('../containers/tools/AddVehicleJourney')
+var DeleteVehicleJourneys = require('../containers/tools/DeleteVehicleJourneys')
+var ShiftVehicleJourney = require('../containers/tools/ShiftVehicleJourney')
 
 const App = () => (
   <div>
@@ -14,6 +15,7 @@ const App = () => (
       <Navigate />
       <AddVehicleJourney />
       <DeleteVehicleJourneys />
+      <ShiftVehicleJourney />
     </div>
     <VehicleJourneysList />
     <SaveVehicleJourneys />

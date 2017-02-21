@@ -36,12 +36,19 @@ const actions = {
   openCreateModal : () => ({
     type : 'CREATE_VEHICLEJOURNEY_MODAL'
   }),
+  openShiftModal : () => ({
+    type : 'SHIFT_VEHICLEJOURNEY_MODAL'
+  }),
   selectVehicleJourney : (index) => ({
     type : 'SELECT_VEHICLEJOURNEY',
     index
   }),
   addVehicleJourney : (data) => ({
     type: 'ADD_VEHICLEJOURNEY',
+    data,
+  }),
+  shiftVehicleJourney : (data) => ({
+    type: 'SHIFT_VEHICLEJOURNEY',
     data,
   }),
   deleteVehicleJourneys : () => ({
@@ -159,14 +166,6 @@ const actions = {
         }
       })
   },
-  getDelta: (vjas) => {
-    let delta = 0
-    if (vjas.departure_time.hour != '' && vjas.departure_time.minute != '' && vjas.arrival_time.hour != '' && vjas.departure_time.minute != ''){
-      delta = (vjas.departure_time.hour - vjas.arrival_time.hour) * 60 + (vjas.departure_time.minute - vjas.arrival_time.minute)
-    }
-    vjas.delta = delta
-    return vjas
-  },
   submitVehicleJourneys : (dispatch, state, next) => {
     dispatch(actions.fetchingApi())
     let urlJSON = window.location.pathname + "_collection.json"
@@ -199,6 +198,35 @@ const actions = {
         }
       })
   },
+
+  // VJAS HELPERS
+  pad: (d) => {
+    return (d < 10) ? '0' + d.toString() : d.toString();
+  },
+  getDelta: (vjas) => {
+    let delta = 0
+    if (vjas.departure_time.hour != '' && vjas.departure_time.minute != '' && vjas.arrival_time.hour != '' && vjas.departure_time.minute != ''){
+      delta = (vjas.departure_time.hour - vjas.arrival_time.hour) * 60 + (vjas.departure_time.minute - vjas.arrival_time.minute)
+    }
+    vjas.delta = delta
+    return vjas
+  },
+  checkSchedules: (schedule) => {
+    if (parseInt(schedule.departure_time.minute) > 59){
+      schedule.departure_time.minute = actions.pad(parseInt(schedule.departure_time.minute) - 60)
+      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) + 1)
+    }
+    if (parseInt(schedule.arrival_time.minute) > 59){
+      schedule.arrival_time.minute = actions.pad(parseInt(schedule.arrival_time.minute) - 60)
+      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) + 1)
+    }
+    if (parseInt(schedule.departure_time.hour) > 23){
+      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) - 24)
+    }
+    if (parseInt(schedule.arrival_time.hour) > 23){
+      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) - 24)
+    }
+  }
 }
 
 module.exports = actions

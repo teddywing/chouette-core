@@ -14,6 +14,12 @@ const modal = (state = {}, action) => {
         modalProps: {},
         confirmModal: {}
       }
+    case 'SHIFT_VEHICLEJOURNEY_MODAL':
+      return {
+        type: 'shift',
+        modalProps: {},
+        confirmModal: {}
+      }
     case 'CLOSE_MODAL':
       return {
         type: '',
