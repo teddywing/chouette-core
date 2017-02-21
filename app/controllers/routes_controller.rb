@@ -34,6 +34,14 @@ class RoutesController < ChouetteController
 
   def show
     @map = RouteMap.new(route).with_helpers(self)
+
+    @route_sp = route.stop_points
+    if sort_sp_column && sort_sp_direction
+      @route_sp = @route_sp.order(sort_sp_column + ' ' + sort_sp_direction)
+    else
+      @route_sp = @route_sp.order(:position)
+    end
+
     show! do
       build_breadcrumb :show
     end
@@ -88,8 +96,28 @@ class RoutesController < ChouetteController
 
   private
 
+  def sort_sp_column
+    @route_sp.column_names.include?(params[:sort]) ? params[:sort] : 'position'
+  end
+  def sort_sp_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
   def route_params
-    params.require(:route).permit( :line_id, :objectid, :object_version, :creator_id, :name, :comment, :opposite_route_id, :published_name, :number, :direction, :wayback, { stop_points_attributes: [ :id, :_destroy, :position, :stop_area_id, :for_boarding, :for_alighting ] } )
+    params.require(:route).permit(
+      :line_id,
+      :objectid,
+      :object_version,
+      :creator_id,
+      :name,
+      :comment,
+      :opposite_route_id,
+      :published_name,
+      :number,
+      :direction,
+      :wayback,
+      stop_points_attributes: [:id, :_destroy, :position, :stop_area_id, :for_boarding, :for_alighting]
+    )
   end
 
 end

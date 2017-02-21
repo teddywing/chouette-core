@@ -31,8 +31,8 @@
 
     .row
       .col-lg-12
-        - if @route.stop_points.any?
-          = table_builder @route.stop_points,
+        - if @route_sp.any?
+          = table_builder @route_sp,
             { 'ID Reflex' => Proc.new {|s| s.try(:stop_area).try(:user_objectid)},
               Chouette::StopArea.human_attribute_name(:name) => Proc.new {|s| s.try(:stop_area).try(:name)},
               Chouette::StopArea.human_attribute_name(:zip_code) => Proc.new {|s| s.try(:stop_area).try(:zip_code)},
