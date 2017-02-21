@@ -45,18 +45,20 @@ module NewapplicationHelper
               end
             if attribute == 'name'
               lnk = []
+
               unless item.class.to_s == 'Calendar' or item.class.to_s == 'Referential'
                 if current_referential
                   lnk << current_referential
                   lnk << item.line if item.respond_to? :line
+                  lnk << item if item.respond_to? :line_referential
+                  lnk << item.stop_area if item.respond_to? :stop_area
+                  lnk << item if item.respond_to? :stop_points
                 elsif item.respond_to? :referential
                   lnk << item.referential
-                elsif item.respond_to? :line_referential
-                  lnk << item.line_referential
                 end
+              else
+                lnk << item
               end
-
-              lnk << item
 
               bcont << content_tag(:td, link_to(value, lnk), title: 'Voir')
             else
@@ -98,14 +100,15 @@ module NewapplicationHelper
           if current_referential
             polymorph_url << current_referential
             polymorph_url << item.line if item.respond_to? :line
+            polymorph_url << item if item.respond_to? :line_referential
+            polymorph_url << item.stop_area if item.respond_to? :stop_area
+            polymorph_url << item if item.respond_to? :stop_points
           elsif item.respond_to? :referential
             polymorph_url << item.referential
-          elsif item.respond_to? :line_referential
-            polymorph_url << item.line_referential
           end
+        else
+          polymorph_url << item
         end
-
-        polymorph_url << item
 
         if action == :delete
           if policy(item).present?
