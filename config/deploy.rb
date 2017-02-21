@@ -73,6 +73,12 @@ namespace :deploy do
   end
   after "deploy:restart", "deploy:group_writable"
 
+  desc "Restart sidekiq"
+  task :sidekiq_restart do
+    run "sudo sidekiq-touch #{fetch(:application)}"
+  end
+  after "deploy:restart", "deploy:sidekiq_restart"
+
   desc "Run db:seed"
   task :seed do
     run "cd #{current_path} && #{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake db:seed RAILS_ENV=#{rails_env}"
