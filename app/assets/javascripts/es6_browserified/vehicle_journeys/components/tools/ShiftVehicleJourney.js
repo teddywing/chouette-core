@@ -21,7 +21,7 @@ class ShiftVehicleJourney extends Component {
     }
     if(this.props.status.fetchSuccess == true) {
       return (
-        <div className='pull-right'>
+        <div  className='pull-left'>
           <button
             type='button'
             className='btn btn-primary btn-sm'

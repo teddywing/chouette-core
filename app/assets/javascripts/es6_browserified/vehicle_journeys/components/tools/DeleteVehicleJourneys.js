@@ -3,7 +3,7 @@ var PropTypes = require('react').PropTypes
 
 const DeleteVehicleJourneys = ({onDeleteVehicleJourneys}) => {
   return (
-    <div className='list-group'>
+    <div  className='pull-left'>
       <button
         type='button'
         className='btn btn-primary btn-sm'

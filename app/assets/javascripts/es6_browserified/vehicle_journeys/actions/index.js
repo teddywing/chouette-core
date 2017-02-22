@@ -45,11 +45,14 @@ const actions = {
   }),
   addVehicleJourney : (data) => ({
     type: 'ADD_VEHICLEJOURNEY',
-    data,
+    data
   }),
   shiftVehicleJourney : (data) => ({
     type: 'SHIFT_VEHICLEJOURNEY',
-    data,
+    data
+  }),
+  duplicateVehicleJourneys : (data) => ({
+    type: 'DUPLICATE_VEHICLEJOURNEY'
   }),
   deleteVehicleJourneys : () => ({
     type: 'DELETE_VEHICLEJOURNEYS'
