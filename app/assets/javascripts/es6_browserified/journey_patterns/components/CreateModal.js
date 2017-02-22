@@ -11,6 +11,7 @@ class CreateModal extends Component {
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
       this.props.onAddJourneyPattern(this.refs)
+      this.props.onModalClose()
       $('#NewJourneyPatternModal').modal('hide')
     }
   }
