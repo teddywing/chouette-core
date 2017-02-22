@@ -24,7 +24,7 @@ class DuplicateVehicleJourney extends Component {
       return (
         <div  className='pull-left'>
           <button
-            disabled= {(actions.getSelected(this.props.vehicleJourneys).length > 0) ? false : true}
+            disabled= {(actions.getSelected(this.props.vehicleJourneys).length == 1) ? false : true}
             type='button'
             className='btn btn-primary btn-sm'
             data-toggle='modal'
@@ -34,32 +34,34 @@ class DuplicateVehicleJourney extends Component {
             <span className='fa fa-files-o'></span>
             </button>
 
-            <div className={ 'modal fade ' + ((this.props.modal.type == 'shift') ? 'in' : '') } id='DuplicateVehicleJourneyModal'>
+            <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='DuplicateVehicleJourneyModal'>
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header clearfix'>
                     <h4>Mettre à jour une course</h4>
                   </div>
 
-                  {(this.props.modal.type == 'shift') && (
+                  {(this.props.modal.type == 'duplicate') && (
                     <form>
                       <div className='modal-body'>
                         <div className='form-group'>
-                          <label className='control-label is-required'>Mettre à jour les horaires de la course</label>
-                          <select
-                            ref='objectid'
-                            className='form-control'
-                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                            required
-                            >
-                            {this.props.vehicleJourneys.map((vj, i) =>
-                              <option
-                                key = {i}
-                                value = {vj.objectid}>
-                                {vj.objectid}
-                              </option>
-                            )}
-                          </select>
+                          <span>Dupliquer les horaires de la course suivante : {actions.getSelected(this.props.vehicleJourneys)[0].objectid}</span>
+                        </div>
+                        <div className='row'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Nombre de courses à créer et dupliquer</label>
+                              <input
+                                type='number'
+                                ref='duplicate_number'
+                                min='1'
+                                max='20'
+                                className='form-control'
+                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                required
+                                />
+                            </div>
+                          </div>
                         </div>
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>

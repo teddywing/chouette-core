@@ -132,3 +132,13 @@ describe('when clicking on validate button inside shifting modal', () => {
     expect(actions.shiftVehicleJourney(data)).toEqual(expectedAction)
   })
 })
+describe('when clicking on validate button inside duplicating modal', () => {
+  it('should create an action to duplicate a vehiclejourney schedule', () => {
+    const data = {}
+    const expectedAction = {
+      type: 'DUPLICATE_VEHICLEJOURNEY',
+      data
+    }
+    expect(actions.duplicateVehicleJourney(data)).toEqual(expectedAction)
+  })
+})

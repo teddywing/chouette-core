@@ -20,6 +20,12 @@ const modal = (state = {}, action) => {
         modalProps: {},
         confirmModal: {}
       }
+    case 'DUPLICATE_VEHICLEJOURNEY_MODAL':
+      return {
+        type: 'duplicate',
+        modalProps: {},
+        confirmModal: {}
+      }
     case 'CLOSE_MODAL':
       return {
         type: '',

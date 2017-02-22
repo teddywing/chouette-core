@@ -24,6 +24,7 @@ const vehicleJourney= (state = {}, action) => {
         selected: false,
         deletable: false
       }
+    case 'DUPLICATE_VEHICLEJOURNEY':
     case 'SHIFT_VEHICLEJOURNEY':
       let shiftedArray, shiftedSchedule, shiftedVjas
       shiftedArray = state.vehicle_journey_at_stops.map((vjas, i) => {
@@ -94,12 +95,31 @@ const vehicleJourneys = (state = [], action) => {
       ]
     case 'SHIFT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
-        if (vj.selected && (actions.getSelected(state).length == 1)){
+        if (vj.selected){
           return vehicleJourney(vj, action)
         }else{
           return vj
         }
       })
+    case 'DUPLICATE_VEHICLEJOURNEY':
+      let dupeVj
+      let dupes = []
+      let selectedIndex
+      state.map((vj, i) => {
+        if(vj.selected){
+          selectedIndex = i
+          for (i = 0; i< action.data.duplicate_number.value; i++){
+            dupeVj = vehicleJourney(vj, action)
+            dupeVj.comment = dupeVj.comment + '-' + i
+            dupeVj.selected = false
+            delete dupeVj['objectid']
+            dupes.push(dupeVj)
+          }
+        }
+      })
+      let concatArray = state.slice(0, selectedIndex + 1).concat(dupes)
+      concatArray = concatArray.concat(state.slice(selectedIndex + 1))
+      return concatArray
     case 'DELETE_VEHICLEJOURNEYS':
       return state.map((vj, i) =>{
         if (vj.selected){

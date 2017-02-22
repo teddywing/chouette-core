@@ -39,6 +39,9 @@ const actions = {
   openShiftModal : () => ({
     type : 'SHIFT_VEHICLEJOURNEY_MODAL'
   }),
+  openDuplicateModal : () => ({
+    type : 'DUPLICATE_VEHICLEJOURNEY_MODAL'
+  }),
   selectVehicleJourney : (index) => ({
     type : 'SELECT_VEHICLEJOURNEY',
     index
@@ -51,8 +54,9 @@ const actions = {
     type: 'SHIFT_VEHICLEJOURNEY',
     data
   }),
-  duplicateVehicleJourneys : (data) => ({
-    type: 'DUPLICATE_VEHICLEJOURNEY'
+  duplicateVehicleJourney : (data) => ({
+    type: 'DUPLICATE_VEHICLEJOURNEY',
+    data
   }),
   deleteVehicleJourneys : () => ({
     type: 'DELETE_VEHICLEJOURNEYS'
