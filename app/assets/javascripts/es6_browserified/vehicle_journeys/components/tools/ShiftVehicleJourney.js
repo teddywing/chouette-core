@@ -23,6 +23,7 @@ class ShiftVehicleJourney extends Component {
       return (
         <div  className='pull-left'>
           <button
+            disabled= {(actions.countSelected(this.props.vehicleJourneys) == 1) ? false : true}
             type='button'
             className='btn btn-primary btn-sm'
             data-toggle='modal'

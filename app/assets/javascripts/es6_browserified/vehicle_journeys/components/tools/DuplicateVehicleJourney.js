@@ -23,6 +23,7 @@ class DuplicateVehicleJourney extends Component {
       return (
         <div  className='pull-left'>
           <button
+            disabled= {(actions.countSelected(this.props.vehicleJourneys) > 0) ? false : true}
             type='button'
             className='btn btn-primary btn-sm'
             data-toggle='modal'
