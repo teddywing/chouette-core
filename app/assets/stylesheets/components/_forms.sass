@@ -131,6 +131,71 @@ $cbx-size: 20px
     &[type='checkbox']:checked + label:before
       background-color: $blue
 
+// Switch
+.has_switch
+  &.form-group
+    > .form-group
+      margin: 0
+
+    .checkbox
+      padding: 0
+      margin: 0
+      display: inline-block
+      min-height: 0
+      width: auto
+      height: 34px
+      line-height: 34px
+
+      > label
+        position: relative
+        min-height: 0
+        padding: 0
+        margin: 0
+
+        > input[type='checkbox']
+          position: absolute
+          left: -9999px
+          margin: 0
+
+          + .switch-label
+            position: relative
+            display: inline-block
+            width: 50px
+            height: 30px
+            padding-left: 60px
+            line-height: 30px
+            color: $blue
+
+            &:before
+              content: ''
+              position: absolute
+              left: 0
+              top: 0
+              display: inline-block
+              width: 50px
+              height: 30px
+              background-color: $blue
+              border-radius: 18px
+
+            &:after
+              content: ''
+              position: absolute
+              left: 0
+              top: 0
+              margin: 2px
+              width: 26px
+              height: 26px
+              border-radius: 50%
+              background-color: #fff
+              transition: 0.2s
+
+          &:checked + .switch-label:after
+            left: 0
+            transition: 0.2s
+          &:not(:checked) + .switch-label:after
+            left: 20px
+            transition: 0.2s
+
 // Form filter
 .form.form-filter
   display: block

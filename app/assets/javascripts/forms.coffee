@@ -4,6 +4,16 @@
       $(this).siblings().removeClass 'open'
       $(this).toggleClass 'open'
 
+@switchInput = ->
+  $('.form-group.has_switch').each ->
+    $(this).on 'click', "input[type='checkbox']", ->
+      labelCont = $(this).siblings('.switch-label')
+
+      if labelCont.text() == labelCont.data('checkedvalue')
+        labelCont.text(labelCont.data('uncheckedvalue'))
+      else
+        labelCont.text(labelCont.data('checkedvalue'))
+
 @submitMover = ->
   $('.formSubmitr').appendTo('.page-action')
 
@@ -20,3 +30,4 @@
 
 $(document).on 'ready page:load', togglableFilter
 $(document).on 'ready page:load', submitMover
+$(document).on 'ready page:load', switchInput

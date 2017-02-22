@@ -97,7 +97,7 @@ class RoutesController < ChouetteController
   private
 
   def sort_sp_column
-    @route_sp.column_names.include?(params[:sort]) ? params[:sort] : 'position'
+    route.stop_points.column_names.include?(params[:sort]) ? params[:sort] : 'position'
   end
   def sort_sp_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'

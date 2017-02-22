@@ -1,28 +1,24 @@
-= simple_form_for [@referential, @line, @route] do |f|
+= simple_form_for [@referential, @line, @route], html: {class: 'form-horizontal', id: 'route_form'}, wrapper: :horizontal_form do |f|
+
   .row
-    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+    .col-lg-12
       = f.input :name
-    .col-lg-6.col-md-6.col-sm-12.col-xs-12
       = f.input :published_name
 
-  .row
-    .col-lg-4.col-md-6.col-sm-8.col-xs-8
+      .form-group.has_switch
+        = f.label :wayback, class: 'col-sm-4 control-label'
+        = f.input :wayback, as: :boolean, checked_value: :straight_forward, unchecked_value: :backward, label: content_tag(:span, @route.wayback_text, class: 'switch-label', data: {checkedValue: t('enumerize.route.direction.straight_forward'), uncheckedValue: t('enumerize.route.direction.backward')}), wrapper_html: { class: 'col-sm-8'}
+
       = f.input :opposite_route_id, collection: @candidate_opposite_routes
 
-    / .col-lg-4.col-md-4.col-sm-4.col-xs-4
-    /   = f.input :direction, include_blank: false
+  .separator
 
-    .col-lg-4.col-md-4.col-sm-4.col-xs-4
-      = f.input :wayback, include_blank: false
-
-  .row style="margin-top:20px"
-    .col-lg-12.col-md-12.col-sm-12.col-xs-12
+  .row
+    .col-lg-12
       #stop_points
 
-  .row style="margin-top:20px"
-    .col-lg-12.col-md-12.col-sm-12.col-xs-12.text-right
-      = link_to 'Annuler', :back, class: 'btn btn-link'
-      = f.button :submit, class: 'btn btn-danger'
+  = f.button :submit, 'Enregistrer', class: 'btn btn-default formSubmitr', form: 'route_form'
+
 
 // Get JSON data for route stop points
 = javascript_tag do

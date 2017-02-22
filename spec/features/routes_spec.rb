@@ -38,7 +38,7 @@ describe "Routes", :type => :feature do
       fill_in "route_name", :with => "A to B"
       # select 'Aller', :from => "route_direction"
       select 'Aller', :from => "route_wayback"
-      click_button("Créer un itinéraire")
+      click_button("Enregistrer")
       expect(page).to have_content("A to B")
     end
   end
