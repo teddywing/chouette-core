@@ -59,6 +59,17 @@ describe('vehicleJourneys reducer', () => {
 
 
   it('should handle ADD_VEHICLEJOURNEY', () => {
+    let resultVJ = [{
+      delta : 0,
+      arrival_time : {
+        hour: '00',
+        minute: '00'
+      },
+      departure_time : {
+        hour: '00',
+        minute: '00'
+      }
+    }]
     let fakeData = {
       journey_pattern_id: {value : '1'},
       comment: {value: 'test'}
@@ -74,7 +85,8 @@ describe('vehicleJourneys reducer', () => {
       objectid: '',
       footnotes: [],
       time_tables: [],
-      vehicle_journey_at_stops: [],
+      vehicle_journey_at_stops: resultVJ,
+      selected: false,
       deletable: false
     }, ...state])
   })

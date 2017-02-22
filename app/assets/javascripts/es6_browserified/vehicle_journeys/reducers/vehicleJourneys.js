@@ -5,13 +5,23 @@ const vehicleJourney= (state = {}, action) => {
     case 'SELECT_VEHICLEJOURNEY':
       return Object.assign({}, state, {selected: !state.selected})
     case 'ADD_VEHICLEJOURNEY':
+      let pristineVjas = JSON.parse(JSON.stringify(state[0].vehicle_journey_at_stops))
+      pristineVjas.map((vj) =>{
+        vj.departure_time.hour = '00'
+        vj.departure_time.minute = '00'
+        vj.arrival_time.hour = '00'
+        vj.arrival_time.minute = '00'
+        vj.delta = 0
+        delete vj['stop_area_object_id']
+      })
       return {
         journey_pattern_id: parseInt(action.data.journey_pattern_id.value),
         comment: action.data.comment.value,
         objectid: '',
         footnotes: [],
         time_tables: [],
-        vehicle_journey_at_stops: [],
+        vehicle_journey_at_stops: pristineVjas,
+        selected: false,
         deletable: false
       }
     case 'SHIFT_VEHICLEJOURNEY':

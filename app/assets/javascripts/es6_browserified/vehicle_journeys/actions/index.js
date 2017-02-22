@@ -209,7 +209,11 @@ const actions = {
     })
   },
   pad: (d) => {
-    return (d < 10) ? '0' + d.toString() : d.toString();
+    if(d.toString().length == 1){
+      return (d < 10) ? '0' + d.toString() : d.toString();
+    }else{
+      return d.toString()
+    }
   },
   getDelta: (vjas) => {
     let delta = 0
