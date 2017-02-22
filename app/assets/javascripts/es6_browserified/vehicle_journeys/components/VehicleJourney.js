@@ -1,7 +1,6 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
-var actions = require('../actions')
 
 class VehicleJourney extends Component {
   constructor(props) {
@@ -63,7 +62,7 @@ class VehicleJourney extends Component {
                       max='23'
                       disabled = {this.props.value.deletable}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
-                      value={actions.pad(vj.arrival_time['hour'])}
+                      value={vj.arrival_time['hour']}
                     />
                     <span>:</span>
                     <input
@@ -72,7 +71,7 @@ class VehicleJourney extends Component {
                       max='59'
                       disabled = {this.props.value.deletable}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
-                      value={actions.pad(vj.arrival_time['minute'])}
+                      value={vj.arrival_time['minute']}
                     />
                   </span>
                 }
@@ -86,7 +85,7 @@ class VehicleJourney extends Component {
                     max='23'
                     disabled = {this.props.value.deletable}
                     onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
-                    value={actions.pad(vj.departure_time['hour'])}
+                    value={vj.departure_time['hour']}
                   />
                   <span>:</span>
                   <input
@@ -95,7 +94,7 @@ class VehicleJourney extends Component {
                     max='59'
                     disabled = {this.props.value.deletable}
                     onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
-                    value={actions.pad(vj.departure_time['minute'])}
+                    value={vj.departure_time['minute']}
                   />
                 </span>
               </li>

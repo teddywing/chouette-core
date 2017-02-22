@@ -51,13 +51,13 @@ const vehicleJourney= (state = {}, action) => {
             arrival_time: Object.assign({}, vjas.arrival_time)
           }
           if (action.isDeparture){
-            newSchedule.departure_time[action.timeUnit] = action.val
+            newSchedule.departure_time[action.timeUnit] = actions.pad(action.val)
             if(!action.isArrivalsToggled)
-              newSchedule.arrival_time[action.timeUnit] = action.val
+              newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val)
             newSchedule = actions.getDelta(newSchedule)
             return Object.assign({}, state.vehicle_journey_at_stops[action.subIndex], newSchedule)
           }else{
-            newSchedule.arrival_time[action.timeUnit] = action.val
+            newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val)
             newSchedule = actions.getDelta(newSchedule)
             return Object.assign({}, state.vehicle_journey_at_stops[action.subIndex],  {arrival_time: newArr})
           }
