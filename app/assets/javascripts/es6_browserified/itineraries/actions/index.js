@@ -41,6 +41,10 @@ const actions = {
     type: 'TOGGLE_MAP',
     index
   }),
+  toggleEdit: (index) =>({
+    type: 'TOGGLE_EDIT',
+    index
+  }),
   closeMaps: () => ({
     type : 'CLOSE_MAP'
   }),

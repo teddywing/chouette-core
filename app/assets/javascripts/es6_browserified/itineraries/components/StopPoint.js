@@ -7,7 +7,7 @@ const StopPoint = (props) => {
   return (
     <div className='nested-fields'>
       <div className='wrapper'>
-        <div>{props.value.user_objectid}</div>
+        <div style={{width: 90}}>{props.value.user_objectid}</div>
 
         <div>
           <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} />
@@ -27,34 +27,38 @@ const StopPoint = (props) => {
           </select>
         </div>
 
-        <div>
-          <div className='btn-group btn-group-sm'>
-            {props.value.stoparea_id &&
-              <div
-                className='btn btn-primary'
-                onClick={props.onToggleMap}
-                >
-                <span className='fa fa-map-marker'></span>
-              </div>
-            }
-            <div
-              className={'btn btn-primary' + (props.first ? ' disabled' : '')}
-              onClick={props.onMoveUpClick}
+        <div className='actions-5'>
+          <div
+            className={'btn btn-link' + (props.value.stoparea_id ? '' : ' disabled')}
+            onClick={props.onToggleMap}
             >
-              <span className='fa fa-arrow-up'></span>
-            </div>
-            <div
-              className={'btn btn-primary' + (props.last ? ' disabled' : '')}
-              onClick={props.onMoveDownClick}
+            <span className='fa fa-map-marker'></span>
+          </div>
+
+          <div
+            className={'btn btn-link' + (props.first ? ' disabled' : '')}
+            onClick={props.onMoveUpClick}
+          >
+            <span className='fa fa-arrow-up'></span>
+          </div>
+          <div
+            className={'btn btn-link' + (props.last ? ' disabled' : '')}
+            onClick={props.onMoveDownClick}
+          >
+            <span className='fa fa-arrow-down'></span>
+          </div>
+          
+          <div
+            className='btn btn-link'
+            onClick={props.onToggleEdit}
             >
-              <span className='fa fa-arrow-down'></span>
-            </div>
-            <div
-              className='btn btn-danger delete'
-              onClick={props.onDeleteClick}
-            >
-              <span className='fa fa-trash'></span>
-            </div>
+            <span className={'fa' + (props.value.edit ? ' fa-undo' : ' fa-pencil')}></span>
+          </div>
+          <div
+            className='btn btn-link'
+            onClick={props.onDeleteClick}
+          >
+            <span className='fa fa-trash text-danger'></span>
           </div>
         </div>
       </div>
@@ -72,6 +76,7 @@ const StopPoint = (props) => {
 
 StopPoint.propTypes = {
   onToggleMap: PropTypes.func.isRequired,
+  onToggleEdit: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,
   onMoveDownClick: PropTypes.func.isRequired,

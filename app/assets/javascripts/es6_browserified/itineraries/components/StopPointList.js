@@ -2,12 +2,12 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var StopPoint = require('./StopPoint')
 
-const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onSelectMarker, onUnselectMarker, onUpdateViaOlMap }) => {
+const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onToggleEdit, onSelectMarker, onUnselectMarker, onUpdateViaOlMap }) => {
   return (
     <div className='subform'>
       <div className='nested-head'>
         <div className="wrapper">
-          <div>
+          <div style={{width: 90}}>
             <div className="form-group">
               <label className="control-label">ID Codif</label>
             </div>
@@ -33,7 +33,7 @@ const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownCli
             </label>
             </div>
           </div>
-          <div></div>
+          <div className='actions-5'></div>
         </div>
       </div>
       {stopPoints.map((stopPoint, index) =>
@@ -47,6 +47,7 @@ const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownCli
           onChange={ onChange }
           onSelectChange={ (e) => onSelectChange(e, index) }
           onToggleMap={() => onToggleMap(index)}
+          onToggleEdit={() => onToggleEdit(index)}
           onSelectMarker={onSelectMarker}
           onUnselectMarker={onUnselectMarker}
           onUpdateViaOlMap={onUpdateViaOlMap}
