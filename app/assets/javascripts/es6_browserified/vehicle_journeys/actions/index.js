@@ -203,10 +203,10 @@ const actions = {
   },
 
   // VJAS HELPERS
-  countSelected: (vj) => {
+  getSelected: (vj) => {
     return vj.filter((obj) =>{
       return obj.selected
-    }).length
+    })
   },
   pad: (d) => {
     return (d < 10) ? '0' + d.toString() : d.toString();

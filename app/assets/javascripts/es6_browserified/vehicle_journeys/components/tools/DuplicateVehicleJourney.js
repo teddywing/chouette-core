@@ -11,6 +11,7 @@ class DuplicateVehicleJourney extends Component {
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
       this.props.onDuplicateVehicleJourney(this.refs)
+      this.props.onModalClose()
       $('#DuplicateVehicleJourneyModal').modal('hide')
     }
   }
@@ -23,7 +24,7 @@ class DuplicateVehicleJourney extends Component {
       return (
         <div  className='pull-left'>
           <button
-            disabled= {(actions.countSelected(this.props.vehicleJourneys) > 0) ? false : true}
+            disabled= {(actions.getSelected(this.props.vehicleJourneys).length > 0) ? false : true}
             type='button'
             className='btn btn-primary btn-sm'
             data-toggle='modal'

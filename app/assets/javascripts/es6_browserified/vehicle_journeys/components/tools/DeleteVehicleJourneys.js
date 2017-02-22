@@ -6,7 +6,7 @@ const DeleteVehicleJourneys = ({onDeleteVehicleJourneys, vehicleJourneys}) => {
   return (
     <div  className='pull-left'>
       <button
-        disabled= {(actions.countSelected(vehicleJourneys) > 0) ? false : true}
+        disabled= {(actions.getSelected(vehicleJourneys).length > 0) ? false : true}
         type='button'
         className='btn btn-primary btn-sm'
         onClick={onDeleteVehicleJourneys}

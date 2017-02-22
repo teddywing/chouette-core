@@ -84,7 +84,7 @@ const vehicleJourneys = (state = [], action) => {
       ]
     case 'SHIFT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
-        if (vj.objectid == action.data.objectid.value){
+        if (vj.selected && (actions.getSelected(state).length == 1)){
           return vehicleJourney(vj, action)
         }else{
           return vj

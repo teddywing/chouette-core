@@ -11,6 +11,7 @@ class ShiftVehicleJourney extends Component {
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
       this.props.onShiftVehicleJourney(this.refs)
+      this.props.onModalClose()
       $('#ShiftVehicleJourneyModal').modal('hide')
     }
   }
@@ -23,7 +24,7 @@ class ShiftVehicleJourney extends Component {
       return (
         <div  className='pull-left'>
           <button
-            disabled= {(actions.countSelected(this.props.vehicleJourneys) == 1) ? false : true}
+            disabled= {(actions.getSelected(this.props.vehicleJourneys).length == 1) ? false : true}
             type='button'
             className='btn btn-primary btn-sm'
             data-toggle='modal'
@@ -44,21 +45,7 @@ class ShiftVehicleJourney extends Component {
                     <form>
                       <div className='modal-body'>
                         <div className='form-group'>
-                          <label className='control-label is-required'>Mettre à jour les horaires de la course</label>
-                          <select
-                            ref='objectid'
-                            className='form-control'
-                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                            required
-                            >
-                            {this.props.vehicleJourneys.map((vj, i) =>
-                              <option
-                                key = {i}
-                                value = {vj.objectid}>
-                                {vj.objectid}
-                              </option>
-                            )}
-                          </select>
+                          <span>Mettre à jour les horaires de la course {actions.getSelected(this.props.vehicleJourneys)[0].objectid}</span>
                         </div>
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
