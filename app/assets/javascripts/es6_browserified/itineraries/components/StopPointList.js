@@ -4,7 +4,38 @@ var StopPoint = require('./StopPoint')
 
 const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onSelectMarker, onUnselectMarker, onUpdateViaOlMap }) => {
   return (
-    <div className='list-group'>
+    <div className='subform'>
+      <div className='nested-head'>
+        <div className="wrapper">
+          <div>
+            <div className="form-group">
+              <label className="control-label">ID Codif</label>
+            </div>
+          </div>
+          <div>
+            <div className="form-group">
+              <label className="control-label required">
+                Arrêt <abbr title="requis">*</abbr>
+            </label>
+            </div>
+          </div>
+          <div>
+            <div className="form-group">
+              <label className="control-label required">
+                Montée <abbr title="requis">*</abbr>
+            </label>
+            </div>
+          </div>
+          <div>
+            <div className="form-group">
+              <label className="control-label required">
+                Descente <abbr title="requis">*</abbr>
+            </label>
+            </div>
+          </div>
+          <div></div>
+        </div>
+      </div>
       {stopPoints.map((stopPoint, index) =>
         <StopPoint
           key={'item-' + index}

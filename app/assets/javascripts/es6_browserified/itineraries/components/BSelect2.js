@@ -38,7 +38,7 @@ class BSelect3 extends React.Component{
           <BSelect2 {...this.props} onSelect={ this.onChange.bind(this) }/>
 
           <span className='input-group-btn'>
-            <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
+            <button type='button' className='btn btn-link' onClick={this.onToggleEdit.bind(this)}>
               <span className='fa fa-undo'></span>
             </button>
           </span>
@@ -63,7 +63,7 @@ class BSelect3 extends React.Component{
               {this.props.value.text}
             </a>
             <span className='input-group-btn'>
-              <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
+              <button type='button' className='btn btn-link' onClick={this.onToggleEdit.bind(this)}>
                 <span className='fa fa-pencil'></span>
               </button>
             </span>
