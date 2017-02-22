@@ -6,9 +6,12 @@
 
 @switchInput = ->
   $('.form-group.has_switch').each ->
-    $(this).on 'click', "input[type='checkbox']", ->
-      labelCont = $(this).siblings('.switch-label')
+    labelCont = $(this).find('.switch-label')
 
+    if labelCont.text() == ''
+      labelCont.text(labelCont.data('uncheckedvalue'))
+
+    $(this).on 'click', "input[type='checkbox']", ->
       if labelCont.text() == labelCont.data('checkedvalue')
         labelCont.text(labelCont.data('uncheckedvalue'))
       else
