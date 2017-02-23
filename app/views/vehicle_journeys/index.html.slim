@@ -1,5 +1,4 @@
 = title_tag t('vehicle_journeys.index.title', route: @route.name )
-
 = @perms.inspect
 = search_form_for @q, :url => referential_line_route_vehicle_journeys_path(@referential,@line,@route), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
   .panel.panel-default
@@ -49,6 +48,8 @@
   | window.journeyPatternId = #{params[:q].present? ? ('"' + params[:q].values[1] + '"').html_safe : false};
   | window.vehicleJourneysLength = #{@vehicle_journeys.total_entries()};
   | window.vehicleJourneysPerPage = 20;
+  | window.line_footnotes = #{raw @footnotes};
+  | window.perms = #{raw @perms}
 
 = javascript_include_tag 'es6_browserified/vehicle_journeys/index.js'
 

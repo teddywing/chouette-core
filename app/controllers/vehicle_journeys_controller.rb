@@ -9,6 +9,7 @@ class VehicleJourneysController < ChouetteController
     end
   end
 
+  alias_method :route, :parent
   before_action :check_policy, only: [:edit, :update, :destroy]
   before_action :user_permissions, only: :index
 
@@ -34,6 +35,7 @@ class VehicleJourneysController < ChouetteController
       if collection.out_of_bounds?
         redirect_to params.merge(:page => 1)
       end
+      @footnotes = route.line.footnotes.to_json
       build_breadcrumb :index
     end
   end
@@ -92,6 +94,8 @@ class VehicleJourneysController < ChouetteController
         perm[name] = current_user.permissions.include?(name)
       end
     end
+    @perms = @perms.to_json
+    ap @perms
   end
 
   private
