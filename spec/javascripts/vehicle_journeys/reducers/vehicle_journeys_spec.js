@@ -201,4 +201,17 @@ describe('vehicleJourneys reducer', () => {
       })
     ).toEqual([state[0], newVJ, state[1]])
   })
+
+  it('should handle EDIT_VEHICLEJOURNEY', () => {
+    let fakeData = {
+      comment: {value : 'toto'},
+    }
+    let newVJ = Object.assign({}, state[0], {comment: fakeData.comment.value})
+    expect(
+      vjReducer(state, {
+        type: 'EDIT_VEHICLEJOURNEY',
+        data: fakeData
+      })
+    ).toEqual([newVJ, state[1]])
+  })
 })

@@ -36,6 +36,10 @@ const actions = {
   openCreateModal : () => ({
     type : 'CREATE_VEHICLEJOURNEY_MODAL'
   }),
+  openEditModal : (vehicleJourney) => ({
+    type : 'EDIT_VEHICLEJOURNEY_MODAL',
+    vehicleJourney
+  }),
   openShiftModal : () => ({
     type : 'SHIFT_VEHICLEJOURNEY_MODAL'
   }),
@@ -48,6 +52,10 @@ const actions = {
   }),
   addVehicleJourney : (data) => ({
     type: 'ADD_VEHICLEJOURNEY',
+    data
+  }),
+  editVehicleJourney : (data) => ({
+    type: 'EDIT_VEHICLEJOURNEY',
     data
   }),
   shiftVehicleJourney : (data) => ({

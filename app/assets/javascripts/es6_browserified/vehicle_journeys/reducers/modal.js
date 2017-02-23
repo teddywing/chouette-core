@@ -8,6 +8,15 @@ const modal = (state = {}, action) => {
           callback: action.callback,
         }
       })
+    case 'EDIT_VEHICLEJOURNEY_MODAL':
+      console.log(action.vj)
+      return {
+        type: 'edit',
+        modalProps: {
+          vehicleJourney: action.vehicleJourney
+        },
+        confirmModal: {}
+      }
     case 'CREATE_VEHICLEJOURNEY_MODAL':
       return {
         type: 'create',
