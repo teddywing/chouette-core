@@ -7,10 +7,10 @@ var App = require('./components/App')
 var addInput = require('./form_helper')
 
 // logger, DO NOT REMOVE
-var applyMiddleware = require('redux').applyMiddleware
-var createLogger = require('redux-logger')
-var thunkMiddleware = require('redux-thunk').default
-var promise = require('redux-promise')
+// var applyMiddleware = require('redux').applyMiddleware
+// var createLogger = require('redux-logger')
+// var thunkMiddleware = require('redux-thunk').default
+// var promise = require('redux-promise')
 
 const getInitialState = () => {
   let state = []
@@ -46,11 +46,11 @@ const getInitialState = () => {
 }
 
 var initialState = {stopPoints: getInitialState()}
-const loggerMiddleware = createLogger()
+// const loggerMiddleware = createLogger()
 let store = createStore(
   reducers,
-  initialState,
-  applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
+  initialState
+  // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 
 render(
