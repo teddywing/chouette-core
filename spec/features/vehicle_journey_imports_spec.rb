@@ -49,7 +49,7 @@ describe "VehicleJourneyImports", :type => :feature do
       attach_file('Fichier', valid_file_path)
       click_button "Lancer l'import"
       expect(page).to have_content(I18n.t("vehicle_journey_imports.new.success"))
-      expect(page).to have_content("Itinéraire #{route.name}")
+      expect(page).to have_content(route.name)
     end
 
     it "should return error messages when file is invalid" do

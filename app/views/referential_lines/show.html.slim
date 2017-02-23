@@ -60,7 +60,7 @@
 
         - if @routes.any?
           .row
-            .col-lg-12
+            .col-lg-12          
               = table_builder @routes,
                 { @routes.human_attribute_name(:number) => 'number', @routes.human_attribute_name(:name) => 'name',
                 'Arrêt de départ' => Proc.new{|r| r.try(:stop_points).first.try(:stop_area).try(:name)},

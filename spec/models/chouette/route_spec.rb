@@ -104,7 +104,7 @@ describe Chouette::Route, :type => :model do
 
           it "should have swap stop_points from route" do
               subject.update_attributes( :stop_points_attributes => swapped_stop_hash)
-              expect(Chouette::Route.find( subject.id ).stop_points.map(&:id)).to eq(new_stop_id_list)
+              expect(Chouette::Route.find(subject.id).stop_points.map(&:id).sort).to eq(new_stop_id_list.sort)
           end
           it "should have swap stop_points from route's journey pattern" do
               subject.update_attributes( :stop_points_attributes => swapped_stop_hash)
