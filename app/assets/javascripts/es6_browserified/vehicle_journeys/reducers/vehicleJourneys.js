@@ -109,6 +109,7 @@ const vehicleJourneys = (state = [], action) => {
         if(vj.selected){
           selectedIndex = i
           for (i = 0; i< action.data.duplicate_number.value; i++){
+            action.data.additional_time.value *= (i + 1)
             dupeVj = vehicleJourney(vj, action)
             dupeVj.comment = dupeVj.comment + '-' + i
             dupeVj.selected = false
