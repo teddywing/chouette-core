@@ -20,21 +20,39 @@ class JourneyPatterns extends Component{
       )
     } else {
       return (
-        <div className='list-group mt-sm mb-sm'>
-          {(this.props.status.fetchSuccess == false) && (
-            <div className="alert alert-danger">
-              <strong>Erreur : </strong>
-              la récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème
+        <div className='row'>
+          <div className='col-lg-12'>
+            {(this.props.status.fetchSuccess == false) && (
+              <div className="alert alert-danger">
+                <strong>Erreur : </strong>
+                la récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème
+              </div>
+            )}
+
+            <div className='table table-cbyc mt-sm mb-sm'>
+              <div className='tc-wrapper'>
+                <div className='tc-head'>
+                  <div className='tc-th'>
+                    <span>ID Mission</span>
+                    <span>Code mission</span>
+                    <span>Nb arrêts</span>
+                  </div>
+                  {this.props.stopPointsList.map((sp, i) =>
+                    <span key={i} className='tc-td'>{sp}</span>
+                  )}
+                </div>
+
+                {this.props.journeyPatterns.map((journeyPattern, index) =>
+                  <JourneyPattern
+                    value={ journeyPattern }
+                    key={ index }
+                    onCheckboxChange= {(e) => this.props.onCheckboxChange(e, index)}
+                    onOpenEditModal= {() => this.props.onOpenEditModal(index, journeyPattern)}
+                    />
+                )}
+              </div>
             </div>
-          )}
-          {this.props.journeyPatterns.map((journeyPattern, index) =>
-            <JourneyPattern
-              value={ journeyPattern }
-              key={ index }
-              onCheckboxChange= {(e) => this.props.onCheckboxChange(e, index)}
-              onOpenEditModal= {() => this.props.onOpenEditModal(index, journeyPattern)}
-              />
-          )}
+          </div>
         </div>
       )
     }
@@ -43,6 +61,7 @@ class JourneyPatterns extends Component{
 
 JourneyPatterns.propTypes = {
   journeyPatterns: PropTypes.array.isRequired,
+  stopPointsList: PropTypes.array.isRequired,
   status: PropTypes.object.isRequired,
   onCheckboxChange: PropTypes.func.isRequired,
   onLoadFirstPage: PropTypes.func.isRequired,

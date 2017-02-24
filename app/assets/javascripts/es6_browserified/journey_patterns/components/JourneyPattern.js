@@ -3,7 +3,7 @@ var PropTypes = require('react').PropTypes
 
 const JourneyPattern = (props) => {
   return (
-    <div className={'list-group-item ' + (props.value.deletable ? 'disabled' : '') + (props.value.object_id ? '' : 'to_record')}>
+    <div className={'tc-item' + (props.value.deletable ? ' disabled' : '') + (props.value.object_id ? '' : ' to_record')}>
       {/* Errors */}
       {(props.value.errors) && (
         <ul className='alert alert-danger small' style={{paddingLeft: 30}}>
@@ -17,37 +17,24 @@ const JourneyPattern = (props) => {
         </ul>
       )}
 
-      <div style={{display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 25px)'}}>
-        {/* Name */}
-        <p className='small'>
-          <strong>Name: </strong>{props.value.name}
-        </p>
+      <div className='tc-th'>
+        <span>{props.value.object_id}</span>
+        <span>{props.value.registration_number}</span>
+        <span>n</span>
 
-        {/* Published name */}
-        <p className='small'>
-          <strong>Published name: </strong>{props.value.published_name}
-        </p>
-
-        {/* Registration number */}
-        <p className='small'>
-          <strong>Registration number: </strong>{props.value.registration_number}
-        </p>
-
-        {/* Object_id */}
-        <p className='small'>
-          <strong>ObjectID: </strong>{props.value.object_id}
-        </p>
-
-        {/* Stop points */}
-        <p className='small'>
-          <strong>Stop points: </strong>
-        </p>
+        <div className='clearfix' style={{display: 'inline-block', verticalAlign: 'top', width: '25px'}}>
+          <button className={(props.value.deletable ? 'disabled' : '') + ' btn btn-xs btn-danger pull-right'} onClick={props.onOpenEditModal} data-toggle='modal' data-target='#JourneyPatternModal'>
+            <span className='fa fa-pencil'></span>
+          </button>
+        </div>
+      </div>
+      <div className='tc-td'>
         <ul className='list-group'>
           {props.value.stop_points.map((stopPoint, i) =>
             <li
               key={ i }
               className='list-group-item clearfix'
-            >
+              >
               <span className='label label-default' style={{marginRight: 5}}>{stopPoint.id}</span>
               <span>{stopPoint.name}</span>
               <span className='pull-right'>
@@ -57,17 +44,11 @@ const JourneyPattern = (props) => {
                   id={stopPoint.id}
                   checked={stopPoint.checked}
                   disabled={props.value.deletable ? 'disabled' : ''}
-                ></input>
+                  ></input>
               </span>
             </li>
           )}
         </ul>
-      </div>
-
-      <div className='clearfix' style={{display: 'inline-block', verticalAlign: 'top', width: '25px'}}>
-        <button className={(props.value.deletable ? 'disabled' : '') + ' btn btn-xs btn-danger pull-right'} onClick={props.onOpenEditModal} data-toggle='modal' data-target='#JourneyPatternModal'>
-          <span className='fa fa-pencil'></span>
-        </button>
       </div>
     </div>
   )

@@ -136,6 +136,7 @@ const actions = {
     }
     let journeyPatterns = []
     let page
+
     switch (nextPage) {
       case true:
         page = currentPage + 1
