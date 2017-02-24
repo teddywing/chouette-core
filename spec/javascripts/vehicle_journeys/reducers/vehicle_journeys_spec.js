@@ -222,13 +222,11 @@ describe('vehicleJourneys reducer', () => {
 
 
   it('should handle EDIT_VEHICLEJOURNEY_NOTES', () => {
-    let fakeFootnote = {
+    let fakeFootnotesResult = fakeFootnotes.push({
         id: 3,
         code: 3,
         label: "3"
-    }
-    fakeFootnotes.push(fakeFootnote)
-    let fakeFootnotesResult = fakeFootnotes.slice(0)
+    })
     let newVJ = Object.assign({}, state[0], {footnotes: fakeFootnotesResult})
     expect(
       vjReducer(state, {
