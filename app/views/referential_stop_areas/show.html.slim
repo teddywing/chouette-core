@@ -1,180 +1,29 @@
-= title_tag t('stop_areas.show.title', stop_area: @stop_area.name)
+/ PageHeader
+= pageheader 'map-marker',
+             @stop_area.name,
+             'Lorem ipsum dolor sit amet'
 
-.stop_area_show
-  = @map.to_html if show_map?
+  .row
+    .col-lg-12.text-right.mb-sm
+      - if policy(Chouette::StopArea).new?
+        = link_to t('stop_areas.actions.new'), new_stop_area_referential_stop_area_path(@stop_area_referential), class: 'btn btn-primary'
+      - if policy(@stop_area).update?
+        = link_to t('stop_areas.actions.edit'), edit_stop_area_referential_stop_area_path(@stop_area_referential, @stop_area), class: 'btn btn-primary'
+      - if policy(@stop_area).destroy?
+        = link_to stop_area_referential_stop_area_path(@stop_area_referential, @stop_area), method: :delete, data: {confirm: t('stop_areas.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('stop_areas.actions.destroy')
 
-  .summary
-    p
-      label = "#{@stop_area.human_attribute_name('comment')} : "
-      = " #{@stop_area.comment}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('nearest_topic_name')} : "
-      = " #{@stop_area.nearest_topic_name}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('street_name')} : "
-      = " #{@stop_area.street_name}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('country_code')} : "
-      = " #{@stop_area.country_code}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('zip_code')} : "
-      = " #{@stop_area.zip_code}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('city_name')} : "
-      = " #{@stop_area.city_name}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('fare_code')} : "
-      = " #{@stop_area.fare_code}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('time_zone')} : "
-      = " #{@stop_area.time_zone}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('url')} : "
-      = " #{@stop_area.url}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('registration_number')} : "
-      = " #{@stop_area.registration_number}"
-    
-    - if @stop_area.deleted_at
-      p
-        label = "#{@stop_area.human_attribute_name('deleted_at')} : "
-        = " #{l @stop_area.deleted_at, format: :long}"
-
-    p
-      label = "#{@stop_area.human_attribute_name('stop_area_type')} : "
-      = " " + t("area_types.label.#{@stop_area.stop_area_type}")
-
-      i.fa.fa-info-circle data-toggle="tooltip" data-placement="right" title="#{t('.not_editable')}"
-
-    - if !manage_itl
-      p
-        label = "#{@stop_area.human_attribute_name('mobility_restricted_suitability')} : "
-
-        - if !@stop_area.mobility_restricted_suitability.nil?
-          = " #{t((@stop_area.mobility_restricted_suitability == true).to_s)}"
-        - else
-          = " #{t('unknown')}"
-
-	    p
-        label = "#{@stop_area.human_attribute_name('stairs_availability')} : "
-
-        - if !@stop_area.stairs_availability.nil?
-          = " #{t((@stop_area.stairs_availability == true).to_s)}"
-        - else
-          = " #{t('unknown')}"
-
-      p
-        label = "#{@stop_area.human_attribute_name('lift_availability')} : "
-        - if !@stop_area.lift_availability.nil?
-          = " #{t((@stop_area.lift_availability == true).to_s)}"
-        - else
-          = " #{t('unknown')}"
-
-      p
-        label = t('stop_areas.show.geographic_data')
-
-      - if @stop_area.long_lat_type == nil
-        span.geo_data = t('stop_areas.show.no_geographic_data')
-      - else
-        - if !@stop_area.projection.nil?
-          p
-            span.geo_data = "#{@stop_area.human_attribute_name('projection')} : "
-            = @referential.projection_type_label
-
-          p
-            span.geo_data = "#{@stop_area.human_attribute_name('projection_x')} : "
-            = @stop_area.projection_x
-
-          p
-            span.geo_data = "#{@stop_area.human_attribute_name('projection_y')} : "
-            = @stop_area.projection_y
-
-        - if !@stop_area.long_lat_type.nil?
-          p
-            span.geo_data = "#{@stop_area.human_attribute_name('long_lat_type')} : "
-            = @stop_area.long_lat_type
-
-          p
-            span.geo_data = "#{@stop_area.human_attribute_name('longitude')} : "
-            = @stop_area.longitude
-
-          p
-            span.geo_data = "#{@stop_area.human_attribute_name('latitude')} : "
-            = @stop_area.latitude
-
-p.after_map
-
-.genealogical.clearfix
-  = render "referential_stop_areas/genealogical"
-
-- if manage_access_points
-  div
-    h3 = t('.access_points')
-    .access_points.paginated_content
-      = paginated_content @access_points, "access_points/access_point", {referential: @referential}
-
-- content_for :sidebar do
-  table
-    tr
-      td
-        ul.actions
-          - if policy(Chouette::StopArea).new?
-            li
-              = link_to t('stop_areas.actions.new'), new_referential_stop_area_path(@referential), class: 'add'
-          - if policy(@stop_area).update?
-        	  li
-              = link_to t('stop_areas.actions.edit'), edit_referential_stop_area_path(@referential, @stop_area), class: 'edit'
-          - if policy(@stop_area).destroy?
-        	  li
-              = link_to t('stop_areas.actions.destroy'), referential_stop_area_path(@referential, @stop_area), method: :delete, data: { :confirm => t('stop_areas.actions.destroy_confirm') }, class: 'remove'
-
-    - if manage_itl
-      / tr
-      /   td
-      /     h4 = t('.itl_managment')
-      /     ul.actions
-      /       li
-      /         = link_to t('stop_areas.actions.add_routing_lines'), add_routing_lines_referential_stop_area_path(@referential, @stop_area), class: 'add_routing_lines'
-      /       li
-      /         = link_to t('stop_areas.actions.add_routing_stops'), add_routing_stops_referential_stop_area_path(@referential, @stop_area), class: 'add_routing_stops'
-
-    - else
-      tr
-        td
-          h4 = t('.stop_managment')
-          ul.actions
-            li
-              / = link_to t('stop_areas.actions.select_parent'), select_parent_referential_stop_area_path(@referential, @stop_area), class: 'parent'
-
-            - if @stop_area.parent == nil
-              li
-                / = link_to t('stop_areas.actions.clone_as_parent'), new_referential_stop_area_stop_area_copy_path(@referential, @stop_area, hierarchy: 'parent'), class: 'clone'
-
-            - if manage_children
-              li
-                / = link_to t('stop_areas.actions.add_children'), add_children_referential_stop_area_path(@referential, @stop_area), class: 'children'
-              li
-                / = link_to t('stop_areas.actions.clone_as_child'), new_referential_stop_area_stop_area_copy_path(@referential, @stop_area, hierarchy: 'child'), class: 'clone'
-
-      - if manage_access_points
-        tr
-          td
-            h4 = t(".access_managment")
-            ul.actions
-              li
-                / = link_to t('access_points.actions.new'), new_referential_stop_area_access_point_path(@referential,@stop_area), class: 'add'
-              li
-                / = link_to t('stop_areas.actions.manage_access_links'), access_links_referential_stop_area_path(@referential,@stop_area), class: 'access_link'
-
-  br
-
-  = creation_tag(@stop_area)
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { @stop_area.human_attribute_name(:stop_area_type) => t("area_types.label.#{@stop_area.stop_area_type}"),
+            @stop_area.human_attribute_name(:registration_number) => @stop_area.registration_number,
+            'Code Reflex' => @stop_area.try(:objectid),
+            'Coordonnées' => geo_data(@stop_area, @stop_area_referential),
+            @stop_area.human_attribute_name(:zip_code) => @stop_area.zip_code,
+            @stop_area.human_attribute_name(:city_name) => @stop_area.city_name,
+            'Etat' => (@stop_area.deleted_at ? 'Supprimé' : 'Actif') }
