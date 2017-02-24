@@ -17,7 +17,7 @@ let SaveJourneyPattern = ({ dispatch, journeyPatterns, page, status }) => {
             actions.submitJourneyPattern(dispatch, journeyPatterns)
           }}
           >
-          Valider
+          Enregistrer
         </button>
       </form>
     )

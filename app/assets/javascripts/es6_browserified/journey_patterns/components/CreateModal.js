@@ -24,13 +24,13 @@ class CreateModal extends Component {
         <div className='pull-right'>
           <button
             type='button'
-            className='btn btn-primary btn-sm'
+            className='btn btn-outline-primary'
             data-toggle='modal'
             data-target='#NewJourneyPatternModal'
             onClick={this.props.onOpenCreateModal}
             >
-            <span className='fa fa-plus'></span> Ajouter une mission
-            </button>
+            Ajouter une mission
+          </button>
 
             <div className={ 'modal fade ' + ((this.props.modal.type == 'create') ? 'in' : '') } id='NewJourneyPatternModal'>
               <div className='modal-dialog'>

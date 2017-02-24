@@ -8,11 +8,11 @@ var JourneyPatternList = require('../containers/JourneyPatternList')
 
 const App = () => (
   <div>
+    <JourneyPatternList />
     <div className='clearfix' style={{ marginBottom: 10 }}>
       <Navigate />
       <AddJourneyPattern />
     </div>
-    <JourneyPatternList />
     <SaveJourneyPattern />
     <ConfirmModal />
     <Modal/>
