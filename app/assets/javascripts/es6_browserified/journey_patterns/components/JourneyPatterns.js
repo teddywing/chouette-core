@@ -20,7 +20,7 @@ class JourneyPatterns extends Component{
       )
     } else {
       return (
-        <div className='list-group'>
+        <div className='list-group mt-sm mb-sm'>
           {(this.props.status.fetchSuccess == false) && (
             <div className="alert alert-danger">
               <strong>Erreur : </strong>
