@@ -6,7 +6,8 @@ const mapStateToProps = (state) => {
   return {
     modal: state.modal,
     vehicleJourneys: state.vehicleJourneys,
-    status: state.status
+    status: state.status,
+    filters: state.filters
   }
 }
 

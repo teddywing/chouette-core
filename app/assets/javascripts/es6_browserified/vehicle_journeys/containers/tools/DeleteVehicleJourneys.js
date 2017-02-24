@@ -4,7 +4,8 @@ var DeleteVJComponent = require('../../components/tools/DeleteVehicleJourneys')
 
 const mapStateToProps = (state) => {
   return {
-    vehicleJourneys: state.vehicleJourneys
+    vehicleJourneys: state.vehicleJourneys,
+    filters: state.filters
   }
 }
 

@@ -23,6 +23,7 @@ class CreateModal extends Component {
       return (
         <div className='pull-left'>
           <button
+            disabled= {(this.props.filters.policy['vehicle_journeys.create']) ? false : true}
             type='button'
             className='btn btn-primary btn-sm'
             data-toggle='modal'

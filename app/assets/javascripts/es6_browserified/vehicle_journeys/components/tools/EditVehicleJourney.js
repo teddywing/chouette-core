@@ -24,7 +24,7 @@ class EditVehicleJourney extends Component {
       return (
         <div  className='pull-left'>
           <button
-            disabled= {(actions.getSelected(this.props.vehicleJourneys).length == 1) ? false : true}
+            disabled= {(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.edit']) ? false : true}
             type='button'
             className='btn btn-primary btn-sm'
             data-toggle='modal'
@@ -109,6 +109,7 @@ class EditVehicleJourney extends Component {
 EditVehicleJourney.propTypes = {
   onOpenEditModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired
 }
 
 module.exports = EditVehicleJourney
