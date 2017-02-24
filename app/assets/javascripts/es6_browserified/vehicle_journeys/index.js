@@ -20,7 +20,7 @@ var initialState = {
   filters: {
     selectedJourneyPatterns : selectedJP,
     // TODO retrieve policy from controller
-    policy: true,
+    policy: window.perms,
     toggleArrivals: false
 
   },
