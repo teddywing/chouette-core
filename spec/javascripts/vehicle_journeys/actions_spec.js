@@ -152,3 +152,34 @@ describe('when clicking on validate button inside duplicating modal', () => {
     expect(actions.duplicateVehicleJourney(data)).toEqual(expectedAction)
   })
 })
+describe('when clicking on edit notes modal', () => {
+  it('should create an action to open footnotes modal', () => {
+    const vehicleJourney = {}
+    const expectedAction = {
+      type: 'EDIT_NOTES_VEHICLEJOURNEY_MODAL',
+      vehicleJourney
+    }
+    expect(actions.openNotesEditModal(vehicleJourney)).toEqual(expectedAction)
+  })
+})
+describe('when clicking on a footnote button inside footnote modal', () => {
+  it('should create an action to toggle this footnote', () => {
+    const footnote = {}, isShown = true
+    const expectedAction = {
+      type: 'TOGGLE_FOOTNOTE_MODAL',
+      footnote,
+      isShown
+    }
+    expect(actions.toggleFootnoteModal(footnote, isShown)).toEqual(expectedAction)
+  })
+})
+describe('when clicking on validate button inside footnote modal', () => {
+  it('should create an action to update vj footnotes', () => {
+    const footnotes = []
+    const expectedAction = {
+      type: 'EDIT_VEHICLEJOURNEY_NOTES',
+      footnotes
+    }
+    expect(actions.editVehicleJourneyNotes(footnotes)).toEqual(expectedAction)
+  })
+})

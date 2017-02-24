@@ -103,6 +103,16 @@ const vehicleJourneys = (state = [], action) => {
           return vj
         }
       })
+    case 'EDIT_VEHICLEJOURNEY_NOTES':
+      return state.map((vj, i) => {
+        if (vj.selected){
+          return Object.assign({}, vj, {
+            footnotes: action.footnotes
+          })
+        }else{
+          return vj
+        }
+      })
     case 'SHIFT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
         if (vj.selected){

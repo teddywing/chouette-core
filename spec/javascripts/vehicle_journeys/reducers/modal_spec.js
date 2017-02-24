@@ -49,4 +49,35 @@ describe('modal reducer', () => {
       })
     ).toEqual(state)
   })
+
+  it('should handle EDIT_NOTES_VEHICLEJOURNEY_MODAL', () => {
+    let vehicleJourney = {}
+    let modalPropsResult = {
+      vehicleJourney: {}
+    }
+    expect(
+      modalReducer(state, {
+        type: 'EDIT_NOTES_VEHICLEJOURNEY_MODAL',
+        vehicleJourney
+      })
+    ).toEqual(Object.assign({}, state, {type: 'notes_edit', modalProps: modalPropsResult}))
+  })
+
+  it('should handle TOGGLE_FOOTNOTE_MODAL', () => {
+    state.modalProps = {vehicleJourney : {footnotes: [{}, {}]}}
+    let footnote = {}
+    let newState = {
+      // for the sake of the test, no need to specify the type
+      type: '',
+      modalProps:{vehicleJourney: {footnotes: [{},{},{}]}},
+      confirmModal: {}
+    }
+    expect(
+      modalReducer(state, {
+        type: 'TOGGLE_FOOTNOTE_MODAL',
+        footnote,
+        isShown: true
+      })
+    ).toEqual(newState)
+  })
 })

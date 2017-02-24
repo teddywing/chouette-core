@@ -1,6 +1,11 @@
 var vjReducer = require('es6_browserified/vehicle_journeys/reducers/vehicleJourneys')
 
 let state = []
+let stateModal = {
+  type: '',
+  modalProps: {},
+  confirmModal: {}
+}
 let fakeFootnotes = [{
   id: 1,
   code: 1,
@@ -211,6 +216,24 @@ describe('vehicleJourneys reducer', () => {
       vjReducer(state, {
         type: 'EDIT_VEHICLEJOURNEY',
         data: fakeData
+      })
+    ).toEqual([newVJ, state[1]])
+  })
+
+
+  it('should handle EDIT_VEHICLEJOURNEY_NOTES', () => {
+    let fakeFootnote = {
+        id: 3,
+        code: 3,
+        label: "3"
+    }
+    fakeFootnotes.push(fakeFootnote)
+    let fakeFootnotesResult = fakeFootnotes.slice(0)
+    let newVJ = Object.assign({}, state[0], {footnotes: fakeFootnotesResult})
+    expect(
+      vjReducer(state, {
+        type: 'EDIT_VEHICLEJOURNEY_NOTES',
+        footnotes: fakeFootnotesResult
       })
     ).toEqual([newVJ, state[1]])
   })

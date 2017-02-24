@@ -40,6 +40,15 @@ const actions = {
     type : 'EDIT_VEHICLEJOURNEY_MODAL',
     vehicleJourney
   }),
+  openNotesEditModal : (vehicleJourney) => ({
+    type : 'EDIT_NOTES_VEHICLEJOURNEY_MODAL',
+    vehicleJourney
+  }),
+  toggleFootnoteModal : (footnote, isShown) => ({
+    type: 'TOGGLE_FOOTNOTE_MODAL',
+    footnote,
+    isShown
+  }),
   openShiftModal : () => ({
     type : 'SHIFT_VEHICLEJOURNEY_MODAL'
   }),
@@ -57,6 +66,10 @@ const actions = {
   editVehicleJourney : (data) => ({
     type: 'EDIT_VEHICLEJOURNEY',
     data
+  }),
+  editVehicleJourneyNotes : (footnotes) => ({
+    type: 'EDIT_VEHICLEJOURNEY_NOTES',
+    footnotes
   }),
   shiftVehicleJourney : (data) => ({
     type: 'SHIFT_VEHICLEJOURNEY',
