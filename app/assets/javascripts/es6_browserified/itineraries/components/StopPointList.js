@@ -14,23 +14,17 @@ const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownCli
           </div>
           <div>
             <div className="form-group">
-              <label className="control-label required">
-                Arrêt <abbr title="requis">*</abbr>
-            </label>
+              <label className="control-label">Arrêt</label>
             </div>
           </div>
           <div>
             <div className="form-group">
-              <label className="control-label required">
-                Montée <abbr title="requis">*</abbr>
-            </label>
+              <label className="control-label">Montée</label>
             </div>
           </div>
           <div>
             <div className="form-group">
-              <label className="control-label required">
-                Descente <abbr title="requis">*</abbr>
-            </label>
+              <label className="control-label">Descente</label>
             </div>
           </div>
           <div className='actions-5'></div>
