@@ -1,7 +1,11 @@
 object @vehicle_journey
 
-[ :objectid, :published_journey_name, :journey_pattern_id].each do |attr|
+[ :objectid, :published_journey_name].each do |attr|
   attributes attr, :unless => lambda { |m| m.send( attr).nil?}
+end
+
+child(:journey_pattern) do |journey_pattern|
+  attributes :id, :objectid, :name, :published_name
 end
 
 child(:time_tables, :object_root => false) do |time_tables|
