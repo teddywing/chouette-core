@@ -21,7 +21,7 @@ const JourneyPattern = (props) => {
       <div className='th'>
         <div className='strong mb-xs'>{props.value.object_id}</div>
         <div>{props.value.registration_number}</div>
-        <div>{actions.getChecked(props.value.stop_points).length}</div>
+        <div>{actions.getChecked(props.value.stop_points).length} arrêt(s)</div>
 
         <div className='clearfix' style={{display: 'inline-block', verticalAlign: 'top', width: '25px'}}>
           <button className={(props.value.deletable ? 'disabled' : '') + ' btn btn-xs btn-danger pull-right'} onClick={props.onOpenEditModal} data-toggle='modal' data-target='#JourneyPatternModal'>
