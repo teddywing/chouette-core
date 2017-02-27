@@ -9,30 +9,14 @@ child(:journey_pattern) do |journey_pattern|
 end
 
 child(:time_tables, :object_root => false) do |time_tables|
-  node do |tt|
-    [:objectid, :comment].map do |att|
-      node(att) { tt.send(att) }
-    end
-    node :calendar do |tt|
-      {
-        id: tt.calendar.id,
-        name: tt.calendar.name,
-        date_ranges: tt.calendar.date_ranges,
-        dates: tt.calendar.dates,
-        shared: tt.calendar.shared
-      }
-    end
+  attributes :objectid, :comment
+  child(:calendar) do
+    attributes :id, :name, :date_ranges, :dates, :shared
   end
 end
 
 child :footnotes, :object_root => false do |footnotes|
-  node do |footnote|
-    {
-      id: footnote.id,
-      code: footnote.code,
-      label: footnote.label
-    }
-  end
+  attributes :id, :code, :label
 end
 
 child :vehicle_journey_at_stops, :object_root => false do |vehicle_stops|
