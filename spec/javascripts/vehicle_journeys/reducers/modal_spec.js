@@ -80,4 +80,37 @@ describe('modal reducer', () => {
       })
     ).toEqual(newState)
   })
+
+  it('should handle EDIT_CALENDARS_VEHICLEJOURNEY_MODAL', () => {
+    let vehicleJourneys = []
+    let modalPropsResult = {
+      vehicleJourneys: [],
+      timetables: []
+    }
+    expect(
+      modalReducer(state, {
+        type: 'EDIT_CALENDARS_VEHICLEJOURNEY_MODAL',
+        vehicleJourneys
+      })
+    ).toEqual(Object.assign({}, state, {type: 'calendars_edit', modalProps: modalPropsResult}))
+  })
+
+  it('should handle DELETE_CALENDAR_MODAL', () => {
+    // TODO spec more for vehiclejourneys
+    let deletableTimetable = {'delete': 'delete'}
+    state.modalProps = {vehicleJourneys : [], timetables: [{'test': 'test'}, {'test 2': 'test 2'}, deletableTimetable] }
+    let footnote = {}
+    let newState = {
+      // for the sake of the test, no need to specify the type
+      type: '',
+      modalProps:{vehicleJourneys: [], timetables: [{'test': 'test'},{'test 2': 'test 2'}]},
+      confirmModal: {}
+    }
+    expect(
+      modalReducer(state, {
+        type: 'DELETE_CALENDAR_MODAL',
+        timetable: deletableTimetable
+      })
+    ).toEqual(newState)
+  })
 })

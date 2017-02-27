@@ -113,6 +113,20 @@ const vehicleJourneys = (state = [], action) => {
           return vj
         }
       })
+    case 'EDIT_VEHICLEJOURNEYS_CALENDARS':
+      return state.map((vj,i) =>{
+        if(vj.selected){
+          let updatedVJ = Object.assign({}, vj)
+          action.vehicleJourneys.map((vjm, j) =>{
+            if(vj.objectid == vjm.objectid){
+              updatedVJ.time_tables =  vjm.time_tables
+            }
+          })
+          return updatedVJ
+        }else{
+          return vj
+        }
+      })
     case 'SHIFT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
         if (vj.selected){

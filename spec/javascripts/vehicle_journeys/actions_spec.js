@@ -183,3 +183,33 @@ describe('when clicking on validate button inside footnote modal', () => {
     expect(actions.editVehicleJourneyNotes(footnotes)).toEqual(expectedAction)
   })
 })
+describe('when clicking on calendar button in toolbox', () => {
+  it('should create an action to open calendar modal', () => {
+    const vehicleJourneys = []
+    const expectedAction = {
+      type: 'EDIT_CALENDARS_VEHICLEJOURNEY_MODAL',
+      vehicleJourneys
+    }
+    expect(actions.openCalendarsEditModal(vehicleJourneys)).toEqual(expectedAction)
+  })
+})
+describe('when clicking on delete button next to a timetable inside modal', () => {
+  it('should create an action to delete timetable from selected vehicle journeys', () => {
+    const timetable = {}
+    const expectedAction = {
+      type: 'DELETE_CALENDAR_MODAL',
+      timetable
+    }
+    expect(actions.deleteCalendarModal(timetable)).toEqual(expectedAction)
+  })
+})
+describe('when clicking on validate button inside calendars modal', () => {
+  it('should create an action to update vj calendars', () => {
+    const vehicleJourneys = []
+    const expectedAction = {
+      type: 'EDIT_VEHICLEJOURNEYS_CALENDARS',
+      vehicleJourneys
+    }
+    expect(actions.editVehicleJourneyCalendars(vehicleJourneys)).toEqual(expectedAction)
+  })
+})

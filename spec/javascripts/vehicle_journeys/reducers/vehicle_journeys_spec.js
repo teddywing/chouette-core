@@ -16,7 +16,16 @@ let fakeFootnotes = [{
   label: "2"
 }]
 
-let fakeTimeTables = []
+let fakeTimeTables = [{
+  comment: 'test 1',
+  objectid: '1'
+},{
+  comment: 'test 2',
+  objectid: '2'
+},{
+  comment: 'test 3',
+  objectid: '3'
+}]
 let fakeVJAS = [{
   delta : 627,
   arrival_time : {
@@ -221,18 +230,16 @@ describe('vehicleJourneys reducer', () => {
   })
 
 
-  it('should handle EDIT_VEHICLEJOURNEY_NOTES', () => {
-    let fakeFootnotesResult = fakeFootnotes.push({
-        id: 3,
-        code: 3,
-        label: "3"
+  it('should handle EDIT_VEHICLEJOURNEYS_CALENDARS', () => {
+    let newState = JSON.parse(JSON.stringify(state))
+    newState.map((vj, i) =>{
+      return Object.assign({}, vj, {time_tables : vj.time_tables[0]})
     })
-    let newVJ = Object.assign({}, state[0], {footnotes: fakeFootnotesResult})
     expect(
       vjReducer(state, {
-        type: 'EDIT_VEHICLEJOURNEY_NOTES',
-        footnotes: fakeFootnotesResult
+        type: 'EDIT_VEHICLEJOURNEYS_CALENDARS',
+        vehicleJourneys: newState
       })
-    ).toEqual([newVJ, state[1]])
+    ).toEqual(newState)
   })
 })

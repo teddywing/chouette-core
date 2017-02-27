@@ -1,3 +1,4 @@
+let vehicleJourneysModal, newModalProps
 const modal = (state = {}, action) => {
   switch (action.type) {
     case 'OPEN_CONFIRM_MODAL':
@@ -18,7 +19,7 @@ const modal = (state = {}, action) => {
         confirmModal: {}
       }
     case 'TOGGLE_FOOTNOTE_MODAL':
-      let newModalProps = JSON.parse(JSON.stringify(state.modalProps))
+      newModalProps = JSON.parse(JSON.stringify(state.modalProps))
       if (action.isShown){
         newModalProps.vehicleJourney.footnotes.push(action.footnote)
       }else{
@@ -33,6 +34,44 @@ const modal = (state = {}, action) => {
         },
         confirmModal: {}
       }
+    case 'EDIT_CALENDARS_VEHICLEJOURNEY_MODAL':
+      vehicleJourneysModal = JSON.parse(JSON.stringify(action.vehicleJourneys))
+      let uniqTimetables = []
+      let timetable = {}
+      vehicleJourneysModal.map((vj, i) => {
+        vj.time_tables.map((tt, j) =>{
+          if(!isInArray(tt, uniqTimetables)){
+            uniqTimetables.push(tt)
+          }
+        })
+      })
+      return {
+        type: 'calendars_edit',
+        modalProps: {
+          vehicleJourneys: vehicleJourneysModal,
+          timetables: uniqTimetables
+        },
+        confirmModal: {}
+      }
+    case 'DELETE_CALENDAR_MODAL':
+      newModalProps = JSON.parse(JSON.stringify(state.modalProps))
+      let timetablesModal = state.modalProps.timetables.slice(0)
+      timetablesModal.map((tt, i) =>{
+        if(tt == action.timetable){
+          timetablesModal.splice(i, 1)
+        }
+      })
+      vehicleJourneysModal = state.modalProps.vehicleJourneys.slice(0)
+      vehicleJourneysModal.map((vj) =>{
+        vj.time_tables.map((tt, i) =>{
+          if (tt == action.timetable){
+            vj.time_tables.splice(i, 1)
+          }
+        })
+      })
+      newModalProps.vehicleJourneys = vehicleJourneysModal
+      newModalProps.timetables = timetablesModal
+      return Object.assign({}, state, {modalProps: newModalProps})
     case 'CREATE_VEHICLEJOURNEY_MODAL':
       return {
         type: 'create',
@@ -60,6 +99,10 @@ const modal = (state = {}, action) => {
     default:
       return state
   }
+}
+
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
 }
 
 module.exports = modal

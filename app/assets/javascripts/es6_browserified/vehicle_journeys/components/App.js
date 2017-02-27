@@ -10,6 +10,7 @@ var ShiftVehicleJourney = require('../containers/tools/ShiftVehicleJourney')
 var DuplicateVehicleJourney = require('../containers/tools/DuplicateVehicleJourney')
 var EditVehicleJourney = require('../containers/tools/EditVehicleJourney')
 var NotesEditVehicleJourney = require('../containers/tools/NotesEditVehicleJourney')
+var CalendarsEditVehicleJourney = require('../containers/tools/CalendarsEditVehicleJourney')
 
 const App = () => (
   <div>
@@ -23,6 +24,7 @@ const App = () => (
         <DuplicateVehicleJourney />
         <EditVehicleJourney />
         <NotesEditVehicleJourney />
+        <CalendarsEditVehicleJourney />
       </div>
     </div>
     <VehicleJourneysList />

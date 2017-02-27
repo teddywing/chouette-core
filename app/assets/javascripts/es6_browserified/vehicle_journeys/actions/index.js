@@ -49,6 +49,18 @@ const actions = {
     footnote,
     isShown
   }),
+  openCalendarsEditModal : (vehicleJourneys) => ({
+    type : 'EDIT_CALENDARS_VEHICLEJOURNEY_MODAL',
+    vehicleJourneys
+  }),
+  deleteCalendarModal : (timetable) => ({
+    type : 'DELETE_CALENDAR_MODAL',
+    timetable
+  }),
+  editVehicleJourneyCalendars : (vehicleJourneys) => ({
+    type: 'EDIT_VEHICLEJOURNEYS_CALENDARS',
+    vehicleJourneys
+  }),
   openShiftModal : () => ({
     type : 'SHIFT_VEHICLEJOURNEY_MODAL'
   }),
