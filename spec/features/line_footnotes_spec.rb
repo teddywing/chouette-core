@@ -29,7 +29,7 @@ describe 'Line Footnotes', type: :feature do
 
     context 'user has permission to edit footnotes' do
       it 'shows edit link for footnotes' do
-        expect(page).to have_content(I18n.t('lines.actions.edit_footnotes'))
+        expect(page).to have_content(I18n.t('actions.edit'))
       end
     end
 

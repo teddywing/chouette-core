@@ -4,8 +4,8 @@ var VisibleStopPoints = require('../containers/VisibleStopPoints')
 
 const App = () => (
   <div>
-    <AddStopPoint />
     <VisibleStopPoints />
+    <AddStopPoint />
   </div>
 )
 

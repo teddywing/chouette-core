@@ -12,9 +12,9 @@ describe "/lines/show", :type => :view do
     allow(view).to receive_messages(current_organisation: referential.organisation)
   end
 
-  it "should render h2 with the line name" do
+  it "should render h1 with the line name" do
     render
-    expect(rendered).to have_selector("h2", :text => Regexp.new(line.name))
+    expect(rendered).to have_selector("h1", :text => Regexp.new(line.name))
   end
 
   # it "should display a map with class 'line'" do
@@ -24,12 +24,12 @@ describe "/lines/show", :type => :view do
   # FIXME #2018
   xit "should render a link to edit the line" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_line_referential_line_path(line_referential, line)}']")
+    expect(rendered).to have_selector("a[href='#{view.edit_line_referential_line_path(line_referential, line)}']")
   end
 
   it "should render a link to remove the line" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.line_referential_line_path(line_referential, line)}'][class='remove']")
+    expect(rendered).to have_selector("a[href='#{view.line_referential_line_path(line_referential, line)}']")
   end
 
 end

@@ -24,6 +24,12 @@ fr:
       no_object: "Aucun(e)"
       lines: "Lignes"
       address: "Adresse"
+      for_boarding:
+        normal: Montée autorisée
+        forbidden: Montée interdite
+      for_alighting:
+        normal: Descente autorisée
+        forbidden: Descente interdite
   activerecord:
     models:
       stop_point:

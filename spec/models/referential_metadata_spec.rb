@@ -70,6 +70,14 @@ RSpec.describe ReferentialMetadata, :type => :model do
       expect(period(end: "2016-11-22").end).to eq(Date.new(2016,11,22))
     end
 
+    it "should support multiparameter on begin attribute" do
+      expect(period("begin(3i)"=>"18", "begin(2i)"=>"2", "begin(1i)"=>"2017").begin).to eq(Date.new(2017,2,18))
+    end
+
+    it "should support multiparameter on end attribute" do
+      expect(period("end(3i)"=>"18", "end(2i)"=>"2", "end(1i)"=>"2017").end).to eq(Date.new(2017,2,18))
+    end
+
     it { is_expected.to validate_presence_of(:begin) }
     it { is_expected.to validate_presence_of(:end) }
 

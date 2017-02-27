@@ -1,58 +1,28 @@
-= title_tag t('companies.show.title', company: @company.name)
+/ PageHeader
+= pageheader 'map-marker',
+             @company.name,
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@company.updated_at, format: :short)) do
 
-.company_show
-  .summary
-    p
-      label = "#{Chouette::Company.human_attribute_name('short_name')} : "
-      = @company.short_name
+  / Below is secundary actions & optional contents (filters, ...)
+  .row
+    .col-lg-12.text-right.mb-sm
+      - if policy(Chouette::Company).create?
+        = link_to t('companies.actions.new'), new_line_referential_company_path(@line_referential), class: 'btn btn-primary'
+      - if policy(@company).update?
+        = link_to t('companies.actions.edit'), edit_line_referential_company_path(@line_referential, @company), class: 'btn btn-primary'
+      - if policy(@company).destroy?
+        = link_to line_referential_company_path(@line_referential, @company), method: :delete, data: {confirm:  t('companies.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('companies.actions.destroy')
 
-    p
-      label = "#{Chouette::Company.human_attribute_name('organizational_unit')} : "
-      = @company.organizational_unit
-
-    p
-      label = "#{Chouette::Company.human_attribute_name('operating_department_name')} : "
-      = @company.operating_department_name
-
-    p
-      label = "#{Chouette::Company.human_attribute_name('code')} : "
-      = @company.code
-
-    p
-      label = "#{Chouette::Company.human_attribute_name('phone')} : "
-      = @company.phone
-
-    p
-      label = "#{Chouette::Company.human_attribute_name('fax')} : "
-      = @company.fax
-
-    p
-      label = "#{Chouette::Company.human_attribute_name('email')} : "
-      = @company.email
-
-    p
-      label = "#{Chouette::Company.human_attribute_name('time_zone')} : "
-      = @company.time_zone
-
-    p
-      label = "#{Chouette::Company.human_attribute_name('url')} : "
-      = @company.url
-
-    p
-      label = "#{Chouette::Company.human_attribute_name('registration_number')} : "
-      = @company.registration_number
-
-- content_for :sidebar do
-  ul.actions
-    - if policy(Chouette::Company).create?
-      li
-        = link_to t('companies.actions.new'), new_line_referential_company_path(@line_referential), class: 'add'
-    - if policy(@company).update?
-      li
-        = link_to t('companies.actions.edit'), edit_line_referential_company_path(@line_referential, @company), class: 'edit'
-    - if policy(@company).destroy?
-      li
-        = link_to  t('companies.actions.destroy'), line_referential_company_path(@line_referential, @company), :method => :delete,  :data => {:confirm =>  t('companies.actions.destroy_confirm')}, class: 'remove'
-      br
-
-  = creation_tag(@company)
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { 'ID Codif' => @company.try(:objectid).try(:local_id),
+            Chouette::Company.human_attribute_name(:phone) => @company.phone,
+            Chouette::Company.human_attribute_name(:email) => @company.email,
+            Chouette::Company.human_attribute_name(:url) => @company.url }

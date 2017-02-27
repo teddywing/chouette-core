@@ -4,14 +4,13 @@ var actions = require('../actions')
 
 let AddStopPoint = ({ dispatch }) => {
   return (
-    <div className="clearfix" style={{marginBottom: 10}}>
+    <div className="nested-linker">
       <form onSubmit={e => {
         e.preventDefault()
         dispatch(actions.addStop())
       }}>
-        <label>Séquence d'arrêts</label>
-        <button type="submit" className="btn btn-primary btn-xs pull-right">
-          <span className="fa fa-plus"></span> Ajouter un arrêt
+        <button type="submit" className="btn btn-outline-primary">
+          Ajouter un arrêt
         </button>
       </form>
     </div>

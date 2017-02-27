@@ -19,26 +19,26 @@ describe Chouette::Line, :type => :model do
 
   # it { should validate_numericality_of :objectversion }
 
-  describe ".last_stop_areas_parents" do
-
-    it "should return stop areas if no parents" do
-      line = create(:line_with_stop_areas)
-      expect(line.stop_areas_last_parents).to eq(line.stop_areas)
-    end
-
-    it "should return stop areas parents if parents" do
-      line = create(:line_with_stop_areas)
-      route = create(:route, :line => line)
-      parent = create(:stop_area)
-      stop_areas = [ create(:stop_area),  create(:stop_area), create(:stop_area, :parent_id => parent.id) ]
-      stop_areas.each do |stop_area|
-        create(:stop_point, :stop_area => stop_area, :route => route)
-      end
-
-      expect(line.stop_areas_last_parents).to match(line.stop_areas[0..(line.stop_areas.size - 2)].push(parent))
-    end
-
-  end
+  # describe ".last_stop_areas_parents" do
+  #
+  #   it "should return stop areas if no parents" do
+  #     line = create(:line_with_stop_areas)
+  #     expect(line.stop_areas_last_parents).to eq(line.stop_areas)
+  #   end
+  #
+  #   # it "should return stop areas parents if parents" do
+  #   #   line = create(:line_with_stop_areas)
+  #   #   route = create(:route, :line => line)
+  #   #   parent = create(:stop_area)
+  #   #   stop_areas = [ create(:stop_area),  create(:stop_area), create(:stop_area, :parent_id => parent.id) ]
+  #   #   stop_areas.each do |stop_area|
+  #   #     create(:stop_point, :stop_area => stop_area, :route => route)
+  #   #   end
+  #   #
+  #   #   expect(line.stop_areas_last_parents).to match(line.stop_areas[0..(line.stop_areas.size - 2)].push(parent))
+  #   # end
+  #
+  # end
 
   describe "#stop_areas" do
     let!(:route){create(:route, :line => subject)}

@@ -1,7 +1,7 @@
 fr:
   vehicle_journey_exports:
     new:
-      title: "Exporter les horaires existants"
+      title: "Exporter les horaires"
       basename: "courses"
     label:
       vehicle_journey_id: "id course (vide si nouvelle)"
@@ -27,4 +27,3 @@ fr:
       vj_filename: "courses_"
       tt_filename: "calendriers"
       ftn_filename: "notes"
-      

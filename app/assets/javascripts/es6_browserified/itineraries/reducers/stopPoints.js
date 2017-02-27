@@ -6,6 +6,7 @@ const stopPoint = (state = {}, action, length) => {
       return {
         text: '',
         index: length,
+        edit: true,
         for_boarding: 'normal',
         for_alighting: 'normal',
         olMap: {
@@ -83,6 +84,14 @@ const stopPoints = (state = [], action) => {
           let stopState = Object.assign({}, t)
           stopState[action.select_id] = action.select_value
           return stopState
+        } else {
+          return t
+        }
+      })
+    case 'TOGGLE_EDIT':
+      return state.map((t, i) => {
+        if (i === action.index){
+          return Object.assign({}, t, {edit: !t.edit})
         } else {
           return t
         }

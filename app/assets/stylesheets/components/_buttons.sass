@@ -10,6 +10,10 @@
   span + .fa
     padding-left: 0.5em
 
+  &.btn-link
+    &, &:focus
+      outline: none
+
   &.btn-default
     background-color: #fff
     border-color: rgba(#fff, 0.5)
@@ -38,6 +42,16 @@
     &:hover, &:focus, &.focus, &:active, &.active,
     .open > .btn-primary.dropdown-toggle
       background-color: $darkblue
+      color: #fff
+
+  &.btn-outline-danger
+    background-color: transparent
+    border-color: $red
+    color: $red
+
+    &:hover, &:focus, &.focus, &:active, &.active,
+    .open > .btn-primary.dropdown-toggle
+      background-color: $red
       color: #fff
 
   + .btn

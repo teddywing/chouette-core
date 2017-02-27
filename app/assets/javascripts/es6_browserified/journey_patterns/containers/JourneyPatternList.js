@@ -5,7 +5,8 @@ var JourneyPatterns = require('../components/JourneyPatterns')
 const mapStateToProps = (state) => {
   return {
     journeyPatterns: state.journeyPatterns,
-    status: state.status
+    status: state.status,
+    stopPointsList: state.stopPointsList
   }
 }
 

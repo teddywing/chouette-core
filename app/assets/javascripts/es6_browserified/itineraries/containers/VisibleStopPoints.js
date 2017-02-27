@@ -33,6 +33,9 @@ const mapDispatchToProps = (dispatch) => {
     onToggleMap: (index) =>{
       dispatch(actions.toggleMap(index))
     },
+    onToggleEdit: (index) =>{
+      dispatch(actions.toggleEdit(index))
+    },
     onSelectMarker: (index, data) =>{
       dispatch(actions.selectMarker(index, data))
     },

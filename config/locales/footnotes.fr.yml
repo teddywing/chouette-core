@@ -1,15 +1,15 @@
 fr:
   notice:
     footnotes:
-      updated: 'Note en bas de page mise à jour'
+      updated: 'Note mise à jour'
   footnotes:
     actions:
-      add_footnote: "ajouter une note en bas de page"
+      add_footnote: "Ajouter une note"
     index:
-      title: "Notes en bas de page"
+      title: "Notes"
   activerecord:
     models:
-      footnote: "note en bas de page"
+      footnote: "note"
     attributes:
       footnote:
         code: "numéro"

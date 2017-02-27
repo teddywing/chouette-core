@@ -11,13 +11,6 @@ var path = window.location.pathname.split('/', 3).join('/')
 class BSelect3 extends React.Component{
   constructor(props) {
     super(props)
-    this.state = {
-      edit: false
-    }
-  }
-  onToggleEdit(e) {
-    e.preventDefault()
-    this.setState({edit: !this.state.edit})
   }
   onChange(e) {
     this.props.onChange(this.props.index, {
@@ -28,20 +21,13 @@ class BSelect3 extends React.Component{
       latitude: e.params.data.latitude,
       name: e.params.data.name
     })
-    this.setState({edit: false})
   }
 
   render() {
-    if(this.state.edit)
+    if(this.props.value.edit)
       return (
-        <div className='input-group select2-bootstrap-append'>
+        <div className='select2-bootstrap-append'>
           <BSelect2 {...this.props} onSelect={ this.onChange.bind(this) }/>
-
-          <span className='input-group-btn'>
-            <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
-              <span className='fa fa-undo'></span>
-            </button>
-          </span>
         </div>
       )
     else
@@ -53,21 +39,13 @@ class BSelect3 extends React.Component{
         )
       else
         return (
-          <div className='input-group'>
-            <a
-              className='form-control form-control-link'
-              href={origin + path + '/stop_areas/' + this.props.value.stoparea_id}
-              title={"Voir l'arrêt '" + this.props.value.text + "'"}
-              style={{lineHeight: '22px', overflow: 'hidden'}}
-            >
-              {this.props.value.text}
-            </a>
-            <span className='input-group-btn'>
-              <button type='button' className='btn btn-default' onClick={this.onToggleEdit.bind(this)}>
-                <span className='fa fa-pencil'></span>
-              </button>
-            </span>
-          </div>
+          <a
+            className='navlink'
+            href={origin + path + '/stop_areas/' + this.props.value.stoparea_id}
+            title="Voir l'arrêt"
+          >
+            {this.props.value.text}
+          </a>
         )
   }
 }

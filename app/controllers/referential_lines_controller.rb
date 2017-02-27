@@ -24,7 +24,16 @@ class ReferentialLinesController < ChouetteController
 
   def show
     @map = LineMap.new(resource).with_helpers(self)
-    @routes = @line.routes.order(:name).paginate(page: params[:page], per_page: 10)
+
+    @q = @line.routes.ransack(params[:q])
+
+    if sort_route_column && sort_route_direction
+      @routes ||= @q.result(distinct: true).order(sort_route_column + ' ' + sort_route_direction)
+    else
+      @routes ||= @q.result(distinct: true).order(:name)
+    end
+    @routes = @routes.paginate(page: params[:page], per_page: 10)
+
     @group_of_lines = @line.group_of_lines
     show! do
       build_breadcrumb :show
@@ -93,6 +102,13 @@ class ReferentialLinesController < ChouetteController
     referential.lines.column_names.include?(params[:sort]) ? params[:sort] : 'number'
   end
   def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  def sort_route_column
+    @line.routes.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+  end
+  def sort_route_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end
 

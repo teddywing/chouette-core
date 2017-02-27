@@ -16,6 +16,7 @@ describe('stops reducer', () => {
       {
         text: 'first',
         index: 0,
+        edit: false,
         for_boarding: 'normal',
         for_alighting: 'normal',
         olMap: {
@@ -26,6 +27,7 @@ describe('stops reducer', () => {
       {
         text: 'second',
         index: 1,
+        edit: false,
         for_boarding: 'normal',
         for_alighting: 'normal',
         olMap: {
@@ -52,6 +54,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -62,6 +65,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -72,6 +76,7 @@ describe('stops reducer', () => {
         {
           text: '',
           index: 2,
+          edit: true,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -94,6 +99,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -104,6 +110,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -126,6 +133,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -136,6 +144,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -158,6 +167,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -174,6 +184,7 @@ describe('stops reducer', () => {
       stopPointsReducer(state, {
         type: 'UPDATE_INPUT_VALUE',
         index: 0,
+        edit: false,
         text: {
           text: "new value",
           name: 'new',
@@ -190,6 +201,7 @@ describe('stops reducer', () => {
           text: 'new value',
           name: 'new',
           index: 0,
+          edit: false,
           stoppoint_id: '',
           stoparea_id: 1,
           for_boarding: 'normal',
@@ -206,6 +218,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -220,16 +233,17 @@ describe('stops reducer', () => {
   it('should handle UPDATE_SELECT_VALUE', () => {
     expect(
       stopPointsReducer(state, {
-          type :'UPDATE_SELECT_VALUE',
-          select_id: 'for_boarding',
-          select_value: 'prohibited',
-          index: 0
+        type :'UPDATE_SELECT_VALUE',
+        select_id: 'for_boarding',
+        select_value: 'prohibited',
+        index: 0
       })
     ).toEqual(
       [
         {
           text: 'first',
           index: 0,
+          edit: false,
           for_boarding: 'prohibited',
           for_alighting: 'normal',
           olMap: {
@@ -240,6 +254,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -262,6 +277,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -269,6 +285,7 @@ describe('stops reducer', () => {
             json: {
               text: 'first',
               index: 0,
+              edit: false,
               for_boarding: 'normal',
               for_alighting: 'normal',
               olMap: undefined
@@ -278,6 +295,41 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          edit: false,
+          for_boarding: 'normal',
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
+        }
+      ]
+    )
+  })
+
+  it('should handle TOGGLE_EDIT', () => {
+    expect(
+      stopPointsReducer(state, {
+        type: 'TOGGLE_EDIT',
+        index: 0
+      })
+    ).toEqual(
+      [
+        {
+          text: 'first',
+          index: 0,
+          edit: true,
+          for_boarding: 'normal',
+          for_alighting: 'normal',
+          olMap: {
+            isOpened: false,
+            json: {}
+          }
+        },
+        {
+          text: 'second',
+          index: 1,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -294,6 +346,7 @@ describe('stops reducer', () => {
       {
         text: 'first',
         index: 0,
+        edit: false,
         for_boarding: 'normal',
         for_alighting: 'normal',
         olMap: {
@@ -304,6 +357,7 @@ describe('stops reducer', () => {
       {
         text: 'second',
         index: 1,
+        edit: false,
         for_boarding: 'normal',
         for_alighting: 'normal',
         olMap: {
@@ -323,6 +377,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -333,6 +388,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -349,6 +405,7 @@ describe('stops reducer', () => {
       {
         text: 'first',
         index: 0,
+        edit: false,
         for_boarding: 'normal',
         for_alighting: 'normal',
         olMap: {
@@ -359,6 +416,7 @@ describe('stops reducer', () => {
       {
         text: 'second',
         index: 1,
+        edit: false,
         for_boarding: 'normal',
         for_alighting: 'normal',
         olMap: {
@@ -378,6 +436,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {
@@ -388,6 +447,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
           olMap: {

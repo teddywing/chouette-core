@@ -21,15 +21,16 @@ class CreateModal extends Component {
     }
     if(this.props.status.fetchSuccess == true) {
       return (
-        <div className='pull-right'>
-          <button
-            type='button'
-            className='btn btn-primary btn-sm'
-            data-toggle='modal'
-            data-target='#NewJourneyPatternModal'
-            onClick={this.props.onOpenCreateModal}
-            >
-            <span className='fa fa-plus'></span> Ajouter une mission
+        <div className='row mt-md'>
+          <div className='col-lg-12 text-right'>
+            <button
+              type='button'
+              className='btn btn-outline-primary'
+              data-toggle='modal'
+              data-target='#NewJourneyPatternModal'
+              onClick={this.props.onOpenCreateModal}
+              >
+              Ajouter une mission
             </button>
 
             <div className={ 'modal fade ' + ((this.props.modal.type == 'create') ? 'in' : '') } id='NewJourneyPatternModal'>
@@ -102,7 +103,8 @@ class CreateModal extends Component {
               </div>
             </div>
           </div>
-        )
+        </div>
+      )
     } else {
       return false
     }

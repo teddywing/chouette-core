@@ -19,7 +19,7 @@ fr:
       title: "Modifier l'itinéraire %{route}"
     show:
       title: "Itinéraire %{route} de la ligne %{line}"
-      stop_points: "Liste des arrêts de l'itinéraire'"
+      stop_points: "Liste des arrêts de l'itinéraire"
       journey_patterns: "Liste des missions"
       no_opposite_route: "Aucun itinéraire associé en sens opposé"
       undefined: "Non défini"

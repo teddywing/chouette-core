@@ -26,6 +26,7 @@ const getInitialState = () => {
       stoparea_id: value.stoparea_id,
       user_objectid: value.user_objectid,
       index: index,
+      edit: false,
       city_name: value.city_name,
       zip_code: value.zip_code,
       name: value.name,

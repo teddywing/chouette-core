@@ -1,3 +1,5 @@
+require 'activeattr_ext.rb'
+
 class ReferentialMetadata < ActiveRecord::Base
   belongs_to :referential
   belongs_to :referential_source, class_name: 'Referential'
@@ -12,6 +14,7 @@ class ReferentialMetadata < ActiveRecord::Base
 
   class Period
     include ActiveAttr::Model
+    include ActiveAttr::MultiParameterAttributes
 
     attribute :id, type: Integer
     attribute :begin, type: Date

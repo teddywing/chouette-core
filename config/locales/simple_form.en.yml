@@ -2,6 +2,8 @@ en:
   simple_form:
     "yes": 'Yes'
     "no": 'No'
+    from: 'From'
+    to: 'To'
     required:
       text: 'required'
       mark: '*'
@@ -23,4 +25,3 @@ en:
     #   defaults:
     #     username: 'User name to sign in.'
     #     password: 'No special characters, please.'
-
