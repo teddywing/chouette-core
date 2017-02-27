@@ -114,3 +114,42 @@
   > .info-msg
     font-style: italic
     font-size: 0.85em
+
+
+//-----------------------------//
+//  Tables (column by column)  //
+//-----------------------------//
+
+.table.table-2entries
+  display: block
+
+  > *
+    display: inline-block
+    vertical-align: top
+
+  .th
+    padding: 6px 8px
+    border-bottom: 2px solid rgba($grey, 0.5)
+  .td
+    padding: 6px 8px
+    border-bottom: 1px solid rgba($grey, 0.5)
+
+  .t2e-head
+    border-right: 1px solid rgba($grey, 0.5)
+
+    .th
+      text-align: right
+
+  .t2e-item-list
+    > div
+      display: block
+      overflow: auto
+      white-space: nowrap
+
+    .t2e-item
+      display: inline-block
+      white-space: normal
+      border-left: 1px solid rgba($grey, 0.5)
+
+      &:first-child
+        border-left: none

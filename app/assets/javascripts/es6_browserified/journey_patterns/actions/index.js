@@ -194,6 +194,11 @@ const actions = {
           dispatch(actions.receiveJourneyPatterns(journeyPatterns))
         }
       })
+  },
+  getChecked : (jp) => {
+    return jp.filter((obj) => {
+      return obj.checked
+    })
   }
 }
 

@@ -11,7 +11,7 @@ class JourneyPatternsCollectionsController < ChouetteController
 
   def show
     @q = route.journey_patterns.includes(:stop_points)
-    @ppage = 3
+    @ppage = 10
     @journey_patterns ||= @q.paginate(page: params[:page], per_page: @ppage).order(:name)
   end
 
