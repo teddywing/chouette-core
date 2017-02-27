@@ -11,7 +11,7 @@ class JourneyPatterns extends Component{
     this.props.onLoadFirstPage()
   }
   componentDidUpdate(prevProps, prevState) {
-    if(this.props.status.isFetching == false){
+    if(prevProps.status.isFetching == true){
       $('.table-2entries').each(function() {
         var refH = []
         var refCol = []

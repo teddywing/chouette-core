@@ -1,0 +1,44 @@
+//-----------------//
+//  JP Collection  //
+//-----------------//
+
+#journey_patterns
+  .table-2entries
+    .t2e-head
+      > .td
+        position: relative
+        padding-left: 25px
+
+        &:before
+          content: ''
+          display: block
+          width: 10px
+          height: 10px
+          background-color: #fff
+          border: 2px solid $blue
+          border-radius: 50%
+          position: absolute
+          z-index: 5
+          left: 5px
+          top: 50%
+          margin-top: -5px
+
+        &:after
+          content: ''
+          display: block
+          width: 4px
+          margin: 0 3px
+          background-color: rgba($grey, 0.5)
+          position: absolute
+          z-index: 3
+          top: 0
+          left: 5px
+          bottom: 0
+
+        &:last-child
+          &:after
+            bottom: 50%
+
+        &:nth-child(2)
+          &:after
+            top: 50%

@@ -35,14 +35,17 @@ const JourneyPattern = (props) => {
           key={ i }
           className='td'
           >
-          <input
-            onChange = {(e) => props.onCheckboxChange(e)}
-            type='checkbox'
-            id={stopPoint.id}
-            checked={stopPoint.checked}
-            disabled={props.value.deletable ? 'disabled' : ''}
-            >
-          </input>
+          <span className='has_radio'>
+            <input
+              onChange = {(e) => props.onCheckboxChange(e)}
+              type='checkbox'
+              id={stopPoint.id}
+              checked={stopPoint.checked}
+              disabled={props.value.deletable ? 'disabled' : ''}
+              >
+            </input>
+            <span className='radio-label'></span>
+          </span>
         </div>
       )}
     </div>
