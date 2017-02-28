@@ -22,6 +22,7 @@ end
 child :vehicle_journey_at_stops, :object_root => false do |vehicle_stops|
   node do |vehicle_stop|
     node(:stop_area_object_id) { vehicle_stop.stop_point.stop_area.objectid }
+    node(:stop_area_name) {vehicle_stop.stop_point.stop_area.name}
     [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
       node(att) { vehicle_stop.send(att) } unless vehicle_stop.send(att).nil?
     end
