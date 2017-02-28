@@ -8,8 +8,8 @@ var stopPointsList = require('./stopPointsList')
 const journeyPatternsApp = combineReducers({
   status,
   journeyPatterns,
-  stopPointsList,
   pagination,
+  stopPointsList,
   modal
 })
 

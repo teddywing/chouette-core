@@ -79,7 +79,7 @@ class JourneyPatterns extends Component{
                   <div>Nb arrêts</div>
                 </div>
                 {this.props.stopPointsList.map((sp, i) =>
-                  <div key={i} className='td'>{sp}</div>
+                  <div key={i} className='td'>{sp.name}</div>
                 )}
               </div>
 
