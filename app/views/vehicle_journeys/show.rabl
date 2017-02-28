@@ -30,8 +30,8 @@ child :vehicle_journey_at_stops, :object_root => false do |vehicle_stops|
     [:arrival_time, :departure_time].map do |att|
       node(att) do |vs|
         {
-          hour: vs.send(att).strftime('%H'),
-          minute: vs.send(att).strftime('%M'),
+          hour: vs.send(att).try(:strftime, '%H'),
+          minute: vs.send(att).try(:strftime, '%M')
         }
       end
     end
