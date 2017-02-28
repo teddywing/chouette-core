@@ -85,7 +85,7 @@ describe('vehicleJourneys reducer', () => {
       }
     }]
     let fakeData = {
-      journey_pattern_id: {value : '1'},
+      journey_pattern_objectid: {value : '1'},
       comment: {value: 'test'}
     }
     expect(
@@ -94,7 +94,7 @@ describe('vehicleJourneys reducer', () => {
         data: fakeData
       })
     ).toEqual([{
-      journey_pattern_id: 1,
+      journey_pattern: {objectid: '1'},
       comment: 'test',
       objectid: '',
       footnotes: [],

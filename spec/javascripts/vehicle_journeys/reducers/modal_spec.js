@@ -98,12 +98,15 @@ describe('modal reducer', () => {
   it('should handle DELETE_CALENDAR_MODAL', () => {
     // TODO spec more for vehiclejourneys
     let deletableTimetable = {'delete': 'delete'}
-    state.modalProps = {vehicleJourneys : [], timetables: [{'test': 'test'}, {'test 2': 'test 2'}, deletableTimetable] }
+    let fakeTimetables = [{'test': 'test'}, {'test 2': 'test 2'}, deletableTimetable]
+    let newTimeTables = [{'test': 'test'}, {'test 2': 'test 2'}]
+    let fakeVehicleJourneys= [{time_tables: fakeTimetables}, {time_tables: fakeTimetables}]
+    state.modalProps = {vehicleJourneys : fakeVehicleJourneys, timetables: fakeTimetables }
     let footnote = {}
     let newState = {
       // for the sake of the test, no need to specify the type
       type: '',
-      modalProps:{vehicleJourneys: [], timetables: [{'test': 'test'},{'test 2': 'test 2'}]},
+      modalProps:{vehicleJourneys: [{time_tables: newTimeTables},{time_tables: newTimeTables}], timetables: [{'test': 'test'},{'test 2': 'test 2'}]},
       confirmModal: {}
     }
     expect(
