@@ -18,6 +18,9 @@
         labelCont.text(labelCont.data('checkedvalue'))
 
 @submitMover = ->
+  if $('.page-action').children('.formSubmitr').length > 0
+    $('.page-action').children('.formSubmitr').remove()
+
   $('.formSubmitr').appendTo('.page-action')
 
   # IE fix
