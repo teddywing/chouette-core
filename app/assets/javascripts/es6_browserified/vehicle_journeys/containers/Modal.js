@@ -6,7 +6,7 @@ var actions = require('../actions')
 const mapStateToProps = (state) => {
   return {
     modal: state.modal,
-    journeyPattern: state.journeyPattern
+    vehicleJourneys: state.vehicleJourneys
   }
 }
 

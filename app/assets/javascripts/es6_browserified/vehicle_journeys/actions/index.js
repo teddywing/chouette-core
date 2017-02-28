@@ -71,6 +71,9 @@ const actions = {
     type : 'SELECT_VEHICLEJOURNEY',
     index
   }),
+  cancelSelection : () => ({
+    type: 'CANCEL_SELECTION'
+  }),
   addVehicleJourney : (data) => ({
     type: 'ADD_VEHICLEJOURNEY',
     data

@@ -153,6 +153,17 @@ describe('vehicleJourneys reducer', () => {
     ).toEqual([state[0], newVJ])
   })
 
+  it('should handle CANCEL_SELECTION', () => {
+    const index = 1
+    const newVJ = Object.assign({}, state[0], {selected: false})
+    expect(
+      vjReducer(state, {
+        type: 'CANCEL_SELECTION',
+        index
+      })
+    ).toEqual([newVJ, state[1]])
+  })
+
   it('should handle DELETE_VEHICLEJOURNEYS', () => {
     const newVJ = Object.assign({}, state[0], {deletable: true})
     expect(

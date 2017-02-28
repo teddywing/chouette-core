@@ -4,6 +4,8 @@ const vehicleJourney= (state = {}, action) => {
   switch (action.type) {
     case 'SELECT_VEHICLEJOURNEY':
       return Object.assign({}, state, {selected: !state.selected})
+    case 'CANCEL_SELECTION':
+      return Object.assign({}, state, {selected: false})
     case 'ADD_VEHICLEJOURNEY':
       let pristineVjas = JSON.parse(JSON.stringify(state[0].vehicle_journey_at_stops))
       pristineVjas.map((vj) =>{
@@ -173,6 +175,10 @@ const vehicleJourneys = (state = [], action) => {
         } else {
           return vj
         }
+      })
+    case 'CANCEL_SELECTION':
+      return state.map((vj) => {
+        return vehicleJourney(vj, action)
       })
     case 'UPDATE_TIME':
       return state.map((vj, i) =>{

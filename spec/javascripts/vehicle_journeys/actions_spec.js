@@ -91,6 +91,15 @@ describe('when checking a vehicleJourney', () => {
     expect(actions.selectVehicleJourney(index)).toEqual(expectedAction)
   })
 })
+describe('when clicking on cancel selection button', () => {
+  it('should create an action to cancel whole selection', () => {
+    const index = 1
+    const expectedAction = {
+      type: 'CANCEL_SELECTION'
+    }
+    expect(actions.cancelSelection()).toEqual(expectedAction)
+  })
+})
 describe('when clicking on delete button', () => {
   it('should create an action to delete vj', () => {
     const expectedAction = {

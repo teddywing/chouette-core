@@ -52,7 +52,7 @@ class NotesEditVehicleJourney extends Component {
             data-target='#NotesEditVehicleJourneyModal'
             onClick={() => this.props.onOpenNotesEditModal(actions.getSelected(this.props.vehicleJourneys)[0])}
             >
-            <span className='fa fa-paw'></span>
+            <span className='fa fa-flag-o'></span>
             </button>
 
             <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='NotesEditVehicleJourneyModal'>

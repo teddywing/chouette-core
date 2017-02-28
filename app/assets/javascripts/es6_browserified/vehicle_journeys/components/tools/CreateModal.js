@@ -30,8 +30,8 @@ class CreateModal extends Component {
             data-target='#NewVehicleJourneyModal'
             onClick={this.props.onOpenCreateModal}
             >
-            <span className='fa fa-plus'></span> Ajouter une mission
-            </button>
+            <span className='fa fa-plus'></span>
+          </button>
 
             <div className={ 'modal fade ' + ((this.props.modal.type == 'create') ? 'in' : '') } id='NewVehicleJourneyModal'>
               <div className='modal-dialog'>
