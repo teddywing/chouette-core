@@ -14,8 +14,11 @@ const vehicleJourney= (state = {}, action) => {
         vj.delta = 0
         delete vj['stop_area_object_id']
       })
+      let journeyPattern = {
+        objectid: action.data.journey_pattern_objectid.value
+      }
       return {
-        journey_pattern_id: parseInt(action.data.journey_pattern_id.value),
+        journey_pattern: journeyPattern,
         comment: action.data.comment.value,
         objectid: '',
         footnotes: [],

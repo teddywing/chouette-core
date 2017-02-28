@@ -29,7 +29,7 @@ class VehicleJourney extends Component {
 
           {/* Id mission */}
           <p className='small'>
-            <strong>Id Mission: </strong>{this.props.value.journey_pattern_id}
+            <strong>Id Mission: </strong>{this.props.value.journey_pattern.objectid}
           </p>
 
           {/* Published name */}

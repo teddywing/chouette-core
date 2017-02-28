@@ -189,7 +189,7 @@ const actions = {
               return actions.getDelta(vjas)
             })
             vehicleJourneys.push({
-              journey_pattern_id: val.journey_pattern_id,
+              journey_pattern: val.journey_pattern,
               published_journey_name: val.published_journey_name,
               objectid: val.objectid,
               footnotes: val.footnotes,

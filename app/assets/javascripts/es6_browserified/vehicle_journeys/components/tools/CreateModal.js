@@ -59,7 +59,7 @@ class CreateModal extends Component {
                               <label className='control-label is-required'>ID de la mission</label>
                               <input
                                 type='text'
-                                ref='journey_pattern_id'
+                                ref='journey_pattern_objectid'
                                 className='form-control'
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                 required
