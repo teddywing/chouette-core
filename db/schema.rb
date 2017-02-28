@@ -11,8 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema.define(version: 20170228135627) do
 
-ActiveRecord::Schema.define(version: 20170215163027) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -275,6 +275,9 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "file"
+    t.date     "started_at"
+    t.date     "ended_at"
+    t.string   "token_download"
   end
 
   add_index "imports", ["referential_id"], :name => "index_imports_on_referential_id"

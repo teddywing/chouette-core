@@ -5,6 +5,13 @@ en:
         for_boarding: "Undefined"
         for_alighting: "Undefined"
   enumerize:
+    import:
+      status:
+        new: New
+        pending: Pending
+        successful: Successful
+        failed: Failed
+        canceled: Canceled
     for_boarding:
       normal: "Regularly scheduled pickup"
       forbidden: "No pickup available"
