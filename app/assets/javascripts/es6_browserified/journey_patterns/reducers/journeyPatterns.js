@@ -65,8 +65,8 @@ const journeyPatterns = (state = [], action) => {
       })
     case 'ADD_JOURNEYPATTERN':
       return [
-        ...state,
-        journeyPattern(state, action)
+        journeyPattern(state, action),
+        ...state
       ]
     case 'SAVE_MODAL':
       return state.map((j, i) =>{

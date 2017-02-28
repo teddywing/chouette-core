@@ -172,6 +172,12 @@ $cbx-size: 20px
     &:checked + .radio-label
       background-color: $blue
 
+    &:disabled
+      cursor: not-allowed
+
+      + .radio-label
+        opacity: 0.5
+
 // Switch
 .has_switch
   &.form-group

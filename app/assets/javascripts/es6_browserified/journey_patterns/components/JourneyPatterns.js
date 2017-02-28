@@ -11,7 +11,7 @@ class JourneyPatterns extends Component{
     this.props.onLoadFirstPage()
   }
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.status.isFetching == true){
+    if(this.props.status.isFetching == false){
       $('.table-2entries').each(function() {
         var refH = []
         var refCol = []
@@ -44,7 +44,6 @@ class JourneyPatterns extends Component{
           }
         }
 
-        // console.log(refCol);
         $(this).find('.th').css('height', refCol[0]);
 
         for(var nth = 1; nth < refH.length; nth++) {
@@ -92,6 +91,7 @@ class JourneyPatterns extends Component{
                       key={ index }
                       onCheckboxChange= {(e) => this.props.onCheckboxChange(e, index)}
                       onOpenEditModal= {() => this.props.onOpenEditModal(index, journeyPattern)}
+                      onDeleteJourneyPattern={() => this.props.onDeleteJourneyPattern(index)}
                       />
                   )}
                 </div>

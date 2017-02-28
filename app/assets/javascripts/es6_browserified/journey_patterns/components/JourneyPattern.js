@@ -19,14 +19,43 @@ const JourneyPattern = (props) => {
       )}
 
       <div className='th'>
-        <div className='strong mb-xs'>{props.value.object_id}</div>
+        <div className='strong mb-xs'>{props.value.object_id ? props.value.object_id : '-'}</div>
         <div>{props.value.registration_number}</div>
         <div>{actions.getChecked(props.value.stop_points).length} arrêt(s)</div>
 
-        <div className='clearfix' style={{display: 'inline-block', verticalAlign: 'top', width: '25px'}}>
-          <button className={(props.value.deletable ? 'disabled' : '') + ' btn btn-xs btn-danger pull-right'} onClick={props.onOpenEditModal} data-toggle='modal' data-target='#JourneyPatternModal'>
-            <span className='fa fa-pencil'></span>
-          </button>
+        <div className={props.value.deletable ? 'btn-group disabled' : 'btn-group'}>
+          <div
+            className={props.value.deletable ? 'btn dropdown-toggle disabled' : 'btn dropdown-toggle'}
+            data-toggle='dropdown'
+          >
+            <span className='fa fa-cog'></span>
+          </div>
+          <ul className='dropdown-menu'>
+            <li className={props.value.deletable ? 'disabled' : ''}>
+              <a
+                href='#'
+                onClick={props.onOpenEditModal}
+                data-toggle='modal'
+                data-target='#JourneyPatternModal'
+              >
+                Modifier
+              </a>
+            </li>
+            <li>
+              <a href='#'>Horaires des courses</a>
+            </li>
+            <li className='delete-action'>
+              <a
+                href='#'
+                onClick={(e) => {
+                  e.preventDefault()
+                  props.onDeleteJourneyPattern(props.index)}
+                }
+              >
+                <span className='fa fa-trash'></span>Supprimer
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -56,7 +85,8 @@ JourneyPattern.propTypes = {
   value: PropTypes.object,
   index: PropTypes.number,
   onCheckboxChange: PropTypes.func.isRequired,
-  onOpenEditModal: PropTypes.func.isRequired
+  onOpenEditModal: PropTypes.func.isRequired,
+  onDeleteJourneyPattern: PropTypes.func.isRequired
 }
 
 module.exports = JourneyPattern

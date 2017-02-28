@@ -57,13 +57,13 @@ describe('journeyPatterns reducer', () => {
         type: 'ADD_JOURNEYPATTERN',
         data: fakeData
       })
-    ).toEqual([...state, {
+    ).toEqual([{
       name : 'm3',
       published_name: 'M3',
       registration_number: '',
       deletable: false,
       stop_points: fakeStopPoints
-    }])
+    }, ...state])
   })
 
   it('should handle UPDATE_CHECKBOX_VALUE', () => {

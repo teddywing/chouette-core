@@ -21,6 +21,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onOpenEditModal: (index, journeyPattern) =>{
       dispatch(actions.openEditModal(index, journeyPattern))
+    },
+    onDeleteJourneyPattern: (index) =>{
+      dispatch(actions.deleteJourneyPattern(index))
     }
   }
 }

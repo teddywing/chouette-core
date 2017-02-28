@@ -130,6 +130,7 @@
   .th
     padding: 6px 8px
     border-bottom: 2px solid rgba($grey, 0.5)
+    border-top: 1px solid rgba($grey, 0.5)
   .td
     padding: 6px 8px
     border-bottom: 1px solid rgba($grey, 0.5)
@@ -139,22 +140,38 @@
 
     .th
       text-align: right
+      border-top-color: transparent
 
   .t2e-item-list
+    +emptyzone(rgba($grey, 0.075), rgba($grey, 0.015))
+
     > div
-      display: block
+      display: inline-block
+      vertical-align: top
       overflow: auto
       white-space: nowrap
+      border-right: 1px solid rgba($grey, 0.5)
+      max-width: 100%
 
     .t2e-item
       display: inline-block
+      vertical-align: top
       white-space: normal
       border-left: 1px solid rgba($grey, 0.5)
+      background-color: #fff
 
       &:first-child
         border-left: none
+
+      .th
+        > *:first-child
+          padding-right: 30px
 
       .td
         > .has_radio
           top: 50%
           margin-top: -10px
+
+      &.disabled
+        color: rgba($darkgrey, 0.5)
+        background-color: rgba(#fff, 0.5)
