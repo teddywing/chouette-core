@@ -24,7 +24,7 @@ class VehicleJourney extends Component {
 
           {/* Nom */}
           <p className='small'>
-            <strong>Nom: </strong>{this.props.value.comment}
+            <strong>Nom: </strong>{this.props.value.published_journey_name}
           </p>
 
           {/* Id mission */}

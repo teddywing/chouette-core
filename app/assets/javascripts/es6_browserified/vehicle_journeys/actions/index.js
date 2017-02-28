@@ -199,7 +199,10 @@ const actions = {
               time_tables: timeTables,
               vehicle_journey_at_stops: vjasWithDelta,
               deletable: false,
-              selected: false
+              selected: false,
+              published_journey_name: val.published_journey_name || 'non renseigné',
+              published_journey_identifier: val.published_journey_name || 'non renseigné',
+              company_id: val.published_journey_name || 'non renseigné'
             })
           }
           // if(vehicleJourneys.length != window.vehicleJourneysPerPage){

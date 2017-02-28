@@ -45,12 +45,12 @@ class EditVehicleJourney extends Component {
                     <form>
                       <div className='modal-body'>
                         <div className='form-group'>
-                          <label className='control-label is-required'>Nom</label>
+                          <label className='control-label is-required'>Intitulé de la course</label>
                           <input
                             type='text'
-                            ref='comment'
+                            ref='published_journey_name'
                             className='form-control'
-                            defaultValue={this.props.modal.modalProps.vehicleJourney.comment}
+                            defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_name}
                             onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                             required
                             />
@@ -63,12 +63,20 @@ class EditVehicleJourney extends Component {
                         </div>
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                            NUMERO DE TRAIN??
+                          <label className='control-label is-required'>Numéro de train</label>
+                          <input
+                            type='text'
+                            ref='published_journey_identifier'
+                            className='form-control'
+                            defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_identifier}
+                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                            required
+                            />
                           </div>
                         </div>
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                            TRANSPORTEUR??
+                            <p>Transporteur <span> {this.props.modal.modalProps.vehicleJourney.company_id}</span></p>
                           </div>
                         </div>
                       </div>

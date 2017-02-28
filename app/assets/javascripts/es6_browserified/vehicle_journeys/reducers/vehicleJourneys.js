@@ -21,7 +21,7 @@ const vehicleJourney= (state = {}, action) => {
       }
       return {
         journey_pattern: journeyPattern,
-        comment: action.data.comment.value,
+        published_journey_name: action.data.published_journey_name.value,
         objectid: '',
         footnotes: [],
         time_tables: [],
@@ -102,7 +102,8 @@ const vehicleJourneys = (state = [], action) => {
       return state.map((vj, i) => {
         if (vj.selected){
           return Object.assign({}, vj, {
-            comment: action.data.comment.value,
+            published_journey_name: action.data.published_journey_name.value,
+            published_journey_identifier: action.data.published_journey_identifier.value,
           })
         }else{
           return vj
@@ -150,7 +151,7 @@ const vehicleJourneys = (state = [], action) => {
           for (i = 0; i< action.data.duplicate_number.value; i++){
             action.data.additional_time.value *= (i + 1)
             dupeVj = vehicleJourney(vj, action)
-            dupeVj.comment = dupeVj.comment + '-' + i
+            dupeVj.published_journey_name = dupeVj.published_journey_name + '-' + i
             dupeVj.selected = false
             delete dupeVj['objectid']
             dupes.push(dupeVj)

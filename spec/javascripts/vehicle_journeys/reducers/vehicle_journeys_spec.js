@@ -17,13 +17,13 @@ let fakeFootnotes = [{
 }]
 
 let fakeTimeTables = [{
-  comment: 'test 1',
+  published_journey_name: 'test 1',
   objectid: '1'
 },{
-  comment: 'test 2',
+  published_journey_name: 'test 2',
   objectid: '2'
 },{
-  comment: 'test 3',
+  published_journey_name: 'test 3',
   objectid: '3'
 }]
 let fakeVJAS = [{
@@ -86,7 +86,7 @@ describe('vehicleJourneys reducer', () => {
     }]
     let fakeData = {
       journey_pattern_objectid: {value : '1'},
-      comment: {value: 'test'}
+      published_journey_name: {value: 'test'}
     }
     expect(
       vjReducer(state, {
@@ -95,7 +95,7 @@ describe('vehicleJourneys reducer', () => {
       })
     ).toEqual([{
       journey_pattern: {objectid: '1'},
-      comment: 'test',
+      published_journey_name: 'test',
       objectid: '',
       footnotes: [],
       time_tables: [],
@@ -217,7 +217,7 @@ describe('vehicleJourneys reducer', () => {
       additional_time: {value: '5'}
     }
     let newVJ = Object.assign({}, state[0], {vehicle_journey_at_stops: newVJAS, selected: false})
-    newVJ.comment = state[0].comment + '-0'
+    newVJ.published_journey_name = state[0].published_journey_name + '-0'
     delete newVJ['objectid']
     expect(
       vjReducer(state, {
@@ -229,9 +229,10 @@ describe('vehicleJourneys reducer', () => {
 
   it('should handle EDIT_VEHICLEJOURNEY', () => {
     let fakeData = {
-      comment: {value : 'toto'},
+      published_journey_name: {value : 'test'},
+      published_journey_identifier: {value: 'test'}
     }
-    let newVJ = Object.assign({}, state[0], {comment: fakeData.comment.value})
+    let newVJ = Object.assign({}, state[0], {published_journey_name: fakeData.published_journey_name.value, published_journey_identifier: fakeData.published_journey_identifier.value})
     expect(
       vjReducer(state, {
         type: 'EDIT_VEHICLEJOURNEY',

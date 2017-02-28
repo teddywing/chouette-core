@@ -47,7 +47,7 @@ class CreateModal extends Component {
                           <label className='control-label is-required'>Nom de la course</label>
                           <input
                             type='text'
-                            ref='comment'
+                            ref='published_journey_name'
                             className='form-control'
                             onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                             required
