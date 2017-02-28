@@ -58,9 +58,7 @@ class EditVehicleJourney extends Component {
 
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                            <p>Mission
-                              <span> {this.props.modal.modalProps.vehicleJourney.journey_pattern.objectid}</span>
-                            </p>
+                            <p>Mission <span> {this.props.modal.modalProps.vehicleJourney.journey_pattern.objectid} - {this.props.modal.modalProps.vehicleJourney.journey_pattern.name}</span></p>
                           </div>
                         </div>
                         <div className='row'>
