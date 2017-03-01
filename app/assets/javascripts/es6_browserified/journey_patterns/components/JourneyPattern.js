@@ -9,6 +9,17 @@ class JourneyPattern extends Component{
     this.previousCity = undefined
   }
 
+  vehicleJourneyURL(oid) {
+    // oid will be used later, for params in URL...
+
+    let routeURL = window.location.pathname.split('/', 7).join('/')
+    let vjURL = routeURL + '/vehicle_journeys'
+
+    return (
+      <a href={vjURL}>Horaires des courses</a>
+    )
+  }
+
   cityNameChecker(sp) {
     let bool = false
     if(sp.city_name != this.previousCity){
@@ -75,9 +86,7 @@ class JourneyPattern extends Component{
                     Modifier
                   </a>
                 </li>
-                <li>
-                  <a href='#'>Horaires des courses</a>
-                </li>
+                <li>{this.vehicleJourneyURL(this.props.value.object_id)}</li>
                 <li className='delete-action'>
                   <a
                     href='#'
