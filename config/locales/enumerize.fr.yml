@@ -12,6 +12,12 @@ fr:
         successful: Réussi
         failed: Echoué
         canceled: Annulé
+    import_resource:
+      status:
+        new: Nouveau
+        pending: En file d'attente
+        successful: Réussi
+        failed: Echoué
     for_boarding:
       normal: "Montée autorisée"
       forbidden: "Montée interdite"

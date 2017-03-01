@@ -2,6 +2,11 @@ class ImportResource < ActiveRecord::Base
   include AASM
   belongs_to :import
 
+  extend Enumerize
+  enumerize :status, in: %i(new pending successful failed)
+
+  validates_presence_of :name, :type, :reference
+
   aasm column: :status do
     state :new, :initial => true
     state :pending
