@@ -174,13 +174,16 @@ module NewapplicationHelper
   # Actions on select toolbox (for selectables tables)
   def select_toolbox(actions)
     tools = content_tag :ul do
+      dPath = nil
+      dPath = referentials_workbench_path if params[:controller] = 'workbenches'
+
       actions.collect do |action|
         if action == :edit
           actitem = link_to('#', title: t("actions.#{action}")) do
             content_tag :span, '', class: 'fa fa-pencil'
           end
         elsif action == :delete
-          actitem = link_to('#', method: :delete, data: { path: referentials_workbench_path, confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }, title: t("actions.#{action}")) do
+          actitem = link_to('#', method: :delete, data: { path: dPath, confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }, title: t("actions.#{action}")) do
             content_tag :span, '', class: 'fa fa-trash'
           end
         end
