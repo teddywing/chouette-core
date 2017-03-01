@@ -6,6 +6,7 @@ var JourneyPattern = require('./JourneyPattern')
 class JourneyPatterns extends Component{
   constructor(props){
     super(props)
+    this.previousCity = undefined
   }
   componentDidMount() {
     this.props.onLoadFirstPage()
@@ -53,7 +54,26 @@ class JourneyPatterns extends Component{
     }
   }
 
+  cityNameChecker(sp) {
+    let bool = false
+    if(sp.city_name != this.previousCity){
+      bool = true
+      this.previousCity = sp.city_name
+    }
+    return (
+      <div
+        className={(bool) ? 'headlined' : ''}
+        data-headline={(bool) ? sp.city_name : ''}
+        title={sp.city_name + ' (' + sp.zip_code +')'}
+      >
+        <span>{sp.name}</span>
+      </div>
+    )
+  }
+
   render() {
+    this.previousCity = undefined
+
     if(this.props.status.isFetching == true) {
       return (
         <div className="isLoading" style={{marginTop: 80, marginBottom: 80}}>
@@ -78,9 +98,13 @@ class JourneyPatterns extends Component{
                   <div>Code mission</div>
                   <div>Nb arrêts</div>
                 </div>
-                {this.props.stopPointsList.map((sp, i) =>
-                  <div key={i} className='td'>{sp.name}</div>
-                )}
+                {this.props.stopPointsList.map((sp, i) =>{
+                  return (
+                    <div key={i} className='td'>
+                      {this.cityNameChecker(sp)}
+                    </div>
+                  )
+                })}
               </div>
 
               <div className='t2e-item-list w80'>

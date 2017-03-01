@@ -25,7 +25,7 @@ class SaveJourneyPattern extends Component{
             <form className='jp_collection formSubmitr ml-xs' onSubmit={e => {e.preventDefault()}}>
               <button
                 className='btn btn-default'
-                type='submit'
+                type='button'
                 onClick={e => {
                   e.preventDefault()
                   actions.submitJourneyPattern(this.props.dispatch, this.props.journeyPatterns)

@@ -1,84 +1,108 @@
 var React = require('react')
+var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../actions')
 
-const JourneyPattern = (props) => {
-  return (
-    <div className={'t2e-item' + (props.value.deletable ? ' disabled' : '') + (props.value.object_id ? '' : ' to_record')}>
-      {/* Errors */}
-      {(props.value.errors) && (
-        <ul className='alert alert-danger small' style={{paddingLeft: 30}}>
-          {Object.keys(props.value.errors).map(function(key, i) {
-            return (
-              <li key={i} style={{listStyleType: 'disc'}}>
-                <strong>'{key}'</strong> {props.value.errors[key]}
-              </li>
-            )
-          })}
-        </ul>
-      )}
+class JourneyPattern extends Component{
+  constructor(props){
+    super(props)
+    this.previousCity = undefined
+  }
 
-      <div className='th'>
-        <div className='strong mb-xs'>{props.value.object_id ? props.value.object_id : '-'}</div>
-        <div>{props.value.registration_number}</div>
-        <div>{actions.getChecked(props.value.stop_points).length} arrêt(s)</div>
-
-        <div className={props.value.deletable ? 'btn-group disabled' : 'btn-group'}>
-          <div
-            className={props.value.deletable ? 'btn dropdown-toggle disabled' : 'btn dropdown-toggle'}
-            data-toggle='dropdown'
-          >
-            <span className='fa fa-cog'></span>
-          </div>
-          <ul className='dropdown-menu'>
-            <li className={props.value.deletable ? 'disabled' : ''}>
-              <a
-                href='#'
-                onClick={props.onOpenEditModal}
-                data-toggle='modal'
-                data-target='#JourneyPatternModal'
-              >
-                Modifier
-              </a>
-            </li>
-            <li>
-              <a href='#'>Horaires des courses</a>
-            </li>
-            <li className='delete-action'>
-              <a
-                href='#'
-                onClick={(e) => {
-                  e.preventDefault()
-                  props.onDeleteJourneyPattern(props.index)}
-                }
-              >
-                <span className='fa fa-trash'></span>Supprimer
-              </a>
-            </li>
-          </ul>
-        </div>
+  cityNameChecker(sp) {
+    let bool = false
+    if(sp.city_name != this.previousCity){
+      bool = true
+      this.previousCity = sp.city_name
+    }
+    return (
+      <div
+        className={(bool) ? 'headlined' : ''}
+      >
+        <span className='has_radio'>
+          <input
+            onChange = {(e) => this.props.onCheckboxChange(e)}
+            type='checkbox'
+            id={sp.id}
+            checked={sp.checked}
+            disabled={this.props.value.deletable ? 'disabled' : ''}
+            >
+          </input>
+          <span className='radio-label'></span>
+        </span>
       </div>
+    )
+  }
 
-      {props.value.stop_points.map((stopPoint, i) =>
-        <div
-          key={ i }
-          className='td'
-          >
-          <span className='has_radio'>
-            <input
-              onChange = {(e) => props.onCheckboxChange(e)}
-              type='checkbox'
-              id={stopPoint.id}
-              checked={stopPoint.checked}
-              disabled={props.value.deletable ? 'disabled' : ''}
-              >
-            </input>
-            <span className='radio-label'></span>
-          </span>
-        </div>
-      )}
-    </div>
-  )
+  render() {
+    this.previousCity = undefined
+
+    return (
+      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.object_id ? '' : ' to_record')}>
+        {/* Errors */}
+        {(this.props.value.errors) && (
+          <ul className='alert alert-danger small' style={{paddingLeft: 30}}>
+            {Object.keys(this.props.value.errors).map(function(key, i) {
+              return (
+                <li key={i} style={{listStyleType: 'disc'}}>
+                  <strong>'{key}'</strong> {this.props.value.errors[key]}
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+
+          <div className='th'>
+            <div className='strong mb-xs'>{this.props.value.object_id ? this.props.value.object_id : '-'}</div>
+            <div>{this.props.value.registration_number}</div>
+            <div>{actions.getChecked(this.props.value.stop_points).length} arrêt(s)</div>
+
+            <div className={this.props.value.deletable ? 'btn-group disabled' : 'btn-group'}>
+              <div
+                className={this.props.value.deletable ? 'btn dropdown-toggle disabled' : 'btn dropdown-toggle'}
+                data-toggle='dropdown'
+                >
+                <span className='fa fa-cog'></span>
+              </div>
+              <ul className='dropdown-menu'>
+                <li className={this.props.value.deletable ? 'disabled' : ''}>
+                  <a
+                    href='#'
+                    onClick={this.props.onOpenEditModal}
+                    data-toggle='modal'
+                    data-target='#JourneyPatternModal'
+                    >
+                    Modifier
+                  </a>
+                </li>
+                <li>
+                  <a href='#'>Horaires des courses</a>
+                </li>
+                <li className='delete-action'>
+                  <a
+                    href='#'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      this.props.onDeleteJourneyPattern(this.props.index)}
+                    }
+                    >
+                    <span className='fa fa-trash'></span>Supprimer
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {this.props.value.stop_points.map((stopPoint, i) =>{
+              return (
+                <div key={i} className='td'>
+                  {this.cityNameChecker(stopPoint)}
+                </div>
+              )
+            })}
+          </div>
+        )
+  }
 }
 
 JourneyPattern.propTypes = {

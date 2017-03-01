@@ -9,36 +9,48 @@
         position: relative
         padding-left: 25px
 
-        &:before
-          content: ''
-          display: block
-          width: 10px
-          height: 10px
-          background-color: #fff
-          border: 2px solid $blue
-          border-radius: 50%
-          position: absolute
-          z-index: 5
-          left: 5px
-          top: 50%
-          margin-top: -5px
+        > .headlined
+          &:before
+            margin-left: -25px
+            padding-left: 25px
 
-        &:after
-          content: ''
-          display: block
-          width: 4px
-          margin: 0 3px
-          background-color: rgba($grey, 0.5)
-          position: absolute
-          z-index: 3
-          top: 0
-          left: 5px
-          bottom: 0
+        > div > span
+          position: relative
 
-        &:last-child
+          &:before
+            content: ''
+            display: block
+            width: 10px
+            height: 10px
+            background-color: #fff
+            border: 2px solid $blue
+            border-radius: 50%
+            position: absolute
+            z-index: 5
+            left: -20px
+            top: 50%
+            margin-top: -5px
+
+          &:after
+            content: ''
+            display: block
+            width: 4px
+            margin: 0 3px
+            background-color: rgba($grey, 0.5)
+            position: absolute
+            z-index: 3
+            top: -6px
+            left: -20px
+            bottom: -6px
+
+        > .headlined > span
+          &:after
+            top: calc((1.4em + 18px) * -1)
+
+        &:last-child > div > span
           &:after
             bottom: 50%
 
-        &:nth-child(2)
+        &:nth-child(2) > div > span
           &:after
             top: 50%

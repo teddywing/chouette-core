@@ -121,10 +121,12 @@
 //-----------------------------//
 
 .table.table-2entries
-  display: block
+  display: table
+  table-layout: fixed
+  width: 100%
 
   > *
-    display: inline-block
+    display: table-cell
     vertical-align: top
 
   .th
@@ -134,6 +136,24 @@
   .td
     padding: 6px 8px
     border-bottom: 1px solid rgba($grey, 0.5)
+    word-wrap: break-word
+    hyphens: auto
+
+    > div
+      position: relative
+      height: 100%
+
+      &.headlined:before
+        content: ''
+        display: block
+        border-bottom: 1px solid rgba($grey, 0.5)
+        margin: -6px -9px 6px -8px
+        padding: 6px 9px 6px 8px
+        border-right: 1px solid #fff
+        height: calc(1.4em + 12px)
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
 
   .t2e-head
     border-right: 1px solid rgba($grey, 0.5)
@@ -141,6 +161,12 @@
     .th
       text-align: right
       border-top-color: transparent
+
+    .td > .headlined
+      &:before
+        content: attr(data-headline)
+        text-transform: uppercase
+        color: rgba($grey, 0.75)
 
   .t2e-item-list
     +emptyzone(rgba($grey, 0.075), rgba($grey, 0.015))
@@ -152,6 +178,7 @@
       white-space: nowrap
       border-right: 1px solid rgba($grey, 0.5)
       max-width: 100%
+      padding-right: 1px
 
     .t2e-item
       display: inline-block
@@ -168,9 +195,13 @@
           padding-right: 30px
 
       .td
-        > .has_radio
-          top: 50%
-          margin-top: -10px
+        > div
+          > .has_radio
+            top: 50%
+            margin-top: -10px
+
+          &.headlined > .has_radio
+            margin-top: calc((1.4em + 6px) * -1)
 
       &.disabled
         color: rgba($darkgrey, 0.5)
