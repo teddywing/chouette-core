@@ -175,11 +175,12 @@ module NewapplicationHelper
   def select_toolbox(actions)
     tools = content_tag :ul do
       actions.collect do |action|
-
-        actitem = link_to '#', title: t("actions.#{action}") do
-          if action == :edit
+        if action == :edit
+          actitem = link_to('#', title: t("actions.#{action}")) do
             content_tag :span, '', class: 'fa fa-pencil'
-          elsif action == :delete
+          end
+        elsif action == :delete
+          actitem = link_to('#', method: :delete, data: { path: referentials_workbench_path, confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }, title: t("actions.#{action}")) do
             content_tag :span, '', class: 'fa fa-trash'
           end
         end
