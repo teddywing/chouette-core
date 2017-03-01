@@ -47,15 +47,29 @@ module Chouette
       @presenter ||= ::VehicleJourneyPresenter.new( self)
     end
 
+    def vehicle_journey_at_stops_matrix
+      fill = route.stop_points.count - self.vehicle_journey_at_stops.count
+      at_stops = self.vehicle_journey_at_stops.to_a.dup
+      fill.times do
+        at_stops << Chouette::VehicleJourneyAtStop.new
+      end
+      at_stops
+    end
+
     def update_vehicle_journey_at_stops_state state
       state.each do |vjas|
-        stop = vehicle_journey_at_stops.find(vjas['id'])
-        ['arrival_time', 'departure_time'].each do |field|
-          stop.assign_attributes({
-            field.to_sym => stop.send(field).change({ hour: vjas[field]['hour'], min: vjas[field]['minute'] })
-          })
+        next if vjas["dummy"]
+        stop = vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
+        if stop
+          stop.arrival_time   ||= Time.now.beginning_of_day
+          stop.departure_time ||= Time.now.beginning_of_day
+          ['arrival_time', 'departure_time'].each do |field|
+            stop.assign_attributes({
+              field.to_sym => stop.send(field).change({ hour: vjas[field]['hour'], min: vjas[field]['minute'] })
+            })
+          end
+          stop.save
         end
-        stop.save
       end
     end
 

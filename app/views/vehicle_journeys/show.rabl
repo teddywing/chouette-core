@@ -1,7 +1,7 @@
 object @vehicle_journey
 
 [ :objectid, :published_journey_name, :published_journey_identifier, :company_id].each do |attr|
-  attributes attr, :unless => lambda { |m| m.send( attr)}
+  attributes attr, :unless => lambda { |m| m.send( attr).nil?}
 end
 
 child(:journey_pattern) do |journey_pattern|
@@ -19,12 +19,18 @@ child :footnotes, :object_root => false do |footnotes|
   attributes :id, :code, :label
 end
 
-child :vehicle_journey_at_stops, :object_root => false do |vehicle_stops|
+child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops|
   node do |vehicle_stop|
-    node(:stop_area_object_id) { vehicle_stop.stop_point.stop_area.objectid }
-    node(:stop_area_name) {vehicle_stop.stop_point.stop_area.name}
+    node(:dummy) { !vehicle_stop.stop_point_id? }
+    node(:stop_area_object_id) do
+      vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.objectid : nil
+    end
+    node(:stop_area_name) do
+      vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.name : nil
+    end
+
     [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
-      node(att) { vehicle_stop.send(att) } unless vehicle_stop.send(att).nil?
+      node(att) { vehicle_stop.send(att) ? vehicle_stop.send(att) : nil  }
     end
 
     [:arrival_time, :departure_time].map do |att|

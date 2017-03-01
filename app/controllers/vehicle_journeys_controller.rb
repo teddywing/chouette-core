@@ -35,7 +35,6 @@ class VehicleJourneysController < ChouetteController
       if collection.out_of_bounds?
         redirect_to params.merge(:page => 1)
       end
-      @footnotes = route.line.footnotes.to_json
       build_breadcrumb :index
     end
   end
@@ -53,6 +52,7 @@ class VehicleJourneysController < ChouetteController
 
   def collection
     unless @vehicle_journeys
+      @footnotes = route.line.footnotes.to_json
       @vehicle_filter = VehicleFilter.new adapted_params
       @vehicle_filter.journey_category_model = resource_class.model_name.route_key
       @q = @vehicle_filter.vehicle_journeys.search @vehicle_filter.filtered_params
