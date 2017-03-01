@@ -15,6 +15,11 @@ class WorkbenchesController < BreadcrumbController
     end
   end
 
+  def delete_referentials
+    ap params
+    ap '-----------------'
+  end
+
   private
   def sort_column
     Workbench.find(params[:id]).referentials.include?(params[:sort]) ? params[:sort] : 'name'
