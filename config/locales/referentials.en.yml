@@ -107,6 +107,8 @@ en:
             end: 'Period end'
 
   notice:
+    referentials:
+      deleted: "Datasets has been successfully destroyed"
     referential:
       archived: "The data space has been successfully archived"
       unarchived: "The data space has been successfully unarchived"

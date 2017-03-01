@@ -16,8 +16,11 @@ class WorkbenchesController < BreadcrumbController
   end
 
   def delete_referentials
-    ap params
-    ap '-----------------'
+    referentials = resource.referentials.where(id: params[:referentials])
+    if referentials.destroy_all
+      flash[:notice] = t('notice.referentials.deleted')
+    end
+    redirect_to resource
   end
 
   private
