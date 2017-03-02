@@ -1,7 +1,7 @@
 object @journey_pattern
 extends "api/v1/trident_objects/show"
 
-[:name, :published_name, :registration_number, :comment].each do |attr|
+[:id, :name, :published_name, :registration_number, :comment].each do |attr|
   attributes attr, :unless => lambda { |m| m.send( attr).nil?}
 end
 

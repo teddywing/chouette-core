@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
+var MissionSelect2 = require('./MissionSelect2')
 
 class CreateModal extends Component {
   constructor(props) {
@@ -9,8 +10,9 @@ class CreateModal extends Component {
   }
 
   handleSubmit() {
-    if(actions.validateFields(this.refs) == true) {
-      this.props.onAddVehicleJourney(this.refs)
+    if(actions.validateFields(this.refs) == true && this.props.modal.modalProps.selectedJPModal) {
+      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal)
+      this.props.onModalClose()
       $('#NewVehicleJourneyModal').modal('hide')
     }
   }
@@ -57,13 +59,7 @@ class CreateModal extends Component {
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                             <div className='form-group'>
                               <label className='control-label is-required'>ID de la mission</label>
-                              <input
-                                type='text'
-                                ref='journey_pattern_objectid'
-                                className='form-control'
-                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                                required
-                                />
+                              <MissionSelect2 onSelectJPModal={this.props.onSelectJPModal} />
                             </div>
                           </div>
                         </div>
@@ -104,7 +100,8 @@ CreateModal.propTypes = {
   status: PropTypes.object.isRequired,
   onOpenCreateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  onAddVehicleJourney: PropTypes.func.isRequired
+  onAddVehicleJourney: PropTypes.func.isRequired,
+  onSelectJPModal: PropTypes.func.isRequired
 }
 
 module.exports = CreateModal

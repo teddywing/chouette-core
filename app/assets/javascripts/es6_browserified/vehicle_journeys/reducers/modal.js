@@ -78,6 +78,9 @@ const modal = (state = {}, action) => {
         modalProps: {},
         confirmModal: {}
       }
+    case 'SELECT_JP_CREATE_MODAL':
+      newModalProps = {selectedJPModal : action.selectedItem}
+      return Object.assign({}, state, {modalProps: newModalProps})
     case 'SHIFT_VEHICLEJOURNEY_MODAL':
       return {
         type: 'shift',

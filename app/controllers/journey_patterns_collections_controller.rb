@@ -10,7 +10,7 @@ class JourneyPatternsCollectionsController < ChouetteController
   alias_method :route, :parent
 
   def show
-    @q = route.journey_patterns.includes(:stop_points)
+    @q = route.journey_patterns.search(params[:q]).result(distinct: true).includes(:stop_points)
     @journey_patterns ||= @q.paginate(:page => params[:page]).order(:name)
   end
 

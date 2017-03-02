@@ -16,11 +16,14 @@ const mapDispatchToProps = (dispatch) => {
     onModalClose: () =>{
       dispatch(actions.closeModal())
     },
-    onAddVehicleJourney: (data) =>{
-      dispatch(actions.addVehicleJourney(data))
+    onAddVehicleJourney: (data, selectedJourneyPattern) =>{
+      dispatch(actions.addVehicleJourney(data, selectedJourneyPattern))
     },
     onOpenCreateModal: () =>{
       dispatch(actions.openCreateModal())
+    },
+    onSelectJPModal: (e) =>{
+      dispatch(actions.selectJPCreateModal(e.params.data))
     }
   }
 }

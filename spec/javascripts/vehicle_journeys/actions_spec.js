@@ -37,14 +37,36 @@ describe('when clicking on add button', () => {
     expect(actions.openCreateModal()).toEqual(expectedAction)
   })
 })
+describe('when using select2 to pick a journey pattern', () => {
+  it('should create an action to select a journey pattern inside modal', () => {
+    let selectedJP = {
+      id: 1,
+      object_id: 2,
+      name: 'test',
+      published_name: 'test'
+    }
+    const expectedAction = {
+      type: 'SELECT_JP_CREATE_MODAL',
+      selectedItem:{
+        id: selectedJP.id,
+        objectid: selectedJP.object_id,
+        name: selectedJP.name,
+        published_name: selectedJP.published_name
+      }
+    }
+    expect(actions.selectJPCreateModal(selectedJP)).toEqual(expectedAction)
+  })
+})
 describe('when clicking on validate button inside create modal', () => {
   it('should create an action to create a new vehicle journey', () => {
     const data = {}
+    const selectedJourneyPattern = {}
     const expectedAction = {
       type: 'ADD_VEHICLEJOURNEY',
-      data
+      data,
+      selectedJourneyPattern
     }
-    expect(actions.addVehicleJourney(data)).toEqual(expectedAction)
+    expect(actions.addVehicleJourney(data, selectedJourneyPattern)).toEqual(expectedAction)
   })
 })
 describe('when previous navigation button is clicked', () => {

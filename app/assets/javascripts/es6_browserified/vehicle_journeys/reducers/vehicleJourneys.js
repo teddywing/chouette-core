@@ -16,11 +16,8 @@ const vehicleJourney= (state = {}, action) => {
         vj.delta = 0
         delete vj['stop_area_object_id']
       })
-      let journeyPattern = {
-        objectid: action.data.journey_pattern_objectid.value
-      }
       return {
-        journey_pattern: journeyPattern,
+        journey_pattern: action.selectedJourneyPattern,
         published_journey_name: action.data.published_journey_name.value,
         objectid: '',
         footnotes: [],

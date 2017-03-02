@@ -42,6 +42,16 @@ describe('modal reducer', () => {
     ).toEqual(Object.assign({}, state, { type: 'create' }))
   })
 
+  it('should handle SELECT_JP_CREATE_MODAL', () => {
+    let newModalProps = {selectedJPModal : {id: 1}}
+    expect(
+      modalReducer(state, {
+        type: 'SELECT_JP_CREATE_MODAL',
+        selectedItem: {id: 1}
+      })
+    ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
+  })
+
   it('should handle CLOSE_MODAL', () => {
     expect(
       modalReducer(state, {

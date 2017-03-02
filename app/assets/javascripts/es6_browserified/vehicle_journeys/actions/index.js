@@ -36,6 +36,15 @@ const actions = {
   openCreateModal : () => ({
     type : 'CREATE_VEHICLEJOURNEY_MODAL'
   }),
+  selectJPCreateModal : (selectedJP) => ({
+    type : 'SELECT_JP_CREATE_MODAL',
+    selectedItem: {
+      id: selectedJP.id,
+      objectid: selectedJP.object_id,
+      name: selectedJP.name,
+      published_name: selectedJP.published_name
+    }
+  }),
   openEditModal : (vehicleJourney) => ({
     type : 'EDIT_VEHICLEJOURNEY_MODAL',
     vehicleJourney
@@ -74,9 +83,10 @@ const actions = {
   cancelSelection : () => ({
     type: 'CANCEL_SELECTION'
   }),
-  addVehicleJourney : (data) => ({
+  addVehicleJourney : (data, selectedJourneyPattern) => ({
     type: 'ADD_VEHICLEJOURNEY',
-    data
+    data,
+    selectedJourneyPattern
   }),
   editVehicleJourney : (data) => ({
     type: 'EDIT_VEHICLEJOURNEY',

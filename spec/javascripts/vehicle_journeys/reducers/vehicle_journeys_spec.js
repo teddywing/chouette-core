@@ -85,16 +85,17 @@ describe('vehicleJourneys reducer', () => {
       }
     }]
     let fakeData = {
-      journey_pattern_objectid: {value : '1'},
       published_journey_name: {value: 'test'}
     }
+    let fakeSelectedJourneyPattern = { id: "1"}
     expect(
       vjReducer(state, {
         type: 'ADD_VEHICLEJOURNEY',
-        data: fakeData
+        data: fakeData,
+        selectedJourneyPattern: fakeSelectedJourneyPattern
       })
     ).toEqual([{
-      journey_pattern: {objectid: '1'},
+      journey_pattern: fakeSelectedJourneyPattern,
       published_journey_name: 'test',
       objectid: '',
       footnotes: [],
