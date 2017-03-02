@@ -189,6 +189,7 @@ const actions = {
               })
             }
             let vjasWithDelta = val.vehicle_journey_at_stops.map((vjas, i) => {
+              actions.fillEmptyFields(vjas)
               return actions.getDelta(vjas)
             })
             vehicleJourneys.push({
@@ -258,10 +259,17 @@ const actions = {
       return d.toString()
     }
   },
+  fillEmptyFields: (vjas) => {
+    if (vjas.departure_time.hour == null) vjas.departure_time.hour = '00'
+    if (vjas.departure_time.minute == null) vjas.departure_time.minute = '00'
+    if (vjas.arrival_time.hour == null) vjas.arrival_time.hour = '00'
+    if (vjas.arrival_time.minute == null) vjas.arrival_time.minute = '00'
+    return vjas
+  },
   getDelta: (vjas) => {
     let delta = 0
     if (vjas.departure_time.hour != '' && vjas.departure_time.minute != '' && vjas.arrival_time.hour != '' && vjas.departure_time.minute != ''){
-      delta = (vjas.departure_time.hour - vjas.arrival_time.hour) * 60 + (vjas.departure_time.minute - vjas.arrival_time.minute)
+      delta = (parseInt(vjas.departure_time.hour) - parseInt(vjas.arrival_time.hour)) * 60 + (parseInt(vjas.departure_time.minute) - parseInt(vjas.arrival_time.minute))
     }
     vjas.delta = delta
     return vjas
