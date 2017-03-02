@@ -58,11 +58,17 @@ input
 // Search bar
 .search_bar
   position: relative
+  background-color: rgba($grey, 0.15)
+  padding: 7px 15px
   width: 100%
+  padding-right: 60%
 
   > .form-control
+    vertical-align: top
+    border-color: rgba($grey, 0.3)
     border-radius: 4px
-    padding-right: 31px
+    height: 31px
+    padding: 4px 31px 5px 12px
 
     &:first-child, &:last-child
       border-radius: 4px
@@ -71,13 +77,13 @@ input
     position: absolute
     top: 0
     bottom: 0
-    right: 0
+    right: 60%
     z-index: 2
     width: auto
 
     > .btn
       margin: 0
-      padding: 6px 9px
+      padding: 4px 9px 5px 9px
       border: none
       border-radius: 0
       background-color: transparent
@@ -247,10 +253,13 @@ $cbx-size: 20px
 .form.form-filter
   display: block
   position: relative
-  background-color: lighten($blue, 58%)
+  background-color: rgba($grey, 0.15)
   padding-right: 167px
   min-height: 42px
-  border-bottom: 2px solid $darkgrey
+  border-top: 1px solid #fff
+
+  &:first-child
+    border-top: none
 
   > *
     display: inline-block
@@ -265,7 +274,7 @@ $cbx-size: 20px
 
     .control-label
       font-weight: 700
-      color: $blue
+      color: $darkgrey
       line-height: 34px
       margin: 0
       padding: 0 10px 0 0
@@ -310,7 +319,6 @@ $cbx-size: 20px
 
     &.togglable
       padding: 7px 44px 7px 15px
-      // padding-right: 44px
       cursor: pointer
 
       > .control-label
@@ -324,7 +332,7 @@ $cbx-size: 20px
         width: 100%
 
       &:hover, &.open
-        background-color: rgba($blue, 0.4)
+        background-color: $blue
         color: #fff
 
         > .control-label, &:before
