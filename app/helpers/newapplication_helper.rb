@@ -161,8 +161,7 @@ module NewapplicationHelper
 
   def sortable_columns collection, key
     direction = (key == params[:sort] && params[:direction] == 'desc') ? 'asc' : 'desc'
-
-    link_to({sort: key, direction: direction}) do
+    link_to(params.merge({direction: direction, sort: key})) do
       pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
       pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
 
