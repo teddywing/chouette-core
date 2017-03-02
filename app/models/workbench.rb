@@ -20,7 +20,7 @@ class Workbench < ActiveRecord::Base
     if line_ids.empty?
       Referential.none
     else
-      Referential.joins(:metadatas).where(['referential_metadata.line_ids && ARRAY[?]', line_ids]).ready
+      Referential.joins(:metadatas).where(['referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids]).ready
     end
   end
 
