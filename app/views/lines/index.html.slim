@@ -13,7 +13,7 @@
         .col-lg-5.col-md-6.col-sm-6.col-xs-8
           = search_form_for @q, url: line_referential_lines_path(@line_referential), html: {method: :get} do |f|
             .input-group.search_bar
-              = f.search_field :name_or_number_or_objectid_cont, placeholder: t('lines.index.name_or_number_or_objectid'), class: 'form-control'
+              = f.search_field :name_or_objectid_cont, placeholder: t('lines.index.name_or_objectid'), class: 'form-control'
 
               span.input-group-btn
                 button.btn.btn-default#search-btn type='submit'
