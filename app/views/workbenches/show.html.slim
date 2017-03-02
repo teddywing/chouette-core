@@ -13,11 +13,11 @@
 .page_content
   .container-fluid
     - if params[:q].present? or @wbench_refs.any?
-      .row.mb-md
+      .row.mb-sm
         .col-lg-12.text-right
           = new_pagination @wbench_refs
 
-      .row.mb-sm
+      .row
         .col-lg-12
           = search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder do |f|
             .input-group.search_bar
@@ -41,7 +41,7 @@
               @wbench_refs.human_attribute_name(:published_at) => ''},
             [:show, :edit, :archive, :unarchive, :delete],
             [:delete],
-            'table'
+            'table has-filter has-search'
 
           = new_pagination @wbench_refs, 'pull-right'
 

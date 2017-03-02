@@ -46,7 +46,11 @@
       .col-lg-12
         - if params[:q].present? or @routes.any?
           .row.mb-sm
-            .col-lg-5.col-md-6.col-sm-6.col-xs-8
+            .col-lg-12.text-right
+              = new_pagination @routes
+
+          .row
+            .col-lg-12
               = search_form_for @q, url: referential_line_path(@referential, @line) do |f|
                 .input-group.search_bar
                   = f.search_field :name_cont, class: 'form-control', placeholder: "Indiquez un nom d'itinéraire..."
@@ -55,12 +59,10 @@
                     button.btn.btn-default type='submit'
                       span.fa.fa-search
 
-            .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
-              = new_pagination @routes
 
         - if @routes.any?
           .row
-            .col-lg-12          
+            .col-lg-12
               = table_builder @routes,
                 { @routes.human_attribute_name(:number) => 'number', @routes.human_attribute_name(:name) => 'name',
                 'Arrêt de départ' => Proc.new{|r| r.try(:stop_points).first.try(:stop_area).try(:name)},
@@ -68,7 +70,7 @@
                 'Nb arrêts' => Proc.new{|r| r.try(:stop_points).count}, 'Nb missions' => Proc.new{|r| r.try(:journey_patterns).count} },
                 [:show, :edit, :delete],
                 [],
-                'table'
+                'table has-search'
 
               = new_pagination @routes, 'pull-right'
 

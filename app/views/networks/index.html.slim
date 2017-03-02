@@ -10,7 +10,11 @@
   .container-fluid
     - if params[:q].present? or @networks.any?
       .row.mb-sm
-        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+        .col-lg-12.text-right
+          = new_pagination @networks
+
+      .row
+        .col-lg-12
           = search_form_for @q, url: line_referential_networks_path(@line_referential), html: {method: :get} do |f|
             .input-group.search_bar
               = f.search_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
@@ -19,9 +23,6 @@
                 button.btn.btn-default#search-btn type='submit'
                   span.fa.fa-search
 
-        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
-          = new_pagination @networks
-
     - if @networks.any?
       .row
         .col-lg-12
@@ -29,7 +30,7 @@
             { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @networks.human_attribute_name(:name) => 'name' },
             [:show, :edit, :delete],
             [],
-            'table'
+            'table has-search'
 
           = new_pagination @networks, 'pull-right'
 
