@@ -21,6 +21,6 @@ class AutocompleteTimeTablesController < InheritedResources::Base
   end
 
   def collection
-    @time_tables = select_time_tables.search(params[:q]).result
+    @time_tables = select_time_tables.search(params[:q]).result.paginate(page: params[:page])
   end
 end
