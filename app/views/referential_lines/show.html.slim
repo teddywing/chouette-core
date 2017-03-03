@@ -31,17 +31,12 @@
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
-        p = 'toto'
-        ul
-          - @line.secondary_companies.each do |sc|
-            li = sc.inspect
-
         = definition_list t('metadatas'),
           {  'ID Codif' => @line.objectid.local_id,
              'Activé' => (@line.deactivated? ? t('false') : t('true')),
              @line.human_attribute_name(:network) => (@line.network.nil? ? t('lines.index.unset') : @line.network.name),
              @line.human_attribute_name(:company) => (@line.company.nil? ? t('lines.index.unset') : @line.company.name),
-            #  'Transporteur(s) secondaire(s)' => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.pluck(:name)),
+             'Transporteur(s) secondaire(s)' => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.collect(&:name).join(', ')),
              'Nom court' => @line.number,
              'Code public' => (@line.registration_number ? @line.registration_number : '-'),
              @line.human_attribute_name(:transport_mode) => (@line.transport_mode ? t("enumerize.line.transport_mode.#{@line.transport_mode}") : '-'),
