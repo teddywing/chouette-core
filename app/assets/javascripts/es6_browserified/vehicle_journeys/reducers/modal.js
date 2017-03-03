@@ -1,3 +1,4 @@
+var _ = require('lodash')
 let vehicleJourneysModal, newModalProps
 const modal = (state = {}, action) => {
   switch (action.type) {
@@ -40,7 +41,7 @@ const modal = (state = {}, action) => {
       let timetable = {}
       vehicleJourneysModal.map((vj, i) => {
         vj.time_tables.map((tt, j) =>{
-          if(!isInArray(tt, uniqTimetables)){
+          if(!(_.find(uniqTimetables, tt))){
             uniqTimetables.push(tt)
           }
         })
@@ -53,6 +54,28 @@ const modal = (state = {}, action) => {
         },
         confirmModal: {}
       }
+    case 'SELECT_TT_CALENDAR_MODAL':
+      newModalProps = Object.assign({}, state.modalProps, {selectedTimetable : action.selectedItem})
+      return Object.assign({}, state, {modalProps: newModalProps})
+    case 'ADD_SELECTED_TIMETABLE':
+      if(state.modalProps.selectedTimetable){
+        newModalProps = JSON.parse(JSON.stringify(state.modalProps))
+        newModalProps.vehicleJourneys.map((vj) => {
+          let isPresent = false
+          vj.time_tables.forEach((tt) =>{
+            if (_.isEqual(newModalProps.selectedTimetable.objectid, tt.objectid)){
+              isPresent = true
+            }
+          })
+          if (!isPresent){
+            vj.time_tables.push(newModalProps.selectedTimetable)
+          }
+        })
+        if (!_.find(newModalProps.timetables, newModalProps.selectedTimetable)){
+          newModalProps.timetables.push(newModalProps.selectedTimetable)
+        }
+        return Object.assign({}, state, {modalProps: newModalProps})
+      }
     case 'DELETE_CALENDAR_MODAL':
       newModalProps = JSON.parse(JSON.stringify(state.modalProps))
       let timetablesModal = state.modalProps.timetables.slice(0)
@@ -64,7 +87,7 @@ const modal = (state = {}, action) => {
       vehicleJourneysModal = state.modalProps.vehicleJourneys.slice(0)
       vehicleJourneysModal.map((vj) =>{
         vj.time_tables.map((tt, i) =>{
-          if (tt == action.timetable){
+          if (_.isEqual(tt, action.timetable)){
             vj.time_tables.splice(i, 1)
           }
         })
@@ -102,10 +125,6 @@ const modal = (state = {}, action) => {
     default:
       return state
   }
-}
-
-function isInArray(value, array) {
-  return array.indexOf(value) > -1;
 }
 
 module.exports = modal

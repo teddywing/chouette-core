@@ -7,6 +7,7 @@
     "babelify": "7.3.0",
     "browserify": "13.1.1",
     "browserify-incremental": "3.1.1",
+    "lodash": "^4.17.4",
     "react": "15.3.2",
     "react-dom": "15.3.2",
     "react-redux": "4.4.5",

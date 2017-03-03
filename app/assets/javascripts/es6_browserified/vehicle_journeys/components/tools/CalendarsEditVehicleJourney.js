@@ -64,6 +64,7 @@ class CalendarsEditVehicleJourney extends Component {
                               <label className='control-label is-required'>Ajouter un calendrier</label>
                               <TimetableSelect2 onSelect2Timetable={this.props.onSelect2Timetable} />
                               <button
+                                onClick={this.props.onAddSelectedTimetable}
                                 type='button'
                               ><span className='fa fa-times'>Ajouter</span>
                               </button>
@@ -109,6 +110,7 @@ CalendarsEditVehicleJourney.propTypes = {
   onCalendarsEditVehicleJourney: PropTypes.func.isRequired,
   onDeleteCalendarModal: PropTypes.func.isRequired,
   onSelect2Timetable: PropTypes.func.isRequired,
+  onAddSelectedTimetable: PropTypes.func.isRequired,
   filters: PropTypes.object.isRequired
 }
 

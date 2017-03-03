@@ -40,7 +40,7 @@ class BSelect4 extends React.Component{
                   item => Object.assign(
                     {},
                     item,
-                    {text: item.published_name, complete_jp: item}
+                    {text: item.comment}
                   )
                 )
               };

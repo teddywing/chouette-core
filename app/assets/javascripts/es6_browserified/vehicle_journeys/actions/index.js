@@ -63,11 +63,15 @@ const actions = {
     vehicleJourneys
   }),
   selectTTCalendarsModal: (selectedTT) =>({
-    type: 'SEELCT_TT_CALENDAR_MODAL',
+    type: 'SELECT_TT_CALENDAR_MODAL',
     selectedItem:{
-      id: selectedTT.id
-      // TODO add relevant attributes
+      id: selectedTT.id,
+      comment: selectedTT.comment,
+      objectid: selectedTT.objectid
     }
+  }),
+  addSelectedTimetable: () => ({
+    type: 'ADD_SELECTED_TIMETABLE'
   }),
   deleteCalendarModal : (timetable) => ({
     type : 'DELETE_CALENDAR_MODAL',
@@ -202,7 +206,8 @@ const actions = {
             for (tt of val.time_tables){
               timeTables.push({
                 objectid: tt.objectid,
-                comment: tt.comment
+                comment: tt.comment,
+                id: tt.id
               })
             }
             let vjasWithDelta = val.vehicle_journey_at_stops.map((vjas, i) => {

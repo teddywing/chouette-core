@@ -105,14 +105,45 @@ describe('modal reducer', () => {
     ).toEqual(Object.assign({}, state, {type: 'calendars_edit', modalProps: modalPropsResult}))
   })
 
+  it('should handle SELECT_TT_CALENDAR_MODAL', () => {
+    let newModalProps = {selectedTimetable : {id: 1}}
+    expect(
+      modalReducer(state, {
+        type: 'SELECT_TT_CALENDAR_MODAL',
+        selectedItem: {id: 1}
+      })
+    ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
+  })
+
+  it('should handle ADD_SELECTED_TIMETABLE', () => {
+    let fakeTimetables = [{'test': 'test'}, {'test 2': 'test 2'}, {'add': 'add'}]
+    let newTimeTables = [{'test': 'test'}, {'test 2': 'test 2'}, {'add': 'add'}]
+    let fakeVehicleJourneys= [{time_tables: fakeTimetables}, {time_tables: newTimeTables}]
+    state.modalProps.vehicleJourneys = fakeVehicleJourneys
+    state.modalProps.timetables = fakeTimetables
+    state.modalProps.selectedTimetable = {'add': 'add'}
+    let newState = {
+      type: '',
+      modalProps:{
+        vehicleJourneys: [{time_tables: newTimeTables},{time_tables: newTimeTables}],
+        timetables: [{'test': 'test'},{'test 2': 'test 2'},{'add': 'add'}],
+        selectedTimetable: {'add': 'add'}
+      },
+      confirmModal: {}
+    }
+    expect(
+      modalReducer(state, {
+        type: 'ADD_SELECTED_TIMETABLE',
+      })
+    ).toEqual(newState)
+  })
+
   it('should handle DELETE_CALENDAR_MODAL', () => {
-    // TODO spec more for vehiclejourneys
     let deletableTimetable = {'delete': 'delete'}
     let fakeTimetables = [{'test': 'test'}, {'test 2': 'test 2'}, deletableTimetable]
     let newTimeTables = [{'test': 'test'}, {'test 2': 'test 2'}]
     let fakeVehicleJourneys= [{time_tables: fakeTimetables}, {time_tables: fakeTimetables}]
-    state.modalProps = {vehicleJourneys : fakeVehicleJourneys, timetables: fakeTimetables }
-    let footnote = {}
+    state.modalProps = Object.assign({}, state.modalProps,{vehicleJourneys : fakeVehicleJourneys, timetables: fakeTimetables })
     let newState = {
       // for the sake of the test, no need to specify the type
       type: '',

@@ -244,3 +244,29 @@ describe('when clicking on validate button inside calendars modal', () => {
     expect(actions.editVehicleJourneyCalendars(vehicleJourneys)).toEqual(expectedAction)
   })
 })
+describe('when clicking on add button inside calendars modal', () => {
+  it('should create an action to add the selected timetable to preselected vjs', () => {
+    const expectedAction = {
+      type: 'ADD_SELECTED_TIMETABLE',
+    }
+    expect(actions.addSelectedTimetable()).toEqual(expectedAction)
+  })
+})
+describe('when using select2 to pick a timetable', () => {
+  it('should create an action to select a timetable inside modal', () => {
+    let selectedTT = {
+      id: 1,
+      objectid: 2,
+      comment: 'test',
+    }
+    const expectedAction = {
+      type: 'SELECT_TT_CALENDAR_MODAL',
+      selectedItem:{
+        id: selectedTT.id,
+        objectid: selectedTT.objectid,
+        comment: selectedTT.comment,
+      }
+    }
+    expect(actions.selectTTCalendarsModal(selectedTT)).toEqual(expectedAction)
+  })
+})
