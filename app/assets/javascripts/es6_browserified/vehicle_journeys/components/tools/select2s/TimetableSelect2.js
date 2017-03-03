@@ -4,7 +4,7 @@ var Select2 = require('react-select2')
 
 // get JSON full path
 var origin = window.location.origin
-var path = window.location.pathname.split('/', 7).join('/')
+var path = window.location.pathname.split('/', 3).join('/')
 
 
 class BSelect4 extends React.Component{
@@ -25,12 +25,12 @@ class BSelect4 extends React.Component{
           theme: 'bootstrap',
           width: '100%',
           ajax: {
-            url: origin + path + '/journey_patterns_collection.json',
+            url: origin + path + '/autocomplete_time_tables.json',
             dataType: 'json',
             delay: '500',
             data: function(params) {
               return {
-                q: {published_name_cont: params.term},
+                q: {comment_cont: params.term},
               };
             },
             processResults: function(data, params) {
