@@ -31,13 +31,19 @@
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        p = 'toto'
+        ul
+          - @line.secondary_companies.each do |sc|
+            li = sc.inspect
+
         = definition_list t('metadatas'),
-          { 'Activé' => (@line.deactivated? ? t('false') : t('true')),
+          {  'ID Codif' => @line.objectid.local_id,
+             'Activé' => (@line.deactivated? ? t('false') : t('true')),
              @line.human_attribute_name(:network) => (@line.network.nil? ? t('lines.index.unset') : @line.network.name),
              @line.human_attribute_name(:company) => (@line.company.nil? ? t('lines.index.unset') : @line.company.name),
-             @line.human_attribute_name(:number) => @line.number,
-             @line.human_attribute_name(:published_name) => @line.published_name,
-             @line.human_attribute_name(:registration_number) => @line.registration_number,
+            #  'Transporteur(s) secondaire(s)' => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.pluck(:name)),
+             'Nom court' => @line.number,
+             'Code public' => (@line.registration_number ? @line.registration_number : '-'),
              @line.human_attribute_name(:transport_mode) => (@line.transport_mode ? t("enumerize.line.transport_mode.#{@line.transport_mode}") : '-'),
              @line.human_attribute_name(:transport_submode) => (@line.transport_submode ? t("enumerize.line.transport_submode.#{@line.transport_submode}") : '-'),
              @line.human_attribute_name(:url) => (@line.url ? @line.url : '-') }
@@ -64,10 +70,13 @@
           .row
             .col-lg-12
               = table_builder @routes,
-                { @routes.human_attribute_name(:number) => 'number', @routes.human_attribute_name(:name) => 'name',
-                'Arrêt de départ' => Proc.new{|r| r.try(:stop_points).first.try(:stop_area).try(:name)},
-                "Arrêt d'arrivée" => Proc.new{|r| r.try(:stop_points).last.try(:stop_area).try(:name)},
-                'Nb arrêts' => Proc.new{|r| r.try(:stop_points).count}, 'Nb missions' => Proc.new{|r| r.try(:journey_patterns).count} },
+                { 'OiD' => Proc.new { |n| n.objectid.local_id },
+                  @routes.human_attribute_name(:name) => 'name',
+                  @routes.human_attribute_name(:published_name) => 'published_name',
+                  @routes.human_attribute_name(:wayback) => 'wayback_text',
+                  'Arrêt de départ' => Proc.new{|r| r.try(:stop_points).first.try(:stop_area).try(:name)},
+                  "Arrêt d'arrivée" => Proc.new{|r| r.try(:stop_points).last.try(:stop_area).try(:name)},
+                  'Nb arrêts' => Proc.new{|r| r.try(:stop_points).count}, 'Nb missions' => Proc.new{|r| r.try(:journey_patterns).count} },
                 [:show, :edit, :delete],
                 [],
                 'table has-search'
