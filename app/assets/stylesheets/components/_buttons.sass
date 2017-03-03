@@ -63,6 +63,9 @@ table, .table
     text-align: center
     padding: 0
 
+  tbody > tr > td.actions,
+  &.table-2entries .t2e-item > .th
+
     > .btn-group
       height: 100%
       width: 100%
@@ -78,6 +81,16 @@ table, .table
         background-color: rgba($blue, 0.5)
         color: #fff
         transition: 0.2s
+
+      &.disabled
+        cursor: not-allowed
+
+        &, &:hover, &:focus
+          color: rgba($blue, 0.5)
+          background-color: rgba($blue, 0)
+
+          > .btn.disabled
+            opacity: 1
 
       &.open .dropdown-toggle
         box-shadow: none
@@ -121,3 +134,23 @@ table, .table
 
             .fa:first-child
               margin-right: 0.5em
+
+  &.table-2entries .t2e-item
+    > .th
+      position: relative
+
+      > .btn-group
+        width: auto
+        height: auto
+        position: absolute
+        right: 0
+        top: 0
+
+        .dropdown-menu
+          left: 0
+          right: auto
+
+    &:last-child
+      > .th > .btn-group .dropdown-menu
+        left: auto
+        right: 0

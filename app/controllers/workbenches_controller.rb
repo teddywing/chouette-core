@@ -15,6 +15,14 @@ class WorkbenchesController < BreadcrumbController
     end
   end
 
+  def delete_referentials
+    referentials = resource.referentials.where(id: params[:referentials])
+    if referentials.destroy_all
+      flash[:notice] = t('notice.referentials.deleted')
+    end
+    redirect_to resource
+  end
+
   private
   def sort_column
     Workbench.find(params[:id]).referentials.include?(params[:sort]) ? params[:sort] : 'name'

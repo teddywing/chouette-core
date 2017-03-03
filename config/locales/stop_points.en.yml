@@ -41,6 +41,8 @@ en:
         lines: "lines"
         created_at: Created at
         updated_at: Updated at
+        for_boarding: "For boarding"
+        for_alighting: "For alighting"
   simple_form:
     labels:
       stop_point:

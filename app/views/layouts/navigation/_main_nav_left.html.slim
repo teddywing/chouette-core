@@ -74,17 +74,17 @@
               
         #miFive.panel-collapse.collapse
           .list-group
-            = link_to '#', target: '_blank', class: 'list-group-item' do
+            = link_to Rails.application.config.try(:portal_url), target: '_blank', class: 'list-group-item' do
               span
                 span.fa.fa-2x.fa-circle
                 |Portail (POSTIF)
 
-            = link_to '#', target: '_blank', class: 'list-group-item' do
+            = link_to Rails.application.config.try(:codifligne_url), target: '_blank', class: 'list-group-item' do
               span
                 span.fa.fa-2x.fa-circle
                 |Codifligne (iLLICO)
 
-            = link_to '#', target: '_blank', class: 'list-group-item' do
+            = link_to Rails.application.config.try(:reflex_url), target: '_blank', class: 'list-group-item' do
               span
                 span.fa.fa-2x.fa-circle
                 |Reflex (iCAR)

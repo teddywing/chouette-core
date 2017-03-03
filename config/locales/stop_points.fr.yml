@@ -41,6 +41,8 @@ fr:
         lines: "Lignes"
         created_at: "Créé le"
         updated_at: "Modifié le"
+        for_boarding: "Montée"
+        for_alighting: "Descente"
   simple_form:
     labels:
       stop_point:

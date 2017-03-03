@@ -9,7 +9,7 @@ class ReferentialMetadata < ActiveRecord::Base
   validates :lines, presence: true
   validates :periodes, presence: true
 
-  scope :include_lines, -> (line_ids) { where('line_ids && ARRAY[?]', line_ids) }
+  scope :include_lines, -> (line_ids) { where('line_ids && ARRAY[?]::bigint[]', line_ids) }
   scope :include_dateranges, -> (dateranges) { where('periodes && ARRAY[?]', dateranges) }
 
   class Period

@@ -73,6 +73,11 @@ Rails.application.configure do
     url: "http://stif-portail-dev.af83.priv"
   }
 
+  # Ext. apps links
+  config.reflex_url = "https://195.46.215.128"
+  config.codifligne_url = "https://pprod.codifligne.stif.info"
+  config.portal_url = "http://stif-boiv-staging.af83.priv"
+
   # file to data for demo
   config.demo_data = "tmp/demo.zip"
 

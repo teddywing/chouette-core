@@ -10,7 +10,11 @@
   .container-fluid
     - if params[:q].present? or @companies.any?
       .row.mb-sm
-        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+        .col-lg-12.text-right
+          = new_pagination @companies
+
+      .row
+        .col-lg-12
           = search_form_for @q, url: referential_companies_path(@referential), html: {method: :get} do |f|
             .input-group.search_bar
               = f.text_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
@@ -18,9 +22,6 @@
               span.input-group-btn
                 button.btn.btn-default#search-btn type="submit"
                   span.fa.fa-search
-
-        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
-          = new_pagination @companies
 
     - if @companies.any?
       .row
@@ -30,7 +31,7 @@
             @companies.human_attribute_name(:name) => 'name', @companies.human_attribute_name(:phone) => 'phone', @companies.human_attribute_name(:email) => 'email', @companies.human_attribute_name(:url) => 'url' },
             [:show, :edit, :delete],
             [],
-            'table'
+            'table has-search'
 
           = new_pagination @companies, 'pull-right'
 

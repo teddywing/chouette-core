@@ -17,7 +17,7 @@ var initialState = {
     isFetching: false
   },
   journeyPatterns: [],
-  stopPointsList: [],
+  stopPointsList: window.stopPoints,
   pagination: {
     page : 1,
     totalCount: window.journeyPatternLength,

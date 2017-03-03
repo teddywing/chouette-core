@@ -3,11 +3,14 @@ var actions = require("../actions")
 const journeyPattern = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_JOURNEYPATTERN':
-      let stopPoints = JSON.parse(JSON.stringify(state[0].stop_points))
-      stopPoints.map((s)=>{
-        s.checked = false
-        return s
-      })
+      let stopPoints = window.stopPoints
+
+      if(stopPoints != undefined) {
+        stopPoints.map((s)=>{
+          s.checked = false
+          return s
+        })
+      }
       return {
         name: action.data.name.value,
         published_name: action.data.published_name.value,
@@ -65,8 +68,8 @@ const journeyPatterns = (state = [], action) => {
       })
     case 'ADD_JOURNEYPATTERN':
       return [
-        ...state,
-        journeyPattern(state, action)
+        journeyPattern(state, action),
+        ...state
       ]
     case 'SAVE_MODAL':
       return state.map((j, i) =>{

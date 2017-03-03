@@ -8,6 +8,7 @@
       font-size: $h2-size
       font-weight: 700
       border-bottom: 2px solid $darkgrey
+      vertical-align: middle
 
       > a
         position: relative
@@ -65,6 +66,11 @@
         > td
           background-color: whitesmoke
 
+  &.has-filter, &.has-search
+    border-top: 2px solid $darkgrey
+    margin-top: 15px
+
+
 // select_toolbox
 .select_toolbox
   padding: 10px
@@ -106,11 +112,103 @@
             background-color: darken($red, 5%)
 
   &.noselect
-    .st_action > a
+    > ul > .st_action > a
       &, &[title='Supprimer'], &:hover, &:focus
-        background-color: rgba($grey, 0.65)
+        background-color: rgba($grey, 0.3)
         cursor: not-allowed
 
   > .info-msg
     font-style: italic
     font-size: 0.85em
+
+
+//-----------------------------//
+//  Tables (column by column)  //
+//-----------------------------//
+
+.table.table-2entries
+  display: table
+  table-layout: fixed
+  width: 100%
+
+  > *
+    display: table-cell
+    vertical-align: top
+
+  .th
+    padding: 6px 8px
+    border-bottom: 2px solid rgba($grey, 0.5)
+    border-top: 1px solid rgba($grey, 0.5)
+  .td
+    padding: 6px 8px
+    border-bottom: 1px solid rgba($grey, 0.5)
+    word-wrap: break-word
+    hyphens: auto
+
+    > div
+      position: relative
+      height: 100%
+
+      &.headlined:before
+        content: ''
+        display: block
+        border-bottom: 1px solid rgba($grey, 0.5)
+        margin: -6px -9px 6px -8px
+        padding: 6px 9px 6px 8px
+        border-right: 1px solid #fff
+        height: calc(1.4em + 12px)
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
+  .t2e-head
+    border-right: 1px solid rgba($grey, 0.5)
+
+    .th
+      text-align: right
+      border-top-color: transparent
+
+    .td > .headlined
+      &:before
+        content: attr(data-headline)
+        text-transform: uppercase
+        color: rgba($grey, 0.75)
+
+  .t2e-item-list
+    +emptyzone(rgba($grey, 0.075), rgba($grey, 0.015))
+
+    > div
+      display: inline-block
+      vertical-align: top
+      overflow: auto
+      white-space: nowrap
+      border-right: 1px solid rgba($grey, 0.5)
+      max-width: 100%
+      padding-right: 1px
+
+    .t2e-item
+      display: inline-block
+      vertical-align: top
+      white-space: normal
+      border-left: 1px solid rgba($grey, 0.5)
+      background-color: #fff
+
+      &:first-child
+        border-left: none
+
+      .th
+        > *:first-child
+          padding-right: 30px
+
+      .td
+        > div
+          > .has_radio
+            top: 50%
+            margin-top: -10px
+
+          &.headlined > .has_radio
+            margin-top: calc((1.4em + 6px) * -1)
+
+      &.disabled
+        color: rgba($darkgrey, 0.5)
+        background-color: rgba(#fff, 0.5)

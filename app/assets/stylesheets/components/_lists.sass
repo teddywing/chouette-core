@@ -13,6 +13,7 @@ $dlWidth: 40%
     text-rendering: optimizespeed
     font-weight: 300
     margin-bottom: 40px
+    border-bottom: 1px solid rgba($grey, 0.5)
 
   .dl-head
     display: block
@@ -27,7 +28,7 @@ $dlWidth: 40%
     word-spacing: normal
     text-rendering: auto
     // overflow: hidden
-    vertical-align: middle
+    vertical-align: top
     padding: 5px 15px 6px 15px
 
   // Definition term
@@ -36,15 +37,19 @@ $dlWidth: 40%
     width: $dlWidth
     font-weight: 700
 
-    &:after
+    &:before
       content: ''
       display: block
       position: absolute
       z-index: 1
-      bottom: 0
+      top: 0
       left: 0
       width: (100 / ($dlWidth / 1%)) * 100 * 1%
       border-bottom: 1px solid rgba($grey, 0.5)
+
+    &:first-child
+      &:before
+        display: none
 
   // Definition
   .dl-def

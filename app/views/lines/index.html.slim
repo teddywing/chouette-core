@@ -10,20 +10,19 @@
   .container-fluid
     - if params[:q].present? or @lines.any?
       .row.mb-sm
-        .col-lg-5.col-md-6.col-sm-6.col-xs-8
+        .col-lg-12.text-right
+          = new_pagination @lines
+
+      .row
+        .col-lg-12
           = search_form_for @q, url: line_referential_lines_path(@line_referential), html: {method: :get} do |f|
             .input-group.search_bar
-              = f.search_field :name_or_number_or_objectid_cont, placeholder: t('lines.index.name_or_number_or_objectid'), class: 'form-control'
+              = f.search_field :name_or_objectid_cont, placeholder: t('lines.index.name_or_objectid'), class: 'form-control'
 
               span.input-group-btn
                 button.btn.btn-default#search-btn type='submit'
                   span.fa.fa-search
 
-        .col-lg-7.col-md-6.col-sm-6.col-xs-4.text-right
-          = new_pagination @lines
-
-      .row
-        .col-lg-12
           = render 'filters'
 
     - if @lines.any?
@@ -35,9 +34,9 @@
             @lines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) },
             @lines.human_attribute_name(:transport_mode) => Proc.new { |n| n.transport_mode.nil? ? '-' :  t("enumerize.line.transport_mode.#{n.try(:transport_mode)}") },
             @lines.human_attribute_name(:transport_submode) => Proc.new { |n| n.transport_submode.nil? ? '-' :  t("enumerize.line.transport_submode.#{n.try(:transport_submode)}") } },
-            [:show],
-            [:delete],
-            'table'
+            [:show, :delete],
+            [],
+            'table has-filter has-search'
 
           = new_pagination @lines, 'pull-right'
 

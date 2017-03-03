@@ -2,6 +2,7 @@ require 'sidekiq/web'
 
 ChouetteIhm::Application.routes.draw do
   resources :workbenches, :only => [:show] do
+    delete :referentials, on: :member, action: :delete_referentials
     resources :imports
   end
 

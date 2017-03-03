@@ -161,8 +161,7 @@ module NewapplicationHelper
 
   def sortable_columns collection, key
     direction = (key == params[:sort] && params[:direction] == 'desc') ? 'asc' : 'desc'
-
-    link_to({sort: key, direction: direction}) do
+    link_to(params.merge({direction: direction, sort: key})) do
       pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
       pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
 
@@ -174,12 +173,16 @@ module NewapplicationHelper
   # Actions on select toolbox (for selectables tables)
   def select_toolbox(actions)
     tools = content_tag :ul do
-      actions.collect do |action|
+      dPath = nil
+      dPath = referentials_workbench_path if params[:controller] = 'workbenches'
 
-        actitem = link_to '#', title: t("actions.#{action}") do
-          if action == :edit
+      actions.collect do |action|
+        if action == :edit
+          actitem = link_to('#', title: t("actions.#{action}")) do
             content_tag :span, '', class: 'fa fa-pencil'
-          elsif action == :delete
+          end
+        elsif action == :delete
+          actitem = link_to('#', method: :delete, data: { path: dPath, confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }, title: t("actions.#{action}")) do
             content_tag :span, '', class: 'fa fa-trash'
           end
         end

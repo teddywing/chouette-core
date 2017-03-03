@@ -28,11 +28,26 @@
           elm = selection.indexOf(e.currentTarget.id)
           selection.splice(elm, 1)
 
+      # console.log(selection)
+
       # Updating toolbox, according to selection
       if selection.length > 0
         toolbox
           .removeClass 'noselect'
           .children('.info-msg').children('span').text(selection.length)
+
+        # Injecting selection into action urls
+        toolbox.find('.st_action').each ->
+          actionURL = $(this).children('a').attr('data-path')
+
+          newSelection = []
+          i = 0
+          while i < selection.length
+            newSelection[i] = 'referentials[]=' + selection[i] + ''
+            i++
+
+          $(this).children('a').attr('href', actionURL + '?' + newSelection.join('&'))
+
       else
         toolbox
           .addClass 'noselect'

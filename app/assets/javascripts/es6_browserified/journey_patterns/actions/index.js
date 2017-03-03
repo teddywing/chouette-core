@@ -169,31 +169,38 @@ const actions = {
         if(hasError == true) {
           dispatch(actions.unavailableServer())
         } else {
-          let val
-          for (val of json){
-            for (let stop_point of val.route_short_description.stop_points){
-              stop_point.checked = false
-              val.stop_area_short_descriptions.map((element) => {
-                if(element.stop_area_short_description.id === stop_point.id){
-                  stop_point.checked = true
-                }
+          if(json.length != 0){
+            let val
+            for (val of json){
+              for (let stop_point of val.route_short_description.stop_points){
+                stop_point.checked = false
+                val.stop_area_short_descriptions.map((element) => {
+                  if(element.stop_area_short_description.id === stop_point.id){
+                    stop_point.checked = true
+                  }
+                })
+              }
+              journeyPatterns.push({
+                name: val.name,
+                object_id: val.object_id,
+                published_name: val.published_name,
+                registration_number: val.registration_number,
+                stop_points: val.route_short_description.stop_points,
+                deletable: false
               })
             }
-            journeyPatterns.push({
-              name: val.name,
-              object_id: val.object_id,
-              published_name: val.published_name,
-              registration_number: val.registration_number,
-              stop_points: val.route_short_description.stop_points,
-              deletable: false
-            })
-          }
-          if(journeyPatterns.length != window.journeyPatternsPerPage){
-            dispatch(actions.updateTotalCount(journeyPatterns.length - window.journeyPatternsPerPage))
+            if(journeyPatterns.length != window.journeyPatternsPerPage){
+              dispatch(actions.updateTotalCount(journeyPatterns.length - window.journeyPatternsPerPage))
+            }
           }
           dispatch(actions.receiveJourneyPatterns(journeyPatterns))
         }
       })
+  },
+  getChecked : (jp) => {
+    return jp.filter((obj) => {
+      return obj.checked
+    })
   }
 }
 

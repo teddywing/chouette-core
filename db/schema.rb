@@ -11,8 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema.define(version: 20170301170956) do
 
-ActiveRecord::Schema.define(version: 20170215163027) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   add_index "access_points", ["objectid"], :name => "access_points_objectid_key", :unique => true
 
   create_table "api_keys", force: true do |t|
-    t.integer  "referential_id"
+    t.integer  "referential_id", limit: 8
     t.string   "token"
     t.string   "name"
     t.datetime "created_at"
@@ -82,10 +82,10 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   create_table "calendars", force: true do |t|
     t.string    "name"
     t.string    "short_name"
-    t.daterange "date_ranges",     array: true
-    t.date      "dates",           array: true
+    t.daterange "date_ranges",               array: true
+    t.date      "dates",                     array: true
     t.boolean   "shared"
-    t.integer   "organisation_id"
+    t.integer   "organisation_id", limit: 8
     t.datetime  "created_at"
     t.datetime  "updated_at"
   end
@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   create_table "clean_up_results", force: true do |t|
     t.string   "message_key"
     t.hstore   "message_attributs"
-    t.integer  "clean_up_id"
+    t.integer  "clean_up_id",       limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.string   "status"
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.integer  "referential_id"
+    t.integer  "referential_id", limit: 8
     t.datetime "begin_date"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.string   "registration_number"
     t.string   "url"
     t.string   "time_zone"
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id",       limit: 8
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -229,7 +229,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.string   "name"
     t.string   "comment"
     t.string   "registration_number"
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id", limit: 8
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -247,20 +247,25 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.integer  "criticity"
     t.string   "message_key"
     t.hstore   "message_attributs"
-    t.integer  "import_id"
-    t.integer  "resource_id"
+    t.integer  "import_id",           limit: 8
+    t.integer  "resource_id",         limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.hstore   "resource_attributes"
   end
 
   add_index "import_messages", ["import_id"], :name => "index_import_messages_on_import_id"
   add_index "import_messages", ["resource_id"], :name => "index_import_messages_on_resource_id"
 
   create_table "import_resources", force: true do |t|
-    t.integer  "import_id"
+    t.integer  "import_id",  limit: 8
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
+    t.string   "reference"
+    t.string   "name"
+    t.hstore   "metrics"
   end
 
   add_index "import_resources", ["import_id"], :name => "index_import_resources_on_import_id"
@@ -269,12 +274,15 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.string   "status"
     t.string   "current_step_id"
     t.float    "current_step_progress"
-    t.integer  "workbench_id"
-    t.integer  "referential_id"
+    t.integer  "workbench_id",          limit: 8
+    t.integer  "referential_id",        limit: 8
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "file"
+    t.date     "started_at"
+    t.date     "ended_at"
+    t.string   "token_download"
   end
 
   add_index "imports", ["referential_id"], :name => "index_imports_on_referential_id"
@@ -332,8 +340,8 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   add_index "journey_patterns_stop_points", ["journey_pattern_id"], :name => "index_journey_pattern_id_on_journey_patterns_stop_points"
 
   create_table "line_referential_memberships", force: true do |t|
-    t.integer "organisation_id"
-    t.integer "line_referential_id"
+    t.integer "organisation_id",     limit: 8
+    t.integer "line_referential_id", limit: 8
     t.boolean "owner"
   end
 
@@ -341,7 +349,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.integer  "criticity"
     t.string   "message_key"
     t.hstore   "message_attributs"
-    t.integer  "line_referential_sync_id"
+    t.integer  "line_referential_sync_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -349,7 +357,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   add_index "line_referential_sync_messages", ["line_referential_sync_id"], :name => "line_referential_sync_id"
 
   create_table "line_referential_syncs", force: true do |t|
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "started_at"
@@ -385,11 +393,11 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.string   "color",                           limit: 6
     t.string   "text_color",                      limit: 6
     t.string   "stable_id"
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id",             limit: 8
     t.boolean  "deactivated",                               default: false
     t.text     "import_xml"
     t.string   "transport_submode"
-    t.integer  "secondary_company_ids",                                                  array: true
+    t.integer  "secondary_company_ids",           limit: 8,                              array: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -412,7 +420,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.string   "source_identifier"
     t.string   "comment"
     t.text     "import_xml"
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -453,8 +461,8 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.string   "status"
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.integer  "source_referential_id"
-    t.integer  "target_referential_id"
+    t.integer  "source_referential_id", limit: 8
+    t.integer  "target_referential_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -463,12 +471,12 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   add_index "referential_clonings", ["target_referential_id"], :name => "index_referential_clonings_on_target_referential_id"
 
   create_table "referential_metadata", force: true do |t|
-    t.integer   "referential_id"
-    t.integer   "line_ids",              array: true
-    t.integer   "referential_source_id"
+    t.integer   "referential_id",        limit: 8
+    t.integer   "line_ids",              limit: 8, array: true
+    t.integer   "referential_source_id", limit: 8
     t.datetime  "created_at"
     t.datetime  "updated_at"
-    t.daterange "periodes",              array: true
+    t.daterange "periodes",                        array: true
   end
 
   add_index "referential_metadata", ["line_ids"], :name => "index_referential_metadata_on_line_ids"
@@ -489,11 +497,11 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.integer  "user_id",                  limit: 8
     t.string   "user_name"
     t.string   "data_format"
-    t.integer  "line_referential_id"
-    t.integer  "stop_area_referential_id"
-    t.integer  "workbench_id"
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
+    t.integer  "workbench_id",             limit: 8
     t.datetime "archived_at"
-    t.integer  "created_from_id"
+    t.integer  "created_from_id",          limit: 8
     t.boolean  "ready",                              default: false
   end
 
@@ -534,7 +542,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   create_table "routing_constraint_zones", force: true do |t|
     t.string   "name"
     t.integer  "stop_area_ids",                         array: true
-    t.integer  "line_id"
+    t.integer  "line_id",        limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "objectid",                 null: false
@@ -558,8 +566,8 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   end
 
   create_table "stop_area_referential_memberships", force: true do |t|
-    t.integer "organisation_id"
-    t.integer "stop_area_referential_id"
+    t.integer "organisation_id",          limit: 8
+    t.integer "stop_area_referential_id", limit: 8
     t.boolean "owner"
   end
 
@@ -567,7 +575,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.integer  "criticity"
     t.string   "message_key"
     t.hstore   "message_attributs"
-    t.integer  "stop_area_referential_sync_id"
+    t.integer  "stop_area_referential_sync_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -575,7 +583,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   add_index "stop_area_referential_sync_messages", ["stop_area_referential_sync_id"], :name => "stop_area_referential_sync_id"
 
   create_table "stop_area_referential_syncs", force: true do |t|
-    t.integer  "stop_area_referential_id"
+    t.integer  "stop_area_referential_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "ended_at"
@@ -615,7 +623,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.string   "city_name"
     t.string   "url"
     t.string   "time_zone"
-    t.integer  "stop_area_referential_id"
+    t.integer  "stop_area_referential_id",        limit: 8
     t.string   "status"
     t.text     "import_xml"
     t.datetime "deleted_at"
@@ -649,10 +657,10 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   add_index "stop_points", ["objectid"], :name => "stop_points_objectid_key", :unique => true
 
   create_table "taggings", force: true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
+    t.integer  "tag_id",        limit: 8
+    t.integer  "taggable_id",   limit: 8
     t.string   "taggable_type"
-    t.integer  "tagger_id"
+    t.integer  "tagger_id",     limit: 8
     t.string   "tagger_type"
     t.string   "context",       limit: 128
     t.datetime "created_at"
@@ -695,7 +703,7 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.integer  "int_day_types",            default: 0
     t.date     "start_date"
     t.date     "end_date"
-    t.integer  "calendar_id"
+    t.integer  "calendar_id",    limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -733,25 +741,25 @@ ActiveRecord::Schema.define(version: 20170215163027) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: ""
+    t.string   "email",                            default: "", null: false
+    t.string   "encrypted_password",               default: ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
+    t.integer  "sign_in_count",                    default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "organisation_id"
+    t.integer  "organisation_id",        limit: 8
     t.string   "name"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        default: 0
+    t.integer  "failed_attempts",                  default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
@@ -759,12 +767,12 @@ ActiveRecord::Schema.define(version: 20170215163027) do
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
-    t.integer  "invited_by_id"
+    t.integer  "invited_by_id",          limit: 8
     t.string   "invited_by_type"
     t.datetime "invitation_created_at"
     t.string   "username"
     t.datetime "synced_at"
-    t.string   "permissions",                                      array: true
+    t.string   "permissions",                                                array: true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -813,11 +821,11 @@ ActiveRecord::Schema.define(version: 20170215163027) do
 
   create_table "workbenches", force: true do |t|
     t.string   "name"
-    t.integer  "organisation_id"
+    t.integer  "organisation_id",          limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "line_referential_id"
-    t.integer  "stop_area_referential_id"
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
   end
 
   add_index "workbenches", ["line_referential_id"], :name => "index_workbenches_on_line_referential_id"

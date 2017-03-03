@@ -28,20 +28,24 @@ let Navigate = ({ dispatch, journeyPatterns, pagination, status }) => {
                   e.preventDefault()
                   dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
                 }}
-                type="submit"
+                type='button'
                 data-toggle=''
                 data-target='#ConfirmModal'
-                className={'previous_page' + (pagination.page == firstPage ? ' disabled' : '')}>
+                className={'previous_page' + (pagination.page == firstPage ? ' disabled' : '')}
+                disabled={'previous_page' + (pagination.page == firstPage ? ' disabled' : '')}
+              >
               </button>
               <button
                 onClick={e => {
                   e.preventDefault()
                   dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
                 }}
-                type="submit"
+                type='button'
                 data-toggle=''
                 data-target='#ConfirmModal'
-                className={'next_page' + (pagination.page == lastPage ? ' disabled' : '')}>
+                className={'next_page' + (pagination.page == lastPage ? ' disabled' : '')}
+                disabled={'next_page' + (pagination.page == lastPage ? ' disabled' : '')}
+              >
               </button>
             </form>
           </div>

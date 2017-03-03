@@ -8,8 +8,8 @@
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
+      = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], class: 'btn btn-primary'
       - if @route.journey_patterns.present?
-        = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], class: 'btn btn-primary'
         = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'btn btn-primary'
         
       = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'btn btn-primary'
@@ -25,7 +25,8 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { @route.human_attribute_name(:direction) => (@route.direction ? @route.direction_text : '-'),
+          { 'OiD' => @route.try(:objectid).try(:local_id),
+            'Direction' => (@route.published_name ? @route.published_name : '-'),
             @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
             @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }
 
@@ -35,10 +36,11 @@
           = table_builder @route_sp,
             { 'ID Reflex' => Proc.new {|s| s.try(:stop_area).try(:user_objectid)},
               Chouette::StopArea.human_attribute_name(:name) => Proc.new {|s| s.try(:stop_area).try(:name)},
+              'Activé' => Proc.new{|s| s.try(:stop_area).deleted_at ? t('false') : t('true')},
               Chouette::StopArea.human_attribute_name(:zip_code) => Proc.new {|s| s.try(:stop_area).try(:zip_code)},
               Chouette::StopArea.human_attribute_name(:city_name) => Proc.new {|s| s.try(:stop_area).try(:city_name)},
               Chouette::StopArea.human_attribute_name(:area_type) => Proc.new {|s| t("area_types.label.#{s.try(:stop_area).try(:area_type)}")},
-              Chouette::StopArea.human_attribute_name(:for_boarding) => Proc.new {|s| t("stop_points.stop_point.for_boarding.#{s.for_boarding}")}, Chouette::StopArea.human_attribute_name(:for_alighting) => Proc.new {|s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}")}, 'Position' => 'position' },
+              Chouette::StopPoint.human_attribute_name(:for_boarding) => Proc.new {|s| t("stop_points.stop_point.for_boarding.#{s.for_boarding}")}, Chouette::StopPoint.human_attribute_name(:for_alighting) => Proc.new {|s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}")}, 'Position' => 'position' },
             [:show],
             [],
             'table'

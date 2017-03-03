@@ -1,64 +1,125 @@
 var React = require('react')
+var Component = require('react').Component
 var PropTypes = require('react').PropTypes
+var actions = require('../actions')
 
-const JourneyPattern = (props) => {
-  return (
-    <div className={'tc-item' + (props.value.deletable ? ' disabled' : '') + (props.value.object_id ? '' : ' to_record')}>
-      {/* Errors */}
-      {(props.value.errors) && (
-        <ul className='alert alert-danger small' style={{paddingLeft: 30}}>
-          {Object.keys(props.value.errors).map(function(key, i) {
-            return (
-              <li key={i} style={{listStyleType: 'disc'}}>
-                <strong>'{key}'</strong> {props.value.errors[key]}
-              </li>
-            )
-          })}
-        </ul>
-      )}
+class JourneyPattern extends Component{
+  constructor(props){
+    super(props)
+    this.previousCity = undefined
+  }
 
-      <div className='tc-th'>
-        <span>{props.value.object_id}</span>
-        <span>{props.value.registration_number}</span>
-        <span>n</span>
+  vehicleJourneyURL(oid) {
+    // oid will be used later, for params in URL...
 
-        <div className='clearfix' style={{display: 'inline-block', verticalAlign: 'top', width: '25px'}}>
-          <button className={(props.value.deletable ? 'disabled' : '') + ' btn btn-xs btn-danger pull-right'} onClick={props.onOpenEditModal} data-toggle='modal' data-target='#JourneyPatternModal'>
-            <span className='fa fa-pencil'></span>
-          </button>
-        </div>
+    let routeURL = window.location.pathname.split('/', 7).join('/')
+    let vjURL = routeURL + '/vehicle_journeys'
+
+    return (
+      <a href={vjURL}>Horaires des courses</a>
+    )
+  }
+
+  cityNameChecker(sp) {
+    let bool = false
+    if(sp.city_name != this.previousCity){
+      bool = true
+      this.previousCity = sp.city_name
+    }
+    return (
+      <div
+        className={(bool) ? 'headlined' : ''}
+      >
+        <span className='has_radio'>
+          <input
+            onChange = {(e) => this.props.onCheckboxChange(e)}
+            type='checkbox'
+            id={sp.id}
+            checked={sp.checked}
+            disabled={this.props.value.deletable ? 'disabled' : ''}
+            >
+          </input>
+          <span className='radio-label'></span>
+        </span>
       </div>
-      <div className='tc-td'>
-        <ul className='list-group'>
-          {props.value.stop_points.map((stopPoint, i) =>
-            <li
-              key={ i }
-              className='list-group-item clearfix'
-              >
-              <span className='label label-default' style={{marginRight: 5}}>{stopPoint.id}</span>
-              <span>{stopPoint.name}</span>
-              <span className='pull-right'>
-                <input
-                  onChange = {(e) => props.onCheckboxChange(e)}
-                  type='checkbox'
-                  id={stopPoint.id}
-                  checked={stopPoint.checked}
-                  disabled={props.value.deletable ? 'disabled' : ''}
-                  ></input>
-              </span>
-            </li>
+    )
+  }
+
+  render() {
+    this.previousCity = undefined
+
+    return (
+      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.object_id ? '' : ' to_record')}>
+        {/* Errors */}
+        {(this.props.value.errors) && (
+          <ul className='alert alert-danger small' style={{paddingLeft: 30}}>
+            {Object.keys(this.props.value.errors).map(function(key, i) {
+              return (
+                <li key={i} style={{listStyleType: 'disc'}}>
+                  <strong>'{key}'</strong> {this.props.value.errors[key]}
+                  </li>
+                )
+              })}
+            </ul>
           )}
-        </ul>
-      </div>
-    </div>
-  )
+
+          <div className='th'>
+            <div className='strong mb-xs'>{this.props.value.object_id ? this.props.value.object_id : '-'}</div>
+            <div>{this.props.value.registration_number}</div>
+            <div>{actions.getChecked(this.props.value.stop_points).length} arrêt(s)</div>
+
+            <div className={this.props.value.deletable ? 'btn-group disabled' : 'btn-group'}>
+              <div
+                className={this.props.value.deletable ? 'btn dropdown-toggle disabled' : 'btn dropdown-toggle'}
+                data-toggle='dropdown'
+                >
+                <span className='fa fa-cog'></span>
+              </div>
+              <ul className='dropdown-menu'>
+                <li className={this.props.value.deletable ? 'disabled' : ''}>
+                  <a
+                    href='#'
+                    onClick={this.props.onOpenEditModal}
+                    data-toggle='modal'
+                    data-target='#JourneyPatternModal'
+                    >
+                    Modifier
+                  </a>
+                </li>
+                <li>{this.vehicleJourneyURL(this.props.value.object_id)}</li>
+                <li className='delete-action'>
+                  <a
+                    href='#'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      this.props.onDeleteJourneyPattern(this.props.index)}
+                    }
+                    >
+                    <span className='fa fa-trash'></span>Supprimer
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {this.props.value.stop_points.map((stopPoint, i) =>{
+              return (
+                <div key={i} className='td'>
+                  {this.cityNameChecker(stopPoint)}
+                </div>
+              )
+            })}
+          </div>
+        )
+  }
 }
 
 JourneyPattern.propTypes = {
   value: PropTypes.object,
   index: PropTypes.number,
   onCheckboxChange: PropTypes.func.isRequired,
-  onOpenEditModal: PropTypes.func.isRequired
+  onOpenEditModal: PropTypes.func.isRequired,
+  onDeleteJourneyPattern: PropTypes.func.isRequired
 }
 
 module.exports = JourneyPattern
