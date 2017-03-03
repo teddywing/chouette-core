@@ -2,7 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
-var MissionSelect2 = require('./MissionSelect2')
+var MissionSelect2 = require('./select2s/MissionSelect2')
 
 class CreateModal extends Component {
   constructor(props) {

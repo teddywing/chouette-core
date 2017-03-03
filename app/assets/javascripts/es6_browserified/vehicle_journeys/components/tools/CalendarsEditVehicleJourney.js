@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
+var TimetableSelect2 = require('./select2s/TimetableSelect2')
 
 class CalendarsEditVehicleJourney extends Component {
   constructor(props) {
@@ -42,21 +43,33 @@ class CalendarsEditVehicleJourney extends Component {
                   {(this.props.modal.type == 'calendars_edit') && (
                     <form>
                       <div className='modal-body'>
-                      <ul>
-                      {this.props.modal.modalProps.timetables.map((tt, i) =>
-                          <li
-                            key= {i}
-                          >
-                            {tt.comment}
-                            <button
-                            type='button'
-                            onClick={() => this.props.onDeleteCalendarModal(tt)}
+                        <ul>
+                        {this.props.modal.modalProps.timetables.map((tt, i) =>
+                            <li
+                              key= {i}
                             >
-                              <span className='fa fa-times'></span>
-                            </button>
-                          </li>
-                      )}
-                      </ul>
+                              {tt.comment}
+                              <button
+                              type='button'
+                              onClick={() => this.props.onDeleteCalendarModal(tt)}
+                              >
+                                <span className='fa fa-times'></span>
+                              </button>
+                            </li>
+                        )}
+                        </ul>
+                        <div className='row'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Ajouter un calendrier</label>
+                              <TimetableSelect2 onSelect2Timetable={this.props.onSelect2Timetable} />
+                              <button
+                                type='button'
+                              ><span className='fa fa-times'>Ajouter</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       <div className='modal-footer'>
@@ -95,6 +108,7 @@ CalendarsEditVehicleJourney.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   onCalendarsEditVehicleJourney: PropTypes.func.isRequired,
   onDeleteCalendarModal: PropTypes.func.isRequired,
+  onSelect2Timetable: PropTypes.func.isRequired,
   filters: PropTypes.object.isRequired
 }
 

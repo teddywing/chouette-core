@@ -24,6 +24,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     onCalendarsEditVehicleJourney: (calendars) =>{
       dispatch(actions.editVehicleJourneyCalendars(calendars))
+    },
+    onSelect2Timetable: (e) =>{
+      console.log(e.params.data)
+      dispatch(actions.select2Timetable(e.params.data))
     }
   }
 }
