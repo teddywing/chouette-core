@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
     onOpenCreateModal: () =>{
       dispatch(actions.openCreateModal())
     },
-    onSelectJPModal: (e) =>{
+    onSelect2JourneyPattern: (e) =>{
       dispatch(actions.selectJPCreateModal(e.params.data))
     }
   }

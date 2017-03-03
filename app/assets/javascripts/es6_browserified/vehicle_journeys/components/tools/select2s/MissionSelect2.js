@@ -16,7 +16,7 @@ class BSelect4 extends React.Component{
     return (
       <Select2
         defaultValue=''
-        onSelect={(e) => this.props.onSelectJPModal(e) }
+        onSelect={(e) => this.props.onSelect2JourneyPattern(e) }
         ref='journey_pattern_id'
         options={{
           placeholder: 'Nom d\'une mission existante',

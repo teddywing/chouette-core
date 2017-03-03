@@ -59,7 +59,7 @@ class CreateModal extends Component {
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                             <div className='form-group'>
                               <label className='control-label is-required'>ID de la mission</label>
-                              <MissionSelect2 onSelectJPModal={this.props.onSelectJPModal} />
+                              <MissionSelect2 onSelect2JourneyPattern={this.props.onSelect2JourneyPattern} />
                             </div>
                           </div>
                         </div>
@@ -101,7 +101,7 @@ CreateModal.propTypes = {
   onOpenCreateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   onAddVehicleJourney: PropTypes.func.isRequired,
-  onSelectJPModal: PropTypes.func.isRequired
+  onSelect2JourneyPattern: PropTypes.func.isRequired
 }
 
 module.exports = CreateModal

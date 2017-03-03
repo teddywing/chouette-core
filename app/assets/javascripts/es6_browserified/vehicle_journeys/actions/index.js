@@ -62,7 +62,7 @@ const actions = {
     type : 'EDIT_CALENDARS_VEHICLEJOURNEY_MODAL',
     vehicleJourneys
   }),
-  select2Timetable: (selectedTT) =>({
+  selectTTCalendarsModal: (selectedTT) =>({
     type: 'SEELCT_TT_CALENDAR_MODAL',
     selectedItem:{
       id: selectedTT.id
