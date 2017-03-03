@@ -1,6 +1,5 @@
 class AutocompleteTimeTablesController < InheritedResources::Base
   respond_to :json, :only => [:index]
-
   before_action :switch_referential
 
   def switch_referential
@@ -14,20 +13,14 @@ class AutocompleteTimeTablesController < InheritedResources::Base
   protected
 
   def select_time_tables
+    scope = referential.time_tables
     if params[:route_id]
-      referential.time_tables.joins( vehicle_journeys: :route).where( "routes.id IN (#{params[:route_id]})")
-   else
-      referential.time_tables
-   end
-  end
-
-  def referential_time_tables
-    @referential_time_tables ||= select_time_tables
+      scope = scope.joins(vehicle_journeys: :route).where( "routes.id IN (#{params[:route_id]})")
+    end
+    scope
   end
 
   def collection
-    comment_selection = referential_time_tables.select{ |p| p.comment =~ /#{params[:q]}/i  }
-    tag_selection = referential_time_tables.tagged_with( params[:q], :wild => true)
-    @time_tables = (comment_selection + tag_selection).uniq
+    @time_tables = select_time_tables.search(params[:q]).result
   end
 end
