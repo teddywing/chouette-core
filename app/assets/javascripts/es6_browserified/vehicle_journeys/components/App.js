@@ -21,9 +21,15 @@ const App = () => (
     </div>
 
     <VehicleJourneysList />
+
+    <div className='row'>
+      <div className='col-lg-12 text-right'>
+        <Navigate />
+      </div>
+    </div>
+
     <SaveVehicleJourneys />
     <ConfirmModal />
-
     <Tools />
   </div>
 )
