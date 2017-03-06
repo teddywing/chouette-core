@@ -9,7 +9,7 @@ var Tools = require('../containers/Tools')
 
 const App = () => (
   <div>
-    <div className='clearfix' style={{ marginBottom: 10 }}>
+    <div>
       <Filters />
       <ToggleArrivals />
       <Navigate />

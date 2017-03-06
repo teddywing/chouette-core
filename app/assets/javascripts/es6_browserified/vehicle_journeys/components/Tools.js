@@ -11,9 +11,8 @@ var actions = require('../actions')
 
 const Tools = ({vehicleJourneys, onCancelSelection}) => {
   return (
-    <div>
-      <h4>Sélectionner une ou plusieurs courses (en colonne)</h4>
-      <div className='list-inline clearfix'>
+    <div className='select_toolbox'>
+      <ul>
         <AddVehicleJourney />
         <DuplicateVehicleJourney />
         <ShiftVehicleJourney />
@@ -21,14 +20,13 @@ const Tools = ({vehicleJourneys, onCancelSelection}) => {
         <CalendarsEditVehicleJourney />
         <NotesEditVehicleJourney />
         <DeleteVehicleJourneys />
-      </div>
-      <div>
-      <span>{actions.getSelected(vehicleJourneys).length} course(s) sélectionnée(s)</span>
+      </ul>
+
+      <span className='info-msg'>{actions.getSelected(vehicleJourneys).length} course(s) sélectionnée(s)</span>
       <br/>
-      <button
-        onClick={onCancelSelection}
-      ><span className='fa fa-times'>Annuler la sélection</span></button>
-      </div>
+      <button onClick={onCancelSelection}>
+        <span className='fa fa-times'>Annuler la sélection</span>
+      </button>
     </div>
   )
 }
