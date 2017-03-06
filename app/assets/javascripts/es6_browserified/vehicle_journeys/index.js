@@ -19,9 +19,23 @@ if (window.journeyPatternId)
 var initialState = {
   filters: {
     selectedJourneyPatterns : selectedJP,
-    // TODO retrieve policy from controller
     policy: window.perms,
-    toggleArrivals: false
+    toggleArrivals: false,
+    query: {
+      interval: {
+        start:{
+          hour: '00',
+          minute: '00'
+        },
+        end:{
+          hour: '23',
+          minute: '59'
+        }
+      },
+      journeyPattern: {},
+      timetable: {},
+      withoutSchedule: false
+    }
 
   },
   status: {

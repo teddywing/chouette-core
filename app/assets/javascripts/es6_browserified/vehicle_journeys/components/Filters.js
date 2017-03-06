@@ -1,15 +1,79 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
+var MissionSelect2 = require('./tools/select2s/MissionSelect2')
+var TimetableSelect2 = require('./tools/select2s/TimetableSelect2')
 
-const Filters = ({filters, onFilters}) => {
+const Filters = ({filters, onFilter, onResetFilters, onUpdateTimeFilter, onToggleWithoutSchedule}) => {
   return (
-    <span>Filters</span>
+    <div className = 'form-filter'>
+      <div className = 'form-group'>
+        <span><MissionSelect2 /></span>
+      </div>
+      <div className = 'form-group'>
+        <span>Plage horaire au départ de la course </span>
+        <span> Début </span>
+        <input
+          type='number'
+          min='00'
+          max='23'
+          onChange={(e) => {onUpdateTimeFilter(e, 'hour')}}
+          value={filters.query.interval.start.hour}
+        />
+        <input
+          type='number'
+          min='00'
+          max='59'
+          onChange={(e) => {onUpdateTimeFilter(e, 'minute')}}
+          value={filters.query.interval.start.minute}
+        />
+        <span> Fin </span>
+        <input
+          type='number'
+          min='00'
+          max='23'
+          onChange={(e) => {onUpdateTimeFilter(e, 'hour')}}
+          value={filters.query.interval.end.hour}
+        />
+        <input
+          type='number'
+          min='00'
+          max='59'
+          onChange={(e) => {onUpdateTimeFilter(e, 'minute')}}
+          value={filters.query.interval.end.minute}
+        />
+      </div>
+      <div className = 'form-group'>
+        <span><TimetableSelect2 /></span>
+      </div>
+      <div className = 'form-group'>
+        <span>Afficher les courses sans horaires</span>
+        <input
+          onChange = {onToggleWithoutSchedule}
+          type = 'checkbox'
+          checked = {filters.query.withoutSchedule}
+        ></input>
+      </div>
+      <div className = 'actions'>
+        <span
+          className = 'btn btn-link'
+          onClick = {onResetFilters}>
+          EFFACER
+        </span>
+        <span
+          className='btn btn-primary'
+          onClick={onFilter}>
+          FILTRER
+        </span>
+      </div>
+    </div>
   )
 }
 
 Filters.propTypes = {
   filters : PropTypes.object.isRequired,
-  onFilters: PropTypes.func.isRequired
+  onFilter: PropTypes.func.isRequired,
+  onResetFilters: PropTypes.func.isRequired,
+  onUpdateTimeFilter: PropTypes.func.isRequired
 }
 
 module.exports = Filters

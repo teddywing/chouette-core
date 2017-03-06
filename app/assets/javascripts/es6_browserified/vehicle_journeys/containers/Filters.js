@@ -10,8 +10,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFilters: () =>{
-      dispatch(actions.toggleArrivals())
+    onUpdateTimeFilter: (e, unit) =>{
+      dispatch(actions.updateTimeFilter(e.target.value, unit))
+    },
+    onToggleWithoutSchedule: () =>{
+      dispatch(actions.toggleWithoutSchedule())
+    },
+    onResetFilters: () =>{
+      dispatch(actions.resetFilters())
+    },
+    onFilter: () =>{
+      dispatch(actions.filterQuery())
     }
   }
 }
