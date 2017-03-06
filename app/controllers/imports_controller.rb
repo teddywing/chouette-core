@@ -21,6 +21,14 @@ class ImportsController < BreadcrumbController
     end
   end
 
+  def download
+    if params[:token] == resource.token_download
+      send_file resource.file.path
+    else
+      user_not_authorized
+    end
+  end
+
   private
 
   def import_params

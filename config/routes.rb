@@ -3,7 +3,9 @@ require 'sidekiq/web'
 ChouetteIhm::Application.routes.draw do
   resources :workbenches, :only => [:show] do
     delete :referentials, on: :member, action: :delete_referentials
-    resources :imports
+    resources :imports do
+      get :download, on: :member
+    end
   end
 
   devise_for :users, :controllers => {
