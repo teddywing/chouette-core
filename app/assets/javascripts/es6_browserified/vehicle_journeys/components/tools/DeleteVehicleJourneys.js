@@ -8,7 +8,10 @@ const DeleteVehicleJourneys = ({onDeleteVehicleJourneys, vehicleJourneys, filter
       <a
         href='#'
         className={(actions.getSelected(vehicleJourneys).length > 0 && filters.policy['vehicle_journeys.destroy']) ? '' : 'disabled'}
-        onClick={onDeleteVehicleJourneys}
+        onClick={e => {
+          e.preventDefault()
+          onDeleteVehicleJourneys()
+        }}
         title='Supprimer'
       >
         <span className='fa fa-trash'></span>
