@@ -166,7 +166,7 @@ describe('vehicleJourneys reducer', () => {
   })
 
   it('should handle DELETE_VEHICLEJOURNEYS', () => {
-    const newVJ = Object.assign({}, state[0], {deletable: true})
+    const newVJ = Object.assign({}, state[0], {deletable: true, selected: false})
     expect(
       vjReducer(state, {
         type: 'DELETE_VEHICLEJOURNEYS'
