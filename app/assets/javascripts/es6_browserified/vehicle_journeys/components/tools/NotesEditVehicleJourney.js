@@ -43,64 +43,63 @@ class NotesEditVehicleJourney extends Component {
     }
     if(this.props.status.fetchSuccess == true) {
       return (
-        <div  className='pull-left'>
-          <button
-            disabled= {(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.edit']) ? false : true}
-            type='button'
-            className='btn btn-primary btn-sm'
+        <li className='st_action'>
+          <a
+            href='#'
+            className={(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled'}
             data-toggle='modal'
             data-target='#NotesEditVehicleJourneyModal'
             onClick={() => this.props.onOpenNotesEditModal(actions.getSelected(this.props.vehicleJourneys)[0])}
-            >
+          >
             <span className='fa fa-flag-o'></span>
-            </button>
+          </a>
 
-            <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='NotesEditVehicleJourneyModal'>
-              <div className='modal-dialog'>
-                <div className='modal-content'>
-                  <div className='modal-header clearfix'>
-                    <h4>Notes</h4>
-                  </div>
-
-                  {(this.props.modal.type == 'notes_edit') && (
-                    <form>
-                      <div className='modal-body'>
-                        {window.line_footnotes.map((lf, i) =>
-                          <div
-                            key = {i}
-                          >
-                            <span>Titre: {lf.label} </span>
-                            <span>Contenu: {lf.code}</span>
-                            {this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className='modal-footer'>
-                        <button
-                          className='btn btn-default'
-                          data-dismiss='modal'
-                          type='button'
-                          onClick={this.props.onModalClose}
-                          >
-                          Annuler
-                        </button>
-                        <button
-                          className='btn btn-danger'
-                          type='button'
-                          onClick={this.handleSubmit.bind(this)}
-                          >
-                          Valider
-                        </button>
-                      </div>
-                    </form>
-                  )}
-
+          <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='NotesEditVehicleJourneyModal'>
+            <div className='modal-dialog'>
+              <div className='modal-content'>
+                <div className='modal-header clearfix'>
+                  <h4>Notes</h4>
                 </div>
+
+                {(this.props.modal.type == 'notes_edit') && (
+                  <form>
+                    <div className='modal-body'>
+                      {window.line_footnotes.map((lf, i) =>
+                        <div
+                          key = {i}
+                        >
+                          <span>Titre: {lf.label} </span>
+                          <span>Contenu: {lf.code}</span>
+                          {this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className='modal-footer'>
+                      <button
+                        className='btn btn-default'
+                        data-dismiss='modal'
+                        type='button'
+                        onClick={this.props.onModalClose}
+                        >
+                        Annuler
+                      </button>
+                      <button
+                        className='btn btn-danger'
+                        type='button'
+                        onClick={this.handleSubmit.bind(this)}
+                        >
+                        Valider
+                      </button>
+                    </div>
+                  </form>
+                )}
+
               </div>
             </div>
           </div>
-        )
+        </li>
+      )
     } else {
       return false
     }

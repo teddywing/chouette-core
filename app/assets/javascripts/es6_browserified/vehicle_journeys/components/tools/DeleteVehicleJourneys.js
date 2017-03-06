@@ -4,16 +4,16 @@ var actions = require('../../actions')
 
 const DeleteVehicleJourneys = ({onDeleteVehicleJourneys, vehicleJourneys, filters}) => {
   return (
-    <div  className='pull-left'>
-      <button
-        disabled= {(actions.getSelected(vehicleJourneys).length > 0 && filters.policy['vehicle_journeys.destroy']) ? false : true}
-        type='button'
-        className='btn btn-primary btn-sm'
+    <li className='st_action'>
+      <a
+        href='#'
+        className={(actions.getSelected(vehicleJourneys).length > 0 && filters.policy['vehicle_journeys.destroy']) ? '' : 'disabled'}
         onClick={onDeleteVehicleJourneys}
-        >
+        title='Supprimer'
+      >
         <span className='fa fa-trash'></span>
-        </button>
-    </div>
+      </a>
+    </li>
   )
 }
 

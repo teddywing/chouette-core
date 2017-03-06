@@ -23,70 +23,69 @@ class CreateModal extends Component {
     }
     if(this.props.status.fetchSuccess == true) {
       return (
-        <div className='pull-left'>
-          <button
-            disabled= {(this.props.filters.policy['vehicle_journeys.create']) ? false : true}
-            type='button'
-            className='btn btn-primary btn-sm'
+        <li className='st_action'>
+          <a
+            href='#'
+            className={((this.props.filters.policy['vehicle_journeys.create']) ? 'disabled ' : '')}
             data-toggle='modal'
             data-target='#NewVehicleJourneyModal'
             onClick={this.props.onOpenCreateModal}
-            >
+          >
             <span className='fa fa-plus'></span>
-          </button>
+          </a>
 
-            <div className={ 'modal fade ' + ((this.props.modal.type == 'create') ? 'in' : '') } id='NewVehicleJourneyModal'>
-              <div className='modal-dialog'>
-                <div className='modal-content'>
-                  <div className='modal-header clearfix'>
-                    <h4>Ajouter une mission</h4>
-                  </div>
+          <div className={ 'modal fade ' + ((this.props.modal.type == 'create') ? 'in' : '') } id='NewVehicleJourneyModal'>
+            <div className='modal-dialog'>
+              <div className='modal-content'>
+                <div className='modal-header clearfix'>
+                  <h4>Ajouter une mission</h4>
+                </div>
 
-                  {(this.props.modal.type == 'create') && (
-                    <form>
-                      <div className='modal-body'>
-                        <div className='form-group'>
-                          <label className='control-label is-required'>Nom de la course</label>
-                          <input
-                            type='text'
-                            ref='published_journey_name'
-                            className='form-control'
-                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                            required
-                            />
-                        </div>
-                        <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                            <div className='form-group'>
-                              <label className='control-label is-required'>ID de la mission</label>
-                              <MissionSelect2 onSelect2JourneyPattern={this.props.onSelect2JourneyPattern} />
-                            </div>
+                {(this.props.modal.type == 'create') && (
+                  <form>
+                    <div className='modal-body'>
+                      <div className='form-group'>
+                        <label className='control-label is-required'>Nom de la course</label>
+                        <input
+                          type='text'
+                          ref='published_journey_name'
+                          className='form-control'
+                          onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                          required
+                          />
+                      </div>
+                      <div className='row'>
+                        <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                          <div className='form-group'>
+                            <label className='control-label is-required'>ID de la mission</label>
+                            <MissionSelect2 onSelect2JourneyPattern={this.props.onSelect2JourneyPattern} />
                           </div>
                         </div>
                       </div>
-                      <div className='modal-footer'>
-                        <button
-                          className='btn btn-default'
-                          data-dismiss='modal'
-                          type='button'
-                          onClick={this.props.onModalClose}
-                          >
-                          Annuler
-                        </button>
-                        <button
-                          className='btn btn-danger'
-                          type='button'
-                          onClick={this.handleSubmit.bind(this)}
-                          >
-                          Valider
-                        </button>
-                      </div>
-                    </form>
-                  )}
-                </div>
+                    </div>
+                    <div className='modal-footer'>
+                      <button
+                        className='btn btn-default'
+                        data-dismiss='modal'
+                        type='button'
+                        onClick={this.props.onModalClose}
+                        >
+                        Annuler
+                      </button>
+                      <button
+                        className='btn btn-danger'
+                        type='button'
+                        onClick={this.handleSubmit.bind(this)}
+                        >
+                        Valider
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
             </div>
           </div>
+        </li>
         )
     } else {
       return false
