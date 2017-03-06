@@ -30,7 +30,7 @@ class ShiftVehicleJourney extends Component {
             data-target='#ShiftVehicleJourneyModal'
             onClick={this.props.onOpenShiftModal}
           >
-            <span className='fa fa-refresh'></span>
+            <span className='sb sb-update-vj'></span>
           </a>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'shift') ? 'in' : '') } id='ShiftVehicleJourneyModal'>

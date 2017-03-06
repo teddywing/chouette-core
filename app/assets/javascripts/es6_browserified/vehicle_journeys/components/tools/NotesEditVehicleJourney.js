@@ -51,7 +51,7 @@ class NotesEditVehicleJourney extends Component {
             data-target='#NotesEditVehicleJourneyModal'
             onClick={() => this.props.onOpenNotesEditModal(actions.getSelected(this.props.vehicleJourneys)[0])}
           >
-            <span className='fa fa-flag-o'></span>
+            <span className='fa fa-sticky-note'></span>
           </a>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='NotesEditVehicleJourneyModal'>
@@ -66,7 +66,7 @@ class NotesEditVehicleJourney extends Component {
                     <div className='modal-body'>
                       {window.line_footnotes.map((lf, i) =>
                         <div
-                          key = {i}
+                          key={i}
                         >
                           <span>Titre: {lf.label} </span>
                           <span>Contenu: {lf.code}</span>

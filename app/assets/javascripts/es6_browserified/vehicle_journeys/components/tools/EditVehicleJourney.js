@@ -30,7 +30,7 @@ class EditVehicleJourney extends Component {
             data-target='#EditVehicleJourneyModal'
             onClick={() => this.props.onOpenEditModal(actions.getSelected(this.props.vehicleJourneys)[0])}
           >
-            <span className='fa fa-pencil'></span>
+            <span className='fa fa-info'></span>
           </a>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='EditVehicleJourneyModal'>
