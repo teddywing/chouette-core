@@ -1,5 +1,5 @@
 var React = require('react')
-var VehicleJourneysList = require('../containers/vehicleJourneysList')
+var VehicleJourneysList = require('../containers/VehicleJourneysList')
 var Navigate = require('../containers/Navigate')
 var ToggleArrivals = require('../containers/ToggleArrivals')
 var Filters = require('../containers/Filters')
