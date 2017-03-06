@@ -18,9 +18,11 @@ class WorkbenchesController < BreadcrumbController
 
   def delete_referentials
     referentials = resource.referentials.where(id: params[:referentials])
-    if referentials.destroy_all
-      flash[:notice] = t('notice.referentials.deleted')
+    referentials.each do |referential|
+      ReferentialDestroyWorker.perform_async(referential.id)
+      referential.update_attribute(:ready, false)
     end
+    flash[:notice] = t('notice.referentials.deleted')
     redirect_to resource
   end
 
