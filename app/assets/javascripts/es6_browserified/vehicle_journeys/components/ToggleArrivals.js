@@ -4,12 +4,13 @@ var PropTypes = require('react').PropTypes
 const ToggleArrivals = ({filters, onToggleArrivals}) => {
   return (
     <div className='list-group'>
-        <span> Afficher les horaires d'arrivée</span>
-        <input
-          onChange = {onToggleArrivals}
-          type = 'checkbox'
-          checked = {filters.toggleArrivals}
-        ></input>
+      <span> Afficher les horaires d'arrivée</span>
+      <input
+        onChange = {onToggleArrivals}
+        type = 'checkbox'
+        checked = {filters.toggleArrivals}
+      >
+      </input>
     </div>
   )
 }

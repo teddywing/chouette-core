@@ -9,15 +9,21 @@ var Tools = require('../containers/Tools')
 
 const App = () => (
   <div>
-    <div>
-      <Filters />
-      <ToggleArrivals />
-      <Navigate />
-      <Tools />
+    <Filters />
+    <div className="row">
+      <div className='col-lg-4 col-md-4 col-sm-4 col-xs-6'>
+        <ToggleArrivals />
+      </div>
+      <div className='col-lg-8 col-md-8 col-sm-8 col-xs-6 text-right'>
+        <Navigate />
+      </div>
     </div>
+
     <VehicleJourneysList />
     <SaveVehicleJourneys />
     <ConfirmModal />
+
+    <Tools />
   </div>
 )
 

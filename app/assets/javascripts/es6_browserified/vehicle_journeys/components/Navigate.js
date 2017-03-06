@@ -13,35 +13,28 @@ let Navigate = ({ dispatch, vehicleJourneys, pagination, status }) => {
   }
   if(status.fetchSuccess == true) {
     return (
-      <div className="vj_wrapper">
-        <div className="page_info">
-          <span className="search">Résultats : {minVJ} - {maxVJ} sur {pagination.totalCount}</span>
-        </div>
-        <form className='btn-group btn-group-sm' onSubmit={e => {
-            e.preventDefault()
-          }}>
+      <div className="pagination">
+        Liste des horaires {minVJ} à {maxVJ} sur {pagination.totalCount}
+
+        <form className='page_links' onSubmit={e => {e.preventDefault()}}>
           <button
             onClick={e => {
               e.preventDefault()
               dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
             }}
-            type="submit"
-            data-toggle=''
+            type='button'
             data-target='#ConfirmModal'
-            className={ (pagination.page == firstPage ? "hidden" : "") + " btn btn-default" }>
-            <span className="fa fa-chevron-left"></span>
-          </button>
+            className={(pagination.page == firstPage ? 'disabled ' : '') + 'previous_page'}
+          ></button>
           <button
             onClick={e => {
               e.preventDefault()
               dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
             }}
-            type="submit"
-            data-toggle=''
+            type='button'
             data-target='#ConfirmModal'
-            className={ (pagination.page == lastPage ? "hidden" : "") + " btn btn-default" }>
-            <span className="fa fa-chevron-right"></span>
-          </button>
+            className={(pagination.page == lastPage ? 'disabled ' : '') + 'next_page'}
+          ></button>
         </form>
       </div>
     )
