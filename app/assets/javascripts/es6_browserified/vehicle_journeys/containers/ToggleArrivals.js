@@ -1,6 +1,6 @@
 var actions = require('../actions')
 var connect = require('react-redux').connect
-var Filters = require('../components/Filters')
+var ToggleArrivals = require('../components/ToggleArrivals')
 
 const mapStateToProps = (state) => {
   return {
@@ -16,6 +16,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const FiltersList = connect(mapStateToProps, mapDispatchToProps)(Filters)
+const ToggleArrivalsList = connect(mapStateToProps, mapDispatchToProps)(ToggleArrivals)
 
-module.exports = FiltersList
+module.exports = ToggleArrivalsList

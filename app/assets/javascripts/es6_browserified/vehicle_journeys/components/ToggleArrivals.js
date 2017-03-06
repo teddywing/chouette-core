@@ -1,7 +1,7 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
 
-const Filters = ({filters, onToggleArrivals}) => {
+const ToggleArrivals = ({filters, onToggleArrivals}) => {
   return (
     <div className='list-group'>
         <span> Afficher les horaires d'arrivée</span>
@@ -14,9 +14,9 @@ const Filters = ({filters, onToggleArrivals}) => {
   )
 }
 
-Filters.propTypes = {
+ToggleArrivals.propTypes = {
   filters : PropTypes.object.isRequired,
   onToggleArrivals: PropTypes.func.isRequired
 }
 
-module.exports = Filters
+module.exports = ToggleArrivals
