@@ -23,8 +23,7 @@ const Tools = ({vehicleJourneys, onCancelSelection}) => {
       </ul>
 
       <span className='info-msg'>{actions.getSelected(vehicleJourneys).length} course(s) sélectionnée(s)</span>
-      <br/>
-      <button className='btn btn-link' onClick={onCancelSelection}>Annuler la sélection</button>
+      <button className='btn btn-xs btn-link pull-right' onClick={onCancelSelection}>Annuler la sélection</button>
     </div>
   )
 }
