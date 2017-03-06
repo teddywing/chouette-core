@@ -5,7 +5,7 @@ var TimetableSelect2 = require('./tools/select2s/TimetableSelect2')
 
 const Filters = ({filters, onFilter, onResetFilters, onUpdateTimeFilter, onToggleWithoutSchedule}) => {
   return (
-    <div className = 'form-filter'>
+    <div className = 'form-filter mb-lg'>
       <div className = 'form-group'>
         <span><MissionSelect2 /></span>
       </div>

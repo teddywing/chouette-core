@@ -25,6 +25,7 @@ let Navigate = ({ dispatch, vehicleJourneys, pagination, status }) => {
             type='button'
             data-target='#ConfirmModal'
             className={(pagination.page == firstPage ? 'disabled ' : '') + 'previous_page'}
+            disabled={(pagination.page == firstPage ? true : false)}
           ></button>
           <button
             onClick={e => {
@@ -34,6 +35,7 @@ let Navigate = ({ dispatch, vehicleJourneys, pagination, status }) => {
             type='button'
             data-target='#ConfirmModal'
             className={(pagination.page == lastPage ? 'disabled ' : '') + 'next_page'}
+            disabled={(pagination.page == lastPage ? true : false)}
           ></button>
         </form>
       </div>

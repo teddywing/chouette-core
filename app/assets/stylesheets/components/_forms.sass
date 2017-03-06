@@ -194,6 +194,7 @@ $cbx-size: 20px
       padding: 0
       margin: 0
       display: inline-block
+      vertical-align: top
       min-height: 0
       width: auto
       height: 34px
@@ -248,6 +249,37 @@ $cbx-size: 20px
           &:not(:checked) + .switch-label:after
             left: 20px
             transition: 0.2s
+
+  &.inline
+    > *
+      display: inline-block
+      vertical-align: top
+
+    > label
+      margin: 0
+      padding: 2px 15px 0 0
+
+    .checkbox
+      height: 22px
+      line-height: 22px
+
+      > label > input[type='checkbox']
+        + .switch-label
+          width: 37px
+          height: 22px
+          line-height: 22px
+          padding-left: 47px
+
+          &:before
+            width: 37px
+            height: 22px
+            border-radius: 14px
+          &:after
+            width: 18px
+            height: 18px
+
+        &:not(:checked) + .switch-label:after
+          left: 15px
 
 // Form filter
 .form.form-filter
