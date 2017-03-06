@@ -3,7 +3,7 @@ var PropTypes = require('react').PropTypes
 var MissionSelect2 = require('./tools/select2s/MissionSelect2')
 var TimetableSelect2 = require('./tools/select2s/TimetableSelect2')
 
-const Filters = ({filters, onFilter, onResetFilters, onUpdateTimeFilter, onToggleWithoutSchedule}) => {
+const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule}) => {
   return (
     <div className = 'form-filter mb-lg'>
       <div className = 'form-group'>
@@ -16,14 +16,14 @@ const Filters = ({filters, onFilter, onResetFilters, onUpdateTimeFilter, onToggl
           type='number'
           min='00'
           max='23'
-          onChange={(e) => {onUpdateTimeFilter(e, 'hour')}}
+          onChange={(e) => {onUpdateStartTimeFilter(e, 'hour')}}
           value={filters.query.interval.start.hour}
         />
         <input
           type='number'
           min='00'
           max='59'
-          onChange={(e) => {onUpdateTimeFilter(e, 'minute')}}
+          onChange={(e) => {onUpdateStartTimeFilter(e, 'minute')}}
           value={filters.query.interval.start.minute}
         />
         <span> Fin </span>
@@ -31,14 +31,14 @@ const Filters = ({filters, onFilter, onResetFilters, onUpdateTimeFilter, onToggl
           type='number'
           min='00'
           max='23'
-          onChange={(e) => {onUpdateTimeFilter(e, 'hour')}}
+          onChange={(e) => {onUpdateEndTimeFilter(e, 'hour')}}
           value={filters.query.interval.end.hour}
         />
         <input
           type='number'
           min='00'
           max='59'
-          onChange={(e) => {onUpdateTimeFilter(e, 'minute')}}
+          onChange={(e) => {onUpdateEndTimeFilter(e, 'minute')}}
           value={filters.query.interval.end.minute}
         />
       </div>
@@ -73,7 +73,8 @@ Filters.propTypes = {
   filters : PropTypes.object.isRequired,
   onFilter: PropTypes.func.isRequired,
   onResetFilters: PropTypes.func.isRequired,
-  onUpdateTimeFilter: PropTypes.func.isRequired
+  onUpdateStartTimeFilter: PropTypes.func.isRequired,
+  onUpdateEndTimeFilter: PropTypes.func.isRequired
 }
 
 module.exports = Filters

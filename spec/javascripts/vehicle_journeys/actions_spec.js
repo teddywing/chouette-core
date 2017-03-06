@@ -270,3 +270,39 @@ describe('when using select2 to pick a timetable', () => {
     expect(actions.selectTTCalendarsModal(selectedTT)).toEqual(expectedAction)
   })
 })
+describe('when clicking on reset button inside query filters', () => {
+  it('should create an action to reset the query filters', () => {
+    const expectedAction = {
+      type: 'RESET_FILTERS',
+    }
+    expect(actions.resetFilters()).toEqual(expectedAction)
+  })
+})
+describe('when clicking on checkbox to show vj without schedule', () => {
+  it('should create an action to toggle this filter', () => {
+    const expectedAction = {
+      type: 'TOGGLE_WITHOUT_SCHEDULE',
+    }
+    expect(actions.toggleWithoutSchedule()).toEqual(expectedAction)
+  })
+})
+describe('when setting new interval', () => {
+  const val = 1
+  const unit = 'hour'
+  it('should create actions to update intervals in state', () => {
+    let expectedAction = {
+      type: 'UPDATE_START_TIME_FILTER',
+      val,
+      unit
+    }
+    expect(actions.updateStartTimeFilter(val, unit)).toEqual(expectedAction)
+  })
+  it('should create actions to update intervals in state', () => {
+    let expectedAction = {
+      type: 'UPDATE_END_TIME_FILTER',
+      val,
+      unit
+    }
+    expect(actions.updateEndTimeFilter(val, unit)).toEqual(expectedAction)
+  })
+})

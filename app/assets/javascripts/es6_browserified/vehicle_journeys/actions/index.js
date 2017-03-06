@@ -161,6 +161,22 @@ const actions = {
     isDeparture,
     isArrivalsToggled
   }),
+  resetFilters: () => ({
+    type: 'RESET_FILTERS'
+  }),
+  toggleWithoutSchedule: () => ({
+    type: 'TOGGLE_WITHOUT_SCHEDULE'
+  }),
+  updateStartTimeFilter: (val, unit) => ({
+    type: 'UPDATE_START_TIME_FILTER',
+    val,
+    unit
+  }),
+  updateEndTimeFilter: (val, unit) => ({
+    type: 'UPDATE_END_TIME_FILTER',
+    val,
+    unit
+  }),
   fetchVehicleJourneys : (dispatch, currentPage, nextPage) => {
     if(currentPage == undefined){
       currentPage = 1
