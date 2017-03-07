@@ -51,12 +51,14 @@ class VehicleJourneysController < ChouetteController
   alias_method :vehicle_journey, :resource
 
   def collection
+    @ppage = 20
+
     unless @vehicle_journeys
       @footnotes = route.line.footnotes.to_json
       @vehicle_filter = VehicleFilter.new adapted_params
       @vehicle_filter.journey_category_model = resource_class.model_name.route_key
       @q = @vehicle_filter.vehicle_journeys.search @vehicle_filter.filtered_params
-      @vehicle_journeys = @q.result( :distinct => false ).paginate(:page => params[:page], :per_page => 20)
+      @vehicle_journeys = @q.result( :distinct => false ).paginate(:page => params[:page], :per_page => @ppage)
     end
     matrix
     @vehicle_journeys

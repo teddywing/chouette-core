@@ -9,36 +9,36 @@
   .container-fluid
     .row
       .col-lg-12
-        = @perms.inspect
-        = search_form_for @q, :url => referential_line_route_vehicle_journeys_path(@referential,@line,@route), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
-          .panel.panel-default
-            .panel-heading
-              = f.label :journey_pattern_id_eq, "Missions"
-              = f.text_field(:journey_pattern_id_eq, class: "form-control")
-
-              button.btn.btn-default type="submit"
-                i.fa.fa-search
-
-              a.advanced_search data-toggle="collapse" data-parent="#search" href="#advanced_search"
-                i.fa.fa-plus
-                = "#{t('.advanced_search')}"
-
-            #advanced_search.panel-collapse.collapse
-              .panel-body
-                div
-                  = f.label :time_tables_id_not_eq, "Sans calendrier"
-                  = f.check_box :time_tables_id_not_eq
-
-                  span.time_tables_id_eq
-                    = f.label :time_tables_id_eq, "Sélectionner calendriers"
-                    = f.text_field :time_tables_id_eq, :input_html => { :"data-pre" => [].to_json}
-
-
-        #vehicle_journeys
-          == render "vehicle_journeys"
-
-          - content_for :sidebar do
-            == render "sidebar"
+        / = @perms.inspect
+        / = search_form_for @q, :url => referential_line_route_vehicle_journeys_path(@referential,@line,@route), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
+        /   .panel.panel-default
+        /     .panel-heading
+        /       = f.label :journey_pattern_id_eq, "Missions"
+        /       = f.text_field(:journey_pattern_id_eq, class: "form-control")
+        / 
+        /       button.btn.btn-default type="submit"
+        /         i.fa.fa-search
+        / 
+        /       a.advanced_search data-toggle="collapse" data-parent="#search" href="#advanced_search"
+        /         i.fa.fa-plus
+        /         = "#{t('.advanced_search')}"
+        / 
+        /     #advanced_search.panel-collapse.collapse
+        /       .panel-body
+        /         div
+        /           = f.label :time_tables_id_not_eq, "Sans calendrier"
+        /           = f.check_box :time_tables_id_not_eq
+        / 
+        /           span.time_tables_id_eq
+        /             = f.label :time_tables_id_eq, "Sélectionner calendriers"
+        /             = f.text_field :time_tables_id_eq, :input_html => { :"data-pre" => [].to_json}
+        / 
+        / 
+        / #vehicle_journeys
+        /   == render "vehicle_journeys"
+        / 
+        /   - content_for :sidebar do
+        /     == render "sidebar"
 
         #vehicle_journeys_wip
 
@@ -46,7 +46,7 @@
   | window.route_id = #{params[:route_id]};
   | window.journeyPatternId = #{params[:q].present? ? ('"' + params[:q].values[1] + '"').html_safe : false};
   | window.vehicleJourneysLength = #{@vehicle_journeys.total_entries()};
-  | window.vehicleJourneysPerPage = 20;
+  | window.vehicleJourneysPerPage = #{@ppage};
   | window.line_footnotes = #{raw @footnotes};
   | window.perms = #{raw @perms}
 

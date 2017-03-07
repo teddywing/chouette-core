@@ -9,47 +9,33 @@ class VehicleJourney extends Component {
 
   render() {
     return (
-      <div className={'list-group-item ' + (this.props.value.deletable ? 'disabled' : '')} >
+      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '')} >
+
+        <div className='th'>
+          <div className='strong mb-xs'>{this.props.value.objectid ? this.props.value.objectid : '-'}</div>
+          <div>{this.props.value.journey_pattern.objectid}</div>
+          <div>
+            {this.props.value.time_tables.map((tt, i)=>
+              <span key={i}>{tt.objectid}</span>
+            )}
+          </div>
+
+          <div
+            className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}
+          >
+            <input
+              id={this.props.index}
+              name={this.props.index}
+              onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
+              type='checkbox'
+              disabled={this.props.value.deletable}
+              checked={this.props.value.selected}
+            ></input>
+          <label htmlFor={this.props.index}></label>
+          </div>
+        </div>
 
         <div style={{display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 25px)'}}>
-          {/* selected */}
-          <p className='small'>
-            <label>Sélectionné</label>
-            <input
-              onChange = {(e) => this.props.onSelectVehicleJourney(this.props.index)}
-              type = 'checkbox'
-              disabled = {this.props.value.deletable}
-              checked = {this.props.value.selected}
-            ></input>
-          </p>
-
-          {/* Nom */}
-          <p className='small'>
-            <strong>Nom: </strong>{this.props.value.published_journey_name}
-          </p>
-
-          {/* Id mission */}
-          <p className='small'>
-            <strong>Id Mission: </strong>{this.props.value.journey_pattern.objectid}
-          </p>
-
-          {/* Published name */}
-          <p className='small'>
-            <strong>Objectid: </strong>{this.props.value.objectid}
-          </p>
-
-          {/* Registration number */}
-          <p className='small'>
-            <strong>Registration number: </strong>{this.props.value.registration_number}
-          </p>
-
-          <p className='small'>
-            <strong>Calendars: </strong>
-            {this.props.value.time_tables.map((tt, i)=>
-              <span key = {i}>{tt.objectid}</span>
-            )}
-          </p>
-
           <ul className='list-group'>
             {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
               <li
