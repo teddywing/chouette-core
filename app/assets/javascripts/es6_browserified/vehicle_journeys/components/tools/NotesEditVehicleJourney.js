@@ -55,46 +55,48 @@ class NotesEditVehicleJourney extends Component {
           </a>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='NotesEditVehicleJourneyModal'>
-            <div className='modal-dialog'>
-              <div className='modal-content'>
-                <div className='modal-header clearfix'>
-                  <h4>Notes</h4>
+            <div className='modal-container'>
+              <div className='modal-dialog'>
+                <div className='modal-content'>
+                  <div className='modal-header clearfix'>
+                    <h4>Notes</h4>
+                  </div>
+
+                  {(this.props.modal.type == 'notes_edit') && (
+                    <form>
+                      <div className='modal-body'>
+                        {window.line_footnotes.map((lf, i) =>
+                          <div
+                            key={i}
+                            >
+                            <span>Titre: {lf.label} </span>
+                            <span>Contenu: {lf.code}</span>
+                            {this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className='modal-footer'>
+                        <button
+                          className='btn btn-default'
+                          data-dismiss='modal'
+                          type='button'
+                          onClick={this.props.onModalClose}
+                          >
+                          Annuler
+                        </button>
+                        <button
+                          className='btn btn-danger'
+                          type='button'
+                          onClick={this.handleSubmit.bind(this)}
+                          >
+                          Valider
+                        </button>
+                      </div>
+                    </form>
+                  )}
+
                 </div>
-
-                {(this.props.modal.type == 'notes_edit') && (
-                  <form>
-                    <div className='modal-body'>
-                      {window.line_footnotes.map((lf, i) =>
-                        <div
-                          key={i}
-                        >
-                          <span>Titre: {lf.label} </span>
-                          <span>Contenu: {lf.code}</span>
-                          {this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className='modal-footer'>
-                      <button
-                        className='btn btn-default'
-                        data-dismiss='modal'
-                        type='button'
-                        onClick={this.props.onModalClose}
-                        >
-                        Annuler
-                      </button>
-                      <button
-                        className='btn btn-danger'
-                        type='button'
-                        onClick={this.handleSubmit.bind(this)}
-                        >
-                        Valider
-                      </button>
-                    </div>
-                  </form>
-                )}
-
               </div>
             </div>
           </div>

@@ -33,68 +33,70 @@ class CalendarsEditVehicleJourney extends Component {
           </a>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='CalendarsEditVehicleJourneyModal'>
-            <div className='modal-dialog'>
-              <div className='modal-content'>
-                <div className='modal-header clearfix'>
-                  <h4>Calendriers associés</h4>
-                </div>
+            <div className='modal-container'>
+              <div className='modal-dialog'>
+                <div className='modal-content'>
+                  <div className='modal-header clearfix'>
+                    <h4>Calendriers associés</h4>
+                  </div>
 
-                {(this.props.modal.type == 'calendars_edit') && (
-                  <form>
-                    <div className='modal-body'>
-                      <ul>
-                      {this.props.modal.modalProps.timetables.map((tt, i) =>
-                          <li
-                            key= {i}
-                          >
-                            {tt.comment}
-                            <button
-                            type='button'
-                            onClick={() => this.props.onDeleteCalendarModal(tt)}
+                  {(this.props.modal.type == 'calendars_edit') && (
+                    <form>
+                      <div className='modal-body'>
+                        <ul>
+                        {this.props.modal.modalProps.timetables.map((tt, i) =>
+                            <li
+                              key= {i}
                             >
-                              <span className='fa fa-times'></span>
-                            </button>
-                          </li>
-                      )}
-                      </ul>
-                      <div className='row'>
-                        <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                          <div className='form-group'>
-                            <label className='control-label is-required'>Ajouter un calendrier</label>
-                            <TimetableSelect2
-                              onSelect2Timetable={this.props.onSelect2Timetable} 
-                              chunkURL={'/autocomplete_time_tables.json'}
-                            />
-                            <button
-                              onClick={this.props.onAddSelectedTimetable}
+                              {tt.comment}
+                              <button
                               type='button'
-                            ><span className='fa fa-times'>Ajouter</span>
-                            </button>
+                              onClick={() => this.props.onDeleteCalendarModal(tt)}
+                              >
+                                <span className='fa fa-times'></span>
+                              </button>
+                            </li>
+                        )}
+                        </ul>
+                        <div className='row'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Ajouter un calendrier</label>
+                              <TimetableSelect2
+                                onSelect2Timetable={this.props.onSelect2Timetable}
+                                chunkURL={'/autocomplete_time_tables.json'}
+                              />
+                              <button
+                                onClick={this.props.onAddSelectedTimetable}
+                                type='button'
+                              ><span className='fa fa-times'>Ajouter</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className='modal-footer'>
-                      <button
-                        className='btn btn-default'
-                        data-dismiss='modal'
-                        type='button'
-                        onClick={this.props.onModalClose}
-                        >
-                        Annuler
-                      </button>
-                      <button
-                        className='btn btn-danger'
-                        type='button'
-                        onClick={this.handleSubmit.bind(this)}
-                        >
-                        Valider
-                      </button>
-                    </div>
-                  </form>
-                )}
+                      <div className='modal-footer'>
+                        <button
+                          className='btn btn-default'
+                          data-dismiss='modal'
+                          type='button'
+                          onClick={this.props.onModalClose}
+                          >
+                          Annuler
+                        </button>
+                        <button
+                          className='btn btn-danger'
+                          type='button'
+                          onClick={this.handleSubmit.bind(this)}
+                          >
+                          Valider
+                        </button>
+                      </div>
+                    </form>
+                  )}
 
+                </div>
               </div>
             </div>
           </div>

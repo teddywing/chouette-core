@@ -29,8 +29,9 @@ const App = () => (
     </div>
 
     <SaveVehicleJourneys />
-    <ConfirmModal />
     <Tools />
+
+    <ConfirmModal />
   </div>
 )
 

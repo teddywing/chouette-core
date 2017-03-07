@@ -34,70 +34,72 @@ class DuplicateVehicleJourney extends Component {
           </a>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='DuplicateVehicleJourneyModal'>
-            <div className='modal-dialog'>
-              <div className='modal-content'>
-                <div className='modal-header clearfix'>
-                  <h4>Mettre à jour une course</h4>
-                </div>
+            <div className='modal-container'>
+              <div className='modal-dialog'>
+                <div className='modal-content'>
+                  <div className='modal-header clearfix'>
+                    <h4>Mettre à jour une course</h4>
+                  </div>
 
-                {(this.props.modal.type == 'duplicate') && (
-                  <form>
-                    <div className='modal-body'>
-                      <div className='form-group'>
-                        <span>Dupliquer les horaires de la course suivante : {actions.getSelected(this.props.vehicleJourneys)[0].objectid}</span>
-                      </div>
-                      <div className='row'>
-                        <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                          <div className='form-group'>
-                            <label className='control-label is-required'>Nombre de courses à créer et dupliquer</label>
-                            <input
-                              type='number'
-                              ref='duplicate_number'
-                              min='1'
-                              max='20'
-                              className='form-control'
-                              onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                              required
-                              />
+                  {(this.props.modal.type == 'duplicate') && (
+                    <form>
+                      <div className='modal-body'>
+                        <div className='form-group'>
+                          <span>Dupliquer les horaires de la course suivante : {actions.getSelected(this.props.vehicleJourneys)[0].objectid}</span>
+                        </div>
+                        <div className='row'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Nombre de courses à créer et dupliquer</label>
+                              <input
+                                type='number'
+                                ref='duplicate_number'
+                                min='1'
+                                max='20'
+                                className='form-control'
+                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                required
+                                />
+                            </div>
+                          </div>
+                        </div>
+                        <div className='row'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Avec un décalage de</label>
+                              <input
+                                type='number'
+                                ref='additional_time'
+                                min='0'
+                                max='59'
+                                className='form-control'
+                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                required
+                                />
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className='row'>
-                        <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                          <div className='form-group'>
-                            <label className='control-label is-required'>Avec un décalage de</label>
-                            <input
-                              type='number'
-                              ref='additional_time'
-                              min='0'
-                              max='59'
-                              className='form-control'
-                              onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                              required
-                              />
-                          </div>
-                        </div>
+                      <div className='modal-footer'>
+                        <button
+                          className='btn btn-default'
+                          data-dismiss='modal'
+                          type='button'
+                          onClick={this.props.onModalClose}
+                          >
+                          Annuler
+                        </button>
+                        <button
+                          className='btn btn-danger'
+                          type='button'
+                          onClick={this.handleSubmit.bind(this)}
+                          >
+                          Valider
+                        </button>
                       </div>
-                    </div>
-                    <div className='modal-footer'>
-                      <button
-                        className='btn btn-default'
-                        data-dismiss='modal'
-                        type='button'
-                        onClick={this.props.onModalClose}
-                        >
-                        Annuler
-                      </button>
-                      <button
-                        className='btn btn-danger'
-                        type='button'
-                        onClick={this.handleSubmit.bind(this)}
-                        >
-                        Valider
-                      </button>
-                    </div>
-                  </form>
-                )}
+                    </form>
+                  )}
+                </div>
               </div>
             </div>
           </div>
