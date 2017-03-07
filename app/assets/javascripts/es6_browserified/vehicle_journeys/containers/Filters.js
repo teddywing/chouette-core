@@ -24,8 +24,11 @@ const mapDispatchToProps = (dispatch) => {
     onResetFilters: () =>{
       dispatch(actions.resetFilters())
     },
-    onFilter: () =>{
-      dispatch(actions.filterQuery())
+    // onFilter: () =>{
+    //   dispatch(actions.filterQuery())
+    // },
+    onSelect2Timetable: (e) => {
+      dispatch(actions.filterSelect2Timetable(e.params.data))
     }
   }
 }

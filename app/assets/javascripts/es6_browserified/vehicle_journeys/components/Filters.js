@@ -3,7 +3,7 @@ var PropTypes = require('react').PropTypes
 var MissionSelect2 = require('./tools/select2s/MissionSelect2')
 var TimetableSelect2 = require('./tools/select2s/TimetableSelect2')
 
-const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule}) => {
+const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onSelect2Timetable}) => {
   return (
     <div className = 'form-filter mb-lg'>
       <div className = 'form-group'>
@@ -45,6 +45,7 @@ const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, on
       <div className = 'form-group'>
         <span>
           <TimetableSelect2
+            onSelect2Timetable={onSelect2Timetable}
             hasRoute={true}
             chunkURL= {("/autocomplete_time_tables.json?route_id=" + String(window.route_id))}
           />
@@ -79,7 +80,8 @@ Filters.propTypes = {
   onFilter: PropTypes.func.isRequired,
   onResetFilters: PropTypes.func.isRequired,
   onUpdateStartTimeFilter: PropTypes.func.isRequired,
-  onUpdateEndTimeFilter: PropTypes.func.isRequired
+  onUpdateEndTimeFilter: PropTypes.func.isRequired,
+  onSelect2Timetable: PropTypes.func.isRequired
 }
 
 module.exports = Filters

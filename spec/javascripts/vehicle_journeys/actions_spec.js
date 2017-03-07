@@ -306,3 +306,21 @@ describe('when setting new interval', () => {
     expect(actions.updateEndTimeFilter(val, unit)).toEqual(expectedAction)
   })
 })
+describe('when using select2 to pick a timetable in the filters', () => {
+  it('should create an action to select a timetable as a filter', () => {
+    let selectedTT = {
+      id: 1,
+      objectid: 2,
+      comment: 'test',
+    }
+    const expectedAction = {
+      type: 'SELECT_TT_FILTER',
+      selectedItem:{
+        id: selectedTT.id,
+        objectid: selectedTT.objectid,
+        comment: selectedTT.comment,
+      }
+    }
+    expect(actions.filterSelect2Timetable(selectedTT)).toEqual(expectedAction)
+  })
+})

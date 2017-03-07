@@ -177,6 +177,17 @@ const actions = {
     val,
     unit
   }),
+  filterSelect2Timetable: (selectedTT) =>({
+    type: 'SELECT_TT_FILTER',
+    selectedItem:{
+      id: selectedTT.id,
+      comment: selectedTT.comment,
+      objectid: selectedTT.objectid
+    }
+  }),
+  filterQuery: () => ({
+    type: 'FILTER_QUERY'
+  }),
   fetchVehicleJourneys : (dispatch, currentPage, nextPage) => {
     if(currentPage == undefined){
       currentPage = 1

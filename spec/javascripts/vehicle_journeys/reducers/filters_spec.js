@@ -120,4 +120,14 @@ describe('filters reducer', () => {
     ).toEqual(state)
   })
 
+  it('should handle SELECT_TT_FILTER', () => {
+    let newTimetable = {timetable : {id: 1}}
+    let newQuery = Object.assign({}, state.query, newTimetable)
+    expect(
+      statusReducer(state, {
+        type: 'SELECT_TT_FILTER',
+        selectedItem: {id: 1}
+      })
+    ).toEqual(Object.assign({}, state, {query: newQuery}))
+  })
 })

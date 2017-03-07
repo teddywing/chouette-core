@@ -37,6 +37,9 @@ const filters = (state = {}, action) => {
       }else{
         return state
       }
+    case 'SELECT_TT_FILTER':
+      newQuery = Object.assign({}, state.query, {timetable : action.selectedItem})
+      return Object.assign({}, state, {query: newQuery})
     case 'TOGGLE_ARRIVALS':
       return Object.assign({}, state, {toggleArrivals: !state.toggleArrivals})
     default:
