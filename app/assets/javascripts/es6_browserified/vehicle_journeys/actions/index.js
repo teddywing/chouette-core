@@ -185,6 +185,15 @@ const actions = {
       objectid: selectedTT.objectid
     }
   }),
+  filterSelect2JourneyPattern: (selectedJP) => ({
+    type : 'SELECT_JP_FILTER',
+    selectedItem: {
+      id: selectedJP.id,
+      objectid: selectedJP.object_id,
+      name: selectedJP.name,
+      published_name: selectedJP.published_name
+    }
+  }),
   filterQuery: () => ({
     type: 'FILTER_QUERY'
   }),

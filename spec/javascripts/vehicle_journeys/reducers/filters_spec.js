@@ -130,4 +130,15 @@ describe('filters reducer', () => {
       })
     ).toEqual(Object.assign({}, state, {query: newQuery}))
   })
+
+  it('should handle SELECT_JP_FILTER', () => {
+    let newJourneyPattern = {journeyPattern : {id: 1}}
+    let newQuery = Object.assign({}, state.query, newJourneyPattern)
+    expect(
+      statusReducer(state, {
+        type: 'SELECT_JP_FILTER',
+        selectedItem: {id: 1}
+      })
+    ).toEqual(Object.assign({}, state, {query: newQuery}))
+  })
 })

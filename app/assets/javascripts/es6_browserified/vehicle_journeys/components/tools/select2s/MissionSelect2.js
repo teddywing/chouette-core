@@ -20,7 +20,7 @@ class BSelect4 extends React.Component{
         ref='journey_pattern_id'
         options={{
           placeholder: 'Nom d\'une mission existante',
-          allowClear: true,
+          allowClear: false,
           language: 'fr', /* Doesn't seem to work... :( */
           theme: 'bootstrap',
           width: '100%',
@@ -40,7 +40,7 @@ class BSelect4 extends React.Component{
                   item => Object.assign(
                     {},
                     item,
-                    {text: item.published_name, complete_jp: item}
+                    {text: item.published_name}
                   )
                 )
               };

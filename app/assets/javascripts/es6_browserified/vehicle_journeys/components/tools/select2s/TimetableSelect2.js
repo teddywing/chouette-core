@@ -20,7 +20,7 @@ class BSelect4 extends React.Component{
         ref='journey_pattern_id'
         options={{
           placeholder: 'Nom d\'un calendrier existant',
-          allowClear: true,
+          allowClear: false,
           language: 'fr', /* Doesn't seem to work... :( */
           theme: 'bootstrap',
           width: '100%',

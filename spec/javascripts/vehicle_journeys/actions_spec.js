@@ -324,3 +324,23 @@ describe('when using select2 to pick a timetable in the filters', () => {
     expect(actions.filterSelect2Timetable(selectedTT)).toEqual(expectedAction)
   })
 })
+describe('when using select2 to pick a journeypattern in the filters', () => {
+  it('should create an action to select a journey pattern as a filter', () => {
+    let selectedJP = {
+      id: 1,
+      object_id: 2,
+      name: 'test',
+      published_name: 'test'
+    }
+    const expectedAction = {
+      type: 'SELECT_JP_FILTER',
+      selectedItem:{
+        id: selectedJP.id,
+        objectid: selectedJP.object_id,
+        name: selectedJP.name,
+        published_name: selectedJP.published_name
+      }
+    }
+    expect(actions.filterSelect2JourneyPattern(selectedJP)).toEqual(expectedAction)
+  })
+})

@@ -3,11 +3,15 @@ var PropTypes = require('react').PropTypes
 var MissionSelect2 = require('./tools/select2s/MissionSelect2')
 var TimetableSelect2 = require('./tools/select2s/TimetableSelect2')
 
-const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onSelect2Timetable}) => {
+const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onSelect2Timetable, onSelect2JourneyPattern}) => {
   return (
     <div className = 'form-filter mb-lg'>
       <div className = 'form-group'>
-        <span><MissionSelect2 /></span>
+        <span>
+          <MissionSelect2
+            onSelect2JourneyPattern={onSelect2JourneyPattern}
+          />
+        </span>
       </div>
       <div className = 'form-group'>
         <span>Plage horaire au départ de la course </span>
@@ -81,7 +85,8 @@ Filters.propTypes = {
   onResetFilters: PropTypes.func.isRequired,
   onUpdateStartTimeFilter: PropTypes.func.isRequired,
   onUpdateEndTimeFilter: PropTypes.func.isRequired,
-  onSelect2Timetable: PropTypes.func.isRequired
+  onSelect2Timetable: PropTypes.func.isRequired,
+  onSelect2JourneyPattern: PropTypes.func.isRequired
 }
 
 module.exports = Filters
