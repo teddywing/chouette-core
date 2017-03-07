@@ -81,7 +81,7 @@ describe User, :type => :model do
 
     it 'should create new users' do
       User.portail_sync
-      expect(User.count).to eq(11)
+      expect(User.count).to eq(12)
       expect(Organisation.count).to eq(3)
     end
 
@@ -112,7 +112,15 @@ describe User, :type => :model do
     it 'should not create new user if username is already present' do
       create :user, username: 'alban.peignier'
       User.portail_sync
-      expect(User.count).to eq(11)
+      expect(User.count).to eq(12)
+    end
+
+    context 'permissions' do
+      it 'should give edit permissions to user if user has "edit offer" permission in portail' do
+        User.portail_sync
+        expect(User.find_by(username: 'vlatka.pavisic').permissions).not_to be_empty
+        expect(User.find_by(username: 'pierre.vabre').permissions).to be_nil
+      end
     end
   end
 
