@@ -37,49 +37,61 @@ class VehicleJourney extends Component {
 
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td'>
-            {this.props.filters.toggleArrivals &&
-              <span>
-                <input
-                  type='number'
-                  min='00'
-                  max='23'
-                  disabled = {this.props.value.deletable}
-                  onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
-                  value={vj.arrival_time['hour']}
-                />
-                <span>:</span>
-                <input
-                  type='number'
-                  min='00'
-                  max='59'
-                  disabled = {this.props.value.deletable}
-                  onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
-                  value={vj.arrival_time['minute']}
-                />
-              </span>
-            }
-            {(vj.delta != 0) &&
-              <span>Delta: {vj.delta}</span>
-            }
-            <span>
-              <input
-                type='number'
-                min='00'
-                max='23'
-                disabled = {this.props.value.deletable}
-                onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
-                value={vj.departure_time['hour']}
-              />
-              <span>:</span>
-              <input
-                type='number'
-                min='00'
-                max='59'
-                disabled = {this.props.value.deletable}
-                onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
-                value={vj.departure_time['minute']}
-              />
-            </span>
+            <div className='inline-table'>
+              {this.props.filters.toggleArrivals &&
+                <div>
+                  <span className='input-group time'>
+                    <input
+                      type='number'
+                      min='00'
+                      max='23'
+                      className='form-control'
+                      disabled={this.props.value.deletable}
+                      onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
+                      value={vj.arrival_time['hour']}
+                      />
+                    <span>:</span>
+                    <input
+                      type='number'
+                      min='00'
+                      max='59'
+                      className='form-control'
+                      disabled={this.props.value.deletable}
+                      onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
+                      value={vj.arrival_time['minute']}
+                      />
+                  </span>
+                </div>
+                }
+                {(vj.delta != 0) &&
+                  <div>
+                    <span className='sb sb-chrono sb-lg text-warning' data-textinside={vj.delta}></span>
+                  </div>
+                }
+                <div>
+                  <span className='input-group time'>
+                    <input
+                      type='number'
+                      min='00'
+                      max='23'
+                      className='form-control'
+                      disabled={this.props.value.deletable}
+                      onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
+                      value={vj.departure_time['hour']}
+                      />
+                    <span>:</span>
+                    <input
+                      type='number'
+                      min='00'
+                      max='59'
+                      className='form-control'
+                      disabled={this.props.value.deletable}
+                      onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
+                      value={vj.departure_time['minute']}
+                      />
+                  </span>
+                </div>
+            </div>
           </div>
         )}
       </div>

@@ -38,6 +38,25 @@ input
 .input-group-btn > .btn-link
   padding-right: 0
 
+// Time input groups
+.input-group.time
+  > .form-control
+    float: none
+    width: auto
+    padding: 6px 8px
+
+    &:first-child
+      border-right: none
+    &:last-child
+      border-left: none
+
+    + span
+      display: table-cell
+      width: 1px
+      border-top: 1px solid #ccc
+      border-bottom: 1px solid #ccc
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
+
 // Validations
 .control-label
   &.is-required
@@ -146,8 +165,17 @@ $cbx-size-xs: 15px
     &[type='checkbox']:checked + label:before
       background-color: $blue
 
-// Table checkboxes
+// Table adjustments
 table, .table
+  .td, td, .th, th
+    .form-control
+      height: 30px
+      padding: 4px 12px
+
+    .input-group.time > .form-control
+      padding: 4px 6px
+
+  // Table checkboxes
   &.table-2entries .t2e-item
     > .th
       position: relative
