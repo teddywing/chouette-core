@@ -91,6 +91,7 @@ input
 
 // Checkbox
 $cbx-size: 20px
+$cbx-size-xs: 15px
 .checkbox
   position: relative
   display: block
@@ -108,6 +109,7 @@ $cbx-size: 20px
         position: relative
         cursor: pointer
         display: inline-block
+        vertical-align: top
         height: $cbx-size
         margin: 0
         padding-left: $cbx-size
@@ -143,6 +145,38 @@ $cbx-size: 20px
 
     &[type='checkbox']:checked + label:before
       background-color: $blue
+
+// Table checkboxes
+table, .table
+  &.table-2entries .t2e-item
+    > .th
+      position: relative
+
+      > .checkbox
+        position: absolute
+        right: 0
+        top: 0
+        margin: 6px 8px
+        height: $cbx-size-xs
+        width: $cbx-size-xs
+
+        > input
+          &[type='checkbox']:not(:checked), &[type='checkbox']:checked
+            + label
+              height: $cbx-size-xs
+              padding-left: $cbx-size-xs
+
+              &:before
+                margin-top: -($cbx-size-xs / 2)
+                height: $cbx-size-xs
+                width: $cbx-size-xs
+                border-radius: 2px
+              &:after
+                margin-top: -($cbx-size-xs / 2)
+                margin-left: -($cbx-size-xs / 2)
+                font-size: $cbx-size-xs - 2px
+                width: $cbx-size-xs
+                line-height: $cbx-size-xs
 
 // Radio
 .has_radio
@@ -194,7 +228,6 @@ $cbx-size: 20px
       padding: 0
       margin: 0
       display: inline-block
-      vertical-align: top
       min-height: 0
       width: auto
       height: 34px
@@ -249,37 +282,6 @@ $cbx-size: 20px
           &:not(:checked) + .switch-label:after
             left: 20px
             transition: 0.2s
-
-  &.inline
-    > *
-      display: inline-block
-      vertical-align: top
-
-    > label
-      margin: 0
-      padding: 2px 15px 0 0
-
-    .checkbox
-      height: 22px
-      line-height: 22px
-
-      > label > input[type='checkbox']
-        + .switch-label
-          width: 37px
-          height: 22px
-          line-height: 22px
-          padding-left: 47px
-
-          &:before
-            width: 37px
-            height: 22px
-            border-radius: 14px
-          &:after
-            width: 18px
-            height: 18px
-
-        &:not(:checked) + .switch-label:after
-          left: 15px
 
 // Form filter
 .form.form-filter
