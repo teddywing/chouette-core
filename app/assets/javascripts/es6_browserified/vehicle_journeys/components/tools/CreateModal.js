@@ -26,7 +26,7 @@ class CreateModal extends Component {
         <li className='st_action'>
           <a
             href='#'
-            className={((this.props.filters.policy['vehicle_journeys.create']) ? 'disabled ' : '')}
+            className={((this.props.filters.policy['vehicle_journeys.create']) ? '' : 'disabled')}
             data-toggle='modal'
             data-target='#NewVehicleJourneyModal'
             onClick={this.props.onOpenCreateModal}
