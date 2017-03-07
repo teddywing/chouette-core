@@ -15,13 +15,13 @@ class BSelect4 extends React.Component{
   render() {
     return (
       <Select2
-        defaultValue=''
-        onSelect={(e) => this.props.onSelect2JourneyPattern(e) }
+        data={(this.props.isFilter) ? [this.props.filters.query.journeyPattern.published_name] : undefined}
+        value={(this.props.isFilter) ? this.props.filters.query.journeyPattern.published_name : undefined}
+        onSelect={(e) => this.props.onSelect2JourneyPattern(e)}
+        multiple={false}
         ref='journey_pattern_id'
         options={{
-          placeholder: 'Nom d\'une mission existante',
           allowClear: false,
-          language: 'fr', /* Doesn't seem to work... :( */
           theme: 'bootstrap',
           width: '100%',
           ajax: {

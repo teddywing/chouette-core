@@ -15,13 +15,13 @@ class BSelect4 extends React.Component{
   render() {
     return (
       <Select2
-        defaultValue=''
+        data={(this.props.isFilter) ? [this.props.filters.query.timetable.comment] : undefined}
+        value={(this.props.isFilter) ? this.props.filters.query.timetable.comment : undefined}
         onSelect={(e) => this.props.onSelect2Timetable(e) }
-        ref='journey_pattern_id'
+        multiple={false}
+        ref='timetable_id'
         options={{
-          placeholder: 'Nom d\'un calendrier existant',
           allowClear: false,
-          language: 'fr', /* Doesn't seem to work... :( */
           theme: 'bootstrap',
           width: '100%',
           ajax: {

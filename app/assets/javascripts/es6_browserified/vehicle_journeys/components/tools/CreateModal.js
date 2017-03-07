@@ -59,7 +59,10 @@ class CreateModal extends Component {
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                             <div className='form-group'>
                               <label className='control-label is-required'>ID de la mission</label>
-                              <MissionSelect2 onSelect2JourneyPattern={this.props.onSelect2JourneyPattern} />
+                              <MissionSelect2
+                                onSelect2JourneyPattern={this.props.onSelect2JourneyPattern}
+                                isFilter={false}
+                              />
                             </div>
                           </div>
                         </div>

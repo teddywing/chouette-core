@@ -32,8 +32,12 @@ var initialState = {
           minute: '59'
         }
       },
-      journeyPattern: {},
-      timetable: {},
+      journeyPattern: {
+        published_name: ''
+      },
+      timetable: {
+        comment: ''
+      },
       withoutSchedule: false
     }
 

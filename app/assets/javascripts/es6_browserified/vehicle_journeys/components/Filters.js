@@ -10,6 +10,8 @@ const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, on
         <span>
           <MissionSelect2
             onSelect2JourneyPattern={onSelect2JourneyPattern}
+            filters= {filters}
+            isFilter={true}
           />
         </span>
       </div>
@@ -52,6 +54,8 @@ const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, on
             onSelect2Timetable={onSelect2Timetable}
             hasRoute={true}
             chunkURL= {("/autocomplete_time_tables.json?route_id=" + String(window.route_id))}
+            filters= {filters}
+            isFilter= {true}
           />
         </span>
       </div>

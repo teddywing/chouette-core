@@ -65,6 +65,7 @@ class CalendarsEditVehicleJourney extends Component {
                               <TimetableSelect2
                                 onSelect2Timetable={this.props.onSelect2Timetable}
                                 chunkURL={'/autocomplete_time_tables.json'}
+                                isFilter={false}
                               />
                               <button
                                 onClick={this.props.onAddSelectedTimetable}
