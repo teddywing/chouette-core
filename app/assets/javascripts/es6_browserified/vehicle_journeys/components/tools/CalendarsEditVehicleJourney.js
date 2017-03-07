@@ -61,7 +61,10 @@ class CalendarsEditVehicleJourney extends Component {
                         <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                           <div className='form-group'>
                             <label className='control-label is-required'>Ajouter un calendrier</label>
-                            <TimetableSelect2 onSelect2Timetable={this.props.onSelect2Timetable} />
+                            <TimetableSelect2
+                              onSelect2Timetable={this.props.onSelect2Timetable} 
+                              chunkURL={'/autocomplete_time_tables.json'}
+                            />
                             <button
                               onClick={this.props.onAddSelectedTimetable}
                               type='button'

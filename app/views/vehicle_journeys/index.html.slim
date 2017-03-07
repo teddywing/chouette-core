@@ -42,8 +42,8 @@
 
         #vehicle_journeys_wip
 
-
 = javascript_tag do
+  | window.route_id = #{params[:route_id]};
   | window.journeyPatternId = #{params[:q].present? ? ('"' + params[:q].values[1] + '"').html_safe : false};
   | window.vehicleJourneysLength = #{@vehicle_journeys.total_entries()};
   | window.vehicleJourneysPerPage = 20;

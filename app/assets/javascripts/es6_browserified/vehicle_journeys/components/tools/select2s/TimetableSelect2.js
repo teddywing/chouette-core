@@ -25,7 +25,7 @@ class BSelect4 extends React.Component{
           theme: 'bootstrap',
           width: '100%',
           ajax: {
-            url: origin + path + '/autocomplete_time_tables.json',
+            url: origin + path + this.props.chunkURL,
             dataType: 'json',
             delay: '500',
             data: function(params) {

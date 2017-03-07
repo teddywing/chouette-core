@@ -43,7 +43,12 @@ const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, on
         />
       </div>
       <div className = 'form-group'>
-        <span><TimetableSelect2 /></span>
+        <span>
+          <TimetableSelect2
+            hasRoute={true}
+            chunkURL= {("/autocomplete_time_tables.json?route_id=" + String(window.route_id))}
+          />
+        </span>
       </div>
       <div className = 'form-group'>
         <span>Afficher les courses sans horaires</span>
