@@ -6,6 +6,7 @@ var VehicleJourney = require('./VehicleJourney')
 class VehicleJourneys extends Component{
   constructor(props){
     super(props)
+    this.previousCity = undefined
   }
   componentDidMount() {
     this.props.onLoadFirstPage()
@@ -54,7 +55,26 @@ class VehicleJourneys extends Component{
     }
   }
 
+  cityNameChecker(sp) {
+    let bool = false
+    if(sp.city_name != this.previousCity){
+      bool = true
+      this.previousCity = sp.city_name
+    }
+    return (
+      <div
+        className={(bool) ? 'headlined' : ''}
+        data-headline={(bool) ? sp.city_name : ''}
+        title={sp.city_name + ' (' + sp.zip_code +')'}
+      >
+        <span>{sp.name}</span>
+      </div>
+    )
+  }
+
   render() {
+    this.previousCity = undefined
+
     if(this.props.status.isFetching == true) {
       return (
         <div className="isLoading" style={{marginTop: 80, marginBottom: 80}}>
@@ -79,7 +99,13 @@ class VehicleJourneys extends Component{
                   <div>ID mission</div>
                   <div>Calendriers</div>
                 </div>
-                
+                {this.props.stopPointsList.map((sp, i) =>{
+                  return (
+                    <div key={i} className='td'>
+                      {this.cityNameChecker(sp)}
+                    </div>
+                  )
+                })}
               </div>
 
               <div className='t2e-item-list w80'>
@@ -107,6 +133,7 @@ class VehicleJourneys extends Component{
 VehicleJourneys.propTypes = {
   status: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
+  stopPointsList: PropTypes.array.isRequired,
   onLoadFirstPage: PropTypes.func.isRequired,
   onUpdateTime: PropTypes.func.isRequired,
   onSelectVehicleJourney: PropTypes.func.isRequired

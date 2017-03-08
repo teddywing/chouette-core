@@ -47,6 +47,7 @@ var initialState = {
     isFetching: false
   },
   vehicleJourneys: [],
+  stopPointsList: window.stopPoints,
   pagination: {
     page : 1,
     totalCount: window.vehicleJourneysLength,
