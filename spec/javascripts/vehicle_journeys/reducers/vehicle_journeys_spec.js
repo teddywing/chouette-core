@@ -95,6 +95,7 @@ describe('vehicleJourneys reducer', () => {
         selectedJourneyPattern: fakeSelectedJourneyPattern
       })
     ).toEqual([{
+      dummy: false,
       journey_pattern: fakeSelectedJourneyPattern,
       published_journey_name: 'test',
       objectid: '',

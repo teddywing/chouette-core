@@ -17,6 +17,7 @@ const vehicleJourney= (state = {}, action) => {
         delete vj['stop_area_object_id']
       })
       return {
+        dummy: false,
         journey_pattern: action.selectedJourneyPattern,
         published_journey_name: action.data.published_journey_name.value,
         objectid: '',

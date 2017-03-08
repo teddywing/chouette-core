@@ -29,6 +29,10 @@ class VehicleJourney extends Component {
     }
   }
 
+  isDisabled(bool1, bool2) {
+    return (bool1 || bool2)
+  }
+
   render() {
     this.previousCity = undefined
 
@@ -67,7 +71,7 @@ class VehicleJourney extends Component {
                       min='00'
                       max='23'
                       className='form-control'
-                      disabled={this.props.value.deletable}
+                      disabled={(this.props.value.deletable && (!vj.dummy))}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
                       value={vj.arrival_time['hour']}
                       />
@@ -77,7 +81,7 @@ class VehicleJourney extends Component {
                       min='00'
                       max='59'
                       className='form-control'
-                      disabled={this.props.value.deletable}
+                      disabled={((this.props.value.deletable) && (!vj.dummy))}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
                       value={vj.arrival_time['minute']}
                       />
@@ -96,7 +100,7 @@ class VehicleJourney extends Component {
                       min='00'
                       max='23'
                       className='form-control'
-                      disabled={this.props.value.deletable}
+                      disabled={this.isDisabled(this.props.value.deletable, vj.dummy)}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
                       value={vj.departure_time['hour']}
                       />
@@ -106,7 +110,7 @@ class VehicleJourney extends Component {
                       min='00'
                       max='59'
                       className='form-control'
-                      disabled={this.props.value.deletable}
+                      disabled={this.isDisabled(this.props.value.deletable, vj.dummy)}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
                       value={vj.departure_time['minute']}
                       />
