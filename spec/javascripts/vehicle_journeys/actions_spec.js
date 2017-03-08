@@ -382,3 +382,13 @@ describe('when user clicked either on filter or reset button in filters', () => 
     expect(actions.createQueryString()).toEqual(expectedAction)
   })
 })
+describe('when submitting new vj', () => {
+  it('should create an action to update pagination totalCount', () => {
+    const diff = 1
+    const expectedAction = {
+      type: 'UPDATE_TOTAL_COUNT',
+      diff
+    }
+    expect(actions.updateTotalCount(diff)).toEqual(expectedAction)
+  })
+})

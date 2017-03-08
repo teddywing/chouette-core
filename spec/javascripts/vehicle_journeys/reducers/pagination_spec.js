@@ -26,6 +26,15 @@ describe('pagination reducer, given parameters allowing page change', () => {
     ).toEqual(Object.assign({}, state, {page: 1}))
   })
 
+  it('should handle UPDATE_TOTAL_COUNT', () => {
+    expect(
+      reducer(state, {
+        type: 'UPDATE_TOTAL_COUNT',
+        diff: 1
+      })
+    ).toEqual(Object.assign({}, state, {totalCount: 24}))
+  })
+
   it('should handle GO_TO_NEXT_PAGE and change state', () => {
     expect(
       reducer(state, {

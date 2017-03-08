@@ -222,6 +222,10 @@ const actions = {
       actions.queryFilterVehicleJourneys(dispatch)
     ])
   ),
+  updateTotalCount: (diff) => ({
+    type: 'UPDATE_TOTAL_COUNT',
+    diff
+  }),
   fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
     if(currentPage == undefined){
       currentPage = 1
@@ -294,9 +298,6 @@ const actions = {
               company_id: val.published_journey_name || 'non renseigné'
             })
           }
-          // if(vehicleJourneys.length != window.vehicleJourneysPerPage){
-          //   dispatch(actions.updateTotalCount(vehicleJourneys.length - window.vehicleJourneysPerPage))
-          // }
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
         }
       })
@@ -328,6 +329,9 @@ const actions = {
           if(next) {
             dispatch(next)
           } else {
+            if(json.length != window.vehicleJourneysPerPage){
+              dispatch(actions.updateTotalCount(window.vehicleJourneysPerPage - json.length))
+            }
             dispatch(actions.receiveVehicleJourneys(json))
           }
         }

@@ -18,6 +18,8 @@ const pagination = (state = {}, action) => {
       return Object.assign({}, state, {stateChanged: true})
     case 'RESET_PAGINATION':
       return Object.assign({}, state, {page: 1, stateChanged: false})
+    case 'UPDATE_TOTAL_COUNT':
+      return Object.assign({}, state, {totalCount : state.totalCount - action.diff })
     default:
       return state
   }
