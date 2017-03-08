@@ -15,7 +15,7 @@ const filters = (state = {}, action) => {
         }
       }
       newQuery = Object.assign({}, state.query, {interval: interval, journeyPattern: {}, timetable: {}, withoutSchedule: false })
-      return Object.assign({}, state, {query: newQuery})
+      return Object.assign({}, state, {query: newQuery, queryString: ''})
     case 'TOGGLE_WITHOUT_SCHEDULE':
       newQuery = Object.assign({}, state.query, {withoutSchedule: !state.query.withoutSchedule})
       return Object.assign({}, state, {query: newQuery})
@@ -45,6 +45,9 @@ const filters = (state = {}, action) => {
       return Object.assign({}, state, {query: newQuery})
     case 'TOGGLE_ARRIVALS':
       return Object.assign({}, state, {toggleArrivals: !state.toggleArrivals})
+    case 'QUERY_FILTER_VEHICLEJOURNEYS':
+      actions.fetchVehicleJourneys(action.dispatch, undefined, undefined, state.queryString)
+      return state
     default:
       return state
   }

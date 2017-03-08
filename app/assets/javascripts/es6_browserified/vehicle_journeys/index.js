@@ -4,6 +4,7 @@ var Provider = require('react-redux').Provider
 var createStore = require('redux').createStore
 var vehicleJourneysApp = require('./reducers')
 var App = require('./components/App')
+var enableBatching = require('./batch').enableBatching
 
 // logger, DO NOT REMOVE
 var applyMiddleware = require('redux').applyMiddleware
@@ -21,6 +22,7 @@ var initialState = {
     selectedJourneyPatterns : selectedJP,
     policy: window.perms,
     toggleArrivals: false,
+    queryString: '',
     query: {
       interval: {
         start:{
@@ -63,7 +65,7 @@ var initialState = {
 const loggerMiddleware = createLogger()
 
 let store = createStore(
-  vehicleJourneysApp,
+  enableBatching(vehicleJourneysApp),
   initialState,
   applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )

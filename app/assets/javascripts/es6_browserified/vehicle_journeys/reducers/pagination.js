@@ -16,6 +16,8 @@ const pagination = (state = {}, action) => {
     case 'UPDATE_TIME':
       toggleOnConfirmModal('modal')
       return Object.assign({}, state, {stateChanged: true})
+    case 'RESET_PAGINATION':
+      return Object.assign({}, state, {page: 1, stateChanged: false})
     default:
       return state
   }

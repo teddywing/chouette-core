@@ -4,7 +4,8 @@ var Filters = require('../components/Filters')
 
 const mapStateToProps = (state) => {
   return {
-    filters: state.filters
+    filters: state.filters,
+    pagination: state.pagination
   }
 }
 
@@ -21,11 +22,11 @@ const mapDispatchToProps = (dispatch) => {
     onToggleWithoutSchedule: () =>{
       dispatch(actions.toggleWithoutSchedule())
     },
-    onResetFilters: () =>{
-      dispatch(actions.resetFilters())
+    onResetFilters: (e, pagination) =>{
+      dispatch(actions.checkConfirmModal(e, actions.resetFilters(dispatch), pagination.stateChanged, dispatch))
     },
-    onFilter: () =>{
-      dispatch(actions.filterQuery())
+    onFilter: (e, pagination) =>{
+      dispatch(actions.checkConfirmModal(e, actions.filterQuery(dispatch), pagination.stateChanged, dispatch))
     },
     onSelect2Timetable: (e) => {
       dispatch(actions.filterSelect2Timetable(e.params.data))

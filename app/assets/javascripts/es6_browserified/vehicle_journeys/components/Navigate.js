@@ -3,7 +3,7 @@ var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../actions')
 
-let Navigate = ({ dispatch, vehicleJourneys, pagination, status }) => {
+let Navigate = ({ dispatch, vehicleJourneys, pagination, status, filters}) => {
   let firstPage = 1
   let lastPage = Math.ceil(pagination.totalCount / pagination.perPage)
   let minVJ = (pagination.page - 1) * pagination.perPage + 1
@@ -20,7 +20,7 @@ let Navigate = ({ dispatch, vehicleJourneys, pagination, status }) => {
           <button
             onClick={e => {
               e.preventDefault()
-              dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
+              dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination, filters.queryString), pagination.stateChanged, dispatch))
             }}
             type='button'
             data-target='#ConfirmModal'
@@ -30,7 +30,7 @@ let Navigate = ({ dispatch, vehicleJourneys, pagination, status }) => {
           <button
             onClick={e => {
               e.preventDefault()
-              dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
+              dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination, filters.queryString), pagination.stateChanged, dispatch))
             }}
             type='button'
             data-target='#ConfirmModal'

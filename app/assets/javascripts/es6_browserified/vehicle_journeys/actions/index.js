@@ -1,3 +1,5 @@
+var batchActions = require('../batch').batchActions
+
 const actions = {
   receiveVehicleJourneys : (json) => ({
     type: "RECEIVE_VEHICLE_JOURNEYS",
@@ -13,17 +15,19 @@ const actions = {
   unavailableServer : () => ({
     type: 'UNAVAILABLE_SERVER'
   }),
-  goToPreviousPage : (dispatch, pagination) => ({
+  goToPreviousPage : (dispatch, pagination, queryString) => ({
     type: 'GO_TO_PREVIOUS_PAGE',
     dispatch,
     pagination,
-    nextPage : false
+    nextPage : false,
+    queryString
   }),
-  goToNextPage : (dispatch, pagination) => ({
+  goToNextPage : (dispatch, pagination, queryString) => ({
     type: 'GO_TO_NEXT_PAGE',
     dispatch,
     pagination,
-    nextPage : true
+    nextPage : true,
+    queryString
   }),
   checkConfirmModal : (event, callback, stateChanged, dispatch) => {
     if(stateChanged === true){
@@ -161,7 +165,7 @@ const actions = {
     isDeparture,
     isArrivalsToggled
   }),
-  resetFilters: () => ({
+  resetStateFilters: () => ({
     type: 'RESET_FILTERS'
   }),
   toggleWithoutSchedule: () => ({
@@ -194,10 +198,31 @@ const actions = {
       published_name: selectedJP.published_name
     }
   }),
-  filterQuery: () => ({
-    type: 'FILTER_QUERY'
+  createQueryString: () => ({
+    type: 'CREATE_QUERY_STRING'
   }),
-  fetchVehicleJourneys : (dispatch, currentPage, nextPage) => {
+  resetPagination: () => ({
+    type: 'RESET_PAGINATION'
+  }),
+  queryFilterVehicleJourneys: (dispatch) => ({
+    type: 'QUERY_FILTER_VEHICLEJOURNEYS',
+    dispatch
+  }),
+  resetFilters: (dispatch) => (
+    batchActions([
+      actions.resetStateFilters(),
+      actions.resetPagination(),
+      actions.queryFilterVehicleJourneys(dispatch)
+    ])
+  ),
+  filterQuery: (dispatch) => (
+    batchActions([
+      actions.createQueryString(),
+      actions.resetPagination(),
+      actions.queryFilterVehicleJourneys(dispatch)
+    ])
+  ),
+  fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
     if(currentPage == undefined){
       currentPage = 1
     }
@@ -221,6 +246,9 @@ const actions = {
       str = '.json?page=' + page.toString()
     }
     let urlJSON = window.location.pathname + str
+    if (queryString){
+      urlJSON += queryString
+    }
     let req = new Request(urlJSON, {
       credentials: 'same-origin',
     })
@@ -303,7 +331,6 @@ const actions = {
         }
       })
   },
-
   // VJAS HELPERS
   getSelected: (vj) => {
     return vj.filter((obj) =>{

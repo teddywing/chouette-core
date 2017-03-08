@@ -72,6 +72,7 @@ describe('when clicking on validate button inside create modal', () => {
 describe('when previous navigation button is clicked', () => {
   it('should create an action to go to previous page', () => {
     const nextPage = false
+    const queryString = ''
     const pagination = {
       totalCount: 25,
       perPage: 12,
@@ -81,13 +82,15 @@ describe('when previous navigation button is clicked', () => {
       type: 'GO_TO_PREVIOUS_PAGE',
       dispatch,
       pagination,
-      nextPage
+      nextPage,
+      queryString
     }
-    expect(actions.goToPreviousPage(dispatch, pagination)).toEqual(expectedAction)
+    expect(actions.goToPreviousPage(dispatch, pagination, queryString)).toEqual(expectedAction)
   })
 })
 describe('when next navigation button is clicked', () => {
   it('should create an action to go to next page', () => {
+    const queryString = ''
     const nextPage = true
     const pagination = {
       totalCount: 25,
@@ -98,9 +101,10 @@ describe('when next navigation button is clicked', () => {
       type: 'GO_TO_NEXT_PAGE',
       dispatch,
       pagination,
-      nextPage
+      nextPage,
+      queryString
     }
-    expect(actions.goToNextPage(dispatch, pagination)).toEqual(expectedAction)
+    expect(actions.goToNextPage(dispatch, pagination, queryString)).toEqual(expectedAction)
   })
 })
 describe('when checking a vehicleJourney', () => {
@@ -273,7 +277,12 @@ describe('when using select2 to pick a timetable', () => {
 describe('when clicking on reset button inside query filters', () => {
   it('should create an action to reset the query filters', () => {
     const expectedAction = {
-      type: 'RESET_FILTERS',
+      type: 'BATCH',
+      payload: [
+        {type: 'RESET_FILTERS'},
+        {type: 'RESET_PAGINATION'},
+        {type: 'QUERY_FILTER_VEHICLEJOURNEYS', dispatch: undefined},
+      ]
     }
     expect(actions.resetFilters()).toEqual(expectedAction)
   })

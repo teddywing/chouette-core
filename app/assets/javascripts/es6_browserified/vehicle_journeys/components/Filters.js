@@ -3,7 +3,7 @@ var PropTypes = require('react').PropTypes
 var MissionSelect2 = require('./tools/select2s/MissionSelect2')
 var TimetableSelect2 = require('./tools/select2s/TimetableSelect2')
 
-const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onSelect2Timetable, onSelect2JourneyPattern}) => {
+const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onSelect2Timetable, onSelect2JourneyPattern}) => {
   return (
     <div className = 'form-filter mb-lg'>
       <div className = 'form-group'>
@@ -70,12 +70,12 @@ const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, on
       <div className = 'actions'>
         <span
           className = 'btn btn-link'
-          onClick = {onResetFilters}>
+          onClick = {(e) => onResetFilters(e, pagination)}>
           EFFACER
         </span>
         <span
           className='btn btn-primary'
-          onClick={onFilter}>
+          onClick={(e) => onFilter(e, pagination)}>
           FILTRER
         </span>
       </div>
@@ -85,6 +85,7 @@ const Filters = ({filters, onFilter, onResetFilters, onUpdateStartTimeFilter, on
 
 Filters.propTypes = {
   filters : PropTypes.object.isRequired,
+  pagination : PropTypes.object.isRequired,
   onFilter: PropTypes.func.isRequired,
   onResetFilters: PropTypes.func.isRequired,
   onUpdateStartTimeFilter: PropTypes.func.isRequired,

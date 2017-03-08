@@ -29,8 +29,9 @@ describe('filters reducer', () => {
       },
       journeyPattern: {},
       timetable: {},
-      withoutSchedule: false
-    }
+      withoutSchedule: false,
+    },
+    queryString: ''
     }
   })
 

@@ -82,12 +82,12 @@ const vehicleJourneys = (state = [], action) => {
       return [...action.json]
     case 'GO_TO_PREVIOUS_PAGE':
       if(action.pagination.page > 1){
-        actions.fetchVehicleJourneys(action.dispatch, action.pagination.page, action.nextPage)
+        actions.fetchVehicleJourneys(action.dispatch, action.pagination.page, action.nextPage, action.queryString)
       }
       return state
     case 'GO_TO_NEXT_PAGE':
       if (action.pagination.totalCount - (action.pagination.page * action.pagination.perPage) > 0){
-        actions.fetchVehicleJourneys(action.dispatch, action.pagination.page, action.nextPage)
+        actions.fetchVehicleJourneys(action.dispatch, action.pagination.page, action.nextPage, action.queryString)
       }
       return state
     case 'ADD_VEHICLEJOURNEY':
