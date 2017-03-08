@@ -18,6 +18,14 @@ describe('pagination reducer, given parameters allowing page change', () => {
     ).toEqual({})
   })
 
+  it('should handle RESET_PAGINATION', () => {
+    expect(
+      reducer(state, {
+        type: 'RESET_PAGINATION',
+      })
+    ).toEqual(Object.assign({}, state, {page: 1}))
+  })
+
   it('should handle GO_TO_NEXT_PAGE and change state', () => {
     expect(
       reducer(state, {
@@ -52,8 +60,7 @@ describe('pagination reducer, given parameters allowing page change', () => {
         isDeparture,
         isArrivalsToggled
       })
-    ).toEqual(Object.assign({}, state, {stateChanged: true})
-)
+    ).toEqual(Object.assign({}, state, {stateChanged: true}))
   })
 
 })

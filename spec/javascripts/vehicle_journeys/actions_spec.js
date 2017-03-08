@@ -287,6 +287,19 @@ describe('when clicking on reset button inside query filters', () => {
     expect(actions.resetFilters()).toEqual(expectedAction)
   })
 })
+describe('when clicking on filter button inside query filters', () => {
+  it('should create an action to filter', () => {
+    const expectedAction = {
+      type: 'BATCH',
+      payload: [
+        {type: 'CREATE_QUERY_STRING'},
+        {type: 'RESET_PAGINATION'},
+        {type: 'QUERY_FILTER_VEHICLEJOURNEYS', dispatch: undefined},
+      ]
+    }
+    expect(actions.filterQuery()).toEqual(expectedAction)
+  })
+})
 describe('when clicking on checkbox to show vj without schedule', () => {
   it('should create an action to toggle this filter', () => {
     const expectedAction = {
@@ -351,5 +364,13 @@ describe('when using select2 to pick a journeypattern in the filters', () => {
       }
     }
     expect(actions.filterSelect2JourneyPattern(selectedJP)).toEqual(expectedAction)
+  })
+})
+describe('when user clicked either on filter or reset button in filters', () => {
+  it('should create an action to reset pagination', () => {
+    const expectedAction = {
+      type: 'RESET_PAGINATION',
+    }
+    expect(actions.resetPagination()).toEqual(expectedAction)
   })
 })
