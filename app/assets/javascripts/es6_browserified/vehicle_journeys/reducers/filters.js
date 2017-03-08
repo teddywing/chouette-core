@@ -48,6 +48,16 @@ const filters = (state = {}, action) => {
     case 'QUERY_FILTER_VEHICLEJOURNEYS':
       actions.fetchVehicleJourneys(action.dispatch, undefined, undefined, state.queryString)
       return state
+    case 'CREATE_QUERY_STRING':
+      let params = {
+        journey_pattern_id: state.query.journeyPattern.id || undefined,
+        timetable_id: state.query.timetable.id || undefined,
+        range_start: (state.query.interval.start.hour + state.query.interval.start.minute),
+        range_end: (state.query.interval.end.hour + state.query.interval.end.minute)
+      }
+      let esc = encodeURIComponent
+      let queryString = Object.keys(params).map((k) => esc(k) + '=' + esc(params[k])).join('&')
+      return Object.assign({}, state, {queryString: queryString})
     default:
       return state
   }

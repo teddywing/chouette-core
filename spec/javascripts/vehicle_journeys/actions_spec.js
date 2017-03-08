@@ -374,3 +374,11 @@ describe('when user clicked either on filter or reset button in filters', () => 
     expect(actions.resetPagination()).toEqual(expectedAction)
   })
 })
+describe('when user clicked either on filter or reset button in filters', () => {
+  it('should create an action to create a queryString with params filters', () => {
+    const expectedAction = {
+      type: 'CREATE_QUERY_STRING',
+    }
+    expect(actions.createQueryString()).toEqual(expectedAction)
+  })
+})

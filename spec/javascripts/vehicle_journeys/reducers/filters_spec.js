@@ -142,4 +142,13 @@ describe('filters reducer', () => {
       })
     ).toEqual(Object.assign({}, state, {query: newQuery}))
   })
+
+  it('should handle SELECT_JP_FILTER', () => {
+    let strResult = "journey_pattern_id=undefined&timetable_id=undefined&range_start=1111&range_end=2222"
+    expect(
+      statusReducer(state, {
+        type: 'CREATE_QUERY_STRING',
+      })
+    ).toEqual(Object.assign({}, state, {queryString: strResult}))
+  })
 })

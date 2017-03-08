@@ -242,12 +242,14 @@ const actions = {
         break
     }
     let str = ".json"
+    let sep = '?'
     if(page > 1){
       str = '.json?page=' + page.toString()
+      sep = '&'
     }
     let urlJSON = window.location.pathname + str
     if (queryString){
-      urlJSON += queryString
+      urlJSON = urlJSON + sep + queryString
     }
     let req = new Request(urlJSON, {
       credentials: 'same-origin',
