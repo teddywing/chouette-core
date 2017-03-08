@@ -125,6 +125,9 @@ const actions = {
           if(next) {
             dispatch(next)
           } else {
+            if(json.length != window.journeyPatternsPerPage){
+              dispatch(actions.updateTotalCount(window.journeyPatternsPerPage - json.length))
+            }
             dispatch(actions.receiveJourneyPatterns(json))
           }
         }
@@ -186,9 +189,6 @@ const actions = {
               stop_points: val.route_short_description.stop_points,
               deletable: false
             })
-          }
-          if(journeyPatterns.length != window.journeyPatternsPerPage){
-            dispatch(actions.updateTotalCount(journeyPatterns.length - window.journeyPatternsPerPage))
           }
           dispatch(actions.receiveJourneyPatterns(journeyPatterns))
         }
