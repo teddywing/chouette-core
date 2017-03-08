@@ -17,6 +17,15 @@ class VehicleJourney extends Component {
     return bool
   }
 
+  timeTableURL(id) {
+    let refURL = window.location.pathname.split('/', 3).join('/')
+    let ttURL = refURL + '/time_tables/' + id
+
+    return (
+      <a href={ttURL} title='Voir le calendrier'><span className='fa fa-calendar'></span></a>
+    )
+  }
+
   columnHasDelta() {
     let a = []
     this.props.value.vehicle_journey_at_stops.map((vj, i) => {
@@ -41,11 +50,9 @@ class VehicleJourney extends Component {
         <div className='th'>
           <div className='strong mb-xs'>{this.props.value.objectid ? this.props.value.objectid : '-'}</div>
           <div>{this.props.value.journey_pattern.objectid}</div>
-          <div>
-            {this.props.value.time_tables.map((tt, i)=>
-              <span key={i}>{tt.objectid}</span>
-            )}
-          </div>
+          {this.props.value.time_tables.map((tt, i)=>
+            <div key={i}>{this.timeTableURL(tt.id)}</div>
+          )}
 
           <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
             <input

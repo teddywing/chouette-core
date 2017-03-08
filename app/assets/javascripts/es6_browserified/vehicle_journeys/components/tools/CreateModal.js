@@ -38,25 +38,27 @@ class CreateModal extends Component {
             <div className='modal-container'>
               <div className='modal-dialog'>
                 <div className='modal-content'>
-                  <div className='modal-header clearfix'>
-                    <h4>Ajouter une mission</h4>
+                  <div className='modal-header'>
+                    <h4 className='modal-title'>Ajouter une mission</h4>
                   </div>
 
                   {(this.props.modal.type == 'create') && (
                     <form>
                       <div className='modal-body'>
-                        <div className='form-group'>
-                          <label className='control-label is-required'>Nom de la course</label>
-                          <input
-                            type='text'
-                            ref='published_journey_name'
-                            className='form-control'
-                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                            required
-                            />
-                        </div>
                         <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Nom de la course</label>
+                              <input
+                                type='text'
+                                ref='published_journey_name'
+                                className='form-control'
+                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                required
+                                />
+                            </div>
+                          </div>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
                               <label className='control-label is-required'>ID de la mission</label>
                               <MissionSelect2
@@ -69,7 +71,7 @@ class CreateModal extends Component {
                       </div>
                       <div className='modal-footer'>
                         <button
-                          className='btn btn-default'
+                          className='btn btn-link'
                           data-dismiss='modal'
                           type='button'
                           onClick={this.props.onModalClose}
@@ -77,7 +79,7 @@ class CreateModal extends Component {
                           Annuler
                         </button>
                         <button
-                          className='btn btn-danger'
+                          className='btn btn-primary'
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >

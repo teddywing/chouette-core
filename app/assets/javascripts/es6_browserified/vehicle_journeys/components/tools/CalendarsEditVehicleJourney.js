@@ -36,42 +36,67 @@ class CalendarsEditVehicleJourney extends Component {
             <div className='modal-container'>
               <div className='modal-dialog'>
                 <div className='modal-content'>
-                  <div className='modal-header clearfix'>
-                    <h4>Calendriers associés</h4>
+                  <div className='modal-header'>
+                    <h4 className='modal-title'>Calendriers associés</h4>
                   </div>
 
                   {(this.props.modal.type == 'calendars_edit') && (
                     <form>
                       <div className='modal-body'>
-                        <ul>
-                        {this.props.modal.modalProps.timetables.map((tt, i) =>
-                            <li
-                              key= {i}
-                            >
-                              {tt.comment}
-                              <button
-                              type='button'
-                              onClick={() => this.props.onDeleteCalendarModal(tt)}
-                              >
-                                <span className='fa fa-times'></span>
-                              </button>
-                            </li>
-                        )}
-                        </ul>
                         <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                            <div className='form-group'>
-                              <label className='control-label is-required'>Ajouter un calendrier</label>
-                              <TimetableSelect2
-                                onSelect2Timetable={this.props.onSelect2Timetable}
-                                chunkURL={'/autocomplete_time_tables.json'}
-                                isFilter={false}
-                              />
-                              <button
-                                onClick={this.props.onAddSelectedTimetable}
-                                type='button'
-                              ><span className='fa fa-times'>Ajouter</span>
-                              </button>
+                          <div className='col-lg-12'>
+                            <div className='subform'>
+                              <div className='nested-head'>
+                                <div className='wrapper'>
+                                  <div>
+                                    <div className='form-group'>
+                                      <label className='control-label'>Calendriers associés</label>
+                                    </div>
+                                  </div>
+                                  <div></div>
+                                </div>
+                              </div>
+                              {this.props.modal.modalProps.timetables.map((tt, i) =>
+                                <div className='nested-fields' key={i}>
+                                  <div className='wrapper'>
+                                    <div>{tt.comment}</div>
+                                    <div>
+                                      <a
+                                        href='#'
+                                        title='Supprimer'
+                                        className='fa fa-trash remove_fields'
+                                        style={{height: 'auto', lineHeight: 'normal'}}
+                                        onClick={(e) => {
+                                          e.preventDefault()
+                                          this.props.onDeleteCalendarModal(tt)
+                                        }}
+                                        ></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                              <div className='nested-fields'>
+                                <div className='wrapper'>
+                                  <div>
+                                    <TimetableSelect2
+                                      onSelect2Timetable={this.props.onSelect2Timetable}
+                                      chunkURL={'/autocomplete_time_tables.json'}
+                                      isFilter={false}
+                                    />
+                                  </div>
+                                  <div>
+                                    <a
+                                      href='#'
+                                      title='Ajouter'
+                                      className='fa fa-plus'
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        this.props.onAddSelectedTimetable()
+                                      }}
+                                    ></a>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -79,7 +104,7 @@ class CalendarsEditVehicleJourney extends Component {
 
                       <div className='modal-footer'>
                         <button
-                          className='btn btn-default'
+                          className='btn btn-link'
                           data-dismiss='modal'
                           type='button'
                           onClick={this.props.onModalClose}
@@ -87,7 +112,7 @@ class CalendarsEditVehicleJourney extends Component {
                           Annuler
                         </button>
                         <button
-                          className='btn btn-danger'
+                          className='btn btn-primary'
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >

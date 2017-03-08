@@ -37,18 +37,18 @@ class DuplicateVehicleJourney extends Component {
             <div className='modal-container'>
               <div className='modal-dialog'>
                 <div className='modal-content'>
-                  <div className='modal-header clearfix'>
-                    <h4>Mettre à jour une course</h4>
+                  <div className='modal-header'>
+                    <h4 className='modal-title'>Dupliquer une course</h4>
+                    {(this.props.modal.type == 'duplicate') && (
+                      <em>Dupliquer les horaires de la course {actions.getSelected(this.props.vehicleJourneys)[0].objectid}</em>
+                    )}
                   </div>
 
                   {(this.props.modal.type == 'duplicate') && (
                     <form>
                       <div className='modal-body'>
-                        <div className='form-group'>
-                          <span>Dupliquer les horaires de la course suivante : {actions.getSelected(this.props.vehicleJourneys)[0].objectid}</span>
-                        </div>
                         <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                          <div className='col-lg-10 col-md-9 col-sm-8 col-xs-12'>
                             <div className='form-group'>
                               <label className='control-label is-required'>Nombre de courses à créer et dupliquer</label>
                               <input
@@ -62,9 +62,7 @@ class DuplicateVehicleJourney extends Component {
                                 />
                             </div>
                           </div>
-                        </div>
-                        <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                          <div className='col-lg-2 col-md-3 col-sm-4 col-xs-12'>
                             <div className='form-group'>
                               <label className='control-label is-required'>Avec un décalage de</label>
                               <input
@@ -82,7 +80,7 @@ class DuplicateVehicleJourney extends Component {
                       </div>
                       <div className='modal-footer'>
                         <button
-                          className='btn btn-default'
+                          className='btn btn-link'
                           data-dismiss='modal'
                           type='button'
                           onClick={this.props.onModalClose}
@@ -90,7 +88,7 @@ class DuplicateVehicleJourney extends Component {
                           Annuler
                         </button>
                         <button
-                          className='btn btn-danger'
+                          className='btn btn-primary'
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >

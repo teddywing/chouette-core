@@ -37,32 +37,42 @@ class EditVehicleJourney extends Component {
             <div className='modal-container'>
               <div className='modal-dialog'>
                 <div className='modal-content'>
-                  <div className='modal-header clearfix'>
-                    <h4>Informations</h4>
+                  <div className='modal-header'>
+                    <h4 className='modal-title'>Informations</h4>
                   </div>
 
                   {(this.props.modal.type == 'edit') && (
                     <form>
                       <div className='modal-body'>
-                        <div className='form-group'>
-                          <label className='control-label is-required'>Intitulé de la course</label>
-                          <input
-                            type='text'
-                            ref='published_journey_name'
-                            className='form-control'
-                            defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_name}
-                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                            required
-                            />
+                        <div className='row'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Intitulé de la course</label>
+                              <input
+                                type='text'
+                                ref='published_journey_name'
+                                className='form-control'
+                                defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_name}
+                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                required
+                                />
+                            </div>
+                          </div>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                            <div className='form-group'>
+                              <label className='control-label'>Mission</label>
+                              <input
+                                type='text'
+                                className='form-control'
+                                value={(this.props.modal.modalProps.vehicleJourney.journey_pattern.objectid) + ' - ' + (this.props.modal.modalProps.vehicleJourney.journey_pattern.name)}
+                                disabled={true}
+                              />
+                            </div>
+                          </div>
                         </div>
 
                         <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                            <p>Mission <span> {this.props.modal.modalProps.vehicleJourney.journey_pattern.objectid} - {this.props.modal.modalProps.vehicleJourney.journey_pattern.name}</span></p>
-                          </div>
-                        </div>
-                        <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <label className='control-label is-required'>Numéro de train</label>
                             <input
                               type='text'
@@ -73,17 +83,21 @@ class EditVehicleJourney extends Component {
                               required
                               />
                           </div>
-                        </div>
-                        <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
-                            <p>Transporteur <span> {this.props.modal.modalProps.vehicleJourney.company_id}</span></p>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                            <label className='control-label'>Transporteur</label>
+                              <input
+                                type='text'
+                                className='form-control'
+                                value={this.props.modal.modalProps.vehicleJourney.company_id}
+                                disabled={true}
+                              />
                           </div>
                         </div>
                       </div>
 
                       <div className='modal-footer'>
                         <button
-                          className='btn btn-default'
+                          className='btn btn-link'
                           data-dismiss='modal'
                           type='button'
                           onClick={this.props.onModalClose}
@@ -91,7 +105,7 @@ class EditVehicleJourney extends Component {
                           Annuler
                         </button>
                         <button
-                          className='btn btn-danger'
+                          className='btn btn-primary'
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >

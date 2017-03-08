@@ -3,15 +3,43 @@
 //-----------------------//
 
 // With Font Awesome adjusts.
+.select2-selection__rendered
+  position: relative
 
-.select2-selection__clear
-  font-size: 0
-  font-family: FontAwesome
-  text-rendering: auto
-  -webkit-font-smoothing: antialiased
+.select2-container--bootstrap
+  .select2-dropdown
+    z-index: 2050
+  .select2-dropdown--above
+    box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.175)
 
-  &::before
-    content: '\f057'
-    display: inline
-    font-size: 14px
-    font-weight: normal
+  .select2-selection--multiple
+    .select2-selection__clear
+      position: absolute
+      top: 50%
+      right: 10px
+      margin: -10px 0 0 0
+      font-size: 0
+      font-family: FontAwesome
+      text-rendering: auto
+      -webkit-font-smoothing: antialiased
+
+      &::before
+        content: '\f057'
+        color: $grey
+        display: inline
+        font-size: 14px
+        font-weight: normal
+
+    .select2-selection__choice
+      background-color: $blue
+      color: #fff
+      border: none
+      border-radius: 3px
+
+    .select2-selection__choice__remove
+      float: right
+      color: rgba(#fff, 0.5)
+      margin: 0 0 0 5px
+
+      &:hover
+        color: #fff
