@@ -7,10 +7,21 @@ class VehicleJourney extends Component {
     super(props)
   }
 
+  columnHasDelta() {
+    let a = []
+    this.props.value.vehicle_journey_at_stops.map((vj, i) => {
+      a.push(vj.delta)
+    })
+    let b = a.reduce((p, c) => p+c, 0)
+
+    if(b > 0) {
+      return true
+    }
+  }
+
   render() {
     return (
-      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '')} >
-
+      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '')}>
         <div className='th'>
           <div className='strong mb-xs'>{this.props.value.objectid ? this.props.value.objectid : '-'}</div>
           <div>{this.props.value.journey_pattern.objectid}</div>
@@ -20,9 +31,7 @@ class VehicleJourney extends Component {
             )}
           </div>
 
-          <div
-            className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}
-          >
+          <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
             <input
               id={this.props.index}
               name={this.props.index}
@@ -31,13 +40,13 @@ class VehicleJourney extends Component {
               disabled={this.props.value.deletable}
               checked={this.props.value.selected}
             ></input>
-          <label htmlFor={this.props.index}></label>
+            <label htmlFor={this.props.index}></label>
           </div>
         </div>
 
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
-          <div key={i} className='td'>
-            <div className='inline-table'>
+          <div key={i} className='td text-center'>
+            <div className='cellwrap'>
               {this.props.filters.toggleArrivals &&
                 <div>
                   <span className='input-group time'>
@@ -63,11 +72,11 @@ class VehicleJourney extends Component {
                   </span>
                 </div>
                 }
-                {(vj.delta != 0) &&
-                  <div>
+                <div className={(this.columnHasDelta() ? '' : 'hidden')}>
+                  {(vj.delta != 0) &&
                     <span className='sb sb-chrono sb-lg text-warning' data-textinside={vj.delta}></span>
-                  </div>
-                }
+                  }
+                </div>
                 <div>
                   <span className='input-group time'>
                     <input
