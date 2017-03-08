@@ -58,8 +58,8 @@ class NotesEditVehicleJourney extends Component {
             <div className='modal-container'>
               <div className='modal-dialog'>
                 <div className='modal-content'>
-                  <div className='modal-header clearfix'>
-                    <h4>Notes</h4>
+                  <div className='modal-header'>
+                    <h4 className='modal-title'>Notes</h4>
                   </div>
 
                   {(this.props.modal.type == 'notes_edit') && (
@@ -68,10 +68,13 @@ class NotesEditVehicleJourney extends Component {
                         {window.line_footnotes.map((lf, i) =>
                           <div
                             key={i}
-                            >
-                            <span>Titre: {lf.label} </span>
-                            <span>Contenu: {lf.code}</span>
-                            {this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}
+                            className='panel panel-default'
+                          >
+                            <div className='panel-heading'>{lf.label}</div>
+                            <div className='panel-body'><p>{lf.code}</p></div>
+                            <div className='panel-footer text-right'>
+                              {this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}
+                            </div>
                           </div>
                         )}
                       </div>
