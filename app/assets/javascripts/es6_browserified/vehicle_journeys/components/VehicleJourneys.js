@@ -67,7 +67,7 @@ class VehicleJourneys extends Component{
         data-headline={(bool) ? sp.city_name : ''}
         title={sp.city_name + ' (' + sp.zip_code +')'}
       >
-        <span>{sp.name}</span>
+        <span><span>{sp.name}</span></span>
       </div>
     )
   }

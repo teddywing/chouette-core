@@ -1,6 +1,6 @@
 object @vehicle_journey
 
-[ :objectid, :published_journey_name, :published_journey_identifier, :company_id].each do |attr|
+[:objectid, :published_journey_name, :published_journey_identifier, :company_id].each do |attr|
   attributes attr, :unless => lambda { |m| m.send( attr).nil?}
 end
 
@@ -27,6 +27,9 @@ child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops
     end
     node(:stop_area_name) do
       vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.name : nil
+    end
+    node(:stop_area_cityname) do
+      vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.city_name : nil
     end
 
     [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|

@@ -5,6 +5,16 @@ var PropTypes = require('react').PropTypes
 class VehicleJourney extends Component {
   constructor(props) {
     super(props)
+    this.previousCity = undefined
+  }
+
+  cityNameChecker(sp) {
+    let bool = false
+    if(sp.stop_area_cityname != this.previousCity){
+      bool = true
+      this.previousCity = sp.stop_area_cityname
+    }
+    return bool
   }
 
   columnHasDelta() {
@@ -20,6 +30,8 @@ class VehicleJourney extends Component {
   }
 
   render() {
+    this.previousCity = undefined
+
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '')}>
         <div className='th'>
@@ -46,7 +58,7 @@ class VehicleJourney extends Component {
 
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
-            <div className='cellwrap'>
+            <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
                 <div>
                   <span className='input-group time'>
