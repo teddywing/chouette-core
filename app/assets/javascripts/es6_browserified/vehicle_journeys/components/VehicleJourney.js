@@ -60,7 +60,7 @@ class VehicleJourney extends Component {
           <div key={i} className='td text-center'>
             <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
-                <div>
+                <div data-headline='Départ à'>
                   <span className='input-group time'>
                     <input
                       type='number'
@@ -89,7 +89,7 @@ class VehicleJourney extends Component {
                     <span className='sb sb-chrono sb-lg text-warning' data-textinside={vj.delta}></span>
                   }
                 </div>
-                <div>
+                <div data-headline='Arrivée à'>
                   <span className='input-group time'>
                     <input
                       type='number'
