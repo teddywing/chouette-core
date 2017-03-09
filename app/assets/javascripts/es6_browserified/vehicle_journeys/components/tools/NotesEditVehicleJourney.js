@@ -25,15 +25,15 @@ class NotesEditVehicleJourney extends Component {
     if(footnote_id){
       return <button
         type='button'
-        className='btn btn-primary btn-sm'
+        className='btn btn-outline-danger btn-xs'
         onClick={() => this.props.onToggleFootnoteModal(lf, false)}
-      >Retirer</button>
+      ><span className="fa fa-trash"></span></button>
     }else{
       return <button
         type='button'
-        className='btn btn-primary btn-sm'
+        className='btn btn-outline-primary btn-xs'
         onClick={() => this.props.onToggleFootnoteModal(lf, true)}
-      >Ajouter</button>
+      ><span className="fa fa-plus"></span></button>
     }
   }
 
@@ -70,18 +70,20 @@ class NotesEditVehicleJourney extends Component {
                             key={i}
                             className='panel panel-default'
                           >
-                            <div className='panel-heading'>{lf.label}</div>
-                            <div className='panel-body'><p>{lf.code}</p></div>
-                            <div className='panel-footer text-right'>
-                              {this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}
+                            <div className='panel-heading'>
+                              <h4 className='panel-title clearfix'>
+                                <div className='pull-left' style={{paddingTop: '3px'}}>{lf.label}</div>
+                                <div className='pull-right'>{this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}</div>
+                              </h4>
                             </div>
+                            <div className='panel-body'><p>{lf.code}</p></div>
                           </div>
                         )}
                       </div>
 
                       <div className='modal-footer'>
                         <button
-                          className='btn btn-default'
+                          className='btn btn-link'
                           data-dismiss='modal'
                           type='button'
                           onClick={this.props.onModalClose}
@@ -89,7 +91,7 @@ class NotesEditVehicleJourney extends Component {
                           Annuler
                         </button>
                         <button
-                          className='btn btn-danger'
+                          className='btn btn-primary'
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >
