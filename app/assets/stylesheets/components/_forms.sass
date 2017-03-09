@@ -113,10 +113,7 @@ input
 
 // Checkbox
 $cbx-size: 20px
-<<<<<<< HEAD
-=======
 $cbx-size-xs: 15px
->>>>>>> 2498_vehicle_journeys
 .checkbox
   position: relative
   display: block
@@ -126,63 +123,61 @@ $cbx-size-xs: 15px
 
   > input
     &[type='checkbox']:not(:checked), &[type='checkbox']:checked
-<<<<<<< HEAD
-      position: absolute
-      margin: 0
-      left: -9999px
+      // position: absolute
+      // margin: 0
+      // left: -9999px
 
-      + label
-        position: relative
-        cursor: pointer
-        display: inline-block
-        height: $cbx-size
-        margin: 0
-        padding-left: $cbx-size
+      // + label
+      //   position: relative
+      //   cursor: pointer
+      //   display: inline-block
+      //   height: $cbx-size
+      //   margin: 0
+      //   padding-left: $cbx-size
 
-        &:before
-          content: ''
-          position: absolute
-          left: 0
-          top: 50%
-          margin-top: -($cbx-size / 2)
-          width: $cbx-size
-          height: $cbx-size
-          border: 2px solid $blue
-          background-color: #fff
-          border-radius: 3px
+      //   &:before
+      //     content: ''
+      //     position: absolute
+      //     left: 0
+      //     top: 50%
+      //     margin-top: -($cbx-size / 2)
+      //     width: $cbx-size
+      //     height: $cbx-size
+      //     border: 2px solid $blue
+      //     background-color: #fff
+      //     border-radius: 3px
 
-        &:after
-          content: '\f00c'
-          font: normal normal normal 14px/1 FontAwesome
-          font-size: inherit
-          text-rendering: auto
-          -webkit-font-smoothing: antialiased
-          position: absolute
-          left: 50%
-          top: 50%
-          margin-top: -($cbx-size / 2)
-          margin-left: -($cbx-size / 2)
-          font-size: $cbx-size - 2px
-          width: $cbx-size
-          line-height: $cbx-size
-          text-align: center
-          color: #fff
+      //   &:after
+      //     content: '\f00c'
+      //     font: normal normal normal 14px/1 FontAwesome
+      //     font-size: inherit
+      //     text-rendering: auto
+      //     -webkit-font-smoothing: antialiased
+      //     position: absolute
+      //     left: 50%
+      //     top: 50%
+      //     margin-top: -($cbx-size / 2)
+      //     margin-left: -($cbx-size / 2)
+      //     font-size: $cbx-size - 2px
+      //     width: $cbx-size
+      //     line-height: $cbx-size
+      //     text-align: center
+      //     color: #fff
 
-    &[type='checkbox']:checked + label:before
-      background-color: $blue
+    // &[type='checkbox']:checked + label:before
+      // background-color: $blue
 
-// Radio
-.has_radio
-  position: relative
-  display: block
-  height: $cbx-size
-  width: $cbx-size
-  margin: 0 auto
+// // Radio
+// .has_radio
+  // position: relative
+  // display: block
+  // height: $cbx-size
+  // width: $cbx-size
+  // margin: 0 auto
 
-  > input[type='checkbox']
-    &:not(:checked), &:checked
-      position: absolute
-=======
+  // > input[type='checkbox']
+    // &:not(:checked), &:checked
+      // position: absolute
       position: absolute
       margin: 0
       left: -9999px
@@ -280,7 +275,6 @@ table, .table
   > input[type='checkbox']
     &:not(:checked), &:checked
       position: absolute
->>>>>>> 2498_vehicle_journeys
       z-index: 5
       margin: 0
       left: 0
@@ -375,8 +369,6 @@ table, .table
             left: 20px
             transition: 0.2s
 
-<<<<<<< HEAD
-=======
   &.inline
     > *
       display: inline-block
@@ -408,17 +400,12 @@ table, .table
         &:not(:checked) + .switch-label:after
           left: 15px
 
->>>>>>> 2498_vehicle_journeys
 // Form filter
 .form.form-filter
   display: block
   position: relative
   background-color: rgba($grey, 0.15)
-<<<<<<< HEAD
-  padding-right: 185px
-=======
   padding-right: 195px
->>>>>>> 2498_vehicle_journeys
   min-height: 42px
   border-top: 1px solid #fff
 
@@ -430,13 +417,9 @@ table, .table
     vertical-align: top
     padding: 7px 15px
 
-<<<<<<< HEAD
-  > .form-group
-=======
   > .form-group, > div > .form-group
     display: inline-block
     vertical-align: top
->>>>>>> 2498_vehicle_journeys
     border-right: 1px solid #fff
     margin: 0
     min-height: 44px
@@ -484,11 +467,7 @@ table, .table
           color: #fff
           transition: 0.2s
 
-<<<<<<< HEAD
-  > .form-group
-=======
   > .form-group, > div > .form-group
->>>>>>> 2498_vehicle_journeys
     position: relative
 
     &.togglable
@@ -508,7 +487,35 @@ table, .table
       &:hover, &.open
         background-color: $blue
         color: #fff
-<<<<<<< HEAD
+
+        // > .control-label, &:before
+        //   color: #fff
+
+      // &:before
+        // content: '\f078'
+        // font: normal normal normal 14px/1 FontAwesome
+        // font-size: inherit
+        // text-rendering: auto
+        // -webkit-font-smoothing: antialiased
+        // position: absolute
+        // right: 15px
+        // top: 0
+        // height: 44px
+        // width: 15px
+        // color: $blue
+        // text-align: center
+        // line-height: 44px
+
+      // &.open:before
+        // content: '\f077'
+        // color: #fff
+
+      // > .control-label + *
+        // display: none
+
+      // &.open > .control-label + *
+        // display: block
+
 
         > .control-label, &:before
           color: #fff
@@ -538,37 +545,6 @@ table, .table
       &.open > .control-label + *
         display: block
 
-=======
-
-        > .control-label, &:before
-          color: #fff
-
-      &:before
-        content: '\f078'
-        font: normal normal normal 14px/1 FontAwesome
-        font-size: inherit
-        text-rendering: auto
-        -webkit-font-smoothing: antialiased
-        position: absolute
-        right: 15px
-        top: 0
-        height: 44px
-        width: 15px
-        color: $blue
-        text-align: center
-        line-height: 44px
-
-      &.open:before
-        content: '\f077'
-        color: #fff
-
-      > .control-label + *
-        display: none
-
-      &.open > .control-label + *
-        display: block
-
->>>>>>> 2498_vehicle_journeys
     > .filter_menu
       margin: 0
       padding: 5px 0
@@ -682,8 +658,6 @@ table, .table
             &[type='checkbox']:checked + span:before
               background-color: $blue
 
-<<<<<<< HEAD
-=======
   > .ffg-row
     display: block
     padding: 0
@@ -695,7 +669,6 @@ table, .table
     > .form-group:last-child
       border-right: none
 
->>>>>>> 2498_vehicle_journeys
 // Form group date
 .form-group.date
   .form-inline
@@ -737,14 +710,11 @@ table, .table
     .form-control, select.date, select.date:first-child, select.date:nth-child(3)
       border-color: $red
 
-<<<<<<< HEAD
-=======
 // Form group time
 .form-group.time
   .control-label.time
     min-width: 60px
 
->>>>>>> 2498_vehicle_journeys
 // Nested fields
 .nested-fields
   margin: 0
