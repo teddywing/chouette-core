@@ -23,6 +23,7 @@ class BSelect4 extends React.Component{
         options={{
           allowClear: false,
           theme: 'bootstrap',
+          placeholder: 'Filtrer par mission...',
           width: '100%',
           ajax: {
             url: origin + path + '/journey_patterns_collection.json',
@@ -34,7 +35,6 @@ class BSelect4 extends React.Component{
               };
             },
             processResults: function(data, params) {
-
               return {
                 results: data.map(
                   item => Object.assign(
