@@ -50,10 +50,10 @@ const filters = (state = {}, action) => {
       return state
     case 'CREATE_QUERY_STRING':
       let params = {
-        journey_pattern_id: state.query.journeyPattern.id || undefined,
-        timetable_id: state.query.timetable.id || undefined,
-        range_start: (state.query.interval.start.hour + state.query.interval.start.minute),
-        range_end: (state.query.interval.end.hour + state.query.interval.end.minute)
+        'q[journey_pattern_id_eq]': state.query.journeyPattern.id || undefined,
+        'q[time_tables_id_eq]': state.query.timetable.id || undefined,
+        'q[range_start]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
+        'q[range_end]': (state.query.interval.end.hour + ': '+ state.query.interval.end.minute)
       }
       let esc = encodeURIComponent
       let queryString = Object.keys(params).map((k) => esc(k) + '=' + esc(params[k])).join('&')

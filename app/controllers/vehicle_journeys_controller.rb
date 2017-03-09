@@ -1,5 +1,9 @@
 class VehicleJourneysController < ChouetteController
   defaults :resource_class => Chouette::VehicleJourney
+  before_action :check_policy, only: [:edit, :update, :destroy]
+  before_action :user_permissions, only: :index
+  before_action :ransack_params, only: :index
+
   respond_to :json, :only => :index
   respond_to :js, :only => [:select_journey_pattern, :edit, :new, :index]
 
@@ -9,9 +13,9 @@ class VehicleJourneysController < ChouetteController
     end
   end
 
+  alias_method :vehicle_journeys, :collection
   alias_method :route, :parent
-  before_action :check_policy, only: [:edit, :update, :destroy]
-  before_action :user_permissions, only: :index
+  alias_method :vehicle_journey, :resource
 
   def select_journey_pattern
     if params[:journey_pattern_id]
@@ -55,7 +59,7 @@ class VehicleJourneysController < ChouetteController
         :street_name => sp.stop_area.try(:street_name)
       }
     end
-    
+
     index! do
       if collection.out_of_bounds?
         redirect_to params.merge(:page => 1)
@@ -64,7 +68,6 @@ class VehicleJourneysController < ChouetteController
     end
   end
 
-
   # overwrite inherited resources to use delete instead of destroy
   # foreign keys will propagate deletion)
   def destroy_resource(object)
@@ -72,23 +75,14 @@ class VehicleJourneysController < ChouetteController
   end
 
   protected
-
-  alias_method :vehicle_journey, :resource
-
   def collection
     @ppage = 20
-
-    unless @vehicle_journeys
-      @footnotes = route.line.footnotes.to_json
-      @vehicle_filter = VehicleFilter.new adapted_params
-      @vehicle_filter.journey_category_model = resource_class.model_name.route_key
-      @q = @vehicle_filter.vehicle_journeys.search @vehicle_filter.filtered_params
-      @vehicle_journeys = @q.result( :distinct => false ).paginate(:page => params[:page], :per_page => @ppage)
-    end
-    matrix
+    @q     = route.sorted_vehicle_journeys('vehicle_journeys').search params[:q]
+    @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
+    @footnotes = route.line.footnotes.to_json
+    @matrix    = resource_class.matrix(@vehicle_journeys)
     @vehicle_journeys
   end
-  alias_method :vehicle_journeys, :collection
 
   def adapted_params
     params.tap do |adapted_params|
@@ -105,12 +99,6 @@ class VehicleJourneysController < ChouetteController
     Time.zone.local(*sample).utc.hour - Time.utc(*sample).hour
   end
 
-  def matrix
-    @matrix = resource_class.matrix(@vehicle_journeys)
-  end
-
-  protected
-
   def check_policy
     authorize resource
   end
@@ -122,10 +110,15 @@ class VehicleJourneysController < ChouetteController
       end
     end
     @perms = @perms.to_json
-    ap @perms
   end
 
   private
+  def ransack_params
+    if params[:q]
+      params[:q] = params[:q].reject{|k| params[:q][k] == 'undefined'}
+    end
+  end
+
   def vehicle_journey_params
     params.require(:vehicle_journey).permit( { footnote_ids: [] } , :journey_pattern_id, :number, :published_journey_name,
                                              :published_journey_identifier, :comment, :transport_mode,
