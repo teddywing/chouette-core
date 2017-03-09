@@ -77,9 +77,23 @@
   background-color: #fff
   box-shadow: 0 0 3px $darkgrey
   position: fixed
-  z-index: 999
+  z-index: 2000
   right: 50px
   bottom: 15px
+
+  body.modal-open &
+    // right: 65px
+
+    &:before
+      content: ''
+      display: block
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      z-index: 5
+      background-color: rgba(#000, 0.5)
 
   > ul
     display: block
@@ -102,6 +116,9 @@
         background-color: $blue
         color: #fff
 
+        &:focus
+          outline: none
+
         &:hover
           background-color: rgba($blue, 0.5)
 
@@ -110,6 +127,11 @@
 
           &:hover
             background-color: darken($red, 5%)
+
+        &.disabled
+          &, &[title='Supprimer'], &:hover, &:focus
+            background-color: rgba($grey, 0.3)
+            cursor: not-allowed
 
   &.noselect
     > ul > .st_action > a
@@ -147,7 +169,7 @@
 
     > div
       position: relative
-      height: 100%
+      height: calc(100% + 6px)
 
       &.headlined:before
         content: ''
@@ -208,6 +230,22 @@
 
           &.headlined > .has_radio
             margin-top: calc((1.4em + 6px) * -1)
+
+      .th + .td, .td:first-child
+        > .headlined
+          [data-headline]
+            position: relative
+            overflow: visible
+
+            &:before
+              content: attr(data-headline)
+              display: block
+              position: absolute
+              z-index: 5
+              bottom: calc(100% + 13px)
+              left: 0
+              right: 0
+              color: rgba($grey, 0.75)
 
       &.disabled
         color: rgba($darkgrey, 0.5)

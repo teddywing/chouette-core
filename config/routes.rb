@@ -79,7 +79,7 @@ ChouetteIhm::Application.routes.draw do
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
-    resources :autocomplete_time_tables
+    resources :autocomplete_time_tables, only: [:index]
     resources :autocomplete_route_sections
     resources :autocomplete_timebands
     resources :group_of_lines, controller: "referential_group_of_lines" do
@@ -115,6 +115,7 @@ ChouetteIhm::Application.routes.draw do
             post 'selection'
           end
         end
+        resource :vehicle_journeys_collection, :only => [:show, :update]
         resources :vehicle_journeys, :vehicle_journey_frequencies do
           get 'select_journey_pattern', :on => :member
           resources :vehicle_translations

@@ -3,9 +3,9 @@ var reducer = require('es6_browserified/journey_patterns/reducers/pagination')
 const diff = 1
 let state = {
   page : 2,
-  totalCount : 25,
+  totalCount : 50,
   stateChanged: false,
-  perPage: 12
+  perPage: 20
 }
 let pagination = Object.assign({}, state)
 const dispatch = function(){}

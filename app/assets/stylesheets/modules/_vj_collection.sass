@@ -1,0 +1,68 @@
+//-----------------//
+//  VJ Collection  //
+//-----------------//
+
+#vehicle_journeys_wip
+  .table-2entries
+    .t2e-head
+      > .td
+        position: relative
+        padding-left: 25px
+
+        > .headlined
+          &:before
+            margin-left: -25px
+            padding-left: 25px
+
+        > div > span
+          position: relative
+          display: block
+          height: 100%
+
+          > span
+            position: absolute
+            display: block
+            line-height: 1em
+            top: 50%
+            transform: translateY(-50%)
+            margin-top: -2px
+
+          &:before
+            content: ''
+            display: block
+            width: 10px
+            height: 10px
+            background-color: #fff
+            border: 2px solid $blue
+            border-radius: 50%
+            position: absolute
+            z-index: 5
+            left: -20px
+            top: 50%
+            margin-top: -5px
+
+          &:after
+            content: ''
+            display: block
+            width: 4px
+            margin: 0 3px
+            background-color: rgba($grey, 0.5)
+            position: absolute
+            z-index: 3
+            top: -6px
+            left: -20px
+            bottom: 0
+
+        > .headlined > span
+          height: calc(100% - (1.4em + 12px))
+
+          &:after
+            top: calc((1.4em + 18px) * -1)
+
+        &:last-child > div > span
+          &:after
+            bottom: 50%
+
+        &:nth-child(2) > div > span
+          &:after
+            top: 50%

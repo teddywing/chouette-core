@@ -90,7 +90,7 @@ gem 'slim-rails', '~> 3.1'
 gem 'formtastic', '2.3.1'
 gem 'RedCloth', '~> 4.3.0'
 gem 'simple_form', '~> 3.1.0'
-gem 'font-awesome-sass', '~> 4.2.0'
+gem 'font-awesome-sass', '~> 4.7'
 gem 'will_paginate-bootstrap', '~> 1.0.1'
 gem 'breadcrumbs_on_rails'
 

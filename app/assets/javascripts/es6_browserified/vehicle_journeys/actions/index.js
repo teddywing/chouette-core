@@ -1,0 +1,386 @@
+var batchActions = require('../batch').batchActions
+
+const actions = {
+  receiveVehicleJourneys : (json) => ({
+    type: "RECEIVE_VEHICLE_JOURNEYS",
+    json
+  }),
+  receiveErrors : (json) => ({
+    type: "RECEIVE_ERRORS",
+    json
+  }),
+  fetchingApi: () =>({
+      type: 'FETCH_API'
+  }),
+  unavailableServer : () => ({
+    type: 'UNAVAILABLE_SERVER'
+  }),
+  goToPreviousPage : (dispatch, pagination, queryString) => ({
+    type: 'GO_TO_PREVIOUS_PAGE',
+    dispatch,
+    pagination,
+    nextPage : false,
+    queryString
+  }),
+  goToNextPage : (dispatch, pagination, queryString) => ({
+    type: 'GO_TO_NEXT_PAGE',
+    dispatch,
+    pagination,
+    nextPage : true,
+    queryString
+  }),
+  checkConfirmModal : (event, callback, stateChanged, dispatch) => {
+    if(stateChanged === true){
+      return actions.openConfirmModal(callback)
+    }else{
+      dispatch(actions.fetchingApi())
+      return callback
+    }
+  },
+  openCreateModal : () => ({
+    type : 'CREATE_VEHICLEJOURNEY_MODAL'
+  }),
+  selectJPCreateModal : (selectedJP) => ({
+    type : 'SELECT_JP_CREATE_MODAL',
+    selectedItem: {
+      id: selectedJP.id,
+      objectid: selectedJP.object_id,
+      name: selectedJP.name,
+      published_name: selectedJP.published_name
+    }
+  }),
+  openEditModal : (vehicleJourney) => ({
+    type : 'EDIT_VEHICLEJOURNEY_MODAL',
+    vehicleJourney
+  }),
+  openNotesEditModal : (vehicleJourney) => ({
+    type : 'EDIT_NOTES_VEHICLEJOURNEY_MODAL',
+    vehicleJourney
+  }),
+  toggleFootnoteModal : (footnote, isShown) => ({
+    type: 'TOGGLE_FOOTNOTE_MODAL',
+    footnote,
+    isShown
+  }),
+  openCalendarsEditModal : (vehicleJourneys) => ({
+    type : 'EDIT_CALENDARS_VEHICLEJOURNEY_MODAL',
+    vehicleJourneys
+  }),
+  selectTTCalendarsModal: (selectedTT) =>({
+    type: 'SELECT_TT_CALENDAR_MODAL',
+    selectedItem:{
+      id: selectedTT.id,
+      comment: selectedTT.comment,
+      objectid: selectedTT.objectid
+    }
+  }),
+  addSelectedTimetable: () => ({
+    type: 'ADD_SELECTED_TIMETABLE'
+  }),
+  deleteCalendarModal : (timetable) => ({
+    type : 'DELETE_CALENDAR_MODAL',
+    timetable
+  }),
+  editVehicleJourneyCalendars : (vehicleJourneys) => ({
+    type: 'EDIT_VEHICLEJOURNEYS_CALENDARS',
+    vehicleJourneys
+  }),
+  openShiftModal : () => ({
+    type : 'SHIFT_VEHICLEJOURNEY_MODAL'
+  }),
+  openDuplicateModal : () => ({
+    type : 'DUPLICATE_VEHICLEJOURNEY_MODAL'
+  }),
+  selectVehicleJourney : (index) => ({
+    type : 'SELECT_VEHICLEJOURNEY',
+    index
+  }),
+  cancelSelection : () => ({
+    type: 'CANCEL_SELECTION'
+  }),
+  addVehicleJourney : (data, selectedJourneyPattern) => ({
+    type: 'ADD_VEHICLEJOURNEY',
+    data,
+    selectedJourneyPattern
+  }),
+  editVehicleJourney : (data) => ({
+    type: 'EDIT_VEHICLEJOURNEY',
+    data
+  }),
+  editVehicleJourneyNotes : (footnotes) => ({
+    type: 'EDIT_VEHICLEJOURNEY_NOTES',
+    footnotes
+  }),
+  shiftVehicleJourney : (data) => ({
+    type: 'SHIFT_VEHICLEJOURNEY',
+    data
+  }),
+  duplicateVehicleJourney : (data) => ({
+    type: 'DUPLICATE_VEHICLEJOURNEY',
+    data
+  }),
+  deleteVehicleJourneys : () => ({
+    type: 'DELETE_VEHICLEJOURNEYS'
+  }),
+  openConfirmModal : (callback) => ({
+    type : 'OPEN_CONFIRM_MODAL',
+    callback
+  }),
+  closeModal : () => ({
+    type : 'CLOSE_MODAL'
+  }),
+  resetValidation: (target) => {
+    $(target).parent().removeClass('has-error').children('.help-block').remove()
+  },
+  validateFields : (fields) => {
+    const test = []
+
+    Object.keys(fields).map(function(key) {
+      test.push(fields[key].validity.valid)
+    })
+    if(test.indexOf(false) >= 0) {
+      // Form is invalid
+      test.map(function(item, i) {
+        if(item == false) {
+          const k = Object.keys(fields)[i]
+          $(fields[k]).parent().addClass('has-error').children('.help-block').remove()
+          $(fields[k]).parent().append("<span class='small help-block'>" + fields[k].validationMessage + "</span>")
+        }
+      })
+      return false
+    } else {
+      // Form is valid
+      return true
+    }
+  },
+  toggleArrivals : () => ({
+    type: 'TOGGLE_ARRIVALS',
+  }),
+  updateTime : (val, subIndex, index, timeUnit, isDeparture, isArrivalsToggled) => ({
+    type: 'UPDATE_TIME',
+    val,
+    subIndex,
+    index,
+    timeUnit,
+    isDeparture,
+    isArrivalsToggled
+  }),
+  resetStateFilters: () => ({
+    type: 'RESET_FILTERS'
+  }),
+  toggleWithoutSchedule: () => ({
+    type: 'TOGGLE_WITHOUT_SCHEDULE'
+  }),
+  updateStartTimeFilter: (val, unit) => ({
+    type: 'UPDATE_START_TIME_FILTER',
+    val,
+    unit
+  }),
+  updateEndTimeFilter: (val, unit) => ({
+    type: 'UPDATE_END_TIME_FILTER',
+    val,
+    unit
+  }),
+  filterSelect2Timetable: (selectedTT) =>({
+    type: 'SELECT_TT_FILTER',
+    selectedItem:{
+      id: selectedTT.id,
+      comment: selectedTT.comment,
+      objectid: selectedTT.objectid
+    }
+  }),
+  filterSelect2JourneyPattern: (selectedJP) => ({
+    type : 'SELECT_JP_FILTER',
+    selectedItem: {
+      id: selectedJP.id,
+      objectid: selectedJP.object_id,
+      name: selectedJP.name,
+      published_name: selectedJP.published_name
+    }
+  }),
+  createQueryString: () => ({
+    type: 'CREATE_QUERY_STRING'
+  }),
+  resetPagination: () => ({
+    type: 'RESET_PAGINATION'
+  }),
+  queryFilterVehicleJourneys: (dispatch) => ({
+    type: 'QUERY_FILTER_VEHICLEJOURNEYS',
+    dispatch
+  }),
+  resetFilters: (dispatch) => (
+    batchActions([
+      actions.resetStateFilters(),
+      actions.resetPagination(),
+      actions.queryFilterVehicleJourneys(dispatch)
+    ])
+  ),
+  filterQuery: (dispatch) => (
+    batchActions([
+      actions.createQueryString(),
+      actions.resetPagination(),
+      actions.queryFilterVehicleJourneys(dispatch)
+    ])
+  ),
+  updateTotalCount: (diff) => ({
+    type: 'UPDATE_TOTAL_COUNT',
+    diff
+  }),
+  fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
+    if(currentPage == undefined){
+      currentPage = 1
+    }
+    let vehicleJourneys = []
+    let page
+    switch (nextPage) {
+      case true:
+        page = currentPage + 1
+        break
+      case false:
+        if(currentPage > 1){
+          page = currentPage - 1
+        }
+        break
+      default:
+        page = currentPage
+        break
+    }
+    let str = ".json"
+    let sep = '?'
+    if(page > 1){
+      str = '.json?page=' + page.toString()
+      sep = '&'
+    }
+    let urlJSON = window.location.pathname + str
+    if (queryString){
+      urlJSON = urlJSON + sep + queryString
+    }
+    let req = new Request(urlJSON, {
+      credentials: 'same-origin',
+    })
+    let hasError = false
+    fetch(req)
+      .then(response => {
+        if(response.status == 500) {
+          hasError = true
+        }
+        return response.json()
+      }).then((json) => {
+        if(hasError == true) {
+          dispatch(actions.unavailableServer())
+        } else {
+          let val
+          for (val of json){
+            var timeTables = []
+            let tt
+            for (tt of val.time_tables){
+              timeTables.push({
+                objectid: tt.objectid,
+                comment: tt.comment,
+                id: tt.id
+              })
+            }
+            let vjasWithDelta = val.vehicle_journey_at_stops.map((vjas, i) => {
+              actions.fillEmptyFields(vjas)
+              return actions.getDelta(vjas)
+            })
+            vehicleJourneys.push({
+              journey_pattern: val.journey_pattern,
+              published_journey_name: val.published_journey_name,
+              objectid: val.objectid,
+              footnotes: val.footnotes,
+              time_tables: timeTables,
+              vehicle_journey_at_stops: vjasWithDelta,
+              deletable: false,
+              selected: false,
+              published_journey_name: val.published_journey_name || 'non renseigné',
+              published_journey_identifier: val.published_journey_name || 'non renseigné',
+              company_id: val.published_journey_name || 'non renseigné'
+            })
+          }
+          dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
+        }
+      })
+  },
+  submitVehicleJourneys : (dispatch, state, next) => {
+    dispatch(actions.fetchingApi())
+    let urlJSON = window.location.pathname + "_collection.json"
+    let req = new Request(urlJSON, {
+      credentials: 'same-origin',
+      method: 'PATCH',
+      contentType: 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      body: JSON.stringify(state),
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      }
+    })
+    let hasError = false
+    fetch(req)
+      .then(response => {
+        if(!response.ok) {
+          hasError = true
+        }
+        return response.json()
+      }).then((json) => {
+        if(hasError == true) {
+          dispatch(actions.receiveErrors(json))
+        } else {
+          if(next) {
+            dispatch(next)
+          } else {
+            if(json.length != window.vehicleJourneysPerPage){
+              dispatch(actions.updateTotalCount(window.vehicleJourneysPerPage - json.length))
+            }
+            dispatch(actions.receiveVehicleJourneys(json))
+          }
+        }
+      })
+  },
+  // VJAS HELPERS
+  getSelected: (vj) => {
+    return vj.filter((obj) =>{
+      return obj.selected
+    })
+  },
+  pad: (d) => {
+    if(d.toString().length == 1){
+      return (d < 10) ? '0' + d.toString() : d.toString();
+    }else{
+      return d.toString()
+    }
+  },
+  fillEmptyFields: (vjas) => {
+    if (vjas.departure_time.hour == null) vjas.departure_time.hour = '00'
+    if (vjas.departure_time.minute == null) vjas.departure_time.minute = '00'
+    if (vjas.arrival_time.hour == null) vjas.arrival_time.hour = '00'
+    if (vjas.arrival_time.minute == null) vjas.arrival_time.minute = '00'
+    return vjas
+  },
+  getDelta: (vjas) => {
+    let delta = 0
+    if (vjas.departure_time.hour != '' && vjas.departure_time.minute != '' && vjas.arrival_time.hour != '' && vjas.departure_time.minute != ''){
+      delta = (parseInt(vjas.departure_time.hour) - parseInt(vjas.arrival_time.hour)) * 60 + (parseInt(vjas.departure_time.minute) - parseInt(vjas.arrival_time.minute))
+    }
+    vjas.delta = delta
+    return vjas
+  },
+  checkSchedules: (schedule) => {
+    if (parseInt(schedule.departure_time.minute) > 59){
+      schedule.departure_time.minute = actions.pad(parseInt(schedule.departure_time.minute) - 60)
+      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) + 1)
+    }
+    if (parseInt(schedule.arrival_time.minute) > 59){
+      schedule.arrival_time.minute = actions.pad(parseInt(schedule.arrival_time.minute) - 60)
+      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) + 1)
+    }
+    if (parseInt(schedule.departure_time.hour) > 23){
+      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) - 24)
+    }
+    if (parseInt(schedule.arrival_time.hour) > 23){
+      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) - 24)
+    }
+  }
+}
+
+module.exports = actions

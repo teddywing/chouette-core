@@ -47,6 +47,47 @@ module Chouette
       @presenter ||= ::VehicleJourneyPresenter.new( self)
     end
 
+    def vehicle_journey_at_stops_matrix
+      fill = route.stop_points.count - self.vehicle_journey_at_stops.count
+      at_stops = self.vehicle_journey_at_stops.to_a.dup
+      fill.times do
+        at_stops << Chouette::VehicleJourneyAtStop.new
+      end
+      at_stops
+    end
+
+    def update_vehicle_journey_at_stops_state state
+      state.each do |vjas|
+        next if vjas["dummy"]
+        stop = vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
+        if stop
+          stop.arrival_time   ||= Time.now.beginning_of_day
+          stop.departure_time ||= Time.now.beginning_of_day
+          ['arrival_time', 'departure_time'].each do |field|
+            stop.assign_attributes({
+              field.to_sym => stop.send(field).change({ hour: vjas[field]['hour'], min: vjas[field]['minute'] })
+            })
+          end
+          stop.save
+        end
+      end
+    end
+
+    def self.state_update route, state
+      transaction do
+        state.each do |item|
+          item.delete('errors')
+          vj = find_by(objectid: item['objectid'])
+          vj.update_vehicle_journey_at_stops_state(item['vehicle_journey_at_stops'])
+          item['errors'] = vj.errors if vj.errors.any?
+        end
+
+        if state.any? {|item| item['errors']}
+          raise ActiveRecord::Rollback
+        end
+      end
+    end
+
     def increasing_times
       previous = nil
       vehicle_journey_at_stops.select{|vjas| vjas.departure_time && vjas.arrival_time}.each do |vjas|
