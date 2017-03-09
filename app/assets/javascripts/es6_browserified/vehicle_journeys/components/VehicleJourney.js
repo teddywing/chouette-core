@@ -72,7 +72,7 @@ class VehicleJourney extends Component {
             <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
                 <div data-headline='Départ à'>
-                  <span className='input-group time'>
+                  <span className={((this.props.value.deletable && (!vj.dummy)) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
                       min='00'
@@ -101,7 +101,7 @@ class VehicleJourney extends Component {
                   }
                 </div>
                 <div data-headline='Arrivée à'>
-                  <span className='input-group time'>
+                  <span className={(this.isDisabled(this.props.value.deletable, vj.dummy) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
                       min='00'
