@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307155042) do
+ActiveRecord::Schema.define(version: 20170309102656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -515,10 +515,10 @@ ActiveRecord::Schema.define(version: 20170307155042) do
     t.string   "creator_id"
     t.float    "distance"
     t.boolean  "no_processing"
-    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
-    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
+    t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
   end
 
   create_table "routes", force: true do |t|
@@ -629,6 +629,7 @@ ActiveRecord::Schema.define(version: 20170307155042) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "stif_type"
   end
 
   add_index "stop_areas", ["name"], :name => "index_stop_areas_on_name"

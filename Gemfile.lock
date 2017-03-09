@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: git@github.com:AF83/stif-reflex-api.git
-  revision: e3841486efc2218aa2fcbc4d53f85c06e41094a8
+  revision: 7c517b98c3900c9bb0b81dd0ccab97f8e8f5f249
   specs:
     reflex (0.0.1)
       nokogiri (~> 1.6)
