@@ -92,7 +92,7 @@ class VehicleJourneys extends Component{
               </div>
             )}
 
-            <div className='table table-2entries mt-sm mb-sm'>
+            <div className={'table table-2entries mt-sm mb-sm' + ((this.props.vehicleJourneys.length > 0) ? '' : ' no_result')}>
               <div className='t2e-head w20'>
                 <div className='th'>
                   <div className='strong mb-xs'>ID course</div>

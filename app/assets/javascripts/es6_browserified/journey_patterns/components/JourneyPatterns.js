@@ -66,7 +66,7 @@ class JourneyPatterns extends Component{
         data-headline={(bool) ? sp.city_name : ''}
         title={sp.city_name + ' (' + sp.zip_code +')'}
       >
-        <span>{sp.name}</span>
+        <span><span>{sp.name}</span></span>
       </div>
     )
   }
@@ -91,7 +91,7 @@ class JourneyPatterns extends Component{
               </div>
             )}
 
-            <div className='table table-2entries mt-sm mb-sm'>
+            <div className={'table table-2entries mt-sm mb-sm' + ((this.props.journeyPatterns.length > 0) ? '' : ' no_result')}>
               <div className='t2e-head w20'>
                 <div className='th'>
                   <div className='strong mb-xs'>ID Mission</div>
