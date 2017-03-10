@@ -8,9 +8,13 @@
       > .td
         position: relative
         padding-left: 25px
-        height: 75px /* Default value */
+
+        > div
+          height: calc(32px - 13px)
 
         > .headlined
+          height: calc(75px - 13px)
+
           &:before
             margin-left: -25px
             padding-left: 25px
