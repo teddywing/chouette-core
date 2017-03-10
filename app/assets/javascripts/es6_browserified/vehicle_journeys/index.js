@@ -8,9 +8,9 @@ var enableBatching = require('./batch').enableBatching
 
 // logger, DO NOT REMOVE
 var applyMiddleware = require('redux').applyMiddleware
-var createLogger = require('redux-logger')
-var thunkMiddleware = require('redux-thunk').default
-var promise = require('redux-promise')
+// var createLogger = require('redux-logger')
+// var thunkMiddleware = require('redux-thunk').default
+// var promise = require('redux-promise')
 
 var selectedJP = []
 
@@ -62,12 +62,12 @@ var initialState = {
     confirmModal: {}
   }
 }
-const loggerMiddleware = createLogger()
+// const loggerMiddleware = createLogger()
 
 let store = createStore(
   enableBatching(vehicleJourneysApp),
-  initialState,
-  applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
+  initialState
+  // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 
 render(
