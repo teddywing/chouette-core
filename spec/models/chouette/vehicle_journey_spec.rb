@@ -26,7 +26,6 @@ describe Chouette::VehicleJourney, :type => :model do
     let(:route) { create :route }
     let(:journey_pattern) { create :journey_pattern, route: route }
     let(:vehicle_journey) { create :vehicle_journey, route: route, journey_pattern: journey_pattern }
-
     let(:state) { vehicle_journey_to_state(vehicle_journey) }
 
     describe '.vehicle_journey_at_stops_matrix' do
@@ -52,23 +51,27 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     it 'should update arrival_time' do
-      stop = state['vehicle_journey_at_stops'].first
-      stop['arrival_time']['hour']   = "10"
-      stop['arrival_time']['minute'] = "10"
+      item = state['vehicle_journey_at_stops'].first
+      item['arrival_time']['hour']   = (item['departure_time']['hour'].to_i - 1).to_s
+      item['arrival_time']['minute'] = Time.now.strftime('%M')
 
       vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
-      stop = vehicle_journey.vehicle_journey_at_stops.find(stop['id'])
-      expect(stop.arrival_time).to eq('2000-01-01 10:10:00 UTC')
+      stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
+
+      expect(stop.arrival_time.strftime('%H')).to eq item['arrival_time']['hour']
+      expect(stop.arrival_time.strftime('%M')).to eq item['arrival_time']['minute']
     end
 
     it 'should update departure_time' do
-      stop = state['vehicle_journey_at_stops'].first
-      stop['departure_time']['hour']   = "12"
-      stop['departure_time']['minute'] = "12"
+      item = state['vehicle_journey_at_stops'].first
+      item['departure_time']['hour']   = (Time.now - 1.hour).strftime('%H')
+      item['departure_time']['minute'] = (Time.now - 1.hour).strftime('%M')
 
       vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
-      stop = vehicle_journey.vehicle_journey_at_stops.find(stop['id'])
-      expect(stop.departure_time).to eq('2000-01-01 12:12:00 UTC')
+      stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
+
+      expect(stop.departure_time.strftime('%H')).to eq item['departure_time']['hour']
+      expect(stop.departure_time.strftime('%M')).to eq item['departure_time']['minute']
     end
   end
 
@@ -152,8 +155,8 @@ describe Chouette::VehicleJourney, :type => :model do
         end
       end
     end
-
   end
+
   context "when following departure times exceeds gap" do
     describe "#increasing_times" do
       before(:each) do
@@ -200,6 +203,7 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(subject.time_tables).to include( tm2)
     end
   end
+
   describe "#bounding_dates" do
     before(:each) do
       tm1 = build(:time_table, :dates =>
@@ -217,6 +221,7 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(subject.bounding_dates.max).to eq(1.days.ago.to_date)
     end
   end
+
   context "#vehicle_journey_at_stops" do
     it "should be ordered like stop_points on route" do
       route = subject.route
@@ -225,7 +230,6 @@ describe Chouette::VehicleJourney, :type => :model do
 
       expect(vj_stop_ids).to eq(expected_order)
     end
-
   end
 
   describe "#footnote_ids=" do
@@ -242,10 +246,7 @@ describe Chouette::VehicleJourney, :type => :model do
         subject.save
         expect(Chouette::VehicleJourney.find(subject.id).footnotes.count).to eq(1)
       end
-
     end
-
   end
-
 end
 
