@@ -21,6 +21,7 @@ const vehicleJourney= (state = {}, action) => {
             minute: '00'
           },
           stop_point_objectid: sp.object_id,
+          stop_area_cityname: sp.city_name,
           dummy: true
         }
         _.each(action.selectedJourneyPattern.stop_areas, (jp) =>{

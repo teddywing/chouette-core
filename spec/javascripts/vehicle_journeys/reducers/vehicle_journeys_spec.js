@@ -84,6 +84,7 @@ describe('vehicleJourneys reducer', () => {
         minute: '00'
       },
       stop_point_objectid: 'test',
+      stop_area_cityname: 'city',
       dummy: true
     }]
     let fakeData = {
@@ -95,7 +96,7 @@ describe('vehicleJourneys reducer', () => {
         type: 'ADD_VEHICLEJOURNEY',
         data: fakeData,
         selectedJourneyPattern: fakeSelectedJourneyPattern,
-        stopPointsList: [{object_id: 'test'}]
+        stopPointsList: [{object_id: 'test', city_name: 'city'}]
       })
     ).toEqual([{
       journey_pattern: fakeSelectedJourneyPattern,
