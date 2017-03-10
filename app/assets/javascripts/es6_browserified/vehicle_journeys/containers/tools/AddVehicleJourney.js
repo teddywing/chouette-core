@@ -7,6 +7,7 @@ const mapStateToProps = (state) => {
     modal: state.modal,
     vehicleJourneys: state.vehicleJourneys,
     status: state.status,
+    stopPointsList: state.stopPointsList,
     filters: state.filters
   }
 }
@@ -16,8 +17,8 @@ const mapDispatchToProps = (dispatch) => {
     onModalClose: () =>{
       dispatch(actions.closeModal())
     },
-    onAddVehicleJourney: (data, selectedJourneyPattern) =>{
-      dispatch(actions.addVehicleJourney(data, selectedJourneyPattern))
+    onAddVehicleJourney: (data, selectedJourneyPattern, stopPointsList) =>{
+      dispatch(actions.addVehicleJourney(data, selectedJourneyPattern, stopPointsList))
     },
     onOpenCreateModal: () =>{
       dispatch(actions.openCreateModal())

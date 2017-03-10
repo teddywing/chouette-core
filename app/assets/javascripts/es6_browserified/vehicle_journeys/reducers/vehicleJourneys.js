@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var actions = require("../actions")
 
 const vehicleJourney= (state = {}, action) => {
@@ -7,23 +8,36 @@ const vehicleJourney= (state = {}, action) => {
     case 'CANCEL_SELECTION':
       return Object.assign({}, state, {selected: false})
     case 'ADD_VEHICLEJOURNEY':
-      let pristineVjas = JSON.parse(JSON.stringify(state[0].vehicle_journey_at_stops))
-      pristineVjas.map((vj) =>{
-        vj.departure_time.hour = '00'
-        vj.departure_time.minute = '00'
-        vj.arrival_time.hour = '00'
-        vj.arrival_time.minute = '00'
-        vj.delta = 0
-        delete vj['stop_area_object_id']
+      let pristineVjasList = []
+      _.each(action.stopPointsList, (sp) =>{
+        let newVjas = {
+          delta: 0,
+          departure_time:{
+            hour: '00',
+            minute: '00'
+          },
+          arrival_time:{
+            hour: '00',
+            minute: '00'
+          },
+          stop_point_objectid: sp.object_id,
+          dummy: true
+        }
+        _.each(action.selectedJourneyPattern.stop_areas, (jp) =>{
+          if (jp.stop_area_short_description.id == sp.id){
+            newVjas.dummy = false
+            return
+          }
+        })
+        pristineVjasList.push(newVjas)
       })
       return {
-        dummy: false,
         journey_pattern: action.selectedJourneyPattern,
         published_journey_name: action.data.published_journey_name.value,
         objectid: '',
         footnotes: [],
         time_tables: [],
-        vehicle_journey_at_stops: pristineVjas,
+        vehicle_journey_at_stops: pristineVjasList,
         selected: false,
         deletable: false
       }

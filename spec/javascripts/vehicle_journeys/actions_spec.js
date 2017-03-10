@@ -43,7 +43,8 @@ describe('when using select2 to pick a journey pattern', () => {
       id: 1,
       object_id: 2,
       name: 'test',
-      published_name: 'test'
+      published_name: 'test',
+      stop_area_short_descriptions: ['test']
     }
     const expectedAction = {
       type: 'SELECT_JP_CREATE_MODAL',
@@ -51,7 +52,8 @@ describe('when using select2 to pick a journey pattern', () => {
         id: selectedJP.id,
         objectid: selectedJP.object_id,
         name: selectedJP.name,
-        published_name: selectedJP.published_name
+        published_name: selectedJP.published_name,
+        stop_areas: selectedJP.stop_area_short_descriptions
       }
     }
     expect(actions.selectJPCreateModal(selectedJP)).toEqual(expectedAction)
@@ -61,12 +63,14 @@ describe('when clicking on validate button inside create modal', () => {
   it('should create an action to create a new vehicle journey', () => {
     const data = {}
     const selectedJourneyPattern = {}
+    const stopPointsList = []
     const expectedAction = {
       type: 'ADD_VEHICLEJOURNEY',
       data,
-      selectedJourneyPattern
+      selectedJourneyPattern,
+      stopPointsList
     }
-    expect(actions.addVehicleJourney(data, selectedJourneyPattern)).toEqual(expectedAction)
+    expect(actions.addVehicleJourney(data, selectedJourneyPattern, stopPointsList)).toEqual(expectedAction)
   })
 })
 describe('when previous navigation button is clicked', () => {

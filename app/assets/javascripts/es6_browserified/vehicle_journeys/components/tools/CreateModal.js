@@ -11,7 +11,7 @@ class CreateModal extends Component {
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true && this.props.modal.modalProps.selectedJPModal) {
-      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal)
+      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList)
       this.props.onModalClose()
       $('#NewVehicleJourneyModal').modal('hide')
     }
@@ -104,6 +104,7 @@ CreateModal.propTypes = {
   index: PropTypes.number,
   modal: PropTypes.object.isRequired,
   status: PropTypes.object.isRequired,
+  stopPointsList: PropTypes.array.isRequired,
   onOpenCreateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   onAddVehicleJourney: PropTypes.func.isRequired,

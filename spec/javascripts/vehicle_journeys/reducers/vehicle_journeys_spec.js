@@ -73,7 +73,7 @@ describe('vehicleJourneys reducer', () => {
 
 
   it('should handle ADD_VEHICLEJOURNEY', () => {
-    let resultVJ = [{
+    let pristineVjasList = [{
       delta : 0,
       arrival_time : {
         hour: '00',
@@ -82,26 +82,28 @@ describe('vehicleJourneys reducer', () => {
       departure_time : {
         hour: '00',
         minute: '00'
-      }
+      },
+      stop_point_objectid: 'test',
+      dummy: true
     }]
     let fakeData = {
       published_journey_name: {value: 'test'}
     }
-    let fakeSelectedJourneyPattern = { id: "1"}
+    let fakeSelectedJourneyPattern = {id: "1"}
     expect(
       vjReducer(state, {
         type: 'ADD_VEHICLEJOURNEY',
         data: fakeData,
-        selectedJourneyPattern: fakeSelectedJourneyPattern
+        selectedJourneyPattern: fakeSelectedJourneyPattern,
+        stopPointsList: [{object_id: 'test'}]
       })
     ).toEqual([{
-      dummy: false,
       journey_pattern: fakeSelectedJourneyPattern,
       published_journey_name: 'test',
       objectid: '',
       footnotes: [],
       time_tables: [],
-      vehicle_journey_at_stops: resultVJ,
+      vehicle_journey_at_stops: pristineVjasList,
       selected: false,
       deletable: false
     }, ...state])

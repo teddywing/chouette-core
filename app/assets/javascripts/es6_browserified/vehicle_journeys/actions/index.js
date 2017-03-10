@@ -46,7 +46,8 @@ const actions = {
       id: selectedJP.id,
       objectid: selectedJP.object_id,
       name: selectedJP.name,
-      published_name: selectedJP.published_name
+      published_name: selectedJP.published_name,
+      stop_areas: selectedJP.stop_area_short_descriptions
     }
   }),
   openEditModal : (vehicleJourney) => ({
@@ -98,10 +99,11 @@ const actions = {
   cancelSelection : () => ({
     type: 'CANCEL_SELECTION'
   }),
-  addVehicleJourney : (data, selectedJourneyPattern) => ({
+  addVehicleJourney : (data, selectedJourneyPattern, stopPointsList) => ({
     type: 'ADD_VEHICLEJOURNEY',
     data,
-    selectedJourneyPattern
+    selectedJourneyPattern,
+    stopPointsList
   }),
   editVehicleJourney : (data) => ({
     type: 'EDIT_VEHICLEJOURNEY',
