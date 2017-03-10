@@ -61,6 +61,9 @@ class VehicleJourneysController < ChouetteController
       }
     end
 
+    @jp_origin = Chouette::JourneyPattern.find_by(objectid: params[:jp])
+
+
     index! do
       if collection.out_of_bounds?
         redirect_to params.merge(:page => 1)
