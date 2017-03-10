@@ -48,10 +48,10 @@ module Chouette
     end
 
     def vehicle_journey_at_stops_matrix
-      fill = route.stop_points.count - self.vehicle_journey_at_stops.count
       at_stops = self.vehicle_journey_at_stops.to_a.dup
-      fill.times do
-        at_stops << Chouette::VehicleJourneyAtStop.new
+      filling  = route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)
+      filling.each do |id|
+        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new())
       end
       at_stops
     end
@@ -61,14 +61,13 @@ module Chouette
         next if vjas["dummy"]
         stop = vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
         if stop
-          stop.arrival_time   ||= Time.now.beginning_of_day
-          stop.departure_time ||= Time.now.beginning_of_day
-          ['arrival_time', 'departure_time'].each do |field|
-            stop.assign_attributes({
-              field.to_sym => stop.send(field).change({ hour: vjas[field]['hour'], min: vjas[field]['minute'] })
-            })
+          params = {}.tap do |el|
+            ['arrival_time', 'departure_time'].each do |field|
+              time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
+              el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
+            end
           end
-          stop.save
+          stop.update_attributes(params)
         end
       end
     end
