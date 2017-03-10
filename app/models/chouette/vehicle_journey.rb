@@ -48,10 +48,10 @@ module Chouette
     end
 
     def vehicle_journey_at_stops_matrix
-      fill = route.stop_points.count - self.vehicle_journey_at_stops.count
       at_stops = self.vehicle_journey_at_stops.to_a.dup
-      fill.times do
-        at_stops << Chouette::VehicleJourneyAtStop.new
+      filling  = route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)
+      filling.each do |id|
+        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new())
       end
       at_stops
     end

@@ -24,8 +24,32 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     let(:route) { create :route }
-    let(:vehicle_journey) { create :vehicle_journey, route: route }
+    let(:journey_pattern) { create :journey_pattern, route: route }
+    let(:vehicle_journey) { create :vehicle_journey, route: route, journey_pattern: journey_pattern }
+
     let(:state) { vehicle_journey_to_state(vehicle_journey) }
+
+    describe '.vehicle_journey_at_stops_matrix' do
+      it 'should fill missing VehicleJourneyAtStop with dummy' do
+        vehicle_journey.vehicle_journey_at_stops.last.destroy
+        expect(vehicle_journey.reload.vehicle_journey_at_stops.map(&:id).count).to eq(route.stop_points.map(&:id).count - 1)
+
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+        expect(at_stops.last.id).to be_nil
+        expect(at_stops.count).to eq route.stop_points.count
+      end
+
+      it 'should keep index order of VehicleJourneyAtStop' do
+        vehicle_journey.vehicle_journey_at_stops[3].destroy
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+
+        expect(at_stops[3].id).to be_nil
+        at_stops.delete_at(3)
+        at_stops.each do |stop|
+          expect(stop.id).not_to be_nil
+        end
+      end
+    end
 
     it 'should update arrival_time' do
       stop = state['vehicle_journey_at_stops'].first
