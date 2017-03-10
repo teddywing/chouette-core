@@ -1,5 +1,4 @@
 var connect = require('react-redux').connect
-var EditModal = require('../components/EditModal')
 var CreateModal = require('../components/CreateModal')
 var actions = require('../actions')
 
