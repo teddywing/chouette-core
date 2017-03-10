@@ -9,7 +9,7 @@ class VehicleJourneys extends Component{
     this.previousCity = undefined
   }
   componentDidMount() {
-    this.props.onLoadFirstPage()
+    this.props.onLoadFirstPage(this.props.filters)
   }
 
   componentDidUpdate(prevProps, prevState) {

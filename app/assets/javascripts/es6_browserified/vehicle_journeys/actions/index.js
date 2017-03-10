@@ -350,6 +350,11 @@ const actions = {
       return d.toString()
     }
   },
+  encodeParams: (params) => {
+    let esc = encodeURIComponent
+    let queryString = Object.keys(params).map((k) => esc(k) + '=' + esc(params[k])).join('&')
+    return queryString
+  },
   fillEmptyFields: (vjas) => {
     if (vjas.departure_time.hour == null) vjas.departure_time.hour = '00'
     if (vjas.departure_time.minute == null) vjas.departure_time.minute = '00'

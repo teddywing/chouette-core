@@ -55,8 +55,7 @@ const filters = (state = {}, action) => {
         'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
         'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute)
       }
-      let esc = encodeURIComponent
-      let queryString = Object.keys(params).map((k) => esc(k) + '=' + esc(params[k])).join('&')
+      let queryString = actions.encodeParams(params)
       return Object.assign({}, state, {queryString: queryString})
     default:
       return state

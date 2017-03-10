@@ -13,9 +13,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLoadFirstPage: () =>{
+    onLoadFirstPage: (filters) =>{
       dispatch(actions.fetchingApi())
-      actions.fetchVehicleJourneys(dispatch)
+      actions.fetchVehicleJourneys(dispatch, undefined, undefined, filters.queryString)
     },
     onUpdateTime: (e, subIndex, index, timeUnit, isDeparture, isArrivalsToggled) => {
       dispatch(actions.updateTime(e.target.value, subIndex, index, timeUnit, isDeparture, isArrivalsToggled))
