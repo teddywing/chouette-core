@@ -272,7 +272,7 @@ const actions = {
           dispatch(actions.unavailableServer())
         } else {
           let val
-          for (val of json){
+          for (val of json.vehicle_journeys){
             var timeTables = []
             let tt
             for (tt of val.time_tables){
