@@ -53,7 +53,7 @@ var initialState = {
   stopPointsList: window.stopPoints,
   pagination: {
     page : 1,
-    totalCount: window.vehicleJourneysLength,
+    totalCount: 0,
     perPage: window.vehicleJourneysPerPage,
     stateChanged: false
   },

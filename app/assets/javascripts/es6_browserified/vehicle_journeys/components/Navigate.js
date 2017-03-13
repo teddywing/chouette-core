@@ -7,6 +7,10 @@ let Navigate = ({ dispatch, vehicleJourneys, pagination, status, filters}) => {
   let firstPage = 1
   let lastPage = Math.ceil(pagination.totalCount / pagination.perPage)
   let minVJ = (pagination.page - 1) * pagination.perPage + 1
+  if (pagination.totalCount == 0){
+    minVJ = 0
+    lastPage = 1
+  }
   let maxVJ = Math.min((pagination.page * pagination.perPage), pagination.totalCount)
   if(status.isFetching == true) {
     return false

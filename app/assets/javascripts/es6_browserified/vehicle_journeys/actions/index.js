@@ -228,6 +228,10 @@ const actions = {
     type: 'UPDATE_TOTAL_COUNT',
     diff
   }),
+  receiveTotalCount: (total) => ({
+    type: 'RECEIVE_TOTAL_COUNT',
+    total
+  }),
   fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
     if(currentPage == undefined){
       currentPage = 1
@@ -301,6 +305,7 @@ const actions = {
             })
           }
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
+          dispatch(actions.receiveTotalCount(json.total))
         }
       })
   },

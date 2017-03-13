@@ -18,6 +18,15 @@ describe('pagination reducer, given parameters allowing page change', () => {
     ).toEqual({})
   })
 
+  it('should handle RECEIVE_TOTAL_COUNT', () => {
+    expect(
+      reducer(state, {
+        type: 'RECEIVE_TOTAL_COUNT',
+        total: 1
+      })
+    ).toEqual(Object.assign({}, state, {totalCount: 1}))
+  })
+
   it('should handle RESET_PAGINATION', () => {
     expect(
       reducer(state, {

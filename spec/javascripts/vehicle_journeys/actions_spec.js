@@ -396,3 +396,13 @@ describe('when submitting new vj', () => {
     expect(actions.updateTotalCount(diff)).toEqual(expectedAction)
   })
 })
+describe('when receiving vj', () => {
+  it('should create an action to show pagination totalCount', () => {
+    const total = 1
+    const expectedAction = {
+      type: 'RECEIVE_TOTAL_COUNT',
+      total
+    }
+    expect(actions.receiveTotalCount(total)).toEqual(expectedAction)
+  })
+})
