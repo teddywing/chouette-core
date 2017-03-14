@@ -58,7 +58,7 @@ describe Chouette::VehicleJourney, :type => :model do
       vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
       stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
 
-      expect(stop.arrival_time.strftime('%H')).to eq item['arrival_time']['hour']
+      expect(stop.arrival_time.strftime('%H').to_i).to eq item['arrival_time']['hour'].to_i
       expect(stop.arrival_time.strftime('%M')).to eq item['arrival_time']['minute']
     end
 
