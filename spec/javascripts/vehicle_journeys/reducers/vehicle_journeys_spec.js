@@ -91,15 +91,18 @@ describe('vehicleJourneys reducer', () => {
       published_journey_name: {value: 'test'}
     }
     let fakeSelectedJourneyPattern = {id: "1"}
+    let fakeSelectedCompany = {name: "ALBATRANS"}
     expect(
       vjReducer(state, {
         type: 'ADD_VEHICLEJOURNEY',
         data: fakeData,
         selectedJourneyPattern: fakeSelectedJourneyPattern,
-        stopPointsList: [{object_id: 'test', city_name: 'city'}]
+        stopPointsList: [{object_id: 'test', city_name: 'city'}],
+        selectedCompany: fakeSelectedCompany
       })
     ).toEqual([{
       journey_pattern: fakeSelectedJourneyPattern,
+      company: fakeSelectedCompany,
       published_journey_name: 'test',
       objectid: '',
       footnotes: [],
@@ -237,7 +240,8 @@ describe('vehicleJourneys reducer', () => {
       published_journey_name: {value : 'test'},
       published_journey_identifier: {value: 'test'}
     }
-    let newVJ = Object.assign({}, state[0], {published_journey_name: fakeData.published_journey_name.value, published_journey_identifier: fakeData.published_journey_identifier.value})
+    let fakeSelectedCompany : {name : 'ALBATRANS'}
+    let newVJ = Object.assign({}, state[0], {company: fakeSelectedCompany, published_journey_name: fakeData.published_journey_name.value, published_journey_identifier: fakeData.published_journey_identifier.value})
     expect(
       vjReducer(state, {
         type: 'EDIT_VEHICLEJOURNEY',

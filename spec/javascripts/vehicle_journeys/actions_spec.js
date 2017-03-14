@@ -63,14 +63,16 @@ describe('when clicking on validate button inside create modal', () => {
   it('should create an action to create a new vehicle journey', () => {
     const data = {}
     const selectedJourneyPattern = {}
+    const selectedCompany = {}
     const stopPointsList = []
     const expectedAction = {
       type: 'ADD_VEHICLEJOURNEY',
       data,
       selectedJourneyPattern,
-      stopPointsList
+      stopPointsList,
+      selectedCompany
     }
-    expect(actions.addVehicleJourney(data, selectedJourneyPattern, stopPointsList)).toEqual(expectedAction)
+    expect(actions.addVehicleJourney(data, selectedJourneyPattern, stopPointsList, selectedCompany)).toEqual(expectedAction)
   })
 })
 describe('when previous navigation button is clicked', () => {
@@ -174,11 +176,13 @@ describe('when clicking on validate button inside shifting modal', () => {
 describe('when clicking on validate button inside editing modal', () => {
   it('should create an action to update a vehiclejourney', () => {
     const data = {}
+    const selectedCompany = {}
     const expectedAction = {
       type: 'EDIT_VEHICLEJOURNEY',
-      data
+      data,
+      selectedCompany
     }
-    expect(actions.editVehicleJourney(data)).toEqual(expectedAction)
+    expect(actions.editVehicleJourney(data, selectedCompany)).toEqual(expectedAction)
   })
 })
 describe('when clicking on validate button inside duplicating modal', () => {
@@ -404,5 +408,23 @@ describe('when receiving vj', () => {
       total
     }
     expect(actions.receiveTotalCount(total)).toEqual(expectedAction)
+  })
+})
+describe('when using select2 to pick a company', () => {
+  it('should create an action to select a company inside modal', () => {
+    let selectedCompany = {
+      id: 1,
+      objectid: 2,
+      name: 'test',
+    }
+    const expectedAction = {
+      type: 'SELECT_CP_EDIT_MODAL',
+      selectedItem:{
+        id: selectedCompany.id,
+        objectid: selectedCompany.objectid,
+        name: selectedCompany.name,
+      }
+    }
+    expect(actions.select2Company(selectedCompany)).toEqual(expectedAction)
   })
 })

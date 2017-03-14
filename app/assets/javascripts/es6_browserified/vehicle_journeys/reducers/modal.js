@@ -54,6 +54,9 @@ const modal = (state = {}, action) => {
         },
         confirmModal: {}
       }
+    case 'SELECT_CP_EDIT_MODAL':
+      newModalProps = Object.assign({}, state.modalProps, {selectedCompany : action.selectedItem})
+      return Object.assign({}, state, {modalProps: newModalProps})
     case 'SELECT_TT_CALENDAR_MODAL':
       newModalProps = Object.assign({}, state.modalProps, {selectedTimetable : action.selectedItem})
       return Object.assign({}, state, {modalProps: newModalProps})
@@ -102,7 +105,7 @@ const modal = (state = {}, action) => {
         confirmModal: {}
       }
     case 'SELECT_JP_CREATE_MODAL':
-      newModalProps = {selectedJPModal : action.selectedItem}
+      newModalProps = Object.assign({}, state.modalProps, {selectedJPModal : action.selectedItem})
       return Object.assign({}, state, {modalProps: newModalProps})
     case 'SHIFT_VEHICLEJOURNEY_MODAL':
       return {

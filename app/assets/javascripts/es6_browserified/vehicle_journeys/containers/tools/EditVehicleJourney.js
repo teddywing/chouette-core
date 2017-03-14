@@ -19,8 +19,11 @@ const mapDispatchToProps = (dispatch) => {
     onOpenEditModal: (vj) =>{
       dispatch(actions.openEditModal(vj))
     },
-    onEditVehicleJourney: (data) =>{
-      dispatch(actions.editVehicleJourney(data))
+    onEditVehicleJourney: (data, selectedCompany) =>{
+      dispatch(actions.editVehicleJourney(data, selectedCompany))
+    },
+    onSelect2Company: (e) => {
+      dispatch(actions.select2Company(e.params.data))
     }
   }
 }

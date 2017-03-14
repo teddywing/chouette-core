@@ -99,15 +99,25 @@ const actions = {
   cancelSelection : () => ({
     type: 'CANCEL_SELECTION'
   }),
-  addVehicleJourney : (data, selectedJourneyPattern, stopPointsList) => ({
+  addVehicleJourney : (data, selectedJourneyPattern, stopPointsList, selectedCompany) => ({
     type: 'ADD_VEHICLEJOURNEY',
     data,
     selectedJourneyPattern,
-    stopPointsList
+    stopPointsList,
+    selectedCompany
   }),
-  editVehicleJourney : (data) => ({
+  select2Company: (selectedCompany) => ({
+    type: 'SELECT_CP_EDIT_MODAL',
+    selectedItem: {
+      id: selectedCompany.id,
+      name: selectedCompany.name,
+      objectid: selectedCompany.objectid
+    }
+  }),
+  editVehicleJourney : (data, selectedCompany) => ({
     type: 'EDIT_VEHICLEJOURNEY',
-    data
+    data,
+    selectedCompany
   }),
   editVehicleJourneyNotes : (footnotes) => ({
     type: 'EDIT_VEHICLEJOURNEY_NOTES',

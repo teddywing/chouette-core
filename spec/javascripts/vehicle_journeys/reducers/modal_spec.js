@@ -157,4 +157,14 @@ describe('modal reducer', () => {
       })
     ).toEqual(newState)
   })
+
+  it('should handle SELECT_CP_EDIT_MODAL', () => {
+    let newModalProps = {selectedCompany : {name: 'ALBATRANS'}}
+    expect(
+      modalReducer(state, {
+        type: 'SELECT_CP_EDIT_MODAL',
+        selectedItem: {name: 'ALBATRANS'}
+      })
+    ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
+  })
 })

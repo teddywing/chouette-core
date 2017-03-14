@@ -33,6 +33,7 @@ const vehicleJourney= (state = {}, action) => {
         pristineVjasList.push(newVjas)
       })
       return {
+        company: action.selectedCompany,
         journey_pattern: action.selectedJourneyPattern,
         published_journey_name: action.data.published_journey_name.value,
         objectid: '',
@@ -115,6 +116,7 @@ const vehicleJourneys = (state = [], action) => {
       return state.map((vj, i) => {
         if (vj.selected){
           return Object.assign({}, vj, {
+            company: action.selectedCompany,
             published_journey_name: action.data.published_journey_name.value,
             published_journey_identifier: action.data.published_journey_identifier.value,
           })

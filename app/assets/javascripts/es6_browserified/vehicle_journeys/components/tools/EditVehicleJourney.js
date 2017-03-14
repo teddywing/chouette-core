@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
+var CompanySelect2 = require('./select2s/CompanySelect2')
 
 class EditVehicleJourney extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class EditVehicleJourney extends Component {
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
-      this.props.onEditVehicleJourney(this.refs)
+      this.props.onEditVehicleJourney(this.refs, this.props.modal.modalProps.selectedCompany)
       this.props.onModalClose()
       $('#EditVehicleJourneyModal').modal('hide')
     }
@@ -85,11 +86,9 @@ class EditVehicleJourney extends Component {
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <label className='control-label'>Transporteur</label>
-                              <input
-                                type='text'
-                                className='form-control'
-                                value={this.props.modal.modalProps.vehicleJourney.company_id}
-                                disabled={true}
+                              <CompanySelect2
+                                company = {this.props.modal.modalProps.vehicleJourney.company}
+                                onSelect2Company = {(e) => this.props.onSelect2Company(e)}
                               />
                           </div>
                         </div>

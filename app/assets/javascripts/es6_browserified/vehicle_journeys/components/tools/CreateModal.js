@@ -3,6 +3,7 @@ var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
 var MissionSelect2 = require('./select2s/MissionSelect2')
+var CompanySelect2 = require('./select2s/CompanySelect2')
 
 class CreateModal extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class CreateModal extends Component {
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true && this.props.modal.modalProps.selectedJPModal) {
-      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList)
+      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList, this.props.modal.modalProps.selectedCompany)
       this.props.onModalClose()
       $('#NewVehicleJourneyModal').modal('hide')
     }
@@ -56,6 +57,15 @@ class CreateModal extends Component {
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                 required
                                 />
+                            </div>
+                          </div>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Nom du transporteur</label>
+                              <CompanySelect2
+                                company = {undefined}
+                                onSelect2Company = {(e) => this.props.onSelect2Company(e)}
+                              />
                             </div>
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
