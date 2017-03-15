@@ -1,4 +1,9 @@
 = search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder, class: 'form form-filter' do |f|
+  .input-group.search_bar
+    = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de référentiel'
+    span.input-group-btn
+      button.btn.btn-default type='submit'
+        span.fa.fa-search
   .form-group.togglable
     = f.label @wbench_refs.human_attribute_name(:status), required: false, class: 'control-label'
     = f.input :archived_at_not_null, label: ("<span>Conservé<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox_list' }, input_html: { class: 'check_boxes' }
@@ -13,9 +18,6 @@
       = f.simple_fields_for :validity_period do |p|
         = p.input :begin_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }
         = p.input :end_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }
-
   .actions
     = link_to 'Effacer', @workbench, class: 'btn btn-link'
     = f.submit 'Filtrer', class: 'btn btn-default'
-
-/ filtres par: etat, orga, plage de validité, date publi.

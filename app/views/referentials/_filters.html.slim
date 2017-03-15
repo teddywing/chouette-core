@@ -1,4 +1,10 @@
 = search_form_for @q, url: referential_path(@referential.id), class: 'form form-filter' do |f|
+  .input-group.search_bar
+    = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de ligne'
+    span.input-group-btn
+      button.btn.btn-default type='submit'
+        span.fa.fa-search
+
   .form-group.togglable
     = f.label @reflines.human_attribute_name(:transport_mode), required: false, class: 'control-label'
     = f.input :transport_mode_eq_any, collection: LineReferential.first.transport_modes, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("transport_modes.label.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }

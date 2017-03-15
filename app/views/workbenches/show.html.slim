@@ -19,13 +19,6 @@
 
       .row
         .col-lg-12
-          = search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder do |f|
-            .input-group.search_bar
-              = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de référentiel'
-              span.input-group-btn
-                button.btn.btn-default type='submit'
-                  span.fa.fa-search
-
           = render 'filters'
 
     - if @wbench_refs.any?
