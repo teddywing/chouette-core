@@ -39,11 +39,12 @@ describe Chouette::Route, :type => :model do
           expect(subject.reorder!( new_stop_point_ids)).to be_truthy
           expect(subject.stop_points.map(&:id)).to eq( old_stop_point_ids)
         end
-        it "should have changed stop_area_ids order" do
-          expect(subject.reorder!( new_stop_point_ids)).to be_truthy
-          subject.reload
-          expect(subject.stop_areas.map(&:id)).to eq( [old_stop_area_ids.last] + old_stop_area_ids[1..-2] + [old_stop_area_ids.first])
-        end
+        # This test is no longer relevant, as reordering is done with Reactux
+        # it "should have changed stop_area_ids order" do
+        #   expect(subject.reorder!( new_stop_point_ids)).to be_truthy
+        #   subject.reload
+        #   expect(subject.stop_areas.map(&:id)).to eq( [old_stop_area_ids.last] + old_stop_area_ids[1..-2] + [old_stop_area_ids.first])
+        # end
       end
     end
 
