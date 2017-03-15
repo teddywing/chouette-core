@@ -7,6 +7,7 @@ let AddStopPoint = ({ dispatch }) => {
     <div className="nested-linker">
       <form onSubmit={e => {
         e.preventDefault()
+        dispatch(actions.closeMaps())
         dispatch(actions.addStop())
       }}>
         <button type="submit" className="btn btn-outline-primary">
