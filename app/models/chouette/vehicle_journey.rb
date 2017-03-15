@@ -80,18 +80,21 @@ module Chouette
           item.delete('errors')
           vj = find_by(objectid: item['objectid'])
           next if item['deletable'] && vj.persisted? && vj.destroy
-
           vj.update_vehicle_journey_at_stops_state(item['vehicle_journey_at_stops'])
+          vj.update_attributes(state_permited_attributes(item))
           item['errors'] = vj.errors if vj.errors.any?
         end
-
         if state.any? {|item| item['errors']}
-          raise ActiveRecord::Rollback
+          raise ::ActiveRecord::Rollback
         end
       end
 
       # Cleanup
       state.delete_if {|item| item['deletable']}
+    end
+
+    def self.state_permited_attributes item
+      item.slice('published_journey_identifier', 'published_journey_name').to_hash
     end
 
     def increasing_times

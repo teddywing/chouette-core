@@ -22,10 +22,35 @@ describe Chouette::VehicleJourney, :type => :model do
       end
     end
 
-    let(:route) { create :route }
+    let(:route)           { create :route }
     let(:journey_pattern) { create :journey_pattern, route: route }
     let(:vehicle_journey) { create :vehicle_journey, route: route, journey_pattern: journey_pattern }
-    let(:state) { vehicle_journey_to_state(vehicle_journey) }
+    let(:state)           { vehicle_journey_to_state(vehicle_journey) }
+    let(:collection)      { [state] }
+
+    it 'should update vj attributes from state' do
+      state['published_journey_name']       = 'edited_name'
+      state['published_journey_identifier'] = 'edited_identifier'
+
+      Chouette::VehicleJourney.state_update(route, collection)
+      expect(vehicle_journey.reload.published_journey_name).to eq state['published_journey_name']
+      expect(vehicle_journey.reload.published_journey_identifier).to eq state['published_journey_identifier']
+    end
+
+    it 'should return errors when validation failed' do
+      state['published_journey_name'] = 'edited_name'
+      # Exceeds_gap departure time validation failed
+      prev = state['vehicle_journey_at_stops'].last(2).first
+      last = state['vehicle_journey_at_stops'].last
+      prev['departure_time']['hour'] = '01'
+      last['departure_time']['hour'] = '23'
+
+      expect {
+        Chouette::VehicleJourney.state_update(route, collection)
+      }.not_to change(vehicle_journey, :published_journey_name)
+      ap state
+      expect(state['errors'][:vehicle_journey_at_stops].size).to eq 1
+    end
 
     it 'should delete vj with deletable set to true from state' do
       state['deletable'] = true
@@ -34,37 +59,39 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(collection).to be_empty
     end
 
-    it 'should update departure_time' do
-      item = state['vehicle_journey_at_stops'].first
-      item['departure_time']['hour']   = (Time.now - 1.hour).strftime('%H')
-      item['departure_time']['minute'] = (Time.now - 1.hour).strftime('%M')
+    describe 'vehicle_journey_at_stops' do
+      it 'should update departure_time' do
+        item = state['vehicle_journey_at_stops'].first
+        item['departure_time']['hour']   = (Time.now - 1.hour).strftime('%H')
+        item['departure_time']['minute'] = (Time.now - 1.hour).strftime('%M')
 
-      vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
-      stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
+        vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+        stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
 
-      expect(stop.departure_time.strftime('%H')).to eq item['departure_time']['hour']
-      expect(stop.departure_time.strftime('%M')).to eq item['departure_time']['minute']
-    end
+        expect(stop.departure_time.strftime('%H')).to eq item['departure_time']['hour']
+        expect(stop.departure_time.strftime('%M')).to eq item['departure_time']['minute']
+      end
 
-    it 'should update arrival_time' do
-      item = state['vehicle_journey_at_stops'].first
-      item['arrival_time']['hour']   = (item['departure_time']['hour'].to_i - 1).to_s
-      item['arrival_time']['minute'] = Time.now.strftime('%M')
+      it 'should update arrival_time' do
+        item = state['vehicle_journey_at_stops'].first
+        item['arrival_time']['hour']   = (item['departure_time']['hour'].to_i - 1).to_s
+        item['arrival_time']['minute'] = Time.now.strftime('%M')
 
-      vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
-      stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
+        vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+        stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
 
-      expect(stop.arrival_time.strftime('%H').to_i).to eq item['arrival_time']['hour'].to_i
-      expect(stop.arrival_time.strftime('%M')).to eq item['arrival_time']['minute']
-    end
+        expect(stop.arrival_time.strftime('%H').to_i).to eq item['arrival_time']['hour'].to_i
+        expect(stop.arrival_time.strftime('%M')).to eq item['arrival_time']['minute']
+      end
 
-    it 'should return errors when validation failed' do
-      # Arrival must be before departure time
-      item = state['vehicle_journey_at_stops'].first
-      item['arrival_time']['hour']   = "12"
-      item['departure_time']['hour'] = "11"
-      vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
-      expect(item['errors'][:arrival_time].size).to eq 1
+      it 'should return errors when validation failed' do
+        # Arrival must be before departure time
+        item = state['vehicle_journey_at_stops'].first
+        item['arrival_time']['hour']   = "12"
+        item['departure_time']['hour'] = "11"
+        vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+        expect(item['errors'][:arrival_time].size).to eq 1
+      end
     end
 
     describe '.vehicle_journey_at_stops_matrix' do
