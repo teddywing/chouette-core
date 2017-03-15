@@ -62,6 +62,15 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(stop.arrival_time.strftime('%M')).to eq item['arrival_time']['minute']
     end
 
+    it 'should return errors when validation failed' do
+      # Arrival must be before departure time
+      item = state['vehicle_journey_at_stops'].first
+      item['arrival_time']['hour']   = "12"
+      item['departure_time']['hour'] = "11"
+      vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+      expect(item['errors'][:arrival_time].size).to eq 1
+    end
+
     it 'should update departure_time' do
       item = state['vehicle_journey_at_stops'].first
       item['departure_time']['hour']   = (Time.now - 1.hour).strftime('%H')

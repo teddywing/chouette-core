@@ -68,6 +68,8 @@ module Chouette
             end
           end
           stop.update_attributes(params)
+          vjas.delete('errors')
+          vjas['errors'] = stop.errors if stop.errors.any?
         end
       end
     end
