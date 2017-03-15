@@ -18,7 +18,7 @@ $(document).on 'ready page:load', ->
 
     stickyContent = '<div class="sticky-content">'
     stickyContent += '<div class="sticky-ptitle">' + $(".page-title").html() + '</div>'
-    stickyContent += '<div class="sticky-paction">' + $(".page-action").html() + '</div>'
+    stickyContent += '<div class="sticky-paction">' + $(".page-action .small")[0].outerHTML + '</div>'
     stickyContent += '</div>'
 
     # console.log stickyContent
@@ -28,9 +28,11 @@ $(document).on 'ready page:load', ->
 
       if $('#menu_top').find('.sticky-content').length == 0
         $('#menu_top').children('.menu-content').after(stickyContent)
+        $('.sticky-paction .small').after($('.formSubmitr'))
 
     else
       $('#main_nav').removeClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length > 0
+        $('.page-action .small').after($('.formSubmitr'))
         $('.sticky-content').remove()
