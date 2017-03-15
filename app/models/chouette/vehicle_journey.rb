@@ -79,6 +79,8 @@ module Chouette
         state.each do |item|
           item.delete('errors')
           vj = find_by(objectid: item['objectid'])
+          next if item['deletable'] && vj.persisted? && vj.destroy
+
           vj.update_vehicle_journey_at_stops_state(item['vehicle_journey_at_stops'])
           item['errors'] = vj.errors if vj.errors.any?
         end
@@ -87,6 +89,9 @@ module Chouette
           raise ActiveRecord::Rollback
         end
       end
+
+      # Cleanup
+      state.delete_if {|item| item['deletable']}
     end
 
     def increasing_times

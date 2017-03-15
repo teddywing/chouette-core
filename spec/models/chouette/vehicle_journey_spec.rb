@@ -1,5 +1,4 @@
 require 'spec_helper'
-
 describe Chouette::VehicleJourney, :type => :model do
   describe "state_update" do
     def vehicle_journey_to_state vj
@@ -28,26 +27,23 @@ describe Chouette::VehicleJourney, :type => :model do
     let(:vehicle_journey) { create :vehicle_journey, route: route, journey_pattern: journey_pattern }
     let(:state) { vehicle_journey_to_state(vehicle_journey) }
 
-    describe '.vehicle_journey_at_stops_matrix' do
-      it 'should fill missing VehicleJourneyAtStop with dummy' do
-        vehicle_journey.vehicle_journey_at_stops.last.destroy
-        expect(vehicle_journey.reload.vehicle_journey_at_stops.map(&:id).count).to eq(route.stop_points.map(&:id).count - 1)
+    it 'should delete vj with deletable set to true from state' do
+      state['deletable'] = true
+      collection         = [state]
+      Chouette::VehicleJourney.state_update(route, collection)
+      expect(collection).to be_empty
+    end
 
-        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
-        expect(at_stops.last.id).to be_nil
-        expect(at_stops.count).to eq route.stop_points.count
-      end
+    it 'should update departure_time' do
+      item = state['vehicle_journey_at_stops'].first
+      item['departure_time']['hour']   = (Time.now - 1.hour).strftime('%H')
+      item['departure_time']['minute'] = (Time.now - 1.hour).strftime('%M')
 
-      it 'should keep index order of VehicleJourneyAtStop' do
-        vehicle_journey.vehicle_journey_at_stops[3].destroy
-        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+      vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+      stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
 
-        expect(at_stops[3].id).to be_nil
-        at_stops.delete_at(3)
-        at_stops.each do |stop|
-          expect(stop.id).not_to be_nil
-        end
-      end
+      expect(stop.departure_time.strftime('%H')).to eq item['departure_time']['hour']
+      expect(stop.departure_time.strftime('%M')).to eq item['departure_time']['minute']
     end
 
     it 'should update arrival_time' do
@@ -71,16 +67,26 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(item['errors'][:arrival_time].size).to eq 1
     end
 
-    it 'should update departure_time' do
-      item = state['vehicle_journey_at_stops'].first
-      item['departure_time']['hour']   = (Time.now - 1.hour).strftime('%H')
-      item['departure_time']['minute'] = (Time.now - 1.hour).strftime('%M')
+    describe '.vehicle_journey_at_stops_matrix' do
+      it 'should fill missing VehicleJourneyAtStop with dummy' do
+        vehicle_journey.vehicle_journey_at_stops.last.destroy
+        expect(vehicle_journey.reload.vehicle_journey_at_stops.map(&:id).count).to eq(route.stop_points.map(&:id).count - 1)
 
-      vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
-      stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+        expect(at_stops.last.id).to be_nil
+        expect(at_stops.count).to eq route.stop_points.count
+      end
 
-      expect(stop.departure_time.strftime('%H')).to eq item['departure_time']['hour']
-      expect(stop.departure_time.strftime('%M')).to eq item['departure_time']['minute']
+      it 'should keep index order of VehicleJourneyAtStop' do
+        vehicle_journey.vehicle_journey_at_stops[3].destroy
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+
+        expect(at_stops[3].id).to be_nil
+        at_stops.delete_at(3)
+        at_stops.each do |stop|
+          expect(stop.id).not_to be_nil
+        end
+      end
     end
   end
 
