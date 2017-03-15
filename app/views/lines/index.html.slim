@@ -22,10 +22,11 @@
         .col-lg-12
           = table_builder @lines,
             { 'Oid' => Proc.new { |n| n.objectid.local_id },
-            @lines.human_attribute_name(:name) => 'name', @lines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) },
-            @lines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) },
-            @lines.human_attribute_name(:transport_mode) => Proc.new { |n| n.transport_mode.nil? ? '-' :  t("enumerize.line.transport_mode.#{n.try(:transport_mode)}") },
-            @lines.human_attribute_name(:transport_submode) => Proc.new { |n| n.transport_submode.nil? ? '-' :  t("enumerize.line.transport_submode.#{n.try(:transport_submode)}") } },
+            :name => 'name',
+            :network => Proc.new { |n| n.try(:network).try(:name) },
+            :company => Proc.new { |n| n.try(:company).try(:name) },
+            :transport_mode => Proc.new { |n| n.transport_mode.nil? ? '-' :  t("enumerize.line.transport_mode.#{n.try(:transport_mode)}") },
+            :transport_submode => Proc.new { |n| n.transport_submode.nil? ? '-' :  t("enumerize.line.transport_submode.#{n.try(:transport_submode)}") } },
             [:show, :delete],
             [],
             'table has-filter has-search'

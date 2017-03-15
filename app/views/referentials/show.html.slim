@@ -48,12 +48,12 @@
           / ID Codif, nom court, nom de la ligne, réseau, mode, transporteur principal, actions = [show, edit_notes]
           = table_builder @reflines,
             { 'ID Codif' => Proc.new { |n| n.objectid.local_id },
-            'Nom court' => 'number',
-            @reflines.human_attribute_name(:name) => 'name',
-            'Activé' => Proc.new{|n| n.deactivated? ? t('false') : t('true')},
-            @reflines.human_attribute_name(:transport_mode) => 'transport_mode',
-            @reflines.human_attribute_name(:network) => Proc.new { |n| n.try(:network).try(:name) },
-            @reflines.human_attribute_name(:company) => Proc.new { |n| n.try(:company).try(:name) } },
+            :number => 'number',
+            :name => 'name',
+            :deactivated => Proc.new{|n| n.deactivated? ? t('false') : t('true')},
+            :transport_mode => 'transport_mode',
+            :network => Proc.new { |n| n.try(:network).try(:name) },
+            :company => Proc.new { |n| n.try(:company).try(:name) } },
             [:show],
             [],
             'table has-filter has-search'

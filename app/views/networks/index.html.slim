@@ -27,7 +27,8 @@
       .row
         .col-lg-12
           = table_builder @networks,
-            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) }, @networks.human_attribute_name(:name) => 'name' },
+            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) },
+            :name => 'name' },
             [:show, :edit, :delete],
             [],
             'table has-search'

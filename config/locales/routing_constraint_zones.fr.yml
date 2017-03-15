@@ -2,13 +2,13 @@ fr:
   activerecord:
     models:
       routing_constraint_zone: Zone de contrainte
-      attributes:
-        routing_constraint_zone:
-          name: Nom
-          stop_areas: Arrêts
-          line: Ligne
-          created_at: "Créé le"
-          updated_at: "Modifié le"
+    attributes:
+      routing_constraint_zone:
+        name: Nom
+        stop_areas: Arrêts
+        line: Ligne
+        created_at: "Créé le"
+        updated_at: "Modifié le"
   routing_constraint_zones:
     actions:
       new: Ajouter une zone de contrainte

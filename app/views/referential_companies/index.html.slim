@@ -28,7 +28,7 @@
         .col-lg-12
           = table_builder @companies,
             { 'ID Codif' => Proc.new { |n| n.try(:objectid).try(:local_id) },
-            @companies.human_attribute_name(:name) => 'name', @companies.human_attribute_name(:phone) => 'phone', @companies.human_attribute_name(:email) => 'email', @companies.human_attribute_name(:url) => 'url' },
+            :name => 'name', :phone => 'phone', :email => 'email', :url => 'url' },
             [:show, :edit, :delete],
             [],
             'table has-search'

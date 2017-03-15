@@ -87,6 +87,7 @@ fr:
         published_at: "Intégré"
         archived_at: "Conservé"
         created_from: 'Créé à partir de'
+        organisation: 'Organisation'
   formtastic:
     titles:
       referential:

@@ -66,12 +66,13 @@
             .col-lg-12
               = table_builder @routes,
                 { 'OiD' => Proc.new { |n| n.objectid.local_id },
-                  @routes.human_attribute_name(:name) => 'name',
-                  @routes.human_attribute_name(:published_name) => 'published_name',
-                  @routes.human_attribute_name(:wayback) => 'wayback_text',
+                  :name => 'name',
+                  :published_name => 'published_name',
+                  :wayback => 'wayback_text',
                   'Arrêt de départ' => Proc.new{|r| r.try(:stop_points).first.try(:stop_area).try(:name)},
                   "Arrêt d'arrivée" => Proc.new{|r| r.try(:stop_points).last.try(:stop_area).try(:name)},
-                  'Nb arrêts' => Proc.new{|r| r.try(:stop_points).count}, 'Nb missions' => Proc.new{|r| r.try(:journey_patterns).count} },
+                  :stop_points => Proc.new{|r| r.try(:stop_points).count},
+                  :journey_patterns => Proc.new{|r| r.try(:journey_patterns).count} },
                 [:show, :edit, :delete],
                 [],
                 'table has-search'

@@ -38,11 +38,16 @@ fr:
         other: "arrêts sur séquence d'arrêts"
     attributes:
       stop_point:
+        name: "Nom"
         lines: "Lignes"
         created_at: "Créé le"
         updated_at: "Modifié le"
         for_boarding: "Montée"
         for_alighting: "Descente"
+        area_type: "Type d'arrêt"
+        city_name: "Commune"
+        zip_code: "Code postal"
+        position: "Position"
   simple_form:
     labels:
       stop_point:

@@ -16,7 +16,11 @@ module NewapplicationHelper
         end
 
         columns.map do |k, v|
-          hcont << content_tag(:th, sortable_columns(collection, k))
+          if k.is_a? Symbol
+            hcont << content_tag(:th, sortable_columns(collection, k))
+          else
+            hcont << content_tag(:th, k)
+          end
         end
         hcont << content_tag(:th, '') if actions.any?
 
@@ -166,7 +170,9 @@ module NewapplicationHelper
       pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
 
       pics = content_tag :span, pic1 + pic2, class: 'orderers'
-      (key.to_s + pics).html_safe
+      obj = collection.model.to_s.gsub('Chouette::', '').scan(/[A-Z][a-z]+/).join('_').downcase
+
+      (I18n.t("activerecord.attributes.#{obj}.#{key}") + pics).html_safe
     end
   end
 
