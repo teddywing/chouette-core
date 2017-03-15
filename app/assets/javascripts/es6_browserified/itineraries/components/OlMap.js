@@ -86,12 +86,16 @@ class OlMap extends Component{
         feature.setStyle(defaultStyles);
         centerLayer.setZIndex(0);
 
-        if(e.selected[0].getGeometry() == feature.getGeometry()) {
-          feature.setStyle(selectedStyles);
-          centerLayer.setZIndex(2);
-        }
-
         if(e.selected.length != 0) {
+
+          if(e.selected[0].getGeometry() == feature.getGeometry()) {
+            if(e.selected[0].style_.image_.fill_.color_ != '#da2f36'){
+              feature.setStyle(selectedStyles);
+              centerLayer.setZIndex(2);
+              e.preventDefault()
+              return false
+            }
+          }
           let data = Object.assign({}, e.selected[0].getProperties(), {geometry: undefined});
 
           this.props.onSelectMarker(this.props.index, data)
