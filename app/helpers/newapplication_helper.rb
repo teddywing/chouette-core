@@ -16,11 +16,11 @@ module NewapplicationHelper
         end
 
         columns.map do |k, v|
-          if k.is_a? Symbol
+          # if k.is_a? Symbol
             hcont << content_tag(:th, sortable_columns(collection, k))
-          else
-            hcont << content_tag(:th, k)
-          end
+          # else
+          #   hcont << content_tag(:th, k)
+          # end
         end
         hcont << content_tag(:th, '') if actions.any?
 

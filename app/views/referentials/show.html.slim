@@ -52,8 +52,8 @@
             :name => 'name',
             :deactivated => Proc.new{|n| n.deactivated? ? t('false') : t('true')},
             :transport_mode => 'transport_mode',
-            :network => Proc.new { |n| n.try(:network).try(:name) },
-            :company => Proc.new { |n| n.try(:company).try(:name) } },
+            'networks.name' => Proc.new { |n| n.try(:network).try(:name) },
+            'companies.name' => Proc.new { |n| n.try(:company).try(:name) } },
             [:show],
             [],
             'table has-filter has-search'
