@@ -1,1 +1,0 @@
-$(".compliance_check_tasks.index").ready ->
