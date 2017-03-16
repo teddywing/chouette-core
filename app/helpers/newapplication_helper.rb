@@ -16,11 +16,11 @@ module NewapplicationHelper
         end
 
         columns.map do |k, v|
-          # if k.is_a? Symbol
+          if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée"].include? k
+            hcont << content_tag(:th, k)
+          else
             hcont << content_tag(:th, sortable_columns(collection, k))
-          # else
-          #   hcont << content_tag(:th, k)
-          # end
+          end
         end
         hcont << content_tag(:th, '') if actions.any?
 

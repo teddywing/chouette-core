@@ -61,7 +61,11 @@ fr:
     attributes:
       line:
         network: "Réseau"
+        networks:
+          name: "Réseau"
         company: "Transporteur principal"
+        companies:
+          name: "Transporteur principal"
         registration_number: "Nom court"
         deactivated: "Activé"
         name: "Nom de la ligne"
