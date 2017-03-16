@@ -4,8 +4,7 @@ class Chouette::RouteSection < Chouette::TridentActiveRecord
   has_many :journey_pattern_sections
   has_many :journey_patterns, through: :journey_pattern_sections, dependent: :destroy
 
-  validates :departure, :arrival, presence: true
-  validates :processed_geometry, presence: true
+  validates :departure, :arrival, :processed_geometry, presence: true
 
   scope :by_endpoint_name, ->(endpoint, name) do
     joins("INNER JOIN stop_areas #{endpoint} ON #{endpoint}.id = route_sections.#{endpoint}_id").where(["#{endpoint}.name ilike ?", "%#{name}%"])
