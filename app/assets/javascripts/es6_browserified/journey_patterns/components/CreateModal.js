@@ -70,7 +70,7 @@ class CreateModal extends Component {
                             </div>
                             <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                               <div className='form-group'>
-                                <label className='control-label is-required'>N° d'enregistrement</label>
+                                <label className='control-label is-required'>Code mission</label>
                                 <input
                                   type='text'
                                   ref='registration_number'
