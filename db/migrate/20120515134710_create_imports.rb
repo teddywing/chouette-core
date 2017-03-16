@@ -1,11 +1,13 @@
 class CreateImports < ActiveRecord::Migration
   def change
-    create_table :imports do |t|
-      t.belongs_to :referential
-      t.string :status
+    unless table_exists? :imports
+      create_table :imports do |t|
+        t.belongs_to :referential
+        t.string :status
 
-      t.timestamps
+        t.timestamps
+      end
+      add_index :imports, :referential_id
     end
-    add_index :imports, :referential_id
   end
 end
