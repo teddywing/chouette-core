@@ -2,7 +2,7 @@ require 'spec_helper'
 describe Chouette::VehicleJourney, :type => :model do
   describe "state_update" do
     def vehicle_journey_to_state vj
-      vj.attributes.slice('objectid', 'published_journey_name', 'journey_pattern_id').tap do |item|
+      vj.attributes.slice('objectid', 'published_journey_name', 'journey_pattern_id', 'company_id').tap do |item|
         item['vehicle_journey_at_stops'] = []
 
         vj.vehicle_journey_at_stops.each do |vs|
@@ -28,6 +28,14 @@ describe Chouette::VehicleJourney, :type => :model do
     let(:state)           { vehicle_journey_to_state(vehicle_journey) }
     let(:collection)      { [state] }
 
+    it 'should update vj company' do
+      state['company'] = create(:company).attributes.slice('id', 'name', 'objectid')
+      Chouette::VehicleJourney.state_update(route, collection)
+
+      expect(state['company_id']).to eq state['company']['id']
+      expect(vehicle_journey.reload.company_id).to eq state['company']['id']
+    end
+
     it 'should update vj attributes from state' do
       state['published_journey_name']       = 'edited_name'
       state['published_journey_identifier'] = 'edited_identifier'
@@ -48,7 +56,6 @@ describe Chouette::VehicleJourney, :type => :model do
       expect {
         Chouette::VehicleJourney.state_update(route, collection)
       }.not_to change(vehicle_journey, :published_journey_name)
-      ap state
       expect(state['errors'][:vehicle_journey_at_stops].size).to eq 1
     end
 
@@ -65,7 +72,7 @@ describe Chouette::VehicleJourney, :type => :model do
         item['departure_time']['hour']   = (Time.now - 1.hour).strftime('%H')
         item['departure_time']['minute'] = (Time.now - 1.hour).strftime('%M')
 
-        vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+        vehicle_journey.update_vjas_from_state(state['vehicle_journey_at_stops'])
         stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
 
         expect(stop.departure_time.strftime('%H')).to eq item['departure_time']['hour']
@@ -77,7 +84,7 @@ describe Chouette::VehicleJourney, :type => :model do
         item['arrival_time']['hour']   = (item['departure_time']['hour'].to_i - 1).to_s
         item['arrival_time']['minute'] = Time.now.strftime('%M')
 
-        vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+        vehicle_journey.update_vjas_from_state(state['vehicle_journey_at_stops'])
         stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
 
         expect(stop.arrival_time.strftime('%H').to_i).to eq item['arrival_time']['hour'].to_i
@@ -89,7 +96,7 @@ describe Chouette::VehicleJourney, :type => :model do
         item = state['vehicle_journey_at_stops'].first
         item['arrival_time']['hour']   = "12"
         item['departure_time']['hour'] = "11"
-        vehicle_journey.update_vehicle_journey_at_stops_state(state['vehicle_journey_at_stops'])
+        vehicle_journey.update_vjas_from_state(state['vehicle_journey_at_stops'])
         expect(item['errors'][:arrival_time].size).to eq 1
       end
     end

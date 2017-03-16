@@ -56,7 +56,7 @@ module Chouette
       at_stops
     end
 
-    def update_vehicle_journey_at_stops_state state
+    def update_vjas_from_state state
       state.each do |vjas|
         next if vjas["dummy"]
         stop = vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
@@ -74,14 +74,25 @@ module Chouette
       end
     end
 
+    def update_company_from_state state
+      if state['company']['id'] != state['company_id']
+        self.company = Company.find(state['company']['id'])
+        state['company_id'] = self.company.id
+        self.save
+      end
+    end
+
     def self.state_update route, state
       transaction do
         state.each do |item|
           item.delete('errors')
           vj = find_by(objectid: item['objectid'])
           next if item['deletable'] && vj.persisted? && vj.destroy
-          vj.update_vehicle_journey_at_stops_state(item['vehicle_journey_at_stops'])
+
+          vj.update_vjas_from_state(item['vehicle_journey_at_stops'])
           vj.update_attributes(state_permited_attributes(item))
+          vj.update_company_from_state(item) if item['company']
+
           item['errors'] = vj.errors if vj.errors.any?
         end
         if state.any? {|item| item['errors']}
