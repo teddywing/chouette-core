@@ -25,9 +25,7 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
       state.each do |item|
         item.delete('errors')
         jp = find_by(objectid: item['object_id']) || state_create_instance(route, item)
-        if item['deletable'] && jp.persisted?
-          next if jp.destroy
-        end
+        next if item['deletable'] && jp.persisted? && jp.destroy
 
         # Update attributes and stop_points associations
         jp.update_attributes(state_permited_attributes(item))
@@ -40,7 +38,7 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
         raise ActiveRecord::Rollback
       end
     end
-    # clean
+
     state.map {|item| item.delete('new_record')}
     state.delete_if {|item| item['deletable']}
   end
@@ -54,8 +52,8 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   end
 
   def self.state_create_instance route, item
-    jp = route.journey_patterns.create(state_permited_attributes(item))
     # Flag new record, so we can unset object_id if transaction rollback
+    jp = route.journey_patterns.create(state_permited_attributes(item))
     item['object_id']  = jp.objectid
     item['new_record'] = true
     jp

@@ -28,11 +28,27 @@ describe Chouette::VehicleJourney, :type => :model do
     let(:state)           { vehicle_journey_to_state(vehicle_journey) }
     let(:collection)      { [state] }
 
+    it 'should create new vj from state' do
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      collection << vehicle_journey_to_state(new_vj)
+      expect {
+        Chouette::VehicleJourney.state_update(route, collection)
+      }.to change {Chouette::VehicleJourney.count}.by(1)
+      expect(collection.last['objectid']).not_to be_nil
+
+      vj = Chouette::VehicleJourney.find_by(objectid: collection.last['objectid'])
+      expect(vj.published_journey_name).to eq 'dummy'
+    end
+
+    it 'should update vj journey_pattern' do
+      state['journey_pattern'] = create(:journey_pattern).attributes.slice('id', 'name', 'objectid')
+      Chouette::VehicleJourney.state_update(route, collection)
+      expect(vehicle_journey.reload.journey_pattern_id).to eq state['journey_pattern']['id']
+    end
+
     it 'should update vj company' do
       state['company'] = create(:company).attributes.slice('id', 'name', 'objectid')
       Chouette::VehicleJourney.state_update(route, collection)
-
-      expect(state['company_id']).to eq state['company']['id']
       expect(vehicle_journey.reload.company_id).to eq state['company']['id']
     end
 
