@@ -9,7 +9,7 @@
 //= require jquery_ujs
 //= require modernizr
 //= require cocoon
-//= require_directory ./OpenLayers
+//= require  ./OpenLayers/ol.js
 //= require bootstrap-sass-official
 //= require select2-full
 //= require select2_locale_fr
