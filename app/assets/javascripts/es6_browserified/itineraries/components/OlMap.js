@@ -120,7 +120,7 @@ class OlMap extends Component{
               {this.props.value.olMap.json.registration_number}
             </p>
             <p>
-              <strong>OiD de l'utilisateur : </strong>
+              <strong>ID Reflex : </strong>
               {this.props.value.olMap.json.user_objectid}
             </p>
 
