@@ -1,5 +1,7 @@
 fr:
   referentials:
+    filters:
+      name_or_number_or_objectid: 'Indiquez un nom de ligne, nom court ou objectid'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
     index:
       title: 'Jeux de données'
