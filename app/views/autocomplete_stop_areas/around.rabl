@@ -10,6 +10,7 @@ child @stop_areas, root: :features, object_root: false do
   node :properties do |s|
     {
       name: s.name,
+      area_type: s.area_type,
       registration_number: s.registration_number,
       stoparea_id: s.id,
       text: "#{s.name}, #{s.zip_code} #{s.city_name}",

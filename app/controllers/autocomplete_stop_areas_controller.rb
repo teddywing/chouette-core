@@ -5,7 +5,7 @@ class AutocompleteStopAreasController < InheritedResources::Base
 
   def around
     stop_area   = referential.stop_areas.find params[:id]
-    @stop_areas = stop_area.around(referential.stop_areas, 100)
+    @stop_areas = stop_area.around(referential.stop_areas.where(area_type: params[:target_type]), 300)
   end
 
   protected

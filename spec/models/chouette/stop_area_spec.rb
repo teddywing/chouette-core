@@ -18,7 +18,6 @@ describe Chouette::StopArea, :type => :model do
   it { is_expected.to validate_numericality_of :latitude }
   it { is_expected.to validate_numericality_of :longitude }
 
-
   # describe ".latitude" do
   #   it "should accept -90 value" do
   #     subject = create :stop_area, :area_type => "BoardingPosition"

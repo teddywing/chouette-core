@@ -10,7 +10,7 @@ class OlMap extends Component{
   fetchApiURL(id){
     const origin = window.location.origin
     const path = window.location.pathname.split('/', 3).join('/')
-    return origin + path + "/autocomplete_stop_areas/" + id + "/around"
+    return origin + path + "/autocomplete_stop_areas/" + id + "/around?target_type=zdep"
   }
 
   componentDidUpdate(prevProps, prevState){
