@@ -134,9 +134,9 @@ describe "TimeTables", :type => :feature do
   describe "edit and return to show" do
     it "edit time_table" do
       visit referential_time_table_path(referential, subject)
-      click_link "Modifier ce calendrier"
+      click_link "Editer ce calendrier"
       fill_in "Nom", :with => "TimeTable Modified"
-      click_button("Modifier calendrier")
+      click_button("Editer calendrier")
       expect(page).to have_content("TimeTable Modified")
     end
   end

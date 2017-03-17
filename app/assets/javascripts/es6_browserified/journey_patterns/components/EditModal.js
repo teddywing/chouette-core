@@ -23,7 +23,7 @@ class EditModal extends Component {
             <div className='modal-content'>
               <div className='modal-header'>
                 <h4 className='modal-title'>
-                  Modifier la mission
+                  Editer la mission
                   {(this.props.modal.type == 'edit') && (
                     <em> "{this.props.modal.modalProps.journeyPattern.name}"</em>
                   )}

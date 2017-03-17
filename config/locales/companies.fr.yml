@@ -3,13 +3,13 @@ fr:
     search_no_results: "Aucun transporteur ne correspond à votre recherche"
     actions:
       new: "Ajouter un transporteur"
-      edit: "Modifier ce transporteur"
+      edit: "Editer ce transporteur"
       destroy: "Supprimer ce transporteur"
       destroy_confirm: "Etes vous sûr de supprimer ce transporteur ?"
     new:
       title: "Ajouter un transporteur"
     edit:
-      title: "Modifier le transporteur %{company}"
+      title: "Editer le transporteur %{company}"
     show:
       title: "Transporteur %{company}"
     index:
@@ -39,7 +39,7 @@ fr:
         objectid: "Identifiant Neptune"
         object_version: "Version"
         created_at: "Créé le"
-        updated_at: "Modifié le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
   formtastic:
     titles:

@@ -24,7 +24,6 @@
     - if @wbench_refs.any?
       .row
         .col-lg-12
-          / actions for table: controler+integrer, consulter, modifier, controler, dupliquer, conserver, purger, supprimer
           = table_builder @wbench_refs,
             { :name => 'name', :status => Proc.new {|w| w.archived? ? ("<span class='fa fa-archive'></span> Conservé").html_safe : '-'},
               :organisation => Proc.new {|w| w.organisation.name},

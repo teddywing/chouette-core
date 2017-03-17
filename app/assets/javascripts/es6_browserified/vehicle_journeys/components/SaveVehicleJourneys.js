@@ -31,7 +31,7 @@ class SaveVehicleJourneys extends Component{
                   actions.submitVehicleJourneys(this.props.dispatch, this.props.vehicleJourneys)
                 }}
               >
-                Enregistrer
+                Valider
               </button>
             </form>
           </div>

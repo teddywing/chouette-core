@@ -4,7 +4,7 @@ fr:
     standard_calendar: Calendrier standard
     actions:
       new: Ajouter un calendrier
-      edit: Modifier cet calendrier
+      edit: Editer cet calendrier
       destroy: Supprimer cet calendrier
       destroy_confirm: Etes vous sûr de supprimer cet calendrier ?
     errors:
@@ -19,7 +19,7 @@ fr:
     new:
       title: Ajouter un calendrier
     edit:
-      title: Modifier le calendrier %{calendar}
+      title: Editer le calendrier %{calendar}
     show:
       title: Calendrier %{calendar}
   simple_form:
@@ -48,4 +48,3 @@ fr:
             dates:
               date_in_date_ranges: Une même date ne peut pas être incluse à la fois dans la liste et dans les intervalles de dates.
               date_in_dates: Une même date ne peut pas être incluse plusieurs fois dans la liste.
-

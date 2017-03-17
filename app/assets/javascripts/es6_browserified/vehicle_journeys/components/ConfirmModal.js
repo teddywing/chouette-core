@@ -7,7 +7,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, vehicleJou
     <div className='modal-dialog'>
       <div className='modal-content'>
         <div className='modal-body'>
-          <p> Voulez-vous enregistrer vos modifications avant de changer de page? </p>
+          <p> Voulez-vous valider vos modifications avant de changer de page? </p>
         </div>
         <div className='modal-footer'>
           <button
@@ -16,7 +16,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, vehicleJou
             type='button'
             onClick= {() => {onModalCancel(modal.confirmModal.callback)}}
             >
-            Ne pas enregistrer
+            Ne pas valider
           </button>
           <button
             className='btn btn-danger'
@@ -24,7 +24,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, vehicleJou
             type='button'
             onClick = {() => {onModalAccept(modal.confirmModal.callback, vehicleJourneys)}}
             >
-            Enregistrer
+            Valider
           </button>
         </div>
       </div>

@@ -28,21 +28,21 @@ describe "Lines", :type => :feature do
 
     context 'filtering' do
       it 'supports filtering by name' do
-        fill_in 'q[name_or_objectid_cont]', with: lines.first.name
+        fill_in 'q[name_or_number_or_objectid_cont]', with: lines.first.name
         click_button 'search-btn'
         expect(page).to have_content(lines.first.name)
         expect(page).not_to have_content(lines.last.name)
       end
 
       it 'supports filtering by number' do
-        fill_in 'q[name_or_objectid_cont]', with: lines.first.number
+        fill_in 'q[name_or_number_or_objectid_cont]', with: lines.first.number
         click_button 'search-btn'
         expect(page).to have_content(lines.first.name)
         expect(page).not_to have_content(lines.last.name)
       end
 
       it 'supports filtering by objectid' do
-        fill_in 'q[name_or_objectid_cont]', with: lines.first.objectid
+        fill_in 'q[name_or_number_or_objectid_cont]', with: lines.first.objectid
         click_button 'search-btn'
         expect(page).to have_content(lines.first.name)
         expect(page).not_to have_content(lines.last.name)
@@ -88,10 +88,10 @@ describe "Lines", :type => :feature do
   # describe "edit and return to show" do
   #   it "edit line" do
   #     visit line_referential_line_path(line_referential, subject)
-  #     click_link "Modifier cette ligne"
+  #     click_link "Editer cette ligne"
   #     fill_in "line_name", :with => "Line Modified"
   #     fill_in "Numéro d'enregistrement", :with => "test-1"
-  #     click_button("Modifier ligne")
+  #     click_button("Editer ligne")
   #     expect(page).to have_content("Line Modified")
   #   end
   # end

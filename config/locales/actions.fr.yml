@@ -1,6 +1,6 @@
 fr:
   actions:
-    edit: 'Modifier'
+    edit: 'Editer'
     destroy: 'Supprimer'
     delete: 'Supprimer'
     search: "Chercher"

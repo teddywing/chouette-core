@@ -36,7 +36,7 @@ describe 'Workbenches', type: :feature do
       fill_in "referential[prefix]", with: "test" # Prefix Neptune
       select workbench.lines.first.id, from: 'referential[metadatas_attributes][0][lines][]' # Lignes
 
-      click_button "Enregistrer"
+      click_button "Valider"
       expect(page).to have_css("h1", text: "Referential to test creation")
     end
   end

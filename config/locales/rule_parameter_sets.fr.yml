@@ -2,7 +2,7 @@ fr:
   rule_parameter_sets:
     actions:
       new: "Ajouter un jeu de paramètres"
-      edit: "Modifier ce jeu de paramètres"
+      edit: "Editer ce jeu de paramètres"
       index: "Jeux de paramètres"
       destroy: "Supprimer ce jeu de paramètres"
       destroy_confirm: "Etes vous sûr de supprimer ce jeu de paramètres ?"
@@ -11,7 +11,7 @@ fr:
     form:
       add_mode_parameter_set: "Ajouter les paramètres spécifiques à un mode"
     edit:
-      title: "Modifier le jeu de paramètres %{rule_parameter_set}"
+      title: "Editer le jeu de paramètres %{rule_parameter_set}"
     destroy:
       last_rps_protected: "Suppresion impossible. L'espace de données doit compter au minimum un jeu de paramètres."
     show:

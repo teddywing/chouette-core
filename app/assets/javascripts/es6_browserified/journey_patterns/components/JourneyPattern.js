@@ -81,7 +81,7 @@ class JourneyPattern extends Component{
                     data-toggle='modal'
                     data-target='#JourneyPatternModal'
                     >
-                    Modifier
+                    Editer
                   </a>
                 </li>
                 <li className={this.props.value.object_id ? '' : 'disabled'}>

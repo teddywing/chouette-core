@@ -2,7 +2,7 @@ fr:
   api_keys:
     actions:
       new: "Ajouter une clé d'accès API"
-      edit: "Modifier la clé d'accès API"
+      edit: "Editer la clé d'accès API"
       destroy: "Supprimer la clé d'accès API"
       destroy_confirm: "Etes vous sûr de vouloir détruire la clé d'accès API ?"
     show:
@@ -10,7 +10,7 @@ fr:
     new:
       title: "Ajouter une clé d'accès API"
     edit:
-      title: "Modifier la clé d'accès API"
+      title: "Editer la clé d'accès API"
   activerecord:
     models:
       api_key: "Clé d'accès API"

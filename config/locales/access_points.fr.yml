@@ -4,13 +4,13 @@ fr:
       no_position: "Pas de position"
     actions:
       new: "Ajouter un accès"
-      edit: "Modifier cet accès"
+      edit: "Editer cet accès"
       destroy: "Supprimer cet accès"
       destroy_confirm: "Etes vous sûr de supprimer cet accès ?"
     new:
       title: "Ajouter un accès"
     edit:
-      title: "Modifier l'accès %{access_point}"
+      title: "Editer l'accès %{access_point}"
     show:
       title: "Accès %{access_point}"
       geographic_data: "Données géographiques"
@@ -51,7 +51,7 @@ fr:
         objectid: "Identifiant Neptune"
         object_version: "Version"
         created_at: "Créé le"
-        updated_at: "Modifié le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
         coordinates: "Coordonnées (lat,lng)"
         zip_code: "Code postal"
