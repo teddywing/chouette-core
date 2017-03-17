@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170309102656) do
+ActiveRecord::Schema.define(version: 20170317114614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -515,8 +515,6 @@ ActiveRecord::Schema.define(version: 20170309102656) do
     t.string   "creator_id"
     t.float    "distance"
     t.boolean  "no_processing"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
     t.datetime "created_at"
@@ -857,8 +855,6 @@ ActiveRecord::Schema.define(version: 20170309102656) do
 
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_child_fkey", column: "child_id", dependent: :delete
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_parent_fkey", column: "parent_id", dependent: :delete
-
-  add_foreign_key "stop_points", "routes", name: "stoppoint_route_fkey", dependent: :delete
 
   add_foreign_key "time_table_dates", "time_tables", name: "tm_date_fkey", dependent: :delete
 
