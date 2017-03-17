@@ -33,6 +33,7 @@ fr:
       edit: "Modifier ce jeu de données"
       clone: "Cloner ce jeu de données"
     errors:
+      validity_period: "Période de validité invalide"
       pg_excluded: "ne peut pas commencer par pg_ (valeurs réservées)"
       public_excluded: "public est une valeur réservée"
       user_excluded: "%{user} est une valeur réservée"
@@ -107,7 +108,6 @@ fr:
           periods:
             begin: 'Début de période'
             end: 'Fin de période'
-
   notice:
     referentials:
       deleted: "Les jeux de données on été supprimés"
