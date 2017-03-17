@@ -42,6 +42,7 @@ fr:
         lines: "Lignes"
         created_at: "Créé le"
         updated_at: "Modifié le"
+        deleted_at: 'Activé'
         for_boarding: "Montée"
         for_alighting: "Descente"
         area_type: "Type d'arrêt"

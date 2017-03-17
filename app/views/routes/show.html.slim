@@ -36,7 +36,7 @@
           = table_builder @route_sp,
             { 'ID Reflex' => Proc.new {|s| s.try(:stop_area).try(:user_objectid)},
               :name => Proc.new {|s| s.try(:stop_area).try(:name)},
-              'Activé' => Proc.new{|s| s.try(:stop_area).deleted_at ? t('false') : t('true')},
+              :deleted_at => Proc.new{|s| s.try(:stop_area).deleted_at ? t('false') : t('true')},
               :zip_code => Proc.new {|s| s.try(:stop_area).try(:zip_code)},
               :city_name => Proc.new {|s| s.try(:stop_area).try(:city_name)},
               :area_type => Proc.new {|s| t("area_types.label.#{s.try(:stop_area).try(:area_type)}")},
