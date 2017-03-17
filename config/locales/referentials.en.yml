@@ -87,6 +87,9 @@ en:
         published_at: "Integrated"
         archived_at: "Archived"
         created_from: 'Created from'
+        updated_at: "Updated"
+        created_at: "Created"
+        organisation: 'Organisation'
   formtastic:
     titles:
       referential:

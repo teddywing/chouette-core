@@ -91,6 +91,7 @@ en:
         deleted: "Deleted"
         comment: "Comments"
         stop_area_type: "Area type"
+        area_type: "Area type"
         nearest_topic_name: "Nearest point of interest"
         street_name: "Street name"
         country_code: "INSEE code"

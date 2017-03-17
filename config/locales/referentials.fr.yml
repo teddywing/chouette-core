@@ -84,6 +84,7 @@ fr:
         routing_constraint_zone: Zone de contrainte
         validity_period: "Période de validité englobante"
         updated_at: "Modifié"
+        created_at: "Créé"
         published_at: "Intégré"
         archived_at: "Conservé"
         created_from: 'Créé à partir de'

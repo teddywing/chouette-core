@@ -61,10 +61,16 @@ en:
     attributes:
       line:
         network: "Network"
+        networks:
+          name: "Network"
         company: "Company"
+        companies:
+          name: "Company"
         registration_number: "Registration number"
         name: "Name"
         published_name: "Published name"
+        registration_number: "Short name"
+        deactivated: "Activated"
         number: "Number"
         transport_mode: "Transport mode"
         transport_submode: "Transport Submode"

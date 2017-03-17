@@ -1,7 +1,7 @@
 = simple_form_for [@referential, @line, @routing_constraint_zone] do |f|
   .row
     .col-lg-6.col-sm-12
-      = f.input :name, label: t('activerecord.models.attributes.routing_constraint_zone.name')
+      = f.input :name
   .row
     .col-lg-6.col-sm-12
       / Temporarily limit the collection to 10 items... otherwise it kills RoR
