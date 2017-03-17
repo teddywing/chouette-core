@@ -12,13 +12,14 @@ $(document).on 'ready page:load', ->
   selectedItem.closest('.panel-collapse').addClass 'in'
   selectedItem.closest('.panel-title').children('a').attr('aria-expanded') == true
 
-  data = ""
-  $('.page-action').children().each ->
-    data += $(this)[0].outerHTML
 
   # Sticky behavior
   $(document).on 'scroll', ->
     limit = 51
+
+    data = ""
+    $('.page-action').children().each ->
+      data += $(this)[0].outerHTML
 
     stickyContent = '<div class="sticky-content">'
     stickyContent += '<div class="sticky-ptitle">' + $(".page-title").html() + '</div>'
@@ -32,11 +33,11 @@ $(document).on 'ready page:load', ->
 
       if $('#menu_top').find('.sticky-content').length == 0
         $('#menu_top').children('.menu-content').after(stickyContent)
-        $('.sticky-paction .small').after($('.formSubmitr'))
+        # $('.sticky-paction .small').after($('.formSubmitr'))
 
     else
       $('#main_nav').removeClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length > 0
-        $('.page-action .small').after($('.formSubmitr'))
+        # $('.page-action .small').after($('.formSubmitr'))
         $('.sticky-content').remove()
