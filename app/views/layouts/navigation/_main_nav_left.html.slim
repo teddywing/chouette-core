@@ -34,11 +34,11 @@
             = link_to '#', class: "list-group-item #{params[:controller] == 'workbenches' ? 'active' : ''}" do
               span Jeux de données
             = link_to '#', class: 'list-group-item' do
-              span Rapports d'import
+              span Import
             = link_to '#', class: 'list-group-item' do
-              span Modèles de calendrier
+              span Modèle de calendrier
             = link_to '#', class: 'list-group-item' do
-              span Rapports de contrôle
+              span Rapport de contrôle
             = link_to '#', class: 'list-group-item' do
               span Jeux de contrôle
 
@@ -62,7 +62,7 @@
         #miFour.panel-collapse.collapse
           .list-group
             = link_to line_referential_path(1), class: "list-group-item #{(@localizationUrl == 'line_referentials#show') ? 'active' : ''}" do
-              span Synchronisation iLLICO
+              span Synchronisation iLICO
             = link_to stop_area_referential_path(1), class: "list-group-item #{(@localizationUrl == 'stop_area_referentials#show') ? 'active' : ''}" do
               span Synchronisation iCAR
 
@@ -82,7 +82,7 @@
             = link_to Rails.application.config.try(:codifligne_url), target: '_blank', class: 'list-group-item' do
               span
                 span.fa.fa-2x.fa-circle
-                |Codifligne (iLLICO)
+                |Codifligne (iLICO)
 
             = link_to Rails.application.config.try(:reflex_url), target: '_blank', class: 'list-group-item' do
               span

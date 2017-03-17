@@ -7,7 +7,7 @@ fr:
     edit:
       title: "Modifier le référentiel %{line_referential}"
     show:
-      title: 'Synchronisation iLLICO'
+      title: 'Synchronisation iLICO'
   activerecord:
     models:
       line_referential:

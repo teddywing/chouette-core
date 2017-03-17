@@ -29,7 +29,7 @@ describe 'Workbenches', type: :feature do
     it "create a new Referential with a specifed line and period" do
       visit workbench_path(workbench)
 
-      click_link "Ajouter un jeu de données"
+      click_link "Créer un jeu de données"
 
       fill_in "referential[name]", with: "Referential to test creation" # Nom du JDD
       fill_in "referential[slug]", with: "test" # Code
