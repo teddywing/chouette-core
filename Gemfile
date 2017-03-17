@@ -91,7 +91,7 @@ gem 'formtastic', '2.3.1'
 gem 'RedCloth', '~> 4.3.0'
 gem 'simple_form', '~> 3.1.0'
 gem 'font-awesome-sass', '~> 4.7'
-gem 'will_paginate-bootstrap', '~> 1.0.1'
+gem 'will_paginate-bootstrap'
 gem 'breadcrumbs_on_rails'
 
 # Format Output
@@ -104,7 +104,7 @@ gem 'inherited_resources'
 gem 'google-analytics-rails'
 
 # Model
-gem 'will_paginate', '~> 3.0.7'
+gem 'will_paginate'
 gem 'ransack'
 gem 'squeel'
 gem 'active_attr'

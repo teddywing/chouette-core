@@ -23,18 +23,22 @@ class ReferentialLinesController < ChouetteController
   end
 
   def show
-    @map = LineMap.new(resource).with_helpers(self)
+    @routes = resource.routes
 
-    @q = @line.routes.ransack(params[:q])
+    case sort_route_column
+    when "stop_points", "journey_patterns"
+      left_join = %Q{LEFT JOIN "#{sort_route_column}" ON "#{sort_route_column}"."route_id" = "routes"."id"}
 
-    if sort_route_column && sort_route_direction
-      @routes ||= @q.result(distinct: true).order(sort_route_column + ' ' + sort_route_direction)
+      @routes = @routes.joins(left_join).group(:id).order("count(#{sort_route_column}.route_id) #{sort_route_direction}")
     else
-      @routes ||= @q.result(distinct: true).order(:name)
+      @routes = @routes.order("#{sort_route_column} #{sort_route_direction}")
     end
+
+    @q = @routes.ransack(params[:q])
+    @routes = @q.result
+
     @routes = @routes.paginate(page: params[:page], per_page: 10)
 
-    @group_of_lines = @line.group_of_lines
     show! do
       build_breadcrumb :show
     end
@@ -106,7 +110,7 @@ class ReferentialLinesController < ChouetteController
   end
 
   def sort_route_column
-    @line.routes.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+    (@line.routes.column_names + %w{stop_points journey_patterns}).include?(params[:sort]) ? params[:sort] : 'name'
   end
   def sort_route_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
