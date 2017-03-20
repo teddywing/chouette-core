@@ -1,6 +1,6 @@
 fr:
   subscriptions:
-    success: "Inscription enregistrée"
+    success: "Inscription validée"
     failure: "Inscription invalide"
     new:
       title: "Créer votre compte"

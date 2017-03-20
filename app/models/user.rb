@@ -29,15 +29,17 @@ class User < ActiveRecord::Base
   end
   after_destroy :check_destroy_organisation
 
+  @@edit_offer_permissions = ['routes.create', 'routes.edit', 'routes.destroy', 'journey_patterns.create', 'journey_patterns.edit', 'journey_patterns.destroy',
+    'vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy', 'time_tables.create', 'time_tables.edit', 'time_tables.destroy',
+    'footnotes.edit', 'footnotes.create', 'footnotes.destroy', 'routing_constraint_zones.create', 'routing_constraint_zones.edit',
+    'routing_constraint_zones.destroy']
+
   def cas_extra_attributes=(extra_attributes)
     extra             = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
     self.name         = extra[:full_name]
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
-    self.permissions  = ['routes.create', 'routes.edit', 'routes.destroy', 'journey_patterns.create', 'journey_patterns.edit', 'journey_patterns.destroy',
-        'vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy', 'time_tables.create', 'time_tables.edit', 'time_tables.destroy',
-        'footnotes.edit', 'footnotes.create', 'footnotes.destroy', 'routing_constraint_zones.create', 'routing_constraint_zones.edit',
-        'routing_constraint_zones.destroy']
+    self.permissions  = @@edit_offer_permissions if extra[:permissions] && extra[:permissions].find { |permission| permission == 'boiv:edit-offer' }
   end
 
   def self.portail_api_request
@@ -64,6 +66,7 @@ class User < ActiveRecord::Base
       user.email        = el['email']
       user.locked_at    = el['locked_at']
       user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
+      user.permissions  = @@edit_offer_permissions if el['permissions'] && el['permissions'].find { |permission| permission == 'boiv:edit-offer' }
       user.synced_at    = Time.now
       user.save
       puts "✓ user #{user.username} has been updated" unless Rails.env.test?

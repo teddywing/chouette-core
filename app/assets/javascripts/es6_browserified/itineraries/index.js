@@ -15,33 +15,36 @@ var addInput = require('./form_helper')
 const getInitialState = () => {
   let state = []
   let datas = JSON.parse(decodeURIComponent(window.itinerary_stop))
-  for (let [index, value] of datas.entries()){
 
-    let fancyText = value.name
-    if(value.zip_code && value.city_name)
-      fancyText += ", " + value.zip_code + " " + value.city_name
+  datas.map(function(v, i) {
+    let fancyText = v.name
+    if(v.zip_code && v.city_name)
+      fancyText += ", " + v.zip_code + " " + v.city_name
 
     state.push({
-      stoppoint_id: value.stoppoint_id,
-      stoparea_id: value.stoparea_id,
-      user_objectid: value.user_objectid,
-      index: index,
+      stoppoint_id: v.stoppoint_id,
+      stoparea_id: v.stoparea_id,
+      user_objectid: v.user_objectid,
+      short_name: v.short_name,
+      area_type: v.area_type,
+      index: i,
       edit: false,
-      city_name: value.city_name,
-      zip_code: value.zip_code,
-      name: value.name,
-      registration_number: value.registration_number,
+      city_name: v.city_name,
+      zip_code: v.zip_code,
+      name: v.name,
+      registration_number: v.registration_number,
       text: fancyText,
-      for_boarding: value.for_boarding || "normal",
-      for_alighting: value.for_alighting || "normal",
-      longitude: value.longitude || 0,
-      latitude: value.latitude || 0,
+      for_boarding: v.for_boarding || "normal",
+      for_alighting: v.for_alighting || "normal",
+      longitude: v.longitude || 0,
+      latitude: v.latitude || 0,
       olMap: {
         isOpened: false,
         json: {}
       }
     })
-  }
+  })
+
   return state
 }
 

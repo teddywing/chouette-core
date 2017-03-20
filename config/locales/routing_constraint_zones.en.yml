@@ -2,13 +2,13 @@ en:
   activerecord:
     models:
       routing_constraint_zone: Routing constraint zone
-      attributes:
-        routing_constraint_zone:
-          name: Name
-          stop_areas: Stop areas
-          line: Line
-          created_at: Created at
-          updated_at: Updated at
+    attributes:
+      routing_constraint_zone:
+        name: Name
+        stop_areas: Stop areas
+        line: Line
+        created_at: Created at
+        updated_at: Updated at
   routing_constraint_zones:
     actions:
       new: New routing constraint zone

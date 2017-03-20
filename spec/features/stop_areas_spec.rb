@@ -65,10 +65,10 @@ describe "StopAreas", :type => :feature do
   # describe "edit and return to show" do
   #   it "edit stop_area" do
   #     visit stop_area_referential_stop_area_path(stop_area_referential, subject)
-  #     click_link "Modifier cet arrêt"
+  #     click_link "Editer cet arrêt"
   #     fill_in "stop_area_name", :with => "StopArea Modified"
   #     fill_in "Numéro d'enregistrement", :with => "test-1"
-  #     click_button("Modifier arrêt")
+  #     click_button("Editer arrêt")
   #     expect(page).to have_content("StopArea Modified")
   #   end
   # end

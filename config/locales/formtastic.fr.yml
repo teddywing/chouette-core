@@ -3,7 +3,7 @@ fr:
     yes: 'Oui'
     no: 'Non'
     create: "Créer %{model}"
-    update: "Modifier %{model}"
+    update: "Editer %{model}"
     submit: 'Valider %{model}'
     cancel: 'Annuler'
     reset: 'Réinitialiser %{model}'

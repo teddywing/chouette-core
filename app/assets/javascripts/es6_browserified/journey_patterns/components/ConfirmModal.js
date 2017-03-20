@@ -12,7 +12,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, journeyPat
           </div>
           <div className='modal-body'>
             <div className='mt-md mb-md'>
-              <p>Vous vous apprêtez à changer de page. Voulez-vous enregistrer vos modifications avant cela ?</p>
+              <p>Vous vous apprêtez à changer de page. Voulez-vous valider vos modifications avant cela ?</p>
             </div>
           </div>
           <div className='modal-footer'>
@@ -22,7 +22,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, journeyPat
               type='button'
               onClick= {() => {onModalCancel(modal.confirmModal.callback)}}
               >
-              Ne pas enregistrer
+              Ne pas valider
             </button>
             <button
               className='btn btn-primary'
@@ -30,7 +30,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, journeyPat
               type='button'
               onClick = {() => {onModalAccept(modal.confirmModal.callback, journeyPatterns)}}
               >
-              Enregistrer
+              Valider
             </button>
           </div>
         </div>

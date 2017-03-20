@@ -147,7 +147,8 @@ module Stif
           :area_type      => 'TypeOfPlaceRef',
           :object_version => 'version',
           :zip_code       => 'PostalRegion',
-          :city_name      => 'Town'
+          :city_name      => 'Town',
+          :stif_type      => 'OBJECT_STATUS'
         }.each do |k, v| stop[k] = entry[v] end
 
         if entry['gml:pos']
@@ -157,7 +158,7 @@ module Stif
 
         if stop.changed?
           stop.created_at = entry[:created]
-          stop.import_xml    = entry[:xml]
+          stop.import_xml = entry[:xml]
           prop = stop.new_record? ? :imported_count : :updated_count
           increment_counts prop, 1
           stop.save!

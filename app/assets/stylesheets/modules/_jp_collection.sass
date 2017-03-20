@@ -16,6 +16,16 @@
 
         > div > span
           position: relative
+          display: block
+          height: 100%
+
+          > span
+            position: absolute
+            display: block
+            line-height: 1em
+            top: 50%
+            transform: translateY(-50%)
+            margin-top: -2px
 
           &:before
             content: ''
@@ -41,9 +51,11 @@
             z-index: 3
             top: -6px
             left: -20px
-            bottom: -6px
+            bottom: 0
 
         > .headlined > span
+          height: calc(100% - (1.4em + 12px))
+
           &:after
             top: calc((1.4em + 18px) * -1)
 
@@ -54,3 +66,15 @@
         &:nth-child(2) > div > span
           &:after
             top: 50%
+
+    &.no_result
+      .t2e-head > .td > div > span,
+      .t2e-head > .td > .headlined > span
+        > span
+          position: relative
+          top: 0
+          transform: none
+          margin-top: 0
+
+        &:after
+          bottom: -6px

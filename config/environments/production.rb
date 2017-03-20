@@ -124,4 +124,6 @@ Rails.application.configure do
 
   config.i18n.available_locales = [:fr, :en]
 
+  # Set node env for browserify-rails
+  config.browserify_rails.node_env = "production"
 end

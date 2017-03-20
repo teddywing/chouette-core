@@ -9,11 +9,9 @@ class JourneyPattern extends Component{
     this.previousCity = undefined
   }
 
-  vehicleJourneyURL(oid) {
-    // oid will be used later, for params in URL...
-
+  vehicleJourneyURL(jpOid) {
     let routeURL = window.location.pathname.split('/', 7).join('/')
-    let vjURL = routeURL + '/vehicle_journeys'
+    let vjURL = routeURL + '/vehicle_journeys?jp=' + jpOid
 
     return (
       <a href={vjURL}>Horaires des courses</a>
@@ -83,10 +81,12 @@ class JourneyPattern extends Component{
                     data-toggle='modal'
                     data-target='#JourneyPatternModal'
                     >
-                    Modifier
+                    Editer
                   </a>
                 </li>
-                <li>{this.vehicleJourneyURL(this.props.value.object_id)}</li>
+                <li className={this.props.value.object_id ? '' : 'disabled'}>
+                  {this.vehicleJourneyURL(this.props.value.object_id)}
+                </li>
                 <li className='delete-action'>
                   <a
                     href='#'

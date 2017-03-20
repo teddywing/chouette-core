@@ -12,7 +12,7 @@
             # Add each element to selection
             selection.push($(this).attr('id'))
 
-          # Remove th checkbox from selection
+          # Remove th checkbox from selection
           selection.splice(0, 1)
 
         else

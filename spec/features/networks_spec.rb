@@ -66,10 +66,10 @@ describe "Networks", :type => :feature do
   #   it "edit network" do
   #     # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
   #     visit line_referential_network_path(line_referential, subject)
-  #     click_link "Modifier ce réseau"
+  #     click_link "Editer ce réseau"
   #     fill_in "network_name", :with => "Network Modified"
   #     fill_in "Numéro d'enregistrement", :with => "test-1"
-  #     click_button("Modifier réseau")
+  #     click_button("Editer réseau")
   #     expect(page).to have_content("Network Modified")
   #   end
   # end

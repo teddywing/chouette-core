@@ -81,7 +81,7 @@ class ReferentialsController < BreadcrumbController
   end
 
   def lines_collection
-    @q = resource.lines.search(params[:q])
+    @q = resource.lines.includes(:company, :network).search(params[:q])
 
     if sort_column && sort_direction
       @reflines ||=
@@ -115,8 +115,10 @@ class ReferentialsController < BreadcrumbController
 
   private
   def sort_column
-    resource.lines.include?(params[:sort]) ? params[:sort] : 'name'
+    sortable_columns = Chouette::Line.column_names + ['networks.name', 'companies.name']
+    params[:sort] if sortable_columns.include?(params[:sort])
   end
+
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end

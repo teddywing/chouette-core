@@ -23,6 +23,11 @@ describe 'reflex:sync' do
       expect(access.stop_area.name).to eq 'First stopPlace children'
     end
 
+    it 'should store object_status on stif_type attribute' do
+      stop_area = Chouette::StopArea.find_by(name: 'Second StopPlace children')
+      expect(stop_area.stif_type).to eq 'REFERENCE_OBJECT'
+    end
+
     it 'should save hierarchy' do
       stop_area = Chouette::StopArea.find_by(name: 'First stopPlace children')
       expect(stop_area.parent.name).to eq 'First stopPlace'

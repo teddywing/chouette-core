@@ -111,8 +111,9 @@ class Chouette::Route < Chouette::TridentActiveRecord
   def sorted_vehicle_journeys(journey_category_model)
     send(journey_category_model)
         .joins(:journey_pattern, :vehicle_journey_at_stops)
+        .joins('LEFT JOIN "time_tables_vehicle_journeys" ON "time_tables_vehicle_journeys"."vehicle_journey_id" = "vehicle_journeys"."id" LEFT JOIN "time_tables" ON "time_tables"."id" = "time_tables_vehicle_journeys"."time_table_id"')
         .where("vehicle_journey_at_stops.stop_point_id=journey_patterns.departure_stop_point_id")
-        .order( "vehicle_journey_at_stops.departure_time")
+        .order("vehicle_journey_at_stops.departure_time")
   end
 
   def stop_point_permutation?( stop_point_ids)

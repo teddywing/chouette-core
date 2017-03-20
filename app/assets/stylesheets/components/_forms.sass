@@ -38,6 +38,28 @@ input
 .input-group-btn > .btn-link
   padding-right: 0
 
+// Time input groups
+.input-group.time
+  > .form-control
+    float: none
+    width: auto
+    padding: 6px 8px
+
+    &:first-child
+      border-right: none
+    &:last-child
+      border-left: none
+
+    + span
+      display: table-cell
+      width: 1px
+      border-top: 1px solid #ccc
+      border-bottom: 1px solid #ccc
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
+
+  &.disabled > .form-control + span
+    background-color: #eee
+
 // Validations
 .control-label
   &.is-required
@@ -58,7 +80,7 @@ input
 // Search bar
 .search_bar
   position: relative
-  background-color: rgba($grey, 0.15)
+  // background-color: rgba($grey, 0.15)
   padding: 7px 15px
   width: 100%
   padding-right: 60%
@@ -91,6 +113,7 @@ input
 
 // Checkbox
 $cbx-size: 20px
+$cbx-size-xs: 15px
 .checkbox
   position: relative
   display: block
@@ -108,6 +131,7 @@ $cbx-size: 20px
         position: relative
         cursor: pointer
         display: inline-block
+        vertical-align: top
         height: $cbx-size
         margin: 0
         padding-left: $cbx-size
@@ -143,6 +167,47 @@ $cbx-size: 20px
 
     &[type='checkbox']:checked + label:before
       background-color: $blue
+
+// Table adjustments
+table, .table
+  .td, td, .th, th
+    .form-control
+      height: 30px
+      padding: 4px 12px
+
+    .input-group.time > .form-control
+      padding: 4px 6px
+
+  // Table checkboxes
+  &.table-2entries .t2e-item
+    > .th
+      position: relative
+
+      > .checkbox
+        position: absolute
+        right: 0
+        top: 0
+        margin: 6px 8px
+        height: $cbx-size-xs
+        width: $cbx-size-xs
+
+        > input
+          &[type='checkbox']:not(:checked), &[type='checkbox']:checked
+            + label
+              height: $cbx-size-xs
+              padding-left: $cbx-size-xs
+
+              &:before
+                margin-top: -($cbx-size-xs / 2)
+                height: $cbx-size-xs
+                width: $cbx-size-xs
+                border-radius: 2px
+              &:after
+                margin-top: -($cbx-size-xs / 2)
+                margin-left: -($cbx-size-xs / 2)
+                font-size: $cbx-size-xs - 2px
+                width: $cbx-size-xs
+                line-height: $cbx-size-xs
 
 // Radio
 .has_radio
@@ -249,12 +314,43 @@ $cbx-size: 20px
             left: 20px
             transition: 0.2s
 
+  &.inline
+    > *
+      display: inline-block
+      vertical-align: top
+
+    > label
+      margin: 0
+      padding: 2px 15px 0 0
+
+    .checkbox
+      height: 22px
+      line-height: 22px
+
+      > label > input[type='checkbox']
+        + .switch-label
+          width: 37px
+          height: 22px
+          line-height: 22px
+          padding-left: 47px
+
+          &:before
+            width: 37px
+            height: 22px
+            border-radius: 14px
+          &:after
+            width: 18px
+            height: 18px
+
+        &:not(:checked) + .switch-label:after
+          left: 15px
+
 // Form filter
 .form.form-filter
   display: block
   position: relative
   background-color: rgba($grey, 0.15)
-  padding-right: 185px
+  padding-right: 195px
   min-height: 42px
   border-top: 1px solid #fff
 
@@ -266,7 +362,15 @@ $cbx-size: 20px
     vertical-align: top
     padding: 7px 15px
 
-  > .form-group
+  > .search_bar
+    padding-right: 50%
+
+    .input-group-btn
+      right: 50%
+
+  > .form-group, > div > .form-group
+    display: inline-block
+    vertical-align: top
     border-right: 1px solid #fff
     margin: 0
     min-height: 44px
@@ -314,7 +418,7 @@ $cbx-size: 20px
           color: #fff
           transition: 0.2s
 
-  > .form-group
+  > .form-group, > div > .form-group
     position: relative
 
     &.togglable
@@ -405,7 +509,7 @@ $cbx-size: 20px
       top: 100%
       left: 0
       min-width: 100%
-      max-height: 300px
+      max-height: 240px
       background-color: #fff
       color: $darkgrey
       box-shadow: 0 0 3px rgba($darkgrey, 0.25)
@@ -476,6 +580,17 @@ $cbx-size: 20px
             &[type='checkbox']:checked + span:before
               background-color: $blue
 
+  > .ffg-row
+    display: block
+    padding: 0
+    border-right: 1px solid #fff
+
+    + .ffg-row
+      border-top: 1px solid #fff
+
+    > .form-group:last-child
+      border-right: none
+
 // Form group date
 .form-group.date
   .form-inline
@@ -516,6 +631,11 @@ $cbx-size: 20px
   &.has-error
     .form-control, select.date, select.date:first-child, select.date:nth-child(3)
       border-color: $red
+
+// Form group time
+.form-group.time
+  .control-label.time
+    min-width: 60px
 
 // Nested fields
 .nested-fields

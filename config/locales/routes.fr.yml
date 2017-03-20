@@ -3,7 +3,7 @@ fr:
     search_no_results: "Aucun itinéraire ne correspond à votre recherche"
     actions:
       new: "Ajouter un itinéraire"
-      edit: "Modifier cet itinéraire"
+      edit: "Editer cet itinéraire"
       edit_boarding_alighting: "Contraintes de montée - descente"
       destroy: "Supprimer cet itinéraire"
       destroy_confirm: "Etes vous sûr de supprimer cet itinéraire ?"
@@ -16,12 +16,12 @@ fr:
     new:
       title: "Ajouter un itinéraire"
     edit:
-      title: "Modifier l'itinéraire %{route}"
+      title: "Editer l'itinéraire %{route}"
     show:
       title: "Itinéraire %{route} de la ligne %{line}"
       stop_points: "Liste des arrêts de l'itinéraire"
       journey_patterns: "Liste des missions"
-      no_opposite_route: "Aucun itinéraire associé en sens opposé"
+      no_opposite_route: "Aucun itinéraire associé"
       undefined: "Non défini"
     index:
       title: "Itinéraires"
@@ -59,12 +59,14 @@ fr:
         comment: "Commentaire"
         direction: "Direction"
         wayback: "Sens"
-        opposite_route: "Itinéraire associé en sens opposé"
-        opposite_route_id: "Itinéraire associé en sens opposé"
+        stop_points: "Nb arrêts"
+        journey_patterns: "Nb missions"
+        opposite_route: "Itinéraire associé"
+        opposite_route_id: "Itinéraire associé"
         objectid: "Identifiant Neptune"
         object_version: "Version"
         created_at: "Créé le"
-        updated_at: "Modifié le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
         no_journey_pattern: "Pas de mission"
   formtastic:
@@ -83,9 +85,3 @@ fr:
       hub:
         route:
           objectid: "[prefixe]:Route:[clé_unique]  caractères autorisés : alphanumériques et 'souligné' pour le préfixe, la clé unique accepte en plus le 'moins'. Longueur maximale de la clé unique = 8."
-
-  # simpleform
-  helpers:
-    submit:
-      route:
-        create: 'Créer un itinéraire'

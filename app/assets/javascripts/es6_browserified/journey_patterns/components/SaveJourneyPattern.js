@@ -31,7 +31,7 @@ class SaveJourneyPattern extends Component{
                   actions.submitJourneyPattern(this.props.dispatch, this.props.journeyPatterns)
                 }}
                 >
-                Enregistrer
+                Valider
               </button>
             </form>
           </div>

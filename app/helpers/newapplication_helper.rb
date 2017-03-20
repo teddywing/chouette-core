@@ -16,7 +16,11 @@ module NewapplicationHelper
         end
 
         columns.map do |k, v|
-          hcont << content_tag(:th, sortable_columns(collection, k))
+          if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée"].include? k
+            hcont << content_tag(:th, k)
+          else
+            hcont << content_tag(:th, sortable_columns(collection, k))
+          end
         end
         hcont << content_tag(:th, '') if actions.any?
 
@@ -160,13 +164,16 @@ module NewapplicationHelper
   end
 
   def sortable_columns collection, key
-    direction = (key == params[:sort] && params[:direction] == 'desc') ? 'asc' : 'desc'
+    direction = (key.to_s == params[:sort] && params[:direction] == 'desc') ? 'asc' : 'desc'
+
     link_to(params.merge({direction: direction, sort: key})) do
       pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
       pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
 
       pics = content_tag :span, pic1 + pic2, class: 'orderers'
-      (key.to_s + pics).html_safe
+      obj = collection.model.to_s.gsub('Chouette::', '').scan(/[A-Z][a-z]+/).join('_').downcase
+
+      (I18n.t("activerecord.attributes.#{obj}.#{key}") + pics).html_safe
     end
   end
 

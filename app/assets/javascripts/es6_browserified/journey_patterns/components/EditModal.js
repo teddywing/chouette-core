@@ -23,7 +23,7 @@ class EditModal extends Component {
             <div className='modal-content'>
               <div className='modal-header'>
                 <h4 className='modal-title'>
-                  Modifier la mission
+                  Editer la mission
                   {(this.props.modal.type == 'edit') && (
                     <em> "{this.props.modal.modalProps.journeyPattern.name}"</em>
                   )}
@@ -63,7 +63,7 @@ class EditModal extends Component {
                       </div>
                       <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                         <div className='form-group'>
-                          <label className='control-label is-required'>N° d'enregistrement</label>
+                          <label className='control-label is-required'>Code mission</label>
                           <input
                             type='text'
                             ref='registration_number'

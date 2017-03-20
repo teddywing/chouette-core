@@ -41,7 +41,7 @@ describe "Referentials", :type => :feature do
       fill_in "Code", :with => "test"
       fill_in "Point haut/droite de l'emprise par défaut", :with => "0.0, 0.0"
       fill_in "Point bas/gauche de l'emprise par défaut", :with => "1.0, 1.0"
-      click_button "Enregistrer"
+      click_button "Valider"
 
       expect(Referential.where(:name => "Test")).not_to be_nil
       # CREATE SCHEMA

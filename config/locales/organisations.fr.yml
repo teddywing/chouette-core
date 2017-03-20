@@ -1,10 +1,10 @@
 fr:
   organisations:
     actions:
-      edit: "Modifier votre organisation"
+      edit: "Editer votre organisation"
     edit:
-      title: "Modifier votre organisation"
-      key_registered: "Clé enregistrée"
+      title: "Editer votre organisation"
+      key_registered: "Clé validée"
       key_not_registered: "Pas de clé"
     show:
       users: "Utilisateurs"

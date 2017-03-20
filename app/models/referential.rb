@@ -43,6 +43,7 @@ class Referential < ActiveRecord::Base
   belongs_to :workbench
 
   scope :ready, -> { where(ready: true) }
+  scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }
 
   def lines
     if metadatas.blank?
@@ -227,6 +228,13 @@ class Referential < ActiveRecord::Base
     else
       Chouette::Line.none
     end
+  end
+
+  def self.referential_ids_in_periode(range)
+    subquery = "SELECT DISTINCT(public.referential_metadata.referential_id) FROM public.referential_metadata, LATERAL unnest(periodes) period "
+    subquery << "WHERE period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(range)}'"
+    query = "SELECT * FROM public.referentials WHERE referentials.id IN (#{subquery})"
+    self.connection.select_values(query).map(&:to_i)
   end
 
   def overlapped_referential_ids

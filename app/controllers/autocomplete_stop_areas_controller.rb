@@ -5,7 +5,7 @@ class AutocompleteStopAreasController < InheritedResources::Base
 
   def around
     stop_area   = referential.stop_areas.find params[:id]
-    @stop_areas = stop_area.around(referential.stop_areas, 100)
+    @stop_areas = stop_area.around(referential.stop_areas.where(area_type: params[:target_type]), 300)
   end
 
   protected
@@ -17,8 +17,8 @@ class AutocompleteStopAreasController < InheritedResources::Base
       scope = scope.possible_parents if relation_parent?
       scope = scope.possible_parents if relation_children?
     end
-    args = [].tap{|arg| 3.times{arg << "%#{params[:q]}%"}}
-    @stop_areas = scope.where("name ILIKE ? OR registration_number ILIKE ? OR objectid ILIKE ?", *args).limit(50)
+    args = [].tap{|arg| 4.times{arg << "%#{params[:q]}%"}}
+    @stop_areas = scope.where("name ILIKE ? OR city_name ILIKE ? OR registration_number ILIKE ? OR objectid ILIKE ?", *args).limit(50)
     @stop_areas
   end
 

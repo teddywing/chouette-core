@@ -1,10 +1,12 @@
 fr:
   referentials:
+    filters:
+      name_or_number_or_objectid: 'Indiquez un nom de ligne, nom court ou objectid'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
     index:
       title: 'Jeux de données'
     edit:
-      title: "Modifier le JDD"
+      title: "Editer le jeu de données"
     show:
       lines: "lignes"
       networks: "réseaux"
@@ -22,17 +24,18 @@ fr:
       validity_out_time_tables: "Calendriers échus"
       validity_out_soon_time_tables: "Calendriers à échoir dans %{count} jours"
     new:
-      title: "Créer un nouveau JDD"
+      title: "Créer un jeu de données"
       duplicated:
-        title: 'Dupliquer un JDD'
-      submit: "Enregistrer"
+        title: 'Dupliquer un jeu de données'
+      submit: "Valider"
     actions:
-      new: "Ajouter un jeu de données"
+      new: "Créer un jeu de données"
       destroy_confirm: "Etes vous sûr de vouloir supprimer ce jeu de données ?"
       destroy: "Supprimer ce jeu de données"
-      edit: "Modifier ce jeu de données"
+      edit: "Editer ce jeu de données"
       clone: "Cloner ce jeu de données"
     errors:
+      validity_period: "Période de validité invalide"
       pg_excluded: "ne peut pas commencer par pg_ (valeurs réservées)"
       public_excluded: "public est une valeur réservée"
       user_excluded: "%{user} est une valeur réservée"
@@ -46,7 +49,7 @@ fr:
         other: "Jeux de Données"
     attributes:
       referential:
-        name: "Nom du JDD"
+        name: "Nom"
         status: "Etat"
         slug: "Code"
         prefix: "Préfixe des identifiants Neptune"
@@ -83,10 +86,12 @@ fr:
         timebands: "Créneaux horaires"
         routing_constraint_zone: Zone de contrainte
         validity_period: "Période de validité englobante"
-        updated_at: "Modifié"
-        published_at: "Intégré"
+        updated_at: "Edité le"
+        created_at: "Créé le"
+        published_at: "Intégré le"
         archived_at: "Conservé"
         created_from: 'Créé à partir de'
+        organisation: 'Organisation'
   formtastic:
     titles:
       referential:
@@ -105,7 +110,6 @@ fr:
           periods:
             begin: 'Début de période'
             end: 'Fin de période'
-
   notice:
     referentials:
       deleted: "Les jeux de données on été supprimés"

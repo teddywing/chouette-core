@@ -1,8 +1,151 @@
 require 'spec_helper'
-
 describe Chouette::VehicleJourney, :type => :model do
-  subject { create(:vehicle_journey_odd) }
+  describe "state_update" do
+    def vehicle_journey_to_state vj
+      vj.attributes.slice('objectid', 'published_journey_name', 'journey_pattern_id', 'company_id').tap do |item|
+        item['vehicle_journey_at_stops'] = []
 
+        vj.vehicle_journey_at_stops.each do |vs|
+          at_stops = {'stop_area_object_id' => vs.stop_point.stop_area.objectid }
+          [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
+            at_stops[att.to_s] = vs.send(att) unless vs.send(att).nil?
+          end
+
+          [:arrival_time, :departure_time].map do |att|
+            at_stops[att.to_s] = {
+              'hour'   => vs.send(att).strftime('%H'),
+              'minute' => vs.send(att).strftime('%M'),
+            }
+          end
+          item['vehicle_journey_at_stops'] << at_stops
+        end
+      end
+    end
+
+    let(:route)           { create :route }
+    let(:journey_pattern) { create :journey_pattern, route: route }
+    let(:vehicle_journey) { create :vehicle_journey, route: route, journey_pattern: journey_pattern }
+    let(:state)           { vehicle_journey_to_state(vehicle_journey) }
+    let(:collection)      { [state] }
+
+    it 'should create new vj from state' do
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      collection << vehicle_journey_to_state(new_vj)
+      expect {
+        Chouette::VehicleJourney.state_update(route, collection)
+      }.to change {Chouette::VehicleJourney.count}.by(1)
+      expect(collection.last['objectid']).not_to be_nil
+
+      vj = Chouette::VehicleJourney.find_by(objectid: collection.last['objectid'])
+      expect(vj.published_journey_name).to eq 'dummy'
+    end
+
+    it 'should update vj journey_pattern' do
+      state['journey_pattern'] = create(:journey_pattern).attributes.slice('id', 'name', 'objectid')
+      Chouette::VehicleJourney.state_update(route, collection)
+
+      expect(state['errors']).to be_nil
+      expect(vehicle_journey.reload.journey_pattern_id).to eq state['journey_pattern']['id']
+    end
+
+    it 'should update vj company' do
+      state['company'] = create(:company).attributes.slice('id', 'name', 'objectid')
+      Chouette::VehicleJourney.state_update(route, collection)
+
+      expect(state['errors']).to be_nil
+      expect(vehicle_journey.reload.company_id).to eq state['company']['id']
+    end
+
+    it 'should update vj attributes from state' do
+      state['published_journey_name']       = 'edited_name'
+      state['published_journey_identifier'] = 'edited_identifier'
+
+      Chouette::VehicleJourney.state_update(route, collection)
+      expect(state['errors']).to be_nil
+      expect(vehicle_journey.reload.published_journey_name).to eq state['published_journey_name']
+      expect(vehicle_journey.reload.published_journey_identifier).to eq state['published_journey_identifier']
+    end
+
+    it 'should return errors when validation failed' do
+      state['published_journey_name'] = 'edited_name'
+      # Exceeds_gap departure time validation failed
+      prev = state['vehicle_journey_at_stops'].last(2).first
+      last = state['vehicle_journey_at_stops'].last
+      prev['departure_time']['hour'] = '01'
+      last['departure_time']['hour'] = '23'
+
+      expect {
+        Chouette::VehicleJourney.state_update(route, collection)
+      }.not_to change(vehicle_journey, :published_journey_name)
+      expect(state['errors'][:vehicle_journey_at_stops].size).to eq 1
+    end
+
+    it 'should delete vj with deletable set to true from state' do
+      state['deletable'] = true
+      collection         = [state]
+      Chouette::VehicleJourney.state_update(route, collection)
+      expect(collection).to be_empty
+    end
+
+    describe 'vehicle_journey_at_stops' do
+      it 'should update departure_time' do
+        item = state['vehicle_journey_at_stops'].first
+        item['departure_time']['hour']   = "02"
+        item['departure_time']['minute'] = "15"
+
+        vehicle_journey.update_vjas_from_state(state['vehicle_journey_at_stops'])
+        stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
+
+        expect(stop.departure_time.strftime('%H')).to eq item['departure_time']['hour']
+        expect(stop.departure_time.strftime('%M')).to eq item['departure_time']['minute']
+      end
+
+      it 'should update arrival_time' do
+        item = state['vehicle_journey_at_stops'].first
+        item['arrival_time']['hour']   = (item['departure_time']['hour'].to_i - 1).to_s
+        item['arrival_time']['minute'] = Time.now.strftime('%M')
+
+        vehicle_journey.update_vjas_from_state(state['vehicle_journey_at_stops'])
+        stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
+
+        expect(stop.arrival_time.strftime('%H').to_i).to eq item['arrival_time']['hour'].to_i
+        expect(stop.arrival_time.strftime('%M')).to eq item['arrival_time']['minute']
+      end
+
+      it 'should return errors when validation failed' do
+        # Arrival must be before departure time
+        item = state['vehicle_journey_at_stops'].first
+        item['arrival_time']['hour']   = "12"
+        item['departure_time']['hour'] = "11"
+        vehicle_journey.update_vjas_from_state(state['vehicle_journey_at_stops'])
+        expect(item['errors'][:arrival_time].size).to eq 1
+      end
+    end
+
+    describe '.vehicle_journey_at_stops_matrix' do
+      it 'should fill missing VehicleJourneyAtStop with dummy' do
+        vehicle_journey.vehicle_journey_at_stops.last.destroy
+        expect(vehicle_journey.reload.vehicle_journey_at_stops.map(&:id).count).to eq(route.stop_points.map(&:id).count - 1)
+
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+        expect(at_stops.last.id).to be_nil
+        expect(at_stops.count).to eq route.stop_points.count
+      end
+
+      it 'should keep index order of VehicleJourneyAtStop' do
+        vehicle_journey.vehicle_journey_at_stops[3].destroy
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+
+        expect(at_stops[3].id).to be_nil
+        at_stops.delete_at(3)
+        at_stops.each do |stop|
+          expect(stop.id).not_to be_nil
+        end
+      end
+    end
+  end
+
+  subject { create(:vehicle_journey_odd) }
   describe "in_relation_to_a_journey_pattern methods" do
     let!(:route) { create(:route)}
     let!(:journey_pattern) { create(:journey_pattern, :route => route)}
@@ -79,8 +222,8 @@ describe Chouette::VehicleJourney, :type => :model do
         end
       end
     end
-
   end
+
   context "when following departure times exceeds gap" do
     describe "#increasing_times" do
       before(:each) do
@@ -127,6 +270,7 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(subject.time_tables).to include( tm2)
     end
   end
+
   describe "#bounding_dates" do
     before(:each) do
       tm1 = build(:time_table, :dates =>
@@ -144,6 +288,7 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(subject.bounding_dates.max).to eq(1.days.ago.to_date)
     end
   end
+
   context "#vehicle_journey_at_stops" do
     it "should be ordered like stop_points on route" do
       route = subject.route
@@ -152,7 +297,6 @@ describe Chouette::VehicleJourney, :type => :model do
 
       expect(vj_stop_ids).to eq(expected_order)
     end
-
   end
 
   describe "#footnote_ids=" do
@@ -169,10 +313,6 @@ describe Chouette::VehicleJourney, :type => :model do
         subject.save
         expect(Chouette::VehicleJourney.find(subject.id).footnotes.count).to eq(1)
       end
-
     end
-
   end
-
 end
-

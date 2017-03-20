@@ -3,8 +3,8 @@ fr:
     search_no_results: "Aucune ligne ne correspond à votre recherche"
     actions:
       new: "Ajouter une ligne"
-      edit: "Modifier cette ligne"
-      edit_footnotes: "Modifier notes en bas de page"
+      edit: "Editer cette ligne"
+      edit_footnotes: "Editer notes en bas de page"
       destroy: "Supprimer cette ligne"
       destroy_confirm: "Etes vous sûr de supprimer cette ligne ?"
       destroy_selection_confirm: "Etes vous sûr de supprimer cette sélection de lignes ?"
@@ -18,7 +18,7 @@ fr:
     new:
       title: "Ajouter une ligne"
     edit:
-      title: "Modifier la ligne %{line}"
+      title: "Editer la ligne %{line}"
     show:
       title: "Ligne %{line}"
       itineraries: "Liste des séquences d'arrêts de la ligne"
@@ -26,8 +26,7 @@ fr:
     index:
       deactivated: "Ligne désactivée"
       title: "Lignes"
-      name_or_number: "Recherche par nom ou indice..."
-      name_or_objectid: "Recherche par nom ou objectid..."
+      name_or_number_or_objectid: "Recherche par nom, nom court ou ID Codif..."
       no_networks: "Aucun réseaux"
       no_companies: "Aucun transporteurs"
       no_group_of_lines: "Aucun groupes de ligne"
@@ -61,11 +60,16 @@ fr:
     attributes:
       line:
         network: "Réseau"
+        networks:
+          name: "Réseau"
         company: "Transporteur principal"
+        companies:
+          name: "Transporteur principal"
         registration_number: "Nom court"
+        deactivated: "Activé"
         name: "Nom de la ligne"
         published_name: "Nom public"
-        number: "Indice"
+        number: "Nom court"
         transport_mode: "Mode"
         transport_submode: "Sous mode de transport"
         url: "Page web associée"
@@ -92,7 +96,7 @@ fr:
         objectid: "Identifiant Neptune"
         object_version: "Version"
         created_at: "Créé le"
-        updated_at: "Modifié le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
         footnotes: "Notes de bas de page"
         stable_id: "Identifiant externe pérenne"

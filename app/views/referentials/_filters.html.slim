@@ -1,15 +1,23 @@
 = search_form_for @q, url: referential_path(@referential.id), class: 'form form-filter' do |f|
-  .form-group.togglable
-    = f.label @reflines.human_attribute_name(:transport_mode), required: false, class: 'control-label'
-    = f.input :transport_mode_eq_any, collection: LineReferential.first.transport_modes, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("transport_modes.label.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
+  .ffg-row
+    .input-group.search_bar
+      = f.search_field :name_or_number_or_objectid_cont, class: 'form-control', placeholder: t('.name_or_number_or_objectid')
+      span.input-group-btn
+        button.btn.btn-default type='submit'
+          span.fa.fa-search
 
-  .form-group.togglable
-    = f.label @reflines.human_attribute_name(:network), required: false, class: 'control-label'
-    = f.input :network_id_eq_any, collection: LineReferential.first.networks.order('name').pluck(:id), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>#{LineReferential.first.networks.find(l).name}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
+  .ffg-row
+    .form-group.togglable
+      = f.label @reflines.human_attribute_name(:transport_mode), required: false, class: 'control-label'
+      = f.input :transport_mode_eq_any, collection: LineReferential.first.transport_modes, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("transport_modes.label.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
-  .form-group.togglable
-    = f.label @reflines.human_attribute_name(:company), required: false, class: 'control-label'
-    = f.input :company_id_eq_any, collection: LineReferential.first.companies.order('name').pluck(:id), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>#{LineReferential.first.companies.find(l).name}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
+    .form-group.togglable
+      = f.label @reflines.human_attribute_name(:network), required: false, class: 'control-label'
+      = f.input :network_id_eq_any, collection: LineReferential.first.networks.order('name').pluck(:id), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>#{LineReferential.first.networks.find(l).name}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
+
+    .form-group.togglable
+      = f.label @reflines.human_attribute_name(:company), required: false, class: 'control-label'
+      = f.input :company_id_eq_any, collection: LineReferential.first.companies.order('name').pluck(:id), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>#{LineReferential.first.companies.find(l).name}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .actions
     = link_to 'Effacer', @workbench, class: 'btn btn-link'

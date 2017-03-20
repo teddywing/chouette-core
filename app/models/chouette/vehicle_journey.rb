@@ -47,6 +47,70 @@ module Chouette
       @presenter ||= ::VehicleJourneyPresenter.new( self)
     end
 
+    def vehicle_journey_at_stops_matrix
+      at_stops = self.vehicle_journey_at_stops.to_a.dup
+      filling  = route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)
+      filling.each do |id|
+        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new())
+      end
+      at_stops
+    end
+
+    def update_vjas_from_state state
+      state.each do |vjas|
+        next if vjas["dummy"]
+        stop = vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
+        if stop
+          params = {}.tap do |el|
+            ['arrival_time', 'departure_time'].each do |field|
+              time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
+              el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
+            end
+          end
+          stop.update_attributes(params)
+          vjas.delete('errors')
+          vjas['errors'] = stop.errors if stop.errors.any?
+        end
+      end
+    end
+
+    def self.state_update route, state
+      transaction do
+        state.each do |item|
+          item.delete('errors')
+          vj = find_by(objectid: item['objectid']) || state_create_instance(route, item)
+          next if item['deletable'] && vj.persisted? && vj.destroy
+
+          vj.update_vjas_from_state(item['vehicle_journey_at_stops'])
+          vj.update_attributes(state_permited_attributes(item))
+          item['errors'] = vj.errors if vj.errors.any?
+        end
+        if state.any? {|item| item['errors']}
+          state.map {|item| item.delete('objectid') if item['new_record']}
+          raise ::ActiveRecord::Rollback
+        end
+      end
+
+      state.map {|item| item.delete('new_record')}
+      state.delete_if {|item| item['deletable']}
+    end
+
+    def self.state_create_instance route, item
+      # Flag new record, so we can unset object_id if transaction rollback
+      vj = route.vehicle_journeys.create(state_permited_attributes(item))
+      item['objectid']   = vj.objectid
+      item['new_record'] = true
+      vj
+    end
+
+    def self.state_permited_attributes item
+      attrs = item.slice('published_journey_identifier', 'published_journey_name', 'journey_pattern_id', 'company_id').to_hash
+      ['company', 'journey_pattern'].map do |association|
+        attrs["#{association}_id"] = item[association]['id'] if item[association]
+      end
+      attrs
+    end
+
     def increasing_times
       previous = nil
       vehicle_journey_at_stops.select{|vjas| vjas.departure_time && vjas.arrival_time}.each do |vjas|

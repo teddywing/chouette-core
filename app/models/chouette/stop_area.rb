@@ -18,9 +18,12 @@ class Chouette::StopArea < Chouette::ActiveRecord
   # include DefaultAttributesSupport
   include StopAreaReferentialSupport
 
-  has_many :stop_points, :dependent => :destroy
-  has_many :access_points, :dependent => :destroy
-  has_many :access_links, :dependent => :destroy
+  with_options dependent: :destroy do |assoc|
+    assoc.has_many :stop_points
+    assoc.has_many :access_points
+    assoc.has_many :access_links
+  end
+
   has_and_belongs_to_many :routing_lines, :class_name => 'Chouette::Line', :foreign_key => "stop_area_id", :association_foreign_key => "line_id", :join_table => "routing_constraints_lines", :order => "lines.number"
   has_and_belongs_to_many :routing_stops, :class_name => 'Chouette::StopArea', :foreign_key => "parent_id", :association_foreign_key => "child_id", :join_table => "stop_areas_stop_areas", :order => "stop_areas.name"
 
@@ -180,8 +183,7 @@ class Chouette::StopArea < Chouette::ActiveRecord
   def around(scope, distance)
     db   = "ST_GeomFromEWKB(ST_MakePoint(longitude, latitude, 4326))"
     from = "ST_GeomFromText('POINT(#{self.longitude} #{self.latitude})', 4326)"
-    sql  = "SELECT * FROM public.stop_areas WHERE ST_DWithin(#{db}, #{from}, ?, false)"
-    scope.find_by_sql [sql, distance]
+    scope.where("ST_DWithin(#{db}, #{from}, ?, false)", distance)
   end
 
   def self.near(origin, distance = 0.3)

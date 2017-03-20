@@ -4,12 +4,26 @@ describe Referential, :type => :model do
   let(:ref) { create :referential, metadatas: [create(:referential_metadata)] }
 
   # it "create a rule_parameter_set" do
-    # referential = create(:referential)
-    #expect(referential.rule_parameter_sets.size).to eq(1)
+  #   referential = create(:referential)
+  #   expect(referential.rule_parameter_sets.size).to eq(1)
   # end
 
   it { should have_many(:metadatas) }
   it { should belong_to(:workbench) }
+
+  context ".referential_ids_in_periode" do
+    it 'should retrieve referential id in periode range' do
+      range = ref.metadatas.first.periodes.sample
+      refs  = Referential.referential_ids_in_periode(range)
+      expect(refs).to include(ref.id)
+    end
+
+    it 'should not retrieve referential id not in periode range' do
+      range = Date.today - 2.year..Date.today - 1.year
+      refs  = Referential.referential_ids_in_periode(range)
+      expect(refs).to_not include(ref.id)
+    end
+  end
 
   context "Cloning referential" do
     let(:clone) do
@@ -102,15 +116,10 @@ describe Referential, :type => :model do
   end
 
   context "lines" do
-
     describe "search" do
-
       it "should support Ransack search method" do
         expect(ref.lines.search.result.to_a).to eq(ref.lines.to_a)
       end
-
     end
-
   end
-
 end

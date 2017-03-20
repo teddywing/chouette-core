@@ -7,9 +7,9 @@ const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownCli
     <div className='subform'>
       <div className='nested-head'>
         <div className="wrapper">
-          <div style={{width: 90}}>
+          <div style={{width: 100}}>
             <div className="form-group">
-              <label className="control-label">ID Codif</label>
+              <label className="control-label">ID Reflex</label>
             </div>
           </div>
           <div>

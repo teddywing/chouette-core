@@ -10,10 +10,14 @@ child @stop_areas, root: :features, object_root: false do
   node :properties do |s|
     {
       name: s.name,
+      short_name: truncate(s.name, :length => 30) || "",
+      city_name: s.city_name,
+      area_type: s.area_type,
       registration_number: s.registration_number,
       stoparea_id: s.id,
       text: "#{s.name}, #{s.zip_code} #{s.city_name}",
       user_objectid: s.user_objectid,
+      zip_code: s.zip_code,
       latitude: s.latitude,
       longitude: s.longitude
     }

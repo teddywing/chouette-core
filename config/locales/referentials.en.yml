@@ -1,5 +1,7 @@
 en:
   referentials:
+    filter:
+      name_or_number_or_objectid: 'Search by name, number or objectid'
     search_no_results: 'No data space matching your query'
     index:
       title: 'Data spaces'
@@ -33,6 +35,7 @@ en:
       edit: "Edit this data space"
       clone: "Clone this data space"
     errors:
+      validity_period: "Invalid validity periode"
       pg_excluded: "can't begins with pg_"
       public_excluded: "public is a reserved value"
       user_excluded: "%{user} is a reserved value"
@@ -87,6 +90,9 @@ en:
         published_at: "Integrated"
         archived_at: "Archived"
         created_from: 'Created from'
+        updated_at: "Updated"
+        created_at: "Created"
+        organisation: 'Organisation'
   formtastic:
     titles:
       referential:

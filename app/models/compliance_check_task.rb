@@ -5,15 +5,12 @@ class ComplianceCheckTask
   extend ActiveModel::Callbacks
   include ActiveModel::Validations
   include ActiveModel::Conversion
-  
+
   enumerize :references_type, in: %w( network line company group_of_line )
   attr_accessor :rule_parameter_set_id, :referential_id, :user_id, :user_name, :name, :references_type, :reference_ids
-  
-  validates_presence_of :referential_id
-  validates_presence_of :user_id
-  validates_presence_of :user_name
-  validates_presence_of :name
-  
+
+  validates_presence_of :referential_id, :user_id, :user_name, :name
+
   def initialize( params = {} )
     params.each {|k,v| send("#{k}=",v)}
   end
@@ -33,10 +30,10 @@ class ComplianceCheckTask
   def save
     if valid?
       # Call Iev Server
-      begin 
+      begin
         Ievkit.create_job( referential.slug, "validator", "", {
                              :file1 => params_io,
-                           } )     
+                           } )
       rescue Exception => exception
         raise exception
       end
@@ -45,7 +42,7 @@ class ComplianceCheckTask
       false
     end
   end
-  
+
   def self.references_types
     self.references_type.values
   end
@@ -66,16 +63,16 @@ class ComplianceCheckTask
         "organisation_name" => organisation.name,
         "referential_name" => referential.name,
       }
-      
+
     }
   end
 
   def validation_params
     {
       "validation" => rule_parameter_set.parameters
-    } if rule_parameter_set.present?    
+    } if rule_parameter_set.present?
   end
-  
+
   def self.data_formats
     self.data_format.values
   end
@@ -83,7 +80,7 @@ class ComplianceCheckTask
   def params_io
     file = StringIO.new( params.to_json )
     Faraday::UploadIO.new(file, "application/json", "parameters.json")
-  end 
+  end
 
   def transport_data_io
     file = File.new(saved_resources_path, "r")
@@ -91,8 +88,8 @@ class ComplianceCheckTask
       Faraday::UploadIO.new(file, "application/zip", original_filename )
     elsif file_extname == ".xml"
       Faraday::UploadIO.new(file, "application/xml", original_filename )
-    end   
-  end 
+    end
+  end
 
   def save_resources
     FileUtils.mkdir_p root
@@ -106,7 +103,7 @@ class ComplianceCheckTask
   def original_filename
     resources.original_filename
   end
-  
+
   def file_extname
     File.extname(resources.original_filename)
   end

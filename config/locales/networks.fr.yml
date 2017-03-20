@@ -3,13 +3,13 @@ fr:
     search_no_results: "Aucun réseau ne correspond à votre recherche"
     actions:
       new: "Ajouter un réseau"
-      edit: "Modifier ce réseau"
+      edit: "Editer ce réseau"
       destroy: "Supprimer ce réseau"
       destroy_confirm: "Etes vous sûr de supprimer ce réseau ?"
     new:
       title: "Ajouter un réseau"
     edit:
-      title: "Modifier le réseau %{network}"
+      title: "Editer le réseau %{network}"
     show:
       title: "Réseau %{network}"
     index:
@@ -36,7 +36,7 @@ fr:
         objectid: "Identifiant Neptune"
         object_version: "Version"
         created_at: "Créé le"
-        updated_at: "Modifié le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
   formtastic:
     titles:
@@ -67,7 +67,7 @@ fr:
 
   table:
     show: Voir
-    edit: Modifier
+    edit: Editer
     delete: Supprimer
 
   referential_networks:

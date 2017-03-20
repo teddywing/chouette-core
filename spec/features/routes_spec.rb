@@ -38,7 +38,7 @@ describe "Routes", :type => :feature do
       fill_in "route_name", :with => "A to B"
       # select 'Aller', :from => "route_direction"
       check('route[wayback]')
-      click_button("Enregistrer")
+      click_button("Valider")
       expect(page).to have_content("A to B")
     end
   end

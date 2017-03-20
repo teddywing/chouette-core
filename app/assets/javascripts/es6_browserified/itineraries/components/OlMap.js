@@ -10,7 +10,7 @@ class OlMap extends Component{
   fetchApiURL(id){
     const origin = window.location.origin
     const path = window.location.pathname.split('/', 3).join('/')
-    return origin + path + "/autocomplete_stop_areas/" + id + "/around"
+    return origin + path + "/autocomplete_stop_areas/" + id + "/around?target_type=zdep"
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -86,12 +86,16 @@ class OlMap extends Component{
         feature.setStyle(defaultStyles);
         centerLayer.setZIndex(0);
 
-        if(e.selected[0].getGeometry() == feature.getGeometry()) {
-          feature.setStyle(selectedStyles);
-          centerLayer.setZIndex(2);
-        }
-
         if(e.selected.length != 0) {
+
+          if(e.selected[0].getGeometry() == feature.getGeometry()) {
+            if(e.selected[0].style_.image_.fill_.color_ != '#da2f36'){
+              feature.setStyle(selectedStyles);
+              centerLayer.setZIndex(2);
+              e.preventDefault()
+              return false
+            }
+          }
           let data = Object.assign({}, e.selected[0].getProperties(), {geometry: undefined});
 
           this.props.onSelectMarker(this.props.index, data)
@@ -112,14 +116,32 @@ class OlMap extends Component{
               {this.props.value.olMap.json.name}
             </p>
             <p>
-              <strong>N° d'enregistrement : </strong>
-              {this.props.value.olMap.json.registration_number}
+              <strong>Type d'arrêt : </strong>
+              {this.props.value.olMap.json.area_type}
             </p>
             <p>
-              <strong>OiD de l'utilisateur : </strong>
+              <strong>Nom court : </strong>
+              {this.props.value.olMap.json.short_name}
+            </p>
+            <p>
+              <strong>Code Reflex : </strong>
               {this.props.value.olMap.json.user_objectid}
             </p>
 
+            <p>
+              <strong>Coordonnées : </strong>
+              WSG84
+              {this.props.value.olMap.json.latitude}
+              {this.props.value.olMap.json.longitude}
+            </p>
+            <p>
+              <strong>Code Postal : </strong>
+              {this.props.value.olMap.json.zip_code}
+            </p>
+            <p>
+              <strong>Commune : </strong>
+              {this.props.value.olMap.json.city_name}
+            </p>
             {(this.props.value.stoparea_id != this.props.value.olMap.json.stoparea_id) &&(
               <div className='btn btn-outline-primary btn-sm'
                 onClick= {() => {this.props.onUpdateViaOlMap(this.props.index, this.props.value.olMap.json)}}

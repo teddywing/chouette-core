@@ -9,7 +9,7 @@ fr:
       periods_dates_count: "dates: %{dates_count}, périodes: %{periods_count}"
     actions:
       new: "Ajouter un calendrier"
-      edit: "Modifier ce calendrier"
+      edit: "Editer ce calendrier"
       destroy: "Supprimer ce calendrier"
       duplicate: "Dupliquer ce calendrier"
       combine: "Combiner ce calendrier"
@@ -22,7 +22,7 @@ fr:
     new:
       title: "Ajouter un calendrier"
     edit:
-      title: "Modifier le calendrier %{time_table}"
+      title: "Editer le calendrier %{time_table}"
     show:
       title: Calendrier %{time_table}
       dates: "Dates d'application"
@@ -77,7 +77,7 @@ fr:
         objectid: "Identifiant Neptune"
         object_version: "Version"
         created_at: "Créé le"
-        updated_at: "Modifié le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
         calendars: "Calendrier"
         calendar_details: "Données du calendrier"

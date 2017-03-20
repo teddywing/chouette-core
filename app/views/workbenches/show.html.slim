@@ -13,32 +13,26 @@
 .page_content
   .container-fluid
     - if params[:q].present? or @wbench_refs.any?
-      .row.mb-sm
-        .col-lg-12.text-right
-          = new_pagination @wbench_refs
+      / .row.mb-sm
+        / .col-lg-12.text-right
+          / = new_pagination @wbench_refs
 
       .row
         .col-lg-12
-          = search_form_for @q, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder do |f|
-            .input-group.search_bar
-              = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de référentiel'
-              span.input-group-btn
-                button.btn.btn-default type='submit'
-                  span.fa.fa-search
-
           = render 'filters'
 
     - if @wbench_refs.any?
       .row
         .col-lg-12
-          / actions for table: controler+integrer, consulter, modifier, controler, dupliquer, conserver, purger, supprimer
           = table_builder @wbench_refs,
-            { @wbench_refs.human_attribute_name(:name) => 'name', @wbench_refs.human_attribute_name(:status) => Proc.new {|w| w.archived? ? ("<span class='fa fa-archive'></span> Conservé").html_safe : '-'},
-              'Organisation' => Proc.new {|w| w.organisation.name},
-              @wbench_refs.human_attribute_name(:validity_period) => Proc.new {|w| w.validity_period.nil? ? '-' : t('validity_range', debut: l(w.try(:validity_period).try(:begin), format: :short), end: l(w.try(:validity_period).try(:end), format: :short))},
-              'Nb lignes' => Proc.new {|w| w.lines.count},
-              @wbench_refs.human_attribute_name(:updated_at) => Proc.new {|w| l(w.updated_at, format: :short)},
-              @wbench_refs.human_attribute_name(:published_at) => ''},
+            { :name => 'name',
+              :status => Proc.new {|w| w.archived? ? ("<span class='fa fa-archive'></span> Conservé").html_safe : '-'},
+              :organisation => Proc.new {|w| w.organisation.name},
+              :validity_period => Proc.new {|w| w.validity_period.nil? ? '-' : t('validity_range', debut: l(w.try(:validity_period).try(:begin), format: :short), end: l(w.try(:validity_period).try(:end), format: :short))},
+              :lines => Proc.new {|w| w.lines.count},
+              :created_at => Proc.new {|w| l(w.created_at, format: :short)},
+              :updated_at => Proc.new {|w| l(w.updated_at, format: :short)},
+              :published_at => ''},
             [:show, :edit, :archive, :unarchive, :delete],
             [:delete],
             'table has-filter has-search'

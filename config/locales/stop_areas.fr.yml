@@ -1,7 +1,7 @@
 fr:
   stop_areas: &fr_stop_areas
     search_no_results: "Aucun arrêt ne correspond à votre recherche"
-    default_geometry_success: "%{count} arrêts modifiés"
+    default_geometry_success: "%{count} arrêts édités"
     stop_area:
       no_position: "Pas de position"
       no_object: "Aucun(e)"
@@ -12,11 +12,11 @@ fr:
       accessibility: "Accessibilité"
     actions:
       new: "Ajouter un arrêt"
-      edit: "Modifier cet arrêt"
+      edit: "Editer cet arrêt"
       destroy: "Supprimer cet arrêt"
       destroy_confirm: "Etes vous sûr de supprimer cet arrêt ainsi que tous ses fils?"
-      select_parent: "Créer ou modifier la relation enfant -> parent"
-      add_children: "Créer ou modifier la relation parent -> enfants"
+      select_parent: "Créer ou éditer la relation enfant -> parent"
+      add_children: "Créer ou éditer la relation parent -> enfants"
       clone_as_parent: "Cloner pour créer un père"
       clone_as_child: "Cloner pour créer un enfant"
       add_routing_lines: "Gérer les lignes de l'ITL"
@@ -31,6 +31,7 @@ fr:
       export_hub_commercial: "Export HUB des arrêts commerciaux"
       export_hub_physical: "Export HUB des arrêts physiques"
     filters:
+      name_or_objectid: "Recherche par nom ou par objectid..."
       zip_code: Indiquez un code postal...
       city_name: Indiquez un nom de commune...
       area_type: Indiquez un type d'arrêt...
@@ -40,7 +41,7 @@ fr:
       address: "246 Boulevard Saint-Germain, 75007 Paris"
       geolocalize: "Géolocalisez "
     edit:
-      title: "Modifier l'arrêt %{stop_area}"
+      title: "Editer l'arrêt %{stop_area}"
     show:
       title: "Arrêt %{stop_area}"
       geographic_data: "Données géographiques"
@@ -61,7 +62,6 @@ fr:
       access_link_legend_2: "cliquer sur les flêches pour créer/éditer un lien"
     index:
       name: "Recherche par nom..."
-      name_or_objectid: "Recherche par nom ou par objectid..."
       zip_code: "Code Postal"
       city_name: "Commune"
       title: "Arrêts"
@@ -111,7 +111,7 @@ fr:
         objectid: "Identifiant Neptune"
         object_version: "Version"
         created_at: "Créé le"
-        updated_at: "Modifié le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
         children_ids: "Fils"
         routing_stop_ids: "Arrêts concernés par l'ITL"
@@ -121,7 +121,7 @@ fr:
         zip_code: "Code postal"
         city_name: "Commune"
         created_at: "Créé le"
-        updated_at: "Modifié le"
+        updated_at: "Edité le"
   formtastic:
     titles:
       stop_area:
