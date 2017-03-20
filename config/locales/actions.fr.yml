@@ -4,6 +4,7 @@ fr:
     destroy: 'Supprimer'
     delete: 'Supprimer'
     search: "Chercher"
+    submit: "Valider"
     add: 'Ajouter'
     show: 'Consulter'
     archive: 'Conserver'

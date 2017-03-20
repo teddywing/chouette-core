@@ -10,8 +10,17 @@ class WorkbenchesController < BreadcrumbController
     @q      = scope.ransack(params[:q])
 
     @q.organisation_name_eq_any ||= current_organisation.name unless params[:q]
-    @collection  = @q.result(distinct: true)
-    @wbench_refs = @collection.order(sort_column + ' ' + sort_direction).paginate(page: params[:page], per_page: 30)
+    @wbench_refs  = @q.result
+    # @wbench_refs = Workbench.find(params[:id]).referentials
+
+    case sort_column
+    when "lines"
+      @wbench_refs = @wbench_refs.joins(:metadatas).group("referentials.id").order("sum(array_length(referential_metadata.line_ids,1)) #{sort_direction}")
+    else
+      @wbench_refs = @wbench_refs.order("#{sort_column} #{sort_direction}")
+    end
+
+    @wbench_refs = @wbench_refs.paginate(page: params[:page], per_page: 30)
 
     show! do
       build_breadcrumb :show
@@ -30,7 +39,7 @@ class WorkbenchesController < BreadcrumbController
 
   private
   def sort_column
-    Workbench.find(params[:id]).referentials.include?(params[:sort]) ? params[:sort] : 'name'
+    (Workbench.find(params[:id]).referentials.column_names + %w{lines}).include?(params[:sort]) ? params[:sort] : 'name'
   end
 
   def sort_direction
