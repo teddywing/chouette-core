@@ -116,14 +116,32 @@ class OlMap extends Component{
               {this.props.value.olMap.json.name}
             </p>
             <p>
-              <strong>N° d'enregistrement : </strong>
-              {this.props.value.olMap.json.registration_number}
+              <strong>Type d'arrêt : </strong>
+              {this.props.value.olMap.json.area_type}
             </p>
             <p>
-              <strong>ID Reflex : </strong>
+              <strong>Nom court : </strong>
+              {this.props.value.olMap.json.short_name}
+            </p>
+            <p>
+              <strong>Code Reflex : </strong>
               {this.props.value.olMap.json.user_objectid}
             </p>
 
+            <p>
+              <strong>Coordonnées : </strong>
+              WSG84
+              {this.props.value.olMap.json.latitude}
+              {this.props.value.olMap.json.longitude}
+            </p>
+            <p>
+              <strong>Code Postal : </strong>
+              {this.props.value.olMap.json.zip_code}
+            </p>
+            <p>
+              <strong>Commune : </strong>
+              {this.props.value.olMap.json.city_name}
+            </p>
             {(this.props.value.stoparea_id != this.props.value.olMap.json.stoparea_id) &&(
               <div className='btn btn-outline-primary btn-sm'
                 onClick= {() => {this.props.onUpdateViaOlMap(this.props.index, this.props.value.olMap.json)}}

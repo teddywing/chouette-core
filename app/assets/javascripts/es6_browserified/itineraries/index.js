@@ -25,6 +25,8 @@ const getInitialState = () => {
       stoppoint_id: v.stoppoint_id,
       stoparea_id: v.stoparea_id,
       user_objectid: v.user_objectid,
+      short_name: v.short_name,
+      area_type: v.area_type,
       index: i,
       edit: false,
       city_name: v.city_name,
