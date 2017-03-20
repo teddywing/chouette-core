@@ -19,8 +19,8 @@
       = f.label @wbench_refs.human_attribute_name(:validity_period), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :validity_period do |p|
-          = p.input :begin_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }
-          = p.input :end_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }
+          = p.input :begin_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }, include_blank: true
+          = p.input :end_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }, include_blank: true
 
   .actions
     = link_to 'Effacer', @workbench, class: 'btn btn-link'
