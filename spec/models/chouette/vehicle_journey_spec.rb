@@ -43,12 +43,16 @@ describe Chouette::VehicleJourney, :type => :model do
     it 'should update vj journey_pattern' do
       state['journey_pattern'] = create(:journey_pattern).attributes.slice('id', 'name', 'objectid')
       Chouette::VehicleJourney.state_update(route, collection)
+
+      expect(state['errors']).to be_nil
       expect(vehicle_journey.reload.journey_pattern_id).to eq state['journey_pattern']['id']
     end
 
     it 'should update vj company' do
       state['company'] = create(:company).attributes.slice('id', 'name', 'objectid')
       Chouette::VehicleJourney.state_update(route, collection)
+
+      expect(state['errors']).to be_nil
       expect(vehicle_journey.reload.company_id).to eq state['company']['id']
     end
 
@@ -57,6 +61,7 @@ describe Chouette::VehicleJourney, :type => :model do
       state['published_journey_identifier'] = 'edited_identifier'
 
       Chouette::VehicleJourney.state_update(route, collection)
+      expect(state['errors']).to be_nil
       expect(vehicle_journey.reload.published_journey_name).to eq state['published_journey_name']
       expect(vehicle_journey.reload.published_journey_identifier).to eq state['published_journey_identifier']
     end
@@ -85,8 +90,8 @@ describe Chouette::VehicleJourney, :type => :model do
     describe 'vehicle_journey_at_stops' do
       it 'should update departure_time' do
         item = state['vehicle_journey_at_stops'].first
-        item['departure_time']['hour']   = (Time.now - 1.hour).strftime('%H')
-        item['departure_time']['minute'] = (Time.now - 1.hour).strftime('%M')
+        item['departure_time']['hour']   = "02"
+        item['departure_time']['minute'] = "15"
 
         vehicle_journey.update_vjas_from_state(state['vehicle_journey_at_stops'])
         stop = vehicle_journey.vehicle_journey_at_stops.find(item['id'])
