@@ -62,7 +62,8 @@ class JourneyPattern extends Component{
           )}
 
           <div className='th'>
-            <div className='strong mb-xs'>{this.props.value.object_id ? this.props.value.object_id : '-'}</div>
+            <div className='strong'>{this.props.value.object_id ? this.props.value.object_id : '-'}</div>
+            <div className='mb-xs'>{this.props.value.name}</div>
             <div>{this.props.value.registration_number}</div>
             <div>{actions.getChecked(this.props.value.stop_points).length} arrêt(s)</div>
 

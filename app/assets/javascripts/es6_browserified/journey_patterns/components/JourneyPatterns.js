@@ -94,7 +94,8 @@ class JourneyPatterns extends Component{
             <div className={'table table-2entries mt-sm mb-sm' + ((this.props.journeyPatterns.length > 0) ? '' : ' no_result')}>
               <div className='t2e-head w20'>
                 <div className='th'>
-                  <div className='strong mb-xs'>ID Mission</div>
+                  <div className='strong'>ID Mission</div>
+                  <div className='mb-xs'>Nom mission</div>
                   <div>Code mission</div>
                   <div>Nb arrêts</div>
                 </div>
