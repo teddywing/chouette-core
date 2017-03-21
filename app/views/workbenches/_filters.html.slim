@@ -9,7 +9,7 @@
   .ffg-row
     .form-group
       = f.label 'Ligne', required: false, class: 'control-label'
-      = f.input :associated_lines_id_eq, as: :select, collection: @workbench.lines.order(:name).map{|l| [l.name, l.id]}, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une ligne...' }, label: false, wrapper_html: { class: 'select2ed'}
+      = f.input :associated_lines_id_eq, as: :select, collection: @workbench.lines.includes(:company).order(:name), input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une ligne...' }, label: false, label_method: :display_name, wrapper_html: { class: 'select2ed'}
 
     .form-group.togglable
       = f.label @wbench_refs.human_attribute_name(:status), required: false, class: 'control-label'
