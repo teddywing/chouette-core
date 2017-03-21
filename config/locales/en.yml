@@ -14,5 +14,6 @@ en:
       short: "%Y/%m/%d"
 
   last_update: 'Last update on<br>%{time}'
+  last_sync: 'Last sync on %{time}'
   validity_range: '%{debut} > %{end}'
   metadatas: 'Metadatas'
