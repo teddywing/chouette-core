@@ -373,21 +373,25 @@ table, .table
     vertical-align: top
     border-right: 1px solid #fff
     margin: 0
-    min-height: 44px
+    min-height: 41px
     padding: 5px 15px
 
     .control-label
       font-weight: 700
       color: $darkgrey
-      line-height: 34px
+      line-height: 31px
       margin: 0
       padding: 0 10px 0 0
       vertical-align: middle
 
-    > .form-control, > .form-group.date
+    > .form-control, > .form-group.date, > .form-group.select2ed
       display: inline-block
       width: auto
       vertical-align: top
+      margin-bottom: 0
+
+    > .form-group.select2ed
+      width: 300px
 
   > .actions
     position: absolute
@@ -422,7 +426,7 @@ table, .table
     position: relative
 
     &.togglable
-      padding: 7px 44px 7px 15px
+      padding: 5px 44px 6px 15px
       cursor: pointer
 
       > .control-label
@@ -451,11 +455,11 @@ table, .table
         position: absolute
         right: 15px
         top: 0
-        height: 44px
+        height: 41px
         width: 15px
         color: $blue
         text-align: center
-        line-height: 44px
+        line-height: 41px
 
       &.open:before
         content: '\f077'
