@@ -87,30 +87,19 @@ class BSelect2 extends React.Component{
                   item => Object.assign(
                     {},
                     item,
-                    { text: item.name + ", " + item.zip_code + " " + item.short_city_name }
+                    { text: item.name + ", " + item.zip_code + " " + item.short_city_name + " <small><em>(" + item.user_objectid + ")</em></small>" }
                   )
                 )
               };
             },
             cache: true
           },
-          minimumInputLength: 3,
-          templateResult: formatRepo
+          escapeMarkup: function (markup) { return markup; },
+          minimumInputLength: 3
         }}
       />
     )
   }
-}
-
-const formatRepo = (props) => {
-  if(props.text) return props.text
-  // console.log(props)
-  // return (
-  //   <div>
-  //     {props.short_name}
-  //     <small><em>{props.zip_code} {props.short_city_name}</em></small>
-  //   </div>
-  // )
 }
 
 module.exports = BSelect3
