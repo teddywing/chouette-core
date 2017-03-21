@@ -63,4 +63,17 @@ class Organisation < ActiveRecord::Base
       puts "✓ Organisation #{org.name} has been updated" unless Rails.env.test?
     end
   end
+
+  def find_referential(referential_id)
+    organisation_referential = referentials.find_by id: referential_id
+    return organisation_referential if organisation_referential
+
+    workbenches.each do |workbench|
+      workbench_referential = workbench.all_referentials.find_by id: referential_id
+      return workbench_referential if workbench_referential
+    end
+
+    raise ActiveRecord::RecordNotFound
+  end
+
 end

@@ -16,17 +16,7 @@ module ReferentialSupport
   end
 
   def find_referential
-    organisation_referential = current_organisation.referentials.find_by id: params[:referential_id]
-    return organisation_referential if organisation_referential
-
-    current_organisation.workbenches.each do |workbench|
-      workbench_referential = workbench.all_referentials.find_by id: params[:referential_id]
-      return workbench_referential if workbench_referential
-    end
-
-    raise ActiveRecord::RecordNotFound
+    current_organisation.find_referential params[:referential_id]
   end
+
 end
-
-
-
