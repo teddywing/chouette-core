@@ -6,6 +6,10 @@
         button.btn.btn-default type='submit'
           span.fa.fa-search
 
+    .input-group.search_bar
+      = f.label 'Ligne', required: false, class: 'control-label'
+      = f.input :associated_lines_id_eq, as: :select, collection: @workbench.lines.order(:name).map{|l| [l.name, l.id]}, input_html: {'data-select2ed': 'true'}, label: false
+
   .ffg-row
     .form-group.togglable
       = f.label @wbench_refs.human_attribute_name(:status), required: false, class: 'control-label'
