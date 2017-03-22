@@ -17,8 +17,13 @@ class ReferentialPolicy < ApplicationPolicy
     edit? && !record.archived?
   end
 
-  def new?     ; create? end
-  def destroy? ; edit? end
+  def archive?
+    edit?
+  end
+
+  def unarchive? ; archive? end
+  def new?       ; create? end
+  def destroy?   ; edit? end
 end
 
 
