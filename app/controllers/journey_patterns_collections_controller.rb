@@ -38,6 +38,7 @@ class JourneyPatternsCollectionsController < ChouetteController
         :street_name => sp.stop_area.try(:street_name)
       }
     end
+    @stop_points_list = @stop_points_list.sort_by {|a| a[:position] }
   end
 
   def update
