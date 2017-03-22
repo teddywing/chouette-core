@@ -21,7 +21,7 @@ if (window.journeyPatternId)
 var initialState = {
   filters: {
     selectedJourneyPatterns : selectedJP,
-    policy: window.perms,
+    policy: perms,
     toggleArrivals: false,
     queryString: '',
     query: {
