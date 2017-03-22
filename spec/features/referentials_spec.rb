@@ -50,7 +50,7 @@ describe "Referentials", :type => :feature do
   end
 
   describe "destroy" do
-    let(:referential) { create(:referential, :organisation => @user.organisation) }
+    let(:referential) {  create(:referential, :organisation => @user.organisation) }
 
     it "should remove referential" do
       visit referential_path(referential)
