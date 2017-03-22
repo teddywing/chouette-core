@@ -69,7 +69,7 @@ class VehicleJourney extends Component {
 
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
-            <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
+            <div className={'cellwrap' + (vj.dummy ? ' headlined' : '') + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
                 <div data-headline='Départ à'>
                   <span className={((this.props.value.deletable && (!vj.dummy)) ? 'disabled ' : '') + 'input-group time'}>
