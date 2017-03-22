@@ -1,73 +1,83 @@
-h2
-  = @referential.name
-  em.small = " (archivé)" if @referential.archived?
+/ PageHeader
+= pageheader 'map-marker',
+             @referential.name,
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@referential.updated_at, format: :short)),
+             link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default') do
 
-.summary
-  p
-    label = "#{Referential.human_attribute_name('slug')} : "
-    = @referential.slug
+  / Below is secundary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      / Actions are: controler, rapport de controle, dupliquer, purger, conserver, supprimer
+      = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
 
-  p
-    label = "#{Referential.human_attribute_name('prefix')} : "
-    = @referential.prefix
+      button.btn.btn-primary type='button' data-toggle='modal' data-target='#purgeModal' Purger
 
-  p
-    label = "#{Referential.human_attribute_name('projection_type')} : "
-    - if !@referential.projection_type_label.empty?
-      = "#{@referential.projection_type_label} (epsg:#{@referential.projection_type})"
-
-  p
-    label = "#{Referential.human_attribute_name('time_zone').capitalize} : "
-    = @referential.time_zone
-
-  p
-    label = "#{Referential.human_attribute_name('data_format_restrictions')} : "
-    = @referential.data_format
-
-  p
-    label = "#{Referential.human_attribute_name('validity_period')} : "
-    - if Chouette::TimeTable.start_validity_period.nil?
-      = Referential.human_attribute_name("no_validity_period")
-    - else
-      = Referential.human_attribute_name("start_validity_period")
-      = l Chouette::TimeTable.start_validity_period
-      = Referential.human_attribute_name("end_validity_period")
-      = l Chouette::TimeTable.end_validity_period
-
-  table width="100%"
-    tr
-      td valign="top" width="50%"
-        == render 'counts'
-
-      td valign="top"
-        == render 'validity_out'
-
-  - if @referential.api_keys.present?
-    h3.api_keys = t('.api_keys')
-    
-    .api_keys.paginated_content
-      = paginated_content(@referential.api_keys, "api_keys/api_key")
-
-- content_for :sidebar do
-  ul.actions
-    li = link_to t('referentials.actions.edit'), edit_referential_path(@referential), class: 'edit'
-
-    li
       - if @referential.archived?
-        = link_to unarchive_referential_path(@referential), method: :put do
-          span.fa-stack
-            span.fa.fa-archive.fa-stack-1x
-            span.fa.fa-ban.fa-stack-2x
-          = " Désarchiver cet espace de données"
+        = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
       - else
-        = link_to archive_referential_path(@referential), method: :put do
-          span.fa.fa-archive
-          = " Archiver cet espace de données"
+        = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
 
-    li = link_to t('referentials.actions.destroy'), referential_path(@referential), method: :delete, data: {:confirm => t('referentials.actions.destroy_confirm')}, class: "remove"
-    li = link_to t('api_keys.actions.new'), new_referential_api_key_path(@referential), class: 'add'
-    br
+      = link_to referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary' do
+        span.fa.fa-trash
+        span = t('actions.destroy')
 
-  h4 = t('.clean_up')
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { 'Statut' => (@referential.archived? ? 'Conservé' : '-'),
+            @referential.human_attribute_name(:validity_period) => (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-'),
+            @referential.human_attribute_name(:organisation) => @referential.organisation.name,
+            @referential.human_attribute_name(:published_at) => '-' }
 
-  == render 'clean'
+    - if params[:q].present? or @reflines.any?
+      .row.mb-sm
+        .col-lg-12.text-right
+          = new_pagination @reflines
+
+      .row
+        .col-lg-12
+          = render 'filters'
+
+    - if @reflines.any?
+      .row
+        .col-lg-12
+          / ID Codif, nom court, nom de la ligne, réseau, mode, transporteur principal, actions = [show, edit_notes]
+          = table_builder @reflines,
+            { 'ID Codif' => Proc.new { |n| n.objectid.local_id },
+            :number => 'number',
+            :name => 'name',
+            :deactivated => Proc.new{|n| n.deactivated? ? t('false') : t('true')},
+            :transport_mode => 'transport_mode',
+            'networks.name' => Proc.new { |n| n.try(:network).try(:name) },
+            'companies.name' => Proc.new { |n| n.try(:company).try(:name) } },
+            [:show],
+            [],
+            'table has-filter has-search'
+
+          = new_pagination @reflines, 'pull-right'
+
+    - unless @reflines.any?
+      .row.mt-xs
+        .col-lg-12
+          = replacement_msg t('referential_lines.search_no_results')
+
+
+/ Modal(s)
+= modalbox 'purgeModal' do
+  = simple_form_for [@referential, CleanUp.new] do |f|
+    .modal-header
+      h4.modal-title Purger le JDD
+    .modal-body
+      .container-fluid
+        .row
+          .col-lg-8.col-ld-offset-2.col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2.col-xs-12
+            = f.input :begin_date, as: :date, label: t('titles.clean_up.begin_date'),:wrapper_html => { class: 'date', title: t('titles.clean_up.begin_date') }
+            = f.input :end_date, as: :date, label: t('titles.clean_up.end_date'), :wrapper_html => { class: 'date', title: t('titles.clean_up.end_date') }
+
+    .modal-footer
+      button.btn.btn-link type='button' data-dismiss='modal' Annuler
+      = f.button :submit, t('actions.clean_up') , class: 'btn btn-primary'

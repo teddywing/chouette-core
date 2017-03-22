@@ -1,24 +1,41 @@
-= title_tag t('networks.index.title')
+/ PageHeader
+= pageheader 'map-marker',
+             t('networks.index.title'),
+             'Lorem ipsum dolor sit amet',
+             '',
+             (policy(Chouette::Network).create? ? link_to(t('networks.actions.new'), new_line_referential_network_path(@line_referential), class: 'btn btn-primary') : '')
 
-= search_form_for @q, :url => line_referential_networks_path(@line_referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
-  .panel.panel-default
-    .panel-heading
-      .input-group.col-md-12
-        = f.text_field :name_cont, placeholder: "#{t('.name')}", class: 'form-control'
-        .input-group-btn
-          button.btn.btn-default type="submit"
-            i.fa.fa-search
+/ PageContent
+.page_content
+  .container-fluid
+    - if params[:q].present? or @networks.any?
+      .row.mb-sm
+        .col-lg-12.text-right
+          = new_pagination @networks
 
-      / <!-- <a data-toggle="collapse" data-parent="#search" href="#advanced_search"> -->
-      / <!--   <i class="fa fa-plus"></i> <%= "#{t('.advanced_search')}" %> -->
-      / <!-- </a> -->
+      .row
+        .col-lg-12
+          = search_form_for @q, url: line_referential_networks_path(@line_referential), html: {method: :get}, class: 'form form-filter' do |f|
+            .input-group.search_bar
+              = f.search_field :name_or_objectid_cont, placeholder: t('.name_or_objectid'), class: 'form-control'
 
-#networks
-  = render 'networks'
+              span.input-group-btn
+                button.btn.btn-default#search-btn type='submit'
+                  span.fa.fa-search
 
-- content_for :sidebar do
-  ul.actions
-    - if policy(Chouette::Network).create?
-      li
-        = link_to t('networks.actions.new'), new_line_referential_network_path(@line_referential), class: 'add'
-      br
+    - if @networks.any?
+      .row
+        .col-lg-12
+          = table_builder @networks,
+            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) },
+            :name => 'name' },
+            [:show, :edit, :delete],
+            [],
+            'table has-search'
+
+          = new_pagination @networks, 'pull-right'
+
+    - unless @networks.any?
+      .row
+        .col-lg-12
+          = replacement_msg t('networks.search_no_results')

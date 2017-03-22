@@ -1,0 +1,25 @@
+/ PageHeader
+= pageheader 'map-marker',
+             "Notes sur la ligne #{@line.name}",
+             'Lorem ipsum dolor sit amet',
+             (@line.footnotes.any? ? t('last_update', time: l(@line.footnotes.last.updated_at, format: :short)) : ''),
+             (policy(@line).update_footnote? ? link_to(t('actions.edit'), edit_referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary') : '')
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      - if @line.footnotes.any?
+        - @line.footnotes.each do |footnote|
+          .col-lg-4.col-md-4.col-sm-6.col-xs-12
+            .panel.panel-default
+              .panel-heading = footnote.code
+              .panel-body
+                p = footnote.label
+              .panel-footer.text-right
+                p.text-muted
+                  em.small = "Dernière mise à jour le #{l(footnote.updated_at, format: :short)}"
+
+      - else
+        = replacement_msg 'Aucune note ne correspond à votre recherche'
+      

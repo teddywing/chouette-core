@@ -1,9 +1,13 @@
-.page_info
-  span.search = t('will_paginate.page_entries_info.search')
-  = page_entries_info @lines
+- if @lines.any?
+  = table_builder @lines,
+    { 'Oid' => Proc.new { |n| n.objectid.local_id }, :id => 'id',
+    :number => 'number', :name => 'name', :network => Proc.new { |n| n.try(:network).try(:name) }, :company => Proc.new { |n| n.try(:company).try(:name) } },
+    [:show],
+    [],
+    'table table-bordered'
 
-.lines.paginated_content
-  = paginated_content(@lines)
+  .text-center
+    = will_paginate @lines, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
 
-.pagination
-  = will_paginate @lines, container: false, renderer: RemoteBootstrapPaginationLinkRenderer
+- else
+  = replacement_msg t('referential_lines.search_no_results')

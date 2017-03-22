@@ -7,15 +7,72 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   has_many :vehicle_journeys, :dependent => :destroy
   has_many :vehicle_journey_at_stops, :through => :vehicle_journeys
   has_and_belongs_to_many :stop_points, -> { order("stop_points.position") }, :before_add => :vjas_add, :before_remove => :vjas_remove, :after_add => :shortcuts_update_for_add, :after_remove => :shortcuts_update_for_remove
+  has_many :stop_areas, through: :stop_points
   has_many :journey_pattern_sections
   has_many :route_sections, through: :journey_pattern_sections, dependent: :destroy
 
   validates_presence_of :route
+  validates_presence_of :name
 
   enum section_status: { todo: 0, completed: 1, control: 2 }
 
   attr_accessor  :control_checked
   after_update :control_route_sections, :unless => "control_checked"
+
+
+  def self.state_update route, state
+    transaction do
+      state.each do |item|
+        item.delete('errors')
+        jp = find_by(objectid: item['object_id']) || state_create_instance(route, item)
+        next if item['deletable'] && jp.persisted? && jp.destroy
+
+        # Update attributes and stop_points associations
+        jp.update_attributes(state_permited_attributes(item))
+        jp.state_stop_points_update(item) if !jp.errors.any? && jp.persisted?
+        item['errors'] = jp.errors if jp.errors.any?
+      end
+
+      if state.any? {|item| item['errors']}
+        state.map {|item| item.delete('object_id') if item['new_record']}
+        raise ActiveRecord::Rollback
+      end
+    end
+
+    state.map {|item| item.delete('new_record')}
+    state.delete_if {|item| item['deletable']}
+  end
+
+  def self.state_permited_attributes item
+    {
+      name: item['name'],
+      published_name: item['published_name'],
+      registration_number: item['registration_number']
+    }
+  end
+
+  def self.state_create_instance route, item
+    # Flag new record, so we can unset object_id if transaction rollback
+    jp = route.journey_patterns.create(state_permited_attributes(item))
+    item['object_id']  = jp.objectid
+    item['new_record'] = true
+    jp
+  end
+
+  def state_stop_points_update item
+    item['stop_points'].each do |sp|
+      exist = stop_area_ids.include?(sp['id'])
+      next if exist && sp['checked']
+
+      stop_point = route.stop_points.find_by(stop_area_id: sp['id'])
+      if !exist && sp['checked']
+        stop_points << stop_point
+      end
+      if exist && !sp['checked']
+        stop_points.delete(stop_point)
+      end
+    end
+  end
 
   # TODO: this a workarround
   # otherwise, we loose the first stop_point

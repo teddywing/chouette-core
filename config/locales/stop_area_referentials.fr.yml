@@ -3,3 +3,5 @@ fr:
     actions:
       sync: "Lancer une synchronisation Reflex"
       cancel_sync: "Annuler la synchronisation Reflex"
+    show:
+      title: 'Synchronisation iCAR'

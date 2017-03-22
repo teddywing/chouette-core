@@ -6,4 +6,4 @@ require File.expand_path('../application', __FILE__)
 Rails.application.initialize!
 
 # Fix version
-APP_VERSION = 'Itération 5'
+APP_VERSION = 'Itération 7'

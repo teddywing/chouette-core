@@ -1,5 +1,6 @@
 class StopAreaReferentialSyncWorker
   include Sidekiq::Worker
+  sidekiq_options :retry => false
 
   def process_time
     Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
@@ -13,6 +14,7 @@ class StopAreaReferentialSyncWorker
       info = Stif::ReflexSynchronization.synchronize
       stop_ref_sync.successful info.merge({processing_time: process_time - start_time})
     rescue Exception => e
+      Rails.logger.error "StopAreaReferentialSyncWorker failed: #{e.message} - #{e.backtrace.join("\n")}"
       stop_ref_sync.failed({
         error: e.message,
         processing_time: process_time - start_time

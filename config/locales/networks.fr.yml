@@ -1,25 +1,27 @@
 fr:
   networks: &fr_networks
+    search_no_results: "Aucun réseau ne correspond à votre recherche"
     actions:
       new: "Ajouter un réseau"
-      edit: "Modifier ce réseau"
+      edit: "Editer ce réseau"
       destroy: "Supprimer ce réseau"
       destroy_confirm: "Etes vous sûr de supprimer ce réseau ?"
     new:
       title: "Ajouter un réseau"
     edit:
-      title: "Modifier le réseau %{network}"
+      title: "Editer le réseau %{network}"
     show:
       title: "Réseau %{network}"
     index:
       title: "Réseaux"
-      name: "Recherche par nom"
+      name: "Recherche par nom..."
+      name_or_objectid: "Recherche par nom ou objectid..."
       advanced_search: "Recherche avancée"
   activerecord:
     models:
       network:
-        zero:  "réseau"
-        one:   "réseau"
+        zero: "réseaux"
+        one: "réseau"
         other: "réseaux"
     attributes:
       network:
@@ -33,7 +35,8 @@ fr:
         source_identifier: "Identifiant du système origine"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
   formtastic:
     titles:
@@ -61,5 +64,11 @@ fr:
           name: "maximum 75 caractères"
           registration_number: "Entier positif, clé unique, d'un maximum de 8 chiffres."
           objectid: "[prefixe]:PTNetwork:[clé_unique]  caractères autorisés : alphanumériques et 'souligné' pour le préfixe, la clé unique accepte en plus le 'moins'. Longueur maximale de la clé unique = 3."
+
+  table:
+    show: Voir
+    edit: Editer
+    delete: Supprimer
+
   referential_networks:
     <<: *fr_networks

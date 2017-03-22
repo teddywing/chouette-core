@@ -24,15 +24,31 @@ en:
       no_object: "Nothing"
       lines: "Lines"
       address: "Address"
-  activerecord:        
-    models:        
-      stop_point: 
+      for_boarding:
+        normal: Allowed boarding
+        forbidden: Forbidden boarding
+      for_alighting:
+        normal: Allowed alighting
+        forbidden: Forbidden alighting
+  activerecord:
+    models:
+      stop_point:
         zero:  "stop point on route"
         one:   "stop point on route"
         other: "stop points on route"
     attributes:
       stop_point:
-        lines: "lines"
+        name: 'Name'
+        lines: "Lines"
+        created_at: Created
+        updated_at: Updated
+        deleted_at: "Activated"
+        for_boarding: "For boarding"
+        for_alighting: "For alighting"
+        area_type: "Area type"
+        city_name: "City name"
+        zip_code: "Zip code"
+        position: "Position"
   simple_form:
     labels:
       stop_point:

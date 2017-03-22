@@ -1,11 +1,20 @@
 fr:
   actions:
-    edit: "Modifier"
-    destroy: "Supprimer"
+    edit: 'Editer'
+    destroy: 'Supprimer'
+    delete: 'Supprimer'
     search: "Chercher"
-    add: "Ajouter"
+    submit: "Valider"
+    add: 'Ajouter'
+    show: 'Consulter'
+    archive: 'Conserver'
+    unarchive: 'Déconserver'
+    clone: 'Dupliquer'
+    clean_up: 'Purger'
+    sync: 'Synchroniser'
   or: "ou"
   cancel: "Annuler"
   search_hint: "Entrez un texte à rechercher"
   no_result_text: "Aucun résultat"
   searching_term: "Recherche en cours..."
+  are_you_sure: Etes vous sûr ?

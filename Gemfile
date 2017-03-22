@@ -1,7 +1,9 @@
+# coding: iso-8859-1
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.1.10'
+gem 'i18n-active_record', :require => 'i18n/active_record'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -9,6 +11,9 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '~> 2.7.2'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
+
+# ES6 powa
+gem 'browserify-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
@@ -19,8 +24,15 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+# Select2 for pretty select boxes w. autocomplete
+gem 'select2-rails', '~> 4.0', '>= 4.0.3'
+
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
+# ActiveRecord associations on top of PostgreSQL arrays
+gem 'has_array_of', git: 'git@github.com:AF83/has_array_of.git'
+
+gem 'rails-observers'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -51,10 +63,10 @@ gem 'polylines'
 # Codifligne API
 gem 'codifligne', git: 'git@github.com:AF83/stif-codifline-api.git'
 # Reflex API
-gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git', branch: 'sax_refactoring'
+gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git'
 
 # Authentication
-gem 'devise', '~> 3.4.0'
+gem 'devise', '~> 3.5.4'
 gem 'devise_cas_authenticatable'
 gem 'devise-encryptable'
 gem 'devise_invitable'
@@ -76,10 +88,10 @@ gem 'calendar_helper', '0.2.5'
 gem 'cocoon'
 gem 'slim-rails', '~> 3.1'
 gem 'formtastic', '2.3.1'
-gem 'RedCloth'
+gem 'RedCloth', '~> 4.3.0'
 gem 'simple_form', '~> 3.1.0'
-gem 'font-awesome-sass', '~> 4.2.0'
-gem 'will_paginate-bootstrap', '~> 1.0.1'
+gem 'font-awesome-sass', '~> 4.7'
+gem 'will_paginate-bootstrap'
 gem 'breadcrumbs_on_rails'
 
 # Format Output
@@ -92,9 +104,10 @@ gem 'inherited_resources'
 gem 'google-analytics-rails'
 
 # Model
-gem 'will_paginate', '~> 3.0.7'
+gem 'will_paginate'
 gem 'ransack'
 gem 'squeel'
+gem 'active_attr'
 
 gem 'draper'
 
@@ -107,10 +120,10 @@ gem 'acts_as_list', '~> 0.6.0'
 gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
 
 gem 'rabl'
+gem 'carrierwave', '~> 1.0'
 
 gem 'sidekiq'
 gem 'sinatra'
-gem 'delayed_job_active_record'
 gem 'whenever', github: 'af83/whenever', require: false # '~> 0.9'
 gem 'rake'
 gem 'devise-async'
@@ -123,12 +136,15 @@ gem 'letter_opener'
 group :development do
   gem 'capistrano', '2.13.5'
   gem 'capistrano-ext'
+  gem 'capistrano-npm', require: false
   gem 'guard'
   gem 'guard-rspec'
   gem 'rails-erd'
   # MetaRequest is incompatible with rgeo-activerecord
   # gem 'meta_request'
   gem 'quiet_assets', '~> 1.0'
+  gem 'license_finder'
+  gem 'bundler-audit'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
@@ -162,6 +178,8 @@ group :test, :development do
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'transpec'
   gem 'shoulda-matchers'
+  gem "teaspoon-jasmine"
+  gem "phantomjs"
 end
 
 group :production do
@@ -176,19 +194,13 @@ gem 'i18n-tasks'
 
 # Rails Assets
 source 'http://rails-assets.org' do
-  gem 'rails-assets-morrisjs', '~> 0.5.1'
-  gem 'rails-assets-raphael', '~> 2.1.3'
   gem 'rails-assets-footable', '~> 2.0.3'
 
   # Use twitter bootstrap resources
   gem 'rails-assets-bootstrap-sass-official', '~> 3.3.0'
   gem 'rails-assets-tagmanager', '~> 3.0.1.0'
-  gem 'rails-assets-typeahead.js', '~> 0.10.5'
-  gem 'rails-assets-typeahead.js-bootstrap3.less'
   gem 'rails-assets-respond'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 3.1.3'
   gem 'rails-assets-jquery-tokeninput', '~> 1.7.0'
 
   gem 'rails-assets-modernizr', '~> 2.0.6'
-  gem 'rails-assets-jquery-ui', '~> 1.11.4'
 end

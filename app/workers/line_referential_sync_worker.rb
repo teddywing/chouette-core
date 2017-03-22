@@ -1,5 +1,7 @@
 class LineReferentialSyncWorker
   include Sidekiq::Worker
+  sidekiq_options :retry => false
+
   def process_time
     Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
   end
@@ -12,6 +14,7 @@ class LineReferentialSyncWorker
       info = Stif::CodifLineSynchronization.synchronize
       lref_sync.successful info.merge({processing_time: process_time - start_time})
     rescue Exception => e
+      Rails.logger.error "LineReferentialSyncWorker failed: #{e.message} - #{e.backtrace.join("\n")}"
       lref_sync.failed({
         error: e.message,
         processing_time: process_time - start_time

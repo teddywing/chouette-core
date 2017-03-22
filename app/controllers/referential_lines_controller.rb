@@ -1,4 +1,5 @@
 class ReferentialLinesController < ChouetteController
+  include PolicyChecker
 
   defaults :resource_class => Chouette::Line, :collection_name => 'lines', :instance_name => 'line'
   respond_to :html
@@ -10,6 +11,7 @@ class ReferentialLinesController < ChouetteController
   belongs_to :referential
 
   def index
+    @hide_group_of_line = referential.group_of_lines.empty?
     index! do |format|
       format.html {
         if collection.out_of_bounds?
@@ -21,9 +23,22 @@ class ReferentialLinesController < ChouetteController
   end
 
   def show
-    @map = LineMap.new(resource).with_helpers(self)
-    @routes = @line.routes
-    @group_of_lines = @line.group_of_lines
+    @routes = resource.routes
+
+    case sort_route_column
+    when "stop_points", "journey_patterns"
+      left_join = %Q{LEFT JOIN "#{sort_route_column}" ON "#{sort_route_column}"."route_id" = "routes"."id"}
+
+      @routes = @routes.joins(left_join).group(:id).order("count(#{sort_route_column}.route_id) #{sort_route_direction}")
+    else
+      @routes = @routes.order("#{sort_route_column} #{sort_route_direction}")
+    end
+
+    @q = @routes.ransack(params[:q])
+    @routes = @q.result
+
+    @routes = @routes.paginate(page: params[:page], per_page: 10)
+
     show! do
       build_breadcrumb :show
     end
@@ -63,33 +78,69 @@ class ReferentialLinesController < ChouetteController
   end
 
   def filtered_lines
-    referential.lines.select{ |t| [t.name, t.published_name].find { |e| /#{params[:q]}/i =~ e }  }
+    referential.lines.by_text(params[:q])
   end
 
   def collection
-    if params[:q] && params[:q]["network_id_eq"] == "-1"
-      params[:q]["network_id_eq"] = ""
-      params[:q]["network_id_blank"] = "1"
-    end
-
-    if params[:q] && params[:q]["company_id_eq"] == "-1"
-      params[:q]["company_id_eq"] = ""
-      params[:q]["company_id_blank"] = "1"
-    end
-
-    if params[:q] && params[:q]["group_of_lines_id_eq"] == "-1"
-      params[:q]["group_of_lines_id_eq"] = ""
-      params[:q]["group_of_lines_id_blank"] = "1"
+    %w(network_id company_id group_of_lines_id comment_id transport_mode).each do |filter|
+      if params[:q] && params[:q]["#{filter}_eq"] == '-1'
+        params[:q]["#{filter}_eq"] = ''
+        params[:q]["#{filter}_blank"] = '1'
+      end
     end
 
     @q = referential.lines.search(params[:q])
-    @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+
+    if sort_column && sort_direction
+      @lines ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction)
+    else
+      @lines ||= @q.result(:distinct => true).order(:number)
+    end
+    @lines = @lines.paginate(page: params[:page], per_page: 10).includes([:network, :company])
+
   end
 
   private
 
+  def sort_column
+    referential.lines.column_names.include?(params[:sort]) ? params[:sort] : 'number'
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  def sort_route_column
+    (@line.routes.column_names + %w{stop_points journey_patterns}).include?(params[:sort]) ? params[:sort] : 'name'
+  end
+  def sort_route_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
   def line_params
-    params.require(:line).permit( :transport_mode, :network_id, :company_id, :objectid, :object_version, :creation_time, :creator_id, :name, :number, :published_name, :transport_mode_name, :registration_number, :comment, :mobility_restricted_suitability, :int_user_needs, :flexible_service, :group_of_lines, :group_of_line_ids, :group_of_line_tokens, :url, :color, :text_color, :stable_id, { footnotes_attributes: [ :code, :label, :_destroy, :id ] } )
+    params.require(:line).permit(
+      :transport_mode,
+      :transport_submode,
+      :network_id,
+      :company_id,
+      :objectid,
+      :object_version,
+      :creator_id,
+      :name, :number,
+      :published_name,
+      :transport_mode,
+      :registration_number,
+      :comment,
+      :mobility_restricted_suitability,
+      :int_user_needs,
+      :flexible_service,
+      :group_of_lines,
+      :group_of_line_ids,
+      :group_of_line_tokens,
+      :url,
+      :color,
+      :text_color,
+      :stable_id
+      )
   end
 
 end

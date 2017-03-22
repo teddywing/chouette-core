@@ -1,6 +1,7 @@
 fr:
   stop_areas: &fr_stop_areas
-    default_geometry_success: "%{count} arrêts modifiés"
+    search_no_results: "Aucun arrêt ne correspond à votre recherche"
+    default_geometry_success: "%{count} arrêts édités"
     stop_area:
       no_position: "Pas de position"
       no_object: "Aucun(e)"
@@ -11,11 +12,11 @@ fr:
       accessibility: "Accessibilité"
     actions:
       new: "Ajouter un arrêt"
-      edit: "Modifier cet arrêt"
+      edit: "Editer cet arrêt"
       destroy: "Supprimer cet arrêt"
       destroy_confirm: "Etes vous sûr de supprimer cet arrêt ainsi que tous ses fils?"
-      select_parent: "Créer ou modifier la relation enfant -> parent"
-      add_children: "Créer ou modifier la relation parent -> enfants"
+      select_parent: "Créer ou éditer la relation enfant -> parent"
+      add_children: "Créer ou éditer la relation parent -> enfants"
       clone_as_parent: "Cloner pour créer un père"
       clone_as_child: "Cloner pour créer un enfant"
       add_routing_lines: "Gérer les lignes de l'ITL"
@@ -29,13 +30,18 @@ fr:
       export_hub_place: "Export HUB des pôles d'échange"
       export_hub_commercial: "Export HUB des arrêts commerciaux"
       export_hub_physical: "Export HUB des arrêts physiques"
+    filters:
+      name_or_objectid: "Recherche par nom ou par objectid..."
+      zip_code: Indiquez un code postal...
+      city_name: Indiquez un nom de commune...
+      area_type: Indiquez un type d'arrêt...
     new:
       title: "Ajouter un arrêt"
     form:
       address: "246 Boulevard Saint-Germain, 75007 Paris"
       geolocalize: "Géolocalisez "
     edit:
-      title: "Modifier l'arrêt %{stop_area}"
+      title: "Editer l'arrêt %{stop_area}"
     show:
       title: "Arrêt %{stop_area}"
       geographic_data: "Données géographiques"
@@ -55,8 +61,9 @@ fr:
       access_link_legend_1: "Les flêches grises représentent des liens non définis"
       access_link_legend_2: "cliquer sur les flêches pour créer/éditer un lien"
     index:
-      name: "Recherche par nom"
+      name: "Recherche par nom..."
       zip_code: "Code Postal"
+      city_name: "Commune"
       title: "Arrêts"
       selection: "Filtrer sur"
       selection_all: "Tous"
@@ -84,6 +91,7 @@ fr:
         deleted: "Supprimé"
         comment: "Commentaire"
         stop_area_type: "Type d'arrêt"
+        area_type: "Type d'arrêt"
         nearest_topic_name: "Point d'intérêt le plus proche"
         street_name: "Nom de la rue"
         country_code: "Code INSEE"
@@ -102,7 +110,8 @@ fr:
         url: "Page web associée"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
         children_ids: "Fils"
         routing_stop_ids: "Arrêts concernés par l'ITL"
@@ -111,6 +120,8 @@ fr:
         coordinates: "Coordonnées (lat,lng) WGS84"
         zip_code: "Code postal"
         city_name: "Commune"
+        created_at: "Créé le"
+        updated_at: "Edité le"
   formtastic:
     titles:
       stop_area:
@@ -167,5 +178,6 @@ fr:
           comment: "Longueur maximale = 255."
           coordinates: "Les coordonnées sont obligatoires."
           projection_xy: "x,y dans le référentiel secondaire, le séparateur de décimales est 'point'"
+
   referential_stop_areas:
     <<: *fr_stop_areas

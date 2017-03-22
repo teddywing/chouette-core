@@ -2,14 +2,19 @@ fr:
   simple_form:
     "yes": 'Oui'
     "no": 'Non'
+    from: 'Du'
+    to: 'Au'
     required:
-      text: 'requis'
+      text: 'Champ requis'
       mark: '*'
-      # You can uncomment the line below if you need to overwrite the whole required html.
-      # When using html, text and mark won't be used.
-      # html: '<abbr title="required">*</abbr>'
     error_notification:
       default_message: "S'il vous plaît examiner les problèmes ci-dessous:"
+
+  helpers:
+    submit:
+      create: Valider
+      edit: Editer
+      update: Editer
     # Labels and hints examples
     # labels:
     #   defaults:
@@ -23,4 +28,3 @@ fr:
     #   defaults:
     #     username: 'User name to sign in.'
     #     password: 'No special characters, please.'
-

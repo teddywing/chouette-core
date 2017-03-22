@@ -5,6 +5,19 @@ en:
         for_boarding: "Undefined"
         for_alighting: "Undefined"
   enumerize:
+    import:
+      status:
+        new: New
+        pending: Pending
+        successful: Successful
+        failed: Failed
+        canceled: Canceled
+    import_resource:
+      status:
+        new: New
+        pending: Pending
+        successful: Successful
+        failed: Failed
     for_boarding:
       normal: "Regularly scheduled pickup"
       forbidden: "No pickup available"
@@ -33,3 +46,196 @@ en:
       netex: "Experimental"
       hub: "Specific Transdev Format"
       kml: "line, route, ... drawings on Keyhole Markup Language format"
+    route:
+      direction:
+        straight_forward: 'Straight Forward'
+        backward: 'Backward'
+        clockwise: 'ClockWise'
+        counter_clockwise: 'Counter Clockwise'
+        north: 'North'
+        north_west: 'North West'
+        west: 'West'
+        south_west: 'South West'
+        south: 'South'
+        south_east: 'South East'
+        east: 'East'
+        north_east: 'North East'
+      wayback:
+        straight_forward: 'Straight Forward'
+        backward: 'Backward'
+    vehicle_journey:
+      transport_mode:
+        interchange: Interchange
+        unknown: "unknown"
+        air: "Air"
+        train: "Train"
+        long_distance_train: "Long distance train"
+        local_train: "Local train"
+        rapid_transit: "Rapid transit"
+        metro: "Metro"
+        tramway: "Tramway"
+        coach: "Coach"
+        bus: "Bus"
+        ferry: "Ferry"
+        waterborne: "Waterborne"
+        private_vehicle: "Private vehicle"
+        walk: "Walk"
+        trolleybus: "Trolleybus"
+        bicycle: "Bicycle"
+        shuttle: "Shuttle"
+        taxi: "Taxi"
+        val: "VAL"
+        other: "Other"
+        air: Air
+        bus: Bus
+        coach: Coach
+        ferry: Ferry
+        metro: Metro
+        rail: Rail
+        trolleybus: Trolleybus
+        tram: Tramway
+        water: Water
+        cableway: Cableway
+        funicular: Funicular
+        other: Other
+    stop_area:
+      area_type:
+        zdep: ZDEp
+        zder: ZDEr
+        zdlp: ZDLp
+        zdlr: ZDLr
+        lda: LDA
+    line:
+      transport_mode:
+        interchange: Interchange
+        unknown: "unknown"
+        air: "Air"
+        train: "Train"
+        long_distance_train: "Long distance train"
+        local_train: "Local train"
+        rapid_transit: "Rapid transit"
+        metro: "Metro"
+        tramway: "Tramway"
+        coach: "Coach"
+        bus: "Bus"
+        ferry: "Ferry"
+        waterborne: "Waterborne"
+        private_vehicle: "Private vehicle"
+        walk: "Walk"
+        trolleyBus: "Trolleybus"
+        bicycle: "Bicycle"
+        shuttle: "Shuttle"
+        taxi: "Taxi"
+        val: "VAL"
+        other: "Other"
+        air: Air
+        bus: Bus
+        coach: Coach
+        ferry: Ferry
+        metro: Metro
+        rail: Rail
+        trolleybus: Trolleybus
+        tram: Tramway
+        water: Water
+        cableway: Cableway
+        funicular: Funicular
+        other: Other
+      transport_submode:
+        unknown: 'Unknown'
+        undefined: 'Undefined'
+        internationalFlight: 'International flight'
+        domesticFlight: 'Domestic flight'
+        intercontinentalFlight: 'Intercontinental flight'
+        domesticScheduledFlight: 'Domestic scheduled flight'
+        shuttleFlight: 'Shuttle flight'
+        intercontinentalCharterFlight: "Intercontinental charter flight"
+        internationalCharterFlight: "International charter flight"
+        roundTripCharterFlight: "Roundtrip charter flight"
+        sightseeingFlight: 'Sightseeing flight'
+        helicopterService: "Helicopter service"
+        domesticCharterFlight: "Domestic charter flight"
+        SchengenAreaFlight: 'Schengen area flight'
+        airshipService: 'Airship service'
+        shortHaulInternationalFlight: 'Short haul international flight'
+        canalBarge: 'Canal barge'
+        localBus: 'Local bus'
+        regionalBus: 'Regional bus'
+        expressBus: 'Express bus'
+        nightBus: 'Night bus'
+        postBus: 'Post but'
+        specialNeedsBus: 'Special needs bus'
+        mobilityBus: 'Mobility bus'
+        mobilityBusForRegisteredDisabled: 'Mobility bus for registered disabled'
+        sightseeingBus: 'sightseeingBus'
+        shuttleBus: 'Shuttle bus'
+        highFrequencyBus: 'High frequency bus'
+        dedicatedLaneBus: 'Dedicated lane bus'
+        schoolBus: 'School bus'
+        schoolAndPublicServiceBus: 'School and public service bus'
+        railReplacementBus: 'Rail replacement bus'
+        demandAndResponseBus: 'Demand and response bus'
+        airportLinkBus: 'Airport link bus'
+        internationalCoach: 'International coach'
+        nationalCoach: 'National coach'
+        shuttleCoach: 'Shuttle coach'
+        regionalCoach: 'Regional coach'
+        specialCoach: 'Special coach'
+        schoolCoach: 'School coach'
+        sightseeingCoach: 'Sightseeing coach'
+        touristCoach: 'Tourist coach'
+        commuterCoach: 'Commuter coach'
+        metro: 'Metro'
+        tube: 'Tube'
+        urbanRailway: 'Urban railway'
+        local: 'Local'
+        highSpeedRail: 'High speed rail'
+        suburbanRailway: 'Suburban railway'
+        regionalRail: 'Regional rail'
+        interregionalRail: 'Interregional rail'
+        longDistance: 'Long distance'
+        international: 'International'
+        sleeperRailService: 'Sleeper rail service'
+        nightRail: 'Night rail'
+        carTransportRailService: 'Car transport rail service'
+        touristRailway: 'Tourist railway'
+        railShuttle: 'Rail shuttle'
+        replacementRailService: 'Replacement rail service'
+        specialTrain: 'Special train'
+        crossCountryRail: 'Cross country rail'
+        rackAndPinionRailway: 'Rack and pinion railway'
+        cityTram: 'City tram'
+        localTram: 'Local tram'
+        regionalTram: 'Regional tram'
+        sightseeingTram: 'Sightseeing tram'
+        shuttleTram: 'Shuttle tram'
+        trainTram: 'Train tram'
+        internationalCarFerry: 'International car ferry'
+        nationalCarFerry: 'National car ferry'
+        regionalCarFerry: 'Regional car ferry'
+        localCarFerry: 'Local car ferry'
+        internationalPassengerFerry: 'International passenger ferry'
+        nationalPassengerFerry: 'National passenger ferry'
+        regionalPassengerFerry: 'Regional passenger ferry'
+        localPassengerFerry: 'Local passenger ferry'
+        postBoat: 'Post boat'
+        trainFerry: 'Train ferry'
+        roadFerryLink: 'Road ferry link'
+        airportBoatLink: "Airport boat link"
+        highSpeedVehicleService: 'High speed vehicle service'
+        highSpeedPassengerService: 'High speed passenger service'
+        sightseeingService: 'Sightseeing service'
+        schoolBoat: 'School boat'
+        cableFerry: 'Cable ferry'
+        riverBus: 'River bus'
+        scheduledFerry: 'Scheduled ferry'
+        shuttleFerryService: 'Shuttle ferry service'
+        telecabin: 'Telecabin'
+        cableCar: 'Cable car'
+        lift: 'Lift'
+        chairLift: 'Chair lift'
+        dragLift: 'Drag lift'
+        telecabinLink: 'Telecabin link'
+        funicular: 'Funicular'
+        streetCableCar: 'Street cable car'
+        allFunicularServices: 'All funicular services'
+        undefinedFunicular: 'Undefined funicular'

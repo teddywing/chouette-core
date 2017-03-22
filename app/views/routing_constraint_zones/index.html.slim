@@ -1,0 +1,11 @@
+= title_tag Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr)
+
+- if policy(Chouette::RoutingConstraintZone).create? && @referential.organisation == current_organisation
+  = link_to t('routing_constraint_zones.actions.new'), new_referential_line_routing_constraint_zone_path
+
+- if @routing_constraint_zones.any?
+  = table_builder @routing_constraint_zones,
+    { :name => 'name' },
+    [:show, :edit, :delete],
+    [],
+    'table table-bordered'

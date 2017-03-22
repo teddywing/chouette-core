@@ -1,50 +1,25 @@
-= title_tag t('networks.show.title', network: @network.name)
+/ PageHeader
+= pageheader 'map-marker',
+             @network.name,
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@network.updated_at, format: :short)) do
 
-.network_show
-  = @map.to_html
+  / Below is secundary actions & optional contents (filters, ...)
+  .row
+    .col-lg-12.text-right.mb-sm
+      - if policy(Chouette::Network).create?
+        = link_to t('networks.actions.new'), new_line_referential_network_path(@line_referential), class: 'btn btn-primary'
+      - if policy(@network).update?
+        = link_to t('networks.actions.edit'), edit_line_referential_network_path(@line_referential, @network), class: 'btn btn-primary'
+      - if policy(@network).destroy?
+        = link_to line_referential_network_path(@line_referential, @network), method: :delete, data: { confirm: t('networks.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('networks.actions.destroy')
 
-  .summary
-    p
-      label = "#{Chouette::Network.human_attribute_name('registration_number')} : "
-      = @network.registration_number
-
-    p
-      label = "#{Chouette::Network.human_attribute_name('comment')} : "
-      = @network.comment
-
-    p
-      label = "#{Chouette::Network.human_attribute_name('version_date')} : "
-      - if @network.version_date.present?
-        = l @network.version_date
-
-    p
-      label = "#{Chouette::Network.human_attribute_name('description')} : "
-      = @network.description
-
-    p
-      label = "#{Chouette::Network.human_attribute_name('source_name')} : "
-      = @network.source_name
-
-    p
-      label = "#{Chouette::Network.human_attribute_name('source_type_name')} : "
-      - if @network.source_type_name.present?
-        = t("source_types.label.#{@network.source_type_name}")
-
-    p
-      label = "#{Chouette::Network.human_attribute_name('source_identifier')} : "
-      = @network.source_identifier
-
-- content_for :sidebar do
-  ul.actions
-    - if policy(Chouette::Network).create?
-      li
-        = link_to t('networks.actions.new'), new_line_referential_network_path(@line_referential), class: 'add'
-    - if policy(@network).update?
-      li
-        = link_to t('networks.actions.edit'), edit_line_referential_network_path(@line_referential, @network), class: 'edit'
-    - if policy(@network).destroy?
-      li
-        = link_to t('networks.actions.destroy'), line_referential_network_path(@line_referential, @network), method: :delete, data: { :confirm => t('networks.actions.destroy_confirm')}, class: 'remove'
-    br
-
-  = creation_tag(@network)
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { 'ID Codif' => @network.try(:objectid).try(:local_id) }

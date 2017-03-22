@@ -2,13 +2,13 @@ fr:
   users:
     actions:
       new: "Ajouter un utilisateur"
-      edit: "Modifier cet utilisateur"
+      edit: "Editer cet utilisateur"
       destroy: "Supprimer cet utilisateur"
       destroy_confirm: "Etes vous sûr de supprimer cet utilisateur ?"
     new:
       title: "Ajouter un utilisateur"
     edit:
-      title: "Modifier l'utilisateur %{user}"
+      title: "Editer l'utilisateur %{user}"
     show:
       title: "Utilisateur %{user}"
     index:
@@ -19,3 +19,12 @@ fr:
     attributes:
       user:
         name: "Nom complet"
+        username: "Nom d'utilisateur"
+        permissions: Permissions
+    errors:
+      models:
+        calendar:
+          attributes:
+            permissions:
+              must_be_unique: Une permission ne peut pas apparaître deux fois chez un même utilisateur.
+              must_be_nonempty: Une permission ne peut pas être une chaine vide.

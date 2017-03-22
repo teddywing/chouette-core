@@ -1,5 +1,6 @@
 en:
   stop_areas: &en_stop_areas
+    search_no_results: "No stop area matching your query"
     default_geometry_success: "%{count} modified stop areas"
     stop_area:
       no_position: "No Position"
@@ -29,6 +30,11 @@ en:
       export_hub_place: "Export HUB places"
       export_hub_commercial: "Export HUB commercial stop points"
       export_hub_physical: "Export HUB physical"
+    filters:
+      name_or_objectid: "Search by name or by objectid..."
+      zip_code: Type a zip code...
+      city_name: Type a city name...
+      area_type: Type an area type...
     new:
       title: "Add a new stop"
     form:
@@ -50,8 +56,9 @@ en:
       genealogical_routing: "Routing constraint's links"
     index:
       title: "Stop areas"
-      name: "Search by name"
+      name: "Search by name..."
       zip_code: "Zip Code"
+      city_name: "City name"
       selection: "Filter on"
       selection_all: "All"
       area_type: "Area Type"
@@ -84,6 +91,7 @@ en:
         deleted: "Deleted"
         comment: "Comments"
         stop_area_type: "Area type"
+        area_type: "Area type"
         nearest_topic_name: "Nearest point of interest"
         street_name: "Street name"
         country_code: "INSEE code"
@@ -102,7 +110,8 @@ en:
         url: "Web page"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by"
         children_ids: "Children"
         routing_stop_ids: "Attached stops"
@@ -111,6 +120,8 @@ en:
         coordinates: "Coordinates (lat,lng) WGS84"
         zip_code: "Zip code"
         city_name: "City"
+        created_at: Created at
+        updated_at: Updated at
   formtastic:
     titles:
       stop_area:

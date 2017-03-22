@@ -16,16 +16,26 @@ describe "Group of lines", :type => :feature do
     subject.lines << line
   end
 
-  describe "list" do
-    it "display group of lines" do
-      visit line_referential_group_of_lines_path(line_referential)
+  describe "index" do
+    before(:each) { visit line_referential_group_of_lines_path(line_referential) }
+
+    it "displays groups of lines" do
       expect(page).to have_content(group_of_lines.first.name)
       expect(page).to have_content(group_of_lines.last.name)
+    end
+
+    context 'filtering' do
+      it 'supports filtering by name' do
+        fill_in 'q[name_cont]', with: group_of_lines.first.name
+        click_button 'search-btn'
+        expect(page).to have_content(group_of_lines.first.name)
+        expect(page).not_to have_content(group_of_lines.last.name)
+      end
     end
   end
 
   describe "show" do
-    it "display group of line" do
+    it "displays group of line" do
       visit line_referential_group_of_lines_path(line_referential)
       click_link "#{subject.name}"
       expect(page).to have_content(subject.name)

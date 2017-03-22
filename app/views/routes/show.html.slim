@@ -1,90 +1,51 @@
-= title_tag t('routes.show.title', route: @route.name, line: @route.line.name )
+/ PageHeader
+= pageheader 'map-marker',
+             @route.name,
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@route.updated_at, format: :short)),
+             (policy(@route).edit? ? link_to(t('actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'btn btn-default') : '') do
 
-.route_show
-  = @map.to_html
+  / Below is secundary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], class: 'btn btn-primary'
+      - if @route.journey_patterns.present?
+        = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'btn btn-primary'
+        
+      = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'btn btn-primary'
 
-  .summary
-    p
-      label = "#{@route.human_attribute_name(:name)} : "
-      = @route.name
+      - if policy(@route).destroy?
+        = link_to referential_line_route_path(@referential, @line, @route), method: :delete, data: {confirm: t('routes.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('actions.destroy')
 
-    p
-      label = "#{@route.human_attribute_name(:published_name)} : "
-      = @route.published_name
+/ PägeContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { 'OiD' => @route.try(:objectid).try(:local_id),
+            'Direction' => (@route.published_name ? @route.published_name : '-'),
+            @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
+            @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }
 
-    p
-      label = "#{@route.human_attribute_name(:number)} : "
-      = @route.number
+    .row
+      .col-lg-12
+        - if @route_sp.any?
+          = table_builder @route_sp,
+            { 'ID Reflex' => Proc.new {|s| s.try(:stop_area).try(:user_objectid)},
+              :name => Proc.new {|s| s.try(:stop_area).try(:name)},
+              :deleted_at => Proc.new{|s| s.try(:stop_area).deleted_at ? t('false') : t('true')},
+              :zip_code => Proc.new {|s| s.try(:stop_area).try(:zip_code)},
+              :city_name => Proc.new {|s| s.try(:stop_area).try(:city_name)},
+              :area_type => Proc.new {|s| t("area_types.label.#{s.try(:stop_area).try(:area_type)}")},
+              :for_boarding => Proc.new {|s| t("stop_points.stop_point.for_boarding.#{s.for_boarding}")},
+              :for_alighting => Proc.new {|s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}")},
+              :position => 'position' },
+            [:show],
+            [],
+            'table'
 
-    p
-      label = "#{@route.human_attribute_name(:comment)} : "
-      = @route.comment
-
-    p
-      label = "#{@route.human_attribute_name(:direction_code)} : "
-      - if @route.direction_code
-        = t("directions.label.#{@route.direction_code}").capitalize
-      - else
-        = t(".undefined")
-
-    p
-      label = "#{@route.human_attribute_name(:wayback_code)} : "
-      - if @route.wayback_code
-        = t("waybacks.label.#{@route.wayback_code}").capitalize
-      - else
-        = t(".undefined")
-
-    p
-      label = "#{@route.human_attribute_name(:opposite_route)} : "
-      - if @route.opposite_route
-        = link_to @route.opposite_route.name, [@referential, @line, @route.opposite_route]
-      - else
-        = t(".no_opposite_route")
-
-p.after_map
-
-#accordion.panel-group
-  .panel.panel-default
-    .panel-heading
-      h4.panel-title
-        a data-toggle="collapse" data-parent="#accordion" href="#stop_points"
-          = t('.stop_points')
-
-    #stop_points.panel-collapse.collapse
-      .panel-body
-        .stop_points.paginated_content
-          = paginated_content(@route.stop_points, "stop_points/stop_point")
-
-#accordion.panel-group
-  .panel.panel-default
-    .panel-heading
-      h4.panel-title
-        a data-toggle="collapse" data-parent="#accordion" href="#journey_patterns"
-          = t('.journey_patterns')
-
-    #journey_patterns.panel-collapse.collapse
-      .panel-body
-        .journey_patterns.paginated_content
-          = paginated_content( @route.journey_patterns, "journey_patterns/journey_pattern")
-
-- content_for :sidebar do
-  ul.actions
-    li = link_to t('routes.actions.new'), new_referential_line_route_path(@referential, @line), class: 'add'
-    li = link_to t('routes.actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'edit'
-    li = link_to t('routes.actions.destroy'), referential_line_route_path(@referential, @line, @route), method: :delete, :data => {:confirm =>  t('routes.actions.destroy_confirm')}, class: 'remove'
-
-  ul.actions
-    - if @route.stop_points.size >= 2
-      li = link_to t('journey_patterns.actions.new'), new_referential_line_route_journey_pattern_path(@referential, @line, @route), class: 'add'
-    
-    - if @route.stop_points.present?
-      li = link_to t('routes.actions.edit_boarding_alighting'), edit_boarding_alighting_referential_line_route_path(@referential, @line, @route), class: 'edit'
-    
-    - if @route.journey_patterns.size > 0
-      li = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'clock'
-
-  ul.actions
-    li = link_to t('vehicle_journey_imports.new.title'), new_referential_line_route_vehicle_journey_import_path( @referential, @line, @route ), class: 'import'
-    li = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'export'
-
-  = creation_tag(@route)
+        - else
+          = replacement_msg t('stop_areas.search_no_results')

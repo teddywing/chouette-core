@@ -8,8 +8,9 @@ class TimeTablesController < ChouetteController
 
   belongs_to :referential
 
-  def show
+  include PolicyChecker
 
+  def show
     @year = params[:year] ? params[:year].to_i : Date.today.cwyear
     @time_table_combination = TimeTableCombination.new
     show! do
@@ -24,11 +25,36 @@ class TimeTablesController < ChouetteController
     end
   end
 
+  def create
+    tt_params = time_table_params
+    if tt_params[:calendar_id]
+      %i(monday tuesday wednesday thursday friday saturday sunday).map { |d| tt_params[d] = true }
+      calendar = current_organisation.calendars.find_by_id(tt_params[:calendar_id])
+      tt_params[:calendar_id] = nil if tt_params.has_key?(:dates_attributes) || tt_params.has_key?(:periods_attributes)
+    end
+    @time_table = Chouette::TimeTable.new(tt_params)
+    if calendar
+      calendar.dates.each_with_index do |date, i|
+        @time_table.dates << Chouette::TimeTableDate.new(date: date, position: i)
+      end
+      calendar.date_ranges.each_with_index do |date_range, i|
+        @time_table.periods << Chouette::TimeTablePeriod.new(period_start: date_range.begin, period_end: date_range.end, position: i)
+      end
+    end
+    create!
+  end
+
   def edit
     edit! do
       build_breadcrumb :edit
       @autocomplete_items = ActsAsTaggableOn::Tag.all
     end
+  end
+
+  def update
+    @time_table = Chouette::TimeTable.find_by_id(params[:id])
+    @time_table.calendar_id = nil
+    update!
   end
 
   def index
@@ -89,8 +115,8 @@ class TimeTablesController < ChouetteController
   end
 
   private
-  
+
   def time_table_params
-    params.require(:time_table).permit( :objectid, :object_version, :creation_time, :creator_id, :version, :comment, :int_day_types, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :start_date, :end_date, { :dates_attributes => [:date, :in_out, :id, :_destroy] }, { :periods_attributes => [:period_start, :period_end, :_destroy, :id] }, :tag_list, :tag_search )
+    params.require(:time_table).permit( :objectid, :object_version, :creator_id, :calendar_id, :version, :comment, :int_day_types, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :start_date, :end_date, { :dates_attributes => [:date, :in_out, :id, :_destroy] }, { :periods_attributes => [:period_start, :period_end, :_destroy, :id] }, :tag_list, :tag_search )
   end
 end

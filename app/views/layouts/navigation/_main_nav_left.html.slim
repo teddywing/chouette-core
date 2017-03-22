@@ -1,0 +1,95 @@
+- @localizationUrl = "#{params[:controller]}##{params[:action]}"
+
+.nav-menu#menu_left
+  .openMenu title='Ouvrir le menu'
+
+  .menu-content
+    .closeMenu title='Fermer le menu'
+    .brandname = "IBOO"
+
+    #menu-items.panel-group
+      .menu-item.panel
+        .panel-heading
+          h4.panel-title
+            = link_to '#miOne', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+              |Offres courantes
+
+        #miOne.panel-collapse.collapse
+          .list-group
+            = link_to root_path, class: "list-group-item #{(@localizationUrl == 'referentials#index') ? 'active' : ''}" do
+              span Tableau de bord
+            = link_to '#', class: 'list-group-item' do
+              span Offre de mon organisation
+            = link_to '#', class: 'list-group-item' do
+              span Offre IDF
+
+      .menu-item.panel
+        .panel-heading
+          h4.panel-title
+            = link_to '#miTwo', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+              |Espace de travail
+
+        #miTwo.panel-collapse.collapse
+          .list-group
+            = link_to '#', class: "list-group-item #{params[:controller] == 'workbenches' ? 'active' : ''}" do
+              span Jeux de données
+            = link_to '#', class: 'list-group-item' do
+              span Import
+            = link_to '#', class: 'list-group-item' do
+              span Modèle de calendrier
+            = link_to '#', class: 'list-group-item' do
+              span Rapport de contrôle
+            = link_to '#', class: 'list-group-item' do
+              span Jeux de contrôle
+
+      .menu-item.panel
+        .panel-heading
+          h4.panel-title
+            = link_to '#miThree', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+              |Données
+
+        #miThree.panel-collapse.collapse
+          .panel-body
+            em.text-muted
+              = "Sélectionnez un jeu de données pour accéder à plus de fonctionnalités"
+
+      .menu-item.panel
+        .panel-heading
+          h4.panel-title
+            = link_to '#miFour', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+              |Synchronisation
+
+        #miFour.panel-collapse.collapse
+          .list-group
+            = link_to line_referential_path(1), class: "list-group-item #{(@localizationUrl == 'line_referentials#show') ? 'active' : ''}" do
+              span Synchronisation iLICO
+            = link_to stop_area_referential_path(1), class: "list-group-item #{(@localizationUrl == 'stop_area_referentials#show') ? 'active' : ''}" do
+              span Synchronisation iCAR
+
+      .menu-item.panel
+        .panel-heading
+          h4.panel-title
+            = link_to '#miFive', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
+              |Outils
+              
+        #miFive.panel-collapse.collapse
+          .list-group
+            = link_to Rails.application.config.try(:portal_url), target: '_blank', class: 'list-group-item' do
+              span
+                span.fa.fa-2x.fa-circle
+                |Portail (POSTIF)
+
+            = link_to Rails.application.config.try(:codifligne_url), target: '_blank', class: 'list-group-item' do
+              span
+                span.fa.fa-2x.fa-circle
+                |iLICO
+
+            = link_to Rails.application.config.try(:reflex_url), target: '_blank', class: 'list-group-item' do
+              span
+                span.fa.fa-2x.fa-circle
+                |iCAR
+
+            = link_to '#', target: '_blank', class: 'list-group-item' do
+              span
+                span.fa.fa-2x.fa-circle
+                |Support

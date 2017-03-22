@@ -1,5 +1,6 @@
 en:
   companies: &en_companies
+    search_no_results: "No company matching your query"
     actions:
       new: "Add a new company"
       edit: "Edit this company"
@@ -13,7 +14,8 @@ en:
       title: "Company  %{company}"
     index:
       title: "Companies"
-      name: "Search by name"
+      name: "Search by name..."
+      name_or_objectid: "Search by name or by objectid..."
       advanced_search: "Advanced search"
   activerecord:
     models:
@@ -36,7 +38,8 @@ en:
         url: "Web page"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by "
   formtastic:
     titles:

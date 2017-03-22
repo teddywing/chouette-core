@@ -1,5 +1,5 @@
 class SearchStopAreaInput < Formtastic::Inputs::SearchInput
-  
+
   def search
     if options[:json]
       tokenLimit = options[:tokenLimit].present? ? options[:tokenLimit] : "null"
@@ -16,19 +16,19 @@ class SearchStopAreaInput < Formtastic::Inputs::SearchInput
 
            var item_localization = function( item){
               var localization = item.zip_code + ' ' + item.short_city_name;
-              return localization;         
+              return localization;
            };
 
-           var item_format = function( item ){                       
-              var name = item_name( item );  
+           var item_format = function( item ){
+              var name = item_name( item );
               var localization = item_localization( item );
-              
+
               html_result = '<li>';
               html_result += '<span><image src=\"' + item.stop_area_path + '\" height=\"25px\" width=\"25px\"></span>'
               if(name != '')
               {
-                html_result += '<span style=\"height:25px; line-height:25px; margin-left: 5px; \">' + name + '</span>' ;    
-              }              
+                html_result += '<span style=\"height:25px; line-height:25px; margin-left: 5px; \">' + name + '</span>' ;
+              }
               if(localization != '')
               {
                 html_result += '<small style=\"height:25px; line-height:25px; margin-left: 10px; color: #555; \">' + localization + '</small>';
@@ -48,7 +48,7 @@ class SearchStopAreaInput < Formtastic::Inputs::SearchInput
              noResultsText: '#{options[:no_result_text]}',
              searchingText: '#{options[:searching_text]}',
              resultsFormatter: item_format,
-             tokenFormatter: item_format,             
+             tokenFormatter: item_format,
            });
         });").html_safe)
     end
@@ -62,7 +62,7 @@ class SearchStopAreaInput < Formtastic::Inputs::SearchInput
     end
   end
 
-  def input_html_options    
+  def input_html_options
     css_class =  super[:class]
     super.merge({
                   :required          => nil,

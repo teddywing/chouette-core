@@ -1,8 +1,10 @@
 fr:
   lines: &fr_lines
+    search_no_results: "Aucune ligne ne correspond à votre recherche"
     actions:
       new: "Ajouter une ligne"
-      edit: "Modifier cette ligne"
+      edit: "Editer cette ligne"
+      edit_footnotes: "Editer notes en bas de page"
       destroy: "Supprimer cette ligne"
       destroy_confirm: "Etes vous sûr de supprimer cette ligne ?"
       destroy_selection_confirm: "Etes vous sûr de supprimer cette sélection de lignes ?"
@@ -11,10 +13,12 @@ fr:
       export_kml_all: "Export KML des lignes"
       export_hub: "Export HUB de la ligne"
       export_hub_all: "Export HUB des lignes"
+      show_network: 'Voir le réseau'
+      show_company: 'Voir le transporteur principal'
     new:
       title: "Ajouter une ligne"
     edit:
-      title: "Modifier la ligne %{line}"
+      title: "Editer la ligne %{line}"
     show:
       title: "Ligne %{line}"
       itineraries: "Liste des séquences d'arrêts de la ligne"
@@ -22,13 +26,17 @@ fr:
     index:
       deactivated: "Ligne désactivée"
       title: "Lignes"
-      name_or_number: "Recherche par nom ou indice"
+      name_or_number_or_objectid: "Recherche par nom, nom court ou ID Codif..."
       no_networks: "Aucun réseaux"
       no_companies: "Aucun transporteurs"
       no_group_of_lines: "Aucun groupes de ligne"
+      no_transport_modes: Aucun mode de transport
+      no_transport_submodes: Aucun sous mode de transport
       all_networks: "Tous les réseaux"
       all_companies: "Tous les transporteurs"
       all_group_of_lines: "Tous les groupes de ligne"
+      all_transport_modes: Tous les modes de transport
+      all_transport_submodes: Tous les sous modes de transport
       multi_selection: "Sélection multiple"
       multi_selection_enable: "Activer la sélection multiple"
       multi_selection_disable: "Désactiver la sélection multiple"
@@ -52,12 +60,18 @@ fr:
     attributes:
       line:
         network: "Réseau"
-        company: "Transporteur"
-        registration_number: "Numéro d'enregistrement"
-        name: "Nom"
+        networks:
+          name: "Réseau"
+        company: "Transporteur principal"
+        companies:
+          name: "Transporteur principal"
+        registration_number: "Nom court"
+        deactivated: "Activé"
+        name: "Nom de la ligne"
         published_name: "Nom public"
-        number: "Indice"
-        transport_mode: "Mode de transport"
+        number: "Nom court"
+        transport_mode: "Mode"
+        transport_submode: "Sous mode de transport"
         url: "Page web associée"
         color: "Couleur du tracé"
         text_color: "Couleur du texte"
@@ -81,7 +95,8 @@ fr:
         comment: "Commentaire"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
         footnotes: "Notes de bas de page"
         stable_id: "Identifiant externe pérenne"

@@ -1,0 +1,45 @@
+/ PageHeader
+= pageheader 'map-marker',
+             t('referentials.index.title'),
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@workbench.updated_at, format: :short)) do
+
+  / Below is secundary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
+
+/ PageContent
+.page_content
+  .container-fluid
+    - if params[:q].present? or @wbench_refs.any?
+      / .row.mb-sm
+        / .col-lg-12.text-right
+          / = new_pagination @wbench_refs
+
+      .row
+        .col-lg-12
+          = render 'filters'
+
+    - if @wbench_refs.any?
+      .row
+        .col-lg-12
+          = table_builder @wbench_refs,
+            { :name => 'name',
+              :status => Proc.new {|w| w.archived? ? ("<span class='fa fa-archive'></span> Conservé").html_safe : '-'},
+              :organisation => Proc.new {|w| w.organisation.name},
+              :validity_period => Proc.new {|w| w.validity_period.nil? ? '-' : t('validity_range', debut: l(w.try(:validity_period).try(:begin), format: :short), end: l(w.try(:validity_period).try(:end), format: :short))},
+              :lines => Proc.new {|w| w.lines.count},
+              :created_at => Proc.new {|w| l(w.created_at, format: :short)},
+              :updated_at => Proc.new {|w| l(w.updated_at, format: :short)},
+              :published_at => ''},
+            [:show, :edit, :archive, :unarchive, :delete],
+            [:delete],
+            'table has-filter has-search'
+
+          = new_pagination @wbench_refs, 'pull-right'
+
+    - unless @wbench_refs.any?
+      .row.mt-xs
+        .col-lg-12
+          = replacement_msg t('referentials.search_no_results')

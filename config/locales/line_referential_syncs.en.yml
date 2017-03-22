@@ -10,10 +10,9 @@ en:
     message:
       new: "New synchronisation added"
       pending: "Synchronisation en cours"
-      successful: "Synchronisation réussie après %{processing_time} secondes avec %{imported} éléments importés. %{deleted} éléments ont été supprimés."
-      failed: "Synchronisation interrompue après %{processing_time} secondes avec l'erreur : %{error}."
+      successful: "Synchronization successful after %{processing_time} with %{imported} objects created, %{updated} objects updated. %{deleted} objects were deleted.."
+      failed: "Synchronization failed after %{processing_time} with error: <em>%{error}</em>."
 
   notice:
     line_referential_sync:
       created: 'Your synchronisation request has been created'
-

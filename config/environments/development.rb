@@ -57,7 +57,7 @@ Rails.application.configure do
   config.accept_user_creation = false
 
   # Reflex api url
-  config.reflex_api_url = "https://195.46.215.128/ws/reflex/V1/service=getData"
+  config.reflex_api_url = "https://pprod.reflex.stif.info/ws/reflex/V1/service=getData"
   config.codifligne_api_url = "https://pprod.codifligne.stif.info/rest/v1/lc/getlist"
 
   # config.chouette_authentication_settings = {
@@ -72,6 +72,11 @@ Rails.application.configure do
     key: "Ohphie1Voo6the5hohpi",
     url: "http://stif-portail-dev.af83.priv"
   }
+
+  # Ext. apps links
+  config.reflex_url = "https://195.46.215.128"
+  config.codifligne_url = "https://pprod.codifligne.stif.info"
+  config.portal_url = "http://stif-boiv-staging.af83.priv"
 
   # file to data for demo
   config.demo_data = "tmp/demo.zip"

@@ -13,9 +13,18 @@ en:
       title: "User %{user}"
     index:
       title: "Users"
-  activerecord:        
-    models:        
+  activerecord:
+    models:
       user: "user"
     attributes:
       user:
-        name: "Full name" 
+        name: "Full name"
+        username: "Username"
+        permissions: Permissions
+    errors:
+      models:
+        calendar:
+          attributes:
+            permissions:
+              must_be_unique: User's permissions must be unique.
+              must_be_nonempty: A permission can't be empty.

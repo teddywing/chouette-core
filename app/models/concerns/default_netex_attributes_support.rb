@@ -32,7 +32,6 @@ module DefaultNetexAttributesSupport
     else
       self.object_version += 1
     end
-    self.creation_time = Time.now
     self.creator_id = 'chouette'
   end
 
@@ -68,14 +67,6 @@ module DefaultNetexAttributesSupport
 
   def default_values
     self.object_version ||= 1
-  end
-
-  def timestamp_attributes_for_update #:nodoc:
-    [:creation_time]
-  end
-
-  def timestamp_attributes_for_create #:nodoc:
-    [:creation_time]
   end
 
 end

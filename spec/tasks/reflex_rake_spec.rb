@@ -23,6 +23,11 @@ describe 'reflex:sync' do
       expect(access.stop_area.name).to eq 'First stopPlace children'
     end
 
+    it 'should store object_status on stif_type attribute' do
+      stop_area = Chouette::StopArea.find_by(name: 'Second StopPlace children')
+      expect(stop_area.stif_type).to eq 'REFERENCE_OBJECT'
+    end
+
     it 'should save hierarchy' do
       stop_area = Chouette::StopArea.find_by(name: 'First stopPlace children')
       expect(stop_area.parent.name).to eq 'First stopPlace'
@@ -31,7 +36,7 @@ describe 'reflex:sync' do
     it 'should map xml data to StopArea attribute' do
       stop_area = Chouette::StopArea.find_by(objectid: 'FR:77153:LDA:69325:STIF')
       expect(stop_area.zip_code).to eq '77153'
-      expect(stop_area.area_type).to eq 'StopPlace'
+      expect(stop_area.area_type).to eq 'lda'
     end
 
     context 'On next sync' do

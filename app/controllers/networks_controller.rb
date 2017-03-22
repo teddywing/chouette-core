@@ -1,6 +1,6 @@
 class NetworksController < BreadcrumbController
   include ApplicationHelper
-  before_action :check_policy, :only => [:edit, :update, :destroy]
+  include PolicyChecker
   defaults :resource_class => Chouette::Network
   respond_to :html
   respond_to :xml
@@ -40,7 +40,12 @@ class NetworksController < BreadcrumbController
 
   def collection
     @q = line_referential.networks.search(params[:q])
-    @networks ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
+
+    if sort_column && sort_direction
+      @networks ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])
+    else
+      @networks ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
+    end
   end
 
   def resource_url(network = nil)
@@ -53,11 +58,20 @@ class NetworksController < BreadcrumbController
 
   alias_method :line_referential, :parent
 
-  def check_policy
-    authorize resource
-  end
+  alias_method :current_referential, :line_referential
+  helper_method :current_referential
 
   def network_params
-    params.require(:network).permit(:objectid, :object_version, :creation_time, :creator_id, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )
+    params.require(:network).permit(:objectid, :object_version, :creator_id, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )
   end
+
+  private
+
+  def sort_column
+    line_referential.networks.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
 end

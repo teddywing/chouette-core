@@ -30,11 +30,14 @@ h3.journey_pattern_stop_points = t('.stop_points')
 - content_for :sidebar do
   ul.actions
     li
-      = link_to t('journey_patterns.actions.new'), new_referential_line_route_journey_pattern_path(@referential, @line, @route), class: 'add'
+      - if policy(@journey_pattern).create? && @journey_pattern.referential.organisation == current_organisation
+        = link_to t('journey_patterns.actions.new'), new_referential_line_route_journey_pattern_path(@referential, @line, @route), class: 'add'
     li
-      = link_to t('journey_patterns.actions.edit'), edit_referential_line_route_journey_pattern_path(@referential, @line, @route, @journey_pattern), class: 'edit'
+      - if policy(@journey_pattern).edit?
+        = link_to t('journey_patterns.actions.edit'), edit_referential_line_route_journey_pattern_path(@referential, @line, @route, @journey_pattern), class: 'edit'
     li
-      = link_to t('journey_patterns.actions.destroy'), referential_line_route_journey_pattern_path(@referential, @line, @route, @journey_pattern), :method => :delete, :data => {:confirm => t('journey_patterns.actions.destroy_confirm')}, class: 'remove'
+      - if policy(@journey_pattern).destroy?
+        = link_to t('journey_patterns.actions.destroy'), referential_line_route_journey_pattern_path(@referential, @line, @route, @journey_pattern), :method => :delete, :data => {:confirm => t('journey_patterns.actions.destroy_confirm')}, class: 'remove'
     li
       = link_to edit_referential_line_route_journey_pattern_route_sections_selector_path(@referential, @line, @route, @journey_pattern), class: "edit#{' control-shape' if @journey_pattern.control?}" do
         = t('journey_patterns.actions.edit_route_sections')
@@ -42,6 +45,6 @@ h3.journey_pattern_stop_points = t('.stop_points')
           i.fa.fa-exclamation-triangle
 
     li
-      = link_to t('journey_patterns.journey_pattern.vehicle_journey_at_stops'), referential_line_route_vehicle_journeys_path(@referential, @line, @route, :q => {:journey_pattern_id_eq => @journey_pattern.id}), class: 'clock'
-  
+      = link_to t('journey_patterns.journey_pattern.vehicle_journey_at_stops'), referential_line_route_vehicle_journeys_path(@referential, @line, @route, :q => {:journey_pattern_id_eq => @journey_pattern.id, :journey_pattern_object_id => @journey_pattern.objectid}), class: 'clock'
+
   = creation_tag(@journey_pattern)

@@ -1,7 +1,12 @@
 require 'sidekiq/web'
 
 ChouetteIhm::Application.routes.draw do
-  resources :workbenches, :only => [:show]
+  resources :workbenches, :only => [:show] do
+    delete :referentials, on: :member, action: :delete_referentials
+    resources :imports do
+      get :download, on: :member
+    end
+  end
 
   devise_for :users, :controllers => {
     :registrations => 'users/registrations', :invitations => 'users/invitations'
@@ -10,7 +15,6 @@ ChouetteIhm::Application.routes.draw do
   devise_scope :user do
     authenticated :user do
       root :to => 'referentials#index', as: :authenticated_root
-      mount Sidekiq::Web => '/sidekiq'
     end
 
     unauthenticated :user do
@@ -23,6 +27,8 @@ ChouetteIhm::Application.routes.draw do
       root :to => target, as: :unauthenticated_root
     end
   end
+
+  mount Sidekiq::Web => '/sidekiq'
 
   namespace :api do
     namespace :v1 do
@@ -66,10 +72,14 @@ ChouetteIhm::Application.routes.draw do
     resources :networks
   end
 
+  resources :calendars
+
   resources :referentials do
     resources :api_keys
-    resources :autocomplete_stop_areas
-    resources :autocomplete_time_tables
+    resources :autocomplete_stop_areas, only: [:show, :index] do
+      get 'around', on: :member
+    end
+    resources :autocomplete_time_tables, only: [:index]
     resources :autocomplete_route_sections
     resources :autocomplete_timebands
     resources :group_of_lines, controller: "referential_group_of_lines" do
@@ -88,6 +98,7 @@ ChouetteIhm::Application.routes.draw do
 
     match 'lines' => 'lines#destroy_all', :via => :delete
     resources :lines, controller: "referential_lines" do
+      resource :footnotes, controller: "line_footnotes"
       delete :index, on: :collection, action: :delete_all
       collection do
         get 'name_filter'
@@ -97,14 +108,14 @@ ChouetteIhm::Application.routes.draw do
           get 'edit_boarding_alighting'
           put 'save_boarding_alighting'
         end
+        resource :journey_patterns_collection, :only => [:show, :update]
         resources :journey_patterns do
-          member do
-            get 'new_vehicle_journey'
-          end
+          get 'new_vehicle_journey', on: :member
           resource :route_sections_selector, path: 'sections' do
             post 'selection'
           end
         end
+        resource :vehicle_journeys_collection, :only => [:show, :update]
         resources :vehicle_journeys, :vehicle_journey_frequencies do
           get 'select_journey_pattern', :on => :member
           resources :vehicle_translations
@@ -113,18 +124,10 @@ ChouetteIhm::Application.routes.draw do
         resources :vehicle_journey_imports
         resources :vehicle_journey_exports
       end
+      resources :routing_constraint_zones
     end
 
     resources :import_tasks, :only => [:new, :create]
-    resources :imports, :only => [:index, :show, :destroy] do
-      member do
-        get "imported_file"
-        get "rule_parameter_set"
-        get "compliance_check"
-        get 'export', defaults: { format: 'zip' }
-      end
-    end
-
     resources :export_tasks, :only => [:new, :create] do
       collection do
         get 'references'

@@ -9,6 +9,8 @@ class AccessLinksController < ChouetteController
   respond_to :html, :xml, :json
   respond_to :kml, :only => :show
 
+  include PolicyChecker
+
   def index
     request.format.kml? ? @per_page = nil : @per_page = 12
     index!
@@ -86,11 +88,10 @@ class AccessLinksController < ChouetteController
       end
   end
 
-
   private
 
   def access_link_params
-    params.require(:access_link).permit(:access_link_type,:access_point_id, :stop_area_id, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :link_distance, :link_type, :default_duration, :frequent_traveller_duration, :occasional_traveller_duration, :mobility_restricted_traveller_duration, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :link_orientation, :link_orientation_type, :stop_area )
+    params.require(:access_link).permit(:access_link_type,:access_point_id, :stop_area_id, :objectid, :object_version, :creator_id, :name, :comment, :link_distance, :link_type, :default_duration, :frequent_traveller_duration, :occasional_traveller_duration, :mobility_restricted_traveller_duration, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :link_orientation, :link_orientation_type, :stop_area )
   end
 
 end

@@ -2,14 +2,14 @@ fr:
   connection_links:
     actions:
       new: "Ajouter une correspondance"
-      edit: "Modifier cette correspondance"
+      edit: "Editer cette correspondance"
       destroy: "Supprimer cette correspondance"
       destroy_confirm: "Etes vous sûr de supprimer cette correspondance ?"
-      select_areas: "Modifier les départs/arrivées"
+      select_areas: "Editer les départs/arrivées"
     new:
       title: "Ajouter une correspondance"
     edit:
-      title: "Modifier la correspondance %{connection_link}"
+      title: "Editer la correspondance %{connection_link}"
     show:
       title: "Correspondance %{connection_link}"
       durations: "Durées (hh mm ss) :"
@@ -56,7 +56,8 @@ fr:
         lift_availability: "Ascenseur"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
   formtastic:
     titles:

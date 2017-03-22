@@ -7,7 +7,7 @@ fr:
       show: "Consulter"
       index: "Liste des arrêts de la séquence"
       new: "Ajouter un arrêt à la séquence"
-      edit: "Modifier cet arrêt de la séquence"
+      edit: "Editer cet arrêt de la séquence"
       destroy: "Supprimer cet arrêt de la séquence"
       destroy_confirm: "Etes vous sûr de retirer cet arrêt de la séquence ?"
     new:
@@ -24,6 +24,12 @@ fr:
       no_object: "Aucun(e)"
       lines: "Lignes"
       address: "Adresse"
+      for_boarding:
+        normal: Montée autorisée
+        forbidden: Montée interdite
+      for_alighting:
+        normal: Descente autorisée
+        forbidden: Descente interdite
   activerecord:
     models:
       stop_point:
@@ -32,7 +38,17 @@ fr:
         other: "arrêts sur séquence d'arrêts"
     attributes:
       stop_point:
+        name: "Nom"
         lines: "Lignes"
+        created_at: "Créé le"
+        updated_at: "Edité le"
+        deleted_at: 'Activé'
+        for_boarding: "Montée"
+        for_alighting: "Descente"
+        area_type: "Type d'arrêt"
+        city_name: "Commune"
+        zip_code: "Code postal"
+        position: "Position"
   simple_form:
     labels:
       stop_point:

@@ -1,0 +1,19 @@
+/ pageheader
+= pageheader 'map-marker',
+             "Missions de #{@route.try(:stop_points).first.try(:stop_area).name} vers #{@route.try(:stop_points).last.try(:stop_area).name}",
+             'Lorem ipsum dolor sit amet',
+             (@journey_patterns.any? ? t('last_update', time: l(@journey_patterns.last.updated_at, format: :short)) : '')
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-12
+        #journey_patterns
+
+
+= javascript_tag do
+  | window.stopPoints = #{(@stop_points_list.to_json).html_safe};
+  | window.journeyPatternLength = #{@journey_patterns.total_entries()};
+  | window.journeyPatternsPerPage = #{@ppage}
+= javascript_include_tag 'es6_browserified/journey_patterns/index.js'

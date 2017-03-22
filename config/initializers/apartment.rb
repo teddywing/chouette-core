@@ -19,9 +19,9 @@ Apartment.configure do |config|
   #
   config.excluded_models = [
     "Referential",
+    "ReferentialMetadata",
     "Organisation",
     "User",
-    "Delayed::Backend::ActiveRecord::Job",
     "Api::V1::ApiKey",
     "RuleParameterSet",
     "StopAreaReferential",
@@ -34,7 +34,12 @@ Apartment.configure do |config|
     "Chouette::Line",
     "Chouette::GroupOfLine",
     "Chouette::Company",
-    "Chouette::Network"
+    "Chouette::Network",
+    "ReferentialCloning",
+    "Workbench",
+    "CleanUp",
+    "CleanUpResult",
+    "Calendar"
   ]
 
   # use postgres schemas?

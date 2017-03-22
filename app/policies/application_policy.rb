@@ -38,6 +38,10 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
+  def organisation_match?(via_referential: false)
+    eval("user.organisation == record#{'.referential' if via_referential}.organisation")
+  end
+
   class Scope
     attr_reader :user, :scope
 

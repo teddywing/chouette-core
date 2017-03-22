@@ -1,0 +1,23 @@
+fr:
+  activerecord:
+    models:
+      routing_constraint_zone: Zone de contrainte
+    attributes:
+      routing_constraint_zone:
+        name: Nom
+        stop_areas: Arrêts
+        line: Ligne
+        created_at: "Créé le"
+        updated_at: "Edité le"
+  routing_constraint_zones:
+    actions:
+      new: Ajouter une zone de contrainte
+      edit: Editer cette zone de contrainte
+      destroy: Supprimer cette zone de contrainte
+      destroy_confirm: Etes vous sûr de supprimer cette zone de contrainte ?
+    new:
+      title: Ajouter une zone de contrainte
+    edit:
+      title: "Editer la zone de contrainte %{routing_constraint_zone}"
+    show:
+      title: "Zone de contrainte %{routing_constraint_zone}"

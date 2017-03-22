@@ -15,6 +15,8 @@ class JourneyPatternsController < ChouetteController
   alias_method :route, :parent
   alias_method :journey_pattern, :resource
 
+  include PolicyChecker
+
   def index
     index! do |format|
       format.html { redirect_to referential_line_route_path(@referential,@line,@route) }
@@ -51,11 +53,10 @@ class JourneyPatternsController < ChouetteController
     @journey_patterns ||= @q.result(:distinct => true).order(:name)
   end
 
-
   private
 
   def journey_pattern_params
-    params.require(:journey_pattern).permit(:route_id, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :registration_number, :published_name, :departure_stop_point_id, :arrival_stop_point_id, {:stop_point_ids => []})
+    params.require(:journey_pattern).permit(:route_id, :objectid, :object_version, :creator_id, :name, :comment, :registration_number, :published_name, :departure_stop_point_id, :arrival_stop_point_id, {:stop_point_ids => []})
   end
 
 end

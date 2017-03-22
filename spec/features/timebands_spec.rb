@@ -44,9 +44,9 @@ describe "Timebands", :type => :feature do
   describe "edit and return to show" do
     it "edit timeband" do
       visit referential_timeband_path(referential, subject)
-      click_link "Modifier ce créneau horaire"
+      click_link "Editer ce créneau horaire"
       fill_in "Titre", :with => "Timeband Modified"
-      click_button("Modifier créneau horaire")
+      click_button("Editer créneau horaire")
       expect(page).to have_content("Timeband Modified")
     end
   end

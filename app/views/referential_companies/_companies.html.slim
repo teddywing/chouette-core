@@ -1,9 +1,0 @@
-.page_info
-  span.search = t('will_paginate.page_entries_info.search')
-  = page_entries_info(@companies)
-
-.companies.paginated_content
-  = paginated_content(@companies)
-
-.pagination
-  = will_paginate @companies, :container => false, renderer: RemoteBootstrapPaginationLinkRenderer

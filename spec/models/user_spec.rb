@@ -12,7 +12,9 @@ describe User, :type => :model do
           :username          => 'john.doe',
           :email             => 'john.doe@af83.com',
           :organisation_code => '0083',
-          :organisation_name => 'af83'
+          :organisation_name => 'af83',
+          :functional_scope  => "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]",
+          :permissions       => nil
         }
         ticket.user    = "john.doe"
         ticket.success = true
@@ -30,6 +32,19 @@ describe User, :type => :model do
       it 'should create a new organisation if organisation is not present' do
         expect{User.authenticate_with_cas_ticket(ticket)}.to change{ Organisation.count }
         expect(Organisation.find_by(code: ticket.extra_attributes[:organisation_code])).to be_truthy
+      end
+
+      it 'should store organisation functional_scope' do
+        User.authenticate_with_cas_ticket(ticket)
+        org = Organisation.find_by(code: ticket.extra_attributes[:organisation_code])
+        expect(org.sso_attributes['functional_scope']).to eq "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]"
+      end
+
+      it 'should update organisation functional_scope' do
+        create :organisation, code: ticket.extra_attributes[:organisation_code], sso_attributes: {functional_scope: "[\"STIF:CODIFLIGNE:Line:C00840\"]"}
+        User.authenticate_with_cas_ticket(ticket)
+        org = Organisation.find_by(code: ticket.extra_attributes[:organisation_code])
+        expect(org.sso_attributes['functional_scope']).to eq "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]"
       end
 
       it 'should not create a new organisation if organisation is already present' do
@@ -66,7 +81,7 @@ describe User, :type => :model do
 
     it 'should create new users' do
       User.portail_sync
-      expect(User.count).to eq(11)
+      expect(User.count).to eq(12)
       expect(Organisation.count).to eq(3)
     end
 
@@ -97,7 +112,31 @@ describe User, :type => :model do
     it 'should not create new user if username is already present' do
       create :user, username: 'alban.peignier'
       User.portail_sync
-      expect(User.count).to eq(11)
+      expect(User.count).to eq(12)
+    end
+
+    context 'permissions' do
+      it 'should give edit permissions to user if user has "edit offer" permission in portail' do
+        User.portail_sync
+        expect(User.find_by(username: 'vlatka.pavisic').permissions).not_to be_empty
+        expect(User.find_by(username: 'pierre.vabre').permissions).to be_nil
+      end
+    end
+  end
+
+  describe 'validations' do
+    it 'validates uniqueness of pemissions' do
+      user = build :user, permissions: Array.new(2, 'calendars.shared')
+      expect {
+        user.save!
+      }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it 'validates no pemission is an empty string' do
+      user = build :user, permissions: ['']
+      expect {
+        user.save!
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 

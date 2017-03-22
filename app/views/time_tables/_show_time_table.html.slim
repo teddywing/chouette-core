@@ -24,6 +24,13 @@
 
   #my-tab-content.tab-content
     #time_tables.tab-pane.active
+      #associated_calendar
+        => "#{t('calendars.standard_calendar')} : "
+        - if @time_table.calendar
+          = link_to @time_table.calendar.name, @time_table.calendar
+        - else
+          = '--'
+
       .well.legend
         span.title = t(".legend")
         span.label.excluded_date X

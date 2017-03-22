@@ -6,16 +6,24 @@ GIT
       chronic (>= 0.6.3)
 
 GIT
+  remote: git@github.com:AF83/has_array_of.git
+  revision: a6439d93291c7a1ca224ea95a8d39ed101e2f05f
+  specs:
+    has_array_of (0.0.1)
+      activerecord (>= 4.0)
+      pg
+      railties (>= 4.0)
+
+GIT
   remote: git@github.com:AF83/stif-codifline-api.git
-  revision: aee8bb5320bf03369fe15fd2f000b55e12c8b915
+  revision: 9afe38cce298165765d98936f6d63f8d3cc33bce
   specs:
     codifligne (0.0.2)
       nokogiri (~> 1.6)
 
 GIT
   remote: git@github.com:AF83/stif-reflex-api.git
-  revision: 2c01010dce3a6cb39339995c373faf89ae00f3f3
-  branch: sax_refactoring
+  revision: 7c517b98c3900c9bb0b81dd0ccab97f8e8f5f249
   specs:
     reflex (0.0.1)
       nokogiri (~> 1.6)
@@ -24,8 +32,7 @@ GEM
   remote: http://rubygems.org/
   remote: http://rails-assets.org/
   specs:
-    RedCloth (4.2.9)
-    RedCloth (4.2.9-java)
+    RedCloth (4.3.2)
     SyslogLogger (2.0)
     aasm (4.5.2)
     actionmailer (4.1.10)
@@ -41,6 +48,9 @@ GEM
       activesupport (= 4.1.10)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    active_attr (0.9.0)
+      activemodel (>= 3.0.2, < 5.1)
+      activesupport (>= 3.0.2, < 5.1)
     activemodel (4.1.10)
       activesupport (= 4.1.10)
       builder (~> 3.1)
@@ -72,8 +82,8 @@ GEM
     astrolabe (1.3.0)
       parser (>= 2.2.0.pre.3, < 3.0)
     awesome_print (1.6.1)
-    bcrypt (3.1.10)
-    bcrypt (3.1.10-java)
+    bcrypt (3.1.11)
+    bcrypt (3.1.11-java)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -81,7 +91,12 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     breadcrumbs_on_rails (2.3.0)
+    browserify-rails (1.1.0)
+      railties (>= 4.0.0, < 5.0)
     builder (3.2.2)
+    bundler-audit (0.5.0)
+      bundler (~> 1.2)
+      thor (~> 0.18)
     calendar_helper (0.2.5)
       open4
     capistrano (2.13.5)
@@ -92,12 +107,18 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
+    capistrano-npm (0.0.2)
+      capistrano (>= 2.5.5)
     capybara (2.4.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    carrierwave (1.0.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     choice (0.1.7)
@@ -140,12 +161,7 @@ GEM
     debug_inspector (0.0.2)
     deep_cloneable (2.0.2)
       activerecord (>= 3.1.0, < 5.0.0)
-    delayed_job (4.0.6)
-      activesupport (>= 3.0, < 5.0)
-    delayed_job_active_record (4.0.3)
-      activerecord (>= 3.0, < 5.0)
-      delayed_job (>= 3.0, < 4.1)
-    devise (3.4.1)
+    devise (3.5.10)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -196,8 +212,8 @@ GEM
     ffi (1.9.10-java)
     ffi-geos (1.1.0)
       ffi (>= 1.0.0)
-    font-awesome-sass (4.2.2)
-      sass (~> 3.2)
+    font-awesome-sass (4.7.0)
+      sass (>= 3.2)
     foreigner (1.7.4)
       activerecord (>= 3.0.0)
     formatador (0.2.5)
@@ -238,7 +254,11 @@ GEM
     hike (1.2.3)
     hitimes (1.2.2)
     hitimes (1.2.2-java)
+    httparty (0.14.0)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    i18n-active_record (0.1.2)
+      i18n (>= 0.5.0)
     i18n-tasks (0.8.6)
       activesupport
       easy_translate (>= 0.5.0)
@@ -270,6 +290,12 @@ GEM
     letter_opener (1.4.1)
       launchy (~> 2.2)
     libv8 (3.16.14.11)
+    license_finder (2.1.2)
+      bundler
+      httparty
+      rubyzip
+      thor
+      xml-simple
     listen (2.8.6)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -282,9 +308,10 @@ GEM
     mime-types (2.4.3)
     mimemagic (0.3.0)
     mini_portile2 (2.1.0)
-    minitest (5.8.3)
+    minitest (5.9.1)
     multi_json (1.11.2)
     multi_test (0.1.2)
+    multi_xml (0.5.5)
     multipart-post (2.0.0)
     nenv (0.2.0)
     net-scp (1.2.1)
@@ -295,9 +322,9 @@ GEM
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     newrelic_rpm (3.11.2.286)
-    nokogiri (1.6.8.1)
+    nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
-    nokogiri (1.6.8.1-java)
+    nokogiri (1.7.0.1-java)
     notiffany (0.0.6)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -305,7 +332,8 @@ GEM
     orm_adapter (0.5.0)
     parser (2.2.0.3)
       ast (>= 1.1, < 3.0)
-    pg (0.18.1)
+    pg (0.19.0)
+    phantomjs (2.1.1.0)
     poltergeist (1.6.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -331,7 +359,7 @@ GEM
       railties (>= 3.1, < 5.0)
     rabl (0.11.6)
       activesupport (>= 2.3.14)
-    rack (1.5.3)
+    rack (1.5.5)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -346,37 +374,17 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.1.10)
       sprockets-rails (~> 2.0)
-    rails-assets-bootstrap (3.1.1)
-      rails-assets-jquery (>= 1.9.0)
     rails-assets-bootstrap-sass-official (3.3.4)
       rails-assets-jquery (>= 1.9.0)
-    rails-assets-eonasdan-bootstrap-datetimepicker (3.1.3)
-      rails-assets-bootstrap (>= 3.0)
-      rails-assets-jquery (>= 1.8.3)
-      rails-assets-moment (>= 2.8.0)
     rails-assets-footable (2.0.3)
       rails-assets-jquery (>= 1.4.4)
     rails-assets-jquery (2.1.4)
     rails-assets-jquery-tokeninput (1.7.0)
       rails-assets-jquery (>= 1.5)
-    rails-assets-jquery-ui (1.11.4)
-      rails-assets-jquery (>= 1.6)
-    rails-assets-mocha (1.17.1)
     rails-assets-modernizr (2.0.6)
-    rails-assets-moment (2.10.3)
-    rails-assets-morrisjs (0.5.1)
-      rails-assets-jquery (>= 2.1.0)
-      rails-assets-mocha (~> 1.17.1)
-      rails-assets-raphael (>= 2.0)
-    rails-assets-raphael (2.1.4)
     rails-assets-respond (1.4.2)
     rails-assets-tagmanager (3.0.1)
       rails-assets-jquery (>= 1.0.0)
-    rails-assets-typeahead.js (0.10.5)
-      rails-assets-jquery (>= 1.7)
-    rails-assets-typeahead.js-bootstrap3.less (0.2.3)
-      rails-assets-bootstrap (~> 3.1.0)
-      rails-assets-typeahead.js (~> 0.10.0)
     rails-erd (1.3.1)
       activerecord (>= 3.2)
       activesupport (>= 3.2)
@@ -385,13 +393,15 @@ GEM
     rails-i18n (4.0.4)
       i18n (~> 0.6)
       railties (~> 4.0)
+    rails-observers (0.1.2)
+      activemodel (~> 4.0)
     railties (4.1.10)
       actionpack (= 4.1.10)
       activesupport (= 4.1.10)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
-    rake (10.4.2)
+    rake (11.3.0)
     ransack (1.6.3)
       actionpack (>= 3.0)
       activerecord (>= 3.0)
@@ -454,6 +464,8 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    select2-rails (4.0.3)
+      thor (~> 0.14)
     shellany (0.0.1)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
@@ -502,6 +514,10 @@ GEM
       activerecord (>= 3.0)
       activesupport (>= 3.0)
       polyamorous (~> 1.1.0)
+    teaspoon (1.1.5)
+      railties (>= 3.2.5, < 6)
+    teaspoon-jasmine (2.3.4)
+      teaspoon (>= 1.0.0)
     temple (0.7.7)
     term-ansicolor (1.3.2)
       tins (~> 1.0)
@@ -509,7 +525,7 @@ GEM
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
-    thor (0.19.1)
+    thor (0.19.4)
     thread (0.2.2)
     thread_safe (0.3.5)
     thread_safe (0.3.5-java)
@@ -531,7 +547,7 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    warden (1.2.3)
+    warden (1.2.6)
       rack (>= 1.0)
     webmock (2.1.0)
       addressable (>= 2.3.6)
@@ -542,9 +558,10 @@ GEM
     websocket-driver (0.5.3-java)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    will_paginate (3.0.7)
+    will_paginate (3.1.5)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
+    xml-simple (1.1.5)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -553,9 +570,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  RedCloth
+  RedCloth (~> 4.3.0)
   SyslogLogger
   aasm
+  active_attr
   activerecord-postgis-adapter
   acts-as-taggable-on (>= 3)
   acts_as_list (~> 0.6.0)
@@ -565,10 +583,14 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   breadcrumbs_on_rails
+  browserify-rails
+  bundler-audit
   calendar_helper (= 0.2.5)
   capistrano (= 2.13.5)
   capistrano-ext
+  capistrano-npm
   capybara (~> 2.4.0)
+  carrierwave (~> 1.0)
   cocoon
   codifligne!
   coffee-rails (~> 4.0.0)
@@ -576,8 +598,7 @@ DEPENDENCIES
   daemons
   database_cleaner
   deep_cloneable (~> 2.0.0)
-  delayed_job_active_record
-  devise (~> 3.4.0)
+  devise (~> 3.5.4)
   devise-async
   devise-encryptable
   devise-i18n
@@ -591,7 +612,7 @@ DEPENDENCIES
   faraday (~> 0.9.1)
   faraday_middleware (~> 0.9.1)
   ffaker (~> 2.1.0)
-  font-awesome-sass (~> 4.2.0)
+  font-awesome-sass (~> 4.7)
   foreigner (~> 1.7.4)
   formtastic (= 2.3.1)
   georuby (= 2.3.0)
@@ -599,6 +620,8 @@ DEPENDENCIES
   google-analytics-rails
   guard
   guard-rspec
+  has_array_of!
+  i18n-active_record
   i18n-tasks
   inherited_resources
   jbuilder (~> 2.0)
@@ -607,10 +630,12 @@ DEPENDENCIES
   language_engine (= 0.0.6)
   launchy
   letter_opener
+  license_finder
   map_layers (= 0.0.4)
   mimemagic
   newrelic_rpm
   pg
+  phantomjs
   poltergeist
   polylines
   pry-rails
@@ -619,19 +644,14 @@ DEPENDENCIES
   rabl
   rails (~> 4.1.10)
   rails-assets-bootstrap-sass-official (~> 3.3.0)!
-  rails-assets-eonasdan-bootstrap-datetimepicker (~> 3.1.3)!
   rails-assets-footable (~> 2.0.3)!
   rails-assets-jquery-tokeninput (~> 1.7.0)!
-  rails-assets-jquery-ui (~> 1.11.4)!
   rails-assets-modernizr (~> 2.0.6)!
-  rails-assets-morrisjs (~> 0.5.1)!
-  rails-assets-raphael (~> 2.1.3)!
   rails-assets-respond!
   rails-assets-tagmanager (~> 3.0.1.0)!
-  rails-assets-typeahead.js (~> 0.10.5)!
-  rails-assets-typeahead.js-bootstrap3.less!
   rails-erd
   rails-i18n (~> 4.0.0)
+  rails-observers
   rake
   ransack
   rb-fsevent
@@ -644,6 +664,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   sawyer (~> 0.6.0)
   sdoc (~> 0.4.0)
+  select2-rails (~> 4.0, >= 4.0.3)
   shoulda-matchers
   sidekiq
   simple_form (~> 3.1.0)
@@ -654,14 +675,15 @@ DEPENDENCIES
   spring
   sqlite3
   squeel
+  teaspoon-jasmine
   therubyracer (~> 0.12)
   transpec
   turbolinks
   uglifier (~> 2.7.2)
   webmock
   whenever!
-  will_paginate (~> 3.0.7)
-  will_paginate-bootstrap (~> 1.0.1)
+  will_paginate
+  will_paginate-bootstrap
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

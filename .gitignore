@@ -28,3 +28,11 @@ coverage
 
 # IDE
 .idea
+
+bin/
+
+# Ignore uploaded files
+/public/uploads
+
+# Ignore node modules
+/node_modules

@@ -48,6 +48,6 @@ fr:
   edit_periods: "Editer Périodes"
   delete_periods: "Supprimer Périodes"
   attributes:
-    author: "Modifié par"
+    author: "Edité par"
     created_at: "Créé le"
-    updated_at: "Modifié le"
+    updated_at: "Edité le"

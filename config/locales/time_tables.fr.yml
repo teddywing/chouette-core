@@ -9,7 +9,7 @@ fr:
       periods_dates_count: "dates: %{dates_count}, périodes: %{periods_count}"
     actions:
       new: "Ajouter un calendrier"
-      edit: "Modifier ce calendrier"
+      edit: "Editer ce calendrier"
       destroy: "Supprimer ce calendrier"
       duplicate: "Dupliquer ce calendrier"
       combine: "Combiner ce calendrier"
@@ -22,7 +22,7 @@ fr:
     new:
       title: "Ajouter un calendrier"
     edit:
-      title: "Modifier le calendrier %{time_table}"
+      title: "Editer le calendrier %{time_table}"
     show:
       title: Calendrier %{time_table}
       dates: "Dates d'application"
@@ -42,7 +42,7 @@ fr:
       selected_date: "Date incluse directement"
       selected_period: "Date incluse par période"
     properties_show:
-      resume: "Validité comprise du %{start_date} au %{end_date}" 
+      resume: "Validité comprise du %{start_date} au %{end_date}"
       resume_empty: "Calendrier vide"
     index:
       comment: "Recherche par nom"
@@ -51,7 +51,7 @@ fr:
       to: " à : "
       start_date: "jj/mm/aaaa"
       end_date: "jj/mm/aaaa"
-      title: "calendriers"
+      title: "Calendriers"
       selection: "Sélection"
       selection_all: "Tous"
       advanced_search: "Recherche avancée"
@@ -76,10 +76,12 @@ fr:
         sunday: "Dimanche"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
         calendars: "Calendrier"
         calendar_details: "Données du calendrier"
+        calendar: Calendrier
         dates: "Dates particulières"
         date: "Le"
         excluded_dates: "Dates exclues"

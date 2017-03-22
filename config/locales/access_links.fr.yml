@@ -2,15 +2,15 @@ fr:
   access_links:
     actions:
       new: "Ajouter un lien"
-      edit: "Modifier ce lien"
+      edit: "Editer ce lien"
       destroy: "Supprimer ce lien"
       destroy_confirm: "Etes vous sûr de supprimer ce lien ?"
     new:
       title_access_point_to_stop_area: "Créer un lien depuis l'accès %{access_point} vers l'arrêt %{stop_area}"
       title_stop_area_to_access_point: "Créer un lien depuis l'arrêt %{stop_area} vers l'accès %{access_point}"
     edit:
-      title_access_point_to_stop_area: "Modifier un lien depuis l'accès %{access_point} vers l'arrêt %{stop_area}"
-      title_stop_area_to_access_point: "Modifier un lien depuis l'arrêt %{stop_area} vers l'accès %{access_point}"
+      title_access_point_to_stop_area: "Editer un lien depuis l'accès %{access_point} vers l'arrêt %{stop_area}"
+      title_stop_area_to_access_point: "Editer un lien depuis l'arrêt %{stop_area} vers l'accès %{access_point}"
     show:
       title: "lien d'accès %{access_link}"
       durations: "Durées (hh mm ss) :"
@@ -37,7 +37,8 @@ fr:
         lift_availability: "Ascenseur"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
   formtastic:
     titles:

@@ -1,5 +1,6 @@
 en:
   networks: &en_networks
+    search_no_results: "No network matching your query"
     actions:
       new: "Add a new network"
       edit: "Edit this network"
@@ -13,7 +14,8 @@ en:
       title: "Network"
     index:
       title: "Networks"
-      name: "Search by name"
+      name: "Search by name..."
+      name_or_objectid: "Search by name or by objectid..."
       advanced_search: "Advanced search"
   activerecord:
     models:
@@ -33,7 +35,8 @@ en:
         source_identifier: "Source identifier"
         objectid: "Neptune identifier"
         object_version: "Version"
-        creation_time: "Created on"
+        created_at: Created at
+        updated_at: Updated at
         creator_id: "Created by "
   formtastic:
     titles:
@@ -61,5 +64,11 @@ en:
           name: "maximum 75 characters"
           registration_number: "Positif integer, unique key, of no more than 8 digits."
           objectid: "[prefix]:PTNetwork:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character. Maximum length of the unique key = 3."
+
+  table:
+    show: Show
+    edit: Edit
+    delete: Delete
+
   referential_networks:
     <<: *en_networks

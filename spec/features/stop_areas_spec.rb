@@ -8,26 +8,43 @@ describe "StopAreas", :type => :feature do
   let!(:stop_areas) { Array.new(2) { create :stop_area, stop_area_referential: stop_area_referential } }
   subject { stop_areas.first }
 
-  describe "list" do
-    it "display stop_areas" do
-      visit stop_area_referential_stop_areas_path(stop_area_referential)
+  describe "index" do
+    before(:each) { visit stop_area_referential_stop_areas_path(stop_area_referential) }
+
+    it "displays stop_areas" do
       expect(page).to have_content(stop_areas.first.name)
       expect(page).to have_content(stop_areas.last.name)
+    end
+
+    context 'filtering' do
+      it 'supports filtering by name' do
+        fill_in 'q[name_or_objectid_cont]', with: stop_areas.first.name
+        click_button 'search-btn'
+        expect(page).to have_content(stop_areas.first.name)
+        expect(page).not_to have_content(stop_areas.last.name)
+      end
+
+      it 'supports filtering by objectid' do
+        fill_in 'q[name_or_objectid_cont]', with: stop_areas.first.objectid
+        click_button 'search-btn'
+        expect(page).to have_content(stop_areas.first.name)
+        expect(page).not_to have_content(stop_areas.last.name)
+      end
     end
   end
 
   describe "show" do
-    it "display stop_area" do
-      visit stop_area_referential_stop_areas_path(stop_area_referential)
-      click_link "#{stop_areas.first.name}"
+    it "displays stop_area" do
+      visit stop_area_referential_stop_area_path(stop_area_referential, stop_areas.first)
       expect(page).to have_content(stop_areas.first.name)
     end
 
-    it "display map" do
-      visit stop_area_referential_stop_areas_path(stop_area_referential)
-      click_link "#{stop_areas.first.name}"
-      expect(page).to have_selector("#map.stop_area")
-    end
+    # it "display map" do
+    #   visit stop_area_referential_stop_areas_path(stop_area_referential)
+    #   # click_link "#{stop_areas.first.name}"
+    #   visit stop_area_referential_stop_area_path(stop_area_referential, stop_areas.first)
+    #   expect(page).to have_selector("#map.stop_area")
+    # end
 
   end
 
@@ -48,10 +65,10 @@ describe "StopAreas", :type => :feature do
   # describe "edit and return to show" do
   #   it "edit stop_area" do
   #     visit stop_area_referential_stop_area_path(stop_area_referential, subject)
-  #     click_link "Modifier cet arrêt"
+  #     click_link "Editer cet arrêt"
   #     fill_in "stop_area_name", :with => "StopArea Modified"
   #     fill_in "Numéro d'enregistrement", :with => "test-1"
-  #     click_button("Modifier arrêt")
+  #     click_button("Editer arrêt")
   #     expect(page).to have_content("StopArea Modified")
   #   end
   # end

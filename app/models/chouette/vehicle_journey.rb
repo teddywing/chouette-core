@@ -1,6 +1,7 @@
 module Chouette
   class VehicleJourney < TridentActiveRecord
     include VehicleJourneyRestrictions
+    include StifTransportModeEnumerations
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
 
@@ -8,7 +9,6 @@ module Chouette
 
     default_scope { where(journey_category: journey_categories[:timed]) }
 
-    attr_accessor :transport_mode_name
     attr_reader :time_table_tokens
 
     def self.nullable_attributes
@@ -43,25 +43,72 @@ module Chouette
 
     accepts_nested_attributes_for :vehicle_journey_at_stops, :allow_destroy => true
 
-
     def presenter
       @presenter ||= ::VehicleJourneyPresenter.new( self)
     end
 
-    def transport_mode_name
-      # return nil if transport_mode is nil
-      transport_mode && Chouette::TransportMode.new( transport_mode.underscore)
-    end
-
-    def transport_mode_name=(transport_mode_name)
-      self.transport_mode = (transport_mode_name ? transport_mode_name.camelcase : nil)
-    end
-
-    @@transport_mode_names = nil
-    def self.transport_mode_names
-      @@transport_mode_names ||= Chouette::TransportMode.all.select do |transport_mode_name|
-        transport_mode_name.to_i > 0
+    def vehicle_journey_at_stops_matrix
+      at_stops = self.vehicle_journey_at_stops.to_a.dup
+      filling  = route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)
+      filling.each do |id|
+        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new())
       end
+      at_stops
+    end
+
+    def update_vjas_from_state state
+      state.each do |vjas|
+        next if vjas["dummy"]
+        stop = vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
+        if stop
+          params = {}.tap do |el|
+            ['arrival_time', 'departure_time'].each do |field|
+              time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
+              el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
+            end
+          end
+          stop.update_attributes(params)
+          vjas.delete('errors')
+          vjas['errors'] = stop.errors if stop.errors.any?
+        end
+      end
+    end
+
+    def self.state_update route, state
+      transaction do
+        state.each do |item|
+          item.delete('errors')
+          vj = find_by(objectid: item['objectid']) || state_create_instance(route, item)
+          next if item['deletable'] && vj.persisted? && vj.destroy
+
+          vj.update_vjas_from_state(item['vehicle_journey_at_stops'])
+          vj.update_attributes(state_permited_attributes(item))
+          item['errors'] = vj.errors if vj.errors.any?
+        end
+        if state.any? {|item| item['errors']}
+          state.map {|item| item.delete('objectid') if item['new_record']}
+          raise ::ActiveRecord::Rollback
+        end
+      end
+
+      state.map {|item| item.delete('new_record')}
+      state.delete_if {|item| item['deletable']}
+    end
+
+    def self.state_create_instance route, item
+      # Flag new record, so we can unset object_id if transaction rollback
+      vj = route.vehicle_journeys.create(state_permited_attributes(item))
+      item['objectid']   = vj.objectid
+      item['new_record'] = true
+      vj
+    end
+
+    def self.state_permited_attributes item
+      attrs = item.slice('published_journey_identifier', 'published_journey_name', 'journey_pattern_id', 'company_id').to_hash
+      ['company', 'journey_pattern'].map do |association|
+        attrs["#{association}_id"] = item[association]['id'] if item[association]
+      end
+      attrs
     end
 
     def increasing_times

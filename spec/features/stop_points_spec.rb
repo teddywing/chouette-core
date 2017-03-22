@@ -11,13 +11,13 @@ describe "StopPoints", :type => :feature do
   describe "from route's page to a stop points page" do
     it "display route's stop points" do
       visit referential_line_route_path(referential,line,route)
-      click_link "Liste des arrêts de la séquence d'arrêts"
+      #click_link "Liste des arrêts de la séquence d'arrêts"
       route.stop_areas.each do |sa|
         expect(page).to have_content(sa.name)
       end
     end
   end
-  
+
   describe "from route's page, go to new stop point page" do
     it "display route's stop points" do
       visit referential_line_route_path(referential,line,route)

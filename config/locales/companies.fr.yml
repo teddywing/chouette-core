@@ -1,19 +1,21 @@
 fr:
   companies: &fr_companies
+    search_no_results: "Aucun transporteur ne correspond à votre recherche"
     actions:
       new: "Ajouter un transporteur"
-      edit: "Modifier ce transporteur"
+      edit: "Editer ce transporteur"
       destroy: "Supprimer ce transporteur"
       destroy_confirm: "Etes vous sûr de supprimer ce transporteur ?"
     new:
       title: "Ajouter un transporteur"
     edit:
-      title: "Modifier le transporteur %{company}"
+      title: "Editer le transporteur %{company}"
     show:
       title: "Transporteur %{company}"
     index:
       title: "Transporteurs"
-      name: "Recherche par nom"
+      name: "Recherche par nom..."
+      name_or_objectid: "Recherche par nom ou objectid..."
       advanced_search: "Recherche avancée"
   activerecord:
     models:
@@ -36,7 +38,8 @@ fr:
         url: "Page web associée"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
   formtastic:
     titles:

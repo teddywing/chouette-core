@@ -1,13 +1,12 @@
 class LineReferential < ActiveRecord::Base
   has_many :line_referential_memberships
   has_many :organisations, through: :line_referential_memberships
-
   has_many :lines, class_name: 'Chouette::Line'
   has_many :group_of_lines, class_name: 'Chouette::GroupOfLine'
   has_many :companies, class_name: 'Chouette::Company'
   has_many :networks, class_name: 'Chouette::Network'
-
-  has_many :line_referential_syncs, -> { order created_at: :desc}
+  has_many :line_referential_syncs, -> { order created_at: :desc }
+  has_many :workbenches
 
   def add_member(organisation, options = {})
     attributes = options.merge organisation: organisation
@@ -25,5 +24,9 @@ class LineReferential < ActiveRecord::Base
 
   def last_sync
     line_referential_syncs.last
+  end
+
+  def transport_modes
+    Chouette::TransportMode.all.select { |tm| tm.to_i > 0 }
   end
 end

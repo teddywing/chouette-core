@@ -1,4 +1,5 @@
 class RoutesController < ChouetteController
+  include PolicyChecker
   defaults :resource_class => Chouette::Route
 
   respond_to :html, :xml, :json
@@ -9,9 +10,11 @@ class RoutesController < ChouetteController
     belongs_to :line, :parent_class => Chouette::Line, :optional => true, :polymorphic => true
   end
 
+  before_action :define_candidate_opposite_routes, only: [:new, :edit, :create, :update]
+
   def index
     index! do |format|
-      format.html { redirect_to referential_line_path(@referential,@line) }
+      format.html { redirect_to referential_line_path(@referential, @line) }
     end
   end
 
@@ -31,6 +34,14 @@ class RoutesController < ChouetteController
 
   def show
     @map = RouteMap.new(route).with_helpers(self)
+
+    @route_sp = route.stop_points
+    if sort_sp_column && sort_sp_direction
+      @route_sp = @route_sp.order(sort_sp_column + ' ' + sort_sp_direction)
+    else
+      @route_sp = @route_sp.order(:position)
+    end
+
     show! do
       build_breadcrumb :show
     end
@@ -74,11 +85,39 @@ class RoutesController < ChouetteController
       end
   end
 
+  def define_candidate_opposite_routes
+    @candidate_opposite_routes =
+      if params[:id]
+        resource.line.routes.where("id <> ?", resource)
+      else
+        parent.routes.select(&:persisted?)
+      end
+  end
+
   private
 
+  def sort_sp_column
+    route.stop_points.column_names.include?(params[:sort]) ? params[:sort] : 'position'
+  end
+  def sort_sp_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
   def route_params
-    params.require(:route).permit( :direction_code, :wayback_code, :line_id, :objectid, :object_version, :creation_time, :creator_id, :name, :comment, :opposite_route_id, :published_name, :number, :direction, :wayback, { stop_points_attributes: [ :id, :_destroy, :position, :stop_area_id, :for_boarding, :for_alighting ] } )
+    params.require(:route).permit(
+      :line_id,
+      :objectid,
+      :object_version,
+      :creator_id,
+      :name,
+      :comment,
+      :opposite_route_id,
+      :published_name,
+      :number,
+      :direction,
+      :wayback,
+      stop_points_attributes: [:id, :_destroy, :position, :stop_area_id, :for_boarding, :for_alighting]
+    )
   end
 
 end
-

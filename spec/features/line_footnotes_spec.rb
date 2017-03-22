@@ -1,0 +1,44 @@
+# -*- coding: utf-8 -*-
+require 'spec_helper'
+
+describe 'Line Footnotes', type: :feature do
+  login_user
+
+  let(:referential) { Referential.first }
+  #let!(:line_referential) { create :line_referential }
+  let!(:network) { create(:network) }
+  let!(:company) { create(:company) }
+  let!(:line) { create :line_with_stop_areas, network: network, company: company, line_referential: referential.line_referential }
+  let!(:footnotes) { Array.new(2) { create :footnote, line: line } }
+  subject { footnotes.first }
+
+  describe 'index' do
+    before(:each) { visit referential_line_footnotes_path(referential.line_referential, line) }
+
+    it 'displays line footnotes' do
+      expect(page).to have_content(subject.label)
+      expect(page).to have_content(subject.label)
+    end
+
+    it 'allows R and U in CRUD' do
+      expect(page).to have_content(I18n.t('actions.edit'))
+      expect(page).not_to have_content(I18n.t('actions.show')) # they're just displayed in index view
+      expect(page).not_to have_content(I18n.t('actions.destroy'))
+      expect(page).not_to have_content(I18n.t('actions.add'))
+    end
+
+    context 'user has permission to edit footnotes' do
+      it 'shows edit link for footnotes' do
+        expect(page).to have_content(I18n.t('actions.edit'))
+      end
+    end
+
+    context 'user does not have permission to edit footnotes' do
+      it 'does not show edit link for footnotes' do
+        @user.update_attribute(:permissions, [])
+        visit referential_line_footnotes_path(referential.line_referential, line)
+        expect(page).not_to have_content(I18n.t('lines.actions.edit_footnotes'))
+      end
+    end
+  end
+end

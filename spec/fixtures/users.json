@@ -10,7 +10,10 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions": [
+    "boiv:edit-offer"
+  ]
 }, {
   "id": 2,
   "username": "luc.donnet",
@@ -23,7 +26,10 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions": [
+    "boiv:edit-offer"
+  ]
 }, {
   "id": 3,
   "username": "alban.peignier",
@@ -36,7 +42,10 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions": [
+    "boiv:edit-offer"
+  ]
 }, {
   "id": 4,
   "username": "pierre.vabre",
@@ -115,6 +124,22 @@
   "profile": "Administrateur",
   "organization_name": "STIF",
   "organization_code": "STIF"
+}, {
+  "id": 9,
+  "username": "vlatka.pavisic",
+  "email": "vlatka.pavisic@af83.com",
+  "firstname": "Vlatka",
+  "lastname": "Pavisic",
+  "phone_number": "+33601010101",
+  "created_at": "2016-09-05T12:34:03.756Z",
+  "updated_at": "2016-09-05T12:34:03.756Z",
+  "locked_at": null,
+  "profile": "Administrateur",
+  "organization_name": "STIF",
+  "organization_code": "STIF",
+  "permissions": [
+    "boiv:edit-offer"
+  ]
 }, {
   "id": 10,
   "username": "john.doe",

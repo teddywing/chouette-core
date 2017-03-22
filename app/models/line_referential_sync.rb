@@ -6,6 +6,8 @@ class LineReferentialSync < ActiveRecord::Base
   after_commit :perform_sync, :on => :create
   validate :multiple_process_validation, :on => :create
 
+  scope :pending, -> { where(status: [:new, :pending]) }
+
   private
   def perform_sync
     create_sync_message :info, :new
@@ -26,7 +28,7 @@ class LineReferentialSync < ActiveRecord::Base
     state :failed
 
     event :run, after: :log_pending do
-      transitions :from => [:new, :failed], :to => :pending
+      transitions :from => :new, :to => :pending
     end
 
     event :successful, after: :log_successful do
@@ -34,7 +36,7 @@ class LineReferentialSync < ActiveRecord::Base
     end
 
     event :failed, after: :log_failed do
-      transitions :from => :pending, :to => :failed
+      transitions :from => [:new, :pending], :to => :failed
     end
   end
 

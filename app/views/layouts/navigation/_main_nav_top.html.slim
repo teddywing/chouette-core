@@ -1,0 +1,21 @@
+.nav-menu#menu_top
+  .brandname IBOO
+
+  .menu-content
+    .menu-item
+      = render 'layouts/navigation/breadcrumb'
+
+    .menu-item-group.pull-right
+      = link_to '#', class: 'menu-item', data: { panel: 'toggle', target: '#operations_panel' }, title: 'Opérations' do
+        span.fa.fa-lg.fa-tasks
+
+      = link_to '#', class: 'menu-item', data: { panel: 'toggle', target: '#profile_panel' }, title: 'Profil' do
+        span = current_user.username
+        span.fa.fa-lg.fa-user
+
+
+      = link_to destroy_user_session_path, method: :delete, class: 'menu-item', title: 'Se déconnecter' do
+        span.fa.fa-lg.fa-sign-out
+
+  = render 'layouts/navigation/nav_panel_operations'
+  = render 'layouts/navigation/nav_panel_profile'

@@ -7,14 +7,15 @@ fr:
       vehicle_journey_at_stops: "Horaires des courses"
     actions:
       new: "Ajouter une mission"
-      edit: "Modifier cette mission"
+      edit: "Editer cette mission"
       destroy: "Supprimer cette mission"
       destroy_confirm: "Etes vous sûr de vouloir détruire cette mission ?"
-      edit_route_sections: "Modifier les sections de parcours"
+      edit_route_sections: "Editer les sections de parcours"
+      edit_journey_patterns_collection: "Editer les missions"
     new:
       title: "Ajouter une mission"
     edit:
-      title: "Modifier la mission %{journey_pattern}"
+      title: "Editer la mission %{journey_pattern}"
     show:
       title: "Mission %{journey_pattern}"
       stop_points: "Liste des arrêts de la mission"
@@ -32,13 +33,14 @@ fr:
       journey_pattern:
         route: "Séquence d'arrêts"
         name: "Nom"
-        published_name: "Nom public"       
+        published_name: "Nom public"
         comment: "Commentaire"
         registration_number: "Numéro d'enregistrement"
         stop_point_ids: "Sélection des arrêts desservis"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
   formtastic:
     titles:

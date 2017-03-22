@@ -7,6 +7,10 @@ class Chouette::StopArea < Chouette::ActiveRecord
   include Geokit::Mappable
   include ProjectionFields
   include StopAreaRestrictions
+
+  extend Enumerize
+  enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
+
   def self.model_name
     ActiveModel::Name.new self, Chouette, self.name.demodulize
   end
@@ -14,9 +18,12 @@ class Chouette::StopArea < Chouette::ActiveRecord
   # include DefaultAttributesSupport
   include StopAreaReferentialSupport
 
-  has_many :stop_points, :dependent => :destroy
-  has_many :access_points, :dependent => :destroy
-  has_many :access_links, :dependent => :destroy
+  with_options dependent: :destroy do |assoc|
+    assoc.has_many :stop_points
+    assoc.has_many :access_points
+    assoc.has_many :access_links
+  end
+
   has_and_belongs_to_many :routing_lines, :class_name => 'Chouette::Line', :foreign_key => "stop_area_id", :association_foreign_key => "line_id", :join_table => "routing_constraints_lines", :order => "lines.number"
   has_and_belongs_to_many :routing_stops, :class_name => 'Chouette::StopArea', :foreign_key => "parent_id", :association_foreign_key => "child_id", :join_table => "stop_areas_stop_areas", :order => "stop_areas.name"
 
@@ -54,7 +61,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
   before_validation :prepare_auto_columns
   def prepare_auto_columns
     self.object_version = 1
-    self.creation_time = Time.now
     self.creator_id = 'chouette'
   end
 
@@ -83,6 +89,14 @@ class Chouette::StopArea < Chouette::ActiveRecord
     end
   end
 
+  def user_objectid
+    if objectid =~ /^.*:([0-9A-Za-z_-]+):STIF$/
+      $1
+    else
+      id.to_s
+    end
+  end
+
   def children_in_depth
     return [] if self.children.empty?
 
@@ -97,7 +111,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
       when "Quay" then []
       when "CommercialStopPoint" then Chouette::StopArea.where(:area_type => ['Quay', 'BoardingPosition']) - [self]
       when "StopPlace" then Chouette::StopArea.where(:area_type => ['StopPlace', 'CommercialStopPoint']) - [self]
-      when "ITL" then Chouette::StopArea.where(:area_type => ['Quay', 'BoardingPosition', 'StopPlace', 'CommercialStopPoint'])
     end
 
   end
@@ -116,15 +129,11 @@ class Chouette::StopArea < Chouette::ActiveRecord
   end
 
   def lines
-    if (area_type == 'CommercialStopPoint')
-      self.children.collect(&:stop_points).flatten.collect(&:route).flatten.collect(&:line).flatten.uniq
-    else
-      self.stop_points.collect(&:route).flatten.collect(&:line).flatten.uniq
-    end
+    []
   end
 
   def routes
-    self.stop_points.collect(&:route).flatten.uniq
+     []
   end
 
   def self.commercial
@@ -139,9 +148,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
     where :area_type => [ "BoardingPosition", "Quay" ]
   end
 
-  def self.itl
-    where :area_type => "ITL"
-  end
 
   def to_lat_lng
     Geokit::LatLng.new(latitude, longitude) if latitude and longitude
@@ -174,6 +180,12 @@ class Chouette::StopArea < Chouette::ActiveRecord
     Chouette::StopArea.bounds ? Chouette::StopArea.bounds.center : nil # FIXME #821 stop_area_referential.envelope.center
   end
 
+  def around(scope, distance)
+    db   = "ST_GeomFromEWKB(ST_MakePoint(longitude, latitude, 4326))"
+    from = "ST_GeomFromText('POINT(#{self.longitude} #{self.latitude})', 4326)"
+    scope.where("ST_DWithin(#{db}, #{from}, ?, false)", distance)
+  end
+
   def self.near(origin, distance = 0.3)
     origin = origin.to_lat_lng
 
@@ -202,21 +214,11 @@ class Chouette::StopArea < Chouette::ActiveRecord
   end
 
   def stop_area_type
-    area_type && Chouette::AreaType.new(area_type.underscore)
+    area_type ? area_type : " "
   end
 
   def stop_area_type=(stop_area_type)
     self.area_type = (stop_area_type ? stop_area_type.camelcase : nil)
-    if self.area_type == 'Itl'
-      self.area_type = 'ITL'
-    end
-  end
-
-  @@stop_area_types = nil
-  def self.stop_area_types
-    @@stop_area_types ||= Chouette::AreaType.all.select do |stop_area_type|
-      stop_area_type.to_i >= 0
-    end
   end
 
   def children_ids=(children_ids)

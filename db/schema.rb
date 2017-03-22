@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161010135256) do
+ActiveRecord::Schema.define(version: 20170320125813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,8 +22,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "access_point_id",                        limit: 8
     t.integer  "stop_area_id",                           limit: 8
     t.string   "objectid",                                                                  null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",                         limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
@@ -38,14 +37,15 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "link_type"
     t.integer  "int_user_needs"
     t.string   "link_orientation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "access_links", ["objectid"], :name => "access_links_objectid_key", :unique => true
 
   create_table "access_points", force: true do |t|
     t.string   "objectid"
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",                  limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
@@ -65,22 +65,60 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "zip_code"
     t.string   "city_name"
     t.text     "import_xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "access_points", ["objectid"], :name => "access_points_objectid_key", :unique => true
 
   create_table "api_keys", force: true do |t|
-    t.integer  "referential_id"
+    t.integer  "referential_id", limit: 8
     t.string   "token"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  create_table "calendars", force: true do |t|
+    t.string    "name"
+    t.string    "short_name"
+    t.daterange "date_ranges",               array: true
+    t.date      "dates",                     array: true
+    t.boolean   "shared"
+    t.integer   "organisation_id", limit: 8
+    t.datetime  "created_at"
+    t.datetime  "updated_at"
+  end
+
+  add_index "calendars", ["organisation_id"], :name => "index_calendars_on_organisation_id"
+  add_index "calendars", ["short_name"], :name => "index_calendars_on_short_name", :unique => true
+
+  create_table "clean_up_results", force: true do |t|
+    t.string   "message_key"
+    t.hstore   "message_attributs"
+    t.integer  "clean_up_id",       limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "clean_up_results", ["clean_up_id"], :name => "index_clean_up_results_on_clean_up_id"
+
+  create_table "clean_ups", force: true do |t|
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.integer  "referential_id", limit: 8
+    t.datetime "begin_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "end_date"
+  end
+
+  add_index "clean_ups", ["referential_id"], :name => "index_clean_ups_on_referential_id"
+
   create_table "companies", force: true do |t|
-    t.string   "objectid",                  null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.string   "objectid",                            null: false
+    t.integer  "object_version",            limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "short_name"
@@ -93,8 +131,10 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "registration_number"
     t.string   "url"
     t.string   "time_zone"
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id",       limit: 8
     t.text     "import_xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "companies", ["line_referential_id"], :name => "index_companies_on_line_referential_id"
@@ -105,8 +145,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "departure_id",                           limit: 8
     t.integer  "arrival_id",                             limit: 8
     t.string   "objectid",                                                                  null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",                         limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
@@ -120,6 +159,8 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.boolean  "stairs_availability"
     t.boolean  "lift_availability"
     t.integer  "int_user_needs"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "connection_links", ["objectid"], :name => "connection_links_objectid_key", :unique => true
@@ -159,7 +200,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "connection_link_id", limit: 8
     t.integer  "stop_point_id",      limit: 8
     t.string   "objectid",                                               null: false
-    t.integer  "object_version"
+    t.integer  "object_version",     limit: 8
     t.datetime "creation_time"
     t.string   "creator_id"
     t.string   "name"
@@ -198,15 +239,16 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   end
 
   create_table "group_of_lines", force: true do |t|
-    t.string   "objectid",            null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.string   "objectid",                      null: false
+    t.integer  "object_version",      limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "registration_number"
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id", limit: 8
     t.text     "import_xml"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "group_of_lines", ["line_referential_id"], :name => "index_group_of_lines_on_line_referential_id"
@@ -216,6 +258,51 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer "group_of_line_id", limit: 8
     t.integer "line_id",          limit: 8
   end
+
+  create_table "import_messages", force: true do |t|
+    t.integer  "criticity"
+    t.string   "message_key"
+    t.hstore   "message_attributs"
+    t.integer  "import_id",           limit: 8
+    t.integer  "resource_id",         limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.hstore   "resource_attributes"
+  end
+
+  add_index "import_messages", ["import_id"], :name => "index_import_messages_on_import_id"
+  add_index "import_messages", ["resource_id"], :name => "index_import_messages_on_resource_id"
+
+  create_table "import_resources", force: true do |t|
+    t.integer  "import_id",  limit: 8
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type"
+    t.string   "reference"
+    t.string   "name"
+    t.hstore   "metrics"
+  end
+
+  add_index "import_resources", ["import_id"], :name => "index_import_resources_on_import_id"
+
+  create_table "imports", force: true do |t|
+    t.string   "status"
+    t.string   "current_step_id"
+    t.float    "current_step_progress"
+    t.integer  "workbench_id",          limit: 8
+    t.integer  "referential_id",        limit: 8
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "file"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.string   "token_download"
+  end
+
+  add_index "imports", ["referential_id"], :name => "index_imports_on_referential_id"
+  add_index "imports", ["workbench_id"], :name => "index_imports_on_workbench_id"
 
   create_table "journey_frequencies", force: true do |t|
     t.integer  "vehicle_journey_id",         limit: 8
@@ -246,8 +333,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   create_table "journey_patterns", force: true do |t|
     t.integer  "route_id",                limit: 8
     t.string   "objectid",                                      null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",          limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
@@ -256,6 +342,8 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "departure_stop_point_id", limit: 8
     t.integer  "arrival_stop_point_id",   limit: 8
     t.integer  "section_status",                    default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "journey_patterns", ["objectid"], :name => "journey_patterns_objectid_key", :unique => true
@@ -268,8 +356,8 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   add_index "journey_patterns_stop_points", ["journey_pattern_id"], :name => "index_journey_pattern_id_on_journey_patterns_stop_points"
 
   create_table "line_referential_memberships", force: true do |t|
-    t.integer "organisation_id"
-    t.integer "line_referential_id"
+    t.integer "organisation_id",     limit: 8
+    t.integer "line_referential_id", limit: 8
     t.boolean "owner"
   end
 
@@ -277,7 +365,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "criticity"
     t.string   "message_key"
     t.hstore   "message_attributs"
-    t.integer  "line_referential_sync_id"
+    t.integer  "line_referential_sync_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -285,7 +373,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   add_index "line_referential_sync_messages", ["line_referential_sync_id"], :name => "line_referential_sync_id"
 
   create_table "line_referential_syncs", force: true do |t|
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "started_at"
@@ -306,13 +394,12 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "network_id",                      limit: 8
     t.integer  "company_id",                      limit: 8
     t.string   "objectid",                                                  null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",                  limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "number"
     t.string   "published_name"
-    t.string   "transport_mode_name"
+    t.string   "transport_mode"
     t.string   "registration_number"
     t.string   "comment"
     t.boolean  "mobility_restricted_suitability"
@@ -322,19 +409,23 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "color",                           limit: 6
     t.string   "text_color",                      limit: 6
     t.string   "stable_id"
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id",             limit: 8
     t.boolean  "deactivated",                               default: false
     t.text     "import_xml"
+    t.string   "transport_submode"
+    t.integer  "secondary_company_ids",           limit: 8,                              array: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "lines", ["line_referential_id"], :name => "index_lines_on_line_referential_id"
   add_index "lines", ["objectid"], :name => "lines_objectid_key", :unique => true
   add_index "lines", ["registration_number"], :name => "lines_registration_number_key"
+  add_index "lines", ["secondary_company_ids"], :name => "index_lines_on_secondary_company_ids"
 
   create_table "networks", force: true do |t|
-    t.string   "objectid",            null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.string   "objectid",                      null: false
+    t.integer  "object_version",      limit: 8
     t.string   "creator_id"
     t.date     "version_date"
     t.string   "description"
@@ -345,7 +436,9 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "source_identifier"
     t.string   "comment"
     t.text     "import_xml"
-    t.integer  "line_referential_id"
+    t.integer  "line_referential_id", limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "networks", ["line_referential_id"], :name => "index_networks_on_line_referential_id"
@@ -356,25 +449,55 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "data_format", default: "neptune"
+    t.string   "data_format",    default: "neptune"
     t.string   "code"
     t.datetime "synced_at"
+    t.hstore   "sso_attributes"
   end
+
+  add_index "organisations", ["code"], :name => "index_organisations_on_code", :unique => true
 
   create_table "pt_links", force: true do |t|
     t.integer  "start_of_link_id", limit: 8
     t.integer  "end_of_link_id",   limit: 8
     t.integer  "route_id",         limit: 8
     t.string   "objectid",                                            null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",   limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "link_distance",              precision: 19, scale: 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "pt_links", ["objectid"], :name => "pt_links_objectid_key", :unique => true
+
+  create_table "referential_clonings", force: true do |t|
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.integer  "source_referential_id", limit: 8
+    t.integer  "target_referential_id", limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "referential_clonings", ["source_referential_id"], :name => "index_referential_clonings_on_source_referential_id"
+  add_index "referential_clonings", ["target_referential_id"], :name => "index_referential_clonings_on_target_referential_id"
+
+  create_table "referential_metadata", force: true do |t|
+    t.integer   "referential_id",        limit: 8
+    t.integer   "line_ids",              limit: 8, array: true
+    t.integer   "referential_source_id", limit: 8
+    t.datetime  "created_at"
+    t.datetime  "updated_at"
+    t.daterange "periodes",                        array: true
+  end
+
+  add_index "referential_metadata", ["line_ids"], :name => "index_referential_metadata_on_line_ids"
+  add_index "referential_metadata", ["referential_id"], :name => "index_referential_metadata_on_referential_id"
+  add_index "referential_metadata", ["referential_source_id"], :name => "index_referential_metadata_on_referential_source_id"
 
   create_table "referentials", force: true do |t|
     t.string   "name"
@@ -390,30 +513,34 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "user_id",                  limit: 8
     t.string   "user_name"
     t.string   "data_format"
-    t.integer  "line_referential_id"
-    t.integer  "stop_area_referential_id"
-    t.integer  "workbench_id"
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
+    t.integer  "workbench_id",             limit: 8
     t.datetime "archived_at"
+    t.integer  "created_from_id",          limit: 8
+    t.boolean  "ready",                              default: false
   end
+
+  add_index "referentials", ["created_from_id"], :name => "index_referentials_on_created_from_id"
 
   create_table "route_sections", force: true do |t|
     t.integer  "departure_id",       limit: 8
     t.integer  "arrival_id",         limit: 8
     t.string   "objectid",                                                       null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",     limit: 8
     t.string   "creator_id"
     t.float    "distance"
     t.boolean  "no_processing"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "routes", force: true do |t|
     t.integer  "line_id",           limit: 8
     t.string   "objectid",                    null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",    limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
@@ -422,9 +549,24 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "number"
     t.string   "direction"
     t.string   "wayback"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "routes", ["objectid"], :name => "routes_objectid_key", :unique => true
+
+  create_table "routing_constraint_zones", force: true do |t|
+    t.string   "name"
+    t.integer  "stop_area_ids",                         array: true
+    t.integer  "line_id",        limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "objectid",                 null: false
+    t.integer  "object_version", limit: 8
+    t.string   "creator_id"
+  end
+
+  add_index "routing_constraint_zones", ["line_id"], :name => "index_routing_constraint_zones_on_line_id"
 
   create_table "routing_constraints_lines", id: false, force: true do |t|
     t.integer "stop_area_id", limit: 8
@@ -440,8 +582,8 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   end
 
   create_table "stop_area_referential_memberships", force: true do |t|
-    t.integer "organisation_id"
-    t.integer "stop_area_referential_id"
+    t.integer "organisation_id",          limit: 8
+    t.integer "stop_area_referential_id", limit: 8
     t.boolean "owner"
   end
 
@@ -449,7 +591,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "criticity"
     t.string   "message_key"
     t.hstore   "message_attributs"
-    t.integer  "stop_area_referential_sync_id"
+    t.integer  "stop_area_referential_sync_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -457,7 +599,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   add_index "stop_area_referential_sync_messages", ["stop_area_referential_sync_id"], :name => "stop_area_referential_sync_id"
 
   create_table "stop_area_referential_syncs", force: true do |t|
-    t.integer  "stop_area_referential_id"
+    t.integer  "stop_area_referential_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "ended_at"
@@ -476,8 +618,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   create_table "stop_areas", force: true do |t|
     t.integer  "parent_id",                       limit: 8
     t.string   "objectid",                                                            null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",                  limit: 8
     t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
@@ -498,10 +639,13 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.string   "city_name"
     t.string   "url"
     t.string   "time_zone"
-    t.integer  "stop_area_referential_id"
+    t.integer  "stop_area_referential_id",        limit: 8
     t.string   "status"
     t.text     "import_xml"
     t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "stif_type"
   end
 
   add_index "stop_areas", ["name"], :name => "index_stop_areas_on_name"
@@ -518,21 +662,22 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "route_id",       limit: 8
     t.integer  "stop_area_id",   limit: 8
     t.string   "objectid",                 null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version", limit: 8
     t.string   "creator_id"
     t.integer  "position"
     t.string   "for_boarding"
     t.string   "for_alighting"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "stop_points", ["objectid"], :name => "stop_points_objectid_key", :unique => true
 
   create_table "taggings", force: true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
+    t.integer  "tag_id",        limit: 8
+    t.integer  "taggable_id",   limit: 8
     t.string   "taggable_type"
-    t.integer  "tagger_id"
+    t.integer  "tagger_id",     limit: 8
     t.string   "tagger_type"
     t.string   "context",       limit: 128
     t.datetime "created_at"
@@ -567,17 +712,20 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   add_index "time_table_periods", ["time_table_id"], :name => "index_time_table_periods_on_time_table_id"
 
   create_table "time_tables", force: true do |t|
-    t.string   "objectid",                   null: false
-    t.integer  "object_version", default: 1
-    t.datetime "creation_time"
+    t.string   "objectid",                             null: false
+    t.integer  "object_version", limit: 8, default: 1
     t.string   "creator_id"
     t.string   "version"
     t.string   "comment"
-    t.integer  "int_day_types",  default: 0
+    t.integer  "int_day_types",            default: 0
     t.date     "start_date"
     t.date     "end_date"
+    t.integer  "calendar_id",    limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
+  add_index "time_tables", ["calendar_id"], :name => "index_time_tables_on_calendar_id"
   add_index "time_tables", ["objectid"], :name => "time_tables_objectid_key", :unique => true
 
   create_table "time_tables_vehicle_journeys", id: false, force: true do |t|
@@ -589,37 +737,46 @@ ActiveRecord::Schema.define(version: 20161010135256) do
   add_index "time_tables_vehicle_journeys", ["vehicle_journey_id"], :name => "index_time_tables_vehicle_journeys_on_vehicle_journey_id"
 
   create_table "timebands", force: true do |t|
-    t.string   "objectid",       null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.string   "objectid",                 null: false
+    t.integer  "object_version", limit: 8
     t.string   "creator_id"
     t.string   "name"
-    t.time     "start_time",     null: false
-    t.time     "end_time",       null: false
+    t.time     "start_time",               null: false
+    t.time     "end_time",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "translations", force: true do |t|
+    t.string   "locale"
+    t.string   "key"
+    t.text     "value"
+    t.text     "interpolations"
+    t.boolean  "is_proc",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: ""
+    t.string   "email",                            default: "", null: false
+    t.string   "encrypted_password",               default: ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
+    t.integer  "sign_in_count",                    default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "organisation_id"
+    t.integer  "organisation_id",        limit: 8
     t.string   "name"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        default: 0
+    t.integer  "failed_attempts",                  default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
@@ -627,11 +784,12 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
-    t.integer  "invited_by_id"
+    t.integer  "invited_by_id",          limit: 8
     t.string   "invited_by_type"
     t.datetime "invitation_created_at"
     t.string   "username"
     t.datetime "synced_at"
+    t.string   "permissions",                                                array: true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -658,8 +816,7 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.integer  "journey_pattern_id",              limit: 8
     t.integer  "company_id",                      limit: 8
     t.string   "objectid",                                              null: false
-    t.integer  "object_version"
-    t.datetime "creation_time"
+    t.integer  "object_version",                  limit: 8
     t.string   "creator_id"
     t.string   "comment"
     t.string   "status_value"
@@ -672,6 +829,8 @@ ActiveRecord::Schema.define(version: 20161010135256) do
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "flexible_service"
     t.integer  "journey_category",                          default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "vehicle_journeys", ["objectid"], :name => "vehicle_journeys_objectid_key", :unique => true
@@ -679,12 +838,16 @@ ActiveRecord::Schema.define(version: 20161010135256) do
 
   create_table "workbenches", force: true do |t|
     t.string   "name"
-    t.integer  "organisation_id"
+    t.integer  "organisation_id",          limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
   end
 
+  add_index "workbenches", ["line_referential_id"], :name => "index_workbenches_on_line_referential_id"
   add_index "workbenches", ["organisation_id"], :name => "index_workbenches_on_organisation_id"
+  add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
@@ -710,8 +873,6 @@ ActiveRecord::Schema.define(version: 20161010135256) do
 
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_child_fkey", column: "child_id", dependent: :delete
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_parent_fkey", column: "parent_id", dependent: :delete
-
-  add_foreign_key "stop_points", "routes", name: "stoppoint_route_fkey", dependent: :delete
 
   add_foreign_key "time_table_dates", "time_tables", name: "tm_date_fkey", dependent: :delete
 

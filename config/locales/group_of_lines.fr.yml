@@ -2,13 +2,13 @@ fr:
   group_of_lines: &fr_group_of_lines
     actions:
       new: "Ajouter un groupe de lignes"
-      edit: "Modifier ce groupe de lignes"
+      edit: "Editer ce groupe de lignes"
       destroy: "Supprimer ce groupe de lignes"
       destroy_confirm: "Etes vous sûr de supprimer ce groupe de lignes ?"
     new:
       title: "Ajouter un groupe de lignes"
     edit:
-      title: "Modifier le groupe de lignes %{group_of_line}"
+      title: "Editer le groupe de lignes %{group_of_line}"
     show:
       title: "Groupe de lignes %{group_of_line}"
       lines: "Liste des lignes"
@@ -32,7 +32,8 @@ fr:
         line_count: "Nombre de lignes"
         objectid: "Identifiant Neptune"
         object_version: "Version"
-        creation_time: "Créé le"
+        created_at: "Créé le"
+        updated_at: "Edité le"
         creator_id: "Créé par"
   formtastic:
     titles:

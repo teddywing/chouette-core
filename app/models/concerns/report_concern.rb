@@ -11,10 +11,7 @@ module ReportConcern
   module ClassMethods
   end
 
-  delegate :progression?, to: :datas
-  delegate :progression, to: :datas
-  delegate :zip_file, to: :datas
-  delegate :stats, to: :datas
+  delegate :progression?, :progression, :zip_file, :stats, to: :datas
 
   def failure_code?
     datas.result == "NOK" && datas.failure?

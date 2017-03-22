@@ -1,14 +1,17 @@
 class Chouette::Route < Chouette::TridentActiveRecord
   include RouteRestrictions
 
+  extend Enumerize
+  extend ActiveModel::Naming
+
+  enumerize :direction, in: %i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)
+  enumerize :wayback, in: %i(straight_forward backward)
+
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 
-  attr_accessor :wayback_code
-  attr_accessor :direction_code
-
   def self.nullable_attributes
-    [:published_name, :comment, :number, :name]
+    [:published_name, :comment, :number, :name, :direction, :wayback]
   end
 
   belongs_to :line
@@ -26,7 +29,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
     end
   end
   belongs_to :opposite_route, :class_name => 'Chouette::Route', :foreign_key => :opposite_route_id
-  has_many :stop_points, -> { order('position ASC') }, :dependent => :destroy do
+  has_many :stop_points, :dependent => :destroy do
     def find_by_stop_area(stop_area)
       stop_area_ids = Integer === stop_area ? [stop_area] : (stop_area.children_in_depth + [stop_area]).map(&:id)
       where( :stop_area_id => stop_area_ids).first or
@@ -61,10 +64,10 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   # validates_presence_of :name
   validates_presence_of :line
-  # validates_presence_of :direction_code
-  # validates_presence_of :wayback_code
+  # validates_presence_of :direction
+  # validates_presence_of :wayback
 
-  before_destroy :dereference_opposite_route
+  validates :wayback, inclusion: { in: self.wayback.values }
 
   after_commit :journey_patterns_control_route_sections
 
@@ -72,9 +75,25 @@ class Chouette::Route < Chouette::TridentActiveRecord
     Chouette::Geometry::RoutePresenter.new self
   end
 
-  def dereference_opposite_route
-    self.line.routes.each do |r|
-      r.update_attributes( :opposite_route => nil) if r.opposite_route == self
+  @@opposite_waybacks = { straight_forward: :backward, backward: :straight_forward}
+  def opposite_wayback
+    @@opposite_waybacks[wayback.to_sym]
+  end
+
+  def opposite_route_candidates
+    if opposite_wayback
+      line.routes.where(opposite_route: [nil, self], wayback: opposite_wayback)
+    else
+      self.class.none
+    end
+  end
+
+  validate :check_opposite_route
+  def check_opposite_route
+    return unless opposite_route && opposite_wayback
+
+    unless opposite_route_candidates.include?(opposite_route)
+      errors.add(:opposite_route_id, :invalid)
     end
   end
 
@@ -92,54 +111,9 @@ class Chouette::Route < Chouette::TridentActiveRecord
   def sorted_vehicle_journeys(journey_category_model)
     send(journey_category_model)
         .joins(:journey_pattern, :vehicle_journey_at_stops)
+        .joins('LEFT JOIN "time_tables_vehicle_journeys" ON "time_tables_vehicle_journeys"."vehicle_journey_id" = "vehicle_journeys"."id" LEFT JOIN "time_tables" ON "time_tables"."id" = "time_tables_vehicle_journeys"."time_table_id"')
         .where("vehicle_journey_at_stops.stop_point_id=journey_patterns.departure_stop_point_id")
-        .order( "vehicle_journey_at_stops.departure_time")
-  end
-
-  def self.direction_binding
-    { "A" => "straight_forward",
-      "R" => "backward",
-      "ClockWise" => "clock_wise",
-      "CounterClockWise" => "counter_clock_wise",
-      "North" => "north",
-      "NorthWest" => "north_west",
-      "West" => "west",
-      "SouthWest" => "south_west",
-      "South" => "south",
-      "SouthEast" => "south_east",
-      "East" => "east",
-      "NorthEast" => "north_east"}
-  end
-  def direction_code
-    return nil if self.class.direction_binding[direction].nil?
-    Chouette::Direction.new( self.class.direction_binding[direction])
-  end
-  def direction_code=(direction_code)
-    self.direction = nil
-    self.class.direction_binding.each do |k,v|
-      self.direction = k if v==direction_code
-    end
-  end
-  @@directions = nil
-  def self.directions
-    @@directions ||= Chouette::Direction.all
-  end
-  def self.wayback_binding
-    { "A" => "straight_forward", "R" => "backward"}
-  end
-  def wayback_code
-    return nil if self.class.wayback_binding[wayback].nil?
-    Chouette::Wayback.new( self.class.wayback_binding[wayback])
-  end
-  def wayback_code=(wayback_code)
-    self.wayback = nil
-    self.class.wayback_binding.each do |k,v|
-      self.wayback = k if v==wayback_code
-    end
-  end
-  @@waybacks = nil
-  def self.waybacks
-    @@waybacks ||= Chouette::Wayback.all
+        .order("vehicle_journey_at_stops.departure_time")
   end
 
   def stop_point_permutation?( stop_point_ids)

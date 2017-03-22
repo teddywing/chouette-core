@@ -1,9 +1,12 @@
 en:
+  notice:
+    footnotes:
+      updated: 'Footnotes has been updated'
   footnotes:
     actions:
-      add_footnote: "add footnote" 
+      add_footnote: "add footnote"
     index:
-      title: "Footnotes"     
+      title: "Footnotes"
   activerecord:
     models:
       footnote: "footnote"

@@ -1,0 +1,46 @@
+= title_tag t('.title', calendar: @calendar.name)
+
+p
+  label => "#{Calendar.human_attribute_name('name')} : "
+  = @calendar.name
+p
+  label => "#{Calendar.human_attribute_name('short_name')} : "
+  = @calendar.short_name
+
+.row
+  .col-xs-4
+    p
+      label => "#{Calendar.human_attribute_name('dates')} : "
+      table.table.table-condensed
+        tbody
+          - @calendar.dates.each do |date|
+            tr
+              td= l date
+    p
+      label => "#{Calendar.human_attribute_name('date_ranges')} : "
+      table.table.table-condensed
+        thead
+          th= t('simple_form.labels.calendar.ranges.begin')
+          th= t('simple_form.labels.calendar.ranges.end')
+        tbody
+          - @calendar.date_ranges.each do |date_range|
+            tr
+              td= l date_range.begin
+              td= l date_range.end
+
+p
+  label => "#{Calendar.human_attribute_name('shared')} : "
+  = @calendar.shared
+p
+  label => "#{Organisation.model_name.human} : "
+  = @calendar.organisation.name
+
+
+- content_for(:sidebar) do
+  ul.actions
+    - if policy(@calendar).edit?
+      li
+        = link_to t('calendars.actions.edit'), edit_calendar_path(@calendar), class: 'edit'
+    - if policy(@calendar).destroy?
+      li
+        = link_to t('calendars.actions.destroy'), calendar_path(@calendar), method: :delete, data: { confirm: t('calendars.actions.destroy_confirm') }, class: 'remove'

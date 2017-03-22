@@ -23,6 +23,11 @@ ssh_options[:forward_agent] = true
 require "bundler/capistrano"
 require 'whenever/capistrano'
 
+require 'capistrano/npm'
+set :npm_options, '--production --silent --no-progress'
+
+after 'deploy:finalize_update', 'npm:install'
+
 # Whenever
 set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/2.2.0/bin'" } # invoke bin/bundle to use 'correct' ruby environment
 
@@ -57,7 +62,8 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/secrets.yml #{release_path}/config/"
     run "ln -nfs #{shared_path}/config/newrelic.yml #{release_path}/config/"
 
-    run "ln -nfs #{shared_path}/tmp/imports #{release_path}/tmp/imports"
+    run "ln -nfs #{shared_path}/public/uploads #{release_path}/public/uploads"
+    run "ln -nfs #{shared_path}/tmp/uploads #{release_path}/tmp/uploads"
   end
   after 'deploy:update_code', 'deploy:symlink_shared'
   before 'deploy:assets:precompile', 'deploy:symlink_shared'
@@ -68,15 +74,14 @@ namespace :deploy do
   end
   after "deploy:restart", "deploy:group_writable"
 
+  desc "Restart sidekiq"
+  task :sidekiq_restart do
+    run "sudo sidekiq-touch #{fetch(:application)}"
+  end
+  after "deploy:restart", "deploy:sidekiq_restart"
+
   desc "Run db:seed"
   task :seed do
     run "cd #{current_path} && #{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake db:seed RAILS_ENV=#{rails_env}"
   end
-end
-
-namespace :delayed_job do
-  task :restart do
-    run "sudo /etc/init.d/stif-boiv restart"
-  end
-  # after "deploy:restart", "delayed_job:restart"
 end
