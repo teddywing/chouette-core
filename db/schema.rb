@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320125813) do
+ActiveRecord::Schema.define(version: 20170322075010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -165,22 +165,6 @@ ActiveRecord::Schema.define(version: 20170320125813) do
 
   add_index "connection_links", ["objectid"], :name => "connection_links_objectid_key", :unique => true
 
-  create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0
-    t.integer  "attempts",   default: 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
-
   create_table "exports", force: true do |t|
     t.integer  "referential_id",  limit: 8
     t.string   "status"
@@ -299,6 +283,7 @@ ActiveRecord::Schema.define(version: 20170320125813) do
     t.datetime "started_at"
     t.datetime "ended_at"
     t.string   "token_download"
+    t.string   "type"
   end
 
   add_index "imports", ["referential_id"], :name => "index_imports_on_referential_id"
@@ -747,16 +732,6 @@ ActiveRecord::Schema.define(version: 20170320125813) do
     t.datetime "updated_at"
   end
 
-  create_table "translations", force: true do |t|
-    t.string   "locale"
-    t.string   "key"
-    t.text     "value"
-    t.text     "interpolations"
-    t.boolean  "is_proc",        default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "users", force: true do |t|
     t.string   "email",                            default: "", null: false
     t.string   "encrypted_password",               default: ""
@@ -850,8 +825,6 @@ ActiveRecord::Schema.define(version: 20170320125813) do
   add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
-  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
-
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify

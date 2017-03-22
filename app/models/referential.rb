@@ -44,6 +44,7 @@ class Referential < ActiveRecord::Base
 
   scope :ready, -> { where(ready: true) }
   scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }
+  scope :include_metadatas_lines, ->(line_ids) { where('referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids) }
 
   def lines
     if metadatas.blank?

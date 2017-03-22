@@ -112,8 +112,7 @@ class OlMap extends Component{
         <div className='map_container'>
           <div className='map_metas'>
             <p>
-              <strong>Nom de l'arrêt : </strong>
-              {this.props.value.olMap.json.name}
+              <strong>{this.props.value.olMap.json.name}</strong>
             </p>
             <p>
               <strong>Type d'arrêt : </strong>
@@ -124,15 +123,15 @@ class OlMap extends Component{
               {this.props.value.olMap.json.short_name}
             </p>
             <p>
-              <strong>Code Reflex : </strong>
+              <strong>ID Reflex : </strong>
               {this.props.value.olMap.json.user_objectid}
             </p>
 
-            <p>
-              <strong>Coordonnées : </strong>
-              WSG84
-              {this.props.value.olMap.json.latitude}
-              {this.props.value.olMap.json.longitude}
+            <p><strong>Coordonnées : </strong></p>
+            <p style={{paddingLeft: 10, marginTop: 0}}>
+              <em>Proj.: </em>WSG84<br/>
+              <em>Lat.: </em>{this.props.value.olMap.json.latitude} <br/>
+              <em>Lon.: </em>{this.props.value.olMap.json.longitude}
             </p>
             <p>
               <strong>Code Postal : </strong>

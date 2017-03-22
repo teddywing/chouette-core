@@ -1,5 +1,6 @@
-= simple_form_for [workbench, import] do |f|
+= simple_form_for import, as: :import, url: workbench_imports_path(workbench) do |f|
   = f.input :name
   = f.input :file
-  = f.association :referential
+  = f.association :referential, collection: workbench.referentials
+  = f.input :type, as: :hidden
   = f.button :submit

@@ -2,7 +2,7 @@
 - @imports.each do |import|
   .import
     li = link_to import.name, workbench_import_path(@workbench, import)
-    li = import.referential.name
+    li = import.referential.name if import.referential
     li = link_to import.file.file.filename, import.file.url, target: :_blank
     hr
 

@@ -54,22 +54,24 @@ class VehicleJourney extends Component {
             <div key={i}>{this.timeTableURL(tt.id)}</div>
           )}
 
-          <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
-            <input
-              id={this.props.index}
-              name={this.props.index}
-              onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
-              type='checkbox'
-              disabled={this.props.value.deletable}
-              checked={this.props.value.selected}
-            ></input>
-            <label htmlFor={this.props.index}></label>
-          </div>
-        </div>
+          {this.isDisabled(this.props.filters.policy['vehicle_journeys.edit'], this.props.filters.policy['vehicle_journeys.destroy']) &&
+            <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
+              <input
+                id={this.props.index}
+                name={this.props.index}
+                onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
+                type='checkbox'
+                disabled={this.props.value.deletable}
+                checked={this.props.value.selected}
+              ></input>
+              <label htmlFor={this.props.index}></label>
+            </div>
+        }
 
+        </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
-            <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
+            <div className={'cellwrap' + (vj.dummy ? ' headlined' : '') + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
                 <div data-headline='Départ à'>
                   <span className={((this.props.value.deletable && (!vj.dummy)) ? 'disabled ' : '') + 'input-group time'}>

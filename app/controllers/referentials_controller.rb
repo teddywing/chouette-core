@@ -73,7 +73,7 @@ class ReferentialsController < BreadcrumbController
 
 
   def resource
-    @referential ||= current_organisation.referentials.find_by_id(params[:id])
+    @referential ||= current_organisation.find_referential(params[:id])
   end
 
   def collection
