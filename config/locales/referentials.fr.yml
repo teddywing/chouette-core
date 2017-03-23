@@ -114,7 +114,7 @@ fr:
     referentials:
       deleted: "Les jeux de données on été supprimés"
     referential:
-      archived: "Le jeu de données a été correctement archivé"
-      unarchived: "Le jeu de données a été correctement désarchivé"
-      unarchived_failed: "Le jeu de données ne peut être désarchivé"
+      archived: "Le jeu de données a été correctement conservé"
+      unarchived: "Le jeu de données a été correctement déconservé"
+      unarchived_failed: "Le jeu de données ne peut être déconservé"
       deleted: "Le jeu de données a été correctement supprimé"
