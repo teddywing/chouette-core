@@ -14,7 +14,7 @@ module RoutesHelper
   end
 
   def route_json_for_edit(route)
-    route.stop_points.includes(:stop_area).map do |stop_point|
+    route.stop_points.includes(:stop_area).order(:position).map do |stop_point|
       stop_area_attributes = stop_point.stop_area.attributes.slice("name","city_name", "zip_code", "registration_number", "longitude", "latitude", "area_type")
       stop_area_attributes["short_name"] = truncate(stop_area_attributes["name"], :length => 30) || ""
       stop_point_attributes = stop_point.attributes.slice("for_boarding","for_alighting")
