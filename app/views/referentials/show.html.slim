@@ -3,7 +3,7 @@
              @referential.name,
              'Lorem ipsum dolor sit amet',
              t('last_update', time: l(@referential.updated_at, format: :short)),
-             link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default') do
+             @referential.archived? ? nil : link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default') do
 
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
