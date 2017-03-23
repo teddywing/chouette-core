@@ -92,7 +92,7 @@ class LinesController < BreadcrumbController
   private
 
   def sort_column
-    (Chouette::Line.column_names + ['companies.name']).include?(params[:sort]) ? params[:sort] : 'number'
+    (Chouette::Line.column_names + ['companies.name', 'networks.name']).include?(params[:sort]) ? params[:sort] : 'number'
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
