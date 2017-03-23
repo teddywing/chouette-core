@@ -7,9 +7,7 @@ class WorkbenchesController < BreadcrumbController
   def show
     scope = params[:q] ? resource.all_referentials : resource.referentials.ready
     scope = ransack_associated_lines(scope)
-
     @q = ransack_periode(scope).ransack(params[:q])
-    @q.organisation_name_eq_any ||= current_organisation.name unless params[:q]
     @wbench_refs = sort_result(@q.result).paginate(page: params[:page], per_page: 30)
     show! do
       build_breadcrumb :show
