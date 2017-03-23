@@ -1,4 +1,9 @@
 $(document).on 'ready page:load', ->
+
+  link = []
+  $(document).on 'page:before-change', ->
+    link = []
+
   $el = $('#main_nav')
     # Opening/closing left-side menu
   $el.find('.openMenu').on 'click', (e) ->
@@ -13,31 +18,29 @@ $(document).on 'ready page:load', ->
   selectedItem.closest('.panel-title').children('a').attr('aria-expanded') == true
 
 
+  data = $('.page-action .small')[0].innerHTML
+
+  stickyContent = '<div class="sticky-content">'
+  stickyContent += '<div class="sticky-ptitle">' + $(".page-title").html() + '</div>'
+  stickyContent += '<div class="sticky-paction"><div class="small">' + data + '</div></div>'
+  stickyContent += '</div>'
+
   # Sticky behavior
   $(document).on 'scroll', ->
     limit = 51
-
-    data = ""
-    $('.page-action').children().each ->
-      data += $(this)[0].outerHTML
-
-    stickyContent = '<div class="sticky-content">'
-    stickyContent += '<div class="sticky-ptitle">' + $(".page-title").html() + '</div>'
-    stickyContent += '<div class="sticky-paction">' + data + '</div>'
-    stickyContent += '</div>'
-
-    # console.log stickyContent
 
     if $(window).scrollTop() >= limit
       $('#main_nav').addClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length == 0
         $('#menu_top').children('.menu-content').after(stickyContent)
-        # $('.sticky-paction .small').after($('.formSubmitr'))
+        if link.length == 0
+          link = $('.page-action .small').next()
+        $('.sticky-paction .small').after(link)
 
     else
       $('#main_nav').removeClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length > 0
-        # $('.page-action .small').after($('.formSubmitr'))
+        $('.page-action .small').after(link)
         $('.sticky-content').remove()

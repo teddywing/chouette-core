@@ -25,7 +25,7 @@
             :number => 'number',
             :name => 'name',
             :network => Proc.new { |n| n.try(:network).try(:name) },
-            :company => Proc.new { |n| n.try(:company).try(:name) },
+            'companies.name' => Proc.new { |n| n.try(:company).try(:name) },
             :transport_mode => Proc.new { |n| n.transport_mode.nil? ? '-' :  t("enumerize.line.transport_mode.#{n.try(:transport_mode)}") },
             :transport_submode => Proc.new { |n| n.transport_submode.nil? ? '-' :  t("enumerize.line.transport_submode.#{n.try(:transport_submode)}") } },
             [:show, :delete],
