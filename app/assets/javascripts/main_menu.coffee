@@ -1,4 +1,9 @@
 $(document).on 'ready page:load', ->
+
+  link = []
+  $(document).on 'page:before-change', ->
+    link = []
+
   $el = $('#main_nav')
     # Opening/closing left-side menu
   $el.find('.openMenu').on 'click', (e) ->
@@ -14,8 +19,6 @@ $(document).on 'ready page:load', ->
 
 
   data = $('.page-action .small')[0].innerHTML
-  link = $('.page-action .small').next()
-  console.log link
 
   stickyContent = '<div class="sticky-content">'
   stickyContent += '<div class="sticky-ptitle">' + $(".page-title").html() + '</div>'
@@ -25,7 +28,6 @@ $(document).on 'ready page:load', ->
   # Sticky behavior
   $(document).on 'scroll', ->
     limit = 51
-    # console.log stickyContent
 
     if $(window).scrollTop() >= limit
       $('#main_nav').addClass 'sticky'
