@@ -29,7 +29,6 @@ class BSelect3 extends React.Component{
 
   parsedText(data) {
     let a = this.props.value.text.replace('</em></small>', '')
-    console.log(a)
     let b = a.split('<small><em>')
 
     return (
