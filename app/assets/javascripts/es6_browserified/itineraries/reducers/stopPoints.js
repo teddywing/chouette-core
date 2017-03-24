@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var addInput = require('../form_helper')
 
 const stopPoint = (state = {}, action, length) => {
@@ -60,7 +61,7 @@ const stopPoints = (state = [], action) => {
       return state.map( (t, i) => {
         if (i === action.index) {
           updateFormForDeletion(t)
-          return Object.assign(
+          return _.assign(
             {},
             t,
             {
@@ -84,7 +85,7 @@ const stopPoints = (state = [], action) => {
     case 'UPDATE_SELECT_VALUE':
       return state.map( (t, i) => {
         if (i === action.index) {
-          let stopState = Object.assign({}, t)
+          let stopState = _.assign({}, t)
           stopState[action.select_id] = action.select_value
           return stopState
         } else {
@@ -94,7 +95,7 @@ const stopPoints = (state = [], action) => {
     case 'TOGGLE_EDIT':
       return state.map((t, i) => {
         if (i === action.index){
-          return Object.assign({}, t, {edit: !t.edit})
+          return _.assign({}, t, {edit: !t.edit})
         } else {
           return t
         }
@@ -103,19 +104,19 @@ const stopPoints = (state = [], action) => {
       return state.map( (t, i) => {
         if (i === action.index){
           let val = !t.olMap.isOpened
-          let jsonData = val ? Object.assign({}, t, {olMap: undefined}) : {}
-          let stateMap = Object.assign({}, t.olMap, {isOpened: val, json: jsonData})
-          return Object.assign({}, t, {olMap: stateMap})
+          let jsonData = val ? _.assign({}, t, {olMap: undefined}) : {}
+          let stateMap = _.assign({}, t.olMap, {isOpened: val, json: jsonData})
+          return _.assign({}, t, {olMap: stateMap})
         }else {
-          let emptyMap = Object.assign({}, t.olMap, {isOpened: false, json : {}})
-          return Object.assign({}, t, {olMap: emptyMap})
+          let emptyMap = _.assign({}, t.olMap, {isOpened: false, json : {}})
+          return _.assign({}, t, {olMap: emptyMap})
         }
       })
     case 'SELECT_MARKER':
       return state.map((t, i) => {
         if (i === action.index){
-          let stateMap = Object.assign({}, t.olMap, {json: action.data})
-          return Object.assign({}, t, {olMap: stateMap})
+          let stateMap = _.assign({}, t.olMap, {json: action.data})
+          return _.assign({}, t, {olMap: stateMap})
         } else {
           return t
         }
@@ -123,16 +124,16 @@ const stopPoints = (state = [], action) => {
     case 'UNSELECT_MARKER':
       return state.map((t, i) => {
         if (i === action.index){
-          let stateMap = Object.assign({}, t.olMap, {json: {}})
-          return Object.assign({}, t, {olMap: stateMap})
+          let stateMap = _.assign({}, t.olMap, {json: {}})
+          return _.assign({}, t, {olMap: stateMap})
         } else {
           return t
         }
       })
     case 'CLOSE_MAP':
       return state.map( (t, i) => {
-        let emptyMap = Object.assign({}, t.olMap, {isOpened: false, json: {}})
-        return Object.assign({}, t, {olMap: emptyMap})
+        let emptyMap = _.assign({}, t.olMap, {isOpened: false, json: {}})
+        return _.assign({}, t, {olMap: emptyMap})
       })
     default:
       return state

@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var actions = require("../actions")
 
 const journeyPattern = (state = {}, action) => {
@@ -21,12 +22,12 @@ const journeyPattern = (state = {}, action) => {
     case 'UPDATE_CHECKBOX_VALUE':
       var updatedStopPoints = state.stop_points.map((s) => {
         if (String(s.id) == action.id) {
-          return Object.assign({}, s, {checked : !s.checked})
+          return _.assign({}, s, {checked : !s.checked})
         }else {
           return s
         }
       })
-      return Object.assign({}, state, {stop_points: updatedStopPoints})
+      return _.assign({}, state, {stop_points: updatedStopPoints})
     default:
       return state
   }
@@ -61,7 +62,7 @@ const journeyPatterns = (state = [], action) => {
     case 'DELETE_JOURNEYPATTERN':
       return state.map((j, i) =>{
         if(i == action.index) {
-          return Object.assign({}, j, {deletable: true})
+          return _.assign({}, j, {deletable: true})
         } else {
           return j
         }
@@ -74,7 +75,7 @@ const journeyPatterns = (state = [], action) => {
     case 'SAVE_MODAL':
       return state.map((j, i) =>{
         if(i == action.index) {
-          return Object.assign({}, j, {
+          return _.assign({}, j, {
             name: action.data.name.value,
             published_name: action.data.published_name.value,
             registration_number: action.data.registration_number.value

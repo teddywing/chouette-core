@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var React = require('react')
 var PropTypes = require('react').PropTypes
 var Select2 = require('react-select2')
@@ -29,7 +30,6 @@ class BSelect3 extends React.Component{
 
   parsedText(data) {
     let a = this.props.value.text.replace('</em></small>', '')
-    console.log(a)
     let b = a.split('<small><em>')
 
     return (
@@ -97,7 +97,7 @@ class BSelect2 extends React.Component{
             processResults: function(data, params) {
               return {
                 results: data.map(
-                  item => Object.assign(
+                  item => _.assign(
                     {},
                     item,
                     { text: item.name + ", " + item.zip_code + " " + item.short_city_name + " <small><em>(" + item.user_objectid + ")</em></small>" }

@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
@@ -96,7 +97,7 @@ class OlMap extends Component{
               return false
             }
           }
-          let data = Object.assign({}, e.selected[0].getProperties(), {geometry: undefined});
+          let data = _.assign({}, e.selected[0].getProperties(), {geometry: undefined});
 
           this.props.onSelectMarker(this.props.index, data)
         } else {
