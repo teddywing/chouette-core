@@ -4,14 +4,14 @@ const modal = (state = {}, action) => {
   switch (action.type) {
     case 'OPEN_CONFIRM_MODAL':
       $('#ConfirmModal').modal('show')
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         type: 'confirm',
         confirmModal: {
           callback: action.callback,
         }
       })
     case 'EDIT_NOTES_VEHICLEJOURNEY_MODAL':
-      let vehicleJourneyModal = Object.assign({}, action.vehicleJourney)
+      let vehicleJourneyModal = _.assign({}, action.vehicleJourney)
       return {
         type: 'notes_edit',
         modalProps: {
@@ -26,7 +26,7 @@ const modal = (state = {}, action) => {
       }else{
         newModalProps.vehicleJourney.footnotes = newModalProps.vehicleJourney.footnotes.filter((f) => {return f.id != action.footnote.id })
       }
-      return Object.assign({}, state, {modalProps: newModalProps})
+      return _.assign({}, state, {modalProps: newModalProps})
     case 'EDIT_VEHICLEJOURNEY_MODAL':
       return {
         type: 'edit',
@@ -55,11 +55,11 @@ const modal = (state = {}, action) => {
         confirmModal: {}
       }
     case 'SELECT_CP_EDIT_MODAL':
-      newModalProps = Object.assign({}, state.modalProps, {selectedCompany : action.selectedItem})
-      return Object.assign({}, state, {modalProps: newModalProps})
+      newModalProps = _.assign({}, state.modalProps, {selectedCompany : action.selectedItem})
+      return _.assign({}, state, {modalProps: newModalProps})
     case 'SELECT_TT_CALENDAR_MODAL':
-      newModalProps = Object.assign({}, state.modalProps, {selectedTimetable : action.selectedItem})
-      return Object.assign({}, state, {modalProps: newModalProps})
+      newModalProps = _.assign({}, state.modalProps, {selectedTimetable : action.selectedItem})
+      return _.assign({}, state, {modalProps: newModalProps})
     case 'ADD_SELECTED_TIMETABLE':
       if(state.modalProps.selectedTimetable){
         newModalProps = JSON.parse(JSON.stringify(state.modalProps))
@@ -77,7 +77,7 @@ const modal = (state = {}, action) => {
         if (!_.find(newModalProps.timetables, newModalProps.selectedTimetable)){
           newModalProps.timetables.push(newModalProps.selectedTimetable)
         }
-        return Object.assign({}, state, {modalProps: newModalProps})
+        return _.assign({}, state, {modalProps: newModalProps})
       }
     case 'DELETE_CALENDAR_MODAL':
       newModalProps = JSON.parse(JSON.stringify(state.modalProps))
@@ -97,7 +97,7 @@ const modal = (state = {}, action) => {
       })
       newModalProps.vehicleJourneys = vehicleJourneysModal
       newModalProps.timetables = timetablesModal
-      return Object.assign({}, state, {modalProps: newModalProps})
+      return _.assign({}, state, {modalProps: newModalProps})
     case 'CREATE_VEHICLEJOURNEY_MODAL':
       return {
         type: 'create',
@@ -105,8 +105,8 @@ const modal = (state = {}, action) => {
         confirmModal: {}
       }
     case 'SELECT_JP_CREATE_MODAL':
-      newModalProps = Object.assign({}, state.modalProps, {selectedJPModal : action.selectedItem})
-      return Object.assign({}, state, {modalProps: newModalProps})
+      newModalProps = _.assign({}, state.modalProps, {selectedJPModal : action.selectedItem})
+      return _.assign({}, state, {modalProps: newModalProps})
     case 'SHIFT_VEHICLEJOURNEY_MODAL':
       return {
         type: 'shift',
