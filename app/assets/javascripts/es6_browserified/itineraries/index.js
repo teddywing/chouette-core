@@ -65,7 +65,7 @@ render(
 
 document.querySelector('input[name=commit]').addEventListener('click', (event)=>{
   let state = store.getState()
-  for (let [i, stopPoint] of state.stopPoints.entries()){
+  state.stopPoints.map((stopPoint, i) => {
     if (stopPoint.stoppoint_id == undefined){
       stopPoint.stoppoint_id = ""
     }
@@ -74,5 +74,5 @@ document.querySelector('input[name=commit]').addEventListener('click', (event)=>
     addInput('position',i, i)
     addInput('for_boarding',stopPoint.for_boarding, i)
     addInput('for_alighting',stopPoint.for_alighting, i)
-  }
+  })
 })
