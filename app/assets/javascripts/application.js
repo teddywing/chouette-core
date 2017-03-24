@@ -22,3 +22,4 @@
 //= require_directory ./plugins
 //= require_directory .
 require('whatwg-fetch')
+require('babel-polyfill')
