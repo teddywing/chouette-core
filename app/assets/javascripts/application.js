@@ -21,3 +21,4 @@
 //= require footable/footable.sort
 //= require_directory ./plugins
 //= require_directory .
+require('whatwg-fetch')

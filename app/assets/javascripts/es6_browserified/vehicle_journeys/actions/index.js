@@ -1,3 +1,9 @@
+var Promise = require('promise-polyfill')
+
+// To add to window
+if (!window.Promise) {
+  window.Promise = Promise;
+}
 var batchActions = require('../batch').batchActions
 
 const actions = {
@@ -271,12 +277,10 @@ const actions = {
     if (queryString){
       urlJSON = urlJSON + sep + queryString
     }
-    let req = new Request(urlJSON, {
-      credentials: 'same-origin',
-    })
     let hasError = false
-    fetch(req)
-      .then(response => {
+    fetch(urlJSON, {
+      credentials: 'same-origin',
+    }).then(response => {
         if(response.status == 500) {
           hasError = true
         }
@@ -322,7 +326,8 @@ const actions = {
   submitVehicleJourneys : (dispatch, state, next) => {
     dispatch(actions.fetchingApi())
     let urlJSON = window.location.pathname + "_collection.json"
-    let req = new Request(urlJSON, {
+    let hasError = false
+    fetch(urlJSON, {
       credentials: 'same-origin',
       method: 'PATCH',
       contentType: 'application/json; charset=utf-8',
@@ -331,10 +336,7 @@ const actions = {
       headers: {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
       }
-    })
-    let hasError = false
-    fetch(req)
-      .then(response => {
+    }).then(response => {
         if(!response.ok) {
           hasError = true
         }
