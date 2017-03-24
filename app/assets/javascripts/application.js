@@ -7,6 +7,7 @@
 //= require turbolinks
 //= require jquery
 //= require jquery_ujs
+//= require(es6-object-assign).polyfill()
 //= require modernizr
 //= require cocoon
 //= require  ./OpenLayers/ol.js
