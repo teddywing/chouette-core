@@ -7,31 +7,31 @@ var App = require('./components/App')
 var addInput = require('./form_helper')
 
 // logger, DO NOT REMOVE
-// var applyMiddleware = require('redux').applyMiddleware
-// var createLogger = require('redux-logger')
-// var thunkMiddleware = require('redux-thunk').default
-// var promise = require('redux-promise')
+var applyMiddleware = require('redux').applyMiddleware
+var createLogger = require('redux-logger')
+var thunkMiddleware = require('redux-thunk').default
+var promise = require('redux-promise')
 
 const getInitialState = () => {
   let state = []
   let datas = JSON.parse(decodeURIComponent(window.itinerary_stop))
 
   datas.map(function(v, i) {
-    let fancyText = v.name
+    let fancyText = v.name.replace("&#39;", "\'")
     if(v.zip_code && v.city_name)
-      fancyText += ", " + v.zip_code + " " + v.city_name
+      fancyText += ", " + v.zip_code + " " + v.city_name.replace("&#39;", "\'")
 
     state.push({
       stoppoint_id: v.stoppoint_id,
       stoparea_id: v.stoparea_id,
       user_objectid: v.user_objectid,
-      short_name: v.short_name,
+      short_name: v.short_name.replace("&#39;", "\'"),
       area_type: v.area_type,
       index: i,
       edit: false,
-      city_name: v.city_name,
+      city_name: v.city_name.replace("&#39;", "\'"),
       zip_code: v.zip_code,
-      name: v.name,
+      name: v.name.replace("&#39;", "\'"),
       registration_number: v.registration_number,
       text: fancyText,
       for_boarding: v.for_boarding || "normal",
@@ -49,11 +49,11 @@ const getInitialState = () => {
 }
 
 var initialState = {stopPoints: getInitialState()}
-// const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger()
 let store = createStore(
   reducers,
-  initialState
-  // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
+  initialState,
+  applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 
 render(

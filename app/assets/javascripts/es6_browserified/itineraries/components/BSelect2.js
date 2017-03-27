@@ -29,15 +29,20 @@ class BSelect3 extends React.Component{
   }
 
   parsedText(data) {
-    let a = this.props.value.text.replace('</em></small>', '')
+    let a = data.replace('</em></small>', '')
     let b = a.split('<small><em>')
-
-    return (
-      <span>
-        {b[0]}
-        <small><em>{b[1]}</em></small>
-      </span>
-    )
+    if (b.length > 1) {
+      return (
+        <span>
+          {b[0]}
+          <small><em>{b[1]}</em></small>
+        </span>
+      )
+    } else {
+      return (
+        <span>{data}</span>
+      )
+    }
   }
 
   render() {
@@ -61,7 +66,7 @@ class BSelect3 extends React.Component{
             href={origin + path + '/stop_areas/' + this.props.value.stoparea_id}
             title="Voir l'arrêt"
           >
-            {this.parsedText(this.props.text)}
+            {this.parsedText(this.props.value.text)}
           </a>
         )
   }
