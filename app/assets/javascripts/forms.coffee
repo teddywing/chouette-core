@@ -28,11 +28,9 @@
   isEdge = !isIE && !!window.StyleMedia
 
   if isIE || isEdge
-    $('.formSubmitr').each ->
+    $(document).on 'click', '.formSubmitr', ->
       target = $(this).attr('form')
-
-      $(this).on 'click', ->
-        $('#' + target).submit()
+      $('#' + target).submit()
 
 $(document).on 'ready page:load', togglableFilter
 $(document).on 'ready page:load', submitMover
