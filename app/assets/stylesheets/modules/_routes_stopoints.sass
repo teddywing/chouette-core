@@ -7,36 +7,43 @@
     padding-left: 20px
 
   .nested-fields
+    height: 100%
     > .wrapper
+      height: 100%
       > div:first-child
         position: relative
         padding-left: 20px /* intial value is 10 */
+        overflow: hidden
 
-        &:before
-          content: ''
-          display: block
-          width: 10px
-          height: 10px
-          background-color: #fff
-          border: 2px solid $blue
-          border-radius: 50%
-          position: absolute
-          z-index: 5
-          left: 0
-          top: 50%
-          margin-top: -5px
+        span
+          position: relative
 
-        &:after
-          content: ''
-          display: block
-          width: 4px
-          margin: 0 3px
-          background-color: rgba($grey, 0.5)
-          position: absolute
-          z-index: 3
-          top: 0
-          left: 0
-          bottom: 0
+          &:before
+            content: ''
+            display: block
+            width: 10px
+            height: 10px
+            background-color: #fff
+            border: 2px solid $blue
+            border-radius: 50%
+            position: absolute
+            z-index: 5
+            left: -20px
+            top: 50%
+            margin-top: -5px
+            box-sizing: border-box
+
+          &:after
+            content: ''
+            display: block
+            width: 4px
+            margin: 0 3px
+            background-color: rgba($grey, 0.5)
+            position: absolute
+            z-index: 3
+            top: -100px
+            left: -20px
+            bottom: -100px
 
       + .map_container
         > .map_metas
@@ -56,10 +63,10 @@
             left: 5px
 
     &:last-child > .wrapper > div:first-child
-      &:after
-        bottom: 50%
+      span:after
+        bottom: 5px
 
   .nested-fields:first-child > .wrapper > div:first-child,
   .nested-head + .nested-fields > .wrapper > div:first-child
-    &:after
-      top: 50%
+    span:after
+      top: 5px
