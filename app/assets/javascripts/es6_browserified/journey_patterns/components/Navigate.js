@@ -7,7 +7,6 @@ let Navigate = ({ dispatch, journeyPatterns, pagination, status }) => {
   let firstPage = 1
   let lastPage = Math.ceil(pagination.totalCount / window.journeyPatternsPerPage)
 
-  let ItemLength = window.journeyPatternLength
   let firstItemOnPage = firstPage + (pagination.perPage * (pagination.page - firstPage))
   let lastItemOnPage = firstItemOnPage + (pagination.perPage - firstPage)
 
@@ -19,7 +18,7 @@ let Navigate = ({ dispatch, journeyPatterns, pagination, status }) => {
       <div className='row'>
         <div className='col-lg-12 text-right'>
           <div className='pagination'>
-            Liste des missions {firstItemOnPage} à {(lastItemOnPage < ItemLength) ? lastItemOnPage : ItemLength} sur {ItemLength}
+            Liste des missions {firstItemOnPage} à {(lastItemOnPage < pagination.totalCount) ? lastItemOnPage : pagination.totalCount} sur {pagination.totalCount}
             <form className='page_links' onSubmit={e => {
                 e.preventDefault()
               }}>
