@@ -12,7 +12,7 @@
   "organization_name": "STIF",
   "organization_code": "STIF",
   "permissions": [
-    "boiv:edit-offer"
+    "BOIV:Edition Offre"
   ]
 }, {
   "id": 2,
@@ -28,7 +28,7 @@
   "organization_name": "STIF",
   "organization_code": "STIF",
   "permissions": [
-    "boiv:edit-offer"
+    "BOIV:Edition Offre"
   ]
 }, {
   "id": 3,
@@ -44,7 +44,7 @@
   "organization_name": "STIF",
   "organization_code": "STIF",
   "permissions": [
-    "boiv:edit-offer"
+    "BOIV:Edition Offre"
   ]
 }, {
   "id": 4,
@@ -138,7 +138,7 @@
   "organization_name": "STIF",
   "organization_code": "STIF",
   "permissions": [
-    "boiv:edit-offer"
+    "BOIV:Edition Offre"
   ]
 }, {
   "id": 10,
