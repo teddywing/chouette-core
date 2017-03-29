@@ -39,8 +39,7 @@ class User < ActiveRecord::Base
     self.name         = extra[:full_name]
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
-
-    if extra[:permissions] && extra[:permissions].include?('BOIV:Edition Offre')
+    if extra[:permissions] && extra[:permissions].include?('boiv:edit-offer')
       self.permissions  = @@edit_offer_permissions
     end
   end
@@ -71,7 +70,7 @@ class User < ActiveRecord::Base
       user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
       user.synced_at    = Time.now
 
-      if el['permissions'] && el['permissions'].include?('BOIV:Edition Offre')
+      if el['permissions'] && el['permissions'].include?('boiv:edit-offer')
         user.permissions = @@edit_offer_permissions
       end
       user.save
