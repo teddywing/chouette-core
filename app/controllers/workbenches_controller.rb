@@ -66,7 +66,9 @@ class WorkbenchesController < BreadcrumbController
     if begin_range > end_range
       flash.now[:error] = t('referentials.errors.validity_period')
     else
-      scope = scope.in_periode(begin_range..end_range)
+      scope        = scope.in_periode(begin_range..end_range)
+      @begin_range = begin_range
+      @end_range   = end_range
     end
     scope
   end
