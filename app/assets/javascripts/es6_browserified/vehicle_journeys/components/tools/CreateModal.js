@@ -40,7 +40,7 @@ class CreateModal extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Ajouter une mission</h4>
+                    <h4 className='modal-title'>Ajouter une course</h4>
                   </div>
 
                   {(this.props.modal.type == 'create') && (
