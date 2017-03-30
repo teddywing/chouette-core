@@ -9,10 +9,6 @@
 .page_content
   .container-fluid
     - if params[:q].present? or @companies.any?
-      .row.mb-sm
-        .col-lg-12.text-right
-          = new_pagination @companies
-
       .row
         .col-lg-12
           = search_form_for @q, url: line_referential_companies_path(@line_referential), html: {method: :get}, class: 'form form-filter' do |f|
