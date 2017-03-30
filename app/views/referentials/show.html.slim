@@ -3,12 +3,11 @@
              @referential.name,
              'Lorem ipsum dolor sit amet',
              t('last_update', time: l(@referential.updated_at, format: :short)),
-             @referential.archived? ? nil : link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default') do
+             ((@referential.archived? || !policy(@referential).edit?) ? '' : link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default')) do
 
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      / Actions are: controler, rapport de controle, dupliquer, purger, conserver, supprimer
       - if policy(@referential).new?
         = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
 
