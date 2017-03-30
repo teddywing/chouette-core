@@ -54,7 +54,7 @@ const StopPoint = (props) => {
             className='btn btn-link'
             onClick={props.onToggleEdit}
             >
-            <span className={'fa' + (props.value.edit ? ' fa-undo' : ' fa-pencil')}></span>
+            <span className={'fa' + (props.value.edit ? ' fa-check' : ' fa-pencil')}></span>
           </div>
           <div
             className='btn btn-link'
