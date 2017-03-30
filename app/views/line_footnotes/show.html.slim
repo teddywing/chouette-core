@@ -2,7 +2,7 @@
 = pageheader 'map-marker',
              "Notes sur la ligne #{@line.name}",
              'Lorem ipsum dolor sit amet',
-             (@line.footnotes.any? ? t('last_update', time: l(@line.footnotes.last.updated_at, format: :short)) : ''),
+             '',
              (policy(@line).update_footnote? ? link_to(t('actions.edit'), edit_referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary') : '')
 
 / PageContent
