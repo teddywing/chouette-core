@@ -13,7 +13,9 @@
 
     .form-group.togglable
       = f.label @wbench_refs.human_attribute_name(:status), required: false, class: 'control-label'
-      = f.input :archived_at_not_null, label: ("<span>Conservé<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox_list' }, input_html: { class: 'check_boxes' }
+      .filter_menu
+        = f.input :archived_at_not_null, label: ("<span>Conservé<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox_list' }, input_html: { class: 'check_boxes' }
+        = f.input :archived_at_null, label: ("<span>En préparation<span class='fa'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox_list' }, input_html: { class: 'check_boxes' }
 
     .form-group.togglable
       = f.label 'Organisation(s)', required: false, class: 'control-label'
