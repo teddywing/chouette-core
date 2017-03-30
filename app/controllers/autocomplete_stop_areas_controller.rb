@@ -10,7 +10,7 @@ class AutocompleteStopAreasController < InheritedResources::Base
 
   protected
   def collection
-    scope = referential.stop_areas
+    scope = referential.stop_areas.where(deleted_at: nil)
     scope = scope.physical if physical_filter?
     if target_type?
       scope = scope.where(area_type: params[:target_type])
