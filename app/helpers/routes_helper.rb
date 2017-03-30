@@ -13,6 +13,12 @@ module RoutesHelper
     end
   end
 
+  def input_opposite_route_id_css(route, way)
+    css = ['opposite_route', way]
+    css << 'hidden' if route.wayback.send("#{way}?")
+    css
+  end
+
   def route_json_for_edit(route)
     route.stop_points.includes(:stop_area).order(:position).map do |stop_point|
       stop_area_attributes = stop_point.stop_area.attributes.slice("name","city_name", "zip_code", "registration_number", "longitude", "latitude", "area_type")

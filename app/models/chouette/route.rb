@@ -5,7 +5,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
   extend ActiveModel::Naming
 
   enumerize :direction, in: %i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)
-  enumerize :wayback, in: %i(straight_forward backward)
+  enumerize :wayback, in: %i(straight_forward backward), default: :backward
 
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -91,7 +91,6 @@ class Chouette::Route < Chouette::TridentActiveRecord
   validate :check_opposite_route
   def check_opposite_route
     return unless opposite_route && opposite_wayback
-
     unless opposite_route_candidates.include?(opposite_route)
       errors.add(:opposite_route_id, :invalid)
     end
