@@ -70,7 +70,7 @@ fr:
         name: "Nom de la ligne"
         published_name: "Nom public"
         number: "Nom court"
-        transport_mode: "Mode"
+        transport_mode: "Mode de transport"
         transport_submode: "Sous mode de transport"
         url: "Page web associée"
         color: "Couleur du tracé"

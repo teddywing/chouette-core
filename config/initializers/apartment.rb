@@ -39,7 +39,9 @@ Apartment.configure do |config|
     "Workbench",
     "CleanUp",
     "CleanUpResult",
-    "Calendar"
+    "Calendar",
+    "Import",
+    "NetexImport"
   ]
 
   # use postgres schemas?

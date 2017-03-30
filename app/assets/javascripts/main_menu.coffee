@@ -1,8 +1,10 @@
 $(document).on 'ready page:load', ->
 
   link = []
+  ptitleCont = ""
   $(document).on 'page:before-change', ->
     link = []
+    ptitleCont = ""
 
   $el = $('#main_nav')
     # Opening/closing left-side menu
@@ -17,11 +19,15 @@ $(document).on 'ready page:load', ->
   selectedItem.closest('.panel-collapse').addClass 'in'
   selectedItem.closest('.panel-title').children('a').attr('aria-expanded') == true
 
+  # Sticky content
+  if ($('.page-action .small').length > 0)
+    data = $('.page-action .small')[0].innerHTML
 
-  data = $('.page-action .small')[0].innerHTML
+  if ($(".page-title").length > 0)
+    ptitleCont = $(".page-title").html()
 
   stickyContent = '<div class="sticky-content">'
-  stickyContent += '<div class="sticky-ptitle">' + $(".page-title").html() + '</div>'
+  stickyContent += '<div class="sticky-ptitle">' + ptitleCont + '</div>'
   stickyContent += '<div class="sticky-paction"><div class="small">' + data + '</div></div>'
   stickyContent += '</div>'
 
@@ -33,7 +39,8 @@ $(document).on 'ready page:load', ->
       $('#main_nav').addClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length == 0
-        $('#menu_top').children('.menu-content').after(stickyContent)
+        if ptitleCont.length > 0
+          $('#menu_top').children('.menu-content').after(stickyContent)
         if link.length == 0
           link = $('.page-action .small').next()
         $('.sticky-paction .small').after(link)

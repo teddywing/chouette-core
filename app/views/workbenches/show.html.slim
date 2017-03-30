@@ -2,7 +2,7 @@
 = pageheader 'map-marker',
              t('referentials.index.title'),
              'Lorem ipsum dolor sit amet',
-             t('last_update', time: l(@workbench.updated_at, format: :short)) do
+             '' do
 
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
@@ -13,10 +13,6 @@
 .page_content
   .container-fluid
     - if params[:q].present? or @wbench_refs.any?
-      / .row.mb-sm
-        / .col-lg-12.text-right
-          / = new_pagination @wbench_refs
-
       .row
         .col-lg-12
           = render 'filters'

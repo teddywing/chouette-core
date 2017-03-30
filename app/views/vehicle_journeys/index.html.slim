@@ -2,7 +2,7 @@
 = pageheader 'map-marker',
              t('vehicle_journeys.index.title', route: @route.name ),
              'Lorem ipsum dolor sit amet',
-             (@vehicle_journeys.any? ? t('last_update', time: l(@vehicle_journeys.last.updated_at, format: :short)) : '') do
+             '' do
 
 / PageContent
 .page_content

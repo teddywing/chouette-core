@@ -28,7 +28,8 @@ module ActiveAttr::MultiParameterAttributes
     single_parameter_attributes.merge(
       multi_parameter_attributes.inject({}) do |hash, (key, args)|
         if args.all?(&:present?)
-          hash.merge(key => _attribute_type(key).new(*args))
+          value = _attribute_type(key).new(*args) rescue nil
+          hash.merge(key => value)
         else
           hash
         end

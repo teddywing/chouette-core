@@ -39,7 +39,9 @@ class User < ActiveRecord::Base
     self.name         = extra[:full_name]
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
-    self.permissions  = @@edit_offer_permissions if extra[:permissions] && extra[:permissions].find { |permission| permission == 'boiv:edit-offer' }
+    if extra[:permissions] && extra[:permissions].include?('boiv:edit-offer')
+      self.permissions  = @@edit_offer_permissions
+    end
   end
 
   def self.portail_api_request
@@ -66,8 +68,11 @@ class User < ActiveRecord::Base
       user.email        = el['email']
       user.locked_at    = el['locked_at']
       user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
-      user.permissions  = @@edit_offer_permissions if el['permissions'] && el['permissions'].find { |permission| permission == 'boiv:edit-offer' }
       user.synced_at    = Time.now
+
+      if el['permissions'] && el['permissions'].include?('boiv:edit-offer')
+        user.permissions = @@edit_offer_permissions
+      end
       user.save
       puts "✓ user #{user.username} has been updated" unless Rails.env.test?
     end

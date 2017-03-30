@@ -78,6 +78,10 @@ RSpec.describe ReferentialMetadata, :type => :model do
       expect(period("end(3i)"=>"18", "end(2i)"=>"2", "end(1i)"=>"2017").end).to eq(Date.new(2017,2,18))
     end
 
+    it "should ignore invalid date" do
+      expect(period("end(3i)"=>"30", "end(2i)"=>"2", "end(1i)"=>"2017").end).to eq(nil)
+    end
+
     it { is_expected.to validate_presence_of(:begin) }
     it { is_expected.to validate_presence_of(:end) }
 

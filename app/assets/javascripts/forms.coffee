@@ -28,7 +28,9 @@
   isEdge = !isIE && !!window.StyleMedia
 
   if isIE || isEdge
-    $(document).on 'click', '.formSubmitr', ->
+    $('.formSubmitr').off()
+    $(document).on 'click', '.formSubmitr', (e)->
+      e.preventDefault()
       target = $(this).attr('form')
       $('#' + target).submit()
 
