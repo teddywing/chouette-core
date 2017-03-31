@@ -20,22 +20,22 @@ $(document).on 'ready page:load', ->
   selectedItem.closest('.panel-title').children('a').attr('aria-expanded') == true
 
   # Sticky content
-  if ($('.page-action .small').length > 0)
-    data = $('.page-action .small')[0].innerHTML
-
-  if ($(".page-title").length > 0)
-    ptitleCont = $(".page-title").html()
-
-  stickyContent = '<div class="sticky-content">'
-  stickyContent += '<div class="sticky-ptitle">' + ptitleCont + '</div>'
-  stickyContent += '<div class="sticky-paction"><div class="small">' + data + '</div></div>'
-  stickyContent += '</div>'
 
   # Sticky behavior
   $(document).on 'scroll', ->
     limit = 51
 
     if $(window).scrollTop() >= limit
+      if ($('.page-action .small').length > 0)
+        data = $('.page-action .small')[0].innerHTML
+
+      if ($(".page-title").length > 0)
+        ptitleCont = $(".page-title").html()
+
+      stickyContent = '<div class="sticky-content">'
+      stickyContent += '<div class="sticky-ptitle">' + ptitleCont + '</div>'
+      stickyContent += '<div class="sticky-paction"><div class="small">' + data + '</div></div>'
+      stickyContent += '</div>'
       $('#main_nav').addClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length == 0
