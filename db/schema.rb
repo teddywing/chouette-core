@@ -514,10 +514,10 @@ ActiveRecord::Schema.define(version: 20170322075010) do
     t.string   "objectid",                                                       null: false
     t.integer  "object_version",     limit: 8
     t.string   "creator_id"
-    t.float    "distance"
-    t.boolean  "no_processing"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.float    "distance"
+    t.boolean  "no_processing"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -825,6 +825,8 @@ ActiveRecord::Schema.define(version: 20170322075010) do
   add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
+  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
+
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
   add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify
@@ -846,6 +848,8 @@ ActiveRecord::Schema.define(version: 20170322075010) do
 
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_child_fkey", column: "child_id", dependent: :delete
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_parent_fkey", column: "parent_id", dependent: :delete
+
+  add_foreign_key "stop_points", "routes", name: "stoppoint_route_fkey", dependent: :delete
 
   add_foreign_key "time_table_dates", "time_tables", name: "tm_date_fkey", dependent: :delete
 
