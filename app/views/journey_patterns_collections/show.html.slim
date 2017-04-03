@@ -11,9 +11,10 @@
       .col-lg-12
         #journey_patterns
 
-
 = javascript_tag do
   | window.stopPoints = #{(@stop_points_list.to_json).html_safe};
   | window.journeyPatternLength = #{@journey_patterns.total_entries()};
-  | window.journeyPatternsPerPage = #{@ppage}
+  | window.journeyPatternsPerPage = #{@ppage};
+  | window.perms = #{raw @perms}
+
 = javascript_include_tag 'es6_browserified/journey_patterns/index.js'

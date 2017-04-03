@@ -34,7 +34,7 @@ class JourneyPattern extends Component{
             type='checkbox'
             id={sp.id}
             checked={sp.checked}
-            disabled={this.props.value.deletable ? 'disabled' : ''}
+            disabled={(this.props.value.deletable || this.props.status.policy['journey_patterns.edit'] == false) ? 'disabled' : ''}
             >
           </input>
           <span className='radio-label'></span>
@@ -74,7 +74,7 @@ class JourneyPattern extends Component{
                 <span className='fa fa-cog'></span>
               </div>
               <ul className='dropdown-menu'>
-                <li className={this.props.value.deletable ? 'disabled' : ''}>
+                <li className={(this.props.value.deletable || this.props.status.policy['journey_patterns.edit'] == false) ? 'disabled' : ''}>
                   <a
                     href='#'
                     onClick={this.props.onOpenEditModal}
@@ -87,7 +87,7 @@ class JourneyPattern extends Component{
                 <li className={this.props.value.object_id ? '' : 'disabled'}>
                   {this.vehicleJourneyURL(this.props.value.object_id)}
                 </li>
-                <li className='delete-action'>
+                <li className={'delete-action' + ((this.props.status.policy['journey_patterns.edit'] == false)? ' disabled' : '')}>
                   <a
                     href='#'
                     onClick={(e) => {

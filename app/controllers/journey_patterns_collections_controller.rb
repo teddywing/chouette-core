@@ -1,6 +1,7 @@
 class JourneyPatternsCollectionsController < ChouetteController
   respond_to :html
   respond_to :json
+  before_action :user_permissions, only: :show
 
   belongs_to :referential do
     belongs_to :line, :parent_class => Chouette::Line do
@@ -39,6 +40,15 @@ class JourneyPatternsCollectionsController < ChouetteController
       }
     end
     @stop_points_list = @stop_points_list.sort_by {|a| a[:position] }
+  end
+
+  def user_permissions
+    @perms = {}.tap do |perm|
+      ['journey_patterns.create', 'journey_patterns.edit', 'journey_patterns.destroy'].each do |name|
+        perm[name] = current_user.permissions.include?(name)
+      end
+    end
+    @perms = @perms.to_json
   end
 
   def update
