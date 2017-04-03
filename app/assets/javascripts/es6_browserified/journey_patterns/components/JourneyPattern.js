@@ -75,28 +75,28 @@ class JourneyPattern extends Component{
               </div>
               <ul className='dropdown-menu'>
                 <li className={(this.props.value.deletable || this.props.status.policy['journey_patterns.edit'] == false) ? 'disabled' : ''}>
-                  <a
-                    href='#'
+                  <button
+                    type='button'
                     onClick={this.props.onOpenEditModal}
                     data-toggle='modal'
                     data-target='#JourneyPatternModal'
                     >
                     Editer
-                  </a>
+                  </button>
                 </li>
                 <li className={this.props.value.object_id ? '' : 'disabled'}>
                   {this.vehicleJourneyURL(this.props.value.object_id)}
                 </li>
                 <li className={'delete-action' + ((this.props.status.policy['journey_patterns.edit'] == false)? ' disabled' : '')}>
-                  <a
-                    href='#'
+                  <button
+                    type='button'
                     onClick={(e) => {
                       e.preventDefault()
                       this.props.onDeleteJourneyPattern(this.props.index)}
                     }
                     >
-                    <span className='fa fa-trash'></span>Supprimer
-                    </a>
+                      <span className='fa fa-trash'></span>Supprimer
+                    </button>
                   </li>
                 </ul>
               </div>
