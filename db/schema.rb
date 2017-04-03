@@ -530,10 +530,10 @@ ActiveRecord::Schema.define(version: 20170410134931) do
     t.string   "objectid",                                                       null: false
     t.integer  "object_version",     limit: 8
     t.string   "creator_id"
-    t.float    "distance"
-    t.boolean  "no_processing"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.float    "distance"
+    t.boolean  "no_processing"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -865,6 +865,8 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_child_fkey", column: "child_id", dependent: :delete
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_parent_fkey", column: "parent_id", dependent: :delete
+
+  add_foreign_key "stop_points", "routes", name: "stoppoint_route_fkey", dependent: :delete
 
   add_foreign_key "time_table_dates", "time_tables", name: "tm_date_fkey", dependent: :delete
 
