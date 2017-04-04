@@ -90,6 +90,7 @@ class JourneyPattern extends Component{
                 <li className={'delete-action' + ((this.props.status.policy['journey_patterns.edit'] == false)? ' disabled' : '')}>
                   <button
                     type='button'
+                    disabled={(this.props.status.policy['journey_patterns.edit'] == false)? ' disabled' : ''}
                     onClick={(e) => {
                       e.preventDefault()
                       this.props.onDeleteJourneyPattern(this.props.index)}
