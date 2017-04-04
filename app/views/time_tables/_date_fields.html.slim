@@ -8,7 +8,6 @@
 
   .wrapper
     div
-      / = f.label @time_table.human_attribute_name("date"), class: 'col-md-1'
       = f.input :date, as: :date, label: false, wrapper_html: { class: 'date' }
       = f.input :in_out, as: :hidden, :input_html => {:value => true}
     div

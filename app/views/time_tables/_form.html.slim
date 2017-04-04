@@ -3,57 +3,87 @@
   .row
     .col-lg-12
       = form.input :comment, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.comment")}
-      = form.input :version
-
       = form.input :tag_list, as: :tags
 
-      = form.input :objectid, :required => !@time_table.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.objectid")}
+      / = form.input :version
+      / = form.input :objectid, :required => !@time_table.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.objectid")}
+
+      .form-group
+        label.control-label.col-sm-4
+          = "Journées d'applications pour les périodes ci-dessous"
+
+        .col-sm-8
+          .form-group.labelled-checkbox-group
+            = form.input :monday, as: :boolean, label: ("<span class='lcbx-group-item-label'>L</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :tuesday, as: :boolean, label: ("<span class='lcbx-group-item-label'>Ma</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :wednesday, as: :boolean, label: ("<span class='lcbx-group-item-label'>Me</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :thursday, as: :boolean, label: ("<span class='lcbx-group-item-label'>J</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :friday, as: :boolean, label: ("<span class='lcbx-group-item-label'>V</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :saturday, as: :boolean, label: ("<span class='lcbx-group-item-label'>S</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :sunday, as: :boolean, label: ("<span class='lcbx-group-item-label'>D</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+
       - if @time_table.new_record?
         = form.input :calendar, as: :select, collection: current_organisation.calendars
 
   .separator
-  
-  .row
-    .col-lg-12
-      h3 = @time_table.human_attribute_name('periods')
-
-      label.day_type_label = @time_table.human_attribute_name("day_types")
-      = form.input :monday, as: :boolean, class: "others"
-      = form.input :tuesday, as: :boolean
-      = form.input :wednesday, as: :boolean
-      = form.input :thursday, as: :boolean
-      = form.input :friday, as: :boolean
-      = form.input :saturday, as: :boolean
-      = form.input :sunday, as: :boolean
 
   .row
     .col-lg-12
-      = form.simple_fields_for :periods do |p|
-        = render "period_fields", f: p
+      .subform
+        .nested-head
+          .wrapper
+            div
+              .form-group
+                label.control-label.required
+                  = t('simple_form.labels.referential.metadatas.periods.begin')
+                  abbr title='requis' *
+            div
+              .form-group
+                label.control-label.required
+                  = t('simple_form.labels.referential.metadatas.periods.end')
+                  abbr title='requis' *
+            div
 
-      = link_to_add_association t("time_tables.actions.add_period"), form, :periods, class: 'btn btn-outline-primary'
+        = form.simple_fields_for :periods do |p|
+          = render "period_fields", f: p
+
+        .links.nested-linker
+          = link_to_add_association t("time_tables.actions.add_period"), form, :periods, class: 'btn btn-outline-primary'
 
   .separator
   
   .row
-    .col-lg-12
-      h3 = @time_table.human_attribute_name('dates')
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .subform
+        .nested-head
+          .wrapper
+            div
+              .form-group
+                label.control-label
+                  = @time_table.human_attribute_name("dates")
+            div
+          
+        = form.simple_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == true}  do |p|
+          = render "date_fields",  f: p
 
-      = form.simple_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == true}  do |p|
-        = render "date_fields",  f: p
+        .links.nested-linker
+          = link_to_add_association t("time_tables.actions.add_date"), form, :dates, class: 'btn btn-outline-primary'
 
-      = link_to_add_association t("time_tables.actions.add_date"), form, :dates, class: 'btn btn-outline-primary'
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .subform
+        .nested-head
+          .wrapper
+            div
+              .form-group
+                label.control-label
+                  = @time_table.human_attribute_name("excluded_dates")
+            div
 
-  .separator
-  
-  .row
-    .col-lg-12
-      h3 = @time_table.human_attribute_name("excluded_dates")
+        = form.simple_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == false}  do |p|
+          = render "excluded_date_fields",  f: p
 
-      = form.simple_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == false}  do |p|
-        = render "excluded_date_fields",  f: p
-
-      = link_to_add_association t("time_tables.actions.add_excluded_date"), form, :dates, class: 'btn btn-outline-primary'
+        .links.nested-linker
+          = link_to_add_association t("time_tables.actions.add_excluded_date"), form, :dates, class: 'btn btn-outline-primary'
 
 
   = form.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'timetable_form'
