@@ -4,8 +4,9 @@
     .col-lg-12
       = form.input :comment, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.comment")}
       = form.input :version
-      = form.input :tag_search, as: :select, :input_html => { :id => "tag_search",:placeholder => t("formtastic.placeholders.time_table.tag_search") }
-      = form.input :tag_list, as: :hidden, :input_html => { :id => "tag_list" }
+
+      = form.input :tag_list, as: :tags
+
       = form.input :objectid, :required => !@time_table.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.objectid")}
       - if @time_table.new_record?
         = form.input :calendar, as: :select, collection: current_organisation.calendars
