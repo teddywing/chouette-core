@@ -73,14 +73,14 @@ class VehicleJourney extends Component {
           <div key={i} className='td text-center'>
             <div className={'cellwrap' + (vj.dummy ? ' headlined' : '') + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
-                <div data-headline='Départ à'>
-                  <span className={((this.props.value.deletable && (!vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false) ? 'disabled ' : '') + 'input-group time'}>
+                <div data-headline='Arrivée à'>
+                  <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
                       min='00'
                       max='23'
                       className='form-control'
-                      disabled={(this.props.value.deletable && (!vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false)}
+                      disabled={(this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false)}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
                       value={vj.arrival_time['hour']}
                       />
@@ -90,7 +90,7 @@ class VehicleJourney extends Component {
                       min='00'
                       max='59'
                       className='form-control'
-                      disabled={((this.props.value.deletable) && (!vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false)}
+                      disabled={((this.isDisabled(this.props.value.deletable), vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false)}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
                       value={vj.arrival_time['minute']}
                       />
@@ -102,7 +102,7 @@ class VehicleJourney extends Component {
                     <span className='sb sb-chrono sb-lg text-warning' data-textinside={vj.delta}></span>
                   }
                 </div>
-                <div data-headline='Arrivée à'>
+                <div data-headline='Départ à'>
                   <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
