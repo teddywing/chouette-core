@@ -126,7 +126,7 @@ describe "TimeTables", :type => :feature do
       click_link "Ajouter un calendrier"
       fill_in "Nom", :with => "TimeTable 1"
       fill_in "Identifiant Neptune", :with => "test:Timetable:1"
-      click_button("Créer calendrier")
+      click_button("Valider")
       expect(page).to have_content("TimeTable 1")
     end
   end
@@ -136,7 +136,7 @@ describe "TimeTables", :type => :feature do
       visit referential_time_table_path(referential, subject)
       click_link "Editer ce calendrier"
       fill_in "Nom", :with => "TimeTable Modified"
-      click_button("Editer calendrier")
+      click_button("Valider")
       expect(page).to have_content("TimeTable Modified")
     end
   end
