@@ -1,23 +1,28 @@
 require 'spec_helper'
 describe Chouette::VehicleJourney, :type => :model do
   describe "state_update" do
+
+    def vehicle_journey_at_stop_to_state vjas
+      at_stop = {'stop_area_object_id' => vjas.stop_point.stop_area.objectid }
+      [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
+        at_stop[att.to_s] = vjas.send(att) unless vjas.send(att).nil?
+      end
+
+      [:arrival_time, :departure_time].map do |att|
+        at_stop[att.to_s] = {
+          'hour'   => vjas.send(att).strftime('%H'),
+          'minute' => vjas.send(att).strftime('%M'),
+        }
+      end
+      at_stop
+    end
+
     def vehicle_journey_to_state vj
       vj.attributes.slice('objectid', 'published_journey_name', 'journey_pattern_id', 'company_id').tap do |item|
         item['vehicle_journey_at_stops'] = []
 
-        vj.vehicle_journey_at_stops.each do |vs|
-          at_stops = {'stop_area_object_id' => vs.stop_point.stop_area.objectid }
-          [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
-            at_stops[att.to_s] = vs.send(att) unless vs.send(att).nil?
-          end
-
-          [:arrival_time, :departure_time].map do |att|
-            at_stops[att.to_s] = {
-              'hour'   => vs.send(att).strftime('%H'),
-              'minute' => vs.send(att).strftime('%M'),
-            }
-          end
-          item['vehicle_journey_at_stops'] << at_stops
+        vj.vehicle_journey_at_stops.each do |vjas|
+          item['vehicle_journey_at_stops'] << vehicle_journey_at_stop_to_state(vjas)
         end
       end
     end
@@ -38,6 +43,20 @@ describe Chouette::VehicleJourney, :type => :model do
 
       vj = Chouette::VehicleJourney.find_by(objectid: collection.last['objectid'])
       expect(vj.published_journey_name).to eq 'dummy'
+    end
+
+    it 'should save vehicle_journey_at_stops of newly created vj' do
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      new_vj.vehicle_journey_at_stops << build(:vehicle_journey_at_stop,
+                 :vehicle_journey => new_vj,
+                 :stop_point      => create(:stop_point),
+                 :arrival_time    => '2000-01-01 01:00:00 UTC',
+                 :departure_time  => '2000-01-01 03:00:00 UTC')
+
+      collection << vehicle_journey_to_state(new_vj)
+      expect {
+        Chouette::VehicleJourney.state_update(route, collection)
+      }.to change {Chouette::VehicleJourneyAtStop.count}.by(1)
     end
 
     it 'should update vj journey_pattern' do
