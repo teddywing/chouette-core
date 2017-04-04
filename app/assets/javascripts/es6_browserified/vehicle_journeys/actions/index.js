@@ -362,12 +362,21 @@ const actions = {
       return obj.selected
     })
   },
-  pad: (d) => {
+  pad: (d, timeUnit) => {
+    let val = d.toString()
     if(d.toString().length == 1){
-      return (d < 10) ? '0' + d.toString() : d.toString();
-    }else{
-      return d.toString()
+      val = (d < 10) ? '0' + d.toString() : d.toString();
     }
+    if(val.length > 2){
+      val = val.substr(1)
+    }
+    if(timeUnit == 'minute' && parseInt(val) > 59){
+      val = '59'
+    }
+    if(timeUnit == 'hour' && parseInt(val) > 23){
+      val = '23'
+    }
+    return val
   },
   encodeParams: (params) => {
     let esc = encodeURIComponent
@@ -391,18 +400,18 @@ const actions = {
   },
   checkSchedules: (schedule) => {
     if (parseInt(schedule.departure_time.minute) > 59){
-      schedule.departure_time.minute = actions.pad(parseInt(schedule.departure_time.minute) - 60)
-      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) + 1)
+      schedule.departure_time.minute = actions.pad(parseInt(schedule.departure_time.minute) - 60, 'minute')
+      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) + 1, 'hour')
     }
     if (parseInt(schedule.arrival_time.minute) > 59){
-      schedule.arrival_time.minute = actions.pad(parseInt(schedule.arrival_time.minute) - 60)
-      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) + 1)
+      schedule.arrival_time.minute = actions.pad(parseInt(schedule.arrival_time.minute) - 60, 'minute')
+      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) + 1, 'hour')
     }
     if (parseInt(schedule.departure_time.hour) > 23){
-      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) - 24)
+      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) - 24, 'hour')
     }
     if (parseInt(schedule.arrival_time.hour) > 23){
-      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) - 24)
+      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) - 24, 'hour')
     }
   }
 }

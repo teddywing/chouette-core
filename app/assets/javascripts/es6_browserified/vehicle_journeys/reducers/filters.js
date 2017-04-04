@@ -22,7 +22,7 @@ const filters = (state = {}, action) => {
       return _.assign({}, state, {query: newQuery})
     case 'UPDATE_END_TIME_FILTER':
       newInterval = JSON.parse(JSON.stringify(state.query.interval))
-      newInterval.end[action.unit] = actions.pad(action.val)
+      newInterval.end[action.unit] = actions.pad(action.val, action.unit)
       if(parseInt(newInterval.start.hour + newInterval.start.minute) < parseInt(newInterval.end.hour + newInterval.end.minute)){
         newQuery = _.assign({}, state.query, {interval: newInterval})
         return _.assign({}, state, {query: newQuery})
@@ -31,7 +31,7 @@ const filters = (state = {}, action) => {
       }
     case 'UPDATE_START_TIME_FILTER':
       newInterval = JSON.parse(JSON.stringify(state.query.interval))
-      newInterval.start[action.unit] = actions.pad(action.val)
+      newInterval.start[action.unit] = actions.pad(action.val, action.unit)
       if(parseInt(newInterval.start.hour + newInterval.start.minute) < parseInt(newInterval.end.hour + newInterval.end.minute)){
         newQuery = _.assign({}, state.query, {interval: newInterval})
         return _.assign({}, state, {query: newQuery})
