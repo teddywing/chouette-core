@@ -23,15 +23,15 @@ class DuplicateVehicleJourney extends Component {
     if(this.props.status.fetchSuccess == true) {
       return (
         <li  className='st_action'>
-          <a
-            href='#'
-            className={((actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled')}
+          <button
+            type='button'
+            disabled={((actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled')}
             data-toggle='modal'
             data-target='#DuplicateVehicleJourneyModal'
             onClick={this.props.onOpenDuplicateModal}
           >
             <span className='fa fa-files-o'></span>
-          </a>
+          </button>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='DuplicateVehicleJourneyModal'>
             <div className='modal-container'>
