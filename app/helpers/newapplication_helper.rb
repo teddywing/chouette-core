@@ -30,6 +30,7 @@ module NewapplicationHelper
 
     body = content_tag :tbody do
       collection.collect do |item|
+
         content_tag :tr do
           bcont = []
 
@@ -54,6 +55,7 @@ module NewapplicationHelper
                 if current_referential
                   lnk << current_referential
                   lnk << item.line if item.respond_to? :line
+                  lnk << item.route.line if item.class.to_s == 'Chouette::RoutingConstraintZone'
                   lnk << item if item.class.to_s == 'Chouette::RoutingConstraintZone'
                   lnk << item if item.respond_to? :line_referential
                   lnk << item.stop_area if item.respond_to? :stop_area
@@ -105,6 +107,7 @@ module NewapplicationHelper
           if current_referential
             polymorph_url << current_referential
             polymorph_url << item.line if item.respond_to? :line
+            polymorph_url << item.route.line if item.class.to_s == 'Chouette::RoutingConstraintZone'
             polymorph_url << item if item.class.to_s == 'Chouette::RoutingConstraintZone'
             polymorph_url << item if item.respond_to? :line_referential
             polymorph_url << item.stop_area if item.respond_to? :stop_area

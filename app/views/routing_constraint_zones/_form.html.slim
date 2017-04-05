@@ -4,6 +4,9 @@
       = f.input :name
   .row
     .col-lg-6.col-sm-12
+      = f.input :route_id, collection: @line.routes
+  .row
+    .col-lg-6.col-sm-12
       / Temporarily limit the collection to 10 items... otherwise it kills RoR
       = f.input :stop_area_ids, as: :select, collection: Chouette::StopArea.limit(10), selected: @routing_constraint_zone.stop_area_ids, label: Chouette::StopArea.model_name.human.pluralize.capitalize, label_method: :name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de arrêts', 'multiple': 'multiple', style: 'width: 100%' }
 

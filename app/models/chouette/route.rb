@@ -16,6 +16,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   belongs_to :line
 
+  has_many :routing_constraint_zones
   has_many :journey_patterns, :dependent => :destroy
   has_many :vehicle_journeys, :dependent => :destroy do
     def timeless
