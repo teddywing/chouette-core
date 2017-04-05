@@ -50,11 +50,11 @@ const vehicleJourney= (state = {}, action) => {
         shiftedSchedule = {
           departure_time: {
             hour: vjas.departure_time.hour,
-            minute: String(parseInt(vjas.departure_time.minute) + parseInt(action.data.additional_time.value))
+            minute: actions.simplePad(parseInt(vjas.departure_time.minute) + parseInt(action.data.additional_time.value))
           },
           arrival_time: {
             hour: vjas.arrival_time.hour,
-            minute: String(parseInt(vjas.arrival_time.minute) + parseInt(action.data.additional_time.value))
+            minute: actions.simplePad(parseInt(vjas.arrival_time.minute) + parseInt(action.data.additional_time.value))
           }
         }
         actions.checkSchedules(shiftedSchedule)
@@ -166,11 +166,12 @@ const vehicleJourneys = (state = [], action) => {
       let dupeVj
       let dupes = []
       let selectedIndex
+      let val = action.data.additional_time.value
       state.map((vj, i) => {
         if(vj.selected){
           selectedIndex = i
           for (i = 0; i< action.data.duplicate_number.value; i++){
-            action.data.additional_time.value *= (i + 1)
+            action.data.additional_time.value = val * (i + 1)
             dupeVj = vehicleJourney(vj, action)
             dupeVj.published_journey_name = dupeVj.published_journey_name + '-' + i
             dupeVj.selected = false

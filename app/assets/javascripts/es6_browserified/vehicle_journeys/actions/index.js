@@ -362,6 +362,13 @@ const actions = {
       return obj.selected
     })
   },
+  simplePad: (d) => {
+    if(d.toString().length == 1){
+      return (d < 10) ? '0' + d.toString() : d.toString();
+    }else{
+      return d.toString()
+    }
+  },
   pad: (d, timeUnit) => {
     let val = d.toString()
     if(d.toString().length == 1){
