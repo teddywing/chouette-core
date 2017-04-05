@@ -60,6 +60,7 @@ const vehicleJourney= (state = {}, action) => {
           }
           actions.checkSchedules(shiftedSchedule)
           shiftedVjas =  _.assign({}, state.vehicle_journey_at_stops[i], shiftedSchedule)
+          delete shiftedVjas['id']
           return _.assign({}, state.vehicle_journey_at_stops[i], shiftedVjas)
         }else {
           return vjas
