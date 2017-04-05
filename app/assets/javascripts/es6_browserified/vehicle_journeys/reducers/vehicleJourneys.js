@@ -47,19 +47,23 @@ const vehicleJourney= (state = {}, action) => {
     case 'SHIFT_VEHICLEJOURNEY':
       let shiftedArray, shiftedSchedule, shiftedVjas
       shiftedArray = state.vehicle_journey_at_stops.map((vjas, i) => {
-        shiftedSchedule = {
-          departure_time: {
-            hour: vjas.departure_time.hour,
-            minute: actions.simplePad(parseInt(vjas.departure_time.minute) + parseInt(action.data.additional_time.value))
-          },
-          arrival_time: {
-            hour: vjas.arrival_time.hour,
-            minute: actions.simplePad(parseInt(vjas.arrival_time.minute) + parseInt(action.data.additional_time.value))
+        if (!vjas.dummy){
+          shiftedSchedule = {
+            departure_time: {
+              hour: vjas.departure_time.hour,
+              minute: actions.simplePad(parseInt(vjas.departure_time.minute) + parseInt(action.data.additional_time.value))
+            },
+            arrival_time: {
+              hour: vjas.arrival_time.hour,
+              minute: actions.simplePad(parseInt(vjas.arrival_time.minute) + parseInt(action.data.additional_time.value))
+            }
           }
+          actions.checkSchedules(shiftedSchedule)
+          shiftedVjas =  _.assign({}, state.vehicle_journey_at_stops[i], shiftedSchedule)
+          return _.assign({}, state.vehicle_journey_at_stops[i], shiftedVjas)
+        }else {
+          return vjas
         }
-        actions.checkSchedules(shiftedSchedule)
-        shiftedVjas =  _.assign({}, state.vehicle_journey_at_stops[i], shiftedSchedule)
-        return _.assign({}, state.vehicle_journey_at_stops[i], shiftedVjas)
       })
       return _.assign({}, state, {vehicle_journey_at_stops: shiftedArray})
     case 'UPDATE_TIME':
