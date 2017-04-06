@@ -6,7 +6,7 @@ describe Chouette::RoutingConstraintZone, type: :model do
 
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :stop_area_ids }
-  it { is_expected.to validate_presence_of :line_id }
+  it { is_expected.to validate_presence_of :route_id }
   # shoulda matcher to validate length of array ?
   xit { is_expected.to validate_length_of(:stop_area_ids).is_at_least(2) }
 

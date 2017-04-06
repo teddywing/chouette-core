@@ -9,8 +9,7 @@ class RoutesController < ChouetteController
   belongs_to :referential do
     belongs_to :line, :parent_class => Chouette::Line, :optional => true, :polymorphic => true
   end
-
-  before_action :define_candidate_opposite_routes, only: [:new, :edit, :create, :update]
+  before_action :define_candidate_opposite_routes, only: [:new, :edit]
 
   def index
     index! do |format|
@@ -66,11 +65,11 @@ class RoutesController < ChouetteController
     end
   end
 
-#  def update
-#    update! do |success, failure|
-#      success.html { redirect_to referential_line_path(@referential,@line) }
-#    end
-#  end
+ # def update
+   # update! do |success, failure|
+   #   success.html { redirect_to referential_line_path(@referential,@line) }
+   # end
+ # end
   protected
 
   alias_method :route, :resource
@@ -86,12 +85,13 @@ class RoutesController < ChouetteController
   end
 
   def define_candidate_opposite_routes
-    @candidate_opposite_routes =
-      if params[:id]
-        resource.line.routes.where("id <> ?", resource)
-      else
-        parent.routes.select(&:persisted?)
-      end
+    scope = if params[:id]
+      parent.routes.where(opposite_route: [nil, resource]).where('id <> ?', resource.id)
+    else
+      parent.routes.where(opposite_route: nil)
+    end
+    @forward  = scope.where(wayback: :straight_forward)
+    @backward = scope.where(wayback: :backward)
   end
 
   private

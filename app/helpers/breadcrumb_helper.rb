@@ -159,7 +159,6 @@ module BreadcrumbHelper
       add_breadcrumb breadcrumb_label(@line), line_referential_line_path(@line_referential, @line),:title => breadcrumb_tooltip(@line) if action == :edit
     else
       referential_breadcrumb
-      add_breadcrumb Chouette::Line.model_name.human(:count => 2).capitalize, referential_lines_path(@referential) unless action == :index
       add_breadcrumb breadcrumb_label(@line), referential_line_path(@referential, @line),:title => breadcrumb_tooltip(@line) if action == :edit
     end
   end

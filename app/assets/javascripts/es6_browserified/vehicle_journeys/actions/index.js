@@ -1,3 +1,9 @@
+var Promise = require('promise-polyfill')
+
+// To add to window
+if (!window.Promise) {
+  window.Promise = Promise;
+}
 var batchActions = require('../batch').batchActions
 
 const actions = {
@@ -271,12 +277,10 @@ const actions = {
     if (queryString){
       urlJSON = urlJSON + sep + queryString
     }
-    let req = new Request(urlJSON, {
-      credentials: 'same-origin',
-    })
     let hasError = false
-    fetch(req)
-      .then(response => {
+    fetch(urlJSON, {
+      credentials: 'same-origin',
+    }).then(response => {
         if(response.status == 500) {
           hasError = true
         }
@@ -322,7 +326,8 @@ const actions = {
   submitVehicleJourneys : (dispatch, state, next) => {
     dispatch(actions.fetchingApi())
     let urlJSON = window.location.pathname + "_collection.json"
-    let req = new Request(urlJSON, {
+    let hasError = false
+    fetch(urlJSON, {
       credentials: 'same-origin',
       method: 'PATCH',
       contentType: 'application/json; charset=utf-8',
@@ -331,10 +336,7 @@ const actions = {
       headers: {
         'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
       }
-    })
-    let hasError = false
-    fetch(req)
-      .then(response => {
+    }).then(response => {
         if(!response.ok) {
           hasError = true
         }
@@ -360,12 +362,28 @@ const actions = {
       return obj.selected
     })
   },
-  pad: (d) => {
+  simplePad: (d) => {
     if(d.toString().length == 1){
       return (d < 10) ? '0' + d.toString() : d.toString();
     }else{
       return d.toString()
     }
+  },
+  pad: (d, timeUnit) => {
+    let val = d.toString()
+    if(d.toString().length == 1){
+      val = (d < 10) ? '0' + d.toString() : d.toString();
+    }
+    if(val.length > 2){
+      val = val.substr(1)
+    }
+    if(timeUnit == 'minute' && parseInt(val) > 59){
+      val = '59'
+    }
+    if(timeUnit == 'hour' && parseInt(val) > 23){
+      val = '23'
+    }
+    return val
   },
   encodeParams: (params) => {
     let esc = encodeURIComponent
@@ -388,20 +406,61 @@ const actions = {
     return vjas
   },
   checkSchedules: (schedule) => {
+    let hours = 0
+    let minutes = 0
     if (parseInt(schedule.departure_time.minute) > 59){
-      schedule.departure_time.minute = actions.pad(parseInt(schedule.departure_time.minute) - 60)
-      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) + 1)
+      hours = Math.floor(parseInt(schedule.departure_time.minute) / 60)
+      minutes = parseInt(schedule.departure_time.minute) % 60
+      schedule.departure_time.minute = actions.simplePad(minutes, 'minute')
+      schedule.departure_time.hour = parseInt(schedule.departure_time.hour) + hours
     }
     if (parseInt(schedule.arrival_time.minute) > 59){
-      schedule.arrival_time.minute = actions.pad(parseInt(schedule.arrival_time.minute) - 60)
-      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) + 1)
+      hours = Math.floor(parseInt(schedule.arrival_time.minute) / 60)
+      minutes = parseInt(schedule.arrival_time.minute) % 60
+      schedule.arrival_time.minute = actions.simplePad(minutes, 'minute')
+      schedule.arrival_time.hour = parseInt(schedule.arrival_time.hour) + hours
     }
-    if (parseInt(schedule.departure_time.hour) > 23){
-      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) - 24)
+    if (parseInt(schedule.departure_time.minute) < 0){
+      hours = Math.floor(parseInt(schedule.departure_time.minute) / 60)
+      minutes = (parseInt(schedule.departure_time.minute) % 60) + 60
+      schedule.departure_time.minute = actions.simplePad(minutes, 'minute')
+      schedule.departure_time.hour = parseInt(schedule.departure_time.hour) + hours
     }
-    if (parseInt(schedule.arrival_time.hour) > 23){
-      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) - 24)
+    if (parseInt(schedule.arrival_time.minute) < 0){
+      hours = Math.floor(parseInt(schedule.arrival_time.minute) / 60)
+      minutes = (parseInt(schedule.arrival_time.minute) % 60) + 60
+      schedule.arrival_time.minute = actions.simplePad(minutes, 'minute')
+      schedule.arrival_time.hour = parseInt(schedule.arrival_time.hour) + hours
     }
+
+    if(schedule.departure_time.hour > 23){
+      schedule.departure_time.hour = '23'
+      schedule.departure_time.minute = '59'
+    }
+    if(schedule.arrival_time.hour > 23){
+      schedule.arrival_time.hour = '23'
+      schedule.arrival_time.minute = '59'
+    }
+
+    if(schedule.departure_time.hour < 0){
+      schedule.departure_time.hour = '00'
+      schedule.departure_time.minute = '00'
+    }
+    if(schedule.arrival_time.hour > 23){
+      schedule.arrival_time.hour = '00'
+      schedule.arrival_time.minute = '00'
+    }
+
+    schedule.departure_time.hour = actions.simplePad(parseInt(schedule.departure_time.hour), 'hour')
+    schedule.arrival_time.hour = actions.simplePad(parseInt(schedule.arrival_time.hour), 'hour')
+    // if (parseInt(schedule.departure_time.hour) > 23){
+    //   schedule.departure_time.hour = parseInt(schedule.departure_time.hour) - 24
+    // }
+    // if (parseInt(schedule.arrival_time.hour) > 23){
+    //   schedule.arrival_time.hour = parseInt(schedule.arrival_time.hour) - 24
+    // }
+    // schedule.departure_time.hour = actions.pad(schedule.departure_time.hour, 'hour')
+    // schedule.arrival_time.hour = actions.pad(schedule.arrival_time.hour, 'hour')
   }
 }
 

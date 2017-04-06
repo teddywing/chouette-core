@@ -44,15 +44,15 @@ class NotesEditVehicleJourney extends Component {
     if(this.props.status.fetchSuccess == true) {
       return (
         <li className='st_action'>
-          <a
-            href='#'
-            className={(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled'}
+          <button
+            type='button'
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled'}
             data-toggle='modal'
             data-target='#NotesEditVehicleJourneyModal'
             onClick={() => this.props.onOpenNotesEditModal(actions.getSelected(this.props.vehicleJourneys)[0])}
           >
             <span className='fa fa-sticky-note'></span>
-          </a>
+          </button>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='NotesEditVehicleJourneyModal'>
             <div className='modal-container'>

@@ -4,6 +4,8 @@ require 'spec_helper'
 describe "Referentials", :type => :feature do
   login_user
 
+  let(:referential) { Referential.first }
+
   describe "index" do
 
     # FIXME #823
@@ -31,6 +33,28 @@ describe "Referentials", :type => :feature do
 
     end
 
+  end
+
+  describe "show" do
+    before(:each) { visit referential_path(referential) }
+
+    it "displays referential" do
+      expect(page).to have_content(referential.name)
+    end
+
+    context 'archived referential' do
+      it 'link to edit referetnial is not displayed' do
+        referential.archive!
+        visit referential_path(referential)
+        expect(page).not_to have_link(I18n.t('actions.edit'), href: edit_referential_path(referential))
+      end
+    end
+
+    context 'unarchived referential' do
+      it 'link to edit referetnial is displayed' do
+        expect(page).to have_link(I18n.t('actions.edit'), href: edit_referential_path(referential))
+      end
+    end
   end
 
   describe "create" do

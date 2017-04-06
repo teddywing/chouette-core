@@ -4,11 +4,12 @@ class Import < ActiveRecord::Base
   belongs_to :referential
 
   extend Enumerize
-  enumerize :status, in: %i(new pending successful failed canceled)
+  enumerize :status, in: %i(new pending successful failed running aborted canceled)
 
   validates :file, presence: true
 
   before_create do
     self.token_download = SecureRandom.urlsafe_base64
+    self.status = Import.status.new
   end
 end

@@ -1,0 +1,21 @@
+/ PageHeader
+= pageheader 'bug',
+             'Erreur 403',
+             ''
+
+.page_content
+  .container-fluid
+    .row
+      .col-lg-12
+        .alert.alert-danger
+          - if I18n.locale == :fr
+            p
+              strong = "Désolé, la page demandée la page n'est pas accessible avec votre profil utilisateur."
+            
+            p = "Vous pouvez néanmoins continuer à utiliser l'application IBOO."
+              
+          - else
+            p
+              strong = "You are not allowed to access the page you were looking for."
+            
+            p = "You can still continue the use the IBOO application. Thank you for understanding."

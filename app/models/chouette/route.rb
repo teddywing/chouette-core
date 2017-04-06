@@ -5,7 +5,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
   extend ActiveModel::Naming
 
   enumerize :direction, in: %i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)
-  enumerize :wayback, in: %i(straight_forward backward)
+  enumerize :wayback, in: %i(straight_forward backward), default: :backward
 
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -16,6 +16,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   belongs_to :line
 
+  has_many :routing_constraint_zones
   has_many :journey_patterns, :dependent => :destroy
   has_many :vehicle_journeys, :dependent => :destroy do
     def timeless
@@ -29,7 +30,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
     end
   end
   belongs_to :opposite_route, :class_name => 'Chouette::Route', :foreign_key => :opposite_route_id
-  has_many :stop_points, :dependent => :destroy do
+  has_many :stop_points, -> { order("position") }, :dependent => :destroy do
     def find_by_stop_area(stop_area)
       stop_area_ids = Integer === stop_area ? [stop_area] : (stop_area.children_in_depth + [stop_area]).map(&:id)
       where( :stop_area_id => stop_area_ids).first or
@@ -91,7 +92,6 @@ class Chouette::Route < Chouette::TridentActiveRecord
   validate :check_opposite_route
   def check_opposite_route
     return unless opposite_route && opposite_wayback
-
     unless opposite_route_candidates.include?(opposite_route)
       errors.add(:opposite_route_id, :invalid)
     end

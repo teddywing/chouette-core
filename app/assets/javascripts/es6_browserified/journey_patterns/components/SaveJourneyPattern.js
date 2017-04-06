@@ -15,7 +15,7 @@ class SaveJourneyPattern extends Component{
   }
 
   render() {
-    if(this.props.status.isFetching == true) {
+    if(this.props.status.isFetching == true || (this.props.status.policy['journey_patterns.edit'] == false)) {
       return false
     }
     if(this.props.status.fetchSuccess == true) {

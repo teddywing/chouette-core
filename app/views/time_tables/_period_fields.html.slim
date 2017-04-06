@@ -1,8 +1,15 @@
-= f.inputs class: 'nested-fields period' do
-  = f.label @time_table.human_attribute_name("period_start"), class: "col-md-1"
-  = f.input :period_start, as: :date_picker, :label => false, :input_html => { class: 'form-control col-md-3' }
-  
-  = f.label @time_table.human_attribute_name("period_end"), class: "col-md-1"
-  = f.input :period_end, as: :date_picker, :label => false, :input_html => { class: 'form-control col-md-3' }
-  
-  = link_to_remove_association t('actions.destroy'), f, class: "col-md-2"
+.nested-fields
+  - if f.object.errors.has_key? :base
+    .row
+      .col-lg-12
+        .alert.alert-danger
+          - f.object.errors[:base].each do |message|
+            p.small = message
+
+  .wrapper
+    div
+      = f.input :period_start, as: :date, label: false, wrapper_html: { class: 'date' }
+    div
+      = f.input :period_end, as: :date, label: false, wrapper_html: { class: 'date' }
+    div
+      = link_to_remove_association '', f, class: 'fa fa-trash', data: { confirm: 'Etes-vous sûr(e) ?' }, title: t('actions.delete')

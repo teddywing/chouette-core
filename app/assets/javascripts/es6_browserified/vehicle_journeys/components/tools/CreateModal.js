@@ -25,22 +25,22 @@ class CreateModal extends Component {
     if(this.props.status.fetchSuccess == true) {
       return (
         <li className='st_action'>
-          <a
-            href='#'
-            className={((this.props.filters.policy['vehicle_journeys.create']) ? '' : 'disabled')}
+          <button
+            type='button'
+            disabled={((this.props.filters.policy['vehicle_journeys.edit'] == true) ? '' : 'disabled')}
             data-toggle='modal'
             data-target='#NewVehicleJourneyModal'
             onClick={this.props.onOpenCreateModal}
           >
             <span className='fa fa-plus'></span>
-          </a>
+          </button>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'create') ? 'in' : '') } id='NewVehicleJourneyModal'>
             <div className='modal-container'>
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Ajouter une mission</h4>
+                    <h4 className='modal-title'>Ajouter une course</h4>
                   </div>
 
                   {(this.props.modal.type == 'create') && (

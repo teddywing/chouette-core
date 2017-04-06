@@ -18,6 +18,8 @@
 
   &[data-textinside]
     position: relative
+    // width: 1em
+    // height: 1em
     &:after
       content: attr(data-textinside)
       font-family: $base-font-family
@@ -50,8 +52,15 @@
   &.sb-5x
     font-size: 5em
 
+
 .sb-update-vj:before
   content: '\e900'
 
-.sb-chrono:before
+.sb-preparing:before
   content: '\e901'
+
+.sb-current-ref:before
+  content: '\e902'
+
+.sb-chrono:before
+  content: '\e903'

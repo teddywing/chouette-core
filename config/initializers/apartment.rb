@@ -39,7 +39,11 @@ Apartment.configure do |config|
     "Workbench",
     "CleanUp",
     "CleanUpResult",
-    "Calendar"
+    "Calendar",
+    "Import",
+    "NetexImport",
+    "ImportMessage",
+    "ImportResource"
   ]
 
   # use postgres schemas?
@@ -56,7 +60,7 @@ Apartment.configure do |config|
   # config.append_environment = true
 
   # supply list of database names for migrations to run on
-  config.tenant_names = lambda{ Referential.pluck :slug }
+  config.tenant_names = lambda{  Referential.order("created_from_id asc").pluck(:slug) }
 end
 
 ##

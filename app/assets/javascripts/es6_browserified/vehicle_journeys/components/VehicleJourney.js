@@ -54,31 +54,33 @@ class VehicleJourney extends Component {
             <div key={i}>{this.timeTableURL(tt.id)}</div>
           )}
 
-          <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
-            <input
-              id={this.props.index}
-              name={this.props.index}
-              onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
-              type='checkbox'
-              disabled={this.props.value.deletable}
-              checked={this.props.value.selected}
-            ></input>
-            <label htmlFor={this.props.index}></label>
-          </div>
-        </div>
+          {(this.props.filters.policy['vehicle_journeys.edit'] == true) &&
+            <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
+              <input
+                id={this.props.index}
+                name={this.props.index}
+                onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
+                type='checkbox'
+                disabled={this.props.value.deletable}
+                checked={this.props.value.selected}
+              ></input>
+              <label htmlFor={this.props.index}></label>
+            </div>
+        }
 
+        </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
-            <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
+            <div className={'cellwrap' + (vj.dummy ? ' headlined' : '') + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
-                <div data-headline='Départ à'>
-                  <span className={((this.props.value.deletable && (!vj.dummy)) ? 'disabled ' : '') + 'input-group time'}>
+                <div data-headline='Arrivée à'>
+                  <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
                       min='00'
                       max='23'
                       className='form-control'
-                      disabled={(this.props.value.deletable && (!vj.dummy))}
+                      disabled={(this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false)}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
                       value={vj.arrival_time['hour']}
                       />
@@ -88,7 +90,7 @@ class VehicleJourney extends Component {
                       min='00'
                       max='59'
                       className='form-control'
-                      disabled={((this.props.value.deletable) && (!vj.dummy))}
+                      disabled={((this.isDisabled(this.props.value.deletable), vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false)}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
                       value={vj.arrival_time['minute']}
                       />
@@ -100,14 +102,14 @@ class VehicleJourney extends Component {
                     <span className='sb sb-chrono sb-lg text-warning' data-textinside={vj.delta}></span>
                   }
                 </div>
-                <div data-headline='Arrivée à'>
-                  <span className={(this.isDisabled(this.props.value.deletable, vj.dummy) ? 'disabled ' : '') + 'input-group time'}>
+                <div data-headline='Départ à'>
+                  <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
                       min='00'
                       max='23'
                       className='form-control'
-                      disabled={this.isDisabled(this.props.value.deletable, vj.dummy)}
+                      disabled={(this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false)}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
                       value={vj.departure_time['hour']}
                       />
@@ -117,7 +119,7 @@ class VehicleJourney extends Component {
                       min='00'
                       max='59'
                       className='form-control'
-                      disabled={this.isDisabled(this.props.value.deletable, vj.dummy)}
+                      disabled={(this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false)}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
                       value={vj.departure_time['minute']}
                       />

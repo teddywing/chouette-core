@@ -1,4 +1,5 @@
 class ImportsController < BreadcrumbController
+  skip_before_action :authenticate_user!, only: [:download]
   defaults resource_class: Import, collection_name: 'imports', instance_name: 'import'
   respond_to :html
   belongs_to :workbench

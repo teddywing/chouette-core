@@ -3,24 +3,26 @@
              @referential.name,
              'Lorem ipsum dolor sit amet',
              t('last_update', time: l(@referential.updated_at, format: :short)),
-             link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default') do
+             ((@referential.archived? || !policy(@referential).edit?) ? '' : link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default')) do
 
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      / Actions are: controler, rapport de controle, dupliquer, purger, conserver, supprimer
-      = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
+      - if policy(@referential).new?
+        = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
 
-      button.btn.btn-primary type='button' data-toggle='modal' data-target='#purgeModal' Purger
+      - if policy(@referential).edit?
+        button.btn.btn-primary type='button' data-toggle='modal' data-target='#purgeModal' Purger
 
-      - if @referential.archived?
-        = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
-      - else
-        = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
+        - if @referential.archived?
+          = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
+        - else
+          = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
 
-      = link_to referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary' do
-        span.fa.fa-trash
-        span = t('actions.destroy')
+      - if policy(@referential).destroy?
+        = link_to referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('actions.destroy')
 
 / PageContent
 .page_content
@@ -34,10 +36,6 @@
             @referential.human_attribute_name(:published_at) => '-' }
 
     - if params[:q].present? or @reflines.any?
-      .row.mb-sm
-        .col-lg-12.text-right
-          = new_pagination @reflines
-
       .row
         .col-lg-12
           = render 'filters'

@@ -7,7 +7,8 @@ const mapStateToProps = (state) => {
   return {
     vehicleJourneys: state.vehicleJourneys,
     page: state.pagination.page,
-    status: state.status
+    status: state.status,
+    filters: state.filters
   }
 }
 

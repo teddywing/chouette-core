@@ -43,6 +43,16 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     [Chouette::TimeTable.maximum(:end_date)].compact.max
   end
 
+  def month_inspect(date)
+    (date.beginning_of_month..date.end_of_month).map do |d|
+      {
+        day: I18n.l(d, format: '%A'),
+        wday: d.wday,
+        mday: d.mday
+      }
+    end
+  end
+
   def save_shortcuts
       shortcuts_update
       self.update_column(:start_date, start_date)

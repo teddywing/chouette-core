@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var React = require('react')
 var PropTypes = require('react').PropTypes
 var Select2 = require('react-select2')
@@ -37,7 +38,7 @@ class BSelect4 extends React.Component{
             processResults: function(data, params) {
               return {
                 results: data.map(
-                  item => Object.assign(
+                  item => _.assign(
                     {},
                     item,
                     {text: item.published_name}

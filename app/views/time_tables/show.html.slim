@@ -1,27 +1,53 @@
 - require 'calendar_helper'
 
-= title_tag t('time_tables.show.title', :time_table => @time_table.comment )
+/ PageHeader
+= pageheader 'map-marker',
+             @time_table.comment,
+             '',
+             (policy(@time_table).edit? ? link_to(t('actions.edit'), edit_referential_time_table_path(@referential, @time_table), class: 'btn btn-default') : '')
 
-== render 'time_table_combinations/combine'
+  / Below is secundary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      / - if policy(@time_table).create? && @referential.organisation == current_organisation
+      /   = link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), class: 'btn btn-primary'
 
-== render 'show_time_table'
-
-- content_for :sidebar do
-  ul.actions
-    li
-      - if policy(@time_table).create? && @referential.organisation == current_organisation
-        = link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), class: 'add'
-    li
-      - if policy(@time_table).edit?
-        = link_to t('time_tables.actions.edit'), edit_referential_time_table_path(@referential, @time_table), class: "edit"
-    li
-      - if policy(@time_table).destroy?
-        = link_to t('time_tables.actions.destroy'), referential_time_table_path(@referential, @time_table), :method => :delete, :data => {:confirm =>  t('time_tables.actions.destroy_confirm')}, class: "remove"
-    li
-      - if policy(@time_table).create? && @referential.organisation == current_organisation
-        = link_to t('time_tables.actions.duplicate'), duplicate_referential_time_table_path(@referential, @time_table), class: "clone"
-    li
       /- if policy(@time_table).create? && @referential.organisation == current_organisation
-      = link_to t('time_tables.actions.combine'), new_referential_time_table_time_table_combination_path(@referential, @time_table), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_combine', class: "merge"}
+      = link_to t('actions.combine'), new_referential_time_table_time_table_combination_path(@referential, @time_table), {remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal_combine', class: 'btn btn-primary' }
 
-  = creation_tag(@time_table)
+      - if policy(@time_table).create? && @referential.organisation == current_organisation
+        = link_to t('actions.clone'), duplicate_referential_time_table_path(@referential, @time_table), class: 'btn btn-primary'
+
+      - if policy(@time_table).destroy?
+        = link_to referential_time_table_path(@referential, @time_table), method: :delete, data: {confirm:  t('time_tables.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('actions.destroy')
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { "Période d'application" => (@time_table.bounding_dates.empty? ? '-' : t('bounding_dates', debut: l(@time_table.bounding_dates.min), end: l(@time_table.bounding_dates.max))),
+            'Etiquettes' => @time_table.tag_list.collect{ |t| content_tag(:span, t, class: 'label label-default') }.join().html_safe,
+            'Modèle de calendrier' => (@time_table.calendar ? link_to(@time_table.calendar.name, @time_table.calendar) : '-'),
+            "Journées d'application pour les périodes ci-dessous" => %w(monday tuesday wednesday thursday friday saturday sunday).collect{ |d| content_tag(:span, t("calendars.days.#{d}"), class: "label label-default #{@time_table.send(d) ? '' : 'disabled'}") }.join.html_safe }
+
+    .row
+      .col-lg-12
+        .pagination.pull-right
+          = @year
+          .page_links
+            = link_to '', referential_time_table_path(@referential, @time_table, year: (@year - 1)), class: 'previous_page'
+            = link_to '', referential_time_table_path(@referential, @time_table, year: (@year + 1)), class: 'next_page'
+
+    .row
+      .col-lg-12
+        / To update
+        = render 'show_time_table'
+
+    .row
+      .col-lg-12
+        / WTF ??!
+        = render 'time_table_combinations/combine'

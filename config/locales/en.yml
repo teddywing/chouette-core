@@ -16,4 +16,5 @@ en:
   last_update: 'Last update on<br>%{time}'
   last_sync: 'Last sync on %{time}'
   validity_range: '%{debut} > %{end}'
-  metadatas: 'Metadatas'
+  bounding_dates: '%{debut} > %{end}'
+  metadatas: 'Informations'

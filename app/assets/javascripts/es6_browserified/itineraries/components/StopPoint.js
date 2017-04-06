@@ -7,7 +7,9 @@ const StopPoint = (props) => {
   return (
     <div className='nested-fields'>
       <div className='wrapper'>
-        <div style={{width: 90}}>{props.value.user_objectid}</div>
+        <div style={{width: 90}}>
+          <span>{props.value.user_objectid}</span>
+        </div>
 
         <div>
           <BSelect2 id={'route_stop_points_' + props.id} value={props.value} onChange={props.onChange} index={props.index} />
@@ -47,12 +49,12 @@ const StopPoint = (props) => {
           >
             <span className='fa fa-arrow-down'></span>
           </div>
-          
+
           <div
             className='btn btn-link'
             onClick={props.onToggleEdit}
             >
-            <span className={'fa' + (props.value.edit ? ' fa-undo' : ' fa-pencil')}></span>
+            <span className={'fa' + (props.value.edit ? ' fa-check' : ' fa-pencil')}></span>
           </div>
           <div
             className='btn btn-link'

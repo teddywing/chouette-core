@@ -14,7 +14,7 @@ class JourneyPattern extends Component{
     let vjURL = routeURL + '/vehicle_journeys?jp=' + jpOid
 
     return (
-      <a href={vjURL}>Horaires des courses</a>
+      <a data-no-turbolink="true" href={vjURL}>Horaires des courses</a>
     )
   }
 
@@ -34,7 +34,7 @@ class JourneyPattern extends Component{
             type='checkbox'
             id={sp.id}
             checked={sp.checked}
-            disabled={this.props.value.deletable ? 'disabled' : ''}
+            disabled={(this.props.value.deletable || this.props.status.policy['journey_patterns.edit'] == false) ? 'disabled' : ''}
             >
           </input>
           <span className='radio-label'></span>
@@ -74,29 +74,30 @@ class JourneyPattern extends Component{
                 <span className='fa fa-cog'></span>
               </div>
               <ul className='dropdown-menu'>
-                <li className={this.props.value.deletable ? 'disabled' : ''}>
-                  <a
-                    href='#'
+                <li className={(this.props.value.deletable || this.props.status.policy['journey_patterns.edit'] == false) ? 'disabled' : ''}>
+                  <button
+                    type='button'
                     onClick={this.props.onOpenEditModal}
                     data-toggle='modal'
                     data-target='#JourneyPatternModal'
                     >
                     Editer
-                  </a>
+                  </button>
                 </li>
                 <li className={this.props.value.object_id ? '' : 'disabled'}>
                   {this.vehicleJourneyURL(this.props.value.object_id)}
                 </li>
-                <li className='delete-action'>
-                  <a
-                    href='#'
+                <li className={'delete-action' + ((this.props.status.policy['journey_patterns.edit'] == false)? ' disabled' : '')}>
+                  <button
+                    type='button'
+                    disabled={(this.props.status.policy['journey_patterns.edit'] == false)? 'disabled' : ''}
                     onClick={(e) => {
                       e.preventDefault()
                       this.props.onDeleteJourneyPattern(this.props.index)}
                     }
                     >
-                    <span className='fa fa-trash'></span>Supprimer
-                    </a>
+                      <span className='fa fa-trash'></span>Supprimer
+                    </button>
                   </li>
                 </ul>
               </div>

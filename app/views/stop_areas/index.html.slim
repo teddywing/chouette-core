@@ -9,10 +9,6 @@
 .page_content
   .container-fluid
     - if params[:q].present? or @stop_areas.any?
-      .row.mb-sm
-        .col-lg-12.text-right
-          = new_pagination @stop_areas
-
       .row
         .col-lg-12
             = render 'filters'

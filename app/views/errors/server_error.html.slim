@@ -1,33 +1,21 @@
-.error
-  h2 = "Désolé, une erreur est survenue"
+/ PageHeader
+= pageheader 'bug',
+             'Erreur serveur',
+             ''
 
-  a href="http://www.chouette.mobi/spip.php?rubrique38" target="_blank"
-    = "N'hésitez pas à nous décrire le problème"
-  = ", nous essaierons de le résoudre."
-  br
-  = "Merci d'avance"
-  br
-  br
-
-  = "Vous pouvez néanmoins continuer à utiliser l'application CHOUETTE"
-  br
-  br
-  br
-  br
-  br
-
-  h2 = "We're sorry, but something went wrong."
-
-  = "You may have mistyped the address or the page may have moved."
-  br
-
-  a href="http://www.chouette.mobi/spip.php?rubrique38" target="_blank"
-    = "Please describe us what happened"
-  = ", we'll try to come back with an answer."
-  br
-  = "Thank you."
-  br
-  br
-
-  = "You can still continue the use the CHOUETTE application."
-  br
+.page_content
+  .container-fluid
+    .row
+      .col-lg-12
+        .alert.alert-danger
+          - if I18n.locale == :fr
+            p
+              strong = "Désolé, une erreur est survenue."
+            
+            p = "Vous pouvez néanmoins continuer à utiliser l'application IBOO."
+              
+          - else
+            p
+              strong = "We're sorry, but something went wrong."
+            
+            p = "You can still continue the use the IBOO application. Thank you for understanding."

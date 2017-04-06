@@ -16,4 +16,5 @@ fr:
   last_update: 'Dernière mise à jour<br>le %{time}'
   last_sync: 'Dernière mise à jour le %{time}'
   validity_range: '%{debut} > %{end}'
-  metadatas: 'Métadonnées'
+  bounding_dates: '%{debut} > %{end}'
+  metadatas: 'Informations'

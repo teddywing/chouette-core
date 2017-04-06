@@ -13,6 +13,7 @@ var App = require('./components/App')
 
 var initialState = {
   status: {
+    policy: window.perms,
     fetchSuccess: true,
     isFetching: false
   },

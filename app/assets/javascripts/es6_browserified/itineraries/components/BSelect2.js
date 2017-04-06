@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var React = require('react')
 var PropTypes = require('react').PropTypes
 var Select2 = require('react-select2')
@@ -27,6 +28,23 @@ class BSelect3 extends React.Component{
     })
   }
 
+  parsedText(data) {
+    let a = data.replace('</em></small>', '')
+    let b = a.split('<small><em>')
+    if (b.length > 1) {
+      return (
+        <span>
+          {b[0]}
+          <small><em>{b[1]}</em></small>
+        </span>
+      )
+    } else {
+      return (
+        <span>{data}</span>
+      )
+    }
+  }
+
   render() {
     if(this.props.value.edit)
       return (
@@ -48,7 +66,7 @@ class BSelect3 extends React.Component{
             href={origin + path + '/stop_areas/' + this.props.value.stoparea_id}
             title="Voir l'arrêt"
           >
-            {this.props.value.text}
+            {this.parsedText(this.props.value.text)}
           </a>
         )
   }
@@ -84,7 +102,7 @@ class BSelect2 extends React.Component{
             processResults: function(data, params) {
               return {
                 results: data.map(
-                  item => Object.assign(
+                  item => _.assign(
                     {},
                     item,
                     { text: item.name + ", " + item.zip_code + " " + item.short_city_name + " <small><em>(" + item.user_objectid + ")</em></small>" }

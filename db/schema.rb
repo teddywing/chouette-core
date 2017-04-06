@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322075010) do
+ActiveRecord::Schema.define(version: 20170404122930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -543,15 +543,13 @@ ActiveRecord::Schema.define(version: 20170322075010) do
   create_table "routing_constraint_zones", force: true do |t|
     t.string   "name"
     t.integer  "stop_area_ids",                         array: true
-    t.integer  "line_id",        limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "objectid",                 null: false
     t.integer  "object_version", limit: 8
     t.string   "creator_id"
+    t.integer  "route_id",       limit: 8
   end
-
-  add_index "routing_constraint_zones", ["line_id"], :name => "index_routing_constraint_zones_on_line_id"
 
   create_table "routing_constraints_lines", id: false, force: true do |t|
     t.integer "stop_area_id", limit: 8
@@ -781,6 +779,8 @@ ActiveRecord::Schema.define(version: 20170322075010) do
     t.time    "departure_time"
     t.string  "for_boarding"
     t.string  "for_alighting"
+    t.integer "departure_day_offset"
+    t.integer "arrival_day_offset"
   end
 
   add_index "vehicle_journey_at_stops", ["stop_point_id"], :name => "index_vehicle_journey_at_stops_on_stop_pointid"
@@ -848,8 +848,6 @@ ActiveRecord::Schema.define(version: 20170322075010) do
 
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_child_fkey", column: "child_id", dependent: :delete
   add_foreign_key "stop_areas_stop_areas", "stop_areas", name: "stoparea_parent_fkey", column: "parent_id", dependent: :delete
-
-  add_foreign_key "stop_points", "routes", name: "stoppoint_route_fkey", dependent: :delete
 
   add_foreign_key "time_table_dates", "time_tables", name: "tm_date_fkey", dependent: :delete
 

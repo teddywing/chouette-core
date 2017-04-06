@@ -1,8 +1,9 @@
+var _ = require('lodash')
 const modal = (state = {}, action) => {
   switch (action.type) {
     case 'OPEN_CONFIRM_MODAL':
       $('#ConfirmModal').modal('show')
-      return Object.assign({}, state, {
+      return _.assign({}, state, {
         type: 'confirm',
         confirmModal: {
           callback: action.callback,
@@ -24,9 +25,9 @@ const modal = (state = {}, action) => {
         confirmModal: {}
       }
     case 'DELETE_JOURNEYPATTERN':
-      return Object.assign({}, state, { type: '' })
+      return _.assign({}, state, { type: '' })
     case 'SAVE_MODAL':
-      return Object.assign({}, state, { type: '' })
+      return _.assign({}, state, { type: '' })
     case 'CLOSE_MODAL':
       return {
         type: '',

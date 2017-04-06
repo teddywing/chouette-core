@@ -6,7 +6,8 @@ describe 'RoutingConstraintZones', type: :feature do
 
   let(:referential) { Referential.first }
   let!(:line) { create :line }
-  let!(:routing_constraint_zones) { Array.new(2) { create :routing_constraint_zone, line: line } }
+  let!(:route) { create :route, line: line }
+  let!(:routing_constraint_zones) { Array.new(2) { create :routing_constraint_zone, route: route } }
   let(:routing_constraint_zone) { routing_constraint_zones.first }
 
   describe 'index' do

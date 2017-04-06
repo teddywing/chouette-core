@@ -1,19 +1,16 @@
-class TagsInput < Formtastic::Inputs::StringInput
-  
-  def to_html
-    input_wrapping do      
-      label_html <<
-        '<span id="tagsContainer"></span>'.html_safe << 
-          builder.text_field(method, input_html_options)
-    end
+class TagsInput < SimpleForm::Inputs::CollectionInput
+  enable :placeholder
+
+  def input(wrapper_options = {})
+    @collection ||= @builder.object.send(attribute_name)
+    label_method, value_method = detect_collection_methods
+
+    merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
+    merged_input_options.reverse_merge!(multiple: true)
+
+    @builder.collection_select(
+      attribute_name, collection, value_method, label_method,
+      input_options, merged_input_options
+    )
   end
-  
-  def input_html_options
-    super.merge({
-                  :required          => nil,
-                  :autofocus         => nil,
-                  :class             => 'tm-input',
-                })
-  end
-  
 end

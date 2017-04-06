@@ -5,9 +5,9 @@ describe "/time_tables/edit", :type => :view do
   let!(:time_table) { assign(:time_table, create(:time_table) ) }
 
   describe "test" do
-    it "should render h2 with the group comment" do
-      render    
-      expect(rendered).to have_selector("h2", :text => Regexp.new(time_table.comment))
+    it "should render h1 with the group comment" do
+      render
+      expect(rendered).to have_selector("h1", :text => Regexp.new(time_table.comment))
     end
   end
 

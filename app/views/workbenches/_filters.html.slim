@@ -13,7 +13,9 @@
 
     .form-group.togglable
       = f.label @wbench_refs.human_attribute_name(:status), required: false, class: 'control-label'
-      = f.input :archived_at_not_null, label: ("<span>Conservé<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox_list' }, input_html: { class: 'check_boxes' }
+      .form-group.checkbox_list
+        = f.input :archived_at_not_null, label: ("<span>Conservé<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox-wrapper' }
+        = f.input :archived_at_null, label: ("<span>En préparation<span class='sb sb-lg sb-preparing'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox-wrapper' }
 
     .form-group.togglable
       = f.label 'Organisation(s)', required: false, class: 'control-label'
@@ -23,8 +25,8 @@
       = f.label @wbench_refs.human_attribute_name(:validity_period), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :validity_period do |p|
-          = p.input :begin_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }, include_blank: true
-          = p.input :end_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }, include_blank: true
+          = p.input :begin_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
+          = p.input :end_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
 
   .actions
     = link_to 'Effacer', @workbench, class: 'btn btn-link'

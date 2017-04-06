@@ -22,15 +22,15 @@ class CalendarsEditVehicleJourney extends Component {
     if(this.props.status.fetchSuccess == true) {
       return (
         <li className='st_action'>
-          <a
-            href='#'
-            className={(actions.getSelected(this.props.vehicleJourneys).length > 0 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled'}
+          <button
+            type='button'
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length > 0 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled'}
             data-toggle='modal'
             data-target='#CalendarsEditVehicleJourneyModal'
             onClick={() => this.props.onOpenCalendarsEditModal(actions.getSelected(this.props.vehicleJourneys))}
           >
             <span className='fa fa-calendar'></span>
-          </a>
+          </button>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='CalendarsEditVehicleJourneyModal'>
             <div className='modal-container'>

@@ -56,21 +56,28 @@ module Chouette
       at_stops
     end
 
+    def create_or_find_vjas_from_state vjas
+      return vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
+      stop_point = Chouette::StopPoint.find_by(objectid: vjas['stop_point_objectid'])
+      stop       = vehicle_journey_at_stops.create(stop_point: stop_point)
+      vjas['id'] = stop.id
+      vjas['new_record'] = true
+      stop
+    end
+
     def update_vjas_from_state state
       state.each do |vjas|
         next if vjas["dummy"]
-        stop = vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
-        if stop
-          params = {}.tap do |el|
-            ['arrival_time', 'departure_time'].each do |field|
-              time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
-              el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
-            end
+        params = {}.tap do |el|
+          ['arrival_time', 'departure_time'].each do |field|
+            time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
+            el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
           end
-          stop.update_attributes(params)
-          vjas.delete('errors')
-          vjas['errors'] = stop.errors if stop.errors.any?
         end
+        stop = create_or_find_vjas_from_state(vjas)
+        stop.update_attributes(params)
+        vjas.delete('errors')
+        vjas['errors'] = stop.errors if stop.errors.any?
       end
     end
 
@@ -85,13 +92,22 @@ module Chouette
           vj.update_attributes(state_permited_attributes(item))
           item['errors'] = vj.errors if vj.errors.any?
         end
+
+        # Delete ids of new object from state if we had to rollback
         if state.any? {|item| item['errors']}
-          state.map {|item| item.delete('objectid') if item['new_record']}
+          state.map do |item|
+            item.delete('objectid') if item['new_record']
+            item['vehicle_journey_at_stops'].map {|vjas| vjas.delete('id') if vjas['new_record'] }
+          end
           raise ::ActiveRecord::Rollback
         end
       end
 
-      state.map {|item| item.delete('new_record')}
+      # Remove new_record flag && deleted item from state if transaction has been saved
+      state.map do |item|
+        item.delete('new_record')
+        item['vehicle_journey_at_stops'].map {|vjas| vjas.delete('new_record') }
+      end
       state.delete_if {|item| item['deletable']}
     end
 

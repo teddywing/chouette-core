@@ -211,8 +211,9 @@ ChouetteIhm::Application.routes.draw do
 
   get '/help/(*slug)' => 'help#show'
 
-  get '/404', :to => 'errors#not_found'
-  get '/422', :to => 'errors#server_error'
-  get '/500', :to => 'errors#server_error'
+  get '/404', to: 'errors#not_found'
+  get '/403', to: 'errors#not_allowed'
+  get '/422', to: 'errors#server_error'
+  get '/500', to: 'errors#server_error'
 
 end

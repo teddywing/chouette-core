@@ -71,12 +71,15 @@ module Stif
       end
 
       def stop_area_area_type entry, method
+        from = method.last
+        from = 'r' if entry['OBJECT_STATUS'] == 'REFERENCE_OBJECT'
+        from = 'p' if entry['OBJECT_STATUS'] == 'LOCAL_OBJECT'
+        type = entry['TypeOfPlaceRef']
+
         if entry['type'] == 'Quay'
-          type = 'zder' if entry['OBJECT_STATUS'] == 'REFERENCE_OBJECT'
-          type = 'zdep' if entry['OBJECT_STATUS'] == 'LOCAL_OBJECT'
+          type = "zde#{from}"
         else
-          type = entry['TypeOfPlaceRef']
-          type = "#{type.to_s}#{method.last}" unless type == 'LDA'
+          type = "zdl#{from}" if type != 'LDA'
         end
         type.downcase
       end
