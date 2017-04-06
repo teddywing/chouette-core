@@ -68,7 +68,7 @@ class DuplicateVehicleJourney extends Component {
                               <input
                                 type='number'
                                 ref='additional_time'
-                                min='0'
+                                min='-59'
                                 max='59'
                                 className='form-control'
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
