@@ -1,5 +1,13 @@
 en:
   calendars:
+    days:
+      monday: M
+      tuesday: Tu
+      wednesday: W
+      thursday: Th
+      friday: F
+      saturday: Sa
+      sunday: Su
     standard_calendars: Standard calendars
     standard_calendar: Standard calendar
     actions:

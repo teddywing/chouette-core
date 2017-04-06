@@ -26,9 +26,16 @@
         = form.input :calendar, as: :select, collection: current_organisation.calendars
 
   .separator
-
   .row
     .col-lg-12
+      #periods
+        .alert.alert-info
+          |Intégration statique (avant Reactux) du composant 'periodes'
+  
+  .separator
+
+  .row
+    .col-lg-8.col-lg-offset-4
       .subform
         .nested-head
           .wrapper
@@ -50,8 +57,12 @@
         .links.nested-linker
           = link_to_add_association t("time_tables.actions.add_period"), form, :periods, class: 'btn btn-outline-primary'
 
-  .separator
-  
+  .row
+    .col-lg-12.mb-sm.mt-md
+      #periods
+        .alert.alert-warning
+          |Les éléments ci-dessous sont à supprimer.
+
   .row
     .col-lg-6.col-md-6.col-sm-12.col-xs-12
       .subform
