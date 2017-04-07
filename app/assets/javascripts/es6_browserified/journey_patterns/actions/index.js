@@ -130,9 +130,10 @@ const actions = {
           if(next) {
             dispatch(next)
           } else {
-            if(json.length != window.journeyPatternsPerPage){
-              dispatch(actions.updateTotalCount(window.journeyPatternsPerPage - json.length))
+            if(json.length != window.currentItemsLength){
+              dispatch(actions.updateTotalCount(window.currentItemsLength - json.length))
             }
+            window.currentItemsLength = json.length
             dispatch(actions.receiveJourneyPatterns(json))
           }
         }
@@ -196,6 +197,7 @@ const actions = {
               })
             }
           }
+          window.currentItemsLength = journeyPatterns.length
           dispatch(actions.receiveJourneyPatterns(journeyPatterns))
         }
       })

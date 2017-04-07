@@ -318,6 +318,7 @@ const actions = {
               company_id: val.published_journey_name || 'non renseigné'
             })
           }
+          window.currentItemsLength = vehicleJourneys.length
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
           dispatch(actions.receiveTotalCount(json.total))
         }
@@ -348,9 +349,10 @@ const actions = {
           if(next) {
             dispatch(next)
           } else {
-            if(json.length != window.vehicleJourneysPerPage){
-              dispatch(actions.updateTotalCount(window.vehicleJourneysPerPage - json.length))
+            if(json.length != window.currentItemsLength){
+              dispatch(actions.updateTotalCount(window.currentItemsLength - json.length))
             }
+            window.currentItemsLength = json.length
             dispatch(actions.receiveVehicleJourneys(json))
           }
         }
