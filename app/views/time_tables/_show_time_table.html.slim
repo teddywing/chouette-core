@@ -1,7 +1,6 @@
-.calendar_helper
-  - cal = ""
-  - (1..12).each do |month|
-    - cal << calendar(year: @year, month: month, first_day_of_week: 1, calendar_title: "#{I18n.t("date.month_names")[month]} #{@year}") do |d|
+- (1..12).each do |month|
+  .col-lg-2.col-md-3.col-sm-3.col-xs-6
+    = new_alt_calendar(year: @year, month: month, first_day_of_week: 1, calendar_title: "#{I18n.t("date.month_names")[month]} #{@year}") do |d|
       - if @time_table.excluded_date?(d)
         - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day excluded_date"}]
       - elsif @time_table.include_in_overlap_dates?(d)
@@ -10,9 +9,6 @@
         - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_date"}]
       - elsif @time_table.include_in_periods?(d)
         - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_period"}]
-
-  = cal.html_safe
-
 
 / wip
 - if @time_table.dates.where("in_out = true").present?
