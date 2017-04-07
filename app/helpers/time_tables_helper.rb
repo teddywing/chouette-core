@@ -54,7 +54,7 @@ module TimeTablesHelper
 
     if (options[:month_header])
       cal << %(<tr>)
-      cal << %(<th scope="col"></th>)
+      cal << %(<th class='weekNumber' scope="col"></th>)
       if options[:previous_month_text] or options[:next_month_text]
         cal << %(<th colspan="2">#{options[:previous_month_text]}</th>)
         colspan=3
@@ -67,7 +67,7 @@ module TimeTablesHelper
     end
 
     cal << %(<tr class="#{options[:day_name_class]}">)
-    cal << %(<th scope="col"></th>)
+    cal << %(<th class='weekNumber' scope="col"></th>)
 
     week_days.each do |wday|
       cal << %(<th id="#{th_id(Date::DAYNAMES[wday], options[:table_id])}" scope="col">)
