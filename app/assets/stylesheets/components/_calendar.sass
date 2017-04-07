@@ -26,6 +26,9 @@ table.calendar
 
   tbody
     tr > td
+      &.weekNumber
+        border: none
+
       &.outsideMonth
         color: rgba($darkgrey, 0.35)
 
@@ -42,3 +45,7 @@ table.calendar
           color: $darkgrey
           background-color: $gold
           border-radius: 50%
+
+          &:hover, &:focus
+            color: $darkgrey
+            text-decoration: none

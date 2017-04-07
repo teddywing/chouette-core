@@ -31,7 +31,7 @@ module TimeTablesHelper
       :next_month_text     => nil,
       :month_header        => true,
       :calendar_title      => month_names[options[:month]],
-      :summary             => "Calendar for #{month_names[options[:month]]} #{options[:year]}"
+      :summary             => "Calendrier pour #{month_names[options[:month]]} #{options[:year]}"
     }
     options = defaults.merge options
 
@@ -54,6 +54,7 @@ module TimeTablesHelper
 
     if (options[:month_header])
       cal << %(<tr>)
+      cal << %(<th scope="col"></th>)
       if options[:previous_month_text] or options[:next_month_text]
         cal << %(<th colspan="2">#{options[:previous_month_text]}</th>)
         colspan=3
@@ -66,6 +67,7 @@ module TimeTablesHelper
     end
 
     cal << %(<tr class="#{options[:day_name_class]}">)
+    cal << %(<th scope="col"></th>)
 
     week_days.each do |wday|
       cal << %(<th id="#{th_id(Date::DAYNAMES[wday], options[:table_id])}" scope="col">)
@@ -77,6 +79,7 @@ module TimeTablesHelper
 
     # previous month
     beginning_of_week(first, first_weekday).upto(first - 1) do |d|
+      cal << "<td class='weekNumber'>S#{d.strftime("%W").to_s}</td>" if d.wday == first_weekday
       cal << generate_other_month_cell(d, options)
     end unless first.wday == first_weekday
 
@@ -89,6 +92,8 @@ module TimeTablesHelper
       cell_attrs[:class] += " weekend" if [0, 6].include?(cur.wday)
       today = (Time.respond_to?(:zone) && !(zone = Time.zone).nil? ? zone.now.to_date : Date.today)
       cell_attrs[:class] += " today" if (cur == today) and options[:show_today]
+
+      cal << "<td class='weekNumber'>S#{cur.strftime("%W").to_s}</td>" if cur.wday == first_weekday
 
       cal << generate_cell(cell_text, cell_attrs)
       cal << "</tr><tr>" if cur.wday == last_weekday
@@ -140,6 +145,7 @@ module TimeTablesHelper
     cell_attrs[:headers] = th_id(date, options[:table_id])
     cell_attrs[:class] = options[:other_month_class]
     cell_attrs[:class] += " weekend" if weekend?(date)
+    cell_attrs[:title] ||= date.strftime("%W").to_i if options[:first_day_of_week] == 1
 
     cell_text = date.day
     if options[:accessible]
