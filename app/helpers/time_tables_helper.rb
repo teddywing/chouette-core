@@ -20,10 +20,10 @@ module TimeTablesHelper
       :table_id            => "calendar-#{options[:year]}-#{"%02d" % options[:month]}",
       :table_class         => 'calendar',
       :month_name_class    => 'monthName',
-      :other_month_class   => 'otherMonth',
+      :other_month_class   => 'outsideMonth',
       :day_name_class      => 'dayName',
       :day_class           => 'day',
-      :abbrev              => true,
+      :abbrev              => false,
       :first_day_of_week   => 0,
       :accessible          => false,
       :show_today          => true,
@@ -69,7 +69,7 @@ module TimeTablesHelper
 
     week_days.each do |wday|
       cal << %(<th id="#{th_id(Date::DAYNAMES[wday], options[:table_id])}" scope="col">)
-      cal << (options[:abbrev] ? %(<abbr title="#{day_names[wday]}">#{t("calendars.days.#{Date::DAYNAMES[wday].downcase}")}</abbr>) : day_names[wday])
+      cal << (options[:abbrev] ? %(<abbr title="#{day_names[wday]}">#{t("calendars.days.#{Date::DAYNAMES[wday].downcase}")}</abbr>) : t("calendars.days.#{Date::DAYNAMES[wday].downcase}"))
       cal << %(</th>)
     end
 
@@ -86,7 +86,7 @@ module TimeTablesHelper
       cell_attrs ||= {}
       cell_attrs[:headers] = th_id(cur, options[:table_id])
       cell_attrs[:class] ||= options[:day_class]
-      cell_attrs[:class] += " weekendDay" if [0, 6].include?(cur.wday)
+      cell_attrs[:class] += " weekend" if [0, 6].include?(cur.wday)
       today = (Time.respond_to?(:zone) && !(zone = Time.zone).nil? ? zone.now.to_date : Date.today)
       cell_attrs[:class] += " today" if (cur == today) and options[:show_today]
 
@@ -139,7 +139,7 @@ module TimeTablesHelper
     cell_attrs = {}
     cell_attrs[:headers] = th_id(date, options[:table_id])
     cell_attrs[:class] = options[:other_month_class]
-    cell_attrs[:class] += " weekendDay" if weekend?(date)
+    cell_attrs[:class] += " weekend" if weekend?(date)
 
     cell_text = date.day
     if options[:accessible]
