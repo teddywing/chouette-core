@@ -99,13 +99,20 @@ class TimeTablesController < ChouetteController
     ransack_params.delete("tag_search") if ransack_params.present?
 
     selected_time_tables = tag_search ? select_time_tables.tagged_with(tag_search, :wild => true, :any => true) : select_time_tables
+
     @q = selected_time_tables.search(ransack_params)
-    @time_tables ||= @q.result(:distinct => true).order(:comment).paginate(:page => params[:page])
+
+    if sort_column && sort_direction
+      @time_tables ||= @q.result(:distinct => true).order("#{sort_column} #{sort_direction}")
+    else
+      @time_tables ||= @q.result(:distinct => true).order(:comment)
+    end
+    @time_tables = @time_tables.paginate(page: params[:page], per_page: 10)
   end
 
   def select_time_tables
     if params[:route_id]
-      referential.time_tables.joins( vehicle_journeys: :route).where( "routes.id IN (#{params[:route_id]})")
+      referential.time_tables.joins(vehicle_journeys: :route).where( "routes.id IN (#{params[:route_id]})")
    else
       referential.time_tables
    end
@@ -120,6 +127,12 @@ class TimeTablesController < ChouetteController
   end
 
   private
+  def sort_column
+    referential.time_tables.column_names.include?(params[:sort]) ? params[:sort] : 'comment'
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
 
   def time_table_params
     params.require(:time_table).permit(

@@ -48,7 +48,7 @@ module NewapplicationHelper
               else
                 item.try(attribute)
               end
-            if attribute == 'name'
+            if attribute == 'name' or attribute == 'comment'
               lnk = []
 
               unless item.class.to_s == 'Calendar' or item.class.to_s == 'Referential'
@@ -59,7 +59,7 @@ module NewapplicationHelper
                   lnk << item if item.class.to_s == 'Chouette::RoutingConstraintZone'
                   lnk << item if item.respond_to? :line_referential
                   lnk << item.stop_area if item.respond_to? :stop_area
-                  lnk << item if item.respond_to? :stop_points
+                  lnk << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
                 elsif item.respond_to? :referential
                   lnk << item.referential
                 end
@@ -111,7 +111,7 @@ module NewapplicationHelper
             polymorph_url << item if item.class.to_s == 'Chouette::RoutingConstraintZone'
             polymorph_url << item if item.respond_to? :line_referential
             polymorph_url << item.stop_area if item.respond_to? :stop_area
-            polymorph_url << item if item.respond_to? :stop_points
+            polymorph_url << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
           elsif item.respond_to? :referential
             polymorph_url << item.referential
           end
