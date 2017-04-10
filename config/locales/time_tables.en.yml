@@ -64,6 +64,8 @@ en:
     attributes:
       time_table:
         comment: "Name"
+        color: "Associated color"
+        bounding_dates: 'Global validity period'
         version: "Short name"
         day_types: "Period day types"
         none: "none"
