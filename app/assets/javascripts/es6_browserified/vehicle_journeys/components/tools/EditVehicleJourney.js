@@ -74,22 +74,51 @@ class EditVehicleJourney extends Component {
 
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
-                            <label className='control-label is-required'>Numéro de train</label>
-                            <input
-                              type='text'
-                              ref='published_journey_identifier'
-                              className='form-control'
-                              defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_identifier}
-                              onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                              required
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Numéro de train</label>
+                              <input
+                                type='text'
+                                ref='published_journey_identifier'
+                                className='form-control'
+                                defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_identifier}
+                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                required
                               />
+                            </div>
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
-                            <label className='control-label'>Transporteur</label>
+                            <div className='form-group'>
+                              <label className='control-label'>Transporteur</label>
                               <CompanySelect2
                                 company = {this.props.modal.modalProps.vehicleJourney.company}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
                               />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className='row'>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                            <div className='form-group'>
+                              <label className='control-label'>Mode de transport</label>
+                              <input
+                                type='text'
+                                className='form-control'
+                                value={(this.props.modal.modalProps.vehicleJourney.transport_mode || 'non renseigné')}
+                                disabled={true}
+                              />
+                            </div>
+                          </div>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                            <div className='form-group'>
+                              <label className='control-label'>Sous mode de transport</label>
+                              <input
+                                type='text'
+                                className='form-control'
+                                value={(this.props.modal.modalProps.vehicleJourney.transport_submode || 'non renseigné')}
+                                disabled={true}
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
