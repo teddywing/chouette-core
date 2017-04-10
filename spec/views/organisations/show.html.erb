@@ -10,7 +10,7 @@ describe "/organisations/show" do
   it "should render each User" do
     render
     organisation.users.each do |user|
-      rendered.should have_selector("div.user span.name", :text => user.name)
+      expect(rendered).to have_selector("div.user span.name", :text => user.name)
     end
   end
 

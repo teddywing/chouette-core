@@ -94,7 +94,7 @@ Configure for Generating URLs in Action Mailer Views.
 * see [Action Mailer Configuration documentation](http://guides.rubyonrails.org/action_mailer_basics.html)
 
 Configure assets access (Must be true if you use Webrick, or false if you use Apache or Nginx).
-* Edit [production.rb](./config/environments/production.rb) and change ```config.serve_static_assets```
+* Edit [production.rb](./config/environments/production.rb) and change ```config.serve_static_files```
 
 Configure SMTP settings.
 * Edit [production.rb](./config/environments/production.rb) and change ```ActionMailer::Base.smtp_settings```
@@ -144,7 +144,7 @@ This task may be added in system start-up configuration.
 Instead of using WEBrick, Rails application may be deployed on [Phusion Passenger](https://www.phusionpassenger.com/) with an [Apache](http://httpd.apache.org/) or [NGinx](http://nginx.com/) front-end, to make server faster and more robust.
 
 Apache like NGinx can serve static resources,
-so change parameter ```serve_static_assets``` to false in [production.rb](./config/environments/production.rb)
+so change parameter ```serve_static_files``` to false in [production.rb](./config/environments/production.rb)
 
 Test
 ----

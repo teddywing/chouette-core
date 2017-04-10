@@ -31,6 +31,7 @@ module ChouetteIhm
     config.browserify_rails.commandline_options = "-t [ babelify --presets [ react es2015 ] ]"
 
     config.active_record.observers = :route_observer
+    config.active_record.raise_in_transactional_callbacks = true
 
     unless Rails.env.production?
         # Work around sprockets+teaspoon mismatch:

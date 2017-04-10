@@ -119,7 +119,7 @@ describe VehicleJourneyImport, :type => :model do
 
     it "should return false when stop points in file are not the same in the route" do
       vehicle_journey_import = VehicleJourneyImport.new(:route => other_route, :file => valid_file)
-      expect { vehicle_journey_import.load_imported_vehicle_journeys }.to raise_exception
+      expect { vehicle_journey_import.load_imported_vehicle_journeys }.to raise_error(RuntimeError)
     end
 
     # it "should return errors when vehicle journeys in file are invalid" do            
@@ -130,7 +130,7 @@ describe VehicleJourneyImport, :type => :model do
 
     it "should return errors when vehicle journey at stops in file are invalid" do           
       vehicle_journey_import = VehicleJourneyImport.new(:route => route, :file => invalid_file_on_vjas)
-      expect { vehicle_journey_import.load_imported_vehicle_journeys }.to raise_exception
+      expect { vehicle_journey_import.load_imported_vehicle_journeys }.to raise_error(ArgumentError)
     end
 
     it "should return errors when vehicle journey at stops are not in ascendant order" do    

@@ -1,8 +1,10 @@
 # coding: iso-8859-1
 source 'http://rubygems.org'
 
+ruby '2.3.1'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.7.1'
+gem 'rails', '~> 4.2.8'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -86,7 +88,7 @@ gem 'language_engine', github: 'af83/language_engine'
 gem 'calendar_helper', '0.2.5'
 gem 'cocoon'
 gem 'slim-rails', '~> 3.1'
-gem 'formtastic', '2.3.1'
+gem 'formtastic', '3.1.5'
 gem 'RedCloth', '~> 4.3.0'
 gem 'simple_form', '~> 3.1.0'
 gem 'font-awesome-sass', '~> 4.7'
@@ -165,6 +167,7 @@ end
 group :test, :development do
   gem 'awesome_print'
   gem 'pry-rails'
+  gem 'pry-byebug'
   gem 'rspec-rails', '~> 3.5.0'
   gem 'fakeweb'
   gem 'webmock'
