@@ -18,6 +18,11 @@ class TimeTablesController < ChouetteController
     end
   end
 
+  def month
+    @date = params['date'] ? Date.parse(params['date']) : Date.today
+    @time_table = resource
+  end
+
   def new
     @autocomplete_items = ActsAsTaggableOn::Tag.all
     new! do
