@@ -128,6 +128,10 @@ class VehicleJourneysController < ChouetteController
         time = params[:q]["vehicle_journey_at_stops_#{filter}"]
         params[:q]["vehicle_journey_at_stops_#{filter}"] = "2000-01-01 #{time}:00 UTC"
       end
+
+      if params[:q]['vehicle_journey_without_departure_time'] == 'false'
+        params[:q]["vehicle_journey_at_stops_departure_time_not_eq"] = '2000-01-01 00:00 UTC'
+      end
     end
   end
 
