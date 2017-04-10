@@ -95,6 +95,39 @@ input
         + [class*='col-sm-']
           float: right
 
+// Colors dropdown
+.dropdown.color_selector
+  .btn.btn-default
+    &, &:hover, &:focus
+      border: 1px solid #cccccc
+      background-color: #fff
+      font-weight: normal
+      color: $darkgrey
+
+  .dropdown-menu
+    position: absolute
+    margin: 2px 0 0 0
+    min-width: 56px
+
+    > .radio
+      position: relative
+      padding: 3px 20px
+      // cursor: pointer
+
+      &:hover, &:focus
+        background-color: #f5f5f5
+
+      > label
+        padding: 0
+
+        input.color_selector, input[type='radio']
+          position: absolute
+          cursor: pointer
+          z-index: 1
+          width: 100%
+          margin: 0
+          opacity: 0
+
 // Search bar
 .search_bar
   position: relative

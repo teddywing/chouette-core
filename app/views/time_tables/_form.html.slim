@@ -3,10 +3,19 @@
   .row
     .col-lg-12
       = form.input :comment, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.comment")}
-      = form.input :tag_list, as: :tags
+      
+      .form-group
+        = form.label @time_table.human_attribute_name(:color), required: false, class: 'control-label col-sm-4'
+      
+        .col-sm-8
+          .dropdown.color_selector
+            button.btn.btn-default.dropdown-toggle type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+              span.fa.fa-circle.mr-xs style="color:#{@time_table.color.nil? ? 'transparent' : @time_table.color}"
+              span.caret
 
-      / = form.input :version
-      / = form.input :objectid, :required => !@time_table.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.objectid")}
+            = form.input :color, as: :radio_buttons, label: false, collection: ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"], input_html: {class: 'color_selector'}, label_method: lambda{|c| ("<span class='fa fa-circle' style='color:" + (c.empty? ? 'transparent' : c) + "'></span>").html_safe}, wrapper_html: { class: 'dropdown-menu', 'aria-labelledby': "dropdownMenu1"}, include_blank: true
+
+      = form.input :tag_list, as: :tags
 
       .form-group
         label.control-label.col-sm-4

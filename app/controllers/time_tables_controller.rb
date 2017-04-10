@@ -140,7 +140,7 @@ class TimeTablesController < ChouetteController
       :object_version,
       :creator_id,
       :calendar_id,
-      :version, :comment,
+      :version, :comment, :color,
       :int_day_types,
       :monday,
       :tuesday,
