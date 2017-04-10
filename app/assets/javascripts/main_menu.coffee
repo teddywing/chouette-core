@@ -49,5 +49,6 @@ $(document).on 'ready page:load', ->
       $('#main_nav').removeClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length > 0
-        $('.page-action .small').after(link)
+        if !$('.page-action').find('.formSubmitr').length
+          $('.page-action .small').after(link)
         $('.sticky-content').remove()
