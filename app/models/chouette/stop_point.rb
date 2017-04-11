@@ -18,6 +18,8 @@ module Chouette
 
     scope :default_order, -> { order("position") }
 
+    delegate :name, to: :stop_area
+
     before_destroy :remove_dependent_journey_pattern_stop_points
     def remove_dependent_journey_pattern_stop_points
       route.journey_patterns.each do |jp|

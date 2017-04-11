@@ -93,15 +93,14 @@ class TimeTablesController < ChouetteController
   protected
 
   def collection
-    ransack_params = params[:q]
-    # Hack to delete params can't be used by ransack
-    tag_search = ransack_params["tag_search"] if ransack_params.present? && ransack_params["tag_search"].present?
-    ransack_params.delete("tag_search") if ransack_params.present?
+    scope = select_time_tables
+    if params[:q] && params[:q]["tag_search"]
+      tags = params[:q]["tag_search"].reject {|c| c.empty?}
+      params[:q].delete("tag_search")
+      scope = select_time_tables.tagged_with(tags, :wild => true, :any => true) if tags.any?
+    end
 
-    selected_time_tables = tag_search ? select_time_tables.tagged_with(tag_search, :wild => true, :any => true) : select_time_tables
-
-    @q = selected_time_tables.search(ransack_params)
-
+    @q = scope.search(params[:q])
     if sort_column && sort_direction
       @time_tables ||= @q.result(:distinct => true).order("#{sort_column} #{sort_direction}")
     else

@@ -22,11 +22,11 @@
               = f.label @time_tables.human_attribute_name(:tag_search), required: false, class: 'control-label'
               = f.input :tag_search, as: :tags, collection: Chouette::TimeTable.tags_on(:tags).pluck(:name), label: false, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une étiquette...' }, wrapper_html: { class: 'select2ed'}, include_blank: false
 
-            / .form-group.togglable
-            /   = f.label @time_tables.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
-            /   .filter_menu
-            /     = f.input :start_date_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }
-            /     = f.input :end_date_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }
+            .form-group.togglable
+              = f.label @time_tables.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
+              .filter_menu
+                = f.input :start_date_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }
+                = f.input :end_date_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }
 
 
           .actions
@@ -44,7 +44,7 @@
             'table has-search'
 
           = new_pagination @time_tables, 'pull-right'
-          
+
     - unless @time_tables.any?
       .row.mt-xs
         .col-lg-12

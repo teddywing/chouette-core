@@ -9,6 +9,13 @@ fr:
         line: Ligne
         created_at: "Créé le"
         updated_at: "Edité le"
+    errors:
+      models:
+        routing_constraint_zone:
+          attributes:
+            stop_points:
+              not_enough_stop_points: "Il faut mettre au moins deux arrêts sur séquence d'arrêts."
+              stop_points_not_from_route: "Arrêt sur séquence d'arrêts n'appartient pas à la Route de cette Zone de contrainte."
   routing_constraint_zones:
     actions:
       new: Ajouter une zone de contrainte

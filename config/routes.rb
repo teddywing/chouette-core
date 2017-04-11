@@ -123,6 +123,7 @@ ChouetteIhm::Application.routes.draw do
         end
         resources :vehicle_journey_imports
         resources :vehicle_journey_exports
+        resources :stop_points, only: :index, controller: 'route_stop_points'
       end
       resources :routing_constraint_zones
     end
