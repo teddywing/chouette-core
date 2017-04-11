@@ -21,12 +21,12 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   create_table "access_links", force: true do |t|
     t.integer  "access_point_id",                        limit: 8
     t.integer  "stop_area_id",                           limit: 8
-    t.string   "objectid",                                                                  null: false
+    t.string   "objectid",                               limit: nil,                          null: false
     t.integer  "object_version",                         limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
-    t.decimal  "link_distance",                                    precision: 19, scale: 2
+    t.string   "creator_id",                             limit: nil
+    t.string   "name",                                   limit: nil
+    t.string   "comment",                                limit: nil
+    t.decimal  "link_distance",                                      precision: 19, scale: 2
     t.boolean  "lift_availability"
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "stairs_availability"
@@ -34,9 +34,9 @@ ActiveRecord::Schema.define(version: 20170410134931) do
     t.time     "frequent_traveller_duration"
     t.time     "occasional_traveller_duration"
     t.time     "mobility_restricted_traveller_duration"
-    t.string   "link_type"
+    t.string   "link_type",                              limit: nil
     t.integer  "int_user_needs"
-    t.string   "link_orientation"
+    t.string   "link_orientation",                       limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -44,26 +44,26 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "access_links", ["objectid"], :name => "access_links_objectid_key", :unique => true
 
   create_table "access_points", force: true do |t|
-    t.string   "objectid"
+    t.string   "objectid",                        limit: nil
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
-    t.decimal  "longitude",                                 precision: 19, scale: 16
-    t.decimal  "latitude",                                  precision: 19, scale: 16
-    t.string   "long_lat_type"
-    t.string   "country_code"
-    t.string   "street_name"
-    t.string   "contained_in"
+    t.string   "creator_id",                      limit: nil
+    t.string   "name",                            limit: nil
+    t.string   "comment",                         limit: nil
+    t.decimal  "longitude",                                   precision: 19, scale: 16
+    t.decimal  "latitude",                                    precision: 19, scale: 16
+    t.string   "long_lat_type",                   limit: nil
+    t.string   "country_code",                    limit: nil
+    t.string   "street_name",                     limit: nil
+    t.string   "contained_in",                    limit: nil
     t.time     "openning_time"
     t.time     "closing_time"
-    t.string   "access_type"
+    t.string   "access_type",                     limit: nil
     t.boolean  "lift_availability"
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "stairs_availability"
     t.integer  "stop_area_id",                    limit: 8
-    t.string   "zip_code"
-    t.string   "city_name"
+    t.string   "zip_code",                        limit: nil
+    t.string   "city_name",                       limit: nil
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -73,17 +73,17 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "api_keys", force: true do |t|
     t.integer  "referential_id", limit: 8
-    t.string   "token"
-    t.string   "name"
+    t.string   "token",          limit: nil
+    t.string   "name",           limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "calendars", force: true do |t|
-    t.string    "name"
-    t.string    "short_name"
-    t.daterange "date_ranges",               array: true
-    t.date      "dates",                     array: true
+    t.string    "name",            limit: nil
+    t.string    "short_name",      limit: nil
+    t.daterange "date_ranges",                 array: true
+    t.date      "dates",                       array: true
     t.boolean   "shared"
     t.integer   "organisation_id", limit: 8
     t.datetime  "created_at"
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "calendars", ["short_name"], :name => "index_calendars_on_short_name", :unique => true
 
   create_table "clean_up_results", force: true do |t|
-    t.string   "message_key"
+    t.string   "message_key",       limit: nil
     t.hstore   "message_attributs"
     t.integer  "clean_up_id",       limit: 8
     t.datetime "created_at"
@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "clean_up_results", ["clean_up_id"], :name => "index_clean_up_results_on_clean_up_id"
 
   create_table "clean_ups", force: true do |t|
-    t.string   "status"
+    t.string   "status",         limit: nil
     t.datetime "started_at"
     t.datetime "ended_at"
     t.integer  "referential_id", limit: 8
@@ -117,20 +117,20 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "clean_ups", ["referential_id"], :name => "index_clean_ups_on_referential_id"
 
   create_table "companies", force: true do |t|
-    t.string   "objectid",                            null: false
+    t.string   "objectid",                  limit: nil, null: false
     t.integer  "object_version",            limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "short_name"
-    t.string   "organizational_unit"
-    t.string   "operating_department_name"
-    t.string   "code"
-    t.string   "phone"
-    t.string   "fax"
-    t.string   "email"
-    t.string   "registration_number"
-    t.string   "url"
-    t.string   "time_zone"
+    t.string   "creator_id",                limit: nil
+    t.string   "name",                      limit: nil
+    t.string   "short_name",                limit: nil
+    t.string   "organizational_unit",       limit: nil
+    t.string   "operating_department_name", limit: nil
+    t.string   "code",                      limit: nil
+    t.string   "phone",                     limit: nil
+    t.string   "fax",                       limit: nil
+    t.string   "email",                     limit: nil
+    t.string   "registration_number",       limit: nil
+    t.string   "url",                       limit: nil
+    t.string   "time_zone",                 limit: nil
     t.integer  "line_referential_id",       limit: 8
     t.text     "import_xml"
     t.datetime "created_at"
@@ -144,13 +144,13 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   create_table "connection_links", force: true do |t|
     t.integer  "departure_id",                           limit: 8
     t.integer  "arrival_id",                             limit: 8
-    t.string   "objectid",                                                                  null: false
+    t.string   "objectid",                               limit: nil,                          null: false
     t.integer  "object_version",                         limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
-    t.decimal  "link_distance",                                    precision: 19, scale: 2
-    t.string   "link_type"
+    t.string   "creator_id",                             limit: nil
+    t.string   "name",                                   limit: nil
+    t.string   "comment",                                limit: nil
+    t.decimal  "link_distance",                                      precision: 19, scale: 2
+    t.string   "link_type",                              limit: nil
     t.time     "default_duration"
     t.time     "frequent_traveller_duration"
     t.time     "occasional_traveller_duration"
@@ -167,13 +167,13 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "exports", force: true do |t|
     t.integer  "referential_id",  limit: 8
-    t.string   "status"
-    t.string   "type"
-    t.string   "options"
+    t.string   "status",          limit: nil
+    t.string   "type",            limit: nil
+    t.string   "options",         limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "references_type"
-    t.string   "reference_ids"
+    t.string   "references_type", limit: nil
+    t.string   "reference_ids",   limit: nil
   end
 
   add_index "exports", ["referential_id"], :name => "index_exports_on_referential_id"
@@ -183,23 +183,23 @@ ActiveRecord::Schema.define(version: 20170410134931) do
     t.integer  "line_id",            limit: 8
     t.integer  "connection_link_id", limit: 8
     t.integer  "stop_point_id",      limit: 8
-    t.string   "objectid",                                               null: false
+    t.string   "objectid",           limit: nil,                           null: false
     t.integer  "object_version",     limit: 8
     t.datetime "creation_time"
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
-    t.string   "description"
+    t.string   "creator_id",         limit: nil
+    t.string   "name",               limit: nil
+    t.string   "comment",            limit: nil
+    t.string   "description",        limit: nil
     t.boolean  "free_access"
-    t.decimal  "longitude",                    precision: 19, scale: 16
-    t.decimal  "latitude",                     precision: 19, scale: 16
-    t.string   "long_lat_type"
-    t.decimal  "x",                            precision: 19, scale: 2
-    t.decimal  "y",                            precision: 19, scale: 2
-    t.string   "projection_type"
-    t.string   "country_code"
-    t.string   "street_name"
-    t.string   "contained_in"
+    t.decimal  "longitude",                      precision: 19, scale: 16
+    t.decimal  "latitude",                       precision: 19, scale: 16
+    t.string   "long_lat_type",      limit: nil
+    t.decimal  "x",                              precision: 19, scale: 2
+    t.decimal  "y",                              precision: 19, scale: 2
+    t.string   "projection_type",    limit: nil
+    t.string   "country_code",       limit: nil
+    t.string   "street_name",        limit: nil
+    t.string   "contained_in",       limit: nil
   end
 
   add_index "facilities", ["objectid"], :name => "facilities_objectid_key", :unique => true
@@ -211,8 +211,8 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "footnotes", force: true do |t|
     t.integer  "line_id",    limit: 8
-    t.string   "code"
-    t.string   "label"
+    t.string   "code",       limit: nil
+    t.string   "label",      limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -223,12 +223,12 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   end
 
   create_table "group_of_lines", force: true do |t|
-    t.string   "objectid",                      null: false
+    t.string   "objectid",            limit: nil, null: false
     t.integer  "object_version",      limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
-    t.string   "registration_number"
+    t.string   "creator_id",          limit: nil
+    t.string   "name",                limit: nil
+    t.string   "comment",             limit: nil
+    t.string   "registration_number", limit: nil
     t.integer  "line_referential_id", limit: 8
     t.text     "import_xml"
     t.datetime "created_at"
@@ -245,7 +245,7 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "import_messages", force: true do |t|
     t.integer  "criticity"
-    t.string   "message_key"
+    t.string   "message_key",         limit: nil
     t.hstore   "message_attributs"
     t.integer  "import_id",           limit: 8
     t.integer  "resource_id",         limit: 8
@@ -259,31 +259,31 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "import_resources", force: true do |t|
     t.integer  "import_id",  limit: 8
-    t.string   "status"
+    t.string   "status",     limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type"
-    t.string   "reference"
-    t.string   "name"
+    t.string   "type",       limit: nil
+    t.string   "reference",  limit: nil
+    t.string   "name",       limit: nil
     t.hstore   "metrics"
   end
 
   add_index "import_resources", ["import_id"], :name => "index_import_resources_on_import_id"
 
   create_table "imports", force: true do |t|
-    t.string   "status"
-    t.string   "current_step_id"
+    t.string   "status",                limit: nil
+    t.string   "current_step_id",       limit: nil
     t.float    "current_step_progress"
     t.integer  "workbench_id",          limit: 8
     t.integer  "referential_id",        limit: 8
-    t.string   "name"
+    t.string   "name",                  limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "file"
+    t.string   "file",                  limit: nil
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.string   "token_download"
-    t.string   "type"
+    t.string   "token_download",        limit: nil
+    t.string   "type",                  limit: nil
   end
 
   add_index "imports", ["referential_id"], :name => "index_imports_on_referential_id"
@@ -317,16 +317,16 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "journey_patterns", force: true do |t|
     t.integer  "route_id",                limit: 8
-    t.string   "objectid",                                      null: false
+    t.string   "objectid",                limit: nil,             null: false
     t.integer  "object_version",          limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
-    t.string   "registration_number"
-    t.string   "published_name"
+    t.string   "creator_id",              limit: nil
+    t.string   "name",                    limit: nil
+    t.string   "comment",                 limit: nil
+    t.string   "registration_number",     limit: nil
+    t.string   "published_name",          limit: nil
     t.integer  "departure_stop_point_id", limit: 8
     t.integer  "arrival_stop_point_id",   limit: 8
-    t.integer  "section_status",                    default: 0, null: false
+    t.integer  "section_status",                      default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -348,7 +348,7 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "line_referential_sync_messages", force: true do |t|
     t.integer  "criticity"
-    t.string   "message_key"
+    t.string   "message_key",              limit: nil
     t.hstore   "message_attributs"
     t.integer  "line_referential_sync_id", limit: 8
     t.datetime "created_at"
@@ -363,42 +363,42 @@ ActiveRecord::Schema.define(version: 20170410134931) do
     t.datetime "updated_at"
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.string   "status"
+    t.string   "status",              limit: nil
   end
 
   add_index "line_referential_syncs", ["line_referential_id"], :name => "index_line_referential_syncs_on_line_referential_id"
 
   create_table "line_referentials", force: true do |t|
-    t.string   "name"
+    t.string   "name",          limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sync_interval", default: 1
+    t.integer  "sync_interval",             default: 1
   end
 
   create_table "lines", force: true do |t|
     t.integer  "network_id",                      limit: 8
     t.integer  "company_id",                      limit: 8
-    t.string   "objectid",                                                  null: false
+    t.string   "objectid",                        limit: nil,                 null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "number"
-    t.string   "published_name"
-    t.string   "transport_mode"
-    t.string   "registration_number"
-    t.string   "comment"
+    t.string   "creator_id",                      limit: nil
+    t.string   "name",                            limit: nil
+    t.string   "number",                          limit: nil
+    t.string   "published_name",                  limit: nil
+    t.string   "transport_mode",                  limit: nil
+    t.string   "registration_number",             limit: nil
+    t.string   "comment",                         limit: nil
     t.boolean  "mobility_restricted_suitability"
     t.integer  "int_user_needs"
     t.boolean  "flexible_service"
-    t.string   "url"
+    t.string   "url",                             limit: nil
     t.string   "color",                           limit: 6
     t.string   "text_color",                      limit: 6
-    t.string   "stable_id"
+    t.string   "stable_id",                       limit: nil
     t.integer  "line_referential_id",             limit: 8
-    t.boolean  "deactivated",                               default: false
+    t.boolean  "deactivated",                                 default: false
     t.text     "import_xml"
-    t.string   "transport_submode"
-    t.integer  "secondary_company_ids",           limit: 8,                              array: true
+    t.string   "transport_submode",               limit: nil
+    t.integer  "secondary_company_ids",           limit: 8,                                array: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -409,17 +409,17 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "lines", ["secondary_company_ids"], :name => "index_lines_on_secondary_company_ids"
 
   create_table "networks", force: true do |t|
-    t.string   "objectid",                      null: false
+    t.string   "objectid",            limit: nil, null: false
     t.integer  "object_version",      limit: 8
-    t.string   "creator_id"
+    t.string   "creator_id",          limit: nil
     t.date     "version_date"
-    t.string   "description"
-    t.string   "name"
-    t.string   "registration_number"
-    t.string   "source_name"
-    t.string   "source_type"
-    t.string   "source_identifier"
-    t.string   "comment"
+    t.string   "description",         limit: nil
+    t.string   "name",                limit: nil
+    t.string   "registration_number", limit: nil
+    t.string   "source_name",         limit: nil
+    t.string   "source_type",         limit: nil
+    t.string   "source_identifier",   limit: nil
+    t.string   "comment",             limit: nil
     t.text     "import_xml"
     t.integer  "line_referential_id", limit: 8
     t.datetime "created_at"
@@ -431,11 +431,11 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "networks", ["registration_number"], :name => "networks_registration_number_key"
 
   create_table "organisations", force: true do |t|
-    t.string   "name"
+    t.string   "name",           limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "data_format",    default: "neptune"
-    t.string   "code"
+    t.string   "data_format",    limit: nil, default: "neptune"
+    t.string   "code",           limit: nil
     t.datetime "synced_at"
     t.hstore   "sso_attributes"
   end
@@ -446,12 +446,12 @@ ActiveRecord::Schema.define(version: 20170410134931) do
     t.integer  "start_of_link_id", limit: 8
     t.integer  "end_of_link_id",   limit: 8
     t.integer  "route_id",         limit: 8
-    t.string   "objectid",                                            null: false
+    t.string   "objectid",         limit: nil,                          null: false
     t.integer  "object_version",   limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
-    t.decimal  "link_distance",              precision: 19, scale: 2
+    t.string   "creator_id",       limit: nil
+    t.string   "name",             limit: nil
+    t.string   "comment",          limit: nil
+    t.decimal  "link_distance",                precision: 19, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -459,7 +459,7 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "pt_links", ["objectid"], :name => "pt_links_objectid_key", :unique => true
 
   create_table "referential_clonings", force: true do |t|
-    t.string   "status"
+    t.string   "status",                limit: nil
     t.datetime "started_at"
     t.datetime "ended_at"
     t.integer  "source_referential_id", limit: 8
@@ -485,25 +485,25 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "referential_metadata", ["referential_source_id"], :name => "index_referential_metadata_on_referential_source_id"
 
   create_table "referentials", force: true do |t|
-    t.string   "name"
-    t.string   "slug"
+    t.string   "name",                     limit: nil
+    t.string   "slug",                     limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "prefix"
-    t.string   "projection_type"
-    t.string   "time_zone"
-    t.string   "bounds"
+    t.string   "prefix",                   limit: nil
+    t.string   "projection_type",          limit: nil
+    t.string   "time_zone",                limit: nil
+    t.string   "bounds",                   limit: nil
     t.integer  "organisation_id",          limit: 8
     t.text     "geographical_bounds"
     t.integer  "user_id",                  limit: 8
-    t.string   "user_name"
-    t.string   "data_format"
+    t.string   "user_name",                limit: nil
+    t.string   "data_format",              limit: nil
     t.integer  "line_referential_id",      limit: 8
     t.integer  "stop_area_referential_id", limit: 8
     t.integer  "workbench_id",             limit: 8
     t.datetime "archived_at"
     t.integer  "created_from_id",          limit: 8
-    t.boolean  "ready",                              default: false
+    t.boolean  "ready",                                default: false
   end
 
   add_index "referentials", ["created_from_id"], :name => "index_referentials_on_created_from_id"
@@ -511,11 +511,11 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   create_table "route_sections", force: true do |t|
     t.integer  "departure_id",       limit: 8
     t.integer  "arrival_id",         limit: 8
-    t.string   "objectid",                                                       null: false
-    t.integer  "object_version",     limit: 8
-    t.string   "creator_id"
     t.spatial  "input_geometry",     limit: {:srid=>4326, :type=>"line_string"}
     t.spatial  "processed_geometry", limit: {:srid=>4326, :type=>"line_string"}
+    t.string   "objectid",           limit: nil,                                 null: false
+    t.integer  "object_version",     limit: 8
+    t.string   "creator_id",         limit: nil
     t.float    "distance"
     t.boolean  "no_processing"
     t.datetime "created_at"
@@ -524,16 +524,16 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "routes", force: true do |t|
     t.integer  "line_id",           limit: 8
-    t.string   "objectid",                    null: false
+    t.string   "objectid",          limit: nil, null: false
     t.integer  "object_version",    limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
+    t.string   "creator_id",        limit: nil
+    t.string   "name",              limit: nil
+    t.string   "comment",           limit: nil
     t.integer  "opposite_route_id", limit: 8
-    t.string   "published_name"
-    t.string   "number"
-    t.string   "direction"
-    t.string   "wayback"
+    t.string   "published_name",    limit: nil
+    t.string   "number",            limit: nil
+    t.string   "direction",         limit: nil
+    t.string   "wayback",           limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -541,13 +541,13 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "routes", ["objectid"], :name => "routes_objectid_key", :unique => true
 
   create_table "routing_constraint_zones", force: true do |t|
-    t.string   "name"
-    t.integer  "stop_area_ids",                         array: true
+    t.string   "name",           limit: nil
+    t.integer  "stop_area_ids",                           array: true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "objectid",                 null: false
+    t.string   "objectid",       limit: nil, null: false
     t.integer  "object_version", limit: 8
-    t.string   "creator_id"
+    t.string   "creator_id",     limit: nil
     t.integer  "route_id",       limit: 8
   end
 
@@ -558,7 +558,7 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "rule_parameter_sets", force: true do |t|
     t.text     "parameters"
-    t.string   "name"
+    t.string   "name",            limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "organisation_id", limit: 8
@@ -572,7 +572,7 @@ ActiveRecord::Schema.define(version: 20170410134931) do
 
   create_table "stop_area_referential_sync_messages", force: true do |t|
     t.integer  "criticity"
-    t.string   "message_key"
+    t.string   "message_key",                   limit: nil
     t.hstore   "message_attributs"
     t.integer  "stop_area_referential_sync_id", limit: 8
     t.datetime "created_at"
@@ -587,48 +587,48 @@ ActiveRecord::Schema.define(version: 20170410134931) do
     t.datetime "updated_at"
     t.datetime "ended_at"
     t.datetime "started_at"
-    t.string   "status"
+    t.string   "status",                   limit: nil
   end
 
   add_index "stop_area_referential_syncs", ["stop_area_referential_id"], :name => "index_stop_area_referential_syncs_on_stop_area_referential_id"
 
   create_table "stop_area_referentials", force: true do |t|
-    t.string   "name"
+    t.string   "name",       limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "stop_areas", force: true do |t|
     t.integer  "parent_id",                       limit: 8
-    t.string   "objectid",                                                            null: false
+    t.string   "objectid",                        limit: nil,                           null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.string   "comment"
-    t.string   "area_type"
-    t.string   "registration_number"
-    t.string   "nearest_topic_name"
+    t.string   "creator_id",                      limit: nil
+    t.string   "name",                            limit: nil
+    t.string   "comment",                         limit: nil
+    t.string   "area_type",                       limit: nil
+    t.string   "registration_number",             limit: nil
+    t.string   "nearest_topic_name",              limit: nil
     t.integer  "fare_code"
-    t.decimal  "longitude",                                 precision: 19, scale: 16
-    t.decimal  "latitude",                                  precision: 19, scale: 16
-    t.string   "long_lat_type"
-    t.string   "country_code"
-    t.string   "street_name"
+    t.decimal  "longitude",                                   precision: 19, scale: 16
+    t.decimal  "latitude",                                    precision: 19, scale: 16
+    t.string   "long_lat_type",                   limit: nil
+    t.string   "country_code",                    limit: nil
+    t.string   "street_name",                     limit: nil
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "stairs_availability"
     t.boolean  "lift_availability"
     t.integer  "int_user_needs"
-    t.string   "zip_code"
-    t.string   "city_name"
-    t.string   "url"
-    t.string   "time_zone"
+    t.string   "zip_code",                        limit: nil
+    t.string   "city_name",                       limit: nil
+    t.string   "url",                             limit: nil
+    t.string   "time_zone",                       limit: nil
     t.integer  "stop_area_referential_id",        limit: 8
-    t.string   "status"
+    t.string   "status",                          limit: nil
     t.text     "import_xml"
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "stif_type"
+    t.string   "stif_type",                       limit: nil
   end
 
   add_index "stop_areas", ["name"], :name => "index_stop_areas_on_name"
@@ -644,12 +644,12 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   create_table "stop_points", force: true do |t|
     t.integer  "route_id",       limit: 8
     t.integer  "stop_area_id",   limit: 8
-    t.string   "objectid",                 null: false
+    t.string   "objectid",       limit: nil, null: false
     t.integer  "object_version", limit: 8
-    t.string   "creator_id"
+    t.string   "creator_id",     limit: nil
     t.integer  "position"
-    t.string   "for_boarding"
-    t.string   "for_alighting"
+    t.string   "for_boarding",   limit: nil
+    t.string   "for_alighting",  limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -659,9 +659,9 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   create_table "taggings", force: true do |t|
     t.integer  "tag_id",        limit: 8
     t.integer  "taggable_id",   limit: 8
-    t.string   "taggable_type"
+    t.string   "taggable_type", limit: nil
     t.integer  "tagger_id",     limit: 8
-    t.string   "tagger_type"
+    t.string   "tagger_type",   limit: nil
     t.string   "context",       limit: 128
     t.datetime "created_at"
   end
@@ -670,8 +670,8 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", force: true do |t|
-    t.string  "name"
-    t.integer "taggings_count", default: 0
+    t.string  "name",           limit: nil
+    t.integer "taggings_count",             default: 0
   end
 
   add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
@@ -695,12 +695,12 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "time_table_periods", ["time_table_id"], :name => "index_time_table_periods_on_time_table_id"
 
   create_table "time_tables", force: true do |t|
-    t.string   "objectid",                             null: false
-    t.integer  "object_version", limit: 8, default: 1
-    t.string   "creator_id"
-    t.string   "version"
-    t.string   "comment"
-    t.integer  "int_day_types",            default: 0
+    t.string   "objectid",       limit: nil,             null: false
+    t.integer  "object_version", limit: 8,   default: 1
+    t.string   "creator_id",     limit: nil
+    t.string   "version",        limit: nil
+    t.string   "comment",        limit: nil
+    t.integer  "int_day_types",              default: 0
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "calendar_id",    limit: 8
@@ -721,49 +721,49 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "time_tables_vehicle_journeys", ["vehicle_journey_id"], :name => "index_time_tables_vehicle_journeys_on_vehicle_journey_id"
 
   create_table "timebands", force: true do |t|
-    t.string   "objectid",                 null: false
+    t.string   "objectid",       limit: nil, null: false
     t.integer  "object_version", limit: 8
-    t.string   "creator_id"
-    t.string   "name"
-    t.time     "start_time",               null: false
-    t.time     "end_time",                 null: false
+    t.string   "creator_id",     limit: nil
+    t.string   "name",           limit: nil
+    t.time     "start_time",                 null: false
+    t.time     "end_time",                   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                            default: "", null: false
-    t.string   "encrypted_password",               default: ""
-    t.string   "reset_password_token"
+    t.string   "email",                  limit: nil, default: "", null: false
+    t.string   "encrypted_password",     limit: nil, default: ""
+    t.string   "reset_password_token",   limit: nil
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                    default: 0
+    t.integer  "sign_in_count",                      default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
+    t.string   "current_sign_in_ip",     limit: nil
+    t.string   "last_sign_in_ip",        limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "organisation_id",        limit: 8
-    t.string   "name"
-    t.string   "confirmation_token"
+    t.string   "name",                   limit: nil
+    t.string   "confirmation_token",     limit: nil
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",                  default: 0
-    t.string   "unlock_token"
+    t.string   "unconfirmed_email",      limit: nil
+    t.integer  "failed_attempts",                    default: 0
+    t.string   "unlock_token",           limit: nil
     t.datetime "locked_at"
-    t.string   "authentication_token"
-    t.string   "invitation_token"
+    t.string   "authentication_token",   limit: nil
+    t.string   "invitation_token",       limit: nil
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
     t.integer  "invited_by_id",          limit: 8
-    t.string   "invited_by_type"
+    t.string   "invited_by_type",        limit: nil
     t.datetime "invitation_created_at"
-    t.string   "username"
+    t.string   "username",               limit: nil
     t.datetime "synced_at"
-    t.string   "permissions",                                                array: true
+    t.string   "permissions",            limit: nil,                           array: true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -774,12 +774,12 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   create_table "vehicle_journey_at_stops", force: true do |t|
     t.integer "vehicle_journey_id",             limit: 8
     t.integer "stop_point_id",                  limit: 8
-    t.string  "connecting_service_id"
-    t.string  "boarding_alighting_possibility"
+    t.string  "connecting_service_id",          limit: nil
+    t.string  "boarding_alighting_possibility", limit: nil
     t.time    "arrival_time"
     t.time    "departure_time"
-    t.string  "for_boarding"
-    t.string  "for_alighting"
+    t.string  "for_boarding",                   limit: nil
+    t.string  "for_alighting",                  limit: nil
     t.integer "departure_day_offset"
     t.integer "arrival_day_offset"
   end
@@ -791,20 +791,20 @@ ActiveRecord::Schema.define(version: 20170410134931) do
     t.integer  "route_id",                        limit: 8
     t.integer  "journey_pattern_id",              limit: 8
     t.integer  "company_id",                      limit: 8
-    t.string   "objectid",                                              null: false
+    t.string   "objectid",                        limit: nil,             null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
-    t.string   "comment"
-    t.string   "status_value"
-    t.string   "transport_mode"
-    t.string   "published_journey_name"
-    t.string   "published_journey_identifier"
-    t.string   "facility"
-    t.string   "vehicle_type_identifier"
+    t.string   "creator_id",                      limit: nil
+    t.string   "comment",                         limit: nil
+    t.string   "status_value",                    limit: nil
+    t.string   "transport_mode",                  limit: nil
+    t.string   "published_journey_name",          limit: nil
+    t.string   "published_journey_identifier",    limit: nil
+    t.string   "facility",                        limit: nil
+    t.string   "vehicle_type_identifier",         limit: nil
     t.integer  "number",                          limit: 8
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "flexible_service"
-    t.integer  "journey_category",                          default: 0, null: false
+    t.integer  "journey_category",                            default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -813,7 +813,7 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "vehicle_journeys", ["route_id"], :name => "index_vehicle_journeys_on_route_id"
 
   create_table "workbenches", force: true do |t|
-    t.string   "name"
+    t.string   "name",                     limit: nil
     t.integer  "organisation_id",          limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -826,15 +826,15 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_index "workbenches", ["stop_area_referential_id"], :name => "index_workbenches_on_stop_area_referential_id"
 
   Foreigner.load
-  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey", dependent: :delete
+  add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
 
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", dependent: :delete
 
-  add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", dependent: :nullify
-  add_foreign_key "journey_frequencies", "vehicle_journeys", name: "journey_frequencies_vehicle_journey_id_fk", dependent: :nullify
+  add_foreign_key "journey_frequencies", "timebands", name: "fk_rails_60bb6f7bd3", dependent: :nullify
+  add_foreign_key "journey_frequencies", "vehicle_journeys", name: "fk_rails_d322c5d659", dependent: :nullify
 
-  add_foreign_key "journey_pattern_sections", "journey_patterns", name: "journey_pattern_sections_journey_pattern_id_fk", dependent: :delete
-  add_foreign_key "journey_pattern_sections", "route_sections", name: "journey_pattern_sections_route_section_id_fk", dependent: :delete
+  add_foreign_key "journey_pattern_sections", "journey_patterns", name: "fk_rails_73ae46b20f", dependent: :delete
+  add_foreign_key "journey_pattern_sections", "route_sections", name: "fk_rails_0dbc726f14", dependent: :delete
 
   add_foreign_key "journey_patterns", "routes", name: "jp_route_fkey", dependent: :delete
   add_foreign_key "journey_patterns", "stop_points", name: "arrival_point_fkey", column: "arrival_stop_point_id", dependent: :nullify
@@ -843,7 +843,10 @@ ActiveRecord::Schema.define(version: 20170410134931) do
   add_foreign_key "journey_patterns_stop_points", "journey_patterns", name: "jpsp_jp_fkey", dependent: :delete
   add_foreign_key "journey_patterns_stop_points", "stop_points", name: "jpsp_stoppoint_fkey", dependent: :delete
 
-  add_foreign_key "routes", "routes", name: "route_opposite_route_fkey", column: "opposite_route_id", dependent: :nullify
+  add_foreign_key "route_sections", "stop_areas", name: "fk_rails_97b8dcfe1a", column: "departure_id"
+  add_foreign_key "route_sections", "stop_areas", name: "fk_rails_df1612606f", column: "arrival_id"
+
+  add_foreign_key "routes", "routes", name: "route_opposite_route_fkey", column: "opposite_route_id"
 
   add_foreign_key "stop_areas", "stop_areas", name: "area_parent_fkey", column: "parent_id", dependent: :nullify
 
