@@ -6,6 +6,7 @@ var Select2 = require('react-select2')
 // get JSON full path
 var origin = window.location.origin
 var path = window.location.pathname.split('/', 3).join('/')
+var line = window.location.pathname.split('/')[4]
 
 
 class BSelect4 extends React.Component{
@@ -27,7 +28,7 @@ class BSelect4 extends React.Component{
           width: '100%',
           placeholder: 'Filtrer par transporteur...',
           ajax: {
-            url: origin + path + '/companies.json',
+            url: origin + path + '/companies.json' + '?line_id=' + line,
             dataType: 'json',
             delay: '500',
             data: function(params) {
