@@ -37,7 +37,7 @@
       .row
         .col-lg-12
           = table_builder @time_tables,
-            { :comment => 'comment', :color => '',
+            { :comment => 'comment', :color => Proc.new{|tt| tt.color ? content_tag(:span, '', class: 'fa fa-circle', style: "color:#{tt.color}") : '-' },
               "Période de validité englobante" => Proc.new{ |tt| tt.bounding_dates.empty? ? '-' : t('bounding_dates', debut: l(tt.bounding_dates.min), end: l(tt.bounding_dates.max)) }, :calendar => Proc.new{ |tt| tt.calendar ? tt.calendar.try(:name) : '-' }, :updated_at => Proc.new {|tt| l(tt.updated_at, format: :short)} },
             [:show, :edit, :duplicate, :delete],
             [],
