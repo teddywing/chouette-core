@@ -232,9 +232,17 @@ class Referential < ActiveRecord::Base
 
   def self.referential_ids_in_periode(range)
     subquery = "SELECT DISTINCT(public.referential_metadata.referential_id) FROM public.referential_metadata, LATERAL unnest(periodes) period "
-    subquery << "WHERE period && '#{ActiveRecord::ConnectionAdapters::PostgreSQLColumn.range_to_string(range)}'"
+    subquery << "WHERE period && '#{range_to_string(range)}'"
     query = "SELECT * FROM public.referentials WHERE referentials.id IN (#{subquery})"
     self.connection.select_values(query).map(&:to_i)
+  end
+
+  # Copied from Rails 4.1 activerecord/lib/active_record/connection_adapters/postgresql/cast.rb
+  # TODO: Relace with the appropriate Rais 4.2 / 5.x helper if one is found.
+  def self.range_to_string(object)
+    from = object.begin.respond_to?(:infinite?) && object.begin.infinite? ? '' : object.begin
+    to   = object.end.respond_to?(:infinite?) && object.end.infinite? ? '' : object.end
+    "[#{from},#{to}#{object.exclude_end? ? ')' : ']'}"
   end
 
   def overlapped_referential_ids

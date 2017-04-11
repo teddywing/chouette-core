@@ -153,6 +153,7 @@ module Stif
           :city_name      => 'Town',
           :stif_type      => 'OBJECT_STATUS'
         }.each do |k, v| stop[k] = entry[v] end
+        # TODO: use stop.update_attributes instead of the above
 
         if entry['gml:pos']
           stop['longitude'] = entry['gml:pos'][:lng]
