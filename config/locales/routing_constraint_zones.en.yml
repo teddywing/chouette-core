@@ -9,6 +9,12 @@ en:
         line: Line
         created_at: Created at
         updated_at: Updated at
+    errors:
+      models:
+        routing_constraint_zone:
+          attributes:
+            stop_points:
+              stop_points_not_from_route: 'Stop point does not belong to the Route of this Routing constraint zone.'
   routing_constraint_zones:
     actions:
       new: New routing constraint zone
@@ -21,3 +27,4 @@ en:
       title: "Update routing constraint zone %{routing_constraint_zone}"
     show:
       title: "Routing constraint zone %{routing_constraint_zone}"
+
