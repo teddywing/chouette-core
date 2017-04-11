@@ -44,7 +44,7 @@ var initialState = {
       timetable: {
         comment: ''
       },
-      withoutSchedule: false
+      withoutSchedule: true
     }
 
   },

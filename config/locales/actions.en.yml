@@ -9,8 +9,10 @@ en:
     archive: "Archive"
     unarchive: "Unarchive"
     clone: 'Clone'
+    duplicate: 'Clone'
     clean_up: 'Clean up'
     sync: 'Synchronize'
+    combine: 'Combine'
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"

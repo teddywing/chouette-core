@@ -64,6 +64,8 @@ fr:
     attributes:
       time_table:
         comment: "Nom"
+        color: "Couleur associée"
+        bounding_dates: 'Période de validité englobante'
         version: "Abréviation"
         day_types: "Jours d'application des périodes"
         none: "aucun"

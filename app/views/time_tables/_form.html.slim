@@ -3,10 +3,19 @@
   .row
     .col-lg-12
       = form.input :comment, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.comment")}
-      = form.input :tag_list, as: :tags
+      
+      .form-group
+        = form.label @time_table.human_attribute_name(:color), required: false, class: 'control-label col-sm-4'
+      
+        .col-sm-8
+          .dropdown.color_selector
+            button.btn.btn-default.dropdown-toggle type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+              span.fa.fa-circle.mr-xs style="color:#{@time_table.color.nil? ? 'transparent' : @time_table.color}"
+              span.caret
 
-      / = form.input :version
-      / = form.input :objectid, :required => !@time_table.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.objectid")}
+            = form.input :color, as: :radio_buttons, label: false, collection: ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"], input_html: {class: 'color_selector'}, label_method: lambda{|c| ("<span class='fa fa-circle' style='color:" + (c.empty? ? 'transparent' : c) + "'></span>").html_safe}, wrapper_html: { class: 'dropdown-menu', 'aria-labelledby': "dropdownMenu1"}, include_blank: true
+
+      = form.input :tag_list, as: :tags
 
       .form-group
         label.control-label.col-sm-4
@@ -26,9 +35,16 @@
         = form.input :calendar, as: :select, collection: current_organisation.calendars
 
   .separator
-
   .row
     .col-lg-12
+      #periods
+        .alert.alert-info
+          |Intégration statique (avant Reactux) du composant 'periodes'
+  
+  .separator
+
+  .row
+    .col-lg-8.col-lg-offset-4
       .subform
         .nested-head
           .wrapper
@@ -50,8 +66,12 @@
         .links.nested-linker
           = link_to_add_association t("time_tables.actions.add_period"), form, :periods, class: 'btn btn-outline-primary'
 
-  .separator
-  
+  .row
+    .col-lg-12.mb-sm.mt-md
+      #time_tables
+      .alert.alert-warning
+        |Les éléments ci-dessous sont à supprimer.
+
   .row
     .col-lg-6.col-md-6.col-sm-12.col-xs-12
       .subform
@@ -67,7 +87,7 @@
           = render "date_fields",  f: p
 
         .links.nested-linker
-          = link_to_add_association t("time_tables.actions.add_date"), form, :dates, class: 'btn btn-outline-primary'
+          = link_to_add_association t("time_tables.actions.add_date"), form, :dates, partial: 'date_fields', class: 'btn btn-outline-primary'
 
     .col-lg-6.col-md-6.col-sm-12.col-xs-12
       .subform
@@ -79,11 +99,12 @@
                   = @time_table.human_attribute_name("excluded_dates")
             div
 
-        = form.simple_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == false}  do |p|
-          = render "excluded_date_fields",  f: p
+        = form.simple_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == false}  do |q|
+          = render "excluded_date_fields",  f: q
 
         .links.nested-linker
-          = link_to_add_association t("time_tables.actions.add_excluded_date"), form, :dates, class: 'btn btn-outline-primary'
+          = link_to_add_association t("time_tables.actions.add_excluded_date"), form, :dates, partial: 'excluded_date_fields', class: 'btn btn-outline-primary'
 
 
   = form.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'timetable_form'
+  = javascript_include_tag 'es6_browserified/time_tables/index.js'

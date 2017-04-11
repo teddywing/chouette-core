@@ -1,94 +1,25 @@
-#time_table_show.time_table_show
-  p
-    span class="state-code #{@time_table.presenter.time_table_state_code}"
-      i.fa.fa-certificate
+.row
+  - (1..12).each do |month|
+    .col-lg-3.col-md-4.col-sm-4.col-xs-6
+      = new_alt_calendar(year: @year, month: month, first_day_of_week: 1, calendar_title: "#{I18n.t("date.month_names")[month]}", show_today: false) do |d|
+        / - if @time_table.excluded_date?(d)
+        /   - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day excluded_date"}]
+        - if @time_table.include_in_overlap_dates?(d)
+          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day overlaped_date"}]
+        - elsif @time_table.include_in_dates?(d)
+          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_date"}]
+        - elsif @time_table.include_in_periods?(d)
+          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_period"}]
 
-    label
-      - if @time_table.bounding_dates.empty?
-        = t(".resume_empty")
-      - else
-        = t(".resume", :start_date => l(@time_table.bounding_dates.min), :end_date => l(@time_table.bounding_dates.max))
-
-  p
-    label = "#{@time_table.human_attribute_name('tag_list')} : "
-    = @time_table.tag_list
-
-  ul.nav.nav-tabs id="tabs" data-tabs="tabs"
-    li.active
-      a href="#time_tables" data-toggle="tab"
-        = @time_table.human_attribute_name("calendars")
-
-    li
-      a href="#time_tables_datas" data-toggle="tab"
-        = @time_table.human_attribute_name("calendar_details")
-
-  #my-tab-content.tab-content
-    #time_tables.tab-pane.active
-      #associated_calendar
-        => "#{t('calendars.standard_calendar')} : "
-        - if @time_table.calendar
-          = link_to @time_table.calendar.name, @time_table.calendar
-        - else
-          = '--'
-
-      .well.legend
-        span.title = t(".legend")
-        span.label.excluded_date X
-        = t(".excluded_date")
-        span.label.overlaped_date X
-        = t(".overlap_date")
-        span.label.selected_date X
-        = t(".selected_date")
-        span.label.selected_period X
-        = t(".selected_period")
-
-      #calendars
-        .year_choice
-          span.previous = link_to("<", referential_time_table_path(@referential, @time_table, year: (@year - 1)) )
-          span.year = "#{@year}"
-          span.next = link_to(">", referential_time_table_path(@referential, @time_table, year: (@year + 1)) )
-
-        .calendar_helper
-          - cal = ""
-          - (1..12).each do |month|
-            - cal << calendar(year: @year, month: month, first_day_of_week: 1) do |d|
-              - if @time_table.excluded_date?(d)
-                - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day excluded_date"}]
-              - elsif @time_table.include_in_overlap_dates?(d)
-                - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day overlaped_date"}]
-              - elsif @time_table.include_in_dates?(d)
-                - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_date"}]
-              - elsif @time_table.include_in_periods?(d)
-                - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_period"}]
-
-          = cal.html_safe
-
-    #time_tables_datas.tab-pane
-      .summary
-        p
-          label = "#{@time_table.human_attribute_name('version')} : "
-          = @time_table.version
-
-        p
-          label = "#{@time_table.human_attribute_name('day_types')} : "
-          - if @time_table.int_day_types & 508 == 0
-            label = "#{@time_table.human_attribute_name('none')} : "
-          - else
-            - %w(monday tuesday wednesday thursday friday saturday sunday).each do |day_type|
-              span class="#{@time_table.send(day_type) ? 'included_day_type' :'excluded_day_type'}"
-                = @time_table.human_attribute_name(day_type)
-
-      - if @time_table.periods.present?
-        h3.time_table_periods = @time_table.human_attribute_name("periods")
-        .periods.content
-          == render 'time_tables/periods'
-
-      - if @time_table.dates.where("in_out = true").present?
-        h3.time_table_dates = @time_table.human_attribute_name("dates")
-        .dates.content
-          == render "time_tables/dates"
-
-      - if @time_table.dates.where("in_out = false").present?
-        h3.time_table_dates = @time_table.human_attribute_name("excluded_dates")
-        .excluded_dates.content
-          == render "time_tables/excluded_dates"
+/ .row
+/   .col-lg-12
+/     / wip
+/     - if @time_table.dates.where("in_out = true").present?
+/       h3.time_table_dates = @time_table.human_attribute_name("dates")
+/       .dates.content
+/         == render "time_tables/dates"
+/ 
+/     - if @time_table.dates.where("in_out = false").present?
+/       h3.time_table_dates = @time_table.human_attribute_name("excluded_dates")
+/       .excluded_dates.content
+/         == render "time_tables/excluded_dates"

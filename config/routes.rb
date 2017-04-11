@@ -166,6 +166,7 @@ ChouetteIhm::Application.routes.draw do
       end
       member do
         get 'duplicate'
+        get 'month', defaults: { format: :json }
       end
       resources :time_table_dates
       resources :time_table_periods

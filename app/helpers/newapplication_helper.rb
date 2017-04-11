@@ -16,7 +16,7 @@ module NewapplicationHelper
         end
 
         columns.map do |k, v|
-          if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée"].include? k
+          if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée", "Période de validité englobante"].include? k
             hcont << content_tag(:th, k)
           else
             hcont << content_tag(:th, sortable_columns(collection, k))
@@ -48,7 +48,7 @@ module NewapplicationHelper
               else
                 item.try(attribute)
               end
-            if attribute == 'name'
+            if attribute == 'name' or attribute == 'comment'
               lnk = []
 
               unless item.class == Calendar or item.class == Referential
@@ -58,7 +58,7 @@ module NewapplicationHelper
                   lnk << item.route.line if item.class == Chouette::RoutingConstraintZone
                   lnk << item if item.respond_to? :line_referential
                   lnk << item.stop_area if item.respond_to? :stop_area
-                  lnk << item if item.respond_to? :stop_points
+                  lnk << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
                 elsif item.respond_to? :referential
                   lnk << item.referential
                 end
@@ -109,7 +109,7 @@ module NewapplicationHelper
             polymorph_url << item.route.line if item.class == Chouette::RoutingConstraintZone
             polymorph_url << item if item.respond_to? :line_referential
             polymorph_url << item.stop_area if item.respond_to? :stop_area
-            polymorph_url << item if item.respond_to? :stop_points
+            polymorph_url << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
           elsif item.respond_to? :referential
             polymorph_url << item.referential
           end

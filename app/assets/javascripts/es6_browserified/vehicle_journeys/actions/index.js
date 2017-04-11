@@ -315,9 +315,12 @@ const actions = {
               selected: false,
               published_journey_name: val.published_journey_name || 'non renseigné',
               published_journey_identifier: val.published_journey_name || 'non renseigné',
-              company_id: val.published_journey_name || 'non renseigné'
+              company_id: val.published_journey_name || 'non renseigné',
+              transport_mode: val.route.line.transport_mode || 'non renseigné',
+              transport_mode: val.route.line.transport_submode || 'non renseigné'
             })
           }
+          window.currentItemsLength = vehicleJourneys.length
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
           dispatch(actions.receiveTotalCount(json.total))
         }
@@ -348,9 +351,10 @@ const actions = {
           if(next) {
             dispatch(next)
           } else {
-            if(json.length != window.vehicleJourneysPerPage){
-              dispatch(actions.updateTotalCount(window.vehicleJourneysPerPage - json.length))
+            if(json.length != window.currentItemsLength){
+              dispatch(actions.updateTotalCount(window.currentItemsLength - json.length))
             }
+            window.currentItemsLength = json.length
             dispatch(actions.receiveVehicleJourneys(json))
           }
         }
@@ -406,20 +410,61 @@ const actions = {
     return vjas
   },
   checkSchedules: (schedule) => {
+    let hours = 0
+    let minutes = 0
     if (parseInt(schedule.departure_time.minute) > 59){
-      schedule.departure_time.minute = actions.pad(parseInt(schedule.departure_time.minute) - 60, 'minute')
-      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) + 1, 'hour')
+      hours = Math.floor(parseInt(schedule.departure_time.minute) / 60)
+      minutes = parseInt(schedule.departure_time.minute) % 60
+      schedule.departure_time.minute = actions.simplePad(minutes, 'minute')
+      schedule.departure_time.hour = parseInt(schedule.departure_time.hour) + hours
     }
     if (parseInt(schedule.arrival_time.minute) > 59){
-      schedule.arrival_time.minute = actions.pad(parseInt(schedule.arrival_time.minute) - 60, 'minute')
-      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) + 1, 'hour')
+      hours = Math.floor(parseInt(schedule.arrival_time.minute) / 60)
+      minutes = parseInt(schedule.arrival_time.minute) % 60
+      schedule.arrival_time.minute = actions.simplePad(minutes, 'minute')
+      schedule.arrival_time.hour = parseInt(schedule.arrival_time.hour) + hours
     }
-    if (parseInt(schedule.departure_time.hour) > 23){
-      schedule.departure_time.hour = actions.pad(parseInt(schedule.departure_time.hour) - 24, 'hour')
+    if (parseInt(schedule.departure_time.minute) < 0){
+      hours = Math.floor(parseInt(schedule.departure_time.minute) / 60)
+      minutes = (parseInt(schedule.departure_time.minute) % 60) + 60
+      schedule.departure_time.minute = actions.simplePad(minutes, 'minute')
+      schedule.departure_time.hour = parseInt(schedule.departure_time.hour) + hours
     }
-    if (parseInt(schedule.arrival_time.hour) > 23){
-      schedule.arrival_time.hour = actions.pad(parseInt(schedule.arrival_time.hour) - 24, 'hour')
+    if (parseInt(schedule.arrival_time.minute) < 0){
+      hours = Math.floor(parseInt(schedule.arrival_time.minute) / 60)
+      minutes = (parseInt(schedule.arrival_time.minute) % 60) + 60
+      schedule.arrival_time.minute = actions.simplePad(minutes, 'minute')
+      schedule.arrival_time.hour = parseInt(schedule.arrival_time.hour) + hours
     }
+
+    if(schedule.departure_time.hour > 23){
+      schedule.departure_time.hour = '23'
+      schedule.departure_time.minute = '59'
+    }
+    if(schedule.arrival_time.hour > 23){
+      schedule.arrival_time.hour = '23'
+      schedule.arrival_time.minute = '59'
+    }
+
+    if(schedule.departure_time.hour < 0){
+      schedule.departure_time.hour = '00'
+      schedule.departure_time.minute = '00'
+    }
+    if(schedule.arrival_time.hour > 23){
+      schedule.arrival_time.hour = '00'
+      schedule.arrival_time.minute = '00'
+    }
+
+    schedule.departure_time.hour = actions.simplePad(parseInt(schedule.departure_time.hour), 'hour')
+    schedule.arrival_time.hour = actions.simplePad(parseInt(schedule.arrival_time.hour), 'hour')
+    // if (parseInt(schedule.departure_time.hour) > 23){
+    //   schedule.departure_time.hour = parseInt(schedule.departure_time.hour) - 24
+    // }
+    // if (parseInt(schedule.arrival_time.hour) > 23){
+    //   schedule.arrival_time.hour = parseInt(schedule.arrival_time.hour) - 24
+    // }
+    // schedule.departure_time.hour = actions.pad(schedule.departure_time.hour, 'hour')
+    // schedule.arrival_time.hour = actions.pad(schedule.arrival_time.hour, 'hour')
   }
 }
 
