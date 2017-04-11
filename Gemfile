@@ -135,8 +135,9 @@ group :development do
   gem 'capistrano', '2.13.5'
   gem 'capistrano-ext'
   gem 'capistrano-npm', require: false
-  gem 'guard'
-  gem 'guard-rspec', "~> 4.5.0"
+  # Issue #3017 Requires ruby_dep which requires ruby > 2.2.3
+  # gem 'guard'
+  # gem 'guard-rspec', "~> 4.5.0"
   gem 'rails-erd'
   # MetaRequest is incompatible with rgeo-activerecord
   # gem 'meta_request'
