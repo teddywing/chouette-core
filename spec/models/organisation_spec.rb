@@ -10,7 +10,7 @@ describe Organisation, :type => :model do
 
   it "create a rule_parameter_set" do
     organisation = create(:organisation)
-    organisation.rule_parameter_sets.size.should == 1
+    expect(organisation.rule_parameter_sets.size).to eq(1)
   end
 
   describe "Portail sync" do

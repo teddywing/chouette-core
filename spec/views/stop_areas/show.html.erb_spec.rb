@@ -14,7 +14,7 @@ describe "/stop_areas/show", :type => :view do
 
   # it "should display a map with class 'stop_area'" do
   #   render
-  #   rendered.should have_selector("#map", :class => 'stop_area')
+  #   expect(rendered).to have_selector("#map", :class => 'stop_area')
   # end
 
   it "should render a link to edit the stop_area" do

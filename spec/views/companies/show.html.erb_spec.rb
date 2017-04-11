@@ -12,7 +12,7 @@ describe "/companies/show", :type => :view do
 
   # it "should display a map with class 'company'" do
   #   render
-  #   rendered.should have_selector("#map", :class => 'company')
+  #  expect(rendered).to have_selector("#map", :class => 'company')
   # end
 
   it "should render a link to edit the company" do

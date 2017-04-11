@@ -18,7 +18,7 @@ describe "/connection_links/show", :type => :view do
 #  it "should display a map with class 'connection_link'" do
 #    pending ": map not yet implemented"
 #     render
-#     rendered.should have_selector("#map", :class => 'connection_link')
+#     expect(rendered).to have_selector("#map", :class => 'connection_link')
 #  end
 
   it "should render a link to edit the connection_link" do

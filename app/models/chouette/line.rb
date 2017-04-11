@@ -14,6 +14,7 @@ class Chouette::Line < Chouette::ActiveRecord
 
   belongs_to :company
   belongs_to :network
+  belongs_to :line_referential
 
   has_array_of :secondary_companies, class_name: 'Chouette::Company'
 
@@ -73,6 +74,10 @@ class Chouette::Line < Chouette::ActiveRecord
 
   def display_name
     [name, company.try(:name)].compact.join(' - ')
+  end
+
+  def companies
+    line_referential.companies.where(id: ([company_id] + Array(secondary_company_ids)).compact)
   end
 
 end
