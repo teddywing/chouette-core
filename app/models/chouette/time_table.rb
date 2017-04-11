@@ -466,4 +466,3 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     tt
   end
 end
-

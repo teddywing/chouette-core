@@ -10,6 +10,7 @@ fr:
     archive: 'Conserver'
     unarchive: 'Déconserver'
     clone: 'Dupliquer'
+    duplicate: 'Dupliquer'
     clean_up: 'Purger'
     sync: 'Synchroniser'
     combine: 'Combiner'

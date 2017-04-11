@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170404122930) do
+ActiveRecord::Schema.define(version: 20170410134931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -706,6 +706,7 @@ ActiveRecord::Schema.define(version: 20170404122930) do
     t.integer  "calendar_id",    limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "color"
   end
 
   add_index "time_tables", ["calendar_id"], :name => "index_time_tables_on_calendar_id"

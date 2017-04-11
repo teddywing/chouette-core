@@ -8,6 +8,12 @@ child(:company) do |company|
   attributes :id, :objectid, :name
 end
 
+child(:route) do |route|
+  child(:line) do |line|
+    attributes :transport_mode, :transport_submode
+  end
+end
+
 child(:journey_pattern) do |journey_pattern|
   attributes :id, :objectid, :name, :published_name
 end
