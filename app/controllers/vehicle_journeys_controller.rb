@@ -78,8 +78,7 @@ class VehicleJourneysController < ChouetteController
 
   protected
   def collection
-    scope = route.vehicle_journeys.joins(:journey_pattern)#
-    scope = scope.joins('LEFT JOIN "vehicle_journey_at_stops" ON "vehicle_journey_at_stops"."vehicle_journey_id" = "vehicle_journeys"."id"')
+    scope = route.vehicle_journeys.joins(:journey_pattern).joins('LEFT JOIN "vehicle_journey_at_stops" ON "vehicle_journey_at_stops"."vehicle_journey_id" = "vehicle_journeys"."id"')
 
     @q = scope.search filtered_ransack_params
     grouping = ransack_periode_filter
