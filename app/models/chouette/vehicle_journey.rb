@@ -81,6 +81,14 @@ module Chouette
       end
     end
 
+    def state_update_vjas? vehicle_journey_at_stops
+      departure_times = vehicle_journey_at_stops.map do |vjas|
+        "#{vjas['departure_time']['hour']}:#{vjas['departure_time']['minute']}"
+      end
+      times = departure_times.uniq
+      (times.count == 1 && times[0] == '00:00') ? false : true
+    end
+
     def self.state_update route, state
       transaction do
         state.each do |item|
@@ -88,7 +96,10 @@ module Chouette
           vj = find_by(objectid: item['objectid']) || state_create_instance(route, item)
           next if item['deletable'] && vj.persisted? && vj.destroy
 
-          vj.update_vjas_from_state(item['vehicle_journey_at_stops'])
+          if vj.state_update_vjas?(item['vehicle_journey_at_stops'])
+            vj.update_vjas_from_state(item['vehicle_journey_at_stops'])
+          end
+
           vj.update_attributes(state_permited_attributes(item))
           item['errors'] = vj.errors if vj.errors.any?
         end
