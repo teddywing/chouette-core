@@ -35,6 +35,9 @@ child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops
     node(:stop_area_object_id) do
       vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.objectid : nil
     end
+    node(:stop_point_objectid) do
+      vehicle_stop.stop_point ? vehicle_stop.stop_point.objectid : nil
+    end
     node(:stop_area_name) do
       vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.name : nil
     end
