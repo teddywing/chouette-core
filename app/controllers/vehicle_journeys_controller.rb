@@ -92,7 +92,7 @@ class VehicleJourneysController < ChouetteController
   end
 
   def ransack_periode_filter
-    if params[:q]
+    if params[:q] && params[:q][:vehicle_journey_at_stops_departure_time_gteq]
       params[:q] = params[:q].reject{|k| params[:q][k] == 'undefined'}
       between = [:departure_time_gteq, :departure_time_lteq].map do |filter|
         "2000-01-01 #{params[:q]["vehicle_journey_at_stops_#{filter}"]}:00 UTC"
