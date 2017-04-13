@@ -8,8 +8,8 @@ const reorderArray = (arr) =>{
   return arr
 }
 
-const Metas = ({day_types}) => {
-  day_types = reorderArray(day_types)
+const Metas = ({metas}) => {
+  let day_types = reorderArray(metas.day_types)
   return (
     <div className='form-horizontal'>
       <div className="row">
@@ -57,7 +57,7 @@ const Metas = ({day_types}) => {
 }
 
 Metas.propTypes = {
-  day_types: PropTypes.array.isRequired
+  metas: PropTypes.object.isRequired
 }
 
 module.exports = Metas

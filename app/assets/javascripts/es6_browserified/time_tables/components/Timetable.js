@@ -1,12 +1,12 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
 
-const Timetable = ({current_month, time_table_periods}) => {
+const Timetable = ({timetable}) => {
   return (
     <div>
       <h2>Calendrier</h2>
       <ul>
-        {current_month.map((day, i) =>
+        {timetable.current_month.map((day, i) =>
           <li
             key={i}
           >
@@ -19,8 +19,7 @@ const Timetable = ({current_month, time_table_periods}) => {
 }
 
 Timetable.propTypes = {
-  current_month: PropTypes.array.isRequired,
-  time_table_periods: PropTypes.array.isRequired
+  timetable: PropTypes.object.isRequired,
 }
 
 module.exports = Timetable

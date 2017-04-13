@@ -17,10 +17,17 @@ var initialState = {
     fetchSuccess: true,
     isFetching: false
   },
-  current_month: [],
-  time_table_periods: [],
-  periode_range: [],
-  day_types: [],
+  timetable: {
+    current_month: [],
+    time_table_periods: [],
+    periode_range: [],
+  },
+  metas: {
+    comment: '',
+    day_types: [],
+    tags: [],
+    color: ''
+  },
   pagination: {
     page : 1,
     totalCount: window.journeyPatternLength,

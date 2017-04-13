@@ -4,7 +4,7 @@ var MetasComponent = require('../components/Metas')
 
 const mapStateToProps = (state) => {
   return {
-    day_types: state.day_types
+    metas: state.metas
   }
 }
 
