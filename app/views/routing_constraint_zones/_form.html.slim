@@ -8,7 +8,7 @@
   .row
     .col-lg-6.col-sm-12
       - stop_points_collection = @routing_constraint_zone.persisted? ? @routing_constraint_zone.route.stop_points : []
-      = f.input :stop_point_ids, id: 'stop_point_ids', as: :select, collection: stop_points_collection, selected: @routing_constraint_zone.stop_point_ids, label: Chouette::StopPoint.model_name.human.pluralize.capitalize, label_method: :name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection des arrêts sur séquence d\'arrêts', 'multiple': 'multiple', style: 'width: 100%' }
+      = f.input :stop_point_ids, as: :select, collection: stop_points_collection, selected: @routing_constraint_zone.stop_point_ids, label: Chouette::StopPoint.model_name.human.pluralize.capitalize, label_method: :name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection des arrêts sur séquence d\'arrêts', 'multiple': 'multiple', style: 'width: 100%' }
 
   .row
     .col-lg-12.text-right
