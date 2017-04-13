@@ -143,8 +143,8 @@ describe('filters reducer', () => {
     ).toEqual(Object.assign({}, state, {query: newQuery}))
   })
 
-  it('should handle SELECT_JP_FILTER', () => {
-    let strResult = "q%5Bjourney_pattern_id_eq%5D=undefined&q%5Btime_tables_id_eq%5D=undefined&q%5Bvehicle_journey_at_stops_departure_time_gteq%5D=11%3A11&q%5Bvehicle_journey_at_stops_departure_time_lteq%5D=22%3A22&q%5Bvehicle_journey_without_u2%5D=true"
+  it('should handle CREATE_QUERY_STRING', () => {
+    let strResult = "q%5Bjourney_pattern_id_eq%5D=undefined&q%5Btime_tables_id_eq%5D=undefined&q%5Bvehicle_journey_at_stops_departure_time_gteq%5D=11%3A11&q%5Bvehicle_journey_at_stops_departure_time_lteq%5D=22%3A22&q%5Bvehicle_journey_without_departure_time%5D=true"
     expect(
       statusReducer(state, {
         type: 'CREATE_QUERY_STRING',
