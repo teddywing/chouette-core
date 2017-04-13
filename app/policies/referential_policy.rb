@@ -6,15 +6,15 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    user.has_permission?('referentials.create')
   end
 
   def edit?
-    organisation_match?
+    user.has_permission?('referentials.edit')
   end
 
-  def update?
-    edit? && !record.archived?
+  def destroy?
+    user.has_permission?('referentials.destroy')
   end
 
   def archive?
@@ -22,8 +22,11 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def unarchive? ; archive? end
-  def new?       ; create? end
-  def destroy?   ; edit? end
+  def update? ; edit? end
+  def new? ; create? end
+  def clone? ; create? end
 end
+
+
 
 
