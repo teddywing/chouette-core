@@ -20,6 +20,7 @@ describe Chouette::VehicleJourney, :type => :model do
     def vehicle_journey_to_state vj
       vj.attributes.slice('objectid', 'published_journey_name', 'journey_pattern_id', 'company_id').tap do |item|
         item['vehicle_journey_at_stops'] = []
+        item['time_tables'] = []
 
         vj.vehicle_journey_at_stops.each do |vjas|
           item['vehicle_journey_at_stops'] << vehicle_journey_at_stop_to_state(vjas)
@@ -59,7 +60,7 @@ describe Chouette::VehicleJourney, :type => :model do
       }.to change {Chouette::VehicleJourneyAtStop.count}.by(1)
     end
 
-    it 'should note save vehicle_journey_at_stops of newly created vj if all departure time is set to 00:00' do
+    it 'should not save vehicle_journey_at_stops of newly created vj if all departure time is set to 00:00' do
       new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
       2.times do
         new_vj.vehicle_journey_at_stops << build(:vehicle_journey_at_stop,
@@ -74,12 +75,21 @@ describe Chouette::VehicleJourney, :type => :model do
       }.not_to change {Chouette::VehicleJourneyAtStop.count}
     end
 
-    it 'should update vj journey_pattern' do
+    it 'should update vj journey_pattern association' do
       state['journey_pattern'] = create(:journey_pattern).attributes.slice('id', 'name', 'objectid')
       Chouette::VehicleJourney.state_update(route, collection)
 
       expect(state['errors']).to be_nil
       expect(vehicle_journey.reload.journey_pattern_id).to eq state['journey_pattern']['id']
+    end
+
+    it 'should update vj time_tables association' do
+      state['time_tables'] = []
+      2.times{state['time_tables'] << create(:time_table).attributes.slice('id', 'comment', 'objectid')}
+      Chouette::VehicleJourney.state_update(route, collection)
+
+      expect(state['errors']).to be_nil
+      expect(vehicle_journey.reload.time_tables.map(&:id)).to eq(state['time_tables'].map{|tt| tt['id']})
     end
 
     it 'should update vj company' do

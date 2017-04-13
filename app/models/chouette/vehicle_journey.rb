@@ -91,6 +91,14 @@ module Chouette
       (times.count == 1 && times[0] == '00:00') ? false : true
     end
 
+    def update_time_tables_from_state item
+      item['time_tables'].each do |tt|
+        unless self.time_tables.map(&:id).include?(tt['id'])
+          self.time_tables << Chouette::TimeTable.find(tt['id'])
+        end
+      end
+    end
+
     def self.state_update route, state
       transaction do
         state.each do |item|
@@ -103,6 +111,7 @@ module Chouette
           end
 
           vj.update_attributes(state_permited_attributes(item))
+          vj.update_time_tables_from_state(item)
           item['errors'] = vj.errors if vj.errors.any?
         end
 
