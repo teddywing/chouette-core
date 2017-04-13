@@ -14,8 +14,7 @@ fill_stop_points_options = ->
       console.log textStatus
       console.log errorThrown
 
-$ ->
-  if document.location.pathname.endsWith('new')
-    fill_stop_points_options()
-  $('#routing_constraint_zone_route_id').change(fill_stop_points_options)
-
+# $ ->
+#   if document.location.pathname.endsWith('new')
+#     fill_stop_points_options()
+#   $('#routing_constraint_zone_route_id').change(fill_stop_points_options)

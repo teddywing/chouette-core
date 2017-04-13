@@ -41,10 +41,10 @@ isEdge = !isIE && !!window.StyleMedia
       else
         $(selectedStatus).css('color', selectedValue)
 
-$(document).on 'ready page:load', togglableFilter
-$(document).on 'ready page:load', submitMover
-$(document).on 'ready page:load', switchInput
-$(document).on 'ready page:load', colorSelector
+$(document).on 'turbolinks:load', togglableFilter
+$(document).on 'turbolinks:load', submitMover
+$(document).on 'turbolinks:load', switchInput
+$(document).on 'turbolinks:load', colorSelector
 
 if isIE || isEdge
   $(document).on 'click', '.formSubmitr', (e)->

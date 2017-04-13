@@ -53,4 +53,4 @@
           .addClass 'noselect'
           .children('.info-msg').children('span').text(selection.length)
 
-$(document).on 'ready page:load', selectTable
+$(document).on 'turbolinks:load', selectTable

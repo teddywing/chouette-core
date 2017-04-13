@@ -16,4 +16,4 @@
       tags: true
 
 
-$(document).on 'ready page:load', select_2
+$(document).on 'turbolinks:load', select_2
