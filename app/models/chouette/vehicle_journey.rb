@@ -92,10 +92,12 @@ module Chouette
     end
 
     def update_time_tables_from_state item
-      item['time_tables'].each do |tt|
-        unless self.time_tables.map(&:id).include?(tt['id'])
-          self.time_tables << Chouette::TimeTable.find(tt['id'])
-        end
+      state_tt_ids = item['time_tables'].map{|tt| tt['id']}
+      self.time_tables.map(&:id).each do |id|
+        self.time_tables.delete(self.time_tables.find(id)) unless state_tt_ids.include?(id)
+      end
+      state_tt_ids.each do |id|
+        self.time_tables << Chouette::TimeTable.find(id) unless self.time_tables.map(&:id).include?(id)
       end
     end
 

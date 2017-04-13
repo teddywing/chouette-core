@@ -83,13 +83,20 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(vehicle_journey.reload.journey_pattern_id).to eq state['journey_pattern']['id']
     end
 
-    it 'should update vj time_tables association' do
+    it 'should update vj time_tables association from state' do
       state['time_tables'] = []
       2.times{state['time_tables'] << create(:time_table).attributes.slice('id', 'comment', 'objectid')}
-      Chouette::VehicleJourney.state_update(route, collection)
+      vehicle_journey.update_time_tables_from_state(state)
 
       expect(state['errors']).to be_nil
       expect(vehicle_journey.reload.time_tables.map(&:id)).to eq(state['time_tables'].map{|tt| tt['id']})
+    end
+
+    it 'should clear vj time_tableas association when remove from state' do
+      vehicle_journey.time_tables << create(:time_table)
+      state['time_tables'] = []
+      vehicle_journey.update_time_tables_from_state(state)
+      expect(vehicle_journey.reload.time_tables).to be_empty
     end
 
     it 'should update vj company' do
