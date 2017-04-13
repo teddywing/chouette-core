@@ -6,10 +6,10 @@ var timeTablesApp = require('./reducers')
 var App = require('./containers/App')
 
 // logger, DO NOT REMOVE
-// var applyMiddleware = require('redux').applyMiddleware
-// var createLogger = require('redux-logger')
-// var thunkMiddleware = require('redux-thunk').default
-// var promise = require('redux-promise')
+var applyMiddleware = require('redux').applyMiddleware
+var createLogger = require('redux-logger')
+var thunkMiddleware = require('redux-thunk').default
+var promise = require('redux-promise')
 
 var initialState = {
   status: {
@@ -20,6 +20,7 @@ var initialState = {
   current_month: [],
   time_table_periods: [],
   periode_range: [],
+  day_types: [],
   pagination: {
     page : 1,
     totalCount: window.journeyPatternLength,
@@ -32,12 +33,12 @@ var initialState = {
     confirmModal: {}
   }
 }
-// const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger()
 
 let store = createStore(
   timeTablesApp,
-  initialState
-  // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
+  initialState,
+  applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 
 render(
