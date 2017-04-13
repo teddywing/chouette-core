@@ -14,7 +14,10 @@
     "react-redux": "4.4.5",
     "react-select2": "4.0.2",
     "redux": "3.6.0",
-    "whatwg-fetch": "2.0.3"
+    "whatwg-fetch": "2.0.3",
+    "redux-logger": "2.7.4",
+    "redux-thunk": "2.1.0",
+    "redux-promise": "0.5.3"
   },
   "license": "MIT",
   "engines": {
@@ -23,9 +26,6 @@
   "devDependencies": {
     "es6-object-assign": "1.0.3",
     "react-addons-test-utils": "15.3.2",
-    "sinon": "1.17.7",
-    "redux-logger": "2.7.4",
-    "redux-thunk": "2.1.0",
-    "redux-promise": "0.5.3"
+    "sinon": "1.17.7"
   }
 }
