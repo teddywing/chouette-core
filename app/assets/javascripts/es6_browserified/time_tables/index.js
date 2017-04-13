@@ -45,5 +45,5 @@ render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('time_tables')
+  document.getElementById('periods')
 )

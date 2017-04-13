@@ -2,6 +2,8 @@ var React = require('react')
 var connect = require('react-redux').connect
 var Component = require('react').Component
 var actions = require('../actions')
+var Metas = require('./Metas')
+var Timetable = require('./Timetable')
 
 class App extends Component {
   componentDidMount(){
@@ -10,7 +12,10 @@ class App extends Component {
 
   render(){
     return(
-      <div></div>
+      <div>
+        <Metas />
+        <Timetable />
+      </div>
     )
   }
 }

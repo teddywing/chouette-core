@@ -3,7 +3,7 @@ const actions = {
     let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
     let array = []
     weekDays.map((day, i) =>{
-      array[i] = (str.indexOf(day) != -1) ? true : false
+      array[i] = str.indexOf(day) != -1
     })
 
     return array
