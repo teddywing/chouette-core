@@ -5,11 +5,11 @@
         / - if @time_table.excluded_date?(d)
         /   - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day excluded_date"}]
         - if @time_table.include_in_overlap_dates?(d)
-          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day overlaped_date"}]
+          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day overlaped_date", title: 'Voir'}]
         - elsif @time_table.include_in_dates?(d)
-          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_date"}]
+          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_date", title: 'Voir'}]
         - elsif @time_table.include_in_periods?(d)
-          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_period"}]
+          - [link_to(d.mday, edit_referential_time_table_path(@referential, @time_table) ), {class: "day selected_period", title: 'Voir'}]
 
 / .row
 /   .col-lg-12
