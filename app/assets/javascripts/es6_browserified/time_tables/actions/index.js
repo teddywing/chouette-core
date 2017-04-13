@@ -12,15 +12,19 @@ const actions = {
   fetchingApi: () =>({
       type: 'FETCH_API'
   }),
-  unavailableServer : () => ({
+  unavailableServer: () => ({
     type: 'UNAVAILABLE_SERVER'
   }),
-  receiveTimeTables : (json) => ({
-    type: "RECEIVE_TIME_TABLES",
+  receiveTimeTables: (json) => ({
+    type: 'RECEIVE_TIME_TABLES',
     json
   }),
+  updateDayTypes: (index) => ({
+    type: 'UPDATE_DAY_TYPES',
+    index
+  }),
 
-  fetchTimeTables : (dispatch, currentPage, nextPage) => {
+  fetchTimeTables: (dispatch, currentPage, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/') + '.json'
     let hasError = false
     fetch(urlJSON, {

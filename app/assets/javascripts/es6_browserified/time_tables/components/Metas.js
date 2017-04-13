@@ -1,17 +1,9 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
-let weekDays = ['L', 'Ma', 'Me', 'J', 'V', 'S', 'D']
+let weekDays = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S']
 
-const reorderArray = (arr) =>{
-  let elt = arr.shift()
-  arr.push(elt)
-  return arr
-}
-
-const Metas = ({metas}) => {
-  let day_types = reorderArray(metas.day_types)
+const Metas = ({metas, onUpdateDayTypes}) => {
   let colorList = ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"]
-
   return (
     <div className='form-horizontal'>
       <div className="row">
@@ -87,14 +79,14 @@ const Metas = ({metas}) => {
             </label>
             <div className="col-sm-8">
               <div className="form-group labelled-checkbox-group">
-                {day_types.map((day, i) =>
+                {metas.day_types.map((day, i) =>
                   <div className="lcbx-group-item"
                     key={i}
                     >
                     <div className="checkbox">
                       <label>
                         <input
-                          onChange={(e) => {e.preventDefault()}}
+                          onChange={(e) => {onUpdateDayTypes(i)}}
                           id={i}
                           type="checkbox"
                           checked={day ? 'checked' : ''}
@@ -115,7 +107,8 @@ const Metas = ({metas}) => {
 }
 
 Metas.propTypes = {
-  metas: PropTypes.object.isRequired
+  metas: PropTypes.object.isRequired,
+  onUpdateDayTypes: PropTypes.func.isRequired
 }
 
 module.exports = Metas

@@ -10,6 +10,10 @@ const metas = (state = {}, action) => {
         tags: action.json.tags,
         color: action.json.color
       })
+    case 'UPDATE_DAY_TYPES':
+      let dayTypes = state.day_types.slice(0)
+      dayTypes[action.index] = !dayTypes[action.index]
+      return _.assign({}, state, {day_types: dayTypes})
     default:
       return state
   }
