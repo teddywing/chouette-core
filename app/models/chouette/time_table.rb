@@ -48,6 +48,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       {
         day: I18n.l(d, format: '%A'),
         wday: d.wday,
+        wnumber: d.strftime("%W").to_s,
         mday: d.mday,
         include_date: include_in_dates?(d),
         excluded_date: excluded_date?(d)

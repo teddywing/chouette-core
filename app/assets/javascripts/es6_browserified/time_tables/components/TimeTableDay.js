@@ -9,9 +9,14 @@ class TimeTableDay extends Component {
 
   render() {
     return (
-      <div className='t2e-item'>
-        Toto
-      </div>
+      <span className='day'>
+        <span className='dayname'>
+          {((this.props.value.day).charAt(0) == 'm') ? (this.props.value.day).substr(0, 2) : (this.props.value.day).charAt(0)}
+        </span>
+        <span className="daynumber">
+          {this.props.value.mday}
+        </span>
+      </span>
     )
   }
 }

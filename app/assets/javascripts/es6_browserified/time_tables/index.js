@@ -19,8 +19,9 @@ var initialState = {
   },
   timetable: {
     current_month: [],
-    time_table_periods: [],
+    current_periode_range: '',
     periode_range: [],
+    time_table_periods: []
   },
   metas: {
     comment: '',
