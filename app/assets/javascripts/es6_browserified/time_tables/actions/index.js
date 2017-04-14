@@ -18,6 +18,10 @@ const actions = {
     type: 'UPDATE_DAY_TYPES',
     index
   }),
+  updateComment: (comment) => ({
+    type: 'UPDATE_COMMENT',
+    comment
+  }),
 
   fetchTimeTables: (dispatch, currentPage, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/') + '.json'

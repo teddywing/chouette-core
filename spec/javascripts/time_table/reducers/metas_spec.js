@@ -28,4 +28,13 @@ describe('status reducer', () => {
     ).toEqual(Object.assign({}, state, {day_types: arr}))
   })
 
+  it('should handle UPDATE_COMMENT', () => {
+    expect(
+      metasReducer(state, {
+        type: 'UPDATE_COMMENT',
+        comment: 'title'
+      })
+    ).toEqual(Object.assign({}, state, {comment: 'title'}))
+  })
+
 })

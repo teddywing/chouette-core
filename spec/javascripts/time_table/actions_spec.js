@@ -8,4 +8,12 @@ describe('actions', () => {
     }
     expect(actions.updateDayTypes(1)).toEqual(expectedAction)
   })
+
+  it('should create an action to update comment', () => {
+    const expectedAction = {
+      type: 'UPDATE_COMMENT',
+      comment: 'test'
+    }
+    expect(actions.updateComment('test')).toEqual(expectedAction)
+  })
 })

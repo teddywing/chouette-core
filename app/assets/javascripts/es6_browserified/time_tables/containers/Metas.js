@@ -12,6 +12,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateDayTypes: (index) => {
       dispatch(actions.updateDayTypes(index))
+    },
+    onUpdateComment: (comment) => {
+      dispatch(actions.updateComment(comment))
     }
   }
 }

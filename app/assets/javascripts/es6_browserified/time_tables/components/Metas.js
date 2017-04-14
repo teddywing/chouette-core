@@ -2,7 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 let weekDays = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S']
 
-const Metas = ({metas, onUpdateDayTypes}) => {
+const Metas = ({metas, onUpdateDayTypes, onUpdateComment}) => {
   let colorList = ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"]
   return (
     <div className="row">
@@ -20,6 +20,7 @@ const Metas = ({metas, onUpdateDayTypes}) => {
                     type='text'
                     className='form-control'
                     value={metas.comment}
+                    onChange={(e) => (onUpdateComment(e.currentTarget.value))}
                     />
                 </div>
               </div>

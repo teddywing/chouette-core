@@ -14,6 +14,8 @@ const metas = (state = {}, action) => {
       let dayTypes = state.day_types.slice(0)
       dayTypes[action.index] = !dayTypes[action.index]
       return _.assign({}, state, {day_types: dayTypes})
+    case 'UPDATE_COMMENT':
+      return _.assign({}, state, {comment: action.comment})
     default:
       return state
   }
