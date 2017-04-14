@@ -91,13 +91,20 @@ module Chouette
       (times.count == 1 && times[0] == '00:00') ? false : true
     end
 
-    def update_time_tables_from_state item
-      state_tt_ids = item['time_tables'].map{|tt| tt['id']}
-      self.time_tables.map(&:id).each do |id|
-        self.time_tables.delete(self.time_tables.find(id)) unless state_tt_ids.include?(id)
-      end
-      state_tt_ids.each do |id|
-        self.time_tables << Chouette::TimeTable.find(id) unless self.time_tables.map(&:id).include?(id)
+    def update_has_and_belongs_to_many_from_state item
+      ['time_tables', 'footnotes'].each do |assos|
+        saved = self.send(assos).map(&:id)
+
+        (saved - item[assos].map{|t| t['id']}).each do |id|
+          self.send(assos).delete(self.send(assos).find(id))
+        end
+
+        item[assos].each do |t|
+          klass = "Chouette::#{assos.classify}".constantize
+          unless saved.include?(t['id'])
+            self.send(assos) << klass.find(t['id'])
+          end
+        end
       end
     end
 
@@ -113,7 +120,7 @@ module Chouette
           end
 
           vj.update_attributes(state_permited_attributes(item))
-          vj.update_time_tables_from_state(item)
+          vj.update_has_and_belongs_to_many_from_state(item)
           item['errors'] = vj.errors if vj.errors.any?
         end
 
