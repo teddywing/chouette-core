@@ -55,7 +55,10 @@ When promted for the password enter the highly secure string `chouette`.
 
 #### Create database
 
+      bundle exec rake db:create
       bundle exec rake db:migrate
+
+      RAILS_ENV=test bundle exec rake db:create
       RAILS_ENV=test bundle exec rake db:migrate
 
 #### Install node.js packages

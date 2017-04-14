@@ -51,7 +51,8 @@ RSpec.configure do |config|
 
   #Capybara.exact = true
   Capybara.javascript_driver = :poltergeist
-  config.filter_run_excluding :js => true
+  config.filter_run_excluding :js  => true
+  config.filter_run           :wip => true      
   config.run_all_when_everything_filtered = true
   config.include TokenInputHelper, :type => :feature
 

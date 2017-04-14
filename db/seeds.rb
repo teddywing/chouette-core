@@ -55,7 +55,7 @@ workbench = Workbench.find_by(name: "Gestion de l'offre")
 
 [["parissudest201604", "Paris Sud-Est Avril 2016"],
  ["parissudest201605", "Paris Sud-Est Mai 2016"]].each do |slug, name|
-  operator.referentials.find_or_create_by(slug: slug) do |referential|
+  operator.referentials.find_or_create_by!(slug: slug) do |referential|
     referential.name      = name
     referential.prefix    = slug
     referential.workbench = workbench
@@ -63,3 +63,6 @@ workbench = Workbench.find_by(name: "Gestion de l'offre")
     referential.stop_area_referential = stop_area_referential
   end
 end
+
+# Clone last referential
+# Referential.new_from(Referential.last)

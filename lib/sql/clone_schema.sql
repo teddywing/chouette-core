@@ -1,9 +1,3 @@
-class ReferentialCloningWorker
-  include Sidekiq::Worker
-  sidekiq_options queue: 'wip'
-
-  def self.sql_func
-    @__sql_func__  ||= <<-EOSQL
 CREATE OR REPLACE FUNCTION clone_schema( source_schema text, dest_schema text, include_recs boolean) RETURNS void AS
 $BODY$
   DECLARE
@@ -82,15 +76,20 @@ $BODY$
 
       -- alter table, assuring the destination schema's table has:
       --    * the same defaults
-      FOR column_, default_ IN SELECT column_name::text, REPLACE(column_default::text, source_schema, dest_schema) FROM information_schema.COLUMNS WHERE table_schema = dest_schema AND TABLE_NAME = object AND column_default LIKE 'nextval(%' || quote_ident(source_schema) || '%::regclass)'
+      FOR column_, default_
+        IN SELECT column_name::text, REPLACE(column_default::text, source_schema, dest_schema)
+        FROM information_schema.COLUMNS
+        WHERE table_schema = dest_schema AND TABLE_NAME = object AND column_default LIKE 'nextval(%' || quote_ident(source_schema) || '%::regclass)'
       LOOP
         EXECUTE 'ALTER TABLE ' || buffer || ' ALTER COLUMN ' || column_ || ' SET DEFAULT ' || default_;
       END LOOP;
     END LOOP;
 
+      /* SELECT 'ALTER TABLE ' || quote_ident(dest_schema) || '.' || quote_ident(rn.relname) || ' ADD CONSTRAINT ' || quote_ident(ct.conname) || ' ' || pg_get_constraintdef(ct.oid) || ';' FROM pg_constraint ct JOIN pg_class rn ON rn.oid = ct.conrelid WHERE connamespace = src_oid AND rn.relkind = 'r' AND ct.contype = 'f' LIMIT 2; */
     -- apply all constraints on tables in destination schema
     FOR qry IN
-      SELECT 'ALTER TABLE ' || quote_ident(dest_schema) || '.' || quote_ident(rn.relname) || ' ADD CONSTRAINT ' || quote_ident(ct.conname) || ' ' || pg_get_constraintdef(ct.oid) || ';' FROM pg_constraint ct JOIN pg_class rn ON rn.oid = ct.conrelid WHERE connamespace = src_oid AND rn.relkind = 'r' AND ct.contype = 'f'
+      SELECT 'ALTER TABLE ' || quote_ident(dest_schema) || '.' || quote_ident(rn.relname) || ' ADD CONSTRAINT ' || quote_ident(ct.conname) || ' ' || REPLACE(pg_get_constraintdef(ct.oid), source_schema || '.', dest_schema || '.') || ';'
+      FROM pg_constraint ct JOIN pg_class rn ON rn.oid = ct.conrelid WHERE connamespace = src_oid AND rn.relkind = 'r' AND ct.contype = 'f'
     LOOP
       EXECUTE qry;
     END LOOP;
@@ -113,28 +112,3 @@ $BODY$
     RETURN;
   END;
 $BODY$ LANGUAGE plpgsql VOLATILE COST 100;
-    EOSQL
-  end
-
-  def perform(id)
-    require 'pry'
-    binding.pry
-    # Replace default apartment created schema with clone schema from source referential
-    ref_cloning = ReferentialCloning.find id
-    sql_clone   = "SELECT clone_schema('#{ref_cloning.source_referential.slug}', '#{ref_cloning.target_referential.slug}_tmp', TRUE);"
-    sql_drop    = "DROP SCHEMA #{ref_cloning.target_referential.slug} CASCADE;"
-    sql_rename  = "ALTER SCHEMA #{ref_cloning.target_referential.slug}_tmp RENAME TO #{ref_cloning.target_referential.slug};"
-    ref_cloning.run!
-
-    begin
-      ActiveRecord::Base.connection.execute self.class.sql_func
-      ActiveRecord::Base.connection.execute sql_clone
-      ActiveRecord::Base.connection.execute sql_drop
-      ActiveRecord::Base.connection.execute sql_rename
-      ref_cloning.successful!
-    rescue Exception => e
-      Rails.logger.error "ReferentialCloningWorker : #{e}"
-      ref_cloning.failed!
-    end
-  end
-end
