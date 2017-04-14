@@ -2,7 +2,7 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 let weekDays = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S']
 
-const Metas = ({metas, onUpdateDayTypes, onUpdateComment}) => {
+const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor}) => {
   let colorList = ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"]
   return (
     <div className="row">
@@ -40,14 +40,18 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment}) => {
                       >
                       <span
                         className='fa fa-circle mr-xs'
-                        style={{color: metas.color}}
+                        style={{color: (metas.color == '')  ? 'transparent' : metas.color}}
                         ></span>
                       <span className='caret'></span>
                     </button>
 
                     <div className="form-group dropdown-menu" aria-labelledby='dpdwn_color'>
                       {colorList.map((c, i) =>
-                        <span className="radio" key={i}>
+                        <span
+                          className="radio"
+                          key={i}
+                          onClick={() => {onUpdateColor(c)}}
+                        >
                           <label htmlFor="">
                             <input
                               type='radio'
@@ -112,7 +116,9 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment}) => {
 
 Metas.propTypes = {
   metas: PropTypes.object.isRequired,
-  onUpdateDayTypes: PropTypes.func.isRequired
+  onUpdateDayTypes: PropTypes.func.isRequired,
+  onUpdateColor: PropTypes.func.isRequired,
+  onUpdateColor: PropTypes.func.isRequired
 }
 
 module.exports = Metas

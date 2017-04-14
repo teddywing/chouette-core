@@ -16,6 +16,8 @@ const metas = (state = {}, action) => {
       return _.assign({}, state, {day_types: dayTypes})
     case 'UPDATE_COMMENT':
       return _.assign({}, state, {comment: action.comment})
+    case 'UPDATE_COLOR':
+      return _.assign({}, state, {color: action.color})
     default:
       return state
   }

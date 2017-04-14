@@ -37,4 +37,13 @@ describe('status reducer', () => {
     ).toEqual(Object.assign({}, state, {comment: 'title'}))
   })
 
+  it('should handle UPDATE_COLOR', () => {
+    expect(
+      metasReducer(state, {
+        type: 'UPDATE_COLOR',
+        color: '#ffffff'
+      })
+    ).toEqual(Object.assign({}, state, {color: '#ffffff'}))
+  })
+
 })

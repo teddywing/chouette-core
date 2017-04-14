@@ -16,4 +16,12 @@ describe('actions', () => {
     }
     expect(actions.updateComment('test')).toEqual(expectedAction)
   })
+
+  it('should create an action to update color', () => {
+    const expectedAction = {
+      type: 'UPDATE_COLOR',
+      color: '#ffffff'
+    }
+    expect(actions.updateColor('#ffffff')).toEqual(expectedAction)
+  })
 })

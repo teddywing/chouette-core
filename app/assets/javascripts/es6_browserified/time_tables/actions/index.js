@@ -22,6 +22,10 @@ const actions = {
     type: 'UPDATE_COMMENT',
     comment
   }),
+  updateColor: (color) => ({
+    type: 'UPDATE_COLOR',
+    color
+  }),
 
   fetchTimeTables: (dispatch, currentPage, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/') + '.json'

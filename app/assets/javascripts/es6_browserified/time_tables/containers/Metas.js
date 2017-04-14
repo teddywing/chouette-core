@@ -15,6 +15,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUpdateComment: (comment) => {
       dispatch(actions.updateComment(comment))
+    },
+    onUpdateColor: (color) => {
+      dispatch(actions.updateColor(color))
     }
   }
 }
