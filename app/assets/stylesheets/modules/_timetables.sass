@@ -1,0 +1,46 @@
+//---------------//
+//  Time Tables  //
+//---------------//
+
+#periods
+  .t2e-head > .th
+    height: 127px
+
+    > .strong
+      padding-top: 113px
+      transform: translateY(-1.4em)
+
+  .t2e-item
+    .th
+      padding: 6px 0 0 0
+      > .monthName
+        padding: 0 0 6px 8px
+
+    .monthDays
+      white-space: nowrap
+
+      .day
+        display: inline-block
+        width: 34px
+        padding: 20px 0 6px 0
+
+        &.last_wday
+          &:not(:last-child)
+            border-right: 2px solid
+
+          &:before
+            content: attr(data-wday)
+            display: block
+            text-align: center
+            color: rgba($grey, 0.5)
+            padding-bottom: 10px
+
+        .dayname
+          display: block
+          text-align: center
+          text-transform: capitalize
+
+        .daynumber
+          display: block
+          text-align: center
+          font-weight: bold

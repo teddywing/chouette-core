@@ -22,9 +22,6 @@ class Timetable extends Component{
           <div className="table table-2entries mt-sm mb-sm">
             <div className="t2e-head w20">
               <div className="th">
-                <div></div>
-                <div></div>
-                <div></div>
                 <div className="strong">Synthèse</div>
               </div>
               <div className="td">Journées d'application</div>
@@ -32,20 +29,22 @@ class Timetable extends Component{
               <div className="td">Exceptions</div>
             </div>
             <div className="t2e-item-list w80">
-              <div className="t2e-item">
-                <div className="th">
-                  <div className="strong monthName">
-                    {this.monthName(this.props.timetable.current_periode_range)}
-                  </div>
+              <div>
+                <div className="t2e-item">
+                  <div className="th">
+                    <div className="strong monthName">
+                      {this.monthName(this.props.timetable.current_periode_range)}
+                    </div>
 
-                  <div className='monthDays'>
-                    {this.props.timetable.current_month.map((day, i) =>
-                      <TimeTableDay
-                        key={i}
-                        index={i}
-                        value={day}
-                        />
-                    )}
+                    <div className='monthDays'>
+                      {this.props.timetable.current_month.map((day, i) =>
+                        <TimeTableDay
+                          key={i}
+                          index={i}
+                          value={day}
+                          />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
