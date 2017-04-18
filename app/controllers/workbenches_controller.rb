@@ -37,10 +37,11 @@ class WorkbenchesController < BreadcrumbController
   end
 
   def sort_result collection
-    col = (Workbench.find(params[:id]).referentials.column_names + %w{lines}).include?(params[:sort]) ? params[:sort] : 'name'
+    col = (Workbench.find(params[:id]).referentials.column_names + %w{lines validity_period}).include?(params[:sort]) ? params[:sort] : 'name'
     dir = %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
-    if col == "lines"
-      collection.joins(:metadatas).group("referentials.id").order("sum(array_length(referential_metadata.line_ids,1)) #{dir}")
+
+    if ['lines', 'validity_period'].include?(col)
+      collection.send("order_by_#{col}", dir)
     else
       collection.order("#{col} #{dir}")
     end

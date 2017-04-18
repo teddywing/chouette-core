@@ -45,6 +45,8 @@ class Referential < ActiveRecord::Base
   scope :ready, -> { where(ready: true) }
   scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }
   scope :include_metadatas_lines, ->(line_ids) { where('referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids) }
+  scope :order_by_validity_period, ->(dir) { joins(:metadatas).order("unnest(periodes) #{dir}") }
+  scope :order_by_lines, ->(dir) { joins(:metadatas).group("referentials.id").order("sum(array_length(referential_metadata.line_ids,1)) #{dir}") }
 
   def lines
     if metadatas.blank?
