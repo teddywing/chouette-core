@@ -30,10 +30,8 @@ var initialState = {
     color: ''
   },
   pagination: {
-    page : 1,
-    totalCount: window.journeyPatternLength,
-    perPage: window.journeyPatternsPerPage,
-    stateChanged: false
+    stateChanged: false,
+    currentPage: ''
   },
   modal: {
     type: '',
