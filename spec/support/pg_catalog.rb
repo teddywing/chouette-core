@@ -1,25 +1,29 @@
 module Support
   module PGCatalog
 
-    def drop_schema!(schema_name)
-      execute("DROP SCHEMA #{schema_name} CASCADE")
-    rescue
-      nil
-    end
-
-    def get_foreign_keys!(schema_oid, table_name)
-      schema_oid = get_schema_oid!(schema_oid) unless Integer === schema_oid
+    def get_foreign_keys(schema_oid, table_name)
+      schema_oid = get_schema_oid(schema_oid) unless Integer === schema_oid
       return [] unless schema_oid
       execute(foreign_key_query(schema_oid, table_name))
         .to_a
     end
-    def get_schema_oid!(schema_name)
+
+    def get_schema_oid(schema_name)
       execute("SELECT oid FROM pg_namespace WHERE nspname = '#{schema_name}'")
         .values
         .flatten
         .first
     end
 
+    def get_sequences(schema_name, table_name)
+      sequences = execute <<-EOSQL
+        SELECT sequence_name FROM information_schema.sequences
+          WHERE sequence_schema = '#{schema_name}' AND sequence_name LIKE '#{table_name}%'
+      EOSQL
+      sequences.values.flatten.map do | sequence |
+        execute "SELECT * from #{schema_name}.#{sequence}"
+      end.flat_map(&:to_a)
+    end
 
     def table_from_schema(schema_name, table_name)
       execute
@@ -54,8 +58,8 @@ module Support
       
     end
 
-    def get_or_create_query(query_key, query_value)
-      queries.fetch(query_key){ queries[query_key] = query_value }
+    def get_or_create_query(query_key, &query_value)
+      queries.fetch(query_key){ queries[query_key] = query_value.() }
     end
 
     def queries
