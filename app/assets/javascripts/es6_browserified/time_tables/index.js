@@ -27,7 +27,8 @@ var initialState = {
     comment: '',
     day_types: [],
     tags: [],
-    color: ''
+    color: '',
+    calendar: {}
   },
   pagination: {
     stateChanged: false,

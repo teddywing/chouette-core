@@ -84,6 +84,14 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
                 </div>
               </div>
               */}
+
+              {/* calendar */}
+              <div className="form-group">
+                <label htmlFor="" className="control-label col-sm-4">Modèle de calendrier associé</label>
+                <div className="col-sm-8">
+                  <span>{metas.calendar.name}</span>
+                </div>
+              </div>
               {/* day_types */}
               <div className="form-group">
                 <label htmlFor="" className="control-label col-sm-4">
