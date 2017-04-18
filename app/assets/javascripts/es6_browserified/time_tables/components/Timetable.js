@@ -1,7 +1,8 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
-var TimeTableDay = require('./TimeTableDay')
+var TimeTableDHead = require('./TimeTableDHead')
+var TimeTableDBody = require('./TimeTableDBody')
 var actions = require('../actions')
 
 class Timetable extends Component{
@@ -32,7 +33,7 @@ class Timetable extends Component{
 
                     <div className='monthDays'>
                       {this.props.timetable.current_month.map((day, i) =>
-                        <TimeTableDay
+                        <TimeTableDHead
                           key={i}
                           index={i}
                           value={day}
@@ -40,6 +41,13 @@ class Timetable extends Component{
                       )}
                     </div>
                   </div>
+                  {this.props.timetable.current_month.map((day, i) =>
+                    <TimeTableDBody
+                      key={i}
+                      index={i}
+                      value={day}
+                      />
+                  )}
                 </div>
               </div>
             </div>

@@ -2,7 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 
-class TimeTableDay extends Component {
+class TimeTableDHead extends Component {
   constructor(props) {
     super(props)
   }
@@ -26,9 +26,9 @@ class TimeTableDay extends Component {
   }
 }
 
-TimeTableDay.propTypes = {
+TimeTableDHead.propTypes = {
   value: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired
 }
 
-module.exports = TimeTableDay
+module.exports = TimeTableDHead
