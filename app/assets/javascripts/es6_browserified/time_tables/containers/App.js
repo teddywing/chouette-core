@@ -4,6 +4,7 @@ var Component = require('react').Component
 var actions = require('../actions')
 var Metas = require('./Metas')
 var Timetable = require('./Timetable')
+var Navigate = require('./Navigate')
 
 class App extends Component {
   componentDidMount(){
@@ -14,6 +15,7 @@ class App extends Component {
     return(
       <div>
         <Metas />
+        <Navigate />
         <Timetable />
       </div>
     )

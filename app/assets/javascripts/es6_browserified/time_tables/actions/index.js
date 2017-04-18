@@ -12,9 +12,25 @@ const actions = {
   unavailableServer: () => ({
     type: 'UNAVAILABLE_SERVER'
   }),
+  receiveMonth: (json) => ({
+    type: 'RECEIVE_MONTH',
+    json
+  }),
   receiveTimeTables: (json) => ({
     type: 'RECEIVE_TIME_TABLES',
     json
+  }),
+  goToPreviousPage : (dispatch, pagination) => ({
+    type: 'GO_TO_PREVIOUS_PAGE',
+    dispatch,
+    pagination,
+    nextPage : false
+  }),
+  goToNextPage : (dispatch, pagination) => ({
+    type: 'GO_TO_NEXT_PAGE',
+    dispatch,
+    pagination,
+    nextPage : true
   }),
   updateDayTypes: (index) => ({
     type: 'UPDATE_DAY_TYPES',
@@ -78,8 +94,22 @@ const actions = {
     return improvedCM
   },
 
-  fetchTimeTables: (dispatch, currentPage, nextPage) => {
-    let urlJSON = window.location.pathname.split('/', 5).join('/') + '.json'
+  checkConfirmModal : (event, callback, stateChanged,dispatch) => {
+    if(stateChanged === true){
+      return actions.openConfirmModal(callback)
+    }else{
+      dispatch(actions.fetchingApi())
+      return callback
+    }
+  },
+  fetchTimeTables: (dispatch, nextPage) => {
+    let urlJSON = window.location.pathname.split('/', 5).join('/')
+    console.log(nextPage)
+    if(nextPage) {
+      urlJSON += "/month.json?date=" + nextPage
+    }else{
+      urlJSON += ".json"
+    }
     let hasError = false
     fetch(urlJSON, {
       credentials: 'same-origin',
@@ -92,7 +122,11 @@ const actions = {
         if(hasError == true) {
           dispatch(actions.unavailableServer())
         } else {
-          dispatch(actions.receiveTimeTables(json))
+          if(nextPage){
+            dispatch(actions.receiveMonth(json))
+          }else{
+            dispatch(actions.receiveTimeTables(json))
+          }
         }
       })
   },

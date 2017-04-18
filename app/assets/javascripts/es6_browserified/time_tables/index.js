@@ -31,7 +31,8 @@ var initialState = {
   },
   pagination: {
     stateChanged: false,
-    currentPage: ''
+    currentPage: '',
+    periode_range: []
   },
   modal: {
     type: '',

@@ -11,6 +11,17 @@ const timetable = (state = {}, action) => {
         time_table_periods: action.json.time_table_periods
       })
       return _.assign({}, fetchedState, {current_month: actions.updateSynthesis(fetchedState)})
+    case 'RECEIVE_MONTH':
+      return _.assign({}, state, {
+        current_month: action.json.days
+      })
+    case 'GO_TO_PREVIOUS_PAGE':
+    case 'GO_TO_NEXT_PAGE':
+      let nextPage = action.nextPage ? 1 : -1
+      let newPage = action.pagination.periode_range[action.pagination.periode_range.indexOf(action.pagination.currentPage) + nextPage]
+      $('#ConfirmModal').modal('hide')
+        actions.fetchTimeTables(action.dispatch, newPage)
+      return _.assign({}, state, {current_periode_range: newPage})
     default:
       return state
   }

@@ -7,6 +7,7 @@ const status = (state = {}, action) => {
     case 'FETCH_API':
       return _.assign({}, state, {isFetching: true})
     case 'RECEIVE_TIME_TABLES':
+    case 'RECEIVE_MONTH':
       return _.assign({}, state, {fetchSuccess: true, isFetching: false})
     default:
       return state
