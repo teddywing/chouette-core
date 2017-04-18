@@ -1,6 +1,9 @@
 module Support
   module PGCatalog
 
+    def get_columns(schema_name, table_name)
+      execute("SELECT * from information_schema.columns WHERE table_name = '#{table_name}' AND table_schema = '#{schema_name}'")
+    end
     def get_foreign_keys(schema_oid, table_name)
       schema_oid = get_schema_oid(schema_oid) unless Integer === schema_oid
       return [] unless schema_oid
@@ -25,8 +28,9 @@ module Support
       end.flat_map(&:to_a)
     end
 
-    def table_from_schema(schema_name, table_name)
-      execute
+    def get_table_information(schema_name, table_name)
+      execute("SELECT * FROM information_schema.tables WHERE table_name = '#{table_name}' AND table_schema = '#{schema_name}'")
+        .to_a
     end
 
 

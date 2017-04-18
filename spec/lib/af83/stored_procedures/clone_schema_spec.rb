@@ -14,7 +14,25 @@ RSpec.describe StoredProcedures do
   end
 
   context "meta specs describe source schema's introspection" do
-    it "shows, sequences are correctly read", :meta do
+    it "table information is correctly read" do
+      expect(get_table_information(source_schema, child_table))
+        .to eq([{"table_catalog"=>"chouette_test",
+                 "table_schema"=>"source_schema",
+                 "table_name"=>"children",
+                 "table_type"=>"BASE TABLE",
+                 "self_referencing_column_name"=>nil,
+                 "reference_generation"=>nil,
+                 "user_defined_type_catalog"=>nil,
+                 "user_defined_type_schema"=>nil,
+                 "user_defined_type_name"=>nil,
+                 "is_insertable_into"=>"YES",
+                 "is_typed"=>"NO",
+                 "commit_action"=>nil}])
+
+      expect( get_table_information(target_schema, child_table) ).to be_empty
+    end
+
+    it "sequences are correctly read", :meta do
       expect(get_sequences(source_schema, child_table))
       .to eq([{"sequence_name"=>"#{child_table}_id_seq",
                "last_value"=>"1",
@@ -63,6 +81,36 @@ RSpec.describe StoredProcedures do
       expect( get_schema_oid(target_schema) ).not_to be_nil
     end
 
+    it "table information is correctly read" do
+      expect(get_table_information(source_schema, child_table))
+        .to eq([{"table_catalog"=>"chouette_test",
+                 "table_schema"=>"source_schema",
+                 "table_name"=>"children",
+                 "table_type"=>"BASE TABLE",
+                 "self_referencing_column_name"=>nil,
+                 "reference_generation"=>nil,
+                 "user_defined_type_catalog"=>nil,
+                 "user_defined_type_schema"=>nil,
+                 "user_defined_type_name"=>nil,
+                 "is_insertable_into"=>"YES",
+                 "is_typed"=>"NO",
+                 "commit_action"=>nil}])
+
+      expect( get_table_information(target_schema, child_table))
+        .to eq([{"table_catalog"=>"chouette_test",
+                 "table_schema"=>"target_schema",
+                 "table_name"=>"children",
+                 "table_type"=>"BASE TABLE",
+                 "self_referencing_column_name"=>nil,
+                 "reference_generation"=>nil,
+                 "user_defined_type_catalog"=>nil,
+                 "user_defined_type_schema"=>nil,
+                 "user_defined_type_name"=>nil,
+                 "is_insertable_into"=>"YES",
+                 "is_typed"=>"NO",
+                 "commit_action"=>nil}])
+    end
+      
     it "has the correct sequences" do
       expect(get_sequences(target_schema, child_table))
       .to eq([{"sequence_name"=>"#{child_table}_id_seq",
@@ -95,7 +143,7 @@ RSpec.describe StoredProcedures do
         "constraint_name" => "children_parents",
         "constraint_def"  => "FOREIGN KEY (parents_id) REFERENCES target_schema.parents(id)"}])
     end
-     
+
   end
 
 end
