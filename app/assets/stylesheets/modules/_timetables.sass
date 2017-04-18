@@ -4,10 +4,10 @@
 
 #periods
   .t2e-head > .th
-    height: 127px
+    height: 134px
 
     > .strong
-      padding-top: 113px
+      padding-top: 122px
       transform: translateY(-1.4em)
 
   .t2e-item
@@ -31,7 +31,7 @@
           &:before
             content: attr(data-wday)
             display: block
-            text-align: center
+            text-align: left
             color: rgba($grey, 0.5)
             padding-bottom: 10px
 
@@ -39,8 +39,18 @@
           display: block
           text-align: center
           text-transform: capitalize
+          padding-bottom: 2px
 
         .daynumber
           display: block
+          margin: 0 auto
+          width: 24px
+          height: 24px
+          line-height: 24px
           text-align: center
           font-weight: bold
+          border-radius: 50%
+          background-color: transparent
+
+          &.included
+            background-color: $gold
