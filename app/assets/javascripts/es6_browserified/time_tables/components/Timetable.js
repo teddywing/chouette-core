@@ -1,13 +1,33 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
-var TimeTableDHead = require('./TimeTableDHead')
-var TimeTableDBody = require('./TimeTableDBody')
+var TimeTableDay = require('./TimeTableDay')
+var DayInfos = require('./DayInfos')
 var actions = require('../actions')
 
 class Timetable extends Component{
   constructor(props){
     super(props)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.status.isFetching == false){
+      $('.table-2entries').each(function() {
+        var refH = []
+        var refCol = []
+
+        $(this).find('.t2e-head').children('.td').each(function() {
+          var h = $(this).outerHeight();
+          refH.push(h)
+        });
+
+        $(this).find('.t2e-item').children('.td-group').each(function() {
+          for(var nth = 0; nth < refH.length; nth++) {
+            $(this).find('.td:nth-child('+ (nth + 1) +')').css('height', refH[nth]);
+          }
+        });
+      });
+    }
   }
 
   render() {
@@ -33,7 +53,7 @@ class Timetable extends Component{
 
                     <div className='monthDays'>
                       {this.props.timetable.current_month.map((day, i) =>
-                        <TimeTableDHead
+                        <TimeTableDay
                           key={i}
                           index={i}
                           value={day}
@@ -41,8 +61,9 @@ class Timetable extends Component{
                       )}
                     </div>
                   </div>
+
                   {this.props.timetable.current_month.map((day, i) =>
-                    <TimeTableDBody
+                    <DayInfos
                       key={i}
                       index={i}
                       value={day}
@@ -60,6 +81,7 @@ class Timetable extends Component{
 
 Timetable.propTypes = {
   timetable: PropTypes.object.isRequired,
+  status: PropTypes.object.isRequired
 }
 
 module.exports = Timetable

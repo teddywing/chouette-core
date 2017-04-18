@@ -3,7 +3,8 @@ var TimetableComponent = require('../components/Timetable')
 
 const mapStateToProps = (state) => {
   return {
-    timetable: state.timetable
+    timetable: state.timetable,
+    status: state.status
   }
 }
 
