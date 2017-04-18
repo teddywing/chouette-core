@@ -26,7 +26,20 @@ const actions = {
     type: 'UPDATE_COLOR',
     color
   }),
-
+  select2Tags: (selectedTag) => ({
+    type: 'UPDATE_SELECT_TAG',
+    selectedItem: {
+      id: selectedTag.id,
+      name: selectedTag.name
+    }
+  }),
+  unselect2Tags: (selectedTag) => ({
+    type: 'UPDATE_UNSELECT_TAG',
+    selectedItem: {
+      id: selectedTag.id,
+      name: selectedTag.name
+    }
+  }),
   fetchTimeTables: (dispatch, currentPage, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/') + '.json'
     let hasError = false

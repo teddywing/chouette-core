@@ -1,8 +1,9 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
 let weekDays = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S']
+var TagsSelect2 = require('./TagsSelect2')
 
-const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor}) => {
+const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelect2Tags, onUnselect2Tags}) => {
   let colorList = ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"]
   return (
     <div className="row">
@@ -71,14 +72,18 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor}) => {
               </div>
 
               {/* tags */}
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="" className="control-label col-sm-4">Etiquettes</label>
                 <div className="col-sm-8">
-                  {/* Select2 to implement*/}
+                  <TagsSelect2
+                    tags={metas.tags}
+                    onSelect2Tags={(e) => onSelect2Tags(e)}
+                    onUnselect2Tags={(e) => onUnselect2Tags(e)}
+                  />
                   <input type="text" value='ton papa' className='form-control'/>
                 </div>
               </div>
-
+              */}
               {/* day_types */}
               <div className="form-group">
                 <label htmlFor="" className="control-label col-sm-4">
@@ -118,7 +123,9 @@ Metas.propTypes = {
   metas: PropTypes.object.isRequired,
   onUpdateDayTypes: PropTypes.func.isRequired,
   onUpdateColor: PropTypes.func.isRequired,
-  onUpdateColor: PropTypes.func.isRequired
+  onUpdateColor: PropTypes.func.isRequired,
+  onSelect2Tags: PropTypes.func.isRequired,
+  onUnselect2Tags: PropTypes.func.isRequired
 }
 
 module.exports = Metas

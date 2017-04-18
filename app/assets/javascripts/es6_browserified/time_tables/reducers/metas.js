@@ -18,6 +18,12 @@ const metas = (state = {}, action) => {
       return _.assign({}, state, {comment: action.comment})
     case 'UPDATE_COLOR':
       return _.assign({}, state, {color: action.color})
+    case 'UPDATE_SELECT_TAG':
+      let tags = [...state.tags]
+      tags.push(action.selectedItem)
+      return _.assign({}, state, {tags: tags})
+    case 'UPDATE_UNSELECT_TAG':
+      return _.assign({}, state, {tags: _.filter(state.tags, (t) => (t.id != action.selectedItem.id))})
     default:
       return state
   }
