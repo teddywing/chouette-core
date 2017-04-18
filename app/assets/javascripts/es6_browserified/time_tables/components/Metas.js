@@ -7,7 +7,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
   let colorList = ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"]
   return (
     <div className="row">
-      <div className="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+      <div className="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
         <div className='form-horizontal'>
           <div className="row">
             <div className="col-lg-12">
