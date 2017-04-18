@@ -16,6 +16,7 @@ fr:
             stop_points:
               not_enough_stop_points: "Il faut mettre au moins deux arrêts sur séquence d'arrêts."
               stop_points_not_from_route: "Arrêt sur séquence d'arrêts n'appartient pas à la Route de cette Zone de contrainte."
+              all_stop_points_selected: "Une zone de contrainte ne peut pas couvrir tous les arrêts d'une ligne."
   routing_constraint_zones:
     actions:
       new: Ajouter une zone de contrainte

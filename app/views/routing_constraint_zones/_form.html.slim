@@ -4,7 +4,7 @@
       = f.input :name
   .row
     .col-lg-6.col-sm-12
-      = f.input :route_id, collection: @line.routes, include_blank: false
+      = f.input :route_id, collection: @line.routes.select { |route| route.stop_points.count > 2 }, include_blank: false
   .row
     .col-lg-6.col-sm-12
       - stop_points_collection = @routing_constraint_zone.persisted? ? @routing_constraint_zone.route.stop_points : []
@@ -16,3 +16,4 @@
       = f.button :submit, class: 'btn btn-danger'
 
 
+= hidden_field_tag 'stop_point_ids', @routing_constraint_zone.stop_point_ids.to_s, id: 'stop_point_ids'
