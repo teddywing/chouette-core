@@ -32,6 +32,11 @@ const actions = {
     pagination,
     nextPage : true
   }),
+  changePage : (dispatch, pagination, val) => ({
+    type: 'CHANGE_PAGE',
+    dispatch,
+    page: val
+  }),
   updateDayTypes: (index) => ({
     type: 'UPDATE_DAY_TYPES',
     index

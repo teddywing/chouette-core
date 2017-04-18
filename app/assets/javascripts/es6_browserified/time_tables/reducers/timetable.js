@@ -21,8 +21,12 @@ const timetable = (state = {}, action) => {
       let nextPage = action.nextPage ? 1 : -1
       let newPage = action.pagination.periode_range[action.pagination.periode_range.indexOf(action.pagination.currentPage) + nextPage]
       $('#ConfirmModal').modal('hide')
-        actions.fetchTimeTables(action.dispatch, newPage)
+      actions.fetchTimeTables(action.dispatch, newPage)
       return _.assign({}, state, {current_periode_range: newPage})
+    case 'CHANGE_PAGE':
+      $('#ConfirmModal').modal('hide')
+      actions.fetchTimeTables(action.dispatch, action.page)
+      return _.assign({}, state, {current_periode_range: action.page})
     default:
       return state
   }

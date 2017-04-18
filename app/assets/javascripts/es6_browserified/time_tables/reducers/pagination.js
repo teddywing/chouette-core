@@ -13,6 +13,9 @@ const pagination = (state = {}, action) => {
       let newPage = action.pagination.periode_range[action.pagination.periode_range.indexOf(action.pagination.currentPage) + nextPage]
       toggleOnConfirmModal()
       return _.assign({}, state, {currentPage : newPage, stateChanged: false})
+    case 'CHANGE_PAGE':
+      toggleOnConfirmModal()
+      return _.assign({}, state, {currentPage : action.page, stateChanged: false})
     default:
       return state
   }

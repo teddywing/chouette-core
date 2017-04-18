@@ -19,8 +19,11 @@ let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
             <form className='page_links' onSubmit={e => {e.preventDefault()}}>
               <select
                 value={pagination.currentPage}
-                onChange={()=>{}}
-                >
+                onChange={(e)=>{
+                  e.preventDefault()
+                  dispatch(actions.checkConfirmModal(e, actions.changePage(dispatch, pagination, e.currentTarget.value), pagination.stateChanged, dispatch))
+                }}
+              >
                 {_.map(pagination.periode_range, (month, i) => (
                   <option
                     value={month}
@@ -28,31 +31,30 @@ let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
                     >
                     {actions.monthName(month) + ' ' + new Date(month).getFullYear()}
                   </option>
-                )
-              )}
-            </select>
-            <button
-              onClick={e => {
-                e.preventDefault()
-                dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
-              }}
-              type='button'
-              data-target='#ConfirmModal'
-              className={(firstPage ? 'disabled ' : '') + 'previous_page'}
-              disabled={(firstPage ? 'disabled' : '')}
-              ></button>
-            <button
-              onClick={e => {
-                e.preventDefault()
-                dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
-              }}
-              type='button'
-              data-target='#ConfirmModal'
-              className={(lastPage ? 'disabled ' : '') + 'next_page'}
-              disabled={(lastPage ? 'disabled' : '')}
-              ></button>
-          </form>
-        </div>
+                ))}
+              </select>
+              <button
+                onClick={e => {
+                  e.preventDefault()
+                  dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
+                }}
+                type='button'
+                data-target='#ConfirmModal'
+                className={(firstPage ? 'disabled ' : '') + 'previous_page'}
+                disabled={(firstPage ? 'disabled' : '')}
+                ></button>
+              <button
+                onClick={e => {
+                  e.preventDefault()
+                  dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
+                }}
+                type='button'
+                data-target='#ConfirmModal'
+                className={(lastPage ? 'disabled ' : '') + 'next_page'}
+                disabled={(lastPage ? 'disabled' : '')}
+                ></button>
+              </form>
+          </div>
         </div>
       </div>
     )
