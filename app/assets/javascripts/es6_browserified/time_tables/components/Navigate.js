@@ -13,44 +13,47 @@ let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
     let firstPage = pageIndex == 0
     let lastPage = pageIndex == pagination.periode_range.length - 1
     return (
-      <div className="pagination">
-
-        <form className='page_links' onSubmit={e => {e.preventDefault()}}>
-          <select
-            value={pagination.currentPage}
-            onChange={()=>{}}
-          >
-            {_.map(pagination.periode_range, (month, i) => (
-              <option
-                value={month}
-                key={i}
-              >
-                {actions.monthName(month) + ' ' + new Date(month).getFullYear()}
-              </option>
-              )
-            )}
-          </select>
-          <button
-            onClick={e => {
-              e.preventDefault()
-                  dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
-            }}
-            type='button'
-            data-target='#ConfirmModal'
-            className={(firstPage ? 'disabled ' : '') + 'previous_page'}
-            disabled={(firstPage ? 'disabled' : '')}
-          ></button>
-          <button
-            onClick={e => {
-              e.preventDefault()
-                  dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
-            }}
-            type='button'
-            data-target='#ConfirmModal'
-            className={(lastPage ? 'disabled ' : '') + 'next_page'}
-            disabled={(lastPage ? 'disabled' : '')}
-          ></button>
-        </form>
+      <div className="row mt-md">
+        <div className="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 text-right">
+          <div className="pagination">
+            <form className='page_links' onSubmit={e => {e.preventDefault()}}>
+              <select
+                value={pagination.currentPage}
+                onChange={()=>{}}
+                >
+                {_.map(pagination.periode_range, (month, i) => (
+                  <option
+                    value={month}
+                    key={i}
+                    >
+                    {actions.monthName(month) + ' ' + new Date(month).getFullYear()}
+                  </option>
+                )
+              )}
+            </select>
+            <button
+              onClick={e => {
+                e.preventDefault()
+                dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
+              }}
+              type='button'
+              data-target='#ConfirmModal'
+              className={(firstPage ? 'disabled ' : '') + 'previous_page'}
+              disabled={(firstPage ? 'disabled' : '')}
+              ></button>
+            <button
+              onClick={e => {
+                e.preventDefault()
+                dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
+              }}
+              type='button'
+              data-target='#ConfirmModal'
+              className={(lastPage ? 'disabled ' : '') + 'next_page'}
+              disabled={(lastPage ? 'disabled' : '')}
+              ></button>
+          </form>
+        </div>
+        </div>
       </div>
     )
   } else {

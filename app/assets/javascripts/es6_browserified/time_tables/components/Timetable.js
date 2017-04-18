@@ -13,7 +13,7 @@ class Timetable extends Component{
     return (
       <div className='row'>
         <div className="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
-          <div className="table table-2entries mt-sm mb-sm">
+          <div className="table table-2entries mb-sm">
             <div className="t2e-head w20">
               <div className="th">
                 <div className="strong">Synthèse</div>
