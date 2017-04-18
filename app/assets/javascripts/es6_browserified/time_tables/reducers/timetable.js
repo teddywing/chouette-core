@@ -12,9 +12,10 @@ const timetable = (state = {}, action) => {
       })
       return _.assign({}, fetchedState, {current_month: actions.updateSynthesis(fetchedState)})
     case 'RECEIVE_MONTH':
-      return _.assign({}, state, {
+      let newState = _.assign({}, state, {
         current_month: action.json.days
       })
+      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState)})
     case 'GO_TO_PREVIOUS_PAGE':
     case 'GO_TO_NEXT_PAGE':
       let nextPage = action.nextPage ? 1 : -1
