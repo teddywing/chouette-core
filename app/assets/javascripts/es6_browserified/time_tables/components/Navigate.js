@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../actions')
+var _ = require('lodash')
 
 let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
   if(status.isFetching == true) {
@@ -15,6 +16,20 @@ let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
       <div className="pagination">
 
         <form className='page_links' onSubmit={e => {e.preventDefault()}}>
+          <select
+            value={pagination.currentPage}
+            onChange={()=>{}}
+          >
+            {_.map(pagination.periode_range, (month, i) => (
+              <option
+                value={month}
+                key={i}
+              >
+                {actions.monthName(month) + ' ' + new Date(month).getFullYear()}
+              </option>
+              )
+            )}
+          </select>
           <button
             onClick={e => {
               e.preventDefault()

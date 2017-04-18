@@ -58,6 +58,11 @@ const actions = {
       name: selectedTag.name
     }
   }),
+  monthName(strDate) {
+    let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+    var date = new Date(strDate)
+    return monthList[date.getMonth()]
+  },
 
   updateSynthesis: (state) => {
     let periods = state.time_table_periods

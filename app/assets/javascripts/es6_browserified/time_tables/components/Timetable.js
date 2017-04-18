@@ -2,17 +2,11 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var TimeTableDay = require('./TimeTableDay')
-
-let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+var actions = require('../actions')
 
 class Timetable extends Component{
   constructor(props){
     super(props)
-  }
-
-  monthName(strDate) {
-    var date = new Date(strDate)
-    return monthList[date.getMonth()]
   }
 
   render() {
@@ -33,7 +27,7 @@ class Timetable extends Component{
                 <div className="t2e-item">
                   <div className="th">
                     <div className="strong monthName">
-                      {this.monthName(this.props.timetable.current_periode_range)}
+                      {actions.monthName(this.props.timetable.current_periode_range)}
                     </div>
 
                     <div className='monthDays'>
