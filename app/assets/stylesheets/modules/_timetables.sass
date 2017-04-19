@@ -3,15 +3,27 @@
 //---------------//
 
 #periods
-  .t2e-head > .th
-    height: 135px
-    text-align: left
-    border-color: $darkgrey
-    border-top-width: 2px
+  .t2e-head
+    > .th
+      height: 135px
+      text-align: left
+      border-color: $darkgrey
+      border-top-width: 2px
 
-    > .strong
-      padding-top: 123px
-      transform: translateY(-1.4em)
+      > .strong
+        padding-top: 123px
+        transform: translateY(-1.4em)
+
+  .t2e-head > .td, .t2e-item > .td-group > .td
+    height: 51px
+
+  .t2e-head > .td
+    line-height: 38px
+
+    > span
+      display: inline-block
+      vertical-align: middle
+      line-height: 1.4
 
   .t2e-item-list > div
     border-color: #fff
@@ -95,7 +107,8 @@
     white-space: nowrap
     position: absolute
     left: 8px
-    top: 6px
+    top: 50%
+    transform: translateY(-50%)
     z-index: 5
 
   .form-group > .month_selector
