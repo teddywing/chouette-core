@@ -1,6 +1,7 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
+var actions = require('../actions')
 
 class PeriodManager extends Component {
   constructor(props) {
@@ -9,8 +10,11 @@ class PeriodManager extends Component {
 
   render() {
     return (
-      <div>
-        P
+      <div
+        className='period_manager'
+        id={this.props.value.id}
+      >
+        <strong>{(this.props.value.period_start.split('-')[2]) + ' > ' + actions.getHumanDate(this.props.value.period_end, 3)}</strong>
       </div>
     )
   }

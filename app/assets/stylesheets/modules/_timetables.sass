@@ -59,7 +59,7 @@
           background-color: transparent
 
           &.included
-            background-color: $gold
+            background-color: rgba($gold, 0.7)
 
     > .td-group
       width: 34px
@@ -76,11 +76,21 @@
 
       > .td
         &.in_periods
-          background-color: $gold
-          border-left-color: $gold
-          border-right-color: $gold
+          background-color: rgba($gold, 0.7)
+          border-left-color: rgba($gold, 0.7)
+          border-right-color: rgba($gold, 0.7)
 
           &.start_period
             border-left-color: rgba($grey, 0.5)
           &.end_period
             border-right-color: rgba($grey, 0.5)
+
+  .period_manager
+    display: block
+    height: auto
+    word-wrap: normal
+    white-space: nowrap
+    position: absolute
+    left: 8px
+    top: 6px
+    z-index: 5
