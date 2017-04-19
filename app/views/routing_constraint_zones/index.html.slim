@@ -5,7 +5,7 @@
 
 - if @routing_constraint_zones.any?
   = table_builder @routing_constraint_zones,
-    { :name => 'name' },
+    { objectid: 'objectid', name: 'name', route: 'route_name', stop_points_count: 'stop_points_count' },
     [:show, :edit, :delete],
     [],
     'table table-bordered'
