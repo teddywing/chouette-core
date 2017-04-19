@@ -2,12 +2,21 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var TimeTableDay = require('./TimeTableDay')
-var DayTypesInDay = require('./DayTypesInDay')
+var PeriodsInDay = require('./PeriodsInDay')
+var ExceptionsInDay = require('./ExceptionsInDay')
 var actions = require('../actions')
 
 class Timetable extends Component{
   constructor(props){
     super(props)
+  }
+
+  currentDate(mFirstday, day) {
+    let currentMonth = mFirstday.split('-')
+    let twodigitsDay = day < 10 ? ('0' + day) : day
+    let currentDate = new Date(currentMonth[0] + '-' + currentMonth[1] + '-' + twodigitsDay)
+
+    return currentDate
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -67,10 +76,21 @@ class Timetable extends Component{
                       key={i}
                       className={'td-group' + (this.props.metas.day_types[d.wday] ? '' : ' out_from_daytypes') + (d.wday == 0 ? ' last_wday' : '')}
                     >
-                      <DayTypesInDay
+                      {/* day_types */}
+                      <div className="td"></div>
+
+                      {/* periods */}
+                      <PeriodsInDay
+                        index={i}
+                        value={this.props.timetable.time_table_periods}
+                        currentDate={this.currentDate(this.props.timetable.current_periode_range, d.mday)}
+                      />
+
+                      {/* exceptions */}
+                      <ExceptionsInDay
                         index={i}
                         value={this.props.timetable}
-                        />
+                      />
                     </div>
                   )}
                 </div>
