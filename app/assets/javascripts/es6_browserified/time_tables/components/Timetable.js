@@ -2,7 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var TimeTableDay = require('./TimeTableDay')
-var DayInfos = require('./DayInfos')
+var DayTypesInDay = require('./DayTypesInDay')
 var actions = require('../actions')
 
 class Timetable extends Component{
@@ -52,22 +52,26 @@ class Timetable extends Component{
                     </div>
 
                     <div className='monthDays'>
-                      {this.props.timetable.current_month.map((day, i) =>
+                      {this.props.timetable.current_month.map((d, i) =>
                         <TimeTableDay
                           key={i}
                           index={i}
-                          value={day}
+                          value={d}
                           />
                       )}
                     </div>
                   </div>
 
-                  {this.props.timetable.current_month.map((day, i) =>
-                    <DayInfos
+                  {this.props.timetable.current_month.map((d, i) =>
+                    <div
                       key={i}
-                      index={i}
-                      value={day}
-                      />
+                      className={'td-group' + (this.props.metas.day_types[d.wday] ? '' : ' out_from_daytypes') + (d.wday == 0 ? ' last_wday' : '')}
+                    >
+                      <DayTypesInDay
+                        index={i}
+                        value={this.props.timetable}
+                        />
+                    </div>
                   )}
                 </div>
               </div>
@@ -80,6 +84,7 @@ class Timetable extends Component{
 }
 
 Timetable.propTypes = {
+  metas: PropTypes.object.isRequired,
   timetable: PropTypes.object.isRequired,
   status: PropTypes.object.isRequired
 }
