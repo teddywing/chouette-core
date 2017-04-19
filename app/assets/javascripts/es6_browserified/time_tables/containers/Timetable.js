@@ -3,6 +3,7 @@ var TimetableComponent = require('../components/Timetable')
 
 const mapStateToProps = (state) => {
   return {
+    metas: state.metas,
     timetable: state.timetable,
     status: state.status
   }
