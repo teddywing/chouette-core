@@ -15,6 +15,10 @@ class ApplicationController < ActionController::Base
     I18n.locale = session[:language] || I18n.default_locale
   end
 
+  def pundit_user
+    UserContext.new(current_user, referential: self.try(:current_referential))
+  end
+
   protected
 
   def user_not_authorized
