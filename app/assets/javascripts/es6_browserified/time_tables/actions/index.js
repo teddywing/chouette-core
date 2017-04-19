@@ -69,7 +69,7 @@ const actions = {
     return monthList[date.getMonth()]
   },
 
-  updateSynthesis: (state) => {
+  updateSynthesis: (state, daytypes) => {
     let periods = state.time_table_periods
 
     let isInPeriod = function(d){
@@ -86,6 +86,8 @@ const actions = {
         if(testDate === false){
           if(currentDate >= begin && currentDate <= end) {
             if(d.excluded_date) {
+              testDate = false
+            } else if(daytypes[d.wday] === false) {
               testDate = false
             } else {
               testDate = true
