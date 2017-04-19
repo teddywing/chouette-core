@@ -124,22 +124,6 @@ describe User, :type => :model do
     end
   end
 
-  describe 'validations' do
-    it 'validates uniqueness of pemissions' do
-      user = build :user, permissions: Array.new(2, 'calendars.shared')
-      expect {
-        user.save!
-      }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    it 'validates no pemission is an empty string' do
-      user = build :user, permissions: ['']
-      expect {
-        user.save!
-      }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-  end
-
   describe "#destroy" do
     let!(:organisation){create(:organisation)}
     let!(:user){create(:user, :organisation => organisation)}
