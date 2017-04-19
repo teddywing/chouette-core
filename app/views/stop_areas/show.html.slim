@@ -22,7 +22,7 @@
         = definition_list t('metadatas'),
           { @stop_area.human_attribute_name(:stop_area_type) => t("area_types.label.#{@stop_area.stop_area_type}"),
             @stop_area.human_attribute_name(:registration_number) => @stop_area.registration_number,
-            'Code Reflex' => @stop_area.try(:objectid),
+            'Code Reflex' => @stop_area.user_objectid,
             'Coordonnées' => geo_data(@stop_area, @stop_area_referential),
             @stop_area.human_attribute_name(:zip_code) => @stop_area.zip_code,
             @stop_area.human_attribute_name(:city_name) => @stop_area.city_name,
