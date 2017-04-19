@@ -59,17 +59,38 @@
           background-color: transparent
 
           &.included
-            background-color: $gold
+            background-color: rgba($gold, 0.7)
 
     > .td-group
       width: 34px
-      border-right: 1px solid rgba($grey, 0.5)
+      > .td
+        border-right: 1px solid rgba($grey, 0.5)
 
       &.last_wday
-        &:not(:last-child)
+        &:not(:last-child) > .td
           border-right: 2px solid $darkgrey
 
       &.out_from_daytypes
-        > .td
-          background-image: linear-gradient(45deg, rgba($grey, 0.15) 0%, rgba($grey, 0.15) 49%, rgba($grey, 0.5) 50%, rgba($grey, 0.15) 51%, rgba($grey, 0.15) 99%, rgba($grey, 0.15) 100%)
-          background-size: 25px 25px
+        background-image: linear-gradient(45deg, rgba($grey, 0.15) 0%, rgba($grey, 0.15) 49%, rgba($grey, 0.5) 50%, rgba($grey, 0.15) 51%, rgba($grey, 0.15) 99%, rgba($grey, 0.15) 100%)
+        background-size: 25px 25px
+
+      > .td
+        &.in_periods
+          background-color: rgba($gold, 0.7)
+          border-left-color: rgba($gold, 0.7)
+          border-right-color: rgba($gold, 0.7)
+
+          &.start_period
+            border-left-color: rgba($grey, 0.5)
+          &.end_period
+            border-right-color: rgba($grey, 0.5)
+
+  .period_manager
+    display: block
+    height: auto
+    word-wrap: normal
+    white-space: nowrap
+    position: absolute
+    left: 8px
+    top: 6px
+    z-index: 5

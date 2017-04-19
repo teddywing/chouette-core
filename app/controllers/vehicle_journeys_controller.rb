@@ -1,6 +1,5 @@
 class VehicleJourneysController < ChouetteController
   defaults :resource_class => Chouette::VehicleJourney
-  before_action :check_policy, only: [:edit, :update, :destroy]
   before_action :user_permissions, only: :index
 
   respond_to :json, :only => :index
@@ -130,17 +129,12 @@ class VehicleJourneysController < ChouetteController
     @matrix = resource_class.matrix(@vehicle_journeys)
   end
 
-  def check_policy
-    authorize resource
-  end
-
   def user_permissions
     @perms = {}.tap do |perm|
       ['vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy'].each do |name|
-        perm[name] = current_user.permissions.include?(name)
+        perm[name] = policy(:vehicle_journey).send("#{name.split('.').last}?")
       end
-    end
-    @perms = @perms.to_json
+    end.to_json
   end
 
   private

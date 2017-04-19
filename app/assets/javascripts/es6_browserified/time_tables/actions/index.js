@@ -68,6 +68,18 @@ const actions = {
     var date = new Date(strDate)
     return monthList[date.getMonth()]
   },
+  getHumanDate(strDate, mLimit) {
+    let origin = strDate.split('-')
+    let D = origin[2]
+    let M = actions.monthName(strDate).toLowerCase()
+    let Y = origin[0]
+
+    if(mLimit) {
+      M = M.substr(0, mLimit) + '.'
+    }
+
+    return (D + ' ' + M + ' ' + Y)
+  },
 
   updateSynthesis: (state, daytypes) => {
     let periods = state.time_table_periods

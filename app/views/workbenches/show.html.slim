@@ -8,7 +8,7 @@
   .row.mb-sm
     .col-lg-12.text-right
       - if policy(Referential).create?
-      = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
+        = link_to t('referentials.actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
 
 / PageContent
 .page_content

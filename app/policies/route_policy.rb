@@ -10,11 +10,11 @@ class RoutePolicy < ApplicationPolicy
   end
 
   def edit?
-    organisation_match?(via_referential: true) && user.has_permission?('routes.edit')
+    organisation_match? && user.has_permission?('routes.edit')
   end
 
   def destroy?
-    organisation_match?(via_referential: true) && user.has_permission?('routes.destroy')
+    organisation_match? && user.has_permission?('routes.destroy')
   end
 
   def update?  ; edit? end

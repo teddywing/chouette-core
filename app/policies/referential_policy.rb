@@ -10,21 +10,24 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.has_permission?('referentials.edit')
+    organisation_match? && user.has_permission?('referentials.edit')
   end
 
   def destroy?
-    user.has_permission?('referentials.destroy')
+    organisation_match? && user.has_permission?('referentials.destroy')
   end
 
   def archive?
     edit?
   end
 
+  def clone?
+    organisation_match? && create?
+  end
+
   def unarchive? ; archive? end
   def update? ; edit? end
   def new? ; create? end
-  def clone? ; create? end
 end
 
 

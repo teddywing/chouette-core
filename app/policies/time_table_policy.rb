@@ -10,11 +10,11 @@ class TimeTablePolicy < ApplicationPolicy
   end
 
   def edit?
-    organisation_match?(via_referential: true) && user.has_permission?('time_tables.edit')
+    organisation_match? && user.has_permission?('time_tables.edit')
   end
 
   def destroy?
-    organisation_match?(via_referential: true) && user.has_permission?('time_tables.destroy')
+    organisation_match? && user.has_permission?('time_tables.destroy')
   end
 
   def update?  ; edit? end
