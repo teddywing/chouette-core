@@ -120,7 +120,7 @@ RSpec.describe ReferentialMetadata, :type => :model do
 
   describe "#periodes" do
 
-    let(:referential_metadata) { create(:referential_metadata) }
+    let(:referential_metadata) { create(:referential_metadata).reload }
 
     it "should not exclude end" do
       expect(referential_metadata.periodes).to_not be_empty
