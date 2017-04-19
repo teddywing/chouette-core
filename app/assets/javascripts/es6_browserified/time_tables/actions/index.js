@@ -69,31 +69,39 @@ const actions = {
     return monthList[date.getMonth()]
   },
 
-  updateSynthesis: (state) => {
+  updateSynthesis: (state, daytypes) => {
     let periods = state.time_table_periods
 
-    let isInPeriod = function(data){
+    let isInPeriod = function(d){
       let currentMonth = state.current_periode_range.split('-')
-      let currentDate = new Date(currentMonth[0] + '-' + currentMonth[1] + '-' + data.mday)
+      let twodigitsDay = d.mday < 10 ? ('0' + d.mday) : d.mday
+      let currentDate = new Date(currentMonth[0] + '-' + currentMonth[1] + '-' + twodigitsDay)
 
-      // Exception wins anyway
-      if(data.excluded_date) {
-        return false
-      } else if(data.include_date) {
-        return true
-      } else {
-        // We compare periods & currentdate, to determine if it is included or not
-        let testDate = false
-        periods.map((p, i) => {
-          let begin = new Date(p.period_start)
-          let end = new Date(p.period_end)
+      // We compare periods & currentDate, to determine if it is included or not
+      let testDate = false
+      periods.map((p, i) => {
+        let begin = new Date(p.period_start)
+        let end = new Date(p.period_end)
 
+        if(testDate === false){
           if(currentDate >= begin && currentDate <= end) {
-            testDate = true
+            if(d.excluded_date) {
+              testDate = false
+            } else if(daytypes[d.wday] === false) {
+              testDate = false
+            } else {
+              testDate = true
+            }
+          } else {
+            if(d.include_date) {
+              testDate = true
+            } else {
+              testDate = false
+            }
           }
-        })
-        return testDate
-      }
+        }
+      })
+      return testDate
     }
 
     let improvedCM = state.current_month.map((d, i) => {
@@ -114,7 +122,7 @@ const actions = {
   },
   fetchTimeTables: (dispatch, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/')
-    console.log(nextPage)
+    // console.log(nextPage)
     if(nextPage) {
       urlJSON += "/month.json?date=" + nextPage
     }else{

@@ -13,4 +13,12 @@ class Chouette::RoutingConstraintZone < Chouette::TridentActiveRecord
   def not_all_stop_points_selected
     errors.add(:stop_point_ids, I18n.t('activerecord.errors.models.routing_constraint_zone.attributes.stop_points.all_stop_points_selected')) if stop_points.length == route.stop_points.length
   end
+
+  def stop_points_count
+    stop_points.count
+  end
+
+  def route_name
+    route.name
+  end
 end
