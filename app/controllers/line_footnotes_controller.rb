@@ -1,7 +1,6 @@
 class LineFootnotesController < BreadcrumbController
   defaults :resource_class => Chouette::Line
   include PolicyChecker
-  before_action :check_policy, only: [:edit, :update, :destroy]
   respond_to :json, :only => :show
   belongs_to :referential
 
@@ -27,7 +26,6 @@ class LineFootnotesController < BreadcrumbController
   end
 
   protected
-
   # overrides default
   def check_policy
     authorize resource, "#{action_name}_footnote?".to_sym
