@@ -16,8 +16,7 @@ RSpec.describe StoredProcedures do
   context "meta specs describe source schema's introspection" do
     it "table information is correctly read" do
       expect(get_table_information(source_schema, child_table))
-        .to eq([{"table_catalog"=>"chouette_test",
-                 "table_schema"=>"source_schema",
+        .to eq([{"table_schema"=>"source_schema",
                  "table_name"=>"children",
                  "table_type"=>"BASE TABLE",
                  "self_referencing_column_name"=>nil,
@@ -83,8 +82,7 @@ RSpec.describe StoredProcedures do
 
     it "table information is correctly read" do
       expect(get_table_information(source_schema, child_table))
-        .to eq([{"table_catalog"=>"chouette_test",
-                 "table_schema"=>"source_schema",
+        .to eq([{"table_schema"=>"source_schema",
                  "table_name"=>"children",
                  "table_type"=>"BASE TABLE",
                  "self_referencing_column_name"=>nil,
@@ -97,8 +95,7 @@ RSpec.describe StoredProcedures do
                  "commit_action"=>nil}])
 
       expect( get_table_information(target_schema, child_table))
-        .to eq([{"table_catalog"=>"chouette_test",
-                 "table_schema"=>"target_schema",
+        .to eq([{"table_schema"=>"target_schema",
                  "table_name"=>"children",
                  "table_type"=>"BASE TABLE",
                  "self_referencing_column_name"=>nil,

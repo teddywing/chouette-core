@@ -31,6 +31,7 @@ module Support
     def get_table_information(schema_name, table_name)
       execute("SELECT * FROM information_schema.tables WHERE table_name = '#{table_name}' AND table_schema = '#{schema_name}'")
         .to_a
+        .map(&without_keys("table_catalog"))
     end
 
 
@@ -68,6 +69,14 @@ module Support
 
     def queries
        @__queries__ ||= {}
+    end
+
+    def without_keys(*keys)
+      -> hashy do
+        hashy.inject({}) do |h, (k,v)|
+          keys.include?(k) ? h : h.merge(k => v)
+        end
+      end
     end
   end
 end
