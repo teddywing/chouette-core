@@ -21,7 +21,6 @@ class User < ActiveRecord::Base
   validates :organisation, :presence => true
   validates :email, :presence => true, :uniqueness => true
   validates :name, :presence => true
-  validate :permissions_unique_and_nonempty
 
   before_validation(:on => :create) do
     self.password ||= Devise.friendly_token.first(6)
@@ -86,10 +85,4 @@ class User < ActiveRecord::Base
     end
   end
 
-  def permissions_unique_and_nonempty
-    if permissions && permissions.any?
-      errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_unique')) if permissions.uniq.length != permissions.length
-      errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_nonempty')) if permissions.include? ''
-    end
-  end
 end
