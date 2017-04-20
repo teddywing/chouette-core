@@ -17,7 +17,7 @@ class TimeTableDay extends Component {
           {((this.props.value.day).charAt(0) == 'm') ? (this.props.value.day).substr(0, 2) : (this.props.value.day).charAt(0)}
         </span>
         <span
-          className={'daynumber' + (this.props.value.in_periods ? ' included' : '')}
+          className={'daynumber' + ((this.props.value.in_periods && this.props.dayTypeActive) ? ' included' : '')}
         >
           {this.props.value.mday}
         </span>
@@ -28,7 +28,8 @@ class TimeTableDay extends Component {
 
 TimeTableDay.propTypes = {
   value: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
+  dayTypeActive: PropTypes.bool.isRequired
 }
 
 module.exports = TimeTableDay

@@ -46,6 +46,7 @@ class Timetable extends Component{
                           key={i}
                           index={i}
                           value={d}
+                          dayTypeActive={this.props.metas.day_types[d.wday]}
                           />
                       )}
                     </div>
