@@ -16,7 +16,8 @@ end
 ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.class_eval do
   def initialize_type_map_with_daterange mapping
     initialize_type_map_without_daterange mapping
-    mapping.register_type 3912, ActiveRecord::ConnectionAdapters::PostgreSQL::OID::DateRange.new(mapping.lookup('date'), :daterange)
+    # mapping.register_type 3912, ActiveRecord::ConnectionAdapters::PostgreSQL::OID::DateRange.new(mapping.lookup('date'), :daterange)
+    mapping.register_type 'daterange', ActiveRecord::ConnectionAdapters::PostgreSQL::OID::DateRange.new(mapping.lookup('date'), :daterange)
   end
 
   alias_method_chain :initialize_type_map, :daterange
