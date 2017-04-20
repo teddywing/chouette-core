@@ -149,6 +149,8 @@
 
       &:hover, &:focus, &:active, &.active
         background-color: rgba(#fff, 1)
+        border-color: $blue
+        outline: none
         box-shadow: none
         transition: 0.2s
 
@@ -185,3 +187,9 @@
 
           .fa:first-child
             margin-right: 0.5em
+
+  .td-group.last_wday ~ .td-group.last_wday ~ .td-group.last_wday ~ .td-group.last_wday
+    > .td, ~ .td-group > .td
+      > .period_manager .dropdown-menu
+        left: auto
+        right: 0
