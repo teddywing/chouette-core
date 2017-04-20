@@ -36,7 +36,7 @@ class PeriodManager extends Component {
               <button
                 type='button'
               >
-                Action
+                Modifier
               </button>
             </li>
             <li className='delete-action'>
@@ -44,7 +44,7 @@ class PeriodManager extends Component {
                 type='button'
               >
                 <span className='fa fa-trash'></span>
-                Action
+                Supprimer
               </button>
             </li>
           </ul>

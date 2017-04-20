@@ -108,6 +108,9 @@
       border-radius: 0
       padding: 8px 15px 7px 15px
 
+      &:active, &.active
+        box-shadow: none
+
       > .caret
         margin-left: 10px
         color: $blue
@@ -144,8 +147,9 @@
       border-radius: 0
       transition: 0.2s
 
-      &:hover, &:focus
+      &:hover, &:focus, &:active, &.active
         background-color: rgba(#fff, 1)
+        box-shadow: none
         transition: 0.2s
 
     .open > .btn.dropdown-toggle
