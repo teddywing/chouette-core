@@ -41,7 +41,7 @@ class PeriodsInDay extends Component {
           let d = this.props.currentDate.getTime()
 
           if(d >= begin && d <= end) {
-            if(d == begin) {
+            if(d == begin || (this.props.currentDate.getUTCDate() == 1)) {
               return (
                 <PeriodManager
                   key={i}

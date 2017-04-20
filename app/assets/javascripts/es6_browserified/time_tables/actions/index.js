@@ -74,7 +74,7 @@ const actions = {
     let M = actions.monthName(strDate).toLowerCase()
     let Y = origin[0]
 
-    if(mLimit) {
+    if(mLimit && M.length > mLimit) {
       M = M.substr(0, mLimit) + '.'
     }
 
