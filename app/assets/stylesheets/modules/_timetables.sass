@@ -15,10 +15,10 @@
         transform: translateY(-1.4em)
 
   .t2e-head > .td, .t2e-item > .td-group > .td
-    height: 51px
+    height: 65px
 
   .t2e-head > .td
-    line-height: 38px
+    line-height: 50px
 
     > span
       display: inline-block
@@ -74,7 +74,7 @@
           background-color: transparent
 
           &.included
-            background-color: rgba($gold, 0.7)
+            background-color: rgba($gold, 0.5)
 
     > .td-group
       width: 34px
@@ -91,25 +91,14 @@
 
       > .td
         &.in_periods
-          background-color: rgba($gold, 0.7)
-          border-left-color: rgba($gold, 0.7)
-          border-right-color: rgba($gold, 0.7)
+          background-color: rgba($gold, 0.5)
+          border-left-color: rgba($gold, 0.5)
+          border-right-color: rgba($gold, 0.5)
 
           &.start_period
             border-left-color: rgba($grey, 0.5)
           &.end_period
             border-right-color: rgba($grey, 0.5)
-
-  .period_manager
-    display: block
-    height: auto
-    word-wrap: normal
-    white-space: nowrap
-    position: absolute
-    left: 8px
-    top: 50%
-    transform: translateY(-50%)
-    z-index: 5
 
   .form-group > .month_selector
     > .btn.btn-default
@@ -128,3 +117,66 @@
       border-radius: 0 0 4px 4px
       max-height: 230px
       overflow: auto
+
+  .period_manager
+    display: block
+    height: auto
+    word-wrap: normal
+    white-space: nowrap
+    position: absolute
+    left: 8px
+    top: 50%
+    transform: translateY(-50%)
+    z-index: 5
+
+    > *
+      display: inline-block
+      vertical-align: middle
+      margin: 0
+
+      &.dropdown
+        margin-left: 5px
+
+    .btn.dropdown-toggle
+      color: $blue
+      background-color: rgba(#fff, 0)
+      padding: 1px 5px
+      border-radius: 0
+      transition: 0.2s
+
+      &:hover, &:focus
+        background-color: rgba(#fff, 1)
+        transition: 0.2s
+
+    .open > .btn.dropdown-toggle
+      background-color: rgba(#fff, 1)
+      border-color: $blue
+      box-shadow: none
+      transition: 0.2s
+
+    .dropdown-menu
+      margin: 0
+      border-radius: 0
+      box-shadow: 0 0 3px rgba($darkgrey, 0.25)
+
+      > li > a, > li > button
+        padding: 5px 15px
+
+      > li.delete-action
+        > a, > button
+          display: block
+          position: relative
+          margin-top: 11px
+
+          &:before
+            content: ''
+            display: block
+            position: absolute
+            left: 15px
+            right: 15px
+            top: -6px
+            height: 1px
+            background-color: $grey
+
+          .fa:first-child
+            margin-right: 0.5em
