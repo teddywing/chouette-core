@@ -74,9 +74,7 @@ on your [profile page](http://stif-portail-dev.af83.priv/users/edit)
 # Troubleshouting
 
 If PG complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is waht to do:
+      
+      bundle exec rake db:test:purge 
 
-          bundle exec rake db:schema:dump # if not up to date
-        
-          RAILS_ENV=test bundle exec rake db:drop
-          RAILS_ENV=test bundle exec rake db:create
-          RAILS_ENV=test bundle exec rake db:schema:load
+Thanks to `lib/tasks/extensions.rake`.
