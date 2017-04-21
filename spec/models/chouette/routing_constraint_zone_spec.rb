@@ -13,7 +13,7 @@ describe Chouette::RoutingConstraintZone, type: :model do
     it 'validates the presence of route_id' do
       expect {
         routing_constraint_zone.update!(route_id: nil)
-      }.to raise_error
+      }.to raise_error(NoMethodError)
     end
 
     it 'validates the presence of stop_point_ids' do
