@@ -51,6 +51,7 @@ class PeriodsInDay extends Component {
                     index={i}
                     value={p}
                     onDeletePeriod={this.props.onDeletePeriod}
+                    onOpenEditPeriodForm={this.props.onOpenEditPeriodForm}
                     metas={this.props.metas}
                   />
                 )

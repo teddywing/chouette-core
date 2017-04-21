@@ -35,6 +35,7 @@ class PeriodManager extends Component {
             <li>
               <button
                 type='button'
+                onClick={() => this.props.onOpenEditPeriodForm(this.props.value)}
               >
                 Modifier
               </button>
@@ -57,7 +58,8 @@ class PeriodManager extends Component {
 
 PeriodManager.propTypes = {
   value: PropTypes.object.isRequired,
-  onDeletePeriod: PropTypes.func.isRequired
+  onDeletePeriod: PropTypes.func.isRequired,
+  onOpenEditPeriodForm: PropTypes.func.isRequired
 }
 
 module.exports = PeriodManager
