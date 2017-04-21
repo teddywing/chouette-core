@@ -73,6 +73,7 @@ class Timetable extends Component{
                       <ExceptionsInDay
                         index={i}
                         value={this.props.timetable}
+                        outFromDaytypes={this.props.metas.day_types[d.wday]}
                       />
                     </div>
                   )}
