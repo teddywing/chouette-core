@@ -68,6 +68,12 @@ const actions = {
     index,
     dayTypes
   }),
+  openAddPeriodForm: () => ({
+    type: 'OPEN_ADD_PERIOD_FORM'
+  }),
+  closePeriodForm: () => ({
+    type: 'CLOSE_PERIOD_FORM'
+  }),
   monthName(strDate) {
     let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
     var date = new Date(strDate)
