@@ -17,9 +17,9 @@ class ExceptionsInDay extends Component {
             <button
               type='button'
               className='btn btn-circle'
-              data-actiontype='add'
+              data-actiontype='remove'
             >
-              <span className='fa fa-plus'></span>
+              <span className='fa fa-times'></span>
             </button>
           </div>
         )
@@ -29,9 +29,9 @@ class ExceptionsInDay extends Component {
             <button
               type='button'
               className='btn btn-circle'
-              data-actiontype='remove'
+              data-actiontype='add'
             >
-              <span className='fa fa-times'></span>
+              <span className='fa fa-plus'></span>
             </button>
           </div>
         )
