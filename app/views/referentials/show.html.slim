@@ -8,6 +8,8 @@
   / Below is secondary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
+      = link_to t('time_tables.index.title'), referential_time_tables_path(@referential), class: 'btn btn-primary'
+
       - if policy(@referential).clone?
         = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
 
