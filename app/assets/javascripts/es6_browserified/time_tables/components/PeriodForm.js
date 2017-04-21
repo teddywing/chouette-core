@@ -2,10 +2,14 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 let monthsArray = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
 
+const formatNumber = (val) => {
+  return ("0" + val).slice(-2)
+}
+
 const makeDaysOptions = (daySelected) => {
   let arr = []
   for(let i = 1; i < 32; i++) {
-    arr.push(<option key={i}>{i}</option>)
+    arr.push(<option value={formatNumber(i)} key={i}>{formatNumber(i)}</option>)
   }
   return arr
 }
@@ -13,7 +17,7 @@ const makeDaysOptions = (daySelected) => {
 const makeMonthsOptions = (monthSelected) => {
   let arr = []
   for(let i = 1; i < 13; i++) {
-    arr.push(<option key={i}>{monthsArray[i - 1]}</option>)
+    arr.push(<option value={formatNumber(i)} key={i}>{monthsArray[i - 1]}</option>)
   }
   return arr
 }
@@ -33,10 +37,10 @@ const PeriodForm = ({modal, timetable, onOpenAddPeriodForm, onClosePeriodForm, o
       <div className="form-group date filter_menu-item">
         <label className="date required control-label" >Du <abbr title="Champ requis">*</abbr></label>
         <div className="form-inline">
-          <select value={modal.modalProps.begin.day} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'begin', 'day')} id="q_validity_period_begin_gteq_3i" className="date required form-control">
+          <select value={formatNumber(modal.modalProps.begin.day)} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'begin', 'day')} id="q_validity_period_begin_gteq_3i" className="date required form-control">
             {makeDaysOptions(modal.modalProps.begin.day)}
           </select>
-          <select value={modal.modalProps.begin.month} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'begin', 'month')} id="q_validity_period_begin_gteq_2i" className="date required form-control">
+          <select value={formatNumber(modal.modalProps.begin.month)} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'begin', 'month')} id="q_validity_period_begin_gteq_2i" className="date required form-control">
             {makeMonthsOptions(modal.modalProps.begin.month)}
           </select>
           <select value={modal.modalProps.begin.year} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'begin', 'year')} id="q_validity_period_begin_gteq_1i" className="date required form-control">
@@ -45,10 +49,10 @@ const PeriodForm = ({modal, timetable, onOpenAddPeriodForm, onClosePeriodForm, o
         </div>
         <label className="date required control-label" >Au <abbr title="Champ requis">*</abbr></label>
         <div className="form-inline">
-          <select value={modal.modalProps.end.day} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'end', 'day')} id="q_validity_period_end_gteq_3i" className="date required form-control">
+          <select value={formatNumber(modal.modalProps.end.day)} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'end', 'day')} id="q_validity_period_end_gteq_3i" className="date required form-control">
             {makeDaysOptions(modal.modalProps.end.day)}
           </select>
-          <select value={modal.modalProps.end.month} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'end', 'month')} id="q_validity_period_end_gteq_2i" className="date required form-control">
+          <select value={formatNumber(modal.modalProps.end.month)} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'end', 'month')} id="q_validity_period_end_gteq_2i" className="date required form-control">
             {makeMonthsOptions(modal.modalProps.end.month)}
           </select>
           <select value={modal.modalProps.end.year} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'end', 'year')} id="q_validity_period_end_gteq_1i" className="date required form-control">

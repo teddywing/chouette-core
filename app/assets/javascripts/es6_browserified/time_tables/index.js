@@ -40,13 +40,13 @@ var initialState = {
     modalProps: {
       active: false,
       begin: {
-        day: '1',
-        month: '1',
+        day: '01',
+        month: '01',
         year: String(new Date().getFullYear())
       },
       end: {
-        day: '1',
-        month: '1',
+        day: '01',
+        month: '01',
         year: String(new Date().getFullYear())
       }
     },

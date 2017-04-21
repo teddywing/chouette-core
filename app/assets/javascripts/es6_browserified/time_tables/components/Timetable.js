@@ -66,6 +66,7 @@ class Timetable extends Component{
                         value={this.props.timetable.time_table_periods}
                         currentDate={this.currentDate(this.props.timetable.current_periode_range, d.mday)}
                         onDeletePeriod={this.props.onDeletePeriod}
+                        onOpenEditPeriodForm={this.props.onOpenEditPeriodForm}
                         metas={this.props.metas}
                       />
 
