@@ -73,7 +73,10 @@ class Timetable extends Component{
                       <ExceptionsInDay
                         index={i}
                         value={this.props.timetable}
+                        metas={this.props.metas}
                         outFromDaytypes={this.props.metas.day_types[d.wday]}
+                        onExcludeDateFromPeriod={this.props.onExcludeDateFromPeriod}
+                        onIncludeDateInPeriod={this.props.onIncludeDateInPeriod}
                       />
                     </div>
                   )}
@@ -91,7 +94,9 @@ Timetable.propTypes = {
   metas: PropTypes.object.isRequired,
   timetable: PropTypes.object.isRequired,
   status: PropTypes.object.isRequired,
-  onDeletePeriod: PropTypes.func.isRequired
+  onDeletePeriod: PropTypes.func.isRequired,
+  onExcludeDateFromPeriod: PropTypes.func.isRequired,
+  onIncludeDateInPeriod: PropTypes.func.isRequired
 }
 
 module.exports = Timetable
