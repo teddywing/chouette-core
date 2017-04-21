@@ -40,14 +40,14 @@ var initialState = {
     modalProps: {
       active: false,
       begin: {
-        day: '',
-        month: '',
-        year: ''
+        day: '1',
+        month: '1',
+        year: String(new Date().getFullYear())
       },
       end: {
-        day: '',
-        month: '',
-        year: ''
+        day: '1',
+        month: '1',
+        year: String(new Date().getFullYear())
       }
     },
     confirmModal: {}
