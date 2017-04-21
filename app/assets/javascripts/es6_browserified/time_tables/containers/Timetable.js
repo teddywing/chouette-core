@@ -1,5 +1,6 @@
 var connect = require('react-redux').connect
 var TimetableComponent = require('../components/Timetable')
+var actions = require('../actions')
 
 const mapStateToProps = (state) => {
   return {
@@ -11,6 +12,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onDeletePeriod: (index, dayTypes) =>{
+      dispatch(actions.deletePeriod(index, dayTypes))
+    }
   }
 }
 

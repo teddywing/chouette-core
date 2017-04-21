@@ -1,5 +1,6 @@
 const _ = require('lodash')
 var actions = require('../actions')
+let newState = {}
 
 const timetable = (state = {}, action) => {
   switch (action.type) {
@@ -12,7 +13,7 @@ const timetable = (state = {}, action) => {
       })
       return _.assign({}, fetchedState, {current_month: actions.updateSynthesis(fetchedState, actions.strToArrayDayTypes(action.json.day_types))})
     case 'RECEIVE_MONTH':
-      let newState = _.assign({}, state, {
+      newState = _.assign({}, state, {
         current_month: action.json.days
       })
       return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, actions.strToArrayDayTypes(action.json.day_types))})
@@ -27,6 +28,15 @@ const timetable = (state = {}, action) => {
       $('#ConfirmModal').modal('hide')
       actions.fetchTimeTables(action.dispatch, action.page)
       return _.assign({}, state, {current_periode_range: action.page})
+    case 'DELETE_PERIOD':
+      let ttperiods = state.time_table_periods.map((period, i) =>{
+        if(i == action.index){
+          period.deleted = true
+        }
+        return period
+      })
+      newState = _.assign({}, state, {time_table_periods : ttperiods})
+      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
     default:
       return state
   }
