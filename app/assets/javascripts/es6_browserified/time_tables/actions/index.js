@@ -80,6 +80,19 @@ const actions = {
     group,
     selectType
   }),
+  includeDateInPeriod: (index, day, dayTypes) => ({
+    type: 'INCLUDE_DATE_IN_PERIOD',
+    index,
+    day,
+    dayTypes
+  }),
+  excludeDateFromPeriod: (index, day, dayTypes) => ({
+    type: 'EXCLUDE_DATE_FROM_PERIOD',
+    index,
+    day,
+    dayTypes
+  }),
+
   monthName(strDate) {
     let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
     var date = new Date(strDate)
@@ -117,18 +130,10 @@ const actions = {
 
         if(testDate === false){
           if(currentDate >= begin && currentDate <= end) {
-            if(d.excluded_date) {
-              testDate = false
-            } else if(daytypes[d.wday] === false) {
+            if(daytypes[d.wday] === false) {
               testDate = false
             } else {
               testDate = true
-            }
-          } else {
-            if(d.include_date) {
-              testDate = true
-            } else {
-              testDate = false
             }
           }
         }
@@ -144,7 +149,7 @@ const actions = {
     return improvedCM
   },
 
-  checkConfirmModal : (event, callback, stateChanged,dispatch) => {
+  checkConfirmModal: (event, callback, stateChanged,dispatch) => {
     if(stateChanged === true){
       return actions.openConfirmModal(callback)
     }else{

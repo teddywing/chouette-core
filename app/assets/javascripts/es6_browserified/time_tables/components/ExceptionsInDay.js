@@ -1,6 +1,7 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
+var actions = require('../actions')
 
 class ExceptionsInDay extends Component {
   constructor(props) {
@@ -18,6 +19,10 @@ class ExceptionsInDay extends Component {
               type='button'
               className='btn btn-circle'
               data-actiontype='remove'
+              onClick={(e) => {
+                $(e.currentTarget).toggleClass('active')
+                this.props.onExcludeDateFromPeriod(this.props.index, this.props.value.current_month[this.props.index], this.props.metas.day_types)
+              }}
             >
               <span className='fa fa-times'></span>
             </button>
@@ -30,6 +35,10 @@ class ExceptionsInDay extends Component {
               type='button'
               className='btn btn-circle'
               data-actiontype='add'
+              onClick={(e) => {
+                $(e.currentTarget).toggleClass('active')
+                this.props.onIncludeDateInPeriod(this.props.index, this.props.value.current_month[this.props.index], this.props.metas.day_types)
+              }}
             >
               <span className='fa fa-plus'></span>
             </button>
@@ -46,7 +55,10 @@ class ExceptionsInDay extends Component {
 
 ExceptionsInDay.propTypes = {
   value: PropTypes.object.isRequired,
+  metas: PropTypes.object.isRequired,
   outFromDaytypes: PropTypes.bool.isRequired,
+  onExcludeDateFromPeriod: PropTypes.func.isRequired,
+  onIncludeDateInPeriod: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired
 }
 

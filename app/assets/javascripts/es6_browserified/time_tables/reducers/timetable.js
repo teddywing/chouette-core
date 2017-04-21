@@ -37,6 +37,24 @@ const timetable = (state = {}, action) => {
       })
       newState = _.assign({}, state, {time_table_periods : ttperiods})
       return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+    case 'INCLUDE_DATE_IN_PERIOD':
+      let newCMi = state.current_month.map((d, i) => {
+        if(i == action.index){
+          d.include_date = !d.include_date
+        }
+        return d
+      })
+      newState = _.assign({}, state, {current_month: newCMi})
+      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+    case 'EXCLUDE_DATE_FROM_PERIOD':
+      let newCMe = state.current_month.map((d, i) => {
+        if(i == action.index){
+          d.excluded_date = !d.excluded_date
+        }
+        return d
+      })
+      newState = _.assign({}, state, {current_month: newCMe})
+      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
     default:
       return state
   }
