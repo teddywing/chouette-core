@@ -1,9 +1,9 @@
 = semantic_form_for [@referential, @connection_link] do |form|
   = form.inputs do
     = form.input :name
-    = form.input :connection_link_type, as: :select, :collection => Chouette::ConnectionLink.connection_link_types, :include_blank => true, :member_label => Proc.new { |type| t("connection_link_types.label.#{type}") }
+    = form.input :connection_link_type, as: :select, collection: connection_link_type_label_pairs, include_blank: true
     = form.input :comment
-    = form.input :link_distance, input_html: { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.connection_link.link_distance") }
+    = form.input :link_distance, input_html: { title: t("formtastic.titles#{format_restriction_for_locales(@referential)}.connection_link.link_distance") }
     = form.input :mobility_restricted_suitability, as: :select, :collection => [[t("true"), true], [t("false"), false]], include_blank: true
     = form.input :stairs_availability, as: :select, :collection => [[t("true"), true], [t("false"), false]], include_blank: true
     = form.input :lift_availability, as: :select, :collection => [[t("true"), true], [t("false"), false]], include_blank: true
