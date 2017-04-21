@@ -37,7 +37,19 @@ var initialState = {
   },
   modal: {
     type: '',
-    modalProps: {},
+    modalProps: {
+      active: false,
+      begin: {
+        day: '',
+        month: '',
+        year: ''
+      },
+      end: {
+        day: '',
+        month: '',
+        year: ''
+      }
+    },
     confirmModal: {}
   }
 }
