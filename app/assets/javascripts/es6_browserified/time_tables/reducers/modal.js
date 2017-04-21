@@ -14,6 +14,10 @@ const modal = (state = {}, action) => {
     case 'OPEN_ADD_PERIOD_FORM':
       newModalProps = _.assign({}, state.modalProps, {active: true})
       return _.assign({}, state, {modalProps: newModalProps})
+    case 'UPDATE_PERIOD_FORM':
+      newModalProps = JSON.parse(JSON.stringify(state.modalProps))
+      newModalProps[action.group][action.selectType] = action.val
+      return _.assign({}, state, {modalProps: newModalProps})
     default:
       return state
   }

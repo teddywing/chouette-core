@@ -16,6 +16,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onClosePeriodForm: () => {
       dispatch(actions.closePeriodForm())
+    },
+    onUpdatePeriodForm: (val, group, selectType) => {
+      dispatch(actions.updatePeriodForm(val, group, selectType))
     }
   }
 }

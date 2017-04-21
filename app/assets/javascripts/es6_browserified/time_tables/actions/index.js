@@ -74,6 +74,12 @@ const actions = {
   closePeriodForm: () => ({
     type: 'CLOSE_PERIOD_FORM'
   }),
+  updatePeriodForm: (val, group, selectType) => ({
+    type: 'UPDATE_PERIOD_FORM',
+    val,
+    group,
+    selectType
+  }),
   monthName(strDate) {
     let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
     var date = new Date(strDate)
