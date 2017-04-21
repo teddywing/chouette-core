@@ -14,14 +14,50 @@ class PeriodManager extends Component {
         className='period_manager'
         id={this.props.value.id}
       >
-        <strong>{(this.props.value.period_start.split('-')[2]) + ' > ' + actions.getHumanDate(this.props.value.period_end, 3)}</strong>
+        <p className='strong'>
+          {actions.getHumanDate(this.props.value.period_start, 3).substr(0, 7) + ' > ' + actions.getHumanDate(this.props.value.period_end, 3)}
+        </p>
+
+        <div className='dropdown'>
+          <div
+            className='btn dropdown-toggle'
+            id='period_actions'
+            data-toggle='dropdown'
+            aria-haspopup='true'
+            aria-expanded='true'
+          >
+            <span className='fa fa-cog'></span>
+          </div>
+          <ul
+            className='dropdown-menu'
+            aria-labelledby='date_selector'
+          >
+            <li>
+              <button
+                type='button'
+              >
+                Modifier
+              </button>
+            </li>
+            <li className='delete-action'>
+              <button
+                type='button'
+                onClick={() => this.props.onDeletePeriod(this.props.index, this.props.metas.day_types)}
+              >
+                <span className='fa fa-trash'></span>
+                Supprimer
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     )
   }
 }
 
 PeriodManager.propTypes = {
-  value: PropTypes.object.isRequired
+  value: PropTypes.object.isRequired,
+  onDeletePeriod: PropTypes.func.isRequired
 }
 
 module.exports = PeriodManager

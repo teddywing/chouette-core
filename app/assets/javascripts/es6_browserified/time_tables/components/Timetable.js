@@ -19,26 +19,6 @@ class Timetable extends Component{
     return currentDate
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(this.props.status.isFetching == false){
-      $('.table-2entries').each(function() {
-        var refH = []
-        var refCol = []
-
-        $(this).find('.t2e-head').children('.td').each(function() {
-          var h = $(this).outerHeight();
-          refH.push(h)
-        });
-
-        $(this).find('.t2e-item').children('.td-group').each(function() {
-          for(var nth = 0; nth < refH.length; nth++) {
-            $(this).find('.td:nth-child('+ (nth + 1) +')').css('height', refH[nth]);
-          }
-        });
-      });
-    }
-  }
-
   render() {
     return (
       <div className='row'>
@@ -48,9 +28,9 @@ class Timetable extends Component{
               <div className="th">
                 <div className="strong">Synthèse</div>
               </div>
-              <div className="td">Journées d'application</div>
-              <div className="td">Périodes</div>
-              <div className="td">Exceptions</div>
+              <div className="td"><span>Journées d'application</span></div>
+              <div className="td"><span>Périodes</span></div>
+              <div className="td"><span>Exceptions</span></div>
             </div>
             <div className="t2e-item-list w80">
               <div>
@@ -66,6 +46,7 @@ class Timetable extends Component{
                           key={i}
                           index={i}
                           value={d}
+                          dayTypeActive={this.props.metas.day_types[d.wday]}
                           />
                       )}
                     </div>
@@ -84,6 +65,8 @@ class Timetable extends Component{
                         index={i}
                         value={this.props.timetable.time_table_periods}
                         currentDate={this.currentDate(this.props.timetable.current_periode_range, d.mday)}
+                        onDeletePeriod={this.props.onDeletePeriod}
+                        metas={this.props.metas}
                       />
 
                       {/* exceptions */}
@@ -106,7 +89,8 @@ class Timetable extends Component{
 Timetable.propTypes = {
   metas: PropTypes.object.isRequired,
   timetable: PropTypes.object.isRequired,
-  status: PropTypes.object.isRequired
+  status: PropTypes.object.isRequired,
+  onDeletePeriod: PropTypes.func.isRequired
 }
 
 module.exports = Timetable

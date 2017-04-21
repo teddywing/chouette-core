@@ -14,16 +14,18 @@ class PeriodsInDay extends Component {
     let periods = this.props.value
 
     periods.map((p, i) => {
-      let begin = new Date(p.period_start).getTime()
-      let end = new Date(p.period_end).getTime()
+      if (!p.deleted){
+        let begin = new Date(p.period_start).getTime()
+        let end = new Date(p.period_end).getTime()
 
-      if(currentDate >= begin && currentDate <= end) {
-        if(currentDate == begin) {
-          cls += ' in_periods start_period'
-        } else if(currentDate == end) {
-          cls += ' in_periods end_period'
-        } else {
-          cls += ' in_periods'
+        if(currentDate >= begin && currentDate <= end) {
+          if(currentDate == begin) {
+            cls += ' in_periods start_period'
+          } else if(currentDate == end) {
+            cls += ' in_periods end_period'
+          } else {
+            cls += ' in_periods'
+          }
         }
       }
     })
@@ -36,21 +38,28 @@ class PeriodsInDay extends Component {
         className={this.isIn(this.props.currentDate)}
       >
         {this.props.value.map((p, i) => {
-          let begin = new Date(p.period_start).getTime()
-          let end = new Date(p.period_end).getTime()
-          let d = this.props.currentDate.getTime()
+          if(!p.deleted){
+            let begin = new Date(p.period_start).getTime()
+            let end = new Date(p.period_end).getTime()
+            let d = this.props.currentDate.getTime()
 
-          if(d >= begin && d <= end) {
-            if(d == begin) {
-              return (
-                <PeriodManager
-                  key={i}
-                  value={p}
-                />
-              )
-            } else {
-              return false
+            if(d >= begin && d <= end) {
+              if(d == begin || (this.props.currentDate.getUTCDate() == 1)) {
+                return (
+                  <PeriodManager
+                    key={i}
+                    index={i}
+                    value={p}
+                    onDeletePeriod={this.props.onDeletePeriod}
+                    metas={this.props.metas}
+                  />
+                )
+              } else {
+                return false
+              }
             }
+          }else{
+            return false
           }
         })}
       </div>
@@ -61,7 +70,8 @@ class PeriodsInDay extends Component {
 PeriodsInDay.propTypes = {
   value: PropTypes.array.isRequired,
   currentDate: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired
+  index: PropTypes.number.isRequired,
+  onDeletePeriod: PropTypes.func.isRequired
 }
 
 module.exports = PeriodsInDay
