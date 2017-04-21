@@ -42,6 +42,7 @@ class PeriodManager extends Component {
             <li className='delete-action'>
               <button
                 type='button'
+                onClick={() => this.props.onDeletePeriod(this.props.index, this.props.metas.day_types)}
               >
                 <span className='fa fa-trash'></span>
                 Supprimer
@@ -55,7 +56,8 @@ class PeriodManager extends Component {
 }
 
 PeriodManager.propTypes = {
-  value: PropTypes.object.isRequired
+  value: PropTypes.object.isRequired,
+  onDeletePeriod: PropTypes.func.isRequired
 }
 
 module.exports = PeriodManager

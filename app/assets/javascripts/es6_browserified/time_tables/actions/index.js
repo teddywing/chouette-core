@@ -63,6 +63,11 @@ const actions = {
       name: selectedTag.name
     }
   }),
+  deletePeriod: (index, dayTypes) => ({
+    type: 'DELETE_PERIOD',
+    index,
+    dayTypes
+  }),
   monthName(strDate) {
     let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
     var date = new Date(strDate)
@@ -92,6 +97,9 @@ const actions = {
       // We compare periods & currentDate, to determine if it is included or not
       let testDate = false
       periods.map((p, i) => {
+        if(p.deleted){
+          return false
+        }
         let begin = new Date(p.period_start)
         let end = new Date(p.period_end)
 

@@ -65,6 +65,8 @@ class Timetable extends Component{
                         index={i}
                         value={this.props.timetable.time_table_periods}
                         currentDate={this.currentDate(this.props.timetable.current_periode_range, d.mday)}
+                        onDeletePeriod={this.props.onDeletePeriod}
+                        metas={this.props.metas}
                       />
 
                       {/* exceptions */}
@@ -87,7 +89,8 @@ class Timetable extends Component{
 Timetable.propTypes = {
   metas: PropTypes.object.isRequired,
   timetable: PropTypes.object.isRequired,
-  status: PropTypes.object.isRequired
+  status: PropTypes.object.isRequired,
+  onDeletePeriod: PropTypes.func.isRequired
 }
 
 module.exports = Timetable
