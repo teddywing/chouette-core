@@ -1,6 +1,7 @@
 en:
   time_tables:
     duplicate_success: "duplication succeded"
+    search_no_results: 'No calendar matching your query'
     time_table:
       empty: "empty"
       bounding: "from %{start} to %{end}"

@@ -1,6 +1,7 @@
 fr:
   time_tables:
     duplicate_success: "duplication terminée"
+    search_no_results: 'Aucun calendrier ne correspond à votre recherche'
     time_table:
       empty: "vide"
       bounding: "du %{start} au %{end}"
