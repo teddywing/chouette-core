@@ -50,7 +50,7 @@ var initialState = {
         year: String(new Date().getFullYear())
       },
       index: false,
-      errors: []
+      error: ''
     },
     confirmModal: {}
   }

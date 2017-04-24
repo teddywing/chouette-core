@@ -1,10 +1,13 @@
 var _ = require('lodash')
+var actions = require('../actions')
+
 let newModalProps = {}
 let emptyDate = {
-  begin: '01',
+  day: '01',
   month: '01',
   year: String(new Date().getFullYear())
 }
+let period_start = '', period_end = ''
 
 const modal = (state = {}, action) => {
   switch (action.type) {
@@ -12,8 +15,8 @@ const modal = (state = {}, action) => {
       newModalProps = _.assign({}, state.modalProps, {active: false})
       return _.assign({}, state, {modalProps: newModalProps})
     case 'OPEN_EDIT_PERIOD_FORM':
-      let period_start = action.period.period_start.split('-')
-      let period_end = action.period.period_end.split('-')
+      period_start = action.period.period_start.split('-')
+      period_end = action.period.period_end.split('-')
       newModalProps = JSON.parse(JSON.stringify(state.modalProps))
 
       newModalProps.begin.year = period_start[0]
@@ -26,16 +29,29 @@ const modal = (state = {}, action) => {
 
       newModalProps.active = true
       newModalProps.index = action.index
+      newModalProps.error = ''
       return _.assign({}, state, {modalProps: newModalProps})
     case 'OPEN_ADD_PERIOD_FORM':
-      newModalProps = _.assign({}, state.modalProps, {active: true, begin: emptyDate, end: emptyDate, index: false, errors: []})
+      newModalProps = _.assign({}, state.modalProps, {active: true, begin: emptyDate, end: emptyDate, index: false, error: ''})
       return _.assign({}, state, {modalProps: newModalProps})
     case 'UPDATE_PERIOD_FORM':
       newModalProps = JSON.parse(JSON.stringify(state.modalProps))
       newModalProps[action.group][action.selectType] = action.val
       return _.assign({}, state, {modalProps: newModalProps})
     case 'VALIDATE_PERIOD_FORM':
-      newModalProps = _.assign({}, state.modalProps, {active: false})
+      period_start = actions.formatDate(action.modalProps.begin)
+      period_end = actions.formatDate(action.modalProps.end)
+      newModalProps = _.assign({}, state.modalProps)
+
+      if(new Date(period_end) <= new Date(period_start)){
+        newModalProps.error = 'La date de départ doit être antérieure à la date de fin'
+        return _.assign({}, state, {modalProps: newModalProps})
+      }
+
+      let newPeriods = JSON.parse(JSON.stringify(action.timeTablePeriods))
+      let error = actions.checkErrorsInPeriods(period_start, period_end, action.modalProps.index, newPeriods)
+      newModalProps.error = error
+      newModalProps.active = (error == '') ? false : true
       return _.assign({}, state, {modalProps: newModalProps})
     default:
       return state

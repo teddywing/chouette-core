@@ -31,7 +31,7 @@ const makeYearsOptions = (yearSelected) => {
   return arr
 }
 
-const PeriodForm = ({modal, timetable, onOpenAddPeriodForm, onClosePeriodForm, onUpdatePeriodForm, onValidatePeriodForm}) => (
+const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriodForm, onUpdatePeriodForm, onValidatePeriodForm}) => (
   <div>
     {modal.modalProps.active &&
       <div className="form-group date filter_menu-item">
@@ -66,10 +66,11 @@ const PeriodForm = ({modal, timetable, onOpenAddPeriodForm, onClosePeriodForm, o
           Annuler
           </button>
           <button
-            onClick={() => onValidatePeriodForm(modal.modalProps)}
+            onClick={() => onValidatePeriodForm(modal.modalProps, timetable.time_table_periods, metas)}
           >
           Valider
           </button>
+          <span>{modal.modalProps.error}</span>
         </div>
       </div>
     }
@@ -85,6 +86,7 @@ const PeriodForm = ({modal, timetable, onOpenAddPeriodForm, onClosePeriodForm, o
 
 PeriodForm.propTypes = {
   modal: PropTypes.object.isRequired,
+  metas: PropTypes.object.isRequired,
   onOpenAddPeriodForm: PropTypes.func.isRequired,
   onClosePeriodForm: PropTypes.func.isRequired,
   onUpdatePeriodForm: PropTypes.func.isRequired,
