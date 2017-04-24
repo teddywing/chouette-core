@@ -14,11 +14,13 @@ class App extends Component {
 
   render(){
     return(
-      <div>
-        <Metas />
-        <Navigate />
-        <Timetable />
-        <PeriodForm />
+      <div className='row'>
+        <div className="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+          <Metas />
+          <Navigate />
+          <Timetable />
+          <PeriodForm />
+        </div>
       </div>
     )
   }
