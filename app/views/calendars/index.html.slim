@@ -13,9 +13,9 @@
 .page_content
   .container-fluid
     - if params[:q].present? or @calendars.any?
-    .row
-      .col-lg-12
-        = render 'filters'
+      .row
+        .col-lg-12
+          = render 'filters'
           
     - if @calendars.any?
       .row
