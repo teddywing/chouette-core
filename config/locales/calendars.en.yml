@@ -1,5 +1,6 @@
 en:
   calendars:
+    search_no_results: 'No calendar matching your query'
     days:
       monday: M
       tuesday: Tu

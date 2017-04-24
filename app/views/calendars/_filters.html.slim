@@ -1,0 +1,20 @@
+= search_form_for @q, url: calendars_path, builder: SimpleForm::FormBuilder, html: { method: :get, class: 'form form-filter' } do |f|
+  .ffg-row
+    .input-group.search_bar
+      = f.search_field :short_name_cont, class: 'form-control', placeholder: 'Indiquez un nom de calendrier...'
+      span.input-group-btn
+        button.btn.btn-default type='submit'
+          span.fa.fa-search
+
+  .ffg-row
+    .form-group.has_switch style='width: 260px'
+      = f.label Calendar.human_attribute_name(:shared), class: 'col-sm-4 control-label'
+      = f.input :shared, as: :boolean, checked_value: true, unchecked_value: false, label: content_tag(:span, '', class: 'switch-label', data: {checkedValue: t('true'), uncheckedValue: t('false')}), wrapper_html: { class: 'col-sm-8' }
+
+    .form-group
+      = f.label Calendar.human_attribute_name(:date), class: 'control-label'
+      = f.input :contains_date, as: :date, label: false, wrapper_html: { class: 'date' }, class: 'form-control'
+
+  .actions
+    = link_to 'Effacer', calendars_path, class: 'btn btn-link'
+    = f.submit 'Filtrer', class: 'btn btn-default'
