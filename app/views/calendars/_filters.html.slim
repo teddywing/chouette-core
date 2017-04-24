@@ -3,7 +3,7 @@
     .input-group.search_bar
       = f.search_field :short_name_cont, class: 'form-control', placeholder: 'Indiquez un nom de calendrier...'
       span.input-group-btn
-        button.btn.btn-default type='submit'
+        button.btn.btn-default#search_btn type='submit'
           span.fa.fa-search
 
   .ffg-row
@@ -17,4 +17,4 @@
 
   .actions
     = link_to 'Effacer', calendars_path, class: 'btn btn-link'
-    = f.submit 'Filtrer', class: 'btn btn-default'
+    = f.submit 'Filtrer', id: 'filter_btn', class: 'btn btn-default'

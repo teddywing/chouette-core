@@ -9,7 +9,7 @@
     .col-lg-12.text-right
       = link_to Import.model_name.human.pluralize.capitalize, workbench_imports_path(@workbench), class: 'btn btn-primary'
       - if policy(Referential).create?
-        = link_to t('actions.new'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
+        = link_to t('actions.add'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
 
 / PageContent
 .page_content
