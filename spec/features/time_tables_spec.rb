@@ -120,24 +120,6 @@ describe "TimeTables", :type => :feature do
     end
   end
 
-  describe "new" do
-    it "creates time_table and return to show" do
-      visit referential_time_tables_path(referential)
-      click_link "Ajouter"
-      fill_in "Nom", :with => "TimeTable 1"
-      click_button("Valider")
-      expect(page).to have_content("TimeTable 1")
-    end
-  end
-
-  describe "edit and return to show" do
-    it "edit time_table" do
-      visit referential_time_table_path(referential, subject)
-      click_link "Editer"
-      fill_in "Nom", :with => "TimeTable Modified"
-      click_button("Valider")
-      expect(page).to have_content("TimeTable Modified")
-    end
-  end
+  # No more test for the form, as it is now managed by React/Redux.
 
 end
