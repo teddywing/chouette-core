@@ -52,6 +52,8 @@ StopAreaReferentialSync.find_or_create_by!(stop_area_referential: stop_area_refe
 end
 
 workbench = Workbench.find_by(name: "Gestion de l'offre")
+workbench.update_attributes(line_referential: line_referential,
+                            stop_area_referential: stop_area_referential)
 
 [["parissudest201604", "Paris Sud-Est Avril 2016"],
  ["parissudest201605", "Paris Sud-Est Mai 2016"]].each do |slug, name|
@@ -59,8 +61,6 @@ workbench = Workbench.find_by(name: "Gestion de l'offre")
     referential.name      = name
     referential.prefix    = slug
     referential.workbench = workbench
-    referential.line_referential = line_referential
-    referential.stop_area_referential = stop_area_referential
   end
 end
 

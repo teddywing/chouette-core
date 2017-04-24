@@ -18,6 +18,11 @@ module RuleParameterSetsHelper
     t "false"
   end
   
+  def transport_mode_label_pairs
+    Chouette::TransportMode
+      .all
+      .zip_map { |mode| t("transport_modes.label.#{mode}") }
+  end
 end
 
 

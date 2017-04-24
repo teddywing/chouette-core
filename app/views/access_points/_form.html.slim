@@ -7,9 +7,8 @@
       = form.input :name
       = form.input :access_point_type, as: :select,
                      :input_html => {:disabled => !@access_point.new_record? },
-                     :collection => Chouette::AccessPoint.access_point_types,
-                     include_blank: false,
-                     :member_label => Proc.new { |access_point_type| t("access_types.label.#{access_point_type}") }
+                     :collection => access_point_type_label_pairs,
+                     include_blank: false
       = form.input :street_name
       = form.input :country_code
       = form.input :zip_code
