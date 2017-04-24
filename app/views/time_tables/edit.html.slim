@@ -1,3 +1,12 @@
-= title_tag t('time_tables.edit.title', :time_table => @time_table.comment)
+/ PageHeader
+= pageheader 'map-marker',
+             @time_table.comment,
+             '',
+             ''
 
-== render 'form'
+/ PageContent
+.page_content
+  .container-fluid
+    #periods
+
+= javascript_include_tag 'es6_browserified/time_tables/index.js'

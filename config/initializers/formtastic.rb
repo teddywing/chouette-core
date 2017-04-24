@@ -74,3 +74,9 @@ Formtastic::FormBuilder.default_text_area_width = 50
 # this to false. Doing so will add a `novalidate` attribute to the `<form>` tag.
 # See http://diveintohtml5.org/forms.html#validation for more info.
 # Formtastic::FormBuilder.perform_browser_validations = true
+
+
+# ------------------------------------------------------------------------------------
+# Preparing Formtastic 4.0
+Formtastic::FormBuilder.action_class_finder = Formtastic::ActionClassFinder
+Formtastic::FormBuilder.input_class_finder  = Formtastic::InputClassFinder

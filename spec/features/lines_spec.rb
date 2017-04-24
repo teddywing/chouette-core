@@ -20,10 +20,10 @@ describe "Lines", :type => :feature do
     end
 
     it 'allows only R in CRUD' do
-      expect(page).to have_content(I18n.t('actions.show'))
-      expect(page).not_to have_content(I18n.t('actions.edit'))
-      expect(page).not_to have_content(I18n.t('actions.destroy'))
-      expect(page).not_to have_content(I18n.t('actions.add'))
+      expect(page).to have_link(I18n.t('actions.show'))
+      expect(page).not_to have_link(I18n.t('actions.edit'), href: edit_referential_line_path(referential, lines.first))
+      expect(page).not_to have_link(I18n.t('actions.destroy'), href: referential_line_path(referential, lines.first))
+      expect(page).not_to have_link(I18n.t('actions.add'), href: new_referential_line_path(referential))
     end
 
     context 'filtering' do

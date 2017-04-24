@@ -58,7 +58,8 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions":  []
 }, {
   "id": 5,
   "username": "laure.dubuc",
@@ -71,7 +72,8 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions":  []
 }, {
   "id": 6,
   "username": "thomas.haddad",
@@ -84,7 +86,8 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions":  []
 }, {
   "id": 7,
   "username": "jean-paul.lescouzeres",
@@ -97,7 +100,8 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions":  []
 }, {
   "id": 8,
   "username": "xinhui.xu",
@@ -110,7 +114,8 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions":  []
 }, {
   "id": 9,
   "username": "edouard.maffert",
@@ -123,7 +128,8 @@
   "locked_at": null,
   "profile": "Administrateur",
   "organization_name": "STIF",
-  "organization_code": "STIF"
+  "organization_code": "STIF",
+  "permissions":  []
 }, {
   "id": 9,
   "username": "vlatka.pavisic",
@@ -152,7 +158,8 @@
   "locked_at": null,
   "profile": "Référent IV Transporteur",
   "organization_name": "RATP",
-  "organization_code": "RATP"
+  "organization_code": "RATP",
+  "permissions":  []
 }, {
   "id": 11,
   "username": "jane.doe",
@@ -165,5 +172,6 @@
   "locked_at": "2016-08-05T12:34:03.995Z",
   "profile": "Référent IV Transporteur",
   "organization_name": "RATP",
-  "organization_code": "RATP"
+  "organization_code": "RATP",
+  "permissions":  []
 }]

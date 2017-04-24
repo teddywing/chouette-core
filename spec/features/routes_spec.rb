@@ -102,7 +102,7 @@ describe "Routes", :type => :feature do
       it 'does not show edit buttons for routes' do
         @user.update_attribute(:permissions, [])
         visit referential_line_path(referential, line)
-        expect(page).not_to have_content(I18n.t('actions.edit'))
+        expect(page).not_to have_link(I18n.t('actions.edit'), href: edit_referential_line_route_path(referential, line, route))
       end
     end
 
@@ -136,7 +136,7 @@ describe "Routes", :type => :feature do
       it 'does not show destroy buttons for routes' do
         @user.update_attribute(:permissions, [])
         visit referential_line_path(referential, line)
-        expect(page).not_to have_content(I18n.t('actions.destroy'))
+        expect(page).not_to have_link(I18n.t('actions.destroy'), href: referential_line_route_path(referential, line, route))
       end
     end
   end

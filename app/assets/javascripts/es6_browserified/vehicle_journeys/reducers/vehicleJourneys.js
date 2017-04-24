@@ -47,19 +47,26 @@ const vehicleJourney= (state = {}, action) => {
     case 'SHIFT_VEHICLEJOURNEY':
       let shiftedArray, shiftedSchedule, shiftedVjas
       shiftedArray = state.vehicle_journey_at_stops.map((vjas, i) => {
-        shiftedSchedule = {
-          departure_time: {
-            hour: vjas.departure_time.hour,
-            minute: String(parseInt(vjas.departure_time.minute) + parseInt(action.data.additional_time.value))
-          },
-          arrival_time: {
-            hour: vjas.arrival_time.hour,
-            minute: String(parseInt(vjas.arrival_time.minute) + parseInt(action.data.additional_time.value))
+        if (!vjas.dummy){
+          shiftedSchedule = {
+            departure_time: {
+              hour: vjas.departure_time.hour,
+              minute: actions.simplePad(parseInt(vjas.departure_time.minute) + parseInt(action.data.additional_time.value))
+            },
+            arrival_time: {
+              hour: vjas.arrival_time.hour,
+              minute: actions.simplePad(parseInt(vjas.arrival_time.minute) + parseInt(action.data.additional_time.value))
+            }
           }
+          actions.checkSchedules(shiftedSchedule)
+          shiftedVjas =  _.assign({}, state.vehicle_journey_at_stops[i], shiftedSchedule)
+          vjas = _.assign({}, state.vehicle_journey_at_stops[i], shiftedVjas)
+          delete vjas['id']
+          return vjas
+        }else {
+          delete vjas['id']
+          return vjas
         }
-        actions.checkSchedules(shiftedSchedule)
-        shiftedVjas =  _.assign({}, state.vehicle_journey_at_stops[i], shiftedSchedule)
-        return _.assign({}, state.vehicle_journey_at_stops[i], shiftedVjas)
       })
       return _.assign({}, state, {vehicle_journey_at_stops: shiftedArray})
     case 'UPDATE_TIME':
@@ -71,14 +78,20 @@ const vehicleJourney= (state = {}, action) => {
             arrival_time: _.assign({}, vjas.arrival_time)
           }
           if (action.isDeparture){
-            newSchedule.departure_time[action.timeUnit] = actions.pad(action.val)
+            newSchedule.departure_time[action.timeUnit] = actions.pad(action.val, action.timeUnit)
             if(!action.isArrivalsToggled)
-              newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val)
+              newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val, action.timeUnit)
             newSchedule = actions.getDelta(newSchedule)
+            if(newSchedule.delta < 0){
+              return vjas
+            }
             return _.assign({}, state.vehicle_journey_at_stops[action.subIndex], {arrival_time: newSchedule.arrival_time, departure_time: newSchedule.departure_time, delta: newSchedule.delta})
           }else{
-            newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val)
+            newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val, action.timeUnit)
             newSchedule = actions.getDelta(newSchedule)
+            if(newSchedule.delta < 0){
+              return vjas
+            }
             return _.assign({}, state.vehicle_journey_at_stops[action.subIndex],  {arrival_time: newSchedule.arrival_time, departure_time: newSchedule.departure_time, delta: newSchedule.delta})
           }
         }else{
@@ -160,11 +173,12 @@ const vehicleJourneys = (state = [], action) => {
       let dupeVj
       let dupes = []
       let selectedIndex
+      let val = action.data.additional_time.value
       state.map((vj, i) => {
         if(vj.selected){
           selectedIndex = i
           for (i = 0; i< action.data.duplicate_number.value; i++){
-            action.data.additional_time.value *= (i + 1)
+            action.data.additional_time.value = val * (i + 1)
             dupeVj = vehicleJourney(vj, action)
             dupeVj.published_journey_name = dupeVj.published_journey_name + '-' + i
             dupeVj.selected = false

@@ -13,18 +13,17 @@ describe "/time_tables/show", :type => :view do
 
   it "should render h2 with the time_table comment" do
     render
-    expect(rendered).to have_selector("h2", :text => Regexp.new(time_table.comment))
+    expect(rendered).to have_selector("h1", :text => Regexp.new(time_table.comment))
   end
 
   it "should render a link to edit the time_table" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.edit_referential_time_table_path(referential, time_table)}']")
+    expect(rendered).to have_selector(" a[href='#{view.edit_referential_time_table_path(referential, time_table)}']")
   end
 
   it "should render a link to remove the time_table" do
     render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{view.referential_time_table_path(referential, time_table)}'][class='remove']")
+    expect(rendered).to have_selector(" a[href='#{view.referential_time_table_path(referential, time_table)}']")
   end
 
 end
-

@@ -1,73 +1,102 @@
-= semantic_form_for [@referential, @time_table] do |form|
-  = form.inputs do
-    = form.input :comment, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.comment")}
-    = form.input :version
-    = form.input :tag_search, as: :tags, :input_html => { :id => "tag_search",:placeholder => t("formtastic.placeholders.time_table.tag_search") }
-    = form.input :tag_list, as: :hidden, :input_html => { :id => "tag_list" }
-    = form.input :objectid, :required => !@time_table.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.objectid")}
-    - if @time_table.new_record?
-      = form.input :calendar, as: :select, collection: current_organisation.calendars
+= simple_form_for [@referential, @time_table], html: {class: 'form-horizontal', id: 'timetable_form'}, wrapper: :horizontal_form do |form|
 
-  h3.time_table_periods = @time_table.human_attribute_name("periods")
+  .row
+    .col-lg-12
+      = form.input :comment, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.comment")}
+      
+      .form-group
+        = form.label @time_table.human_attribute_name(:color), required: false, class: 'control-label col-sm-4'
+      
+        .col-sm-8
+          .dropdown.color_selector
+            button.btn.btn-default.dropdown-toggle type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+              span.fa.fa-circle.mr-xs style="color:#{@time_table.color.nil? ? 'transparent' : @time_table.color}"
+              span.caret
 
-  #periods_content
-    = form.inputs class: 'day_type' do
-      label.day_type_label = @time_table.human_attribute_name("day_types")
-      = form.input :monday, as: :boolean, class: "others"
-      = form.input :tuesday, as: :boolean
-      = form.input :wednesday, as: :boolean
-      = form.input :thursday, as: :boolean
-      = form.input :friday, as: :boolean
-      = form.input :saturday, as: :boolean
-      = form.input :sunday, as: :boolean
+            = form.input :color, as: :radio_buttons, label: false, collection: ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"], input_html: {class: 'color_selector'}, label_method: lambda{|c| ("<span class='fa fa-circle' style='color:" + (c.empty? ? 'transparent' : c) + "'></span>").html_safe}, wrapper_html: { class: 'dropdown-menu', 'aria-labelledby': "dropdownMenu1"}, include_blank: true
 
-    #periods
-      = form.semantic_fields_for :periods do |p|
-        == render "period_fields",  :f => p
+      / = form.input :tag_list, as: :tags
 
-    = link_to_add_association t("time_tables.actions.add_period"), form, :periods , :"data-association-insertion-method" => "append", :"data-association-insertion-node" => "div#periods"
+      .form-group
+        label.control-label.col-sm-4
+          = "Journées d'applications pour les périodes ci-dessous"
 
-  h3.time_table_dates = @time_table.human_attribute_name("dates")
+        .col-sm-8
+          .form-group.labelled-checkbox-group
+            = form.input :monday, as: :boolean, label: ("<span class='lcbx-group-item-label'>L</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :tuesday, as: :boolean, label: ("<span class='lcbx-group-item-label'>Ma</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :wednesday, as: :boolean, label: ("<span class='lcbx-group-item-label'>Me</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :thursday, as: :boolean, label: ("<span class='lcbx-group-item-label'>J</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :friday, as: :boolean, label: ("<span class='lcbx-group-item-label'>V</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :saturday, as: :boolean, label: ("<span class='lcbx-group-item-label'>S</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
+            = form.input :sunday, as: :boolean, label: ("<span class='lcbx-group-item-label'>D</span>").html_safe, wrapper_html: { class: 'lcbx-group-item' }
 
-  #dates_content
-    #dates
-      = form.semantic_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == true}  do |p|
-        == render "date_fields",  :f => p
+      - if @time_table.new_record?
+        = form.input :calendar, as: :select, collection: current_organisation.calendars
 
-    = link_to_add_association t("time_tables.actions.add_date"), form, :dates, :"data-association-insertion-method" => "append", :"partial" => "date_fields", :"data-association-insertion-node" => "div#dates"
+  .separator
 
-  h3.time_table_dates = @time_table.human_attribute_name("excluded_dates")
+  .row
+    .col-lg-8.col-lg-offset-4
+      .subform
+        .nested-head
+          .wrapper
+            div
+              .form-group
+                label.control-label.required
+                  = t('simple_form.labels.referential.metadatas.periods.begin')
+                  abbr title='requis' *
+            div
+              .form-group
+                label.control-label.required
+                  = t('simple_form.labels.referential.metadatas.periods.end')
+                  abbr title='requis' *
+            div
 
-  #excluded_dates_content
-    #excluded_dates
-      = form.semantic_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == false}  do |p|
-        == render "excluded_date_fields",  :f => p
+        = form.simple_fields_for :periods do |p|
+          = render "period_fields", f: p
 
-    = link_to_add_association t("time_tables.actions.add_excluded_date"), form, :dates, :"data-association-insertion-method" => "append", :"partial" => "excluded_date_fields", :"data-association-insertion-node" => "div#excluded_dates"
+        .links.nested-linker
+          = link_to_add_association t("time_tables.actions.add_period"), form, :periods, class: 'btn btn-outline-primary'
 
-  = form.actions do
-    = form.action :submit, as: :button
-    = form.action :cancel, as: :link
+  .row
+    .col-lg-12.mb-sm.mt-md
+      #time_tables
+      .alert.alert-warning
+        |Les éléments ci-dessous sont à supprimer.
 
-= javascript_tag "var items = #{ @time_table.tag_list.to_a };"
+  .row
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .subform
+        .nested-head
+          .wrapper
+            div
+              .form-group
+                label.control-label
+                  = @time_table.human_attribute_name("dates")
+            div
+          
+        = form.simple_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == true}  do |p|
+          = render "date_fields",  f: p
 
-javascript:
-  $("#tag_search").tagsManager({
-    prefilled: items,
-    output: '#tag_list',
-    tagsContainer: '#tagsContainer'
-  });
+        .links.nested-linker
+          = link_to_add_association t("time_tables.actions.add_date"), form, :dates, partial: 'date_fields', class: 'btn btn-outline-primary'
 
-  var time_tables_tag_list = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    remote: "#{tags_referential_time_tables_path(@referential, format: 'json')}?tag=%QUERY",
-  });
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .subform
+        .nested-head
+          .wrapper
+            div
+              .form-group
+                label.control-label
+                  = @time_table.human_attribute_name("excluded_dates")
+            div
 
-  time_tables_tag_list.initialize();
+        = form.simple_fields_for :dates, @time_table.dates.to_a.select {|d| d.in_out == false}  do |q|
+          = render "excluded_date_fields",  f: q
 
-  $("#tag_search").typeahead(null, {
-    name: 'time_tables_tag_list',
-    displayKey: 'name',
-    source: time_tables_tag_list.ttAdapter()
-  });
+        .links.nested-linker
+          = link_to_add_association t("time_tables.actions.add_excluded_date"), form, :dates, partial: 'excluded_date_fields', class: 'btn btn-outline-primary'
+
+
+  = form.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'timetable_form'

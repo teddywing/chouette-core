@@ -4,10 +4,16 @@
       = f.input :name
   .row
     .col-lg-6.col-sm-12
-      / Temporarily limit the collection to 10 items... otherwise it kills RoR
-      = f.input :stop_area_ids, as: :select, collection: Chouette::StopArea.limit(10), selected: @routing_constraint_zone.stop_area_ids, label: Chouette::StopArea.model_name.human.pluralize.capitalize, label_method: :name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection de arrêts', 'multiple': 'multiple', style: 'width: 100%' }
+      = f.input :route_id, collection: @line.routes.select { |route| route.stop_points.count > 2 }, include_blank: false
+  .row
+    .col-lg-6.col-sm-12
+      - stop_points_collection = @routing_constraint_zone.persisted? ? @routing_constraint_zone.route.stop_points : []
+      = f.input :stop_point_ids, as: :select, collection: stop_points_collection, selected: @routing_constraint_zone.stop_point_ids, label: Chouette::StopPoint.model_name.human.pluralize.capitalize, label_method: :name, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Sélection des arrêts sur séquence d\'arrêts', 'multiple': 'multiple', style: 'width: 100%' }
 
   .row
     .col-lg-12.text-right
       = link_to 'Annuler', :back, class: 'btn btn-link'
       = f.button :submit, class: 'btn btn-danger'
+
+
+= hidden_field_tag 'stop_point_ids', @routing_constraint_zone.stop_point_ids.to_s, id: 'stop_point_ids'

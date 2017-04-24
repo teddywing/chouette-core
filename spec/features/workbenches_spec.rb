@@ -18,10 +18,25 @@ describe 'Workbenches', type: :feature do
     let!(:ready_referential) { create :referential, workbench: workbench, metadatas: referential_metadatas, ready: true, organisation: @user.organisation }
     let!(:unready_referential) { create :referential, workbench: workbench }
 
+    before(:each) { visit workbench_path(workbench) }
+
     it 'shows ready referentials belonging to that workbench by default' do
-      visit workbench_path(workbench)
       expect(page).to have_content(ready_referential.name)
       expect(page).not_to have_content(unready_referential.name)
+    end
+
+    context 'user has the permission to create referentials' do
+      it 'shows the link for a new referetnial' do
+        expect(page).to have_link(I18n.t('referentials.actions.new'), href: new_referential_path(workbench_id: workbenches.first))
+      end
+    end
+
+    context 'user does not have the permission to create referentials' do
+      it 'does not show the clone link for referetnial' do
+        @user.update_attribute(:permissions, [])
+        visit referential_path(referential)
+        expect(page).not_to have_link(I18n.t('referentials.actions.new'), href: new_referential_path(workbench_id: workbenches.first))
+      end
     end
   end
 

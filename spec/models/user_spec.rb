@@ -14,7 +14,7 @@ describe User, :type => :model do
           :organisation_code => '0083',
           :organisation_name => 'af83',
           :functional_scope  => "[\"STIF:CODIFLIGNE:Line:C00840\", \"STIF:CODIFLIGNE:Line:C00086\"]",
-          :permissions       => nil
+          :permissions       => []
         }
         ticket.user    = "john.doe"
         ticket.success = true
@@ -119,24 +119,8 @@ describe User, :type => :model do
       it 'should give edit permissions to user if user has "edit offer" permission in portail' do
         User.portail_sync
         expect(User.find_by(username: 'vlatka.pavisic').permissions).not_to be_empty
-        expect(User.find_by(username: 'pierre.vabre').permissions).to be_nil
+        expect(User.find_by(username: 'pierre.vabre').permissions).to be_empty
       end
-    end
-  end
-
-  describe 'validations' do
-    it 'validates uniqueness of pemissions' do
-      user = build :user, permissions: Array.new(2, 'calendars.shared')
-      expect {
-        user.save!
-      }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    it 'validates no pemission is an empty string' do
-      user = build :user, permissions: ['']
-      expect {
-        user.save!
-      }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 

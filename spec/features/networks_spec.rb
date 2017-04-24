@@ -81,7 +81,7 @@ describe "Networks", :type => :feature do
   #     click_link "Supprimer ce réseau"
   #     page.evaluate_script('window.confirm = function() { return true; }')
   #     click_button "Valider"
-  #     page.should have_no_content(subject.name)
+  #     expect(page).to have_no_content(subject.name)
   #   end
 
   # end

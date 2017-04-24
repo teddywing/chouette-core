@@ -55,6 +55,59 @@ describe "Referentials", :type => :feature do
         expect(page).to have_link(I18n.t('actions.edit'), href: edit_referential_path(referential))
       end
     end
+
+    context 'user has the permission to create referentials' do
+      it 'shows the clone link for referetnial' do
+        expect(page).to have_link(I18n.t('actions.clone'), href: new_referential_path(from: referential.id))
+      end
+    end
+
+    context 'user does not have the permission to create referentials' do
+      it 'does not show the clone link for referetnial' do
+        @user.update_attribute(:permissions, [])
+        visit referential_path(referential)
+        expect(page).not_to have_link(I18n.t('actions.clone'), href: new_referential_path(from: referential.id))
+      end
+    end
+
+    context 'user has the permission to edit referentials' do
+      it 'shows the link to edit the referential' do
+        expect(page).to have_link(I18n.t('actions.edit'), href: edit_referential_path(referential))
+      end
+
+      it 'shows the link to archive the referential' do
+        expect(page).to have_link(I18n.t('actions.archive'), href: archive_referential_path(referential))
+      end
+    end
+
+    context 'user does not have the permission to edit referentials' do
+      before(:each) do
+        @user.update_attribute(:permissions, [])
+        visit referential_path(referential)
+      end
+
+      it 'does not show the link to edit the referential' do
+        expect(page).not_to have_link(I18n.t('actions.edit'), href: edit_referential_path(referential))
+      end
+
+      it 'does not show the link to archive the referential' do
+        expect(page).not_to have_link(I18n.t('actions.archive'), href: archive_referential_path(referential))
+      end
+    end
+
+    context 'user has the permission to destroy referentials' do
+      it 'shows the link to destroy the referential' do
+        expect(page).to have_link(I18n.t('actions.destroy'), href: referential_path(referential))
+      end
+    end
+
+    context 'user does not have the permission to destroy referentials' do
+      it 'does not show the destroy link for referetnial' do
+        @user.update_attribute(:permissions, [])
+        visit referential_path(referential)
+        expect(page).not_to have_link(I18n.t('actions.destroy'), href: referential_path(referential))
+      end
+    end
   end
 
   describe "create" do

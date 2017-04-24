@@ -5,9 +5,9 @@ var actions = require('../../actions')
 const DeleteVehicleJourneys = ({onDeleteVehicleJourneys, vehicleJourneys, filters}) => {
   return (
     <li className='st_action'>
-      <a
-        href='#'
-        className={(actions.getSelected(vehicleJourneys).length > 0 && filters.policy['vehicle_journeys.destroy']) ? '' : 'disabled'}
+      <button
+        type='button'
+        disabled={(actions.getSelected(vehicleJourneys).length > 0 && filters.policy['vehicle_journeys.destroy']) ? '' : 'disabled'}
         onClick={e => {
           e.preventDefault()
           onDeleteVehicleJourneys()
@@ -15,7 +15,7 @@ const DeleteVehicleJourneys = ({onDeleteVehicleJourneys, vehicleJourneys, filter
         title='Supprimer'
       >
         <span className='fa fa-trash'></span>
-      </a>
+      </button>
     </li>
   )
 }

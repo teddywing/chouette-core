@@ -118,13 +118,15 @@
       height: 35px
       margin: 5px
 
-      > a
+      > a, > button
         display: block
         height: 35px
+        width: 100%
         text-align: center
         line-height: 35px
         border-radius: 50%
         background-color: $blue
+        border: none
         color: #fff
 
         &:focus
@@ -139,7 +141,7 @@
           &:hover
             background-color: darken($red, 5%)
 
-        &.disabled
+        &.disabled, &:disabled
           &, &[title='Supprimer'], &:hover, &:focus
             background-color: rgba($grey, 0.3)
             cursor: not-allowed
@@ -262,3 +264,11 @@
       &.disabled
         color: rgba($darkgrey, 0.5)
         background-color: rgba(#fff, 0.5)
+
+      // TD group
+      > .td-group
+        display: inline-block
+        vertical-align: top
+
+        > .td
+          display: block

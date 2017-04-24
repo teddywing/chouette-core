@@ -77,6 +77,57 @@ input
       border-color: #4cae4c
       box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #5cb85c
 
+// BS horizontal form label positionning fix
+.form-horizontal
+  .form-group
+    position: relative
+
+    > .control-label
+      &[class*='col-sm-']
+        float: none
+        padding-top: 0
+        position: absolute
+        left: 0
+        right: 0
+        top: 50%
+        transform: translateY(-50%)
+
+        + [class*='col-sm-']
+          float: right
+
+// Colors dropdown
+.dropdown.color_selector
+  .btn.btn-default
+    &, &:hover, &:focus
+      border: 1px solid #cccccc
+      background-color: #fff
+      font-weight: normal
+      color: $darkgrey
+
+  .dropdown-menu
+    position: absolute
+    margin: 2px 0 0 0
+    min-width: 56px
+
+    > .radio
+      position: relative
+      padding: 3px 20px
+      // cursor: pointer
+
+      &:hover, &:focus
+        background-color: #f5f5f5
+
+      > label
+        padding: 0
+
+        input.color_selector, input[type='radio']
+          position: absolute
+          cursor: pointer
+          z-index: 1
+          width: 100%
+          margin: 0
+          opacity: 0
+
 // Search bar
 .search_bar
   position: relative
@@ -646,6 +697,59 @@ table, .table
   .control-label.time
     min-width: 60px
 
+// Form group checkboxes
+$grp-cbx-size: 34px
+.form-group.labelled-checkbox-group
+  margin: 0
+
+  > .lcbx-group-item
+    display: inline-block
+    margin: 0 5px
+
+    &:first-child
+      margin-left: 0
+
+    > .checkbox
+      display: block
+      width: $grp-cbx-size
+      height: $grp-cbx-size
+      line-height: $grp-cbx-size
+      margin: 0
+      padding: 0
+
+      > label
+        position: relative
+        min-height: 0
+        padding: 0
+        margin: 0
+
+        > input
+          &[type='checkbox']:not(:checked), &[type='checkbox']:checked
+            position: absolute
+            left: -9999px
+            margin: 0
+
+            + .lcbx-group-item-label
+              position: relative
+              cursor: pointer
+              font-weight: bold
+              display: inline-block
+              vertical-align: top
+              width: $grp-cbx-size
+              height: $grp-cbx-size
+              line-height: $grp-cbx-size - 2px
+              text-align: center
+              margin: 0
+              background-color: rgba($grey, 0.15)
+              color: rgba($grey, 0.5)
+              border: 1px solid rgba($grey, 0.5)
+              border-radius: 3px
+
+          &[type='checkbox']:checked + .lcbx-group-item-label
+            background-color: $blue
+            border-color: $blue
+            color: #fff
+
 // Nested fields
 .nested-fields
   margin: 0
@@ -727,7 +831,7 @@ table, .table
   margin: 0
   padding: 0 5px
 
-  + .nested-fields
+  + .nested-fields, + .links.nested-linker
     border-top: 2px solid $darkgrey
 
   .wrapper

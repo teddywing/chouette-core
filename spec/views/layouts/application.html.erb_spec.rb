@@ -12,7 +12,7 @@ describe "/layouts/application", :type => :view do
 
     it "should display referential name as title" #do
     #   render
-    #   rendered.should_not have_selector("h1")
+    #   expect(rendered).not_to have_selector("h1")
     # end
                                           
   end

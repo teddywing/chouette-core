@@ -8,6 +8,12 @@ child(:company) do |company|
   attributes :id, :objectid, :name
 end
 
+child(:route) do |route|
+  child(:line) do |line|
+    attributes :transport_mode, :transport_submode
+  end
+end
+
 child(:journey_pattern) do |journey_pattern|
   attributes :id, :objectid, :name, :published_name
 end
@@ -28,6 +34,9 @@ child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops
     node(:dummy) { !vehicle_stop.stop_point_id? }
     node(:stop_area_object_id) do
       vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.objectid : nil
+    end
+    node(:stop_point_objectid) do
+      vehicle_stop.stop_point ? vehicle_stop.stop_point.objectid : nil
     end
     node(:stop_area_name) do
       vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.name : nil

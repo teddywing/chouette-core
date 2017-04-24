@@ -1,5 +1,8 @@
 # require 'spec_helper'
 
+# TODO: Can we get rid of this???
+#       *************************
+
 # describe ComplianceCheckTask, :type => :model do
 
 #   subject { Factory( :compliance_check_task ) }
@@ -274,19 +277,19 @@
 # #
 # #    it "should create a ComplianceCheckResult :started when started" do
 # #      subject.validate
-# #      subject.compliance_check_results.first.should be_log_message(:key => "started")
+     # expect(subject.compliance_check_results.first).to be_log_message(:key => "started")
 # #    end
 # #
 # #    it "should create a ComplianceCheckResult :completed when completed" do
 # #      subject.validate
-# #      subject.compliance_check_results.last.should be_log_message(:key => "completed")
+     # expect(subject.compliance_check_results.last).to be_log_message(:key => "completed")
 # #    end
 # #
 # #    it "should create a ComplianceCheckResult :failed when failed" do
 # #      pending
 # #      # subject.loader.stub(:export).and_raise("export failed")
 # #      subject.validate
-# #      subject.compliance_check_results.last.should be_log_message(:key => "failed")
+     # expect(subject.compliance_check_results.last).to be_log_message(:key => "failed")
 # #    end
 # #
 # #  end

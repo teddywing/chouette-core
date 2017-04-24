@@ -31,7 +31,7 @@ let Navigate = ({ dispatch, journeyPatterns, pagination, status }) => {
                 data-toggle=''
                 data-target='#ConfirmModal'
                 className={'previous_page' + (pagination.page == firstPage ? ' disabled' : '')}
-                disabled={'previous_page' + (pagination.page == firstPage ? ' disabled' : '')}
+                disabled={(pagination.page == firstPage ? ' disabled' : '')}
               >
               </button>
               <button
@@ -43,7 +43,7 @@ let Navigate = ({ dispatch, journeyPatterns, pagination, status }) => {
                 data-toggle=''
                 data-target='#ConfirmModal'
                 className={'next_page' + (pagination.page == lastPage ? ' disabled' : '')}
-                disabled={'next_page' + (pagination.page == lastPage ? ' disabled' : '')}
+                disabled={(pagination.page == lastPage ? 'disabled' : '')}
               >
               </button>
             </form>

@@ -116,6 +116,7 @@ class JourneyPatterns extends Component{
                       onCheckboxChange= {(e) => this.props.onCheckboxChange(e, index)}
                       onOpenEditModal= {() => this.props.onOpenEditModal(index, journeyPattern)}
                       onDeleteJourneyPattern={() => this.props.onDeleteJourneyPattern(index)}
+                      status= {this.props.status}
                       />
                   )}
                 </div>

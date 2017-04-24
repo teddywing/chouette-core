@@ -49,27 +49,61 @@ module Chouette
 
     def vehicle_journey_at_stops_matrix
       at_stops = self.vehicle_journey_at_stops.to_a.dup
-      filling  = route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)
-      filling.each do |id|
-        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new())
+      (route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)).each do |id|
+        # Set stop_point id for fake vjas with no departure time yep.
+        params = {}
+        params[:stop_point_id] = id if journey_pattern.stop_points.map(&:id).include?(id)
+        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new(params))
       end
       at_stops
+    end
+
+    def create_or_find_vjas_from_state vjas
+      return vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
+      stop_point = Chouette::StopPoint.find_by(objectid: vjas['stop_point_objectid'])
+      stop       = vehicle_journey_at_stops.create(stop_point: stop_point)
+      vjas['id'] = stop.id
+      vjas['new_record'] = true
+      stop
     end
 
     def update_vjas_from_state state
       state.each do |vjas|
         next if vjas["dummy"]
-        stop = vehicle_journey_at_stops.find(vjas['id']) if vjas['id']
-        if stop
-          params = {}.tap do |el|
-            ['arrival_time', 'departure_time'].each do |field|
-              time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
-              el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
-            end
+        params = {}.tap do |el|
+          ['arrival_time', 'departure_time'].each do |field|
+            time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
+            el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
           end
-          stop.update_attributes(params)
-          vjas.delete('errors')
-          vjas['errors'] = stop.errors if stop.errors.any?
+        end
+        stop = create_or_find_vjas_from_state(vjas)
+        stop.update_attributes(params)
+        vjas.delete('errors')
+        vjas['errors'] = stop.errors if stop.errors.any?
+      end
+    end
+
+    def state_update_vjas? vehicle_journey_at_stops
+      departure_times = vehicle_journey_at_stops.map do |vjas|
+        "#{vjas['departure_time']['hour']}:#{vjas['departure_time']['minute']}"
+      end
+      times = departure_times.uniq
+      (times.count == 1 && times[0] == '00:00') ? false : true
+    end
+
+    def update_has_and_belongs_to_many_from_state item
+      ['time_tables', 'footnotes'].each do |assos|
+        saved = self.send(assos).map(&:id)
+
+        (saved - item[assos].map{|t| t['id']}).each do |id|
+          self.send(assos).delete(self.send(assos).find(id))
+        end
+
+        item[assos].each do |t|
+          klass = "Chouette::#{assos.classify}".constantize
+          unless saved.include?(t['id'])
+            self.send(assos) << klass.find(t['id'])
+          end
         end
       end
     end
@@ -81,17 +115,30 @@ module Chouette
           vj = find_by(objectid: item['objectid']) || state_create_instance(route, item)
           next if item['deletable'] && vj.persisted? && vj.destroy
 
-          vj.update_vjas_from_state(item['vehicle_journey_at_stops'])
+          if vj.state_update_vjas?(item['vehicle_journey_at_stops'])
+            vj.update_vjas_from_state(item['vehicle_journey_at_stops'])
+          end
+
           vj.update_attributes(state_permited_attributes(item))
+          vj.update_has_and_belongs_to_many_from_state(item)
           item['errors'] = vj.errors if vj.errors.any?
         end
+
+        # Delete ids of new object from state if we had to rollback
         if state.any? {|item| item['errors']}
-          state.map {|item| item.delete('objectid') if item['new_record']}
+          state.map do |item|
+            item.delete('objectid') if item['new_record']
+            item['vehicle_journey_at_stops'].map {|vjas| vjas.delete('id') if vjas['new_record'] }
+          end
           raise ::ActiveRecord::Rollback
         end
       end
 
-      state.map {|item| item.delete('new_record')}
+      # Remove new_record flag && deleted item from state if transaction has been saved
+      state.map do |item|
+        item.delete('new_record')
+        item['vehicle_journey_at_stops'].map {|vjas| vjas.delete('new_record') }
+      end
       state.delete_if {|item| item['deletable']}
     end
 

@@ -5,10 +5,12 @@
              t('last_update', time: l(@referential.updated_at, format: :short)),
              ((@referential.archived? || !policy(@referential).edit?) ? '' : link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default')) do
 
-  / Below is secundary actions & optional contents (filters, ...)
+  / Below is secondary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      - if policy(@referential).new?
+      = link_to t('time_tables.index.title'), referential_time_tables_path(@referential), class: 'btn btn-primary'
+
+      - if policy(@referential).clone?
         = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
 
       - if policy(@referential).edit?

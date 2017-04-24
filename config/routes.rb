@@ -123,6 +123,7 @@ ChouetteIhm::Application.routes.draw do
         end
         resources :vehicle_journey_imports
         resources :vehicle_journey_exports
+        resources :stop_points, only: :index, controller: 'route_stop_points'
       end
       resources :routing_constraint_zones
     end
@@ -165,6 +166,7 @@ ChouetteIhm::Application.routes.draw do
       end
       member do
         get 'duplicate'
+        get 'month', defaults: { format: :json }
       end
       resources :time_table_dates
       resources :time_table_periods
@@ -211,8 +213,11 @@ ChouetteIhm::Application.routes.draw do
 
   get '/help/(*slug)' => 'help#show'
 
-  get '/404', :to => 'errors#not_found'
-  get '/422', :to => 'errors#server_error'
-  get '/500', :to => 'errors#server_error'
+  if Rails.env.production?
+    get '404', to: 'errors#not_found'
+    get '403', to: 'errors#not_allowed'
+    get '422', to: 'errors#server_error'
+    get '500', to: 'errors#server_error'
+  end
 
 end

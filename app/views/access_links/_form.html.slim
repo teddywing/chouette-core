@@ -5,7 +5,7 @@
     = form.input :stop_area_id , as: :hidden
     = form.input :link_orientation_type , as: :hidden
     = form.input :name
-    = form.input :access_link_type, as: :select, collection: Chouette::AccessLink.access_link_types, include_blank: true, member_label: Proc.new { |type| t("connection_link_types.label.#{type}") }
+    = form.input :access_link_type, as: :select, collection: access_link_type_label_pairs, include_blank: true
     = form.input :comment
     = form.input :link_distance
     = form.input :mobility_restricted_suitability, as: :select, collection: [[t("true"), true], [t("false"), false]], include_blank: true

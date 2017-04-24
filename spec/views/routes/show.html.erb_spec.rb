@@ -26,7 +26,7 @@ describe "/routes/show", :type => :view do
 
   # it "should display a map with class 'line'" do
   #   render
-  #   rendered.should have_selector("#map", :class => 'line')
+  #   expect(rendered).to have_selector("#map", :class => 'line')
   # end
 
   # it "should render a link to edit the route" do

@@ -27,7 +27,12 @@ class ReferentialCompaniesController < ChouetteController
   end
 
   def collection
-    @q = referential.workbench.companies.search(params[:q])
+    scope = referential.line_referential.companies
+    if params[:line_id]
+      scope = referential.line_referential.lines.find(params[:line_id]).companies
+    end
+
+    @q = scope.search(params[:q])
 
     if sort_column && sort_direction
       @companies ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])

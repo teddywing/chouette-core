@@ -19,7 +19,7 @@ describe "/lines/show", :type => :view do
 
   # it "should display a map with class 'line'" do
   #   render
-  #   rendered.should have_selector("#map", :class => 'line')
+  #   expect(rendered).to have_selector("#map", :class => 'line')
   # end
   # FIXME #2018
   xit "should render a link to edit the line" do

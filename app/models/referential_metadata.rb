@@ -12,6 +12,25 @@ class ReferentialMetadata < ActiveRecord::Base
   scope :include_lines, -> (line_ids) { where('line_ids && ARRAY[?]::bigint[]', line_ids) }
   scope :include_dateranges, -> (dateranges) { where('periodes && ARRAY[?]', dateranges) }
 
+# Transform Wed, 22 Feb 2017...Fri, 24 Feb 2017 into Wed, 22 Feb 2017..Thu, 23 Feb 2017
+  def periodes
+    attributes["periodes"].tap do | periods |
+      return periods unless periods
+      return adapted_periods(periods)
+    end
+  end
+
+  def adapted_periods(periods)
+    periods.map do | period |
+      if period.try(:exclude_end?)
+        period.begin .. (period.end - 1)
+      else
+        period
+      end
+    end
+  end
+  private :adapted_periods
+
   class Period
     include ActiveAttr::Model
     include ActiveAttr::MultiParameterAttributes

@@ -5,7 +5,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
   extend ActiveModel::Naming
 
   enumerize :direction, in: %i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)
-  enumerize :wayback, in: %i(straight_forward backward), default: :backward
+  enumerize :wayback, in: %i(straight_forward backward), default: :straight_forward
 
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -16,6 +16,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   belongs_to :line
 
+  has_many :routing_constraint_zones
   has_many :journey_patterns, :dependent => :destroy
   has_many :vehicle_journeys, :dependent => :destroy do
     def timeless

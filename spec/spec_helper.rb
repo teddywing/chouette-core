@@ -51,7 +51,8 @@ RSpec.configure do |config|
 
   #Capybara.exact = true
   Capybara.javascript_driver = :poltergeist
-  config.filter_run_excluding :js => true
+  config.filter_run_excluding :js  => true
+  config.filter_run           :wip => true      
   config.run_all_when_everything_filtered = true
   config.include TokenInputHelper, :type => :feature
 
@@ -86,4 +87,21 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    # Choose a test framework:
+    with.test_framework :rspec
+    # with.test_framework :minitest
+    # with.test_framework :minitest_4
+    # with.test_framework :test_unit
+
+    # Choose one or more libraries:
+    # with.library :active_record
+    # with.library :active_model
+    # with.library :action_controller
+    # Or, choose the following (which implies all of the above):
+    with.library :rails
+  end
 end

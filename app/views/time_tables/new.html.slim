@@ -1,3 +1,12 @@
-= title_tag t('time_tables.new.title')
+/ PageHeader
+= pageheader 'map-marker',
+             t('time_tables.new.title'),
+             '',
+             ''
 
-== render 'form'
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        == render 'form'

@@ -15,7 +15,7 @@ class SaveVehicleJourneys extends Component{
   }
 
   render() {
-    if(this.props.status.isFetching == true) {
+    if(this.props.status.isFetching == true || this.props.filters.policy['vehicle_journeys.edit'] == false) {
       return false
     }
     if(this.props.status.fetchSuccess == true) {
@@ -46,7 +46,8 @@ class SaveVehicleJourneys extends Component{
 SaveVehicleJourneys.propTypes = {
   vehicleJourneys: PropTypes.array.isRequired,
   page: PropTypes.number.isRequired,
-  status: PropTypes.object.isRequired
+  status: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired
 }
 
 module.exports = SaveVehicleJourneys

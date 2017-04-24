@@ -21,7 +21,6 @@ class User < ActiveRecord::Base
   validates :organisation, :presence => true
   validates :email, :presence => true, :uniqueness => true
   validates :name, :presence => true
-  validate :permissions_unique_and_nonempty
 
   before_validation(:on => :create) do
     self.password ||= Devise.friendly_token.first(6)
@@ -32,16 +31,14 @@ class User < ActiveRecord::Base
   @@edit_offer_permissions = ['routes.create', 'routes.edit', 'routes.destroy', 'journey_patterns.create', 'journey_patterns.edit', 'journey_patterns.destroy',
     'vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy', 'time_tables.create', 'time_tables.edit', 'time_tables.destroy',
     'footnotes.edit', 'footnotes.create', 'footnotes.destroy', 'routing_constraint_zones.create', 'routing_constraint_zones.edit',
-    'routing_constraint_zones.destroy']
+    'routing_constraint_zones.destroy', 'referentials.create', 'referentials.edit', 'referentials.destroy']
 
   def cas_extra_attributes=(extra_attributes)
     extra             = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
     self.name         = extra[:full_name]
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
-    if extra[:permissions] && extra[:permissions].include?('boiv:edit-offer')
-      self.permissions  = @@edit_offer_permissions
-    end
+    self.permissions  = extra[:permissions].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
   end
 
   def self.portail_api_request
@@ -69,10 +66,7 @@ class User < ActiveRecord::Base
       user.locked_at    = el['locked_at']
       user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
       user.synced_at    = Time.now
-
-      if el['permissions'] && el['permissions'].include?('boiv:edit-offer')
-        user.permissions = @@edit_offer_permissions
-      end
+      user.permissions  = el['permissions'].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
       user.save
       puts "✓ user #{user.username} has been updated" unless Rails.env.test?
     end
@@ -91,10 +85,4 @@ class User < ActiveRecord::Base
     end
   end
 
-  def permissions_unique_and_nonempty
-    if permissions && permissions.any?
-      errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_unique')) if permissions.uniq.length != permissions.length
-      errors.add(:permissions, I18n.t('activerecord.errors.models.calendar.attributes.permissions.must_be_nonempty')) if permissions.include? ''
-    end
-  end
 end

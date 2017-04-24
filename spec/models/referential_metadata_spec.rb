@@ -118,6 +118,19 @@ RSpec.describe ReferentialMetadata, :type => :model do
 
   end
 
+  describe "#periodes" do
+
+    let(:referential_metadata) { create(:referential_metadata).reload }
+
+    it "should not exclude end" do
+      expect(referential_metadata.periodes).to_not be_empty
+      referential_metadata.periodes.each do |periode|
+        expect(periode).to_not be_exclude_end
+      end
+    end
+
+  end
+
   describe "before_validation" do
     let(:referential_metadata) do
       create(:referential_metadata).tap do |metadata|

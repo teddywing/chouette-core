@@ -10,11 +10,11 @@ class VehicleJourneyPolicy < ApplicationPolicy
   end
 
   def edit?
-    organisation_match?(via_referential: true) && user.has_permission?('vehicle_journeys.edit')
+    organisation_match? && user.has_permission?('vehicle_journeys.edit')
   end
 
   def destroy?
-    organisation_match?(via_referential: true) && user.has_permission?('vehicle_journeys.destroy')
+    organisation_match? && user.has_permission?('vehicle_journeys.destroy')
   end
 
   def update?  ; edit? end

@@ -10,11 +10,11 @@ class ConnectionLinkPolicy < ApplicationPolicy
   end
 
   def edit?
-    organisation_match?(via_referential: true) && user.has_permission?('connection_links.edit')
+    organisation_match? && user.has_permission?('connection_links.edit')
   end
 
   def destroy?
-    organisation_match?(via_referential: true) && user.has_permission?('connection_links.destroy')
+    organisation_match? && user.has_permission?('connection_links.destroy')
   end
 
   def update?  ; edit? end

@@ -78,6 +78,9 @@ Rails.application.configure do
   config.codifligne_url = "https://pprod.codifligne.stif.info"
   config.portal_url = "http://stif-boiv-staging.af83.priv"
 
+  # IEV url
+  config.iev_url = "localhost:8080"
+
   # file to data for demo
   config.demo_data = "tmp/demo.zip"
 

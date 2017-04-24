@@ -1,8 +1,6 @@
 class VehicleJourneysController < ChouetteController
   defaults :resource_class => Chouette::VehicleJourney
-  before_action :check_policy, only: [:edit, :update, :destroy]
   before_action :user_permissions, only: :index
-  before_action :ransack_params, only: :index
 
   respond_to :json, :only => :index
   respond_to :js, :only => [:select_journey_pattern, :edit, :new, :index]
@@ -61,8 +59,7 @@ class VehicleJourneysController < ChouetteController
       }
     end
 
-    @jp_origin = Chouette::JourneyPattern.find_by(objectid: params[:jp])
-
+    @jp_origin  = Chouette::JourneyPattern.find_by(objectid: params[:jp])
 
     index! do
       if collection.out_of_bounds?
@@ -80,12 +77,37 @@ class VehicleJourneysController < ChouetteController
 
   protected
   def collection
+    scope = route.vehicle_journeys.joins(:journey_pattern).joins('LEFT JOIN "vehicle_journey_at_stops" ON "vehicle_journey_at_stops"."vehicle_journey_id" = "vehicle_journeys"."id"')
+
+    @q = scope.search filtered_ransack_params
+    grouping = ransack_periode_filter
+    @q.build_grouping(grouping) if grouping
+
     @ppage = 20
-    @q     = route.sorted_vehicle_journeys('vehicle_journeys').search params[:q]
-    @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
+    @vehicle_journeys = @q.result(distinct: true).paginate(:page => params[:page], :per_page => @ppage)
     @footnotes = route.line.footnotes.to_json
     @matrix    = resource_class.matrix(@vehicle_journeys)
     @vehicle_journeys
+  end
+
+  def ransack_periode_filter
+    if params[:q] && params[:q][:vehicle_journey_at_stops_departure_time_gteq]
+      params[:q] = params[:q].reject{|k| params[:q][k] == 'undefined'}
+      between = [:departure_time_gteq, :departure_time_lteq].map do |filter|
+        "2000-01-01 #{params[:q]["vehicle_journey_at_stops_#{filter}"]}:00 UTC"
+      end
+      {
+        :m => 'or',
+        :vehicle_journey_at_stops_departure_time_between => between.join(' to '),
+        :vehicle_journey_at_stops_id_null => params[:q][:vehicle_journey_without_departure_time]
+      }
+    end
+  end
+
+  def filtered_ransack_params
+    if params[:q]
+      params[:q].except(:vehicle_journey_at_stops_departure_time_gteq, :vehicle_journey_at_stops_departure_time_lteq)
+    end
   end
 
   def adapted_params
@@ -107,30 +129,15 @@ class VehicleJourneysController < ChouetteController
     @matrix = resource_class.matrix(@vehicle_journeys)
   end
 
-  def check_policy
-    authorize resource
-  end
-
   def user_permissions
     @perms = {}.tap do |perm|
       ['vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy'].each do |name|
-        perm[name] = current_user.permissions.include?(name)
+        perm[name] = policy(:vehicle_journey).send("#{name.split('.').last}?")
       end
-    end
-    @perms = @perms.to_json
+    end.to_json
   end
 
   private
-  def ransack_params
-    if params[:q]
-      params[:q] = params[:q].reject{|k| params[:q][k] == 'undefined'}
-      [:departure_time_gteq, :departure_time_lteq].each do |filter|
-        time = params[:q]["vehicle_journey_at_stops_#{filter}"]
-        params[:q]["vehicle_journey_at_stops_#{filter}"] = "2000-01-01 #{time}:00 UTC"
-      end
-    end
-  end
-
   def vehicle_journey_params
     params.require(:vehicle_journey).permit( { footnote_ids: [] } , :journey_pattern_id, :number, :published_journey_name,
                                              :published_journey_identifier, :comment, :transport_mode,

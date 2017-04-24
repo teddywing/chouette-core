@@ -1,8 +1,8 @@
-# coding: iso-8859-1
+# coding: utf-8
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.1.10'
+gem 'rails', '~> 4.2.8'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -56,7 +56,7 @@ platforms :ruby do
   gem 'sqlite3'
 end
 
-gem 'activerecord-postgis-adapter'
+gem 'activerecord-postgis-adapter', "~> 3.0.0"
 gem 'polylines'
 
 # Codifligne API
@@ -82,11 +82,11 @@ gem 'georuby', '2.3.0' # Fix version for georuby-ext because api has changed
 gem 'mimemagic'
 
 # User interface
-gem 'language_engine', '0.0.6'
+gem 'language_engine', github: 'af83/language_engine'
 gem 'calendar_helper', '0.2.5'
 gem 'cocoon'
 gem 'slim-rails', '~> 3.1'
-gem 'formtastic', '2.3.1'
+gem 'formtastic', '3.1.5'
 gem 'RedCloth', '~> 4.3.0'
 gem 'simple_form', '~> 3.1.0'
 gem 'font-awesome-sass', '~> 4.7'
@@ -105,15 +105,14 @@ gem 'google-analytics-rails'
 # Model
 gem 'will_paginate'
 gem 'ransack'
-gem 'squeel'
+gem "squeel", :git => "git://github.com/activerecord-hackery/squeel.git"
 gem 'active_attr'
 
 gem 'draper'
 
 gem 'enumerize', '~> 0.10.0'
-gem 'foreigner', '~> 1.7.4'
 gem 'deep_cloneable', '~> 2.0.0'
-gem 'acts-as-taggable-on', '>= 3'
+gem 'acts-as-taggable-on', '~> 4.0.0'
 
 gem 'acts_as_list', '~> 0.6.0'
 gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
@@ -136,12 +135,13 @@ group :development do
   gem 'capistrano', '2.13.5'
   gem 'capistrano-ext'
   gem 'capistrano-npm', require: false
-  gem 'guard'
-  gem 'guard-rspec'
+  # Issue #3017 Requires ruby_dep which requires ruby > 2.2.3
+  # gem 'guard'
+  # gem 'guard-rspec', "~> 4.5.0"
   gem 'rails-erd'
   # MetaRequest is incompatible with rgeo-activerecord
   # gem 'meta_request'
-  gem 'quiet_assets', '~> 1.0'
+  gem 'quiet_assets'
   gem 'license_finder'
   gem 'bundler-audit'
 
@@ -166,7 +166,8 @@ end
 group :test, :development do
   gem 'awesome_print'
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 3.1.0'
+  gem 'pry-byebug'
+  gem 'rspec-rails', '~> 3.5.0'
   gem 'fakeweb'
   gem 'webmock'
   gem 'capybara', '~> 2.4.0'
@@ -177,7 +178,7 @@ group :test, :development do
   gem 'rb-inotify', require: RUBY_PLATFORM.include?('linux') && 'rb-inotify'
   gem 'rb-fsevent', require: RUBY_PLATFORM.include?('darwin') && 'rb-fsevent'
   gem 'transpec'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~> 3.1'
   gem "teaspoon-jasmine"
   gem "phantomjs"
 end

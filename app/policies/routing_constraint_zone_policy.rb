@@ -10,11 +10,11 @@ class RoutingConstraintZonePolicy < ApplicationPolicy
   end
 
   def edit?
-    organisation_match?(via_referential: true) && user.has_permission?('routing_constraint_zones.edit')
+    organisation_match? && user.has_permission?('routing_constraint_zones.edit')
   end
 
   def destroy?
-    organisation_match?(via_referential: true) && user.has_permission?('routing_constraint_zones.destroy')
+    organisation_match? && user.has_permission?('routing_constraint_zones.destroy')
   end
 
   def update?  ; edit? end

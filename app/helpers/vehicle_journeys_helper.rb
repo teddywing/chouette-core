@@ -41,6 +41,12 @@ module VehicleJourneysHelper
     end
   end
   
+  def route_journey_pattern_label_pairs route
+    route
+      .journey_patterns
+      .zip_map { |jp| journey_name(jp) }
+  end
+
   def edit_vehicle_title( vehicle)
     return t('vehicle_journeys.edit.title_stopless', :name => vehicle_name( vehicle)) if vehicle.vehicle_journey_at_stops.empty?
     first_vjas = vehicle.vehicle_journey_at_stops.first
