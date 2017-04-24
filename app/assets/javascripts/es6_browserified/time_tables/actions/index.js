@@ -71,9 +71,10 @@ const actions = {
   openAddPeriodForm: () => ({
     type: 'OPEN_ADD_PERIOD_FORM'
   }),
-  openEditPeriodForm: (period) => ({
+  openEditPeriodForm: (period, index) => ({
     type: 'OPEN_EDIT_PERIOD_FORM',
-    period
+    period,
+    index
   }),
   closePeriodForm: () => ({
     type: 'CLOSE_PERIOD_FORM'

@@ -35,7 +35,7 @@ class PeriodManager extends Component {
             <li>
               <button
                 type='button'
-                onClick={() => this.props.onOpenEditPeriodForm(this.props.value)}
+                onClick={() => this.props.onOpenEditPeriodForm(this.props.value, this.props.index)}
               >
                 Modifier
               </button>

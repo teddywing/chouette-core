@@ -9,7 +9,7 @@ const modal = (state = {}, action) => {
         month: '',
         year: ''
       }
-      newModalProps = _.assign({}, state.modalProps, {active: false, begin: emptyDate, end: emptyDate})
+      newModalProps = _.assign({}, state.modalProps, {active: false, begin: emptyDate, end: emptyDate, index: false})
       return _.assign({}, state, {modalProps: newModalProps})
     case 'OPEN_EDIT_PERIOD_FORM':
       let period_start = action.period.period_start.split('-')
@@ -25,6 +25,7 @@ const modal = (state = {}, action) => {
       newModalProps.end.day = period_end[2]
 
       newModalProps.active = true
+      newModalProps.index = action.index
       return _.assign({}, state, {modalProps: newModalProps})
     case 'OPEN_ADD_PERIOD_FORM':
       newModalProps = _.assign({}, state.modalProps, {active: true})

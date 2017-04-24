@@ -21,8 +21,8 @@ const mapDispatchToProps = (dispatch) => {
     onIncludeDateInPeriod: (index, day, dayTypes) => {
       dispatch(actions.includeDateInPeriod(index, day, dayTypes))
     },
-    onOpenEditPeriodForm: (period) => {
-      dispatch(actions.openEditPeriodForm(period))
+    onOpenEditPeriodForm: (period, index) => {
+      dispatch(actions.openEditPeriodForm(period, index))
     }
   }
 }
