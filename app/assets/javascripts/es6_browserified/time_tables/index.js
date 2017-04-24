@@ -48,7 +48,9 @@ var initialState = {
         day: '01',
         month: '01',
         year: String(new Date().getFullYear())
-      }
+      },
+      index: false,
+      errors: []
     },
     confirmModal: {}
   }

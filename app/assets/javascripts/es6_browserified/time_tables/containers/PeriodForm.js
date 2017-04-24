@@ -19,6 +19,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUpdatePeriodForm: (val, group, selectType) => {
       dispatch(actions.updatePeriodForm(val, group, selectType))
+    },
+    onValidatePeriodForm: (props) => {
+      dispatch(actions.validatePeriodForm(props))
     }
   }
 }

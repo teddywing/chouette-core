@@ -55,6 +55,22 @@ const timetable = (state = {}, action) => {
       })
       newState = _.assign({}, state, {current_month: newCMe})
       return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+    case 'VALIDATE_PERIOD_FORM':
+      let period_start = actions.formatDate(action.modalProps.begin)
+      let period_end = actions.formatDate(action.modalProps.end)
+      let newPeriods = JSON.parse(JSON.stringify(state.time_table_periods))
+      if (action.modalProps.index !== false){
+        newPeriods[action.modalProps.index].period_start = period_start
+        newPeriods[action.modalProps.index].period_end = period_end
+      }else{
+        let newPeriod = {
+          period_start: period_start,
+          period_end: period_end
+        }
+        newPeriods.push(newPeriod)
+      }
+      return _.assign({}, state, {time_table_periods: newPeriods})
+
     default:
       return state
   }

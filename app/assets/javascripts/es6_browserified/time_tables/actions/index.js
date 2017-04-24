@@ -85,6 +85,10 @@ const actions = {
     group,
     selectType
   }),
+  validatePeriodForm: (modalProps) => ({
+    type: 'VALIDATE_PERIOD_FORM',
+    modalProps
+  }),
   includeDateInPeriod: (index, day, dayTypes) => ({
     type: 'INCLUDE_DATE_IN_PERIOD',
     index,
@@ -161,6 +165,9 @@ const actions = {
       dispatch(actions.fetchingApi())
       return callback
     }
+  },
+  formatDate: (props) => {
+    return props.year + '-' + props.month + '-' + props.day
   },
   fetchTimeTables: (dispatch, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/')
