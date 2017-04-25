@@ -6,6 +6,7 @@ var Metas = require('./Metas')
 var Timetable = require('./Timetable')
 var Navigate = require('./Navigate')
 var PeriodForm = require('./PeriodForm')
+var SaveTimetable = require('./SaveTimetable')
 
 class App extends Component {
   componentDidMount(){
@@ -20,6 +21,7 @@ class App extends Component {
           <Navigate />
           <Timetable />
           <PeriodForm />
+          <SaveTimetable />
         </div>
       </div>
     )
