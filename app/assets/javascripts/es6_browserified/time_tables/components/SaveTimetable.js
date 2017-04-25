@@ -28,7 +28,7 @@ class SaveTimetable extends Component{
                 type='button'
                 onClick={e => {
                   e.preventDefault()
-                  actions.submitTimeTable(this.props.dispatch, this.props.timetable, this.props.metas)
+                  actions.submitTimetable(this.props.dispatch, this.props.timetable, this.props.metas)
                 }}
                 >
                 Valider

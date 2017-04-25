@@ -7,6 +7,7 @@ var Timetable = require('./Timetable')
 var Navigate = require('./Navigate')
 var PeriodForm = require('./PeriodForm')
 var SaveTimetable = require('./SaveTimetable')
+var ConfirmModal = require('./ConfirmModal')
 
 class App extends Component {
   componentDidMount(){
@@ -22,6 +23,7 @@ class App extends Component {
           <Timetable />
           <PeriodForm />
           <SaveTimetable />
+          <ConfirmModal />
         </div>
       </div>
     )

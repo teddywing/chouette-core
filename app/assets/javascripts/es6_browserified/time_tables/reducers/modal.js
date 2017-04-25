@@ -11,6 +11,14 @@ let period_start = '', period_end = ''
 
 const modal = (state = {}, action) => {
   switch (action.type) {
+    case 'OPEN_CONFIRM_MODAL':
+      $('#ConfirmModal').modal('show')
+      return _.assign({}, state, {
+        type: 'confirm',
+        confirmModal: {
+          callback: action.callback,
+        }
+      })
     case 'CLOSE_PERIOD_FORM':
       newModalProps = _.assign({}, state.modalProps, {active: false})
       return _.assign({}, state, {modalProps: newModalProps})
