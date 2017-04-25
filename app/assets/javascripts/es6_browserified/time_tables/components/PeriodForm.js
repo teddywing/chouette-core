@@ -36,29 +36,28 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
     <div className="row">
       <div className="col lg-6 col-lg-offset-3">
         <div className='subform'>
-          <div className="nested-head">
-            <div className="wrapper">
-              <div>
-                <div className="form-group">
-                  <label htmlFor="" className="control-label required">
-                    Début de période
-                    <abbr title="requis">*</abbr>
-                  </label>
-                </div>
-              </div>
-              <div>
-                <div className="form-group">
-                  <label htmlFor="" className="control-label required">
-                    Fin de période
-                    <abbr title="requis">*</abbr>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {modal.modalProps.active &&
             <div>
+              <div className="nested-head">
+                <div className="wrapper">
+                  <div>
+                    <div className="form-group">
+                      <label htmlFor="" className="control-label required">
+                        Début de période
+                        <abbr title="requis">*</abbr>
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="form-group">
+                      <label htmlFor="" className="control-label required">
+                        Fin de période
+                        <abbr title="requis">*</abbr>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="nested-fields">
                 <div className="wrapper">
                   <div>
@@ -116,7 +115,7 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
             </div>
           }
           {!modal.modalProps.active &&
-            <div className="links nested-linker">
+            <div className="text-right">
               <button
                 type='button'
                 className='btn btn-outline-primary add_fields'
