@@ -18,23 +18,22 @@ describe 'Calendars', type: :feature do
     end
 
     context 'filtering' do
-      # Fixme !
-      # it 'supports filtering by short name' do
-      #   fill_in 'q[short_name_cont]', with: calendars.first.short_name
-      #   click_button 'search_btn'
-      #   expect(page).to have_content(calendars.first.short_name)
-      #   expect(page).not_to have_content(calendars.last.short_name)
-      # end
+      it 'supports filtering by short name' do
+        fill_in 'q[short_name_cont]', with: calendars.first.short_name
+        click_button 'search_btn'
+        expect(page).to have_content(calendars.first.short_name)
+        expect(page).not_to have_content(calendars.last.short_name)
+      end
 
-      # it 'supports filtering by shared' do
-      #   shared_calendar = create :calendar, organisation_id: 1, shared: true
-      #   visit calendars_path
-      #   # select I18n.t('true'), from: 'q[shared]'
-      #   find(:css, '#q_shared').set(true)
-      #   click_button 'filter_btn'
-      #   expect(page).to have_content(shared_calendar.short_name)
-      #   expect(page).not_to have_content(calendars.first.short_name)
-      # end
+      it 'supports filtering by shared' do
+        shared_calendar = create :calendar, organisation_id: 1, shared: true
+        visit calendars_path
+        # select I18n.t('true'), from: 'q[shared]'
+        find(:css, '#q_shared_true').set(true)
+        click_button 'filter_btn'
+        expect(page).to have_content(shared_calendar.short_name)
+        expect(page).not_to have_content(calendars.first.short_name)
+      end
 
       # wip
       # it 'supports filtering by date' do

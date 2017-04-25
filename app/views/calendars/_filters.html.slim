@@ -9,12 +9,11 @@
   .ffg-row
     .form-group.has_switch style='width: 260px'
       = f.label Calendar.human_attribute_name(:shared), class: 'col-sm-4 control-label'
-      = f.input :shared, as: :boolean, checked_value: true, unchecked_value: false, label: content_tag(:span, '', class: 'switch-label', data: {checkedValue: t('true'), uncheckedValue: t('false')}), wrapper_html: { class: 'col-sm-8' }
+      = f.input :shared_true, as: :boolean, checked_value: true, unchecked_value: false, label: content_tag(:span, '', class: 'switch-label', data: {checkedValue: t('true'), uncheckedValue: t('false')}), wrapper_html: { class: 'col-sm-8' }
 
     .form-group
       = f.label Calendar.human_attribute_name(:date), class: 'control-label'
-      = f.input :contains_date, as: :date, label: false, wrapper_html: { class: 'date' }, class: 'form-control'
-
+      = f.input :contains_date, as: :date, label: false, wrapper_html: { class: 'date' }, class: 'form-control', include_blank: true
   .actions
     = link_to 'Effacer', calendars_path, class: 'btn btn-link'
     = f.submit 'Filtrer', id: 'filter_btn', class: 'btn btn-default'
