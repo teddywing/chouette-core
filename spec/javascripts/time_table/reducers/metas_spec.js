@@ -5,10 +5,9 @@ let state = {}
 describe('status reducer', () => {
   beforeEach(() => {
     state = {
-    comment: 'test',
-    day_types: [true, true, true, true, true, true, true],
-    tags: ['t1'],
-    color: 'blue'
+      comment: 'test',
+      day_types: [true, true, true, true, true, true, true],
+      color: 'blue'
     }
   })
 
@@ -25,7 +24,7 @@ describe('status reducer', () => {
         type: 'UPDATE_DAY_TYPES',
         index: 0
       })
-    ).toEqual(Object.assign({}, state, {day_types: arr}))
+    ).toEqual(Object.assign({}, state, {day_types: arr, calendar: {name: 'Aucun'}}))
   })
 
   it('should handle UPDATE_COMMENT', () => {

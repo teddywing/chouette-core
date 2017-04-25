@@ -10,6 +10,7 @@ class SaveTimetable extends Component{
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.status.isFetching == true){
+      $(window).scrollTop(0);
       submitMover();
     }
   }
@@ -22,7 +23,7 @@ class SaveTimetable extends Component{
       return (
         <div className='row mt-md'>
           <div className='col-lg-12 text-right'>
-            <form className='formSubmitr ml-xs' onSubmit={e => {e.preventDefault()}}>
+            <form className='time_tables formSubmitr ml-xs' onSubmit={e => {e.preventDefault()}}>
               <button
                 className='btn btn-default'
                 type='button'
@@ -30,7 +31,7 @@ class SaveTimetable extends Component{
                   e.preventDefault()
                   actions.submitTimetable(this.props.dispatch, this.props.timetable, this.props.metas)
                 }}
-                >
+              >
                 Valider
               </button>
             </form>
