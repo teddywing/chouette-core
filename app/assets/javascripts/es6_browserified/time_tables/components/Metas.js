@@ -19,6 +19,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
                 type='text'
                 className='form-control'
                 value={metas.comment}
+                required='required'
                 onChange={(e) => (onUpdateComment(e.currentTarget.value))}
                 />
             </div>
