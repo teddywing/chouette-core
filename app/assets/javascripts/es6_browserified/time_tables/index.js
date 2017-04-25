@@ -13,6 +13,7 @@ var promise = require('redux-promise')
 
 var initialState = {
   status: {
+    actionType: window.actionType,
     policy: window.perms,
     fetchSuccess: true,
     isFetching: false

@@ -19,6 +19,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
                 type='text'
                 className='form-control'
                 value={metas.comment}
+                required='required'
                 onChange={(e) => (onUpdateComment(e.currentTarget.value))}
                 />
             </div>
@@ -90,6 +91,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
               <span>{metas.calendar.name}</span>
             </div>
           </div>
+
           {/* day_types */}
           <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4">
@@ -98,7 +100,9 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
             <div className="col-sm-8">
               <div className="form-group labelled-checkbox-group">
                 {metas.day_types.map((day, i) =>
-                  <div className="lcbx-group-item"
+                  <div
+                    className='lcbx-group-item'
+                    data-wday={'day_' + i}
                     key={i}
                   >
                     <div className="checkbox">

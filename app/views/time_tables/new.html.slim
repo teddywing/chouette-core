@@ -1,12 +1,15 @@
 / PageHeader
 = pageheader 'map-marker',
-             t('time_tables.new.title'),
+             t("time_tables.#{params[:action]}.title"),
              '',
              ''
 
 / PageContent
 .page_content
   .container-fluid
-    .row
-      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
-        == render 'form'
+    #periods
+
+= javascript_tag do
+  | window.actionType = "#{params[:action]}"
+
+= javascript_include_tag 'es6_browserified/time_tables/index.js'

@@ -29,7 +29,7 @@ describe 'Calendars', type: :feature do
         shared_calendar = create :calendar, organisation_id: 1, shared: true
         visit calendars_path
         # select I18n.t('true'), from: 'q[shared]'
-        find(:css, '#q_shared').set(true)
+        find(:css, '#q_shared_true').set(true)
         click_button 'filter_btn'
         expect(page).to have_content(shared_calendar.short_name)
         expect(page).not_to have_content(calendars.first.short_name)

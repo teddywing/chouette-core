@@ -5,9 +5,22 @@ const actions = {
     let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
     return weekDays.map((day, i) => str.indexOf(day) !== -1)
   },
-
+  arrayToStrDayTypes: (arr) => {
+    let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
+    let str = ''
+    arr.map((dayActive, i) => {
+      if(dayActive){
+        str += weekDays[i]
+      }
+    })
+    return str
+  },
   fetchingApi: () =>({
     type: 'FETCH_API'
+  }),
+  receiveErrors : (json) => ({
+    type: "RECEIVE_ERRORS",
+    json
   }),
   unavailableServer: () => ({
     type: 'UNAVAILABLE_SERVER'
@@ -103,7 +116,13 @@ const actions = {
     day,
     dayTypes
   }),
-
+  openConfirmModal : (callback) => ({
+    type : 'OPEN_CONFIRM_MODAL',
+    callback
+  }),
+  closeModal : () => ({
+    type : 'CLOSE_MODAL'
+  }),
   monthName(strDate) {
     let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
     var date = new Date(strDate)
@@ -211,6 +230,39 @@ const actions = {
         }
       })
   },
+  submitTimetable: (dispatch, timetable, metas, next) => {
+    dispatch(actions.fetchingApi())
+    let strDayTypes = actions.arrayToStrDayTypes(metas.day_types)
+    metas.day_types= strDayTypes
+    let sentState = _.assign({}, timetable, metas)
+    let urlJSON = window.location.pathname.split('/', 5).join('/')
+    let hasError = false
+    fetch(urlJSON, {
+      credentials: 'same-origin',
+      method: 'PATCH',
+      contentType: 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      body: JSON.stringify(sentState),
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      }
+    }).then(response => {
+        if(!response.ok) {
+          hasError = true
+        }
+        return response.json()
+      }).then((json) => {
+        if(hasError == true) {
+          dispatch(actions.receiveErrors(json))
+        } else {
+          if(next) {
+            dispatch(next)
+          } else {
+            dispatch(actions.receiveTimeTables(json))
+          }
+        }
+      })
+  }
 }
 
 module.exports = actions

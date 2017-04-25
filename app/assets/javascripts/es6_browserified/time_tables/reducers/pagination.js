@@ -16,6 +16,15 @@ const pagination = (state = {}, action) => {
     case 'CHANGE_PAGE':
       toggleOnConfirmModal()
       return _.assign({}, state, {currentPage : action.page, stateChanged: false})
+    case 'INCLUDE_DATE_IN_PERIOD':
+    case 'EXCLUDE_DATE_FROM_PERIOD':
+    case 'DELETE_PERIOD':
+    case 'VALIDATE_PERIOD_FORM':
+    case 'UPDATE_COMMENT':
+    case 'UPDATE_COLOR':
+    case 'UPDATE_DAY_TYPES':
+      toggleOnConfirmModal('modal')
+      return _.assign({}, state, {stateChanged: true})
     default:
       return state
   }

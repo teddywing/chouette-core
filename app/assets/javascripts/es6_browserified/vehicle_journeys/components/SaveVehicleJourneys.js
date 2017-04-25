@@ -10,6 +10,7 @@ class SaveVehicleJourneys extends Component{
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.status.isFetching == true) {
+      $(window).scrollTop(0);
       submitMover();
     }
   }

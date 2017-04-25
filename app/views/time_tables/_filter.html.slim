@@ -17,8 +17,8 @@
     .form-group.togglable
       = f.label @time_tables.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
       .filter_menu
-        = f.input :start_date_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }
-        = f.input :end_date_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }
+        = f.input :start_date_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
+        = f.input :end_date_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
 
 
   .actions
