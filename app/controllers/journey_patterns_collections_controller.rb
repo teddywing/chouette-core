@@ -1,14 +1,19 @@
 class JourneyPatternsCollectionsController < ChouetteController
+  defaults :resource_class => Chouette::JourneyPattern
+  before_action :user_permissions, only: :show
+
   respond_to :html
   respond_to :json
-  before_action :user_permissions, only: :show
 
   belongs_to :referential do
     belongs_to :line, :parent_class => Chouette::Line do
       belongs_to :route, :parent_class => Chouette::Route
     end
   end
+
+  alias_method :vehicle_journeys, :collection
   alias_method :route, :parent
+  alias_method :vehicle_journey, :resource
 
   def show
     @q = route.journey_patterns.search(params[:q]).result(distinct: true).includes(:stop_points)
@@ -40,6 +45,7 @@ class JourneyPatternsCollectionsController < ChouetteController
       }
     end
     @stop_points_list = @stop_points_list.sort_by {|a| a[:position] }
+    build_breadcrumb :index
   end
 
   def user_permissions
