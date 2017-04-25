@@ -22,6 +22,8 @@ fr:
       add_excluded_date: "Ajouter une date exclue"
     new:
       title: "Ajouter un calendrier"
+    duplicate:
+      title: "Dupliquer un calendrier"
     edit:
       title: "Editer le calendrier %{time_table}"
     show:
