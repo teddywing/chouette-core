@@ -84,7 +84,7 @@ fr:
         creator_id: "Créé par"
         calendars: "Calendrier"
         calendar_details: "Données du calendrier"
-        calendar: Calendrier
+        calendar: Modèle de calendrier
         dates: "Dates particulières"
         date: "Le"
         excluded_dates: "Dates exclues"
