@@ -11,10 +11,15 @@ const metas = (state = {}, action) => {
         color: action.json.color,
         calendar: action.json.calendar ? action.json.calendar : {name : 'Aucun'}
       })
+    case 'INCLUDE_DATE_IN_PERIOD':
+    case 'EXCLUDE_DATE_FROM_PERIOD':
+    case 'DELETE_PERIOD':
+    case 'VALIDATE_PERIOD_FORM':
+      return _.assign({}, state, {calendar: {name: 'Aucun'}})
     case 'UPDATE_DAY_TYPES':
       let dayTypes = state.day_types.slice(0)
       dayTypes[action.index] = !dayTypes[action.index]
-      return _.assign({}, state, {day_types: dayTypes})
+      return _.assign({}, state, {day_types: dayTypes, calendar : {name: 'Aucun'}})
     case 'UPDATE_COMMENT':
       return _.assign({}, state, {comment: action.comment})
     case 'UPDATE_COLOR':

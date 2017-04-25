@@ -9,29 +9,7 @@
   .container-fluid
     .row
       .col-lg-12
-        = search_form_for @q, url: referential_time_tables_path(@referential), html: { method: :get, class: 'form form-filter' } do |f|
-          .ffg-row
-            .input-group.search_bar
-              = f.text_field :comment_cont, :placeholder => "#{t('.comment')}", class: 'form-control'
-              span.input-group-btn
-                button.btn.btn-default type='submit'
-                  span.fa.fa-search
-
-          .ffg-row
-            .form-group
-              = f.label @time_tables.human_attribute_name(:tag_search), required: false, class: 'control-label'
-              = f.input :tag_search, as: :tags, collection: Chouette::TimeTable.tags_on(:tags).pluck(:name), label: false, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une étiquette...' }, wrapper_html: { class: 'select2ed'}, include_blank: false
-
-            .form-group.togglable
-              = f.label @time_tables.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
-              .filter_menu
-                = f.input :start_date_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date filter_menu-item' }
-                = f.input :end_date_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date filter_menu-item' }
-
-
-          .actions
-            = link_to 'Effacer', @workbench, class: 'btn btn-link'
-            = f.submit 'Filtrer', class: 'btn btn-default'
+        = render 'filter'
 
     - if @time_tables.any?
       .row

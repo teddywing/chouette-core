@@ -85,6 +85,12 @@ const actions = {
     group,
     selectType
   }),
+  validatePeriodForm: (modalProps, timeTablePeriods, metas) => ({
+    type: 'VALIDATE_PERIOD_FORM',
+    modalProps,
+    timeTablePeriods,
+    metas
+  }),
   includeDateInPeriod: (index, day, dayTypes) => ({
     type: 'INCLUDE_DATE_IN_PERIOD',
     index,
@@ -161,6 +167,21 @@ const actions = {
       dispatch(actions.fetchingApi())
       return callback
     }
+  },
+  formatDate: (props) => {
+    return props.year + '-' + props.month + '-' + props.day
+  },
+  checkErrorsInPeriods: (start, end, index, periods) => {
+    let error = ''
+    start = new Date(start)
+    end = new Date(end)
+    _.each(periods, (period, i) => {
+      if(index != i){
+        if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end))
+        error = 'Les périodes ne peuvent pas se chevaucher'
+      }
+    })
+    return error
   },
   fetchTimeTables: (dispatch, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/')

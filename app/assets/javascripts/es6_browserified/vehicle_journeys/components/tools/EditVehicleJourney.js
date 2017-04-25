@@ -104,7 +104,7 @@ class EditVehicleJourney extends Component {
                               <input
                                 type='text'
                                 className='form-control'
-                                value={(this.props.modal.modalProps.vehicleJourney.transport_mode || 'non renseigné')}
+                                value={this.props.modal.modalProps.vehicleJourney.transport_mode}
                                 disabled={true}
                               />
                             </div>
@@ -115,7 +115,7 @@ class EditVehicleJourney extends Component {
                               <input
                                 type='text'
                                 className='form-control'
-                                value={(this.props.modal.modalProps.vehicleJourney.transport_submode || 'non renseigné')}
+                                value={this.props.modal.modalProps.vehicleJourney.transport_submode}
                                 disabled={true}
                               />
                             </div>

@@ -14,6 +14,7 @@ en:
       new: "Add a new stop"
       edit: "Edit this stop"
       destroy: "Remove this stop"
+      deleted_at: "Activated"
       destroy_confirm: "Are you sure you want destroy this stop and all of his children ?"
       select_parent: "Create or modify the relation child -> parent"
       add_children: "Create or modify the relation parent -> children"
