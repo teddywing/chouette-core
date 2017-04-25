@@ -59,6 +59,7 @@ class VehicleJourney extends Component {
               <input
                 id={this.props.index}
                 name={this.props.index}
+                style={{display: 'none'}}
                 onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
                 type='checkbox'
                 disabled={this.props.value.deletable}
