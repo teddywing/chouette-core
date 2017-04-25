@@ -7,7 +7,7 @@ class ErrorsController < ApplicationController
     render status: 500
   end
 
-  def not_allowed
+  def forbidden
     render status: 403
   end
 end

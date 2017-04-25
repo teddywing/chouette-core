@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def user_not_authorized
-    render :file => "#{Rails.root}/public/403.html", :status => :forbidden, :layout => false
+    redirect_to forbidden_path
   end
 
   def current_organisation

@@ -15,11 +15,11 @@ RSpec.describe ErrorsController, type: :controller do
     end
   end
 
-  describe 'GET not_allowed' do
-    before(:each) { get 'not_allowed' }
+  describe 'GET forbidden' do
+    before(:each) { get 'forbidden' }
 
-    it 'renders the not_allowed template' do
-      expect(response).to render_template('not_allowed')
+    it 'renders the forbidden template' do
+      expect(response).to render_template('forbidden')
     end
 
     it 'returns 403 status code' do

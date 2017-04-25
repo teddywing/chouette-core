@@ -213,9 +213,9 @@ ChouetteIhm::Application.routes.draw do
 
   get '/help/(*slug)' => 'help#show'
 
-  match '/404', to: 'errors#not_found', via: :all
-  match '/403', to: 'errors#not_allowed', via: :all
-  match '/422', to: 'errors#server_error', via: :all
-  match '/500', to: 'errors#server_error', via: :all
+  match '/404', to: 'errors#not_found', via: :all, as: 'not_found'
+  match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden'
+  match '/422', to: 'errors#server_error', via: :all, as: 'unprocessable_entity'
+  match '/500', to: 'errors#server_error', via: :all, as: 'server_error'
 
 end
