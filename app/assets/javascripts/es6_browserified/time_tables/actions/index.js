@@ -7,13 +7,13 @@ const actions = {
   },
   arrayToStrDayTypes: (arr) => {
     let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
-    let str = ''
+    let str = []
     arr.map((dayActive, i) => {
       if(dayActive){
-        str += weekDays[i]
+        str.push(weekDays[i])
       }
     })
-    return str
+    return str.join(',')
   },
   fetchingApi: () =>({
     type: 'FETCH_API'
