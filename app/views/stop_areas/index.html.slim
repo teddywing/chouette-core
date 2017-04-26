@@ -16,10 +16,10 @@
     - if @stop_areas.any?
       .row
         .col-lg-12
+          p = t('activerecord.attributes.stop_point.deleted_at')
           = table_builder @stop_areas,
-            { 'Oid' => Proc.new { |n| n.try(:user_objectid) },
-            :name => 'name', :registration_number => 'registration_number', :zip_code => 'zip_code',
-            :city_name => 'city_name', :area_type => Proc.new{|s| (s.area_type.nil? ? '-' : t("enumerize.stop_area.area_type.#{s.try(:area_type)}"))} },
+            { 'ID Reflex' => Proc.new { |n| n.try(:user_objectid) }, :name => 'name', :registration_number => 'registration_number', :deleted_at => Proc.new{|s| s.deleted_at ? t('false') : t('true')},
+            :zip_code => 'zip_code', :city_name => 'city_name', :area_type => Proc.new{|s| (s.area_type.nil? ? '-' : t("enumerize.stop_area.area_type.#{s.try(:area_type)}"))} },
             [:show, :edit, :delete],
             [],
             'table has-filter has-search'

@@ -27,7 +27,7 @@ describe 'Workbenches', type: :feature do
 
     context 'user has the permission to create referentials' do
       it 'shows the link for a new referetnial' do
-        expect(page).to have_link(I18n.t('referentials.actions.new'), href: new_referential_path(workbench_id: workbenches.first))
+        expect(page).to have_link(I18n.t('actions.add'), href: new_referential_path(workbench_id: workbenches.first))
       end
     end
 
@@ -35,7 +35,7 @@ describe 'Workbenches', type: :feature do
       it 'does not show the clone link for referetnial' do
         @user.update_attribute(:permissions, [])
         visit referential_path(referential)
-        expect(page).not_to have_link(I18n.t('referentials.actions.new'), href: new_referential_path(workbench_id: workbenches.first))
+        expect(page).not_to have_link(I18n.t('actions.add'), href: new_referential_path(workbench_id: workbenches.first))
       end
     end
   end
@@ -44,7 +44,7 @@ describe 'Workbenches', type: :feature do
     it "create a new Referential with a specifed line and period" do
       visit workbench_path(workbench)
 
-      click_link "Créer un jeu de données"
+      click_link I18n.t('actions.add')
 
       fill_in "referential[name]", with: "Referential to test creation" # Nom du JDD
       fill_in "referential[slug]", with: "test" # Code

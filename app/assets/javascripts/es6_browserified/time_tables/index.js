@@ -13,6 +13,7 @@ var promise = require('redux-promise')
 
 var initialState = {
   status: {
+    actionType: window.actionType,
     policy: window.perms,
     fetchSuccess: true,
     isFetching: false
@@ -48,7 +49,9 @@ var initialState = {
         day: '01',
         month: '01',
         year: String(new Date().getFullYear())
-      }
+      },
+      index: false,
+      error: ''
     },
     confirmModal: {}
   }

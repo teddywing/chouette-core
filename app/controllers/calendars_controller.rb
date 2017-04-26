@@ -1,7 +1,7 @@
 class CalendarsController < BreadcrumbController
   include PolicyChecker
   defaults resource_class: Calendar
-
+  before_action :ransack_contains_date, only: [:index]
   respond_to :html
   respond_to :js, only: :index
 
@@ -38,6 +38,18 @@ class CalendarsController < BreadcrumbController
     calendars = @q.result
     calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
     @calendars = calendars.paginate(page: params[:page])
+  end
+
+  def ransack_contains_date
+    # 3 parts to date object, in order to use in ransackable_scopes
+    if params[:q] && !params[:q]['contains_date(1i)'].empty?
+      date =[]
+      ['contains_date(1i)', 'contains_date(2i)', 'contains_date(3i)'].each do |key|
+        date << params[:q][key]
+        params[:q].delete(key)
+      end
+      params[:q]['contains_date'] = Date.parse(date.join('-'))
+    end
   end
 end
 

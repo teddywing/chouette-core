@@ -5,9 +5,22 @@ const actions = {
     let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
     return weekDays.map((day, i) => str.indexOf(day) !== -1)
   },
-
+  arrayToStrDayTypes: (arr) => {
+    let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
+    let str = []
+    arr.map((dayActive, i) => {
+      if(dayActive){
+        str.push(weekDays[i])
+      }
+    })
+    return str.join(',')
+  },
   fetchingApi: () =>({
     type: 'FETCH_API'
+  }),
+  receiveErrors : (json) => ({
+    type: "RECEIVE_ERRORS",
+    json
   }),
   unavailableServer: () => ({
     type: 'UNAVAILABLE_SERVER'
@@ -85,6 +98,12 @@ const actions = {
     group,
     selectType
   }),
+  validatePeriodForm: (modalProps, timeTablePeriods, metas) => ({
+    type: 'VALIDATE_PERIOD_FORM',
+    modalProps,
+    timeTablePeriods,
+    metas
+  }),
   includeDateInPeriod: (index, day, dayTypes) => ({
     type: 'INCLUDE_DATE_IN_PERIOD',
     index,
@@ -97,7 +116,13 @@ const actions = {
     day,
     dayTypes
   }),
-
+  openConfirmModal : (callback) => ({
+    type : 'OPEN_CONFIRM_MODAL',
+    callback
+  }),
+  closeModal : () => ({
+    type : 'CLOSE_MODAL'
+  }),
   monthName(strDate) {
     let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
     var date = new Date(strDate)
@@ -162,6 +187,21 @@ const actions = {
       return callback
     }
   },
+  formatDate: (props) => {
+    return props.year + '-' + props.month + '-' + props.day
+  },
+  checkErrorsInPeriods: (start, end, index, periods) => {
+    let error = ''
+    start = new Date(start)
+    end = new Date(end)
+    _.each(periods, (period, i) => {
+      if(index != i){
+        if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end))
+        error = 'Les périodes ne peuvent pas se chevaucher'
+      }
+    })
+    return error
+  },
   fetchTimeTables: (dispatch, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/')
     // console.log(nextPage)
@@ -190,6 +230,39 @@ const actions = {
         }
       })
   },
+  submitTimetable: (dispatch, timetable, metas, next) => {
+    dispatch(actions.fetchingApi())
+    let strDayTypes = actions.arrayToStrDayTypes(metas.day_types)
+    metas.day_types= strDayTypes
+    let sentState = _.assign({}, timetable, metas)
+    let urlJSON = window.location.pathname.split('/', 5).join('/')
+    let hasError = false
+    fetch(urlJSON + '.json', {
+      credentials: 'same-origin',
+      method: 'PATCH',
+      contentType: 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      body: JSON.stringify(sentState),
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      }
+    }).then(response => {
+        if(!response.ok) {
+          hasError = true
+        }
+        return response.json()
+      }).then((json) => {
+        if(hasError == true) {
+          dispatch(actions.receiveErrors(json))
+        } else {
+          if(next) {
+            dispatch(next)
+          } else {
+            dispatch(actions.receiveTimeTables(json))
+          }
+        }
+      })
+  }
 }
 
 module.exports = actions

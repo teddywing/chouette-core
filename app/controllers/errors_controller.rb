@@ -1,14 +1,14 @@
 class ErrorsController < ApplicationController
   def not_found
-    render template: 'errors/not_found', status: 404, formats: [:html]
+    render status: 404
   end
 
   def server_error
-    render template: 'errors/server_error', status: 500, formats: [:html]
+    render status: 500
   end
 
-  def not_allowed
-    render template: 'errors/not_found', status: 403, formats: [:html]
+  def forbidden
+    render status: 403
   end
 end
 

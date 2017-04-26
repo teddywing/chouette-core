@@ -1,5 +1,6 @@
 fr:
   calendars:
+    search_no_results: 'Aucun calendrier ne correspond à votre recherche'
     days:
       monday: L
       tuesday: Ma

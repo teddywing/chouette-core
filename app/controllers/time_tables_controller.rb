@@ -57,9 +57,10 @@ class TimeTablesController < ChouetteController
   end
 
   def update
-    @time_table = Chouette::TimeTable.find_by_id(params[:id])
-    @time_table.calendar_id = nil
-    update!
+    state  = JSON.parse request.raw_post
+    respond_to do |format|
+      format.json { render json: state, status: state['errors'] ? :unprocessable_entity : :ok }
+    end
   end
 
   def index
@@ -99,6 +100,7 @@ class TimeTablesController < ChouetteController
       params[:q].delete("tag_search")
       scope = select_time_tables.tagged_with(tags, :wild => true, :any => true) if tags.any?
     end
+    scope = ransack_periode(scope)
 
     @q = scope.search(params[:q])
     if sort_column && sort_direction
@@ -126,6 +128,24 @@ class TimeTablesController < ChouetteController
   end
 
   private
+  # Fake ransack filter
+  def ransack_periode scope
+    return scope unless params[:q]
+    periode = params[:q]
+    return scope if periode['end_date_lteq(1i)'].empty? || periode['start_date_gteq(1i)'].empty?
+
+    begin_range = Date.civil(periode["start_date_gteq(1i)"].to_i, periode["start_date_gteq(2i)"].to_i, periode["start_date_gteq(3i)"].to_i)
+    end_range   = Date.civil(periode["end_date_lteq(1i)"].to_i, periode["end_date_lteq(2i)"].to_i, periode["end_date_lteq(3i)"].to_i)
+
+    if begin_range > end_range
+      flash.now[:error] = t('referentials.errors.validity_period')
+    else
+      @begin_range = begin_range
+      @end_range   = end_range
+    end
+    scope
+  end
+
   def sort_column
     referential.time_tables.column_names.include?(params[:sort]) ? params[:sort] : 'comment'
   end

@@ -4,8 +4,10 @@ fill_stop_points_options = ->
   referential_id = document.location.pathname.match(/\d+/g)[0]
   line_id = document.location.pathname.match(/\d+/g)[1]
   route_id = $('#routing_constraint_zone_route_id').val()
+
   if errors_on_form()
-   stop_point_ids = eval($('#stop_point_ids').val())
+    stop_point_ids = eval($('#stop_point_ids').val())
+
   $.ajax
     url: "/referentials/#{referential_id}/lines/#{line_id}/routes/#{route_id}/stop_points"
     dataType: 'json'
@@ -21,7 +23,6 @@ errors_on_form = ->
   document.location.pathname.endsWith('routing_constraint_zones') && $('#new_routing_constraint_zone').length
 
 $(document).on 'turbolinks:load', ->
-  if document.location.pathname.endsWith('new') || errors_on_form()
+  if document.location.pathname.endsWith('routing_constraint_zones/new') || errors_on_form()
     fill_stop_points_options()
   $('#routing_constraint_zone_route_id').change(fill_stop_points_options)
-

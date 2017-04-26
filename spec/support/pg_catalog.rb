@@ -1,5 +1,7 @@
 module Support
   module PGCatalog
+    # TODO: Check what of the follwowing can be done with ActiveRecord. E.g.
+    # @connection.foreign_keys(table)...
 
     def get_columns(schema_name, table_name)
       execute("SELECT * from information_schema.columns WHERE table_name = '#{table_name}' AND table_schema = '#{schema_name}'")

@@ -9,4 +9,7 @@
   .container-fluid
     #periods
 
+= javascript_tag do
+  | window.actionType = "#{raw params[:action]}"
+
 = javascript_include_tag 'es6_browserified/time_tables/index.js'

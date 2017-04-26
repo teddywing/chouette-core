@@ -6,6 +6,7 @@ $(document).on 'turbolinks:load', ->
     link = []
     ptitleCont = ""
 
+
   $el = $('#main_nav')
     # Opening/closing left-side menu
   $el.find('.openMenu').on 'click', (e) ->
@@ -19,10 +20,7 @@ $(document).on 'turbolinks:load', ->
   selectedItem.closest('.panel-collapse').addClass 'in'
   selectedItem.closest('.panel-title').children('a').attr('aria-expanded') == true
 
-  # Sticky content
-
-  # Sticky behavior
-  $(document).on 'scroll', ->
+  sticker = () ->
     limit = 51
 
     if $(window).scrollTop() >= limit
@@ -43,6 +41,7 @@ $(document).on 'turbolinks:load', ->
           $('#menu_top').children('.menu-content').after(stickyContent)
         if link.length == 0
           link = $('.page-action .small').next()
+
         $('.sticky-paction .small').after(link)
 
     else
@@ -52,3 +51,7 @@ $(document).on 'turbolinks:load', ->
         if !$('.page-action').find('.formSubmitr').length
           $('.page-action .small').after(link)
         $('.sticky-content').remove()
+
+  sticker();
+  # Sticky behavior
+  $(document).on 'scroll', sticker
