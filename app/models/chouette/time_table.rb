@@ -32,6 +32,21 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   validates_associated :dates
   validates_associated :periods
 
+  def state_update state
+    update_attributes(self.class.state_permited_attributes(state))
+
+    days = state['day_types'].split(',')
+    Date::DAYNAMES.map(&:underscore).each do |name|
+      prefix = human_attribute_name(name).first(2)
+      send("#{name}=", days.include?(prefix))
+    end
+    self.save
+  end
+
+  def self.state_permited_attributes item
+    item.slice('comment').to_hash
+  end
+
   def presenter
     @presenter ||= ::TimeTablePresenter.new( self)
   end

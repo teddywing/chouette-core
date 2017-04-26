@@ -7,13 +7,13 @@ const actions = {
   },
   arrayToStrDayTypes: (arr) => {
     let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
-    let str = ''
+    let str = []
     arr.map((dayActive, i) => {
       if(dayActive){
-        str += weekDays[i]
+        str.push(weekDays[i])
       }
     })
-    return str
+    return str.join(',')
   },
   fetchingApi: () =>({
     type: 'FETCH_API'
@@ -237,7 +237,7 @@ const actions = {
     let sentState = _.assign({}, timetable, metas)
     let urlJSON = window.location.pathname.split('/', 5).join('/')
     let hasError = false
-    fetch(urlJSON, {
+    fetch(urlJSON + '.json', {
       credentials: 'same-origin',
       method: 'PATCH',
       contentType: 'application/json; charset=utf-8',

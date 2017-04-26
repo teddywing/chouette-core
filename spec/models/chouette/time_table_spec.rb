@@ -7,6 +7,29 @@ describe Chouette::TimeTable, :type => :model do
   it { is_expected.to validate_presence_of :comment }
   it { is_expected.to validate_uniqueness_of :objectid }
 
+  describe "Update state" do
+    def time_table_to_state time_table
+      time_table.slice('id', 'comment').tap do |item|
+        item['day_types'] = "Di,Lu,Ma,Me,Je,Ve,Sa"
+      end
+    end
+
+    let(:state) { time_table_to_state subject }
+
+    it 'should update comment' do
+      state['comment'] = "Edited timetable name"
+      subject.state_update state
+      expect(subject.reload.comment).to eq state['comment']
+    end
+
+    it 'should update day_types' do
+      state['day_types'] = "Di,Lu,Je,Ma"
+      subject.state_update state
+      expect(subject.reload.valid_days).to include(7, 1, 4, 2)
+      expect(subject.reload.valid_days).not_to include(3, 5, 6)
+    end
+  end
+
   describe "#periods_max_date" do
     context "when all period extends from 04/10/2013 to 04/15/2013," do
       before(:each) do
@@ -1204,8 +1227,8 @@ end
         expect(subject.dates[9].date).to eq(Date.new(2014,8,27))
       end
     end
-  
-  
+
+
     context "with same definition : dsjointed timetable should be empty" do
       before do
         subject.periods.clear

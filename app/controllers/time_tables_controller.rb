@@ -57,9 +57,10 @@ class TimeTablesController < ChouetteController
   end
 
   def update
-    @time_table = Chouette::TimeTable.find_by_id(params[:id])
-    @time_table.calendar_id = nil
-    update!
+    state  = JSON.parse request.raw_post
+    respond_to do |format|
+      format.json { render json: state, status: state['errors'] ? :unprocessable_entity : :ok }
+    end
   end
 
   def index
