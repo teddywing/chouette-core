@@ -237,7 +237,7 @@ const actions = {
     let sentState = _.assign({}, timetable, metas)
     let urlJSON = window.location.pathname.split('/', 5).join('/')
     let hasError = false
-    fetch(urlJSON, {
+    fetch(urlJSON + '.json', {
       credentials: 'same-origin',
       method: 'PATCH',
       contentType: 'application/json; charset=utf-8',
