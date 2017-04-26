@@ -15,7 +15,9 @@ namespace :referential do
     ReferentialMetadata.create!(referential: referential, line_ids: [args[:line_id]], periodes: [Date.parse(args[:start_date])..Date.parse(args[:end_date])])
     referential.switch
 
-    puts "✓ Created Referential '#{name}' (#{referential.id})"
+
+    print "✓ Created Referential ".green, name, "(#{referential.id})".blue,  " switched to schema: ", referential.slug.yellow, "\n"
+    puts "  For inspection of data in the console, do a: `Referential.last.switch'".blueish
 
     stop_areas = workbench.stop_area_referential.stop_areas.last(10)
 
@@ -32,6 +34,7 @@ namespace :referential do
         route.stop_areas = stop_areas.reverse
       end
       route.save!
+      print "  ✓ Created Route ".green, route.name, "(#{route.id}), ".blue, "Line (#{line.id}) has #{line.routes.count} routes\n"
 
       journey_pattern = Chouette::JourneyPattern.create!(route: route, name: "Journey Pattern #{Faker::Name.unique.name}")
       journey_pattern.stop_points = stop_areas.inject([]) { |stop_points, stop_area| stop_points += stop_area.stop_points }
