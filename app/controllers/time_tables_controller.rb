@@ -58,7 +58,6 @@ class TimeTablesController < ChouetteController
 
   def update
     state  = JSON.parse request.raw_post
-
     respond_to do |format|
       format.json { render json: state, status: state['errors'] ? :unprocessable_entity : :ok }
     end
