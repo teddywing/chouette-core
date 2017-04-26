@@ -7,8 +7,8 @@
   / Below is secundary actions & optional contents
   .row
     .col-lg-12.text-right.mb-sm
-      = link_to t('lines.actions.show_network'), [@referential, @line.network], class: 'btn btn-primary'
-      = link_to t('lines.actions.show_company'), [@referential, @line.company], class: 'btn btn-primary'
+      / = link_to t('lines.actions.show_network'), [@referential, @line.network], class: 'btn btn-primary'
+      / = link_to t('lines.actions.show_company'), [@referential, @line.company], class: 'btn btn-primary'
 
       = link_to @line.human_attribute_name(:footnotes), referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary'
       = link_to Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr), referential_line_routing_constraint_zones_path(@referential, @line), class: 'btn btn-primary disabled'
@@ -34,8 +34,8 @@
         = definition_list t('metadatas'),
           {  'ID Codif' => @line.objectid.local_id,
              'Activé' => (@line.deactivated? ? t('false') : t('true')),
-             @line.human_attribute_name(:network) => (@line.network.nil? ? t('lines.index.unset') : @line.network.name),
-             @line.human_attribute_name(:company) => (@line.company.nil? ? t('lines.index.unset') : @line.company.name),
+             @line.human_attribute_name(:network) => (@line.network.nil? ? t('lines.index.unset') : link_to(@line.network.name, [@referential, @line.network]) ),
+             @line.human_attribute_name(:company) => (@line.company.nil? ? t('lines.index.unset') : link_to(@line.company.name, [@referential, @line.company]) ),
              'Transporteur(s) secondaire(s)' => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.collect(&:name).join(', ')),
              'Nom court' => @line.number,
              'Code public' => (@line.registration_number ? @line.registration_number : '-'),
