@@ -33,7 +33,7 @@ class TagsSelect2 extends React.Component{
         options={{
           tags:true,
           createTag: function(params) {
-            return {name: params.term, text: params.term, id: params.term}
+            return {name: params.term, text: params.term, id: false}
           },
           allowClear: true,
           theme: 'bootstrap',
