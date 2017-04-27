@@ -38,7 +38,7 @@ class TagsSelect2 extends React.Component{
           allowClear: true,
           theme: 'bootstrap',
           width: '100%',
-          placeholder: 'Cherchez un tag...',
+          placeholder: 'Ajoutez ou cherchez une étiquette...',
           ajax: {
             url: origin + path + '/tags.json',
             dataType: 'json',
