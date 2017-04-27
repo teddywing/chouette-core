@@ -11,6 +11,8 @@ describe Chouette::TimeTable, :type => :model do
     def time_table_to_state time_table
       time_table.slice('id', 'comment').tap do |item|
         item['day_types'] = "Di,Lu,Ma,Me,Je,Ve,Sa"
+        item['current_month'] = time_table.month_inspect(Date.today.beginning_of_month)
+        item['current_periode_range'] = Date.today.beginning_of_month.to_s
       end
     end
 
@@ -27,6 +29,27 @@ describe Chouette::TimeTable, :type => :model do
       subject.state_update state
       expect(subject.reload.valid_days).to include(7, 1, 4, 2)
       expect(subject.reload.valid_days).not_to include(3, 5, 6)
+    end
+
+    it 'should delete date if date is set to neither include or excluded date' do
+      updated = state['current_month'].map do |day|
+        day['include_date'] = false if day['include_date']
+      end
+
+      expect {
+        subject.state_update state
+      }.to change {subject.dates.count}.by(-updated.compact.count)
+    end
+
+    it 'should update date if date is set to excluded date' do
+        updated = state['current_month'].map do |day|
+          next unless day['include_date']
+          day['include_date']  = false
+          day['excluded_date'] = true
+        end
+
+        subject.state_update state
+        expect(subject.reload.excluded_days.count).to eq (updated.compact.count)
     end
   end
 
