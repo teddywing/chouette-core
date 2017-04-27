@@ -34,6 +34,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
 
   def state_update state
     update_attributes(self.class.state_permited_attributes(state))
+    self.tag_list = state['tags'].collect{|t| t['name']}.join(', ')
 
     days = state['day_types'].split(',')
     Date::DAYNAMES.map(&:underscore).each do |name|
