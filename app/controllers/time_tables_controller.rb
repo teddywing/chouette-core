@@ -46,7 +46,11 @@ class TimeTablesController < ChouetteController
         @time_table.periods << Chouette::TimeTablePeriod.new(period_start: date_range.begin, period_end: date_range.end, position: i)
       end
     end
-    create!
+
+    create! do |success, failure|
+      success.html { redirect_to edit_referential_time_table_path(@referential, @time_table) }
+      failure.html { render :new }
+    end
   end
 
   def edit
@@ -58,6 +62,7 @@ class TimeTablesController < ChouetteController
 
   def update
     state  = JSON.parse request.raw_post
+    resource.state_update state
     respond_to do |format|
       format.json { render json: state, status: state['errors'] ? :unprocessable_entity : :ok }
     end

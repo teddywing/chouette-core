@@ -62,6 +62,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/secrets.yml #{release_path}/config/"
     run "ln -nfs #{shared_path}/config/newrelic.yml #{release_path}/config/"
 
+    run "rm -rf #{release_path}/public/uploads"
     run "ln -nfs #{shared_path}/public/uploads #{release_path}/public/uploads"
     run "ln -nfs #{shared_path}/tmp/uploads #{release_path}/tmp/uploads"
   end

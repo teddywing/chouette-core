@@ -25,16 +25,20 @@ class TagsSelect2 extends React.Component{
     return (
       <Select2
         value={(this.props.tags.length) ? _.map(this.props.tags, 'id') : undefined}
-        data={(this.props.tags.length) ? this.mapKeys(this.props.tags) : undefined}
+        data={(this.props.initialTags.length) ? this.mapKeys(this.props.initialTags) : undefined}
         onSelect={(e) => this.props.onSelect2Tags(e)}
         onUnselect={(e) => setTimeout( () => this.props.onUnselect2Tags(e, 150))}
         multiple={true}
         ref='tags_id'
         options={{
+          tags:true,
+          createTag: function(params) {
+            return {name: params.term, text: params.term, id: params.term}
+          },
           allowClear: true,
           theme: 'bootstrap',
           width: '100%',
-          placeholder: 'Cherchez un tag...',
+          placeholder: 'Ajoutez ou cherchez une étiquette...',
           ajax: {
             url: origin + path + '/tags.json',
             dataType: 'json',

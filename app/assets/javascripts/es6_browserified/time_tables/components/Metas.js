@@ -71,18 +71,17 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
           </div>
 
           {/* tags */}
-          {/* <div className="form-group">
+          <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4">Etiquettes</label>
             <div className="col-sm-8">
               <TagsSelect2
+                initialTags={metas.initial_tags}
                 tags={metas.tags}
                 onSelect2Tags={(e) => onSelect2Tags(e)}
                 onUnselect2Tags={(e) => onUnselect2Tags(e)}
               />
-              <input type="text" value='ton papa' className='form-control'/>
             </div>
           </div>
-          */}
 
           {/* calendar */}
           <div className="form-group">

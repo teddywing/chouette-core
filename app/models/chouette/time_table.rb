@@ -34,11 +34,38 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
 
   def state_update state
     update_attributes(self.class.state_permited_attributes(state))
+    self.tag_list = state['tags'].collect{|t| t['name']}.join(', ')
 
     days = state['day_types'].split(',')
     Date::DAYNAMES.map(&:underscore).each do |name|
       prefix = human_attribute_name(name).first(2)
       send("#{name}=", days.include?(prefix))
+    end
+
+    saved_dates = Hash[self.dates.collect{ |d| [d.id, d.date]}]
+    cmonth = Date.parse(state['current_periode_range'])
+
+    state['current_month'].each do |d|
+      date    = Date.parse(d['date'])
+      checked = d['include_date'] || d['excluded_date']
+      in_out  = d['include_date'] ? true : false
+
+      date_id = saved_dates.key(date)
+      time_table_date = self.dates.find(date_id) if date_id
+
+      next if !checked && !time_table_date
+
+      # Destroy date if no longer checked
+      next if !checked && time_table_date.destroy
+
+      # Create new date
+      unless time_table_date
+        time_table_date = self.dates.create({in_out: in_out, date: date})
+      end
+      # Update in_out
+      if in_out != time_table_date.in_out
+        time_table_date.update_attributes({in_out: in_out})
+      end
     end
     self.save
   end
@@ -62,6 +89,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     (date.beginning_of_month..date.end_of_month).map do |d|
       {
         day: I18n.l(d, format: '%A'),
+        date: d.to_s,
         wday: d.wday,
         wnumber: d.strftime("%W").to_s,
         mday: d.mday,
