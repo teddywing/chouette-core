@@ -13,10 +13,28 @@ describe Chouette::TimeTable, :type => :model do
         item['day_types'] = "Di,Lu,Ma,Me,Je,Ve,Sa"
         item['current_month'] = time_table.month_inspect(Date.today.beginning_of_month)
         item['current_periode_range'] = Date.today.beginning_of_month.to_s
+        item['tags'] = time_table.tags.map{ |tag| {id: tag.id, name: tag.name}}
       end
     end
 
     let(:state) { time_table_to_state subject }
+    it 'should save new tags' do
+      subject.tag_list = "awesome, great"
+      subject.save
+      state['tags'] << {'id' => false, 'name' => 'new_tag'}
+
+      subject.state_update state
+      expect(subject.reload.tags.map(&:name)).to include('new_tag')
+    end
+
+    it 'should remove removed tags' do
+      subject.tag_list = "awesome, great"
+      subject.save
+      state['tags'] = []
+
+      subject.state_update state
+      expect(subject.reload.tags).to be_empty
+    end
 
     it 'should update comment' do
       state['comment'] = "Edited timetable name"
