@@ -40,6 +40,28 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       prefix = human_attribute_name(name).first(2)
       send("#{name}=", days.include?(prefix))
     end
+
+    saved_dates = Hash[self.dates.collect{ |d| [d.id, d.date]}]
+    cmonth = Date.parse(state['current_periode_range'])
+
+    state['current_month'].each do |d|
+      date = Date.parse("#{d['mday']}-#{cmonth.strftime("%B-%Y")}")
+      id = saved_dates.key(date)
+      next unless id
+
+      time_table_date = self.dates.find(id)
+      # Destroy removed date
+      unless d['include_date'] || d['excluded_date']
+        next if time_table_date.destroy
+      end
+      # Update in_out
+      in_out = d['include_date'] ? true : false
+      if in_out != time_table_date.in_out
+        time_table_date.update_attributes({in_out: in_out})
+      end
+
+    end
+
     self.save
   end
 
