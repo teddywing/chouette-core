@@ -25,7 +25,7 @@ class TagsSelect2 extends React.Component{
     return (
       <Select2
         value={(this.props.tags.length) ? _.map(this.props.tags, 'id') : undefined}
-        data={(this.props.tags.length) ? this.mapKeys(this.props.tags) : undefined}
+        data={(this.props.initialTags.length) ? this.mapKeys(this.props.initialTags) : undefined}
         onSelect={(e) => this.props.onSelect2Tags(e)}
         onUnselect={(e) => setTimeout( () => this.props.onUnselect2Tags(e, 150))}
         multiple={true}
@@ -33,7 +33,7 @@ class TagsSelect2 extends React.Component{
         options={{
           tags:true,
           createTag: function(params) {
-            return {name: params.term, text: params.term, id: false}
+            return {name: params.term, text: params.term, id: params.term}
           },
           allowClear: true,
           theme: 'bootstrap',

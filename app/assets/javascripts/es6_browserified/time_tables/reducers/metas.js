@@ -8,6 +8,7 @@ const metas = (state = {}, action) => {
         comment: action.json.comment,
         day_types: actions.strToArrayDayTypes(action.json.day_types),
         tags: action.json.tags,
+        initial_tags: action.json.tags,
         color: action.json.color,
         calendar: action.json.calendar ? action.json.calendar : {name : 'Aucun'}
       })
