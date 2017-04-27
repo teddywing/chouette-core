@@ -45,23 +45,27 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     cmonth = Date.parse(state['current_periode_range'])
 
     state['current_month'].each do |d|
-      date = Date.parse("#{d['mday']}-#{cmonth.strftime("%B-%Y")}")
-      id = saved_dates.key(date)
-      next unless id
+      date    = Date.parse(d['date'])
+      checked = d['include_date'] || d['excluded_date']
+      in_out  = d['include_date'] ? true : false
 
-      time_table_date = self.dates.find(id)
-      # Destroy removed date
-      unless d['include_date'] || d['excluded_date']
-        next if time_table_date.destroy
+      date_id = saved_dates.key(date)
+      time_table_date = self.dates.find(date_id) if date_id
+
+      next if !checked && !time_table_date
+
+      # Destroy date if no longer checked
+      next if !checked && time_table_date.destroy
+
+      # Create new date
+      unless time_table_date
+        time_table_date = self.dates.create({in_out: in_out, date: date})
       end
       # Update in_out
-      in_out = d['include_date'] ? true : false
       if in_out != time_table_date.in_out
         time_table_date.update_attributes({in_out: in_out})
       end
-
     end
-
     self.save
   end
 
@@ -84,6 +88,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     (date.beginning_of_month..date.end_of_month).map do |d|
       {
         day: I18n.l(d, format: '%A'),
+        date: d.to_s,
         wday: d.wday,
         wnumber: d.strftime("%W").to_s,
         mday: d.mday,
