@@ -51,6 +51,30 @@ describe Chouette::TimeTable, :type => :model do
         subject.state_update state
         expect(subject.reload.excluded_days.count).to eq (updated.compact.count)
     end
+
+    it 'should create new include date' do
+      day  = state['current_month'].first
+      date = Date.parse(day['date'])
+      day['include_date'] = true
+      expect(subject.included_days).not_to include(date)
+
+      expect {
+        subject.state_update state
+      }.to change {subject.dates.count}.by(1)
+      expect(subject.reload.included_days).to include(date)
+    end
+
+    it 'should create new exclude date' do
+      day  = state['current_month'].first
+      date = Date.parse(day['date'])
+      day['excluded_date'] = true
+      expect(subject.excluded_days).not_to include(date)
+
+      expect {
+        subject.state_update state
+      }.to change {subject.dates.count}.by(1)
+      expect(subject.reload.excluded_days).to include(date)
+    end
   end
 
   describe "#periods_max_date" do
