@@ -31,6 +31,10 @@ class TagsSelect2 extends React.Component{
         multiple={true}
         ref='tags_id'
         options={{
+          tags:true,
+          createTag: function(params) {
+            return {name: params.term, text: params.term, id: params.term}
+          },
           allowClear: true,
           theme: 'bootstrap',
           width: '100%',
