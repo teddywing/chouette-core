@@ -54,18 +54,20 @@ class DuplicateVehicleJourney extends Component {
                               <span className={'input-group time'}>
                                 <input
                                   type='number'
+                                  ref='duplicate_time_hh'
                                   min='00'
                                   max='23'
                                   className='form-control'
-                                  value={'00'}
+                                  defaultValue={'00'}
                                   />
                                 <span>:</span>
                                 <input
                                   type='number'
+                                  ref='duplicate_time_mm'
                                   min='00'
                                   max='59'
                                   className='form-control'
-                                  value={'00'}
+                                  defaultValue={'00'}
                                   />
                               </span>
                             </div>
