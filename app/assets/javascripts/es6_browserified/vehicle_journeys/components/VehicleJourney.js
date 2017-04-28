@@ -46,7 +46,7 @@ class VehicleJourney extends Component {
     this.previousCity = undefined
 
     return (
-      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '')}>
+      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.errors ? ' has-error': '')}>
         <div className='th'>
           <div className='strong mb-xs'>{this.props.value.objectid ? this.props.value.objectid : '-'}</div>
           <div>{this.props.value.journey_pattern.objectid}</div>
