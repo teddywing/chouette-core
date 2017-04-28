@@ -74,6 +74,7 @@ en:
         number: "Number"
         transport_mode: "Transport mode"
         transport_submode: "Transport Submode"
+        seasonal: "Seasonal"
         url: "Web page"
         color: "Line color"
         text_color: "Text color"

@@ -402,6 +402,12 @@ const actions = {
     if (vjas.arrival_time.minute == null) vjas.arrival_time.minute = '00'
     return vjas
   },
+  getDuplicateDelta: (original, newDeparture) => {
+    if (original.departure_time.hour != '' && original.departure_time.minute != '' && newDeparture.departure_time.hour != '' && newDeparture.departure_time.minute != ''){
+      return  (parseInt(newDeparture.departure_time.hour) - parseInt(original.departure_time.hour)) * 60 + (parseInt(newDeparture.departure_time.minute) - parseInt(original.departure_time.minute))
+    }
+    return 0
+  },
   getDelta: (vjas) => {
     let delta = 0
     if (vjas.departure_time.hour != '' && vjas.departure_time.minute != '' && vjas.arrival_time.hour != '' && vjas.departure_time.minute != ''){

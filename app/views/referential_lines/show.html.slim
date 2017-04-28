@@ -41,7 +41,8 @@
              'Code public' => (@line.registration_number ? @line.registration_number : '-'),
              @line.human_attribute_name(:transport_mode) => (@line.transport_mode ? t("enumerize.line.transport_mode.#{@line.transport_mode}") : '-'),
              @line.human_attribute_name(:transport_submode) => (@line.transport_submode ? t("enumerize.line.transport_submode.#{@line.transport_submode}") : '-'),
-             @line.human_attribute_name(:url) => (@line.url ? @line.url : '-') }
+             @line.human_attribute_name(:url) => (@line.url ? @line.url : '-'),
+             @line.human_attribute_name(:seasonal) => (@line.seasonal? ? t('true') : t('false')),}
 
     .row
       .col-lg-12
@@ -51,7 +52,7 @@
               = search_form_for @q, url: referential_line_path(@referential, @line), class: 'form form-filter' do |f|
                 .input-group.search_bar
                   = f.search_field :name_cont, class: 'form-control', placeholder: "Indiquez un nom d'itinéraire..."
-          
+
                   span.input-group-btn
                     button.btn.btn-default type='submit'
                       span.fa.fa-search

@@ -34,4 +34,5 @@
              'Code public' => (@line.registration_number ? @line.registration_number : '-'),
              @line.human_attribute_name(:transport_mode) => (@line.transport_mode ? t("enumerize.line.transport_mode.#{@line.transport_mode}") : '-'),
              @line.human_attribute_name(:transport_submode) => (@line.transport_submode ? t("enumerize.line.transport_submode.#{@line.transport_submode}") : '-'),
-             @line.human_attribute_name(:url) => (@line.url ? @line.url : '-') }
+             @line.human_attribute_name(:url) => (@line.url ? @line.url : '-'),
+             @line.human_attribute_name(:seasonal) => (@line.seasonal? ? t('true') : t('false')),}

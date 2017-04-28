@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
+var _ = require('lodash')
 
 class DuplicateVehicleJourney extends Component {
   constructor(props) {
@@ -10,12 +11,24 @@ class DuplicateVehicleJourney extends Component {
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
+      let newDeparture = {
+        departure_time : {
+          hour: this.refs.duplicate_time_hh.value,
+          minute: this.refs.duplicate_time_mm.value
+        }
+      }
+      let val = actions.getDuplicateDelta(_.find(actions.getSelected(this.props.vehicleJourneys)[0].vehicle_journey_at_stops, {'dummy': false}), newDeparture)
+      this.refs.additional_time.value = parseInt(this.refs.additional_time.value) + val
       this.props.onDuplicateVehicleJourney(this.refs)
       this.props.onModalClose()
       $('#DuplicateVehicleJourneyModal').modal('hide')
     }
   }
 
+  getDefaultValue(type) {
+    let vjas = _.find(actions.getSelected(this.props.vehicleJourneys)[0].vehicle_journey_at_stops, {'dummy': false})
+    return vjas.departure_time[type]
+  }
   render() {
     if(this.props.status.isFetching == true) {
       return false
@@ -48,7 +61,32 @@ class DuplicateVehicleJourney extends Component {
                     <form>
                       <div className='modal-body'>
                         <div className='row'>
-                          <div className='col-lg-8 col-md-8 col-sm-8 col-xs-12'>
+                          <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Horaire de départ</label>
+                              <span className={'input-group time'}>
+                                <input
+                                  type='number'
+                                  ref='duplicate_time_hh'
+                                  min='00'
+                                  max='23'
+                                  className='form-control'
+                                  defaultValue={this.getDefaultValue('hour')}
+                                  />
+                                <span>:</span>
+                                <input
+                                  type='number'
+                                  ref='duplicate_time_mm'
+                                  min='00'
+                                  max='59'
+                                  className='form-control'
+                                  defaultValue={this.getDefaultValue('minute')}
+                                  />
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                             <div className='form-group'>
                               <label className='control-label is-required'>Nombre de courses à créer et dupliquer</label>
                               <input
@@ -62,7 +100,8 @@ class DuplicateVehicleJourney extends Component {
                                 />
                             </div>
                           </div>
-                          <div className='col-lg-4 col-md-4 col-sm-4 col-xs-12'>
+
+                          <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3'>
                             <div className='form-group'>
                               <label className='control-label is-required'>Avec un décalage de</label>
                               <input
