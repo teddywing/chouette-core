@@ -297,7 +297,8 @@ const actions = {
               timeTables.push({
                 objectid: tt.objectid,
                 comment: tt.comment,
-                id: tt.id
+                id: tt.id,
+                color: tt.color
               })
             }
             let vjasWithDelta = val.vehicle_journey_at_stops.map((vjas, i) => {
