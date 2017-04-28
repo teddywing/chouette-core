@@ -72,6 +72,13 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   after_commit :journey_patterns_control_route_sections
 
+  def self.includes_first_and_last_stop_area
+    includes(:stop_points)
+      .where(stop_points: {
+        position: 0
+      })
+  end
+
   def geometry_presenter
     Chouette::Geometry::RoutePresenter.new self
   end

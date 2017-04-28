@@ -3,6 +3,17 @@ require 'spec_helper'
 describe Chouette::Route, :type => :model do
   subject { create(:route) }
 
+  describe ".includes_first_and_last_stop_area" do
+    it "joins Chouette::StopArea and includes only the first & last stops" do
+      expected_route = create(:route)
+
+      route = Chouette::Route.includes_first_and_last_stop_area.first
+
+      expect(route.stop_points.length).to eq(1)
+      expect(route.stop_points.first.position).to eq(0)
+    end
+  end
+
   describe '#objectid' do
     subject { super().objectid }
     it { is_expected.to be_kind_of(Chouette::ObjectId) }
