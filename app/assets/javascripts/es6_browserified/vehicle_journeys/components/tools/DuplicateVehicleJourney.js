@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
+var _ = require('lodash')
 
 class DuplicateVehicleJourney extends Component {
   constructor(props) {
@@ -16,6 +17,10 @@ class DuplicateVehicleJourney extends Component {
     }
   }
 
+  getDefaultValue(type) {
+    let vjas = _.find(actions.getSelected(this.props.vehicleJourneys)[0].vehicle_journey_at_stops, {'dummy': false})
+    return vjas.departure_time[type]
+  }
   render() {
     if(this.props.status.isFetching == true) {
       return false
@@ -28,7 +33,7 @@ class DuplicateVehicleJourney extends Component {
             disabled={((actions.getSelected(this.props.vehicleJourneys).length >= 1 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled')}
             data-toggle='modal'
             data-target='#DuplicateVehicleJourneyModal'
-            onClick={() => this.props.onOpenDuplicateModal(actions.getSelected(this.props.vehicleJourneys)[0])}
+            onClick={this.props.onOpenDuplicateModal}
           >
             <span className='fa fa-files-o'></span>
           </button>
@@ -58,7 +63,7 @@ class DuplicateVehicleJourney extends Component {
                                   min='00'
                                   max='23'
                                   className='form-control'
-                                  defaultValue={'00'}
+                                  defaultValue={this.getDefaultValue('hour')}
                                   />
                                 <span>:</span>
                                 <input
@@ -67,7 +72,7 @@ class DuplicateVehicleJourney extends Component {
                                   min='00'
                                   max='59'
                                   className='form-control'
-                                  defaultValue={'00'}
+                                  defaultValue={this.getDefaultValue('minute')}
                                   />
                               </span>
                             </div>

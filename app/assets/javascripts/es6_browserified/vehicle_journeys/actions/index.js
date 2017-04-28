@@ -95,9 +95,8 @@ const actions = {
   openShiftModal : () => ({
     type : 'SHIFT_VEHICLEJOURNEY_MODAL'
   }),
-  openDuplicateModal : (vj) => ({
-    type : 'DUPLICATE_VEHICLEJOURNEY_MODAL',
-    vehicleJourney: vj
+  openDuplicateModal : () => ({
+    type : 'DUPLICATE_VEHICLEJOURNEY_MODAL'
   }),
   selectVehicleJourney : (index) => ({
     type : 'SELECT_VEHICLEJOURNEY',
