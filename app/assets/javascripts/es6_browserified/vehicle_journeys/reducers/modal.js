@@ -116,7 +116,9 @@ const modal = (state = {}, action) => {
     case 'DUPLICATE_VEHICLEJOURNEY_MODAL':
       return {
         type: 'duplicate',
-        modalProps: {},
+        modalProps: {
+          vehicleJourney: action.vehicleJourney
+        },
         confirmModal: {}
       }
     case 'CLOSE_MODAL':

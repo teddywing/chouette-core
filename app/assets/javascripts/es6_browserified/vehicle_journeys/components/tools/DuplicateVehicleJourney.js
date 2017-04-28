@@ -28,7 +28,7 @@ class DuplicateVehicleJourney extends Component {
             disabled={((actions.getSelected(this.props.vehicleJourneys).length >= 1 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled')}
             data-toggle='modal'
             data-target='#DuplicateVehicleJourneyModal'
-            onClick={this.props.onOpenDuplicateModal}
+            onClick={() => this.props.onOpenDuplicateModal(actions.getSelected(this.props.vehicleJourneys)[0])}
           >
             <span className='fa fa-files-o'></span>
           </button>
@@ -47,6 +47,30 @@ class DuplicateVehicleJourney extends Component {
                   {(this.props.modal.type == 'duplicate') && (
                     <form>
                       <div className='modal-body'>
+                        <div className='row'>
+                          <div className='col-lg-8 col-md-8 col-sm-8 col-xs-12'>
+                            <div className='form-group'>
+                              <label className='control-label is-required'>Horaire de départ</label>
+                              <span className={'input-group time'}>
+                                <input
+                                  type='number'
+                                  min='00'
+                                  max='23'
+                                  className='form-control'
+                                  value={'00'}
+                                  />
+                                <span>:</span>
+                                <input
+                                  type='number'
+                                  min='00'
+                                  max='59'
+                                  className='form-control'
+                                  value={'00'}
+                                  />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
                         <div className='row'>
                           <div className='col-lg-8 col-md-8 col-sm-8 col-xs-12'>
                             <div className='form-group'>
