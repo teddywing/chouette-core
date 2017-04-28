@@ -19,7 +19,7 @@ child(:journey_pattern) do |journey_pattern|
 end
 
 child(:time_tables, :object_root => false) do |time_tables|
-  attributes :id, :objectid, :comment
+  attributes :id, :objectid, :comment, :color
   child(:calendar) do
     attributes :id, :name, :date_ranges, :dates, :shared
   end

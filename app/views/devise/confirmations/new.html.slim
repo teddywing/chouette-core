@@ -4,9 +4,9 @@
   .col-md-4.login
     .panel.panel-default
       .panel-heading = t('.title')
-      
+
       .panel-body
-        = simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :wrapper => "form_without_label", html: { :class => 'form-horizontal user', method: :post } ) do |form|
+        = simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), html: { :class => 'form-horizontal user', method: :post } ) do |form|
           = form.input :email, :label => false, input_html: { :class => "form-control" }
           .row
             .col-md-12

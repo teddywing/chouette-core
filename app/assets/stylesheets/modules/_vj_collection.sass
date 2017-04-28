@@ -78,3 +78,27 @@
 
         &:after
           bottom: -6px
+
+  // Errors
+  .table-2entries .t2e-item-list
+    .t2e-item
+      position: relative
+
+      &.has-error
+        &:before
+          content: ''
+          position: absolute
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+          z-index: 5
+          border: 2px solid $red
+
+        > .th
+          > div:first-child, > div:first-child + div
+            color: $red
+
+        // Reset default behaviour
+        .form-control
+          border-color: #ccc

@@ -11,7 +11,7 @@
       = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], class: 'btn btn-primary'
       - if @route.journey_patterns.present?
         = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'btn btn-primary'
-        
+
       = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'btn btn-primary'
 
       - if policy(@route).destroy?
@@ -26,7 +26,7 @@
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
           { 'OiD' => @route.try(:objectid).try(:local_id),
-            'Direction' => (@route.published_name ? @route.published_name : '-'),
+            t('activerecord.attributes.route.published_name') => (@route.published_name ? @route.published_name : '-'),
             @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
             @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }
 
