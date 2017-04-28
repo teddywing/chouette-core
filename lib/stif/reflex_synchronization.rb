@@ -146,6 +146,7 @@ module Stif
         stop.deleted_at            = nil
         stop.stop_area_referential = self.defaut_referential
         {
+          :comment        => 'Description',
           :name           => 'Name',
           :area_type      => 'TypeOfPlaceRef',
           :object_version => 'version',
