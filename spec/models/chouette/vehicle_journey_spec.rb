@@ -18,7 +18,7 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     def vehicle_journey_to_state vj
-      vj.attributes.slice('objectid', 'published_journey_name', 'journey_pattern_id', 'company_id').tap do |item|
+      vj.slice('objectid', 'published_journey_name', 'journey_pattern_id', 'company_id').tap do |item|
         item['vehicle_journey_at_stops'] = []
         item['time_tables']              = []
         item['footnotes']                = []
@@ -77,7 +77,7 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     it 'should update vj journey_pattern association' do
-      state['journey_pattern'] = create(:journey_pattern).attributes.slice('id', 'name', 'objectid')
+      state['journey_pattern'] = create(:journey_pattern).slice('id', 'name', 'objectid')
       Chouette::VehicleJourney.state_update(route, collection)
 
       expect(state['errors']).to be_nil
@@ -85,10 +85,12 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     it 'should update vj time_tables association from state' do
-      2.times{state['time_tables'] << create(:time_table).attributes.slice('id', 'comment', 'objectid')}
+      2.times{state['time_tables'] << create(:time_table).slice('id', 'comment', 'objectid')}
       vehicle_journey.update_has_and_belongs_to_many_from_state(state)
 
-      expect(vehicle_journey.reload.time_tables.map(&:id)).to eq(state['time_tables'].map{|tt| tt['id']})
+      expected = state['time_tables'].map{|tt| tt['id']}
+      actual   = vehicle_journey.reload.time_tables.map(&:id)
+      expect(actual).to match_array(expected)
     end
 
     it 'should clear vj time_tableas association when remove from state' do
@@ -100,7 +102,7 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     it 'should update vj footnote association from state' do
-      2.times{state['footnotes'] << create(:footnote, line: route.line).attributes.slice('id', 'code', 'label', 'line_id')}
+      2.times{state['footnotes'] << create(:footnote, line: route.line).slice('id', 'code', 'label', 'line_id')}
       vehicle_journey.update_has_and_belongs_to_many_from_state(state)
 
       expect(vehicle_journey.reload.footnotes.map(&:id)).to eq(state['footnotes'].map{|tt| tt['id']})
@@ -115,7 +117,7 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     it 'should update vj company' do
-      state['company'] = create(:company).attributes.slice('id', 'name', 'objectid')
+      state['company'] = create(:company).slice('id', 'name', 'objectid')
       Chouette::VehicleJourney.state_update(route, collection)
 
       expect(state['errors']).to be_nil
