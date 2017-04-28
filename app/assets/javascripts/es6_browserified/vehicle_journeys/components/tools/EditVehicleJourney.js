@@ -11,7 +11,13 @@ class EditVehicleJourney extends Component {
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
-      this.props.onEditVehicleJourney(this.refs, this.props.modal.modalProps.selectedCompany)
+      var company;
+      if(this.props.modal.modalProps.selectedCompany) {
+        company = this.props.modal.modalProps.selectedCompany
+      } else {
+        company = this.props.modal.modalProps.vehicleJourney.company
+      }
+      this.props.onEditVehicleJourney(this.refs, company)
       this.props.onModalClose()
       $('#EditVehicleJourneyModal').modal('hide')
     }
