@@ -72,11 +72,11 @@ class NotesEditVehicleJourney extends Component {
                           >
                             <div className='panel-heading'>
                               <h4 className='panel-title clearfix'>
-                                <div className='pull-left' style={{paddingTop: '3px'}}>{lf.label}</div>
+                                <div className='pull-left' style={{paddingTop: '3px'}}>{lf.code}</div>
                                 <div className='pull-right'>{this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}</div>
                               </h4>
                             </div>
-                            <div className='panel-body'><p>{lf.code}</p></div>
+                            <div className='panel-body'><p>{lf.label}</p></div>
                           </div>
                         )}
                       </div>
