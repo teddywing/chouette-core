@@ -73,6 +73,7 @@ fr:
         number: "Nom court"
         transport_mode: "Mode de transport"
         transport_submode: "Sous mode de transport"
+        seasonal: "Saisonnière"
         url: "Page web associée"
         color: "Couleur du tracé"
         text_color: "Couleur du texte"

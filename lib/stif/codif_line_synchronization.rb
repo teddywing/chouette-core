@@ -87,7 +87,8 @@ module Stif
           objectid: api_line.stif_id,
           number: api_line.short_name,
           deactivated: (api_line.status == "inactive" ? true : false),
-          import_xml: api_line.xml
+          import_xml: api_line.xml,
+          seasonal: api_line.seasonal
         }
         params[:transport_mode] = api_line.transport_mode.to_s
         params[:transport_submode] = api_line.transport_submode.to_s
