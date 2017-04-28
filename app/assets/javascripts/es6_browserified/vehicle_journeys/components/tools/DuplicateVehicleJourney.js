@@ -11,6 +11,14 @@ class DuplicateVehicleJourney extends Component {
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
+      let newDeparture = {
+        departure_time : {
+          hour: this.refs.duplicate_time_hh.value,
+          minute: this.refs.duplicate_time_mm.value
+        }
+      }
+      let val = actions.getDuplicateDelta(_.find(actions.getSelected(this.props.vehicleJourneys)[0].vehicle_journey_at_stops, {'dummy': false}), newDeparture)
+      this.refs.additional_time.value = parseInt(this.refs.additional_time.value) + val
       this.props.onDuplicateVehicleJourney(this.refs)
       this.props.onModalClose()
       $('#DuplicateVehicleJourneyModal').modal('hide')
