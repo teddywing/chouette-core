@@ -59,6 +59,7 @@ fr:
         other: "lignes"
     attributes:
       line:
+        id: "ID"
         network: "Réseau"
         networks:
           name: "Réseau"
