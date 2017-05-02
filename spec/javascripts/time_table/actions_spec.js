@@ -24,4 +24,28 @@ describe('actions', () => {
     }
     expect(actions.updateColor('#ffffff')).toEqual(expectedAction)
   })
+
+  it('should create an action to update selected tags', () => {
+    let selectedItem = {
+      id: 1,
+      name: 'test'
+    }
+    const expectedAction = {
+      type: 'UPDATE_SELECT_TAG',
+      selectedItem: selectedItem
+    }
+    expect(actions.select2Tags(selectedItem)).toEqual(expectedAction)
+  })
+
+  it('should create an action to update unselected tags', () => {
+    let selectedItem = {
+      id: 1,
+      name: 'test'
+    }
+    const expectedAction = {
+      type: 'UPDATE_UNSELECT_TAG',
+      selectedItem: selectedItem
+    }
+    expect(actions.unselect2Tags(selectedItem)).toEqual(expectedAction)
+  })
 })
