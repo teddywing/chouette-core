@@ -1,46 +1,26 @@
-= title_tag t('.title', calendar: @calendar.name)
+/ PageHeader
+= pageheader 'map-marker',
+             @calendar.name,
+             '',
+             t('last_update', time: l(@calendar.updated_at, format: :short)),
+             (policy(@calendar).edit? ? link_to(t('actions.edit'), edit_calendar_path(@calendar), class: 'btn btn-default') : '') do
 
-p
-  label => "#{Calendar.human_attribute_name('name')} : "
-  = @calendar.name
-p
-  label => "#{Calendar.human_attribute_name('short_name')} : "
-  = @calendar.short_name
+  / Below is secondary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      - if policy(@calendar).destroy?
+        = link_to calendar_path(@calendar), method: :delete, data: { confirm: t('calendars.actions.destroy_confirm') }, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('actions.destroy')
 
-.row
-  .col-xs-4
-    p
-      label => "#{Calendar.human_attribute_name('dates')} : "
-      table.table.table-condensed
-        tbody
-          - @calendar.dates.each do |date|
-            tr
-              td= l date
-    p
-      label => "#{Calendar.human_attribute_name('date_ranges')} : "
-      table.table.table-condensed
-        thead
-          th= t('simple_form.labels.calendar.ranges.begin')
-          th= t('simple_form.labels.calendar.ranges.end')
-        tbody
-          - @calendar.date_ranges.each do |date_range|
-            tr
-              td= l date_range.begin
-              td= l date_range.end
-
-p
-  label => "#{Calendar.human_attribute_name('shared')} : "
-  = @calendar.shared
-p
-  label => "#{Organisation.model_name.human} : "
-  = @calendar.organisation.name
-
-
-- content_for(:sidebar) do
-  ul.actions
-    - if policy(@calendar).edit?
-      li
-        = link_to t('calendars.actions.edit'), edit_calendar_path(@calendar), class: 'edit'
-    - if policy(@calendar).destroy?
-      li
-        = link_to t('calendars.actions.destroy'), calendar_path(@calendar), method: :delete, data: { confirm: t('calendars.actions.destroy_confirm') }, class: 'remove'
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { 'Nom court' => @calendar.try(:short_name),
+            Calendar.human_attribute_name(:shared) => t("#{@calendar.shared}"),
+            'Organisation' => @calendar.organisation.name,
+            Calendar.human_attribute_name(:dates) =>  @calendar.dates.collect{|d| l(d, format: :short)}.join(', ').html_safe,
+            Calendar.human_attribute_name(:date_ranges) => @calendar.date_ranges.collect{|d| t('validity_range', debut: l(d.begin, format: :short), end: l(d.end, format: :short))}.join('<br>').html_safe }
