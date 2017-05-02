@@ -57,7 +57,6 @@ describe Chouette::TimeTable, :type => :model do
       expect(subject.reload.color).to eq(state['color'])
     end
 
-    #edit crud periods from state
     it 'should save new tags' do
       subject.tag_list = "awesome, great"
       subject.save
