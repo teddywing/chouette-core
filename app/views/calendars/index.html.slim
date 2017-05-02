@@ -2,12 +2,7 @@
 = pageheader 'map-marker',
              t('.title'),
              '',
-             '' do
-
-  / Below is secundary actions & optional contents (filters, ...)
-  .row.mb-sm
-    .col-lg-12.text-right
-      = link_to t('actions.add'), new_calendar_path, class: 'btn btn-primary'
+             link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default') do
 
 / PageContent
 .page_content
