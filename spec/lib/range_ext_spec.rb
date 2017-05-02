@@ -1,8 +1,6 @@
 RSpec.describe Range do
   context "intersection" do
     it "is nil (sic) for two distinct ranges" do
-      require 'pry'
-      binding.pry
       expect( (1..2).intersection(3..4) ).to be_nil
     end
 
