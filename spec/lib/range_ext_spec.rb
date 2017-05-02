@@ -1,3 +1,4 @@
+require 'range_ext'
 RSpec.describe Range do
   context "intersection" do
     it "is nil (sic) for two distinct ranges" do
