@@ -90,7 +90,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   end
 
   def self.state_permited_attributes item
-    item.slice('comment').to_hash
+    item.slice('comment', 'color').to_hash
   end
 
   def presenter
