@@ -14,10 +14,43 @@ describe Chouette::TimeTable, :type => :model do
         item['current_month'] = time_table.month_inspect(Date.today.beginning_of_month)
         item['current_periode_range'] = Date.today.beginning_of_month.to_s
         item['tags'] = time_table.tags.map{ |tag| {id: tag.id, name: tag.name}}
+        item['time_table_periods'] = time_table.periods.map{|p| {'id': p.id, 'period_start': p.period_start.to_s, 'period_end': p.period_end.to_s}}
       end
     end
 
     let(:state) { time_table_to_state subject }
+
+    it 'should update time table periods association' do
+      period = state['time_table_periods'].first
+      period['period_start'] = (Date.today - 1.month).to_s
+      period['period_end']   = (Date.today + 1.month).to_s
+
+      subject.state_update_periods state['time_table_periods']
+      ['period_end', 'period_start'].each do |prop|
+        expect(subject.reload.periods.first.send(prop).to_s).to eq(period[prop])
+      end
+    end
+
+    it 'should create time table periods association' do
+      state['time_table_periods'] << {
+        'id' => false,
+        'period_start' => (Date.today + 1.year).to_s,
+        'period_end' => (Date.today + 2.year).to_s
+      }
+
+      expect {
+        subject.state_update_periods state['time_table_periods']
+      }.to change {subject.periods.count}.by(1)
+      expect(state['time_table_periods'].last['id']).to eq subject.reload.periods.last.id
+    end
+
+    it 'should delete time table periods association' do
+      state['time_table_periods'].first['deleted'] = true
+      expect {
+        subject.state_update_periods state['time_table_periods']
+      }.to change {subject.periods.count}.by(-1)
+    end
+
     it 'should save new tags' do
       subject.tag_list = "awesome, great"
       subject.save
