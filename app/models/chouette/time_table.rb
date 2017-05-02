@@ -54,7 +54,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       time_table_date = self.dates.find(date_id) if date_id
 
       next if !checked && !time_table_date
-
       # Destroy date if no longer checked
       next if !checked && time_table_date.destroy
 
@@ -67,7 +66,27 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
         time_table_date.update_attributes({in_out: in_out})
       end
     end
+
+    self.state_update_periods state['time_table_periods']
     self.save
+  end
+
+  def state_update_periods state_periods
+    state_periods.each do |item|
+      period = self.periods.find(item['id']) if item['id']
+      next if period && item['deleted'] && period.destroy
+      period ||= self.periods.build
+
+      period.period_start = Date.parse(item['period_start'])
+      period.period_end   = Date.parse(item['period_end'])
+
+      if period.changed?
+        period.save
+        item['id'] = period.id
+      end
+    end
+
+    state_periods.delete_if {|item| item['deleted']}
   end
 
   def self.state_permited_attributes item
