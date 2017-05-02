@@ -33,8 +33,12 @@ class CalendarsController < BreadcrumbController
 
   def collection
     return @calendars if @calendars
+    scope = Calendar.where('organisation_id = ?', current_organisation.id)
 
-    @q = Calendar.where('organisation_id = ? OR shared = true', current_organisation.id).search(params[:q])
+    scope = shared_scope(scope)
+
+    @q = scope.ransack(params[:q])
+
     calendars = @q.result
     calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
     @calendars = calendars.paginate(page: params[:page])
@@ -51,5 +55,16 @@ class CalendarsController < BreadcrumbController
       params[:q]['contains_date'] = Date.parse(date.join('-'))
     end
   end
-end
 
+  def shared_scope scope
+    return scope unless params[:q]
+
+    if params[:q][:shared_true] == params[:q][:shared_false]
+      params[:q].delete(:shared_true)
+      params[:q].delete(:shared_false)
+    end
+
+    scope
+  end
+
+end
