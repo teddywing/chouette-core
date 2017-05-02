@@ -27,7 +27,7 @@ describe Referential, :type => :model do
 
   context "Cloning referential" do
     let(:clone) do
-      Referential.new_from(ref)
+      Referential.new_from(ref, organisation: ref.organisation)
     end
 
     let(:saved_clone) do

@@ -126,14 +126,14 @@ class Referential < ActiveRecord::Base
     self
   end
 
-  def self.new_from from
+  def self.new_from(from, organisation:)
     Referential.new({
       name: I18n.t("activerecord.copy", :name => from.name),
       slug: "#{from.slug}_clone",
       prefix: from.prefix,
       time_zone: from.time_zone,
       bounds: from.bounds,
-      organisation: from.organisation,
+      organisation: organisation,
       line_referential: from.line_referential,
       stop_area_referential: from.stop_area_referential,
       workbench: from.workbench,
