@@ -4,10 +4,16 @@ let state = {}
 
 describe('status reducer', () => {
   beforeEach(() => {
+    let tag = {
+      id: 0,
+      name: 'test'
+    }
     state = {
       comment: 'test',
       day_types: [true, true, true, true, true, true, true],
-      color: 'blue'
+      color: 'blue',
+      initial_tags: [tag],
+      tags: [tag]
     }
   })
 
@@ -45,4 +51,27 @@ describe('status reducer', () => {
     ).toEqual(Object.assign({}, state, {color: '#ffffff'}))
   })
 
+  it('should handle UPDATE_SELECT_TAG', () => {
+    expect(
+      metasReducer(state, {
+        type: 'UPDATE_SELECT_TAG',
+        selectedItem:{
+          id: 1,
+          name: 'great'
+        }
+      })
+    ).toEqual(Object.assign({}, state, {tags: [...state.tags, {id: 1, name:'great'}]}))
+  })
+
+  it('should handle UPDATE_UNSELECT_TAG', () => {
+    expect(
+      metasReducer(state, {
+        type: 'UPDATE_UNSELECT_TAG',
+        selectedItem:{
+          id: 0,
+          name: 'test'
+        }
+      })
+    ).toEqual(Object.assign({}, state, {tags: []}))
+  })
 })
