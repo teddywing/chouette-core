@@ -1,3 +1,4 @@
+require 'range_ext'
 class Calendar < ActiveRecord::Base
   belongs_to :organisation
   has_many :time_tables
