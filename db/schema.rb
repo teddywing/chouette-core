@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170428133742) do
+ActiveRecord::Schema.define(version: 20170502130327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -696,21 +696,23 @@ ActiveRecord::Schema.define(version: 20170428133742) do
   add_index "time_table_periods", ["time_table_id"], name: "index_time_table_periods_on_time_table_id", using: :btree
 
   create_table "time_tables", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                               null: false
-    t.integer  "object_version", limit: 8,   default: 1
+    t.string   "objectid",                                null: false
+    t.integer  "object_version",  limit: 8,   default: 1
     t.string   "creator_id"
     t.string   "version"
     t.string   "comment"
-    t.integer  "int_day_types",              default: 0
+    t.integer  "int_day_types",               default: 0
     t.date     "start_date"
     t.date     "end_date"
-    t.integer  "calendar_id",    limit: 8
+    t.integer  "calendar_id",     limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color",          limit: 255
+    t.string   "color",           limit: 255
+    t.integer  "created_from_id"
   end
 
   add_index "time_tables", ["calendar_id"], name: "index_time_tables_on_calendar_id", using: :btree
+  add_index "time_tables", ["created_from_id"], name: "index_time_tables_on_created_from_id", using: :btree
   add_index "time_tables", ["objectid"], name: "time_tables_objectid_key", unique: true, using: :btree
 
   create_table "time_tables_vehicle_journeys", id: false, force: :cascade do |t|

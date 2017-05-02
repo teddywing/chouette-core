@@ -18,6 +18,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   has_many :periods, -> {order(:period_start)}, inverse_of: :time_table, :validate => :true, :class_name => "Chouette::TimeTablePeriod", :dependent => :destroy
 
   belongs_to :calendar
+  belongs_to :created_from, class_name: 'Chouette::TimeTable'
 
   after_save :save_shortcuts
 
@@ -525,6 +526,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def duplicate
     tt = self.deep_clone :include => [:periods, :dates], :except => :object_version
     tt.uniq_objectid
+    tt.created_from = self
     tt.comment = I18n.t("activerecord.copy", :name => self.comment)
     tt
   end

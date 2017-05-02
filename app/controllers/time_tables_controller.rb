@@ -37,7 +37,10 @@ class TimeTablesController < ChouetteController
       calendar = current_organisation.calendars.find_by_id(tt_params[:calendar_id])
       tt_params[:calendar_id] = nil if tt_params.has_key?(:dates_attributes) || tt_params.has_key?(:periods_attributes)
     end
-    @time_table = Chouette::TimeTable.new(tt_params)
+
+    created_from = duplicate_source
+    @time_table  = created_from ? created_from.duplicate : Chouette::TimeTable.new(tt_params)
+
     if calendar
       calendar.dates.each_with_index do |date, i|
         @time_table.dates << Chouette::TimeTableDate.new(date: date, position: i)
@@ -48,7 +51,10 @@ class TimeTablesController < ChouetteController
     end
 
     create! do |success, failure|
-      success.html { redirect_to edit_referential_time_table_path(@referential, @time_table) }
+      success.html do
+        path = @time_table.created_from ? 'referential_time_table_path' : 'edit_referential_time_table_path'
+        redirect_to send(path, @referential, @time_table)
+      end
       failure.html { render :new }
     end
   end
@@ -158,6 +164,11 @@ class TimeTablesController < ChouetteController
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end
 
+  def duplicate_source
+    from_id = time_table_params['created_from_id']
+    Chouette::TimeTable.find(from_id) if from_id
+  end
+
   def time_table_params
     params.require(:time_table).permit(
       :objectid,
@@ -175,6 +186,7 @@ class TimeTablesController < ChouetteController
       :sunday,
       :start_date,
       :end_date,
+      :created_from_id,
       { :dates_attributes => [:date, :in_out, :id, :_destroy] },
       { :periods_attributes => [:period_start, :period_end, :_destroy, :id] },
       {tag_list: []},

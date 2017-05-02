@@ -4,7 +4,11 @@
     .col-lg-12
       = form.input :comment, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.time_table.comment")}
 
-      - if @time_table.new_record?
+      - if @time_table.new_record? && !@time_table.created_from
         = form.input :calendar, as: :select, collection: current_organisation.calendars
+
+      - if @time_table.created_from
+        = form.input :created_from, disabled: true, input_html: { value: @time_table.created_from.comment }
+        .hidden = form.input :created_from_id, as: :hidden
 
   = form.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'timetable_form'
