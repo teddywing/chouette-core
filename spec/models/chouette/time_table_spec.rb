@@ -51,6 +51,12 @@ describe Chouette::TimeTable, :type => :model do
       }.to change {subject.periods.count}.by(-1)
     end
 
+    it 'should update color' do
+      state['color'] = '#FFA070'
+      subject.state_update state
+      expect(subject.reload.color).to eq(state['color'])
+    end
+
     it 'should save new tags' do
       subject.tag_list = "awesome, great"
       subject.save
