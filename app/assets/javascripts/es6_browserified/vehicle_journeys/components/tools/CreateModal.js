@@ -49,19 +49,18 @@ class CreateModal extends Component {
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label is-required'>Nom de la course</label>
+                              <label className='control-label'>Nom de la course</label>
                               <input
                                 type='text'
                                 ref='published_journey_name'
                                 className='form-control'
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                                required
                                 />
                             </div>
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label is-required'>Nom du transporteur</label>
+                              <label className='control-label'>Nom du transporteur</label>
                               <CompanySelect2
                                 company = {undefined}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
