@@ -13,7 +13,8 @@ RSpec.describe StoredProcedures do
     StoredProcedures.create_stored_procedure :clone_schema
   end
 
-  context "meta specs describe source schema's introspection" do
+  # :meta specs are not run, as the describe the testing methd and not the application
+  context "meta specs describe source schema's introspection", :meta do
     it "table information is correctly read" do
       expect(get_table_information(source_schema, child_table))
         .to eq([{"table_schema"=>"source_schema",
@@ -31,7 +32,7 @@ RSpec.describe StoredProcedures do
       expect( get_table_information(target_schema, child_table) ).to be_empty
     end
 
-    it "sequences are correctly read", :meta do
+    it "sequences are correctly read" do
       expect(get_sequences(source_schema, child_table))
       .to eq([{"sequence_name"=>"#{child_table}_id_seq",
                "last_value"=>"1",

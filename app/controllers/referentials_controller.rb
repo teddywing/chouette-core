@@ -8,7 +8,10 @@ class ReferentialsController < BreadcrumbController
   respond_to :js, :only => :show
 
   def new
-    @referential = Referential.new_from(Referential.find(params[:from])) if params[:from]
+    if params[:from]
+      source_referential = Referential.find(params[:from])
+      @referential = Referential.new_from(source_referential, organisation: current_organisation)
+    end
 
     new! do
       @referential.data_format = current_organisation.data_format
