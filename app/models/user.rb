@@ -1,3 +1,4 @@
+# coding: utf-8
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable, :database_authenticatable
@@ -32,6 +33,11 @@ class User < ActiveRecord::Base
     'vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy', 'time_tables.create', 'time_tables.edit', 'time_tables.destroy',
     'footnotes.edit', 'footnotes.create', 'footnotes.destroy', 'routing_constraint_zones.create', 'routing_constraint_zones.edit',
     'routing_constraint_zones.destroy', 'referentials.create', 'referentials.edit', 'referentials.destroy']
+  mattr_reader :edit_offer_permissions
+
+  def self.all_permissions
+    edit_offer_permissions
+  end
 
   def cas_extra_attributes=(extra_attributes)
     extra             = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
