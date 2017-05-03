@@ -7,16 +7,18 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 
-stif = Organisation.find_or_create_by!(name: "STIF") do |org|
-  org.code = 'STIF'
+Organisation.where(code: nil).destroy_all
+
+stif = Organisation.find_or_create_by!(code: "STIF") do |org|
+  org.name = 'STIF'
 end
 
 stif.users.find_or_create_by!(username: "admin") do |user|
   user.email = 'stif-boiv@af83.com'
   user.password = "secret"
   user.name = "STIF Administrateur"
+  user.permissions = User.all_permissions
 end
-
 
 operator = Organisation.find_or_create_by!(code: 'transporteur-a') do |organisation|
   organisation.name = "Transporteur A"
@@ -26,6 +28,7 @@ operator.users.find_or_create_by!(username: "transporteur") do |user|
   user.email = 'stif-boiv+transporteur@af83.com'
   user.password = "secret"
   user.name = "Martin Lejeune"
+  user.permissions = User.all_permissions
 end
 
 stop_area_referential = StopAreaReferential.find_or_create_by!(name: "Reflex") do |referential|
@@ -42,14 +45,15 @@ line_referential = LineReferential.find_or_create_by!(name: "CodifLigne") do |re
   referential.add_member operator
 end
 
-LineReferentialSync.find_or_create_by!(line_referential: line_referential)
-StopAreaReferentialSync.find_or_create_by!(stop_area_referential: stop_area_referential)
-
 10.times do |n|
-  line_referential.lines.find_or_create_by name: "Test #{n}" do |l|
+  line_referential.lines.find_or_create_by! name: "Test #{n}" do |l|
     l.objectid = "Chouette:Dummy:Line:00" + n.to_s
   end
 end
+
+# Include all Lines in organisation functional_scope
+stif.update sso_attributes: { functional_scope: line_referential.lines.pluck(:objectid) }
+operator.update sso_attributes: { functional_scope: line_referential.lines.limit(3).pluck(:objectid) }
 
 workbench = Workbench.find_by(name: "Gestion de l'offre")
 workbench.update_attributes(line_referential: line_referential,
