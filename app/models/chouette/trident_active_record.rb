@@ -12,8 +12,7 @@ class Chouette::TridentActiveRecord < Chouette::ActiveRecord
   end
 
   def prefix
-    self.referential.prefix
+    referential.prefix
   end
-
 
 end
