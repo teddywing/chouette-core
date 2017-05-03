@@ -445,7 +445,7 @@ GEM
     ruby-graphviz (1.2.3)
     rubycas-client (2.3.9)
       activesupport
-    rubyzip (1.1.7)
+    rubyzip (1.2.1)
     safe_yaml (1.0.4)
     sass (3.2.19)
     sass-rails (4.0.5)
@@ -641,7 +641,7 @@ DEPENDENCIES
   rgeo (~> 0.5.2)
   roo
   rspec-rails (~> 3.5.0)
-  rubyzip (~> 1.1.7)
+  rubyzip
   sass-rails (~> 4.0.3)
   sawyer (~> 0.6.0)
   sdoc (~> 0.4.0)
