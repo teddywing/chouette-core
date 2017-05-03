@@ -54,14 +54,13 @@ class EditVehicleJourney extends Component {
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label is-required'>Intitulé de la course</label>
+                              <label className='control-label'>Nom de la course</label>
                               <input
                                 type='text'
                                 ref='published_journey_name'
                                 className='form-control'
                                 defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_name}
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                                required
                                 />
                             </div>
                           </div>
@@ -81,14 +80,13 @@ class EditVehicleJourney extends Component {
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label is-required'>Numéro de train</label>
+                              <label className='control-label'>Numéro de train</label>
                               <input
                                 type='text'
                                 ref='published_journey_identifier'
                                 className='form-control'
                                 defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_identifier}
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                                required
                               />
                             </div>
                           </div>
