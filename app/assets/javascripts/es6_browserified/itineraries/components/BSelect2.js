@@ -24,7 +24,8 @@ class BSelect3 extends React.Component{
       short_name: e.params.data.short_name,
       city_name: e.params.data.city_name,
       area_type: e.params.data.area_type,
-      zip_code: e.params.data.zip_code
+      zip_code: e.params.data.zip_code,
+      comment: e.params.data.comment
     })
   }
 
