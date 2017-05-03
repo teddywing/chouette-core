@@ -27,7 +27,7 @@ Go into your local repro and install the gems
         bundle config build.libv8 --with-system-v8
         bundle
 
-or 
+or
         gem install libv8 -v '<version>' -- --with-system-v8
         bundle
 
@@ -65,16 +65,33 @@ When promted for the password enter the highly secure string `chouette`.
 
       bundle exec rake npm:install
 
-### SSO Configuration
+### Authentication
 
-Get yourself an invitation to [Stif Portail](http://stif-portail-dev.af83.priv/) and be sure to update your information
-on your [profile page](http://stif-portail-dev.af83.priv/users/edit)  
-  
- 
-# Troubleshouting
+See `config.chouette_authentication_settings`.
 
-If PG complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is waht to do:
-      
-      bundle exec rake db:test:purge 
+Use the database authentication or get an invitation to [STIF Portail](http://stif-portail-dev.af83.priv/).
+
+### Run seed
+
+Run :
+
+      bundle exec rake db:seed
+
+Two users are created : stif-boiv@af83.com/secret and stif-boiv+transporteur@af83.com/secret
+
+If you have access to STIF CodifLigne and Reflex :
+
+      bundle exec rake codifligne:sync
+      bundle exec rake reflex:sync
+
+To create Referential with some data (Route, JourneyPattern, VehicleJourney, etc) :
+
+      bundle exec rake referential:create
+
+# Troubleshooting
+
+If PG complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
+
+      bundle exec rake db:test:purge
 
 Thanks to `lib/tasks/extensions.rake`.
