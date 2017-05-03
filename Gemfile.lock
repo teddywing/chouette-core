@@ -1,28 +1,5 @@
 GIT
-  remote: git://github.com/activerecord-hackery/squeel.git
-  revision: 5542266d502db8022e14105f9dfb455a79d6fc4a
-  specs:
-    squeel (1.2.3)
-      activerecord (>= 3.0)
-      activesupport (>= 3.0)
-      polyamorous (~> 1.1.0)
-
-GIT
-  remote: git://github.com/af83/language_engine.git
-  revision: c4d7d5af781b55c1df4806c3960caf3c22f1ee96
-  specs:
-    language_engine (0.0.7)
-      rails (~> 4.2)
-
-GIT
-  remote: git://github.com/af83/whenever.git
-  revision: b7963381a11243affe4f35881c85be0710f434e3
-  specs:
-    whenever (0.9.4)
-      chronic (>= 0.6.3)
-
-GIT
-  remote: git@github.com:AF83/has_array_of.git
+  remote: git@github.com:af83/has_array_of.git
   revision: a6439d93291c7a1ca224ea95a8d39ed101e2f05f
   specs:
     has_array_of (0.0.1)
@@ -31,22 +8,45 @@ GIT
       railties (>= 4.0)
 
 GIT
-  remote: git@github.com:AF83/stif-codifline-api.git
+  remote: git@github.com:af83/stif-codifline-api.git
   revision: 02108a647514ca36e4377deecf3ffcce99359139
   specs:
     codifligne (0.0.2)
       nokogiri (~> 1.6)
 
 GIT
-  remote: git@github.com:AF83/stif-reflex-api.git
+  remote: git@github.com:af83/stif-reflex-api.git
   revision: 7c517b98c3900c9bb0b81dd0ccab97f8e8f5f249
   specs:
     reflex (0.0.1)
       nokogiri (~> 1.6)
 
+GIT
+  remote: https://github.com/activerecord-hackery/squeel.git
+  revision: 5542266d502db8022e14105f9dfb455a79d6fc4a
+  specs:
+    squeel (1.2.3)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      polyamorous (~> 1.1.0)
+
+GIT
+  remote: https://github.com/af83/language_engine.git
+  revision: c4d7d5af781b55c1df4806c3960caf3c22f1ee96
+  specs:
+    language_engine (0.0.7)
+      rails (~> 4.2)
+
+GIT
+  remote: https://github.com/af83/whenever.git
+  revision: b7963381a11243affe4f35881c85be0710f434e3
+  specs:
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
+
 GEM
-  remote: http://rubygems.org/
-  remote: http://rails-assets.org/
+  remote: https://rubygems.org/
+  remote: https://rails-assets.org/
   specs:
     RedCloth (4.3.2)
     SyslogLogger (2.0)

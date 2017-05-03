@@ -1,5 +1,9 @@
 # coding: utf-8
-source 'http://rubygems.org'
+source 'https://rubygems.org'
+
+# Use https for github
+git_source(:github) { |name| "https://github.com/#{name}.git" }
+git_source(:af83) { |name| "git@github.com:af83/#{name}.git" }
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.2.8'
@@ -29,7 +33,7 @@ gem 'select2-rails', '~> 4.0', '>= 4.0.3'
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
 # ActiveRecord associations on top of PostgreSQL arrays
-gem 'has_array_of', git: 'git@github.com:AF83/has_array_of.git'
+gem 'has_array_of', af83: 'has_array_of'
 
 gem 'rails-observers'
 
@@ -60,9 +64,9 @@ gem 'activerecord-postgis-adapter', "~> 3.0.0"
 gem 'polylines'
 
 # Codifligne API
-gem 'codifligne', git: 'git@github.com:AF83/stif-codifline-api.git'
+gem 'codifligne', af83: 'stif-codifline-api'
 # Reflex API
-gem 'reflex', git: 'git@github.com:AF83/stif-reflex-api.git'
+gem 'reflex', af83: 'stif-reflex-api'
 
 # Authentication
 gem 'devise', '~> 3.5.4'
@@ -105,7 +109,7 @@ gem 'google-analytics-rails'
 # Model
 gem 'will_paginate'
 gem 'ransack'
-gem "squeel", :git => "git://github.com/activerecord-hackery/squeel.git"
+gem "squeel", github: 'activerecord-hackery/squeel'
 gem 'active_attr'
 
 gem 'draper'
@@ -194,7 +198,7 @@ gem 'devise-i18n'
 gem 'i18n-tasks'
 
 # Rails Assets
-source 'http://rails-assets.org' do
+source 'https://rails-assets.org' do
   gem 'rails-assets-footable', '~> 2.0.3'
 
   # Use twitter bootstrap resources
