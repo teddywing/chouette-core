@@ -95,7 +95,7 @@ gem 'breadcrumbs_on_rails'
 
 # Format Output
 gem 'json'
-gem 'rubyzip', '~> 1.1.7'
+gem 'rubyzip'
 gem 'roo'
 
 # Controller
