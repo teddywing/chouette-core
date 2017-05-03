@@ -108,6 +108,7 @@ fr:
       transport_mode:
         interchange: Interconnection
         unknown: Inconnu
+        undefined: 'Non défini'
         air: Air
         train: Train
         long_distance_train: Train Grande Ligne
