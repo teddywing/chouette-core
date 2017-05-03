@@ -19,7 +19,8 @@ child @stop_areas, root: :features, object_root: false do
       user_objectid: s.user_objectid,
       zip_code: s.zip_code,
       latitude: s.latitude,
-      longitude: s.longitude
+      longitude: s.longitude,
+      comment: s.comment
     }
   end
 end
