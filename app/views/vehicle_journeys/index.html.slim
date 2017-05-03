@@ -19,6 +19,7 @@
   | window.vehicleJourneysLength = #{@vehicle_journeys.total_entries()};
   | window.vehicleJourneysPerPage = #{@ppage};
   | window.line_footnotes = #{raw @footnotes};
-  | window.perms = #{raw @perms}
+  | window.perms = #{raw @perms};
+  | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
 
 = javascript_include_tag 'es6_browserified/vehicle_journeys/index.js'

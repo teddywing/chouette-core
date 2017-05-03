@@ -317,8 +317,8 @@ const actions = {
               published_journey_name: val.published_journey_name || 'non renseigné',
               published_journey_identifier: val.published_journey_identifier || 'non renseigné',
               company: val.company || 'non renseigné',
-              transport_mode: val.route.line.transport_mode || 'non renseigné',
-              transport_submode: val.route.line.transport_submode || 'non renseigné'
+              transport_mode: val.route.line.transport_mode || 'undefined',
+              transport_submode: val.route.line.transport_submode || 'undefined'
             })
           }
           window.currentItemsLength = vehicleJourneys.length
