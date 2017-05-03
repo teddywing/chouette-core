@@ -75,6 +75,7 @@ const stopPoints = (state = [], action) => {
               short_name: action.text.short_name,
               area_type: action.text.area_type,
               city_name: action.text.city_name,
+              comment: action.text.comment,
               registration_number: action.text.registration_number
             }
           )

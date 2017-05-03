@@ -195,7 +195,8 @@ describe('stops reducer', () => {
           registration_number: '0',
           city_name: 'city',
           area_type: 'area',
-          short_name: 'new'
+          short_name: 'new',
+          comment: 'newcomment'
         }
       })
     ).toEqual(
@@ -216,6 +217,7 @@ describe('stops reducer', () => {
           city_name: 'city',
           area_type: 'area',
           short_name: 'new',
+          comment: 'newcomment',
           olMap: {
             isOpened: false,
             json: {}

@@ -13,7 +13,8 @@ node do |stop_area|
   :user_objectid => stop_area.user_objectid,
   :longitude => stop_area.longitude,
   :latitude => stop_area.latitude,
-  :area_type => stop_area.area_type
+  :area_type => stop_area.area_type,
+  :comment => stop_area.comment
   }
 end
 
