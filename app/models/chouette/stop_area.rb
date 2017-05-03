@@ -30,7 +30,7 @@ class Chouette::StopArea < Chouette::ActiveRecord
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential_id
 
-  acts_as_tree :foreign_key => 'parent_id',:order => "name"
+  acts_as_tree :foreign_key => 'parent_id', :order => "name"
 
   attr_accessor :stop_area_type
   attr_accessor :children_ids

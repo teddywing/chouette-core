@@ -7,7 +7,7 @@ module Chouette
 
     before_save :nil_if_blank
 
-    # to be overrided to set nullable attrs when empty
+    # to be overridden to set nullable attrs when empty
     def self.nullable_attributes
       []
     end
@@ -21,6 +21,7 @@ module Chouette
       self.class.human_attribute_name(*args)
     end
 
+    # TODO: Can we remove this?
     # class << self
     #   alias_method :create_reflection_without_chouette_naming, :create_reflection
 
