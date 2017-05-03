@@ -1,12 +1,12 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'simplecov'
-# if ENV['JOB_NAME']
-#   require 'simplecov-rcov'
-#   SimpleCov.formatters = [
-#     SimpleCov::Formatter::HTMLFormatter,
-#     SimpleCov::Formatter::RcovFormatter
-#   ]
-# end
+if ENV['JOB_NAME']
+  require 'simplecov-rcov'
+  SimpleCov.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::RcovFormatter
+  ]
+end
 SimpleCov.start 'rails' do
   add_filter 'vendor'
 end
