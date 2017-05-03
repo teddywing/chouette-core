@@ -39,4 +39,4 @@ namespace :ci do
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "spec", "teaspoon", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "spec", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
