@@ -32,7 +32,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { 'Statut' => (@referential.archived? ? 'Conservé' : '-'),
+          { 'Statut' => @referential.archived? ? "<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>".html_safe : "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>".html_safe,
             @referential.human_attribute_name(:validity_period) => (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-'),
             @referential.human_attribute_name(:organisation) => @referential.organisation.name,
             @referential.human_attribute_name(:published_at) => '-' }
