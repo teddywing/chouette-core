@@ -262,13 +262,7 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     it "orders journeys with nil times at the end" do
-      pattern = create(:journey_pattern)
-      journey_nil = build(
-        :vehicle_journey_common,
-        journey_pattern: pattern
-      )
-      journey_nil.route = journey_nil.journey_pattern.route
-      journey_nil.save
+      journey_nil = create(:vehicle_journey_empty)
       journey = create(
         :vehicle_journey,
         route: journey_nil.route,
