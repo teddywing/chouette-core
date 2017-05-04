@@ -45,7 +45,7 @@ const actions = {
     pagination,
     nextPage : true
   }),
-  changePage : (dispatch, pagination, val) => ({
+  changePage : (dispatch, val) => ({
     type: 'CHANGE_PAGE',
     dispatch,
     page: val
