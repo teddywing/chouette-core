@@ -125,20 +125,34 @@
     display: block
     height: auto
     word-wrap: normal
-    white-space: nowrap
+    white-space: normal
     position: absolute
-    left: 8px
+    left: 0
     top: 50%
     transform: translateY(-50%)
     z-index: 5
+    padding: 0 8px
+
+    @for $i from 0 through 31
+      &[data-toendperiod='#{$i}']
+        width: 40px * ($i + 1)
 
     > *
       display: inline-block
       vertical-align: middle
       margin: 0
+      max-width: calc(100% - 30px)
 
       &.dropdown
         margin-left: 5px
+
+    &[data-toendperiod='0'], &[data-toendperiod='1'], &[data-toendperiod='2']
+      max-width: none
+      > *
+        display: none
+
+        &.dropdown
+          display: inline-block
 
     .btn.dropdown-toggle
       color: $blue

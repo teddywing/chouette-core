@@ -140,6 +140,10 @@ const actions = {
 
     return (D + ' ' + M + ' ' + Y)
   },
+  getLocaleDate(strDate) {
+    let date = new Date(strDate)
+    return date.toLocaleDateString()
+  },
 
   updateSynthesis: (state, daytypes) => {
     let periods = state.time_table_periods
