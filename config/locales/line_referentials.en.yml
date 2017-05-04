@@ -8,6 +8,9 @@ en:
       title: "Edit %{line_referential} referential"
     show:
       title: "iLICO synchronization"
+      synchronized: Synchronized
+      status: Status
+      message: Message
   activerecord:
     models:
       line_referential:

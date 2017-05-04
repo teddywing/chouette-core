@@ -27,9 +27,12 @@
           table.table
             thead
               tr
-                th Synchronisé
-                th Statut
-                th Message
+                / th Synchronisé
+                th = t('.synchronized')
+                / th Statut
+                th = t('.status')
+                / th Message
+                th = t('.message')
 
             tbody
               - @line_referential.line_referential_syncs.each_with_index do |sync, i|

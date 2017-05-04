@@ -12,7 +12,10 @@ class ApplicationController < ActionController::Base
   helper LanguageEngine::Engine.helpers
 
   def set_locale
-    I18n.locale = session[:language] || I18n.default_locale
+    # I18n.locale = session[:language] || I18n.default_locale
+    # For testing different locales w/o restarting the server
+    I18n.locale = (params['lang'] || session[:language] || I18n.default_locale).to_sym
+    logger.info "locale set to #{I18n.locale.inspect}"
   end
 
   def pundit_user
