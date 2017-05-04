@@ -221,6 +221,47 @@ describe Chouette::VehicleJourney, :type => :model do
     end
   end
 
+  describe ".with_stops" do
+    it "selects vehicle journeys including stops in order or earliest departure time" do
+      def initialize_stop_times(vehicle_journey, &block)
+        vehicle_journey
+          .vehicle_journey_at_stops
+          .each_with_index do |at_stop, index|
+            at_stop.update(
+              departure_time: at_stop.departure_time + block.call(index),
+              arrival_time: at_stop.arrival_time + block.call(index)
+            )
+          end
+      end
+
+      # Create later vehicle journey to give it a later id, such that it should
+      # appear last if the order in the query isn't right.
+      journey_late = create(:vehicle_journey)
+      journey_early = create(
+        :vehicle_journey,
+        route: journey_late.route,
+        journey_pattern: journey_late.journey_pattern
+      )
+
+      initialize_stop_times(journey_early) do |index|
+        (index + 5).minutes
+      end
+      initialize_stop_times(journey_late) do |index|
+        (index + 65).minutes
+      end
+
+      expected_journey_order = [journey_early, journey_late]
+
+      expect(
+        journey_late
+          .route
+          .vehicle_journeys
+          .with_stops
+          .to_a
+      ).to eq(expected_journey_order)
+    end
+  end
+
   subject { create(:vehicle_journey_odd) }
   describe "in_relation_to_a_journey_pattern methods" do
     let!(:route) { create(:route)}

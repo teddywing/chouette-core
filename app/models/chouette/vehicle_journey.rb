@@ -209,5 +209,18 @@ module Chouette
       end
     end
 
+    def self.with_stops
+      self
+        .joins(:journey_pattern)
+        .joins('
+          LEFT JOIN "vehicle_journey_at_stops"
+            ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
+            AND "vehicle_journey_at_stops"."stop_point_id" =
+              "journey_patterns"."departure_stop_point_id"
+        ')
+        .order("vehicle_journey_at_stops.departure_time")
+    end
+
   end
 end
