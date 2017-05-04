@@ -260,6 +260,31 @@ describe Chouette::VehicleJourney, :type => :model do
           .to_a
       ).to eq(expected_journey_order)
     end
+
+    it "orders journeys with nil times at the end" do
+      pattern = create(:journey_pattern)
+      journey_nil = build(
+        :vehicle_journey_common,
+        journey_pattern: pattern
+      )
+      journey_nil.route = journey_nil.journey_pattern.route
+      journey_nil.save
+      journey = create(
+        :vehicle_journey,
+        route: journey_nil.route,
+        journey_pattern: journey_nil.journey_pattern
+      )
+
+      expected_journey_order = [journey, journey_nil]
+
+      expect(
+        journey
+          .route
+          .vehicle_journeys
+          .with_stops
+          .to_a
+      ).to eq(expected_journey_order)
+    end
   end
 
   subject { create(:vehicle_journey_odd) }
