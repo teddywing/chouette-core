@@ -137,10 +137,7 @@ describe('modal reducer', () => {
     ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
   })
 
-  it('should handle VALIDATE_PERIOD_FORM', () => {
-    // if period_end <= period_start, throw error
-    // if newperiod is on another one, throw error
-
+  it('should handle VALIDATE_PERIOD_FORM and throw error if period starts after the end', () => {
     let modProps = {
       active: false,
       begin: {
@@ -181,5 +178,72 @@ describe('modal reducer', () => {
         timeTablePeriods: ttperiods
       })
     ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
+  })
+
+  it('should handle VALIDATE_PERIOD_FORM and throw error if periods overlap', () => {
+    let state2 = {
+      confirmModal: {},
+      modalProps: {
+        active: false,
+        begin: {
+          day: '03',
+          month: '05',
+          year: '2017'
+        },
+        end: {
+          day: '09',
+          month: '05',
+          year: '2017'
+        },
+        index: false,
+        error: ''
+      },
+      type: ''
+    }
+    let modProps2 = {
+      active: false,
+      begin: {
+        day: '03',
+        month: '05',
+        year: '2017'
+      },
+      end: {
+        day: '09',
+        month: '05',
+        year: '2017'
+      },
+      index: false,
+      error: ''
+    }
+    let ttperiods2 = [
+      {id: 261, period_start: '2017-02-23', period_end: '2017-03-05'},
+      {id: 262, period_start: '2017-03-15', period_end: '2017-03-25'},
+      {id: 264, period_start: '2017-04-24', period_end: '2017-05-04'},
+      {id: 265, period_start: '2017-05-14', period_end: '2017-05-24'}
+    ]
+
+    let newModalProps2 = {
+      active: true,
+      begin: {
+        day: '03',
+        month: '05',
+        year: '2017'
+      },
+      end: {
+        day: '09',
+        month: '05',
+        year: '2017'
+      },
+      index: false,
+      error: "Les périodes ne peuvent pas se chevaucher"
+    }
+
+    expect(
+      modalReducer(state2, {
+        type: 'VALIDATE_PERIOD_FORM',
+        modalProps : modProps2,
+        timeTablePeriods: ttperiods2
+      })
+    ).toEqual(Object.assign({}, state2, {modalProps: newModalProps2}))
   })
 })

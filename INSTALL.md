@@ -108,7 +108,9 @@ If you have access to STIF CodifLigne and Reflex :
 
 **N.B.** These are asynchronious tasks, you can observe the launched jobs in your [Sidekiq Console](http://localhost:3000/sidekiq)
 
-To create Referential with some data (Route, JourneyPattern, VehicleJourney, etc) :
+#### Data in various Apartments (Referentials)
+
+To create `Referential` objects with some data (`Route`, `JourneyPattern`, `VehicleJourney`, etc) :
 
       bundle exec rake referential:create
 
