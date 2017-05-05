@@ -171,10 +171,9 @@ describe('actions', () => {
     const expectedAction = {
       type: 'INCLUDE_DATE_IN_PERIOD',
       index,
-      day,
       dayTypes
     }
-    expect(actions.includeDateInPeriod(index, day, dayTypes)).toEqual(expectedAction)
+    expect(actions.includeDateInPeriod(index, dayTypes)).toEqual(expectedAction)
   })
 
   it('should create an action to exclude date from period', () => {
@@ -182,10 +181,9 @@ describe('actions', () => {
     const expectedAction = {
       type: 'EXCLUDE_DATE_FROM_PERIOD',
       index,
-      day,
       dayTypes
     }
-    expect(actions.excludeDateFromPeriod(index, day, dayTypes)).toEqual(expectedAction)
+    expect(actions.excludeDateFromPeriod(index, dayTypes)).toEqual(expectedAction)
   })
 
   it('should create an action to open confirm modal', () => {
