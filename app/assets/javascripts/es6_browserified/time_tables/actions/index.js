@@ -104,16 +104,14 @@ const actions = {
     timeTablePeriods,
     metas
   }),
-  includeDateInPeriod: (index, day, dayTypes) => ({
+  includeDateInPeriod: (index, dayTypes) => ({
     type: 'INCLUDE_DATE_IN_PERIOD',
     index,
-    day,
     dayTypes
   }),
-  excludeDateFromPeriod: (index, day, dayTypes) => ({
+  excludeDateFromPeriod: (index, dayTypes) => ({
     type: 'EXCLUDE_DATE_FROM_PERIOD',
     index,
-    day,
     dayTypes
   }),
   openConfirmModal : (callback) => ({
