@@ -2,7 +2,7 @@ var metasReducer = require('es6_browserified/time_tables/reducers/metas')
 
 let state = {}
 
-describe('status reducer', () => {
+describe('metas reducer', () => {
   beforeEach(() => {
     let tag = {
       id: 0,
