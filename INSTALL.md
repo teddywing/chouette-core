@@ -9,7 +9,7 @@ and install that version.
 
 Example with [rvm](https://rvm.io/):
 
-        rvm install 2.3.0
+        rvm install 2.3.1
 
 Add the bundler gem
 
@@ -28,6 +28,7 @@ Go into your local repro and install the gems
         bundle
 
 or
+
         gem install libv8 -v '<version>' -- --with-system-v8
         bundle
 
@@ -63,7 +64,18 @@ When promted for the password enter the highly secure string `chouette`.
 
 #### Install node.js packages
 
-      bundle exec rake npm:install
+      bundle exec rake npm:installndle
+      
+#### Check installation
+
+* Run tests
+
+      bundle exec rake spec
+      bundle exec rake teaspoon
+
+* Start local server
+
+      bundle exec rails server
 
 ### Authentication
 
@@ -90,7 +102,7 @@ To create Referential with some data (Route, JourneyPattern, VehicleJourney, etc
 
 # Troubleshooting
 
-If PG complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
+If Postgres complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
 
       bundle exec rake db:test:purge
 
