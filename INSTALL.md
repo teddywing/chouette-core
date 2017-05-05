@@ -28,6 +28,7 @@ Go into your local repro and install the gems
         bundle
 
 or
+
         gem install libv8 -v '<version>' -- --with-system-v8
         bundle
 
