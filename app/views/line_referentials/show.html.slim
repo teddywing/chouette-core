@@ -27,11 +27,8 @@
           table.table
             thead
               tr
-                / th Synchronisé
                 th = t('.synchronized')
-                / th Statut
                 th = t('.status')
-                / th Message
                 th = t('.message')
 
             tbody
@@ -42,8 +39,9 @@
                     - sync.line_referential_sync_messages.last.tap do |log|
                       - if log.criticity = log.criticity
                         tr
-                          td = l(log.created_at, format: :short)
-                          td
+                          td style='width: 150px'
+                            = l(log.created_at, format: :short_with_time)
+                          td.text-center
                             .fa.fa-circle class="text-#{criticity_class(log.criticity)}"
                           td
                             - data = log.message_attributs.symbolize_keys!
