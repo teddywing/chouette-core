@@ -64,7 +64,7 @@ When promted for the password enter the highly secure string `chouette`.
 
 #### Install node.js packages
 
-      bundle exec rake npm:installndle
+      bundle exec rake npm:install
 
 #### Check installation
 
