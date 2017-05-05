@@ -91,7 +91,7 @@ To create Referential with some data (Route, JourneyPattern, VehicleJourney, etc
 
 # Troubleshooting
 
-If PG complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
+If Postgres complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
 
       bundle exec rake db:test:purge
 
