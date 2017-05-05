@@ -79,6 +79,27 @@
         &:after
           bottom: -6px
 
+      .t2e-head > .td:last-child > div > span
+        &:after
+          bottom: 50%
+
+  .table-2entries .t2e-head > .td:nth-child(2) > div,
+  .table-2entries .t2e-head > .td:last-child > div,
+  .table-2entries.no_result .t2e-head > .td:last-child > div
+    > span:before
+      content: '•'
+      color: $blue
+      text-align: center
+      font-size: 28px
+      letter-spacing: 0
+      text-indent: -0.01em
+      line-height: 12px
+      width: 15px
+      height: 15px
+      left: -23px
+      top: 50%
+      margin-top: -8px
+
   // Errors
   .table-2entries .t2e-item-list
     .t2e-item

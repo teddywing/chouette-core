@@ -12,7 +12,7 @@
       height: 100%
       > div:first-child
         position: relative
-        padding-left: 20px /* intial value is 10 */
+        padding-left: 25px /* intial value is 10 */
         overflow: hidden
 
         span
@@ -70,3 +70,19 @@
   .nested-head + .nested-fields > .wrapper > div:first-child
     span:after
       top: 5px
+
+  .nested-head + .nested-fields > .wrapper > div:first-child,
+  .nested-fields:last-child > .wrapper:last-child > div:first-child
+    span:before
+      content: '•'
+      color: $blue
+      text-align: center
+      font-size: 28px
+      letter-spacing: 0
+      text-indent: -0.01em
+      line-height: 12px
+      width: 15px
+      height: 15px
+      left: -23px
+      top: 50%
+      margin-top: -8px
