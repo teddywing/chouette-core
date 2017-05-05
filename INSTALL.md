@@ -9,7 +9,7 @@ and install that version.
 
 Example with [rvm](https://rvm.io/):
 
-        rvm install 2.3.0
+        rvm install 2.3.1
 
 Add the bundler gem
 
