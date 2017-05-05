@@ -14,15 +14,24 @@ FactoryGirl.define do
 
       transient do
         stop_points_count 5
-        journey_patterns_count 2
       end
 
       after(:create) do |route, evaluator|
         create_list(:stop_point, evaluator.stop_points_count, route: route)
-        create_list(:journey_pattern, evaluator.journey_patterns_count, route: route)
       end
 
+      factory :route_with_journey_patterns do
+        transient do
+          journey_patterns_count 2
+        end
+
+        after(:create) do |route, evaluator|
+          create_list(:journey_pattern, evaluator.journey_patterns_count, route: route)
+        end
+
+      end
     end
+
   end
 
 end

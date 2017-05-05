@@ -1,6 +1,6 @@
 RSpec.describe Chouette::Route, :type => :model do
 
-  subject { create(:route) }
+  subject { create( :route_with_journey_patterns ) }
 
 
   context "delete a route" do
@@ -25,6 +25,7 @@ RSpec.describe Chouette::Route, :type => :model do
     end
 
     it "deletes the associated vehicle_journeys" do
+      vehicle_journey
       expect{ vehicle_journey.route.destroy}.to change{Chouette::VehicleJourney.count}.by -1
     end
 
