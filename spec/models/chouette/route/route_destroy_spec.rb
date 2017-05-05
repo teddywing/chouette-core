@@ -8,19 +8,19 @@ RSpec.describe Chouette::Route, :type => :model do
 
     it "deletes the associated journey_patterns" do
       expected_delta = subject.journey_patterns.count
-      expect( expected_delta ).to be_positive
+      expect( expected_delta > 0 ).to eq(true)
       expect{ subject.destroy }.to change{Chouette::JourneyPattern.count}.by -expected_delta
     end
 
     it "deletes the associated stop_points" do
       expected_delta = subject.stop_points.count
-      expect( expected_delta ).to be_positive
+      expect( expected_delta > 0 ).to eq(true)
       expect{ subject.destroy }.to change{Chouette::StopPoint.count}.by -expected_delta
     end
 
     it "does not delete the associated stop_areas" do
       count = subject.stop_points.count
-      expect( count ).to be_positive
+      expect( count > 0 ).to eq(true)
       expect{ subject.destroy }.not_to change{Chouette::StopArea.count}
     end
 
