@@ -46,11 +46,6 @@ class RoutesController < ChouetteController
     end
   end
 
-  # overwrite inherited resources to use delete instead of destroy
-  # foreign keys will propagate deletion)
-  def destroy_resource(object)
-    object.delete
-  end
 
   def destroy
     destroy! do |success, failure|
