@@ -11,18 +11,18 @@ module Stif
 
       def processed_counts
         {
-          imported: self.imported_count,
-          updated: self.updated_count,
-          deleted: self.deleted_count
+          imported: imported_count,
+          updated: updated_count,
+          deleted: deleted_count
         }
       end
 
       def increment_counts prop_name, value
-        self.send("#{prop_name}=", self.send(prop_name) + value)
+        send("#{prop_name}=", self.send(prop_name) + value)
       end
 
       def synchronize
-        self.reset_counts
+        reset_counts
         start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
         # Fetch Codifline data
         client = Codifligne::API.new

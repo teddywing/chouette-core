@@ -46,9 +46,6 @@ class RoutesController < ChouetteController
     end
   end
 
-  # overwrite inherited resources to use delete instead of destroy
-  # foreign keys will propagate deletion)
-
   def destroy
     destroy! do |success, failure|
       success.html { redirect_to referential_line_path(@referential,@line) }
