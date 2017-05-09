@@ -248,6 +248,10 @@ const actions = {
     type: 'RECEIVE_TOTAL_COUNT',
     total
   }),
+  humanOID : (oid) => {
+    var a = oid.split(':')
+    return a[a.length - 1]
+  },
   fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
     if(currentPage == undefined){
       currentPage = 1

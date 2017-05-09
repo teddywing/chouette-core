@@ -84,6 +84,10 @@ const actions = {
   resetValidation: (target) => {
     $(target).parent().removeClass('has-error').children('.help-block').remove()
   },
+  humanOID : (oid) => {
+    var a = oid.split(':')
+    return a[a.length - 1]
+  },
   validateFields : (fields) => {
     const test = []
 
