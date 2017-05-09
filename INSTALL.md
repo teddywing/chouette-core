@@ -9,7 +9,7 @@ and install that version.
 
 Example with [rvm](https://rvm.io/):
 
-        rvm install 2.3.0
+        rvm install 2.3.1
 
 Add the bundler gem
 
@@ -91,6 +91,43 @@ To create Referential with some data (Route, JourneyPattern, VehicleJourney, etc
 # Troubleshooting
 
 If PG complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
+
+#### Check installation
+
+* Run tests
+
+      bundle exec rake spec
+      bundle exec rake teaspoon
+
+* Start local server
+
+      bundle exec rails server
+
+
+#### Synchronize With STIF
+
+If you have access to STIF CodifLigne and Reflex :
+
+* Launch Sidekiq
+
+      bundle exec sidekiq
+
+* Execute the Synchronization Tasks
+
+      bundle exec rake codifligne:sync
+      bundle exec rake reflex:sync
+
+**N.B.** These are asynchronious tasks, you can observe the launched jobs in your [Sidekiq Console](http://localhost:3000/sidekiq)
+
+#### Data in various Apartments (Referentials)
+
+To create `Referential` objects with some data (`Route`, `JourneyPattern`, `VehicleJourney`, etc) :
+
+      bundle exec rake referential:create
+
+# Troubleshooting
+
+If Postgres complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
 
       bundle exec rake db:test:purge
 

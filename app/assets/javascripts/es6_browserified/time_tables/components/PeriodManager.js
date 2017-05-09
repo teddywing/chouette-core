@@ -8,14 +8,33 @@ class PeriodManager extends Component {
     super(props)
   }
 
+  toEndPeriod(curr, end) {
+    let diff
+
+    let startCurrM = curr.split('-')[1]
+    let endPeriodM = end.split('-')[1]
+
+    let lastDayInM = new Date(curr.split('-')[2], startCurrM + 1, 0)
+    lastDayInM = lastDayInM.toJSON().substr(0, 10).split('-')[2]
+
+    if(startCurrM === endPeriodM) {
+      diff = (end.split('-')[2] - curr.split('-')[2])
+    } else {
+      diff = (lastDayInM - curr.split('-')[2])
+    }
+
+    return diff
+  }
+
   render() {
     return (
       <div
         className='period_manager'
         id={this.props.value.id}
+        data-toendperiod={this.toEndPeriod(this.props.currentDate.toJSON().substr(0, 10),  this.props.value.period_end)}
       >
         <p className='strong'>
-          {actions.getHumanDate(this.props.value.period_start, 3).substr(0, 7) + ' > ' + actions.getHumanDate(this.props.value.period_end, 3)}
+          {actions.getLocaleDate(this.props.value.period_start) + ' > ' + actions.getLocaleDate(this.props.value.period_end)}
         </p>
 
         <div className='dropdown'>
@@ -58,6 +77,7 @@ class PeriodManager extends Component {
 
 PeriodManager.propTypes = {
   value: PropTypes.object.isRequired,
+  currentDate: PropTypes.object.isRequired,
   onDeletePeriod: PropTypes.func.isRequired,
   onOpenEditPeriodForm: PropTypes.func.isRequired
 }

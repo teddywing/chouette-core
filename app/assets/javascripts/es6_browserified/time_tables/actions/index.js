@@ -45,7 +45,7 @@ const actions = {
     pagination,
     nextPage : true
   }),
-  changePage : (dispatch, pagination, val) => ({
+  changePage : (dispatch, val) => ({
     type: 'CHANGE_PAGE',
     dispatch,
     page: val
@@ -104,16 +104,14 @@ const actions = {
     timeTablePeriods,
     metas
   }),
-  includeDateInPeriod: (index, day, dayTypes) => ({
+  includeDateInPeriod: (index, dayTypes) => ({
     type: 'INCLUDE_DATE_IN_PERIOD',
     index,
-    day,
     dayTypes
   }),
-  excludeDateFromPeriod: (index, day, dayTypes) => ({
+  excludeDateFromPeriod: (index, dayTypes) => ({
     type: 'EXCLUDE_DATE_FROM_PERIOD',
     index,
-    day,
     dayTypes
   }),
   openConfirmModal : (callback) => ({
@@ -139,6 +137,10 @@ const actions = {
     }
 
     return (D + ' ' + M + ' ' + Y)
+  },
+  getLocaleDate(strDate) {
+    let date = new Date(strDate)
+    return date.toLocaleDateString()
   },
 
   updateSynthesis: (state, daytypes) => {

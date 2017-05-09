@@ -77,14 +77,14 @@ class VehicleJourneysController < ChouetteController
 
   protected
   def collection
-    scope = route.vehicle_journeys.joins(:journey_pattern).joins('LEFT JOIN "vehicle_journey_at_stops" ON "vehicle_journey_at_stops"."vehicle_journey_id" = "vehicle_journeys"."id"')
+    scope = route.vehicle_journeys.with_stops
 
     @q = scope.search filtered_ransack_params
     grouping = ransack_periode_filter
     @q.build_grouping(grouping) if grouping
 
     @ppage = 20
-    @vehicle_journeys = @q.result(distinct: true).paginate(:page => params[:page], :per_page => @ppage)
+    @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
     @footnotes = route.line.footnotes.to_json
     @matrix    = resource_class.matrix(@vehicle_journeys)
     @vehicle_journeys

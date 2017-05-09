@@ -14,8 +14,8 @@ class RouteObserver < ActiveRecord::Observer
     end
   end
 
-  def after_destroy(route)
+  def before_destroy(route)
     Rails.logger.debug "after_destroy(#{route.inspect})"
-    line.routes.where(opposite_route: route).update_all(opposite_route: nil)
+    route.line.routes.where(opposite_route: route).update_all(opposite_route_id: nil)
   end
 end

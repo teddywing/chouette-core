@@ -105,7 +105,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
   end
 
   def time_tables
-    self.vehicle_journeys.joins(:time_tables).map(&:"time_tables").flatten.uniq
+    vehicle_journeys.joins(:time_tables).map(&:"time_tables").flatten.uniq
   end
 
   def sorted_vehicle_journeys(journey_category_model)

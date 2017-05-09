@@ -50,9 +50,10 @@ class PeriodsInDay extends Component {
                     key={i}
                     index={i}
                     value={p}
+                    metas={this.props.metas}
+                    currentDate={this.props.currentDate}
                     onDeletePeriod={this.props.onDeletePeriod}
                     onOpenEditPeriodForm={this.props.onOpenEditPeriodForm}
-                    metas={this.props.metas}
                   />
                 )
               } else {

@@ -39,7 +39,7 @@ let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
                       value={month}
                       onClick={e => {
                         e.preventDefault()
-                        dispatch(actions.checkConfirmModal(e, actions.changePage(dispatch, pagination, e.currentTarget.value), pagination.stateChanged, dispatch))
+                        dispatch(actions.checkConfirmModal(e, actions.changePage(dispatch, e.currentTarget.value), pagination.stateChanged, dispatch))
                       }}
                     >
                       {actions.monthName(month) + ' ' + new Date(month).getFullYear()}

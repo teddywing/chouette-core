@@ -14,7 +14,7 @@ class JourneyPattern extends Component{
     let vjURL = routeURL + '/vehicle_journeys?jp=' + jpOid
 
     return (
-      <a data-no-turbolink="true" href={vjURL}>Horaires des courses</a>
+      <a data-turbolinks="false" href={vjURL}>Horaires des courses</a>
     )
   }
 
@@ -62,7 +62,7 @@ class JourneyPattern extends Component{
           )}
 
           <div className='th'>
-            <div className='strong mb-xs'>{this.props.value.object_id ? this.props.value.object_id : '-'}</div>
+            <div className='strong mb-xs'>{this.props.value.object_id ? actions.humanOID(this.props.value.object_id) : '-'}</div>
             <div>{this.props.value.registration_number}</div>
             <div>{actions.getChecked(this.props.value.stop_points).length} arrêt(s)</div>
 

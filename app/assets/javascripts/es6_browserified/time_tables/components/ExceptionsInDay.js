@@ -21,7 +21,7 @@ class ExceptionsInDay extends Component {
               data-actiontype='remove'
               onClick={(e) => {
                 $(e.currentTarget).toggleClass('active')
-                this.props.onExcludeDateFromPeriod(this.props.index, this.props.value.current_month[this.props.index], this.props.metas.day_types)
+                this.props.onExcludeDateFromPeriod(this.props.index, this.props.metas.day_types)
               }}
             >
               <span className='fa fa-times'></span>
@@ -37,7 +37,7 @@ class ExceptionsInDay extends Component {
               data-actiontype='add'
               onClick={(e) => {
                 $(e.currentTarget).toggleClass('active')
-                this.props.onIncludeDateInPeriod(this.props.index, this.props.value.current_month[this.props.index], this.props.metas.day_types)
+                this.props.onIncludeDateInPeriod(this.props.index, this.props.metas.day_types)
               }}
             >
               <span className='fa fa-plus'></span>

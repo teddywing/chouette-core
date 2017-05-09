@@ -1,6 +1,7 @@
 var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
+var actions = require('../actions')
 
 class VehicleJourney extends Component {
   constructor(props) {
@@ -48,8 +49,8 @@ class VehicleJourney extends Component {
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.errors ? ' has-error': '')}>
         <div className='th'>
-          <div className='strong mb-xs'>{this.props.value.objectid ? this.props.value.objectid : '-'}</div>
-          <div>{this.props.value.journey_pattern.objectid}</div>
+          <div className='strong mb-xs'>{this.props.value.objectid ? actions.humanOID(this.props.value.objectid) : '-'}</div>
+          <div>{actions.humanOID(this.props.value.journey_pattern.objectid)}</div>
           {this.props.value.time_tables.map((tt, i)=>
             <div key={i}>{this.timeTableURL(tt)}</div>
           )}

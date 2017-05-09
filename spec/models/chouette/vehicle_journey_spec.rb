@@ -221,6 +221,95 @@ describe Chouette::VehicleJourney, :type => :model do
     end
   end
 
+  describe ".with_stops" do
+    def initialize_stop_times(vehicle_journey, &block)
+      vehicle_journey
+        .vehicle_journey_at_stops
+        .each_with_index do |at_stop, index|
+          at_stop.update(
+            departure_time: at_stop.departure_time + block.call(index),
+            arrival_time: at_stop.arrival_time + block.call(index)
+          )
+        end
+    end
+
+    it "selects vehicle journeys including stops in order or earliest departure time" do
+      # Create later vehicle journey to give it a later id, such that it should
+      # appear last if the order in the query isn't right.
+      journey_late = create(:vehicle_journey)
+      journey_early = create(
+        :vehicle_journey,
+        route: journey_late.route,
+        journey_pattern: journey_late.journey_pattern
+      )
+
+      initialize_stop_times(journey_early) do |index|
+        (index + 5).minutes
+      end
+      initialize_stop_times(journey_late) do |index|
+        (index + 65).minutes
+      end
+
+      expected_journey_order = [journey_early, journey_late]
+
+      expect(
+        journey_late
+          .route
+          .vehicle_journeys
+          .with_stops
+          .to_a
+      ).to eq(expected_journey_order)
+    end
+
+    it "orders journeys with nil times at the end" do
+      journey_nil = create(:vehicle_journey_empty)
+      journey = create(
+        :vehicle_journey,
+        route: journey_nil.route,
+        journey_pattern: journey_nil.journey_pattern
+      )
+
+      expected_journey_order = [journey, journey_nil]
+
+      expect(
+        journey
+          .route
+          .vehicle_journeys
+          .with_stops
+          .to_a
+      ).to eq(expected_journey_order)
+    end
+
+    it "journeys that skip the first stop(s) get ordered by the time of the \
+        first stop that they make" do
+      journey_missing_stop = create(:vehicle_journey)
+      journey_early = create(
+      :vehicle_journey,
+        route: journey_missing_stop.route,
+        journey_pattern: journey_missing_stop.journey_pattern
+      )
+
+      initialize_stop_times(journey_early) do |index|
+        (index + 5).minutes
+      end
+      initialize_stop_times(journey_missing_stop) do |index|
+        (index + 65).minutes
+      end
+
+      journey_missing_stop.vehicle_journey_at_stops.first.destroy
+
+      expected_journey_order = [journey_early, journey_missing_stop]
+
+      expect(
+        journey_missing_stop
+          .route
+          .vehicle_journeys
+          .with_stops
+          .to_a
+      ).to eq(expected_journey_order)
+    end
+  end
+
   subject { create(:vehicle_journey_odd) }
   describe "in_relation_to_a_journey_pattern methods" do
     let!(:route) { create(:route)}

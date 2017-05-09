@@ -45,14 +45,13 @@ class CalendarsController < BreadcrumbController
   end
 
   def ransack_contains_date
-    # 3 parts to date object, in order to use in ransackable_scopes
+    date =[]
     if params[:q] && !params[:q]['contains_date(1i)'].empty?
-      date =[]
       ['contains_date(1i)', 'contains_date(2i)', 'contains_date(3i)'].each do |key|
-        date << params[:q][key]
+        date << params[:q][key].to_i
         params[:q].delete(key)
       end
-      params[:q]['contains_date'] = Date.parse(date.join('-'))
+      params[:q]['contains_date'] = Date.new(*date)
     end
   end
 

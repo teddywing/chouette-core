@@ -118,9 +118,18 @@ class Calendar < ActiveRecord::Base
     end
   end
 
+  def flatten_date_array attributes, key
+    date_int = %w(1 2 3).map {|e| attributes["#{key}(#{e}i)"].to_i }
+    Date.new(*date_int)
+  end
+
   def periods_attributes=(attributes = {})
     @periods = []
     attributes.each do |index, period_attribute|
+      # Convert date_select to date
+      ['begin', 'end'].map do |attr|
+        period_attribute[attr] = flatten_date_array(period_attribute, attr)
+      end
       period = Period.new(period_attribute.merge(id: index))
       @periods << period unless period.marked_for_destruction?
     end
@@ -223,6 +232,7 @@ class Calendar < ActiveRecord::Base
   def date_values_attributes=(attributes = {})
     @date_values = []
     attributes.each do |index, date_value_attribute|
+      date_value_attribute['value'] = flatten_date_array(date_value_attribute, 'value')
       date_value = DateValue.new(date_value_attribute.merge(id: index))
       @date_values << date_value unless date_value.marked_for_destruction?
     end

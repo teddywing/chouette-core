@@ -8,10 +8,12 @@ fr:
       hour: "%Hh%M"
       minute: "%M min"
       short: "%d/%m/%Y"
+      short_with_time: "%d/%m/%Y à %Hh%M"
 
   date:
     formats:
       short: "%d/%m/%Y"
+      short_with_time: "%d/%m/%Y à %Hh%M"
 
   last_update: 'Dernière mise à jour<br>le %{time}'
   last_sync: 'Dernière mise à jour le %{time}'

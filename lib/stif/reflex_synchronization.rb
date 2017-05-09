@@ -35,7 +35,7 @@ module Stif
       end
 
       def synchronize
-        self.reset_counts
+        reset_counts
         ['getOR', 'getOP'].each do |method|
           start   = Time.now
           results = Reflex::API.new().process(method)
