@@ -33,6 +33,31 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   validates_associated :dates
   validates_associated :periods
 
+  def continuous_dates
+    chunk = {}
+    group = nil
+    self.dates.where(in_out: true).each_with_index do |date, index|
+      group ||= index
+      group = (date.date == dates[index - 1].date + 1.day) ? group : group + 1
+      chunk[group] ||= []
+      chunk[group] << date
+    end
+    chunk.values
+  end
+
+  def convert_continuous_dates_to_periods
+    chunks = self.continuous_dates
+    # Remove less than 3 continuous day chunk
+    chunks.delete_if {|chunk| chunk.count < 3}
+
+    transaction do
+      chunks.each do |chunk|
+        self.periods.create!(period_start: chunk.first.date, period_end: chunk.last.date)
+        chunk.map(&:destroy)
+      end
+    end
+  end
+
   def state_update state
     update_attributes(self.class.state_permited_attributes(state))
     self.tag_list = state['tags'].collect{|t| t['name']}.join(', ')
