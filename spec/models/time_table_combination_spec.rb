@@ -5,18 +5,33 @@ describe TimeTableCombination, :type => :model do
   let!(:combined){create(:time_table)}
   subject {build(:time_table_combination)}
 
-  describe 'continuous_dates' do
+  describe '#continuous_dates' do
     it 'should group continuous dates' do
       dates = source.dates.where(in_out: true)
-      expect(source.continuous_dates.values[0].count).to eq(dates.count)
+      expect(source.continuous_dates[0].count).to eq(dates.count)
 
-      # 6 more continious date, 1 isolated date
+      # 6 more continuous date, 1 isolated date
       (10..15).each do |n|
         source.dates.create(date: Date.today + n.day, in_out: true)
       end
       source.dates.create(date: Date.today + 1.year, in_out: true)
-      expect(source.reload.continuous_dates.values[1].count).to eq(6)
-      expect(source.reload.continuous_dates.values[2].count).to eq(1)
+      expect(source.reload.continuous_dates[1].count).to eq(6)
+      expect(source.reload.continuous_dates[2].count).to eq(1)
+    end
+  end
+
+  describe '#convert_continuous_dates_to_periods' do
+    it 'should convert continuous dates to periods' do
+      (10..12).each do |n|
+        source.dates.create(date: Date.today + n.day, in_out: true)
+      end
+      source.dates.create(date: Date.today + 1.year, in_out: true)
+
+      expect {
+        source.reload.convert_continuous_dates_to_periods
+      }.to change {source.periods.count}.by(2)
+
+      expect(source.reload.dates.where(in_out: true).count).to eq(1)
     end
   end
 
