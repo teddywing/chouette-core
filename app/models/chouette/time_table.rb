@@ -33,6 +33,19 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   validates_associated :dates
   validates_associated :periods
 
+  def continuous_dates
+    chunk = {}
+    group = nil
+
+    self.dates.each_with_index do |date, index|
+      group ||= index
+      group = (date.date == dates[index - 1].date + 1.day) ? group : group + 1
+      chunk[group] ||= []
+      chunk[group] << date
+    end
+    chunk
+  end
+
   def state_update state
     update_attributes(self.class.state_permited_attributes(state))
     self.tag_list = state['tags'].collect{|t| t['name']}.join(', ')
