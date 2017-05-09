@@ -1,3 +1,4 @@
+# Deprecated, to remove (see #3324)
 fr:
   transport_modes:
     name: "Mode de transport"
