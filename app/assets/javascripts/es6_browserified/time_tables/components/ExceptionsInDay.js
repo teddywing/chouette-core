@@ -17,7 +17,7 @@ class ExceptionsInDay extends Component {
           <div className='td'>
             <button
               type='button'
-              className='btn btn-circle'
+              className={'btn btn-circle' + (this.props.value.current_month[this.props.index].excluded_date ? ' active' : '')}
               data-actiontype='remove'
               onClick={(e) => {
                 $(e.currentTarget).toggleClass('active')
@@ -33,7 +33,7 @@ class ExceptionsInDay extends Component {
           <div className='td'>
             <button
               type='button'
-              className='btn btn-circle'
+              className={'btn btn-circle'  + (this.props.value.current_month[this.props.index].include_date ? ' active' : '')}
               data-actiontype='add'
               onClick={(e) => {
                 $(e.currentTarget).toggleClass('active')

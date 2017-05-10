@@ -5,6 +5,7 @@ var createStore = require('redux').createStore
 var reducers = require('./reducers')
 var App = require('./components/App')
 var addInput = require('./form_helper')
+let datas = JSON.parse(decodeURIComponent(window.itinerary_stop))
 
 // logger, DO NOT REMOVE
 // var applyMiddleware = require('redux').applyMiddleware
@@ -14,7 +15,6 @@ var addInput = require('./form_helper')
 
 const getInitialState = () => {
   let state = []
-  let datas = JSON.parse(decodeURIComponent(window.itinerary_stop))
 
   datas.map(function(v, i) {
     let fancyText = v.name.replace("&#39;", "\'")
@@ -67,10 +67,7 @@ render(
 document.querySelector('input[name=commit]').addEventListener('click', (event)=>{
   let state = store.getState()
   state.stopPoints.map((stopPoint, i) => {
-    if (stopPoint.stoppoint_id == undefined){
-      stopPoint.stoppoint_id = ""
-    }
-    addInput('id',stopPoint.stoppoint_id, i)
+    addInput('id', (datas[i]) ? datas[i].stoppoint_id : '', i)
     addInput('stop_area_id',stopPoint.stoparea_id, i)
     addInput('position',i, i)
     addInput('for_boarding',stopPoint.for_boarding, i)
