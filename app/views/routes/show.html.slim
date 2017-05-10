@@ -10,7 +10,7 @@
     .col-lg-12.text-right
       = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], class: 'btn btn-primary'
       - if @route.journey_patterns.present?
-        = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'btn btn-primary'
+        = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], data: {turbolinks: false}, class: 'btn btn-primary'
 
       = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'btn btn-primary'
 
