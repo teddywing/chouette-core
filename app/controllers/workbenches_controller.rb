@@ -68,7 +68,7 @@ class WorkbenchesController < BreadcrumbController
   def ransack_periode scope
     return scope unless params[:q] && params[:q]['validity_period']
     periode = params[:q]['validity_period']
-    return scope if periode['end_lteq(1i)'].empty? || periode['begin_gteq(1i)'].empty?
+    return scope if periode['end_lteq(1i)'].blank? || periode['begin_gteq(1i)'].blank?
 
     begin_range = Date.civil(periode["begin_gteq(1i)"].to_i, periode["begin_gteq(2i)"].to_i, periode["begin_gteq(3i)"].to_i)
     end_range   = Date.civil(periode["end_lteq(1i)"].to_i, periode["end_lteq(2i)"].to_i, periode["end_lteq(3i)"].to_i)
