@@ -64,7 +64,7 @@ class DuplicateVehicleJourney extends Component {
                           <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3'>
                             <div className='form-group'>
                               <label className='control-label is-required'>Horaire de départ</label>
-                              <span className={'input-group time'}>
+                              <span className={'input-group time' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? ' disabled' : '')}>
                                 <input
                                   type='number'
                                   ref='duplicate_time_hh'
@@ -72,6 +72,7 @@ class DuplicateVehicleJourney extends Component {
                                   max='23'
                                   className='form-control'
                                   defaultValue={this.getDefaultValue('hour')}
+                                  disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
                                   />
                                 <span>:</span>
                                 <input
@@ -81,6 +82,7 @@ class DuplicateVehicleJourney extends Component {
                                   max='59'
                                   className='form-control'
                                   defaultValue={this.getDefaultValue('minute')}
+                                  disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
                                   />
                               </span>
                             </div>
