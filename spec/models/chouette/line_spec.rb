@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Chouette::Line, :type => :model do
 
   subject { create(:line) }
+  it { is_expected.to belong_to(:line_referential) }
 
   # it { is_expected.to validate_presence_of :network }
   # it { is_expected.to validate_presence_of :company }
@@ -11,6 +12,13 @@ describe Chouette::Line, :type => :model do
 
   # it { should validate_presence_of :objectid }
   it { is_expected.to validate_uniqueness_of :objectid }
+
+  describe '#display_name' do
+    it 'should display local_id, number, name and company name' do
+      display_name = "#{subject.objectid.local_id} - #{subject.number} - #{subject.name} - #{subject.company.try(:name)}"
+      expect(subject.display_name).to eq(display_name)
+    end
+  end
 
   describe '#objectid' do
     subject { super().objectid }
