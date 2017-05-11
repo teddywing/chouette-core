@@ -60,7 +60,6 @@ const stopPoints = (state = [], action) => {
     case 'UPDATE_INPUT_VALUE':
       return state.map( (t, i) => {
         if (i === action.index) {
-          updateFormForDeletion(t)
           return _.assign(
             {},
             t,
