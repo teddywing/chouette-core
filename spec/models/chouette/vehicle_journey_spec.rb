@@ -284,7 +284,7 @@ describe Chouette::VehicleJourney, :type => :model do
         first stop that they make" do
       journey_missing_stop = create(:vehicle_journey)
       journey_early = create(
-      :vehicle_journey,
+        :vehicle_journey,
         route: journey_missing_stop.route,
         journey_pattern: journey_missing_stop.journey_pattern
       )
