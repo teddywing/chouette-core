@@ -5,6 +5,14 @@ module LinesHelper
     line.number
   end
 
+  def sorted_transport_submode
+    Chouette::Line.transport_submode.values.sort_by{|m| t("enumerize.line.transport_submode.#{m}") }
+  end
+
+  def sorted_transport_mode
+    Chouette::Line.transport_mode.values.sort_by{|m| t("enumerize.line.transport_mode.#{m}") }
+  end
+
   def colors?(line)
     line.text_color.present? || line.color.present?
   end
@@ -12,15 +20,15 @@ module LinesHelper
   def text_color(line)
     line.text_color.blank? ? "black" : "##{line.text_color}"
   end
-  
+
   def background_color(line)
     line.color.blank? ? "white" : "#"+line.color
   end
-  
+
   def number_style(line)
     if colors?(line)
       number_style = "color: #{text_color(line)}; background-color: #{background_color(line)};"
-    else 
+    else
       number_style = ""
     end
 
