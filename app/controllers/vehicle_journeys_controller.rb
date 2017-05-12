@@ -78,7 +78,6 @@ class VehicleJourneysController < ChouetteController
   protected
   def collection
     scope = route.vehicle_journeys.with_stops
-
     @q = scope.search filtered_ransack_params
 
     # Fixme 3358
@@ -94,7 +93,6 @@ class VehicleJourneysController < ChouetteController
 
   def ransack_periode_filter
     if params[:q] && params[:q][:vehicle_journey_at_stops_departure_time_gteq]
-      params[:q] = params[:q].reject{|k| params[:q][k] == 'undefined'}
       between = [:departure_time_gteq, :departure_time_lteq].map do |filter|
         "2000-01-01 #{params[:q]["vehicle_journey_at_stops_#{filter}"]}:00 UTC"
       end
@@ -108,6 +106,7 @@ class VehicleJourneysController < ChouetteController
 
   def filtered_ransack_params
     if params[:q]
+      params[:q] = params[:q].reject{|k| params[:q][k] == 'undefined'}
       params[:q].except(:vehicle_journey_at_stops_departure_time_gteq, :vehicle_journey_at_stops_departure_time_lteq)
     end
   end

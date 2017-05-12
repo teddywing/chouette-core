@@ -53,9 +53,10 @@ const filters = (state = {}, action) => {
       let params = {
         'q[journey_pattern_id_eq]': state.query.journeyPattern.id || undefined,
         'q[time_tables_id_eq]': state.query.timetable.id || undefined,
-        'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
-        'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute),
-        'q[vehicle_journey_without_departure_time]' : state.query.withoutSchedule
+        // Fixme 3358
+        // 'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
+        // 'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute),
+        // 'q[vehicle_journey_without_departure_time]' : state.query.withoutSchedule
       }
       let queryString = actions.encodeParams(params)
       return _.assign({}, state, {queryString: queryString})
