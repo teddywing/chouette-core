@@ -231,13 +231,21 @@ module Chouette
     #         "vehicle_journeys"."id"
     #   ')
     #   .where_departure_time_between('08:00', '09:45')
-    def self.where_departure_time_between(start_time, end_time)
+    def self.where_departure_time_between(
+      start_time,
+      end_time,
+      allow_empty: false
+    )
       self
         .where(
           %Q(
             "vehicle_journey_at_stops"."departure_time" >= ?
             AND "vehicle_journey_at_stops"."departure_time" < ?
-            OR "vehicle_journey_at_stops"."id" IS NULL
+            #{
+              if allow_empty
+                'OR "vehicle_journey_at_stops"."id" IS NULL'
+              end
+            }
           ),
           "2000-01-01 #{start_time}:00 UTC",
           "2000-01-01 #{end_time}:00 UTC"

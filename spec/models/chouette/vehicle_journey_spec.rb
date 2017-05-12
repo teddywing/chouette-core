@@ -346,6 +346,23 @@ describe Chouette::VehicleJourney, :type => :model do
         .to_a
       ).to eq([journey_middle])
     end
+
+    it "can include vehicle journeys that have nil stops" do
+      journey = create(:vehicle_journey_empty)
+      route = journey.route
+
+      expect(route
+        .vehicle_journeys
+        .select('DISTINCT "vehicle_journeys".*')
+        .joins('
+          LEFT JOIN "vehicle_journey_at_stops"
+            ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
+        ')
+        .where_departure_time_between('02:30', '03:30', allow_empty: true)
+        .to_a
+      ).to eq([journey])
+    end
   end
 
   subject { create(:vehicle_journey_odd) }

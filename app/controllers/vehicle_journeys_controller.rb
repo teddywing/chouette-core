@@ -84,7 +84,9 @@ class VehicleJourneysController < ChouetteController
         params[:q][:vehicle_journey_at_stops_departure_time_lteq]
       scope = scope.where_departure_time_between(
         params[:q][:vehicle_journey_at_stops_departure_time_gteq],
-        params[:q][:vehicle_journey_at_stops_departure_time_lteq]
+        params[:q][:vehicle_journey_at_stops_departure_time_lteq],
+        allow_empty:
+          params[:q][:vehicle_journey_without_departure_time] == 'true'
       )
     end
 
