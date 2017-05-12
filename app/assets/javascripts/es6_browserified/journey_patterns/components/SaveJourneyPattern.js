@@ -8,18 +8,10 @@ class SaveJourneyPattern extends Component{
     super(props)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(prevProps.status.isFetching == true){
-      $(window).scrollTop(0);
-      submitMover();
-    }
-  }
-
   render() {
-    if(this.props.status.isFetching == true || (this.props.status.policy['journey_patterns.edit'] == false)) {
+    if(this.props.status.policy['journey_patterns.edit'] == false) {
       return false
-    }
-    if(this.props.status.fetchSuccess == true) {
+    }else{
       return (
         <div className='row mt-md'>
           <div className='col-lg-12 text-right'>
@@ -38,8 +30,6 @@ class SaveJourneyPattern extends Component{
           </div>
         </div>
       )
-    } else {
-      return false
     }
   }
 }

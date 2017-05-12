@@ -1363,6 +1363,11 @@ end
   end
 
   describe "#duplicate" do
+    it 'should also copy tags' do
+      subject.tag_list.add('tag1', 'tag2')
+      expect(subject.duplicate.tag_list).to include('tag1', 'tag2')
+    end
+
       it "should be a copy of" do
         target=subject.duplicate
         expect(target.id).to be_nil

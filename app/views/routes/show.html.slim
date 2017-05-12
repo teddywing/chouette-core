@@ -3,14 +3,14 @@
              @route.name,
              'Lorem ipsum dolor sit amet',
              t('last_update', time: l(@route.updated_at, format: :short)),
-             (policy(@route).edit? ? link_to(t('actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'btn btn-default') : '') do
+             (policy(@route).edit? ? link_to(t('actions.edit'), edit_referential_line_route_path(@referential, @line, @route), data: {turbolinks: false}, class: 'btn btn-default') : '') do
 
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], class: 'btn btn-primary'
+      = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], data: {turbolinks: false}, class: 'btn btn-primary'
       - if @route.journey_patterns.present?
-        = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'btn btn-primary'
+        = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], data: {turbolinks: false}, class: 'btn btn-primary'
 
       = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'btn btn-primary'
 
