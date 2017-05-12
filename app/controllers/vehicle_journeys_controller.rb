@@ -79,6 +79,7 @@ class VehicleJourneysController < ChouetteController
   def collection
     scope = route.vehicle_journeys.with_stops
 
+    # Apply departure time range filter
     if params[:q] &&
         params[:q][:vehicle_journey_at_stops_departure_time_gteq] &&
         params[:q][:vehicle_journey_at_stops_departure_time_lteq]
