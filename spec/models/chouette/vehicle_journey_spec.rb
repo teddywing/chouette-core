@@ -310,6 +310,38 @@ describe Chouette::VehicleJourney, :type => :model do
     end
   end
 
+  describe ".departure_time_between" do
+    it "selects vehicle journeys whose departure times are between the
+        specified range" do
+      journey_early = create(
+        :vehicle_journey,
+        stop_departure_time: '02:00:00'
+      )
+
+      route = journey_early.route
+      journey_pattern = journey_early.journey_pattern
+
+      journey_middle = create(
+        :vehicle_journey,
+        route: route,
+        journey_pattern: journey_pattern,
+        stop_departure_time: '03:00:00'
+      )
+      journey_late = create(
+        :vehicle_journey,
+        route: route,
+        journey_pattern: journey_pattern,
+        stop_departure_time: '04:00:00'
+      )
+
+      expect(route
+        .vehicle_journeys
+        .departure_time_between('02:30', '03:30')
+        .to_a
+      ).to eq([journey_middle])
+    end
+  end
+
   subject { create(:vehicle_journey_odd) }
   describe "in_relation_to_a_journey_pattern methods" do
     let!(:route) { create(:route)}

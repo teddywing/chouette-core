@@ -220,5 +220,26 @@ module Chouette
         .order('"vehicle_journey_at_stops"."departure_time"')
     end
 
+    # Example:
+    #   .departure_time_between('08:00', '09:45')
+    def self.departure_time_between(start_time, end_time)
+      self
+        .select('DISTINCT "vehicle_journeys".*')
+        .joins('
+          LEFT JOIN "vehicle_journey_at_stops"
+            ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
+        ')
+        .where(
+          %Q(
+            "vehicle_journey_at_stops"."departure_time" >= ?
+            AND "vehicle_journey_at_stops"."departure_time" < ?
+            OR "vehicle_journey_at_stops"."id" IS NULL
+          ),
+          "2000-01-01 #{start_time}:00 UTC",
+          "2000-01-01 #{end_time}:00 UTC"
+        )
+    end
+
   end
 end
