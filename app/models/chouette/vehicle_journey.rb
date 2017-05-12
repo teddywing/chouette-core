@@ -220,16 +220,19 @@ module Chouette
         .order('"vehicle_journey_at_stops"."departure_time"')
     end
 
+    # Requires a SELECT DISTINCT and a join with
+    # "vehicle_journey_at_stops".
+    #
     # Example:
-    #   .departure_time_between('08:00', '09:45')
-    def self.departure_time_between(start_time, end_time)
+    #   .select('DISTINCT "vehicle_journeys".*')
+    #   .joins('
+    #     LEFT JOIN "vehicle_journey_at_stops"
+    #       ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+    #         "vehicle_journeys"."id"
+    #   ')
+    #   .where_departure_time_between('08:00', '09:45')
+    def self.where_departure_time_between(start_time, end_time)
       self
-        .select('DISTINCT "vehicle_journeys".*')
-        .joins('
-          LEFT JOIN "vehicle_journey_at_stops"
-            ON "vehicle_journey_at_stops"."vehicle_journey_id" =
-              "vehicle_journeys"."id"
-        ')
         .where(
           %Q(
             "vehicle_journey_at_stops"."departure_time" >= ?

@@ -336,7 +336,13 @@ describe Chouette::VehicleJourney, :type => :model do
 
       expect(route
         .vehicle_journeys
-        .departure_time_between('02:30', '03:30')
+        .select('DISTINCT "vehicle_journeys".*')
+        .joins('
+          LEFT JOIN "vehicle_journey_at_stops"
+            ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
+        ')
+        .where_departure_time_between('02:30', '03:30')
         .to_a
       ).to eq([journey_middle])
     end
