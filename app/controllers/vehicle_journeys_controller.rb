@@ -92,10 +92,6 @@ class VehicleJourneysController < ChouetteController
 
     @q = scope.search filtered_ransack_params
 
-    # Fixme 3358
-    # grouping = ransack_periode_filter
-    # @q.build_grouping(grouping) if grouping
-
     @ppage = 20
     @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
     @footnotes = route.line.footnotes.to_json
