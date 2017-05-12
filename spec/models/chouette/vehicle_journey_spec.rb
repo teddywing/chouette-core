@@ -197,7 +197,7 @@ describe Chouette::VehicleJourney, :type => :model do
 
         expect(vehicle_journey.reload.vehicle_journey_at_stops).to be_empty
         at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
-        at_stops.map{|stop| expect(stop.stop_point_id).to be_nil }
+        at_stops.map{|stop| expect(stop.id).to be_nil }
         expect(at_stops.count).to eq route.stop_points.count
       end
 
