@@ -217,7 +217,7 @@ module Chouette
             AND "vehicle_journey_at_stops"."stop_point_id" =
               "journey_patterns"."departure_stop_point_id"
         ')
-        .order("vehicle_journey_at_stops.departure_time")
+        .order('"vehicle_journey_at_stops"."departure_time"')
     end
 
   end
