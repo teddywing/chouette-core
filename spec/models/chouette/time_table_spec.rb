@@ -1198,6 +1198,7 @@ end
         expect(subject.dates[2].date).to eq(Date.new(2014,7,20))
       end
     end
+
     context "timetable with dates against timetable with dates and periods all covered" do
       before do
         subject.periods.clear
@@ -1218,12 +1219,15 @@ end
         subject.disjoin! another_tt
         subject.reload
       end
+
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
       end
+
       it "should have no remained day_types" do
         subject.int_day_types == 0
       end
+
       it "should have 0 dates left" do
         expect(subject.dates.size).to eq(0)
       end
@@ -1243,12 +1247,15 @@ end
         subject.disjoin! another_tt
         subject.reload
       end
+
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
       end
+
       it "should have 0 day_types" do
         expect(subject.int_day_types).to eq(0)
       end
+
       it "should have 6 dates " do
         expect(subject.dates.size).to eq(6)
         expect(subject.dates[0].date).to eq(Date.new(2014,8,11))
@@ -1274,24 +1281,26 @@ end
         subject.disjoin! another_tt
         subject.reload
       end
-      it "should have 0 result periods" do
-        expect(subject.periods.size).to eq(0)
+
+      it "should have 3 result periods" do
+        expect(subject.periods.size).to eq(3)
+        [
+          ['2014-08-11', '2014-08-13'],
+          ['2014-08-18', '2014-08-20'],
+          ['2014-08-25', '2014-08-27']
+        ].each_with_index do |period, index|
+          expect(subject.periods[index].period_start.to_s).to eq(period[0])
+          expect(subject.periods[index].period_end.to_s).to eq(period[1])
+        end
      end
+
       it "should have 0 day_types" do
         expect(subject.int_day_types).to eq(0)
       end
-      it "should have 10 dates " do
-        expect(subject.dates.size).to eq(10)
-        expect(subject.dates[0].date).to eq(Date.new(2014,8,6))
-        expect(subject.dates[1].date).to eq(Date.new(2014,8,11))
-        expect(subject.dates[2].date).to eq(Date.new(2014,8,12))
-        expect(subject.dates[3].date).to eq(Date.new(2014,8,13))
-        expect(subject.dates[4].date).to eq(Date.new(2014,8,18))
-        expect(subject.dates[5].date).to eq(Date.new(2014,8,19))
-        expect(subject.dates[6].date).to eq(Date.new(2014,8,20))
-        expect(subject.dates[7].date).to eq(Date.new(2014,8,25))
-        expect(subject.dates[8].date).to eq(Date.new(2014,8,26))
-        expect(subject.dates[9].date).to eq(Date.new(2014,8,27))
+
+      it "should have 1 dates " do
+        expect(subject.dates.size).to eq(1)
+        expect(subject.dates.first.date.to_s).to eq('2014-08-06')
       end
     end
 
@@ -1311,24 +1320,26 @@ end
         subject.disjoin! another_tt
         subject.reload
       end
-      it "should have same 0 result periods" do
-        expect(subject.periods.size).to eq(0)
+
+      it "should have same 3 result periods" do
+        expect(subject.periods.size).to eq(3)
+        [
+          ['2014-08-11', '2014-08-13'],
+          ['2014-08-18', '2014-08-20'],
+          ['2014-08-25', '2014-08-27']
+        ].each_with_index do |period, index|
+          expect(subject.periods[index].period_start.to_s).to eq(period[0])
+          expect(subject.periods[index].period_end.to_s).to eq(period[1])
+        end
       end
+
       it "should have 0 day_types" do
         expect(subject.int_day_types).to eq(0)
       end
-      it "should have only 10 dates " do
-        expect(subject.dates.size).to eq(10)
-        expect(subject.dates[0].date).to eq(Date.new(2014,8,6))
-        expect(subject.dates[1].date).to eq(Date.new(2014,8,11))
-        expect(subject.dates[2].date).to eq(Date.new(2014,8,12))
-        expect(subject.dates[3].date).to eq(Date.new(2014,8,13))
-        expect(subject.dates[4].date).to eq(Date.new(2014,8,18))
-        expect(subject.dates[5].date).to eq(Date.new(2014,8,19))
-        expect(subject.dates[6].date).to eq(Date.new(2014,8,20))
-        expect(subject.dates[7].date).to eq(Date.new(2014,8,25))
-        expect(subject.dates[8].date).to eq(Date.new(2014,8,26))
-        expect(subject.dates[9].date).to eq(Date.new(2014,8,27))
+
+      it "should have only 1 dates " do
+        expect(subject.dates.size).to eq(1)
+        expect(subject.dates.first.date.to_s).to eq('2014-08-06')
       end
     end
 

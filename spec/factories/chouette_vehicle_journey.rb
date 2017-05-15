@@ -11,13 +11,18 @@ FactoryGirl.define do
       end
 
       factory :vehicle_journey do
-        after(:create) do |vehicle_journey|
+        transient do
+          stop_arrival_time '01:00:00'
+          stop_departure_time '03:00:00'
+        end
+
+        after(:create) do |vehicle_journey, evaluator|
           vehicle_journey.journey_pattern.stop_points.each_with_index do |stop_point, index|
             vehicle_journey.vehicle_journey_at_stops << create(:vehicle_journey_at_stop,
                    :vehicle_journey => vehicle_journey,
                    :stop_point      => stop_point,
-                   :arrival_time    => '2000-01-01 01:00:00 UTC',
-                   :departure_time  => '2000-01-01 03:00:00 UTC')
+                   :arrival_time    => "2000-01-01 #{evaluator.stop_arrival_time} UTC",
+                   :departure_time  => "2000-01-01 #{evaluator.stop_departure_time} UTC")
           end
         end
 

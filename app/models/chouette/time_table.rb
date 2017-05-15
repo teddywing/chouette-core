@@ -495,6 +495,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
           add_included_day d
         end
       end
+      self.convert_continuous_dates_to_periods
     end
     # if remained excluded dates are valid in other tt , remove it from result
     self.dates.each do |date|
@@ -528,6 +529,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       self.dates.to_a.sort! { |a,b| a.date <=> b.date}
       self.save!
     end
+    self.convert_continuous_dates_to_periods
   end
 
 
@@ -546,6 +548,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       self.periods.to_a.sort! { |a,b| a.period_start <=> b.period_start}
       self.save!
     end
+    self.convert_continuous_dates_to_periods
   end
 
   def duplicate

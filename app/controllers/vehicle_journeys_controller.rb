@@ -79,11 +79,19 @@ class VehicleJourneysController < ChouetteController
   def collection
     scope = route.vehicle_journeys.with_stops
 
-    @q = scope.search filtered_ransack_params
+    # Apply departure time range filter
+    if params[:q] &&
+        params[:q][:vehicle_journey_at_stops_departure_time_gteq] &&
+        params[:q][:vehicle_journey_at_stops_departure_time_lteq]
+      scope = scope.where_departure_time_between(
+        params[:q][:vehicle_journey_at_stops_departure_time_gteq],
+        params[:q][:vehicle_journey_at_stops_departure_time_lteq],
+        allow_empty:
+          params[:q][:vehicle_journey_without_departure_time] == 'true'
+      )
+    end
 
-    # Fixme 3358
-    # grouping = ransack_periode_filter
-    # @q.build_grouping(grouping) if grouping
+    @q = scope.search filtered_ransack_params
 
     @ppage = 20
     @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
@@ -92,22 +100,9 @@ class VehicleJourneysController < ChouetteController
     @vehicle_journeys
   end
 
-  def ransack_periode_filter
-    if params[:q] && params[:q][:vehicle_journey_at_stops_departure_time_gteq]
-      params[:q] = params[:q].reject{|k| params[:q][k] == 'undefined'}
-      between = [:departure_time_gteq, :departure_time_lteq].map do |filter|
-        "2000-01-01 #{params[:q]["vehicle_journey_at_stops_#{filter}"]}:00 UTC"
-      end
-      {
-        :m => 'or',
-        :vehicle_journey_at_stops_departure_time_between => between.join(' to '),
-        :vehicle_journey_at_stops_id_null => params[:q][:vehicle_journey_without_departure_time]
-      }
-    end
-  end
-
   def filtered_ransack_params
     if params[:q]
+      params[:q] = params[:q].reject{|k| params[:q][k] == 'undefined'}
       params[:q].except(:vehicle_journey_at_stops_departure_time_gteq, :vehicle_journey_at_stops_departure_time_lteq)
     end
   end
