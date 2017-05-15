@@ -37,7 +37,7 @@ describe "Group of lines", :type => :feature do
   describe "show" do
     it "displays group of line" do
       visit line_referential_group_of_lines_path(line_referential)
-      click_link "#{subject.name}"
+      click_link subject.name
       expect(page).to have_content(subject.name)
     end
 

@@ -27,18 +27,6 @@ describe 'Line Footnotes', type: :feature do
       expect(page).not_to have_content(I18n.t('actions.add'))
     end
 
-    context 'user has permission to edit footnotes' do
-      it 'shows edit link for footnotes' do
-        expect(page).to have_content(I18n.t('actions.edit'))
-      end
-    end
-
-    context 'user does not have permission to edit footnotes' do
-      it 'does not show edit link for footnotes' do
-        @user.update_attribute(:permissions, [])
-        visit referential_line_footnotes_path(referential.line_referential, line)
-        expect(page).not_to have_content(I18n.t('lines.actions.edit_footnotes'))
-      end
-    end
   end
+
 end
