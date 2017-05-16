@@ -20,6 +20,10 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   belongs_to :calendar
   belongs_to :created_from, class_name: 'Chouette::TimeTable'
 
+  scope :overlapping, -> (date_start, date_end) do
+    joins(:periods).where('(period_start, period_end) OVERLAPS (?, ?)', date_start, date_end)
+  end
+
   after_save :save_shortcuts
 
   def self.object_id_key
