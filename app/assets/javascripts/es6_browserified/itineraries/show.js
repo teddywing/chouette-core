@@ -3,7 +3,7 @@ const geoColPts = []
 const geoColLns = []
 var oLon = 0
 var oLat = 0
-route.forEach((stop, i) => {
+route.forEach(function(stop, i){
   if (i == 0){
     oLon = parseFloat(stop.longitude)
     oLat = parseFloat(stop.latitude)
