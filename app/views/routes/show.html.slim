@@ -30,10 +30,13 @@
             @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
             @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }
 
+      - if @route_sp.any?
+        .col-lg-6.col-md-6.col-sm-12.col-xs-12
+          #route_map.map.mb-lg
+      
     .row
       .col-lg-12
         - if @route_sp.any?
-          #route_map.map
           = table_builder @route_sp,
             { 'ID Reflex' => Proc.new {|s| s.try(:stop_area).try(:user_objectid)},
               :name => Proc.new {|s| s.try(:stop_area).try(:name)},
@@ -49,6 +52,7 @@
 
         - else
           = replacement_msg t('stop_areas.search_no_results')
+
 = javascript_tag do
   | window.route = "#{URI.escape(route_json_for_edit(@route))}"
 = javascript_include_tag 'es6_browserified/itineraries/show.js'

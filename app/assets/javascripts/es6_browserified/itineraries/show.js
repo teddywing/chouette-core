@@ -27,20 +27,20 @@ var edgeStyles = new ol.style.Style({
   image: new ol.style.Circle(({
     radius: 5,
     stroke: new ol.style.Stroke({
-      color: '#ff0000',
+      color: '#007fbb',
       width: 2
     }),
     fill: new ol.style.Fill({
-      color: '#ffffff',
+      color: '#007fbb',
       width: 2
     })
   }))
 })
 var defaultStyles = new ol.style.Style({
   image: new ol.style.Circle(({
-    radius: 5,
+    radius: 4,
     stroke: new ol.style.Stroke({
-      color: '#004d87',
+      color: '#007fbb',
       width: 2
     }),
     fill: new ol.style.Fill({
@@ -51,8 +51,8 @@ var defaultStyles = new ol.style.Style({
 })
 var lineStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
-      color: '#0000ff',
-      width: 4
+      color: '#007fbb',
+      width: 3
   })
 })
 
@@ -94,7 +94,6 @@ var map = new ol.Map({
   }),
   view: new ol.View({
     center: ol.proj.fromLonLat([parseFloat(route[0].longitude), parseFloat(route[0].latitude)]),
-    zoom: 10
+    zoom: 13
   })
 });
-
