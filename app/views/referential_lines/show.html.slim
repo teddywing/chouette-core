@@ -51,7 +51,9 @@
             .col-lg-12
               = search_form_for @q, url: referential_line_path(@referential, @line), class: 'form form-filter' do |f|
                 .input-group.search_bar
-                  = f.search_field :name_cont, class: 'form-control', placeholder: "Indiquez un nom d'itinéraire..."
+                  = f.search_field :name_or_objectid_cont, class: 'form-control', placeholder: "Indiquez un nom d'itinéraire..."
+
+                  = f.input :wayback_eq_any, as: :checkboxes, class: 'form-control',collection: Chouette::Route.wayback.values, as: :check_boxes, label: false, required: false, wrapper_html: { class: 'checkbox_list'}, label_method: lambda{|l| ("<span>" + t("enumerize.route.wayback.#{l}") + "</span>").html_safe}
 
                   span.input-group-btn
                     button.btn.btn-default type='submit'
