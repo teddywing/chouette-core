@@ -52,9 +52,11 @@ class VehicleJourney extends Component {
         <div className='th'>
           <div className='strong mb-xs'>{this.props.value.objectid ? actions.humanOID(this.props.value.objectid) : '-'}</div>
           <div>{actions.humanOID(this.props.value.journey_pattern.objectid)}</div>
-          {this.props.value.time_tables.map((tt, i)=>
-            <div key={i}>{this.timeTableURL(tt)}</div>
-          )}
+          <div>
+            {this.props.value.time_tables.map((tt, i)=>
+              <span key={i} className='vj_tt'>{this.timeTableURL(tt)}</span>
+            )}
+          </div>
 
           {(this.props.filters.policy['vehicle_journeys.edit'] == true) &&
             <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
