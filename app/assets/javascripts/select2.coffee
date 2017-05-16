@@ -12,6 +12,7 @@
     target.select2
       theme: 'bootstrap'
       language: 'fr'
+      placeholder: target.data('select2ed-placeholder')
       allowClear: true
       tags: true
 
