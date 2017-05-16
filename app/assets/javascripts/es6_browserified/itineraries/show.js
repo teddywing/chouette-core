@@ -1,8 +1,8 @@
 route = JSON.parse(decodeURIComponent(route))
 const geoColPts = []
 const geoColLns = []
-let oLon = 0
-let oLat = 0
+var oLon = 0
+var oLat = 0
 route.forEach((stop, i) => {
   if (i == 0){
     oLon = parseFloat(stop.longitude)
