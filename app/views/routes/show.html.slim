@@ -8,7 +8,8 @@
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], data: {turbolinks: false}, class: 'btn btn-primary'
+      - if @route_sp.any?
+        = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], data: {turbolinks: false}, class: 'btn btn-primary'
       - if @route.journey_patterns.present?
         = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], data: {turbolinks: false}, class: 'btn btn-primary'
 
