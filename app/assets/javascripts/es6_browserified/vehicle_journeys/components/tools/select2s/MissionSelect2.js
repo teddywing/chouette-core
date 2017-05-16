@@ -32,7 +32,7 @@ class BSelect4 extends React.Component{
             delay: '500',
             data: function(params) {
               return {
-                q: {published_name_cont: params.term},
+                q: {published_name_or_objectid_cont: params.term},
               };
             },
             processResults: function(data, params) {
@@ -48,7 +48,7 @@ class BSelect4 extends React.Component{
             },
             cache: true
           },
-          minimumInputLength: 3,
+          minimumInputLength: 2,
           templateResult: formatRepo
         }}
       />

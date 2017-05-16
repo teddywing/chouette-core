@@ -87,9 +87,9 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
             </div>
 
             {/* Switch avec/sans horaires */}
-            <div className='form-group has_switch w40'>
-              <label className='control-label col-sm-8'>Afficher les courses sans horaires</label>
-              <div className='form-group col-sm-4' style={{padding: 0}}>
+            <div className='form-group has_switch'>
+              <label className='control-label pull-left'>Afficher les courses sans horaires</label>
+              <div className='form-group pull-left' style={{padding: 0}}>
                 <div className='checkbox'>
                   <label>
                     <input
