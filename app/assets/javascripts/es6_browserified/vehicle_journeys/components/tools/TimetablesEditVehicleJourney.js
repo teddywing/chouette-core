@@ -4,13 +4,13 @@ var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
 var TimetableSelect2 = require('./select2s/TimetableSelect2')
 
-class CalendarsEditVehicleJourney extends Component {
+class TimetablesEditVehicleJourney extends Component {
   constructor(props) {
     super(props)
   }
 
   handleSubmit() {
-    this.props.onCalendarsEditVehicleJourney(this.props.modal.modalProps.vehicleJourneys)
+    this.props.onTimetablesEditVehicleJourney(this.props.modal.modalProps.vehicleJourneys, this.props.modal.modalProps.timetables)
     this.props.onModalClose()
     $('#CalendarsEditVehicleJourneyModal').modal('hide')
   }
@@ -134,14 +134,14 @@ class CalendarsEditVehicleJourney extends Component {
   }
 }
 
-CalendarsEditVehicleJourney.propTypes = {
+TimetablesEditVehicleJourney.propTypes = {
   onOpenCalendarsEditModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  onCalendarsEditVehicleJourney: PropTypes.func.isRequired,
+  onTimetablesEditVehicleJourney: PropTypes.func.isRequired,
   onDeleteCalendarModal: PropTypes.func.isRequired,
   onSelect2Timetable: PropTypes.func.isRequired,
   onAddSelectedTimetable: PropTypes.func.isRequired,
   filters: PropTypes.object.isRequired
 }
 
-module.exports = CalendarsEditVehicleJourney
+module.exports = TimetablesEditVehicleJourney

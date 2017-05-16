@@ -88,9 +88,10 @@ const actions = {
     type : 'DELETE_CALENDAR_MODAL',
     timetable
   }),
-  editVehicleJourneyCalendars : (vehicleJourneys) => ({
-    type: 'EDIT_VEHICLEJOURNEYS_CALENDARS',
-    vehicleJourneys
+  editVehicleJourneyTimetables : (vehicleJourneys, timetables) => ({
+    type: 'EDIT_VEHICLEJOURNEYS_TIMETABLES',
+    vehicleJourneys,
+    timetables
   }),
   openShiftModal : () => ({
     type : 'SHIFT_VEHICLEJOURNEY_MODAL'

@@ -249,11 +249,13 @@ describe('when clicking on delete button next to a timetable inside modal', () =
 describe('when clicking on validate button inside calendars modal', () => {
   it('should create an action to update vj calendars', () => {
     const vehicleJourneys = []
+    const timetables = []
     const expectedAction = {
-      type: 'EDIT_VEHICLEJOURNEYS_CALENDARS',
-      vehicleJourneys
+      type: 'EDIT_VEHICLEJOURNEYS_TIMETABLES',
+      vehicleJourneys,
+      timetables
     }
-    expect(actions.editVehicleJourneyCalendars(vehicleJourneys)).toEqual(expectedAction)
+    expect(actions.editVehicleJourneyTimetables(vehicleJourneys, timetables)).toEqual(expectedAction)
   })
 })
 describe('when clicking on add button inside calendars modal', () => {

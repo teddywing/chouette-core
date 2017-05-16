@@ -147,13 +147,14 @@ const vehicleJourneys = (state = [], action) => {
           return vj
         }
       })
-    case 'EDIT_VEHICLEJOURNEYS_CALENDARS':
+    case 'EDIT_VEHICLEJOURNEYS_TIMETABLES':
+      let newTimetables = JSON.parse(JSON.stringify(action.timetables))
       return state.map((vj,i) =>{
         if(vj.selected){
           let updatedVJ = _.assign({}, vj)
           action.vehicleJourneys.map((vjm, j) =>{
             if(vj.objectid == vjm.objectid){
-              updatedVJ.time_tables =  vjm.time_tables
+              updatedVJ.time_tables =  newTimetables
             }
           })
           return updatedVJ
