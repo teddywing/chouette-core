@@ -23,16 +23,21 @@ route.forEach((stop, i) => {
 })
 var defaultStyles = new ol.style.Style({
   image: new ol.style.Circle(({
-    radius: 4,
+    radius: 5,
+    stroke: new ol.style.Stroke({
+      color: '#004d87',
+      width: 2
+    }),
     fill: new ol.style.Fill({
-      color: '#004d87'
+      color: '#ffffff',
+      width: 2
     })
   }))
 })
 var lineStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
       color: '#0000ff',
-      width: 2
+      width: 4
   })
 })
 
