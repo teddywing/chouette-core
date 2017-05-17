@@ -217,6 +217,12 @@ const actions = {
       published_name: selectedJP.published_name
     }
   }),
+  filterSelect2VehicleJourney: (selectedVJ) => ({
+    type : 'SELECT_VJ_FILTER',
+    selectedItem: {
+      objectid: selectedVJ.objectid
+    }
+  }),
   createQueryString: () => ({
     type: 'CREATE_QUERY_STRING'
   }),

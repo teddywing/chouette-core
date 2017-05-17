@@ -44,6 +44,9 @@ const filters = (state = {}, action) => {
     case 'SELECT_JP_FILTER':
       newQuery = _.assign({}, state.query, {journeyPattern : action.selectedItem})
       return _.assign({}, state, {query: newQuery})
+    case 'SELECT_VJ_FILTER':
+      newQuery = _.assign({}, state.query, {vehicleJourney : action.selectedItem})
+      return _.assign({}, state, {query: newQuery})
     case 'TOGGLE_ARRIVALS':
       return _.assign({}, state, {toggleArrivals: !state.toggleArrivals})
     case 'QUERY_FILTER_VEHICLEJOURNEYS':
@@ -52,6 +55,7 @@ const filters = (state = {}, action) => {
     case 'CREATE_QUERY_STRING':
       let params = {
         'q[journey_pattern_id_eq]': state.query.journeyPattern.id || undefined,
+        'q[objectid_cont]': state.query.vehicleJourney.objectid || undefined,
         'q[time_tables_id_eq]': state.query.timetable.id || undefined,
         'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
         'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute),

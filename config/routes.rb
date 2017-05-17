@@ -118,6 +118,7 @@ ChouetteIhm::Application.routes.draw do
         resource :vehicle_journeys_collection, :only => [:show, :update]
         resources :vehicle_journeys, :vehicle_journey_frequencies do
           get 'select_journey_pattern', :on => :member
+          get 'select_vehicle_journey', :on => :member
           resources :vehicle_translations
           resources :time_tables
         end

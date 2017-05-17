@@ -3,7 +3,7 @@ class VehicleJourneysController < ChouetteController
   before_action :user_permissions, only: :index
 
   respond_to :json, :only => :index
-  respond_to :js, :only => [:select_journey_pattern, :edit, :new, :index]
+  respond_to :js, :only => [:select_journey_pattern, :select_vehicle_journey, :edit, :new, :index]
 
   belongs_to :referential do
     belongs_to :line, :parent_class => Chouette::Line do
@@ -18,10 +18,15 @@ class VehicleJourneysController < ChouetteController
 
   def select_journey_pattern
     if params[:journey_pattern_id]
-      selected_journey_pattern = Chouette::JourneyPattern.find( params[:journey_pattern_id])
+      selected_journey_pattern = Chouette::JourneyPattern.find(params[:journey_pattern_id])
 
       @vehicle_journey = vehicle_journey
       @vehicle_journey.update_journey_pattern(selected_journey_pattern)
+    end
+  end
+  def select_vehicle_journey
+    if params[:vehicle_journey_objectid]
+      @vehicle_journey = Chouette::VehicleJourney.find(params[:vehicle_journey_objectid])
     end
   end
 
@@ -136,14 +141,28 @@ class VehicleJourneysController < ChouetteController
 
   private
   def vehicle_journey_params
-    params.require(:vehicle_journey).permit( { footnote_ids: [] } , :journey_pattern_id, :number, :published_journey_name,
-                                             :published_journey_identifier, :comment, :transport_mode,
-                                             :mobility_restricted_suitability, :flexible_service, :status_value,
-                                             :facility, :vehicle_type_identifier, :objectid, :time_table_tokens,
-                                             { date: [ :hour, :minute ] }, :button, :referential_id, :line_id,
-                                             :route_id, :id, { vehicle_journey_at_stops_attributes: [ :arrival_time,
-                                                                                                      :id, :_destroy,
-                                                                                                      :stop_point_id,
-                                                                                                      :departure_time] } )
+    params.require(:vehicle_journey).permit(
+      { footnote_ids: [] },
+      :journey_pattern_id,
+      :number,
+      :published_journey_name,
+      :published_journey_identifier,
+      :comment,
+      :transport_mode,
+      :mobility_restricted_suitability,
+      :flexible_service,
+      :status_value,
+      :facility,
+      :vehicle_type_identifier,
+      :objectid,
+      :time_table_tokens,
+      { date: [:hour, :minute] },
+      :button,
+      :referential_id,
+      :line_id,
+      :route_id,
+      :id,
+      { vehicle_journey_at_stops_attributes: [:arrival_time, :id, :_destroy, :stop_point_id, :departure_time] }
+    )
   end
 end

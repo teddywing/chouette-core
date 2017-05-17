@@ -8,40 +8,44 @@ var origin = window.location.origin
 var path = window.location.pathname.split('/', 7).join('/')
 
 
-class BSelect4 extends React.Component{
+class BSelect4b extends React.Component{
   constructor(props) {
     super(props)
+  }
+  humanOID(oid) {
+    var a = oid.split(':')
+    return a[a.length - 1]
   }
 
   render() {
     return (
       <Select2
-        data={(this.props.isFilter) ? [this.props.filters.query.journeyPattern.published_name] : undefined}
-        value={(this.props.isFilter) ? this.props.filters.query.journeyPattern.published_name : undefined}
-        onSelect={(e) => this.props.onSelect2JourneyPattern(e)}
+        data={(this.props.isFilter) ? [this.props.filters.query.vehicleJourney.objectid] : undefined}
+        value={(this.props.isFilter) ? this.props.filters.query.vehicleJourney.objectid : undefined}
+        onSelect={(e) => this.props.onSelect2VehicleJourney(e)}
         multiple={false}
-        ref='journey_pattern_id'
+        ref='vehicle_journey_objectid'
         options={{
           allowClear: false,
           theme: 'bootstrap',
-          placeholder: 'Filtrer par mission...',
+          placeholder: 'Filtrer par ID course...',
           width: '100%',
           ajax: {
-            url: origin + path + '/journey_patterns_collection.json',
+            url: origin + path + '/vehicle_journeys.json',
             dataType: 'json',
             delay: '500',
             data: function(params) {
               return {
-                q: {published_name_cont: params.term},
+                q: {objectid_cont: params.term},
               };
             },
             processResults: function(data, params) {
               return {
-                results: data.map(
+                results: data.vehicle_journeys.map(
                   item => _.assign(
                     {},
                     item,
-                    {text: item.published_name}
+                    { id: item.objectid, text: _.last(_.split(item.objectid, ':')) }
                   )
                 )
               };
@@ -60,4 +64,4 @@ const formatRepo = (props) => {
   if(props.text) return props.text
 }
 
-module.exports = BSelect4
+module.exports = BSelect4b

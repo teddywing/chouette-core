@@ -33,6 +33,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelect2JourneyPattern: (e) => {
       dispatch(actions.filterSelect2JourneyPattern(e.params.data))
+    },
+    onSelect2VehicleJourney: (e) => {
+      dispatch(actions.filterSelect2VehicleJourney(e.params.data))
     }
   }
 }

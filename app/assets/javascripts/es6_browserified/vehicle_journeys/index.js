@@ -38,6 +38,9 @@ var initialState = {
       journeyPattern: {
         published_name: ''
       },
+      vehicleJourney: {
+        objectid: ''
+      },
       company: {
         name: ''
       },
@@ -76,6 +79,7 @@ if (window.jpOrigin){
   }
   let params = {
     'q[journey_pattern_id_eq]': initialState.filters.query.journeyPattern.id,
+    'q[objectid_cont]': initialState.filters.query.vehicleJourney.objectid
   }
   initialState.filters.queryString = actions.encodeParams(params)
 }
