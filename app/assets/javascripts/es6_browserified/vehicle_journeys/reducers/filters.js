@@ -15,10 +15,13 @@ const filters = (state = {}, action) => {
           minute: '59'
         }
       }
-      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, timetable: {}, withoutSchedule: true })
+      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, timetable: {}, withoutSchedule: true, withoutTimeTable: true })
       return _.assign({}, state, {query: newQuery, queryString: ''})
     case 'TOGGLE_WITHOUT_SCHEDULE':
       newQuery = _.assign({}, state.query, {withoutSchedule: !state.query.withoutSchedule})
+      return _.assign({}, state, {query: newQuery})
+    case 'TOGGLE_WITHOUT_TIMETABLE':
+      newQuery = _.assign({}, state.query, {withoutTimeTable: !state.query.withoutTimeTable})
       return _.assign({}, state, {query: newQuery})
     case 'UPDATE_END_TIME_FILTER':
       newInterval = JSON.parse(JSON.stringify(state.query.interval))

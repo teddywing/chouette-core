@@ -190,6 +190,9 @@ const actions = {
   toggleWithoutSchedule: () => ({
     type: 'TOGGLE_WITHOUT_SCHEDULE'
   }),
+  toggleWithoutTimeTable: () => ({
+    type: 'TOGGLE_WITHOUT_TIMETABLE'
+  }),
   updateStartTimeFilter: (val, unit) => ({
     type: 'UPDATE_START_TIME_FILTER',
     val,

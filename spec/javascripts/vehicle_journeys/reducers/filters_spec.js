@@ -31,6 +31,7 @@ describe('filters reducer', () => {
       vehicleJourney: {},
       timetable: {},
       withoutSchedule: true,
+      withoutTimeTable: true
     },
     queryString: ''
     }

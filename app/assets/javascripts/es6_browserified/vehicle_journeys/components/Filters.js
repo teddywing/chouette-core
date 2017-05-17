@@ -4,7 +4,7 @@ var MissionSelect2 = require('./tools/select2s/MissionSelect2')
 var VJSelect2 = require('./tools/select2s/VJSelect2')
 var TimetableSelect2 = require('./tools/select2s/TimetableSelect2')
 
-const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onSelect2Timetable, onSelect2JourneyPattern, onSelect2VehicleJourney}) => {
+const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onToggleWithoutTimeTable, onSelect2Timetable, onSelect2JourneyPattern, onSelect2VehicleJourney}) => {
   return (
     <div className='row'>
       <div className='col-lg-12'>
@@ -106,6 +106,25 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
                       type='checkbox'
                       onChange={onToggleWithoutSchedule}
                       checked={filters.query.withoutSchedule}
+                      ></input>
+                    <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="ffg-row">
+            {/* Switch avec/sans calendrier */}
+            <div className='form-group has_switch'>
+              <label className='control-label pull-left'>Afficher les courses sans calendrier</label>
+              <div className='form-group pull-left' style={{padding: 0}}>
+                <div className='checkbox'>
+                  <label>
+                    <input
+                      type='checkbox'
+                      onChange={onToggleWithoutTimeTable}
+                      checked={filters.query.withoutTimeTable}
                       ></input>
                     <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'></span>
                   </label>

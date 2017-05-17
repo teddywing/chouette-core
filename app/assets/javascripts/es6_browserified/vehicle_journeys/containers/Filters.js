@@ -22,6 +22,9 @@ const mapDispatchToProps = (dispatch) => {
     onToggleWithoutSchedule: () =>{
       dispatch(actions.toggleWithoutSchedule())
     },
+    onToggleWithoutTimeTable: () =>{
+      dispatch(actions.toggleWithoutTimeTable())
+    },
     onResetFilters: (e, pagination) =>{
       dispatch(actions.checkConfirmModal(e, actions.resetFilters(dispatch), pagination.stateChanged, dispatch))
     },
