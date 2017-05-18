@@ -1,8 +1,18 @@
-= simple_form_for [@referential, @time_table, @time_table_combination], html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |form|
+
+h1 = @time_table.comment
+
+= simple_form_for [@referential, @time_table, @combination], html: {class: 'form-horizontal'}, wrapper: :horizontal_form do |form|
   .row
     .col-lg-12
-      = form.input :operation, as: :select, :collection => Hash[TimeTableCombination.operations.map {|b| [t( b, :scope => "time_table_combinations.operations"),b]}]
+      = form.input :combined_type, as: :select, collection: ['time_table', 'calendar']
 
+      = form.input :operation, as: :select, collection: TimeTableCombination.operations
+
+      = form.input :target_id, as: :select, 'data-select2ed': 'true', collection: Chouette::TimeTable.all.map{|t| [t.comment, t.id]}
+
+      = form.input :target_id, as: :select, 'data-select2ed': 'true', collection: Calendar.all.map{|t| [t.name, t.id]}, disabled: true
+
+      = form.button :submit, t('actions.submit')
       / = form.input :combined_id, :label => t('.time_tables'), as: :search_time_table, :json => referential_autocomplete_time_tables_path(@referential, :format => :json), hint_text: t('search_hint'), no_result_text: t('no_result_text'), :searching_text => t('searching_term'), :tokenLimit => 1
 
-  = form.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr'
+

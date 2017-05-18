@@ -518,6 +518,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     self.dates.to_a.sort! { |a,b| a.date <=> b.date}
     self.save!
     end
+    self.convert_continuous_dates_to_periods
   end
 
   # remove dates form tt which aren't in another_tt

@@ -3,15 +3,17 @@ class TimeTableCombination
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_accessor :source_id, :combined_id, :operation
+  attr_accessor :source_id, :combined_type, :target_id, :operation
 
-  validates_presence_of :source_id, :combined_id, :operation
-  validates_inclusion_of :operation, :in =>  %w( union intersection disjunction), :allow_nil => true
+  validates_presence_of  :source_id, :combined_type, :operation, :target_id
+  validates_inclusion_of :operation, :in =>  %w(union intersection disjunction), :allow_nil => true
+  validates_inclusion_of :combined_type, :in =>  %w(time_table calendar)
 
   def clean
-    self.source_id = nil
-    self.combined_id = nil
-    self.operation = nil
+    self.source_id     = nil
+    self.target_id     = nil
+    self.time_table_id = nil
+    self.operation     = nil
     self.errors.clear
   end
 
@@ -29,14 +31,23 @@ class TimeTableCombination
     false
   end
 
+  def target
+    klass  = combined_type == 'calendar' ? Calendar : Chouette::TimeTable
+    target = klass.find target_id
+    target = target.convert_to_time_table unless target.is_a? Chouette::TimeTable
+    target
+  end
+
   def combine
-    source = Chouette::TimeTable.find( source_id)
-    combined = Chouette::TimeTable.find( combined_id)
-    if operation == "union"
+    source   = Chouette::TimeTable.find source_id
+    combined = self.target
+
+    case operation
+    when 'union'
       source.merge! combined
-    elsif operation == "intersection"
+    when 'intersection'
       source.intersect! combined
-    elsif operation == "disjunction"
+    when 'disjunction'
       source.disjoin! combined
     else
       raise "unknown operation"
