@@ -24,7 +24,7 @@ class BSelect4 extends React.Component{
         options={{
           allowClear: false,
           theme: 'bootstrap',
-          placeholder: 'Filtrer par mission...',
+          placeholder: 'Filtrer par code, nom ou OID de mission...',
           width: '100%',
           ajax: {
             url: origin + path + '/journey_patterns_collection.json',
@@ -32,7 +32,7 @@ class BSelect4 extends React.Component{
             delay: '500',
             data: function(params) {
               return {
-                q: {published_name_cont: params.term},
+                q: {published_name_or_objectid_or_registration_number_cont: params.term},
               };
             },
             processResults: function(data, params) {
