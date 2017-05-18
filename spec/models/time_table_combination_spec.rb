@@ -48,9 +48,12 @@ describe TimeTableCombination, :type => :model do
         combined.int_day_types = 508
         combined.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,15), :period_end => Date.new(2014,9,15))
         combined.save
-        subject.operation = 'union'
-        subject.source_id = source.id
-        subject.combined_id = combined.id
+
+        subject.operation     = 'union'
+        subject.source_id     = source.id
+        subject.target_id     = combined.id
+        subject.combined_type = 'time_table'
+
         subject.combine
         source.reload
       end
@@ -73,9 +76,12 @@ describe TimeTableCombination, :type => :model do
         combined.int_day_types = 508
         combined.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,15), :period_end => Date.new(2014,9,15))
         combined.save
-        subject.operation = 'intersection'
-        subject.source_id = source.id
-        subject.combined_id = combined.id
+
+        subject.operation     = 'intersection'
+        subject.source_id     = source.id
+        subject.target_id     = combined.id
+        subject.combined_type = 'time_table'
+
         subject.combine
         source.reload
       end
@@ -102,9 +108,12 @@ describe TimeTableCombination, :type => :model do
         combined.int_day_types = 508
         combined.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,15), :period_end => Date.new(2014,9,15))
         combined.save
-        subject.operation = 'disjunction'
-        subject.source_id = source.id
-        subject.combined_id = combined.id
+
+        subject.operation     = 'disjunction'
+        subject.source_id     = source.id
+        subject.target_id     = combined.id
+        subject.combined_type = 'time_table'
+
         subject.combine
         source.reload
       end
