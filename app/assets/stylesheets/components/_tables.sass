@@ -218,8 +218,9 @@
       vertical-align: top
       overflow: auto
       white-space: nowrap
-      border-right: 1px solid rgba($grey, 0.5)
+      // border-right: 1px solid rgba($grey, 0.5)
       max-width: 100%
+      min-width: 280px
       padding-right: 1px
 
     .t2e-item
@@ -231,19 +232,12 @@
 
       &:first-child
         border-left: none
+      &:last-child
+        border-right: 1px solid rgba($grey, 0.5)
 
       .th
         > *:first-child
           padding-right: 30px
-
-      .td
-        > div
-          // > .has_radio
-          //   top: 50%
-          //   margin-top: -10px
-          //
-          // &.headlined > .has_radio
-          //   margin-top: calc((1.4em + 6px) * -1)
 
       .th + .td, .td:first-child
         > .headlined

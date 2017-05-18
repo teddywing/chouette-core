@@ -181,6 +181,7 @@ table, .table
           right: auto
 
     &:last-child
-      > .th > .btn-group .dropdown-menu
-        left: auto
-        right: 0
+      &:not(:first-child)
+        > .th > .btn-group .dropdown-menu
+          left: auto
+          right: 0
