@@ -52,7 +52,7 @@ class BSelect4b extends React.Component{
             },
             cache: true
           },
-          minimumInputLength: 2,
+          minimumInputLength: 1,
           templateResult: formatRepo
         }}
       />
