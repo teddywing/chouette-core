@@ -72,7 +72,9 @@ ChouetteIhm::Application.routes.draw do
     resources :networks
   end
 
-  resources :calendars
+  resources :calendars do
+    get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+  end
 
   resources :referentials do
     resources :api_keys

@@ -29,12 +29,12 @@ bind_select2_ajax = (el, cfg = {}) ->
 select2_time_table = (item) ->
   return item.text if item.loading
   wrap  = $('<div>', "class":'select2-result clearfix')
-  wrap.html(["<h5>Time table : #{item.comment}</h5>"].join("\n"))
+  wrap.html(["<h5>#{item.comment}</h5>"].join("\n"))
 
 select2_calendar = (item) ->
   return item.text if item.loading
   wrap  = $('<div>', "class":'select2-result clearfix')
-  wrap.html(["<h5>Calendar : #{item.name}</h5>"].join("\n"))
+  wrap.html(["<h5>#{item.name}</h5>"].join("\n"))
 
 
 @select_2 = ->

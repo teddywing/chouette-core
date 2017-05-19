@@ -16,7 +16,7 @@ class TimeTableCombination
   def clean
     self.source_id     = nil
     self.time_table_id = nil
-    self.calendar      = nil
+    self.calendar_id   = nil
     self.combined_type = nil
     self.operation     = nil
     self.errors.clear
