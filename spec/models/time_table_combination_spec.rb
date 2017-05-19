@@ -51,7 +51,7 @@ describe TimeTableCombination, :type => :model do
 
         subject.operation     = 'union'
         subject.source_id     = source.id
-        subject.target_id     = combined.id
+        subject.time_table_id = combined.id
         subject.combined_type = 'time_table'
 
         subject.combine
@@ -79,7 +79,7 @@ describe TimeTableCombination, :type => :model do
 
         subject.operation     = 'intersection'
         subject.source_id     = source.id
-        subject.target_id     = combined.id
+        subject.time_table_id = combined.id
         subject.combined_type = 'time_table'
 
         subject.combine
@@ -111,7 +111,7 @@ describe TimeTableCombination, :type => :model do
 
         subject.operation     = 'disjunction'
         subject.source_id     = source.id
-        subject.target_id     = combined.id
+        subject.time_table_id = combined.id
         subject.combined_type = 'time_table'
 
         subject.combine

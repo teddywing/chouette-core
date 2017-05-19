@@ -8,11 +8,8 @@ h1 = @time_table.comment
 
       = form.input :operation, as: :select, collection: TimeTableCombination.operations
 
-      = form.input :target_id, as: :select, 'data-select2ed': 'true', collection: Chouette::TimeTable.all.map{|t| [t.comment, t.id]}
+      = form.input :time_table_id, as: :select, input_html: { data: { select2_ajax: 'true', term: 'comment_cont', url: referential_autocomplete_time_tables_path(@referential, format: :json), formater: 'select2_time_table'}}
 
-      = form.input :target_id, as: :select, 'data-select2ed': 'true', collection: Calendar.all.map{|t| [t.name, t.id]}, disabled: true
+      = form.input :calendar_id, as: :select, input_html: { data: { select2_ajax: 'true', term: 'name_cont', url: referential_autocomplete_time_tables_path(@referential, format: :json), formater: 'select2_calendar'}}
 
       = form.button :submit, t('actions.submit')
-      / = form.input :combined_id, :label => t('.time_tables'), as: :search_time_table, :json => referential_autocomplete_time_tables_path(@referential, :format => :json), hint_text: t('search_hint'), no_result_text: t('no_result_text'), :searching_text => t('searching_term'), :tokenLimit => 1
-
-

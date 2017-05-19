@@ -3,15 +3,20 @@ class TimeTableCombination
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_accessor :source_id, :combined_type, :target_id, :operation
+  attr_accessor :source_id, :combined_type, :operation, :time_table_id, :calendar_id
 
-  validates_presence_of  :source_id, :combined_type, :operation, :target_id
+  validates_presence_of  :source_id, :combined_type, :operation
+
+  validates :time_table_id, presence: true, if: "calendar_id.blank?"
+  validates :calendar_id, presence: true, if: "time_table_id.blank?"
+
   validates_inclusion_of :operation, :in =>  %w(union intersection disjunction), :allow_nil => true
   validates_inclusion_of :combined_type, :in =>  %w(time_table calendar)
 
   def clean
     self.source_id     = nil
-    self.target_id     = nil
+    self.time_table_id = nil
+    self.calendar      = nil
     self.combined_type = nil
     self.operation     = nil
     self.errors.clear
@@ -32,8 +37,9 @@ class TimeTableCombination
   end
 
   def target
+    id     = self.send("#{combined_type}_id")
     klass  = combined_type == 'calendar' ? Calendar : Chouette::TimeTable
-    target = klass.find target_id
+    target = klass.find id
     target = target.convert_to_time_table unless target.is_a? Chouette::TimeTable
     target
   end
