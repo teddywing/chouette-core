@@ -5,7 +5,7 @@ node do |time_table|
     :time_table_bounding => time_table.presenter.time_table_bounding,
     :composition_info => time_table.presenter.composition_info,
     :tags => time_table.tags.join(','),
-    :text => time_table.comment,
+    :text => "#{time_table.objectid.parts.try(:third)} - #{time_table.comment}",
     :day_types => %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| time_table.send(d) }.map{ |d| time_table.human_attribute_name(d).first(2)}.join('')}
 end
 

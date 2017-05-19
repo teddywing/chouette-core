@@ -20,22 +20,12 @@ bind_select2_ajax = (el, cfg = {}) ->
       delay: 125,
       processResults: (data, params) -> results: data
     minimumInputLength: 3
-    templateResult: eval(target.data('formater'))
+    templateResult: (item) ->
+      item.text
     templateSelection: (item) ->
       item.text
 
   bind_select2(el, cfg)
-
-select2_time_table = (item) ->
-  return item.text if item.loading
-  wrap  = $('<div>', "class":'select2-result clearfix')
-  wrap.html(["<h5>#{item.comment}</h5>"].join("\n"))
-
-select2_calendar = (item) ->
-  return item.text if item.loading
-  wrap  = $('<div>', "class":'select2-result clearfix')
-  wrap.html(["<h5>#{item.name}</h5>"].join("\n"))
-
 
 @select_2 = ->
   $("[data-select2ed='true']").each ->

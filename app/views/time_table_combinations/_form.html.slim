@@ -5,8 +5,8 @@ h1 = @time_table.comment
       = form.input :combined_type, as: :select, collection: ['time_table', 'calendar']
       = form.input :operation, as: :select, collection: TimeTableCombination.operations
 
-      = form.input :time_table_id, as: :select, input_html: {class: 'tt_combination_target', data: { select2_ajax: 'true', term: 'comment_cont', url: referential_autocomplete_time_tables_path(@referential, format: :json), formater: 'select2_time_table'}}, disabled: @combination.combined_type != 'time_table', wrapper_html: {class: @combination.combined_type != 'time_table' ? 'hidden' : ''}
+      = form.input :time_table_id, as: :select, input_html: {class: 'tt_combination_target', data: { select2_ajax: 'true', term: 'comment_cont', url: referential_autocomplete_time_tables_path(@referential, format: :json)}}, disabled: @combination.combined_type != 'time_table', wrapper_html: {class: @combination.combined_type != 'time_table' ? 'hidden' : ''}
 
-      = form.input :calendar_id, as: :select, input_html: { class: 'tt_combination_target', data: { select2_ajax: 'true', term: 'name_cont', url: autocomplete_calendars_path, formater: 'select2_calendar'}}, disabled: @combination.combined_type != 'calendar', wrapper_html: {class: @combination.combined_type != 'calendar' ? 'hidden' : ''}
+      = form.input :calendar_id, as: :select, input_html: { class: 'tt_combination_target', data: { select2_ajax: 'true', term: 'name_cont', url: autocomplete_calendars_path}}, disabled: @combination.combined_type != 'calendar', wrapper_html: {class: @combination.combined_type != 'calendar' ? 'hidden' : ''}
 
       = form.button :submit, t('actions.submit')
