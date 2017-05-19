@@ -13,11 +13,12 @@ class BSelect4 extends React.Component{
     super(props)
   }
 
+
   render() {
     return (
       <Select2
-        data={(this.props.isFilter) ? [this.props.filters.query.journeyPattern.published_name] : undefined}
-        value={(this.props.isFilter) ? this.props.filters.query.journeyPattern.published_name : undefined}
+        data={(this.props.isFilter) ? [this.props.filters.query.journeyPattern.published_name] : ((this.props.selection.selectedJPModal) ? [this.props.selection.selectedJPModal.published_name] : undefined)}
+        value={(this.props.isFilter) ? this.props.filters.query.journeyPattern.published_name : ((this.props.selection.selectedJPModal) ? this.props.selection.selectedJPModal.published_name : undefined) }
         onSelect={(e) => this.props.onSelect2JourneyPattern(e)}
         multiple={false}
         ref='journey_pattern_id'
@@ -42,7 +43,7 @@ class BSelect4 extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    {text: item.published_name}
+                    { text: '<small><em>Nom: </em></small>' + item.published_name + '<br/><small><em>Code: </em></small>' + item.registration_number + '<br/><small><em>ID: </em></small>' + _.last(_.split(item.object_id, ':')) }
                   )
                 )
               };
@@ -50,6 +51,7 @@ class BSelect4 extends React.Component{
             cache: true
           },
           minimumInputLength: 2,
+          escapeMarkup: function (markup) { return markup; },
           templateResult: formatRepo
         }}
       />
