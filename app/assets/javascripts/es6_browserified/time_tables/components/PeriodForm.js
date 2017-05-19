@@ -118,7 +118,7 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
             <div className="text-right">
               <button
                 type='button'
-                className='btn btn-outline-primary add_fields'
+                className='btn btn-outline-primary'
                 onClick={onOpenAddPeriodForm}
                 >
                 Ajouter une période
