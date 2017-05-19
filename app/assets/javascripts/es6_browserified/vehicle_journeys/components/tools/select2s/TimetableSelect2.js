@@ -26,6 +26,7 @@ class BSelect4 extends React.Component{
           theme: 'bootstrap',
           width: '100%',
           placeholder: 'Filtrer par calendrier...',
+          language: require('./fr'),
           ajax: {
             url: origin + path + this.props.chunkURL,
             dataType: 'json',

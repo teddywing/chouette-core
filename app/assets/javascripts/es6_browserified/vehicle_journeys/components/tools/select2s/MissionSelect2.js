@@ -25,6 +25,7 @@ class BSelect4 extends React.Component{
           allowClear: false,
           theme: 'bootstrap',
           placeholder: 'Filtrer par code, nom ou OID de mission...',
+          language: require('./fr'),
           width: '100%',
           ajax: {
             url: origin + path + '/journey_patterns_collection.json',

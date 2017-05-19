@@ -30,6 +30,7 @@ class BSelect4b extends React.Component{
           theme: 'bootstrap',
           placeholder: 'Filtrer par ID course...',
           width: '100%',
+          language: require('./fr'),
           ajax: {
             url: origin + path + '/vehicle_journeys.json',
             dataType: 'json',
