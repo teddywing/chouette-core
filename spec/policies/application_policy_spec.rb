@@ -11,10 +11,9 @@ RSpec.describe ApplicationPolicy, type: :policy do
       expect_it.not_to permit(user_context, referential)
     end
 
-    it "denies a user with a different organisation" do
+    it "allows a user with a different organisation" do
       user.update_attribute :organisation, referential.organisation
       expect_it.to permit(user_context, referential)
     end
-
   end
 end
