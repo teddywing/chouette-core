@@ -48,6 +48,10 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
+  def boiv_read_offer?
+    organisation_match? && user.has_permission?('boiv:read_offer')
+  end
+
   def organisation_match?
     user.organisation == organisation
   end

@@ -10,6 +10,11 @@ module Support
     def create_user_context(user:, referential:)
       OpenStruct.new(user: user, context: {referential: referential})
     end
+
+    def add_permissions(*permissions, for_user:)
+      for_user.permissions ||= []
+      for_user.permissions += permissions.flatten
+    end
   end
 
   module ApplicationPolicyMacros
