@@ -365,6 +365,27 @@ describe Chouette::VehicleJourney, :type => :model do
     end
   end
 
+  describe ".exclude_journeys_without_time_tables" do
+    it "filters out vehicle journeys not associated with a calendar" do
+      journey = create(:vehicle_journey)
+      route = journey.route
+
+      journey_with_time_table = create(
+        :vehicle_journey,
+        route: route,
+        journey_pattern: journey.journey_pattern
+      )
+      journey_with_time_table.time_tables << create(:time_table)
+
+      expect(
+        route
+          .vehicle_journeys
+          .exclude_journeys_without_time_tables
+          .to_a
+      ).to eq([journey_with_time_table])
+    end
+  end
+
   subject { create(:vehicle_journey_odd) }
   describe "in_relation_to_a_journey_pattern methods" do
     let!(:route) { create(:route)}
