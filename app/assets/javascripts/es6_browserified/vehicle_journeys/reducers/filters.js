@@ -62,7 +62,8 @@ const filters = (state = {}, action) => {
         'q[time_tables_id_eq]': state.query.timetable.id || undefined,
         'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
         'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute),
-        'q[vehicle_journey_without_departure_time]' : state.query.withoutSchedule
+        'q[vehicle_journey_without_departure_time]': state.query.withoutSchedule,
+        'q[vehicle_journey_without_time_table]': state.query.withoutTimeTable
       }
       let queryString = actions.encodeParams(params)
       return _.assign({}, state, {queryString: queryString})
