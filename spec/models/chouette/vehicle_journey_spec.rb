@@ -365,8 +365,8 @@ describe Chouette::VehicleJourney, :type => :model do
     end
   end
 
-  describe ".exclude_journeys_without_time_tables" do
-    it "filters out vehicle journeys not associated with a calendar" do
+  describe ".without_time_tables" do
+    it "selects only vehicle journeys that have no associated calendar" do
       journey = create(:vehicle_journey)
       route = journey.route
 
@@ -380,9 +380,9 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(
         route
           .vehicle_journeys
-          .exclude_journeys_without_time_tables
+          .without_time_tables
           .to_a
-      ).to eq([journey_with_time_table])
+      ).to eq([journey])
     end
   end
 

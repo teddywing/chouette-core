@@ -252,25 +252,16 @@ module Chouette
         )
     end
 
-    def self.exclude_journeys_without_time_tables
-      # Joins the VehicleJourney–TimeTable through table to remove
-      # VehicleJourneys that don't have an associated TimeTable. The subquery
-      # allows us to select unique VehicleJourney IDs from the through table,
-      # which prevents VehicleJourneys from appearing multiple times in the
-      # result set due to the join. Using a DISTINCT in a subquery avoids messy
-      # DISTINCT and GROUP BY clauses in the main query.
+    def self.without_time_tables
+      # Joins the VehicleJourney–TimeTable through table to select only those
+      # VehicleJourneys that don't have an associated TimeTable.
       self
         .joins('
-          LEFT JOIN (
-            SELECT DISTINCT
-              "time_tables_vehicle_journeys"."vehicle_journey_id"
-            FROM "time_tables_vehicle_journeys"
-          ) AS "distinct_time_tables_vehicle_journeys"
-          ON "distinct_time_tables_vehicle_journeys"."vehicle_journey_id" =
-            "vehicle_journeys"."id"
+          LEFT JOIN "time_tables_vehicle_journeys"
+            ON "time_tables_vehicle_journeys"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
         ')
-        .where('"distinct_time_tables_vehicle_journeys"."vehicle_journey_id"
-          IS NOT NULL')
+        .where('"time_tables_vehicle_journeys"."vehicle_journey_id" IS NULL')
     end
 
   end
