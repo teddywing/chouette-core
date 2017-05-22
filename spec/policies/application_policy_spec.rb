@@ -25,7 +25,7 @@ RSpec.describe ApplicationPolicy, type: :policy do
         expect_it.not_to permit(user_context, referential)
       end
       it "even if she has the permisson" do
-        add_permissions('boiv:read_offer', for_user: user)
+        add_permissions('boiv:read-offer', for_user: user)
         expect_it.not_to permit(user_context, referential)
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe ApplicationPolicy, type: :policy do
         expect_it.not_to permit(user_context, referential)
       end
       it "allows if permission present" do
-        add_permissions('boiv:read_offer', for_user: user)
+        add_permissions('boiv:read-offer', for_user: user)
         expect_it.to permit(user_context, referential)
       end
     end

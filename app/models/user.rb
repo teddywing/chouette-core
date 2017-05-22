@@ -1,4 +1,3 @@
-# coding: utf-8
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable, :database_authenticatable
@@ -52,7 +51,7 @@ class User < ActiveRecord::Base
     raise 'Rails.application.config.stif_portail_api settings is not defined' unless conf
 
     conn = Faraday.new(:url => conf[:url]) do |c|
-      c.headers['Authorization'] = "Token token=\"#{conf[:key]}\""
+      c.headers['Authorization'] = %{Token token="#{conf[:key]}"}
       c.adapter  Faraday.default_adapter
     end
 
@@ -73,6 +72,7 @@ class User < ActiveRecord::Base
       user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
       user.synced_at    = Time.now
       user.permissions  = el['permissions'].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
+      user.permissions  += el['permissions'].grep( %r{^\Aboiv:read-offer\z} )
       user.save
       puts "✓ user #{user.username} has been updated" unless Rails.env.test?
     end

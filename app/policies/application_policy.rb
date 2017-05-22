@@ -49,7 +49,7 @@ class ApplicationPolicy
   end
 
   def boiv_read_offer?
-    organisation_match? && user.has_permission?('boiv:read_offer')
+    organisation_match? && user.has_permission?('boiv:read-offer')
   end
 
   def organisation_match?
