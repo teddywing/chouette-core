@@ -84,7 +84,7 @@ class VehicleJourneysController < ChouetteController
   def collection
     scope = route.vehicle_journeys.with_stops
     scope = maybe_filter_by_departure_time(scope)
-    scope = maybe_filter_without_time_tables(scope)
+    scope = maybe_filter_out_journeys_with_time_tables(scope)
 
     @q = scope.search filtered_ransack_params
 
@@ -110,11 +110,11 @@ class VehicleJourneysController < ChouetteController
     scope
   end
 
-  def maybe_filter_without_time_tables(scope)
+  def maybe_filter_out_journeys_with_time_tables(scope)
     if params[:q] &&
-        params[:q][:vehicle_journey_without_time_table] == 'false'
+        params[:q][:vehicle_journey_without_time_table] == 'true'
       return scope
-        .exclude_journeys_without_time_tables
+        .without_time_tables
     end
 
     scope
