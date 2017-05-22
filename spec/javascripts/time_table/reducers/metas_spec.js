@@ -24,11 +24,11 @@ describe('metas reducer', () => {
   })
 
   it('should handle UPDATE_DAY_TYPES', () => {
-    const arr = [false, true, true, true, true, true, true]
+    const arr = [false, false, true, true, true, true, true]
     expect(
       metasReducer(state, {
         type: 'UPDATE_DAY_TYPES',
-        index: 0
+        dayTypes: arr
       })
     ).toEqual(Object.assign({}, state, {day_types: arr, calendar: {name: 'Aucun'}}))
   })

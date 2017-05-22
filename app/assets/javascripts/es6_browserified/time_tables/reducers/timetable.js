@@ -55,6 +55,8 @@ const timetable = (state = {}, action) => {
       })
       newState = _.assign({}, state, {current_month: newCMe})
       return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+    case 'UPDATE_CURRENT_MONTH_FROM_DAYTYPES':
+      return _.assign({}, state, {current_month: actions.updateSynthesis(state, action.dayTypes)})
     case 'VALIDATE_PERIOD_FORM':
       let period_start = actions.formatDate(action.modalProps.begin)
       let period_end = actions.formatDate(action.modalProps.end)

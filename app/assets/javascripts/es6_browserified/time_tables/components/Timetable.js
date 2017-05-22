@@ -60,7 +60,7 @@ class Timetable extends Component{
                 {this.props.timetable.current_month.map((d, i) =>
                   <div
                     key={i}
-                    className={'td-group' + (this.props.metas.day_types[d.wday] ? '' : ' out_from_daytypes') + (d.wday == 0 ? ' last_wday' : '')}
+                    className={'td-group' + (this.props.metas.day_types[d.wday] || !d.in_periods ? '' : ' out_from_daytypes') + (d.wday == 0 ? ' last_wday' : '')}
                   >
                     {/* day_types */}
                     <div className="td"></div>
@@ -80,7 +80,7 @@ class Timetable extends Component{
                       index={i}
                       value={this.props.timetable}
                       metas={this.props.metas}
-                      outFromDaytypes={this.props.metas.day_types[d.wday]}
+                      blueDaytype={this.props.metas.day_types[d.wday]}
                       onExcludeDateFromPeriod={this.props.onExcludeDateFromPeriod}
                       onIncludeDateInPeriod={this.props.onIncludeDateInPeriod}
                     />

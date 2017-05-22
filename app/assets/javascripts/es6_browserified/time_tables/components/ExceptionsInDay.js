@@ -10,9 +10,8 @@ class ExceptionsInDay extends Component {
 
   render() {
     {/* display add or remove link, only if true in daytypes */}
-    if(this.props.outFromDaytypes == true) {
       {/* display add or remove link, according to context (presence in period, or not) */}
-      if(this.props.value.current_month[this.props.index].in_periods == true) {
+      if(this.props.value.current_month[this.props.index].in_periods == true && this.props.blueDaytype == true) {
         return (
           <div className='td'>
             <button
@@ -28,7 +27,7 @@ class ExceptionsInDay extends Component {
             </button>
           </div>
         )
-      } else {
+      } else if(this.props.value.current_month[this.props.index].in_periods == false) {
         return (
           <div className='td'>
             <button
@@ -44,19 +43,20 @@ class ExceptionsInDay extends Component {
             </button>
           </div>
         )
+      } else if(this.props.value.current_month[this.props.index].in_periods == true && this.props.blueDaytype == false){
+        return (
+          <div className='td'></div>
+        )
+      } else{
+        return false
       }
-    } else {
-      return (
-        <div className='td'></div>
-      )
-    }
   }
 }
 
 ExceptionsInDay.propTypes = {
   value: PropTypes.object.isRequired,
   metas: PropTypes.object.isRequired,
-  outFromDaytypes: PropTypes.bool.isRequired,
+  blueDaytype: PropTypes.bool.isRequired,
   onExcludeDateFromPeriod: PropTypes.func.isRequired,
   onIncludeDateInPeriod: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired

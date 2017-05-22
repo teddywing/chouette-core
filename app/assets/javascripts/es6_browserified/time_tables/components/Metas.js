@@ -107,7 +107,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
                     <div className="checkbox">
                       <label>
                         <input
-                          onChange={(e) => {onUpdateDayTypes(i)}}
+                          onChange={(e) => {onUpdateDayTypes(i, metas.day_types)}}
                           id={i}
                           type="checkbox"
                           checked={day ? 'checked' : ''}
