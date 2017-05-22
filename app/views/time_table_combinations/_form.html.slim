@@ -3,7 +3,7 @@
     .col-lg-12
       .form-group.has_switch
         = f.label :combined_type, class: 'col-sm-4 control-label required' do
-          = 'Type de calendriers'
+          = 'Type de calendriers '
           abbr title='Champ requis' *
         = f.input :combined_type, as: :boolean, checked_value: 'time_table', unchecked_value: 'calendar', required: false, label: content_tag(:span, t("time_table_combinations.combined_type.#{@combination.combined_type}"), class: 'switch-label', data: { checkedValue: 'Calendriers', uncheckedValue: 'Modèles de calendriers' }), wrapper_html: { class: 'col-sm-8' }
 
