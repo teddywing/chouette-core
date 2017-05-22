@@ -4,7 +4,7 @@ bind_select2 = (el, cfg = {}) ->
     theme: 'bootstrap'
     language: 'fr'
     placeholder: target.data('select2ed-placeholder')
-    allowClear: true
+    allowClear: false
 
   target.select2 $.extend({}, default_cfg, cfg)
 

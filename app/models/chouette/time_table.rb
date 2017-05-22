@@ -282,6 +282,10 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     [bounding_min, bounding_max].compact
   end
 
+  def display_day_types
+    %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join('')
+  end
+
   def day_by_mask(flag)
     int_day_types & flag == flag
   end
