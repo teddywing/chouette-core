@@ -83,8 +83,19 @@ class VehicleJourneysController < ChouetteController
   protected
   def collection
     scope = route.vehicle_journeys.with_stops
+    scope = maybe_filter_by_departure_time(scope)
+    scope = maybe_filter_without_time_tables(scope)
 
-    # Apply departure time range filter
+    @q = scope.search filtered_ransack_params
+
+    @ppage = 20
+    @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
+    @footnotes = route.line.footnotes.to_json
+    @matrix    = resource_class.matrix(@vehicle_journeys)
+    @vehicle_journeys
+  end
+
+  def maybe_filter_by_departure_time(scope)
     if params[:q] &&
         params[:q][:vehicle_journey_at_stops_departure_time_gteq] &&
         params[:q][:vehicle_journey_at_stops_departure_time_lteq]
@@ -96,18 +107,10 @@ class VehicleJourneysController < ChouetteController
       )
     end
 
-    scope = filter_without_time_tables(scope)
-
-    @q = scope.search filtered_ransack_params
-
-    @ppage = 20
-    @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
-    @footnotes = route.line.footnotes.to_json
-    @matrix    = resource_class.matrix(@vehicle_journeys)
-    @vehicle_journeys
+    scope
   end
 
-  def filter_without_time_tables(scope)
+  def maybe_filter_without_time_tables(scope)
     if params[:q] &&
         params[:q][:vehicle_journey_without_time_table] == 'false'
       return scope
