@@ -48,7 +48,7 @@ var initialState = {
         comment: ''
       },
       withoutSchedule: true,
-      withoutTimeTable: true
+      withoutTimeTable: false
     }
 
   },
