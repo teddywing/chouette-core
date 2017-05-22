@@ -8,7 +8,8 @@ node do |time_table|
     :tags => time_table.tags.join(','),
     :text => "#{time_table.comment} - #{time_table.display_day_types} - #{time_table.objectid.parts.try(:third)}",
     :color => time_table.color,
-    :day_types => time_table.display_day_types
+    :day_types => time_table.display_day_types,
+    :short_id => time_table.objectid.parts.try(:third)
   }
 end
 
