@@ -96,6 +96,8 @@ class VehicleJourneysController < ChouetteController
       )
     end
 
+    scope = filter_without_time_tables(scope)
+
     @q = scope.search filtered_ransack_params
 
     @ppage = 20
@@ -103,6 +105,16 @@ class VehicleJourneysController < ChouetteController
     @footnotes = route.line.footnotes.to_json
     @matrix    = resource_class.matrix(@vehicle_journeys)
     @vehicle_journeys
+  end
+
+  def filter_without_time_tables(scope)
+    if params[:q] &&
+        params[:q][:vehicle_journey_without_time_table] == 'false'
+      return scope
+        .exclude_journeys_without_time_tables
+    end
+
+    scope
   end
 
   def filtered_ransack_params
