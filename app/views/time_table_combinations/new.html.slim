@@ -1,2 +1,12 @@
-= t('time_tables.show.combine_form')
-= render 'form'
+/ PageHeader
+= pageheader 'map-marker',
+             t('time_tables.show.combine_form'),
+             '',
+             ''
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        = render 'form'

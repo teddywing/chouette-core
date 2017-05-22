@@ -1,4 +1,5 @@
 class TimeTableCombination
+
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
@@ -10,8 +11,8 @@ class TimeTableCombination
   validates :time_table_id, presence: true, if: "calendar_id.blank?"
   validates :calendar_id, presence: true, if: "time_table_id.blank?"
 
+  validates_inclusion_of :combined_type, :in => %w(time_table calendar)
   validates_inclusion_of :operation, :in =>  %w(union intersection disjunction), :allow_nil => true
-  validates_inclusion_of :combined_type, :in =>  %w(time_table calendar)
 
   def clean
     self.source_id     = nil
@@ -23,13 +24,14 @@ class TimeTableCombination
   end
 
   def self.operations
-    %w( union intersection disjunction)
+    %w(union intersection disjunction)
   end
 
   def initialize(attributes = {})
     attributes.each do |name, value|
       send("#{name}=", value)
     end
+    self.combined_type = "time_table"
   end
 
   def persisted?
