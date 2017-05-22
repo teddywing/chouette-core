@@ -11,9 +11,11 @@
     .col-lg-12.text-right
       / - if policy(@time_table).create? && @referential.organisation == current_organisation
       /   = link_to t('time_tables.actions.new'), new_referential_time_table_path(@referential), class: 'btn btn-primary'
+      - if @time_table.calendar
+        = link_to t('actions.actualize'), actualize_referential_time_table_path(@referential, @time_table), method: :post, class: 'btn btn-primary'
 
       /- if policy(@time_table).create? && @referential.organisation == current_organisation
-      = link_to t('actions.combine'), new_referential_time_table_time_table_combination_path(@referential, @time_table), {remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal_combine', class: 'btn btn-primary' }
+      = link_to t('actions.combine'), new_referential_time_table_time_table_combination_path(@referential, @time_table), class: 'btn btn-primary'
 
       - if policy(@time_table).create? && @referential.organisation == current_organisation
         = link_to t('actions.clone'), duplicate_referential_time_table_path(@referential, @time_table), class: 'btn btn-primary'

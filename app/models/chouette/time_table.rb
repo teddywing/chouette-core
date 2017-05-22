@@ -134,6 +134,12 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     [Chouette::TimeTable.maximum(:end_date)].compact.max
   end
 
+  def actualize
+    self.dates.clear
+    self.periods.clear
+    self.merge! self.calendar.convert_to_time_table
+  end
+
   def month_inspect(date)
     (date.beginning_of_month..date.end_of_month).map do |d|
       {

@@ -168,6 +168,7 @@ ChouetteIhm::Application.routes.draw do
         get :tags
       end
       member do
+        post 'actualize'
         get 'duplicate'
         get 'month', defaults: { format: :json }
       end

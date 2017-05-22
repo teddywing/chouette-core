@@ -20,6 +20,8 @@ fr:
       add_period: "Ajouter une période"
       add_date: "Ajouter une date particulière"
       add_excluded_date: "Ajouter une date exclue"
+    actualize:
+      success: "Actualisation terminée"
     new:
       title: "Ajouter un calendrier"
     duplicate:

@@ -95,6 +95,15 @@ class TimeTablesController < ChouetteController
     render :new
   end
 
+  def actualize
+    @time_table = resource
+    if @time_table.calendar
+      @time_table.actualize
+      flash[:notice] = t('.success')
+    end
+    redirect_to referential_time_table_path @referential, @time_table
+  end
+
   def tags
     @tags = ActsAsTaggableOn::Tag.where("tags.name LIKE ?", "%#{params[:tag]}%")
     respond_to do |format|
