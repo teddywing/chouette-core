@@ -17,6 +17,10 @@ class TimeTablePolicy < ApplicationPolicy
     organisation_match? && user.has_permission?('time_tables.destroy')
   end
 
+  def duplicate?
+    organisation_match? && create?
+  end
+
   def update?  ; edit? end
   def new?     ; create? end
 end
