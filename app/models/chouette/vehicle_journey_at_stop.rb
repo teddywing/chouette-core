@@ -26,23 +26,5 @@ module Chouette
       @_destroy = false
     end
 
-    def increasing_times_validate( previous)
-      result = true
-      return result unless previous
-
-      if exceeds_gap?( previous.departure_time, departure_time)
-        result = false
-        errors.add( :departure_time, 'departure time gap overflow')
-      end
-      if exceeds_gap?( previous.arrival_time, arrival_time)
-        result = false
-        errors.add( :arrival_time, 'arrival time gap overflow')
-      end
-      result
-    end
-    def exceeds_gap?(earlier, later)
-      (4 * 3600) < ((later - earlier) % (3600 * 24))
-    end
-
   end
 end
