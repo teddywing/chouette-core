@@ -11,5 +11,4 @@ class BoivPolicy < ApplicationPolicy
   def show?
     boiv_read_offer?
   end
-  
 end

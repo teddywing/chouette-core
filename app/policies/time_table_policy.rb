@@ -1,27 +1,28 @@
+require_relative 'chain'
 class TimeTablePolicy < BoivPolicy
+  extend Policies::Chain
+
   class Scope < Scope
     def resolve
       scope
     end
   end
 
+  chain_policies :archived?, :!, policies: %i{create? destroy? duplicate? edit?}
+
   def create?
-    !archived? &&
       user.has_permission?('time_tables.create') # organisation match via referential is checked in the view
   end
 
   def edit?
-    !archived? &&
       organisation_match? && user.has_permission?('time_tables.edit')
   end
 
   def destroy?
-    !archived? &&
       organisation_match? && user.has_permission?('time_tables.destroy')
   end
 
   def duplicate?
-    !archived? &&
       organisation_match? && create?
   end
 
