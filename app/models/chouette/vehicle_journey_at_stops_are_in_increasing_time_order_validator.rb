@@ -9,7 +9,6 @@ module Chouette
       # TODO: Rename `previous`
       previous = nil
 
-      # TODO: Move `select` to a new named method
       vehicle_journey
         .vehicle_journey_at_stops
         .select { |vjas| vjas.departure_time && vjas.arrival_time }
