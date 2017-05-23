@@ -7,7 +7,10 @@ class ApplicationPolicy
     @record = record
   end
 
-  attr_accessor :referential
+  def archived?
+    referential.ready
+  end
+
   def referential
     @referential ||= record_referential
   end
