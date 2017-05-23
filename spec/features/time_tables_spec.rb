@@ -67,6 +67,10 @@ describe "TimeTables", :type => :feature do
       expect(page).to have_content(time_tables.first.comment)
     end
 
+    it 'should not show actualize link on time_tabl without calendar' do
+      expect(page).not_to have_content(I18n.t('time_tables.actions.actualize'))
+    end
+
     # context 'user has permission to create time tables' do
     #   it 'shows a create link for time tables' do
     #     expect(page).to have_content(I18n.t('time_tables.actions.new'))
