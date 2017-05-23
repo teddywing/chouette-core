@@ -26,7 +26,6 @@ module Support
         let( :user )         { create :user }
       end
     end
-    
   end
 end
 
