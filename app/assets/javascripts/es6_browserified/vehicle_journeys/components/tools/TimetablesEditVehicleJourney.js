@@ -129,7 +129,6 @@ TimetablesEditVehicleJourney.propTypes = {
   onTimetablesEditVehicleJourney: PropTypes.func.isRequired,
   onDeleteCalendarModal: PropTypes.func.isRequired,
   onSelect2Timetable: PropTypes.func.isRequired,
-  onAddSelectedTimetable: PropTypes.func.isRequired,
   filters: PropTypes.object.isRequired
 }
 
