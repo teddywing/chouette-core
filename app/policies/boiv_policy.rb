@@ -1,0 +1,3 @@
+class BoivPolicy < BoivPolicy
+  
+end

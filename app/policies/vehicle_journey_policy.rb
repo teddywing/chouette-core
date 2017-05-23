@@ -1,4 +1,4 @@
-class VehicleJourneyPolicy < ApplicationPolicy
+class VehicleJourneyPolicy < BoivPolicy
   class Scope < Scope
     def resolve
       scope

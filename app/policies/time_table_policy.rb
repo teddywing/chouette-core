@@ -1,4 +1,4 @@
-class TimeTablePolicy < ApplicationPolicy
+class TimeTablePolicy < BoivPolicy
   class Scope < Scope
     def resolve
       scope

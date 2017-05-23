@@ -1,4 +1,4 @@
-class RoutePolicy < ApplicationPolicy
+class RoutePolicy < BoivPolicy
   class Scope < Scope
     def resolve
       scope

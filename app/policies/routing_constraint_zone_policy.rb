@@ -1,4 +1,4 @@
-class RoutingConstraintZonePolicy < ApplicationPolicy
+class RoutingConstraintZonePolicy < BoivPolicy
   class Scope < Scope
     def resolve
       scope
