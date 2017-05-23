@@ -77,6 +77,17 @@ class CreateModal extends Component {
                               />
                             </div>
                           </div>
+                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                            <div className='form-group'>
+                              <label className='control-label'>Numéro de train</label>
+                              <input
+                                type='text'
+                                ref='published_journey_identifier'
+                                className='form-control'
+                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                />
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div className='modal-footer'>
