@@ -95,6 +95,15 @@ class TimeTablesController < ChouetteController
     render :new
   end
 
+  def actualize
+    @time_table = resource
+    if @time_table.calendar
+      @time_table.actualize
+      flash[:notice] = t('.success')
+    end
+    redirect_to referential_time_table_path @referential, @time_table
+  end
+
   def tags
     @tags = ActsAsTaggableOn::Tag.where("tags.name LIKE ?", "%#{params[:tag]}%")
     respond_to do |format|
@@ -112,8 +121,8 @@ class TimeTablesController < ChouetteController
       scope = select_time_tables.tagged_with(tags, :wild => true, :any => true) if tags.any?
     end
     scope = ransack_periode(scope)
-
     @q = scope.search(params[:q])
+
     if sort_column && sort_direction
       @time_tables ||= @q.result(:distinct => true).order("#{sort_column} #{sort_direction}")
     else
@@ -139,22 +148,27 @@ class TimeTablesController < ChouetteController
   end
 
   private
-  # Fake ransack filter
   def ransack_periode scope
     return scope unless params[:q]
-    periode = params[:q]
-    return scope if periode['end_date_lteq(1i)'].empty? || periode['start_date_gteq(1i)'].empty?
+    return scope unless params[:q]['end_date_lteq(1i)'].present?
 
-    begin_range = Date.civil(periode["start_date_gteq(1i)"].to_i, periode["start_date_gteq(2i)"].to_i, periode["start_date_gteq(3i)"].to_i)
-    end_range   = Date.civil(periode["end_date_lteq(1i)"].to_i, periode["end_date_lteq(2i)"].to_i, periode["end_date_lteq(3i)"].to_i)
+    begin_range = flatten_date('start_date_gteq')
+    end_range   = flatten_date('end_date_lteq')
 
     if begin_range > end_range
       flash.now[:error] = t('referentials.errors.validity_period')
     else
+      scope        = scope.overlapping(begin_range, end_range)
+      params[:q]   = params[:q].slice('comment_cont', 'color_cont_any')
       @begin_range = begin_range
       @end_range   = end_range
     end
     scope
+  end
+
+  def flatten_date key
+    date_int = %w(1 2 3).map {|e| params[:q]["#{key}(#{e}i)"].to_i }
+    Date.new(*date_int)
   end
 
   def sort_column

@@ -1,5 +1,5 @@
 var connect = require('react-redux').connect
-var CalendarsEditComponent = require('../../components/tools/CalendarsEditVehicleJourney')
+var TimetablesEditComponent = require('../../components/tools/TimetablesEditVehicleJourney')
 var actions = require('../../actions')
 
 const mapStateToProps = (state) => {
@@ -22,8 +22,8 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteCalendarModal: (timetable) => {
       dispatch(actions.deleteCalendarModal(timetable))
     },
-    onCalendarsEditVehicleJourney: (calendars) =>{
-      dispatch(actions.editVehicleJourneyCalendars(calendars))
+    onTimetablesEditVehicleJourney: (vehicleJourneys, timetables) =>{
+      dispatch(actions.editVehicleJourneyTimetables(vehicleJourneys, timetables))
     },
     onSelect2Timetable: (e) =>{
       dispatch(actions.selectTTCalendarsModal(e.params.data))
@@ -34,6 +34,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const CalendarsEditVehicleJourney = connect(mapStateToProps, mapDispatchToProps)(CalendarsEditComponent)
+const TimetablesEditVehicleJourney = connect(mapStateToProps, mapDispatchToProps)(TimetablesEditComponent)
 
-module.exports = CalendarsEditVehicleJourney
+module.exports = TimetablesEditVehicleJourney

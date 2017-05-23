@@ -13,6 +13,7 @@ en:
     clean_up: 'Clean up'
     sync: 'Synchronize'
     combine: 'Combine'
+    actualize: 'Actualize'
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"

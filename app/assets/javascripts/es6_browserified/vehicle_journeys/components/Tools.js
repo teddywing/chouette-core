@@ -6,7 +6,7 @@ var ShiftVehicleJourney = require('../containers/tools/ShiftVehicleJourney')
 var DuplicateVehicleJourney = require('../containers/tools/DuplicateVehicleJourney')
 var EditVehicleJourney = require('../containers/tools/EditVehicleJourney')
 var NotesEditVehicleJourney = require('../containers/tools/NotesEditVehicleJourney')
-var CalendarsEditVehicleJourney = require('../containers/tools/CalendarsEditVehicleJourney')
+var TimetablesEditVehicleJourney = require('../containers/tools/TimetablesEditVehicleJourney')
 var actions = require('../actions')
 
 const Tools = ({vehicleJourneys, onCancelSelection}) => {
@@ -17,7 +17,7 @@ const Tools = ({vehicleJourneys, onCancelSelection}) => {
         <DuplicateVehicleJourney />
         <ShiftVehicleJourney />
         <EditVehicleJourney />
-        <CalendarsEditVehicleJourney />
+        <TimetablesEditVehicleJourney />
         <NotesEditVehicleJourney />
         <DeleteVehicleJourneys />
       </ul>

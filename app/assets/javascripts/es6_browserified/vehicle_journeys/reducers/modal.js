@@ -63,17 +63,6 @@ const modal = (state = {}, action) => {
     case 'ADD_SELECTED_TIMETABLE':
       if(state.modalProps.selectedTimetable){
         newModalProps = JSON.parse(JSON.stringify(state.modalProps))
-        newModalProps.vehicleJourneys.map((vj) => {
-          let isPresent = false
-          vj.time_tables.forEach((tt) =>{
-            if (_.isEqual(newModalProps.selectedTimetable.objectid, tt.objectid)){
-              isPresent = true
-            }
-          })
-          if (!isPresent){
-            vj.time_tables.push(newModalProps.selectedTimetable)
-          }
-        })
         if (!_.find(newModalProps.timetables, newModalProps.selectedTimetable)){
           newModalProps.timetables.push(newModalProps.selectedTimetable)
         }

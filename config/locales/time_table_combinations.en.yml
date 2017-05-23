@@ -2,6 +2,9 @@ en:
   time_table_combinations:
     success: "operation applied on timetable"
     failure: "operation failed on timetable"
+    combined_type:
+      calendar: 'Calendars'
+      time_table: 'Time tables'
     operations:
       union: "merge"
       intersection: "intersect"
@@ -13,3 +16,5 @@ en:
       time_table_combination:
         combined_id: "Time table id"
         operation: "operation"
+        time_table_id: "Search a calendar"
+        calendar_id: "Search a calendar"

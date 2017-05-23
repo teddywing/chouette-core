@@ -1,7 +1,7 @@
 var _ = require('lodash')
 var actions = require("../actions")
 
-const vehicleJourney= (state = {}, action) => {
+const vehicleJourney= (state = {}, action, keep) => {
   switch (action.type) {
     case 'SELECT_VEHICLEJOURNEY':
       return _.assign({}, state, {selected: !state.selected})
@@ -61,10 +61,14 @@ const vehicleJourney= (state = {}, action) => {
           actions.checkSchedules(shiftedSchedule)
           shiftedVjas =  _.assign({}, state.vehicle_journey_at_stops[i], shiftedSchedule)
           vjas = _.assign({}, state.vehicle_journey_at_stops[i], shiftedVjas)
-          delete vjas['id']
+          if(!keep){
+            delete vjas['id']
+          }
           return vjas
         }else {
-          delete vjas['id']
+          if(!keep){
+            delete vjas['id']
+          }
           return vjas
         }
       })
@@ -147,13 +151,14 @@ const vehicleJourneys = (state = [], action) => {
           return vj
         }
       })
-    case 'EDIT_VEHICLEJOURNEYS_CALENDARS':
+    case 'EDIT_VEHICLEJOURNEYS_TIMETABLES':
+      let newTimetables = JSON.parse(JSON.stringify(action.timetables))
       return state.map((vj,i) =>{
         if(vj.selected){
           let updatedVJ = _.assign({}, vj)
           action.vehicleJourneys.map((vjm, j) =>{
             if(vj.objectid == vjm.objectid){
-              updatedVJ.time_tables =  vjm.time_tables
+              updatedVJ.time_tables =  newTimetables
             }
           })
           return updatedVJ
@@ -164,7 +169,7 @@ const vehicleJourneys = (state = [], action) => {
     case 'SHIFT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
         if (vj.selected){
-          return vehicleJourney(vj, action)
+          return vehicleJourney(vj, action, true)
         }else{
           return vj
         }
@@ -179,7 +184,7 @@ const vehicleJourneys = (state = [], action) => {
           selectedIndex = i
           for (i = 0; i< action.data.duplicate_number.value; i++){
             action.data.additional_time.value = val * (i + 1)
-            dupeVj = vehicleJourney(vj, action)
+            dupeVj = vehicleJourney(vj, action, false)
             dupeVj.published_journey_name = dupeVj.published_journey_name + '-' + i
             dupeVj.selected = false
             delete dupeVj['objectid']

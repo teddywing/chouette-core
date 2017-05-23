@@ -1,5 +1,64 @@
 .map
-  // ...
-
   .list-group-item &
     margin-top: 15px
+
+
+  .ol-scale-line
+    background-color: transparent
+    bottom: 5px
+    right: 5px
+    left: auto
+    padding: 3px
+    position: absolute
+
+    .ol-scale-line-inner
+      position: relative
+      border: none
+      border-bottom: 2px solid $darkblue
+      border-top: none
+      color: $darkblue
+      font-size: 0.85em
+      text-align: center
+      font-weight: 700
+
+      &:before
+        content: ''
+        display: block
+        position: absolute
+        left: 0
+        bottom: 0
+        right: 0
+        height: 5px
+        border-left: 2px solid $darkblue
+        border-right: 2px solid $darkblue
+
+  .ol-zoom
+    background-color: transparent
+
+    .ol-zoom-in, .ol-zoom-out
+      background-color: $darkblue
+      color: #fff
+      border-radius: 3px
+      margin: 0
+
+    .ol-zoom-in
+      border-bottom-left-radius: 0
+      border-bottom-right-radius: 0
+
+    .ol-zoom-out
+      margin-top: 1px
+      border-top-left-radius: 0
+      border-top-right-radius: 0
+
+  .ol-zoomslider
+    margin: 2px
+    width: calc(1.375em + 4px)
+    background-color: rgba($darkblue, 0.25)
+
+    button.ol-zoomslider-thumb
+      margin: 0 -2px 0 -2px
+      padding: 0 2px
+      background-color: $darkblue
+      color: #fff
+      border-radius: 0
+      z-index: 5

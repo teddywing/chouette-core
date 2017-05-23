@@ -197,7 +197,7 @@ describe Chouette::VehicleJourney, :type => :model do
 
         expect(vehicle_journey.reload.vehicle_journey_at_stops).to be_empty
         at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
-        at_stops.map{|stop| expect(stop.stop_point_id).to be_nil }
+        at_stops.map{|stop| expect(stop.id).to be_nil }
         expect(at_stops.count).to eq route.stop_points.count
       end
 
@@ -284,7 +284,7 @@ describe Chouette::VehicleJourney, :type => :model do
         first stop that they make" do
       journey_missing_stop = create(:vehicle_journey)
       journey_early = create(
-      :vehicle_journey,
+        :vehicle_journey,
         route: journey_missing_stop.route,
         journey_pattern: journey_missing_stop.journey_pattern
       )
@@ -307,6 +307,82 @@ describe Chouette::VehicleJourney, :type => :model do
           .with_stops
           .to_a
       ).to eq(expected_journey_order)
+    end
+  end
+
+  describe ".departure_time_between" do
+    it "selects vehicle journeys whose departure times are between the
+        specified range" do
+      journey_early = create(
+        :vehicle_journey,
+        stop_departure_time: '02:00:00'
+      )
+
+      route = journey_early.route
+      journey_pattern = journey_early.journey_pattern
+
+      journey_middle = create(
+        :vehicle_journey,
+        route: route,
+        journey_pattern: journey_pattern,
+        stop_departure_time: '03:00:00'
+      )
+      journey_late = create(
+        :vehicle_journey,
+        route: route,
+        journey_pattern: journey_pattern,
+        stop_departure_time: '04:00:00'
+      )
+
+      expect(route
+        .vehicle_journeys
+        .select('DISTINCT "vehicle_journeys".*')
+        .joins('
+          LEFT JOIN "vehicle_journey_at_stops"
+            ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
+        ')
+        .where_departure_time_between('02:30', '03:30')
+        .to_a
+      ).to eq([journey_middle])
+    end
+
+    it "can include vehicle journeys that have nil stops" do
+      journey = create(:vehicle_journey_empty)
+      route = journey.route
+
+      expect(route
+        .vehicle_journeys
+        .select('DISTINCT "vehicle_journeys".*')
+        .joins('
+          LEFT JOIN "vehicle_journey_at_stops"
+            ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
+        ')
+        .where_departure_time_between('02:30', '03:30', allow_empty: true)
+        .to_a
+      ).to eq([journey])
+    end
+  end
+
+  describe ".without_time_tables" do
+    it "selects only vehicle journeys that have no associated calendar" do
+      journey = create(:vehicle_journey)
+      route = journey.route
+
+      journey_with_time_table = create(
+        :vehicle_journey,
+        route: route,
+        journey_pattern: journey.journey_pattern
+      )
+      journey_with_time_table.time_tables << create(:time_table)
+
+      expect(
+        route
+          .vehicle_journeys
+          .without_time_tables
+          .to_a
+      ).to eq([journey])
     end
   end
 

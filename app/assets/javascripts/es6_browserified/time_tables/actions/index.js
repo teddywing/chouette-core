@@ -50,9 +50,13 @@ const actions = {
     dispatch,
     page: val
   }),
-  updateDayTypes: (index) => ({
+  updateDayTypes: (dayTypes) => ({
     type: 'UPDATE_DAY_TYPES',
-    index
+    dayTypes
+  }),
+  updateCurrentMonthFromDaytypes: (dayTypes) => ({
+    type: 'UPDATE_CURRENT_MONTH_FROM_DAYTYPES',
+    dayTypes
   }),
   updateComment: (comment) => ({
     type: 'UPDATE_COMMENT',
@@ -162,11 +166,8 @@ const actions = {
 
         if(testDate === false){
           if(currentDate >= begin && currentDate <= end) {
-            if(daytypes[d.wday] === false) {
-              testDate = false
-            } else {
-              testDate = true
-            }
+            testDate = true
+            p.include_date = false
           }
         }
       })
@@ -174,8 +175,11 @@ const actions = {
     }
 
     let improvedCM = state.current_month.map((d, i) => {
+      let bool = isInPeriod(state.current_month[i])
       return _.assign({}, state.current_month[i], {
-        in_periods: isInPeriod(state.current_month[i])
+        in_periods: bool,
+        include_date: bool ? false : state.current_month[i].include_date,
+        excluded_date: !bool ? false : state.current_month[i].excluded_date
       })
     })
     return improvedCM
@@ -197,7 +201,7 @@ const actions = {
     start = new Date(start)
     end = new Date(end)
     _.each(periods, (period, i) => {
-      if(index != i){
+      if(index != i && !period.deleted){
         if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end))
         error = 'Les périodes ne peuvent pas se chevaucher'
       }

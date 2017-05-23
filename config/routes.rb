@@ -72,7 +72,9 @@ ChouetteIhm::Application.routes.draw do
     resources :networks
   end
 
-  resources :calendars
+  resources :calendars do
+    get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+  end
 
   resources :referentials do
     resources :api_keys
@@ -118,6 +120,7 @@ ChouetteIhm::Application.routes.draw do
         resource :vehicle_journeys_collection, :only => [:show, :update]
         resources :vehicle_journeys, :vehicle_journey_frequencies do
           get 'select_journey_pattern', :on => :member
+          get 'select_vehicle_journey', :on => :member
           resources :vehicle_translations
           resources :time_tables
         end
@@ -165,6 +168,7 @@ ChouetteIhm::Application.routes.draw do
         get :tags
       end
       member do
+        post 'actualize'
         get 'duplicate'
         get 'month', defaults: { format: :json }
       end

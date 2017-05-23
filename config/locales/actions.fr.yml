@@ -14,6 +14,7 @@ fr:
     clean_up: 'Purger'
     sync: 'Synchroniser'
     combine: 'Combiner'
+    actualize: 'Actualiser'
   or: "ou"
   cancel: "Annuler"
   search_hint: "Entrez un texte à rechercher"

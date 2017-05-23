@@ -20,6 +20,10 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   belongs_to :calendar
   belongs_to :created_from, class_name: 'Chouette::TimeTable'
 
+  scope :overlapping, -> (date_start, date_end) do
+    joins(:periods).where('(period_start, period_end) OVERLAPS (?, ?)', date_start, date_end)
+  end
+
   after_save :save_shortcuts
 
   def self.object_id_key
@@ -128,6 +132,12 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   end
   def self.end_validity_period
     [Chouette::TimeTable.maximum(:end_date)].compact.max
+  end
+
+  def actualize
+    self.dates.clear
+    self.periods.clear
+    self.merge! self.calendar.convert_to_time_table
   end
 
   def month_inspect(date)
@@ -276,6 +286,10 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     end
 
     [bounding_min, bounding_max].compact
+  end
+
+  def display_day_types
+    %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join('')
   end
 
   def day_by_mask(flag)
@@ -513,6 +527,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     self.dates.to_a.sort! { |a,b| a.date <=> b.date}
     self.save!
     end
+    self.convert_continuous_dates_to_periods
   end
 
   # remove dates form tt which aren't in another_tt
@@ -528,6 +543,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       self.dates.to_a.sort! { |a,b| a.date <=> b.date}
       self.save!
     end
+    self.convert_continuous_dates_to_periods
   end
 
 
@@ -546,6 +562,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       self.periods.to_a.sort! { |a,b| a.period_start <=> b.period_start}
       self.save!
     end
+    self.convert_continuous_dates_to_periods
   end
 
   def duplicate

@@ -10,8 +10,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onUpdateDayTypes: (index) => {
-      dispatch(actions.updateDayTypes(index))
+    onUpdateDayTypes: (index, dayTypes) => {
+      let newDayTypes = dayTypes.slice(0)
+      newDayTypes[index] = !newDayTypes[index]
+      dispatch(actions.updateDayTypes(newDayTypes))
+      dispatch(actions.updateCurrentMonthFromDaytypes(newDayTypes))
     },
     onUpdateComment: (comment) => {
       dispatch(actions.updateComment(comment))

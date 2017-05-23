@@ -22,6 +22,9 @@ const mapDispatchToProps = (dispatch) => {
     onToggleWithoutSchedule: () =>{
       dispatch(actions.toggleWithoutSchedule())
     },
+    onToggleWithoutTimeTable: () =>{
+      dispatch(actions.toggleWithoutTimeTable())
+    },
     onResetFilters: (e, pagination) =>{
       dispatch(actions.checkConfirmModal(e, actions.resetFilters(dispatch), pagination.stateChanged, dispatch))
     },
@@ -33,6 +36,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelect2JourneyPattern: (e) => {
       dispatch(actions.filterSelect2JourneyPattern(e.params.data))
+    },
+    onSelect2VehicleJourney: (e) => {
+      dispatch(actions.filterSelect2VehicleJourney(e.params.data))
     }
   }
 }

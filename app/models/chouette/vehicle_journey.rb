@@ -51,9 +51,7 @@ module Chouette
       at_stops = self.vehicle_journey_at_stops.to_a.dup
       (route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)).each do |id|
         # Set stop_point id for fake vjas with no departure time yep.
-        params = {}
-        params[:stop_point_id] = id if journey_pattern.stop_points.map(&:id).include?(id)
-        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new(params))
+        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new(stop_point_id: id))
       end
       at_stops
     end
@@ -219,7 +217,51 @@ module Chouette
             AND "vehicle_journey_at_stops"."stop_point_id" =
               "journey_patterns"."departure_stop_point_id"
         ')
-        .order("vehicle_journey_at_stops.departure_time")
+        .order('"vehicle_journey_at_stops"."departure_time"')
+    end
+
+    # Requires a SELECT DISTINCT and a join with
+    # "vehicle_journey_at_stops".
+    #
+    # Example:
+    #   .select('DISTINCT "vehicle_journeys".*')
+    #   .joins('
+    #     LEFT JOIN "vehicle_journey_at_stops"
+    #       ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+    #         "vehicle_journeys"."id"
+    #   ')
+    #   .where_departure_time_between('08:00', '09:45')
+    def self.where_departure_time_between(
+      start_time,
+      end_time,
+      allow_empty: false
+    )
+      self
+        .where(
+          %Q(
+            "vehicle_journey_at_stops"."departure_time" >= ?
+            AND "vehicle_journey_at_stops"."departure_time" < ?
+            #{
+              if allow_empty
+                'OR "vehicle_journey_at_stops"."id" IS NULL'
+              end
+            }
+          ),
+          "2000-01-01 #{start_time}:00 UTC",
+          "2000-01-01 #{end_time}:00 UTC"
+        )
+    end
+
+    def self.without_time_tables
+      # Joins the VehicleJourney–TimeTable through table to select only those
+      # VehicleJourneys that don't have an associated TimeTable.
+      self
+        .joins('
+          LEFT JOIN "time_tables_vehicle_journeys"
+            ON "time_tables_vehicle_journeys"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
+        ')
+        .where('"time_tables_vehicle_journeys"."vehicle_journey_id" IS NULL')
     end
 
   end

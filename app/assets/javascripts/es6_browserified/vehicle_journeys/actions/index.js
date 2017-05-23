@@ -88,9 +88,10 @@ const actions = {
     type : 'DELETE_CALENDAR_MODAL',
     timetable
   }),
-  editVehicleJourneyCalendars : (vehicleJourneys) => ({
-    type: 'EDIT_VEHICLEJOURNEYS_CALENDARS',
-    vehicleJourneys
+  editVehicleJourneyTimetables : (vehicleJourneys, timetables) => ({
+    type: 'EDIT_VEHICLEJOURNEYS_TIMETABLES',
+    vehicleJourneys,
+    timetables
   }),
   openShiftModal : () => ({
     type : 'SHIFT_VEHICLEJOURNEY_MODAL'
@@ -189,6 +190,9 @@ const actions = {
   toggleWithoutSchedule: () => ({
     type: 'TOGGLE_WITHOUT_SCHEDULE'
   }),
+  toggleWithoutTimeTable: () => ({
+    type: 'TOGGLE_WITHOUT_TIMETABLE'
+  }),
   updateStartTimeFilter: (val, unit) => ({
     type: 'UPDATE_START_TIME_FILTER',
     val,
@@ -214,6 +218,12 @@ const actions = {
       objectid: selectedJP.object_id,
       name: selectedJP.name,
       published_name: selectedJP.published_name
+    }
+  }),
+  filterSelect2VehicleJourney: (selectedVJ) => ({
+    type : 'SELECT_VJ_FILTER',
+    selectedItem: {
+      objectid: selectedVJ.objectid
     }
   }),
   createQueryString: () => ({

@@ -31,7 +31,7 @@ end
 
 child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops|
   node do |vehicle_stop|
-    node(:dummy) { !vehicle_stop.stop_point_id? }
+    node(:dummy) { !vehicle_stop.id? }
     node(:stop_area_object_id) do
       vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.objectid : nil
     end

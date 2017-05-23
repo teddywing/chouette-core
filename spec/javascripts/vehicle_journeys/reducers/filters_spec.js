@@ -28,8 +28,10 @@ describe('filters reducer', () => {
         }
       },
       journeyPattern: {},
+      vehicleJourney: {},
       timetable: {},
       withoutSchedule: true,
+      withoutTimeTable: false
     },
     queryString: ''
     }
@@ -144,7 +146,16 @@ describe('filters reducer', () => {
   })
 
   it('should handle CREATE_QUERY_STRING', () => {
-    let strResult = 'q%5Bjourney_pattern_id_eq%5D=undefined&q%5Btime_tables_id_eq%5D=undefined'
+    let strResult = [
+      "q%5Bjourney_pattern_id_eq%5D=undefined",
+      "&q%5Bobjectid_cont%5D=undefined",
+      "&q%5Btime_tables_id_eq%5D=undefined",
+      "&q%5Bvehicle_journey_at_stops_departure_time_gteq%5D=11%3A11",
+      "&q%5Bvehicle_journey_at_stops_departure_time_lteq%5D=22%3A22",
+      "&q%5Bvehicle_journey_without_departure_time%5D=true",
+      "&q%5Bvehicle_journey_without_time_table%5D=false"
+    ].join('')
+
     expect(
       statusReducer(state, {
         type: 'CREATE_QUERY_STRING',

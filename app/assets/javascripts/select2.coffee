@@ -1,19 +1,42 @@
+bind_select2 = (el, cfg = {}) ->
+  target = $(el)
+  default_cfg =
+    theme: 'bootstrap'
+    language: 'fr'
+    placeholder: target.data('select2ed-placeholder')
+    allowClear: false
+
+  target.select2 $.extend({}, default_cfg, cfg)
+
+bind_select2_ajax = (el, cfg = {}) ->
+  target = $(el)
+  cfg =
+    ajax:
+      data: (params) ->
+        q:
+          "#{target.data('term')}": params.term
+      url: target.data('url'),
+      dataType: 'json',
+      delay: 125,
+      processResults: (data, params) -> results: data
+    minimumInputLength: 3
+    templateResult: (item) ->
+      item.text
+    templateSelection: (item) ->
+      item.text
+
+  bind_select2(el, cfg)
+
 @select_2 = ->
   $("[data-select2ed='true']").each ->
-    target = $(this)
-    target.select2
-      theme: 'bootstrap'
-      language: 'fr'
-      placeholder: target.data('select2ed-placeholder')
-      allowClear: true
+    bind_select2(this)
+
+  $("[data-select2-ajax='true']").each ->
+    bind_select2_ajax(this)
 
   $('select.form-control.tags').each ->
-    target = $(this)
-    target.select2
-      theme: 'bootstrap'
-      language: 'fr'
-      allowClear: true
-      tags: true
+    bind_select2(this, {tags: true})
+
 
 
 $(document).on 'turbolinks:load', select_2

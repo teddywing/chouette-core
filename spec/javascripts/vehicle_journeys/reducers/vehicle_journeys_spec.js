@@ -251,15 +251,14 @@ describe('vehicleJourneys reducer', () => {
   })
 
 
-  it('should handle EDIT_VEHICLEJOURNEYS_CALENDARS', () => {
+  it('should handle EDIT_VEHICLEJOURNEYS_TIMETABLES', () => {
     let newState = JSON.parse(JSON.stringify(state))
-    newState.map((vj, i) =>{
-      return Object.assign({}, vj, {time_tables : vj.time_tables[0]})
-    })
+    newState[0].time_tables = [fakeTimeTables[0]]
     expect(
       vjReducer(state, {
-        type: 'EDIT_VEHICLEJOURNEYS_CALENDARS',
-        vehicleJourneys: newState
+        type: 'EDIT_VEHICLEJOURNEYS_TIMETABLES',
+        vehicleJourneys: state,
+        timetables: [fakeTimeTables[0]]
       })
     ).toEqual(newState)
   })

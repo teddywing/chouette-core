@@ -9,6 +9,18 @@ RSpec.describe Calendar, :type => :model do
   it { is_expected.to validate_presence_of(:short_name) }
   it { is_expected.to validate_uniqueness_of(:short_name) }
 
+  describe '#to_time_table' do
+    let(:calendar) { create(:calendar, date_ranges: [Date.today..(Date.today + 1.month)]) }
+
+    it 'should convert calendar to an instance of Chouette::TimeTable' do
+      time_table = calendar.convert_to_time_table
+      expect(time_table).to be_an_instance_of(Chouette::TimeTable)
+      expect(time_table.periods[0].period_start).to eq(calendar.date_ranges[0].begin)
+      expect(time_table.periods[0].period_end).to eq(calendar.date_ranges[0].end)
+      expect(time_table.dates.map(&:date)).to match_array(calendar.dates)
+    end
+  end
+
   describe 'validations' do
     it 'validates that dates and date_ranges do not overlap' do
       calendar = build(:calendar, dates: [Date.today], date_ranges: [Date.today..Date.tomorrow])
@@ -69,7 +81,6 @@ RSpec.describe Calendar, :type => :model do
     end
 
     describe 'intersect?' do
-
       it 'should detect date in common with other date_ranges' do
         november = period(begin: '2016-11-01', end: '2016-11-30')
         mid_november_mid_december = period(begin: '2016-11-15', end: '2016-12-15')
@@ -111,7 +122,6 @@ RSpec.describe Calendar, :type => :model do
   end
 
   describe 'DateValue' do
-
     subject { date_value }
 
     def date_value(attributes = {})
@@ -141,8 +151,6 @@ RSpec.describe Calendar, :type => :model do
     end
 
     it { is_expected.to validate_presence_of(:value) }
-
   end
-
 end
 

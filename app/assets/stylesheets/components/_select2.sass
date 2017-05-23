@@ -2,9 +2,15 @@
 // Select2 Customisation //
 //-----------------------//
 
+// Dirty hotfix for select2 i18n not working properly
+// .select2-results__options
+//   .select2-results__message, .loading-results
+//     display: none
+
 .select2-selection__placeholder
   color: rgba($grey, 0.65)
   font-style: italic
+  padding: 0 6px
 
 // With Font Awesome adjusts.
 .select2-selection__rendered
@@ -66,3 +72,10 @@
 
     .select2-container--bootstrap .select2-selection
       border-color: rgba($grey, 0.3)
+
+// Tags
+.form-filter
+  .form-group.select2ed
+    .form-control.tags + .select2-container--bootstrap
+      input.select2-search__field
+        padding: 0 6px

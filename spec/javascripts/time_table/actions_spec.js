@@ -13,11 +13,12 @@ const day = {
 }
 describe('actions', () => {
   it('should create an action to update dayTypes', () => {
+    let obj = {}
     const expectedAction = {
       type: 'UPDATE_DAY_TYPES',
-      index: 1
+      dayTypes: obj
     }
-    expect(actions.updateDayTypes(1)).toEqual(expectedAction)
+    expect(actions.updateDayTypes(obj)).toEqual(expectedAction)
   })
 
   it('should create an action to update comment', () => {

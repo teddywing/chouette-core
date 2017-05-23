@@ -3,7 +3,7 @@ class VehicleJourneysController < ChouetteController
   before_action :user_permissions, only: :index
 
   respond_to :json, :only => :index
-  respond_to :js, :only => [:select_journey_pattern, :edit, :new, :index]
+  respond_to :js, :only => [:select_journey_pattern, :select_vehicle_journey, :edit, :new, :index]
 
   belongs_to :referential do
     belongs_to :line, :parent_class => Chouette::Line do
@@ -18,10 +18,15 @@ class VehicleJourneysController < ChouetteController
 
   def select_journey_pattern
     if params[:journey_pattern_id]
-      selected_journey_pattern = Chouette::JourneyPattern.find( params[:journey_pattern_id])
+      selected_journey_pattern = Chouette::JourneyPattern.find(params[:journey_pattern_id])
 
       @vehicle_journey = vehicle_journey
       @vehicle_journey.update_journey_pattern(selected_journey_pattern)
+    end
+  end
+  def select_vehicle_journey
+    if params[:vehicle_journey_objectid]
+      @vehicle_journey = Chouette::VehicleJourney.find(params[:vehicle_journey_objectid])
     end
   end
 
@@ -78,11 +83,10 @@ class VehicleJourneysController < ChouetteController
   protected
   def collection
     scope = route.vehicle_journeys.with_stops
-    @q = scope.search filtered_ransack_params
+    scope = maybe_filter_by_departure_time(scope)
+    scope = maybe_filter_out_journeys_with_time_tables(scope)
 
-    # Fixme 3358
-    # grouping = ransack_periode_filter
-    # @q.build_grouping(grouping) if grouping
+    @q = scope.search filtered_ransack_params
 
     @ppage = 20
     @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
@@ -91,17 +95,29 @@ class VehicleJourneysController < ChouetteController
     @vehicle_journeys
   end
 
-  def ransack_periode_filter
-    if params[:q] && params[:q][:vehicle_journey_at_stops_departure_time_gteq]
-      between = [:departure_time_gteq, :departure_time_lteq].map do |filter|
-        "2000-01-01 #{params[:q]["vehicle_journey_at_stops_#{filter}"]}:00 UTC"
-      end
-      {
-        :m => 'or',
-        :vehicle_journey_at_stops_departure_time_between => between.join(' to '),
-        :vehicle_journey_at_stops_id_null => params[:q][:vehicle_journey_without_departure_time]
-      }
+  def maybe_filter_by_departure_time(scope)
+    if params[:q] &&
+        params[:q][:vehicle_journey_at_stops_departure_time_gteq] &&
+        params[:q][:vehicle_journey_at_stops_departure_time_lteq]
+      scope = scope.where_departure_time_between(
+        params[:q][:vehicle_journey_at_stops_departure_time_gteq],
+        params[:q][:vehicle_journey_at_stops_departure_time_lteq],
+        allow_empty:
+          params[:q][:vehicle_journey_without_departure_time] == 'true'
+      )
     end
+
+    scope
+  end
+
+  def maybe_filter_out_journeys_with_time_tables(scope)
+    if params[:q] &&
+        params[:q][:vehicle_journey_without_time_table] == 'true'
+      return scope
+        .without_time_tables
+    end
+
+    scope
   end
 
   def filtered_ransack_params
@@ -140,14 +156,28 @@ class VehicleJourneysController < ChouetteController
 
   private
   def vehicle_journey_params
-    params.require(:vehicle_journey).permit( { footnote_ids: [] } , :journey_pattern_id, :number, :published_journey_name,
-                                             :published_journey_identifier, :comment, :transport_mode,
-                                             :mobility_restricted_suitability, :flexible_service, :status_value,
-                                             :facility, :vehicle_type_identifier, :objectid, :time_table_tokens,
-                                             { date: [ :hour, :minute ] }, :button, :referential_id, :line_id,
-                                             :route_id, :id, { vehicle_journey_at_stops_attributes: [ :arrival_time,
-                                                                                                      :id, :_destroy,
-                                                                                                      :stop_point_id,
-                                                                                                      :departure_time] } )
+    params.require(:vehicle_journey).permit(
+      { footnote_ids: [] },
+      :journey_pattern_id,
+      :number,
+      :published_journey_name,
+      :published_journey_identifier,
+      :comment,
+      :transport_mode,
+      :mobility_restricted_suitability,
+      :flexible_service,
+      :status_value,
+      :facility,
+      :vehicle_type_identifier,
+      :objectid,
+      :time_table_tokens,
+      { date: [:hour, :minute] },
+      :button,
+      :referential_id,
+      :line_id,
+      :route_id,
+      :id,
+      { vehicle_journey_at_stops_attributes: [:arrival_time, :id, :_destroy, :stop_point_id, :departure_time] }
+    )
   end
 end

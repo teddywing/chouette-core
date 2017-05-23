@@ -15,6 +15,7 @@ class VehicleJourney extends Component {
       bool = true
       this.previousCity = sp.stop_area_cityname
     }
+
     return bool
   }
 
@@ -51,9 +52,11 @@ class VehicleJourney extends Component {
         <div className='th'>
           <div className='strong mb-xs'>{this.props.value.objectid ? actions.humanOID(this.props.value.objectid) : '-'}</div>
           <div>{actions.humanOID(this.props.value.journey_pattern.objectid)}</div>
-          {this.props.value.time_tables.map((tt, i)=>
-            <div key={i}>{this.timeTableURL(tt)}</div>
-          )}
+          <div>
+            {this.props.value.time_tables.map((tt, i)=>
+              <span key={i} className='vj_tt'>{this.timeTableURL(tt)}</span>
+            )}
+          </div>
 
           {(this.props.filters.policy['vehicle_journeys.edit'] == true) &&
             <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
@@ -73,7 +76,7 @@ class VehicleJourney extends Component {
         </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
-            <div className={'cellwrap' + (vj.dummy ? ' headlined' : '') + (this.cityNameChecker(vj) ? ' headlined' : '')}>
+            <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
                 <div data-headline='Arrivée à'>
                   <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.edit'] == false) ? 'disabled ' : '') + 'input-group time'}>

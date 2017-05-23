@@ -1,16 +1,26 @@
 var React = require('react')
 var PropTypes = require('react').PropTypes
 var MissionSelect2 = require('./tools/select2s/MissionSelect2')
+var VJSelect2 = require('./tools/select2s/VJSelect2')
 var TimetableSelect2 = require('./tools/select2s/TimetableSelect2')
 
-const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onSelect2Timetable, onSelect2JourneyPattern}) => {
+const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onToggleWithoutTimeTable, onSelect2Timetable, onSelect2JourneyPattern, onSelect2VehicleJourney}) => {
   return (
     <div className='row'>
       <div className='col-lg-12'>
         <div className='form form-filter'>
           <div className='ffg-row'>
+            {/* ID course */}
+            <div className="form-group w33">
+              <VJSelect2
+                onSelect2VehicleJourney={onSelect2VehicleJourney}
+                filters={filters}
+                isFilter={true}
+                />
+            </div>
+
             {/* Missions */}
-            <div className='form-group w40'>
+            <div className='form-group w33'>
               <MissionSelect2
                 onSelect2JourneyPattern={onSelect2JourneyPattern}
                 filters={filters}
@@ -19,7 +29,7 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
             </div>
 
             {/* Calendriers */}
-            <div className='form-group w40'>
+            <div className='form-group w33'>
               <TimetableSelect2
                 onSelect2Timetable={onSelect2Timetable}
                 hasRoute={true}
@@ -87,9 +97,9 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
             </div>
 
             {/* Switch avec/sans horaires */}
-            <div className='form-group has_switch w40'>
-              <label className='control-label col-sm-8'>Afficher les courses sans horaires</label>
-              <div className='form-group col-sm-4' style={{padding: 0}}>
+            <div className='form-group has_switch'>
+              <label className='control-label pull-left'>Afficher les courses sans horaires</label>
+              <div className='form-group pull-left' style={{padding: 0}}>
                 <div className='checkbox'>
                   <label>
                     <input
@@ -98,6 +108,25 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
                       checked={filters.query.withoutSchedule}
                       ></input>
                     <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="ffg-row">
+            {/* Switch avec/sans calendrier */}
+            <div className='form-group has_switch'>
+              <label className='control-label pull-left'>Afficher les courses sans calendrier</label>
+              <div className='form-group pull-left' style={{padding: 0}}>
+                <div className='checkbox'>
+                  <label>
+                    <input
+                      type='checkbox'
+                      onChange={onToggleWithoutTimeTable}
+                      checked={filters.query.withoutTimeTable}
+                      ></input>
+                    <span className='switch-label' data-checkedvalue='Oui' data-uncheckedvalue='Non'></span>
                   </label>
                 </div>
               </div>
@@ -131,7 +160,8 @@ Filters.propTypes = {
   onUpdateStartTimeFilter: PropTypes.func.isRequired,
   onUpdateEndTimeFilter: PropTypes.func.isRequired,
   onSelect2Timetable: PropTypes.func.isRequired,
-  onSelect2JourneyPattern: PropTypes.func.isRequired
+  onSelect2JourneyPattern: PropTypes.func.isRequired,
+  onSelect2VehicleJourney: PropTypes.func.isRequired
 }
 
 module.exports = Filters

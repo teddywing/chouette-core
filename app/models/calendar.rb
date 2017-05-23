@@ -19,6 +19,17 @@ class Calendar < ActiveRecord::Base
     [:contains_date]
   end
 
+  def convert_to_time_table
+    Chouette::TimeTable.new.tap do |tt|
+      self.dates.each do |d|
+        tt.dates << Chouette::TimeTableDate.new(date: d, in_out: true)
+      end
+      self.date_ranges.each do |p|
+        tt.periods << Chouette::TimeTablePeriod.new(period_start: p.begin, period_end: p.end)
+      end
+    end
+  end
+
   class Period
     include ActiveAttr::Model
 

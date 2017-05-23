@@ -15,10 +15,13 @@ const filters = (state = {}, action) => {
           minute: '59'
         }
       }
-      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, timetable: {}, withoutSchedule: true })
+      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, timetable: {}, withoutSchedule: true, withoutTimeTable: false })
       return _.assign({}, state, {query: newQuery, queryString: ''})
     case 'TOGGLE_WITHOUT_SCHEDULE':
       newQuery = _.assign({}, state.query, {withoutSchedule: !state.query.withoutSchedule})
+      return _.assign({}, state, {query: newQuery})
+    case 'TOGGLE_WITHOUT_TIMETABLE':
+      newQuery = _.assign({}, state.query, {withoutTimeTable: !state.query.withoutTimeTable})
       return _.assign({}, state, {query: newQuery})
     case 'UPDATE_END_TIME_FILTER':
       newInterval = JSON.parse(JSON.stringify(state.query.interval))
@@ -44,6 +47,9 @@ const filters = (state = {}, action) => {
     case 'SELECT_JP_FILTER':
       newQuery = _.assign({}, state.query, {journeyPattern : action.selectedItem})
       return _.assign({}, state, {query: newQuery})
+    case 'SELECT_VJ_FILTER':
+      newQuery = _.assign({}, state.query, {vehicleJourney : action.selectedItem})
+      return _.assign({}, state, {query: newQuery})
     case 'TOGGLE_ARRIVALS':
       return _.assign({}, state, {toggleArrivals: !state.toggleArrivals})
     case 'QUERY_FILTER_VEHICLEJOURNEYS':
@@ -52,11 +58,12 @@ const filters = (state = {}, action) => {
     case 'CREATE_QUERY_STRING':
       let params = {
         'q[journey_pattern_id_eq]': state.query.journeyPattern.id || undefined,
+        'q[objectid_cont]': state.query.vehicleJourney.objectid || undefined,
         'q[time_tables_id_eq]': state.query.timetable.id || undefined,
-        // Fixme 3358
-        // 'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
-        // 'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute),
-        // 'q[vehicle_journey_without_departure_time]' : state.query.withoutSchedule
+        'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
+        'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute),
+        'q[vehicle_journey_without_departure_time]': state.query.withoutSchedule,
+        'q[vehicle_journey_without_time_table]': state.query.withoutTimeTable
       }
       let queryString = actions.encodeParams(params)
       return _.assign({}, state, {queryString: queryString})

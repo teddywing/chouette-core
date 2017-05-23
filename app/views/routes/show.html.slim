@@ -8,7 +8,8 @@
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], data: {turbolinks: false}, class: 'btn btn-primary'
+      - if @route_sp.any?
+        = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], data: {turbolinks: false}, class: 'btn btn-primary'
       - if @route.journey_patterns.present?
         = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], data: {turbolinks: false}, class: 'btn btn-primary'
 
@@ -19,7 +20,7 @@
           span.fa.fa-trash
           span = t('actions.destroy')
 
-/ PägeContent
+/ PageContent
 .page_content
   .container-fluid
     .row
@@ -30,6 +31,10 @@
             @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
             @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }
 
+      - if @route_sp.any?
+        .col-lg-6.col-md-6.col-sm-12.col-xs-12
+          #route_map.map.mb-lg
+      
     .row
       .col-lg-12
         - if @route_sp.any?
@@ -48,3 +53,7 @@
 
         - else
           = replacement_msg t('stop_areas.search_no_results')
+
+= javascript_tag do
+  | window.route = "#{URI.escape(route_json_for_edit(@route))}"
+= javascript_include_tag 'es6_browserified/itineraries/show.js'
