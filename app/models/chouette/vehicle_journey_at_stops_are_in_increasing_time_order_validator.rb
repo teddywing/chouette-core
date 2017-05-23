@@ -1,6 +1,5 @@
 module Chouette
-  # TODO: Rename to IncreasingTimeOrder
-  class VehicleJourneyAtStopsAreInIncreasingOrderValidator <
+  class VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator <
       ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       increasing_times(record)

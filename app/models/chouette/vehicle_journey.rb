@@ -29,7 +29,7 @@ module Chouette
     has_many :stop_points, -> { order("stop_points.position") }, :through => :vehicle_journey_at_stops
 
     validates :vehicle_journey_at_stops,
-      vehicle_journey_at_stops_are_in_increasing_order: true
+      vehicle_journey_at_stops_are_in_increasing_time_order: true
     validates_presence_of :number
 
     before_validation :set_default_values
