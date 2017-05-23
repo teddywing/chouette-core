@@ -40,8 +40,8 @@ module Chouette
       end
       result
     end
-    def exceeds_gap?(first, second)
-      (4 * 3600) < ((second - first) % (3600 * 24))
+    def exceeds_gap?(earlier, later)
+      (4 * 3600) < ((later - earlier) % (3600 * 24))
     end
 
   end
