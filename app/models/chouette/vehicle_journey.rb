@@ -28,7 +28,8 @@ module Chouette
     has_and_belongs_to_many :time_tables, :class_name => 'Chouette::TimeTable', :foreign_key => "vehicle_journey_id", :association_foreign_key => "time_table_id"
     has_many :stop_points, -> { order("stop_points.position") }, :through => :vehicle_journey_at_stops
 
-    validate :increasing_times
+    validates :vehicle_journey_at_stops,
+      vehicle_journey_at_stops_are_in_increasing_order: true
     validates_presence_of :number
 
     before_validation :set_default_values
@@ -154,14 +155,6 @@ module Chouette
         attrs["#{association}_id"] = item[association]['id'] if item[association]
       end
       attrs
-    end
-
-    def increasing_times
-      previous = nil
-      vehicle_journey_at_stops.select{|vjas| vjas.departure_time && vjas.arrival_time}.each do |vjas|
-        errors.add( :vehicle_journey_at_stops, 'time gap overflow') unless vjas.increasing_times_validate( previous)
-        previous = vjas
-      end
     end
 
     def missing_stops_in_relation_to_a_journey_pattern(selected_journey_pattern)
