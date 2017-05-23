@@ -27,8 +27,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelect2Timetable: (e) =>{
       dispatch(actions.selectTTCalendarsModal(e.params.data))
-    },
-    onAddSelectedTimetable: () => {
       dispatch(actions.addSelectedTimetable())
     }
   }
