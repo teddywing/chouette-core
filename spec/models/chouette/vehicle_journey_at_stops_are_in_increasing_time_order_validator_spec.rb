@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Chouette::VehicleJourneyAtStopsAreInIncreasingOrderValidator do
+describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
   subject { create(:vehicle_journey_odd) }
 
   describe "#increasing_times" do
