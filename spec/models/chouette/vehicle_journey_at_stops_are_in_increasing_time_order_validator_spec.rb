@@ -23,7 +23,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
     end
   end
 
-  describe ".increasing_times_validate" do
+  describe ".validate_at_stop_times_must_increase" do
     let!(:vehicle_journey) { create(:vehicle_journey_odd) }
     subject { vehicle_journey.vehicle_journey_at_stops.first }
 
@@ -35,7 +35,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
         vjas1.arrival_time = vjas2.arrival_time - 5.hour
         expect(
           Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
-            .increasing_times_validate(vjas2, vjas1)
+            .validate_at_stop_times_must_increase(vjas2, vjas1)
         ).to be_falsey
         expect(vjas2.errors).not_to be_empty
         expect(vjas2.errors[:arrival_time]).not_to be_blank
@@ -47,7 +47,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
         vjas1.departure_time = vjas2.departure_time - 5.hour
         expect(
           Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
-            .increasing_times_validate(vjas2, vjas1)
+            .validate_at_stop_times_must_increase(vjas2, vjas1)
         ).to be_falsey
         expect(vjas2.errors).not_to be_empty
         expect(vjas2.errors[:departure_time]).not_to be_blank
@@ -58,7 +58,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
       it "should not add errors" do
         expect(
           Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
-            .increasing_times_validate(vjas2, vjas1)
+            .validate_at_stop_times_must_increase(vjas2, vjas1)
         ).to be_truthy
         expect(vjas2.errors).to be_empty
       end

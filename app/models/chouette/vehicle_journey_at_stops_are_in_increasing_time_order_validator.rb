@@ -8,7 +8,10 @@ module Chouette
         .vehicle_journey_at_stops
         .select { |vjas| vjas.departure_time && vjas.arrival_time }
         .each do |vjas|
-          unless self.class.increasing_times_validate(vjas, previous_at_stop)
+          unless self.class.validate_at_stop_times_must_increase(
+            vjas,
+            previous_at_stop
+          )
             vehicle_journey.errors.add(
               :vehicle_journey_at_stops,
               'time gap overflow'
@@ -19,7 +22,7 @@ module Chouette
         end
     end
 
-    def self.increasing_times_validate(at_stop, previous_at_stop)
+    def self.validate_at_stop_times_must_increase(at_stop, previous_at_stop)
       valid = true
       return valid unless previous_at_stop
 
