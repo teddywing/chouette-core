@@ -8,7 +8,7 @@ class ApplicationPolicy
   end
 
   def archived?
-    referential.ready
+    referential.try(:ready)
   end
 
   def referential

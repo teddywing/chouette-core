@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-require 'spec_helper'
-
 describe 'Line Footnotes', type: :feature do
   login_user
 
