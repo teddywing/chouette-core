@@ -27,22 +27,25 @@ module Chouette
       valid = true
       return valid unless previous_at_stop
 
-      if self.exceeds_gap?(previous_at_stop.departure_time, at_stop.departure_time)
+      if TimeDuration.exceeds_gap?(
+        4.hours,
+        previous_at_stop.departure_time,
+        at_stop.departure_time
+      )
         valid = false
         at_stop.errors.add(:departure_time, 'departure time gap overflow')
       end
 
-      if self.exceeds_gap?(previous_at_stop.arrival_time, at_stop.arrival_time)
+      if TimeDuration.exceeds_gap?(
+        4.hours,
+        previous_at_stop.arrival_time,
+        at_stop.arrival_time
+      )
         valid = false
         at_stop.errors.add(:arrival_time, 'arrival time gap overflow')
       end
 
       valid
-    end
-
-    # TODO: Get rid of this and change to TimeDuration version
-    def self.exceeds_gap?(earlier, later)
-      (4 * 3600) < ((later - earlier) % (3600 * 24))
     end
   end
 end
