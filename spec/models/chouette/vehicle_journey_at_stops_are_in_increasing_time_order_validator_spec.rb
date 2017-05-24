@@ -13,7 +13,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
         subject.vehicle_journey_at_stops[1].departure_time
     end
 
-    it "should make instance invalid" do
+    it "should make instance invalid if departure time exceeds gap" do
       subject.validate
 
       expect(
