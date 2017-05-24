@@ -16,6 +16,7 @@ module Support
         for_user.permissions ||= []
         for_user.permissions += permissions.flatten
       end
+
     end
 
     module PoliciesMacros
@@ -25,6 +26,12 @@ module Support
           let( :user_context ) { create_user_context(user: user, referential: referential)  }
           let( :referentail )  { create :referential }
           let( :user )         { create :user }
+        end
+      end
+      def with_user_permission(permission, &blk)
+        it "with user permission #{permission.inspect}" do
+          add_permissions(permission, for_user: user)
+          blk.()
         end
       end
     end
