@@ -1,4 +1,9 @@
+require_relative 'chain'
 class LinePolicy < BoivPolicy
+  extend Policies::Chain
+
+  chain_policies :archived?, :!, policies: %i{create_footnote? destroy_footnote? edit_footnote?}
+
   class Scope < Scope
     def resolve
       scope
