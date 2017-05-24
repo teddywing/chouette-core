@@ -12,7 +12,7 @@ module Chouette
         .vehicle_journey_at_stops
         .select { |vjas| vjas.departure_time && vjas.arrival_time }
         .each do |vjas|
-          unless vjas.increasing_times_validate(previous_at_stop)
+          unless self.class.increasing_times_validate(vjas, previous_at_stop)
             vehicle_journey.errors.add(
               :vehicle_journey_at_stops,
               'time gap overflow'
@@ -23,22 +23,23 @@ module Chouette
         end
     end
 
-    def increasing_times_validate(previous_at_stop)
+    def self.increasing_times_validate(at_stop, previous_at_stop)
       result = true
       return result unless previous_at_stop
 
-      if exceeds_gap?(previous_at_stop.departure_time, departure_time)
+      if self.exceeds_gap?(previous_at_stop.departure_time, at_stop.departure_time)
         result = false
-        errors.add( :departure_time, 'departure time gap overflow')
+        at_stop.errors.add(:departure_time, 'departure time gap overflow')
       end
-      if exceeds_gap?(previous_at_stop.arrival_time, arrival_time)
+      if self.exceeds_gap?(previous_at_stop.arrival_time, at_stop.arrival_time)
         result = false
-        errors.add( :arrival_time, 'arrival time gap overflow')
+        at_stop.errors.add(:arrival_time, 'arrival time gap overflow')
       end
       result
     end
 
-    def exceeds_gap?(earlier, later)
+    # TODO: Get rid of this and change to TimeDuration version
+    def self.exceeds_gap?(earlier, later)
       (4 * 3600) < ((later - earlier) % (3600 * 24))
     end
   end
