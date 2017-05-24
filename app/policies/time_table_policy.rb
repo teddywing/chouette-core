@@ -1,4 +1,3 @@
-require_relative 'chain'
 class TimeTablePolicy < BoivPolicy
   extend Policies::Chain
 

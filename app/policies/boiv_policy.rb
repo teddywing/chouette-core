@@ -1,3 +1,4 @@
+require_relative 'chain'
 class BoivPolicy < ApplicationPolicy
 
   def boiv_read_offer?

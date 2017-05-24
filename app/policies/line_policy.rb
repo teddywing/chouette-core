@@ -27,7 +27,7 @@ class LinePolicy < BoivPolicy
   end
 
   def destroy_footnote?
-    user.has_permission?('routes.destroy')
+    user.has_permission?('footnotes.destroy')
   end
 
   def update_footnote?  ; edit_footnote? end
