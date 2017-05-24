@@ -17,7 +17,10 @@ module Chouette
       return unless arrival_time && departure_time
 
       if TimeDuration.exceeds_gap?(4.hours, arrival_time, departure_time)
-        errors.add(:arrival_time,I18n.t("activerecord.errors.models.vehicle_journey_at_stop.arrival_must_be_before_departure"))
+        errors.add(
+          :arrival_time,
+          I18n.t("activerecord.errors.models.vehicle_journey_at_stop.arrival_must_be_before_departure")
+        )
       end
     end
 
