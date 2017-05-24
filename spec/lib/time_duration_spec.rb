@@ -2,9 +2,6 @@ require 'spec_helper'
 
 describe TimeDuration do
   describe ".exceeds_gap?" do
-    let!(:vehicle_journey) { create(:vehicle_journey_odd) }
-    subject { vehicle_journey.vehicle_journey_at_stops.first }
-
     context "when duration is 4.hours" do
       it "should return false if gap < 1.hour" do
         t1 = Time.now
