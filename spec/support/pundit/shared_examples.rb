@@ -1,5 +1,5 @@
 RSpec.shared_examples 'permitted policy and same organisation' do
-  | permission, restricted_ready: false|
+  | permission, archived: false|
 
   context 'permission absent → ' do
     it "denies a user with a different organisation" do
@@ -25,10 +25,10 @@ RSpec.shared_examples 'permitted policy and same organisation' do
       expect_it.to permit(user_context, referential)
     end
 
-    if restricted_ready
+    if archived
       it 'removes the permission for archived referentials' do
         user.update_attribute :organisation, referential.organisation
-        referential.update_attribute :ready, true
+        referential.update_attribute :archived_at, 42.seconds.ago
         expect_it.not_to permit(user_context, referential)
       end
     end
@@ -36,7 +36,7 @@ RSpec.shared_examples 'permitted policy and same organisation' do
 end
 
 RSpec.shared_examples 'permitted policy' do
-  | permission, restricted_ready: false|
+  | permission, archived: false|
   context 'permission absent → ' do
     it "denies a user with a different organisation" do
       expect_it.not_to permit(user_context, referential)
@@ -50,9 +50,9 @@ RSpec.shared_examples 'permitted policy' do
       expect_it.to permit(user_context, referential)
     end
 
-    if restricted_ready
+    if archived
       it 'removes the permission for archived referentials' do
-        referential.update_attribute :ready, true
+        referential.update_attribute :archived_at, 42.seconds.ago
         expect_it.not_to permit(user_context, referential)
       end
     end

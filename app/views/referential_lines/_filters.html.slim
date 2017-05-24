@@ -9,7 +9,7 @@
   .ffg-row
     .form-group.togglable
       = f.label Chouette::Route.human_attribute_name(:wayback), required: false, class: 'control-label'
-      = f.input :wayback_eq_any, as: :checkboxes, class: 'form-control', collection: Chouette::Route.wayback.values, as: :check_boxes, label: false, required: false, wrapper_html: { class: 'checkbox_list'}, label_method: lambda{|l| ("<span>" + t("enumerize.route.wayback.#{l}") + "</span>").html_safe}
+      = f.input :wayback_eq_any, class: 'form-control', collection: Chouette::Route.wayback.values, as: :check_boxes, label: false, required: false, wrapper_html: { class: 'checkbox_list'}, label_method: lambda{|l| ("<span>" + t("enumerize.route.wayback.#{l}") + "</span>").html_safe}
 
   .actions
     = link_to 'Effacer', referential_line_path(@referential, @line), class: 'btn btn-link'

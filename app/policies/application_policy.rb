@@ -8,7 +8,7 @@ class ApplicationPolicy
   end
 
   def archived?
-    referential.try(:ready)
+    !!referential.archived_at
   end
 
   def referential
