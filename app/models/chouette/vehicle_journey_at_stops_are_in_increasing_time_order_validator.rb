@@ -24,18 +24,20 @@ module Chouette
     end
 
     def self.increasing_times_validate(at_stop, previous_at_stop)
-      result = true
-      return result unless previous_at_stop
+      valid = true
+      return valid unless previous_at_stop
 
       if self.exceeds_gap?(previous_at_stop.departure_time, at_stop.departure_time)
-        result = false
+        valid = false
         at_stop.errors.add(:departure_time, 'departure time gap overflow')
       end
+
       if self.exceeds_gap?(previous_at_stop.arrival_time, at_stop.arrival_time)
-        result = false
+        valid = false
         at_stop.errors.add(:arrival_time, 'arrival time gap overflow')
       end
-      result
+
+      valid
     end
 
     # TODO: Get rid of this and change to TimeDuration version
