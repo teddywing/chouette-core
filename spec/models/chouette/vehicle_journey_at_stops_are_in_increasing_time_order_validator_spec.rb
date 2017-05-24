@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
   subject { create(:vehicle_journey_odd) }
 
-  describe "#increasing_times" do
+  describe "#validate" do
     before(:each) do
       subject.vehicle_journey_at_stops[0].departure_time =
         subject.vehicle_journey_at_stops[1].departure_time - 5.hour
