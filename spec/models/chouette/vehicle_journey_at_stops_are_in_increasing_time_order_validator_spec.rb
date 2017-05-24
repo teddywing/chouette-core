@@ -23,24 +23,25 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
     end
   end
 
-  describe "#exceeds_gap?" do
-    let!(:vehicle_journey) { create(:vehicle_journey_odd) }
-    subject { vehicle_journey.vehicle_journey_at_stops.first }
+  # TODO: Move to TimeDuration
+  # describe "#exceeds_gap?" do
+  #   let!(:vehicle_journey) { create(:vehicle_journey_odd) }
+  #   subject { vehicle_journey.vehicle_journey_at_stops.first }
+  #
+  #   it "should return false if gap < 1.hour" do
+  #     t1 = Time.now
+  #     t2 = Time.now + 3.minutes
+  #     expect(subject.exceeds_gap?(t1, t2)).to be_falsey
+  #   end
+  #
+  #   it "should return true if gap > 4.hour" do
+  #     t1 = Time.now
+  #     t2 = Time.now + (4.hours + 1.minutes)
+  #     expect(subject.exceeds_gap?(t1, t2)).to be_truthy
+  #   end
+  # end
 
-    it "should return false if gap < 1.hour" do
-      t1 = Time.now
-      t2 = Time.now + 3.minutes
-      expect(subject.exceeds_gap?(t1, t2)).to be_falsey
-    end
-
-    it "should return true if gap > 4.hour" do
-      t1 = Time.now
-      t2 = Time.now + (4.hours + 1.minutes)
-      expect(subject.exceeds_gap?(t1, t2)).to be_truthy
-    end
-  end
-
-  describe "#increasing_times_validate" do
+  describe ".increasing_times_validate" do
     let!(:vehicle_journey) { create(:vehicle_journey_odd) }
     subject { vehicle_journey.vehicle_journey_at_stops.first }
 
@@ -50,7 +51,10 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
     context "when vjas#arrival_time exceeds gap" do
       it "should add errors on arrival_time" do
         vjas1.arrival_time = vjas2.arrival_time - 5.hour
-        expect(vjas2.increasing_times_validate(vjas1)).to be_falsey
+        expect(
+          Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
+            .increasing_times_validate(vjas2, vjas1)
+        ).to be_falsey
         expect(vjas2.errors).not_to be_empty
         expect(vjas2.errors[:arrival_time]).not_to be_blank
       end
@@ -59,7 +63,10 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
     context "when vjas#departure_time exceeds gap" do
       it "should add errors on departure_time" do
         vjas1.departure_time = vjas2.departure_time - 5.hour
-        expect(vjas2.increasing_times_validate(vjas1)).to be_falsey
+        expect(
+          Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
+            .increasing_times_validate(vjas2, vjas1)
+        ).to be_falsey
         expect(vjas2.errors).not_to be_empty
         expect(vjas2.errors[:departure_time]).not_to be_blank
       end
@@ -67,7 +74,10 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
 
     context "when vjas does'nt exceed gap" do
       it "should not add errors" do
-        expect(vjas2.increasing_times_validate(vjas1)).to be_truthy
+        expect(
+          Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
+            .increasing_times_validate(vjas2, vjas1)
+        ).to be_truthy
         expect(vjas2.errors).to be_empty
       end
     end
