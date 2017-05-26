@@ -88,9 +88,18 @@ const modal = (state = {}, action) => {
       newModalProps.timetables = timetablesModal
       return _.assign({}, state, {modalProps: newModalProps})
     case 'CREATE_VEHICLEJOURNEY_MODAL':
+      let selectedJP = {}
+      if (window.jpOrigin){
+        selectedJP = {
+          id: window.jpOrigin.id,
+          name: window.jpOrigin.name,
+          published_name: window.jpOrigin.published_name,
+          objectid: window.jpOrigin.objectid
+        }
+      }
       return {
         type: 'create',
-        modalProps: {},
+        modalProps: window.jpOrigin ? {selectedJPModal: selectedJP} : {},
         confirmModal: {}
       }
     case 'SELECT_JP_CREATE_MODAL':
