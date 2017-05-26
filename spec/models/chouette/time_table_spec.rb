@@ -51,6 +51,15 @@ describe Chouette::TimeTable, :type => :model do
       }.to change {subject.periods.count}.by(-1)
     end
 
+    it 'should update caldendar association' do
+      subject.calendar = create(:calendar)
+      subject.save
+      state['calendar'] = nil
+
+      subject.state_update state
+      expect(subject.reload.calendar).to eq(nil)
+    end
+
     it 'should update color' do
       state['color'] = '#FFA070'
       subject.state_update state
