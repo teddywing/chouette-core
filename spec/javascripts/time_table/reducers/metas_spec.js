@@ -30,7 +30,7 @@ describe('metas reducer', () => {
         type: 'UPDATE_DAY_TYPES',
         dayTypes: arr
       })
-    ).toEqual(Object.assign({}, state, {day_types: arr, calendar: {name: 'Aucun'}}))
+    ).toEqual(Object.assign({}, state, {day_types: arr, calendar: null}))
   })
 
   it('should handle UPDATE_COMMENT', () => {

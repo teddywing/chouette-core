@@ -30,7 +30,7 @@ var initialState = {
     tags: [],
     initial_tags: [],
     color: '',
-    calendar: {}
+    calendar: null
   },
   pagination: {
     stateChanged: false,
