@@ -54,7 +54,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
       end
     end
 
-    context "when vjas does'nt exceed gap" do
+    context "when vjas doesn't exceed gap" do
       it "should not add errors" do
         expect(
           Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
