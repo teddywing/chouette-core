@@ -14,6 +14,20 @@ describe TimeDuration do
         t2 = Time.now + (4.hours + 1.minutes)
         expect(TimeDuration.exceeds_gap?(4.hours, t1, t2)).to be_truthy
       end
+
+      it "returns true when `earlier` is later than `later`" do
+        earlier = Time.new(2000, 1, 1, 11, 0, 0, 0)
+        later = Time.new(2000, 1, 1, 12, 0, 0, 0)
+
+        expect(TimeDuration.exceeds_gap?(4.hours, later, earlier)).to be true
+      end
+
+      it "returns false when `earlier` == `later`" do
+        earlier = Time.new(2000, 1, 1, 1, 0, 0, 0)
+        later = earlier
+
+        expect(TimeDuration.exceeds_gap?(4.hours, later, earlier)).to be false
+      end
     end
   end
 end
