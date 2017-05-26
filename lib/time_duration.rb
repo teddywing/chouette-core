@@ -9,6 +9,12 @@ module TimeDuration
   #     Time.now + 2.hours
   #   )
   def self.exceeds_gap?(duration, earlier, later)
-    duration < (later - earlier)
+    duration < self.duration_without_24_hour_cycles(later - earlier)
+  end
+
+  private
+
+  def self.duration_without_24_hour_cycles(duration)
+    duration % 24.hours
   end
 end
