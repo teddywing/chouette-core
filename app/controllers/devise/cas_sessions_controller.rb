@@ -16,7 +16,13 @@ class Devise::CasSessionsController < Devise::SessionsController
   end
 
   def service
-    redirect_to after_sign_in_path_for(warden.authenticate!(:scope => resource_name))
+    warden.authenticate!(:scope => resource_name)
+    if LoginPolicy.new(current_user).boiv?
+      redirect_to after_sign_in_path_for(current_user)
+    else
+      # TODO: Set flash here
+      redirect_to :new
+    end
   end
 
   def unregistered
