@@ -16,32 +16,17 @@ module Chouette
       # security against nil values
       return unless arrival_time && departure_time
 
-      if exceeds_gap?( arrival_time, departure_time)
-        errors.add(:arrival_time,I18n.t("activerecord.errors.models.vehicle_journey_at_stop.arrival_must_be_before_departure"))
+      if TimeDuration.exceeds_gap?(4.hours, arrival_time, departure_time)
+        errors.add(
+          :arrival_time,
+          I18n.t("activerecord.errors.models.vehicle_journey_at_stop.arrival_must_be_before_departure")
+        )
       end
     end
 
     after_initialize :set_virtual_attributes
     def set_virtual_attributes
       @_destroy = false
-    end
-
-    def increasing_times_validate( previous)
-      result = true
-      return result unless previous
-
-      if exceeds_gap?( previous.departure_time, departure_time)
-        result = false
-        errors.add( :departure_time, 'departure time gap overflow')
-      end
-      if exceeds_gap?( previous.arrival_time, arrival_time)
-        result = false
-        errors.add( :arrival_time, 'arrival time gap overflow')
-      end
-      result
-    end
-    def exceeds_gap?(first, second)
-      (4 * 3600) < ((second - first) % (3600 * 24))
     end
 
   end

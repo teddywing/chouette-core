@@ -36,6 +36,7 @@ const vehicleJourney= (state = {}, action, keep) => {
         company: action.selectedCompany,
         journey_pattern: action.selectedJourneyPattern,
         published_journey_name: action.data.published_journey_name.value,
+        published_journey_identifier: action.data.published_journey_identifier.value,
         objectid: '',
         footnotes: [],
         time_tables: [],

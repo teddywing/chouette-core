@@ -1,26 +1,18 @@
 RSpec.describe TimeTablePolicy, type: :policy do
 
   permissions :duplicate? do
-    context "user of a different organisation" do
-      it "is denied" do
-        expect_it.not_to permit(user_context, referential)
-      end
-      it "even if she has the time_tables.create permission" do
-        add_permissions 'time_tables.create', for_user: user
-        expect_it.not_to permit(user_context, referential)
-      end
-    end
-    context "user of the same organisation" do
-      before do
-        user.update_attribute :organisation, referential.organisation
-      end
-      it "is denied" do
-        expect_it.not_to permit(user_context, referential)
-      end
-      it "unless she has the time_tables.create permission" do
-        add_permissions 'time_tables.create', for_user: user
-        expect_it.to permit(user_context, referential)
-      end
+    it_behaves_like 'permitted policy and same organisation', 'time_tables.create', archived: true
+  end
+
+  %w{destroy edit}.each do | permission |
+    permissions "#{permission}?".to_sym do
+      it_behaves_like 'permitted policy and same organisation', "time_tables.#{permission}", archived: true
     end
   end
+
+  permissions :create? do
+    it_behaves_like 'permitted policy', 'time_tables.create', archived: true
+  end
+
+
 end

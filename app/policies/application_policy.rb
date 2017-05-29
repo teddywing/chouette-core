@@ -7,7 +7,10 @@ class ApplicationPolicy
     @record = record
   end
 
-  attr_accessor :referential
+  def archived?
+    !!referential.try(:archived_at)
+  end
+
   def referential
     @referential ||= record_referential
   end
@@ -46,6 +49,10 @@ class ApplicationPolicy
 
   def scope
     Pundit.policy_scope!(user, record.class)
+  end
+
+  def boiv_read_offer?
+    organisation_match? && user.has_permission?('boiv:read-offer')
   end
 
   def organisation_match?

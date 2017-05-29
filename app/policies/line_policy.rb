@@ -1,4 +1,9 @@
-class LinePolicy < ApplicationPolicy
+require_relative 'chain'
+class LinePolicy < BoivPolicy
+  extend Policies::Chain
+
+  chain_policies :archived?, :!, policies: %i{create_footnote? destroy_footnote? edit_footnote?}
+
   class Scope < Scope
     def resolve
       scope
@@ -22,7 +27,7 @@ class LinePolicy < ApplicationPolicy
   end
 
   def destroy_footnote?
-    user.has_permission?('routes.destroy')
+    user.has_permission?('footnotes.destroy')
   end
 
   def update_footnote?  ; edit_footnote? end

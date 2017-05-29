@@ -88,7 +88,8 @@ describe('vehicleJourneys reducer', () => {
       dummy: true
     }]
     let fakeData = {
-      published_journey_name: {value: 'test'}
+      published_journey_name: {value: 'test'},
+      published_journey_identifier: {value : ''}
     }
     let fakeSelectedJourneyPattern = {id: "1"}
     let fakeSelectedCompany = {name: "ALBATRANS"}
@@ -104,6 +105,7 @@ describe('vehicleJourneys reducer', () => {
       journey_pattern: fakeSelectedJourneyPattern,
       company: fakeSelectedCompany,
       published_journey_name: 'test',
+      published_journey_identifier: '',
       objectid: '',
       footnotes: [],
       time_tables: [],

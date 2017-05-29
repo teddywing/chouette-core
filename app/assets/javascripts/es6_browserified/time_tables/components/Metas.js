@@ -87,7 +87,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
           <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4">Modèle de calendrier associé</label>
             <div className="col-sm-8">
-              <span>{metas.calendar.name}</span>
+              <span>{metas.calendar ? metas.calendar.name : 'Aucun'}</span>
             </div>
           </div>
 

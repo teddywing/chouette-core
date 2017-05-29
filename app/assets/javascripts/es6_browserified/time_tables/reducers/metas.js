@@ -10,15 +10,15 @@ const metas = (state = {}, action) => {
         tags: action.json.tags,
         initial_tags: action.json.tags,
         color: action.json.color,
-        calendar: action.json.calendar ? action.json.calendar : {name : 'Aucun'}
+        calendar: action.json.calendar ? action.json.calendar : null
       })
     case 'INCLUDE_DATE_IN_PERIOD':
     case 'EXCLUDE_DATE_FROM_PERIOD':
     case 'DELETE_PERIOD':
     case 'VALIDATE_PERIOD_FORM':
-      return _.assign({}, state, {calendar: {name: 'Aucun'}})
+      return _.assign({}, state, {calendar: null})
     case 'UPDATE_DAY_TYPES':
-      return _.assign({}, state, {day_types: action.dayTypes, calendar : {name: 'Aucun'}})
+      return _.assign({}, state, {day_types: action.dayTypes, calendar : null})
     case 'UPDATE_COMMENT':
       return _.assign({}, state, {comment: action.comment})
     case 'UPDATE_COLOR':

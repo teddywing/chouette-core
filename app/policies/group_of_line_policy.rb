@@ -1,4 +1,4 @@
-class GroupOfLinePolicy < ApplicationPolicy
+class GroupOfLinePolicy < BoivPolicy
   class Scope < Scope
     def resolve
       scope

@@ -84,17 +84,6 @@ class TimetablesEditVehicleJourney extends Component {
                                       isFilter={false}
                                     />
                                   </div>
-                                  <div>
-                                    <a
-                                      href='#'
-                                      title='Ajouter'
-                                      className='fa fa-plus'
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        this.props.onAddSelectedTimetable()
-                                      }}
-                                    ></a>
-                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -140,7 +129,6 @@ TimetablesEditVehicleJourney.propTypes = {
   onTimetablesEditVehicleJourney: PropTypes.func.isRequired,
   onDeleteCalendarModal: PropTypes.func.isRequired,
   onSelect2Timetable: PropTypes.func.isRequired,
-  onAddSelectedTimetable: PropTypes.func.isRequired,
   filters: PropTypes.object.isRequired
 }
 

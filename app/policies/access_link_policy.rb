@@ -1,4 +1,4 @@
-class AccessLinkPolicy < ApplicationPolicy
+class AccessLinkPolicy < BoivPolicy
   class Scope < Scope
     def resolve
       scope

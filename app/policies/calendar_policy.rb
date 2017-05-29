@@ -1,4 +1,4 @@
-class CalendarPolicy < ApplicationPolicy
+class CalendarPolicy < BoivPolicy
   class Scope < Scope
     def resolve
       scope
