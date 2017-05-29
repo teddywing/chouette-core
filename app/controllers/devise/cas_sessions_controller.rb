@@ -20,8 +20,7 @@ class Devise::CasSessionsController < Devise::SessionsController
     if LoginPolicy.new(current_user).boiv?
       redirect_to after_sign_in_path_for(current_user)
     else
-      # TODO: Set flash here
-      redirect_to cas_login_url
+      redirect_to cas_login_url, flash: {alert: t('devise.sessions.new.unauthorized')}
     end
   end
 
