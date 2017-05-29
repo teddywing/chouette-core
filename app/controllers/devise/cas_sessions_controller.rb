@@ -21,7 +21,7 @@ class Devise::CasSessionsController < Devise::SessionsController
       redirect_to after_sign_in_path_for(current_user)
     else
       # TODO: Set flash here
-      redirect_to :new
+      redirect_to cas_login_url
     end
   end
 
