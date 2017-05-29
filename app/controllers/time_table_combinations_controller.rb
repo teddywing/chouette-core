@@ -5,6 +5,7 @@ class TimeTableCombinationsController < ChouetteController
 
   def new
     @combination = TimeTableCombination.new(source_id: parent.id)
+    @combination.combined_type = 'time_table'
   end
 
   def create

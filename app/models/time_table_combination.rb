@@ -31,7 +31,6 @@ class TimeTableCombination
     attributes.each do |name, value|
       send("#{name}=", value)
     end
-    self.combined_type = "time_table"
   end
 
   def persisted?
@@ -40,7 +39,7 @@ class TimeTableCombination
 
   def target
     id     = self.send("#{combined_type}_id")
-    klass  = combined_type == 'calendar' ? Calendar : Chouette::TimeTable
+    klass  = combined_type == "calendar" ? Calendar : Chouette::TimeTable
     target = klass.find id
     target = target.convert_to_time_table unless target.is_a? Chouette::TimeTable
     target
