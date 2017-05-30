@@ -43,7 +43,10 @@ class User < ActiveRecord::Base
     self.name         = extra[:full_name]
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
+      # TODO: Discuss the following behavior in the light of how the portal's permissions will evolve
+      # boiv:edit-offer does not imply boiv:read-offer, which needs to be provided specifically for any connection rights
     self.permissions  = extra[:permissions].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
+    self.permissions  += extra[:permissions].grep( %r{^\Aboiv:read-offer\z} )
   end
 
   def self.portail_api_request
@@ -71,10 +74,11 @@ class User < ActiveRecord::Base
       user.locked_at    = el['locked_at']
       user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
       user.synced_at    = Time.now
+      # TODO: Discuss the following behavior in the light of how the portal's permissions will evolve
+      # boiv:edit-offer does not imply boiv:read-offer, which needs to be provided specifically for any connection rights
       user.permissions  = el['permissions'].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
       user.permissions  += el['permissions'].grep( %r{^\Aboiv:read-offer\z} )
       user.save
-      puts "✓ user #{user.username} has been updated" unless Rails.env.test?
     end
   end
 
