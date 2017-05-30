@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../../actions')
+var _ = require('lodash')
 
 class NotesEditVehicleJourney extends Component {
   constructor(props) {
@@ -27,14 +28,26 @@ class NotesEditVehicleJourney extends Component {
         type='button'
         className='btn btn-outline-danger btn-xs'
         onClick={() => this.props.onToggleFootnoteModal(lf, false)}
-      ><span className="fa fa-trash"></span></button>
+      ><span className="fa fa-trash"></span> Retirer</button>
     }else{
       return <button
         type='button'
         className='btn btn-outline-primary btn-xs'
         onClick={() => this.props.onToggleFootnoteModal(lf, true)}
-      ><span className="fa fa-plus"></span></button>
+      ><span className="fa fa-plus"></span> Ajouter</button>
     }
+  }
+
+  filterFN() {
+    return _.filter(window.line_footnotes, (lf, i) => {
+      let bool = true
+      _.map(this.props.modal.modalProps.vehicleJourney.footnotes, (f, j) => {
+        if(lf.id === f.id) {
+          bool = false
+        }
+      })
+      return bool
+    })
   }
 
   render() {
@@ -65,7 +78,24 @@ class NotesEditVehicleJourney extends Component {
                   {(this.props.modal.type == 'notes_edit') && (
                     <form>
                       <div className='modal-body'>
-                        {window.line_footnotes.map((lf, i) =>
+                        <h3>Notes associées</h3>
+                        {(this.props.modal.modalProps.vehicleJourney.footnotes).map((lf, i) =>
+                          <div
+                            key={i}
+                            className='panel panel-default'
+                          >
+                            <div className='panel-heading'>
+                              <h4 className='panel-title clearfix'>
+                                <div className='pull-left' style={{paddingTop: '3px'}}>{lf.code}</div>
+                                <div className='pull-right'>{this.renderFootnoteButton(lf, this.props.modal.modalProps.vehicleJourney.footnotes)}</div>
+                              </h4>
+                            </div>
+                            <div className='panel-body'><p>{lf.label}</p></div>
+                          </div>
+                        )}
+
+                        <h3 className='mt-lg'>Sélectionnez les notes à associer à cette course :</h3>
+                        {this.filterFN().map((lf, i) =>
                           <div
                             key={i}
                             className='panel panel-default'
