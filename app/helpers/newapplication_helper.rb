@@ -160,7 +160,7 @@ module NewapplicationHelper
       end.join.html_safe
     end
 
-    # content_tag :div, trigger + menu, class: 'btn-group'
+    content_tag :div, trigger + menu, class: 'btn-group'
 
   end
 
