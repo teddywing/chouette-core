@@ -4,8 +4,6 @@ module Chouette
       @at_stops = at_stops
     end
 
-    # def update
-
     def calculate!
       start_date = @at_stops.first.arrival_time.to_date
       offset = 0
@@ -54,6 +52,17 @@ module Chouette
 
         previous_at_stop = at_stop
       end
+    end
+
+    def save
+      @at_stops.each do |at_stop|
+        at_stop.save
+      end
+    end
+
+    def update
+      calculate!
+      save
     end
   end
 end
