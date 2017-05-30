@@ -118,7 +118,7 @@ describe User, :type => :model do
     context 'permissions' do
       it 'should give edit permissions to user if user has "edit offer" permission in portail' do
         User.portail_sync
-        expect(User.find_by(username: 'vlatka.pavisic').permissions).not_to be_empty
+        expect(User.find_by(username: 'vlatka.pavisic').permissions).to include_all(User.edit_offer_permissions)
         expect(User.find_by(username: 'pierre.vabre').permissions).to be_empty
       end
     end
