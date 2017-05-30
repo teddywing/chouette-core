@@ -14,8 +14,8 @@ describe Chouette::VehicleJourneyAtStop do
       ].each do |arrival_time, departure_time|
         at_stops << build(
           :vehicle_journey_at_stop,
-          arrival_time: "2000-01-01 #{arrival_time} UTC",
-          departure_time: "2000-01-01 #{departure_time} UTC",
+          arrival_time: arrival_time,
+          departure_time: departure_time,
 
           # TODO: make this the default
           arrival_day_offset: 0,
