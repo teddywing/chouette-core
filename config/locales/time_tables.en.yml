@@ -87,6 +87,7 @@ en:
         calendars: "Calendar view"
         calendar_details: "Calendar details"
         calendar: "Calendar"
+        calendar_id: "Calendar"
         dates: "Peculiar dates"
         date: "On"
         excluded_dates: "Excluded dates"
