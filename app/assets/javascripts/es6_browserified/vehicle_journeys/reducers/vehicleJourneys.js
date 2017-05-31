@@ -42,7 +42,9 @@ const vehicleJourney= (state = {}, action, keep) => {
         time_tables: [],
         vehicle_journey_at_stops: pristineVjasList,
         selected: false,
-        deletable: false
+        deletable: false,
+        transport_mode: window.transportMode ? window.transportMode : 'undefined',
+        transport_submode: window.transportSubmode ? window.transportSubmode : 'undefined'
       }
     case 'DUPLICATE_VEHICLEJOURNEY':
     case 'SHIFT_VEHICLEJOURNEY':

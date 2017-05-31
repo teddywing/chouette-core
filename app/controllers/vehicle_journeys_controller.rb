@@ -64,6 +64,9 @@ class VehicleJourneysController < ChouetteController
       }
     end
 
+    @transport_mode = route.line['transport_mode']
+    @transport_submode = route.line['transport_submode']
+
     if params[:jp]
       @jp_origin  = Chouette::JourneyPattern.find_by(objectid: params[:jp])
       @jp_origin_stop_points = @jp_origin.stop_points
