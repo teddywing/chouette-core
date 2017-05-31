@@ -2,6 +2,7 @@ var _ = require('lodash')
 const pagination = (state = {}, action) => {
   switch (action.type) {
     case 'RECEIVE_JOURNEY_PATTERNS':
+    case 'RECEIVE_VEHICLE_JOURNEYS':
       return _.assign({}, state, {stateChanged: false})
     case 'GO_TO_PREVIOUS_PAGE':
       if (action.pagination.page > 1){

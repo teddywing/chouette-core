@@ -7,6 +7,32 @@ describe Chouette::TimeTable, :type => :model do
   it { is_expected.to validate_presence_of :comment }
   it { is_expected.to validate_uniqueness_of :objectid }
 
+  describe "actualize" do
+    let(:calendar) { create(:calendar) }
+    let(:int_day_types) { 508 }
+
+    before do
+      subject.int_day_types = int_day_types
+      subject.calendar = calendar
+      subject.save
+      subject.actualize
+    end
+
+    it 'should override dates' do
+      expect(subject.dates.map(&:date)).to match_array calendar.dates
+    end
+
+    it 'should override periods' do
+      [:period_start, :period_end].each do |key|
+        expect(subject.periods.map(&key)).to match_array calendar.convert_to_time_table.periods.map(&key)
+      end
+    end
+
+    it 'should not change int_day_types' do
+      expect(subject.int_day_types).to eq(int_day_types)
+    end
+  end
+
   describe "Update state" do
     def time_table_to_state time_table
       time_table.slice('id', 'comment').tap do |item|

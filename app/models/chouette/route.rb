@@ -63,8 +63,10 @@ class Chouette::Route < Chouette::TridentActiveRecord
   end
   accepts_nested_attributes_for :stop_points, :allow_destroy => :true
 
-  # validates_presence_of :name
+  validates_presence_of :name
+  validates_presence_of :published_name
   validates_presence_of :line
+
   # validates_presence_of :direction
   # validates_presence_of :wayback
 
