@@ -73,4 +73,17 @@ document.querySelector('input[name=commit]').addEventListener('click', (event)=>
     addInput('for_boarding',stopPoint.for_boarding, i)
     addInput('for_alighting',stopPoint.for_alighting, i)
   })
+  if(state.stopPoints.length < datas.length){
+    for(var j= state.stopPoints.length; j < datas.length; j++){
+      updateFormForDeletion(datas[j])
+    }
+  }
 })
+
+const updateFormForDeletion = (stop) =>{
+  if (stop.stoppoint_id !== undefined){
+    let now = Date.now()
+    addInput('id', stop.stoppoint_id, now)
+    addInput('_destroy', 'true', now)
+  }
+}
