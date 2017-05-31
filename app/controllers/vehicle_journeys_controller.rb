@@ -64,7 +64,10 @@ class VehicleJourneysController < ChouetteController
       }
     end
 
-    @jp_origin  = Chouette::JourneyPattern.find_by(objectid: params[:jp])
+    if params[:jp]
+      @jp_origin  = Chouette::JourneyPattern.find_by(objectid: params[:jp])
+      @jp_origin_stop_points = @jp_origin.stop_points
+    end
 
     index! do
       if collection.out_of_bounds?
