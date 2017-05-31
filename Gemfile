@@ -147,6 +147,7 @@ group :development do
   gem 'license_finder'
   gem 'bundler-audit'
   gem 'spring-commands-rspec'
+  gem 'dbshell-rails'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
