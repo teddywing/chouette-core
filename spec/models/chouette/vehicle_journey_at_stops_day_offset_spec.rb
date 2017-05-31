@@ -12,7 +12,7 @@ describe Chouette::VehicleJourneyAtStop do
         ['23:50', '00:05'],
         ['00:30', '00:35'],
       ].each do |arrival_time, departure_time|
-        at_stops << build(
+        at_stops << build_stubbed(
           :vehicle_journey_at_stop,
           arrival_time: arrival_time,
           departure_time: departure_time,
@@ -43,7 +43,7 @@ describe Chouette::VehicleJourneyAtStop do
         ['22:30', '22:35'],
         ['01:02', '01:14'],
       ].each do |arrival_time, departure_time|
-        at_stops << build(
+        at_stops << build_stubbed(
           :vehicle_journey_at_stop,
           arrival_time: arrival_time,
           departure_time: departure_time,
@@ -73,7 +73,7 @@ describe Chouette::VehicleJourneyAtStop do
         ['04:30', '04:35'],
         ['00:00', '00:04'],
       ].each do |arrival_time, departure_time|
-        at_stops << build(
+        at_stops << build_stubbed(
           :vehicle_journey_at_stop,
           arrival_time: arrival_time,
           departure_time: departure_time,
