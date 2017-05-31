@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-# TODO: Ensure that the fields have a default value of 0
-
 describe Chouette::VehicleJourneyAtStop do
   describe "#calculate" do
     it "increments day offset when departure & arrival are on different sides
@@ -15,11 +13,7 @@ describe Chouette::VehicleJourneyAtStop do
         at_stops << build_stubbed(
           :vehicle_journey_at_stop,
           arrival_time: arrival_time,
-          departure_time: departure_time,
-
-          # TODO: make this the default
-          arrival_day_offset: 0,
-          departure_day_offset: 0
+          departure_time: departure_time
         )
       end
 
@@ -46,11 +40,7 @@ describe Chouette::VehicleJourneyAtStop do
         at_stops << build_stubbed(
           :vehicle_journey_at_stop,
           arrival_time: arrival_time,
-          departure_time: departure_time,
-
-          # TODO: make this the default
-          arrival_day_offset: 0,
-          departure_day_offset: 0
+          departure_time: departure_time
         )
       end
 
@@ -76,11 +66,7 @@ describe Chouette::VehicleJourneyAtStop do
         at_stops << build_stubbed(
           :vehicle_journey_at_stop,
           arrival_time: arrival_time,
-          departure_time: departure_time,
-
-          # TODO: make this the default
-          arrival_day_offset: 0,
-          departure_day_offset: 0
+          departure_time: departure_time
         )
       end
 
