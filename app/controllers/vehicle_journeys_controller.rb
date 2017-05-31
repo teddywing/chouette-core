@@ -115,7 +115,7 @@ class VehicleJourneysController < ChouetteController
 
   def maybe_filter_out_journeys_with_time_tables(scope)
     if params[:q] &&
-        params[:q][:vehicle_journey_without_time_table] == 'true'
+        params[:q][:vehicle_journey_without_time_table] == 'false'
       return scope
         .without_time_tables
     end
