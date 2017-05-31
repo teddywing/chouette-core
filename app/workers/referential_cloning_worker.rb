@@ -1,6 +1,5 @@
 class ReferentialCloningWorker
   include Sidekiq::Worker
-  sidekiq_options queue: 'wip'
 
   # Replace default apartment created schema with clone schema from source referential
   def perform(id)
