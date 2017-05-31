@@ -50,9 +50,12 @@ module Chouette
 
     def vehicle_journey_at_stops_matrix
       at_stops = self.vehicle_journey_at_stops.to_a.dup
+      active_stop_point_ids = journey_pattern.stop_points.map(&:id)
+
       (route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)).each do |id|
-        # Set stop_point id for fake vjas with no departure time yep.
-        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new(stop_point_id: id))
+        vjas = Chouette::VehicleJourneyAtStop.new(stop_point_id: id)
+        vjas.dummy = active_stop_point_ids.include?(id) ? false : true
+        at_stops.insert(route.stop_points.map(&:id).index(id), vjas)
       end
       at_stops
     end

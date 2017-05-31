@@ -31,18 +31,19 @@ end
 
 child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops|
   node do |vehicle_stop|
-    node(:dummy) { !vehicle_stop.id? }
+    node(:dummy) { vehicle_stop.dummy }
+
     node(:stop_area_object_id) do
-      vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.objectid : nil
+      vehicle_stop.stop_point.stop_area.objectid
     end
     node(:stop_point_objectid) do
-      vehicle_stop.stop_point ? vehicle_stop.stop_point.objectid : nil
+      vehicle_stop.stop_point.objectid
     end
     node(:stop_area_name) do
-      vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.name : nil
+      vehicle_stop.stop_point.stop_area.name
     end
     node(:stop_area_cityname) do
-      vehicle_stop.stop_point ? vehicle_stop.stop_point.stop_area.city_name : nil
+      vehicle_stop.stop_point.stop_area.city_name
     end
 
     [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
