@@ -66,17 +66,24 @@ render(
 
 document.querySelector('input[name=commit]').addEventListener('click', (event)=>{
   let state = store.getState()
-  state.stopPoints.map((stopPoint, i) => {
-    addInput('id', (datas[i]) ? datas[i].stoppoint_id : '', i)
-    addInput('stop_area_id',stopPoint.stoparea_id, i)
-    addInput('position',i, i)
-    addInput('for_boarding',stopPoint.for_boarding, i)
-    addInput('for_alighting',stopPoint.for_alighting, i)
-  })
-  if(state.stopPoints.length < datas.length){
-    for(var j= state.stopPoints.length; j < datas.length; j++){
-      updateFormForDeletion(datas[j])
+
+  if(state.stopPoints.length >= 2) {
+    state.stopPoints.map((stopPoint, i) => {
+      addInput('id', (datas[i]) ? datas[i].stoppoint_id : '', i)
+      addInput('stop_area_id',stopPoint.stoparea_id, i)
+      addInput('position',i, i)
+      addInput('for_boarding',stopPoint.for_boarding, i)
+      addInput('for_alighting',stopPoint.for_alighting, i)
+    })
+    if(state.stopPoints.length < datas.length){
+      for(var j= state.stopPoints.length; j < datas.length; j++){
+        updateFormForDeletion(datas[j])
+      }
     }
+  } else {
+    event.preventDefault()
+    let msg = "L'itinéraire doit comporter au moins deux arrêts"
+    $('#stop_points').find('.subform').after("<div class='alert alert-danger'><span class='fa fa-lg fa-exclamation-circle'></span><span>" + msg + "</span></div>")
   }
 })
 
