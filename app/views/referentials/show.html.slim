@@ -80,4 +80,5 @@
 
     .modal-footer
       button.btn.btn-link type='button' data-dismiss='modal' Annuler
-      = f.button :submit, t('actions.clean_up') , class: 'btn btn-primary'
+      - unless policy(@referential).archived?
+        = buttonf.button :submit, t('actions.clean_up') , class: 'btn btn-primary'
