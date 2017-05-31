@@ -25,6 +25,11 @@ class ReferentialPolicy < BoivPolicy
     organisation_match? && create?
   end
 
+  def common_lines?
+    # TODO: Replace with correct BL ASA available, c.f. https://projects.af83.io/issues/2692
+    true
+  end
+
   def unarchive? ; archive? end
   def update? ; edit? end
   def new? ; create? end
