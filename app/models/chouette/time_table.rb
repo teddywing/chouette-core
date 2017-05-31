@@ -138,7 +138,10 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def actualize
     self.dates.clear
     self.periods.clear
-    self.merge! self.calendar.convert_to_time_table
+    from = self.calendar.convert_to_time_table
+    self.dates   = from.dates
+    self.periods = from.periods
+    self.save
   end
 
   def month_inspect(date)
