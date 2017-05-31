@@ -16,6 +16,7 @@
   | window.route_id = #{params[:route_id]};
   | window.stopPoints = #{(@stop_points_list.to_json).html_safe};
   | window.jpOrigin = #{(@jp_origin.to_json).html_safe};
+  | window.jpOriginStopPoints = #{(@jp_origin_stop_points.to_json).html_safe};
   | window.vehicleJourneysLength = #{@vehicle_journeys.total_entries()};
   | window.vehicleJourneysPerPage = #{@ppage};
   | window.line_footnotes = #{raw @footnotes};
