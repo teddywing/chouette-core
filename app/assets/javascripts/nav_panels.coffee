@@ -1,4 +1,4 @@
-$(document).on 'turbolinks:load', ->
+$ ->
   $('#menu_top [data-panel="toggle"]').on 'click', (e) ->
     e.preventDefault()
     $(this).siblings().removeClass 'active'

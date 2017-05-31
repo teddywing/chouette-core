@@ -14,7 +14,7 @@ class JourneyPattern extends Component{
     let vjURL = routeURL + '/vehicle_journeys?jp=' + jpOid
 
     return (
-      <a data-turbolinks="false" href={vjURL}>Horaires des courses</a>
+      <a href={vjURL}>Horaires des courses</a>
     )
   }
 

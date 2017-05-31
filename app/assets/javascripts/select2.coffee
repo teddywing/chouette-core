@@ -39,4 +39,5 @@ bind_select2_ajax = (el, cfg = {}) ->
 
 
 
-$(document).on 'turbolinks:load', select_2
+$ ->
+  select_2()
