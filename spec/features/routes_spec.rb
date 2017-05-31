@@ -37,6 +37,7 @@ describe "Routes", :type => :feature do
       click_link "Ajouter un itinéraire"
       fill_in "route_name", :with => "A to B"
       fill_in "route_published_name", :with => "Published A to B"
+      # select 'Aller', :from => "route_direction"
       check('route[wayback]')
       click_button("Valider")
       expect(page).to have_content("A to B")
