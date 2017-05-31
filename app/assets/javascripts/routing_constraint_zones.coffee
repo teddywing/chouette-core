@@ -22,7 +22,7 @@ fill_stop_points_options = ->
 errors_on_form = ->
   document.location.pathname.endsWith('routing_constraint_zones') && $('#new_routing_constraint_zone').length
 
-$(document).on 'turbolinks:load', ->
+$ ->
   if document.location.pathname.endsWith('routing_constraint_zones/new') || errors_on_form()
     fill_stop_points_options()
   $('#routing_constraint_zone_route_id').change(fill_stop_points_options)
