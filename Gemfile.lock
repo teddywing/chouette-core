@@ -492,6 +492,8 @@ GEM
     slop (3.6.0)
     spring (2.0.1)
       activesupport (>= 4.2)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (2.12.4)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -651,6 +653,7 @@ DEPENDENCIES
   sinatra
   slim-rails (~> 3.1)
   spring
+  spring-commands-rspec
   sqlite3
   squeel!
   teaspoon-jasmine
