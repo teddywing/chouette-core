@@ -32,11 +32,19 @@ module Chouette
       vehicle_journey_at_stops_are_in_increasing_time_order: true
     validates_presence_of :number
 
-    before_validation :set_default_values
+    before_validation :set_default_values,
+      :calculate_vehicle_journey_at_stop_day_offset
+
     def set_default_values
       if number.nil?
         self.number = 0
       end
+    end
+
+    def calculate_vehicle_journey_at_stop_day_offset
+      Chouette::VehicleJourneyAtStopsDayOffset.new(
+        vehicle_journey_at_stops
+      ).update
     end
 
     scope :without_any_time_table, -> { joins('LEFT JOIN "time_tables_vehicle_journeys" ON "time_tables_vehicle_journeys"."vehicle_journey_id" = "vehicle_journeys"."id" LEFT JOIN "time_tables" ON "time_tables"."id" = "time_tables_vehicle_journeys"."time_table_id"').where(:time_tables => { :id => nil}) }
