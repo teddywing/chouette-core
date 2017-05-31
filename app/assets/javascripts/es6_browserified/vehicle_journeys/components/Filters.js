@@ -126,7 +126,7 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
                       onChange={onToggleWithoutTimeTable}
                       checked={filters.query.withoutTimeTable}
                       ></input>
-                    <span className='switch-label' data-checkedvalue='Oui' data-uncheckedvalue='Non'></span>
+                    <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'></span>
                   </label>
                 </div>
               </div>
