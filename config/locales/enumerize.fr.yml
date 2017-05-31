@@ -193,7 +193,7 @@ fr:
         regionalRail: 'Train régional'
         interregionalRail: 'Train interrégional'
         longDistance: 'Longue distance'
-        international: 'International'
+        intermational: Internationale
         sleeperRailService: 'Train à couchettes'
         nightRail: 'Train de nuit'
         carTransportRailService: 'Service ferroviaire de transport de voitures'

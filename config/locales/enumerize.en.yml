@@ -193,7 +193,7 @@ en:
         regionalRail: 'Regional rail'
         interregionalRail: 'Interregional rail'
         longDistance: 'Long distance'
-        international: 'International'
+        intermational: 'International'
         sleeperRailService: 'Sleeper rail service'
         nightRail: 'Night rail'
         carTransportRailService: 'Car transport rail service'
