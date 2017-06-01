@@ -145,7 +145,7 @@ describe Chouette::TimeTable, :type => :model do
     end
 
     it 'should create new include date' do
-      day  = state['current_month'].first
+      day  = state['current_month'].find{|d| !d['excluded_date'] && !d['include_date'] }
       date = Date.parse(day['date'])
       day['include_date'] = true
       expect(subject.included_days).not_to include(date)
@@ -157,7 +157,7 @@ describe Chouette::TimeTable, :type => :model do
     end
 
     it 'should create new exclude date' do
-      day  = state['current_month'].first
+      day  = state['current_month'].find{|d| !d['excluded_date'] && !d['include_date']}
       date = Date.parse(day['date'])
       day['excluded_date'] = true
       expect(subject.excluded_days).not_to include(date)
