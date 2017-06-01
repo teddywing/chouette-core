@@ -107,7 +107,9 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
                       onChange={onToggleWithoutSchedule}
                       checked={filters.query.withoutSchedule}
                       ></input>
-                    <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'></span>
+                    <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'>
+                      {filters.query.withoutSchedule ? 'Oui' : 'Non'}
+                    </span>
                   </label>
                 </div>
               </div>
@@ -126,7 +128,9 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
                       onChange={onToggleWithoutTimeTable}
                       checked={filters.query.withoutTimeTable}
                       ></input>
-                    <span className='switch-label' data-checkedvalue='Oui' data-uncheckedvalue='Non'></span>
+                    <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'>
+                      {filters.query.withoutTimeTable ? 'Oui' : 'Non'}
+                    </span>
                   </label>
                 </div>
               </div>
