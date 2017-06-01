@@ -190,8 +190,8 @@ describe Chouette::VehicleJourney, :type => :model do
       end
     end
 
-    describe '.vehicle_journey_at_stops_matrix' do
-      it 'should fill missing VehicleJourneyAtStop with dummy' do
+    describe '#vehicle_journey_at_stops_matrix' do
+      it 'should fill missing vjas with dummy vjas' do
         vehicle_journey.journey_pattern.stop_points.delete_all
         vehicle_journey.vehicle_journey_at_stops.delete_all
 
@@ -201,14 +201,28 @@ describe Chouette::VehicleJourney, :type => :model do
         expect(at_stops.count).to eq route.stop_points.count
       end
 
-      it 'should fill VehicleJourneyAtStop with new vjas when vj has been save without departure time' do
+      it 'should set dummy to false for active stop_points vjas' do
+        # Destroy vjas but stop_points is still active
+        # it should fill a new vjas without dummy flag
+        vehicle_journey.vehicle_journey_at_stops[3].destroy
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+        expect(at_stops[3].dummy).to be false
+      end
+
+      it 'should set dummy to true for deactivated stop_points vjas' do
+        vehicle_journey.journey_pattern.stop_points.delete(vehicle_journey.journey_pattern.stop_points.first)
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+        expect(at_stops.first.dummy).to be true
+      end
+
+      it 'should fill vjas for active stop_points without vjas yet' do
         vehicle_journey.vehicle_journey_at_stops.destroy_all
 
         at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
         expect(at_stops.map(&:stop_point_id)).to eq vehicle_journey.journey_pattern.stop_points.map(&:id)
       end
 
-      it 'should keep index order of VehicleJourneyAtStop' do
+      it 'should keep index order of vjas' do
         vehicle_journey.vehicle_journey_at_stops[3].destroy
         at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
 

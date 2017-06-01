@@ -62,7 +62,7 @@ module Chouette
 
       (route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)).each do |id|
         vjas = Chouette::VehicleJourneyAtStop.new(stop_point_id: id)
-        vjas.dummy = active_stop_point_ids.include?(id) ? false : true
+        vjas.dummy = !active_stop_point_ids.include?(id)
         at_stops.insert(route.stop_points.map(&:id).index(id), vjas)
       end
       at_stops
