@@ -180,6 +180,7 @@ GEM
     daemons (1.2.4)
     database_cleaner (1.5.3)
     dbf (3.1.0)
+    dbshell-rails (0.0.2)
     debug_inspector (0.0.2)
     deep_cloneable (2.0.2)
       activerecord (>= 3.1.0, < 5.0.0)
@@ -492,6 +493,8 @@ GEM
     slop (3.6.0)
     spring (2.0.1)
       activesupport (>= 4.2)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (2.12.4)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -577,6 +580,7 @@ DEPENDENCIES
   cucumber-rails
   daemons
   database_cleaner
+  dbshell-rails
   deep_cloneable (~> 2.0.0)
   devise (~> 3.5.4)
   devise-async
@@ -651,6 +655,7 @@ DEPENDENCIES
   sinatra
   slim-rails (~> 3.1)
   spring
+  spring-commands-rspec
   sqlite3
   squeel!
   teaspoon-jasmine

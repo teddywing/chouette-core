@@ -117,7 +117,7 @@ const Filters = ({filters, pagination, onFilter, onResetFilters, onUpdateStartTi
           <div className="ffg-row">
             {/* Switch avec/sans calendrier */}
             <div className='form-group has_switch'>
-              <label className='control-label pull-left'>Afficher les courses sans calendrier</label>
+              <label className='control-label pull-left'>Afficher les courses avec calendrier</label>
               <div className='form-group pull-left' style={{padding: 0}}>
                 <div className='checkbox'>
                   <label>

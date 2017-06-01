@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170502130327) do
+ActiveRecord::Schema.define(version: 20170531154114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -783,8 +783,8 @@ ActiveRecord::Schema.define(version: 20170502130327) do
     t.time    "departure_time"
     t.string  "for_boarding"
     t.string  "for_alighting"
-    t.integer "departure_day_offset"
-    t.integer "arrival_day_offset"
+    t.integer "departure_day_offset",                     default: 0
+    t.integer "arrival_day_offset",                       default: 0
   end
 
   add_index "vehicle_journey_at_stops", ["stop_point_id"], name: "index_vehicle_journey_at_stops_on_stop_pointid", using: :btree
