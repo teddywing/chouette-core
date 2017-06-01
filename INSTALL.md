@@ -19,7 +19,7 @@ Go into your local repro and install the gems
 
         bundle
 
-### Caveats
+### Installation Caveats
 
 `libv8` might cause you troubles, depending on your local configuration. If you have `libv8` installed (probably because of `node.js`) you might need to tell bundler/Rubygems to use the system version.
 
@@ -40,6 +40,18 @@ You will get the correct value of `<version>` from bundler's error message.
 
 As documented [here](https://github.com/dryade/georuby-ext/issues/2) we need some more libs before we can start the `rake` setup tasks. On mac/OS the easiest way is just to install `postgis` now with `homebrew` as this will
 install all needed libraries.
+
+Also if on Linux you might discover a problem as late as when launching `rake`.
+In case of a stacktrace similar to this one
+
+```
+$ bundle exec rake --trace -T
+rake aborted!
+LoadError: library names list must not be empty
+```
+
+you need to install `libproj4-dev` on your system.
+
 
 ### Postgres
 
