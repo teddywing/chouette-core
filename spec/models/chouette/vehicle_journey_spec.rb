@@ -1,7 +1,28 @@
 require 'spec_helper'
-describe Chouette::VehicleJourney, :type => :model do
-  describe "state_update" do
 
+describe Chouette::VehicleJourney, :type => :model do
+  describe "vjas_departure_time_must_be_before_next_stop_arrival_time" do
+    let(:vehicle_journey) { create :vehicle_journey }
+    let(:vjas) { vehicle_journey.vehicle_journey_at_stops }
+
+    it 'should add errors a stop departure_time is greater then next stop arrival time' do
+      vjas[0][:departure_time] = vjas[1][:arrival_time] + 1.hour
+      vehicle_journey.validate
+
+      expect(vjas[0].errors[:departure_time]).not_to be_blank
+      expect(vehicle_journey).not_to be_valid
+    end
+
+    it 'should not add errors when departure_time is less then next stop arrival time' do
+      vehicle_journey.validate
+      vjas.each do |stop|
+        expect(stop.errors).to be_empty
+      end
+      expect(vehicle_journey).to be_valid
+    end
+  end
+
+  describe "state_update" do
     def vehicle_journey_at_stop_to_state vjas
       at_stop = {'stop_area_object_id' => vjas.stop_point.stop_area.objectid }
       [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
@@ -136,16 +157,12 @@ describe Chouette::VehicleJourney, :type => :model do
 
     it 'should return errors when validation failed' do
       state['published_journey_name'] = 'edited_name'
-      # Exceeds_gap departure time validation failed
-      prev = state['vehicle_journey_at_stops'].last(2).first
-      last = state['vehicle_journey_at_stops'].last
-      prev['departure_time']['hour'] = '01'
-      last['departure_time']['hour'] = '23'
+      state['vehicle_journey_at_stops'].last['departure_time']['hour'] = '23'
 
       expect {
         Chouette::VehicleJourney.state_update(route, collection)
       }.not_to change(vehicle_journey, :published_journey_name)
-      expect(state['errors'][:vehicle_journey_at_stops].size).to eq 1
+      expect(state['vehicle_journey_at_stops'].last['errors']).not_to be_empty
     end
 
     it 'should delete vj with deletable set to true from state' do

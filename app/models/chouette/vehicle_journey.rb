@@ -28,12 +28,23 @@ module Chouette
     has_and_belongs_to_many :time_tables, :class_name => 'Chouette::TimeTable', :foreign_key => "vehicle_journey_id", :association_foreign_key => "time_table_id"
     has_many :stop_points, -> { order("stop_points.position") }, :through => :vehicle_journey_at_stops
 
-    validates :vehicle_journey_at_stops,
+    validates :vehicle_journey_at_stops, :vjas_departure_time_must_be_before_next_stop_arrival_time,
       vehicle_journey_at_stops_are_in_increasing_time_order: true
     validates_presence_of :number
 
     before_validation :set_default_values,
       :calculate_vehicle_journey_at_stop_day_offset
+
+    def vjas_departure_time_must_be_before_next_stop_arrival_time
+      vehicle_journey_at_stops.each_with_index do |current_stop, index|
+        next_stop = vehicle_journey_at_stops[index + 1]
+        next unless next_stop
+
+        if next_stop[:arrival_time] <= current_stop[:departure_time]
+          current_stop.errors.add(:departure_time, 'departure time must be before next stop arrival time')
+        end
+      end
+    end
 
     def set_default_values
       if number.nil?
