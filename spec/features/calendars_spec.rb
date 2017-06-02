@@ -19,11 +19,19 @@ describe 'Calendars', type: :feature do
 
     context 'filtering' do
       it 'supports filtering by short name' do
-        fill_in 'q[short_name_cont]', with: calendars.first.short_name
+        fill_in 'q[name_or_short_name_cont]', with: calendars.first.short_name
         click_button 'search_btn'
         expect(page).to have_content(calendars.first.short_name)
         expect(page).not_to have_content(calendars.last.short_name)
       end
+
+      it 'supports filtering by name' do
+        fill_in 'q[name_or_short_name_cont]', with: calendars.first.name
+        click_button 'search_btn'
+        expect(page).to have_content(calendars.first.name)
+        expect(page).not_to have_content(calendars.last.name)
+      end
+
 
       it 'supports filtering by shared' do
         shared_calendar = create :calendar, organisation_id: 1, shared: true
