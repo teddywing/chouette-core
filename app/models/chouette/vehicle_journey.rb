@@ -36,13 +36,14 @@ module Chouette
       :calculate_vehicle_journey_at_stop_day_offset
 
     def vjas_departure_time_must_be_before_next_stop_arrival_time
+      notice = 'departure time must be before next stop arrival time'
       vehicle_journey_at_stops.each_with_index do |current_stop, index|
         next_stop = vehicle_journey_at_stops[index + 1]
-        next unless next_stop
 
-        if next_stop[:arrival_time] <= current_stop[:departure_time]
-          current_stop.errors.add(:departure_time, 'departure time must be before next stop arrival time')
-        end
+        next unless next_stop && (next_stop[:arrival_time] < current_stop[:departure_time])
+
+        current_stop.errors.add(:departure_time, notice)
+        self.errors.add(:vehicle_journey_at_stops, notice)
       end
     end
 

@@ -6,11 +6,21 @@ describe Chouette::VehicleJourney, :type => :model do
     let(:vjas) { vehicle_journey.vehicle_journey_at_stops }
 
     it 'should add errors a stop departure_time is greater then next stop arrival time' do
-      vjas[0][:departure_time] = vjas[1][:arrival_time] + 1.hour
+      vjas[0][:departure_time] = vjas[1][:arrival_time] + 1.minute
       vehicle_journey.validate
 
       expect(vjas[0].errors[:departure_time]).not_to be_blank
+      expect(vehicle_journey.errors[:vehicle_journey_at_stops].count).to eq(1)
       expect(vehicle_journey).not_to be_valid
+    end
+
+    it 'should consider valid to have departure_time equal to next stop arrival time' do
+      vjas[0][:departure_time] = vjas[1][:arrival_time]
+      vehicle_journey.validate
+
+      expect(vjas[0].errors[:departure_time]).to be_blank
+      expect(vehicle_journey.errors[:vehicle_journey_at_stops]).to be_empty
+      expect(vehicle_journey).to be_valid
     end
 
     it 'should not add errors when departure_time is less then next stop arrival time' do
