@@ -1,9 +1,13 @@
 class CleanUp < ActiveRecord::Base
+  extend Enumerize
   include AASM
   belongs_to :referential
   has_one :clean_up_result
 
+  enumerize :date_type, in: %i(between before after)
+
   validates :begin_date, presence: true
+  validates :date_type, presence: true
   after_commit :perform_cleanup, :on => :create
 
   def perform_cleanup
