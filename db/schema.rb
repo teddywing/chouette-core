@@ -284,7 +284,7 @@ ActiveRecord::Schema.define(version: 20170605135126) do
     t.datetime "started_at"
     t.datetime "ended_at"
     t.string   "token_download"
-    t.string   "type",                  limit: 255
+    t.string   "type"
   end
 
   add_index "imports", ["referential_id"], name: "index_imports_on_referential_id", using: :btree
@@ -602,7 +602,7 @@ ActiveRecord::Schema.define(version: 20170605135126) do
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
     t.integer  "parent_id",                       limit: 8
-    t.string   "objectid",                                                              null: false
+    t.string   "objectid",                                                            null: false
     t.integer  "object_version",                  limit: 8
     t.string   "creator_id"
     t.string   "name"
@@ -611,8 +611,8 @@ ActiveRecord::Schema.define(version: 20170605135126) do
     t.string   "registration_number"
     t.string   "nearest_topic_name"
     t.integer  "fare_code"
-    t.decimal  "longitude",                                   precision: 19, scale: 16
-    t.decimal  "latitude",                                    precision: 19, scale: 16
+    t.decimal  "longitude",                                 precision: 19, scale: 16
+    t.decimal  "latitude",                                  precision: 19, scale: 16
     t.string   "long_lat_type"
     t.string   "country_code"
     t.string   "street_name"
@@ -630,7 +630,7 @@ ActiveRecord::Schema.define(version: 20170605135126) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "stif_type",                       limit: 255
+    t.string   "stif_type"
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree
@@ -697,18 +697,18 @@ ActiveRecord::Schema.define(version: 20170605135126) do
   add_index "time_table_periods", ["time_table_id"], name: "index_time_table_periods_on_time_table_id", using: :btree
 
   create_table "time_tables", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                                null: false
-    t.integer  "object_version",  limit: 8,   default: 1
+    t.string   "objectid",                              null: false
+    t.integer  "object_version",  limit: 8, default: 1
     t.string   "creator_id"
     t.string   "version"
     t.string   "comment"
-    t.integer  "int_day_types",               default: 0
+    t.integer  "int_day_types",             default: 0
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "calendar_id",     limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color",           limit: 255
+    t.string   "color"
     t.integer  "created_from_id"
   end
 
