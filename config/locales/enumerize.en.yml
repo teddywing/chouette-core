@@ -105,6 +105,11 @@ en:
         zdlp: ZDLp
         zdlr: ZDLr
         lda: LDA
+    clean_up:
+      date_type:
+        between: Between two dates
+        before: Before date
+        after: After date
     line:
       transport_mode:
         interchange: Interchange

@@ -104,6 +104,11 @@ fr:
         zdlp: ZDLp
         zdlr: ZDLr
         lda: LDA
+    clean_up:
+      date_type:
+        between: Entre deux dates
+        before: Avant une date
+        after: Après une date
     line:
       transport_mode:
         interchange: Interconnection
