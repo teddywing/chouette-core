@@ -1,11 +1,30 @@
-= title_tag Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr)
+/ PageHeader
+= pageheader 'map-marker',
+             t('routing_constraint_zones.index.title'),
+             '',
+             '',
+             ((policy(Chouette::RoutingConstraintZone).create? && @referential.organisation == current_organisation) ? link_to(t('routing_constraint_zones.actions.new'), new_referential_line_routing_constraint_zone_path(@referential, @line), class: 'btn btn-primary') : '')
 
-- if policy(Chouette::RoutingConstraintZone).create? && @referential.organisation == current_organisation
-  = link_to t('routing_constraint_zones.actions.new'), new_referential_line_routing_constraint_zone_path(@referential, @line)
+/ PageContent
+.page_content
+  .container-fluid
+    - if params[:q].present? or @routing_constraint_zones.any?
+      .row
+        .col-lg-12
+          = render 'filters'
 
-- if @routing_constraint_zones.any?
-  = table_builder @routing_constraint_zones,
-    { objectid: 'objectid', name: 'name', route: 'route_name', stop_points_count: 'stop_points_count' },
-    [:show, :edit, :delete],
-    [],
-    'table table-bordered'
+    - if @routing_constraint_zones.any?
+      .row
+        .col-lg-12
+          = table_builder @routing_constraint_zones,
+            { 'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) },
+              :name => 'name', :stop_points_count => 'stop_points_count',
+              :route => 'route_name' },
+            [:show, :edit, :delete],
+            [],
+            'table has-filter has-search'
+
+    - unless @routing_constraint_zones.any?
+      .row.mt-xs
+        .col-lg-12
+          = replacement_msg t('routing_constraint_zones.search_no_results')

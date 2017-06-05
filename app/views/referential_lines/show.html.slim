@@ -7,11 +7,8 @@
   / Below is secundary actions & optional contents
   .row
     .col-lg-12.text-right.mb-sm
-      / = link_to t('lines.actions.show_network'), [@referential, @line.network], class: 'btn btn-primary'
-      / = link_to t('lines.actions.show_company'), [@referential, @line.company], class: 'btn btn-primary'
-
       = link_to @line.human_attribute_name(:footnotes), referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary'
-      = link_to Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr), referential_line_routing_constraint_zones_path(@referential, @line), class: 'btn btn-primary disabled'
+      = link_to t('routing_constraint_zones.index.title'), referential_line_routing_constraint_zones_path(@referential, @line), class: 'btn btn-primary'
 
       - if policy(Chouette::Line).create? && @referential.organisation == current_organisation
         = link_to t('lines.actions.new'), new_referential_line_path(@referential), class: 'btn btn-primary'

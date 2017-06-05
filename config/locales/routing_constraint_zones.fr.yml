@@ -21,14 +21,17 @@ fr:
               stop_points_not_from_route: "Arrêt sur séquence d'arrêts n'appartient pas à la Route de cette Zone de contrainte."
               all_stop_points_selected: "Une zone de contrainte ne peut pas couvrir tous les arrêts d'une ligne."
   routing_constraint_zones:
+    search_no_results: "Aucune ITL ne correspond à votre recherche"
     actions:
-      new: Ajouter une zone de contrainte
+      new: Ajouter un ITL
       edit: Editer cette zone de contrainte
       destroy: Supprimer cette zone de contrainte
       destroy_confirm: Etes vous sûr de supprimer cette zone de contrainte ?
     new:
-      title: Ajouter une zone de contrainte
+      title: Ajouter un ITL
     edit:
       title: "Editer la zone de contrainte %{routing_constraint_zone}"
     show:
       title: "Zone de contrainte %{routing_constraint_zone}"
+    index:
+      title: "Interdictions de traffic local"
