@@ -478,8 +478,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       if !another_tt.periods.empty?
         # copy periods
         self.periods = another_tt.clone_periods
-        # set valid_days
-        self.int_day_types = another_tt.int_day_types
       end
       # merge dates
       self.dates ||= []
@@ -543,7 +541,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       self.dates.clear
       days.each {|d| self.dates << Chouette::TimeTableDate.new( :date =>d, :in_out => true)}
       self.periods.clear
-      self.int_day_types = 0
       self.dates.to_a.sort! { |a,b| a.date <=> b.date}
       self.save!
     end
@@ -558,8 +555,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       days = self.effective_days - days_to_exclude
       self.dates.clear
       self.periods.clear
-      self.int_day_types = 0
-
       days.each {|d| self.dates << Chouette::TimeTableDate.new( :date =>d, :in_out => true)}
 
       self.dates.to_a.sort! { |a,b| a.date <=> b.date}
