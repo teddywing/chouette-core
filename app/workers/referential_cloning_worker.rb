@@ -16,6 +16,8 @@ class ReferentialCloningWorker
   def clone_schema ref_cloning, source_schema, target_schema
     ref_cloning.run!
 
+  require 'pry'
+  binding.pry
     StoredProcedures.invoke_stored_procedure(:clone_schema, source_schema, target_schema, true) 
     execute_sql "DROP SCHEMA #{source_schema} CASCADE;"
     execute_sql "ALTER SCHEMA #{target_schema} RENAME TO #{source_schema};"
