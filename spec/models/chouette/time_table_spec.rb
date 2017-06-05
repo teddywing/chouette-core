@@ -999,7 +999,7 @@ end
         expect(subject.periods[2].period_start).to eq(Date.new(2014, 8, 1))
         expect(subject.periods[2].period_end).to eq(Date.new(2014, 8, 12))
       end
-      it "should have common day_types" do
+      it "should not modify day_types" do
         expect(subject.int_day_types).to eq(4|16|128)
       end
       it "should have dates for thursdays and fridays" do
@@ -1033,9 +1033,6 @@ end
       it "should have no period" do
         expect(subject.periods.size).to eq(0)
        end
-      it "should have no day_types" do
-        expect(subject.int_day_types).to eq(0)
-      end
       it "should have date all common days" do
         expect(subject.dates.size).to eq(3)
         expect(subject.dates[0].date).to eq(Date.new(2014,7,16))
@@ -1064,7 +1061,7 @@ end
       it "should have 0 period" do
         expect(subject.periods.size).to eq(0)
       end
-      it "should have no day_types" do
+      it "should not modify day_types" do
         expect(subject.int_day_types).to eq(0)
       end
       it "should have date reduced for period" do
@@ -1089,8 +1086,8 @@ end
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
       end
-      it "should have no day_types" do
-        expect(subject.int_day_types).to eq(0)
+      it "should not modify day_types" do
+        expect(subject.int_day_types).to eq(4|8|16)
       end
       it "should have 1 date " do
         expect(subject.dates.size).to eq(1)
@@ -1119,9 +1116,6 @@ end
       it "should have 0 periods" do
         expect(subject.periods.size).to eq(0)
        end
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
-      end
       it "should have only dates " do
         expect(subject.dates.size).to eq(11)
         expect(subject.dates[0].date).to eq(Date.new(2014,6,30))
@@ -1160,7 +1154,7 @@ end
       it "should have 0 period" do
         expect(subject.periods.size).to eq(0)
       end
-      it "should have no remained day_types" do
+      it "should not modify day_types" do
         expect(subject.int_day_types).to eq(0)
       end
       it "should have date reduced for period" do
@@ -1188,9 +1182,6 @@ end
       end
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
-      end
-      it "should have no remained day_types" do
-        expect(subject.int_day_types).to eq(0)
       end
       it "should have dates for period reduced" do
         expect(subject.dates.size).to eq(4)
@@ -1222,9 +1213,6 @@ end
       end
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
-      end
-      it "should have no remained day_types" do
-        subject.int_day_types == 0
       end
       it "should have 3 dates left" do
         expect(subject.dates.size).to eq(3)
@@ -1259,10 +1247,6 @@ end
         expect(subject.periods.size).to eq(0)
       end
 
-      it "should have no remained day_types" do
-        subject.int_day_types == 0
-      end
-
       it "should have 0 dates left" do
         expect(subject.dates.size).to eq(0)
       end
@@ -1285,10 +1269,6 @@ end
 
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
-      end
-
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
       end
 
       it "should have 6 dates " do
@@ -1329,8 +1309,8 @@ end
         end
      end
 
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
+      it "should not modify day_types" do
+        expect(subject.int_day_types).to eq(4|8|16)
       end
 
       it "should have 1 dates " do
@@ -1368,8 +1348,8 @@ end
         end
       end
 
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
+      it "should not modify day_types" do
+        expect(subject.int_day_types).to eq(4|8|16)
       end
 
       it "should have only 1 dates " do
@@ -1398,9 +1378,6 @@ end
       end
       it "should have same 0 result periods" do
         expect(subject.periods.size).to eq(0)
-      end
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
       end
       it "should have 0 dates " do
         expect(subject.dates.size).to eq(0)
