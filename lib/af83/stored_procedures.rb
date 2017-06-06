@@ -30,9 +30,9 @@ module StoredProcedures extend self
     when String
       "'#{param}'"
     when TrueClass
-      "TRUE"
+      "'t'"
     when FalseClass
-      "FALSE"
+      "'f'"
     else
       param
     end

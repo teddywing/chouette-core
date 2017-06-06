@@ -3,6 +3,11 @@ module Support
     # TODO: Check what of the follwowing can be done with ActiveRecord. E.g.
     # @connection.foreign_keys(table)...
 
+    def count_records(schema_name, table_name)
+      result = execute("SELECT COUNT(*) AS count FROM #{schema_name}.#{table_name}")
+      return result.to_a.first["count"].to_i
+    end
+
     def get_columns(schema_name, table_name)
       execute("SELECT * from information_schema.columns WHERE table_name = '#{table_name}' AND table_schema = '#{schema_name}'")
     end

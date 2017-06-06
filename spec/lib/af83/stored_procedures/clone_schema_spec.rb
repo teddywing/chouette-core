@@ -2,6 +2,7 @@ require 'spec_helper'
 
 include Support::PGCatalog
 
+
 RSpec.describe StoredProcedures do
   let( :source_schema ){ "source_schema" }
   let( :target_schema ){ "target_schema" }
@@ -72,10 +73,10 @@ RSpec.describe StoredProcedures do
     end
   end
 
-  context "after cloning" do
-    before do
-      described_class.invoke_stored_procedure(:clone_schema, source_schema, target_schema, false)
-    end
+  shared_examples_for "after cloning schema" do
+
+    let( :expected_target_parent_count ){ include_recs ? 1 : 0 }
+    let( :expected_target_child_count ){ include_recs ? 1 : 0 }
 
     it "target schema does exist" do
       expect( get_schema_oid(target_schema) ).not_to be_nil
@@ -142,26 +143,55 @@ RSpec.describe StoredProcedures do
         "constraint_def"  => "FOREIGN KEY (parents_id) REFERENCES target_schema.parents(id)"}])
     end
 
+    it "the data has been copied or not" do
+      source_pt_count = count_records(source_schema, parent_table)
+      source_ch_count = count_records(source_schema, child_table)
+      target_pt_count = count_records(target_schema, parent_table)
+      target_ch_count = count_records(target_schema, child_table)
+
+      expect( source_pt_count ).to eq( 1 )
+      expect( source_ch_count ).to eq( 1 )
+      expect( target_pt_count ).to eq( expected_target_parent_count )
+      expect( target_ch_count ).to eq( expected_target_child_count )
+    end
+  end
+
+  context "after cloning" do
+    before do
+      described_class.invoke_stored_procedure(:clone_schema, source_schema, target_schema, include_recs)
+    end
+
+    context "without including records" do
+      let( :include_recs ){ false }
+      it_behaves_like 'after cloning schema'
+    end
+
+    context "with including records" do
+      let( :include_recs ){ true }
+      it_behaves_like 'after cloning schema'
+    end
+
   end
 
 end
 
 def create_schema_with_tables
-  execute("CREATE SCHEMA IF NOT EXISTS #{source_schema}")
   execute <<-EOSQL
-  DROP SCHEMA IF EXISTS #{source_schema} CASCADE;
-  CREATE SCHEMA #{source_schema};
+    DROP SCHEMA IF EXISTS #{source_schema} CASCADE;
+    CREATE SCHEMA #{source_schema};
 
-  CREATE TABLE #{source_schema}.#{parent_table} (
-    id bigserial PRIMARY KEY
-  );
-  CREATE TABLE #{source_schema}.#{child_table} (
-    id bigserial PRIMARY KEY,
-  #{parent_table}_id bigint
-  );
-  ALTER TABLE #{source_schema}.#{child_table}
-    ADD CONSTRAINT #{child_table}_#{parent_table}
-    FOREIGN KEY( #{parent_table}_id ) REFERENCES #{source_schema}.#{parent_table}(id);
-    EOSQL
+    CREATE TABLE #{source_schema}.#{parent_table} (
+      id bigserial PRIMARY KEY
+    );
+    CREATE TABLE #{source_schema}.#{child_table} (
+      id bigserial PRIMARY KEY,
+    #{parent_table}_id bigint
+    );
+    ALTER TABLE #{source_schema}.#{child_table}
+      ADD CONSTRAINT #{child_table}_#{parent_table}
+      FOREIGN KEY( #{parent_table}_id ) REFERENCES #{source_schema}.#{parent_table}(id);
+      INSERT INTO #{source_schema}.#{parent_table} VALUES (100);
+      INSERT INTO #{source_schema}.#{child_table} VALUES (1, 100);
+  EOSQL
 end
 

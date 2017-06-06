@@ -127,7 +127,7 @@ class Referential < ActiveRecord::Base
   end
 
   def self.new_from(from, organisation:)
-    Referential.new({
+    Referential.new(
       name: I18n.t("activerecord.copy", :name => from.name),
       slug: "#{from.slug}_clone",
       prefix: from.prefix,
@@ -139,7 +139,7 @@ class Referential < ActiveRecord::Base
       workbench: from.workbench,
       created_from: from,
       metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m) }
-    })
+    )
   end
 
   def self.available_srids
