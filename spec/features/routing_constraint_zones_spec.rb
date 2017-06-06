@@ -20,7 +20,7 @@ describe 'RoutingConstraintZones', type: :feature do
 
     context 'user has permission to create routing_constraint_zones' do
       it 'shows a create link for routing_constraint_zones' do
-        expect(page).to have_content(I18n.t('routing_constraint_zones.actions.new'))
+        expect(page).to have_content(I18n.t('actions.new'))
       end
     end
 
@@ -28,7 +28,7 @@ describe 'RoutingConstraintZones', type: :feature do
       it 'does not show a create link for routing_constraint_zones' do
         @user.update_attribute(:permissions, [])
         visit referential_line_routing_constraint_zones_path(referential, line)
-        expect(page).not_to have_content(I18n.t('routing_constraint_zones.actions.new'))
+        expect(page).not_to have_content(I18n.t('actions.new'))
       end
     end
 

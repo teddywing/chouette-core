@@ -6,12 +6,12 @@ fr:
       routing_constraint_zone:
         name: Nom
         stop_areas: Arrêts
-        line: Ligne
+        line: Ligne associée
         created_at: "Créé le"
         updated_at: "Edité le"
         objectid: Object ID
         stop_points_count: Nombre d'arrêts
-        route: Itinéraire
+        route: Itinéraire associé
     errors:
       models:
         routing_constraint_zone:
@@ -23,9 +23,6 @@ fr:
   routing_constraint_zones:
     search_no_results: "Aucune ITL ne correspond à votre recherche"
     actions:
-      new: Ajouter un ITL
-      edit: Editer cette zone de contrainte
-      destroy: Supprimer cette zone de contrainte
       destroy_confirm: Etes vous sûr de supprimer cette zone de contrainte ?
     new:
       title: Ajouter un ITL

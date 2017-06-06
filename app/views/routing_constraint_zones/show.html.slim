@@ -1,17 +1,35 @@
-= title_tag @routing_constraint_zone.name
+/ PageHeader
+= pageheader 'map-marker',
+             @routing_constraint_zone.name,
+             '',
+             t('last_update', time: l(@routing_constraint_zone.updated_at, format: :short)) do
 
-p
-  label => "#{@routing_constraint_zone.human_attribute_name(:name)} : "
-  = @routing_constraint_zone.name
+  / Below is secundary actions & optional contents
+  .row
+    .col-lg-12.text-right.mb-sm
+      - if policy(@routing_constraint_zone).update?
+        = link_to t('actions.edit'), edit_referential_line_routing_constraint_zone_path(@referential, @line, @routing_constraint_zone), class: 'btn btn-primary'
 
-p
-  label => "#{Chouette::Route.model_name.human.capitalize} : "
-  = link_to @routing_constraint_zone.route.name, referential_line_route_path(@referential, @line, @routing_constraint_zone.route)
+      - if policy(@routing_constraint_zone).destroy?
+        = link_to referential_line_routing_constraint_zone_path(@referential, @line, @routing_constraint_zone), method: :delete, data: {confirm: t('routing_constraint_zones.actions.destroy_confirm')}, class: 'btn btn-primary' do
+          span.fa.fa-trash
+          span = t('actions.destroy')
 
-p
-  label => "#{Chouette::StopPoint.model_name.human.pluralize.capitalize} : "
-  br
-  - @routing_constraint_zone.stop_points.each do |stop_point|
-    = link_to stop_point.name, referential_stop_area_path(@referential, stop_point.stop_area)
-    br
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { @routing_constraint_zone.human_attribute_name(:name) => @routing_constraint_zone.try(:name),
+            @routing_constraint_zone.human_attribute_name(:route) => link_to(@routing_constraint_zone.try(:route_name), [@referential, @line, @routing_constraint_zone.route]),
+            @routing_constraint_zone.human_attribute_name(:line) => link_to(@line.name, [@referential, @line])}
 
+    .row
+      .col-lg-12
+        = table_builder @routing_constraint_zone.route.stop_points,
+          { "Arrêts de l'itinéraire" => 'name',
+            "Arrêts inclus dans l'ITL" => Proc.new{ |rsp| (@routing_constraint_zone.stop_points.collect{|c| c.name}.include? rsp.name) ? 'Oui' : 'Non' } },
+          [],
+          [],
+          'table has-stoppoints'
