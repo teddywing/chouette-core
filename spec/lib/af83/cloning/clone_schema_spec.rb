@@ -1,70 +1,15 @@
-require 'spec_helper'
-
 include Support::PGCatalog
 
-
-RSpec.describe StoredProcedures do
+RSpec.describe AF83::SchemaCloner do
   let( :source_schema ){ "source_schema" }
   let( :target_schema ){ "target_schema" }
   let( :child_table ){ "children" }
   let( :parent_table ){ "parents" }
 
+  subject { described_class.new }
+
   before do
     create_schema_with_tables
-    StoredProcedures.create_stored_procedure :clone_schema
-  end
-
-  # :meta specs are not run, as the describe the testing methd and not the application
-  context "meta specs describe source schema's introspection", :meta do
-    it "table information is correctly read" do
-      expect(get_table_information(source_schema, child_table))
-        .to eq([{"table_schema"=>"source_schema",
-                 "table_name"=>"children",
-                 "table_type"=>"BASE TABLE",
-                 "self_referencing_column_name"=>nil,
-                 "reference_generation"=>nil,
-                 "user_defined_type_catalog"=>nil,
-                 "user_defined_type_schema"=>nil,
-                 "user_defined_type_name"=>nil,
-                 "is_insertable_into"=>"YES",
-                 "is_typed"=>"NO",
-                 "commit_action"=>nil}])
-
-      expect( get_table_information(target_schema, child_table) ).to be_empty
-    end
-
-    it "sequences are correctly read" do
-      expect(get_sequences(source_schema, child_table))
-      .to eq([{"sequence_name"=>"#{child_table}_id_seq",
-               "last_value"=>"1",
-               "start_value"=>"1",
-               "increment_by"=>"1",
-               "max_value"=>"9223372036854775807",
-               "min_value"=>"1",
-               "cache_value"=>"1",
-               "log_cnt"=>"0",
-               "is_cycled"=>"f",
-               "is_called"=>"f"}])
-
-      expect(get_sequences(source_schema, parent_table))
-      .to eq([{"sequence_name"=>"#{parent_table}_id_seq",
-               "last_value"=>"1",
-               "start_value"=>"1",
-               "increment_by"=>"1",
-               "max_value"=>"9223372036854775807",
-               "min_value"=>"1",
-               "cache_value"=>"1",
-               "log_cnt"=>"0",
-               "is_cycled"=>"f",
-               "is_called"=>"f"}])
-    end
-
-    it "shows foreign key constraints are correctly read" do
-      expect( get_foreign_keys(source_schema, child_table) )
-      .to eq([{
-        "constraint_name" => "children_parents",
-        "constraint_def"  => "FOREIGN KEY (parents_id) REFERENCES source_schema.parents(id)"}])
-    end
   end
 
   context "before cloning" do
@@ -152,9 +97,22 @@ RSpec.describe StoredProcedures do
     end
   end
 
+  context "step by step", :wip do
+    # before do
+    #   subject.clone_schema(source_schema, target_schema)
+    # end
+    it "assure target schema nonexistance" do
+      expect{ subject.clone_schema(source_schema, source_schema) }.to raise_error(RuntimeError)
+    end
+    it "assure source schema's existance" do
+      expect{ subject.clone_schema(target_schema, target_schema) }.to raise_error(RuntimeError)
+    end
+
+  end
+
   context "after cloning" do
     before do
-      described_class.invoke_stored_procedure(:clone_schema, source_schema, target_schema, include_recs)
+      subject.clone_schema(source_schema, target_schema, include_recs: include_recs)
     end
 
     context "without including records" do
@@ -166,7 +124,6 @@ RSpec.describe StoredProcedures do
       let( :include_recs ){ true }
       it_behaves_like 'after cloning schema'
     end
-
   end
 
 end

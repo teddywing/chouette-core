@@ -16,7 +16,7 @@ class ReferentialCloningWorker
   def clone_schema ref_cloning, source_schema, target_schema
     ref_cloning.run!
 
-    StoredProcedures.invoke_stored_procedure(:clone_schema, source_schema, target_schema) 
+    StoredProcedures.invoke_stored_procedure(:clone_schema, source_schema, target_schema, true) 
 
     ref_cloning.successful!
   rescue Exception => e

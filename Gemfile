@@ -110,6 +110,8 @@ gem 'ransack'
 gem "squeel", github: 'activerecord-hackery/squeel'
 gem 'active_attr'
 
+gem 'sequel'
+
 gem 'draper'
 
 gem 'enumerize', '~> 0.10.0'
