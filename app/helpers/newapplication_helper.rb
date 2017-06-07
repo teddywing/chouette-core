@@ -1,6 +1,7 @@
 module NewapplicationHelper
 
   # Table Builder
+  # selectable means actions-for-selection
   def table_builder collection, columns, actions, selectable = [], cls = nil
     return unless collection.present?
 
@@ -8,6 +9,7 @@ module NewapplicationHelper
       content_tag :tr do
         hcont = []
 
+        # Adds checkbox to table header
         unless selectable.empty?
           cbx = content_tag :div, '', class: 'checkbox' do
             check_box_tag('0', 'all').concat(content_tag(:label, '', for: '0'))
@@ -16,12 +18,14 @@ module NewapplicationHelper
         end
 
         columns.map do |k, v|
+          # These columns are hard-coded to not be sortable
           if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée", "Période de validité englobante", "Période englobante", "Nombre de courses associées", "Journées d'application", "Arrêts de l'itinéraire", "Arrêts inclus dans l'ITL"].include? k
             hcont << content_tag(:th, k)
           else
             hcont << content_tag(:th, sortable_columns(collection, k))
           end
         end
+        # Inserts a blank column for the gear menu
         hcont << content_tag(:th, '') if actions.any?
 
         hcont.join.html_safe
@@ -34,6 +38,8 @@ module NewapplicationHelper
         content_tag :tr do
           bcont = []
 
+          # Adds item checkboxes whose value = the row object's id
+          # Apparently the object id is also used in the HTML id attribute without any prefix
           unless selectable.empty?
             cbx = content_tag :div, '', class: 'checkbox' do
               check_box_tag(item.try(:id), item.try(:id)).concat(content_tag(:label, '', for: item.try(:id)))
@@ -48,9 +54,11 @@ module NewapplicationHelper
               else
                 item.try(attribute)
               end
+            # if so this column's contents get transformed into a link to the object
             if attribute == 'name' or attribute == 'comment'
               lnk = []
 
+              # #is_a? ? ; or ?
               unless item.class == Calendar or item.class == Referential
                 if current_referential
                   lnk << current_referential
@@ -172,6 +180,7 @@ module NewapplicationHelper
       pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
 
       pics = content_tag :span, pic1 + pic2, class: 'orderers'
+      # This snake cases and downcases the class name. Should use the ActiveSupport method to do this
       obj = collection.model.to_s.gsub('Chouette::', '').scan(/[A-Z][a-z]+/).join('_').downcase
 
       (I18n.t("activerecord.attributes.#{obj}.#{key}") + pics).html_safe
