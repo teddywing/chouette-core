@@ -4,6 +4,7 @@
 = pageheader 'map-marker',
              @time_table.comment,
              '',
+             t('last_update', time: l(@time_table.updated_at, format: :short)),
              (policy(@time_table).edit? ? link_to(t('actions.edit'), edit_referential_time_table_path(@referential, @time_table), class: 'btn btn-default') : '')
 
   / Below is secundary actions & optional contents (filters, ...)
