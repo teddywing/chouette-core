@@ -109,9 +109,7 @@ describe TableBuilderHelper, type: :helper do
 #     </ul><span class="info-msg"><span>0</span> élément(s) sélectionné(s)</span>
 # </div>
 
-      minified_expected = expected.gsub(/^\s+/, '').gsub("\n", '')
-
-      expect(helper.table_builder_2(
+      html_str = helper.table_builder_2(
         referentials,
         { :name => 'name',
           :status => Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>").html_safe},
@@ -124,7 +122,11 @@ describe TableBuilderHelper, type: :helper do
           :published_at => ''},
         links: [:show, :edit, :archive, :unarchive, :delete],
         cls: 'table has-filter has-search'
-      )).to eq(minified_expected)
+      )
+      beautified_html = ''
+      REXML::Document.new(html_str).write(beautified_html, 4)
+
+      expect(beautified_html).to eq(expected)
     end
   end
 end
