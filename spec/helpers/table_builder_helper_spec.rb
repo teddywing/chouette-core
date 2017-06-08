@@ -3,16 +3,15 @@ require 'spec_helper'
 describe TableBuilderHelper, type: :helper do
   describe "#table_builder_2" do
     it "builds a table" do
-      # TODO: Rename to `referentials`
       # TODO: `sortable_columns` calls `#model` on this collection
-      workbenches = [
+      referentials = [
         build_stubbed(:referential)
       ]
 
       allow(helper).to receive(:params).and_return({
         :controller => 'workbenches',
         :action => 'show',
-        :id => workbenches[0].workbench.id
+        :id => referentials[0].workbench.id
       })
 
       expected = <<-HTML
@@ -98,7 +97,7 @@ describe TableBuilderHelper, type: :helper do
       minified_expected = expected.gsub(/^\s+/, '').gsub("\n", '')
 
       expect(helper.table_builder_2(
-        workbenches,
+        referentials,
         { :name => 'name',
           :status => Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>").html_safe},
           :status => Proc.new {|w| ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>").html_safe},
