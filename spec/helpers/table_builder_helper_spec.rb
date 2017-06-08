@@ -1,11 +1,25 @@
 require 'spec_helper'
 
+module TableBuilderHelper
+  include Pundit
+end
+
 describe TableBuilderHelper, type: :helper do
   describe "#table_builder_2" do
     it "builds a table" do
-      referentials = [
-        build_stubbed(:referential)
-      ]
+      referential = build_stubbed(:referential)
+
+      # user_context = create_user_context(
+      #   user: build_stubbed(:user),
+      #   referential: referential
+      # )
+      user_context = OpenStruct.new(
+        user: build_stubbed(:user),
+        context: { referential: referential }
+      )
+      allow(helper).to receive(:current_user).and_return(user_context)
+
+      referentials = [referential]
 
       allow(referentials).to receive(:model).and_return(Referential)
 
