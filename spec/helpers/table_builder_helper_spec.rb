@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'htmlbeautifier'
 
 module TableBuilderHelper
   include Pundit
@@ -123,8 +124,8 @@ describe TableBuilderHelper, type: :helper do
         links: [:show, :edit, :archive, :unarchive, :delete],
         cls: 'table has-filter has-search'
       )
-      beautified_html = ''
-      REXML::Document.new(html_str).write(beautified_html, 4)
+
+      beautified_html = HtmlBeautifier.beautify(html_str, indent: '    ')
 
       expect(beautified_html).to eq(expected)
     end
