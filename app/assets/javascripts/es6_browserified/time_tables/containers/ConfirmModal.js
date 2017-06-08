@@ -5,13 +5,14 @@ var ConfirmModal = require('../components/ConfirmModal')
 const mapStateToProps = (state) => {
   return {
     modal: state.modal,
-    journeyPatterns: state.journeyPatterns
+    timetable: state.timetable,
+    metas: state.metas
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onModalAccept: (next, timetable, metas, state) =>{
+    onModalAccept: (next, timetable, metas) =>{
       dispatch(actions.fetchingApi())
       actions.submitTimetable(dispatch, timetable, metas, next)
     },
