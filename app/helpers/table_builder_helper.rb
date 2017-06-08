@@ -32,10 +32,7 @@ module TableBuilderHelper
           if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée", "Période de validité englobante", "Période englobante", "Nombre de courses associées", "Journées d'application"].include? k
             hcont << content_tag(:th, k)
           else
-            # FIXME: error undefined `current_referential`
-            # hcont << content_tag(:th, sortable_columns(collection, k))
-            # temporarily replaced with:
-            hcont << content_tag(:th, k)
+            hcont << content_tag(:th, sortable_columns(collection, k))
           end
         end
         # Inserts a blank column for the gear menu
@@ -74,28 +71,27 @@ module TableBuilderHelper
               lnk = []
 
               # #is_a? ? ; or ?
-              # unless item.class == Calendar or item.class == Referential
-              #   if current_referential
-              #     lnk << current_referential
-              #     lnk << item.line if item.respond_to? :line
-              #     lnk << item.route.line if item.class == Chouette::RoutingConstraintZone
-              #     lnk << item if item.respond_to? :line_referential
-              #     lnk << item.stop_area if item.respond_to? :stop_area
-              #     lnk << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
-              #   elsif item.respond_to? :referential
-              #     lnk << item.referential
-              #   end
-              # else
-              #   lnk << item
-              # end
-              #
-              # bcont << content_tag(:td, link_to(value, lnk), title: 'Voir')
+              unless item.class == Calendar or item.class == Referential
+                if current_referential
+                  lnk << current_referential
+                  lnk << item.line if item.respond_to? :line
+                  lnk << item.route.line if item.class == Chouette::RoutingConstraintZone
+                  lnk << item if item.respond_to? :line_referential
+                  lnk << item.stop_area if item.respond_to? :stop_area
+                  lnk << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
+                elsif item.respond_to? :referential
+                  lnk << item.referential
+                end
+              else
+                lnk << item
+              end
+
+              bcont << content_tag(:td, link_to(value, lnk), title: 'Voir')
             else
               bcont << content_tag(:td, value)
             end
           end
-          # TODO: error undefined `current_referential`
-          # bcont << content_tag(:td, links_builder(item, links), class: 'actions') if links.any?
+          bcont << content_tag(:td, links_builder(item, links), class: 'actions') if links.any?
 
           bcont.join.html_safe
         end
