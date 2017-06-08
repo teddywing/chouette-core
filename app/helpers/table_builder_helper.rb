@@ -3,12 +3,14 @@ module TableBuilderHelper
   def table_builder_2(
     collection,
     columns,
+    current_referential: nil,
     sortable: true,
     selectable: false,  # TODO: is this necessary?
     # selection_actions: [] ## this has been gotten rid of. The element based on this should be created elsewhere
     links: [],  # links: or actions: ? I think 'links' is better since 'actions' evokes Rails controller actions and we want to put `link_to`s here
     sort_by: {},  # { column: 'name', direction: 'desc' }
     cls: ''  # can we rename this to "class"?
+      # ^^ rename to html_options = {} at the end of the non-keyword arguments? Hrm, not a fan of combining hash args and keyword args
 # sort column
 # sort direction
 
