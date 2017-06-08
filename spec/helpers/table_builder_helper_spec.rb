@@ -3,10 +3,11 @@ require 'spec_helper'
 describe TableBuilderHelper, type: :helper do
   describe "#table_builder_2" do
     it "builds a table" do
-      # TODO: `sortable_columns` calls `#model` on this collection
       referentials = [
         build_stubbed(:referential)
       ]
+
+      allow(referentials).to receive(:model).and_return(Referential)
 
       allow(helper).to receive(:params).and_return({
         :controller => 'workbenches',
