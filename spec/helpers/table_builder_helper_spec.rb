@@ -7,6 +7,12 @@ describe TableBuilderHelper, type: :helper do
         build_stubbed(:referential)
       ]
 
+      allow(helper).to receive(:params).and_return({
+        :controller => 'workbenches',
+        :action => 'show',
+        :id => workbenches[0].workbench.id
+      })
+
       expected = <<-HTML
 <table class="table has-filter has-search">
     <thead>
