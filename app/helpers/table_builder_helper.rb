@@ -194,7 +194,6 @@ module TableBuilderHelper
       pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
 
       pics = content_tag :span, pic1 + pic2, class: 'orderers'
-      # This snake cases and downcases the class name. Should use the ActiveSupport method to do this
       # TODO: figure out a way to maybe explicitise the dynamicness of getting the model type from the `collection`.
       # TODO: rename `pics` to something like `icons` or arrow icons or some such
 
@@ -203,7 +202,9 @@ module TableBuilderHelper
   end
 
   def column_header_label(model, field)
-    model_underscored = model.to_s.gsub('Chouette::', '').scan(/[A-Z][a-z]+/).join('_').downcase
-    I18n.t("activerecord.attributes.#{model_underscored}.#{field}")
+    # Transform `Chouette::Line` into "line"
+    model_key = model.to_s.demodulize.underscore
+
+    I18n.t("activerecord.attributes.#{model_key}.#{field}")
   end
 end
