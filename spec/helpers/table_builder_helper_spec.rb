@@ -3,6 +3,8 @@ require 'spec_helper'
 describe TableBuilderHelper, type: :helper do
   describe "#table_builder_2" do
     it "builds a table" do
+      # TODO: Rename to `referentials`
+      # TODO: `sortable_columns` calls `#model` on this collection
       workbenches = [
         build_stubbed(:referential)
       ]
