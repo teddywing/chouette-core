@@ -195,11 +195,15 @@ module TableBuilderHelper
 
       pics = content_tag :span, pic1 + pic2, class: 'orderers'
       # This snake cases and downcases the class name. Should use the ActiveSupport method to do this
-      # TODO: Maybe give this whole thing a name so it's clearer what's going on. Also, figure out a way to maybe explicitise the dynamicness of getting the model type from the `collection`.
-      # TODO: move these two lines to a new method called `column_header_label` and rename `pics` to something like `icons` or arrow icons or some such
-      obj = collection.model.to_s.gsub('Chouette::', '').scan(/[A-Z][a-z]+/).join('_').downcase
+      # TODO: figure out a way to maybe explicitise the dynamicness of getting the model type from the `collection`.
+      # TODO: rename `pics` to something like `icons` or arrow icons or some such
 
-      (I18n.t("activerecord.attributes.#{obj}.#{key}") + pics).html_safe
+      (column_header_label(collection.model, key) + pics).html_safe
     end
+  end
+
+  def column_header_label(model, field)
+    model_underscored = model.to_s.gsub('Chouette::', '').scan(/[A-Z][a-z]+/).join('_').downcase
+    I18n.t("activerecord.attributes.#{model_underscored}.#{field}")
   end
 end
