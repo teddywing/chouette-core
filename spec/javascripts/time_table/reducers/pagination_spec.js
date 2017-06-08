@@ -118,11 +118,4 @@ describe('pagination reducer', () => {
       })
     ).toEqual(Object.assign({}, state, {stateChanged: true}))
   })
-  it('should handle UPDATE_DAY_TYPES', () => {
-    expect(
-      paginationReducer(state, {
-        type: 'UPDATE_DAY_TYPES'
-      })
-    ).toEqual(Object.assign({}, state, {stateChanged: true}))
-  })
 })
