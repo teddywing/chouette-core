@@ -59,6 +59,9 @@ module NewapplicationHelper
               lnk = []
 
               # #is_a? ? ; or ?
+              # TODO: Ask Jean-Paul: on which pages do we create multiple links?
+              # Do we actually create multiple links with this code?
+              # Answer: this is a polymorphic URL
               unless item.class == Calendar or item.class == Referential
                 if current_referential
                   lnk << current_referential

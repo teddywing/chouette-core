@@ -7,6 +7,7 @@
   / Below is secundary actions & optional contents
   .row
     .col-lg-12.text-right.mb-sm
+      / TODO: Make a list of Link objects that can be rendered with link_tos here and in the gear menu
       = link_to @line.human_attribute_name(:footnotes), referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary'
       = link_to t('routing_constraint_zones.index.title'), referential_line_routing_constraint_zones_path(@referential, @line), class: 'btn btn-primary'
 
