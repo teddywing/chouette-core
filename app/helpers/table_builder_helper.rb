@@ -100,4 +100,104 @@ module TableBuilderHelper
 
     content_tag :table, head + body, class: cls
   end
+
+  private
+
+  # TODO: `def build_link[s]`
+  def links_builder(item, actions)
+    trigger = content_tag :div, class: 'btn dropdown-toggle', data: { toggle: 'dropdown' } do
+      content_tag :span, '', class: 'fa fa-cog'
+    end
+
+    menu = content_tag :ul, class: 'dropdown-menu' do
+      actions.collect do |action|
+        polymorph_url = []
+
+        unless [:show, :delete].include? action
+          polymorph_url << action
+        end
+
+        unless item.class == Calendar or item.class == Referential
+          if current_referential
+            polymorph_url << current_referential
+            polymorph_url << item.line if item.respond_to? :line
+            polymorph_url << item.route.line if item.class == Chouette::RoutingConstraintZone
+            polymorph_url << item if item.respond_to? :line_referential
+            polymorph_url << item.stop_area if item.respond_to? :stop_area
+            polymorph_url << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
+          elsif item.respond_to? :referential
+            polymorph_url << item.referential
+          end
+        else
+          polymorph_url << item
+        end
+
+        if action == :delete
+          if policy(item).present?
+            if policy(item).destroy?
+              content_tag :li, '', class: 'delete-action' do
+                link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
+                  txt = t("actions.#{action}")
+                  pic = content_tag :span, '', class: 'fa fa-trash'
+                  pic + txt
+                end
+              end
+            end
+          else
+            content_tag :li, '', class: 'delete-action' do
+              link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
+                txt = t("actions.#{action}")
+                pic = content_tag :span, '', class: 'fa fa-trash'
+                pic + txt
+              end
+            end
+          end
+
+        elsif action == :edit
+          if policy(item).present?
+            if policy(item).update?
+              content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
+            end
+          else
+            content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
+          end
+        elsif action == :archive
+          unless item.archived?
+            content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
+          end
+        elsif action == :unarchive
+          if item.archived?
+            content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
+          end
+        else
+          content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
+        end
+      end.join.html_safe
+    end
+
+    content_tag :div, trigger + menu, class: 'btn-group'
+
+  end
+
+  # TODO: clean up?
+  def sortable_columns collection, key
+      # #<ActiveRecord::Relation [#<Referential id: 4, name: "Referential Yanis Gaillard", slug: "referential_yanis_gaillard", created_at: "2017-05-02 12:37:38", updated_at: "2017-05-02 12:37:49", prefix: "c4nqg22nvt", projection_type: nil, time_zone: "Paris", bounds: nil, organisation_id: 1, geographical_bounds: nil, user_id: nil, user_name: nil, data_format: "neptune", line_referential_id: 1, stop_area_referential_id: 1, workbench_id: 1, archived_at: nil, created_from_id: nil, ready: true>, #<Referential id: 3, name: "Test Referential 2017.04.25", slug: "test_referential_20170425", created_at: "2017-04-25 10:08:49", updated_at: "2017-04-25 10:08:51", prefix: "test_referential_20170425", projection_type: "", time_zone: "Paris", bounds: "SRID=4326;POLYGON((-5.2 42.25,-5.2 51.1,8.23 51.1,...", organisation_id: 1, geographical_bounds: nil, user_id: 1, user_name: "Wing Teddy", data_format: "neptune", line_referential_id: 1, stop_area_referential_id: 1, workbench_id: 1, archived_at: nil, created_from_id: nil, ready: true>]>
+    # (byebug) collection.model
+    # Referential(id: integer, name: string, slug: string, created_at: datetime, updated_at: datetime, prefix: string, projection_type: string, time_zone: string, bounds: string, organisation_id: integer, geographical_bounds: text, user_id: integer, user_name: string, data_format: string, line_referential_id: integer, stop_area_referential_id: integer, workbench_id: integer, archived_at: datetime, created_from_id: integer, ready: boolean)
+    # params = {"controller"=>"workbenches", "action"=>"show", "id"=>"1", "q"=>{"archived_at_not_null"=>"1", "archived_at_null"=>"1"}}
+    direction = (key.to_s == params[:sort] && params[:direction] == 'desc') ? 'asc' : 'desc'
+
+    link_to(params.merge({direction: direction, sort: key})) do
+      pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
+      pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
+
+      pics = content_tag :span, pic1 + pic2, class: 'orderers'
+      # This snake cases and downcases the class name. Should use the ActiveSupport method to do this
+      # TODO: Maybe give this whole thing a name so it's clearer what's going on. Also, figure out a way to maybe explicitise the dynamicness of getting the model type from the `collection`.
+      # TODO: move these two lines to a new method called `column_header_label` and rename `pics` to something like `icons` or arrow icons or some such
+      obj = collection.model.to_s.gsub('Chouette::', '').scan(/[A-Z][a-z]+/).join('_').downcase
+
+      (I18n.t("activerecord.attributes.#{obj}.#{key}") + pics).html_safe
+    end
+  end
 end
