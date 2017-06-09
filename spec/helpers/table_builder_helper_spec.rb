@@ -58,26 +58,26 @@ describe TableBuilderHelper, type: :helper do
     <tbody>
         <tr>
             <td>
-                <div class="checkbox"><input type="checkbox" name="4" id="4" value="4" /><label for="4"></label></div>
+                <div class="checkbox"><input type="checkbox" name="#{referential.id}" id="#{referential.id}" value="#{referential.id}" /><label for="#{referential.id}"></label></div>
             </td>
-            <td title="Voir"><a href="/referentials/4">Referential Yanis Gaillard</a></td>
+            <td title="Voir"><a href="/referentials/#{referential.id}">#{referential.name}</a></td>
             <td>
                 <div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>
             </td>
-            <td>STIF</td>
-            <td>01/05/2017 &gt; 31/08/2017</td>
-            <td>1</td>
-            <td>02/05/2017</td>
-            <td>02/05/2017</td>
+            <td>#{referential.organisation.name}</td>
+            <td>-</td>
+            <td>#{referential.lines.count}</td>
+            <td>#{I18n.localize(referential.created_at, format: :short)}</td>
+            <td>#{I18n.localize(referential.updated_at, format: :short)}</td>
             <td></td>
             <td class="actions">
                 <div class="btn-group">
                     <div class="btn dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></div>
                     <ul class="dropdown-menu">
-                        <li><a href="/referentials/4">Consulter</a></li>
-                        <li><a href="/referentials/4/edit">Editer</a></li>
-                        <li><a rel="nofollow" data-method="put" href="/referentials/4/archive">Conserver</a></li>
-                        <li class="delete-action"><a data-confirm="Etes-vous sûr(e) de vouloir effectuer cette action ?" rel="nofollow" data-method="delete" href="/referentials/4"><span class="fa fa-trash"></span>Supprimer</a></li>
+                        <li><a href="/referentials/#{referential.id}">Consulter</a></li>
+                        <li><a href="/referentials/#{referential.id}/edit">Editer</a></li>
+                        <li><a rel="nofollow" data-method="put" href="/referentials/#{referential.id}/archive">Conserver</a></li>
+                        <li class="delete-action"><a data-confirm="Etes-vous sûr(e) de vouloir effectuer cette action ?" rel="nofollow" data-method="delete" href="/referentials/#{referential.id}"><span class="fa fa-trash"></span>Supprimer</a></li>
                     </ul>
                 </div>
             </td>
