@@ -16,8 +16,17 @@ module TableBuilderHelper
 
 # TODO: add `linked_column` or some such attribute that defines which column should be linked and what method to call to get it
   )
-    # TODO: Maybe move this to a private method
-    head = content_tag :thead do
+
+    content_tag :table,
+      thead(collection, columns, selectable, links) +
+        tbody(collection, columns, selectable, links),
+      class: cls
+  end
+
+  private
+
+  def thead(collection, columns, selectable, links)
+    content_tag :thead do
       content_tag :tr do
         hcont = []
 
@@ -43,9 +52,11 @@ module TableBuilderHelper
         hcont.join.html_safe
       end
     end
+  end
 
+  def tbody(collection, columns, selectable, links)
     # TODO: refactor
-    body = content_tag :tbody do
+    content_tag :tbody do
       collection.collect do |item|
 
         content_tag :tr do
@@ -99,11 +110,7 @@ module TableBuilderHelper
         end
       end.join.html_safe
     end
-
-    content_tag :table, head + body, class: cls
   end
-
-  private
 
   # TODO: `def build_link[s]`
   def links_builder(item, actions)
