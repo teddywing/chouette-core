@@ -9,6 +9,7 @@ describe TableBuilderHelper, type: :helper do
   describe "#table_builder_2" do
     it "builds a table" do
       referential = build_stubbed(:referential)
+      workbench = referential.workbench
 
       # user_context = create_user_context(
       #   user: build_stubbed(:user),
@@ -27,7 +28,13 @@ describe TableBuilderHelper, type: :helper do
       allow(helper).to receive(:params).and_return({
         controller: 'workbenches',
         action: 'show',
-        id: referentials[0].workbench.id
+        id: referentials[0].workbench.id,
+
+        # These are added by WorkbenchesController#query_params
+        q: {
+          archived_at_not_null: 1,
+          archived_at_null: 1
+        }
       })
 
       expected = <<-HTML
@@ -37,14 +44,14 @@ describe TableBuilderHelper, type: :helper do
             <th>
                 <div class="checkbox"><input type="checkbox" name="0" id="0" value="all" /><label for="0"></label></div>
             </th>
-            <th><a href="/workbenches/1?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=name">Nom<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/1?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=status">Etat<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/1?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=organisation">Organisation<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/1?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=validity_period">Période de validité englobante<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/1?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=lines">Lignes<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/1?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=created_at">Créé le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/1?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=updated_at">Edité le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/1?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=published_at">Intégré le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=name">Nom<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=status">Etat<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=organisation">Organisation<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=validity_period">Période de validité englobante<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=lines">Lignes<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=created_at">Créé le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=updated_at">Edité le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;q%5Barchived_at_not_null%5D=1&amp;q%5Barchived_at_null%5D=1&amp;sort=published_at">Intégré le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
             <th></th>
         </tr>
     </thead>
