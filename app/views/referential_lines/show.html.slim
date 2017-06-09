@@ -1,26 +1,23 @@
 / PageHeader
 = pageheader 'map-marker',
              @line.name,
-             'Lorem ipsum dolor sit amet',
+             '',
              t('last_update', time: l(@line.updated_at, format: :short)) do
 
   / Below is secundary actions & optional contents
   .row
     .col-lg-12.text-right.mb-sm
-      / = link_to t('lines.actions.show_network'), [@referential, @line.network], class: 'btn btn-primary'
-      / = link_to t('lines.actions.show_company'), [@referential, @line.company], class: 'btn btn-primary'
-
       = link_to @line.human_attribute_name(:footnotes), referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary'
-      = link_to Chouette::RoutingConstraintZone.model_name.human.pluralize(:fr), referential_line_routing_constraint_zones_path(@referential, @line), class: 'btn btn-primary disabled'
+      = link_to t('routing_constraint_zones.index.title'), referential_line_routing_constraint_zones_path(@referential, @line), class: 'btn btn-primary'
 
       - if policy(Chouette::Line).create? && @referential.organisation == current_organisation
-        = link_to t('lines.actions.new'), new_referential_line_path(@referential), class: 'btn btn-primary'
+        = link_to t('actions.new'), new_referential_line_path(@referential), class: 'btn btn-primary'
       - if policy(@line).update?
-        = link_to t('lines.actions.edit'), edit_referential_line_path(@referential, @line), class: 'btn btn-primary'
+        = link_to t('actions.edit'), edit_referential_line_path(@referential, @line), class: 'btn btn-primary'
       - if policy(@line).destroy?
         = link_to referential_line_path(@referential, @line), method: :delete, data: {confirm: t('lines.actions.destroy_confirm')}, class: 'btn btn-primary' do
           span.fa.fa-trash
-          span = t('lines.actions.destroy')
+          span = t('actions.destroy')
 
       - if !@line.hub_restricted? || (@line.hub_restricted? && @line.routes.size < 2)
         - if policy(Chouette::Route).create? && @referential.organisation == current_organisation
