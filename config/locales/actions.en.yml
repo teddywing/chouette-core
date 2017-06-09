@@ -5,6 +5,7 @@ en:
     delete: "Delete"
     search: "Search"
     add: "Add new"
+    new: "Add new"
     show: "See"
     archive: "Archive"
     unarchive: "Unarchive"

@@ -11,7 +11,7 @@ en:
         updated_at: Updated at
         objectid: Object ID
         stop_points_count: Number of stop points
-        route: Route
+        route: Associated route
     errors:
       models:
         routing_constraint_zone:
@@ -21,6 +21,7 @@ en:
               stop_points_not_from_route: 'Stop point does not belong to the Route of this Routing constraint zone.'
               all_stop_points_selected: 'All stop points from route cannot be selected.'
   routing_constraint_zones:
+    search_no_results: "No ITL matches your query"
     actions:
       new: New routing constraint zone
       edit: Edit this routing constraint zone
@@ -32,4 +33,5 @@ en:
       title: "Update routing constraint zone %{routing_constraint_zone}"
     show:
       title: "Routing constraint zone %{routing_constraint_zone}"
-
+    index:
+      title: "Interdictions of local trafficous"

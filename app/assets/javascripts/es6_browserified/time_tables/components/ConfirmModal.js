@@ -2,7 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 
-const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, journeyPatterns}) => (
+const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, timetable, metas}) => (
   <div className={ 'modal fade ' + ((modal.type == 'confirm') ? 'in' : '') } id='ConfirmModal'>
     <div className='modal-container'>
       <div className='modal-dialog'>
@@ -28,7 +28,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, journeyPat
               className='btn btn-primary'
               data-dismiss='modal'
               type='button'
-              onClick = {() => {onModalAccept(modal.confirmModal.callback, journeyPatterns)}}
+              onClick = {() => {onModalAccept(modal.confirmModal.callback, timetable, metas)}}
               >
               Valider
             </button>

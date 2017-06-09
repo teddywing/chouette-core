@@ -6,6 +6,8 @@ class Chouette::TimeTableDate < Chouette::ActiveRecord
   validates_presence_of :date
   validates_uniqueness_of :date, :scope => :time_table_id
 
+  scope :in_dates, -> { where(in_out: true) }
+
   def self.model_name
     ActiveModel::Name.new Chouette::TimeTableDate, Chouette, "TimeTableDate"
   end

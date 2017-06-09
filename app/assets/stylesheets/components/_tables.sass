@@ -82,6 +82,66 @@
     border-top: 2px solid $darkgrey
     margin-top: 15px
 
+  // Specific for tables displaying stop points
+  &.has-stoppoints
+    tbody
+      > tr > td:first-child
+        position: relative
+        padding-left: 25px
+
+        &:before
+          content: ''
+          display: block
+          width: 10px
+          height: 10px
+          background-color: #fff
+          border: 2px solid $blue
+          border-radius: 50%
+          position: absolute
+          z-index: 5
+          left: 5px
+          top: 50%
+          margin-top: -5px
+
+        &:after
+          content: ''
+          display: block
+          width: 4px
+          margin: 0 3px
+          background-color: rgba($grey, 0.5)
+          position: absolute
+          z-index: 3
+          top: 0
+          left: 5px
+          bottom: 0
+
+      > tr:first-child > td:first-child
+        &:after
+          content: ''
+          top: 50%
+
+      > tr:last-child > td:first-child
+        &:after
+          content: ''
+          bottom: 50%
+
+      > tr:first-child > td:first-child, > tr:last-child > td:first-child
+        &:before
+          content: '•'
+          color: $blue
+          text-align: center
+          font-size: 28px
+          letter-spacing: 0
+          text-indent: -0.01em
+          line-height: 12px
+          width: 15px
+          height: 15px
+          left: 2px
+          top: 50%
+          margin-top: -8px
+
+
+
 // select_toolbox
 .select_toolbox
   padding: 10px

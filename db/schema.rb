@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605135126) do
+ActiveRecord::Schema.define(version: 20170607141317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,10 +108,10 @@ ActiveRecord::Schema.define(version: 20170605135126) do
     t.datetime "started_at"
     t.datetime "ended_at"
     t.integer  "referential_id", limit: 8
-    t.datetime "begin_date"
+    t.date     "begin_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "end_date"
+    t.date     "end_date"
     t.string   "date_type"
   end
 
@@ -828,6 +828,10 @@ ActiveRecord::Schema.define(version: 20170605135126) do
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
   add_index "workbenches", ["organisation_id"], name: "index_workbenches_on_organisation_id", using: :btree
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
+
+  create_table "yyy", id: false, force: :cascade do |t|
+    t.text "value"
+  end
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade

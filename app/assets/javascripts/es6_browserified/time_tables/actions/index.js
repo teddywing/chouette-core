@@ -201,8 +201,8 @@ const actions = {
     start = new Date(start)
     end = new Date(end)
     _.each(periods, (period, i) => {
-      if(index != i && !period.deleted){
-        if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end))
+      if(index !== i && !period.deleted){
+        if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end) || (start >= new Date(period.period_start) && end <= new Date(period.period_end)) || (start <= new Date(period.period_start) && end >= new Date(period.period_end)))
         error = 'Les périodes ne peuvent pas se chevaucher'
       }
     })
