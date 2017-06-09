@@ -6,6 +6,86 @@ RSpec.describe CleanUp, :type => :model do
   it { should validate_presence_of(:date_type) }
   it { should belong_to(:referential) }
 
+  context '#exclude_dates_in_overlapping_period with :before date_type' do
+    let(:time_table) { create(:time_table) }
+    let(:period) { time_table.periods[0] }
+    let(:cleaner) { create(:clean_up, date_type: :before) }
+
+    it 'should add exclude date into period for overlapping period' do
+      days_in_period = (period.period_start..period.period_end).count
+      cleaner.begin_date = period.period_end
+
+      expect { cleaner.exclude_dates_in_overlapping_period(period) }.to change {
+        time_table.dates.where(in_out: false).count
+      }.by(days_in_period - 1)
+    end
+
+    it 'should not add exclude date if no overlapping found' do
+      cleaner.begin_date = period.period_start
+      expect { cleaner.exclude_dates_in_overlapping_period(period) }.to_not change {
+        time_table.dates.where(in_out: false).count
+      }
+    end
+  end
+
+  context '#exclude_dates_in_overlapping_period with :after date_type' do
+    let(:time_table) { create(:time_table) }
+    let(:period) { time_table.periods[0] }
+    let(:cleaner) { create(:clean_up, date_type: :after) }
+
+    it 'should add exclude date into period for overlapping period' do
+      days_in_period = (period.period_start..period.period_end).count
+      cleaner.begin_date = period.period_start + 1.day
+      expect { cleaner.exclude_dates_in_overlapping_period(period) }.to change {
+        time_table.dates.where(in_out: false).count
+      }.by(days_in_period - 2)
+    end
+
+    it 'should not add exclude date if no overlapping found' do
+      cleaner.begin_date = period.period_end
+      expect { cleaner.exclude_dates_in_overlapping_period(period) }.to_not change {
+        time_table.dates.where(in_out: false).count
+      }
+    end
+  end
+
+   context '#exclude_dates_in_overlapping_period with :between date_type' do
+    let(:time_table) { create(:time_table) }
+    let(:period) { time_table.periods[0] }
+    let(:cleaner) { create(:clean_up, date_type: :between, begin_date: period.period_start + 3.day, end_date: period.period_end) }
+
+    it 'should add exclude date into period for overlapping period' do
+      expected_day_out = (cleaner.begin_date..cleaner.end_date).count
+      expect { cleaner.exclude_dates_in_overlapping_period(period) }.to change {
+        time_table.dates.where(in_out: false).count
+      }.by(expected_day_out)
+    end
+
+    it 'should not add exclude date if no overlapping found' do
+      cleaner.begin_date = period.period_end  + 1.day
+      cleaner.end_date   = cleaner.begin_date + 1.day
+
+      expect { cleaner.exclude_dates_in_overlapping_period(period) }.to_not change {
+        time_table.dates.where(in_out: false).count
+      }
+    end
+  end
+
+  context '#overlapping_periods' do
+    let(:cleaner) { create(:clean_up, date_type: :before, end_date: nil) }
+    let(:time_table) { create(:time_table) }
+
+    it 'should detect overlapping periods' do
+      cleaner.begin_date = time_table.periods[0].period_start
+      expect(cleaner.overlapping_periods).to include(time_table.periods[0])
+    end
+
+    it 'should not return none overlapping periods' do
+      cleaner.begin_date = time_table.periods[0].period_start - 1.day
+      expect(cleaner.overlapping_periods).to_not include(time_table.periods[0])
+    end
+  end
+
   context '#clean' do
     let(:cleaner) { create(:clean_up, date_type: :before) }
 
