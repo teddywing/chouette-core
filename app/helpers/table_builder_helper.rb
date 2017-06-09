@@ -75,24 +75,8 @@ module TableBuilderHelper
               end
             # if so this column's contents get transformed into a link to the object
             if attribute == 'name' || attribute == 'comment'
-              lnk = []
-
-              unless item.is_a?(Calendar) || item.is_a?(Referential)
-                if current_referential
-                  lnk << current_referential
-                  lnk << item.line if item.respond_to? :line
-                  lnk << item.route.line if item.is_a?(Chouette::RoutingConstraintZone)
-                  lnk << item if item.respond_to? :line_referential
-                  lnk << item.stop_area if item.respond_to? :stop_area
-                  lnk << item if item.respond_to? :stop_points || item.is_a?(Chouette::TimeTable)
-                elsif item.respond_to? :referential
-                  lnk << item.referential
-                end
-              else
-                lnk << item
-              end
-
-              bcont << content_tag(:td, link_to(value, lnk), title: 'Voir')
+              polymorph_url = polymorphic_url_parts(item)
+              bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
             else
               bcont << content_tag(:td, value)
             end
@@ -119,20 +103,7 @@ module TableBuilderHelper
           polymorph_url << action
         end
 
-        unless item.is_a?(Calendar) || item.is_a?(Referential)
-          if current_referential
-            polymorph_url << current_referential
-            polymorph_url << item.line if item.respond_to? :line
-            polymorph_url << item.route.line if item.is_a?(Chouette::RoutingConstraintZone)
-            polymorph_url << item if item.respond_to? :line_referential
-            polymorph_url << item.stop_area if item.respond_to? :stop_area
-            polymorph_url << item if item.respond_to? :stop_points || item.is_a?(Chouette::TimeTable)
-          elsif item.respond_to? :referential
-            polymorph_url << item.referential
-          end
-        else
-          polymorph_url << item
-        end
+        polymorph_url += polymorphic_url_parts(item)
 
         if action == :delete
           if policy(item).present?
@@ -214,5 +185,26 @@ module TableBuilderHelper
         content_tag(:label, '', for: id_name)
       )
     end
+  end
+
+  def polymorphic_url_parts(item)
+    polymorph_url = []
+
+    unless item.is_a?(Calendar) || item.is_a?(Referential)
+      if current_referential
+        polymorph_url << current_referential
+        polymorph_url << item.line if item.respond_to? :line
+        polymorph_url << item.route.line if item.is_a?(Chouette::RoutingConstraintZone)
+        polymorph_url << item if item.respond_to? :line_referential
+        polymorph_url << item.stop_area if item.respond_to? :stop_area
+        polymorph_url << item if item.respond_to? :stop_points || item.is_a?(Chouette::TimeTable)
+      elsif item.respond_to? :referential
+        polymorph_url << item.referential
+      end
+    else
+      polymorph_url << item
+    end
+
+    polymorph_url
   end
 end
