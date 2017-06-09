@@ -32,10 +32,7 @@ module TableBuilderHelper
 
         # Adds checkbox to table header
         if selectable
-          cbx = content_tag :div, '', class: 'checkbox' do
-            check_box_tag('0', 'all').concat(content_tag(:label, '', for: '0'))
-          end
-          hcont << content_tag(:th, cbx)
+          hcont << content_tag(:th, checkbox(id_name: '0', value: 'all'))
         end
 
         columns.map do |k, v|
@@ -62,14 +59,11 @@ module TableBuilderHelper
         content_tag :tr do
           bcont = []
 
-          # Adds item checkboxes whose value = the row object's id
-          # Apparently the object id is also used in the HTML id attribute without any prefix
           if selectable
-            # TODO: Extract method `build_checkbox(attribute)`
-            cbx = content_tag :div, '', class: 'checkbox' do
-              check_box_tag(item.try(:id), item.try(:id)).concat(content_tag(:label, '', for: item.try(:id)))
-            end
-            bcont << content_tag(:td, cbx)
+            bcont << content_tag(
+              :td,
+              checkbox(id_name: item.try(:id), value: item.try(:id))
+            )
           end
 
           columns.map do |k, attribute|
@@ -213,5 +207,13 @@ module TableBuilderHelper
     model_key = model.to_s.demodulize.underscore
 
     I18n.t("activerecord.attributes.#{model_key}.#{field}")
+  end
+
+  def checkbox(id_name:, value:)
+    content_tag :div, '', class: 'checkbox' do
+      check_box_tag(id_name, value).concat(
+        content_tag(:label, '', for: id_name)
+      )
+    end
   end
 end
