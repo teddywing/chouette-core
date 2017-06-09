@@ -15,25 +15,57 @@ class CleanUp < ActiveRecord::Base
   end
 
   def clean
-    result = {}
-    result['time_table_count']      = self.clean_time_tables
-    result['vehicle_journey_count'] = self.clean_vehicle_journeys
-    result['journey_pattern_count'] = self.clean_journey_patterns
-    result
+    {}.tap do |result|
+      result['time_table']        = send("destroy_time_tables_#{self.date_type}").try(:count)
+      result['time_table_date']   = send("destroy_time_tables_dates_#{self.date_type}").try(:count)
+      result['time_table_period'] = send("destroy_time_tables_periods_#{self.date_type}").try(:count)
+    end
   end
 
-  def clean_time_tables
-    Chouette::TimeTable.validity_out_between?(begin_date, end_date).delete_all
+  def destroy_time_tables_between
+    time_tables = Chouette::TimeTable.where('end_date <= ? AND start_date >= ?', self.end_date, self.begin_date)
+    self.destroy_time_tables(time_tables)
   end
 
-  def clean_vehicle_journeys
-    ids = Chouette::VehicleJourney.includes(:time_tables).where(:time_tables => {id: nil}).pluck(:id)
-    Chouette::VehicleJourney.where(id: ids).delete_all
+  def destroy_time_tables_before
+    time_tables = Chouette::TimeTable.where('end_date <= ?', self.begin_date)
+    self.destroy_time_tables(time_tables)
   end
 
-  def clean_journey_patterns
-    ids = Chouette::JourneyPattern.includes(:vehicle_journeys).where(:vehicle_journeys => {id: nil}).pluck(:id)
-    Chouette::JourneyPattern.where(id: ids).delete_all
+  def destroy_time_tables_after
+    time_tables = Chouette::TimeTable.where('start_date >= ?', self.begin_date)
+    self.destroy_time_tables(time_tables)
+  end
+
+  def destroy_time_table_dates_before
+    Chouette::TimeTableDate.in_dates.where('date <= ?', self.begin_date).destroy_all
+  end
+
+  def destroy_time_tables_dates_after
+    Chouette::TimeTableDate.in_dates.where('date >= ?', self.begin_date).destroy_all
+  end
+
+  def destroy_time_tables_dates_between
+    Chouette::TimeTableDate.in_dates.where('date >= ? AND date <= ?', self.begin_date, self.end_date).destroy_all
+  end
+
+  def destroy_time_tables_periods_before
+    Chouette::TimeTablePeriod.where('period_end <= ?', self.begin_date).destroy_all
+  end
+
+  def destroy_time_tables_periods_after
+    Chouette::TimeTablePeriod.where('period_start >= ?', self.begin_date).destroy_all
+  end
+
+  def destroy_time_tables_periods_between
+    Chouette::TimeTablePeriod.where('period_start >= ? AND period_end <= ?', self.begin_date, self.end_date).destroy_all
+  end
+
+  def destroy_time_tables(time_tables)
+    time_tables.each do |time_table|
+      time_table.vehicle_journeys.map(&:destroy)
+    end
+    time_tables.destroy_all
   end
 
   aasm column: :status do
@@ -61,11 +93,11 @@ class CleanUp < ActiveRecord::Base
 
   def log_successful message_attributs
     update_attribute(:ended_at, Time.now)
-    CleanUpResult.create(clean_up: self, message_key: :successfull, message_attributs: message_attributs)
+    CleanUpResult.create(destroy_up: self, message_key: :successfull, message_attributs: message_attributs)
   end
 
   def log_failed message_attributs
     update_attribute(:ended_at, Time.now)
-    CleanUpResult.create(clean_up: self, message_key: :failed, message_attributs: message_attributs)
+    CleanUpResult.create(destroy_up: self, message_key: :failed, message_attributs: message_attributs)
   end
 end

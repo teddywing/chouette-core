@@ -20,7 +20,7 @@
               "Nombre de courses associées" => Proc.new{ |tt| tt.vehicle_journeys.count },
               "Journées d'application" => Proc.new{ |tt| (%w(monday tuesday wednesday thursday friday saturday sunday).collect{|d| tt.send(d) ? t("calendars.days.#{d}") : '' }).reject{|a| a.empty?}.join(', ').html_safe },
               :calendar => Proc.new{ |tt| tt.calendar ? tt.calendar.try(:name) : '-' }, :updated_at => Proc.new {|tt| l(tt.updated_at, format: :short)} },
-            [:show, :edit, :duplicate, :delete],
+            [:show, :edit, :duplicate, :actualize, :delete],
             [],
             'table has-search'
 
