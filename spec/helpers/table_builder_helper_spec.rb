@@ -116,7 +116,7 @@ describe TableBuilderHelper, type: :helper do
 
       beautified_html = HtmlBeautifier.beautify(html_str, indent: '    ')
 
-      expect(beautified_html).to eq(expected)
+      expect(beautified_html).to eq(expected.chomp)
     end
   end
 end
