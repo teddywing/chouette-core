@@ -16,7 +16,15 @@ describe TableBuilderHelper, type: :helper do
       #   referential: referential
       # )
       user_context = OpenStruct.new(
-        user: build_stubbed(:user),
+        user: build_stubbed(
+          :user,
+          organisation: referential.organisation,
+          permissions: [
+            'referentials.create',
+            'referentials.edit',
+            'referentials.destroy'
+          ]
+        ),
         context: { referential: referential }
       )
       allow(helper).to receive(:current_user).and_return(user_context)
