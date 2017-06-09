@@ -5,7 +5,7 @@ module TableBuilderHelper
     columns,
     current_referential: nil,
     sortable: true,
-    selectable: false,  # TODO: is this necessary?
+    selectable: false,
     # selection_actions: [] ## this has been gotten rid of. The element based on this should be created elsewhere
     links: [],  # links: or actions: ? I think 'links' is better since 'actions' evokes Rails controller actions and we want to put `link_to`s here
     sort_by: {},  # { column: 'name', direction: 'desc' }
@@ -31,7 +31,7 @@ module TableBuilderHelper
         hcont = []
 
         # Adds checkbox to table header
-        if !selectable
+        if selectable
           cbx = content_tag :div, '', class: 'checkbox' do
             check_box_tag('0', 'all').concat(content_tag(:label, '', for: '0'))
           end
@@ -64,7 +64,7 @@ module TableBuilderHelper
 
           # Adds item checkboxes whose value = the row object's id
           # Apparently the object id is also used in the HTML id attribute without any prefix
-          if !selectable
+          if selectable
             # TODO: Extract method `build_checkbox(attribute)`
             cbx = content_tag :div, '', class: 'checkbox' do
               check_box_tag(item.try(:id), item.try(:id)).concat(content_tag(:label, '', for: item.try(:id)))

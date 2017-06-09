@@ -110,6 +110,7 @@ describe TableBuilderHelper, type: :helper do
           :created_at => Proc.new {|w| l(w.created_at, format: :short)},
           :updated_at => Proc.new {|w| l(w.updated_at, format: :short)},
           :published_at => ''},
+        selectable: true,
         links: [:show, :edit, :archive, :unarchive, :delete],
         cls: 'table has-filter has-search'
       )
