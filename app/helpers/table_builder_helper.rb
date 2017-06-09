@@ -80,18 +80,18 @@ module TableBuilderHelper
                 item.try(attribute)
               end
             # if so this column's contents get transformed into a link to the object
-            if attribute == 'name' or attribute == 'comment'
+            if attribute == 'name' || attribute == 'comment'
               lnk = []
 
               # #is_a? ? ; or ?
-              unless item.class == Calendar or item.class == Referential
+              unless item.class == Calendar || item.class == Referential
                 if current_referential
                   lnk << current_referential
                   lnk << item.line if item.respond_to? :line
                   lnk << item.route.line if item.class == Chouette::RoutingConstraintZone
                   lnk << item if item.respond_to? :line_referential
                   lnk << item.stop_area if item.respond_to? :stop_area
-                  lnk << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
+                  lnk << item if item.respond_to? :stop_points || item.class.to_s == 'Chouette::TimeTable'
                 elsif item.respond_to? :referential
                   lnk << item.referential
                 end
@@ -126,14 +126,14 @@ module TableBuilderHelper
           polymorph_url << action
         end
 
-        unless item.class == Calendar or item.class == Referential
+        unless item.class == Calendar || item.class == Referential
           if current_referential
             polymorph_url << current_referential
             polymorph_url << item.line if item.respond_to? :line
             polymorph_url << item.route.line if item.class == Chouette::RoutingConstraintZone
             polymorph_url << item if item.respond_to? :line_referential
             polymorph_url << item.stop_area if item.respond_to? :stop_area
-            polymorph_url << item if item.respond_to? :stop_points or item.class.to_s == 'Chouette::TimeTable'
+            polymorph_url << item if item.respond_to? :stop_points || item.class.to_s == 'Chouette::TimeTable'
           elsif item.respond_to? :referential
             polymorph_url << item.referential
           end
