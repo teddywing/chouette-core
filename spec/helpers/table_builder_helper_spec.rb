@@ -25,9 +25,9 @@ describe TableBuilderHelper, type: :helper do
       allow(referentials).to receive(:model).and_return(Referential)
 
       allow(helper).to receive(:params).and_return({
-        :controller => 'workbenches',
-        :action => 'show',
-        :id => referentials[0].workbench.id
+        controller: 'workbenches',
+        action: 'show',
+        id: referentials[0].workbench.id
       })
 
       expected = <<-HTML
