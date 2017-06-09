@@ -18,14 +18,14 @@ module TableBuilderHelper
   )
 
     content_tag :table,
-      thead(collection, columns, selectable, links) +
+      thead(collection, columns, selectable, links.any?) +
         tbody(collection, columns, selectable, links),
       class: cls
   end
 
   private
 
-  def thead(collection, columns, selectable, links)
+  def thead(collection, columns, selectable, has_links)
     content_tag :thead do
       content_tag :tr do
         hcont = []
@@ -44,7 +44,7 @@ module TableBuilderHelper
           end
         end
         # Inserts a blank column for the gear menu
-        hcont << content_tag(:th, '') if links.any?
+        hcont << content_tag(:th, '') if has_links
 
         hcont.join.html_safe
       end
