@@ -17,12 +17,13 @@ RSpec.describe ReferentialCloningWorker do
     let( :target_schema ){ "target_schema" }
     let( :referential_cloning ){ OpenStruct.new(source_referential: make_referential(source_schema),
                                                 target_referential: make_referential(target_schema)) }
+    let( :cloner ){ 'cloner' }
+
 
     before do
       expect( ReferentialCloning ).to receive(:find).with(id).and_return(referential_cloning)
-      expect( StoredProcedures )
-        .to receive(:invoke_stored_procedure)
-          .with(:clone_schema, source_schema, target_schema, true)
+      expect( AF83::SchemaCloner ).to receive(:new).with( source_schema, target_schema ).and_return(cloner)
+      expect( cloner ).to receive(:clone_schema)
 
       expect( referential_cloning ).to receive(:run!)
     end

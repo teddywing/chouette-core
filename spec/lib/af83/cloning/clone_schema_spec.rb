@@ -13,8 +13,6 @@ RSpec.describe AF83::SchemaCloner, type: :pg_catalog do
     end
 
     it "table information is correctly duplicated" do
-      expect_same_sequence_params("#{child_table}_id_seq")
-      expect_same_sequence_params("#{parent_table}_id_seq")
       expect(get_table_information(source_schema, child_table))
         .to eq([{"table_schema"=>"source_schema",
       "table_name"=>"children",
@@ -42,22 +40,44 @@ RSpec.describe AF83::SchemaCloner, type: :pg_catalog do
       "commit_action"=>nil}])
     end
 
+    it "table content is the same and sequences are synchronized" do
+      expect_same_content(parent_table)
+      expect_same_content(child_table)
 
-    xit "has the correct foreign keys" do
+      expect_same_sequence_params("#{parent_table}_id_seq")
+      expect_same_sequence_params("#{child_table}_id_seq")
+    end
+
+    it "has correctly updated default values" do
+      child_table_pk_default = get_columns(target_schema, child_table)
+        .find{ |col| col["column_name"] == "id" }["column_default"]
+      expect( child_table_pk_default ).to eq("nextval('#{target_schema}.children_id_seq'::regclass)")
+    end
+
+    it "has the correct foreign keys" do
       expect( get_foreign_keys(target_schema, child_table) )
         .to eq([{
         "constraint_name" => "children_parents",
         "constraint_def"  => "FOREIGN KEY (parents_id) REFERENCES target_schema.parents(id)"}])
     end
 
-    xit "the data has been copied" do
+    xit "it has the correct unique keys UNTESTABLE SO FAR" do
+      insert source_schema, child_table, "#{parent_table}_id" => 1, some_key: 400
+      insert target_schema, child_table, "#{parent_table}_id" => 1, some_key: 400
+      reinsert_sql = "INSERT INTO #{source_schema}.#{child_table} (#{parent_table}_id, some_key) VALUES (1, 400)"
+      expect{ execute(reinsert_sql) rescue nil}.not_to change{ execute("SELECT COUNT(*) FROM #{source_schema}.#{child_table}") } 
+
+      # expect{  insert(target_schema, child_table, "#{parent_table}_id" => 1, some_key: 400) }.to raise_error(ActiveRecord::RecordNotUnique)
     end
 
-    xit "it has the correct unique keys"
-      
-    end
+    it "inserts are independent" do
+      insert source_schema, child_table, "#{parent_table}_id" => 1, some_key: 400
+      insert target_schema, child_table, "#{parent_table}_id" => 1, some_key: 400
+      last_source = get_content(source_schema, child_table).last
+      last_target = get_content(target_schema, child_table).last
 
-    xit "inserts are independent" do
+      expect( last_source ).to eq("id"=>"3", "parents_id"=>"1", "some_key"=>"400", "is_orphan"=>"f")
+      expect( last_target ).to eq("id"=>"3", "parents_id"=>"1", "some_key"=>"400", "is_orphan"=>"f")
     end
 
   end
@@ -77,13 +97,17 @@ RSpec.describe AF83::SchemaCloner, type: :pg_catalog do
       is_orphan boolean DEFAULT false
     );
 
-    CREATE UNIQUE INDEX #{source_schema}.#{child_table}_some_key_idx ON #{source_schema}.#{child_table} (some_key);
+    CREATE UNIQUE INDEX #{child_table}_some_key_idx ON #{source_schema}.#{child_table} (some_key);
 
     ALTER TABLE #{source_schema}.#{child_table}
       ADD CONSTRAINT #{child_table}_#{parent_table}
       FOREIGN KEY( #{parent_table}_id ) REFERENCES #{source_schema}.#{parent_table}(id);
-      INSERT INTO #{source_schema}.#{parent_table} VALUES (100);
-      INSERT INTO #{source_schema}.#{child_table} VALUES (1, 100);
+
+    INSERT INTO #{source_schema}.#{parent_table} VALUES (DEFAULT);
+    INSERT INTO #{source_schema}.#{parent_table} VALUES (DEFAULT);
     EOSQL
+    insert source_schema, child_table, "#{parent_table}_id" => 1, some_key: 200
+    insert source_schema, child_table, "#{parent_table}_id" => 2, some_key: 300, is_orphan: true
   end
+
 end

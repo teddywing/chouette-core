@@ -1,17 +1,11 @@
 module Support
   module PGCatalog
-    # TODO: Check what of the follwowing can be done with ActiveRecord. E.g.
-    # @connection.foreign_keys(table)...
-
-    def expect_same_sequence_params(sequence_name)
-      expected_seq = get_sequences(source_schema, sequence_name)
-      actual_seq   = get_sequences(target_schema, sequence_name)
-      expect( actual_seq ).to eq(expected_seq)
-    end
+    include BareSQL
 
     def get_columns(schema_name, table_name)
-      execute("SELECT * from information_schema.columns WHERE table_name = '#{table_name}' AND table_schema = '#{schema_name}'")
+      execute("SELECT column_name, column_default FROM information_schema.columns WHERE table_name = '#{table_name}' AND table_schema = '#{schema_name}'").to_a
     end
+
     def get_foreign_keys(schema_oid, table_name)
       schema_oid = get_schema_oid(schema_oid) unless Integer === schema_oid
       return [] unless schema_oid
@@ -41,13 +35,6 @@ module Support
 
 
     private
-    def base_connection
-      ActiveRecord::Base.connection
-    end
-
-    def execute(sql)
-      base_connection.execute(sql)
-    end
 
     def foreign_key_query(schema_oid, table_name)
       <<-EOQ

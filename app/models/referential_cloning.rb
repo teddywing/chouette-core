@@ -6,8 +6,8 @@ class ReferentialCloning < ActiveRecord::Base
 
   private
   def perform_clone
-    # ReferentialCloningWorker.perform_async(id)
-    ReferentialCloningWorker.new.perform(id)
+    ReferentialCloningWorker.perform_async(id)
+    # ReferentialCloningWorker.new.perform(id)
   end
 
   aasm column: :status do
