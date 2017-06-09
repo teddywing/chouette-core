@@ -82,32 +82,6 @@ describe TableBuilderHelper, type: :helper do
                 </div>
             </td>
         </tr>
-        <tr>
-            <td>
-                <div class="checkbox"><input type="checkbox" name="3" id="3" value="3" /><label for="3"></label></div>
-            </td>
-            <td title="Voir"><a href="/referentials/3">Test Referential 2017.04.25</a></td>
-            <td>
-                <div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>
-            </td>
-            <td>STIF</td>
-            <td>25/04/2017 &gt; 25/05/2022</td>
-            <td>6</td>
-            <td>25/04/2017</td>
-            <td>25/04/2017</td>
-            <td></td>
-            <td class="actions">
-                <div class="btn-group">
-                    <div class="btn dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></div>
-                    <ul class="dropdown-menu">
-                        <li><a href="/referentials/3">Consulter</a></li>
-                        <li><a href="/referentials/3/edit">Editer</a></li>
-                        <li><a rel="nofollow" data-method="put" href="/referentials/3/archive">Conserver</a></li>
-                        <li class="delete-action"><a data-confirm="Etes-vous sûr(e) de vouloir effectuer cette action ?" rel="nofollow" data-method="delete" href="/referentials/3"><span class="fa fa-trash"></span>Supprimer</a></li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
     </tbody>
 </table>
       HTML
