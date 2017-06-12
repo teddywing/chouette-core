@@ -183,7 +183,12 @@ module TableBuilderHelper
     # params = {"controller"=>"workbenches", "action"=>"show", "id"=>"1", "q"=>{"archived_at_not_null"=>"1", "archived_at_null"=>"1"}}
     return column.name if !column.sortable
 
-    direction = (column.key.to_s == sort_on && sort_direction == 'desc') ? 'asc' : 'desc'
+    direction =
+      if column.key.to_s == sort_on && sort_direction == 'desc'
+        'asc'
+      else
+        'desc'
+      end
 
     link_to(params.merge({direction: direction, sort: column.key})) do
       pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
