@@ -12,11 +12,6 @@ module TableBuilderHelper
       @attribute = attribute
       @sortable = sortable
     end
-
-    def key_or_name
-      return @key unless @key.nil?
-      return @name unless @name.empty?
-    end
   end
 
   class ColumnMustHaveKeyOrNameError < StandardError; end
@@ -60,9 +55,8 @@ module TableBuilderHelper
 
         columns.map do |column|
           hcont << content_tag(:th, build_column_header(
+            column,
             collection.model,
-            column.key_or_name,
-            column.sortable,
             params[:sort],
             params[:direction]
           ))
@@ -178,9 +172,8 @@ module TableBuilderHelper
 
   # TODO: clean up?
   def build_column_header(
+    column,
     collection_model,
-    key,
-    sortable,
     sort_on,
     sort_direction
   )
@@ -188,11 +181,11 @@ module TableBuilderHelper
     # (byebug) collection.model
     # Referential(id: integer, name: string, slug: string, created_at: datetime, updated_at: datetime, prefix: string, projection_type: string, time_zone: string, bounds: string, organisation_id: integer, geographical_bounds: text, user_id: integer, user_name: string, data_format: string, line_referential_id: integer, stop_area_referential_id: integer, workbench_id: integer, archived_at: datetime, created_from_id: integer, ready: boolean)
     # params = {"controller"=>"workbenches", "action"=>"show", "id"=>"1", "q"=>{"archived_at_not_null"=>"1", "archived_at_null"=>"1"}}
-    return key if !sortable
+    return column.name if !column.sortable
 
-    direction = (key.to_s == sort_on && sort_direction == 'desc') ? 'asc' : 'desc'
+    direction = (column.key.to_s == sort_on && sort_direction == 'desc') ? 'asc' : 'desc'
 
-    link_to(params.merge({direction: direction, sort: key})) do
+    link_to(params.merge({direction: direction, sort: column.key})) do
       pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
       pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
 
@@ -200,7 +193,7 @@ module TableBuilderHelper
       # TODO: figure out a way to maybe explicitise the dynamicness of getting the model type from the `collection`.
       # TODO: rename `pics` to something like `icons` or arrow icons or some such
 
-      (column_header_label(collection_model, key) + pics).html_safe
+      (column_header_label(collection_model, column.key) + pics).html_safe
     end
   end
 
