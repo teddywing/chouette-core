@@ -191,14 +191,24 @@ module TableBuilderHelper
       end
 
     link_to(params.merge({direction: direction, sort: column.key})) do
-      pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
-      pic2 = content_tag :span, '', class: "fa fa-sort-desc #{(direction == 'asc') ? 'active' : ''}"
+      arrow_up = content_tag(
+        :span,
+        '',
+        class: "fa fa-sort-asc #{direction == 'desc' ? 'active' : ''}"
+      )
+      arrow_down = content_tag(
+        :span,
+        '',
+        class: "fa fa-sort-desc #{direction == 'asc' ? 'active' : ''}"
+      )
 
-      pics = content_tag :span, pic1 + pic2, class: 'orderers'
+      arrow_icons = content_tag :span, arrow_up + arrow_down, class: 'orderers'
       # TODO: figure out a way to maybe explicitise the dynamicness of getting the model type from the `collection`.
-      # TODO: rename `pics` to something like `icons` or arrow icons or some such
 
-      (column_header_label(collection_model, column.key) + pics).html_safe
+      (
+        column_header_label(collection_model, column.key) +
+        arrow_icons
+      ).html_safe
     end
   end
 
