@@ -26,6 +26,8 @@ class ReferentialsController < BreadcrumbController
   def show
     resource.switch
     show! do |format|
+      @referential = ReferentialDecorator.new(@referential)
+
       format.json {
         render :json => { :lines_count => resource.lines.count,
                :networks_count => resource.networks.count,

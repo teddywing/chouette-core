@@ -8,23 +8,38 @@
   / Below is secondary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      = link_to t('time_tables.index.title'), referential_time_tables_path(@referential), class: 'btn btn-primary'
-
-      - if policy(@referential).clone?
-        = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
-
-      - if policy(@referential).edit?
-        button.btn.btn-primary type='button' data-toggle='modal' data-target='#purgeModal' Purger
-
-        - if @referential.archived?
-          = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
+      /= link_to t('time_tables.index.title'), referential_time_tables_path(@referential), class: 'btn btn-primary'
+      /
+      /- if policy(@referential).clone?
+      /  = link_to t('actions.clone'), new_referential_path(from: @referential.id), class: 'btn btn-primary'
+      /
+      /- if policy(@referential).edit?
+      /  button.btn.btn-primary type='button' data-toggle='modal' data-target='#purgeModal' Purger
+      /
+      /  - if @referential.archived?
+      /    = link_to t('actions.unarchive'), unarchive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
+      /  - else
+      /    = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
+      /
+      /- if policy(@referential).destroy?
+      /  = link_to referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary' do
+      /    span.fa.fa-trash
+      /    span = t('actions.destroy')
+      /= leslinks.map { |l| link_to l.href, l.label }
+      - @referential.action_links.each do |link|
+        - if link.method == :delete
+          = link_to link.href,
+              method: link.method,
+              data: link.data,
+              class: 'btn btn-primary' do
+                span.fa.fa-trash
+                span = t('actions.destroy')
         - else
-          = link_to t('actions.archive'), archive_referential_path(@referential.id), method: :put, class: 'btn btn-primary'
-
-      - if policy(@referential).destroy?
-        = link_to referential_path(@referential), method: :delete, data: {confirm: t('referentials.actions.destroy_confirm')}, class: 'btn btn-primary' do
-          span.fa.fa-trash
-          span = t('actions.destroy')
+          = link_to link.name,
+              link.href,
+              method: link.method,
+              data: link.data,
+              class: 'btn btn-primary'
 
 / PageContent
 .page_content
