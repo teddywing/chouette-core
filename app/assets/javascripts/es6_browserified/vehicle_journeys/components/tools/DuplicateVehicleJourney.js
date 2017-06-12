@@ -61,7 +61,7 @@ class DuplicateVehicleJourney extends Component {
                     <form>
                       <div className='modal-body'>
                         <div className='row'>
-                          <div className={'col-lg-3 col-md-3 col-sm-3 col-xs-3 ' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'hidden' : '' )}>
+                          <div className={'col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-3 col-xs-offset-1 ' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'hidden' : '' )}>
                             <div className='form-group'>
                               <label className='control-label is-required'>Horaire de départ</label>
                               <span className={'input-group time' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? ' disabled' : '')}>
@@ -88,7 +88,7 @@ class DuplicateVehicleJourney extends Component {
                             </div>
                           </div>
 
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
+                          <div className='col-lg-4 col-md-4 col-sm-4 col-xs-4'>
                             <div className='form-group'>
                               <label className='control-label is-required'>Nombre de courses à créer et dupliquer</label>
                               <input
@@ -96,6 +96,7 @@ class DuplicateVehicleJourney extends Component {
                                 ref='duplicate_number'
                                 min='1'
                                 max='20'
+                                defaultValue='1'
                                 className='form-control'
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                 required
@@ -111,6 +112,7 @@ class DuplicateVehicleJourney extends Component {
                                 ref='additional_time'
                                 min='-59'
                                 max='59'
+                                defaultValue='0'
                                 className='form-control'
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                 required
