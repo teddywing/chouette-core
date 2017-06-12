@@ -57,6 +57,7 @@ module TableBuilderHelper
           hcont << content_tag(:th, build_column_header(
             column,
             collection.model,
+            params,
             params[:sort],
             params[:direction]
           ))
@@ -174,6 +175,7 @@ module TableBuilderHelper
   def build_column_header(
     column,
     collection_model,
+    params,
     sort_on,
     sort_direction
   )
