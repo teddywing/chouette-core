@@ -54,7 +54,7 @@ module TableBuilderHelper
   def tbody(collection, columns, selectable, links)
     # TODO: refactor
     content_tag :tbody do
-      collection.collect do |item|
+      collection.map do |item|
 
         content_tag :tr do
           bcont = []
@@ -96,7 +96,7 @@ module TableBuilderHelper
     end
 
     menu = content_tag :ul, class: 'dropdown-menu' do
-      actions.collect do |action|
+      actions.map do |action|
         polymorph_url = []
 
         unless [:show, :delete].include? action
