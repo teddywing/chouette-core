@@ -1,6 +1,7 @@
+require_relative 'bare_sql'
 module Support
   module PGCatalog
-    include BareSQL
+    include Support::BareSQL
 
     def get_columns(schema_name, table_name)
       execute("SELECT column_name, column_default FROM information_schema.columns WHERE table_name = '#{table_name}' AND table_schema = '#{schema_name}'").to_a
