@@ -191,8 +191,11 @@ describe TableBuilderHelper, type: :helper do
       html_str = helper.table_builder_2(
         companies,
         {
-          'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) },
-          :name => 'name'
+          'ID Codif' => Proc.new { |n| n.try(:objectid).try(:local_id) },
+          :name => 'name',
+          :phone => 'phone',
+          :email => 'email',
+          :url => 'url'
         },
         links: [:show, :edit, :delete],
         cls: 'table has-search'
