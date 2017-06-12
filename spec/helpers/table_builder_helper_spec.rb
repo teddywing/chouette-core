@@ -108,7 +108,13 @@ describe TableBuilderHelper, type: :helper do
           ),
           TableBuilderHelper::Column.new(
             key: :status,
-            attribute: Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>").html_safe}
+            attribute: Proc.new do |w|
+              if w.archived?
+                ("<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>").html_safe
+              else
+                ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>").html_safe
+              end
+            end
           ),
           TableBuilderHelper::Column.new(
             key: :organisation,
@@ -116,7 +122,17 @@ describe TableBuilderHelper, type: :helper do
           ),
           TableBuilderHelper::Column.new(
             key: :validity_period,
-            attribute: Proc.new {|w| w.validity_period.nil? ? '-' : t('validity_range', debut: l(w.try(:validity_period).try(:begin), format: :short), end: l(w.try(:validity_period).try(:end), format: :short))}
+            attribute: Proc.new do |w|
+              if w.validity_period.nil?
+                '-'
+              else
+                t(
+                  'validity_range',
+                  debut: l(w.try(:validity_period).try(:begin), format: :short),
+                  end: l(w.try(:validity_period).try(:end), format: :short)
+                )
+              end
+            end
           ),
           TableBuilderHelper::Column.new(
             key: :lines,
