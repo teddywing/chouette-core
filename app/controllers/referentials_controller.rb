@@ -24,19 +24,19 @@ class ReferentialsController < BreadcrumbController
   end
 
   def show
-     resource.switch
-     show! do |format|
-       format.json {
-         render :json => { :lines_count => resource.lines.count,
-                :networks_count => resource.networks.count,
-                :vehicle_journeys_count => resource.vehicle_journeys.count + resource.vehicle_journey_frequencies.count,
-                :time_tables_count => resource.time_tables.count,
-                :referential_id => resource.id}
-       }
-       format.html { build_breadcrumb :show}
-     end
+    resource.switch
+    show! do |format|
+      format.json {
+        render :json => { :lines_count => resource.lines.count,
+               :networks_count => resource.networks.count,
+               :vehicle_journeys_count => resource.vehicle_journeys.count + resource.vehicle_journey_frequencies.count,
+               :time_tables_count => resource.time_tables.count,
+               :referential_id => resource.id}
+      }
+      format.html { build_breadcrumb :show}
+    end
 
-     @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
+    @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
   end
 
   def edit
