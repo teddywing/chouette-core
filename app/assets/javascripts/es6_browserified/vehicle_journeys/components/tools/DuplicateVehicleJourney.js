@@ -61,7 +61,7 @@ class DuplicateVehicleJourney extends Component {
                     <form>
                       <div className='modal-body'>
                         <div className='row'>
-                          <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3 hidden'>
+                          <div className={'col-lg-3 col-md-3 col-sm-3 col-xs-3 ' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'hidden' : '' )}>
                             <div className='form-group'>
                               <label className='control-label is-required'>Horaire de départ</label>
                               <span className={'input-group time' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? ' disabled' : '')}>
