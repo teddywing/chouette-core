@@ -19,6 +19,9 @@ class CleanUp < ActiveRecord::Base
       result['time_table']        = send("destroy_time_tables_#{self.date_type}").try(:count)
       result['time_table_date']   = send("destroy_time_tables_dates_#{self.date_type}").try(:count)
       result['time_table_period'] = send("destroy_time_tables_periods_#{self.date_type}").try(:count)
+      self.overlapping_periods.each do |period|
+        exclude_dates_in_overlapping_period(period)
+      end
     end
   end
 
@@ -59,6 +62,42 @@ class CleanUp < ActiveRecord::Base
 
   def destroy_time_tables_periods_between
     Chouette::TimeTablePeriod.where('period_start >= ? AND period_end <= ?', self.begin_date, self.end_date).destroy_all
+  end
+
+  def overlapping_periods
+    self.end_date = self.begin_date if self.date_type != 'between'
+    Chouette::TimeTablePeriod.where('(period_start, period_end) OVERLAPS (?, ?)', self.begin_date, self.end_date)
+  end
+
+  def exclude_dates_in_overlapping_period(period)
+    days_in_period  = period.period_start..period.period_end
+    day_out         = period.time_table.dates.where(in_out: false).map(&:date)
+    # check if day is greater or less then cleanup date
+    if date_type != 'between'
+      operator = date_type == 'after' ? '>' : '<'
+      to_exclude_days = days_in_period.map do |day|
+        day if day.public_send(operator, self.begin_date)
+      end
+    else
+      days_in_cleanup_periode = (self.begin_date..self.end_date)
+      to_exclude_days = days_in_period & days_in_cleanup_periode
+    end
+
+    to_exclude_days.to_a.compact.each do |day|
+      # we ensure day is not already an exclude date
+      if !day_out.include?(day)
+        self.add_exclude_date(period.time_table, day)
+      end
+    end
+  end
+
+  def add_exclude_date(time_table, day)
+    day_in = time_table.dates.where(in_out: true).map(&:date)
+    unless day_in.include?(day)
+      time_table.add_exclude_date(false, day)
+    else
+      time_table.dates.where(date: day).take.update_attribute(:in_out, false)
+    end
   end
 
   def destroy_time_tables(time_tables)

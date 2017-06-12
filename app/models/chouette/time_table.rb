@@ -135,6 +135,10 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     [Chouette::TimeTable.maximum(:end_date)].compact.max
   end
 
+  def add_exclude_date(in_out, date)
+    self.dates.create!({in_out: in_out, date: date})
+  end
+
   def actualize
     self.dates.clear
     self.periods.clear
