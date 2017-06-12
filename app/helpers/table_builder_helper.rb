@@ -1,4 +1,27 @@
 module TableBuilderHelper
+  class Column
+    attr_reader :key, :name, :attribute, :sortable
+
+    def initialize(key: nil, name: '', attribute:, sortable: true)
+      if key.nil? && name.empty?
+        raise ColumnMustHaveKeyOrNameError
+      end
+
+      @key = key
+      @name = name
+      @attribute = attribute
+      @sortable = sortable
+    end
+
+    def key_or_name
+      return @key unless @key.nil?
+      return @name unless @name.empty?
+    end
+  end
+
+  class ColumnMustHaveKeyOrNameError < StandardError; end
+
+
   # TODO: rename this after migration from `table_builder`
   def table_builder_2(
     collection,
@@ -35,16 +58,11 @@ module TableBuilderHelper
           hcont << content_tag(:th, checkbox(id_name: '0', value: 'all'))
         end
 
-        columns.map do |key, attribute|
-          sortable = true
-          if attribute.is_a?(Hash) && attribute.has_key?(:sortable)
-            sortable = attribute[:sortable]
-          end
-
+        columns.map do |column|
           hcont << content_tag(:th, build_column_header(
             collection.model,
-            key,
-            sortable,
+            column.key_or_name,
+            column.sortable,
             params[:sort],
             params[:direction]
           ))
@@ -72,19 +90,15 @@ module TableBuilderHelper
             )
           end
 
-          columns.map do |k, attribute|
-            if attribute.is_a?(Hash)
-              attribute = attribute[:attribute]
-            end
-
+          columns.map do |column|
             value =
-              if Proc === attribute
-                attribute.call(item)
+              if Proc === column.attribute
+                column.attribute.call(item)
               else
-                item.try(attribute)
+                item.try(column.attribute)
               end
             # if so this column's contents get transformed into a link to the object
-            if attribute == 'name' || attribute == 'comment'
+            if column.attribute == 'name' || column.attribute == 'comment'
               polymorph_url = polymorphic_url_parts(item)
               bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
             else
