@@ -35,13 +35,19 @@ module TableBuilderHelper
           hcont << content_tag(:th, checkbox(id_name: '0', value: 'all'))
         end
 
-        columns.map do |k, v|
-          # These columns are hard-coded to not be sortable
-          if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée", "Période de validité englobante", "Période englobante", "Nombre de courses associées", "Journées d'application"].include? k
-            hcont << content_tag(:th, k)
-          else
-            hcont << content_tag(:th, sortable_columns(collection, k))
+        columns.map do |key, attribute|
+          sortable = true
+          if attribute.is_a?(Hash) && attribute.has_key?(:sortable)
+            sortable = attribute[:sortable]
           end
+
+          hcont << content_tag(:th, build_column_header(
+            collection.model,
+            key,
+            sortable,
+            params[:sort],
+            params[:direction]
+          ))
         end
         # Inserts a blank column for the gear menu
         hcont << content_tag(:th, '') if has_links
@@ -67,6 +73,10 @@ module TableBuilderHelper
           end
 
           columns.map do |k, attribute|
+            if attribute.is_a?(Hash)
+              attribute = attribute[:attribute]
+            end
+
             value =
               if Proc === attribute
                 attribute.call(item)
@@ -153,12 +163,20 @@ module TableBuilderHelper
   end
 
   # TODO: clean up?
-  def sortable_columns collection, key
+  def build_column_header(
+    collection_model,
+    key,
+    sortable,
+    sort_on,
+    sort_direction
+  )
       # #<ActiveRecord::Relation [#<Referential id: 4, name: "Referential Yanis Gaillard", slug: "referential_yanis_gaillard", created_at: "2017-05-02 12:37:38", updated_at: "2017-05-02 12:37:49", prefix: "c4nqg22nvt", projection_type: nil, time_zone: "Paris", bounds: nil, organisation_id: 1, geographical_bounds: nil, user_id: nil, user_name: nil, data_format: "neptune", line_referential_id: 1, stop_area_referential_id: 1, workbench_id: 1, archived_at: nil, created_from_id: nil, ready: true>, #<Referential id: 3, name: "Test Referential 2017.04.25", slug: "test_referential_20170425", created_at: "2017-04-25 10:08:49", updated_at: "2017-04-25 10:08:51", prefix: "test_referential_20170425", projection_type: "", time_zone: "Paris", bounds: "SRID=4326;POLYGON((-5.2 42.25,-5.2 51.1,8.23 51.1,...", organisation_id: 1, geographical_bounds: nil, user_id: 1, user_name: "Wing Teddy", data_format: "neptune", line_referential_id: 1, stop_area_referential_id: 1, workbench_id: 1, archived_at: nil, created_from_id: nil, ready: true>]>
     # (byebug) collection.model
     # Referential(id: integer, name: string, slug: string, created_at: datetime, updated_at: datetime, prefix: string, projection_type: string, time_zone: string, bounds: string, organisation_id: integer, geographical_bounds: text, user_id: integer, user_name: string, data_format: string, line_referential_id: integer, stop_area_referential_id: integer, workbench_id: integer, archived_at: datetime, created_from_id: integer, ready: boolean)
     # params = {"controller"=>"workbenches", "action"=>"show", "id"=>"1", "q"=>{"archived_at_not_null"=>"1", "archived_at_null"=>"1"}}
-    direction = (key.to_s == params[:sort] && params[:direction] == 'desc') ? 'asc' : 'desc'
+    return key if !sortable
+
+    direction = (key.to_s == sort_on && sort_direction == 'desc') ? 'asc' : 'desc'
 
     link_to(params.merge({direction: direction, sort: key})) do
       pic1 = content_tag :span, '', class: "fa fa-sort-asc #{(direction == 'desc') ? 'active' : ''}"
@@ -168,7 +186,7 @@ module TableBuilderHelper
       # TODO: figure out a way to maybe explicitise the dynamicness of getting the model type from the `collection`.
       # TODO: rename `pics` to something like `icons` or arrow icons or some such
 
-      (column_header_label(collection.model, key) + pics).html_safe
+      (column_header_label(collection_model, key) + pics).html_safe
     end
   end
 

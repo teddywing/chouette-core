@@ -191,7 +191,10 @@ describe TableBuilderHelper, type: :helper do
       html_str = helper.table_builder_2(
         companies,
         {
-          'ID Codif' => Proc.new { |n| n.try(:objectid).try(:local_id) },
+          'ID Codif' => {
+            attribute: Proc.new { |n| n.try(:objectid).try(:local_id) },
+            sortable: false
+          },
           :name => 'name',
           :phone => 'phone',
           :email => 'email',
