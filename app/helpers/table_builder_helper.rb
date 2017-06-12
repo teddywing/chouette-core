@@ -62,6 +62,7 @@ module TableBuilderHelper
             params[:direction]
           ))
         end
+
         # Inserts a blank column for the gear menu
         hcont << content_tag(:th, '') if has_links
 
