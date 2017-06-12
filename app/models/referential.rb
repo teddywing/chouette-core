@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
 
@@ -180,7 +179,7 @@ class Referential < ActiveRecord::Base
 
   before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench, unless: :created_from
   before_validation :clone_associations, :on => :create, if: :created_from
-  before_create :create_schema
+  before_create :create_schema,  unless: :created_from
 
   after_create :clone_schema, if: :created_from
 
@@ -282,7 +281,7 @@ class Referential < ActiveRecord::Base
   end
 
   def clone_schema
-    ReferentialCloning.create(source_referential: self.created_from, target_referential: self)
+    ReferentialCloning.create(source_referential: created_from, target_referential: self)
   end
 
   def create_schema
