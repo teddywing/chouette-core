@@ -119,6 +119,89 @@ describe TableBuilderHelper, type: :helper do
 
       expect(beautified_html).to eq(expected.chomp)
     end
+
+    it "can set a column as non-sortable" do
+      company = build_stubbed(:company)
+      line_referential = build_stubbed(
+        :line_referential,
+        companies: [company]
+      )
+      referential = build_stubbed(
+        :referential,
+        line_referential: line_referential
+      )
+
+      user_context = OpenStruct.new(
+        user: build_stubbed(
+          :user,
+          organisation: referential.organisation,
+          permissions: [
+            'referentials.create',
+            'referentials.edit',
+            'referentials.destroy'
+          ]
+        ),
+        context: { referential: referential }
+      )
+      allow(helper).to receive(:current_user).and_return(user_context)
+      allow(helper).to receive(:current_referential).and_return(referential)
+
+      companies = [company]
+
+      allow(companies).to receive(:model).and_return(Chouette::Company)
+
+      allow(helper).to receive(:params).and_return({
+        controller: 'referential_companies',
+        action: 'index',
+        referential_id: referential.id
+      })
+
+      expected = <<-HTML
+<table class="table has-search">
+    <thead>
+        <tr>
+            <th>ID Codif</th>
+            <th><a href="/referentials/#{referential.id}/companies?direction=desc&amp;sort=name">Nom<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/referentials/#{referential.id}/companies?direction=desc&amp;sort=phone">Numéro de téléphone<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/referentials/#{referential.id}/companies?direction=desc&amp;sort=email">Email<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/referentials/#{referential.id}/companies?direction=desc&amp;sort=url">Page web associée<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>#{company.objectid.local_id}</td>
+            <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="actions">
+                <div class="btn-group">
+                    <div class="btn dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></div>
+                    <ul class="dropdown-menu">
+                        <li><a href="/referentials/#{referential.id}/companies/#{company.id}">Consulter</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+      HTML
+
+      html_str = helper.table_builder_2(
+        companies,
+        {
+          'Oid' => Proc.new { |n| n.try(:objectid).try(:local_id) },
+          :name => 'name'
+        },
+        links: [:show, :edit, :delete],
+        cls: 'table has-search'
+      )
+
+      beautified_html = HtmlBeautifier.beautify(html_str, indent: '    ')
+
+      expect(beautified_html).to eq(expected.chomp)
+    end
   end
 end
 
