@@ -7,6 +7,11 @@ module TableBuilderHelper
         raise ColumnMustHaveKeyOrNameError
       end
 
+      # TODO: Make a similar _ && _ for either `attribute`, which should be a
+      # string attribute, and another param, which should represent a proc.
+      # Then maybe have an `#attribute` method that returns either the string
+      # or the result of the proc
+
       @key = key
       @name = name
       @attribute = attribute
