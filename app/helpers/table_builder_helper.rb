@@ -172,7 +172,6 @@ module TableBuilderHelper
 
   end
 
-  # TODO: clean up?
   def build_column_header(
     column,
     collection_model,
@@ -180,10 +179,6 @@ module TableBuilderHelper
     sort_on,
     sort_direction
   )
-      # #<ActiveRecord::Relation [#<Referential id: 4, name: "Referential Yanis Gaillard", slug: "referential_yanis_gaillard", created_at: "2017-05-02 12:37:38", updated_at: "2017-05-02 12:37:49", prefix: "c4nqg22nvt", projection_type: nil, time_zone: "Paris", bounds: nil, organisation_id: 1, geographical_bounds: nil, user_id: nil, user_name: nil, data_format: "neptune", line_referential_id: 1, stop_area_referential_id: 1, workbench_id: 1, archived_at: nil, created_from_id: nil, ready: true>, #<Referential id: 3, name: "Test Referential 2017.04.25", slug: "test_referential_20170425", created_at: "2017-04-25 10:08:49", updated_at: "2017-04-25 10:08:51", prefix: "test_referential_20170425", projection_type: "", time_zone: "Paris", bounds: "SRID=4326;POLYGON((-5.2 42.25,-5.2 51.1,8.23 51.1,...", organisation_id: 1, geographical_bounds: nil, user_id: 1, user_name: "Wing Teddy", data_format: "neptune", line_referential_id: 1, stop_area_referential_id: 1, workbench_id: 1, archived_at: nil, created_from_id: nil, ready: true>]>
-    # (byebug) collection.model
-    # Referential(id: integer, name: string, slug: string, created_at: datetime, updated_at: datetime, prefix: string, projection_type: string, time_zone: string, bounds: string, organisation_id: integer, geographical_bounds: text, user_id: integer, user_name: string, data_format: string, line_referential_id: integer, stop_area_referential_id: integer, workbench_id: integer, archived_at: datetime, created_from_id: integer, ready: boolean)
-    # params = {"controller"=>"workbenches", "action"=>"show", "id"=>"1", "q"=>{"archived_at_not_null"=>"1", "archived_at_null"=>"1"}}
     return column.name if !column.sortable
 
     direction =
@@ -206,7 +201,6 @@ module TableBuilderHelper
       )
 
       arrow_icons = content_tag :span, arrow_up + arrow_down, class: 'orderers'
-      # TODO: figure out a way to maybe explicitise the dynamicness of getting the model type from the `collection`.
 
       (
         column_header_label(collection_model, column.key) +
