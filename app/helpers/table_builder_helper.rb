@@ -127,6 +127,7 @@ module TableBuilderHelper
         if action == :delete
           if policy(item).present?
             if policy(item).destroy?
+              # TODO: This tag is exactly the same as the one below it
               content_tag :li, '', class: 'delete-action' do
                 link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
                   txt = t("actions.#{action}")

@@ -39,6 +39,7 @@ describe TableBuilderHelper, type: :helper do
         id: referentials[0].workbench.id,
 
         # These are added by WorkbenchesController#query_params
+        # TODO: Remove these params from here and the expected HTML as they don't relate to the test at hand
         q: {
           archived_at_not_null: 1,
           archived_at_null: 1
