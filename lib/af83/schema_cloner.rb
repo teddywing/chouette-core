@@ -46,10 +46,8 @@ module AF83
     end
 
     def assure_schema_preconditons
-      raise RuntimeError, "Target Schema #{target_schema} does already exist" unless
-      execute("SELECT oid FROM pg_namespace WHERE nspname = '#{target_schema}' LIMIT 1").empty?
-
       raise RuntimeError, "Source Schema #{source_schema} does not exist" unless source
+      log 'found', source
     end
 
     def clone_foreign_key fk_desc
@@ -88,7 +86,7 @@ module AF83
       adjust_defaults table_name
     end
     def create_target_schema
-      execute("CREATE SCHEMA #{target_schema}")
+      execute("CREATE SCHEMA IF NOT EXISTS #{target_schema}")
       clone_sequences
       clone_tables
       clone_foreign_keys
@@ -119,6 +117,12 @@ module AF83
     def initialize(source_schema, target_schema)
       @source_schema = source_schema
       @target_schema = target_schema
+    end
+
+    def log(*messages)
+      messages.each do | message |
+        Rails.logger.info "SchemaCloner: #{message.inspect}"
+      end
     end
 
     #
