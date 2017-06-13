@@ -31,21 +31,21 @@ class CleanUp < ActiveRecord::Base
   end
 
   def destroy_time_tables_before
-    time_tables = Chouette::TimeTable.where('end_date <= ?', self.begin_date)
+    time_tables = Chouette::TimeTable.where('end_date < ?', self.begin_date)
     self.destroy_time_tables(time_tables)
   end
 
   def destroy_time_tables_after
-    time_tables = Chouette::TimeTable.where('start_date >= ?', self.begin_date)
+    time_tables = Chouette::TimeTable.where('start_date > ?', self.begin_date)
     self.destroy_time_tables(time_tables)
   end
 
   def destroy_time_table_dates_before
-    Chouette::TimeTableDate.in_dates.where('date <= ?', self.begin_date).destroy_all
+    Chouette::TimeTableDate.in_dates.where('date < ?', self.begin_date).destroy_all
   end
 
   def destroy_time_tables_dates_after
-    Chouette::TimeTableDate.in_dates.where('date >= ?', self.begin_date).destroy_all
+    Chouette::TimeTableDate.in_dates.where('date > ?', self.begin_date).destroy_all
   end
 
   def destroy_time_tables_dates_between
@@ -53,11 +53,11 @@ class CleanUp < ActiveRecord::Base
   end
 
   def destroy_time_tables_periods_before
-    Chouette::TimeTablePeriod.where('period_end <= ?', self.begin_date).destroy_all
+    Chouette::TimeTablePeriod.where('period_end < ?', self.begin_date).destroy_all
   end
 
   def destroy_time_tables_periods_after
-    Chouette::TimeTablePeriod.where('period_start >= ?', self.begin_date).destroy_all
+    Chouette::TimeTablePeriod.where('period_start > ?', self.begin_date).destroy_all
   end
 
   def destroy_time_tables_periods_between

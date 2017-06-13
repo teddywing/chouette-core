@@ -146,7 +146,7 @@ RSpec.describe CleanUp, :type => :model do
     let(:cleaner) { create(:clean_up, date_type: :after, begin_date: time_table_date.date) }
 
     it 'should destroy record' do
-      count = Chouette::TimeTableDate.where('date >= ?', cleaner.begin_date).count
+      count = Chouette::TimeTableDate.where('date > ?', cleaner.begin_date).count
       expect{ cleaner.destroy_time_tables_dates_after }.to change {
         Chouette::TimeTableDate.count
       }.by(-count)
@@ -173,9 +173,9 @@ RSpec.describe CleanUp, :type => :model do
 
   context '#destroy_time_tables_after' do
     let!(:time_table) { create(:time_table ) }
-    let(:cleaner) { create(:clean_up, date_type: :after, begin_date: time_table.start_date) }
+    let(:cleaner) { create(:clean_up, date_type: :after, begin_date: time_table.start_date - 1.day) }
 
-    it 'should destroy time_tables with start_date >= purge begin_date' do
+    it 'should destroy time_tables with start_date > purge begin_date' do
       expect{ cleaner.destroy_time_tables_after }.to change {
         Chouette::TimeTable.count
       }.by(-1)
@@ -209,9 +209,9 @@ RSpec.describe CleanUp, :type => :model do
 
   context '#destroy_time_tables_before' do
     let!(:time_table) { create(:time_table ) }
-    let(:cleaner) { create(:clean_up, date_type: :before, begin_date: time_table.end_date) }
+    let(:cleaner) { create(:clean_up, date_type: :before, begin_date: time_table.end_date + 1.day) }
 
-    it 'should destroy time_tables with end_date <= purge begin_date' do
+    it 'should destroy time_tables with end_date < purge begin_date' do
       expect{ cleaner.destroy_time_tables_before }.to change {
         Chouette::TimeTable.count
       }.by(-1)
