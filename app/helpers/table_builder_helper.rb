@@ -107,7 +107,14 @@ module TableBuilderHelper
               bcont << content_tag(:td, value)
             end
           end
-          bcont << content_tag(:td, links_builder(item, links), class: 'actions') if links.any?
+
+          if links.any?
+            bcont << content_tag(
+              :td,
+              build_links(item, links),
+              class: 'actions'
+            )
+          end
 
           bcont.join.html_safe
         end
@@ -115,8 +122,7 @@ module TableBuilderHelper
     end
   end
 
-  # TODO: `def build_link[s]`
-  def links_builder(item, actions)
+  def build_links(item, actions)
     trigger = content_tag :div, class: 'btn dropdown-toggle', data: { toggle: 'dropdown' } do
       content_tag :span, '', class: 'fa fa-cog'
     end
