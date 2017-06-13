@@ -477,16 +477,17 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   # merge effective days from another timetable
   def merge!(another_tt)
     transaction do
+    # merge dates
+    self.dates ||= []
+    another_tt.included_days.each do |d|
+      add_included_day d
+    end
+
     # if one tt has no period, just merge lists
     if self.periods.empty? || another_tt.periods.empty?
       if !another_tt.periods.empty?
         # copy periods
         self.periods = another_tt.clone_periods
-      end
-      # merge dates
-      self.dates ||= []
-      another_tt.included_days.each do |d|
-        add_included_day d
       end
     else
       # check if periods can be kept
