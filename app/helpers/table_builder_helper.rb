@@ -7,15 +7,18 @@ module TableBuilderHelper
         raise ColumnMustHaveKeyOrNameError
       end
 
-      # TODO: Make a similar _ && _ for either `attribute`, which should be a
-      # string attribute, and another param, which should represent a proc.
-      # Then maybe have an `#attribute` method that returns either the string
-      # or the result of the proc
-
       @key = key
       @name = name
       @attribute = attribute
       @sortable = sortable
+    end
+
+    def value(obj)
+      if @attribute.is_a?(Proc)
+        @attribute.call(obj)
+      else
+        obj.try(@attribute)
+      end
     end
   end
 
@@ -92,12 +95,7 @@ module TableBuilderHelper
           end
 
           columns.map do |column|
-            value =
-              if Proc === column.attribute
-                column.attribute.call(item)
-              else
-                item.try(column.attribute)
-              end
+            value = column.value(item)
 
             if column.attribute == 'name' || column.attribute == 'comment'
               # Build a link to the `item`
