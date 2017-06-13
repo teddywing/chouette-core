@@ -98,8 +98,9 @@ module TableBuilderHelper
               else
                 item.try(column.attribute)
               end
-            # if so this column's contents get transformed into a link to the object
+
             if column.attribute == 'name' || column.attribute == 'comment'
+              # Build a link to the `item`
               polymorph_url = polymorphic_url_parts(item)
               bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
             else
