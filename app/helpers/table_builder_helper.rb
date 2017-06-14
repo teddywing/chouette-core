@@ -80,7 +80,6 @@ module TableBuilderHelper
   end
 
   def tbody(collection, columns, selectable, links)
-    # TODO: refactor
     content_tag :tbody do
       collection.map do |item|
 
