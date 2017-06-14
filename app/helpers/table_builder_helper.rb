@@ -1,35 +1,10 @@
+require 'table_builder_helper/column'
 require 'table_builder_helper/custom_links'
 require 'table_builder_helper/url'
 
 # TODO: Add doc comment about neeeding to make a decorator for your collections
 # TODO: Document global variables this uses
 module TableBuilderHelper
-  class Column
-    attr_reader :key, :name, :attribute, :sortable
-
-    def initialize(key: nil, name: '', attribute:, sortable: true)
-      if key.nil? && name.empty?
-        raise ColumnMustHaveKeyOrNameError
-      end
-
-      @key = key
-      @name = name
-      @attribute = attribute
-      @sortable = sortable
-    end
-
-    def value(obj)
-      if @attribute.is_a?(Proc)
-        @attribute.call(obj)
-      else
-        obj.try(@attribute)
-      end
-    end
-  end
-
-  class ColumnMustHaveKeyOrNameError < StandardError; end
-
-
   # TODO: rename this after migration from `table_builder`
   def table_builder_2(
     collection,
