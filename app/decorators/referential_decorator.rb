@@ -17,6 +17,7 @@ class ReferentialDecorator < Draper::Decorator
     end
 
     if h.policy(object).edit?
+      # TODO: Handle buttons in the header and don't show them in the gear menu
       # button.btn.btn-primary type='button' data-toggle='modal' data-target='#purgeModal' Purger
 
       if object.archived?
