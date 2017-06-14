@@ -4,7 +4,7 @@ class RoutingConstraintZonesController < ChouetteController
   defaults resource_class: Chouette::RoutingConstraintZone
   respond_to :html, :xml, :json
 
-  before_action :remove_empty_stop_point, only: [:create, :update]
+  before_action :check_stoppoint_param, only: [:create, :update]
 
   belongs_to :referential do
     belongs_to :line, parent_class: Chouette::Line
@@ -56,7 +56,16 @@ class RoutingConstraintZonesController < ChouetteController
     )
   end
 
-  def remove_empty_stop_point
-    params.require(:routing_constraint_zone)[:stop_point_ids].delete('')
+  def check_stoppoint_param
+    spArr = []
+    if params.require(:routing_constraint_zone)[:stop_point_ids] and params.require(:routing_constraint_zone)[:stop_point_ids].length >= 2
+      params.require(:routing_constraint_zone)[:stop_point_ids].each do |k,v|
+        spArr << v
+      end
+      params.require(:routing_constraint_zone)[:stop_point_ids] = spArr
+    else
+      Rails.logger.error("Error: An ITL must have at least two stop points")
+    end
   end
+
 end

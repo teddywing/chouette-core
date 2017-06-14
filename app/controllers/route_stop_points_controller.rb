@@ -11,8 +11,7 @@ class RouteStopPointsController < ChouetteController
 
   def index
     respond_to do |format|
-      format.json { render json: referential.lines.find(params[:line_id]).routes.find(params[:route_id]).stop_points.map { |sp| { id: sp.id, name: sp.name } } }
+      format.json { render json: referential.lines.find(params[:line_id]).routes.find(params[:route_id]).stop_points.map { |sp| { id: sp.id, stop_area_id: sp.stop_area.id, name: sp.name, zip_code: sp.stop_area.zip_code, city_name: sp.stop_area.city_name } } }
     end
   end
 end
-
