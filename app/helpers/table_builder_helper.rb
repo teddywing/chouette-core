@@ -119,13 +119,13 @@ module TableBuilderHelper
     end
   end
 
-  def build_links(item, actions)
+  def build_links(item, links)
     trigger = content_tag :div, class: 'btn dropdown-toggle', data: { toggle: 'dropdown' } do
       content_tag :span, '', class: 'fa fa-cog'
     end
 
     menu = content_tag :ul, class: 'dropdown-menu' do
-      item.action_links.map do |link|
+      (action_links(links, item) + item.action_links).map do |link|
         content_tag :li, link_to(
           link.name,
           link.href,
@@ -266,5 +266,61 @@ module TableBuilderHelper
     end
 
     polymorph_url
+  end
+
+  # TODO: rename
+  def action_links(actions, obj)
+    actions_after_policy_check(actions, obj).map do |action|
+      # TODO: Move that s to another method
+      polymorph_url = []
+
+      unless [:show, :delete].include? action
+        polymorph_url << action
+      end
+
+      polymorph_url += polymorphic_url_parts(obj)
+
+      Link.new(
+        name: t("actions.#{action}"),
+        href: polymorph_url,
+        method: action_link_method(action)
+      )
+    end
+  end
+
+  def action_link_method(action)
+    actions_to_http_methods = {
+      delete: :delete,
+      archive: :put,
+      unarchive: :put
+    }
+
+    actions_to_http_methods[action] || :get
+  end
+
+  def actions_after_policy_check(actions, obj)
+    actions.select do |action|
+    #   if action == :delete
+    #     if policy(item).present? && policy(item).destroy?
+    #       action
+    #     end
+    #   elsif action == :edit
+    #     if policy(item).present? && policy(item).update?
+    #       action
+    #     end
+    #   elsif action == :edit
+    #     
+    #   end
+      # if (action == :delete && policy(item).present? && policy(item).destroy?) ||
+      (action == :delete && policy(obj).present? && policy(obj).destroy?) ||
+        (action == :delete && !policy(obj).present?) ||
+        (action == :edit && policy(obj).present? && policy(obj).update?) ||
+        (action == :edit && !policy(obj).present?) ||
+        (action == :archive && !obj.archived?) ||
+        (action == :unarchive && obj.archived?) ||
+        ([:delete, :edit, :archive, :unarchive].include?(action))
+      #   action
+      # end
+    end
   end
 end
