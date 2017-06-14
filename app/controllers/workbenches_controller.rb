@@ -1,6 +1,3 @@
-# TODO: Try not importing
-require 'referential_decorator'
-
 class WorkbenchesController < BreadcrumbController
   before_action :query_params, only: [:show]
 
