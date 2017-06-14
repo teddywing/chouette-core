@@ -125,18 +125,13 @@ module TableBuilderHelper
   end
 
   def build_links(item, links)
-    user_context = UserContext.new(
-      current_user,
-      referential: self.try(:current_referential)
-    )
-
     trigger = content_tag :div, class: 'btn dropdown-toggle', data: { toggle: 'dropdown' } do
       content_tag :span, '', class: 'fa fa-cog'
     end
 
     menu = content_tag :ul, class: 'dropdown-menu' do
       (
-        CustomLinks.new(item, user_context, links).links +
+        CustomLinks.new(item, pundit_user, links).links +
         item.action_links
       ).map do |link|
         content_tag :li, link_to(
