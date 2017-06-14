@@ -1,3 +1,5 @@
+# TODO: Add doc comment about neeeding to make a decorator for your collections
+# TODO: Document global variables this uses
 module TableBuilderHelper
   class Column
     attr_reader :key, :name, :attribute, :sortable
