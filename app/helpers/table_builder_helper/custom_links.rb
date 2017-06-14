@@ -40,20 +40,38 @@ module TableBuilderHelper
 
     def actions_after_policy_check
       @actions.select do |action|
+        # Has policy and can destroy
         (action == :delete &&
             Pundit.policy(@user_context, @obj).present? &&
             Pundit.policy(@user_context, @obj).destroy?) ||
+
+          # Doesn't have policy
           (action == :delete &&
             !Pundit.policy(@user_context, @obj).present?) ||
+
+          # Has policy and can update
           (action == :edit &&
             Pundit.policy(@user_context, @obj).present? &&
             Pundit.policy(@user_context, @obj).update?) ||
+
+          # Doesn't have policy
           (action == :edit &&
             !Pundit.policy(@user_context, @obj).present?) ||
+
+          # Object isn't archived
           (action == :archive && !@obj.archived?) ||
+
+          # Object is archived
           (action == :unarchive && @obj.archived?) ||
-          (![:delete, :edit, :archive, :unarchive].include?(action))
+
+          action_is_allowed_regardless_of_policy(action)
       end
+    end
+
+    private
+
+    def action_is_allowed_regardless_of_policy(action)
+      ![:delete, :edit, :archive, :unarchive].include?(action)
     end
   end
 end
