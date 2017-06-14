@@ -109,6 +109,8 @@ module TableBuilderHelper
         CustomLinks.new(item, pundit_user, links).links +
         item.action_links
       ).map do |link|
+        # TODO: ensure the Delete link is formatted correctly with the spacer,
+        # icon, and label
         content_tag :li, link_to(
           link.name,
           link.href,
