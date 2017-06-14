@@ -52,9 +52,7 @@ module TableBuilderHelper
             !Pundit.policy(@user_context, @obj).present?) ||
           (action == :archive && !@obj.archived?) ||
           (action == :unarchive && @obj.archived?) ||
-
-          # TODO: Something wrong here for actions not handled
-          ([:delete, :edit, :archive, :unarchive].include?(action))
+          (![:delete, :edit, :archive, :unarchive].include?(action))
       end
     end
   end
