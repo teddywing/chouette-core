@@ -1,3 +1,6 @@
+# TODO: Try not importing
+require 'referential_decorator'
+
 class WorkbenchesController < BreadcrumbController
   before_action :query_params, only: [:show]
 
@@ -14,6 +17,10 @@ class WorkbenchesController < BreadcrumbController
     q_for_result =
       scope.ransack(params[:q].merge(archived_at_not_null: nil, archived_at_null: nil))
     @wbench_refs = sort_result(q_for_result.result).paginate(page: params[:page], per_page: 30)
+    @wbench_refs = ModelDecorator.decorate(
+      @wbench_refs,
+      with: ReferentialDecorator
+    )
 
     @q = scope.ransack(params[:q])
     show! do
