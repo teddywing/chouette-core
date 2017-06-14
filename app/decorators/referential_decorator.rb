@@ -1,20 +1,3 @@
-# Delegates 'will_paginate' methods
-class PaginatingDecorator < Draper::CollectionDecorator
-  delegate(
-    :current_page,
-    :per_page,
-    :offset,
-    :total_entries,
-    :total_pages
-  )
-end
-
-
-class ModelDecorator < PaginatingDecorator
-  delegate :model
-end
-
-
 class ReferentialDecorator < Draper::Decorator
   delegate_all
 
