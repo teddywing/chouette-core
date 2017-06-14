@@ -96,7 +96,7 @@ module TableBuilderHelper
           columns.map do |column|
             value = column.value(item)
 
-            if column.attribute == 'name' || column.attribute == 'comment'
+            if column_is_linkable?(column)
               # Build a link to the `item`
               polymorph_url = polymorphic_url_parts(item)
               bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
@@ -241,6 +241,10 @@ module TableBuilderHelper
         content_tag(:label, '', for: id_name)
       )
     end
+  end
+
+  def column_is_linkable?(column)
+    column.attribute == 'name' || column.attribute == 'comment'
   end
 
   def polymorphic_url_parts(item)
