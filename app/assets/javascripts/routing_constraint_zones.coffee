@@ -58,4 +58,5 @@ $ ->
   ITL_stoppoints()
 
   $('#routing_constraint_zone_route_id').on 'change', ->
+    $('.alert-danger').remove()
     ITL_stoppoints()
