@@ -1,3 +1,6 @@
+require 'table_builder_helper/custom_links'
+require 'table_builder_helper/url'
+
 # TODO: Add doc comment about neeeding to make a decorator for your collections
 # TODO: Document global variables this uses
 module TableBuilderHelper
@@ -100,7 +103,7 @@ module TableBuilderHelper
 
             if column_is_linkable?(column)
               # Build a link to the `item`
-              polymorph_url = polymorphic_url_parts(item)
+              polymorph_url = URL.polymorphic_url_parts(item)
               bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
             else
               bcont << content_tag(:td, value)
@@ -122,12 +125,20 @@ module TableBuilderHelper
   end
 
   def build_links(item, links)
+    user_context = UserContext.new(
+      current_user,
+      referential: self.try(:current_referential)
+    )
+
     trigger = content_tag :div, class: 'btn dropdown-toggle', data: { toggle: 'dropdown' } do
       content_tag :span, '', class: 'fa fa-cog'
     end
 
     menu = content_tag :ul, class: 'dropdown-menu' do
-      (action_links(links, item) + item.action_links).map do |link|
+      (
+        CustomLinks.new(item, user_context, links).links +
+        item.action_links
+      ).map do |link|
         content_tag :li, link_to(
           link.name,
           link.href,
@@ -247,82 +258,5 @@ module TableBuilderHelper
 
   def column_is_linkable?(column)
     column.attribute == 'name' || column.attribute == 'comment'
-  end
-
-  def polymorphic_url_parts(item)
-    polymorph_url = []
-
-    unless item.is_a?(Calendar) || item.is_a?(Referential)
-      if current_referential
-        polymorph_url << current_referential
-        polymorph_url << item.line if item.respond_to? :line
-        polymorph_url << item.route.line if item.is_a?(Chouette::RoutingConstraintZone)
-        polymorph_url << item if item.respond_to? :line_referential
-        polymorph_url << item.stop_area if item.respond_to? :stop_area
-        polymorph_url << item if item.respond_to? :stop_points || item.is_a?(Chouette::TimeTable)
-      elsif item.respond_to? :referential
-        polymorph_url << item.referential
-      end
-    else
-      polymorph_url << item
-    end
-
-    polymorph_url
-  end
-
-  # TODO: rename
-  def action_links(actions, obj)
-    actions_after_policy_check(actions, obj).map do |action|
-      # TODO: Move that s to another method
-      polymorph_url = []
-
-      unless [:show, :delete].include? action
-        polymorph_url << action
-      end
-
-      polymorph_url += polymorphic_url_parts(obj)
-
-      Link.new(
-        name: t("actions.#{action}"),
-        href: polymorph_url,
-        method: action_link_method(action)
-      )
-    end
-  end
-
-  def action_link_method(action)
-    actions_to_http_methods = {
-      delete: :delete,
-      archive: :put,
-      unarchive: :put
-    }
-
-    actions_to_http_methods[action] || :get
-  end
-
-  def actions_after_policy_check(actions, obj)
-    actions.select do |action|
-    #   if action == :delete
-    #     if policy(item).present? && policy(item).destroy?
-    #       action
-    #     end
-    #   elsif action == :edit
-    #     if policy(item).present? && policy(item).update?
-    #       action
-    #     end
-    #   elsif action == :edit
-    #     
-    #   end
-      # if (action == :delete && policy(item).present? && policy(item).destroy?) ||
-      (action == :delete && policy(obj).present? && policy(obj).destroy?) ||
-        (action == :delete && !policy(obj).present?) ||
-        (action == :edit && policy(obj).present? && policy(obj).update?) ||
-        (action == :edit && !policy(obj).present?) ||
-        (action == :archive && !obj.archived?) ||
-        (action == :unarchive && obj.archived?) ||
-        ([:delete, :edit, :archive, :unarchive].include?(action))
-      #   action
-      # end
-    end
   end
 end
