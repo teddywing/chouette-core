@@ -12,6 +12,7 @@ fr:
         objectid: Object ID
         stop_points_count: Nombre d'arrêts
         route: Itinéraire associé
+        route_id: Itinéraire associé
     errors:
       models:
         routing_constraint_zone:

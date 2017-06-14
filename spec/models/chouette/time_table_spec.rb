@@ -1,11 +1,20 @@
 require 'spec_helper'
 
 describe Chouette::TimeTable, :type => :model do
-
   subject { create(:time_table) }
 
   it { is_expected.to validate_presence_of :comment }
   it { is_expected.to validate_uniqueness_of :objectid }
+
+  context "merge with calendar" do
+    let(:calendar) { create(:calendar) }
+
+    it 'should add calendar dates to time_table' do
+      subject.dates.clear
+      subject.merge!(calendar.convert_to_time_table)
+      expect(subject.dates.map(&:date)).to include(*calendar.dates)
+    end
+  end
 
   describe "actualize" do
     let(:calendar) { create(:calendar) }

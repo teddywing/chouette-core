@@ -38,7 +38,7 @@ const getInitialState = () => {
       for_alighting: v.for_alighting || "normal",
       longitude: v.longitude || 0,
       latitude: v.latitude || 0,
-      comment: v.comment.replace("&#39;", "\'"),
+      comment: v.comment ? v.comment.replace("&#39;", "\'") : '',
       olMap: {
         isOpened: false,
         json: {}

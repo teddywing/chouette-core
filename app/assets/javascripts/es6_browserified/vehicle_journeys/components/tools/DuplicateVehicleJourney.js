@@ -53,74 +53,75 @@ class DuplicateVehicleJourney extends Component {
                   <div className='modal-header'>
                     <h4 className='modal-title'>Dupliquer une course</h4>
                     {(this.props.modal.type == 'duplicate') && (
-                      <em>Dupliquer les horaires de la course {actions.getSelected(this.props.vehicleJourneys)[0].objectid}</em>
+                      <em>Dupliquer les horaires de la course {actions.humanOID(actions.getSelected(this.props.vehicleJourneys)[0].objectid)}</em>
                     )}
                   </div>
 
                   {(this.props.modal.type == 'duplicate') && (
-                    <form>
+                    <form className='form-horizontal'>
                       <div className='modal-body'>
-                        <div className='row'>
-                          <div className={'col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-3 col-xs-offset-1 ' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'hidden' : '' )}>
-                            <div className='form-group'>
-                              <label className='control-label is-required'>Horaire de départ</label>
-                              <span className={'input-group time' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? ' disabled' : '')}>
-                                <input
-                                  type='number'
-                                  ref='duplicate_time_hh'
-                                  min='00'
-                                  max='23'
-                                  className='form-control'
-                                  defaultValue={this.getDefaultValue('hour')}
-                                  disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
-                                  />
-                                <span>:</span>
-                                <input
-                                  type='number'
-                                  ref='duplicate_time_mm'
-                                  min='00'
-                                  max='59'
-                                  className='form-control'
-                                  defaultValue={this.getDefaultValue('minute')}
-                                  disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
-                                  />
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className='col-lg-4 col-md-4 col-sm-4 col-xs-4'>
-                            <div className='form-group'>
-                              <label className='control-label is-required'>Nombre de courses à créer et dupliquer</label>
+                        <div className={'form-group ' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'hidden' : '' )}>
+                          <label className='control-label is-required col-sm-8'>Horaire de départ indicatif</label>
+                          <span className="col-sm-4">
+                            <span className={'input-group time' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? ' disabled' : '')}>
                               <input
                                 type='number'
-                                ref='duplicate_number'
-                                min='1'
-                                max='20'
-                                defaultValue='1'
+                                ref='duplicate_time_hh'
+                                min='00'
+                                max='23'
                                 className='form-control'
-                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                                required
+                                defaultValue={this.getDefaultValue('hour')}
+                                disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
                                 />
-                            </div>
-                          </div>
-
-                          <div className='col-lg-3 col-md-3 col-sm-3 col-xs-3'>
-                            <div className='form-group'>
-                              <label className='control-label is-required'>Avec un décalage de</label>
+                              <span>:</span>
                               <input
                                 type='number'
-                                ref='additional_time'
-                                min='-59'
+                                ref='duplicate_time_mm'
+                                min='00'
                                 max='59'
-                                defaultValue='0'
                                 className='form-control'
-                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                                required
+                                defaultValue={this.getDefaultValue('minute')}
+                                disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
                                 />
-                            </div>
+                            </span>
+                          </span>
+                        </div>
+
+                        <div className='form-group'>
+                          <label className='control-label is-required col-sm-8'>Nombre de courses à créer et dupliquer</label>
+                          <div className="col-sm-4">
+                            <input
+                              type='number'
+                              style={{'width': 104}}
+                              ref='duplicate_number'
+                              min='1'
+                              max='20'
+                              defaultValue='1'
+                              className='form-control'
+                              onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                              required
+                              />
+                          </div>
+                        </div>
+
+                        <div className='form-group'>
+                          <label className='control-label is-required col-sm-8'>Décalage à partir duquel on créé les courses</label>
+                          <div className="col-sm-4">
+                            <input
+                              type='number'
+                              style={{'width': 104}}
+                              ref='additional_time'
+                              min='-59'
+                              max='59'
+                              defaultValue='0'
+                              className='form-control'
+                              onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                              required
+                              />
                           </div>
                         </div>
                       </div>
+
                       <div className='modal-footer'>
                         <button
                           className='btn btn-link'

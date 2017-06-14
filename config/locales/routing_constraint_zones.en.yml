@@ -12,6 +12,7 @@ en:
         objectid: Object ID
         stop_points_count: Number of stop points
         route: Associated route
+        route_id: Associated route
     errors:
       models:
         routing_constraint_zone:
