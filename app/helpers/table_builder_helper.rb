@@ -9,22 +9,19 @@ module TableBuilderHelper
   def table_builder_2(
     collection,
     columns,
-    current_referential: nil,
 
     # When false, no columns will be sortable
     sortable: true,
 
+    # When true, adds a column of checkboxes to the left side of the table
     selectable: false,
-    # selection_actions: [] ## this has been gotten rid of. The element based on this should be created elsewhere
-    links: [],  # links: or actions: ? I think 'links' is better since 'actions' evokes Rails controller actions and we want to put `link_to`s here
-    # TODO: get rid of this argument. Going with params instead
-    sort_by: {},  # { column: 'name', direction: 'desc' }
-    cls: ''  # can we rename this to "class"?
-      # ^^ rename to html_options = {} at the end of the non-keyword arguments? Hrm, not a fan of combining hash args and keyword args
-# sort column
-# sort direction
 
-# TODO: add `linked_column` or some such attribute that defines which column should be linked and what method to call to get it
+    # A set of controller actions that will be added as links to the top of the
+    # gear menu
+    links: [],
+
+    # A CSS class to apply to the <table>
+    cls: ''
   )
 
     content_tag :table,
