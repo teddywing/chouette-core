@@ -38,7 +38,6 @@ module TableBuilderHelper
       content_tag :tr do
         hcont = []
 
-        # Adds checkbox to table header
         if selectable
           hcont << content_tag(:th, checkbox(id_name: '0', value: 'all'))
         end
