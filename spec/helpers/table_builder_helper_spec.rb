@@ -187,7 +187,8 @@ describe TableBuilderHelper, type: :helper do
         context: { referential: referential }
       )
       allow(helper).to receive(:current_user).and_return(user_context)
-      allow(helper).to receive(:current_referential).and_return(referential)
+      allow(TableBuilderHelper::URL).to receive(:current_referential)
+        .and_return(referential)
 
       companies = [company]
 
