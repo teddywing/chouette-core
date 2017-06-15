@@ -104,7 +104,11 @@ module TableBuilderHelper
   end
 
   def build_links(item, links)
-    trigger = content_tag :div, class: 'btn dropdown-toggle', data: { toggle: 'dropdown' } do
+    trigger = content_tag(
+      :div,
+      class: 'btn dropdown-toggle',
+      data: { toggle: 'dropdown' }
+    ) do
       content_tag :span, '', class: 'fa fa-cog'
     end
 
