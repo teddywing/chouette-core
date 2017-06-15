@@ -115,62 +115,9 @@ module TableBuilderHelper
       ).map do |link|
         gear_menu_link(link)
       end.join.html_safe
-
-      # actions.map do |action|
-      #   polymorph_url = []
-      #
-      #   unless [:show, :delete].include? action
-      #     polymorph_url << action
-      #   end
-      #
-      #   polymorph_url += polymorphic_url_parts(item)
-      #
-      #   if action == :delete
-      #     if policy(item).present?
-      #       if policy(item).destroy?
-      #         # TODO: This tag is exactly the same as the one below it
-      #         content_tag :li, '', class: 'delete-action' do
-      #           link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
-      #             txt = t("actions.#{action}")
-      #             pic = content_tag :span, '', class: 'fa fa-trash'
-      #             pic + txt
-      #           end
-      #         end
-      #       end
-      #     else
-      #       content_tag :li, '', class: 'delete-action' do
-      #         link_to(polymorph_url, method: :delete, data: { confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?' }) do
-      #           txt = t("actions.#{action}")
-      #           pic = content_tag :span, '', class: 'fa fa-trash'
-      #           pic + txt
-      #         end
-      #       end
-      #     end
-      #
-      #   elsif action == :edit
-      #     if policy(item).present?
-      #       if policy(item).update?
-      #         content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
-      #       end
-      #     else
-      #       content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
-      #     end
-      #   elsif action == :archive
-      #     unless item.archived?
-      #       content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
-      #     end
-      #   elsif action == :unarchive
-      #     if item.archived?
-      #       content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
-      #     end
-      #   else
-      #     content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
-      #   end
-      # end.join.html_safe
     end
 
     content_tag :div, trigger + menu, class: 'btn-group'
-
   end
 
   def build_column_header(
