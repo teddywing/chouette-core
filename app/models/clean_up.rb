@@ -40,7 +40,7 @@ class CleanUp < ActiveRecord::Base
     self.destroy_time_tables(time_tables)
   end
 
-  def destroy_time_table_dates_before
+  def destroy_time_tables_dates_before
     Chouette::TimeTableDate.in_dates.where('date < ?', self.begin_date).destroy_all
   end
 
@@ -132,11 +132,11 @@ class CleanUp < ActiveRecord::Base
 
   def log_successful message_attributs
     update_attribute(:ended_at, Time.now)
-    CleanUpResult.create(destroy_up: self, message_key: :successfull, message_attributs: message_attributs)
+    CleanUpResult.create(clean_up: self, message_key: :successfull, message_attributs: message_attributs)
   end
 
   def log_failed message_attributs
     update_attribute(:ended_at, Time.now)
-    CleanUpResult.create(destroy_up: self, message_key: :failed, message_attributs: message_attributs)
+    CleanUpResult.create(clean_up: self, message_key: :failed, message_attributs: message_attributs)
   end
 end
