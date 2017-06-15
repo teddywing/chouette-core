@@ -200,6 +200,11 @@ describe TableBuilderHelper, type: :helper do
         referential_id: referential.id
       })
 
+      companies = ModelDecorator.decorate(
+        companies,
+        with: CompanyDecorator
+      )
+
       expected = <<-HTML
 <table class="table has-search">
     <thead>

@@ -1,4 +1,6 @@
 class CompanyDecorator < Draper::Decorator
+  decorates Chouette::Company
+
   delegate_all
 
   def self.collection_decorator_class
