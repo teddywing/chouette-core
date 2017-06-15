@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var actions = require('../actions')
+var _ = require('lodash')
 
 class SaveTimetable extends Component{
   constructor(props){
@@ -18,7 +19,11 @@ class SaveTimetable extends Component{
               type='button'
               onClick={e => {
                 e.preventDefault()
-                actions.submitTimetable(this.props.dispatch, this.props.timetable, this.props.metas)
+                if(this.props.timetable.time_table_periods.length == 0 && _.some(this.props.metas.day_types)){
+                  this.props.onShowErrorModal()
+                }else{
+                  actions.submitTimetable(this.props.getDispatch(), this.props.timetable, this.props.metas)
+                }
               }}
             >
               Valider

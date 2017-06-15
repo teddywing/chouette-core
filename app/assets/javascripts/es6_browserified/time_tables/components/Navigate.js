@@ -39,7 +39,7 @@ let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
                       value={month}
                       onClick={e => {
                         e.preventDefault()
-                        dispatch(actions.checkConfirmModal(e, actions.changePage(dispatch, e.currentTarget.value), pagination.stateChanged, dispatch))
+                        dispatch(actions.checkConfirmModal(e, actions.changePage(dispatch, e.currentTarget.value), pagination.stateChanged, dispatch, metas, timetable))
                       }}
                     >
                       {actions.monthName(month) + ' ' + new Date(month).getFullYear()}
@@ -56,7 +56,7 @@ let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
               <button
                 onClick={e => {
                   e.preventDefault()
-                  dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch))
+                  dispatch(actions.checkConfirmModal(e, actions.goToPreviousPage(dispatch, pagination), pagination.stateChanged, dispatch, metas, timetable))
                 }}
                 type='button'
                 data-target='#ConfirmModal'
@@ -66,7 +66,7 @@ let Navigate = ({ dispatch, metas, timetable, pagination, status, filters}) => {
               <button
                 onClick={e => {
                   e.preventDefault()
-                  dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch))
+                  dispatch(actions.checkConfirmModal(e, actions.goToNextPage(dispatch, pagination), pagination.stateChanged, dispatch, metas, timetable))
                 }}
                 type='button'
                 data-target='#ConfirmModal'
