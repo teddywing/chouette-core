@@ -20,6 +20,15 @@ module TableBuilderHelper
         obj.try(@attribute)
       end
     end
+
+    def header_label(model = nil)
+      return @name unless name.empty?
+
+      # Transform `Chouette::Line` into "line"
+      model_key = model.to_s.demodulize.underscore
+
+      I18n.t("activerecord.attributes.#{model_key}.#{@key}")
+    end
   end
 
 

@@ -10,8 +10,10 @@ module TableBuilderHelper
     collection,
     columns,
     current_referential: nil,
-    # TODO: use this when building column headers
+
+    # When false, no columns will be sortable
     sortable: true,
+
     selectable: false,
     # selection_actions: [] ## this has been gotten rid of. The element based on this should be created elsewhere
     links: [],  # links: or actions: ? I think 'links' is better since 'actions' evokes Rails controller actions and we want to put `link_to`s here
@@ -26,14 +28,14 @@ module TableBuilderHelper
   )
 
     content_tag :table,
-      thead(collection, columns, selectable, links.any?) +
+      thead(collection, columns, sortable, selectable, links.any?) +
         tbody(collection, columns, selectable, links),
       class: cls
   end
 
   private
 
-  def thead(collection, columns, selectable, has_links)
+  def thead(collection, columns, sortable, selectable, has_links)
     content_tag :thead do
       content_tag :tr do
         hcont = []
@@ -45,6 +47,7 @@ module TableBuilderHelper
         columns.each do |column|
           hcont << content_tag(:th, build_column_header(
             column,
+            sortable,
             collection.model,
             params,
             params[:sort],
@@ -179,11 +182,16 @@ module TableBuilderHelper
 
   def build_column_header(
     column,
+    table_is_sortable,
     collection_model,
     params,
     sort_on,
     sort_direction
   )
+    if !table_is_sortable
+      return column.header_label(collection_model)
+    end
+
     return column.name if !column.sortable
 
     direction =
@@ -208,17 +216,10 @@ module TableBuilderHelper
       arrow_icons = content_tag :span, arrow_up + arrow_down, class: 'orderers'
 
       (
-        column_header_label(collection_model, column.key) +
+        column.header_label(collection_model) +
         arrow_icons
       ).html_safe
     end
-  end
-
-  def column_header_label(model, field)
-    # Transform `Chouette::Line` into "line"
-    model_key = model.to_s.demodulize.underscore
-
-    I18n.t("activerecord.attributes.#{model_key}.#{field}")
   end
 
   def checkbox(id_name:, value:)
