@@ -121,7 +121,7 @@ module TableBuilderHelper
             method: link.method,
             data: link.data
           ) do
-            link.content || link.name
+            link.content
           end,
           class: link.method == :delete ? 'delete-action' : '',
         )

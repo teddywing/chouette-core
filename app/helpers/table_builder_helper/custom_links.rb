@@ -17,7 +17,7 @@ module TableBuilderHelper
     def links
       actions_after_policy_check.map do |action|
         Link.new(
-          name: I18n.t("actions.#{action}"),
+          content: I18n.t("actions.#{action}"),
           href: polymorphic_url(action),
           method: method_for_action(action)
         )

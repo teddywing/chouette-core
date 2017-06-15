@@ -1,11 +1,10 @@
 class Link
-  attr_reader :name, :href, :method, :data, :content
+  attr_reader :content, :href, :method, :data
 
-  def initialize(name: nil, href:, method: nil, data: nil, content: nil)
-    @name = name
+  def initialize(content: nil, href:, method: nil, data: nil)
+    @content = content
     @href = href
     @method = method
     @data = data
-    @content = content
   end
 end

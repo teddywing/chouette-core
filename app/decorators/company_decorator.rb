@@ -16,21 +16,21 @@ class CompanyDecorator < Draper::Decorator
 
     if h.policy(Chouette::Company).create?
       links << Link.new(
-        name: h.t('companies.actions.new'),
+        content: h.t('companies.actions.new'),
         href: h.new_line_referential_company_path(@line_referential)
       )
     end
 
     if h.policy(object).update?
       links << Link.new(
-        name: h.t('companies.actions.edit'),
+        content: h.t('companies.actions.edit'),
         href: h.edit_line_referential_company_path(@line_referential, object)
       )
     end
 
     if h.policy(object).destroy?
       links << Link.new(
-        name: t('companies.actions.destroy'),
+        content: t('companies.actions.destroy'),
         href: h.line_referential_company_path(@line_referential, object),
         method: :delete,
         data: { confirm:  t('companies.actions.destroy_confirm') }

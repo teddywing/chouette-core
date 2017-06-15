@@ -4,14 +4,14 @@ class ReferentialDecorator < Draper::Decorator
   def action_links
     links = [
       Link.new(
-        name: h.t('time_tables.index.title'),
+        content: h.t('time_tables.index.title'),
         href: h.referential_time_tables_path(object)
       )
     ]
 
     if h.policy(object).clone?
       links << Link.new(
-        name: h.t('actions.clone'),
+        content: h.t('actions.clone'),
         href: h.new_referential_path(from: object.id)
       )
     end
@@ -22,13 +22,13 @@ class ReferentialDecorator < Draper::Decorator
 
       if object.archived?
         links << Link.new(
-          name: h.t('actions.unarchive'),
+          content: h.t('actions.unarchive'),
           href: h.unarchive_referential_path(object.id),
           method: :put
         )
       else
         links << Link.new(
-          name: h.t('actions.archive'),
+          content: h.t('actions.archive'),
           href: h.archive_referential_path(object.id),
           method: :put
         )
@@ -37,10 +37,10 @@ class ReferentialDecorator < Draper::Decorator
 
     if h.policy(object).destroy?
       links << Link.new(
+        content: h.destroy_link_content,
         href: h.referential_path(object),
         method: :delete,
-        data: { confirm: h.t('referentials.actions.destroy_confirm') },
-        content: h.destroy_link_content
+        data: { confirm: h.t('referentials.actions.destroy_confirm') }
       )
     end
 
