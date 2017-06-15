@@ -39,7 +39,10 @@ describe TableBuilderHelper, type: :helper do
         id: referentials[0].workbench.id
       })
 
-      referentials.map! { |referential| referential.decorate }
+      referentials = ModelDecorator.decorate(
+        referentials,
+        with: ReferentialDecorator
+      )
 
       expected = <<-HTML
 <table class="table has-filter has-search">
