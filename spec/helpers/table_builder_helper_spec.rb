@@ -11,12 +11,8 @@ describe TableBuilderHelper, type: :helper do
       referential = build_stubbed(:referential)
       workbench = referential.workbench
 
-      # user_context = create_user_context(
-      #   user: build_stubbed(:user),
-      #   referential: referential
-      # )
-      user_context = OpenStruct.new(
-        user: build_stubbed(
+      user_context = UserContext.new(
+        build_stubbed(
           :user,
           organisation: referential.organisation,
           permissions: [
@@ -25,7 +21,7 @@ describe TableBuilderHelper, type: :helper do
             'referentials.destroy'
           ]
         ),
-        context: { referential: referential }
+        referential: referential
       )
       allow(helper).to receive(:current_user).and_return(user_context)
 
@@ -174,8 +170,8 @@ describe TableBuilderHelper, type: :helper do
         line_referential: line_referential
       )
 
-      user_context = OpenStruct.new(
-        user: build_stubbed(
+      user_context = UserContext.new(
+        build_stubbed(
           :user,
           organisation: referential.organisation,
           permissions: [
@@ -184,7 +180,7 @@ describe TableBuilderHelper, type: :helper do
             'referentials.destroy'
           ]
         ),
-        context: { referential: referential }
+        referential: referential
       )
       allow(helper).to receive(:current_user).and_return(user_context)
       allow(TableBuilderHelper::URL).to receive(:current_referential)
@@ -282,8 +278,8 @@ describe TableBuilderHelper, type: :helper do
         line_referential: line_referential
       )
 
-      user_context = OpenStruct.new(
-        user: build_stubbed(
+      user_context = UserContext.new(
+        build_stubbed(
           :user,
           organisation: referential.organisation,
           permissions: [
@@ -292,7 +288,7 @@ describe TableBuilderHelper, type: :helper do
             'referentials.destroy'
           ]
         ),
-        context: { referential: referential }
+        referential: referential
       )
       allow(helper).to receive(:current_user).and_return(user_context)
       allow(TableBuilderHelper::URL).to receive(:current_referential)
