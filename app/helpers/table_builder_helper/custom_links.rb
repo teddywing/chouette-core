@@ -35,7 +35,7 @@ module TableBuilderHelper
     end
 
     def method_for_action(action)
-      ACTIONS_TO_HTTP_METHODS[action] || :get
+      ACTIONS_TO_HTTP_METHODS[action]
     end
 
     def actions_after_policy_check
