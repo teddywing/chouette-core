@@ -152,7 +152,7 @@ describe TableBuilderHelper, type: :helper do
           )
         ],
         selectable: true,
-        links: [:show, :edit, :archive, :unarchive, :delete],
+        links: [:show, :edit],
         cls: 'table has-filter has-search'
       )
 
