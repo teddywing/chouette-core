@@ -113,18 +113,7 @@ module TableBuilderHelper
         CustomLinks.new(item, pundit_user, links).links +
         item.action_links
       ).map do |link|
-        # TODO: make a new method for this
-        content_tag(
-          :li,
-          link_to(
-            link.href,
-            method: link.method,
-            data: link.data
-          ) do
-            link.content
-          end,
-          class: link.method == :delete ? 'delete-action' : '',
-        )
+        gear_menu_link(link)
       end.join.html_safe
 
       # actions.map do |action|
@@ -236,5 +225,19 @@ module TableBuilderHelper
 
   def column_is_linkable?(column)
     column.attribute == 'name' || column.attribute == 'comment'
+  end
+
+  def gear_menu_link(link)
+    content_tag(
+      :li,
+      link_to(
+        link.href,
+        method: link.method,
+        data: link.data
+      ) do
+        link.content
+      end,
+      class: ('delete-action' if link.method == :delete)
+    )
   end
 end
