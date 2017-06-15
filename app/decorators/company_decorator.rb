@@ -9,4 +9,33 @@ class CompanyDecorator < Draper::Decorator
     object.lines.count
   end
 
+  def action_links
+    links = []
+
+    if h.policy(Chouette::Company).create?
+      links << Link.new(
+        name: h.t('companies.actions.new'),
+        href: h.new_line_referential_company_path(@line_referential)
+      )
+    end
+
+    if h.policy(object).update?
+      links << Link.new(
+        name: h.t('companies.actions.edit'),
+        href: h.edit_line_referential_company_path(@line_referential, object)
+      )
+    end
+
+    if h.policy(object).destroy?
+      links << Link.new(
+        name: t('companies.actions.destroy'),
+        href: h.line_referential_company_path(@line_referential, object),
+        method: :delete,
+        data: { confirm:  t('companies.actions.destroy_confirm') }
+      )
+    end
+
+    links
+  end
+
 end
