@@ -113,13 +113,17 @@ module TableBuilderHelper
         CustomLinks.new(item, pundit_user, links).links +
         item.action_links
       ).map do |link|
-        # TODO: ensure the Delete link is formatted correctly with the spacer,
-        # icon, and label
-        content_tag :li, link_to(
-          link.name,
-          link.href,
-          method: link.method,
-          data: link.data
+        # TODO: make a new method for this
+        content_tag(
+          :li,
+          link_to(
+            link.href,
+            method: link.method,
+            data: link.data
+          ) do
+            link.content || link.name
+          end,
+          class: link.method == :delete ? 'delete-action' : '',
         )
       end.join.html_safe
 

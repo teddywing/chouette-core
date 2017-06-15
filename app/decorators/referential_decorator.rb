@@ -39,7 +39,8 @@ class ReferentialDecorator < Draper::Decorator
       links << Link.new(
         href: h.referential_path(object),
         method: :delete,
-        data: { confirm: h.t('referentials.actions.destroy_confirm') }
+        data: { confirm: h.t('referentials.actions.destroy_confirm') },
+        content: h.destroy_link
       )
     end
 
