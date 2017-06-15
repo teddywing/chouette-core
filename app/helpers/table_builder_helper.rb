@@ -41,7 +41,7 @@ module TableBuilderHelper
           hcont << content_tag(:th, checkbox(id_name: '0', value: 'all'))
         end
 
-        columns.map do |column|
+        columns.each do |column|
           hcont << content_tag(:th, build_column_header(
             column,
             collection.model,
@@ -73,7 +73,7 @@ module TableBuilderHelper
             )
           end
 
-          columns.map do |column|
+          columns.each do |column|
             value = column.value(item)
 
             if column_is_linkable?(column)
