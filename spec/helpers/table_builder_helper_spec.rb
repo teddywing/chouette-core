@@ -376,15 +376,3 @@ describe TableBuilderHelper, type: :helper do
     end
   end
 end
-
-
-# Replace table builder on workspaces#show page
-# Make the builder work without a `current_referential` so we can actually test it
-# Make a way to define a column as non-sortable. By default, columns will be sortable. Unless sortable==false and no columns should be sortable.
-#
-#
-# TODO:
-# - Finish writing workbench test
-# - Port some code over to the new table builder
-# - Ask Jean-Paul if there's anything he wishes could be changed or improved about the existing table builder
-# - Thing that Jean-Paul didn't like was the link generation
