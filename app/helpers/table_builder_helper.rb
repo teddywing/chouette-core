@@ -10,10 +10,12 @@ module TableBuilderHelper
     collection,
     columns,
     current_referential: nil,
+    # TODO: use this when building column headers
     sortable: true,
     selectable: false,
     # selection_actions: [] ## this has been gotten rid of. The element based on this should be created elsewhere
     links: [],  # links: or actions: ? I think 'links' is better since 'actions' evokes Rails controller actions and we want to put `link_to`s here
+    # TODO: get rid of this argument. Going with params instead
     sort_by: {},  # { column: 'name', direction: 'desc' }
     cls: ''  # can we rename this to "class"?
       # ^^ rename to html_options = {} at the end of the non-keyword arguments? Hrm, not a fan of combining hash args and keyword args
