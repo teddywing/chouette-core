@@ -27,19 +27,11 @@
       /    span = t('actions.destroy')
       /= leslinks.map { |l| link_to l.href, l.label }
       - @referential.action_links.each do |link|
-        - if link.method == :delete
-          = link_to link.href,
-              method: link.method,
-              data: link.data,
-              class: 'btn btn-primary' do
-                span.fa.fa-trash
-                span = t('actions.destroy')
-        - else
-          = link_to link.name,
-              link.href,
-              method: link.method,
-              data: link.data,
-              class: 'btn btn-primary'
+        = link_to link.href,
+            method: link.method,
+            data: link.data,
+            class: 'btn btn-primary' do
+              = link.content
 
 / PageContent
 .page_content
