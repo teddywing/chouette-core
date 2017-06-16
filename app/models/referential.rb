@@ -4,9 +4,10 @@ class Referential < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :slug
   validates_presence_of :prefix
-  validates_presence_of :time_zone
-  validates_presence_of :upper_corner
-  validates_presence_of :lower_corner
+  # Fixme #3657
+  # validates_presence_of :time_zone
+  # validates_presence_of :upper_corner
+  # validates_presence_of :lower_corner
 
   validates_uniqueness_of :slug
   validates_uniqueness_of :name
