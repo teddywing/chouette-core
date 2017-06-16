@@ -6,8 +6,8 @@
 
       - if policy(@calendar).share?
         .form-group.has_switch
-          = f.label :shared, class: 'col-sm-4 control-label'
-          = f.input :shared, as: :boolean, checked_value: true, unchecked_value: false, label: content_tag(:span, t("#{@calendar.shared}"), class: 'switch-label', data: {checkedValue: t('true'), uncheckedValue: t('false')}), wrapper_html: { class: 'col-sm-8'}
+          = f.label :shared, class: 'col-sm-4 col-xs-5 control-label'
+          = f.input :shared, as: :boolean, checked_value: true, unchecked_value: false, label: content_tag(:span, t("#{@calendar.shared}"), class: 'switch-label', data: {checkedValue: t('true'), uncheckedValue: t('false')}), wrapper_html: { class: 'col-sm-8 col-xs-7'}
 
   .separator
   
