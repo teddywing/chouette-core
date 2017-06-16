@@ -75,6 +75,8 @@ class User < ActiveRecord::Base
       user.synced_at    = Time.now
       # TODO: Discuss the following behavior in the light of how the portal's permissions will evolve
       # boiv:edit-offer does not imply boiv:read-offer, which needs to be provided specifically for any connection rights
+        require 'pry'
+        binding.pry
       user.permissions  = el['permissions'].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
       user.save
     end
