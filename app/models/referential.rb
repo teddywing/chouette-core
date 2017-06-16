@@ -4,9 +4,10 @@ class Referential < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :slug
   validates_presence_of :prefix
-  validates_presence_of :time_zone
-  validates_presence_of :upper_corner
-  validates_presence_of :lower_corner
+  # Fixme #3657
+  # validates_presence_of :time_zone
+  # validates_presence_of :upper_corner
+  # validates_presence_of :lower_corner
 
   validates_uniqueness_of :slug
   validates_uniqueness_of :name
@@ -179,6 +180,8 @@ class Referential < ActiveRecord::Base
 
   before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench, unless: :created_from
   before_validation :clone_associations, :on => :create, if: :created_from
+  before_validation :assign_slug, :on => :create
+  before_validation :assign_prefix, :on => :create
   before_create :create_schema,  unless: :created_from
 
   after_create :clone_schema, if: :created_from
@@ -286,6 +289,14 @@ class Referential < ActiveRecord::Base
 
   def create_schema
     Apartment::Tenant.create slug
+  end
+
+  def assign_slug
+    self.slug ||= "#{self.name.parameterize.gsub('-', '_')}_#{Time.now.to_i}"
+  end
+
+  def assign_prefix
+    self.prefix = self.organisation.name.parameterize.gsub('-', '_')
   end
 
   def assign_line_and_stop_area_referential
