@@ -74,7 +74,6 @@ class ReferentialsController < BreadcrumbController
   alias_method :current_referential, :referential
   helper_method :current_referential
 
-
   def resource
     @referential ||= current_organisation.find_referential(params[:id])
   end
