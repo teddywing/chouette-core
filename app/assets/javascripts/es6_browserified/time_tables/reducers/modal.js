@@ -19,6 +19,9 @@ const modal = (state = {}, action) => {
           callback: action.callback,
         }
       })
+    case 'OPEN_ERROR_MODAL':
+      $('#ErrorModal').modal('show')
+      return _.assign({}, state, {type: 'error'})
     case 'CLOSE_PERIOD_FORM':
       newModalProps = _.assign({}, state.modalProps, {active: false})
       return _.assign({}, state, {modalProps: newModalProps})

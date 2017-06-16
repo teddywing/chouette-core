@@ -11,6 +11,16 @@ const mapStateToProps = (state) => {
   }
 }
 
-const SaveTimetable = connect(mapStateToProps)(SaveTimetableComponent)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onShowErrorModal: () => {
+      dispatch(actions.showErrorModal())
+    },
+    getDispatch: () => {
+      return dispatch
+    }
+  }
+}
+const SaveTimetable = connect(mapStateToProps, mapDispatchToProps)(SaveTimetableComponent)
 
 module.exports = SaveTimetable

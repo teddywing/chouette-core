@@ -11,5 +11,4 @@ RSpec.describe BoivPolicy, type: :policy do
   permissions :show? do
     it_behaves_like 'permitted policy and same organisation', 'boiv:read-offer'
   end
-
 end

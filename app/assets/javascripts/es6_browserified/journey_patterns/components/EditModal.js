@@ -63,7 +63,7 @@ class EditModal extends Component {
                       </div>
                       <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                         <div className='form-group'>
-                          <label className='control-label is-required'>Code mission</label>
+                          <label className='control-label'>Code mission</label>
                           <input
                             type='text'
                             ref='registration_number'
@@ -71,7 +71,6 @@ class EditModal extends Component {
                             id={this.props.modal.modalProps.index}
                             defaultValue={this.props.modal.modalProps.journeyPattern.registration_number}
                             onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
-                            required
                             />
                         </div>
                       </div>

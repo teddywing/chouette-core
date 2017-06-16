@@ -87,7 +87,7 @@ describe TimeTableCombination, :type => :model do
       end
 
       it "should intersect combined to source" do
-        expect(source.int_day_types).to eq(0)
+        expect(source.int_day_types).to eq(508)
         expect(source.periods.size).to eq(1)
   		  expect(source.dates.size).to eq(0)
 
@@ -119,7 +119,7 @@ describe TimeTableCombination, :type => :model do
       end
 
       it "should disjoin combined to source" do
-        expect(source.int_day_types).to eq(0)
+        expect(source.int_day_types).to eq(508)
         expect(source.periods.size).to eq(1)
 		    expect(source.dates.size).to eq(0)
 

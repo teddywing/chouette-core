@@ -16,7 +16,7 @@ module NewapplicationHelper
         end
 
         columns.map do |k, v|
-          if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée", "Période de validité englobante", "Période englobante", "Nombre de courses associées", "Journées d'application"].include? k
+          if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée", "Période de validité englobante", "Période englobante", "Nombre de courses associées", "Journées d'application", "Arrêts de l'itinéraire", "Arrêts inclus dans l'ITL"].include? k
             hcont << content_tag(:th, k)
           else
             hcont << content_tag(:th, sortable_columns(collection, k))
@@ -160,7 +160,7 @@ module NewapplicationHelper
       end.join.html_safe
     end
 
-    # content_tag :div, trigger + menu, class: 'btn-group'
+    content_tag :div, trigger + menu, class: 'btn-group'
 
   end
 

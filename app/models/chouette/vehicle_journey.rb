@@ -28,15 +28,35 @@ module Chouette
     has_and_belongs_to_many :time_tables, :class_name => 'Chouette::TimeTable', :foreign_key => "vehicle_journey_id", :association_foreign_key => "time_table_id"
     has_many :stop_points, -> { order("stop_points.position") }, :through => :vehicle_journey_at_stops
 
-    validates :vehicle_journey_at_stops,
+    validates :vehicle_journey_at_stops, :vjas_departure_time_must_be_before_next_stop_arrival_time,
       vehicle_journey_at_stops_are_in_increasing_time_order: true
     validates_presence_of :number
 
-    before_validation :set_default_values
+    before_validation :set_default_values,
+      :calculate_vehicle_journey_at_stop_day_offset
+
+    def vjas_departure_time_must_be_before_next_stop_arrival_time
+      notice = 'departure time must be before next stop arrival time'
+      vehicle_journey_at_stops.each_with_index do |current_stop, index|
+        next_stop = vehicle_journey_at_stops[index + 1]
+
+        next unless next_stop && (next_stop[:arrival_time] < current_stop[:departure_time])
+
+        current_stop.errors.add(:departure_time, notice)
+        self.errors.add(:vehicle_journey_at_stops, notice)
+      end
+    end
+
     def set_default_values
       if number.nil?
         self.number = 0
       end
+    end
+
+    def calculate_vehicle_journey_at_stop_day_offset
+      Chouette::VehicleJourneyAtStopsDayOffset.new(
+        vehicle_journey_at_stops
+      ).update
     end
 
     scope :without_any_time_table, -> { joins('LEFT JOIN "time_tables_vehicle_journeys" ON "time_tables_vehicle_journeys"."vehicle_journey_id" = "vehicle_journeys"."id" LEFT JOIN "time_tables" ON "time_tables"."id" = "time_tables_vehicle_journeys"."time_table_id"').where(:time_tables => { :id => nil}) }
@@ -50,9 +70,12 @@ module Chouette
 
     def vehicle_journey_at_stops_matrix
       at_stops = self.vehicle_journey_at_stops.to_a.dup
+      active_stop_point_ids = journey_pattern.stop_points.map(&:id)
+
       (route.stop_points.map(&:id) - at_stops.map(&:stop_point_id)).each do |id|
-        # Set stop_point id for fake vjas with no departure time yep.
-        at_stops.insert(route.stop_points.map(&:id).index(id), Chouette::VehicleJourneyAtStop.new(stop_point_id: id))
+        vjas = Chouette::VehicleJourneyAtStop.new(stop_point_id: id)
+        vjas.dummy = !active_stop_point_ids.include?(id)
+        at_stops.insert(route.stop_points.map(&:id).index(id), vjas)
       end
       at_stops
     end

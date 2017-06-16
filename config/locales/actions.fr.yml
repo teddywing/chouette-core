@@ -6,6 +6,7 @@ fr:
     search: "Chercher"
     submit: "Valider"
     add: 'Ajouter'
+    new: 'Ajouter'
     show: 'Consulter'
     archive: 'Conserver'
     unarchive: 'Déconserver'

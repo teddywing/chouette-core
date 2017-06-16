@@ -22,7 +22,9 @@ namespace :referential do
       stop_areas = workbench.stop_area_referential.stop_areas.last(10)
 
       4.times do |i|
-        route_attrs = { line: line, name: "Route #{Faker::Name.unique.name}" }
+        name = Faker::Name.unique.name
+        route_attrs = { line: line, name: "Route #{name}", published_name: "Published #{name}" }
+
         if i.even?
           route_attrs[:wayback] = :straight_forward
           route = Chouette::Route.create!(route_attrs)

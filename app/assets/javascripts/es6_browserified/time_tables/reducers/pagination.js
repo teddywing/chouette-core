@@ -5,8 +5,12 @@ const pagination = (state = {}, action) => {
     case 'RECEIVE_TIME_TABLES':
       return _.assign({}, state, {
         currentPage: action.json.current_periode_range,
-        periode_range: action.json.periode_range
+        periode_range: action.json.periode_range,
+        stateChanged: false
       })
+    case 'RECEIVE_MONTH':
+    case 'RECEIVE_ERRORS':
+      return _.assign({}, state, {stateChanged: false})
     case 'GO_TO_PREVIOUS_PAGE':
     case 'GO_TO_NEXT_PAGE':
       let nextPage = action.nextPage ? 1 : -1
@@ -22,7 +26,6 @@ const pagination = (state = {}, action) => {
     case 'VALIDATE_PERIOD_FORM':
     case 'UPDATE_COMMENT':
     case 'UPDATE_COLOR':
-    case 'UPDATE_DAY_TYPES':
       toggleOnConfirmModal('modal')
       return _.assign({}, state, {stateChanged: true})
     default:

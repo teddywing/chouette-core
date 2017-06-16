@@ -1,11 +1,46 @@
 require 'spec_helper'
 
 describe Chouette::TimeTable, :type => :model do
-
   subject { create(:time_table) }
 
   it { is_expected.to validate_presence_of :comment }
   it { is_expected.to validate_uniqueness_of :objectid }
+
+  context "merge with calendar" do
+    let(:calendar) { create(:calendar) }
+
+    it 'should add calendar dates to time_table' do
+      subject.dates.clear
+      subject.merge!(calendar.convert_to_time_table)
+      expect(subject.dates.map(&:date)).to include(*calendar.dates)
+    end
+  end
+
+  describe "actualize" do
+    let(:calendar) { create(:calendar) }
+    let(:int_day_types) { 508 }
+
+    before do
+      subject.int_day_types = int_day_types
+      subject.calendar = calendar
+      subject.save
+      subject.actualize
+    end
+
+    it 'should override dates' do
+      expect(subject.dates.map(&:date)).to match_array calendar.dates
+    end
+
+    it 'should override periods' do
+      [:period_start, :period_end].each do |key|
+        expect(subject.periods.map(&key)).to match_array calendar.convert_to_time_table.periods.map(&key)
+      end
+    end
+
+    it 'should not change int_day_types' do
+      expect(subject.int_day_types).to eq(int_day_types)
+    end
+  end
 
   describe "Update state" do
     def time_table_to_state time_table
@@ -119,7 +154,7 @@ describe Chouette::TimeTable, :type => :model do
     end
 
     it 'should create new include date' do
-      day  = state['current_month'].first
+      day  = state['current_month'].find{|d| !d['excluded_date'] && !d['include_date'] }
       date = Date.parse(day['date'])
       day['include_date'] = true
       expect(subject.included_days).not_to include(date)
@@ -131,7 +166,7 @@ describe Chouette::TimeTable, :type => :model do
     end
 
     it 'should create new exclude date' do
-      day  = state['current_month'].first
+      day  = state['current_month'].find{|d| !d['excluded_date'] && !d['include_date']}
       date = Date.parse(day['date'])
       day['excluded_date'] = true
       expect(subject.excluded_days).not_to include(date)
@@ -973,7 +1008,7 @@ end
         expect(subject.periods[2].period_start).to eq(Date.new(2014, 8, 1))
         expect(subject.periods[2].period_end).to eq(Date.new(2014, 8, 12))
       end
-      it "should have common day_types" do
+      it "should not modify day_types" do
         expect(subject.int_day_types).to eq(4|16|128)
       end
       it "should have dates for thursdays and fridays" do
@@ -1007,9 +1042,6 @@ end
       it "should have no period" do
         expect(subject.periods.size).to eq(0)
        end
-      it "should have no day_types" do
-        expect(subject.int_day_types).to eq(0)
-      end
       it "should have date all common days" do
         expect(subject.dates.size).to eq(3)
         expect(subject.dates[0].date).to eq(Date.new(2014,7,16))
@@ -1038,7 +1070,7 @@ end
       it "should have 0 period" do
         expect(subject.periods.size).to eq(0)
       end
-      it "should have no day_types" do
+      it "should not modify day_types" do
         expect(subject.int_day_types).to eq(0)
       end
       it "should have date reduced for period" do
@@ -1063,8 +1095,8 @@ end
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
       end
-      it "should have no day_types" do
-        expect(subject.int_day_types).to eq(0)
+      it "should not modify day_types" do
+        expect(subject.int_day_types).to eq(4|8|16)
       end
       it "should have 1 date " do
         expect(subject.dates.size).to eq(1)
@@ -1093,9 +1125,6 @@ end
       it "should have 0 periods" do
         expect(subject.periods.size).to eq(0)
        end
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
-      end
       it "should have only dates " do
         expect(subject.dates.size).to eq(11)
         expect(subject.dates[0].date).to eq(Date.new(2014,6,30))
@@ -1134,7 +1163,7 @@ end
       it "should have 0 period" do
         expect(subject.periods.size).to eq(0)
       end
-      it "should have no remained day_types" do
+      it "should not modify day_types" do
         expect(subject.int_day_types).to eq(0)
       end
       it "should have date reduced for period" do
@@ -1162,9 +1191,6 @@ end
       end
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
-      end
-      it "should have no remained day_types" do
-        expect(subject.int_day_types).to eq(0)
       end
       it "should have dates for period reduced" do
         expect(subject.dates.size).to eq(4)
@@ -1196,9 +1222,6 @@ end
       end
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
-      end
-      it "should have no remained day_types" do
-        subject.int_day_types == 0
       end
       it "should have 3 dates left" do
         expect(subject.dates.size).to eq(3)
@@ -1233,10 +1256,6 @@ end
         expect(subject.periods.size).to eq(0)
       end
 
-      it "should have no remained day_types" do
-        subject.int_day_types == 0
-      end
-
       it "should have 0 dates left" do
         expect(subject.dates.size).to eq(0)
       end
@@ -1259,10 +1278,6 @@ end
 
       it "should have 0 result periods" do
         expect(subject.periods.size).to eq(0)
-      end
-
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
       end
 
       it "should have 6 dates " do
@@ -1303,8 +1318,8 @@ end
         end
      end
 
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
+      it "should not modify day_types" do
+        expect(subject.int_day_types).to eq(4|8|16)
       end
 
       it "should have 1 dates " do
@@ -1342,8 +1357,8 @@ end
         end
       end
 
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
+      it "should not modify day_types" do
+        expect(subject.int_day_types).to eq(4|8|16)
       end
 
       it "should have only 1 dates " do
@@ -1372,9 +1387,6 @@ end
       end
       it "should have same 0 result periods" do
         expect(subject.periods.size).to eq(0)
-      end
-      it "should have 0 day_types" do
-        expect(subject.int_day_types).to eq(0)
       end
       it "should have 0 dates " do
         expect(subject.dates.size).to eq(0)

@@ -64,7 +64,13 @@ class VehicleJourneysController < ChouetteController
       }
     end
 
-    @jp_origin  = Chouette::JourneyPattern.find_by(objectid: params[:jp])
+    @transport_mode = route.line['transport_mode']
+    @transport_submode = route.line['transport_submode']
+
+    if params[:jp]
+      @jp_origin  = Chouette::JourneyPattern.find_by(objectid: params[:jp])
+      @jp_origin_stop_points = @jp_origin.stop_points
+    end
 
     index! do
       if collection.out_of_bounds?
@@ -111,11 +117,17 @@ class VehicleJourneysController < ChouetteController
   end
 
   def maybe_filter_out_journeys_with_time_tables(scope)
-    if params[:q] &&
-        params[:q][:vehicle_journey_without_time_table] == 'true'
-      return scope
-        .without_time_tables
+    if params[:q] && params[:q][:vehicle_journey_without_time_table] == 'false'
+      return scope.without_time_tables
     end
+
+    # if params[:q]
+    #   if params[:q][:vehicle_journey_without_time_table] == 'true'
+    #     return scope.without_time_tables
+    #   end
+    # else
+    #   return scope.without_time_tables
+    # end
 
     scope
   end
@@ -129,7 +141,7 @@ class VehicleJourneysController < ChouetteController
 
   def adapted_params
     params.tap do |adapted_params|
-      adapted_params.merge!( :route => parent)
+      adapted_params.merge!(:route => parent)
       hour_entry = "vehicle_journey_at_stops_departure_time_gt(4i)".to_sym
       if params[:q] && params[:q][ hour_entry]
         adapted_params[:q].merge! hour_entry => (params[:q][ hour_entry].to_i - utc_offset)

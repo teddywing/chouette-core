@@ -1,7 +1,38 @@
 require 'spec_helper'
-describe Chouette::VehicleJourney, :type => :model do
-  describe "state_update" do
 
+describe Chouette::VehicleJourney, :type => :model do
+  describe "vjas_departure_time_must_be_before_next_stop_arrival_time" do
+    let(:vehicle_journey) { create :vehicle_journey }
+    let(:vjas) { vehicle_journey.vehicle_journey_at_stops }
+
+    it 'should add errors a stop departure_time is greater then next stop arrival time' do
+      vjas[0][:departure_time] = vjas[1][:arrival_time] + 1.minute
+      vehicle_journey.validate
+
+      expect(vjas[0].errors[:departure_time]).not_to be_blank
+      expect(vehicle_journey.errors[:vehicle_journey_at_stops].count).to eq(1)
+      expect(vehicle_journey).not_to be_valid
+    end
+
+    it 'should consider valid to have departure_time equal to next stop arrival time' do
+      vjas[0][:departure_time] = vjas[1][:arrival_time]
+      vehicle_journey.validate
+
+      expect(vjas[0].errors[:departure_time]).to be_blank
+      expect(vehicle_journey.errors[:vehicle_journey_at_stops]).to be_empty
+      expect(vehicle_journey).to be_valid
+    end
+
+    it 'should not add errors when departure_time is less then next stop arrival time' do
+      vehicle_journey.validate
+      vjas.each do |stop|
+        expect(stop.errors).to be_empty
+      end
+      expect(vehicle_journey).to be_valid
+    end
+  end
+
+  describe "state_update" do
     def vehicle_journey_at_stop_to_state vjas
       at_stop = {'stop_area_object_id' => vjas.stop_point.stop_area.objectid }
       [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
@@ -136,16 +167,12 @@ describe Chouette::VehicleJourney, :type => :model do
 
     it 'should return errors when validation failed' do
       state['published_journey_name'] = 'edited_name'
-      # Exceeds_gap departure time validation failed
-      prev = state['vehicle_journey_at_stops'].last(2).first
-      last = state['vehicle_journey_at_stops'].last
-      prev['departure_time']['hour'] = '01'
-      last['departure_time']['hour'] = '23'
+      state['vehicle_journey_at_stops'].last['departure_time']['hour'] = '23'
 
       expect {
         Chouette::VehicleJourney.state_update(route, collection)
       }.not_to change(vehicle_journey, :published_journey_name)
-      expect(state['errors'][:vehicle_journey_at_stops].size).to eq 1
+      expect(state['vehicle_journey_at_stops'].last['errors']).not_to be_empty
     end
 
     it 'should delete vj with deletable set to true from state' do
@@ -190,8 +217,8 @@ describe Chouette::VehicleJourney, :type => :model do
       end
     end
 
-    describe '.vehicle_journey_at_stops_matrix' do
-      it 'should fill missing VehicleJourneyAtStop with dummy' do
+    describe '#vehicle_journey_at_stops_matrix' do
+      it 'should fill missing vjas with dummy vjas' do
         vehicle_journey.journey_pattern.stop_points.delete_all
         vehicle_journey.vehicle_journey_at_stops.delete_all
 
@@ -201,14 +228,28 @@ describe Chouette::VehicleJourney, :type => :model do
         expect(at_stops.count).to eq route.stop_points.count
       end
 
-      it 'should fill VehicleJourneyAtStop with new vjas when vj has been save without departure time' do
+      it 'should set dummy to false for active stop_points vjas' do
+        # Destroy vjas but stop_points is still active
+        # it should fill a new vjas without dummy flag
+        vehicle_journey.vehicle_journey_at_stops[3].destroy
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+        expect(at_stops[3].dummy).to be false
+      end
+
+      it 'should set dummy to true for deactivated stop_points vjas' do
+        vehicle_journey.journey_pattern.stop_points.delete(vehicle_journey.journey_pattern.stop_points.first)
+        at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
+        expect(at_stops.first.dummy).to be true
+      end
+
+      it 'should fill vjas for active stop_points without vjas yet' do
         vehicle_journey.vehicle_journey_at_stops.destroy_all
 
         at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
         expect(at_stops.map(&:stop_point_id)).to eq vehicle_journey.journey_pattern.stop_points.map(&:id)
       end
 
-      it 'should keep index order of VehicleJourneyAtStop' do
+      it 'should keep index order of vjas' do
         vehicle_journey.vehicle_journey_at_stops[3].destroy
         at_stops = vehicle_journey.reload.vehicle_journey_at_stops_matrix
 

@@ -111,7 +111,9 @@ describe('vehicleJourneys reducer', () => {
       time_tables: [],
       vehicle_journey_at_stops: pristineVjasList,
       selected: false,
-      deletable: false
+      deletable: false,
+      transport_mode: 'undefined',
+      transport_submode: 'undefined'
     }, ...state])
   })
 

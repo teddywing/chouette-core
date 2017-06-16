@@ -20,8 +20,6 @@ gem 'browserify-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -112,6 +110,8 @@ gem 'ransack'
 gem "squeel", github: 'activerecord-hackery/squeel'
 gem 'active_attr'
 
+gem 'sequel'
+
 gem 'draper'
 
 gem 'enumerize', '~> 0.10.0'
@@ -148,6 +148,8 @@ group :development do
   gem 'quiet_assets'
   gem 'license_finder'
   gem 'bundler-audit'
+  gem 'spring-commands-rspec'
+  gem 'dbshell-rails'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'

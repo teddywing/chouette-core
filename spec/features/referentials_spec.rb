@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-require 'spec_helper'
-
 describe "Referentials", :type => :feature do
   login_user
 
@@ -111,13 +109,9 @@ describe "Referentials", :type => :feature do
   end
 
   describe "create" do
-
     it "should" do
       visit new_referential_path
       fill_in "Nom", :with => "Test"
-      fill_in "Code", :with => "test"
-      fill_in "Point haut/droite de l'emprise par défaut", :with => "0.0, 0.0"
-      fill_in "Point bas/gauche de l'emprise par défaut", :with => "1.0, 1.0"
       click_button "Valider"
 
       expect(Referential.where(:name => "Test")).not_to be_nil

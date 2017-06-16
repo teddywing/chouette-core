@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-require 'spec_helper'
-
-describe "Lines", :type => :feature do
+describe "Lines", type: :feature do
   login_user
 
   let(:line_referential) { create :line_referential }

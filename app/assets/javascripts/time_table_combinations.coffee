@@ -3,4 +3,5 @@
     $(this).closest('.has_switch').siblings('.form-group').each ->
       $(this).toggleClass('hidden')
 
-$(document).on 'turbolinks:load', combinedTypeToggle
+$ ->
+  combinedTypeToggle()

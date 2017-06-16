@@ -104,6 +104,11 @@ fr:
         zdlp: ZDLp
         zdlr: ZDLr
         lda: LDA
+    clean_up:
+      date_type:
+        between: Entre deux dates
+        before: Avant une date
+        after: Après une date
     line:
       transport_mode:
         interchange: Interconnection
@@ -193,7 +198,7 @@ fr:
         regionalRail: 'Train régional'
         interregionalRail: 'Train interrégional'
         longDistance: 'Longue distance'
-        international: 'International'
+        intermational: Internationale
         sleeperRailService: 'Train à couchettes'
         nightRail: 'Train de nuit'
         carTransportRailService: 'Service ferroviaire de transport de voitures'

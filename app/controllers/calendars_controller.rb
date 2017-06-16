@@ -33,10 +33,8 @@ class CalendarsController < BreadcrumbController
 
   def collection
     return @calendars if @calendars
-    scope = Calendar.where('organisation_id = ?', current_organisation.id)
-
+    scope = Calendar.where('organisation_id = ? OR shared = ?', current_organisation.id, true)
     scope = shared_scope(scope)
-
     @q = scope.ransack(params[:q])
 
     calendars = @q.result

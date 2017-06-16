@@ -12,6 +12,9 @@ const metas = (state = {}, action) => {
         color: action.json.color,
         calendar: action.json.calendar ? action.json.calendar : null
       })
+    case 'RECEIVE_MONTH':
+      let dt = (typeof state.day_types === 'string') ? actions.strToArrayDayTypes(state.day_types) : state.day_types
+      return _.assign({}, state, {day_types: dt})
     case 'INCLUDE_DATE_IN_PERIOD':
     case 'EXCLUDE_DATE_FROM_PERIOD':
     case 'DELETE_PERIOD':

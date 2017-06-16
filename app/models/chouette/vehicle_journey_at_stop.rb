@@ -9,7 +9,7 @@ module Chouette
     belongs_to :stop_point
     belongs_to :vehicle_journey
 
-    attr_accessor :_destroy
+    attr_accessor :_destroy, :dummy
 
     validate :arrival_must_be_before_departure
     def arrival_must_be_before_departure
@@ -27,6 +27,7 @@ module Chouette
     after_initialize :set_virtual_attributes
     def set_virtual_attributes
       @_destroy = false
+      @dummy = false
     end
 
   end

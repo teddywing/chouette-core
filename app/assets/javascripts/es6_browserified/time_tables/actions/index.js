@@ -122,6 +122,9 @@ const actions = {
     type : 'OPEN_CONFIRM_MODAL',
     callback
   }),
+  showErrorModal: () => ({
+    type: 'OPEN_ERROR_MODAL'
+  }),
   closeModal : () => ({
     type : 'CLOSE_MODAL'
   }),
@@ -185,9 +188,13 @@ const actions = {
     return improvedCM
   },
 
-  checkConfirmModal: (event, callback, stateChanged,dispatch) => {
+  checkConfirmModal: (event, callback, stateChanged, dispatch, metas, timetable) => {
     if(stateChanged === true){
-      return actions.openConfirmModal(callback)
+      if(timetable.time_table_periods.length == 0 && _.some(metas.day_types)){
+        return actions.showErrorModal()
+      }else{
+        return actions.openConfirmModal(callback)
+      }
     }else{
       dispatch(actions.fetchingApi())
       return callback
@@ -201,8 +208,8 @@ const actions = {
     start = new Date(start)
     end = new Date(end)
     _.each(periods, (period, i) => {
-      if(index != i && !period.deleted){
-        if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end))
+      if(index !== i && !period.deleted){
+        if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end) || (start >= new Date(period.period_start) && end <= new Date(period.period_end)) || (start <= new Date(period.period_start) && end >= new Date(period.period_end)))
         error = 'Les périodes ne peuvent pas se chevaucher'
       }
     })

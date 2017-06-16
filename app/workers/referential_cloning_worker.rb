@@ -1,13 +1,12 @@
 class ReferentialCloningWorker
   include Sidekiq::Worker
-  sidekiq_options queue: 'wip'
 
   # Replace default apartment created schema with clone schema from source referential
   def perform(id)
     ref_cloning = ReferentialCloning.find id
 
     source_schema = ref_cloning.source_referential.slug
-    target_schema = "#{source_schema}_tmp"
+    target_schema = ref_cloning.target_referential.slug
 
     clone_schema ref_cloning, source_schema, target_schema
   end
@@ -17,9 +16,9 @@ class ReferentialCloningWorker
   def clone_schema ref_cloning, source_schema, target_schema
     ref_cloning.run!
 
-    StoredProcedures.invoke_stored_procedure(:clone_schema, source_schema, target_schema, true) 
-    execute_sql "DROP SCHEMA #{source_schema} CASCADE;"
-    execute_sql "ALTER SCHEMA #{target_schema} RENAME TO #{source_schema};"
+    AF83::SchemaCloner
+      .new(source_schema, target_schema) 
+      .clone_schema
 
     ref_cloning.successful!
   rescue Exception => e

@@ -20,6 +20,7 @@ bind_select2_ajax = (el, cfg = {}) ->
       delay: 125,
       processResults: (data, params) -> results: data
     minimumInputLength: 3
+    placeholder: target.data('select2ed-placeholder')
     templateResult: (item) ->
       item.text
     templateSelection: (item) ->
@@ -39,4 +40,5 @@ bind_select2_ajax = (el, cfg = {}) ->
 
 
 
-$(document).on 'turbolinks:load', select_2
+$ ->
+  select_2()

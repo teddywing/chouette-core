@@ -15,9 +15,7 @@ RSpec.describe RouteStopPointsController, type: :controller do
     end
 
     it 'returns a JSON of stop areas' do
-      expect(response.body).to eq(route.stop_points.map { |sp| { id: sp.id, name: sp.name } }.to_json)
+      expect(response.body).to eq(route.stop_points.map { |sp| { id: sp.id, stop_area_id: sp.stop_area.id, name: sp.name, zip_code: sp.stop_area.zip_code, city_name: sp.stop_area.city_name } }.to_json)
     end
   end
 end
-
-

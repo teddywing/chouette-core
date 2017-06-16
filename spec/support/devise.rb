@@ -36,8 +36,8 @@ module DeviseRequestHelper
 end
 
 module DeviseControllerHelper
-  def login_user
-    before(:each) do
+  def setup_user
+    before do
       @request.env["devise.mapping"] = Devise.mappings[:user]
       organisation = Organisation.where(:code => "first").first_or_create(attributes_for(:organisation))
       @user = create(:user, :organisation => organisation,
@@ -47,6 +47,11 @@ module DeviseControllerHelper
         'access_points.create', 'access_points.edit', 'access_points.destroy', 'access_links.create', 'access_links.edit', 'access_links.destroy',
         'connection_links.create', 'connection_links.edit', 'connection_links.destroy', 'route_sections.create', 'route_sections.edit', 'route_sections.destroy',
         'referentials.create', 'referentials.edit', 'referentials.destroy'])
+    end
+  end
+  def login_user()
+    setup_user
+    before do
       sign_in @user
     end
   end

@@ -135,10 +135,17 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     [Chouette::TimeTable.maximum(:end_date)].compact.max
   end
 
+  def add_exclude_date(in_out, date)
+    self.dates.create!({in_out: in_out, date: date})
+  end
+
   def actualize
     self.dates.clear
     self.periods.clear
-    self.merge! self.calendar.convert_to_time_table
+    from = self.calendar.convert_to_time_table
+    self.dates   = from.dates
+    self.periods = from.periods
+    self.save
   end
 
   def month_inspect(date)
@@ -470,18 +477,17 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   # merge effective days from another timetable
   def merge!(another_tt)
     transaction do
+    # merge dates
+    self.dates ||= []
+    another_tt.included_days.each do |d|
+      add_included_day d
+    end
+
     # if one tt has no period, just merge lists
     if self.periods.empty? || another_tt.periods.empty?
       if !another_tt.periods.empty?
         # copy periods
         self.periods = another_tt.clone_periods
-        # set valid_days
-        self.int_day_types = another_tt.int_day_types
-      end
-      # merge dates
-      self.dates ||= []
-      another_tt.included_days.each do |d|
-        add_included_day d
       end
     else
       # check if periods can be kept
@@ -540,7 +546,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       self.dates.clear
       days.each {|d| self.dates << Chouette::TimeTableDate.new( :date =>d, :in_out => true)}
       self.periods.clear
-      self.int_day_types = 0
       self.dates.to_a.sort! { |a,b| a.date <=> b.date}
       self.save!
     end
@@ -555,8 +560,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       days = self.effective_days - days_to_exclude
       self.dates.clear
       self.periods.clear
-      self.int_day_types = 0
-
       days.each {|d| self.dates << Chouette::TimeTableDate.new( :date =>d, :in_out => true)}
 
       self.dates.to_a.sort! { |a,b| a.date <=> b.date}
