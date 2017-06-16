@@ -46,8 +46,6 @@ describe 'Workbenches', type: :feature do
       click_link I18n.t('actions.add')
 
       fill_in "referential[name]", with: "Referential to test creation" # Nom du JDD
-      fill_in "referential[slug]", with: "test" # Code
-      fill_in "referential[prefix]", with: "test" # Prefix Neptune
       select workbench.lines.first.id, from: 'referential[metadatas_attributes][0][lines][]' # Lignes
 
       click_button "Valider"

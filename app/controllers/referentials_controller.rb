@@ -130,13 +130,7 @@ class ReferentialsController < BreadcrumbController
     params.require(:referential).permit(
       :id,
       :name,
-      :slug,
-      :prefix,
-      :time_zone,
-      :upper_corner,
-      :lower_corner,
       :organisation_id,
-      :projection_type,
       :data_format,
       :archived_at,
       :created_from_id,
