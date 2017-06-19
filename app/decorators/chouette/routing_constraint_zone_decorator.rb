@@ -1,7 +1,11 @@
-# TODO: Figure out @referential, @line
 class Chouette::RoutingConstraintZoneDecorator < Draper::Decorator
   delegate_all
 
+  # Requires:
+  #   context: {
+  #     referential: ,
+  #     line:
+  #   }
   def action_links
     links = []
 
@@ -9,8 +13,8 @@ class Chouette::RoutingConstraintZoneDecorator < Draper::Decorator
       links << Link.new(
         content: h.t('actions.edit'),
         href: h.edit_referential_line_routing_constraint_zone_path(
-          @referential,
-          @line,
+          context[:referential],
+          context[:line],
           object
         )
       )
@@ -19,8 +23,8 @@ class Chouette::RoutingConstraintZoneDecorator < Draper::Decorator
       links << Link.new(
         content: h.destroy_link_content,
         href: h.referential_line_routing_constraint_zone_path(
-          @referential,
-          @line,
+          context[:referential],
+          context[:line],
           object
         ),
         method: :delete,
