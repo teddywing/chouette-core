@@ -63,10 +63,10 @@ module DefaultAttributesSupport
   def fix_uniq_objectid
     base_objectid = objectid.rpartition(":").first
     self.objectid = "#{base_objectid}:#{id}"
-    if !valid?
+    if !valid?(:objectid)
       base_objectid="#{objectid}_"
       cnt=1
-      while !valid?
+      while !valid?(:objectid)
         self.objectid = "#{base_objectid}#{cnt}"
         cnt += 1
       end
