@@ -79,8 +79,8 @@ describe TableBuilderHelper, type: :helper do
                     <ul class="dropdown-menu">
                         <li><a href="/referentials/#{referential.id}">Consulter</a></li>
                         <li><a href="/referentials/#{referential.id}/edit">Editer</a></li>
-                        <li><a href="/referentials/1008/time_tables">Calendriers</a></li>
-                        <li><a href="/referentials/new?from=1008">Dupliquer</a></li>
+                        <li><a href="/referentials/#{referential.id}/time_tables">Calendriers</a></li>
+                        <li><a href="/referentials/new?from=#{referential.id}">Dupliquer</a></li>
                         <li><a rel="nofollow" data-method="put" href="/referentials/#{referential.id}/archive">Conserver</a></li>
                         <li class="delete-action"><a data-confirm="Etes vous sûr de vouloir supprimer ce jeu de données ?" rel="nofollow" data-method="delete" href="/referentials/#{referential.id}"><span class="fa fa-trash"></span>Supprimer</a></li>
                     </ul>
