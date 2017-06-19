@@ -67,7 +67,6 @@ module TableBuilderHelper
     # A CSS class to apply to the <table>
     cls: ''
   )
-
     content_tag :table,
       thead(collection, columns, sortable, selectable, links.any?) +
         tbody(collection, columns, selectable, links),
