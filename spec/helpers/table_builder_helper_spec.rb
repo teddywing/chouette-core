@@ -90,12 +90,6 @@ describe TableBuilderHelper, type: :helper do
     </tbody>
 </table>
       HTML
-# TODO: Create a module for the selection box
-# <div class="select_toolbox noselect">
-#     <ul>
-#         <li class="st_action"><a data-path="/workbenches/1/referentials" data-confirm="Etes-vous sûr(e) de vouloir effectuer cette action ?" title="Supprimer" rel="nofollow" data-method="delete" href="#"><span class="fa fa-trash"></span></a></li>
-#     </ul><span class="info-msg"><span>0</span> élément(s) sélectionné(s)</span>
-# </div>
 
       html_str = helper.table_builder_2(
         referentials,
