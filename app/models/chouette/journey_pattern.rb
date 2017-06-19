@@ -14,11 +14,11 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   validates_presence_of :route
   validates_presence_of :name
 
+  validates :stop_points, length: { minimum: 2 }, on: :update
   enum section_status: { todo: 0, completed: 1, control: 2 }
 
   attr_accessor  :control_checked
   after_update :control_route_sections, :unless => "control_checked"
-
 
   def self.state_update route, state
     transaction do
@@ -26,7 +26,6 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
         item.delete('errors')
         jp = find_by(objectid: item['object_id']) || state_create_instance(route, item)
         next if item['deletable'] && jp.persisted? && jp.destroy
-
         # Update attributes and stop_points associations
         jp.update_attributes(state_permited_attributes(item))
         jp.state_stop_points_update(item) if !jp.errors.any? && jp.persisted?
