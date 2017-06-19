@@ -46,7 +46,6 @@ class User < ActiveRecord::Base
       # TODO: Discuss the following behavior in the light of how the portal's permissions will evolve
       # boiv:edit-offer does not imply boiv:read-offer, which needs to be provided specifically for any connection rights
     self.permissions  = extra[:permissions].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
-    self.permissions  += extra[:permissions].grep( %r{^\Aboiv:read-offer\z} )
   end
 
   def self.portail_api_request
@@ -77,7 +76,6 @@ class User < ActiveRecord::Base
       # TODO: Discuss the following behavior in the light of how the portal's permissions will evolve
       # boiv:edit-offer does not imply boiv:read-offer, which needs to be provided specifically for any connection rights
       user.permissions  = el['permissions'].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
-      user.permissions  += el['permissions'].grep( %r{^\Aboiv:read-offer\z} )
       user.save
     end
   end
