@@ -33,7 +33,7 @@ class LineDecorator < Draper::Decorator
         content: h.destroy_link_content('lines.actions.destroy_confirm'),
         href: h.line_referential_line_path(context[:line_referential], object),
         method: :delete,
-        data: { confirm:  h.t('lines.actions.destroy_confirm') }
+        data: { confirm: h.t('lines.actions.destroy_confirm') }
       )
     end
 
