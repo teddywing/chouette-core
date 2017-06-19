@@ -1,3 +1,4 @@
+# TODO: Move this into the Chouette:: namespace
 class CompanyDecorator < Draper::Decorator
   decorates Chouette::Company
 
