@@ -5,7 +5,8 @@ class LineDecorator < Draper::Decorator
 
   # Requires:
   #   context: {
-  #     line_referential:
+  #     line_referential: ,
+  #     current_organisation:
   #   }
   def action_links
     links = []
@@ -21,7 +22,9 @@ class LineDecorator < Draper::Decorator
     )
 
     if h.policy(Chouette::Line).create? &&
-        context[:line_referential].organisations.include?(current_organisation)
+        context[:line_referential].organisations.include?(
+          context[:current_organisation]
+        )
       links << Link.new(
         content: h.t('lines.actions.new'),
         href: h.new_line_referential_line_path(context[:line_referential])
