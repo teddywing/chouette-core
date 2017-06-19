@@ -28,11 +28,6 @@ class LineDecorator < Draper::Decorator
       )
     end
 
-    # TODO: what if false? do we delete this?
-    if false && h.policy(object).update?
-      # = link_to t('lines.actions.edit'), edit_line_referential_line_path(context[:line_referential], object), class: 'btn btn-primary'
-    end
-
     if h.policy(object).destroy?
       links << Link.new(
         content: h.destroy_link_content('lines.actions.destroy_confirm'),
