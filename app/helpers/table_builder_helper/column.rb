@@ -22,7 +22,7 @@ module TableBuilderHelper
     end
 
     def header_label(model = nil)
-      return @name unless name.empty?
+      return @name unless @name.empty?
 
       # Transform `Chouette::Line` into "line"
       model_key = model.to_s.demodulize.underscore
