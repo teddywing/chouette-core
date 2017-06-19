@@ -20,6 +20,7 @@ class RoutingConstraintZoneDecorator < Draper::Decorator
           object
         )
       )
+    end
 
     if h.policy(object).destroy?
       links << Link.new(
