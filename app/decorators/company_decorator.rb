@@ -43,7 +43,7 @@ class CompanyDecorator < Draper::Decorator
           object
         ),
         method: :delete,
-        data: { confirm:  t('companies.actions.destroy_confirm') }
+        data: { confirm: h.t('companies.actions.destroy_confirm') }
       )
     end
 
