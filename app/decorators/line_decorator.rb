@@ -35,9 +35,7 @@ class LineDecorator < Draper::Decorator
 
     if h.policy(object).destroy?
       links << Link.new(
-# TODO: this translation is different!
-span = t('lines.actions.destroy')
-        content: h.destroy_link_content,
+        content: h.destroy_link_content('lines.actions.destroy_confirm'),
         href: h.line_referential_line_path(context[:line_referential], object),
         method: :delete,
         data: { confirm:  h.t('lines.actions.destroy_confirm') }
