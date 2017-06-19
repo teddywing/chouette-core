@@ -6,7 +6,9 @@ class CalendarsController < BreadcrumbController
   respond_to :js, only: :index
 
   def show
-    @calendar = @calendar.decorate
+    show! do
+      @calendar = @calendar.decorate
+    end
   end
 
   private
