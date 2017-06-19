@@ -1,4 +1,5 @@
 module TableBuilderHelper
+  # Depends on `current_referential`, defined in object controllers
   class URL
     def self.polymorphic_url_parts(item)
       polymorph_url = []

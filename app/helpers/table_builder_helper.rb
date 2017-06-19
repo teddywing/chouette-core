@@ -2,12 +2,56 @@ require 'table_builder_helper/column'
 require 'table_builder_helper/custom_links'
 require 'table_builder_helper/url'
 
-# TODO: Add doc comment about neeeding to make a decorator for your collections
-# TODO: Document global variables this uses
+# table_builder_2
+# A Rails helper that constructs an HTML table from a collection of objects. It
+# receives the collection and an array of columns that get transformed into
+# `<td>`s. A column of checkboxes can be added to the left side of the table
+# for multiple selection. Columns are sortable by default, but sorting can be
+# disabled either at the table level or at the column level. An optional
+# `links` argument takes a set of symbols corresponding to controller actions
+# that should be inserted in a gear menu next to each row in the table. That
+# menu will also be populated with links defined in `collection#action_links`,
+# a list of `Link` objects defined in a decorator for the given object.
+#
+# Depends on `params` and `current_referential`.
+#
+# Example:
+#   table_builder_2(
+#     @companies,
+#     [
+#       TableBuilderHelper::Column.new(
+#         name: 'ID Codif',
+#         attribute: Proc.new { |n| n.try(:objectid).try(:local_id) },
+#         sortable: false
+#       ),
+#       TableBuilderHelper::Column.new(
+#         key: :name,
+#         attribute: 'name'
+#       ),
+#       TableBuilderHelper::Column.new(
+#         key: :phone,
+#         attribute: 'phone'
+#       ),
+#       TableBuilderHelper::Column.new(
+#         key: :email,
+#         attribute: 'email'
+#       ),
+#       TableBuilderHelper::Column.new(
+#         key: :url,
+#         attribute: 'url'
+#       ),
+#     ],
+#     links: [:show, :edit],
+#     cls: 'table has-search'
+#   )
 module TableBuilderHelper
   # TODO: rename this after migration from `table_builder`
   def table_builder_2(
+    # An `ActiveRecord::Relation`, wrapped in a decorator to provide a list of
+    # `Link` objects via an `#action_links` method
     collection,
+
+    # An array of `TableBuilderHelper::Column`s
     columns,
 
     # When false, no columns will be sortable
