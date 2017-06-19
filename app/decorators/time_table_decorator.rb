@@ -40,7 +40,7 @@ class TimeTableDecorator < Draper::Decorator
     end
 
     if h.policy(object).destroy?
-      Link.new(
+      links << Link.new(
         content: h.destroy_link_content,
         href: h.referential_time_table_path(context[:referential], object),
         method: :delete,
