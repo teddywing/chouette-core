@@ -11,6 +11,10 @@ class CompanyDecorator < Draper::Decorator
     object.lines.count
   end
 
+  # Requires:
+  #   context: {
+  #     line_referential:
+  #   }
   def action_links
     links = []
 
