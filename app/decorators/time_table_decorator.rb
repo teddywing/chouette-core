@@ -1,4 +1,6 @@
-class Chouette::TimeTableDecorator < Draper::Decorator
+class TimeTableDecorator < Draper::Decorator
+  decorates Chouette::TimeTable
+
   delegate_all
 
   # Requires:

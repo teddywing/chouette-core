@@ -1,4 +1,6 @@
-class Chouette::LineDecorator < Draper::Decorator
+class LineDecorator < Draper::Decorator
+  decorates Chouette::Line
+
   delegate_all
 
   # Requires:
