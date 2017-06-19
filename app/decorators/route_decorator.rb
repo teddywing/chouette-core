@@ -1,4 +1,6 @@
-class Chouette::RouteDecorator < Draper::Decorator
+class RouteDecorator < Draper::Decorator
+  decorates Chouette::Route
+
   delegate_all
 
   # Requires:
