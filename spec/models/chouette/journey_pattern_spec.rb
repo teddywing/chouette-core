@@ -18,6 +18,7 @@ describe Chouette::JourneyPattern, :type => :model do
         journey_pattern.stop_points.delete(sp)
       end
       expect(journey_pattern).to_not be_valid
+      expect(journey_pattern.errors).to have_key(:stop_points)
     end
   end
 
