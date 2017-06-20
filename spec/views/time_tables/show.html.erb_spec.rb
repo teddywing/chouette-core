@@ -3,7 +3,14 @@ require 'spec_helper'
 describe "/time_tables/show", :type => :view do
 
   assign_referential
-  let!(:time_table) { assign(:time_table, create(:time_table)) }
+  let!(:time_table) do
+    assign(
+      :time_table,
+      create(:time_table).decorate(context: {
+        referential: referential
+      })
+    )
+  end
   let!(:year) { assign(:year, Date.today.cwyear) }
   let!(:time_table_combination) {assign(:time_table_combination, TimeTableCombination.new)}
 
