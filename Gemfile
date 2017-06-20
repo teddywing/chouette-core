@@ -161,6 +161,7 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'simplecov', :require => false
   gem 'simplecov-rcov', :require => false
+  gem 'htmlbeautifier'
 end
 
 group :test, :development, :dev do

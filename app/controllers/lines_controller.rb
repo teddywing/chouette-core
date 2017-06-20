@@ -25,6 +25,11 @@ class LinesController < BreadcrumbController
   def show
     @group_of_lines = resource.group_of_lines
     show! do
+      @line = @line.decorate(context: {
+        line_referential: @line_referential,
+        current_organisation: current_organisation
+      })
+
       build_breadcrumb :show
     end
   end

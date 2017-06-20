@@ -24,6 +24,12 @@ fr:
     form:
       warning: "Attention, la sélection s'applique aussi aux %{count} courses de la mission"
   activerecord:
+    errors:
+      models:
+        journey_pattern:
+          attributes:
+            stop_points:
+              minimum: 'Une mission doit avoir au minimum deux arrêts'
     models:
       journey_pattern:
         zero:  "mission"

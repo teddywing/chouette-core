@@ -8,17 +8,12 @@
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      - if @route_sp.any?
-        = link_to t('journey_patterns.index.title'), [@referential, @line, @route, :journey_patterns_collection], class: 'btn btn-primary'
-      - if @route.journey_patterns.present?
-        = link_to t('vehicle_journeys.actions.index'), [@referential, @line, @route, :vehicle_journeys], class: 'btn btn-primary'
-
-      = link_to t('vehicle_journey_exports.new.title'), referential_line_route_vehicle_journey_exports_path(@referential, @line, @route, format: :zip), class: 'btn btn-primary'
-
-      - if policy(@route).destroy?
-        = link_to referential_line_route_path(@referential, @line, @route), method: :delete, data: {confirm: t('routes.actions.destroy_confirm')}, class: 'btn btn-primary' do
-          span.fa.fa-trash
-          span = t('actions.destroy')
+      - @route.action_links.each do |link|
+        = link_to link.href,
+            method: link.method,
+            data: link.data,
+            class: 'btn btn-primary' do
+              = link.content
 
 / PageContent
 .page_content

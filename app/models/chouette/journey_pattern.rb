@@ -14,7 +14,7 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   validates_presence_of :route
   validates_presence_of :name
 
-  validates :stop_points, length: { minimum: 2 }, on: :update
+  validates :stop_points, length: { minimum: 2, too_short: :minimum }, on: :update
   enum section_status: { todo: 0, completed: 1, control: 2 }
 
   attr_accessor  :control_checked

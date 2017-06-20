@@ -1,3 +1,4 @@
+# TODO: Move these factories into their own files so all factory definitions are consistent
 FactoryGirl.define do
 
   factory :organisation do
