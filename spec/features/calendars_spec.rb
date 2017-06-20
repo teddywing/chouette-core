@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-require 'spec_helper'
-
-describe 'Calendars', type: :feature do
+RSpec.describe 'Calendars', type: :feature do
   login_user
 
   let!(:calendars) { Array.new(2) { create :calendar, organisation_id: 1 } }
@@ -68,5 +65,18 @@ describe 'Calendars', type: :feature do
       visit calendar_path(calendars.first)
       expect(page).to have_content(calendars.first.name)
     end
+  end
+
+  describe 'create', :wip do
+    before do
+      visit new_calendar_path
+
+    end
+    it 'with correct date' do
+      require 'pry'
+      binding.pry
+
+    end
+
   end
 end

@@ -5,6 +5,7 @@ class CalendarsController < BreadcrumbController
   respond_to :html
   respond_to :js, only: :index
 
+
   private
   def calendar_params
     permitted_params = [:id, :name, :short_name, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]

@@ -30,66 +30,6 @@ class Calendar < ActiveRecord::Base
     end
   end
 
-  class Period
-    include ActiveAttr::Model
-
-    attribute :id, type: Integer
-    attribute :begin, type: Date
-    attribute :end, type: Date
-
-    validates_presence_of :begin, :end
-    validate :check_end_greather_than_begin
-
-    def check_end_greather_than_begin
-      if self.begin and self.end and self.begin > self.end
-        errors.add(:end, :invalid)
-      end
-    end
-
-    def self.from_range(index, range)
-      Period.new id: index, begin: range.begin, end: range.end
-    end
-
-    def range
-      if self.begin and self.end and self.begin <= self.end
-        Range.new self.begin, self.end
-      end
-    end
-
-    def intersect?(*other)
-      return false if range.nil?
-
-      other = other.flatten
-      other = other.delete_if { |o| o.id == id } if id
-
-      other.any? do |period|
-        if other_range = period.range
-          (range & other_range).present?
-        end
-      end
-    end
-
-    def cover? date
-      range.cover? date
-    end
-
-    # Stuff required for coocon
-    def new_record?
-      !persisted?
-    end
-
-    def persisted?
-      id.present?
-    end
-
-    def mark_for_destruction
-      self._destroy = true
-    end
-
-    attribute :_destroy, type: Boolean
-    alias_method :marked_for_destruction?, :_destroy
-  end
-
   # Required by coocon
   def build_period
     Period.new
@@ -132,6 +72,8 @@ class Calendar < ActiveRecord::Base
   def flatten_date_array attributes, key
     date_int = %w(1 2 3).map {|e| attributes["#{key}(#{e}i)"].to_i }
     Date.new(*date_int)
+  rescue
+    nil
   end
 
   def periods_attributes=(attributes = {})
@@ -166,35 +108,6 @@ class Calendar < ActiveRecord::Base
 
 ### dates
 
-  class DateValue
-    include ActiveAttr::Model
-
-    attribute :id, type: Integer
-    attribute :value, type: Date
-
-    validates_presence_of :value
-
-    def self.from_date(index, date)
-      DateValue.new id: index, value: date
-    end
-
-    # Stuff required for coocon
-    def new_record?
-      !persisted?
-    end
-
-    def persisted?
-      id.present?
-    end
-
-    def mark_for_destruction
-      self._destroy = true
-    end
-
-    attribute :_destroy, type: Boolean
-    alias_method :marked_for_destruction?, :_destroy
-  end
-
   # Required by coocon
   def build_date_value
     DateValue.new
@@ -216,11 +129,7 @@ class Calendar < ActiveRecord::Base
   validate :validate_date_values
 
   def validate_date_values
-    date_values_are_valid = true
-
-    unless date_values.all?(&:valid?)
-      date_values_are_valid = false
-    end
+    date_values_are_valid = date_values.all?(&:valid?)
 
     date_values.each do |date_value|
       if date_values.count { |d| d.value == date_value.value } > 1
