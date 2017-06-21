@@ -1,5 +1,8 @@
 require 'range_ext'
 class Calendar < ActiveRecord::Base
+
+  NullDate = Date.new
+
   belongs_to :organisation
   has_many :time_tables
 
@@ -51,11 +54,7 @@ class Calendar < ActiveRecord::Base
   validate :validate_periods
 
   def validate_periods
-    periods_are_valid = true
-
-    unless periods.all?(&:valid?)
-      periods_are_valid = false
-    end
+    periods_are_valid = periods.all?(&:valid?)
 
     periods.each do |period|
       if period.intersect?(periods)
@@ -71,9 +70,9 @@ class Calendar < ActiveRecord::Base
 
   def flatten_date_array attributes, key
     date_int = %w(1 2 3).map {|e| attributes["#{key}(#{e}i)"].to_i }
-    Date.new(*date_int)
+    ::Date.new(*date_int)
   rescue
-    nil
+    Calendar::CalendarDate.new(*date_int)
   end
 
   def periods_attributes=(attributes = {})

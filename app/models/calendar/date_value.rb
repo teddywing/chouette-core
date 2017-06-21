@@ -4,14 +4,9 @@ class Calendar::DateValue
   attribute :id, type: Integer
   attribute :value, type: Date
 
-  validate :validate
+  validates_presence_of :value
+  validate :validate_date
   
-  def initialize(atts={})
-    super( atts.slice(:id, :value) )
-    # date stored for error message
-    @date = atts.slice(*%w{value(3i) value(2i) value(1i)}).values.join("/") 
-  end
-
   def self.from_date(index, date)
     DateValue.new id: index, value: date
   end
@@ -29,8 +24,8 @@ class Calendar::DateValue
     self._destroy = true
   end
 
-  def validate
-    errors.add(:value, "Illegal Date #{@date}") if value.blank?
+  def validate_date
+    errors.add(:value, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: value.to_s)) unless value.legal? 
   end
 
   attribute :_destroy, type: Boolean

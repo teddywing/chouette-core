@@ -5,8 +5,9 @@ class Calendar::Period
   attribute :begin, type: Date
   attribute :end, type: Date
 
-  validates_presence_of :begin, :end
   validate :check_end_greather_than_begin
+  validates_presence_of :begin, :end
+  validate :validate_dates
 
   def check_end_greather_than_begin
     if self.begin and self.end and self.begin > self.end
@@ -35,6 +36,19 @@ class Calendar::Period
         (range & other_range).present?
       end
     end
+  end
+
+  def validate_dates
+    validate_begin
+    validate_end
+  end
+
+  def validate_begin
+    errors.add(:begin, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: self.begin.to_s)) unless self.begin.legal?
+  end
+
+  def validate_end
+    errors.add(:end, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: self.end.to_s)) unless self.end.legal?
   end
 
   def cover? date
