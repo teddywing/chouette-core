@@ -9,6 +9,12 @@ class Calendar::Period
   validates_presence_of :begin, :end
   validate :validate_dates
 
+  def initialize(args={})
+    super
+    self.begin = Calendar::CalendarDate.from_date(self.begin) if Date === self.begin
+    self.end = Calendar::CalendarDate.from_date(self.end) if Date === self.end
+  end
+
   def check_end_greather_than_begin
     if self.begin and self.end and self.begin > self.end
       errors.add(:end, :invalid)
@@ -16,7 +22,10 @@ class Calendar::Period
   end
 
   def self.from_range(index, range)
-    Period.new id: index, begin: range.begin, end: range.end
+    new \
+      id:    index, 
+      begin: Calendar::CalendarDate.from_date(range.begin), 
+      end:   Calendar::CalendarDate.from_date(range.end)
   end
 
   def range
@@ -44,11 +53,11 @@ class Calendar::Period
   end
 
   def validate_begin
-    errors.add(:begin, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: self.begin.to_s)) unless self.begin.legal?
+    errors.add(:begin, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: self.begin.to_s)) unless self.begin.try( :legal? )
   end
 
   def validate_end
-    errors.add(:end, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: self.end.to_s)) unless self.end.legal?
+    errors.add(:end, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: self.end.to_s)) unless self.end.try( :legal? )
   end
 
   def cover? date

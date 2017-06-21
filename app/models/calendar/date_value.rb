@@ -8,7 +8,7 @@ class Calendar::DateValue
   validate :validate_date
   
   def self.from_date(index, date)
-    DateValue.new id: index, value: date
+    new id: index, value: Calendar::CalendarDate.from_date(date)
   end
 
   # Stuff required for coocon
@@ -25,7 +25,7 @@ class Calendar::DateValue
   end
 
   def validate_date
-    errors.add(:value, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: value.to_s)) unless value.legal? 
+    errors.add(:value, I18n.t('activerecord.errors.models.calendar.attributes.dates.illegal_date', date: value.to_s)) unless value.try(:legal?)
   end
 
   attribute :_destroy, type: Boolean

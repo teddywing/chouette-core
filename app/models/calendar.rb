@@ -1,8 +1,6 @@
 require 'range_ext'
 class Calendar < ActiveRecord::Base
 
-  NullDate = Date.new
-
   belongs_to :organisation
   has_many :time_tables
 
@@ -70,8 +68,6 @@ class Calendar < ActiveRecord::Base
 
   def flatten_date_array attributes, key
     date_int = %w(1 2 3).map {|e| attributes["#{key}(#{e}i)"].to_i }
-    ::Date.new(*date_int)
-  rescue
     Calendar::CalendarDate.new(*date_int)
   end
 

@@ -20,6 +20,10 @@ class Calendar
       o
     end
 
+    def self.from_date(date)
+      new date.year, date.month, date.day
+    end
+
     def legal?; !!!@illegal end
   end
 end
