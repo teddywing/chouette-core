@@ -134,9 +134,10 @@ const actions = {
     type: 'SHIFT_VEHICLEJOURNEY',
     data
   }),
-  duplicateVehicleJourney : (data) => ({
+  duplicateVehicleJourney : (data, departureDelta) => ({
     type: 'DUPLICATE_VEHICLEJOURNEY',
-    data
+    data,
+    departureDelta
   }),
   deleteVehicleJourneys : () => ({
     type: 'DELETE_VEHICLEJOURNEYS'

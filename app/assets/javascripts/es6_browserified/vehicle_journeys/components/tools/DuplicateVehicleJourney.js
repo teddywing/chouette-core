@@ -18,8 +18,8 @@ class DuplicateVehicleJourney extends Component {
         }
       }
       let val = actions.getDuplicateDelta(_.find(actions.getSelected(this.props.vehicleJourneys)[0].vehicle_journey_at_stops, {'dummy': false}), newDeparture)
-      this.refs.additional_time.value = parseInt(this.refs.additional_time.value) + val
-      this.props.onDuplicateVehicleJourney(this.refs)
+      this.refs.additional_time.value = parseInt(this.refs.additional_time.value)
+      this.props.onDuplicateVehicleJourney(this.refs, val)
       this.props.onModalClose()
       $('#DuplicateVehicleJourneyModal').modal('hide')
     }
