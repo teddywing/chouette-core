@@ -459,20 +459,20 @@ const actions = {
       schedule.arrival_time.hour = parseInt(schedule.arrival_time.hour) + hours
     }
 
-    if(schedule.departure_time.hour > 23){
+    if(parseInt(schedule.departure_time.hour) > 23){
       schedule.departure_time.hour = '23'
       schedule.departure_time.minute = '59'
     }
-    if(schedule.arrival_time.hour > 23){
+    if(parseInt(schedule.arrival_time.hour) > 23){
       schedule.arrival_time.hour = '23'
       schedule.arrival_time.minute = '59'
     }
 
-    if(schedule.departure_time.hour < 0){
+    if(parseInt(schedule.departure_time.hour) < 0){
       schedule.departure_time.hour = '00'
       schedule.departure_time.minute = '00'
     }
-    if(schedule.arrival_time.hour > 23){
+    if(parseInt(schedule.arrival_time.hour) < 0){
       schedule.arrival_time.hour = '00'
       schedule.arrival_time.minute = '00'
     }
