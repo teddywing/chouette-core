@@ -17,15 +17,6 @@ class ReferentialDecorator < Draper::Decorator
     end
 
     if h.policy(object).edit?
-      links << HTMLElement.new(
-        :button,
-        'Purger',
-        type: 'button',
-        data: {
-          toggle: 'modal',
-          target: '#purgeModal'
-        }
-      )
 
       if object.archived?
         links << Link.new(
@@ -34,6 +25,15 @@ class ReferentialDecorator < Draper::Decorator
           method: :put
         )
       else
+        links << HTMLElement.new(
+          :button,
+          'Purger',
+          type: 'button',
+          data: {
+            toggle: 'modal',
+            target: '#purgeModal'
+          }
+        )
         links << Link.new(
           content: h.t('actions.archive'),
           href: h.archive_referential_path(object.id),
@@ -42,7 +42,7 @@ class ReferentialDecorator < Draper::Decorator
       end
     end
 
-    if h.policy(object).destroy?
+    if h.policy(object).destroy? && !object.archived?
       links << Link.new(
         content: h.destroy_link_content,
         href: h.referential_path(object),
