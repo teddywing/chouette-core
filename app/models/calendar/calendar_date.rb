@@ -3,7 +3,7 @@ class Calendar
 
     module IllegalDate
       attr_reader :year, :month, :day
-      def to_s
+      def to_s(*_args)
         "%d-%02d-%02d" % [year, month, day]
       end
     end

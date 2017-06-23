@@ -50,7 +50,7 @@ class CalendarsController < BreadcrumbController
         date << params[:q][key].to_i
         params[:q].delete(key)
       end
-      params[:q]['contains_date'] = Date.new(*date)
+      params[:q]['contains_date'] = Date.new(*date) rescue nil
     end
   end
 
