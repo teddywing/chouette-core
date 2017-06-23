@@ -431,7 +431,7 @@ describe Chouette::VehicleJourney, :type => :model do
         ')
         .where_departure_time_between('03:00', '04:00', allow_empty: true)
         .to_a
-      ).to eq([journey_early, journey_late])
+      ).to match_array([journey_early, journey_late])
     end
   end
 
