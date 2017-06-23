@@ -16,14 +16,13 @@ class WorkbenchesController < BreadcrumbController
     ransack_params = params[:q].merge(archived_at_not_null: nil, archived_at_null: nil).clone
     ransack_params.delete('associated_lines_id_eq')
 
-    q_for_result = scope.ransack(ransack_params)
-    @wbench_refs = sort_result(q_for_result.result).paginate(page: params[:page], per_page: 30)
+    @q = scope.ransack(ransack_params)
+    @wbench_refs = sort_result(@q.result).paginate(page: params[:page], per_page: 30)
     @wbench_refs = ModelDecorator.decorate(
       @wbench_refs,
       with: ReferentialDecorator
     )
 
-    @q = scope.ransack(params[:q])
     show! do
       build_breadcrumb :show
     end
