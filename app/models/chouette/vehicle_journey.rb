@@ -256,7 +256,7 @@ module Chouette
         .where(
           %Q(
             "vehicle_journey_at_stops"."departure_time" >= ?
-            AND "vehicle_journey_at_stops"."departure_time" < ?
+            AND "vehicle_journey_at_stops"."departure_time" <= ?
             #{
               if allow_empty
                 'OR "vehicle_journey_at_stops"."id" IS NULL'

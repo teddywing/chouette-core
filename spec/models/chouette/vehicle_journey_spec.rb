@@ -404,6 +404,35 @@ describe Chouette::VehicleJourney, :type => :model do
         .to_a
       ).to eq([journey])
     end
+
+    it "uses an inclusive range" do
+      journey_early = create(
+        :vehicle_journey,
+        stop_departure_time: '03:00:00'
+      )
+
+      route = journey_early.route
+      journey_pattern = journey_early.journey_pattern
+
+      journey_late = create(
+        :vehicle_journey,
+        route: route,
+        journey_pattern: journey_pattern,
+        stop_departure_time: '04:00:00'
+      )
+
+      expect(route
+        .vehicle_journeys
+        .select('DISTINCT "vehicle_journeys".*')
+        .joins('
+          LEFT JOIN "vehicle_journey_at_stops"
+            ON "vehicle_journey_at_stops"."vehicle_journey_id" =
+              "vehicle_journeys"."id"
+        ')
+        .where_departure_time_between('03:00', '04:00', allow_empty: true)
+        .to_a
+      ).to eq([journey_early, journey_late])
+    end
   end
 
   describe ".without_time_tables" do
