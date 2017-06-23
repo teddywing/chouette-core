@@ -11,8 +11,12 @@ class WorkbenchesController < BreadcrumbController
     scope = ransack_status(scope)
 
     # Ignore archived_at_not_null/archived_at_null managed by ransack_status scope
-    q_for_result =
-      scope.ransack(params[:q].merge(archived_at_not_null: nil, archived_at_null: nil))
+    # We clone params[:q] so we can delete fake ransack filter arguments before calling search method,
+    # which will allow us to preserve params[:q] for sorting
+    ransack_params = params[:q].merge(archived_at_not_null: nil, archived_at_null: nil).clone
+    ransack_params.delete('associated_lines_id_eq')
+
+    q_for_result = scope.ransack(ransack_params)
     @wbench_refs = sort_result(q_for_result.result).paginate(page: params[:page], per_page: 30)
     @wbench_refs = ModelDecorator.decorate(
       @wbench_refs,
@@ -63,7 +67,6 @@ class WorkbenchesController < BreadcrumbController
   def ransack_associated_lines scope
     if params[:q] && params[:q]['associated_lines_id_eq']
       scope = scope.include_metadatas_lines([params[:q]['associated_lines_id_eq']])
-      params[:q].delete('associated_lines_id_eq')
     end
     scope
   end
