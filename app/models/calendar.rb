@@ -1,4 +1,7 @@
 require 'range_ext'
+require_relative 'calendar/date_value'
+require_relative 'calendar/period'
+
 class Calendar < ActiveRecord::Base
   belongs_to :organisation
   has_many :time_tables
@@ -30,69 +33,11 @@ class Calendar < ActiveRecord::Base
     end
   end
 
-  class Period
-    include ActiveAttr::Model
 
-    attribute :id, type: Integer
-    attribute :begin, type: Date
-    attribute :end, type: Date
-
-    validates_presence_of :begin, :end
-    validate :check_end_greather_than_begin
-
-    def check_end_greather_than_begin
-      if self.begin and self.end and self.begin > self.end
-        errors.add(:end, :invalid)
-      end
-    end
-
-    def self.from_range(index, range)
-      Period.new id: index, begin: range.begin, end: range.end
-    end
-
-    def range
-      if self.begin and self.end and self.begin <= self.end
-        Range.new self.begin, self.end
-      end
-    end
-
-    def intersect?(*other)
-      return false if range.nil?
-
-      other = other.flatten
-      other = other.delete_if { |o| o.id == id } if id
-
-      other.any? do |period|
-        if other_range = period.range
-          (range & other_range).present?
-        end
-      end
-    end
-
-    def cover? date
-      range.cover? date
-    end
-
-    # Stuff required for coocon
-    def new_record?
-      !persisted?
-    end
-
-    def persisted?
-      id.present?
-    end
-
-    def mark_for_destruction
-      self._destroy = true
-    end
-
-    attribute :_destroy, type: Boolean
-    alias_method :marked_for_destruction?, :_destroy
-  end
-
+  ### Calendar::Period
   # Required by coocon
   def build_period
-    Period.new
+    Calendar::Period.new
   end
 
   def periods
@@ -100,11 +45,9 @@ class Calendar < ActiveRecord::Base
   end
 
   def init_periods
-    if date_ranges
-      date_ranges.each_with_index.map { |r, index| Period.from_range(index, r) }
-    else
-      []
-    end
+    (date_ranges || [])
+      .each_with_index
+      .map( &Calendar::Period.method(:from_range) )
   end
   private :init_periods
 
@@ -141,7 +84,7 @@ class Calendar < ActiveRecord::Base
       ['begin', 'end'].map do |attr|
         period_attribute[attr] = flatten_date_array(period_attribute, attr)
       end
-      period = Period.new(period_attribute.merge(id: index))
+      period = Calendar::Period.new(period_attribute.merge(id: index))
       @periods << period unless period.marked_for_destruction?
     end
 
@@ -164,40 +107,11 @@ class Calendar < ActiveRecord::Base
 
   private :clear_periods
 
-### dates
-
-  class DateValue
-    include ActiveAttr::Model
-
-    attribute :id, type: Integer
-    attribute :value, type: Date
-
-    validates_presence_of :value
-
-    def self.from_date(index, date)
-      DateValue.new id: index, value: date
-    end
-
-    # Stuff required for coocon
-    def new_record?
-      !persisted?
-    end
-
-    def persisted?
-      id.present?
-    end
-
-    def mark_for_destruction
-      self._destroy = true
-    end
-
-    attribute :_destroy, type: Boolean
-    alias_method :marked_for_destruction?, :_destroy
-  end
+  ### Calendar::DateValue
 
   # Required by coocon
   def build_date_value
-    DateValue.new
+    Calendar::DateValue.new
   end
 
   def date_values
@@ -206,7 +120,7 @@ class Calendar < ActiveRecord::Base
 
   def init_date_values
     if dates
-      dates.each_with_index.map { |d, index| DateValue.from_date(index, d) }
+      dates.each_with_index.map { |d, index| Calendar::DateValue.from_date(index, d) }
     else
       []
     end
@@ -244,7 +158,7 @@ class Calendar < ActiveRecord::Base
     @date_values = []
     attributes.each do |index, date_value_attribute|
       date_value_attribute['value'] = flatten_date_array(date_value_attribute, 'value')
-      date_value = DateValue.new(date_value_attribute.merge(id: index))
+      date_value = Calendar::DateValue.new(date_value_attribute.merge(id: index))
       @date_values << date_value unless date_value.marked_for_destruction?
     end
 
