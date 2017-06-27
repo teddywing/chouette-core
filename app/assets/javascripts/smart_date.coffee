@@ -1,4 +1,7 @@
-legalDaysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+smartDateSelector       = '.smart_date'
+smartDateSelectSelector = "#{smartDateSelector} select"
+legalDaysPerMonth       = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 correctDay = (dateValues) ->
   [day, month, year] = dates
@@ -8,7 +11,9 @@ correctDay = (dateValues) ->
 
 smartCorrectDate = ->
   allSelectors = $(@).parent().children('select') # N'a pas un sibbling('select', include_self = true) ?
-  allVals      = allSelectors.map (sel) -> paeseInt(sel.val())
+  console.log allSelectors
+  allVals      = allSelectors.map (sel) -> parseInt($(sel).val())
+  console.log allVals
   correctedDay = correctDay allVals
   daySelector  = allSelectors.first()
   $(daySelector).val(correctedDay)
