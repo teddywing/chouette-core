@@ -1,7 +1,7 @@
-
-smartDateSelector       = '.smart_date'
-smartDateSelectSelector = "#{smartDateSelector} select"
 legalDaysPerMonth       = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+isLeapYear = (year) ->
+  (year % 4 == 0) && ((year % 400 == 0) || (year % 100 != 0))
 
 correctDay = (dateValues) ->
   [day, month, year] = dateValues
@@ -18,4 +18,4 @@ smartCorrectDate = ->
   $(daySelector).val(correctedDay)
 
 $ ->
-  $(smartDateSelectSelector).on 'change', smartCorrectDate
+  $(document).on 'change', '.smart_date select', smartCorrectDate
