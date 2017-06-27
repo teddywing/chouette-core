@@ -9,7 +9,7 @@ module Support
       end
 
       def create_user_context(user:, referential:)
-        OpenStruct.new(user: user, context: {referential: referential})
+        UserContext.new(user, referential: referential)
       end
 
       def add_permissions(*permissions, for_user:)

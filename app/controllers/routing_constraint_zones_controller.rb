@@ -16,6 +16,10 @@ class RoutingConstraintZonesController < ChouetteController
 
   def show
     @routing_constraint_zone = collection.find(params[:id])
+    @routing_constraint_zone = @routing_constraint_zone.decorate(context: {
+      referential: @referential,
+      line: @line
+    })
   end
 
   protected

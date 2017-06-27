@@ -18,8 +18,8 @@ class DuplicateVehicleJourney extends Component {
         }
       }
       let val = actions.getDuplicateDelta(_.find(actions.getSelected(this.props.vehicleJourneys)[0].vehicle_journey_at_stops, {'dummy': false}), newDeparture)
-      this.refs.additional_time.value = parseInt(this.refs.additional_time.value) + val
-      this.props.onDuplicateVehicleJourney(this.refs)
+      this.refs.additional_time.value = parseInt(this.refs.additional_time.value)
+      this.props.onDuplicateVehicleJourney(this.refs, val)
       this.props.onModalClose()
       $('#DuplicateVehicleJourneyModal').modal('hide')
     }
@@ -51,10 +51,9 @@ class DuplicateVehicleJourney extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Dupliquer une course</h4>
-                    {(this.props.modal.type == 'duplicate') && (
-                      <em>Dupliquer les horaires de la course {actions.humanOID(actions.getSelected(this.props.vehicleJourneys)[0].objectid)}</em>
-                    )}
+                    <h4 className='modal-title'>
+                      Dupliquer { actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'plusieurs courses' : 'une course' }
+                    </h4>
                   </div>
 
                   {(this.props.modal.type == 'duplicate') && (

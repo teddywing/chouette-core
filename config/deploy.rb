@@ -12,7 +12,7 @@ set :group_writable, true
 set :bundle_cmd, "/var/lib/gems/2.2.0/bin/bundle"
 set :rake, "#{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake"
 
-set :keep_releases, 5
+set :keep_releases, -> { fetch(:kept_releases, 5) }
 after "deploy:restart", "deploy:cleanup"
 
 set :rails_env, -> { fetch(:stage) }

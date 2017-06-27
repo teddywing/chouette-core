@@ -109,15 +109,11 @@ RSpec.describe Calendar, :type => :model do
     let(:calendar) { create(:calendar, date_ranges: []) }
 
     it 'shoud fill date_ranges with date ranges' do
-      expected_ranges = [
-        Range.new(Date.today, Date.tomorrow)
-      ]
-      expected_ranges.each_with_index do |range, index|
-        calendar.date_ranges << Calendar::Period.from_range(index, range)
-      end
+      expected_range = Date.today..Date.tomorrow
+      calendar.date_ranges << expected_range
       calendar.valid?
 
-      expect(calendar.date_ranges.map { |period| period.begin..period.end }).to eq(expected_ranges)
+      expect(calendar.date_ranges.map { |period| period.begin..period.end }).to eq([expected_range])
     end
   end
 
