@@ -40,7 +40,7 @@ class ShiftVehicleJourney extends Component {
                   <div className='modal-header'>
                     <h4 className='modal-title'>Mettre à jour une course</h4>
                     {(this.props.modal.type == 'shift') && (
-                      <em>Mettre à jour les horaires de la course {actions.getSelected(this.props.vehicleJourneys)[0].objectid}</em>
+                      <em>Mettre à jour les horaires de la course {actions.humanOID(actions.getSelected(this.props.vehicleJourneys)[0].objectid)}</em>
                     )}
                   </div>
 
@@ -57,6 +57,7 @@ class ShiftVehicleJourney extends Component {
                                 min='-59'
                                 max='59'
                                 className='form-control'
+                                defaultValue='0'
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                 required
                                 />
