@@ -61,30 +61,30 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
               <div className="nested-fields">
                 <div className="wrapper">
                   <div>
-                    <div className={'form-group date' + (modal.modalProps.error ? ' has-error' : '')}>
+                    <div className={'form-group date smart_date' + (modal.modalProps.error ? ' has-error' : '')}>
                       <div className="form-inline">
-                        <select value={formatNumber(modal.modalProps.begin.day)} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'begin', 'day')} id="q_validity_period_begin_gteq_3i" className="date required form-control">
+                        <select value={formatNumber(modal.modalProps.begin.day)} onChange={(e) => onUpdatePeriodForm(e, 'begin', 'day')} id="q_validity_period_begin_gteq_3i" className="date required form-control">
                           {makeDaysOptions(modal.modalProps.begin.day)}
                         </select>
-                        <select value={formatNumber(modal.modalProps.begin.month)} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'begin', 'month')} id="q_validity_period_begin_gteq_2i" className="date required form-control">
+                        <select value={formatNumber(modal.modalProps.begin.month)} onChange={(e) => onUpdatePeriodForm(e, 'begin', 'month')} id="q_validity_period_begin_gteq_2i" className="date required form-control">
                           {makeMonthsOptions(modal.modalProps.begin.month)}
                         </select>
-                        <select value={modal.modalProps.begin.year} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'begin', 'year')} id="q_validity_period_begin_gteq_1i" className="date required form-control">
+                        <select value={modal.modalProps.begin.year} onChange={(e) => onUpdatePeriodForm(e, 'begin', 'year')} id="q_validity_period_begin_gteq_1i" className="date required form-control">
                           {makeYearsOptions(modal.modalProps.begin.year)}
                         </select>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <div className={'form-group date' + (modal.modalProps.error ? ' has-error' : '')}>
+                    <div className={'form-group date smart_date' + (modal.modalProps.error ? ' has-error' : '')}>
                       <div className="form-inline">
-                        <select value={formatNumber(modal.modalProps.end.day)} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'end', 'day')} id="q_validity_period_end_gteq_3i" className="date required form-control">
+                        <select value={formatNumber(modal.modalProps.end.day)} onChange={(e) => onUpdatePeriodForm(e, 'end', 'day')} id="q_validity_period_end_gteq_3i" className="date required form-control">
                           {makeDaysOptions(modal.modalProps.end.day)}
                         </select>
-                        <select value={formatNumber(modal.modalProps.end.month)} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'end', 'month')} id="q_validity_period_end_gteq_2i" className="date required form-control">
+                        <select value={formatNumber(modal.modalProps.end.month)} onChange={(e) => onUpdatePeriodForm(e, 'end', 'month')} id="q_validity_period_end_gteq_2i" className="date required form-control">
                           {makeMonthsOptions(modal.modalProps.end.month)}
                         </select>
-                        <select value={modal.modalProps.end.year} onChange={(e) => onUpdatePeriodForm(e.currentTarget.value, 'end', 'year')} id="q_validity_period_end_gteq_1i" className="date required form-control">
+                        <select value={modal.modalProps.end.year} onChange={(e) => onUpdatePeriodForm(e, 'end', 'year')} id="q_validity_period_end_gteq_1i" className="date required form-control">
                           {makeYearsOptions(modal.modalProps.end.year)}
                         </select>
                       </div>

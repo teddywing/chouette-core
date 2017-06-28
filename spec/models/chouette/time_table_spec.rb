@@ -2,17 +2,73 @@ require 'spec_helper'
 
 describe Chouette::TimeTable, :type => :model do
   subject { create(:time_table) }
+  let(:subject_periods_to_range) { subject.periods.map{|p| p.period_start..p.period_end } }
 
   it { is_expected.to validate_presence_of :comment }
   it { is_expected.to validate_uniqueness_of :objectid }
 
-  context "merge with calendar" do
-    let(:calendar) { create(:calendar) }
+  describe "#merge! with time_table" do
+    let(:another_tt) { create(:time_table) }
+    let(:another_tt_periods_to_range) { another_tt.periods.map{|p| p.period_start..p.period_end } }
 
-    it 'should add calendar dates to time_table' do
+    # Make sur we don't have overlapping periods or dates
+    before do
+      another_tt.periods.each do |p|
+        p.period_start = p.period_start + 1.year
+        p.period_end   = p.period_end + 1.year
+      end
+      another_tt.dates.each{| d| d.date = d.date + 1.year }
+    end
+
+    it 'should merge dates' do
+      subject.dates.clear
+      subject.merge!(another_tt)
+      expect(subject.dates.map(&:date)).to include(*another_tt.dates.map(&:date))
+    end
+
+    it 'should merge periods' do
+      subject.periods.clear
+      subject.merge!(another_tt)
+
+      expect(subject_periods_to_range).to include(*another_tt_periods_to_range)
+    end
+
+    it 'should not modify int_day_types' do
+      int_day_types = subject.int_day_types
+      subject.merge!(another_tt)
+      expect(subject.int_day_types).to eq int_day_types
+    end
+
+    it 'should merge date in_out false' do
+      another_tt.dates.last.in_out = false
+      another_tt.save
+
+      subject.merge!(another_tt)
+      expect(subject.dates.map(&:date)).to include(another_tt.dates.last.date)
+    end
+  end
+
+  context "#merge! with calendar" do
+    let(:calendar) { create(:calendar, date_ranges: [Date.today + 1.year..Date.tomorrow + 1.year]) }
+
+    it 'should merge calendar dates' do
       subject.dates.clear
       subject.merge!(calendar.convert_to_time_table)
       expect(subject.dates.map(&:date)).to include(*calendar.dates)
+    end
+
+    it 'should merge calendar periods with no periods in source' do
+      subject.periods.clear
+      another_tt = calendar.convert_to_time_table
+      subject.merge!(another_tt)
+      expect(subject_periods_to_range).to include(*calendar.date_ranges)
+    end
+
+    it 'should add calendar periods with existing periods in source' do
+      another_tt = calendar.convert_to_time_table
+      subject.merge!(another_tt)
+
+      expect(subject_periods_to_range).to include(*calendar.date_ranges)
     end
   end
 
@@ -979,47 +1035,6 @@ end
         expect(days.include?(Date.new(2014,7,20))).to be_truthy
         expect(days.include?(Date.new(2014,7,21))).to be_truthy
       end
-  end
-
-
-  describe "#merge!" do
-    context "timetables have periods with common day_types " do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,1), :period_end => Date.new(2014,8,5))
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,6,30), :period_end => Date.new(2014,7,6))
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,16), :in_out => true)
-        subject.int_day_types = 4|16|32|128
-        another_tt = create(:time_table , :int_day_types => (4|16|64|128) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,5), :period_end => Date.new(2014,8,12))
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,7,15), :period_end => Date.new(2014,7,25))
-        subject.merge! another_tt
-        subject.reload
-      end
-      it "should have merged periods" do
-        expect(subject.periods.size).to eq(3)
-        expect(subject.periods[0].period_start).to eq(Date.new(2014, 6, 30))
-        expect(subject.periods[0].period_end).to eq(Date.new(2014, 7, 6))
-        expect(subject.periods[1].period_start).to eq(Date.new(2014, 7, 15))
-        expect(subject.periods[1].period_end).to eq(Date.new(2014, 7, 25))
-        expect(subject.periods[2].period_start).to eq(Date.new(2014, 8, 1))
-        expect(subject.periods[2].period_end).to eq(Date.new(2014, 8, 12))
-      end
-      it "should not modify day_types" do
-        expect(subject.int_day_types).to eq(4|16|128)
-      end
-      it "should have dates for thursdays and fridays" do
-        expect(subject.dates.size).to eq(4)
-        expect(subject.dates[0].date).to eq(Date.new(2014,7,3))
-        expect(subject.dates[1].date).to eq(Date.new(2014,7,18))
-        expect(subject.dates[2].date).to eq(Date.new(2014,7,25))
-        expect(subject.dates[3].date).to eq(Date.new(2014,8,8))
-      end
-    end
-
   end
 
   describe "#intersect!" do
