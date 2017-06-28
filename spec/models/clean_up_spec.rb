@@ -191,7 +191,7 @@ RSpec.describe CleanUp, :type => :model do
 
   context '#destroy_time_tables' do
     let!(:time_table) { create(:time_table) }
-    let(:cleaner) { create(:clean_up, date_type: :before) }
+    let(:cleaner) { create(:clean_up) }
 
     it 'should destroy all time_tables' do
       expect{cleaner.destroy_time_tables(Chouette::TimeTable.all)}.to change {
@@ -199,11 +199,26 @@ RSpec.describe CleanUp, :type => :model do
       }.by(-1)
     end
 
-    it 'should destroy associated vehicle_journeys' do
-      create(:vehicle_journey, time_tables: [time_table])
-      expect{cleaner.destroy_time_tables(Chouette::TimeTable.all)}.to change {
-        Chouette::VehicleJourney.count
-      }.by(-1)
+    it 'should destroy time_table vehicle_journey association' do
+      vj = create(:vehicle_journey, time_tables: [time_table])
+      cleaner.destroy_time_tables(Chouette::TimeTable.all)
+      expect(vj.reload.time_tables).to be_empty
+    end
+  end
+
+  context '#destroy_vehicle_journey_without_time_table' do
+    let(:cleaner) { create(:clean_up) }
+
+    it 'should destroy vehicle_journey' do
+      vj = create(:vehicle_journey)
+      expect{cleaner.destroy_vehicle_journey_without_time_table
+      }.to change { Chouette::VehicleJourney.count }.by(-1)
+    end
+
+    it 'should not destroy vehicle_journey with time_table' do
+      create(:vehicle_journey, time_tables: [create(:time_table)])
+      expect{cleaner.destroy_vehicle_journey_without_time_table
+      }.to_not change { Chouette::VehicleJourney.count }
     end
   end
 
