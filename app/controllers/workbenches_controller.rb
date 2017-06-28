@@ -40,7 +40,7 @@ class WorkbenchesController < BreadcrumbController
 
   private
   def resource
-    @workbench = Workbench.find params[:id]
+    @workbench = current_organisation.workbenches.find params[:id]
   end
 
   def sort_result collection
