@@ -30,29 +30,40 @@
           $('#ITL_stoppoints').find('.nested-fields').remove()
           $('#ITL_stoppoints').find('.nested-head').after(html)
 
-    # VALIDATION
-    selection = []
-    $('#ITL_stoppoints').on 'click', "input[type='checkbox']", (e) ->
-      v = $(e.target).val()
+        # VALIDATION
+        selection = []
 
-      if ( $.inArray(v, selection) != -1 )
-        selection.splice(selection.indexOf(v), 1)
-      else
-        selection.push(v)
+        totalItems = collection.length
 
-    alertMsg = "<div class='alert alert-danger' style='margin-bottom:15px;'>
-                  <p class='small'>Un ITL doit comporter au moins deux arrêts</p>
-                </div>"
+        $('#ITL_stoppoints').on 'click', "input[type='checkbox']", (e) ->
+          v = $(e.target).val()
 
-    $(document).on 'click', "input[type='submit']", (e)->
-      inputName = $('#routing_constraint_zone_name').val()
+          if ( $.inArray(v, selection) != -1 )
+            selection.splice(selection.indexOf(v), 1)
+          else
+            selection.push(v)
 
-      $('.alert-danger').remove()
+        alertMsg1 = "<div class='alert alert-danger' style='margin-bottom:15px;'>
+                      <p class='small'>Un ITL doit comporter au moins deux arrêts</p>
+                    </div>"
+        alertMsg2 = "<div class='alert alert-danger' style='margin-bottom:15px;'>
+                      <p class='small'>Un ITL ne peut recouvrir tous les arrêts d'un itinéraire</p>
+                    </div>"
 
-      if ( selection.length < 2 && inputName != "")
-        e.preventDefault()
-        $('#routing_constraint_zone_name').closest('.form-group').removeClass('has-error').find('.help-block').remove()
-        $('#ITL_stoppoints').prepend(alertMsg)
+        $(document).on 'click', "input[type='submit']", (e)->
+          inputName = $('#routing_constraint_zone_name').val()
+
+          $('.alert-danger').remove()
+
+          if ( selection.length < 2 && inputName != "" )
+            e.preventDefault()
+            $('#routing_constraint_zone_name').closest('.form-group').removeClass('has-error').find('.help-block').remove()
+            $('#ITL_stoppoints').prepend(alertMsg1)
+
+          if ( selection.length == totalItems && inputName != "" )
+            e.preventDefault()
+            $('#routing_constraint_zone_name').closest('.form-group').removeClass('has-error').find('.help-block').remove()
+            $('#ITL_stoppoints').prepend(alertMsg2)
 
 $ ->
   ITL_stoppoints()
