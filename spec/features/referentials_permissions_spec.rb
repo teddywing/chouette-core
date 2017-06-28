@@ -31,7 +31,7 @@ describe "Referentials", :type => :feature do
         end
         it 'shows the delete button' do
           expected_href = referential_path(referential)
-          expect( page ).to have_css(%{a[href=#{expected_href.inspect}] span}, text: destroy_link_text)
+          expect( page ).to have_css(%{a[href=#{expected_href.inspect}]}, text: destroy_link_text)
         end
       end
 

@@ -19,6 +19,7 @@ class CleanUp < ActiveRecord::Base
       result['time_table']        = send("destroy_time_tables_#{self.date_type}").try(:count)
       result['time_table_date']   = send("destroy_time_tables_dates_#{self.date_type}").try(:count)
       result['time_table_period'] = send("destroy_time_tables_periods_#{self.date_type}").try(:count)
+      result['vehicle_journey']   = destroy_vehicle_journey_without_time_table.try(:count)
       self.overlapping_periods.each do |period|
         exclude_dates_in_overlapping_period(period)
       end
@@ -100,9 +101,16 @@ class CleanUp < ActiveRecord::Base
     end
   end
 
+  def destroy_vehicle_journey_without_time_table
+    Chouette::VehicleJourney.without_any_time_table.destroy_all
+  end
+
   def destroy_time_tables(time_tables)
+    # Delete vehicle_journey time_table association
     time_tables.each do |time_table|
-      time_table.vehicle_journeys.map(&:destroy)
+      time_table.vehicle_journeys.each do |vj|
+        vj.time_tables.delete(time_table)
+      end
     end
     time_tables.destroy_all
   end

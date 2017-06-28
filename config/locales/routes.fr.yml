@@ -58,7 +58,7 @@ fr:
         number: "Indice"
         comment: "Commentaire"
         direction: "Direction"
-        wayback: "Sens"
+        wayback: "Direction"
         stop_points: "Nb arrêts"
         journey_patterns: "Nb missions"
         opposite_route: "Itinéraire associé"

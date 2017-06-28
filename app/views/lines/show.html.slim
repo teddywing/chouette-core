@@ -7,17 +7,12 @@
   / Below is secundary actions & optional contents
   .row
     .col-lg-12.text-right.mb-sm
-      = link_to t('lines.actions.show_network'), [@line_referential, @line.network], class: 'btn btn-primary'
-      = link_to t('lines.actions.show_company'), [@line_referential, @line.company], class: 'btn btn-primary'
-
-      - if policy(Chouette::Line).create? && @line_referential.organisations.include?(current_organisation)
-        = link_to t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'btn btn-primary'
-      - if false && policy(@line).update?
-        = link_to t('lines.actions.edit'), edit_line_referential_line_path(@line_referential, @line), class: 'btn btn-primary'
-      - if policy(@line).destroy?
-        = link_to line_referential_line_path(@line_referential, @line), method: :delete, data: {confirm:  t('lines.actions.destroy_confirm')}, class: 'btn btn-primary' do
-          span.fa.fa-trash
-          span = t('lines.actions.destroy')
+      - @line.action_links.each do |link|
+        = link_to link.href,
+            method: link.method,
+            data: link.data,
+            class: 'btn btn-primary' do
+              = link.content
 
 / PageContent
 .page_content

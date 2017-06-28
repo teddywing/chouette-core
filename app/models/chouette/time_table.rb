@@ -477,63 +477,22 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   # merge effective days from another timetable
   def merge!(another_tt)
     transaction do
-    # merge dates
-    self.dates ||= []
-    another_tt.included_days.each do |d|
-      add_included_day d
+      self.periods = another_tt.clone_periods + self.periods
+      self.periods = self.optimize_periods
+
+      # For included dates
+      another_tt.included_days.map{ |d| add_included_day(d) }
+
+      # For excluded dates
+      existing_out_date = self.dates.where(in_out: false).map(&:date)
+      another_tt.dates.where(in_out: false).each do |d|
+        unless existing_out_date.include?(d.date)
+          self.dates << Chouette::TimeTableDate.new(:date => d.date, :in_out => false)
+        end
+      end
+      self.save!
     end
 
-    # if one tt has no period, just merge lists
-    if self.periods.empty? || another_tt.periods.empty?
-      if !another_tt.periods.empty?
-        # copy periods
-        self.periods = another_tt.clone_periods
-      end
-    else
-      # check if periods can be kept
-      common_day_types = self.int_day_types & another_tt.int_day_types & 508
-      # if common day types : merge periods
-      if common_day_types != 0
-        periods = self.optimize_periods
-        another_periods = another_tt.optimize_periods
-        # add not common days of both periods as peculiar days
-        self.effective_days_of_periods(self.class.valid_days(self.int_day_types ^ common_day_types)).each do |d|
-          self.dates |= [Chouette::TimeTableDate.new(:date => d, :in_out => true)]
-        end
-        another_tt.effective_days_of_periods(self.class.valid_days(another_tt.int_day_types ^ common_day_types)).each do |d|
-          add_included_day d
-        end
-        # merge periods
-        self.periods = periods | another_periods
-        self.int_day_types = common_day_types
-        self.periods = self.optimize_periods
-      else
-        # convert all period in days
-        self.effective_days_of_periods.each do |d|
-          self.dates << Chouette::TimeTableDate.new(:date => d, :in_out => true) unless self.include_in_dates?(d)
-        end
-        another_tt.effective_days_of_periods.each do |d|
-          add_included_day d
-        end
-      end
-    end
-    # if remained excluded dates are valid in other tt , remove it from result
-    self.dates.each do |date|
-      date.in_out = true if date.in_out == false && another_tt.include_day?(date.date)
-    end
-
-    # if peculiar dates are valid in new periods, remove them
-    if !self.periods.empty?
-      days_in_period = self.effective_days_of_periods
-      dates = []
-      self.dates.each do |date|
-        dates << date unless date.in_out && days_in_period.include?(date.date)
-      end
-      self.dates = dates
-    end
-    self.dates.to_a.sort! { |a,b| a.date <=> b.date}
-    self.save!
-    end
     self.convert_continuous_dates_to_periods
   end
 

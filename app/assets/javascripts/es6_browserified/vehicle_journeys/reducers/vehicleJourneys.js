@@ -182,11 +182,12 @@ const vehicleJourneys = (state = [], action) => {
       let dupes = []
       let selectedIndex
       let val = action.data.additional_time.value
+      let departureDelta = action.departureDelta
       state.map((vj, i) => {
         if(vj.selected){
           selectedIndex = i
           for (i = 0; i< action.data.duplicate_number.value; i++){
-            action.data.additional_time.value = val * (i + 1)
+            action.data.additional_time.value = (parseInt(val) * (i + 1)) + departureDelta
             dupeVj = vehicleJourney(vj, action, false)
             dupeVj.published_journey_name = dupeVj.published_journey_name + '-' + i
             dupeVj.selected = false

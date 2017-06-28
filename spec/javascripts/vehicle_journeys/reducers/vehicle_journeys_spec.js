@@ -216,14 +216,15 @@ describe('vehicleJourneys reducer', () => {
       delta: 627,
       arrival_time : {
         hour: '12',
-        minute: '00'
+        minute: '01'
       },
       departure_time : {
         hour: '22',
-        minute: '27'
+        minute: '28'
       },
       stop_area_object_id : "FR:92024:ZDE:420553:STIF"
     }]
+    let departureDelta = 1
     let fakeData = {
       duplicate_number: {value : 1},
       additional_time: {value: '5'}
@@ -234,7 +235,8 @@ describe('vehicleJourneys reducer', () => {
     expect(
       vjReducer(state, {
         type: 'DUPLICATE_VEHICLEJOURNEY',
-        data: fakeData
+        data: fakeData,
+        departureDelta
       })
     ).toEqual([state[0], newVJ, state[1]])
   })

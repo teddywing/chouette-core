@@ -31,13 +31,14 @@ class User < ActiveRecord::Base
   @@edit_offer_permissions = ['routes.create', 'routes.edit', 'routes.destroy', 'journey_patterns.create', 'journey_patterns.edit', 'journey_patterns.destroy',
     'vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy', 'time_tables.create', 'time_tables.edit', 'time_tables.destroy',
     'footnotes.edit', 'footnotes.create', 'footnotes.destroy', 'routing_constraint_zones.create', 'routing_constraint_zones.edit',
-    'routing_constraint_zones.destroy', 'referentials.create', 'referentials.edit', 'referentials.destroy']
+    'routing_constraint_zones.destroy', 'referentials.create', 'referentials.edit', 'referentials.destroy', 'boiv:edit-offer']
   mattr_reader :edit_offer_permissions
 
   def self.all_permissions
     edit_offer_permissions
   end
 
+  # Callback invoked by DeviseCasAuthenticable::Model#authernticate_with_cas_ticket
   def cas_extra_attributes=(extra_attributes)
     extra             = extra_attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
     self.name         = extra[:full_name]

@@ -18,8 +18,10 @@ const mapDispatchToProps = (dispatch) => {
     onClosePeriodForm: () => {
       dispatch(actions.closePeriodForm())
     },
-    onUpdatePeriodForm: (val, group, selectType) => {
-      dispatch(actions.updatePeriodForm(val, group, selectType))
+    onUpdatePeriodForm: (e, group, selectType) => {
+      dispatch(actions.updatePeriodForm(e.currentTarget.value, group, selectType))
+      let selector = '#q_validity_period_' + group + '_gteq_3i'
+      dispatch(actions.updatePeriodForm($(selector).val(), group, 'day'))
     },
     onValidatePeriodForm: (modalProps, timeTablePeriods, metas) => {
       dispatch(actions.validatePeriodForm(modalProps, timeTablePeriods, metas))

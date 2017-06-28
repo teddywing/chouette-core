@@ -188,11 +188,13 @@ describe('when clicking on validate button inside editing modal', () => {
 describe('when clicking on validate button inside duplicating modal', () => {
   it('should create an action to duplicate a vehiclejourney schedule', () => {
     const data = {}
+    const departureDelta = 0
     const expectedAction = {
       type: 'DUPLICATE_VEHICLEJOURNEY',
-      data
+      data,
+      departureDelta
     }
-    expect(actions.duplicateVehicleJourney(data)).toEqual(expectedAction)
+    expect(actions.duplicateVehicleJourney(data, departureDelta)).toEqual(expectedAction)
   })
 })
 describe('when clicking on edit notes modal', () => {

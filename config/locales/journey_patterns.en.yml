@@ -24,6 +24,12 @@ en:
     form:
       warning: "Be careful, selection is also applied to the %{count} vehicle journeys associated to this journey pattern"
   activerecord:
+    errors:
+      models:
+        journey_pattern:
+          attributes:
+            stop_points:
+              minimum: 'Must at least have two stop points'
     models:
       journey_pattern:
         zero:  "journey pattern"

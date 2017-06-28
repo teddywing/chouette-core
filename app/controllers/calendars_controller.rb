@@ -5,6 +5,12 @@ class CalendarsController < BreadcrumbController
   respond_to :html
   respond_to :js, only: :index
 
+  def show
+    show! do
+      @calendar = @calendar.decorate
+    end
+  end
+
   private
   def calendar_params
     permitted_params = [:id, :name, :short_name, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]
@@ -49,7 +55,7 @@ class CalendarsController < BreadcrumbController
         date << params[:q][key].to_i
         params[:q].delete(key)
       end
-      params[:q]['contains_date'] = Date.new(*date)
+      params[:q]['contains_date'] = Date.new(*date) rescue nil
     end
   end
 

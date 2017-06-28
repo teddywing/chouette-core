@@ -15,7 +15,7 @@ const filters = (state = {}, action) => {
           minute: '59'
         }
       }
-      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, timetable: {}, withoutSchedule: true, withoutTimeTable: false })
+      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, timetable: {}, withoutSchedule: true, withoutTimeTable: true })
       return _.assign({}, state, {query: newQuery, queryString: ''})
     case 'TOGGLE_WITHOUT_SCHEDULE':
       newQuery = _.assign({}, state.query, {withoutSchedule: !state.query.withoutSchedule})

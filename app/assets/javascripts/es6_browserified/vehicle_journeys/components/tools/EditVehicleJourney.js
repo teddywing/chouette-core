@@ -70,7 +70,7 @@ class EditVehicleJourney extends Component {
                               <input
                                 type='text'
                                 className='form-control'
-                                value={(this.props.modal.modalProps.vehicleJourney.journey_pattern.objectid) + ' - ' + (this.props.modal.modalProps.vehicleJourney.journey_pattern.name)}
+                                value={actions.humanOID(this.props.modal.modalProps.vehicleJourney.journey_pattern.objectid) + ' - ' + (this.props.modal.modalProps.vehicleJourney.journey_pattern.name)}
                                 disabled={true}
                               />
                             </div>
