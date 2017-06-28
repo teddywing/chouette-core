@@ -11,8 +11,8 @@ class Calendar < ActiveRecord::Base
     validate :check_end_greather_than_begin
 
     def check_end_greather_than_begin
-      if self.begin and self.end and self.begin > self.end
-        errors.add(:end, :invalid)
+      if self.begin && self.end && self.begin >= self.end
+        errors.add(:base, I18n.t('calendars.errors.short_period'))
       end
     end
 
@@ -22,7 +22,7 @@ class Calendar < ActiveRecord::Base
     end
 
     def range
-      if self.begin and self.end and self.begin <= self.end
+      if self.begin && self.end && self.begin <= self.end
         Range.new self.begin, self.end
       end
     end

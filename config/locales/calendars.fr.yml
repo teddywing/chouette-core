@@ -31,6 +31,7 @@ fr:
       destroy_confirm: Etes vous sûr de supprimer cet calendrier ?
     errors:
       overlapped_periods: Une autre période chevauche cette période
+      short_period: Une période doit être d'un duréé de deux jours minimum
     index:
       title: Calendriers
       all: Tous
