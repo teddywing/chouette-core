@@ -114,6 +114,10 @@ class Referential < ActiveRecord::Base
     Chouette::RouteSection.all
   end
 
+  def routing_constraint_zones
+    Chouette::RoutingConstraintZone.all
+  end
+
   after_initialize :define_default_attributes
 
   def define_default_attributes

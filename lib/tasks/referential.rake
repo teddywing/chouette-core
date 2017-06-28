@@ -39,6 +39,8 @@ namespace :referential do
         print "  ✓ Created Route ".green, route.name, "(#{route.id}), ".blue, "Line (#{line.id}) has #{line.routes.count} routes\n"
 
         journey_pattern = Chouette::JourneyPattern.create!(route: route, name: "Journey Pattern #{Faker::Name.unique.name}")
+        print "✓ Created JourneyPattern ".green, journey_pattern.name, "(#{journey_pattern.id})".blue, "\n"
+
         journey_pattern.stop_points = stop_areas.inject([]) { |stop_points, stop_area| stop_points += stop_area.stop_points }
 
         time_tables = []
@@ -46,11 +48,14 @@ namespace :referential do
           name = "Test #{Faker::Name.unique.name}"
           time_table = Chouette::TimeTable.create!(comment: name, start_date: Date.parse(args[:start_date]) + j.days,
                                                    end_date: Date.parse(args[:end_date]) - j.days)
+          print "✓ Created TimeTable ".green, time_table.comment, "(#{time_table.id})".blue, "\n"
           time_tables << time_table
         end
 
         25.times do |j|
           vehicle_journey = Chouette::VehicleJourney.create!(journey_pattern: journey_pattern, route: route, number: Faker::Number.unique.number(4), time_tables: time_tables)
+          print "✓ Created VehicleJourney ".green, vehicle_journey.number, "(#{vehicle_journey.id})".blue, "\n"
+
           time = Time.current.at_noon + j.minutes
           journey_pattern.stop_points.each_with_index do |stop_point, k|
             vehicle_journey.vehicle_journey_at_stops.create!(stop_point: stop_point, arrival_time: time + k.minutes, departure_time: time + k.minutes + 30.seconds)

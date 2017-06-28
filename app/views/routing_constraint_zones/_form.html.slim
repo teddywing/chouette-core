@@ -3,7 +3,7 @@
   .row
     .col-lg-12
       = form.input :name
-      = form.input :route_id, collection: @line.routes.select { |route| route.stop_points.count > 2 }, include_blank: false
+      = form.input :route_id, collection: @line.routes, include_blank: false
 
       .separator
 

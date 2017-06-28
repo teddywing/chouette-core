@@ -1,6 +1,6 @@
 / PageHeader
 = pageheader 'map-marker',
-             t('.title'),
+             t('.title', routing_constraint_zone: @routing_constraint_zone.name),
              '',
              t('last_update', time: l(@routing_constraint_zone.updated_at, format: :short))
 
