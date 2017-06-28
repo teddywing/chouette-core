@@ -71,7 +71,7 @@ class Calendar < ActiveRecord::Base
 
   def flatten_date_array attributes, key
     date_int = %w(1 2 3).map {|e| attributes["#{key}(#{e}i)"].to_i }
-    Calendar::CalendarDate.new(*date_int)
+    Calendar::DateValue.new(*date_int)
   end
 
   def periods_attributes=(attributes = {})
