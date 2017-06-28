@@ -58,7 +58,7 @@ en:
         comment: "Comments"
         number: "Number"
         direction: "Direction"
-        wayback: "Wayback"
+        wayback: "Direction"
         stop_points: "Nb Stop points"
         opposite_route: "Reversed route"
         opposite_route_id: "Reversed route"
