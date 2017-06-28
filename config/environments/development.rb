@@ -60,13 +60,13 @@ Rails.application.configure do
   config.reflex_api_url = "https://pprod.reflex.stif.info/ws/reflex/V1/service=getData"
   config.codifligne_api_url = "https://pprod.codifligne.stif.info/rest/v1/lc/getlist"
 
-  config.chouette_authentication_settings = {
-    type: "database"
-  }
   # config.chouette_authentication_settings = {
-  #   type: "cas",
-  #   cas_server: "http://stif-portail-dev.af83.priv/sessions"
+  #   type: "database"
   # }
+  config.chouette_authentication_settings = {
+    type: "cas",
+    cas_server: "http://stif-portail-dev.af83.priv/sessions"
+  }
   config.stif_portail_api =
   {
     key: "Ohphie1Voo6the5hohpi",
