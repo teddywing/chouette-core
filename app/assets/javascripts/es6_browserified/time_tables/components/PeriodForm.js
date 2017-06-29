@@ -61,7 +61,7 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
               <div className="nested-fields">
                 <div className="wrapper">
                   <div>
-                    <div className={'form-group date smart_date' + (modal.modalProps.error ? ' has-error' : '')}>
+                    <div className={'form-group date ' + (modal.modalProps.error ? ' has-error' : '')}>
                       <div className="form-inline">
                         <select value={formatNumber(modal.modalProps.begin.day)} onChange={(e) => onUpdatePeriodForm(e, 'begin', 'day')} id="q_validity_period_begin_gteq_3i" className="date required form-control">
                           {makeDaysOptions(modal.modalProps.begin.day)}
@@ -76,7 +76,7 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
                     </div>
                   </div>
                   <div>
-                    <div className={'form-group date smart_date' + (modal.modalProps.error ? ' has-error' : '')}>
+                    <div className={'form-group date ' + (modal.modalProps.error ? ' has-error' : '')}>
                       <div className="form-inline">
                         <select value={formatNumber(modal.modalProps.end.day)} onChange={(e) => onUpdatePeriodForm(e, 'end', 'day')} id="q_validity_period_end_gteq_3i" className="date required form-control">
                           {makeDaysOptions(modal.modalProps.end.day)}

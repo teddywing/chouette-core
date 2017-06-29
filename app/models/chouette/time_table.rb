@@ -496,16 +496,25 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     self.convert_continuous_dates_to_periods
   end
 
+  def included_days_in_dates_and_periods
+    in_day  = self.dates.select {|d| d.in_out }.map(&:date)
+    out_day = self.dates.select {|d| !d.in_out }.map(&:date)
+
+    in_periods = self.periods.map{|p| (p.period_start..p.period_end).to_a }.flatten
+    days = in_periods + in_day
+    days -= out_day
+    days
+  end
+
   # remove dates form tt which aren't in another_tt
   def intersect!(another_tt)
     transaction do
-
-      # transform tt as effective dates and get common ones
-      days = another_tt.intersects(self.effective_days) & self.intersects(another_tt.effective_days)
+      days = self.included_days_in_dates_and_periods & another_tt.included_days_in_dates_and_periods
       self.dates.clear
-      days.each {|d| self.dates << Chouette::TimeTableDate.new( :date =>d, :in_out => true)}
       self.periods.clear
-      self.dates.to_a.sort! { |a,b| a.date <=> b.date}
+      days.sort.each do |d|
+        self.dates << Chouette::TimeTableDate.new(:date => d, :in_out => true)
+      end
       self.save!
     end
     self.convert_continuous_dates_to_periods
