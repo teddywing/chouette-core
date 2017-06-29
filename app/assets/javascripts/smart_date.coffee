@@ -2,8 +2,6 @@ window.legalDaysPerMonth =
   false: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
   true:  [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-
-window.legal
 window.correctDay = (dateValues) ->
   [day, month, year] = dateValues
   return day unless day > 0 && month > 0 && year > 0
