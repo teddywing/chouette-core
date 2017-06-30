@@ -200,9 +200,17 @@ RSpec.describe CleanUp, :type => :model do
     end
 
     it 'should destroy time_table vehicle_journey association' do
+      vj = create(:vehicle_journey, time_tables: [time_table, create(:time_table)])
+      cleaner.destroy_time_tables(Chouette::TimeTable.where(id: time_table.id))
+
+      expect(vj.reload.time_tables.map(&:id)).to_not include(time_table.id)
+    end
+
+    it 'should also destroy associated vehicle_journey if it belongs to any other time_table' do
       vj = create(:vehicle_journey, time_tables: [time_table])
-      cleaner.destroy_time_tables(Chouette::TimeTable.all)
-      expect(vj.reload.time_tables).to be_empty
+      expect{cleaner.destroy_time_tables(Chouette::TimeTable.all)}.to change {
+        Chouette::VehicleJourney.count
+      }.by(-1)
     end
   end
 
