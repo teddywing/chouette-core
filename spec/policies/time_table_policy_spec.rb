@@ -1,5 +1,8 @@
 RSpec.describe TimeTablePolicy, type: :policy do
 
+  let( :record ){ build_stubbed :time_table }
+
+
   permissions :duplicate? do
     it_behaves_like 'permitted policy and same organisation', 'time_tables.create', archived: true
   end

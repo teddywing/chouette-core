@@ -24,8 +24,8 @@ module Support
         into.module_eval do
           subject { described_class }
           let( :user_context ) { create_user_context(user: user, referential: referential)  }
-          let( :referentail )  { create :referential }
-          let( :user )         { create :user }
+          let( :referential )  { build_stubbed :referential }
+          let( :user )         { build_stubbed :user }
         end
       end
       def with_user_permission(permission, &blk)
