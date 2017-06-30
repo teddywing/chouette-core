@@ -1,5 +1,7 @@
 RSpec.describe BoivPolicy, type: :policy do
 
+  let( :record ){ nil }
+
   permissions :index? do
     it_behaves_like 'permitted policy and same organisation', 'boiv:read-offer'
   end

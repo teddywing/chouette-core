@@ -7,7 +7,7 @@ RSpec.describe ApplicationPolicy, type: :policy do
     end
 
     it "allows a user with a different organisation" do
-      user.update_attribute :organisation, referential.organisation
+      user.organisation = referential.organisation
       expect_it.to permit(user_context, referential)
     end
   end
