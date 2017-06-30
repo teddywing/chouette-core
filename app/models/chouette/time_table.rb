@@ -520,18 +520,15 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     self.convert_continuous_dates_to_periods
   end
 
-
+  # remove days from another calendar
   def disjoin!(another_tt)
     transaction do
-      # remove days from another calendar
-      days_to_exclude = self.intersects(another_tt.effective_days)
-      days = self.effective_days - days_to_exclude
+      days = self.included_days_in_dates_and_periods - another_tt.included_days_in_dates_and_periods
       self.dates.clear
       self.periods.clear
-      days.each {|d| self.dates << Chouette::TimeTableDate.new( :date =>d, :in_out => true)}
-
-      self.dates.to_a.sort! { |a,b| a.date <=> b.date}
-      self.periods.to_a.sort! { |a,b| a.period_start <=> b.period_start}
+      days.sort.each do |d|
+        self.dates << Chouette::TimeTableDate.new(:date => d, :in_out => true)
+      end
       self.save!
     end
     self.convert_continuous_dates_to_periods
