@@ -27,7 +27,7 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
         jp = find_by(objectid: item['object_id']) || state_create_instance(route, item)
         next if item['deletable'] && jp.persisted? && jp.destroy
         # Update attributes and stop_points associations
-        jp.update_attributes(state_permited_attributes(item))
+        jp.update_attributes(state_permited_attributes(item)) unless item['new_record']
         jp.state_stop_points_update(item) if !jp.errors.any? && jp.persisted?
         item['errors'] = jp.errors if jp.errors.any?
       end
@@ -53,6 +53,13 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   def self.state_create_instance route, item
     # Flag new record, so we can unset object_id if transaction rollback
     jp = route.journey_patterns.create(state_permited_attributes(item))
+
+    # FIXME
+    # DefaultAttributesSupport will trigger some weird validation on after save
+    # wich will call to valid?, wich will populate errors
+    # In this case, we mark jp to be valid if persisted? return true
+    jp.errors.clear if jp.persisted?
+
     item['object_id']  = jp.objectid
     item['new_record'] = true
     jp
