@@ -38,4 +38,6 @@ bin/
 /node_modules
 
 # Every machine shall create its binstubs
-/bin
+/bin/rake
+/bin/rails
+/bin/rspec
