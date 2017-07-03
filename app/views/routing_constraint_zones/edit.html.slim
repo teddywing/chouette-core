@@ -18,6 +18,9 @@
 
              .separator
 
+             - @routing_constraint_zone.errors[:stop_point_ids].each do |error_message|
+               = error_message
+
              #ITL_stoppoints
                .subform
                  .nested-head
