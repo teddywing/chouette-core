@@ -10,20 +10,10 @@ class WorkbenchesController < BreadcrumbController
     scope = ransack_periode(scope)
     scope = ransack_status(scope)
 
-    # Ignore archived_at_not_null/archived_at_null managed by ransack_status scope
-    # We clone params[:q] so we can delete fake ransack filter arguments before calling search method,
-    # which will allow us to preserve params[:q] for sorting
-    ransack_params = params[:q].clone
-    ransack_params.delete('associated_lines_id_eq')
-    ransack_params.delete('archived_at_not_null')
-    ransack_params.delete('archived_at_null')
-
-    @q = scope.ransack(ransack_params)
-    @wbench_refs = sort_result(@q.result).paginate(page: params[:page], per_page: 30)
-    @wbench_refs = ModelDecorator.decorate(
-      @wbench_refs,
-      with: ReferentialDecorator
-    )
+    @q_for_form   = scope.ransack(params[:q])
+    @q_for_result = scope.ransack(ransack_params)
+    @wbench_refs  = sort_result(@q_for_result.result).paginate(page: params[:page], per_page: 30)
+    @wbench_refs  = ModelDecorator.decorate(@wbench_refs, with: ReferentialDecorator)
 
     show! do
       build_breadcrumb :show
@@ -100,5 +90,16 @@ class WorkbenchesController < BreadcrumbController
     scope = scope.where(archived_at: nil) if unarchived
     scope = scope.where("archived_at is not null") if archived
     scope
+  end
+
+  # Ignore archived_at_not_null/archived_at_null managed by ransack_status scope
+  # We clone params[:q] so we can delete fake ransack filter arguments before calling search method,
+  # which will allow us to preserve params[:q] for sorting
+  def ransack_params
+    copy_params = params[:q].clone
+    copy_params.delete('associated_lines_id_eq')
+    copy_params.delete('archived_at_not_null')
+    copy_params.delete('archived_at_null')
+    copy_params
   end
 end

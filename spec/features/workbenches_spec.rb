@@ -42,24 +42,31 @@ describe 'Workbenches', type: :feature do
         end
       end
 
-      # context 'filter by organisation' do
-      #   it 'should be possible to filter by organisation' do
-      #     find("#q_organisation_name_eq_any_#{@user.organisation.name.parameterize.underscore}").set(true)
-      #     click_button 'Filtrer'
+      context 'filter by organisation' do
+        it 'should be possible to filter by organisation' do
+          find("#q_organisation_name_eq_any_#{@user.organisation.name.parameterize.underscore}").set(true)
+          click_button 'Filtrer'
 
-      #     expect(page).to have_content(referential.name)
-      #     expect(page).not_to have_content(other_referential.name)
-      #   end
+          expect(page).to have_content(referential.name)
+          expect(page).not_to have_content(other_referential.name)
+        end
 
-      #   it 'should be possible to filter by multiple organisation' do
-      #     find("#q_organisation_name_eq_any_#{@user.organisation.name.parameterize.underscore}").set(true)
-      #     find("#q_organisation_name_eq_any_#{another_organisation.name.parameterize.underscore}").set(true)
-      #     click_button 'Filtrer'
+        it 'should be possible to filter by multiple organisation' do
+          find("#q_organisation_name_eq_any_#{@user.organisation.name.parameterize.underscore}").set(true)
+          find("#q_organisation_name_eq_any_#{another_organisation.name.parameterize.underscore}").set(true)
+          click_button 'Filtrer'
 
-      #     expect(page).to have_content(referential.name)
-      #     expect(page).to have_content(other_referential.name)
-      #   end
-      # end
+          expect(page).to have_content(referential.name)
+          expect(page).to have_content(other_referential.name)
+        end
+
+        it 'should keep filter value on submit' do
+          box = "#q_organisation_name_eq_any_#{another_organisation.name.parameterize.underscore}"
+          find(box).set(true)
+          click_button 'Filtrer'
+          expect(find(box)).to be_checked
+        end
+      end
 
       context 'filter by status' do
         it 'should display archived referentials' do
@@ -88,6 +95,12 @@ describe 'Workbenches', type: :feature do
           click_button 'Filtrer'
           expect(page).to have_content(referential.name)
           expect(page).to_not have_content(other_referential.name)
+        end
+
+        it 'should keep filter value on submit' do
+          find("#q_archived_at_null").set(true)
+          click_button 'Filtrer'
+          expect(find("#q_archived_at_null")).to be_checked
         end
       end
     end
