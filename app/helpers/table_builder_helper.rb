@@ -104,6 +104,10 @@ module TableBuilderHelper
   end
 
   def tbody(collection, columns, selectable, links)
+    # Certain controllers don't define a `#current_referential`. If the method
+    # is unavailable, give it a default value to avoid a `NoMethodError`.
+    current_referential ||= nil
+
     content_tag :tbody do
       collection.map do |item|
 
