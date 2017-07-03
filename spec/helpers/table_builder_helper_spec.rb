@@ -81,7 +81,7 @@ describe TableBuilderHelper, type: :helper do
                         <li><a href="/referentials/#{referential.id}/time_tables">Calendriers</a></li>
                         <li><a href="/referentials/new?from=#{referential.id}">Dupliquer</a></li>
                         <li><a rel="nofollow" data-method="put" href="/referentials/#{referential.id}/archive">Conserver</a></li>
-                        <li class="delete-action"><a data-confirm="Etes vous sûr de vouloir supprimer ce jeu de données ?" rel="nofollow" data-method="delete" href="/referentials/#{referential.id}"><span class="fa fa-trash"></span>Supprimer</a></li>
+                        <li class="delete-action"><a data-confirm="Etes vous sûr de vouloir supprimer ce jeu de données ?" rel="nofollow" data-method="delete" href="/referentials/#{referential.id}"><span class="fa fa-trash mr-xs"></span>Supprimer</a></li>
                     </ul>
                 </div>
             </td>

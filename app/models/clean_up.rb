@@ -16,10 +16,13 @@ class CleanUp < ActiveRecord::Base
 
   def clean
     {}.tap do |result|
-      result['time_table']        = send("destroy_time_tables_#{self.date_type}").try(:count)
+      processed = send("destroy_time_tables_#{self.date_type}")
+      if processed
+        result['time_table']      = processed[:time_tables].try(:count)
+        result['vehicle_journey'] = processed[:vehicle_journeys].try(:count)
+      end
       result['time_table_date']   = send("destroy_time_tables_dates_#{self.date_type}").try(:count)
       result['time_table_period'] = send("destroy_time_tables_periods_#{self.date_type}").try(:count)
-      result['vehicle_journey']   = destroy_vehicle_journey_without_time_table.try(:count)
       self.overlapping_periods.each do |period|
         exclude_dates_in_overlapping_period(period)
       end
@@ -106,13 +109,16 @@ class CleanUp < ActiveRecord::Base
   end
 
   def destroy_time_tables(time_tables)
+    results = { :time_tables => [], :vehicle_journeys => [] }
     # Delete vehicle_journey time_table association
     time_tables.each do |time_table|
       time_table.vehicle_journeys.each do |vj|
         vj.time_tables.delete(time_table)
+        results[:vehicle_journeys] << vj.destroy if vj.time_tables.empty?
       end
     end
-    time_tables.destroy_all
+    results[:time_tables] = time_tables.destroy_all
+    results
   end
 
   aasm column: :status do

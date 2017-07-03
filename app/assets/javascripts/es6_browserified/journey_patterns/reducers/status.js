@@ -9,6 +9,8 @@ const status = (state = {}, action) => {
       return _.assign({}, state, {isFetching: true})
     case 'RECEIVE_JOURNEY_PATTERNS':
       return _.assign({}, state, {fetchSuccess: true, isFetching: false})
+    case 'RECEIVE_ERRORS':
+      return _.assign({}, state, {isFetching: false})
     default:
       return state
   }
