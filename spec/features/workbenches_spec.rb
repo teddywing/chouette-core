@@ -156,7 +156,6 @@ describe 'Workbenches', type: :feature do
           end
         end
       end
-    end
 
     context 'permissions' do
       before(:each) do
@@ -177,7 +176,6 @@ describe 'Workbenches', type: :feature do
         end
       end
     end
-  end
 
   describe 'create new Referential' do
     it "create a new Referential with a specifed line and period" do
@@ -188,8 +186,9 @@ describe 'Workbenches', type: :feature do
       fill_in "referential[name]", with: "Referential to test creation"
       select workbench.lines.first.id, from: 'referential[metadatas_attributes][0][lines][]'
 
-      click_button "Valider"
-      expect(page).to have_css("h1", text: "Referential to test creation")
+        click_button "Valider"
+        expect(page).to have_css("h1", text: "Referential to test creation")
+      end
     end
   end
 end

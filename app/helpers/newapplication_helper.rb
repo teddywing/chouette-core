@@ -155,7 +155,10 @@ module NewapplicationHelper
             content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
           end
         else
-          content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
+          permission = "#{action}?"
+          if !policy(item).respond_to?(permission) || policy(item).public_send(permission)
+            content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
+          end
         end
       end.join.html_safe
     end

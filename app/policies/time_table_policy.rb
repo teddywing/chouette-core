@@ -6,6 +6,10 @@ class TimeTablePolicy < BoivPolicy
     end
   end
 
+  def actualize?
+    !archived? && organisation_match? && edit?
+  end
+
   def create?
     !archived? && user.has_permission?('time_tables.create') # organisation match via referential is checked in the view
   end

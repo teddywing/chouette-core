@@ -53,7 +53,7 @@ class ApplicationPolicy
   end
 
   def boiv_read_offer?
-    organisation_match? && user.has_permission?('boiv:read-offer')
+    organisation_match? && !(user.permissions || []).grep(%r{\Aboiv:.}).empty?
   end
 
   def organisation_match?

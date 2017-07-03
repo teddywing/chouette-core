@@ -40,6 +40,14 @@ module TableBuilderHelper
 
     def actions_after_policy_check
       @actions.select do |action|
+        # TODO: My idea would be to push authorization logic into policies
+        #       Eventually the code should look like:
+        #       select do |action|
+        #         Pundit.policy(@user_context, @obj).send("#{action}?")
+        #       end
+        #       This puts the responsability where it belongs to and allows
+        #       for easy and fast unit testing of the BL, always a goos sign.
+
         # Has policy and can destroy
         (action == :delete &&
             Pundit.policy(@user_context, @obj).present? &&
@@ -64,6 +72,10 @@ module TableBuilderHelper
           # Object is archived
           (action == :unarchive && @obj.archived?) ||
 
+          !Pundit.policy(@user_context, @obj).respond_to?("#{action}?") ||
+          Pundit.policy(@user_context, @obj).public_send("#{action}?") ||
+            
+
           action_is_allowed_regardless_of_policy(action)
       end
     end
@@ -71,7 +83,7 @@ module TableBuilderHelper
     private
 
     def action_is_allowed_regardless_of_policy(action)
-      ![:delete, :edit, :archive, :unarchive].include?(action)
+      ![:delete, :edit, :archive, :unarchive, :duplicate, :actualize].include?(action)
     end
   end
 end

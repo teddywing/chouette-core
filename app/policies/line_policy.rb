@@ -6,9 +6,8 @@ class LinePolicy < BoivPolicy
     end
   end
 
-  def create?
-    false
-  end
+  def show?; true end
+  def create?; false end
   def update?  ; false end
   def new?     ; create? end
   def edit?    ; false end
