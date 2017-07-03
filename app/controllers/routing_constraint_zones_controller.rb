@@ -4,13 +4,32 @@ class RoutingConstraintZonesController < ChouetteController
   defaults resource_class: Chouette::RoutingConstraintZone
   respond_to :html, :xml, :json
 
-  before_action :check_stoppoint_param, only: [:create, :update]
+  # before_action :check_stoppoint_param, only: [:create, :update]
 
   belongs_to :referential do
     belongs_to :line, parent_class: Chouette::Line
   end
 
+  def show
+    show! do |format|
+      @routing_constraint_zone = @routing_constraint_zone.decorate(context: {
+        referential: current_referential,
+        line: parent.id
+      })
+    end
+  end
+
+  def new
+    new! do |format|
+      format.html
+      @route = @line.routes.find params[:route_id] if params[:route_id]
+      format.js
+    end
+  end
+
   protected
+
+  alias_method :routing_constraint_zone, :resource
 
   def collection
     @q = current_referential.routing_constraint_zones.search(params[:q])
@@ -23,26 +42,6 @@ class RoutingConstraintZonesController < ChouetteController
       end
       routing_constraint_zones = routing_constraint_zones.paginate(page: params[:page], per_page: 10)
     end
-  end
-
-  def resource
-    @routing_constraint_zone ||= begin
-      routing_constraint_zone = current_referential.routing_constraint_zones.find(params[:id])
-      routing_constraint_zone = routing_constraint_zone.decorate(context: {
-        referential: current_referential,
-        line: parent.id
-        })
-      end
-  end
-
-  def build_resource
-    @routing_constraint_zone ||= begin
-      routing_constraint_zone = current_referential.routing_constraint_zones.new
-      routing_constraint_zone = routing_constraint_zone.decorate(context: {
-        referential: current_referential,
-        line: parent.id
-        })
-      end
   end
 
   private

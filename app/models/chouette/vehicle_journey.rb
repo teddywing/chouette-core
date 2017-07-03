@@ -23,14 +23,13 @@ module Chouette
 
     validates_presence_of :route
     validates_presence_of :journey_pattern
+    validates :vehicle_journey_at_stops, :vjas_departure_time_must_be_before_next_stop_arrival_time,
+      vehicle_journey_at_stops_are_in_increasing_time_order: true
+    validates_presence_of :number
 
     has_many :vehicle_journey_at_stops, -> { includes(:stop_point).order("stop_points.position") }, :dependent => :destroy
     has_and_belongs_to_many :time_tables, :class_name => 'Chouette::TimeTable', :foreign_key => "vehicle_journey_id", :association_foreign_key => "time_table_id"
     has_many :stop_points, -> { order("stop_points.position") }, :through => :vehicle_journey_at_stops
-
-    validates :vehicle_journey_at_stops, :vjas_departure_time_must_be_before_next_stop_arrival_time,
-      vehicle_journey_at_stops_are_in_increasing_time_order: true
-    validates_presence_of :number
 
     before_validation :set_default_values,
       :calculate_vehicle_journey_at_stop_day_offset
