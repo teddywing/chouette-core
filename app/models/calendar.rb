@@ -28,7 +28,7 @@ class Calendar < ActiveRecord::Base
       self.dates.each do |d|
         tt.dates << Chouette::TimeTableDate.new(date: d, in_out: true)
       end
-      self.date_ranges.each do |p|
+      self.periods.each do |p|
         tt.periods << Chouette::TimeTablePeriod.new(period_start: p.begin, period_end: p.end)
       end
     end
