@@ -34,7 +34,7 @@ class LineFootnotesController < BreadcrumbController
   private
   def resource
     @referential = Referential.find params[:referential_id]
-    @line = @referential.lines.find params[:line_id]
+    @line        = @referential.lines.find params[:line_id]
   end
 
   def line_params

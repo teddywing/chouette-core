@@ -1,18 +1,19 @@
 class ApplicationPolicy
-  attr_reader :user, :record
+  attr_reader :current_referential, :record, :user
 
   def initialize(user_context, record)
-    @user = user_context.user
-    @referential = user_context.context[:referential]
-    @record = record
+    @user                = user_context.user
+    @current_referential = user_context.context[:referential]
+    @record              = record
   end
 
   def archived?
-    !!referential.try(:archived_at)
+    return @is_archived if instance_variable_defined?(:@is_archived)
+    @is_archived = is_archived
   end
 
   def referential
-    @referential ||= record_referential
+    @referential ||=  current_referential || record_referential
   end
 
   def record_referential
@@ -75,6 +76,16 @@ class ApplicationPolicy
 
     def resolve
       scope
+    end
+  end
+
+  private
+  def is_archived
+    !!case referential
+    when Referential
+      referential.archived_at
+    else
+      current_referential.try(:archived_at)
     end
   end
 end
