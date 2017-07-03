@@ -122,7 +122,10 @@ module TableBuilderHelper
 
             if column_is_linkable?(column)
               # Build a link to the `item`
-              polymorph_url = URL.polymorphic_url_parts(item)
+              polymorph_url = URL.polymorphic_url_parts(
+                item,
+                current_referential
+              )
               bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
             else
               bcont << content_tag(:td, value)
