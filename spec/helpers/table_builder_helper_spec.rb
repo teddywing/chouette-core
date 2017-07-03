@@ -367,5 +367,92 @@ describe TableBuilderHelper, type: :helper do
 
       expect(beautified_html).to eq(expected.chomp)
     end
+
+    it "displays a gear menu if there are action_links and no `links` argument" do
+      referential = build_stubbed(:referential)
+      workbench = referential.workbench
+
+      user_context = UserContext.new(
+        build_stubbed(
+          :user,
+          organisation: referential.organisation,
+          permissions: [
+            'referentials.create',
+            'referentials.edit',
+            'referentials.destroy'
+          ]
+        ),
+        referential: referential
+      )
+      allow(helper).to receive(:current_user).and_return(user_context)
+
+      referentials = [referential]
+
+      allow(referentials).to receive(:model).and_return(Referential)
+
+      allow(helper).to receive(:params).and_return({
+        controller: 'workbenches',
+        action: 'show',
+        id: referentials[0].workbench.id
+      })
+
+      referentials = ModelDecorator.decorate(
+        referentials,
+        with: ReferentialDecorator
+      )
+
+      html_str = helper.table_builder_2(
+        referentials,
+        [
+          TableBuilderHelper::Column.new(
+            key: :name,
+            attribute: 'name'
+          )
+        ]
+      )
+
+      expect(html_str).to match(/fa-cog/)
+    end
+
+    it "doesn't display a gear menu without action_links or `links` argument" do
+      referential = build_stubbed(:referential)
+      workbench = referential.workbench
+
+      user_context = UserContext.new(
+        build_stubbed(
+          :user,
+          organisation: referential.organisation,
+          permissions: [
+            'referentials.create',
+            'referentials.edit',
+            'referentials.destroy'
+          ]
+        ),
+        referential: referential
+      )
+      allow(helper).to receive(:current_user).and_return(user_context)
+
+      referentials = [referential]
+
+      allow(referentials).to receive(:model).and_return(Referential)
+
+      allow(helper).to receive(:params).and_return({
+        controller: 'workbenches',
+        action: 'show',
+        id: referentials[0].workbench.id
+      })
+
+      html_str = helper.table_builder_2(
+        referentials,
+        [
+          TableBuilderHelper::Column.new(
+            key: :name,
+            attribute: 'name'
+          )
+        ]
+      )
+
+      expect(html_str).not_to match(/fa-cog/)
+    end
   end
 end

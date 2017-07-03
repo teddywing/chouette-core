@@ -67,6 +67,7 @@ module TableBuilderHelper
     # A CSS class to apply to the <table>
     cls: ''
   )
+    links = links_for_gear_menu(links, 
     content_tag :table,
       thead(collection, columns, sortable, selectable, links.any?) +
         tbody(collection, columns, selectable, links),
@@ -129,13 +130,7 @@ module TableBuilderHelper
             end
           end
 
-          if links.any?
-            bcont << content_tag(
-              :td,
-              build_links(item, links),
-              class: 'actions'
-            )
-          end
+          bcont << build_links(item, links)
 
           bcont.join.html_safe
         end
@@ -152,16 +147,19 @@ module TableBuilderHelper
       content_tag :span, '', class: 'fa fa-cog'
     end
 
+    # return if links.empty?
+
     menu = content_tag :ul, class: 'dropdown-menu' do
-      (
-        CustomLinks.new(item, pundit_user, links).links +
-        item.action_links.select { |link| link.is_a?(Link) }
-      ).map do |link|
+      links.map do |link|
         gear_menu_link(link)
       end.join.html_safe
     end
 
-    content_tag :div, trigger + menu, class: 'btn-group'
+    content_tag(
+      :td,
+      content_tag(:div, trigger + menu, class: 'btn-group'),
+      class: 'actions'
+    )
   end
 
   def build_column_header(
@@ -216,6 +214,11 @@ module TableBuilderHelper
 
   def column_is_linkable?(column)
     column.attribute == 'name' || column.attribute == 'comment'
+  end
+
+  def links_for_gear_menu(links, obj)
+    CustomLinks.new(item, pundit_user, links).links +
+      (item.try(:action_links) || []).select { |link| link.is_a?(Link) }
   end
 
   def gear_menu_link(link)
