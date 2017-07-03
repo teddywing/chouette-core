@@ -25,4 +25,4 @@
             Calendar.human_attribute_name(:shared) => t("#{@calendar.shared}"),
             'Organisation' => @calendar.organisation.name,
             Calendar.human_attribute_name(:dates) =>  @calendar.dates.collect{|d| l(d, format: :short)}.join(', ').html_safe,
-            Calendar.human_attribute_name(:date_ranges) => @calendar.date_ranges.collect{|d| t('validity_range', debut: l(d.begin, format: :short), end: l(d.end - (d.exclude_end? ? 1.day : 0), format: :short))}.join('<br>').html_safe }
+            Calendar.human_attribute_name(:date_ranges) => @calendar.periods.map{|d| t('validity_range', debut: l(d.begin, format: :short), end: l(d.end, format: :short))}.join('<br>').html_safe }
