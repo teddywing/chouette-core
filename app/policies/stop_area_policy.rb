@@ -1,4 +1,4 @@
-class StopAreaPolicy < BoivPolicy
+class StopAreaPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

@@ -1,4 +1,4 @@
-class JourneyPatternPolicy < BoivPolicy
+class JourneyPatternPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve

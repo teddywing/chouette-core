@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe TableBuilderHelper::CustomLinks do
   describe "#actions_after_policy_check" do
     it "includes :show" do
@@ -8,9 +6,6 @@ describe TableBuilderHelper::CustomLinks do
         build_stubbed(
           :user,
           organisation: referential.organisation,
-          permissions: [
-            'boiv:read-offer'
-          ]
         ),
         referential: referential
       )

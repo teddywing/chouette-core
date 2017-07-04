@@ -1,4 +1,4 @@
-class NetworkPolicy < BoivPolicy
+class NetworkPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

@@ -6,6 +6,18 @@ class ApplicationPolicy
     destroy?
   end
 
+  # Tie edit and update together, #edit?, do not override #edit?,
+  # unless you want to break this tie on purpose
+  def edit?
+    update?
+  end
+
+  # Tie new and create together, do not override #new?,
+  # unless you want to break this tie on purpose
+  def new?
+    create?
+  end
+
 
 
   def initialize(user_context, record)
@@ -28,7 +40,7 @@ class ApplicationPolicy
   end
 
   def index?
-    false
+    show?
   end
 
   def show?
@@ -57,10 +69,6 @@ class ApplicationPolicy
 
   def scope
     Pundit.policy_scope!(user, record.class)
-  end
-
-  def boiv_read_offer?
-    organisation_match? && !(user.permissions || []).grep(%r{\Aboiv:.}).empty?
   end
 
   def organisation_match?
