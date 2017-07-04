@@ -20,7 +20,7 @@ describe TableBuilderHelper::CustomLinks do
           referential,
           user_context,
           [:show]
-        ).actions_after_policy_check
+        ).authorized_actions
       ).to eq([:show])
     end
   end

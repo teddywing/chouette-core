@@ -30,6 +30,10 @@ class ReferentialPolicy < BoivPolicy
     true
   end
 
+  def show?
+    true
+  end
+
   def unarchive? ; archive? end
   def update? ; edit? end
   def new? ; create? end
