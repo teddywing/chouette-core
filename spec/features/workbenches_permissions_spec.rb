@@ -18,20 +18,20 @@ describe 'Workbenches', type: :feature do
     context 'on show view' do
       let( :path ){ workbench_path(workbench) }
 
-      context 'if present → ' do 
+      context 'if present → ' do
         let( :permission ){ true }
 
         it 'shows the corresponding button' do
           expected_href = new_referential_path(workbench_id: workbench)
-          expect( page ).to have_link('Ajouter', href: expected_href) 
+          expect( page ).to have_link('Créer', href: expected_href)
         end
       end
 
-      context 'if absent → ' do 
+      context 'if absent → ' do
         let( :permission ){ false }
 
         it 'does not show the corresponding button' do
-          expect( page ).not_to have_link('Ajouter') 
+          expect( page ).not_to have_link('Créer')
         end
       end
       # let!(:ready_referential) { create :referential, workbench: workbench, metadatas: referential_metadatas, ready: true, organisation: @user.organisation }

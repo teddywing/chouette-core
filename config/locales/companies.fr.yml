@@ -15,7 +15,7 @@ fr:
     index:
       title: "Transporteurs"
       name: "Recherche par nom..."
-      name_or_objectid: "Recherche par nom ou objectid..."
+      name_or_objectid: "Recherche par nom ou ID Codifligne..."
       advanced_search: "Recherche avancée"
   activerecord:
     models:

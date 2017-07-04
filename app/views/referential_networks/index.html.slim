@@ -23,11 +23,11 @@
       .row
         .col-lg-12
           = table_builder @networks,
-            { 'ID Codif' => Proc.new { |n| n.try(:objectid).try(:local_id) }, :name => 'name' },
+            { 'ID Codifligne' => Proc.new { |n| n.try(:objectid).try(:local_id) }, :name => 'name' },
             [:show, :edit, :delete],
             [],
             'table has-search'
-
+      
           = new_pagination @networks, 'pull-right'
 
     - unless @networks.any?

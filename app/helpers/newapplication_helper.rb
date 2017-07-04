@@ -16,7 +16,7 @@ module NewapplicationHelper
         end
 
         columns.map do |k, v|
-          if ["ID Codif", "Oid", "OiD", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée", "Période de validité englobante", "Période englobante", "Nombre de courses associées", "Journées d'application", "Arrêts de l'itinéraire", "Arrêts inclus dans l'ITL"].include? k
+          if ["ID Codifligne", "Oid", "OiD", "ID", "ID Reflex", "Arrêt de départ", "Arrêt d'arrivée", "Période de validité englobante", "Période englobante", "Nombre de courses associées", "Journées d'application", "Arrêts de l'itinéraire", "Arrêts inclus dans l'ITL"].include? k
             hcont << content_tag(:th, k)
           else
             hcont << content_tag(:th, sortable_columns(collection, k))

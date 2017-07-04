@@ -9,7 +9,6 @@ fr:
         line: Ligne associée
         created_at: "Créé le"
         updated_at: "Edité le"
-        objectid: Object ID
         stop_points_count: Nombre d'arrêts
         route: Itinéraire associé
         route_id: Itinéraire associé
