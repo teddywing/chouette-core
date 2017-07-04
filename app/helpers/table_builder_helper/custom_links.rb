@@ -41,22 +41,10 @@ module TableBuilderHelper
     end
 
     def authorized_actions
-      @actions.select(&method(:action_authorized?))
-    end
-    def action_authorized?(action)
-      # TODO: Remove this guard when all resources have policies associated to them
-      return true unless policy
-      policy.public_send("#{action}?")
-    rescue NoMethodError
-      # TODO: When all action permissions are implemented for all policies remove this rescue clause
-      action_is_allowed_regardless_of_policy(action)
+      @actions.select(&policy.method(:authorizes_action?))
     end
 
     private
-
-    def action_is_allowed_regardless_of_policy(action)
-      ![:delete, :edit, :archive, :unarchive, :duplicate, :actualize].include?(action)
-    end
 
     def policy
       @__policy__ ||= Pundit.policy(user_context, object)

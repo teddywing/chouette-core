@@ -6,13 +6,6 @@ class LinePolicy < ApplicationPolicy
     end
   end
 
-  def show?; true end
-  def create?; false end
-  def update?  ; false end
-  def new?     ; create? end
-  def edit?    ; false end
-  def destroy? ; create? end
-
   def create_footnote?
     !archived? && user.has_permission?('footnotes.create')
   end

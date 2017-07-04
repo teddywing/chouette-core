@@ -193,6 +193,7 @@ describe TableBuilderHelper, type: :helper do
         companies,
         with: CompanyDecorator
       )
+      allow(CompanyDecorator).to receive(:where).with(id: company.id).and_return double.as_null_object
 
       expected = <<-HTML
 <table class="table has-search">
@@ -302,6 +303,7 @@ describe TableBuilderHelper, type: :helper do
         with: CompanyDecorator,
         context: {line_referential: line_referential}
       )
+      allow(CompanyDecorator).to receive(:where).with(id: company.id).and_return double.as_null_object
 
       expected = <<-HTML
 <table class="table has-search">

@@ -5,23 +5,18 @@ class CalendarPolicy < ApplicationPolicy
     end
   end
 
-  def show?
-    organisation_match? || record.shared
+  def create? 
+    organisation_match?
   end
-
-  def new?     ; modify?  end
-  def create?  ; new? end
-
-  def edit?    ; modify? end
-  def update?  ; edit? end
-
-  def destroy? ; modify? end
+  def destroy?
+    organisation_match?
+  end
+  def update?
+    organisation_match?
+  end
 
   def share?
     user.organisation.name == 'STIF' # FIXME
   end
 
-  def modify?
-    organisation_match?
-  end
 end

@@ -6,13 +6,25 @@ class ApplicationPolicy
     destroy?
   end
 
-  # Tie edit and update together, #edit?, do not override #edit?,
+  def authorizes_action?(action)
+    public_send("#{action}?")
+  rescue NoMethodError
+    false
+  end
+
+  # Tie edit? and update? together, #edit?, do not override #edit?,
   # unless you want to break this tie on purpose
   def edit?
     update?
   end
 
-  # Tie new and create together, do not override #new?,
+  # Tie index? and show? together, do not override #new?,
+  # unless you want to break this tie on purpose
+  def index?
+    show?
+  end
+
+  # Tie new? and create? together, do not override #new?,
   # unless you want to break this tie on purpose
   def new?
     create?
@@ -39,31 +51,19 @@ class ApplicationPolicy
     record.referential if record.respond_to?(:referential)
   end
 
-  def index?
-    show?
+  def create?
+    false
+  end
+
+  def destroy?
+    false
   end
 
   def show?
     scope.where(:id => record.id).exists?
   end
 
-  def create?
-    false
-  end
-
-  def new?
-    create?
-  end
-
   def update?
-    false
-  end
-
-  def edit?
-    update?
-  end
-
-  def destroy?
     false
   end
 
