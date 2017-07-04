@@ -36,3 +36,8 @@ bin/
 
 # Ignore node modules
 /node_modules
+
+# Every machine shall create its binstubs
+/bin/rake
+/bin/rails
+/bin/rspec

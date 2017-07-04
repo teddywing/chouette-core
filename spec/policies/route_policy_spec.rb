@@ -1,5 +1,7 @@
 RSpec.describe RoutePolicy, type: :policy do
 
+  let( :record ){ build_stubbed :route }
+
   permissions :create? do
     it_behaves_like 'permitted policy', 'routes.create', archived: true
   end

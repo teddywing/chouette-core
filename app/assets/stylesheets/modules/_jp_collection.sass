@@ -98,3 +98,33 @@
         left: -23px
         top: 50%
         margin-top: -8px
+
+  // Errors
+  .table-2entries .t2e-item-list
+    .t2e-item
+      position: relative
+
+      .th .vj_tt
+        display: inline-block
+        vertical-align: top
+
+        + .vj_tt
+          margin-left: 5px
+
+      &.has-error
+        &:before
+          content: ''
+          position: absolute
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+          border: 2px solid $red
+
+        > .th
+          > div:first-child, > div:first-child + div
+            color: $red
+
+        // Reset default behaviour
+        .form-control
+          border-color: #ccc

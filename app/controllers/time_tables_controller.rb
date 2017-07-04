@@ -49,8 +49,8 @@ class TimeTablesController < ChouetteController
       calendar.dates.each_with_index do |date, i|
         @time_table.dates << Chouette::TimeTableDate.new(date: date, position: i, in_out: true)
       end
-      calendar.date_ranges.each_with_index do |date_range, i|
-        @time_table.periods << Chouette::TimeTablePeriod.new(period_start: date_range.begin, period_end: date_range.end, position: i)
+      calendar.periods.each_with_index do |period, i|
+        @time_table.periods << Chouette::TimeTablePeriod.new(period_start: period.begin, period_end: period.end, position: i)
       end
     end
 

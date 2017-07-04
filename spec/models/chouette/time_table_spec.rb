@@ -7,6 +7,10 @@ describe Chouette::TimeTable, :type => :model do
   it { is_expected.to validate_presence_of :comment }
   it { is_expected.to validate_uniqueness_of :objectid }
 
+    def create_time_table_periode time_table, start_date, end_date
+      create(:time_table_period, time_table: time_table, :period_start => start_date, :period_end => end_date)
+    end
+
   describe "#merge! with time_table" do
     let(:another_tt) { create(:time_table) }
     let(:another_tt_periods_to_range) { another_tt.periods.map{|p| p.period_start..p.period_end } }
@@ -69,6 +73,134 @@ describe Chouette::TimeTable, :type => :model do
       subject.merge!(another_tt)
 
       expect(subject_periods_to_range).to include(*calendar.date_ranges)
+    end
+  end
+
+  describe "#disjoin!" do
+    let(:another_tt) { create(:time_table) }
+
+    context 'dates' do
+      before do
+        subject.periods.clear
+        another_tt.periods.clear
+      end
+
+      it 'should remove common dates' do
+        subject.disjoin!(another_tt)
+        expect(subject.reload.dates).to be_empty
+      end
+
+      it 'should remove common dates with mixed none common dates' do
+        another_tt.dates.clear
+        another_tt.dates << create(:time_table_date, time_table: another_tt, date: subject.dates[0].date)
+
+        subject.disjoin!(another_tt)
+        expect(subject.reload.dates.map(&:date)).to_not include(another_tt.dates[0].date)
+      end
+    end
+
+    context 'periods' do
+      let(:another_tt_periods_to_range) { another_tt.periods.map{|p| p.period_start..p.period_end } }
+      # Clear dates as we are testing periods
+      before do
+        subject.dates.clear
+        another_tt.dates.clear
+      end
+
+      it 'should remove common dates in periods' do
+        subject.disjoin!(another_tt)
+        expect(subject_periods_to_range).to_not include(*another_tt_periods_to_range)
+      end
+
+      it 'should build new period without common dates in periods' do
+        subject.periods.clear
+        another_tt.periods.clear
+
+        subject.periods << create_time_table_periode(subject, Date.today, Date.today + 10.day)
+        another_tt.periods << create_time_table_periode(another_tt, Date.tomorrow, Date.today + 3.day)
+
+        subject.disjoin!(another_tt)
+        expected_range = Date.tomorrow..Date.today + 3.day
+
+        expect(subject_periods_to_range).to_not include(expected_range)
+        expect(subject.periods.count).to eq 1
+      end
+    end
+  end
+
+  describe '#intersect! with time_table' do
+    let(:another_tt) { create(:time_table) }
+
+    context 'dates' do
+      # Clear periods as we are testing dates
+      before do
+        subject.periods.clear
+        another_tt.periods.clear
+      end
+
+      it 'should keep common dates' do
+        days = subject.dates.map(&:date)
+        subject.intersect!(another_tt)
+        expect(subject.included_days_in_dates_and_periods).to include(*days)
+      end
+
+      it 'should not keep dates who are not in common' do
+        # Add 1 year interval, to make sur we have not dates in common
+        another_tt.dates.map{|d| d.date = d.date + 1.year }
+        subject.intersect!(another_tt)
+
+        expect(subject.reload.dates).to be_empty
+      end
+    end
+
+    context 'periods' do
+      let(:another_tt_periods_to_range) { another_tt.periods.map{|p| p.period_start..p.period_end } }
+      # Clear dates as we are testing periods
+      before do
+        subject.dates.clear
+        another_tt.dates.clear
+      end
+
+      it 'should keep common dates in periods' do
+        subject.intersect!(another_tt)
+        expect(subject_periods_to_range).to include(*another_tt_periods_to_range)
+      end
+
+      it 'should build new period with common dates in periods' do
+        subject.periods.clear
+        another_tt.periods.clear
+
+        subject.periods << create_time_table_periode(subject, Date.today, Date.today + 10.day)
+        another_tt.periods << create_time_table_periode(another_tt, Date.tomorrow, Date.today + 3.day)
+
+        subject.intersect!(another_tt)
+        expected_range = Date.tomorrow..Date.today + 3.day
+
+        expect(subject_periods_to_range).to include(expected_range)
+        expect(subject.periods.count).to eq 1
+      end
+
+      it 'should not keep dates in periods who are not in common' do
+        another_tt.periods.map do |p|
+          p.period_start = p.period_start + 1.year
+          p.period_end   = p.period_end + 1.year
+        end
+
+        subject.intersect!(another_tt)
+        expect(subject.periods).to be_empty
+      end
+
+      context 'with calendar' do
+        let(:period_start) { subject.periods[0].period_start }
+        let(:period_end)   { subject.periods[0].period_end }
+        let(:another_tt)   { create(:calendar, date_ranges: [period_start..period_end]).convert_to_time_table }
+
+        it 'should keep common dates in periods' do
+          subject.intersect!(another_tt)
+          expect(subject.reload.periods.count).to eq 1
+          expect(subject_periods_to_range).to include(*another_tt_periods_to_range)
+        end
+      end
     end
   end
 
@@ -1035,378 +1167,6 @@ end
         expect(days.include?(Date.new(2014,7,20))).to be_truthy
         expect(days.include?(Date.new(2014,7,21))).to be_truthy
       end
-  end
-
-  describe "#intersect!" do
-    context "timetables have periods with common day_types " do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,1), :period_end => Date.new(2014,8,6))
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,6,30), :period_end => Date.new(2014,7,20))
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,16), :in_out => true)
-        subject.int_day_types = 4|16|32|128
-        another_tt = create(:time_table , :int_day_types => (4|16|64|128) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,6), :period_end => Date.new(2014,8,12))
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,7,15), :period_end => Date.new(2014,7,25))
-        subject.intersect! another_tt
-        subject.reload
-      end
-      it "should have no period" do
-        expect(subject.periods.size).to eq(0)
-       end
-      it "should have date all common days" do
-        expect(subject.dates.size).to eq(3)
-        expect(subject.dates[0].date).to eq(Date.new(2014,7,16))
-        expect(subject.dates[1].date).to eq(Date.new(2014,7,19))
-        expect(subject.dates[2].date).to eq(Date.new(2014,8,6))
-      end
-    end
-    context "timetables have periods or dates " do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,16), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,17), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,18), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,19), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,20), :in_out => true)
-        subject.int_day_types = 0
-        another_tt = create(:time_table , :int_day_types => (4|16|64|128) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,6), :period_end => Date.new(2014,8,12))
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,7,17), :period_end => Date.new(2014,7,25))
-        subject.intersect! another_tt
-        subject.reload
-      end
-      it "should have 0 period" do
-        expect(subject.periods.size).to eq(0)
-      end
-      it "should not modify day_types" do
-        expect(subject.int_day_types).to eq(0)
-      end
-      it "should have date reduced for period" do
-        expect(subject.dates.size).to eq(2)
-        expect(subject.dates[0].date).to eq(Date.new(2014,7,18))
-        expect(subject.dates[1].date).to eq(Date.new(2014,7,19))
-      end
-    end
-    context "with only periods : intersect timetable have no one day period" do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,1), :period_end => Date.new(2014,8,6))
-        subject.int_day_types = 4|8|16
-        another_tt = create(:time_table , :int_day_types => (4|8|16) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,6), :period_end => Date.new(2014,8,12))
-        subject.intersect! another_tt
-        subject.reload
-      end
-      it "should have 0 result periods" do
-        expect(subject.periods.size).to eq(0)
-      end
-      it "should not modify day_types" do
-        expect(subject.int_day_types).to eq(4|8|16)
-      end
-      it "should have 1 date " do
-        expect(subject.dates.size).to eq(1)
-        expect(subject.dates[0].date).to eq(Date.new(2014,8,6))
-      end
-    end
-
-  end
-
-  describe "#disjoin!" do
-    context "timetables have periods with common day_types " do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,1), :period_end => Date.new(2014,8,6))
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,6,30), :period_end => Date.new(2014,7,20))
-        subject.int_day_types = 4|16|32|128
-        another_tt = create(:time_table , :int_day_types => (4|16|64|128) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,6), :period_end => Date.new(2014,8,12))
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,7,15), :period_end => Date.new(2014,8,2))
-        subject.disjoin! another_tt
-        subject.reload
-      end
-      it "should have 0 periods" do
-        expect(subject.periods.size).to eq(0)
-       end
-      it "should have only dates " do
-        expect(subject.dates.size).to eq(11)
-        expect(subject.dates[0].date).to eq(Date.new(2014,6,30))
-        expect(subject.dates[1].date).to eq(Date.new(2014,7,2))
-        expect(subject.dates[2].date).to eq(Date.new(2014,7,3))
-        expect(subject.dates[3].date).to eq(Date.new(2014,7,5))
-        expect(subject.dates[4].date).to eq(Date.new(2014,7,7))
-        expect(subject.dates[5].date).to eq(Date.new(2014,7,9))
-        expect(subject.dates[6].date).to eq(Date.new(2014,7,10))
-        expect(subject.dates[7].date).to eq(Date.new(2014,7,12))
-        expect(subject.dates[8].date).to eq(Date.new(2014,7,14))
-        expect(subject.dates[9].date).to eq(Date.new(2014,7,17))
-        expect(subject.dates[10].date).to eq(Date.new(2014,8,4))
-      end
-    end
-    context "timetables have periods or dates " do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,16), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,17), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,18), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,19), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,20), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,8,6), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,8,7), :in_out => true)
-        subject.int_day_types = 0
-        another_tt = create(:time_table , :int_day_types => (4|16|64|128) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,6), :period_end => Date.new(2014,8,12))
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,7,17), :period_end => Date.new(2014,7,25))
-        subject.disjoin! another_tt
-        subject.reload
-      end
-      it "should have 0 period" do
-        expect(subject.periods.size).to eq(0)
-      end
-      it "should not modify day_types" do
-        expect(subject.int_day_types).to eq(0)
-      end
-      it "should have date reduced for period" do
-        expect(subject.dates.size).to eq(4)
-        expect(subject.dates[0].date).to eq(Date.new(2014,7,16))
-        expect(subject.dates[1].date).to eq(Date.new(2014,7,17))
-        expect(subject.dates[2].date).to eq(Date.new(2014,7,20))
-        expect(subject.dates[3].date).to eq(Date.new(2014,8,7))
-      end
-    end
-    context "disjoined timetable have all periods in removed ones " do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,1), :period_end => Date.new(2014,8,8))
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,6,30), :period_end => Date.new(2014,7,20))
-        subject.int_day_types = 4|16|32|128
-        another_tt = create(:time_table , :int_day_types => (4|16|64|128) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,7,31), :period_end => Date.new(2014,8,12))
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,6,30), :period_end => Date.new(2014,7,20))
-        subject.disjoin! another_tt
-        subject.reload
-      end
-      it "should have 0 result periods" do
-        expect(subject.periods.size).to eq(0)
-      end
-      it "should have dates for period reduced" do
-        expect(subject.dates.size).to eq(4)
-        expect(subject.dates[0].date).to eq(Date.new(2014,7,3))
-        expect(subject.dates[1].date).to eq(Date.new(2014,7,10))
-        expect(subject.dates[2].date).to eq(Date.new(2014,7,17))
-        expect(subject.dates[3].date).to eq(Date.new(2014,8,7))
-      end
-    end
-
-    context "timetable with dates against timetable with dates and periods" do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,16), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,17), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,18), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,19), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,20), :in_out => true)
-        subject.int_day_types = 0
-        another_tt = create(:time_table , :int_day_types => (4|16|64|128) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,7,31), :period_end => Date.new(2014,8,12))
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,17), :in_out => true)
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,18), :in_out => true)
-        subject.disjoin! another_tt
-        subject.reload
-      end
-      it "should have 0 result periods" do
-        expect(subject.periods.size).to eq(0)
-      end
-      it "should have 3 dates left" do
-        expect(subject.dates.size).to eq(3)
-        expect(subject.dates[0].date).to eq(Date.new(2014,7,16))
-        expect(subject.dates[1].date).to eq(Date.new(2014,7,19))
-        expect(subject.dates[2].date).to eq(Date.new(2014,7,20))
-      end
-    end
-
-    context "timetable with dates against timetable with dates and periods all covered" do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,1), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,2), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,5), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,6), :in_out => true)
-        subject.int_day_types = 512
-        another_tt = create(:time_table , :int_day_types => (32|64|512) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,6,30), :period_end => Date.new(2014,7,11))
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,1), :in_out => true)
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,2), :in_out => true)
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,5), :in_out => true)
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,6), :in_out => true)
-        subject.disjoin! another_tt
-        subject.reload
-      end
-
-      it "should have 0 result periods" do
-        expect(subject.periods.size).to eq(0)
-      end
-
-      it "should have 0 dates left" do
-        expect(subject.dates.size).to eq(0)
-      end
-    end
-
-    context "with only periods : disjoined timetable have no empty period" do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,1), :period_end => Date.new(2014,8,8))
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,10), :period_end => Date.new(2014,8,31))
-        subject.int_day_types = 4|8
-        another_tt = create(:time_table , :int_day_types => (4|8) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,4), :period_end => Date.new(2014,8,7))
-        subject.disjoin! another_tt
-        subject.reload
-      end
-
-      it "should have 0 result periods" do
-        expect(subject.periods.size).to eq(0)
-      end
-
-      it "should have 6 dates " do
-        expect(subject.dates.size).to eq(6)
-        expect(subject.dates[0].date).to eq(Date.new(2014,8,11))
-        expect(subject.dates[1].date).to eq(Date.new(2014,8,12))
-        expect(subject.dates[2].date).to eq(Date.new(2014,8,18))
-        expect(subject.dates[3].date).to eq(Date.new(2014,8,19))
-        expect(subject.dates[4].date).to eq(Date.new(2014,8,25))
-        expect(subject.dates[5].date).to eq(Date.new(2014,8,26))
-      end
-    end
-
-    context "with only periods : disjoined timetable have no one day period" do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,1), :period_end => Date.new(2014,8,6))
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,10), :period_end => Date.new(2014,8,31))
-        subject.int_day_types = 4|8|16
-        another_tt = create(:time_table , :int_day_types => (4|8) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,4), :period_end => Date.new(2014,8,5))
-        subject.disjoin! another_tt
-        subject.reload
-      end
-
-      it "should have 3 result periods" do
-        expect(subject.periods.size).to eq(3)
-        [
-          ['2014-08-11', '2014-08-13'],
-          ['2014-08-18', '2014-08-20'],
-          ['2014-08-25', '2014-08-27']
-        ].each_with_index do |period, index|
-          expect(subject.periods[index].period_start.to_s).to eq(period[0])
-          expect(subject.periods[index].period_end.to_s).to eq(period[1])
-        end
-     end
-
-      it "should not modify day_types" do
-        expect(subject.int_day_types).to eq(4|8|16)
-      end
-
-      it "should have 1 dates " do
-        expect(subject.dates.size).to eq(1)
-        expect(subject.dates.first.date.to_s).to eq('2014-08-06')
-      end
-    end
-
-    context "with periods against dates: disjoined timetable have no unused excluded date" do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,1), :period_end => Date.new(2014,8,8))
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2014,8,10), :period_end => Date.new(2014,8,31))
-        subject.int_day_types = 4|8|16
-        another_tt = create(:time_table , :int_day_types => (0) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,8,4), :in_out => true)
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,8,5), :in_out => true)
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,8,7), :in_out => true)
-        subject.disjoin! another_tt
-        subject.reload
-      end
-
-      it "should have same 3 result periods" do
-        expect(subject.periods.size).to eq(3)
-        [
-          ['2014-08-11', '2014-08-13'],
-          ['2014-08-18', '2014-08-20'],
-          ['2014-08-25', '2014-08-27']
-        ].each_with_index do |period, index|
-          expect(subject.periods[index].period_start.to_s).to eq(period[0])
-          expect(subject.periods[index].period_end.to_s).to eq(period[1])
-        end
-      end
-
-      it "should not modify day_types" do
-        expect(subject.int_day_types).to eq(4|8|16)
-      end
-
-      it "should have only 1 dates " do
-        expect(subject.dates.size).to eq(1)
-        expect(subject.dates.first.date.to_s).to eq('2014-08-06')
-      end
-    end
-
-
-    context "with same definition : dsjointed timetable should be empty" do
-      before do
-        subject.periods.clear
-        subject.dates.clear
-        subject.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2015,6,1), :period_end => Date.new(2015,6,30))
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2015,6,16), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2015,6,22), :in_out => false)
-        subject.int_day_types = 4|8|16|32|64|128|256
-        another_tt = create(:time_table , :int_day_types => ( 4|8|16|32|64|128|256) )
-        another_tt.periods.clear
-        another_tt.dates.clear
-        another_tt.periods << Chouette::TimeTablePeriod.new(:period_start => Date.new(2015,6,1), :period_end => Date.new(2015,6,30))
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2015,6,16), :in_out => true)
-        another_tt.dates << Chouette::TimeTableDate.new( :date => Date.new(2015,6,22), :in_out => false)
-        subject.disjoin! another_tt
-        subject.reload
-      end
-      it "should have same 0 result periods" do
-        expect(subject.periods.size).to eq(0)
-      end
-      it "should have 0 dates " do
-        expect(subject.dates.size).to eq(0)
-      end
-    end
   end
 
   describe "#duplicate" do

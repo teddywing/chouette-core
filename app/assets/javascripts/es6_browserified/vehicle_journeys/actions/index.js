@@ -449,12 +449,18 @@ const actions = {
     if (parseInt(schedule.departure_time.minute) < 0){
       hours = Math.floor(parseInt(schedule.departure_time.minute) / 60)
       minutes = (parseInt(schedule.departure_time.minute) % 60) + 60
+      if(minutes == 60){
+        minutes = 0
+      }
       schedule.departure_time.minute = actions.simplePad(minutes, 'minute')
       schedule.departure_time.hour = parseInt(schedule.departure_time.hour) + hours
     }
     if (parseInt(schedule.arrival_time.minute) < 0){
       hours = Math.floor(parseInt(schedule.arrival_time.minute) / 60)
       minutes = (parseInt(schedule.arrival_time.minute) % 60) + 60
+      if(minutes == 60){
+        minutes = 0
+      }
       schedule.arrival_time.minute = actions.simplePad(minutes, 'minute')
       schedule.arrival_time.hour = parseInt(schedule.arrival_time.hour) + hours
     }

@@ -8,5 +8,6 @@ FactoryGirl.define do
     association :line_referential
     association :stop_area_referential
     time_zone "Europe/Paris"
+    ready { true }
   end
 end

@@ -20,6 +20,11 @@ describe Chouette::JourneyPattern, :type => :model do
       expect(journey_pattern).to_not be_valid
       expect(journey_pattern.errors).to have_key(:stop_points)
     end
+
+    it 'should only validate on update' do
+      jp = build(:journey_pattern_common)
+      expect(jp).to be_valid
+    end
   end
 
   describe "state_update" do

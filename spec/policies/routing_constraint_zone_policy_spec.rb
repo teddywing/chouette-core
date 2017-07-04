@@ -1,5 +1,8 @@
 RSpec.describe RoutingConstraintZonePolicy, type: :policy do
 
+  let( :record ){ build_stubbed :routing_constraint_zone }
+
+
   permissions :create? do
     it_behaves_like 'permitted policy', 'routing_constraint_zones.create', archived: true
   end
