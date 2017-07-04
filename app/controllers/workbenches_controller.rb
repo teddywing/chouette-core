@@ -7,7 +7,7 @@ class WorkbenchesController < BreadcrumbController
   def show
     scope = resource.all_referentials
     scope = ransack_associated_lines(scope)
-    scope = ransack_periode(scope)
+    scope = ransack_period(scope)
     scope = ransack_status(scope)
 
     @q_for_form   = scope.ransack(params[:q])
@@ -60,13 +60,21 @@ class WorkbenchesController < BreadcrumbController
   end
 
   # Fake ransack filter
-  def ransack_periode scope
-    return scope unless params[:q] && params[:q]['validity_period']
-    periode = params[:q]['validity_period']
-    return scope if periode['end_lteq(1i)'].blank? || periode['begin_gteq(1i)'].blank?
+  def ransack_period scope
+    period = params[:q]['validity_period']
+    return scope unless period
 
-    begin_range = Date.civil(periode["begin_gteq(1i)"].to_i, periode["begin_gteq(2i)"].to_i, periode["begin_gteq(3i)"].to_i)
-    end_range   = Date.civil(periode["end_lteq(1i)"].to_i, periode["end_lteq(2i)"].to_i, periode["end_lteq(3i)"].to_i)
+    begin
+      if period['begin_gteq'].kind_of?(Array)
+        begin_range = Date.new(*period['begin_gteq'].map(&:to_i))
+        end_range   = Date.new(*period['end_lteq'].map(&:to_i))
+      else
+        begin_range = Date.new(period["begin_gteq(1i)"].to_i, period["begin_gteq(2i)"].to_i, period["begin_gteq(3i)"].to_i)
+        end_range   = Date.new(period["end_lteq(1i)"].to_i, period["end_lteq(2i)"].to_i, period["end_lteq(3i)"].to_i)
+      end
+    rescue Exception => e
+      return scope
+    end
 
     if begin_range > end_range
       flash.now[:error] = t('referentials.errors.validity_period')

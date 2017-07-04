@@ -15,6 +15,7 @@ en:
     sync: 'Synchronize'
     combine: 'Combine'
     actualize: 'Actualize'
+    import: 'Import'
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"
