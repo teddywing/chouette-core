@@ -121,6 +121,18 @@ describe 'Workbenches', type: :feature do
           expect(page).to_not have_content(other_referential.name)
         end
 
+       it 'should keep filtering on sort' do
+          dates = referential.validity_period.to_a
+          fill_validity_field dates[0], 'begin_gteq'
+          fill_validity_field dates[1], 'end_lteq'
+          click_button 'Filtrer'
+
+          find('a[href*="&sort=validity_period"]').click
+
+          expect(page).to have_content(referential.name)
+          expect(page).to_not have_content(other_referential.name)
+        end
+
         it 'should not show results for out off range' do
           fill_validity_field(Date.today - 2.year, 'begin_gteq')
           fill_validity_field(Date.today - 1.year, 'end_lteq')
