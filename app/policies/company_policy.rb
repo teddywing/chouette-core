@@ -5,11 +5,10 @@ class CompanyPolicy < BoivPolicy
     end
   end
 
-  def create?
-    false
-  end
-  def update?  ; create? end
-  def new?     ; create? end
-  def edit?    ; create? end
-  def destroy? ; create? end
+  def create?;   false end
+  def destroy?;  false end
+  def edit?;     false end
+  def new?;      false end
+  def show?;     true end
+  def update?;   false end
 end

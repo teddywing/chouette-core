@@ -17,7 +17,7 @@ describe TableBuilderHelper, type: :helper do
           permissions: [
             'referentials.create',
             'referentials.edit',
-            'referentials.destroy'
+            'referentials.destroy',
           ]
         ),
         referential: referential
@@ -299,7 +299,8 @@ describe TableBuilderHelper, type: :helper do
 
       companies = ModelDecorator.decorate(
         companies,
-        with: CompanyDecorator
+        with: CompanyDecorator,
+        context: {line_referential: line_referential}
       )
 
       expected = <<-HTML

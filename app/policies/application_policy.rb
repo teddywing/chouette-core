@@ -1,6 +1,13 @@
 class ApplicationPolicy
   attr_reader :current_referential, :record, :user
 
+  # Make authorization by action easier
+  def delete?
+    destroy?
+  end
+
+
+
   def initialize(user_context, record)
     @user                = user_context.user
     @current_referential = user_context.context[:referential]

@@ -48,23 +48,18 @@ module TableBuilderHelper
         #       This puts the responsability where it belongs to and allows
         #       for easy and fast unit testing of the BL, always a goos sign.
 
+        # N.B. Does not have policy shall not apply in the future anymore
+
         # Has policy and can destroy
+        # Doesn't have policy or is autorized
         (action == :delete &&
-            Pundit.policy(@user_context, @obj).present? &&
+            !Pundit.policy(@user_context, @obj).present? ||
             Pundit.policy(@user_context, @obj).destroy?) ||
 
-          # Doesn't have policy
-          (action == :delete &&
-            !Pundit.policy(@user_context, @obj).present?) ||
-
-          # Has policy and can update
+          # Doesn't have policy or is autorized
           (action == :edit &&
-            Pundit.policy(@user_context, @obj).present? &&
+            !Pundit.policy(@user_context, @obj).present? ||
             Pundit.policy(@user_context, @obj).update?) ||
-
-          # Doesn't have policy
-          (action == :edit &&
-            !Pundit.policy(@user_context, @obj).present?) ||
 
           # Object isn't archived
           (action == :archive && !@obj.archived?) ||
@@ -74,7 +69,7 @@ module TableBuilderHelper
 
           !Pundit.policy(@user_context, @obj).respond_to?("#{action}?") ||
           Pundit.policy(@user_context, @obj).public_send("#{action}?") ||
-            
+
 
           action_is_allowed_regardless_of_policy(action)
       end
