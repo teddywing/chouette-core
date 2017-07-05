@@ -1,5 +1,17 @@
 class ApplicationPolicy
+
   attr_reader :current_referential, :record, :user
+  def initialize(user_context, record)
+    @user                = user_context.user
+    @current_referential = user_context.context[:referential]
+    @record              = record
+  end
+
+  # HMMM: Maybe one can tie index? to show? again by replacing record.class as follows:
+  #       Class === record ? record : record.class
+  def scope
+    Pundit.policy_scope!(user, record.class)
+  end
 
   # Make authorization by action easier
   def delete?
@@ -12,16 +24,15 @@ class ApplicationPolicy
     false
   end
 
+
+  #
+  # Tied permissions
+  # ----------------
+
   # Tie edit? and update? together, #edit?, do not override #edit?,
   # unless you want to break this tie on purpose
   def edit?
     update?
-  end
-
-  # Tie index? and show? together, do not override #new?,
-  # unless you want to break this tie on purpose
-  def index?
-    show?
   end
 
   # Tie new? and create? together, do not override #new?,
@@ -31,25 +42,22 @@ class ApplicationPolicy
   end
 
 
+  #
+  # Permissions for undestructive actions
+  # -------------------------------------
 
-  def initialize(user_context, record)
-    @user                = user_context.user
-    @current_referential = user_context.context[:referential]
-    @record              = record
+  def index?
+    true
   end
 
-  def archived?
-    return @is_archived if instance_variable_defined?(:@is_archived)
-    @is_archived = is_archived
+  def show?
+    scope.where(:id => record.id).exists?
   end
 
-  def referential
-    @referential ||=  current_referential || record_referential
-  end
 
-  def record_referential
-    record.referential if record.respond_to?(:referential)
-  end
+  #
+  # Permissions for destructive actions
+  # -----------------------------------
 
   def create?
     false
@@ -59,16 +67,18 @@ class ApplicationPolicy
     false
   end
 
-  def show?
-    scope.where(:id => record.id).exists?
-  end
-
   def update?
     false
   end
 
-  def scope
-    Pundit.policy_scope!(user, record.class)
+
+  #
+  #  Custom Permissions
+  #  ------------------
+
+  def archived?
+    return @is_archived if instance_variable_defined?(:@is_archived)
+    @is_archived = is_archived
   end
 
   def organisation_match?
@@ -81,6 +91,18 @@ class ApplicationPolicy
     organisation or referential.try :organisation
   end
 
+
+  #
+  #  Helpers
+  #  -------
+
+  def referential
+    @referential ||=  current_referential || record_referential
+  end
+
+  def record_referential
+    record.referential if record.respond_to?(:referential)
+  end
   class Scope
     attr_reader :user, :scope
 
