@@ -6,14 +6,14 @@ class AccessLinkPolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_permission?('access_links.create') # organisation match via referential is checked in the view
+    !archived? && oragnisation_mathc? && user.has_permission?('access_links.create')
   end
 
   def update?
-    organisation_match? && user.has_permission?('access_links.edit')
+    !archived? && organisation_match? && user.has_permission?('access_links.edit')
   end
 
   def destroy?
-    organisation_match? && user.has_permission?('access_links.destroy')
+    !archived? && organisation_match? && user.has_permission?('access_links.destroy')
   end
 end

@@ -4,7 +4,7 @@ RSpec.describe RoutingConstraintZonePolicy, type: :policy do
 
 
   permissions :create? do
-    it_behaves_like 'permitted policy', 'routing_constraint_zones.create', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'routing_constraint_zones.create', archived: true
   end
 
   permissions :destroy? do
@@ -16,7 +16,7 @@ RSpec.describe RoutingConstraintZonePolicy, type: :policy do
   end
 
   permissions :new? do
-    it_behaves_like 'permitted policy', 'routing_constraint_zones.create', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'routing_constraint_zones.create', archived: true
   end
 
   permissions :update? do

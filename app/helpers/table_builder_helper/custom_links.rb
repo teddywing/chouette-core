@@ -33,7 +33,7 @@ module TableBuilderHelper
         polymorph_url << action
       end
 
-      polymorph_url += URL.polymorphic_url_parts(@object)
+      polymorph_url += URL.polymorphic_url_parts(object)
     end
 
     def method_for_action(action)
@@ -41,7 +41,7 @@ module TableBuilderHelper
     end
 
     def authorized_actions
-      @actions.select(&policy.method(:authorizes_action?))
+      actions.select(&policy.method(:authorizes_action?))
     end
 
     private

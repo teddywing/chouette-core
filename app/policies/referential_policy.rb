@@ -10,20 +10,25 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def destroy?
-    organisation_match? && user.has_permission?('referentials.destroy')
+    !archived? && organisation_match? && user.has_permission?('referentials.destroy')
   end
 
   def update?
-    organisation_match? && user.has_permission?('referentials.edit')
+    !archived? && organisation_match? && user.has_permission?('referentials.edit')
   end
 
 
-  def archive?
-    edit?
-  end
 
   def clone?
-    organisation_match? && create?
+    !archived? && organisation_match? && create?
+  end
+
+  def archive?
+    !archived? && update?
+  end
+
+  def unarchive?
+    archived? && update?
   end
 
   def common_lines?
@@ -31,11 +36,6 @@ class ReferentialPolicy < ApplicationPolicy
     true
   end
 
-  def show?
-    true
-  end
-
-  def unarchive? ; archive? end
 end
 
 

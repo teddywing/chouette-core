@@ -6,7 +6,7 @@ class RoutingConstraintZonePolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && user.has_permission?('routing_constraint_zones.create') # organisation match via referential is checked in the view
+    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.create')
   end
 
   def destroy?

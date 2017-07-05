@@ -10,6 +10,7 @@ describe TableBuilderHelper::CustomLinks do
         referential: referential
       )
 
+      stub_policy_scope(referential)
       expect(
         TableBuilderHelper::CustomLinks.new(
           referential,

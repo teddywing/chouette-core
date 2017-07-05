@@ -6,14 +6,14 @@ class AccessPointPolicy < ApplicationPolicy
   end
 
   def create?
-    user.has_permission?('access_points.create') # organisation match via referential is checked in the view
+    !archived? && organisation_match? && user.has_permission?('access_points.create')
   end
 
   def update?
-    organisation_match? && user.has_permission?('access_points.edit')
+    !archived? && organisation_match? && user.has_permission?('access_points.edit')
   end
 
   def destroy?
-    organisation_match? && user.has_permission?('access_points.destroy')
+    !archived? && organisation_match? && user.has_permission?('access_points.destroy')
   end
 end

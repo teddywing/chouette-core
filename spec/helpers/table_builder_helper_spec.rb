@@ -27,6 +27,7 @@ describe TableBuilderHelper, type: :helper do
       referentials = [referential]
 
       allow(referentials).to receive(:model).and_return(Referential)
+      stub_policy_scope(referential)
 
       allow(helper).to receive(:params).and_return({
         controller: 'workbenches',
@@ -193,7 +194,7 @@ describe TableBuilderHelper, type: :helper do
         companies,
         with: CompanyDecorator
       )
-      allow(CompanyDecorator).to receive(:where).with(id: company.id).and_return double.as_null_object
+      stub_policy_scope(company)
 
       expected = <<-HTML
 <table class="table has-search">
@@ -303,7 +304,7 @@ describe TableBuilderHelper, type: :helper do
         with: CompanyDecorator,
         context: {line_referential: line_referential}
       )
-      allow(CompanyDecorator).to receive(:where).with(id: company.id).and_return double.as_null_object
+      stub_policy_scope(company)
 
       expected = <<-HTML
 <table class="table has-search">

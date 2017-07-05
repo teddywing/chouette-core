@@ -7,16 +7,15 @@ class JourneyPatternPolicy < ApplicationPolicy
   end
 
   def create?
-    # organisation match via referential is checked in the view
-    user.has_permission?('journey_patterns.create')
+    !archived? && organisation_match? && user.has_permission?('journey_patterns.create')
   end
 
   def destroy?
-    organisation_match? && user.has_permission?('journey_patterns.destroy')
+    !archived? && organisation_match? && user.has_permission?('journey_patterns.destroy')
   end
 
   def update?
-    organisation_match? && user.has_permission?('journey_patterns.edit')
+    !archived? && organisation_match? && user.has_permission?('journey_patterns.edit')
   end
 end
 

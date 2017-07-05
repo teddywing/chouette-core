@@ -6,13 +6,13 @@ class CalendarPolicy < ApplicationPolicy
   end
 
   def create? 
-    organisation_match?
+    !archived? && organisation_match?
   end
   def destroy?
-    organisation_match?
+    !archived? && organisation_match?
   end
   def update?
-    organisation_match?
+    !archived? && organisation_match?
   end
 
   def share?
