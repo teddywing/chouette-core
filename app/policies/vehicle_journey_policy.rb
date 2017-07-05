@@ -14,6 +14,6 @@ class VehicleJourneyPolicy < ApplicationPolicy
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('vehicle_journeys.edit')
+    !archived? && organisation_match? && user.has_permission?('vehicle_journeys.update')
   end
 end

@@ -14,6 +14,6 @@ class RoutingConstraintZonePolicy < ApplicationPolicy
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.edit')
+    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.update')
   end
 end

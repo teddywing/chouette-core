@@ -15,7 +15,7 @@ class JourneyPatternPolicy < ApplicationPolicy
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('journey_patterns.edit')
+    !archived? && organisation_match? && user.has_permission?('journey_patterns.update')
   end
 end
 

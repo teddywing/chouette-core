@@ -11,7 +11,7 @@ RSpec.describe RoutePolicy, type: :policy do
   end
 
   permissions :edit? do
-    it_behaves_like 'permitted policy and same organisation', 'routes.edit', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'routes.update', archived: true
   end
 
   permissions :new? do
@@ -19,6 +19,6 @@ RSpec.describe RoutePolicy, type: :policy do
   end
 
   permissions :update? do
-    it_behaves_like 'permitted policy and same organisation', 'routes.edit', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'routes.update', archived: true
   end
 end

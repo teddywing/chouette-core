@@ -16,7 +16,7 @@ describe TableBuilderHelper, type: :helper do
           organisation: referential.organisation,
           permissions: [
             'referentials.create',
-            'referentials.edit',
+            'referentials.update',
             'referentials.destroy',
           ]
         ),

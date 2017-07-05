@@ -14,6 +14,6 @@ class ConnectionLinkPolicy < ApplicationPolicy
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('connection_links.edit')
+    !archived? && organisation_match? && user.has_permission?('connection_links.update')
   end
 end

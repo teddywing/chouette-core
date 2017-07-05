@@ -28,10 +28,21 @@ class User < ActiveRecord::Base
   end
   after_destroy :check_destroy_organisation
 
-  @@edit_offer_permissions = ['routes.create', 'routes.edit', 'routes.destroy', 'journey_patterns.create', 'journey_patterns.edit', 'journey_patterns.destroy',
-    'vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy', 'time_tables.create', 'time_tables.edit', 'time_tables.destroy',
-    'footnotes.edit', 'footnotes.create', 'footnotes.destroy', 'routing_constraint_zones.create', 'routing_constraint_zones.edit',
-    'routing_constraint_zones.destroy', 'referentials.create', 'referentials.edit', 'referentials.destroy', 'boiv:edit-offer']
+  def self.destructive_permissions_for(models)
+    models.product( %w{create destroy update} ).map{ |model_action| model_action.join('.') }
+  end
+
+  @@edit_offer_permissions =
+    destructive_permissions_for( %w[
+      footnotes
+      journey_patterns
+      referentials
+      routes
+      routing_constraint_zones
+      time_tables
+      vehicle_journeys
+    ]) << 'boiv:edit-offer'
+
   mattr_reader :edit_offer_permissions
 
   def self.all_permissions

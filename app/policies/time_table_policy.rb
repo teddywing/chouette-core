@@ -15,7 +15,7 @@ class TimeTablePolicy < ApplicationPolicy
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('time_tables.edit')
+    !archived? && organisation_match? && user.has_permission?('time_tables.update')
   end
 
   def actualize?

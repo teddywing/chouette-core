@@ -82,13 +82,12 @@ class ApplicationPolicy
   end
 
   def organisation_match?
-    user.organisation == organisation
+    user.organisation_id == organisation_id
   end
 
-  def organisation
+  def organisation_id
     # When sending permission to react UI, we don't have access to record object for edit & destroy.. actions
-    organisation = record.is_a?(Symbol) ? nil : record.try(:organisation)
-    organisation or referential.try :organisation
+    referential.try(:organisation_id) || record.try(:organisation_id)
   end
 
 

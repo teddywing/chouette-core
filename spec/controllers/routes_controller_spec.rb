@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe RoutesController, :type => :controller do
+RSpec.describe RoutesController, :type => :controller do
   login_user
 
   let!(:route) { create(:route) }

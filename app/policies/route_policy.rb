@@ -14,6 +14,6 @@ class RoutePolicy < ApplicationPolicy
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('routes.edit')
+    !archived? && organisation_match? && user.has_permission?('routes.update')
   end
 end

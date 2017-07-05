@@ -159,11 +159,10 @@ class VehicleJourneysController < ChouetteController
   end
 
   def user_permissions
-    @perms = {}.tap do |perm|
-      ['vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy'].each do |name|
-        perm[name] = policy(:vehicle_journey).send("#{name.split('.').last}?")
-      end
-    end.to_json
+    @perms =
+      %w{create destroy update}.inject({}) do | permissions, action |
+        permissions.merge( "vehicle_journeys.#{action}" => policy.authorizes_action?(action) )
+      end.to_json
   end
 
   private

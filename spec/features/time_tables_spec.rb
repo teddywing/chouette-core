@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-require 'spec_helper'
-
-describe "TimeTables", :type => :feature do
+RSpec.describe "TimeTables", :type => :feature do
   login_user
 
   let!(:time_tables) { Array.new(2) { create(:time_table) } }

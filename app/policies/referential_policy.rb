@@ -14,7 +14,7 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('referentials.edit')
+    !archived? && organisation_match? && user.has_permission?('referentials.update')
   end
 
 
@@ -24,11 +24,11 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def archive?
-    !archived? && update?
+    record.archived_at.nil? && user.has_permission?('referentials.update')
   end
 
   def unarchive?
-    archived? && update?
+    !record.archived_at.nil? && user.has_permission?('referentials.update')
   end
 
   def common_lines?

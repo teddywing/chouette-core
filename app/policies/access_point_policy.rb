@@ -10,7 +10,7 @@ class AccessPointPolicy < ApplicationPolicy
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('access_points.edit')
+    !archived? && organisation_match? && user.has_permission?('access_points.update')
   end
 
   def destroy?

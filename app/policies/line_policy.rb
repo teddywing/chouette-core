@@ -11,7 +11,7 @@ class LinePolicy < ApplicationPolicy
   end
 
   def edit_footnote?
-    !archived? && user.has_permission?('footnotes.edit')
+    !archived? && user.has_permission?('footnotes.update')
   end
 
   def destroy_footnote?
