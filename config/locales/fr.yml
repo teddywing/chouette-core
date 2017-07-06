@@ -14,6 +14,8 @@ fr:
     formats:
       short: "%d/%m/%Y"
       short_with_time: "%d/%m/%Y à %Hh%M"
+  errors:
+    format: "%{message}"
 
   last_update: 'Dernière mise à jour<br>le %{time}'
   last_sync: 'Dernière mise à jour le %{time}'
