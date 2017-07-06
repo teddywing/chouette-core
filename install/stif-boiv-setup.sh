@@ -1,7 +1,25 @@
 #!/bin/bash -e
 
-DATABASE_HOST=${DATABASE_HOST:-"localhost"}
+export DATABASE_HOST=${DATABASE_HOST:-"localhost"}
+export SIDEKIQ_REDIS_URL=${SIDEKIQ_REDIS_URL:-"redis://localhost:6379/0"}
 
+if [[ "$#" != "1" ]] ; then
+  echo "Argument count mismatch. 1 and only 1 argument expected"
+  exit -1
+fi
+ 
+SVRTYPE="$1"
+
+if test "$SVRTYPE" == "front"; then
+  echo "*** FRONT SERVER SELECTED"
+elif [[ "$SVRTYPE" == "worker" ]] ; then
+  echo "*** WORKER SERVER SELECTED"
+else
+  echo "server type must be front or worker"
+  exit -2
+fi
+
+exit 0
 # mandatory packages and distribution upgrade
 apt-get update && apt-get dist-upgrade
 apt-get install -y wget sudo
@@ -19,6 +37,7 @@ apt-get install -y libsqlite3-dev libproj-dev libpq-dev
 gem2.3 install bundler
 
 # Apache / Passenger
+if test "$SVRTYPE" == "front"; then
 echo "==== Installation de Apache 2.4 et Passenger"
 apt-get install -y apache2 libapache2-mod-passenger
 
@@ -26,19 +45,23 @@ cp stif-boiv.conf /etc/apache2/sites-available/
 
 a2enmod expires
 a2ensite stif-boiv
+fi
 
 # Redis
+if test "$SVRTYPE" == "front"; then
 
 echo "==== Installation de Redis"
 
 apt-get install -y redis-server
+fi
 
 # Sidekiq
 
+if test "$SVRTYPE" == "worker"; then
 echo "==== Installation de Sidekiq comme service"
 cp sidekiq-stif-boiv.service /etc/systemd/system/
 systemctl enable sidekiq-stif-boiv
-
+fi
 
 echo "==== Installation de PostgreSQL"
 if [ "x$DATABASE_HOST" = "xlocalhost" ]; then
@@ -58,6 +81,7 @@ fi
 
 # NodeJS
 
+if test "$SVRTYPE" == "front"; then
 echo "==== Installation de NodeJS 5.x"
 apt-get install -y apt-transport-https
 
@@ -69,7 +93,7 @@ wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add 
 apt-get update
 
 apt-get install -y nodejs
-
+fi
 # Configuration de l'applicatif
 
 echo "==== Paramétrage de l'applicatif"
@@ -78,7 +102,8 @@ read -s DATABASE_PASSWORD
 
 export DATABASE_PASSWORD
 
-PGPASSWORD=$DATABASE_PASSWORD PGHOST=$DATABASE_HOST PGUSER=stif_boiv psql -q -c 'select 1' stif_boiv >/dev/null 2>&1 && echo "Mot de passe correct" 
+PGPASSWORD=$DATABASE_PASSWORD PGHOST=$DATABASE_HOST PGUSER=stif_boiv psql -q -c 'select 1' stif_boiv >/dev/null 2>&1 && echo "Mot de passe PG correct" 
+
 ./deploy-helper.sh setup
 
 echo "!!! Configuration intiale terminée. Vous pouvez maintenant déployer l'applicatif"

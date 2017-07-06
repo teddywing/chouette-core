@@ -111,6 +111,16 @@ Rails.application.configure do
   # config.company_contact = "http://www.cityway.fr/contact/?rub_code=14"
   # config.accept_user_creation = false
 
+  config.chouette_authentication_settings = {
+    type: "cas",
+    cas_server: "https://portail-server/sessions",
+    cas_validate_url: "http://portail-server/sessions/proxyValidate"
+  }
+  config.stif_portail_api = {
+    key: "api_token_for_portail_goes_here",
+    url: "http://portail-server"
+  }
+
   # file to data for demo
   # config.demo_data = "/path/to/demo.zip"
 
@@ -123,6 +133,14 @@ Rails.application.configure do
   end
 
   config.i18n.available_locales = [:fr, :en]
+
+  # REFLEX api url
+  config.reflex_api_url = "https://pprod.reflex.stif.info/ws/reflex/V1/service=getData"
+  # CODIFLIGNE api url
+  config.codifligne_api_url = "https://pprod.codifligne.stif.info/rest/v1/lc/getlist"
+
+  # IEV
+  config.iev_url = "http://worker-server:8080"
 
   # Set node env for browserify-rails
   config.browserify_rails.node_env = "production"
