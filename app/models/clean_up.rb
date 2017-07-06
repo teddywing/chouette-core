@@ -83,7 +83,7 @@ class CleanUp < ActiveRecord::Base
         day if day.public_send(operator, self.begin_date)
       end
     else
-      days_in_cleanup_periode = (self.begin_date..self.end_date)
+      days_in_cleanup_periode = ((self.begin_date + 1.day)...self.end_date)
       to_exclude_days = days_in_period & days_in_cleanup_periode
     end
 
