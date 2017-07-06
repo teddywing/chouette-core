@@ -1,4 +1,4 @@
-class JourneyPatternPolicy < BoivPolicy
+class JourneyPatternPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
@@ -7,19 +7,15 @@ class JourneyPatternPolicy < BoivPolicy
   end
 
   def create?
-    # organisation match via referential is checked in the view
-    user.has_permission?('journey_patterns.create')
-  end
-
-  def edit?
-    organisation_match? && user.has_permission?('journey_patterns.edit')
+    !archived? && organisation_match? && user.has_permission?('journey_patterns.create')
   end
 
   def destroy?
-    organisation_match? && user.has_permission?('journey_patterns.destroy')
+    !archived? && organisation_match? && user.has_permission?('journey_patterns.destroy')
   end
 
-  def update?  ; edit? end
-  def new?     ; create? end
+  def update?
+    !archived? && organisation_match? && user.has_permission?('journey_patterns.update')
+  end
 end
 

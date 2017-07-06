@@ -1,27 +1,22 @@
-class CalendarPolicy < BoivPolicy
+class CalendarPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope
     end
   end
 
-  def show?
-    organisation_match? || record.shared
+  def create? 
+    !archived? && organisation_match? && user.has_permission?('calendars.create')
   end
-
-  def new?     ; modify?  end
-  def create?  ; new? end
-
-  def edit?    ; modify? end
-  def update?  ; edit? end
-
-  def destroy? ; modify? end
+  def destroy?
+    !archived? && organisation_match? && user.has_permission?('calendars.destroy')
+  end
+  def update?
+    !archived? && organisation_match? && user.has_permission?('calendars.update')
+  end
 
   def share?
     user.organisation.name == 'STIF' # FIXME
   end
 
-  def modify?
-    organisation_match?
-  end
 end

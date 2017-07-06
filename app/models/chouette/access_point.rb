@@ -1,4 +1,3 @@
-
 require 'geokit'
 require 'geo_ruby'
 

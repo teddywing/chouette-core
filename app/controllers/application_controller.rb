@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def pundit_user
-    UserContext.new(current_user, referential: self.try(:current_referential))
+    UserContext.new(current_user, referential: @referential)
   end
 
   protected

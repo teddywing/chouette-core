@@ -1,70 +1,107 @@
 class ApplicationPolicy
-  attr_reader :user, :record
 
+  attr_reader :current_referential, :record, :user
   def initialize(user_context, record)
-    @user = user_context.user
-    @referential = user_context.context[:referential]
-    @record = record
+    @user                = user_context.user
+    @current_referential = user_context.context[:referential]
+    @record              = record
   end
 
-  def archived?
-    !!referential.try(:archived_at)
+  # HMMM: Maybe one can tie index? to show? again by replacing record.class as follows:
+  #       Class === record ? record : record.class
+  def scope
+    Pundit.policy_scope!(user, record.class)
   end
 
-  def referential
-    @referential ||= record_referential
+  # Make authorization by action easier
+  def delete?
+    destroy?
   end
 
-  def record_referential
-    record.referential if record.respond_to?(:referential)
+  def authorizes_action?(action)
+    public_send("#{action}?")
+  rescue NoMethodError
+    false
   end
+
+
+  #
+  # Tied permissions
+  # ----------------
+
+  # Tie edit? and update? together, #edit?, do not override #edit?,
+  # unless you want to break this tie on purpose
+  def edit?
+    update?
+  end
+
+  # Tie new? and create? together, do not override #new?,
+  # unless you want to break this tie on purpose
+  def new?
+    create?
+  end
+
+
+  #
+  # Permissions for undestructive actions
+  # -------------------------------------
 
   def index?
-    false
+    true
   end
 
   def show?
     scope.where(:id => record.id).exists?
   end
 
+
+  #
+  # Permissions for destructive actions
+  # -----------------------------------
+
   def create?
     false
-  end
-
-  def new?
-    create?
-  end
-
-  def update?
-    false
-  end
-
-  def edit?
-    update?
   end
 
   def destroy?
     false
   end
 
-  def scope
-    Pundit.policy_scope!(user, record.class)
+  def update?
+    false
   end
 
-  def boiv_read_offer?
-    organisation_match? && user.has_permission?('boiv:read-offer')
+
+  #
+  #  Custom Permissions
+  #  ------------------
+
+  def archived?
+    return @is_archived if instance_variable_defined?(:@is_archived)
+    @is_archived = is_archived
   end
 
   def organisation_match?
-    user.organisation == organisation
+    user.organisation_id == organisation_id
   end
 
-  def organisation
+  def organisation_id
     # When sending permission to react UI, we don't have access to record object for edit & destroy.. actions
-    organisation = record.is_a?(Symbol) ? nil : record.try(:organisation)
-    organisation or referential.try :organisation
+    referential.try(:organisation_id) || record.try(:organisation_id)
   end
 
+
+  #
+  #  Helpers
+  #  -------
+
+  def referential
+    @referential ||=  current_referential || record_referential
+  end
+
+  def record_referential
+    record.referential if record.respond_to?(:referential)
+  end
   class Scope
     attr_reader :user, :scope
 
@@ -75,6 +112,16 @@ class ApplicationPolicy
 
     def resolve
       scope
+    end
+  end
+
+  private
+  def is_archived
+    !!case referential
+    when Referential
+      referential.archived_at
+    else
+      current_referential.try(:archived_at)
     end
   end
 end

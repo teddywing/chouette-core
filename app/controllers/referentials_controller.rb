@@ -1,7 +1,6 @@
 class ReferentialsController < BreadcrumbController
   defaults :resource_class => Referential
   include PolicyChecker
-  before_action :check_policy, :only => [:edit, :update, :destroy, :archive, :unarchive] # overrides default
 
   respond_to :html
   respond_to :json, :only => :show

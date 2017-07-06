@@ -121,7 +121,7 @@ describe 'Workbenches', type: :feature do
           expect(page).to_not have_content(other_referential.name)
         end
 
-       it 'should keep filtering on sort' do
+        it 'should keep filtering on sort' do
           dates = referential.validity_period.to_a
           fill_validity_field dates[0], 'begin_gteq'
           fill_validity_field dates[1], 'end_lteq'
@@ -149,47 +149,47 @@ describe 'Workbenches', type: :feature do
           end
           click_button 'Filtrer'
 
-         ['begin_gteq', 'end_lteq'].each_with_index do |field, index|
+          ['begin_gteq', 'end_lteq'].each_with_index do |field, index|
             expect(find("#q_validity_period_#{field}_3i").value).to eq dates[index].day.to_s
             expect(find("#q_validity_period_#{field}_2i").value).to eq dates[index].month.to_s
             expect(find("#q_validity_period_#{field}_1i").value).to eq dates[index].year.to_s
           end
         end
       end
-    end
 
-    context 'permissions' do
-      before(:each) do
-        visit workbench_path(workbench)
-      end
+      context 'permissions' do
+        before(:each) do
+          visit workbench_path(workbench)
+        end
 
-      context 'user has the permission to create referentials' do
-        it 'shows the link for a new referetnial' do
-          expect(page).to have_link(I18n.t('actions.add'), href: new_referential_path(workbench_id: workbench.id))
+        context 'user has the permission to create referentials' do
+          it 'shows the link for a new referetnial' do
+            expect(page).to have_link(I18n.t('actions.add'), href: new_referential_path(workbench_id: workbench.id))
+          end
+        end
+
+        context 'user does not have the permission to create referentials' do
+          it 'does not show the clone link for referential' do
+            @user.update_attribute(:permissions, [])
+            visit referential_path(referential)
+            expect(page).not_to have_link(I18n.t('actions.add'), href: new_referential_path(workbench_id: workbench.id))
+          end
         end
       end
 
-      context 'user does not have the permission to create referentials' do
-        it 'does not show the clone link for referential' do
-          @user.update_attribute(:permissions, [])
-          visit referential_path(referential)
-          expect(page).not_to have_link(I18n.t('actions.add'), href: new_referential_path(workbench_id: workbench.id))
+      describe 'create new Referential' do
+        it "create a new Referential with a specifed line and period" do
+          referential.destroy
+
+          visit workbench_path(workbench)
+          click_link I18n.t('actions.add')
+          fill_in "referential[name]", with: "Referential to test creation"
+          select workbench.lines.first.id, from: 'referential[metadatas_attributes][0][lines][]'
+
+          click_button "Valider"
+          expect(page).to have_css("h1", text: "Referential to test creation")
         end
       end
-    end
-  end
-
-  describe 'create new Referential' do
-    it "create a new Referential with a specifed line and period" do
-      referential.destroy
-
-      visit workbench_path(workbench)
-      click_link I18n.t('actions.add')
-      fill_in "referential[name]", with: "Referential to test creation"
-      select workbench.lines.first.id, from: 'referential[metadatas_attributes][0][lines][]'
-
-      click_button "Valider"
-      expect(page).to have_css("h1", text: "Referential to test creation")
     end
   end
 end

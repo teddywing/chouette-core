@@ -35,10 +35,24 @@ module Support
         end
       end
     end
+
+    module FeaturePermissionMacros
+      def with_permissions(*permissions, &blk)
+        perms, options = permissions.partition{|x| String === x}
+        context "with permissions #{perms.inspect}...", *options do
+          before do
+            add_permissions(*permissions, for_user: @user)
+          end
+          instance_eval(&blk)
+        end
+      end
+    end
   end
 end
 
 RSpec.configure do | c |
   c.include Support::Pundit::Policies, type: :policy
   c.extend Support::Pundit::PoliciesMacros, type: :policy
+  c.include Support::Pundit::Policies, type: :feature
+  c.extend Support::Pundit::FeaturePermissionMacros, type: :feature
 end

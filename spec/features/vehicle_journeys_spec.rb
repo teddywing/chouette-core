@@ -43,7 +43,7 @@ describe 'VehicleJourneys', type: :feature do
 
       context 'user does not have permission to edit vehicle journeys' do
         it 'does not show an edit link for vehicle journeys' do
-          @user.tap { |u| u.permissions.delete('vehicle_journeys.edit') }.save
+          @user.tap { |u| u.permissions.delete('vehicle_journeys.update') }.save
           visit referential_line_route_vehicle_journey_path(referential, line, route, vehicle_journey)
           expect(page).not_to have_content(I18n.t('vehicle_journeys.actions.edit'))
         end

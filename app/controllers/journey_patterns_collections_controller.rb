@@ -49,11 +49,10 @@ class JourneyPatternsCollectionsController < ChouetteController
   end
 
   def user_permissions
-    @perms = {}.tap do |perm|
-      ['journey_patterns.create', 'journey_patterns.edit', 'journey_patterns.destroy'].each do |name|
-        perm[name] = policy(:journey_pattern).send("#{name.split('.').last}?")
-      end
-    end.to_json
+    @perms =
+      %w{create destroy edit}.inject({}) do | permissions, action |
+        permissions.merge( "journey_patterns.#{action}" => policy.authorizes_action?(action) )
+      end.to_json
   end
 
   def update

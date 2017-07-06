@@ -1,4 +1,4 @@
-class ReferentialPolicy < BoivPolicy
+class ReferentialPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope
@@ -9,20 +9,26 @@ class ReferentialPolicy < BoivPolicy
     user.has_permission?('referentials.create')
   end
 
-  def edit?
-    organisation_match? && user.has_permission?('referentials.edit')
+  def destroy?
+    !archived? && organisation_match? && user.has_permission?('referentials.destroy')
   end
 
-  def destroy?
-    organisation_match? && user.has_permission?('referentials.destroy')
+  def update?
+    !archived? && organisation_match? && user.has_permission?('referentials.update')
+  end
+
+
+
+  def clone?
+    !archived? && organisation_match? && create?
   end
 
   def archive?
-    edit?
+    record.archived_at.nil? && user.has_permission?('referentials.update')
   end
 
-  def clone?
-    organisation_match? && create?
+  def unarchive?
+    !record.archived_at.nil? && user.has_permission?('referentials.update')
   end
 
   def common_lines?
@@ -30,9 +36,6 @@ class ReferentialPolicy < BoivPolicy
     true
   end
 
-  def unarchive? ; archive? end
-  def update? ; edit? end
-  def new? ; create? end
 end
 
 
