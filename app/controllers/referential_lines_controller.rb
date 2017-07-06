@@ -39,6 +39,15 @@ class ReferentialLinesController < ChouetteController
 
     @routes = @routes.paginate(page: params[:page], per_page: 10)
 
+    @routes = ModelDecorator.decorate(
+      @routes,
+      with: RouteDecorator,
+      context: {
+        referential: referential,
+        line: @line
+      }
+    )
+
     show! do
       build_breadcrumb :show
     end
