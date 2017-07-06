@@ -5,8 +5,8 @@ fr:
     delete: 'Supprimer'
     search: "Chercher"
     submit: "Valider"
-    add: 'Ajouter'
-    new: 'Ajouter'
+    add: 'Créer'
+    new: 'Créer'
     show: 'Consulter'
     archive: 'Conserver'
     unarchive: 'Déconserver'
@@ -16,6 +16,7 @@ fr:
     sync: 'Synchroniser'
     combine: 'Combiner'
     actualize: 'Actualiser'
+    import: 'Importer'
   or: "ou"
   cancel: "Annuler"
   search_hint: "Entrez un texte à rechercher"

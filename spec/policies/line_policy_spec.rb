@@ -1,5 +1,8 @@
 RSpec.describe LinePolicy, type: :policy do
 
+  let( :record ){ build_stubbed :line }
+
+
   %w{create destroy edit}.each do | permission |
     footnote_permission = "#{permission}_footnote"
     permissions "#{footnote_permission}?".to_sym do

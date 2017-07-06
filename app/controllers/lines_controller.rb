@@ -13,6 +13,15 @@ class LinesController < BreadcrumbController
   def index
     @hide_group_of_line = line_referential.group_of_lines.empty?
     index! do |format|
+      @lines = ModelDecorator.decorate(
+        @lines,
+        with: LineDecorator,
+        context: {
+          line_referential: @line_referential,
+          current_organisation: current_organisation
+        }
+      )
+
       format.html {
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)

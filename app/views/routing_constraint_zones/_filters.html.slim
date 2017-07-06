@@ -1,7 +1,7 @@
 = search_form_for @q, url: referential_line_routing_constraint_zones_path(@referential, @line), class: 'form form-filter' do |f|
   .ffg-row
     .input-group.search_bar
-      = f.search_field :name_or_objectid_cont, class: 'form-control', placeholder: "Indiquez un nom d'ITL ou un OiD..."
+      = f.search_field :name_or_objectid_cont, class: 'form-control', placeholder: "Indiquez un nom d'ITL ou un ID..."
       span.input-group-btn
         button.btn.btn-default#search-btn type='submit'
           span.fa.fa-search

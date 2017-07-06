@@ -51,7 +51,7 @@ namespace :deploy do
   end
 
   task :bundle_link do
-    run "ln -fs #{bundle_cmd} #{release_path}/bin/bundle"
+    run "mkdir -p #{release_path}/bin && ln -fs #{bundle_cmd} #{release_path}/bin/bundle"
   end
   after "bundle:install", "deploy:bundle_link"
 

@@ -20,3 +20,6 @@ fr:
   validity_range: '%{debut} > %{end}'
   bounding_dates: '%{debut} > %{end}'
   metadatas: 'Informations'
+
+  id_codif: 'ID Codifligne'
+  id_reflex: 'ID Reflex'

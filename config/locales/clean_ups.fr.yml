@@ -14,11 +14,21 @@ fr:
         end_date: "Fin date limite : "
   titles:
     clean_up:
-      begin_date: "Début date de la purge"
-      end_date: "Fin date de la purge"
-
+      begin_date: "Date de début de la purge"
+      end_date: "Date de fin de la purge"
   formtastic:
     titles:
       clean_up:
-        begin_date: "Début date de la purge"
-        end_date: "Fin date de la purge"
+        begin_date: "Date de début de la purge"
+        end_date: "Date de fin de la purge"
+  activerecord:
+    errors:
+      models:
+        clean_up:
+          attributes:
+            date_type:
+              presence: "Une purge doit avoir un type de renseigné"
+            begin_date:
+              presence: "Une purge doit avoir une date de début"
+            end_date:
+              presence: "Une purge doit avoir une date de fin"

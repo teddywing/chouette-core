@@ -90,7 +90,7 @@ fr:
         published_name: "Nom public"
         deleted: "Supprimé"
         deleted_at: "Activé"
-        comment: "Description"
+        comment: "Commentaire"
         stop_area_type: "Type d'arrêt"
         area_type: "Type d'arrêt"
         nearest_topic_name: "Point d'intérêt le plus proche"

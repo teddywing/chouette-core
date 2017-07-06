@@ -1,12 +1,11 @@
 module TableBuilderHelper
-  # Depends on `current_referential`, defined in object controllers
   class URL
-    def self.polymorphic_url_parts(item)
+    def self.polymorphic_url_parts(item, referential)
       polymorph_url = []
 
       unless item.is_a?(Calendar) || item.is_a?(Referential)
-        if current_referential
-          polymorph_url << current_referential
+        if referential
+          polymorph_url << referential
           polymorph_url << item.line if item.respond_to? :line
           polymorph_url << item.route.line if item.is_a?(Chouette::RoutingConstraintZone)
           polymorph_url << item if item.respond_to? :line_referential

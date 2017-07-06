@@ -24,12 +24,12 @@ fr:
   routing_constraint_zones:
     search_no_results: "Aucune ITL ne correspond à votre recherche"
     actions:
-      destroy_confirm: Etes vous sûr de supprimer cette zone de contrainte ?
+      destroy_confirm: Etes vous sûr de supprimer cette ITL ?
     new:
-      title: Ajouter un ITL
+      title: Créer une ITL
     edit:
-      title: "Editer la zone de contrainte %{routing_constraint_zone}"
+      title: "Editer l'ITL : %{routing_constraint_zone}"
     show:
       title: "Zone de contrainte %{routing_constraint_zone}"
     index:
-      title: "Interdictions de traffic local"
+      title: "Interdictions de trafic local"
