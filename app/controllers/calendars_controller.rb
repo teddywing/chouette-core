@@ -5,6 +5,12 @@ class CalendarsController < BreadcrumbController
   respond_to :html
   respond_to :js, only: :index
 
+  def index
+    index! do
+      @calendars = ModelDecorator.decorate(@calendars, with: CalendarDecorator)
+    end
+  end
+
   def show
     show! do
       @calendar = @calendar.decorate
