@@ -176,7 +176,7 @@ describe TableBuilderHelper, type: :helper do
         referential: referential
       )
       allow(helper).to receive(:current_user).and_return(user_context)
-      allow(TableBuilderHelper::URL).to receive(:current_referential)
+      allow(helper).to receive(:current_referential)
         .and_return(referential)
 
       companies = [company]
@@ -284,7 +284,7 @@ describe TableBuilderHelper, type: :helper do
         referential: referential
       )
       allow(helper).to receive(:current_user).and_return(user_context)
-      allow(TableBuilderHelper::URL).to receive(:current_referential)
+      allow(helper).to receive(:current_referential)
         .and_return(referential)
 
       companies = [company]

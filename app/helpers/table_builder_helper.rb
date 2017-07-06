@@ -104,9 +104,9 @@ module TableBuilderHelper
   end
 
   def tbody(collection, columns, selectable, links)
-    # Certain controllers don't define a `#current_referential`. If the method
-    # is unavailable, give it a default value to avoid a `NoMethodError`.
-    current_referential ||= nil
+    # Certain controllers don't define a `#current_referential`. In these
+    # cases, avoid a `NoMethodError`.
+    referential = current_referential if respond_to?(:current_referential)
 
     content_tag :tbody do
       collection.map do |item|
@@ -128,7 +128,7 @@ module TableBuilderHelper
               # Build a link to the `item`
               polymorph_url = URL.polymorphic_url_parts(
                 item,
-                current_referential
+                referential
               )
               bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
             else
