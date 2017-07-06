@@ -46,118 +46,14 @@ RSpec.describe LinePolicy, type: :policy do
   #  ---------------------------
 
   permissions :create_footnote? do
-    context 'permission present →' do
-      before do
-        add_permissions('footnotes.create', for_user: user)
-      end
-
-      it 'authorized for unarchived referentials' do
-        expect_it.to permit(user_context, record)
-      end
-
-      it 'forbidden for archived referentials' do
-        referential.archived_at = 1.second.ago
-        expect_it.not_to permit(user_context, record)
-      end
-    end
-
-    context 'permission absent →' do 
-      it 'is forbidden' do
-        expect_it.not_to permit(user_context, record)
-      end
-    end
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.create', archived: true
   end
 
   permissions :destroy_footnote? do
-    context 'permission present →' do
-      before do
-        add_permissions('footnotes.destroy', for_user: user)
-      end
-
-      it 'authorized for unarchived referentials' do
-        expect_it.to permit(user_context, record)
-      end
-
-      it 'forbidden for archived referentials' do
-        referential.archived_at = 1.second.ago
-        expect_it.not_to permit(user_context, record)
-      end
-    end
-
-    context 'permission absent →' do 
-      it 'is forbidden' do
-        expect_it.not_to permit(user_context, record)
-      end
-    end
-  end
-
-  permissions :edit_footnote? do
-    context 'permission present →' do
-      before do
-        add_permissions('footnotes.update', for_user: user)
-      end
-
-      it 'authorized for unarchived referentials' do
-        expect_it.to permit(user_context, record)
-      end
-
-      it 'forbidden for archived referentials' do
-        referential.archived_at = 1.second.ago
-        expect_it.not_to permit(user_context, record)
-      end
-    end
-
-    context 'permission absent →' do 
-      it 'is forbidden' do
-        expect_it.not_to permit(user_context, record)
-      end
-    end
-  end
-
-  permissions :new_footnote? do
-    context 'permission present →' do
-      before do
-        add_permissions('footnotes.create', for_user: user)
-      end
-
-      it 'authorized for unarchived referentials' do
-        expect_it.to permit(user_context, record)
-      end
-
-      it 'forbidden for archived referentials' do
-        referential.archived_at = 1.second.ago
-        expect_it.not_to permit(user_context, record)
-      end
-    end
-
-    context 'permission absent →' do 
-      it 'is forbidden' do
-        expect_it.not_to permit(user_context, record)
-      end
-    end
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.destroy', archived: true
   end
 
   permissions :update_footnote? do
-    context 'permission present →' do
-      before do
-        add_permissions('footnotes.update', for_user: user)
-      end
-
-      it 'authorized for unarchived referentials' do
-        expect_it.to permit(user_context, record)
-      end
-
-      it 'forbidden for archived referentials' do
-        referential.archived_at = 1.second.ago
-        expect_it.not_to permit(user_context, record)
-      end
-    end
-
-    context 'permission absent →' do 
-      it 'is forbidden' do
-        expect_it.not_to permit(user_context, record)
-      end
-    end
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.update', archived: true
   end
-
 end

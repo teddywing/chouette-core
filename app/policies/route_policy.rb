@@ -6,7 +6,7 @@ class RoutePolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && user.has_permission?('routes.create') # organisation match via referential is checked in the view
+    !archived? && organisation_match? && user.has_permission?('routes.create')
   end
 
   def destroy?

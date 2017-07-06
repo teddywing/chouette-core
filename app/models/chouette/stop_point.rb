@@ -2,7 +2,7 @@ module Chouette
   class StopPoint < TridentActiveRecord
 
     def self.policy_class
-      DefaultPolicy
+      RoutePolicy
     end
 
     include ForBoardingEnumerations

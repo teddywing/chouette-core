@@ -6,13 +6,13 @@ class CalendarPolicy < ApplicationPolicy
   end
 
   def create? 
-    !archived? && organisation_match?
+    !archived? && organisation_match? && user.has_permission?('calendars.create')
   end
   def destroy?
-    !archived? && organisation_match?
+    !archived? && organisation_match? && user.has_permission?('calendars.destroy')
   end
   def update?
-    !archived? && organisation_match?
+    !archived? && organisation_match? && user.has_permission?('calendars.update')
   end
 
   def share?

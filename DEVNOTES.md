@@ -33,7 +33,7 @@ The following Policies are of this type.
 
 The standard type policy inherits from `ApplicationPolicy` does not override any _Undesructive_ _Pemission_ but overrides the _Destructive_ ones.
 
-Normally, but not always they are overriden as follows
+They are overriden as follows
 
 ```ruby
       def <destructive>?
@@ -41,21 +41,20 @@ Normally, but not always they are overriden as follows
       end
 ```
 
-There are some variations (**TO BE CLARIFIED**) concerning `organisation_match?`.
+**An exception** is `Referntial` which **cannot** check for `organisation_match?` for creation as there is no referential.
 
 The following Policies are of this type.
 
   - `AccessLink`
   - `AccessPoint`
-  - `Calendar` (*)
+  - `Calendar`
   - `ConnectionLink`
   - `JourneyPattern`
   - `Referential` + custom
-  - `Route`
+  - `Route` (used by `StopPoint` too)
   - `RoutingConstraintZone`
   - `TimeTable` + custom
 
-`Calendar` is a strange exception where no user permission is checked for the _destructive_ _permissions_.
 
 
 
