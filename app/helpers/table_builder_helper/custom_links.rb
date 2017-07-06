@@ -33,7 +33,10 @@ module TableBuilderHelper
         polymorph_url << action
       end
 
-      polymorph_url += URL.polymorphic_url_parts(object)
+      polymorph_url += URL.polymorphic_url_parts(
+        object,
+        user_context.context[:referential]
+      )
     end
 
     def method_for_action(action)
