@@ -49,8 +49,9 @@ class JourneyPatternsCollectionsController < ChouetteController
   end
 
   def user_permissions
+    policy = policy(:journey_pattern)
     @perms =
-      %w{create destroy edit}.inject({}) do | permissions, action |
+      %w{create destroy update}.inject({}) do | permissions, action |
         permissions.merge( "journey_patterns.#{action}" => policy.authorizes_action?(action) )
       end.to_json
   end

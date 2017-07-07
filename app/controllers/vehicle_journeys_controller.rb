@@ -159,6 +159,7 @@ class VehicleJourneysController < ChouetteController
   end
 
   def user_permissions
+    policy = policy(:vehicle_journey)
     @perms =
       %w{create destroy update}.inject({}) do | permissions, action |
         permissions.merge( "vehicle_journeys.#{action}" => policy.authorizes_action?(action) )

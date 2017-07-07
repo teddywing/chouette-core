@@ -62,7 +62,7 @@ Rails.application.configure do
   config.codifligne_api_url = "https://pprod.codifligne.stif.info/rest/v1/lc/getlist"
 
   # config.chouette_authentication_settings = {
-  #   type: "database"
+    # type: "database"
   # }
   config.chouette_authentication_settings = {
     type: "cas",

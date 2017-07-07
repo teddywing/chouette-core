@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
       routing_constraint_zones
       time_tables
       vehicle_journeys
-    ]) << 'boiv:edit-offer'
+    ])
 
   mattr_reader :edit_offer_permissions
 
