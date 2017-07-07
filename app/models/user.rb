@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   # attr_accessible :email, :password, :current_password, :password_confirmation, :remember_me, :name, :organisation_attributes
   belongs_to :organisation
-
   accepts_nested_attributes_for :organisation
 
   validates :organisation, :presence => true
@@ -27,6 +26,8 @@ class User < ActiveRecord::Base
     self.password_confirmation ||= self.password
   end
   after_destroy :check_destroy_organisation
+
+  scope :with_organisation, -> { where.not(organisation_id: nil) }
 
   def self.destructive_permissions_for(models)
     models.product( %w{create destroy update} ).map{ |model_action| model_action.join('.') }

@@ -5,7 +5,7 @@ RSpec.describe CalendarMailer, type: :mailer do
   shared_examples 'notify all user' do |type|
     let!(:user)    { create(:user) }
     let(:calendar) { create(:calendar, shared: true) }
-    let(:email)    { CalendarMailer.send(type, calendar) }
+    let(:email)    { CalendarMailer.send(type, calendar, user) }
 
     it 'should deliver email to user' do
       expect(email).to deliver_to user.email
