@@ -49,20 +49,20 @@
               |Données
 
         #miThree.panel-collapse.collapse
-          - if @referential && current_referential
+          - if @referential.try(:id) && respond_to?(:current_referential)
             .list-group
               .list-group-item
                 = (current_referential.name).upcase
                 .list-group
                   = link_to referential_networks_path(current_referential), class: 'list-group-item' do
                     span = t('networks.index.title')
-
+          
                   = link_to referential_companies_path(current_referential), class: 'list-group-item' do
                     span = t('companies.index.title')
-
+          
                   = link_to '#', class: 'list-group-item disabled' do
                     span Tracés
-
+          
                   = link_to referential_time_tables_path(current_referential), class: 'list-group-item' do
                     span = t('time_tables.index.title')
 
