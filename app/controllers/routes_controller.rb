@@ -44,8 +44,7 @@ class RoutesController < ChouetteController
     show! do
       @route = @route.decorate(context: {
         referential: @referential,
-        line: @line,
-        route_sp: @route_sp
+        line: @line
       })
 
       build_breadcrumb :show

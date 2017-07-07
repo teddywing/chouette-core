@@ -8,15 +8,15 @@
 
   .ffg-row
     / .form-group.togglable
-      / = f.label @time_tables.human_attribute_name(:color), required: false, class: 'control-label'
+      / = f.label Chouette::TimeTable.human_attribute_name(:color), required: false, class: 'control-label'
       / = f.input :color_cont_any, collection: ["#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"], as: :check_boxes, label: false, label_method: lambda{|tt| ("<span style='height:19px;'><span class='fa fa-circle' style='position:relative;top:0;margin-top:0;color:" + tt + "'></span></span>").html_safe }, required: false, wrapper_html: { class: 'checkbox_list' }
 
     .form-group
-      = f.label @time_tables.human_attribute_name(:tag_search), required: false, class: 'control-label'
+      = f.label Chouette::TimeTable.human_attribute_name(:tag_search), required: false, class: 'control-label'
       = f.input :tag_search, as: :tags, collection: Chouette::TimeTable.tags_on(:tags).pluck(:name), label: false, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une étiquette...' }, wrapper_html: { class: 'select2ed'}, include_blank: false
 
     .form-group.togglable
-      = f.label @time_tables.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
+      = f.label Chouette::TimeTable.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
       .filter_menu
         = f.input :start_date_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
         = f.input :end_date_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true

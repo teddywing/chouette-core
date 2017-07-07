@@ -14,15 +14,47 @@
     - if @time_tables.any?
       .row
         .col-lg-12
-          = table_builder @time_tables,
-            { 'ID' => Proc.new { |n| n.objectid.local_id }, :color => Proc.new{|tt| tt.color ? content_tag(:span, '', class: 'fa fa-circle', style: "color:#{tt.color}") : '-' }, :comment => 'comment', 
-              "Période englobante" => Proc.new{ |tt| tt.bounding_dates.empty? ? '-' : t('bounding_dates', debut: l(tt.bounding_dates.min), end: l(tt.bounding_dates.max)) },
-              "Nombre de courses associées" => Proc.new{ |tt| tt.vehicle_journeys.count },
-              "Journées d'application" => Proc.new{ |tt| (%w(monday tuesday wednesday thursday friday saturday sunday).collect{|d| tt.send(d) ? t("calendars.days.#{d}") : '' }).reject{|a| a.empty?}.join(', ').html_safe },
-              :calendar => Proc.new{ |tt| tt.calendar ? tt.calendar.try(:name) : '-' }, :updated_at => Proc.new {|tt| l(tt.updated_at, format: :short)} },
-            [:show, :edit, :duplicate, :actualize, :delete],
-            [],
-            'table has-search'
+          = table_builder_2 @time_tables,
+            [ \
+              TableBuilderHelper::Column.new( \
+                name: 'ID', \
+                attribute: Proc.new { |n| n.objectid.local_id }, \
+                sortable: false \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :color, \
+                attribute: Proc.new { |tt| tt.color ? content_tag(:span, '', class: 'fa fa-circle', style: "color:#{tt.color}") : '-' }, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :comment, \
+                attribute: 'comment' \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: "Période englobante", \
+                attribute: Proc.new { |tt| tt.bounding_dates.empty? ? '-' : t('bounding_dates', debut: l(tt.bounding_dates.min), end: l(tt.bounding_dates.max)) }, \
+                sortable: false \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: "Nombre de courses associées", \
+                attribute: Proc.new{ |tt| tt.vehicle_journeys.count }, \
+                sortable: false \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: "Journées d'application", \
+                attribute: Proc.new { |tt| (%w(monday tuesday wednesday thursday friday saturday sunday).collect{|d| tt.send(d) ? t("calendars.days.#{d}") : '' }).reject{|a| a.empty?}.join(', ').html_safe }, \
+                sortable: false \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :calendar, \
+                attribute: Proc.new { |tt| tt.calendar ? tt.calendar.try(:name) : '-' } \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :updated_at, \
+                attribute: Proc.new { |tt| l(tt.updated_at, format: :short) } \
+              ) \
+            ],
+            links: [:show, :edit],
+            cls: 'table has-search'
 
           = new_pagination @time_tables, 'pull-right'
 
