@@ -16,6 +16,8 @@ class ReferentialDecorator < Draper::Decorator
       )
     end
 
+  require 'pry'
+  binding.pry
     if h.policy(object).edit?
 
       if object.archived?
