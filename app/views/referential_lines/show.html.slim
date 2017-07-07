@@ -76,7 +76,7 @@
                     sortable: false \
                   ), \
                   TableBuilderHelper::Column.new( \
-                    name: 'Arrêt d'arrivée', \
+                    name: "Arrêt d'arrivée", \
                     attribute: Proc.new{ |r| r.try(:stop_points).last.try(:stop_area).try(:name) }, \
                     sortable: false \
                   ), \
