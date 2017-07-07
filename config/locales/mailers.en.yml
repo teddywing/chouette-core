@@ -1,0 +1,9 @@
+en:
+  mailers:
+    calendar_mailer:
+      created:
+        subject: A new shared calendar has been created
+        body: body created
+      created:
+        subject: A shared calendar has been updated
+        body: body updated

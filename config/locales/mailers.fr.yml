@@ -1,0 +1,9 @@
+fr:
+  mailers:
+    calendar_mailer:
+      created:
+        subject: Un nouveau calendrier partagé à été ajouté
+        body: body created
+      updated:
+        subject: Un nouveau calendrier partagé à été mise à jour
+        body: body updated
