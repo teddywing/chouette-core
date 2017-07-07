@@ -1,5 +1,5 @@
 describe TableBuilderHelper::CustomLinks do
-  describe "#actions_after_policy_check" do
+  describe "#authorized_actions" do
     it "includes :show" do
       referential = build_stubbed(:referential)
       user_context = UserContext.new(
