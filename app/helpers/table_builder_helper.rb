@@ -104,10 +104,6 @@ module TableBuilderHelper
   end
 
   def tbody(collection, columns, selectable, links)
-    # Certain controllers don't define a `#current_referential`. In these
-    # cases, avoid a `NoMethodError`.
-    referential = current_referential if respond_to?(:current_referential)
-
     content_tag :tbody do
       collection.map do |item|
 
@@ -237,5 +233,11 @@ module TableBuilderHelper
       end,
       class: ('delete-action' if link.method == :delete)
     )
+  end
+
+  def referential
+    # Certain controllers don't define a `#current_referential`. In these
+    # cases, avoid a `NoMethodError`.
+    @__referential__ ||= try(:current_referential)
   end
 end
