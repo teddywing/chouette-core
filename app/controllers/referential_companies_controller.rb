@@ -13,6 +13,14 @@ class ReferentialCompaniesController < ChouetteController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
+
+        @companies = ModelDecorator.decorate(
+          @companies,
+          with: CompanyDecorator,
+          context: {
+            line_referential: referential
+          }
+        )
       }
       build_breadcrumb :index
     end
