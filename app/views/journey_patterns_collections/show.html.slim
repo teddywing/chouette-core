@@ -3,7 +3,10 @@
              "Missions de #{@route.try(:stop_points).first.try(:stop_area).name} vers #{@route.try(:stop_points).last.try(:stop_area).name}",
              'Lorem ipsum dolor sit amet',
              ''
-
+- @journey_patterns.each do |jp|
+  - jp.errors.each do |error_message|
+    = error_message   
+    
 / PageContent
 .page_content
   .container-fluid
