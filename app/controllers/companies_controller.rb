@@ -20,7 +20,7 @@ class CompaniesController < BreadcrumbController
           @companies,
           with: CompanyDecorator,
           context: {
-            line_referential: line_referential
+            referential: line_referential
           }
         )
       }

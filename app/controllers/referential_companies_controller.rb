@@ -18,7 +18,7 @@ class ReferentialCompaniesController < ChouetteController
           @companies,
           with: CompanyDecorator,
           context: {
-            line_referential: referential
+            referential: referential
           }
         )
       }
