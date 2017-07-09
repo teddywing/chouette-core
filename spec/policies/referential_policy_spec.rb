@@ -56,22 +56,52 @@ RSpec.describe ReferentialPolicy, type: :policy do
         add_permissions('referentials.update', for_user: user)
       end
 
-      it 'allowed for unarchived referentials' do
-        expect_it.to permit(user_context, record)
+      context 'same organisation →' do
+        before do
+          user.organisation_id = referential.organisation_id
+        end
+        it "allows a user with the same organisation" do
+          expect_it.to permit(user_context, record)
+        end
+        describe "archived" do
+          let( :record ){ build_stubbed :referential, archived_at: 2.minutes.ago  }
+          it 'does remove permission for archived referentials' do
+            expect_it.not_to permit(user_context, record)
+          end
+        end
       end
 
-      it 'forbidden for archived referentials' do
-        record.archived_at = 1.second.ago
-        expect_it.not_to permit(user_context, record)
+      context 'different organisations →' do
+        it "forbids a user with a different organisation" do
+          expect_it.not_to permit(user_context, record)
+        end
+
+        describe "archived" do
+          let( :record ){ build_stubbed :referential, archived_at: 2.minutes.ago  }
+          it 'forbids for archived referentials' do
+            expect_it.not_to permit(user_context, record)
+          end
+        end
+
       end
     end
 
-    context 'permission absent →' do 
-      it 'is forbidden' do
-        expect_it.not_to permit(user_context, record)
+    context 'permission absent →' do
+      context 'same organisation →' do
+        before do
+          user.organisation_id = referential.organisation_id
+        end
+        it "forbids a user with the same organisation" do
+          expect_it.not_to permit(user_context, record)
+        end
+        describe "archived" do
+          let( :record ){ build_stubbed :referential, archived_at: 2.minutes.ago  }
+          it 'forbids for archived referentials' do
+            expect_it.not_to permit(user_context, record)
+          end
+        end
       end
     end
-
   end
 
   permissions :unarchive? do
@@ -81,22 +111,51 @@ RSpec.describe ReferentialPolicy, type: :policy do
         add_permissions('referentials.update', for_user: user)
       end
 
-      it 'forbidden for unarchived referentials' do
-        expect_it.not_to permit(user_context, record)
+      context 'same organisation →' do
+        before do
+          user.organisation_id = referential.organisation_id
+        end
+        it "forbids a user with the same organisation" do
+          expect_it.not_to permit(user_context, record)
+        end
+        describe "archived" do
+          let( :record ){ build_stubbed :referential, archived_at: 2.minutes.ago  }
+          it 'adds permission for archived referentials' do
+            expect_it.to permit(user_context, record)
+          end
+        end
       end
 
-      it 'allowed for archived referentials' do
-        record.archived_at = 1.second.ago
-        expect_it.to permit(user_context, record)
+      context 'different organisations →' do
+        it "forbids a user with a different organisation" do
+          expect_it.not_to permit(user_context, record)
+        end
+
+        describe "archived" do
+          let( :record ){ build_stubbed :referential, archived_at: 2.minutes.ago  }
+          it 'still forbids for archived referentials' do
+            expect_it.not_to permit(user_context, record)
+          end
+        end
+
       end
     end
 
-    context 'permission absent →' do 
-      it 'is forbidden' do
-        record.archived_at = 1.second.ago
-        expect_it.not_to permit(user_context, record)
+    context 'permission absent →' do
+      context 'same organisation →' do
+        before do
+          user.organisation_id = referential.organisation_id
+        end
+        it "forbids a user with a different rganisation" do
+          expect_it.not_to permit(user_context, record)
+        end
+        describe "archived" do
+          let( :record ){ build_stubbed :referential, archived_at: 2.minutes.ago  }
+          it 'still forbids for archived referentials' do
+            expect_it.not_to permit(user_context, record)
+          end
+        end
       end
     end
-
   end
 end
