@@ -37,6 +37,14 @@ class ReferentialLinesController < ChouetteController
     )
 
     show! do
+      @line = ReferentialLineDecorator.decorate(
+        @line,
+        context: {
+          referential: referential,
+          current_organisation: current_organisation
+        }
+      )
+
       build_breadcrumb :show
     end
   end
