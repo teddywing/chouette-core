@@ -16,6 +16,8 @@ class RoutingConstraintZonesController < ChouetteController
         referential: current_referential,
         line: parent.id
       })
+
+      build_breadcrumb :show
     end
   end
 
