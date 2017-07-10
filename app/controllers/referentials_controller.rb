@@ -26,6 +26,7 @@ class ReferentialsController < BreadcrumbController
     resource.switch
     show! do |format|
       @referential = @referential.decorate
+      @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
 
       format.json {
         render :json => { :lines_count => resource.lines.count,
@@ -36,8 +37,6 @@ class ReferentialsController < BreadcrumbController
       }
       format.html { build_breadcrumb :show}
     end
-
-    @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
   end
 
   def edit
