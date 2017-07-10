@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-require 'spec_helper'
-
-describe 'Calendars', type: :feature do
+RSpec.describe 'Calendars', type: :feature do
   login_user
 
   let(:calendar) { create :calendar, organisation_id: 1 }
 
   describe 'permissions' do
     before do
-      allow_any_instance_of(CalendarPolicy).to receive(:edit?).and_return permission
+      allow_any_instance_of(CalendarPolicy).to receive(:create?).and_return permission
       allow_any_instance_of(CalendarPolicy).to receive(:destroy?).and_return permission
+      allow_any_instance_of(CalendarPolicy).to receive(:edit?).and_return permission
       allow_any_instance_of(CalendarPolicy).to receive(:share?).and_return permission
       visit path
     end
@@ -48,6 +46,24 @@ describe 'Calendars', type: :feature do
         let( :permission ){ false }
         it 'view does not show the corresponding checkbox' do
           expect( page ).not_to have_css('div.has_switch label.boolean[for=calendar_shared]')
+        end
+      end
+    end
+
+    context 'on index view' do
+      let( :path ){ calendars_path }
+
+      context 'if present → ' do
+        let( :permission ){ true }
+        it 'index shows an edit button' do
+          expect(page).to have_css('a.btn.btn-default', text: 'Créer')
+        end
+      end
+
+      context 'if absent → ' do
+        let( :permission ){ false }
+        it 'index does not show any edit button' do
+          expect(page).not_to have_css('a.btn.btn-default', text: 'Créer')
         end
       end
     end
