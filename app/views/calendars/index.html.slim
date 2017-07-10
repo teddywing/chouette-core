@@ -1,8 +1,10 @@
 / PageHeader
-= pageheader 'map-marker',
-             t('.title'),
-             '',
-             link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default') do
+
+- header_params = ['map-marker',
+                   t('.title'),
+                   '']
+- header_params << link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')  if policy(Calendar).create?
+= pageheader(*header_params) do
 
 / PageContent
 .page_content
