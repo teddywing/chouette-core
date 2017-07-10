@@ -35,6 +35,9 @@ class User < ActiveRecord::Base
 
   @@edit_offer_permissions =
     destructive_permissions_for( %w[
+                                access_points
+                                connection_links
+                                calendars
       footnotes
       journey_patterns
       referentials
