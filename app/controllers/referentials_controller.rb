@@ -27,6 +27,14 @@ class ReferentialsController < BreadcrumbController
     show! do |format|
       @referential = @referential.decorate
       @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
+      @reflines = ModelDecorator.decorate(
+        @reflines,
+        with: ReferentialLineDecorator,
+        context: {
+          referential: referential,
+          current_organisation: current_organisation
+        }
+      )
 
       format.json {
         render :json => { :lines_count => resource.lines.count,

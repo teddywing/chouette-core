@@ -8,15 +8,15 @@
 
   .ffg-row
     .form-group.togglable
-      = f.label @reflines.human_attribute_name(:transport_mode), required: false, class: 'control-label'
+      = f.label Chouette::Line.human_attribute_name(:transport_mode), required: false, class: 'control-label'
       = f.input :transport_mode_eq_any, collection: @referential.lines.pluck(:transport_mode).uniq.compact, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("enumerize.line.transport_mode.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
     .form-group.togglable
-      = f.label @reflines.human_attribute_name(:network), required: false, class: 'control-label'
+      = f.label Chouette::Line.human_attribute_name(:network), required: false, class: 'control-label'
       = f.input :network_id_eq_any, collection: LineReferential.first.networks.order('name').pluck(:id), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>#{LineReferential.first.networks.find(l).name}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
     .form-group.togglable
-      = f.label @reflines.human_attribute_name(:company), required: false, class: 'control-label'
+      = f.label Chouette::Line.human_attribute_name(:company), required: false, class: 'control-label'
       = f.input :company_id_eq_any, collection: LineReferential.first.companies.order('name').pluck(:id), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>#{LineReferential.first.companies.find(l).name}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .actions
