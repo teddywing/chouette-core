@@ -1,1 +1,1 @@
-$("#stop_points").html("<%= escape_javascript(render partial: 'routing_constraint_zones/stop_points', object: @route.stop_points) %>");
+$("#stop_points").html("<%= escape_javascript(render partial: 'routing_constraint_zones/stop_points', locals: { routing_constraint_zone: @routing_constraint_zone, stop_points: @route.stop_points }) %>");

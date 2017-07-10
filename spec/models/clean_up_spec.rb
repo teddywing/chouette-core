@@ -2,18 +2,17 @@ require 'rails_helper'
 
 RSpec.describe CleanUp, :type => :model do
 
-  it { should validate_presence_of(:begin_date) }
-  it { should validate_presence_of(:date_type) }
+  it { should validate_presence_of(:date_type).with_message(:presence) }
+  it { should validate_presence_of(:begin_date).with_message(:presence) }
   it { should belong_to(:referential) }
 
   context '#exclude_dates_in_overlapping_period with :before date_type' do
     let(:time_table) { create(:time_table) }
     let(:period) { time_table.periods[0] }
-    let(:cleaner) { create(:clean_up, date_type: :before) }
+    let(:cleaner) { create(:clean_up, date_type: :before, begin_date: period.period_end) }
 
     it 'should add exclude date into period for overlapping period' do
       days_in_period = (period.period_start..period.period_end).count
-      cleaner.begin_date = period.period_end
 
       expect { cleaner.exclude_dates_in_overlapping_period(period) }.to change {
         time_table.dates.where(in_out: false).count
@@ -31,11 +30,10 @@ RSpec.describe CleanUp, :type => :model do
   context '#exclude_dates_in_overlapping_period with :after date_type' do
     let(:time_table) { create(:time_table) }
     let(:period) { time_table.periods[0] }
-    let(:cleaner) { create(:clean_up, date_type: :after) }
+    let(:cleaner) { create(:clean_up, date_type: :after, begin_date: period.period_start + 1.day) }
 
     it 'should add exclude date into period for overlapping period' do
       days_in_period = (period.period_start..period.period_end).count
-      cleaner.begin_date = period.period_start + 1.day
       expect { cleaner.exclude_dates_in_overlapping_period(period) }.to change {
         time_table.dates.where(in_out: false).count
       }.by(days_in_period - 2)
@@ -55,10 +53,11 @@ RSpec.describe CleanUp, :type => :model do
     let(:cleaner) { create(:clean_up, date_type: :between, begin_date: period.period_start + 3.day, end_date: period.period_end) }
 
     it 'should add exclude date into period for overlapping period' do
+
       expected_day_out = (cleaner.begin_date..cleaner.end_date).count
       expect { cleaner.exclude_dates_in_overlapping_period(period) }.to change {
         time_table.dates.where(in_out: false).count
-      }.by(expected_day_out)
+      }.by(expected_day_out - 2)
     end
 
     it 'should not add exclude date if no overlapping found' do
@@ -72,11 +71,11 @@ RSpec.describe CleanUp, :type => :model do
   end
 
   context '#overlapping_periods' do
-    let(:cleaner) { create(:clean_up, date_type: :before, end_date: nil) }
     let(:time_table) { create(:time_table) }
+    let(:period) { time_table.periods[0] }
+    let(:cleaner) { create(:clean_up, date_type: :before, begin_date: period.period_start) }
 
     it 'should detect overlapping periods' do
-      cleaner.begin_date = time_table.periods[0].period_start
       expect(cleaner.overlapping_periods).to include(time_table.periods[0])
     end
 
@@ -128,7 +127,7 @@ RSpec.describe CleanUp, :type => :model do
     it 'should destroy record' do
       expect{ cleaner.destroy_time_tables_dates_between }.to change {
         Chouette::TimeTableDate.count
-      }.by(-time_table.dates.count)
+      }.by(-time_table.dates.count + 2)
     end
 
     it 'should not destroy record not in range' do
@@ -155,7 +154,7 @@ RSpec.describe CleanUp, :type => :model do
 
   context '#destroy_time_tables_between' do
     let!(:time_table) { create(:time_table ) }
-    let(:cleaner) { create(:clean_up, date_type: :after, begin_date: time_table.start_date, end_date: time_table.end_date) }
+    let(:cleaner) { create(:clean_up, date_type: :between, begin_date: time_table.start_date - 1.day, end_date: time_table.end_date + 1.day) }
 
     it 'should destroy time_tables with validity period in purge range' do
       expect{ cleaner.destroy_time_tables_between }.to change {
@@ -240,7 +239,7 @@ RSpec.describe CleanUp, :type => :model do
       }.by(-1)
     end
 
-    it 'should not destroy time_tables with end_date > purge begin date' do
+    it 'should not destroy time_tables with end_date > purge begin_date' do
       cleaner.begin_date = Date.today
       expect{ cleaner.destroy_time_tables_before }.to_not change {
         Chouette::TimeTable.count

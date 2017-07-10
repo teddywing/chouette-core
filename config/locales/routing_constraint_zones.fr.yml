@@ -18,18 +18,18 @@ fr:
         routing_constraint_zone:
           attributes:
             stop_points:
-              not_enough_stop_points: "Il faut mettre au moins deux arrêts sur séquence d'arrêts."
+              not_enough_stop_points: "Il faut mettre au moins deux arrêts sur la séquence d'arrêts."
               stop_points_not_from_route: "Arrêt sur séquence d'arrêts n'appartient pas à la Route de cette Zone de contrainte."
-              all_stop_points_selected: "Une zone de contrainte ne peut pas couvrir tous les arrêts d'une ligne."
+              all_stop_points_selected: "Une ITL ne peut pas couvrir tous les arrêts d'un itinéraire."
   routing_constraint_zones:
     search_no_results: "Aucune ITL ne correspond à votre recherche"
     actions:
-      destroy_confirm: Etes vous sûr de supprimer cette zone de contrainte ?
+      destroy_confirm: Etes vous sûr de supprimer cette ITL ?
     new:
-      title: Ajouter un ITL
+      title: Créer une ITL
     edit:
-      title: "Editer la zone de contrainte %{routing_constraint_zone}"
+      title: "Editer l'ITL : %{routing_constraint_zone}"
     show:
       title: "Zone de contrainte %{routing_constraint_zone}"
     index:
-      title: "Interdictions de traffic local"
+      title: "Interdictions de trafic local"

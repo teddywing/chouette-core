@@ -12,7 +12,7 @@
           .row
             .col-lg-12
               = form.input :name
-              = form.input :route_id, collection: @line.routes, include_blank: false, input_html: {data: {url: new_referential_line_routing_constraint_zone_path(@referential, @line) }}
+              = form.input :route_id, collection: @line.routes, include_blank: false, input_html: {data: {url: new_referential_line_routing_constraint_zone_path(@referential, @line), object: @routing_constraint_zone.to_json }}
 
               .separator
 

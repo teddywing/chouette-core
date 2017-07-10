@@ -16,8 +16,8 @@ describe TableBuilderHelper, type: :helper do
           organisation: referential.organisation,
           permissions: [
             'referentials.create',
-            'referentials.edit',
-            'referentials.destroy'
+            'referentials.update',
+            'referentials.destroy',
           ]
         ),
         referential: referential
@@ -27,6 +27,7 @@ describe TableBuilderHelper, type: :helper do
       referentials = [referential]
 
       allow(referentials).to receive(:model).and_return(Referential)
+      stub_policy_scope(referential)
 
       allow(helper).to receive(:params).and_return({
         controller: 'workbenches',
@@ -176,7 +177,7 @@ describe TableBuilderHelper, type: :helper do
         referential: referential
       )
       allow(helper).to receive(:current_user).and_return(user_context)
-      allow(TableBuilderHelper::URL).to receive(:current_referential)
+      allow(helper).to receive(:current_referential)
         .and_return(referential)
 
       companies = [company]
@@ -193,6 +194,7 @@ describe TableBuilderHelper, type: :helper do
         companies,
         with: CompanyDecorator
       )
+      stub_policy_scope(company)
 
       expected = <<-HTML
 <table class="table has-search">
@@ -284,7 +286,7 @@ describe TableBuilderHelper, type: :helper do
         referential: referential
       )
       allow(helper).to receive(:current_user).and_return(user_context)
-      allow(TableBuilderHelper::URL).to receive(:current_referential)
+      allow(helper).to receive(:current_referential)
         .and_return(referential)
 
       companies = [company]
@@ -299,8 +301,10 @@ describe TableBuilderHelper, type: :helper do
 
       companies = ModelDecorator.decorate(
         companies,
-        with: CompanyDecorator
+        with: CompanyDecorator,
+        context: {line_referential: line_referential}
       )
+      stub_policy_scope(company)
 
       expected = <<-HTML
 <table class="table has-search">

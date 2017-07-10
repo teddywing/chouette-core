@@ -8,14 +8,16 @@ module TableBuilderHelper
       unarchive: :put
     }
 
-    def initialize(obj, user_context, actions)
-      @obj = obj
+    attr_reader :actions, :object, :user_context
+
+    def initialize(object, user_context, actions)
+      @object       = object
       @user_context = user_context
-      @actions = actions
+      @actions      = actions
     end
 
     def links
-      actions_after_policy_check.map do |action|
+      authorized_actions.map do |action|
         Link.new(
           content: I18n.t("actions.#{action}"),
           href: polymorphic_url(action),
@@ -31,47 +33,24 @@ module TableBuilderHelper
         polymorph_url << action
       end
 
-      polymorph_url += URL.polymorphic_url_parts(@obj)
+      polymorph_url += URL.polymorphic_url_parts(
+        object,
+        user_context.context[:referential]
+      )
     end
 
     def method_for_action(action)
       ACTIONS_TO_HTTP_METHODS[action]
     end
 
-    def actions_after_policy_check
-      @actions.select do |action|
-        # Has policy and can destroy
-        (action == :delete &&
-            Pundit.policy(@user_context, @obj).present? &&
-            Pundit.policy(@user_context, @obj).destroy?) ||
-
-          # Doesn't have policy
-          (action == :delete &&
-            !Pundit.policy(@user_context, @obj).present?) ||
-
-          # Has policy and can update
-          (action == :edit &&
-            Pundit.policy(@user_context, @obj).present? &&
-            Pundit.policy(@user_context, @obj).update?) ||
-
-          # Doesn't have policy
-          (action == :edit &&
-            !Pundit.policy(@user_context, @obj).present?) ||
-
-          # Object isn't archived
-          (action == :archive && !@obj.archived?) ||
-
-          # Object is archived
-          (action == :unarchive && @obj.archived?) ||
-
-          action_is_allowed_regardless_of_policy(action)
-      end
+    def authorized_actions
+      actions.select(&policy.method(:authorizes_action?))
     end
 
     private
 
-    def action_is_allowed_regardless_of_policy(action)
-      ![:delete, :edit, :archive, :unarchive].include?(action)
+    def policy
+      @__policy__ ||= Pundit.policy(user_context, object)
     end
   end
 end

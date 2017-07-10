@@ -158,6 +158,7 @@ group :development do
 end
 
 group :test do
+  gem 'email_spec'
   gem 'cucumber-rails', require: false
   gem 'simplecov', :require => false
   gem 'simplecov-rcov', :require => false

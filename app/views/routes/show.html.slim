@@ -1,7 +1,7 @@
 / PageHeader
 = pageheader 'map-marker',
              @route.name,
-             'Lorem ipsum dolor sit amet',
+             '',
              t('last_update', time: l(@route.updated_at, format: :short)),
              (policy(@route).edit? ? link_to(t('actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'btn btn-default') : '') do
 
@@ -21,7 +21,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { 'OiD' => @route.try(:objectid).try(:local_id),
+          { t('id_codif') => @route.try(:objectid).try(:local_id),
             t('activerecord.attributes.route.published_name') => (@route.published_name ? @route.published_name : '-'),
             @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
             @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }

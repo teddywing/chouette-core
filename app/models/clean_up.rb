@@ -6,8 +6,8 @@ class CleanUp < ActiveRecord::Base
 
   enumerize :date_type, in: %i(between before after)
 
-  validates :begin_date, presence: true
-  validates :date_type, presence: true
+  validates_presence_of :begin_date, message: :presence
+  validates_presence_of :date_type, message: :presence
   after_commit :perform_cleanup, :on => :create
 
   def perform_cleanup
@@ -30,7 +30,7 @@ class CleanUp < ActiveRecord::Base
   end
 
   def destroy_time_tables_between
-    time_tables = Chouette::TimeTable.where('end_date <= ? AND start_date >= ?', self.end_date, self.begin_date)
+    time_tables = Chouette::TimeTable.where('end_date < ? AND start_date > ?', self.end_date, self.begin_date)
     self.destroy_time_tables(time_tables)
   end
 
@@ -53,7 +53,7 @@ class CleanUp < ActiveRecord::Base
   end
 
   def destroy_time_tables_dates_between
-    Chouette::TimeTableDate.in_dates.where('date >= ? AND date <= ?', self.begin_date, self.end_date).destroy_all
+    Chouette::TimeTableDate.in_dates.where('date > ? AND date < ?', self.begin_date, self.end_date).destroy_all
   end
 
   def destroy_time_tables_periods_before
@@ -65,7 +65,7 @@ class CleanUp < ActiveRecord::Base
   end
 
   def destroy_time_tables_periods_between
-    Chouette::TimeTablePeriod.where('period_start >= ? AND period_end <= ?', self.begin_date, self.end_date).destroy_all
+    Chouette::TimeTablePeriod.where('period_start > ? AND period_end < ?', self.begin_date, self.end_date).destroy_all
   end
 
   def overlapping_periods
@@ -89,7 +89,8 @@ class CleanUp < ActiveRecord::Base
 
     to_exclude_days.to_a.compact.each do |day|
       # we ensure day is not already an exclude date
-      if !day_out.include?(day)
+      # and that day is not equal to the boundariy date of the clean up
+      if !day_out.include?(day) && day != self.begin_date && day != self.end_date
         self.add_exclude_date(period.time_table, day)
       end
     end

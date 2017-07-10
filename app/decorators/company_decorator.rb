@@ -19,6 +19,8 @@ class CompanyDecorator < Draper::Decorator
     links = []
 
     if h.policy(Chouette::Company).create?
+      require 'pry'
+      binding.pry
       links << Link.new(
         content: h.t('companies.actions.new'),
         href: h.new_line_referential_company_path(context[:line_referential])

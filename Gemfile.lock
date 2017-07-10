@@ -215,6 +215,9 @@ GEM
       json
       thread
       thread_safe
+    email_spec (1.6.0)
+      launchy (~> 2.1)
+      mail (~> 2.2)
     enumerize (0.10.1)
       activesupport (>= 3.2)
     erubis (2.7.0)
@@ -591,6 +594,7 @@ DEPENDENCIES
   devise_cas_authenticatable
   devise_invitable
   draper
+  email_spec
   enumerize (~> 0.10.0)
   fabrication (~> 2.14.1)
   factory_girl_rails (~> 4.0)

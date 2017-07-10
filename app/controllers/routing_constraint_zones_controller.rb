@@ -22,14 +22,20 @@ class RoutingConstraintZonesController < ChouetteController
   def new
     new! do |format|
       format.html
-      @route = @line.routes.find params[:route_id] if params[:route_id]
-      format.js
+      format.js {
+        # Get selected route in the form view
+        @route = @line.routes.find params[:route_id] if params[:route_id]
+        # Get the routing_constraint_zone, the main use is when validation failed
+        routing_constraint_zone = @line.routing_constraint_zones.new(JSON(params[:routing_constraint_zone_json])) if params[:routing_constraint_zone_json]
+        @routing_constraint_zone = routing_constraint_zone || build_resource
+      }
     end
   end
 
   protected
 
   alias_method :routing_constraint_zone, :resource
+  alias_method :line, :parent
 
   def collection
     @q = current_referential.routing_constraint_zones.search(params[:q])

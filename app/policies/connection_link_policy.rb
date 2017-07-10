@@ -1,4 +1,4 @@
-class ConnectionLinkPolicy < BoivPolicy
+class ConnectionLinkPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope
@@ -6,17 +6,14 @@ class ConnectionLinkPolicy < BoivPolicy
   end
 
   def create?
-    user.has_permission?('connection_links.create') # organisation match via referential is checked in the view
-  end
-
-  def edit?
-    organisation_match? && user.has_permission?('connection_links.edit')
+    !archived? && organisation_match? && user.has_permission?('connection_links.create')
   end
 
   def destroy?
-    organisation_match? && user.has_permission?('connection_links.destroy')
+    !archived? && organisation_match? && user.has_permission?('connection_links.destroy')
   end
 
-  def update?  ; edit? end
-  def new?     ; create? end
+  def update?
+    !archived? && organisation_match? && user.has_permission?('connection_links.update')
+  end
 end

@@ -17,7 +17,6 @@ class TimeTablesController < ChouetteController
       @time_table = @time_table.decorate(context: {
         referential: @referential
       })
-
       build_breadcrumb :show
     end
   end
@@ -86,6 +85,15 @@ class TimeTablesController < ChouetteController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
+
+        @time_tables = ModelDecorator.decorate(
+          @time_tables,
+          with: TimeTableDecorator,
+          context: {
+            referential: @referential
+          }
+        )
+
         build_breadcrumb :index
       }
     end

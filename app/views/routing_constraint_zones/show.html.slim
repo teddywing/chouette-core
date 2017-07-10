@@ -26,9 +26,16 @@
 
     .row
       .col-lg-12
-        = table_builder @routing_constraint_zone.route.stop_points,
-          { "Arrêts de l'itinéraire" => 'name',
-            "Arrêts inclus dans l'ITL" => Proc.new{ |rsp| (@routing_constraint_zone.stop_point_ids.include? rsp.id) ? 'Oui' : 'Non' } },
-          [],
-          [],
-          'table has-stoppoints'
+        = table_builder_2 @routing_constraint_zone.route.stop_points,
+          [ \
+            TableBuilderHelper::Column.new( \
+              name: "Arrêts de l'itinéraire", \
+              attribute: 'name' \
+            ),
+            TableBuilderHelper::Column.new( \
+              name: "Arrêts inclus dans l'ITL", \
+              attribute: Proc.new{ |rsp| (@routing_constraint_zone.stop_point_ids.include? rsp.id) ? 'Oui' : 'Non' } \
+            ) \
+          ],
+          sortable: false,
+          cls: 'table has-stoppoints'

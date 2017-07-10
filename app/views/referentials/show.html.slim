@@ -39,7 +39,7 @@
         .col-lg-12
           / ID Codif, nom court, nom de la ligne, réseau, mode, transporteur principal, actions = [show, edit_notes]
           = table_builder @reflines,
-            { 'ID Codif' => Proc.new { |n| n.objectid.local_id },
+            { 'ID Codifligne' => Proc.new { |n| n.objectid.local_id },
             :number => 'number',
             :name => 'name',
             :deactivated => Proc.new{ |n| n.deactivated? ? t('false') : t('true') },
@@ -70,7 +70,7 @@
             = f.input :date_type, as: :radio_buttons, label: false
             = f.input :begin_date, as: :date, label: t('titles.clean_up.begin_date'),:wrapper_html => { class: 'date smart_date', title: t('titles.clean_up.begin_date') }
 
-            = f.input :end_date, as: :date, label: t('titles.clean_up.end_date'), :wrapper_html => { class: 'date cleanup_end_date_wrapper hidden smert_date', title: t('titles.clean_up.end_date') }
+            = f.input :end_date, as: :date, label: t('titles.clean_up.end_date'), :wrapper_html => { class: 'date cleanup_end_date_wrapper smart_date', title: t('titles.clean_up.end_date'), id: "end_date" }
 
     .modal-footer
       button.btn.btn-link type='button' data-dismiss='modal' Annuler

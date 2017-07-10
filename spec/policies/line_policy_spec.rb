@@ -1,21 +1,59 @@
 RSpec.describe LinePolicy, type: :policy do
 
   let( :record ){ build_stubbed :line }
+  before { stub_policy_scope(record) }
 
 
-  %w{create destroy edit}.each do | permission |
-    footnote_permission = "#{permission}_footnote"
-    permissions "#{footnote_permission}?".to_sym do
-      it_behaves_like 'permitted policy', "footnotes.#{permission}", archived: true
+  #
+  #  Non Destructive
+  #  ---------------
+
+  context 'Non Destructive actions →' do
+    permissions :index? do
+      it_behaves_like 'always allowed', 'anything', archived: true
+    end
+    permissions :show? do
+      it_behaves_like 'always allowed', 'anything', archived: true
     end
   end
 
-  permissions :new_footnote? do
-    it_behaves_like 'permitted policy', 'footnotes.create', archived: true
+
+  #
+  #  Destructive
+  #  -----------
+
+  context 'Destructive actions →' do
+    permissions :create? do
+      it_behaves_like 'always forbidden', 'lines.create', archived: true
+    end
+    permissions :destroy? do
+      it_behaves_like 'always forbidden', 'lines.destroy', archived: true
+    end
+    permissions :edit? do
+      it_behaves_like 'always forbidden', 'lines.update', archived: true
+    end
+    permissions :new? do
+      it_behaves_like 'always forbidden', 'lines.create', archived: true
+    end
+    permissions :update? do
+      it_behaves_like 'always forbidden', 'lines.update', archived: true
+    end
+  end
+
+
+  #
+  #  Custom Footnote Permissions
+  #  ---------------------------
+
+  permissions :create_footnote? do
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.create', archived: true
+  end
+
+  permissions :destroy_footnote? do
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.destroy', archived: true
   end
 
   permissions :update_footnote? do
-    it_behaves_like 'permitted policy', 'footnotes.edit', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.update', archived: true
   end
-
 end

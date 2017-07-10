@@ -29,7 +29,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          {  'ID Codif' => @line.objectid.local_id,
+          {  t('id_codif') => @line.objectid.local_id,
              'Activé' => (@line.deactivated? ? t('false') : t('true')),
              @line.human_attribute_name(:network) => (@line.network.nil? ? t('lines.index.unset') : link_to(@line.network.name, [@referential, @line.network]) ),
              @line.human_attribute_name(:company) => (@line.company.nil? ? t('lines.index.unset') : link_to(@line.company.name, [@referential, @line.company]) ),
@@ -51,18 +51,46 @@
         - if @routes.any?
           .row
             .col-lg-12
-              = table_builder @routes,
-                { 'OiD' => Proc.new { |n| n.objectid.local_id },
-                  :name => 'name',
-                  :published_name => 'published_name',
-                  :wayback => 'wayback_text',
-                  'Arrêt de départ' => Proc.new{|r| r.try(:stop_points).first.try(:stop_area).try(:name)},
-                  "Arrêt d'arrivée" => Proc.new{|r| r.try(:stop_points).last.try(:stop_area).try(:name)},
-                  :stop_points => Proc.new{|r| r.try(:stop_points).count},
-                  :journey_patterns => Proc.new{|r| r.try(:journey_patterns).count} },
-                [:show, :edit, :delete],
-                [],
-                'table has-search'
+              = table_builder_2 @routes,
+                [ \
+                  TableBuilderHelper::Column.new( \
+                    name: 'ID', \
+                    attribute: Proc.new { |n| n.objectid.local_id }, \
+                    sortable: false \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    key: :name, \
+                    attribute: 'name' \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    key: :published_name, \
+                    attribute: 'published_name' \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    key: :wayback, \
+                    attribute: 'wayback_text' \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    name: 'Arrêt de départ', \
+                    attribute: Proc.new { |r| r.try(:stop_points).first.try(:stop_area).try(:name) }, \
+                    sortable: false \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    name: "Arrêt d'arrivée", \
+                    attribute: Proc.new{ |r| r.try(:stop_points).last.try(:stop_area).try(:name) }, \
+                    sortable: false \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    key: :stop_points, \
+                    attribute: Proc.new{ |r| r.try(:stop_points).count } \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    key: :journey_patterns, \
+                    attribute: Proc.new{ |r| r.try(:journey_patterns).count } \
+                  ) \
+                ],
+                links: [:show, :edit],
+                cls: 'table has-search'
 
               = new_pagination @routes, 'pull-right'
 

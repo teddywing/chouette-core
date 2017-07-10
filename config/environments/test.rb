@@ -1,8 +1,6 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.eager_load = false
-
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
@@ -32,6 +30,7 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_options = { from: 'Stif BOIV <stif-boiv@af83.com>' }
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
@@ -73,8 +72,6 @@ Rails.application.configure do
 
   # Configure the e-mail address which will be shown in Devise::Maile
   config.mailer_sender = "appli@chouette.mobi"
-
-  config.action_mailer.delivery_method = :sendmail
   # change to true to allow email to be sent during development
   config.action_mailer.perform_deliveries = false
   config.action_mailer.raise_delivery_errors = false

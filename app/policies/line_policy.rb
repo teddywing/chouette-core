@@ -1,4 +1,4 @@
-class LinePolicy < BoivPolicy
+class LinePolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
@@ -6,24 +6,16 @@ class LinePolicy < BoivPolicy
     end
   end
 
-  def create?
-    false
-  end
-  def update?  ; false end
-  def new?     ; create? end
-  def edit?    ; false end
-  def destroy? ; create? end
-
   def create_footnote?
-    !archived? && user.has_permission?('footnotes.create')
+    !archived? && organisation_match? && user.has_permission?('footnotes.create')
   end
 
   def edit_footnote?
-    !archived? && user.has_permission?('footnotes.edit')
+    !archived? && organisation_match? && user.has_permission?('footnotes.update')
   end
 
   def destroy_footnote?
-    !archived? && user.has_permission?('footnotes.destroy')
+    !archived? && organisation_match? && user.has_permission?('footnotes.destroy')
   end
 
   def update_footnote?  ; edit_footnote? end

@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   # attr_accessible :email, :password, :current_password, :password_confirmation, :remember_me, :name, :organisation_attributes
   belongs_to :organisation
-
   accepts_nested_attributes_for :organisation
 
   validates :organisation, :presence => true
@@ -28,10 +27,23 @@ class User < ActiveRecord::Base
   end
   after_destroy :check_destroy_organisation
 
-  @@edit_offer_permissions = ['routes.create', 'routes.edit', 'routes.destroy', 'journey_patterns.create', 'journey_patterns.edit', 'journey_patterns.destroy',
-    'vehicle_journeys.create', 'vehicle_journeys.edit', 'vehicle_journeys.destroy', 'time_tables.create', 'time_tables.edit', 'time_tables.destroy',
-    'footnotes.edit', 'footnotes.create', 'footnotes.destroy', 'routing_constraint_zones.create', 'routing_constraint_zones.edit',
-    'routing_constraint_zones.destroy', 'referentials.create', 'referentials.edit', 'referentials.destroy', 'boiv:edit-offer']
+  scope :with_organisation, -> { where.not(organisation_id: nil) }
+
+  def self.destructive_permissions_for(models)
+    models.product( %w{create destroy update} ).map{ |model_action| model_action.join('.') }
+  end
+
+  @@edit_offer_permissions =
+    destructive_permissions_for( %w[
+      footnotes
+      journey_patterns
+      referentials
+      routes
+      routing_constraint_zones
+      time_tables
+      vehicle_journeys
+    ])
+
   mattr_reader :edit_offer_permissions
 
   def self.all_permissions
@@ -44,8 +56,6 @@ class User < ActiveRecord::Base
     self.name         = extra[:full_name]
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
-      # TODO: Discuss the following behavior in the light of how the portal's permissions will evolve
-      # boiv:edit-offer does not imply boiv:read-offer, which needs to be provided specifically for any connection rights
     self.permissions  = extra[:permissions].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
   end
 
@@ -74,8 +84,6 @@ class User < ActiveRecord::Base
       user.locked_at    = el['locked_at']
       user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
       user.synced_at    = Time.now
-      # TODO: Discuss the following behavior in the light of how the portal's permissions will evolve
-      # boiv:edit-offer does not imply boiv:read-offer, which needs to be provided specifically for any connection rights
       user.permissions  = el['permissions'].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
       user.save
     end

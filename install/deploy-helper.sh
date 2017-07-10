@@ -16,6 +16,8 @@ function setup() {
 
     mkdir -p $BASEDIR/shared/config/environments
 
+    mkdir -p $BASEDIR/shared/config/initializers
+
     mkdir -p $BASEDIR/shared/public
     mkdir -p $BASEDIR/shared/public/uploads
     mkdir -p $BASEDIR/shared/public/assets
@@ -54,6 +56,24 @@ production:
   password: $DATABASE_PASSWORD
 EOF
     fi
+
+
+    if [ ! -f initializers/sidekiq.rb ]; then
+        cat > initializers/sidekiq.rb <<EOF
+Sidekiq.configure_server do |config|
+  pendings = [
+    LineReferential.find_by(name: 'CodifLigne').line_referential_syncs.pending.take,
+    StopAreaReferential.find_by(name: 'Reflex').stop_area_referential_syncs.pending.take
+  ]
+  pendings.compact.map{|sync| sync.failed({error: 'Failed by Sidekiq reboot', processing_time: 0})}
+  config.redis = { url: '$SIDEKIQ_REDIS_URL' }
+end
+
+Sidekiq.configure_client do |config|
+  config.redis = { url: '$SIDEKIQ_REDIS_URL' }
+end
+EOF
+    fi
 }
 
 function install() {
@@ -85,7 +105,7 @@ function install() {
         ln -s $local_directory $release_directory
     done
 
-    for file in secrets.yml database.yml environments/production.rb; do
+    for file in secrets.yml database.yml environments/production.rb initializers/sidekiq.rb; do
         local_file=$BASEDIR/shared/config/$file
         release_file=config/$file
 

@@ -6,13 +6,12 @@ class RouteDecorator < Draper::Decorator
   # Requires:
   #   context: {
   #     referential: ,
-  #     line: ,
-  #     route_sp
+  #     line:
   #   }
   def action_links
     links = []
 
-    if context[:route_sp].any?
+    if object.stop_points.any?
       links << Link.new(
         content: h.t('journey_patterns.index.title'),
         href: [

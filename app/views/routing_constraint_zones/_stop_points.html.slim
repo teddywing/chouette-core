@@ -9,5 +9,5 @@
           = "#{stop_point.stop_area.city_name} (#{stop_point.stop_area.zip_code})"
       div
         span.has_radio
-          = check_box_tag( "routing_constraint_zone[stop_point_ids][]", "#{stop_point.id}", @routing_constraint_zone.stop_point_ids && @routing_constraint_zone.stop_point_ids.include?(stop_point.id)  )
+          = check_box_tag( "routing_constraint_zone[stop_point_ids][]", "#{stop_point.id}", routing_constraint_zone.stop_point_ids && routing_constraint_zone.stop_point_ids.include?(stop_point.id)  )
           span.radio-label
