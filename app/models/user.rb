@@ -35,6 +35,9 @@ class User < ActiveRecord::Base
 
   @@edit_offer_permissions =
     destructive_permissions_for( %w[
+                                access_points
+                                connection_links
+                                calendars
       footnotes
       journey_patterns
       referentials
@@ -42,7 +45,7 @@ class User < ActiveRecord::Base
       routing_constraint_zones
       time_tables
       vehicle_journeys
-    ])
+    ]) << 'boiv:edit-offer'
 
   mattr_reader :edit_offer_permissions
 

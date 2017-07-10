@@ -3,7 +3,7 @@ en:
     calendar_mailer:
       created:
         subject: A new shared calendar has been created
-        body: body created
+        body: A new shared calendar% {cal_name} has been added by STIF. You can now view it in the list of shared calendars %{cal_index_url}
       created:
         subject: A shared calendar has been updated
-        body: body updated
+        body: A new shared calendar% {cal_name} has been updated by STIF. You can now view it in the list of shared calendars %{cal_index_url}

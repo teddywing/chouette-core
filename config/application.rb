@@ -33,6 +33,8 @@ module ChouetteIhm
     config.active_record.observers = [:route_observer, :calendar_observer]
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.active_job.queue_adapter = :sidekiq
+
     unless Rails.env.production?
         # Work around sprockets+teaspoon mismatch:
         Rails.application.config.assets.precompile += %w(spec_helper.js)
