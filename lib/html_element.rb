@@ -1,4 +1,6 @@
 class HTMLElement
+  attr_reader :content, :options, :tag_name
+
   def initialize(tag_name, content = nil, options = nil)
     @tag_name = tag_name
     @content = content
