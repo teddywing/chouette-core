@@ -20,7 +20,7 @@ RSpec.describe CalendarMailer, type: :mailer do
     end
 
     it 'should have correct body' do
-      key = I18n.t("mailers.calendar_mailer.#{type}.body")
+      key = I18n.t("mailers.calendar_mailer.#{type}.body", cal_name: calendar.name, cal_index_url: calendars_url)
       expect(email).to have_body_text /#{key}/
     end
   end

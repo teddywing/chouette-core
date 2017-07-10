@@ -3,7 +3,7 @@ fr:
     calendar_mailer:
       created:
         subject: Un nouveau calendrier partagé à été ajouté
-        body: body created
+        body: 'Un calendrier partagé %{cal_name} a été ajouté par le STIF. Vous pouvez maintenant le consulter dans la liste des calendriers partagés : %{cal_index_url}'
       updated:
         subject: Un nouveau calendrier partagé à été mise à jour
-        body: body updated
+        body: 'Un calendrier partagé %{cal_name} a été mis à jour par le STIF. Vous pouvez maintenant le consulter dans la liste des calendriers partagés : %{cal_index_url}'
