@@ -28,8 +28,8 @@ class RoutingConstraintZonesController < ChouetteController
   def show
     show! do |format|
       @routing_constraint_zone = @routing_constraint_zone.decorate(context: {
-        referential: current_referential,
-        line: parent.id
+        referential: referential,
+        line: parent
       })
 
       build_breadcrumb :show
