@@ -2,7 +2,7 @@ module PolicyChecker
   extend ActiveSupport::Concern
 
   included do
-    before_action :authorize_resource, except: [:create, :index, :new]
+    before_action :authorize_resource, only: [:destroy, :show, :update]
     before_action :authorize_resource_class, only: [:create, :index, :new]
   end
 
