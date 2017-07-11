@@ -12,7 +12,12 @@ class NetworksController < BreadcrumbController
 
   def show
     @map = NetworkMap.new(resource).with_helpers(self)
+
     show! do
+      @network = @network.decorate(context: {
+        line_referential: line_referential
+      })
+
       build_breadcrumb :show
     end
   end

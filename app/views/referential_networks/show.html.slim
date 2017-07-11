@@ -7,14 +7,12 @@
   / Below is secundary actions & optional contents (filters, ...)
   .row
     .col-lg-12.text-right.mb-sm
-      - if policy(Chouette::Network).create?
-        = link_to t('networks.actions.new'), new_referential_network_path(@referential), class: 'btn btn-primary'
-      - if policy(@network).update?
-        = link_to t('networks.actions.edit'), edit_referential_network_path(@referential, @network), class: 'btn btn-primary'
-      - if policy(@network).destroy?
-        = link_to referential_network_path(@referential, @network), method: :delete, data: { confirm: t('networks.actions.destroy_confirm')}, class: 'btn btn-primary' do
-          span.fa.fa-trash
-          span = t('networks.actions.destroy')
+      - @network.action_links.each do |link|
+        = link_to link.href,
+            method: link.method,
+            data: link.data,
+            class: 'btn btn-primary' do
+              = link.content
 
 / PageContent
 .page_content
