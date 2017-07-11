@@ -1,12 +1,4 @@
-all_permissions = %w[
-      footnotes
-      journey_patterns
-      referentials
-      routes
-      routing_constraint_zones
-      time_tables
-      vehicle_journeys
-    ].product( %w{create destroy update} ).map{ |model_action| model_action.join('.') }
+require_relative '../support/permissions'
 
 FactoryGirl.define do
   factory :user do
@@ -17,7 +9,7 @@ FactoryGirl.define do
     password "secret"
     password_confirmation "secret"
     factory :allmighty_user do
-      permissions all_permissions
+      permissions Support::Permissions.all_permissions
     end
   end
 end

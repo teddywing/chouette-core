@@ -24,7 +24,7 @@ class TimetablesEditVehicleJourney extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={(actions.getSelected(this.props.vehicleJourneys).length > 0 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled'}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length > 0 && this.props.filters.policy['vehicle_journeys.update']) ? '' : 'disabled'}
             data-toggle='modal'
             data-target='#CalendarsEditVehicleJourneyModal'
             onClick={() => this.props.onOpenCalendarsEditModal(actions.getSelected(this.props.vehicleJourneys))}
