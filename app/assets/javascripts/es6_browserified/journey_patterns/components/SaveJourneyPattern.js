@@ -9,7 +9,7 @@ class SaveJourneyPattern extends Component{
   }
 
   render() {
-    if(this.props.status.policy['journey_patterns.edit'] == false) {
+    if(this.props.status.policy['journey_patterns.update'] == false) {
       return false
     }else{
       return (
