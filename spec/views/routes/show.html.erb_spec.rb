@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe "/routes/show", type: 'view' do
+RSpec.describe "/routes/show", type: :view do
 
   assign_referential
   let!(:line) { assign :line, create(:line) }
