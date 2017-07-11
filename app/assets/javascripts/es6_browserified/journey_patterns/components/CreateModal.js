@@ -17,7 +17,7 @@ class CreateModal extends Component {
   }
 
   render() {
-    if(this.props.status.isFetching == true || this.props.status.policy['journey_patterns.edit'] == false) {
+    if(this.props.status.isFetching == true || this.props.status.policy['journey_patterns.update'] == false) {
       return false
     }
     if(this.props.status.fetchSuccess == true) {

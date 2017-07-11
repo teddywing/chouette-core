@@ -8,6 +8,7 @@ export RUN_GROUP=src
 export SUDO=""
 
 function setup() {
+    grep -q $RUN_USER /etc/passwd || exit -1
     mkdir -p $BASEDIR
     mkdir -p $BASEDIR/releases $BASEDIR/shared
 
@@ -45,15 +46,16 @@ EOF
     if [ ! -f database.yml ]; then
         cat > database.yml <<EOF
 production:
-  adapter: postgresql
+  adapter: postgis
   encoding: unicode
-  pool: 5
+  port: 5432
 
   host: $DATABASE_HOST
-  database: stif-boiv
+  schema_search_path: 'public,shared_extensions'
 
   username: stif-boiv
   password: $DATABASE_PASSWORD
+  postgis_schema: 'shared_extensions'
 EOF
     fi
 
@@ -97,6 +99,10 @@ function install() {
 
     mkdir -p tmp
 
+    # merge assets with existing ones
+    rsync -a public/assets/ $BASEDIR/shared/public/assets/
+
+    # relink shared dirs
     for directory in public/uploads tmp/uploads public/assets; do
         local_directory=$BASEDIR/shared/$directory
         release_directory=$directory
@@ -105,6 +111,7 @@ function install() {
         ln -s $local_directory $release_directory
     done
 
+    # relink shared files
     for file in secrets.yml database.yml environments/production.rb initializers/sidekiq.rb; do
         local_file=$BASEDIR/shared/config/$file
         release_file=config/$file
@@ -118,5 +125,5 @@ function install() {
 command=$1
 shift
 
-set -x
+#set -x
 $command $@
