@@ -2,6 +2,7 @@ var React = require('react')
 var Component = require('react').Component
 var PropTypes = require('react').PropTypes
 var JourneyPattern = require('./JourneyPattern')
+var _ = require('lodash')
 
 class JourneyPatterns extends Component{
   constructor(props){
@@ -85,9 +86,16 @@ class JourneyPatterns extends Component{
         <div className='row'>
           <div className='col-lg-12'>
             {(this.props.status.fetchSuccess == false) && (
-              <div className="alert alert-danger">
+              <div className="alert alert-danger mt-sm">
                 <strong>Erreur : </strong>
                 la récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème
+              </div>
+            )}
+
+            { _.some(this.props.journeyPatterns, 'errors') && (
+              <div className="alert alert-danger mt-sm">
+                <strong>Erreur : </strong>
+                une erreur bloque la validation des modifications.
               </div>
             )}
 
