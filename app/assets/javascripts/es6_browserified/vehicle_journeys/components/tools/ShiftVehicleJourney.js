@@ -25,7 +25,7 @@ class ShiftVehicleJourney extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.edit']) ? '' : 'disabled'}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.update']) ? '' : 'disabled'}
             data-toggle='modal'
             data-target='#ShiftVehicleJourneyModal'
             onClick={this.props.onOpenShiftModal}

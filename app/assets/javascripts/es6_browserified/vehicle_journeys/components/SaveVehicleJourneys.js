@@ -9,7 +9,7 @@ class SaveVehicleJourneys extends Component{
   }
 
   render() {
-    if(this.props.filters.policy['vehicle_journeys.edit'] == false) {
+    if(this.props.filters.policy['vehicle_journeys.update'] == false) {
       return false
     }else{
       return (
