@@ -29,6 +29,14 @@ class ReferentialNetworksController < ChouetteController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
+
+        @networks = ModelDecorator.decorate(
+          @networks,
+          with: ReferentialNetworkDecorator,
+          context: {
+            referential: referential
+          }
+        )
       }
       build_breadcrumb :index
     end

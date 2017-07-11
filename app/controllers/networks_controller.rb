@@ -36,6 +36,14 @@ class NetworksController < BreadcrumbController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
+
+        @networks = ModelDecorator.decorate(
+          @networks,
+          with: NetworkDecorator,
+          context: {
+            line_referential: line_referential
+          }
+        )
       }
       build_breadcrumb :index
     end
