@@ -90,6 +90,9 @@ class StopAreasController < BreadcrumbController
         }
 
       end
+
+      @stop_area = @stop_area.decorate
+
       build_breadcrumb :show
     end
   end
