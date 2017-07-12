@@ -1,4 +1,5 @@
 class Chouette::JourneyPattern < Chouette::TridentActiveRecord
+  include ChecksumSupport
   include JourneyPatternRestrictions
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -19,6 +20,12 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
 
   attr_accessor  :control_checked
   after_update :control_route_sections, :unless => "control_checked"
+
+  def checksum_attributes
+    values = self.slice(*['name', 'published_name', 'registration_number']).values
+    values << self.stop_points.map(&:stop_area).map(&:user_objectid)
+    values.flatten
+  end
 
   def self.state_update route, state
     transaction do
