@@ -19,10 +19,9 @@ else
   exit -2
 fi
 
-exit 0
 # mandatory packages and distribution upgrade
 apt-get update && apt-get dist-upgrade
-apt-get install -y wget sudo
+apt-get install -y wget sudo build-essential
 
 # ruby
 echo "==== Installation de Ruby 2.3"
@@ -81,28 +80,29 @@ fi
 
 # NodeJS
 
-if test "$SVRTYPE" == "front"; then
-echo "==== Installation de NodeJS 5.x"
-apt-get install -y apt-transport-https
-
-cat > /etc/apt/sources.list.d/nodesource.list <<EOF
-deb https://deb.nodesource.com/node_5.x  jessie main
-EOF
-
-wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-apt-get update
-
-apt-get install -y nodejs
-fi
+#if test "$SVRTYPE" == "front"; then
+#echo "==== Installation de NodeJS 5.x"
+#apt-get install -y apt-transport-https
+#
+#cat > /etc/apt/sources.list.d/nodesource.list <<EOF
+#deb https://deb.nodesource.com/node_5.x  jessie main
+#EOF
+#
+#wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+#apt-get update
+#
+#apt-get install -y nodejs
+#fi
 # Configuration de l'applicatif
 
 echo "==== Paramétrage de l'applicatif"
-echo -n "Veuillez saisir à nouveau le mot de passe d'accès à la base de données :"
+echo -n "Veuillez saisir le mot de passe d'accès à la base de données :"
 read -s DATABASE_PASSWORD
 
+echo ''
 export DATABASE_PASSWORD
 
-PGPASSWORD=$DATABASE_PASSWORD PGHOST=$DATABASE_HOST PGUSER=stif_boiv psql -q -c 'select 1' stif_boiv >/dev/null 2>&1 && echo "Mot de passe PG correct" 
+PGPASSWORD=$DATABASE_PASSWORD PGHOST=$DATABASE_HOST PGUSER=stif_boiv psql -q -c 'select 1' stif_boiv >/dev/null 2>&1 && echo "Mot de passe PG correct" || echo "ATTENTION : connexion impossible"
 
 ./deploy-helper.sh setup
 

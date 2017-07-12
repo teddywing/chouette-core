@@ -10,6 +10,7 @@ task :package do
   sh "bundle exec rake assets:clobber RAILS_ENV=production"
   sh "bundle exec rake assets:precompile RAILS_ENV=production"
   sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar vendor/cache"
+  sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar public/assets"
 
   %w{deploy-helper.sh README sidekiq-stif-boiv.service stif-boiv.conf stif-boiv-setup.sh template-stif-boiv.sql}.each do |f|
     cp "install/#{f}", "tmp/package/#{f}"

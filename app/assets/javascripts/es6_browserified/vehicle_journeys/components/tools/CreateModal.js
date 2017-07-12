@@ -27,7 +27,7 @@ class CreateModal extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={((this.props.filters.policy['vehicle_journeys.edit'] == true) ? '' : 'disabled')}
+            disabled={((this.props.filters.policy['vehicle_journeys.update'] == true) ? '' : 'disabled')}
             data-toggle='modal'
             data-target='#NewVehicleJourneyModal'
             onClick={this.props.onOpenCreateModal}
