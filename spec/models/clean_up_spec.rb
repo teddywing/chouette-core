@@ -6,6 +6,18 @@ RSpec.describe CleanUp, :type => :model do
   it { should validate_presence_of(:begin_date).with_message(:presence) }
   it { should belong_to(:referential) }
 
+  context 'Clean Up With Date Type : Between' do
+    subject(:cleaner) { create(:clean_up, date_type: :between) }
+    it { should validate_presence_of(:end_date).with_message(:presence) }
+
+    it 'should have a end date strictly greater than the begin date' do
+      expect(cleaner).to be_valid
+
+      cleaner.end_date = cleaner.begin_date
+      expect(cleaner).not_to be_valid
+    end
+  end
+
   context '#exclude_dates_in_overlapping_period with :before date_type' do
     let(:time_table) { create(:time_table) }
     let(:period) { time_table.periods[0] }

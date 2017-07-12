@@ -24,6 +24,7 @@ en:
         end_date: "End date of clean up"
   activerecord:
     errors:
+      invalid_period: "Invalid period : the end date must be strictly greater than the begin date"
       models:
         clean_up:
           attributes:

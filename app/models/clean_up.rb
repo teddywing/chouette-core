@@ -7,8 +7,16 @@ class CleanUp < ActiveRecord::Base
   enumerize :date_type, in: %i(between before after)
 
   validates_presence_of :begin_date, message: :presence
+  validates_presence_of :end_date, message: :presence, if: Proc.new {|cu| cu.date_type == 'between'}
   validates_presence_of :date_type, message: :presence
+  validate :end_date_must_be_greater_that_begin_date
   after_commit :perform_cleanup, :on => :create
+
+  def end_date_must_be_greater_that_begin_date
+    if self.end_date && self.date_type == 'between' && self.begin_date >= self.end_date
+      errors.add(:base, I18n.t('clean_ups.activerecord.errors.invalid_period'))
+    end
+  end
 
   def perform_cleanup
     CleanUpWorker.perform_async(self.id)
