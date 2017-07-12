@@ -1,4 +1,6 @@
 class Chouette::TimeTableDate < Chouette::ActiveRecord
+  include ChecksumSupport
+
   self.primary_key = "id"
   belongs_to :time_table, inverse_of: :dates
   acts_as_list :scope => 'time_table_id = #{time_table_id}',:top_of_list => 0
@@ -12,5 +14,11 @@ class Chouette::TimeTableDate < Chouette::ActiveRecord
     ActiveModel::Name.new Chouette::TimeTableDate, Chouette, "TimeTableDate"
   end
 
+  def checksum_attributes
+    [].tap do |attrs|
+      attrs << self.date.to_s
+      attrs << self.in_out.to_s
+    end
+  end
 end
 

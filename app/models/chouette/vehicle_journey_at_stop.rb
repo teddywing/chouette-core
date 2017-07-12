@@ -25,6 +25,15 @@ module Chouette
       end
     end
 
+    def checksum_attributes
+      [].tap do |attrs|
+        attrs << self.departure_time.try(:to_s, :time)
+        attrs << self.arrival_time.try(:to_s, :time)
+        attrs << self.departure_day_offset.to_s
+        attrs << self.arrival_day_offset.to_s
+      end
+    end
+
     after_initialize :set_virtual_attributes
     def set_virtual_attributes
       @_destroy = false
