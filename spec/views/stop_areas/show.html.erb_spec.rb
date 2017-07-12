@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "/stop_areas/show", :type => :view do
 
   let!(:stop_area_referential) { assign :stop_area_referential, stop_area.stop_area_referential }
-  let!(:stop_area) { assign :stop_area, create(:stop_area) }
+  let!(:stop_area) { assign :stop_area, create(:stop_area).decorate }
   let!(:access_points) { assign :access_points, [] }
   let!(:map) { assign(:map, double(:to_html => '<div id="map"/>'.html_safe)) }
 
