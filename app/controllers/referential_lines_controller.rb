@@ -10,18 +10,6 @@ class ReferentialLinesController < ChouetteController
 
   belongs_to :referential
 
-  def index
-    @hide_group_of_line = referential.group_of_lines.empty?
-    index! do |format|
-      format.html {
-        if collection.out_of_bounds?
-          redirect_to params.merge(:page => 1)
-        end
-        build_breadcrumb :index
-      }
-    end
-  end
-
   def show
     @routes = resource.routes
 
@@ -49,6 +37,14 @@ class ReferentialLinesController < ChouetteController
     )
 
     show! do
+      @line = ReferentialLineDecorator.decorate(
+        @line,
+        context: {
+          referential: referential,
+          current_organisation: current_organisation
+        }
+      )
+
       build_breadcrumb :show
     end
   end

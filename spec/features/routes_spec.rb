@@ -11,13 +11,10 @@ describe "Routes", :type => :feature do
   before { @user.update(organisation: referential.organisation) }
 
   with_permissions "boiv:read" do
-    context "from lines page to a line page" do
-      it "display line's routes" do
-        visit referential_lines_path(referential)
-        first(:link, 'Consulter').click
-        expect(page).to have_content(route.name)
-        expect(page).to have_content(route2.name)
-      end
+    it "line page displays line's routes" do
+      visit referential_line_path(referential, line)
+      expect(page).to have_content(route.name)
+      expect(page).to have_content(route2.name)
     end
 
     describe "from line's page to route's page" do

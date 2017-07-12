@@ -7,11 +7,11 @@
           span.fa.fa-search
 
   .ffg-row
-    = f.input :zip_code_cont, placeholder: t('.zip_code'), label: @stop_areas.human_attribute_name(:zip_code), required: false
-    = f.input :city_name_cont, placeholder: t('.city_name'), label: @stop_areas.human_attribute_name(:city_name), required: false
+    = f.input :zip_code_cont, placeholder: t('.zip_code'), label: Chouette::StopArea.human_attribute_name(:zip_code), required: false
+    = f.input :city_name_cont, placeholder: t('.city_name'), label: Chouette::StopArea.human_attribute_name(:city_name), required: false
 
     .form-group.togglable
-      = f.label @stop_areas.human_attribute_name(:area_type), required: false, class: 'control-label'
+      = f.label Chouette::StopArea.human_attribute_name(:area_type), required: false, class: 'control-label'
       = f.input :area_type_eq_any, collection: Chouette::StopArea.area_type.options.sort, as: :check_boxes, label: false, label_method: lambda{|w| ("<span>" + t("enumerize.stop_area.area_type.#{w[1]}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .actions

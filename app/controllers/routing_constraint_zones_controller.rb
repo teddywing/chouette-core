@@ -10,12 +10,29 @@ class RoutingConstraintZonesController < ChouetteController
     belongs_to :line, parent_class: Chouette::Line
   end
 
+  def index
+    index! do |format|
+      @routing_constraint_zones = ModelDecorator.decorate(
+        @routing_constraint_zones,
+        with: RoutingConstraintZoneDecorator,
+        context: {
+          referential: referential,
+          line: parent
+        }
+      )
+
+      build_breadcrumb :index
+    end
+  end
+
   def show
     show! do |format|
       @routing_constraint_zone = @routing_constraint_zone.decorate(context: {
-        referential: current_referential,
-        line: parent.id
+        referential: referential,
+        line: parent
       })
+
+      build_breadcrumb :show
     end
   end
 

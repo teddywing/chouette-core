@@ -12,7 +12,12 @@ class NetworksController < BreadcrumbController
 
   def show
     @map = NetworkMap.new(resource).with_helpers(self)
+
     show! do
+      @network = @network.decorate(context: {
+        line_referential: line_referential
+      })
+
       build_breadcrumb :show
     end
   end
@@ -31,6 +36,14 @@ class NetworksController < BreadcrumbController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
+
+        @networks = ModelDecorator.decorate(
+          @networks,
+          with: NetworkDecorator,
+          context: {
+            line_referential: line_referential
+          }
+        )
       }
       build_breadcrumb :index
     end

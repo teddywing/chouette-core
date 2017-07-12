@@ -53,11 +53,18 @@ class StopAreasController < BreadcrumbController
   def index
     request.format.kml? ? @per_page = nil : @per_page = 12
     @zip_codes = stop_area_referential.stop_areas.where("zip_code is NOT null").distinct.pluck(:zip_code)
+
     index! do |format|
       format.html {
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
+
+        @stop_areas = ModelDecorator.decorate(
+          @stop_areas,
+          with: StopAreaDecorator
+        )
+
         build_breadcrumb :index
       }
     end
@@ -90,6 +97,9 @@ class StopAreasController < BreadcrumbController
         }
 
       end
+
+      @stop_area = @stop_area.decorate
+
       build_breadcrumb :show
     end
   end

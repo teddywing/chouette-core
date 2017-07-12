@@ -8,12 +8,13 @@ module TableBuilderHelper
       unarchive: :put
     }
 
-    attr_reader :actions, :object, :user_context
+    attr_reader :actions, :object, :user_context, :referential
 
-    def initialize(object, user_context, actions)
+    def initialize(object, user_context, actions, referential = nil)
       @object       = object
       @user_context = user_context
       @actions      = actions
+      @referential  = referential
     end
 
     def links
@@ -33,10 +34,7 @@ module TableBuilderHelper
         polymorph_url << action
       end
 
-      polymorph_url += URL.polymorphic_url_parts(
-        object,
-        user_context.context[:referential]
-      )
+      polymorph_url += URL.polymorphic_url_parts(object, referential)
     end
 
     def method_for_action(action)
