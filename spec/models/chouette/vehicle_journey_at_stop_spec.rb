@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
   let(:subject) { create(:vehicle_journey_at_stop) }
 
-  context 'checksum' do
+  describe 'checksum' do
     it_behaves_like 'checksum support', :vehicle_journey_at_stop
 
     context '#checksum_attributes' do

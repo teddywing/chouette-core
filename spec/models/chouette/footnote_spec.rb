@@ -5,7 +5,7 @@ describe Chouette::Footnote, type: :model do
 
   it { should validate_presence_of :line }
 
-  context 'checksum' do
+  describe 'checksum' do
     it_behaves_like 'checksum support', :footnote
 
     context '#checksum_attributes' do
