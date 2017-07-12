@@ -117,7 +117,7 @@ class TimeTablesController < ChouetteController
   end
 
   def tags
-    @tags = ActsAsTaggableOn::Tag.where("tags.name LIKE ?", "%#{params[:tag]}%")
+    @tags = ActsAsTaggableOn::Tag.where("tags.name = ?", "%#{params[:tag]}%")
     respond_to do |format|
       format.json { render :json => @tags.map{|t| {:id => t.id, :name => t.name }} }
     end
