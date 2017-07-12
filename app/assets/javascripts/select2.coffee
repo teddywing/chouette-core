@@ -19,7 +19,7 @@ bind_select2_ajax = (el, cfg = {}) ->
       dataType: 'json',
       delay: 125,
       processResults: (data, params) -> results: data
-    minimumInputLength: 3
+    minimumInputLength: 1
     placeholder: target.data('select2ed-placeholder')
     templateResult: (item) ->
       item.text
