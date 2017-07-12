@@ -130,7 +130,7 @@ class TimeTablesController < ChouetteController
     if params[:q] && params[:q]["tag_search"]
       tags = params[:q]["tag_search"].reject {|c| c.empty?}
       params[:q].delete("tag_search")
-      scope = select_time_tables.tagged_with(tags, :wild => true, :any => true) if tags.any?
+      scope = select_time_tables.tagged_with(tags, :any => true) if tags.any?
     end
     scope = ransack_periode(scope)
     @q = scope.search(params[:q])
