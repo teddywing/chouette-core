@@ -12,7 +12,8 @@ module ChecksumSupport
   end
 
   def current_checksum_source
-    source = self.checksum_attributes.map{ |x| x || VALUE_FOR_NIL_ATTRIBUTE }
+    source = self.checksum_attributes.map{ |x| x unless x.try(:empty?) }
+    source = source.map{ |x| x || VALUE_FOR_NIL_ATTRIBUTE }
     source.map(&:to_s).join(SEPARATOR)
   end
 

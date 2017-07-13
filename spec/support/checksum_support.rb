@@ -1,7 +1,7 @@
 shared_examples 'checksum support' do |factory_name|
   let(:instance) { create(factory_name) }
 
-  context '#current_checksum_source' do
+  describe '#current_checksum_source' do
     let(:attributes) { ['code_value', 'label_value'] }
     let(:seperator)  { ChecksumSupport::SEPARATOR }
     let(:nil_value)  { ChecksumSupport::VALUE_FOR_NIL_ATTRIBUTE }
@@ -14,10 +14,19 @@ shared_examples 'checksum support' do |factory_name|
       expect(instance.current_checksum_source).to eq("code_value#{seperator}label_value")
     end
 
-    context 'default for nil value' do
+    context 'nil value' do
       let(:attributes) { ['code_value', nil] }
 
       it 'should replace nil attributes by default value' do
+        source = "code_value#{seperator}#{nil_value}"
+        expect(instance.current_checksum_source).to eq(source)
+      end
+    end
+
+    context 'empty array' do
+      let(:attributes) { ['code_value', []] }
+
+      it 'should convert to nil' do
         source = "code_value#{seperator}#{nil_value}"
         expect(instance.current_checksum_source).to eq(source)
       end
