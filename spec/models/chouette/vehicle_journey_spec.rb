@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
+
+  describe 'checksum' do
+    it_behaves_like 'checksum support', :vehicle_journey
+  end
+
   describe "vjas_departure_time_must_be_before_next_stop_arrival_time" do
     let(:vehicle_journey) { create :vehicle_journey }
     let(:vjas) { vehicle_journey.vehicle_journey_at_stops }
