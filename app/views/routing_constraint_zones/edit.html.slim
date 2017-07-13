@@ -18,10 +18,10 @@
 
               .separator
 
-              - @routing_constraint_zone.errors[:stop_point_ids].each do |error_message|
-                .alert.alert-danger = error_message
-
               #ITL_stoppoints
+                - @routing_constraint_zone.errors[:stop_point_ids].each do |error_message|
+                  .alert.alert-danger.mb-md = error_message
+
                 .subform
                   .nested-head
                     .wrapper

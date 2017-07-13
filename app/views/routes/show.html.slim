@@ -33,18 +33,44 @@
     .row
       .col-lg-12
         - if @route_sp.any?
-          = table_builder @route_sp,
-            { 'ID Reflex' => Proc.new {|s| s.try(:stop_area).try(:user_objectid)},
-              :name => Proc.new {|s| s.try(:stop_area).try(:name)},
-              :deleted_at => Proc.new{|s| s.try(:stop_area).deleted_at ? t('false') : t('true')},
-              :zip_code => Proc.new {|s| s.try(:stop_area).try(:zip_code)},
-              :city_name => Proc.new {|s| s.try(:stop_area).try(:city_name)},
-              :for_boarding => Proc.new {|s| t("stop_points.stop_point.for_boarding.#{s.for_boarding}")},
-              :for_alighting => Proc.new {|s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}")},
-              :position => 'position' },
-            [:show],
-            [],
-            'table'
+          = table_builder_2 @route_sp,
+            [ \
+              TableBuilderHelper::Column.new( \
+                name: 'ID Reflex', \
+                attribute: Proc.new { |s| s.try(:stop_area).try(:user_objectid) }, \
+                sortable: false \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :name, \
+                attribute: Proc.new {|s| s.try(:stop_area).try(:name)} \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :deleted_at, \
+                attribute: Proc.new { |s| s.try(:stop_area).deleted_at ? t('false') : t('true') } \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :zip_code, \
+                attribute: Proc.new { |s| s.try(:stop_area).try(:zip_code) } \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :city_name, \
+                attribute: Proc.new { |s| s.try(:stop_area).try(:city_name) } \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :for_boarding, \
+                attribute: Proc.new { |s| t("stop_points.stop_point.for_boarding.#{s.for_boarding}") } \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :for_alighting, \
+                attribute: Proc.new { |s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}") } \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :position, \
+                attribute: 'position' \
+              ), \
+            ],
+            links: [:show],
+            cls: 'table'
 
         - else
           = replacement_msg t('stop_areas.search_no_results')

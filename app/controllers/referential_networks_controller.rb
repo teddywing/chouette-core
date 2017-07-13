@@ -10,7 +10,15 @@ class ReferentialNetworksController < ChouetteController
 
   def show
     @map = NetworkMap.new(resource).with_helpers(self)
+
     show! do
+      @network = ReferentialNetworkDecorator.decorate(
+        @network,
+        context: {
+          referential: referential
+        }
+      )
+
       build_breadcrumb :show
     end
   end
@@ -21,6 +29,14 @@ class ReferentialNetworksController < ChouetteController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
+
+        @networks = ModelDecorator.decorate(
+          @networks,
+          with: ReferentialNetworkDecorator,
+          context: {
+            referential: referential
+          }
+        )
       }
       build_breadcrumb :index
     end

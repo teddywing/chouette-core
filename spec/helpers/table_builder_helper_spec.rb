@@ -302,7 +302,7 @@ describe TableBuilderHelper, type: :helper do
       companies = ModelDecorator.decorate(
         companies,
         with: CompanyDecorator,
-        context: {line_referential: line_referential}
+        context: { referential: line_referential }
       )
       stub_policy_scope(company)
 

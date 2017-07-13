@@ -25,4 +25,8 @@ class TimeTablePolicy < ApplicationPolicy
   def duplicate?
     !archived? && organisation_match? && create?
   end
+
+  def month?
+    update?
+  end
 end

@@ -13,7 +13,7 @@ class CompanyDecorator < Draper::Decorator
 
   # Requires:
   #   context: {
-  #     line_referential:
+  #     referential:
   #   }
   def action_links
     links = []
@@ -23,7 +23,7 @@ class CompanyDecorator < Draper::Decorator
       binding.pry
       links << Link.new(
         content: h.t('companies.actions.new'),
-        href: h.new_line_referential_company_path(context[:line_referential])
+        href: h.new_line_referential_company_path(context[:referential])
       )
     end
 
@@ -31,7 +31,7 @@ class CompanyDecorator < Draper::Decorator
       links << Link.new(
         content: h.t('companies.actions.edit'),
         href: h.edit_line_referential_company_path(
-          context[:line_referential],
+          context[:referential],
           object
         )
       )
@@ -41,7 +41,7 @@ class CompanyDecorator < Draper::Decorator
       links << Link.new(
         content: t('companies.actions.destroy'),
         href: h.line_referential_company_path(
-          context[:line_referential],
+          context[:referential],
           object
         ),
         method: :delete,

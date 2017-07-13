@@ -47,6 +47,11 @@ class RoutesController < ChouetteController
         line: @line
       })
 
+      @route_sp = ModelDecorator.decorate(
+        @route_sp,
+        with: StopPointDecorator
+      )
+
       build_breadcrumb :show
     end
   end

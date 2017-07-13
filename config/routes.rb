@@ -99,7 +99,7 @@ ChouetteIhm::Application.routes.draw do
     resources :networks, controller: "referential_networks"
 
     match 'lines' => 'lines#destroy_all', :via => :delete
-    resources :lines, controller: "referential_lines" do
+    resources :lines, controller: "referential_lines", except: :index do
       resource :footnotes, controller: "line_footnotes"
       delete :index, on: :collection, action: :delete_all
       collection do

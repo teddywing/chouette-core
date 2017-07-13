@@ -1,15 +1,9 @@
-class LineFootnotesController < BreadcrumbController
-  defaults :resource_class => Chouette::Line
-  include PolicyChecker
-  respond_to :json, :only => :show
+class LineFootnotesController < ChouetteController
+  defaults resource_class: Chouette::Line, collection_name: 'lines', instance_name: 'line'
   belongs_to :referential
 
-  def show
-    show! do
-      build_breadcrumb :show
-    end
-    @footnotes = @line.footnotes
-  end
+  before_action :authorize_resource, only: [:destroy_footnote, :edit_footnote, :show_footnote, :update_footnote]
+  before_action :authorize_resource_class, only: [:create_footnote, :index_footnote, :new_footnote]
 
   def edit
     edit! do
@@ -18,24 +12,30 @@ class LineFootnotesController < BreadcrumbController
   end
 
   def update
-    if @line.update(line_params)
-      redirect_to referential_line_footnotes_path(@referential, @line) , notice: t('notice.footnotes.updated')
-    else
-      render :edit
+    update! do |success, failure|
+      success.html { redirect_to referential_line_footnotes_path(@referential, @line) , notice: t('notice.footnotes.updated') }
+      failure.html { render :edit }
     end
   end
 
   protected
-  # overrides default
-  def check_policy
+
+  protected
+  def authorize_resource
     authorize resource, "#{action_name}_footnote?".to_sym
   end
 
-  private
-  def resource
-    @referential = Referential.find params[:referential_id]
-    @line        = @referential.lines.find params[:line_id]
+  def authorize_resource_class
+    authorize resource_class, "#{action_name}_footnote?".to_sym
   end
+
+  alias_method :line, :resource
+
+  def resource
+    @line ||= current_referential.lines.find params[:line_id]
+  end
+
+  private
 
   def line_params
     params.require(:line).permit(
