@@ -15,10 +15,8 @@ class Chouette::TimeTableDate < Chouette::ActiveRecord
   end
 
   def checksum_attributes
-    [].tap do |attrs|
-      attrs << self.date.to_s
-      attrs << self.in_out.to_s
-    end
+    attrs = ['date', 'in_out']
+    self.slice(*attrs).values
   end
 end
 
