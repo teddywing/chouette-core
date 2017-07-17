@@ -14,7 +14,7 @@ class CleanUp < ActiveRecord::Base
 
   def end_date_must_be_greater_that_begin_date
     if self.end_date && self.date_type == 'between' && self.begin_date >= self.end_date
-      errors.add(:base, I18n.t('clean_ups.activerecord.errors.invalid_period'))
+      errors.add(:base, I18n.t('activerecord.errors.models.clean_up.invalid_period'))
     end
   end
 
