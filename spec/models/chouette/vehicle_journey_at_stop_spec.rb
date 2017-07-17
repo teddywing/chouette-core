@@ -22,15 +22,16 @@ RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
         arrival_day_offset: bad_offset,
         departure_day_offset: bad_offset
       )
+      error_message = I18n.t(
+        'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
+        local_id: at_stop.vehicle_journey.objectid.local_id,
+        max: bad_offset
+      )
 
       at_stop.validate
 
-      expect(at_stop.errors[:arrival_day_offset]).to include(
-        I18n.t('vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max')
-      )
-      expect(at_stop.errors[:departure_day_offset]).to include(
-        I18n.t('vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max')
-      )
+      expect(at_stop.errors[:arrival_day_offset]).to include(error_message)
+      expect(at_stop.errors[:departure_day_offset]).to include(error_message)
     end
   end
 end

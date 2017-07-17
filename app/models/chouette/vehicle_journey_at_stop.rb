@@ -26,34 +26,34 @@ module Chouette
       end
     end
 
-    validates :arrival_day_offset, numericality: {
-      greater_than_or_equal_to: 0,
-      less_than_or_equal_to: DAY_OFFSET_MAX,
-      message: ->(object, data) do
-        byebug
-        I18n.t(
-          'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
-          local_id: object.vehicle_journey.objectid.local_id,
-          max: DAY_OFFSET_MAX + 1
-        )
-      end
-    }
-    validates :departure_day_offset, numericality: {
-      greater_than_or_equal_to: 0,
-      less_than_or_equal_to: DAY_OFFSET_MAX,
-      message: ->(object, data) do
-        I18n.t(
-          'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
-          local_id: object.vehicle_journey.objectid.local_id,
-          max: DAY_OFFSET_MAX + 1
-        )
-      end
-    }
+    validate :day_offset_must_be_within_range
 
     after_initialize :set_virtual_attributes
     def set_virtual_attributes
       @_destroy = false
       @dummy = false
+    end
+
+    def day_offset_must_be_within_range
+      def outside_range(offset)
+        offset < 0 || offset > DAY_OFFSET_MAX
+      end
+
+      def error_message
+        I18n.t(
+          'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
+          local_id: vehicle_journey.objectid.local_id,
+          max: DAY_OFFSET_MAX + 1
+        )
+      end
+
+      if outside_range(arrival_day_offset)
+        errors.add(:arrival_day_offset, error_message)
+      end
+
+      if outside_range(departure_day_offset)
+        errors.add(:departure_day_offset, error_message)
+      end
     end
 
   end
