@@ -2,4 +2,3 @@
 :pidfile: tmp/pids/sidekiq.pid
 :queues:
   - mail
-  - wip
