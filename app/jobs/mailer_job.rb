@@ -1,5 +1,5 @@
 class MailerJob < ActiveJob::Base
-  queue_as :mail
+  # No need to specify queue it's already used mailers queue
 
   def perform klass, action, params
     klass.constantize.public_send(action, *params).deliver_later
