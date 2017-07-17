@@ -142,7 +142,7 @@ module Chouette
 
           vj.update_attributes(state_permited_attributes(item))
           vj.update_has_and_belongs_to_many_from_state(item)
-          item['errors'] = vj.errors if vj.errors.any?
+          item['errors'] = vj.errors.full_messages.uniq if vj.errors.any?
         end
 
         # Delete ids of new object from state if we had to rollback
