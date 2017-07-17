@@ -28,11 +28,26 @@ module Chouette
 
     validates :arrival_day_offset, numericality: {
       greater_than_or_equal_to: 0,
-      less_than_or_equal_to: DAY_OFFSET_MAX
+      less_than_or_equal_to: DAY_OFFSET_MAX,
+      message: ->(object, data) do
+        byebug
+        I18n.t(
+          'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
+          local_id: object.vehicle_journey.objectid.local_id,
+          max: DAY_OFFSET_MAX + 1
+        )
+      end
     }
     validates :departure_day_offset, numericality: {
       greater_than_or_equal_to: 0,
-      less_than_or_equal_to: DAY_OFFSET_MAX
+      less_than_or_equal_to: DAY_OFFSET_MAX,
+      message: ->(object, data) do
+        I18n.t(
+          'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
+          local_id: object.vehicle_journey.objectid.local_id,
+          max: DAY_OFFSET_MAX + 1
+        )
+      end
     }
 
     after_initialize :set_virtual_attributes
