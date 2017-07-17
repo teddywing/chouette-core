@@ -37,7 +37,7 @@ ChouetteIhm::Application.routes.draw do
       resources :connection_links, only: [:index, :show]
       resources :companies, only: [:index, :show]
       resources :group_of_lines, only: [:index, :show]
-      resources :imports, only: :create
+      resources :netex_imports, only: :create
       resources :journey_patterns, only: :show
       resources :lines, only: [:index, :show] do
         resources :journey_patterns, only: [:index, :show]
