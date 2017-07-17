@@ -35,10 +35,6 @@ module Chouette
     end
 
     def day_offset_must_be_within_range
-      def outside_range(offset)
-        offset < 0 || offset > DAY_OFFSET_MAX
-      end
-
       def error_message
         I18n.t(
           'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
@@ -47,14 +43,19 @@ module Chouette
         )
       end
 
-      if outside_range(arrival_day_offset)
+      if day_offset_outside_range?(arrival_day_offset)
         errors.add(:arrival_day_offset, error_message)
       end
 
-      if outside_range(departure_day_offset)
+      if day_offset_outside_range?(departure_day_offset)
         errors.add(:departure_day_offset, error_message)
       end
     end
+
+    def day_offset_outside_range?(offset)
+      offset < 0 || offset > DAY_OFFSET_MAX
+    end
+
 
   end
 end

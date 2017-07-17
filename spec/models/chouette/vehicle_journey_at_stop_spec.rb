@@ -1,16 +1,28 @@
 require 'spec_helper'
 
 RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
-  it do
-    should validate_numericality_of(:arrival_day_offset)
-      .is_greater_than_or_equal_to(0)
-      .is_less_than_or_equal_to(Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX)
-  end
+  describe "#day_offset_outside_range" do
+    it "disallows negative offsets" do
+      at_stop = build_stubbed(:vehicle_journey_at_stop)
 
-  it do
-    should validate_numericality_of(:departure_day_offset)
-      .is_greater_than_or_equal_to(0)
-      .is_less_than_or_equal_to(Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX)
+      expect(at_stop.day_offset_outside_range?(-1)).to be true
+    end
+
+    it "disallows offsets greater than DAY_OFFSET_MAX" do
+      at_stop = build_stubbed(:vehicle_journey_at_stop)
+
+      expect(at_stop.day_offset_outside_range?(
+        Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX + 1
+      )).to be true
+    end
+
+    it "allows offsets between 0 and DAY_OFFSET_MAX inclusive" do
+      at_stop = build_stubbed(:vehicle_journey_at_stop)
+
+      expect(at_stop.day_offset_outside_range?(
+        Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX
+      )).to be false
+    end
   end
 
   describe "#validate" do
