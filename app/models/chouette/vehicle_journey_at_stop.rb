@@ -3,6 +3,8 @@ module Chouette
     include ForBoardingEnumerations
     include ForAlightingEnumerations
 
+    DAY_OFFSET_MAX = 1
+
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
 
@@ -23,6 +25,15 @@ module Chouette
         )
       end
     end
+
+    validates :arrival_day_offset, numericality: {
+      greater_than_or_equal_to: 0,
+      less_than_or_equal_to: DAY_OFFSET_MAX
+    }
+    validates :departure_day_offset, numericality: {
+      greater_than_or_equal_to: 0,
+      less_than_or_equal_to: DAY_OFFSET_MAX
+    }
 
     after_initialize :set_virtual_attributes
     def set_virtual_attributes
