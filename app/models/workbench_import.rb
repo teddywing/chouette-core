@@ -1,0 +1,2 @@
+class WorkbenchImport < Import
+end
