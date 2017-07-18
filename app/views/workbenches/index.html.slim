@@ -35,9 +35,8 @@
                 = t('.offers.referentials')
                 span.badge.ml-xs = @workbench.referentials.count if @workbench.all_referentials.any?
               
-              - if @workbench.all_referentials.any?
-                div
-                  = link_to '', workbench_path(@workbench), class: ' fa fa-chevron-right pull-right', title: t('.offers.see')
+              div
+                = link_to '', workbench_path(@workbench), class: ' fa fa-chevron-right pull-right', title: t('.offers.see')
 
           - if @workbench.all_referentials.any?
             .list-group
@@ -54,10 +53,9 @@
               div
                 = t('.offers.calendars')
                 span.badge.ml-xs = @calendars.count if @calendars.any?
-              
-              - if @calendars.any?
-                div
-                  = link_to '', calendars_path, class: ' fa fa-chevron-right pull-right', title: t('.offers.see')
+
+              div
+                = link_to '', calendars_path, class: ' fa fa-chevron-right pull-right', title: t('.offers.see')
 
           - if @calendars.any?
             .list-group
