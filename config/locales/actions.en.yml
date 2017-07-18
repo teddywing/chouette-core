@@ -4,6 +4,7 @@ en:
     destroy: "Destroy"
     delete: "Delete"
     search: "Search"
+    submit: "Submit"
     add: "Add new"
     new: "Add new"
     show: "See"

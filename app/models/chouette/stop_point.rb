@@ -36,12 +36,12 @@ module Chouette
 
     def stop_area_id_validation
       if stop_area_id.nil?
-        errors.add(:stop_area_id, I18n.t("errors.messages.empty"))
+        errors.add(:stop_area_id, I18n.t("stop_areas.errors.empty"))
       end
     end
 
     def self.area_candidates
-      Chouette::StopArea.where( :area_type => ['Quay', 'BoardingPosition'])
+      Chouette::StopArea.where(:area_type => ['Quay', 'BoardingPosition'])
     end
 
   end

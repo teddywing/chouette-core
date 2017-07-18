@@ -29,7 +29,7 @@
           = error["source"]["file"]["line_number"]
 
       - else
-        = I18n.t("activemodel.attributes.compliance_check_result."+r.test_id);
+        = I18n.t("activemodel.attributes.compliance_check_result.#{r.test_id}");
         = I18n.t("compliance_check_result.details.detail_#{error['error_id']}", object_labels_hash(error) )
         = "\n"
 
