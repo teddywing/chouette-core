@@ -10,7 +10,7 @@ describe Chouette::VehicleJourney, :type => :model do
       vehicle_journey.validate
 
       expect(vjas[0].errors[:departure_time]).not_to be_blank
-      expect(vehicle_journey.errors[:vehicle_journey_at_stops].count).to eq(1)
+      expect(vehicle_journey.errors.count).to eq(1)
       expect(vehicle_journey).not_to be_valid
     end
 
@@ -19,7 +19,7 @@ describe Chouette::VehicleJourney, :type => :model do
       vehicle_journey.validate
 
       expect(vjas[0].errors[:departure_time]).to be_blank
-      expect(vehicle_journey.errors[:vehicle_journey_at_stops]).to be_empty
+      expect(vehicle_journey.errors).to be_empty
       expect(vehicle_journey).to be_valid
     end
 

@@ -1,0 +1,12 @@
+en:
+  workbenches:
+    index:
+      title: "%{organisation} dashboard"
+      offers:
+        title: "Transport offers"
+        organisation: "Organisation offers"
+        idf: "IDF offers"
+        referentials: "Referentials"
+        calendars: "Calendars"
+        see: "See the list"
+        no_content: "No content yet."
