@@ -35,7 +35,7 @@ module Chouette
     end
 
     def day_offset_must_be_within_range
-      def error_message
+      error_message = lambda do
         I18n.t(
           'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
           local_id: vehicle_journey.objectid.local_id,
