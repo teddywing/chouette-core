@@ -33,16 +33,16 @@
             h3.panel-title.with_actions
               div
                 = t('.offers.referentials')
-                span.badge.ml-xs = @workbench.referentials.count if @workbench.referentials.any?
+                span.badge.ml-xs = @workbench.referentials.count if @workbench.all_referentials.any?
               
-              - if @workbench.referentials.any?
+              - if @workbench.all_referentials.any?
                 div
                   = link_to '', workbench_path(@workbench), class: ' fa fa-chevron-right pull-right', title: t('.offers.see')
 
-          - if @workbench.referentials.any?
+          - if @workbench.all_referentials.any?
             .list-group
-              - @workbench.referentials.each do |referential|
-                = link_to referential.name, referential_path(referential), class: 'list-group-item'
+              - @workbench.all_referentials.each_with_index do |referential, i|
+                = link_to referential.name, referential_path(referential), class: 'list-group-item' if i < 6
           
           - else
             .panel-body
@@ -61,8 +61,8 @@
 
           - if @calendars.any?
             .list-group
-              - @calendars.each do |calendar|
-                = link_to calendar.name, calendar_path(calendar), class: 'list-group-item'
+              - @calendars.each_with_index do |calendar, i|
+                = link_to calendar.name, calendar_path(calendar), class: 'list-group-item' if i < 6
           
           - else
             .panel-body
