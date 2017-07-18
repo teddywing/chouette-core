@@ -1,12 +1,9 @@
 namespace :generate do
-  
+
   desc "Create model diagrams for Chouette"
   task :model_diagram  => :environment do
-    sh "bundle exec rake erd orientation=horizontal title='Chouette v2.5.2 model diagram (part 1)' only='Organisation,Referential,Export,Api::V1::ApiKey,ExportLogMessage,Import,RuleParameterSet,Validation,User' filename='model-diagram-part-1'"
-
-    sh "bundle exec rake erd:generate orientation=horizontal title='Chouette v2.5.2 model diagram (part 2)' exclude='Organisation,Referential,Export,Api::V1::ApiKey,ExportLogMessage,Import,RuleParameterSet, Validation,User,NetexImport,NeptuneImport,GtfsImport,CsvImport,Delayed::Backend::ActiveRecord::Job' filename='model-diagram-part-2'"
-
-    sh "bundle exec rake erd:generate orientation=horizontal title='Chouette v2.5.2 model diagram (part 3)' only='NetexImport,NeptuneImport,GtfsImport,CsvImport,Delayed::Backend::ActiveRecord::Job' filename='model-diagram-part-3'"
+    sh "bundle exec rake erd only='Calendar,Referential,Chouette::Line,Chouette::Route,Chouette::JourneyPattern,Chouette::VehicleJourney,Chouette::VehicleJourneyAtStop,Chouette::TimeTable,Chouette::TimeTableDate,Chouette::TimeTablePeriod,Chouette::Footnote,Chouette::Network,Chouette::Company,Chouette::StopPoint,Chouette::StopArea' filename='offer_datas' title='Offer Datas'"
+    sh "bundle exec rake erd only='Organisation,Referential,User,Workbench' filename='organisation' title='Organisation'"
   end
-  
+
 end
