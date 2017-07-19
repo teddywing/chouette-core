@@ -71,10 +71,9 @@ Rails.application.configure do
       cas_server: "http://stif-portail-dev.af83.priv/sessions"
     }
   end
-  config.stif_portail_api =
-    {
-      key: "Ohphie1Voo6the5hohpi",
-      url: "http://stif-portail-dev.af83.priv"
+  config.stif_portail_api = {
+    key: "Ohphie1Voo6the5hohpi",
+    url: "http://stif-portail-dev.af83.priv"
   }
 
   # Ext. apps links
