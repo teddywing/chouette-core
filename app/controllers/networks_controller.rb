@@ -37,14 +37,13 @@ class NetworksController < BreadcrumbController
           redirect_to params.merge(:page => 1)
         end
 
-        @networks = ModelDecorator.decorate(
-          @networks,
-          with: NetworkDecorator,
-          context: {
-            line_referential: line_referential
-          }
-        )
+        @networks = decorate_networks(@networks)
       }
+
+      format.js {
+        @networks = decorate_networks(@networks)
+      }
+
       build_breadcrumb :index
     end
   end
@@ -85,6 +84,16 @@ class NetworksController < BreadcrumbController
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  def decorate_networks(networks)
+    ModelDecorator.decorate(
+      networks,
+      with: NetworkDecorator,
+      context: {
+        line_referential: line_referential
+      }
+    )
   end
 
 end
