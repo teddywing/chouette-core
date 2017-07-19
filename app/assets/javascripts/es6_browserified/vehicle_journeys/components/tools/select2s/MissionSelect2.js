@@ -50,7 +50,7 @@ class BSelect4 extends React.Component{
             },
             cache: true
           },
-          minimumInputLength: 0,
+          minimumInputLength: 1,
           escapeMarkup: function (markup) { return markup; },
           templateResult: formatRepo
         }}
