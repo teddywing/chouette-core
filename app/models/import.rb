@@ -4,7 +4,7 @@ class Import < ActiveRecord::Base
   belongs_to :referential
 
   extend Enumerize
-  enumerize :status, in: %i(new pending successful failed running aborted canceled)
+  enumerize :status, in: %i(new downloading analyzing pending successful failed running aborted canceled)
 
   validates :file, presence: true
 

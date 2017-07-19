@@ -9,5 +9,9 @@ FactoryGirl.define do
     status :new
     started_at nil
     ended_at nil
+
+    factory :workbench_import do
+      type 'WorkbenchImport'
+    end
   end
 end
