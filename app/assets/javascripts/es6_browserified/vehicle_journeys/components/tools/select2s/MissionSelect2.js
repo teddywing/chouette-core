@@ -43,7 +43,7 @@ class BSelect4 extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    { text: '<strong>' + _.last(_.split(item.object_id, ':')) + " - " + item.published_name + "</strong><br/><small>" + item.registration_number + "</small>" }
+                    { text: "<strong>" + item.published_name + _.last(_.split(item.object_id, ':')) + "</strong><br/><small>" + item.registration_number + "</small>" }
                   )
                 )
               };
