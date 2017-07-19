@@ -37,7 +37,7 @@ class TimeTablesController < ChouetteController
     tt_params = time_table_params
     if tt_params[:calendar_id]
       %i(monday tuesday wednesday thursday friday saturday sunday).map { |d| tt_params[d] = true }
-      calendar = current_organisation.calendars.find_by_id(tt_params[:calendar_id])
+      calendar = Calendar.find(tt_params[:calendar_id])
       tt_params[:calendar_id] = nil if tt_params.has_key?(:dates_attributes) || tt_params.has_key?(:periods_attributes)
     end
 
