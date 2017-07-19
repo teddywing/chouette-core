@@ -80,7 +80,8 @@ Rails.application.configure do
   config.portal_url = "http://stif-boiv-staging.af83.priv"
 
   # IEV url
-  config.iev_url = "localhost:8080"
+  config.iev_url = "http://localhost:8080"
+  config.fe_url  = "http://localhost:3000"
 
   # file to data for demo
   config.demo_data = "tmp/demo.zip"
