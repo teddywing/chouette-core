@@ -25,7 +25,7 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
         end
       end
 
-      context 'all rights and different organisation' do 
+      context 'all rights and different organisation' do
 
         let( :user ){ build_stubbed :allmighty_user }
 
@@ -33,10 +33,11 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
           expect_action_link_elements.to be_empty
           expect_action_link_hrefs.to eq([
             referential_time_tables_path(object),
+            new_referential_path(from: object),
           ])
         end
       end
-      context 'all rights and same organisation' do 
+      context 'all rights and same organisation' do
 
         let( :user ){ build_stubbed :allmighty_user, organisation: referential.organisation }
 
