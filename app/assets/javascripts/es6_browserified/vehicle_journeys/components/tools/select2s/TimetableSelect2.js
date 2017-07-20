@@ -43,14 +43,14 @@ class BSelect4 extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    {text: '<strong>' + item.short_id + ' - ' + (item.color ? "<span class='fa fa-circle' style='color:" + item.color + "'></span> - " : '') + item.comment + '</strong><br/><small>' + item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') + '</small>'}
+                    {text: '<strong>' + (item.color ? "<span class='fa fa-circle' style='color:" + item.color + "'></span> " : '') + item.comment + ' - ' + item.short_id + '</strong><br/><small>' + item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') + '</small>'}
                   )
                 )
               };
             },
             cache: true
           },
-          minimumInputLength: 3,
+          minimumInputLength: 1,
           escapeMarkup: function (markup) { return markup; },
           templateResult: formatRepo
         }}

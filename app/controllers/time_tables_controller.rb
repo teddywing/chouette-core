@@ -37,7 +37,7 @@ class TimeTablesController < ChouetteController
     tt_params = time_table_params
     if tt_params[:calendar_id]
       %i(monday tuesday wednesday thursday friday saturday sunday).map { |d| tt_params[d] = true }
-      calendar = current_organisation.calendars.find_by_id(tt_params[:calendar_id])
+      calendar = Calendar.find(tt_params[:calendar_id])
       tt_params[:calendar_id] = nil if tt_params.has_key?(:dates_attributes) || tt_params.has_key?(:periods_attributes)
     end
 
@@ -86,15 +86,13 @@ class TimeTablesController < ChouetteController
           redirect_to params.merge(:page => 1)
         end
 
-        @time_tables = ModelDecorator.decorate(
-          @time_tables,
-          with: TimeTableDecorator,
-          context: {
-            referential: @referential
-          }
-        )
+        @time_tables = decorate_time_tables(@time_tables)
 
         build_breadcrumb :index
+      }
+
+      format.js {
+        @time_tables = decorate_time_tables(@time_tables)
       }
     end
   end
@@ -193,6 +191,16 @@ class TimeTablesController < ChouetteController
   def duplicate_source
     from_id = time_table_params['created_from_id']
     Chouette::TimeTable.find(from_id) if from_id
+  end
+
+  def decorate_time_tables(time_tables)
+    ModelDecorator.decorate(
+      time_tables,
+      with: TimeTableDecorator,
+      context: {
+        referential: @referential
+      }
+    )
   end
 
   def time_table_params
