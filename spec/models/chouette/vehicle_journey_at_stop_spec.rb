@@ -2,23 +2,19 @@ require 'spec_helper'
 
 RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
   describe "#day_offset_outside_range" do
-    it "disallows negative offsets" do
-      at_stop = build_stubbed(:vehicle_journey_at_stop)
+    let (:at_stop) { build_stubbed(:vehicle_journey_at_stop) }
 
+    it "disallows negative offsets" do
       expect(at_stop.day_offset_outside_range?(-1)).to be true
     end
 
     it "disallows offsets greater than DAY_OFFSET_MAX" do
-      at_stop = build_stubbed(:vehicle_journey_at_stop)
-
       expect(at_stop.day_offset_outside_range?(
         Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX + 1
       )).to be true
     end
 
     it "allows offsets between 0 and DAY_OFFSET_MAX inclusive" do
-      at_stop = build_stubbed(:vehicle_journey_at_stop)
-
       expect(at_stop.day_offset_outside_range?(
         Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX
       )).to be false
