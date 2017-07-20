@@ -19,7 +19,8 @@ RSpec.describe "NetexImport", type: :request do
       {
         name: 'hello world',
         file: file,
-        referential_id: referential.id
+        referential_id: referential.id,
+        workbench_id:   referential.workbench_id
       }
     end 
 

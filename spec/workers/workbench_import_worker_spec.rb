@@ -14,7 +14,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
     # That should be `build_stubbed's` job, no?
     allow(Import).to receive(:find).with(import.id).and_return(import)
   end
-  it 'downloads a zip file' do
+  xit 'downloads a zip file' do
     stub_request(:get, path)
       .with(headers: authorization_token_header(api_key))
       .to_return(body: result)

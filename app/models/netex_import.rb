@@ -2,7 +2,6 @@ require 'net/http'
 class NetexImport < Import
   after_commit :launch_java_import
 
-  validates_presence_of :referential, :workbench
 
   def launch_java_import
     logger.warn  "Call iev get #{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{id}"
