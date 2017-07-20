@@ -46,7 +46,7 @@ RSpec.describe ReferentialPolicy, type: :policy do
   # ------------------
 
   permissions :clone? do
-    it_behaves_like 'permitted policy and same organisation', 'referentials.create', archived: true
+    it_behaves_like 'permitted policy', 'referentials.create', archived: true
   end
 
   permissions :archive? do
