@@ -1,6 +1,5 @@
 require 'net/http'
 class NetexImport < Import
-  mount_uploader :file, ImportUploader
   after_commit :launch_java_import
 
   def launch_java_import
