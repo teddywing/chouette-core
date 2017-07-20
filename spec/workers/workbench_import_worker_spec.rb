@@ -6,6 +6,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   let( :referential ){ import.referential }
   let( :api_key ){ build_stubbed :api_key, referential: referential }
 
+  # /workbenches/:workbench_id/imports/:id/download
   let( :path ){ download_workbench_import_path(workbench, import) }
   let( :result ){ import.file.read }
 
@@ -14,11 +15,9 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
     allow(Import).to receive(:find).with(import.id).and_return(import)
   end
   it 'downloads a zip file' do
-    # /workbenches/:workbench_id/imports/:id/download
     stub_request(:get, path)
       .with(headers: authorization_token_header(api_key))
       .to_return(body: result)
-    # WTH was I trying to test ;) Ah yeah HTTP into download
     worker.perform import.id
     expect( worker.downloaded ).to eq( result )
   end
