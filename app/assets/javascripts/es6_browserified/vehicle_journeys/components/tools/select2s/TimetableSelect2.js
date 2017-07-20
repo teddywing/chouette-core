@@ -2,6 +2,7 @@ var _ = require('lodash')
 var React = require('react')
 var PropTypes = require('react').PropTypes
 var Select2 = require('react-select2')
+var actions = require('../../../actions')
 
 // get JSON full path
 var origin = window.location.origin
@@ -37,20 +38,20 @@ class BSelect4 extends React.Component{
               };
             },
             processResults: function(data, params) {
-
               return {
                 results: data.map(
                   item => _.assign(
                     {},
                     item,
-                    {text: item.comment}
+                    {text: '<strong>' + (item.color ? "<span class='fa fa-circle' style='color:" + item.color + "'></span> " : '') + item.comment + ' - ' + item.short_id + '</strong><br/><small>' + item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') + '</small>'}
                   )
                 )
               };
             },
             cache: true
           },
-          minimumInputLength: 3,
+          minimumInputLength: 1,
+          escapeMarkup: function (markup) { return markup; },
           templateResult: formatRepo
         }}
       />

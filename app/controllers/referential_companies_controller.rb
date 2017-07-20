@@ -14,14 +14,13 @@ class ReferentialCompaniesController < ChouetteController
           redirect_to params.merge(:page => 1)
         end
 
-        @companies = ModelDecorator.decorate(
-          @companies,
-          with: CompanyDecorator,
-          context: {
-            referential: referential
-          }
-        )
+        @companies = decorate_companies(@companies)
       }
+
+      format.js {
+        @companies = decorate_companies(@companies)
+      }
+
       build_breadcrumb :index
     end
   end
@@ -68,6 +67,16 @@ class ReferentialCompaniesController < ChouetteController
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  def decorate_companies(companies)
+    ModelDecorator.decorate(
+      companies,
+      with: CompanyDecorator,
+      context: {
+        referential: referential
+      }
+    )
   end
 
 end

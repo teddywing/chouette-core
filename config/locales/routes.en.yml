@@ -84,9 +84,3 @@ en:
       hub:
         route:
           objectid: "[prefix]:Route:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character. Maximum length of the unique key = 8."
-
-  # simpleform
-  helpers:
-    submit:
-      route:
-        create: 'Create route'

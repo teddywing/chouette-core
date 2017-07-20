@@ -186,7 +186,7 @@ class Referential < ActiveRecord::Base
   before_validation :clone_associations, :on => :create, if: :created_from
   before_validation :assign_slug, :on => :create
   before_validation :assign_prefix, :on => :create
-  before_create :create_schema,  unless: :created_from
+  before_create :create_schema
 
   after_create :clone_schema, if: :created_from
 

@@ -14,6 +14,36 @@ fr:
     formats:
       short: "%d/%m/%Y"
       short_with_time: "%d/%m/%Y à %Hh%M"
+    abbr_day_names:
+    - dim
+    - lun
+    - mar
+    - mer
+    - jeu
+    - ven
+    - sam
+    day_names:
+    - dimanche
+    - lundi
+    - mardi
+    - mercredi
+    - jeudi
+    - vendredi
+    - samedi
+    month_names:
+    -
+    - janvier
+    - février
+    - mars
+    - avril
+    - mai
+    - juin
+    - juillet
+    - août
+    - septembre
+    - octobre
+    - novembre
+    - décembre
   errors:
     format: "%{message}"
 
@@ -25,3 +55,4 @@ fr:
 
   id_codif: 'ID Codifligne'
   id_reflex: 'ID Reflex'
+  objectid: 'ID'

@@ -7,6 +7,8 @@ fr:
     index:
       title: "Imports"
       warning: ""
+    new:
+      title: "Imports"
     show:
       report: "Rapport"
       imported_file: "Fichier source"

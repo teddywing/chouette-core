@@ -77,7 +77,8 @@ module DefaultAttributesSupport
   def build_objectid
     if objectid.include? ':__pending_id__'
       fix_uniq_objectid
-      update_attributes( :objectid => objectid, :object_version => (object_version - 1) )
+      self.object_version = object_version - 1
+      self.save(validate: false)
     end
   end
 

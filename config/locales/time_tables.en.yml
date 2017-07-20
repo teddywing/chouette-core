@@ -24,6 +24,8 @@ en:
       success: "Actualize succeded"
     new:
       title: "Add a new timetable"
+    duplicate:
+      title: "Duplicate timetable"
     edit:
       title: "Update timetable %{time_table}"
     show:

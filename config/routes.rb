@@ -1,7 +1,7 @@
 require 'sidekiq/web'
 
 ChouetteIhm::Application.routes.draw do
-  resources :workbenches, :only => [:show] do
+  resources :workbenches, only: [:show, :index] do
     delete :referentials, on: :member, action: :delete_referentials
     resources :imports do
       get :download, on: :member
@@ -14,7 +14,7 @@ ChouetteIhm::Application.routes.draw do
 
   devise_scope :user do
     authenticated :user do
-      root :to => 'referentials#index', as: :authenticated_root
+      root :to => 'workbenches#index', as: :authenticated_root
     end
 
     unauthenticated :user do
@@ -77,7 +77,7 @@ ChouetteIhm::Application.routes.draw do
     get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
   end
 
-  resources :referentials do
+  resources :referentials, except: :index do
     resources :api_keys
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
@@ -214,7 +214,8 @@ ChouetteIhm::Application.routes.draw do
       end
     end
   end
-  root :to => "referentials#index"
+
+  root :to => "workbenches#index"
 
   get '/help/(*slug)' => 'help#show'
 

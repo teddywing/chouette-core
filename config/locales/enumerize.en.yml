@@ -114,6 +114,7 @@ en:
       transport_mode:
         interchange: Interchange
         unknown: "unknown"
+        undefined: "undefined"
         air: "Air"
         train: "Train"
         long_distance_train: "Long distance train"
