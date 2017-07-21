@@ -12,10 +12,32 @@ class WorkbenchImportWorker
 
   def download
     logger.warn  "HTTP GET #{import_url}"
-    @downloaded = AF83::HTTPFetcher.get_resource(
+    zipfile_data = AF83::HTTPFetcher.get_resource(
       host: import_host,
       path: import_path,
       params: {token: import.token_download})
+
+    Tempfile.open( do | tmpfile |
+      tmpfile.write zipfile_data
+      @downloaded = tmpfile.path
+    end
+
+    if one_entry?
+      upload(@downloaded)
+    else
+      split_zip.each(&method(:upload))
+    end
+  end
+
+  def single_entry?
+    true
+  end
+
+  def split_zip
+    []
+  end
+
+  def upload zip_file
   end
 
   def import_host

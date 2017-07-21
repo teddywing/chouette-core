@@ -1,7 +1,7 @@
 RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
   let( :worker ) { described_class.new }
-  let( :import ){ build_stubbed :import, token_download: download_token }
+  let( :import ){ build_stubbed :import, token_download: download_token, file: File.open(zip_file) }
   let( :workbench ){ import.workbench }
   let( :referential ){ import.referential }
 
@@ -19,16 +19,36 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   end
 
 
-  it 'downloads a zip file' do
+  context 'multireferential zipfile' do 
+    let( :zip_file ){ File.join(fixture_path, 'multiref.zip') }
 
-    default_headers = {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}
-    stub_request(:get, url)
-      .with(headers: default_headers)
-      .to_return(body: result)
+    it 'downloads a zip file' do
+      default_headers = {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}
+      stub_request(:get, url)
+        .with(headers: default_headers)
+        .to_return(body: result)
 
-    worker.perform import.id
+      worker.perform import.id
 
-    expect( worker.downloaded ).to eq( result )
+      expect( File.read(worker.downloaded) ).to eq( result )
+      expect( worker ).not_to be_single_entry
+    end
+  end
+
+  context 'unireferential zipfile' do 
+    let( :zip_file ){ File.join(fixture_path, 'uniref.zip') }
+
+    it 'downloads a zip file' do
+      default_headers = {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}
+      stub_request(:get, url)
+        .with(headers: default_headers)
+        .to_return(body: result)
+
+      worker.perform import.id
+
+      expect( File.read(worker.downloaded) ).to eq( result )
+      expect( worker ).to be_single_entry
+    end
   end
 
 end
