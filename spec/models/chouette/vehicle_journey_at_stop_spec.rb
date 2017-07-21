@@ -19,6 +19,16 @@ RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
         Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX
       )).to be false
     end
+
+    it "forces a nil offset to 0" do
+      at_stop = build_stubbed(
+        :vehicle_journey_at_stop,
+        arrival_day_offset: nil,
+        departure_day_offset: nil
+      )
+
+      expect(at_stop.day_offset_outside_range?(nil)).to be false
+    end
   end
 
   describe "#validate" do

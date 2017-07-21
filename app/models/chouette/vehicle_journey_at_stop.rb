@@ -59,6 +59,10 @@ module Chouette
     end
 
     def day_offset_outside_range?(offset)
+      # At-stops that were created before the database-default of 0 will have
+      # nil offsets. Handle these gracefully by forcing them to a 0 offset.
+      offset ||= 0
+
       offset < 0 || offset > DAY_OFFSET_MAX
     end
 
