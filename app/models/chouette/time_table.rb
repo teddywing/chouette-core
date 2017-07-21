@@ -38,11 +38,12 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   validates_associated :periods
 
   def continuous_dates
+    in_days = self.dates.where(in_out: true).sort_by(&:date)
     chunk = {}
     group = nil
-    self.dates.where(in_out: true).each_with_index do |date, index|
+    in_days.each_with_index do |date, index|
       group ||= index
-      group = (date.date == dates[index - 1].date + 1.day) ? group : group + 1
+      group = (date.date == in_days[index - 1].date + 1.day) ? group : group + 1
       chunk[group] ||= []
       chunk[group] << date
     end
@@ -51,8 +52,8 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
 
   def convert_continuous_dates_to_periods
     chunks = self.continuous_dates
-    # Remove less than 3 continuous day chunk
-    chunks.delete_if {|chunk| chunk.count < 3}
+    # Remove less than 2 continuous day chunk
+    chunks.delete_if {|chunk| chunk.count < 2}
 
     transaction do
       chunks.each do |chunk|
@@ -415,7 +416,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def clone_periods
     periods = []
     self.periods.each { |p| periods << p.copy}
-    periods
+    periods.sort_by(&:period_start)
   end
 
   def included_days
@@ -436,7 +437,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
 
 
   # produce a copy of periods without anyone overlapping or including another
-  def optimize_periods
+  def optimize_overlapping_periods
     periods = self.clone_periods
     optimized = []
     i=0
@@ -461,6 +462,44 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     optimized.sort { |a,b| a.period_start <=> b.period_start}
   end
 
+  def optimize_continuous_periods
+    periods = self.clone_periods
+    optimized = []
+    i = 0
+    while i < periods.length
+      p1 = periods[i]
+      p2 = periods[i + 1]
+      if p1.period_end + 1.day === p2.try(:period_start)
+        p1.period_end = p2.period_end
+        optimized << p1
+        periods.delete p2
+      end
+      i += 1
+    end
+   optimized
+  end
+
+  def optimize_continuous_dates_and_periods
+    days = self.included_days
+    periods = self.clone_periods
+    optimized = []
+    i = 0
+    while i < days.length
+      day = days[i]
+      j = i
+      while j < periods.length
+        period = periods[j]
+        period.period_start = day if period.period_start - 1.day === day
+        period.period_end = day if period.period_end + 1.day === day
+        optimized << period
+        j += 1
+      end
+      i += 1
+    end
+    #update a period if a in_day is just before or after
+    optimized
+  end
+
   # add a peculiar day or switch it from excluded to included
   def add_included_day(d)
     if self.excluded_date?(d)
@@ -478,10 +517,10 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def merge!(another_tt)
     transaction do
       self.periods = another_tt.clone_periods + self.periods
-      self.periods = self.optimize_periods
 
       # For included dates
       another_tt.included_days.map{ |d| add_included_day(d) }
+      # binding.pry
 
       # For excluded dates
       existing_out_date = self.dates.where(in_out: false).map(&:date)
@@ -494,6 +533,9 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     end
 
     self.convert_continuous_dates_to_periods
+    self.periods = self.optimize_continuous_dates_and_periods
+    self.periods = self.optimize_continuous_periods
+    self.periods = self.optimize_overlapping_periods
   end
 
   def included_days_in_dates_and_periods
