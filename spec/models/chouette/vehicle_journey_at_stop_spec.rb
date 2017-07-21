@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
-  describe "#day_offset_outside_range" do
+  describe "#day_offset_outside_range?" do
     let (:at_stop) { build_stubbed(:vehicle_journey_at_stop) }
 
     it "disallows negative offsets" do
