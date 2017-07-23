@@ -30,6 +30,8 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
       worker.perform import.id
 
+  require 'pry'
+  binding.pry
       expect( File.read(worker.downloaded) ).to eq( result )
       expect( worker ).not_to be_single_entry
     end

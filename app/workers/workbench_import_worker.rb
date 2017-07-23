@@ -1,6 +1,7 @@
 class WorkbenchImportWorker
   include Sidekiq::Worker
   include Rails.application.routes.url_helpers
+  include Configurable
 
   attr_reader :import, :downloaded
 
@@ -17,17 +18,21 @@ class WorkbenchImportWorker
       path: import_path,
       params: {token: import.token_download})
 
-    Tempfile.open( do | tmpfile |
-      tmpfile.write zipfile_data
-      @downloaded = tmpfile.path
+    path = File.join(config.dir, import.name.gsub(%r{\s+}, '-'))
+    unique_path = FileService.unique_filename path
+    Dir.mkdir unique_path
+    @downloaded = File.join(unique_path, import.name)
+    File.open(downloaded, 'wb') do | file |
+      file.write zipfile_data
     end
 
-    if one_entry?
-      upload(@downloaded)
+    if single_entry?
+      upload(downloaded)
     else
       split_zip.each(&method(:upload))
     end
   end
+
 
   def single_entry?
     true
@@ -38,6 +43,12 @@ class WorkbenchImportWorker
   end
 
   def upload zip_file
+  end
+
+  # Memoized Values
+
+  def dirname
+    @__dirname__ ||= make_unique_dir
   end
 
   def import_host
