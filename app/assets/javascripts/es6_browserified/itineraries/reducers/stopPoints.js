@@ -56,7 +56,7 @@ const stopPoints = (state = [], action) => {
             {},
             t,
             {
-              stoppoint_id: "",
+              stoppoint_id: t.stoppoint_id,
               text: action.text.text,
               stoparea_id: action.text.stoparea_id,
               user_objectid: action.text.user_objectid,

@@ -16,6 +16,7 @@ describe('stops reducer', () => {
       {
         text: 'first',
         index: 0,
+        stoppoint_id: 72,
         edit: false,
         for_boarding: 'normal',
         for_alighting: 'normal',
@@ -27,6 +28,7 @@ describe('stops reducer', () => {
       {
         text: 'second',
         index: 1,
+        stoppoint_id: 73,
         edit: false,
         for_boarding: 'normal',
         for_alighting: 'normal',
@@ -54,6 +56,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          stoppoint_id: 72,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -65,6 +68,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          stoppoint_id: 73,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -99,6 +103,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          stoppoint_id: 72,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -110,6 +115,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          stoppoint_id: 73,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -133,6 +139,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          stoppoint_id: 72,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -144,6 +151,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          stoppoint_id: 73,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -167,6 +175,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          stoppoint_id: 72,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -205,8 +214,8 @@ describe('stops reducer', () => {
           text: 'new value',
           name: 'new',
           index: 0,
+          stoppoint_id: 72,
           edit: false,
-          stoppoint_id: '',
           stoparea_id: 1,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -226,6 +235,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          stoppoint_id: 73,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -251,6 +261,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          stoppoint_id: 72,
           edit: false,
           for_boarding: 'prohibited',
           for_alighting: 'normal',
@@ -262,6 +273,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          stoppoint_id: 73,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -285,6 +297,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          stoppoint_id: 72,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -293,6 +306,7 @@ describe('stops reducer', () => {
             json: {
               text: 'first',
               index: 0,
+              stoppoint_id: 72,
               edit: false,
               for_boarding: 'normal',
               for_alighting: 'normal',
@@ -303,6 +317,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          stoppoint_id: 73,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -326,6 +341,7 @@ describe('stops reducer', () => {
         {
           text: 'first',
           index: 0,
+          stoppoint_id: 72,
           edit: true,
           for_boarding: 'normal',
           for_alighting: 'normal',
@@ -337,6 +353,7 @@ describe('stops reducer', () => {
         {
           text: 'second',
           index: 1,
+          stoppoint_id: 73,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
