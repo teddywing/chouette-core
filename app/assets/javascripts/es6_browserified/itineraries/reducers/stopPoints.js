@@ -30,15 +30,15 @@ const stopPoints = (state = [], action) => {
     case 'MOVE_STOP_UP':
       return [
         ...state.slice(0, action.index - 1),
-        state[action.index],
-        state[action.index - 1],
+        _.assign({}, state[action.index], { stoppoint_id: state[action.index - 1].stoppoint_id }),
+        _.assign({}, state[action.index - 1], { stoppoint_id: state[action.index].stoppoint_id }),
         ...state.slice(action.index + 1)
       ]
     case 'MOVE_STOP_DOWN':
       return [
         ...state.slice(0, action.index),
-        state[action.index + 1],
-        state[action.index],
+        _.assign({}, state[action.index + 1], { stoppoint_id: state[action.index].stoppoint_id }),
+        _.assign({}, state[action.index], { stoppoint_id: state[action.index + 1].stoppoint_id }),
         ...state.slice(action.index + 2)
       ]
     case 'DELETE_STOP':
