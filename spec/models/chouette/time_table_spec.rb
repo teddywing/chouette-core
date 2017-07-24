@@ -14,6 +14,8 @@ describe Chouette::TimeTable, :type => :model do
   describe "#merge! with time_table" do
     let(:another_tt) { create(:time_table) }
     let(:another_tt_periods_to_range) { another_tt.periods.map{|p| p.period_start..p.period_end } }
+    let(:dates) { another_tt.dates.map(&:date) }
+    let(:continuous_dates) { another_tt.continuous_dates.flatten.map(&:date) }
 
     # Make sur we don't have overlapping periods or dates
     before do
@@ -22,12 +24,19 @@ describe Chouette::TimeTable, :type => :model do
         p.period_end   = p.period_end + 1.year
       end
       another_tt.dates.each{| d| d.date = d.date + 1.year }
+      another_tt.save
     end
 
     it 'should merge dates' do
       subject.dates.clear
       subject.merge!(another_tt)
-      expect(subject.dates.map(&:date)).to include(*another_tt.dates.map(&:date))
+      expect(subject.dates.map(&:date)).to match_array(dates - continuous_dates)
+    end
+
+    it 'should not merge continuous dates' do
+      subject.dates.clear
+      subject.merge!(another_tt)
+      expect(subject.dates.map(&:date)).not_to include(*continuous_dates)
     end
 
     it 'should merge periods' do
@@ -54,24 +63,30 @@ describe Chouette::TimeTable, :type => :model do
 
   context "#merge! with calendar" do
     let(:calendar) { create(:calendar, date_ranges: [Date.today + 1.year..Date.tomorrow + 1.year]) }
+    let(:another_tt) { calendar.convert_to_time_table }
+    let(:dates) { subject.dates.map(&:date) }
+    let(:continuous_dates) { subject.continuous_dates.flatten.map(&:date) }
 
     it 'should merge calendar dates' do
       subject.dates.clear
-      subject.merge!(calendar.convert_to_time_table)
-      expect(subject.dates.map(&:date)).to include(*calendar.dates)
+      subject.merge!(another_tt)
+      expect(subject.dates.map(&:date)).to match_array(dates - continuous_dates)
+    end
+
+    it 'should not merge calendar continuous dates' do
+      subject.dates.clear
+      subject.merge!(another_tt)
+      expect(subject.dates.map(&:date)).not_to include(*continuous_dates)
     end
 
     it 'should merge calendar periods with no periods in source' do
       subject.periods.clear
-      another_tt = calendar.convert_to_time_table
       subject.merge!(another_tt)
       expect(subject_periods_to_range).to include(*calendar.date_ranges)
     end
 
     it 'should add calendar periods with existing periods in source' do
-      another_tt = calendar.convert_to_time_table
       subject.merge!(another_tt)
-
       expect(subject_periods_to_range).to include(*calendar.date_ranges)
     end
   end
@@ -1127,7 +1142,7 @@ end
         subject.int_day_types = 4|8|16
       end
       it "should return 2 ordered periods" do
-        periods = subject.optimize_periods
+        periods = subject.optimize_overlapping_periods
         expect(periods.size).to eq(2)
         expect(periods[0].period_start).to eq(Date.new(2014, 6, 1))
         expect(periods[0].period_end).to eq(Date.new(2014, 6, 14))

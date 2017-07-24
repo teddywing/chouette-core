@@ -47,18 +47,17 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       chunk[group] ||= []
       chunk[group] << date
     end
-    chunk.values
+    # Remove less than 2 continuous day chunk
+    chunk.values.delete_if {|dates| dates.count < 2}
   end
 
   def convert_continuous_dates_to_periods
     chunks = self.continuous_dates
-    # Remove less than 2 continuous day chunk
-    chunks.delete_if {|chunk| chunk.count < 2}
 
     transaction do
       chunks.each do |chunk|
         self.periods.create!(period_start: chunk.first.date, period_end: chunk.last.date)
-        chunk.map(&:destroy)
+        self.dates.delete(chunk)
       end
     end
   end
@@ -462,41 +461,50 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     optimized.sort { |a,b| a.period_start <=> b.period_start}
   end
 
-  def optimize_continuous_periods
-    periods = self.clone_periods
-    optimized = []
-    i = 0
-    while i < periods.length
-      p1 = periods[i]
-      p2 = periods[i + 1]
-      if p1.period_end + 1.day === p2.try(:period_start)
-        p1.period_end = p2.period_end
-        optimized << p1
-        periods.delete p2
-      end
-      i += 1
+  def continuous_periods
+    periods = self.periods.sort_by(&:period_start)
+    chunk = {}
+    group = nil
+    periods.each_with_index do |period, index|
+      group ||= index
+      group = (period.period_start - 1.day == periods[index - 1].period_end) ? group : group + 1
+      chunk[group] ||= []
+      chunk[group] << period
     end
-   optimized
+    chunk.values.delete_if {|periods| periods.count < 2}
   end
 
+  def convert_continuous_periods_into_one
+    chunks = self.continuous_periods
+
+    transaction do
+      chunks.each do |chunk|
+        self.periods.create!(period_start: chunk.first.period_start, period_end: chunk.last.period_end)
+        self.periods.delete(chunk)
+      end
+    end
+  end
+
+  #update a period if a in_day is just before or after
   def optimize_continuous_dates_and_periods
-    days = self.included_days
+
+
+    in_days = self.dates.where(in_out: true).sort_by(&:date)
     periods = self.clone_periods
     optimized = []
-    i = 0
-    while i < days.length
-      day = days[i]
-      j = i
-      while j < periods.length
-        period = periods[j]
-        period.period_start = day if period.period_start - 1.day === day
-        period.period_end = day if period.period_end + 1.day === day
-        optimized << period
-        j += 1
+
+    periods.each do |period|
+      in_days.each do |day|
+        if period.period_start - 1.day === day.date
+          period.period_start = day.date
+          self.dates.delete(day)
+        elsif period.period_end + 1.day === day.date
+          period.period_end = day.date
+          self.dates.delete(day)
+        end
       end
-      i += 1
+      optimized << period
     end
-    #update a period if a in_day is just before or after
     optimized
   end
 
@@ -520,7 +528,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
 
       # For included dates
       another_tt.included_days.map{ |d| add_included_day(d) }
-      # binding.pry
 
       # For excluded dates
       existing_out_date = self.dates.where(in_out: false).map(&:date)
@@ -528,14 +535,13 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
         unless existing_out_date.include?(d.date)
           self.dates << Chouette::TimeTableDate.new(:date => d.date, :in_out => false)
         end
+        self.save!
       end
-      self.save!
+      self.convert_continuous_dates_to_periods
+      self.periods = self.optimize_continuous_dates_and_periods
+      self.convert_continuous_periods_into_one
+      self.periods = self.optimize_overlapping_periods
     end
-
-    self.convert_continuous_dates_to_periods
-    self.periods = self.optimize_continuous_dates_and_periods
-    self.periods = self.optimize_continuous_periods
-    self.periods = self.optimize_overlapping_periods
   end
 
   def included_days_in_dates_and_periods
