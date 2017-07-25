@@ -59,6 +59,14 @@ describe Chouette::TimeTable, :type => :model do
       subject.merge!(another_tt)
       expect(subject.dates.map(&:date)).to include(another_tt.dates.last.date)
     end
+
+    it 'should remove date in_out false if other tt doesnt have them' do
+      subject.dates.create(in_out: false, date: Date.today + 5.day + 1.year)
+
+      expect {
+        subject.merge!(another_tt)
+      }.to change {subject.reload.excluded_days.count}.by(-1)
+    end
   end
 
   context "#merge! with calendar" do
@@ -1124,7 +1132,7 @@ end
 
 
 
-  describe "#optimize_periods" do
+  describe "#optimize_overlapping_periods" do
       before do
         subject.periods.clear
         subject.periods << Chouette::TimeTablePeriod.new(

@@ -542,7 +542,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
 
       another_tt.excluded_days.each do |d|
         unless self.reload.excluded_date?(d)
-          self.dates.create!(:date => d, :in_out => false)
+          self.dates << Chouette::TimeTableDate.new(date: d, in_out: false)
         end
         self.save!
       end
