@@ -480,29 +480,35 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     transaction do
       chunks.each do |chunk|
         self.periods.create!(period_start: chunk.first.period_start, period_end: chunk.last.period_end)
-        self.periods.delete(chunk)
+        self.periods.delete chunk
       end
     end
   end
 
   #update a period if a in_day is just before or after
   def optimize_continuous_dates_and_periods
+    return self.periods if self.included_days.empty? || periods.empty?
 
-
-    in_days = self.dates.where(in_out: true).sort_by(&:date)
     periods = self.clone_periods
     optimized = []
 
-    periods.each do |period|
-      in_days.each do |day|
+    i = 0
+    while i < periods.length
+      period = periods[i]
+      j = 0
+      in_days = self.reload.dates.where(in_out: true).sort_by(&:date)
+      while j < in_days.length
+        day = in_days[j]
         if period.period_start - 1.day === day.date
           period.period_start = day.date
-          self.dates.delete(day)
+          self.dates.delete day
         elsif period.period_end + 1.day === day.date
           period.period_end = day.date
-          self.dates.delete(day)
+          self.dates.delete day
         end
+        j += 1
       end
+      i += 1
       optimized << period
     end
     optimized
@@ -530,13 +536,17 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
       another_tt.included_days.map{ |d| add_included_day(d) }
 
       # For excluded dates
-      existing_out_date = self.dates.where(in_out: false).map(&:date)
-      another_tt.dates.where(in_out: false).each do |d|
-        unless existing_out_date.include?(d.date)
-          self.dates << Chouette::TimeTableDate.new(:date => d.date, :in_out => false)
+      self.dates.where(in_out: false).each do |d|
+        self.dates.delete d if another_tt.include_in_periods?(d.date) && !another_tt.excluded_date?(d.date)
+      end
+
+      another_tt.excluded_days.each do |d|
+        unless self.reload.excluded_date?(d)
+          self.dates.create!(:date => d, :in_out => false)
         end
         self.save!
       end
+
       self.convert_continuous_dates_to_periods
       self.periods = self.optimize_continuous_dates_and_periods
       self.convert_continuous_periods_into_one
