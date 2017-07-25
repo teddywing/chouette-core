@@ -1,5 +1,5 @@
 class Chouette::Line < Chouette::ActiveRecord
-  include StifCodifligneAttributesSupport
+  include DefaultNetexAttributesSupport
   include LineRestrictions
   include LineReferentialSupport
   include StifTransportModeEnumerations
