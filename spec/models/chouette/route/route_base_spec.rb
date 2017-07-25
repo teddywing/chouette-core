@@ -4,7 +4,7 @@ RSpec.describe Chouette::Route, :type => :model do
 
   describe '#objectid' do
     subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::ObjectId) }
+    it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
   end
 
   it { is_expected.to enumerize(:direction).in(:straight_forward, :backward, :clockwise, :counter_clockwise, :north, :north_west, :west, :south_west, :south, :south_east, :east, :north_east) }

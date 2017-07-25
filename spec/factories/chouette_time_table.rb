@@ -9,7 +9,7 @@ FactoryGirl.define do
 
   factory :time_table, :class => Chouette::TimeTable do
     sequence(:comment) { |n| "Timetable #{n}" }
-    sequence(:objectid) { |n| "test:Timetable:#{n}" }
+    sequence(:objectid) { |n| "test:Timetable:#{n}:loc" }
     sequence(:int_day_types) { (1..7).to_a.map{ |n| 2**(n+1)}.sum }
     calendar nil
 

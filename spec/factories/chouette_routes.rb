@@ -6,7 +6,7 @@ FactoryGirl.define do
     sequence(:number) { |n| "#{n}" }
     sequence(:wayback) { |n| Chouette::Route.wayback.values[n % 2] }
     sequence(:direction) { |n| Chouette::Route.direction.values[n % 12] }
-    sequence(:objectid) { |n| "test:Route:#{n}" }
+    sequence(:objectid) { |n| "test:Route:#{n}:loc" }
 
     association :line, :factory => :line
 
