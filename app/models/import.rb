@@ -11,7 +11,14 @@ class Import < ActiveRecord::Base
   validates :file, presence: true
   validates_presence_of :referential, :workbench
 
-  before_create do
+  before_create :initialize_fields
+
+  def notify_parent
+  end
+
+  private
+
+  def initialize_fields
     self.token_download = SecureRandom.urlsafe_base64
     self.status = Import.status.new
   end
