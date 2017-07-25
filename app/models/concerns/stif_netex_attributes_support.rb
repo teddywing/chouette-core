@@ -13,7 +13,7 @@ module StifNetexAttributesSupport
   end
 
   def objectid
-    Chouette::StifNetexObjectId.new read_attribute(:objectid)
+    Chouette::StifNetexObjectid.new read_attribute(:objectid)
   end
 
   def provider_id
@@ -43,13 +43,12 @@ module StifNetexAttributesSupport
   end
 
   def increment_workbench_local_id
-    workbench_object_identifier = self.referential.workbench.worbench_object_identifiers.find_or_create_by_object_class(self.class)
-    result = WorbenchObjectIdentifier.increment_counter(:last_local_id, 1)
-    counter = 3
-    # Ecrire le code pour répéter l'opération 3 fois au cas ou l'enregistrement échouerait.
-    while result == false && counter <= 3
-     .....
-    end
+    # workbench_object_identifier = self.referential.workbench.worbench_object_identifiers.find_or_create_by_object_class(self.class)
+    # result = WorbenchObjectIdentifier.increment_counter(:last_local_id, 1)
+    # counter = 3
+    # # Ecrire le code pour répéter l'opération 3 fois au cas ou l'enregistrement échouerait.
+    # while result == false && counter <= 3
+    #  .....
+    # end
   end
-
 end
