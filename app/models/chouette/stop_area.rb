@@ -14,10 +14,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
   extend Enumerize
   enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
 
-  def self.model_name
-    ActiveModel::Name.new self, Chouette, self.name.demodulize
-  end
-
   with_options dependent: :destroy do |assoc|
     assoc.has_many :stop_points
     assoc.has_many :access_points
