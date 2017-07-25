@@ -17,8 +17,30 @@
       border-bottom: 2px solid $darkgrey
       padding: 5px 15px
 
+      .badge
+        color: #fff
+        background-color: $grey
+
       > h3, > h4
         margin: 0
+
+      > .panel-title.with_actions
+        display: table
+        width: 100%
+
+        .badge
+          vertical-align: top
+
+        a
+          text-decoration: none
+          color: $blue
+
+          &:hover, &:focus
+            color: $darkblue
+
+        > div
+          display: table-cell
+          vertical-align: middle
 
     .panel-footer
       padding: 5px 15px

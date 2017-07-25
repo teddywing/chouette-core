@@ -27,11 +27,12 @@ describe Referential, :type => :model do
 
   context "Cloning referential" do
     let(:clone) do
-      Referential.new_from(ref, organisation: ref.organisation)
+      Referential.new_from(ref)
     end
 
     let(:saved_clone) do
       clone.tap do |clone|
+        clone.organisation = ref.organisation
         clone.metadatas.each do |metadata|
           metadata.periodes = metadata.periodes.map { |period| Range.new(period.end+1, period.end+10) }
         end

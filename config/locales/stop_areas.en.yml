@@ -1,6 +1,8 @@
 en:
   stop_areas: &en_stop_areas
     search_no_results: "No stop area matching your query"
+    errors:
+      empty: Aucun stop_area_id
     default_geometry_success: "%{count} modified stop areas"
     stop_area:
       no_position: "No Position"
@@ -90,6 +92,7 @@ en:
         registration_number: "Registration number"
         published_name: "Published name"
         deleted: "Deleted"
+        deleted_at: "Deleted at"
         comment: "Description"
         stop_area_type: "Area type"
         area_type: "Area type"
@@ -179,5 +182,6 @@ en:
           comment: "Maximum length = 255."
           coordinates: "Coordinates are mandatory."
           projection_xy: "x,y in secondary referential, dot for decimal separator"
+
   referential_stop_areas:
     <<: *en_stop_areas

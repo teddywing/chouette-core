@@ -1,9 +1,9 @@
 # i18n-tasks finds and manages missing and unused translations: https://github.com/glebm/i18n-tasks
 
 # The "main" locale.
-base_locale: en
+base_locale: fr
 ## All available locales are inferred from the data by default. Alternatively, specify them explicitly:
-# locales: [es, fr]
+locales: [en, fr]
 ## Reporting locale, default: en. Available: en, ru.
 # internal_locale: en
 
@@ -18,7 +18,6 @@ data:
     ## Default:
     - config/locales/%{locale}.yml
     ## More files:
-    - config/locales/*.%{locale}.yml
     - config/locales/**/*.%{locale}.yml
     ## Another gem (replace %#= with %=):
     # - "<%#= %x[bundle show vagrant].chomp %>/templates/locales/%{locale}.yml"
@@ -27,13 +26,12 @@ data:
   # `i18n-tasks normalize -p` will force move the keys according to these rules
   write:
     ## For example, write devise and simple form keys to their respective files:
-    - ['{devise}.*', 'config/locales/devise.%{locale}.yml']
-    - ['{simple_form}.*', 'config/locales/simple_form.%{locale}.yml']
+    - ['{devise, simple_form}.*', 'config/locales/\1.%{locale}.yml']
     ## Catch-all default:
     - config/locales/%{locale}.yml
 
   ## Specify the router (see Readme for details). Valid values: conservative_router, pattern_router, or a custom class.
-  # router: convervative_router
+  # router: conservative_router
 
   yaml:
     write:
@@ -68,13 +66,18 @@ search:
     - app/assets/images
     - app/assets/fonts
     - app/assets/javascripts
+    - app/assets/videos
 
   ## Alternatively, the only files or `File.fnmatch patterns` to search in `paths`:
   ## If specified, this settings takes priority over `exclude`, but `exclude` still applies.
-  # include: ["*.rb", "*.html.slim"]
+  # only: ["*.rb", "*.html.slim"]
 
-  ## Default scanner finds t() and I18n.t() calls.
-  # scanner: I18n::Tasks::Scanners::PatternWithScopeScanner
+  ## If `strict` is `false`, guess usages such as t("categories.#{category}.title"). The default is `true`.
+  # strict: true
+
+  ## Multiple scanners can be used. Their results are merged.
+  ## The options specified above are passed down to each scanner. Per-scanner options can be specified as well.
+  ## See this example of a custom scanner: https://github.com/glebm/i18n-tasks/wiki/A-custom-scanner-example
 
 ## Google Translate
 # translation:
@@ -104,3 +107,16 @@ search:
 ## Ignore these keys completely:
 # ignore:
 #  - kaminari.*
+
+## Sometimes, it isn't possible for i18n-tasks to match the key correctly,
+## e.g. in case of a relative key defined in a helper method.
+## In these cases you can use the built-in PatternMapper to map patterns to keys, e.g.:
+#
+# <%# I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
+#       only: %w(*.html.haml *.html.slim),
+#       patterns: [['= title\b', '.page_title']] %>
+#
+# The PatternMapper can also match key literals via a special %{key} interpolation, e.g.:
+#
+# <%# I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
+#       patterns: [['\bSpree\.t[( ]\s*%{key}', 'spree.%{key}']] %>

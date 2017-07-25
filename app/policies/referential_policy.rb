@@ -20,7 +20,7 @@ class ReferentialPolicy < ApplicationPolicy
 
 
   def clone?
-    !archived? && organisation_match? && create?
+    !archived? && create?
   end
 
   def archive?
@@ -37,7 +37,3 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
 end
-
-
-
-

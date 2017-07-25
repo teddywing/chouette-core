@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe User, :type => :model do
+RSpec.describe User, :type => :model do
   # it { should validate_uniqueness_of :email }
   # it { should validate_presence_of :name }
 
@@ -116,9 +114,11 @@ describe User, :type => :model do
     end
 
     context 'permissions' do
+      let( :all_permissions ){ Stif::PermissionTranslator.translate(%w{boiv:edit-offer}) }
+
       it 'should give edit permissions to user if user has "edit offer" permission in portail' do
         User.portail_sync
-        expect(User.find_by(username: 'vlatka.pavisic').permissions).to include_all(User.edit_offer_permissions)
+          expect(User.find_by(username: 'vlatka.pavisic').permissions).to eq(all_permissions)
         expect(User.find_by(username: 'pierre.vabre').permissions).to be_empty
       end
     end

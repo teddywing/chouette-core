@@ -43,14 +43,14 @@ class BSelect4 extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    { text: '<small><em>Nom: </em></small>' + item.published_name + '<br/><small><em>Code: </em></small>' + item.registration_number + '<br/><small><em>ID: </em></small>' + _.last(_.split(item.object_id, ':')) }
+                    { text: "<strong>" + item.published_name + _.last(_.split(item.object_id, ':')) + "</strong><br/><small>" + item.registration_number + "</small>" }
                   )
                 )
               };
             },
             cache: true
           },
-          minimumInputLength: 0,
+          minimumInputLength: 1,
           escapeMarkup: function (markup) { return markup; },
           templateResult: formatRepo
         }}

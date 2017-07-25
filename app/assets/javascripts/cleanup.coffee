@@ -4,11 +4,16 @@ $(document).on("change", 'input[name="clean_up[date_type]"]', (e) ->
 
   if type == 'before'
     end_date.hide()
-    $("label[for='clean_up_begin_date_3i']").html("Date de fin de la purge");
+    $('label.begin_date').addClass 'hidden'
+    $('label.end_date').removeClass 'hidden'
+
   else if type == 'after'
     end_date.hide()
-    $("label[for='clean_up_begin_date_3i']").html("Date de début de la purge");
+    $('label.begin_date').removeClass 'hidden'
+    $('label.end_date').addClass 'hidden'
+
   else
-    $("label[for='clean_up_begin_date_3i']").html("Date de début de la purge");
+    $('label.begin_date').removeClass 'hidden'
+    $('label.end_date').addClass 'hidden'
     end_date.show()
 )

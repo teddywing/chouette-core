@@ -1,7 +1,24 @@
 require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
-  describe "vjas_departure_time_must_be_before_next_stop_arrival_time" do
+  it "must be valid with an at-stop day offset of 1" do
+    vehicle_journey = create(
+      :vehicle_journey,
+      stop_arrival_time: '23:00:00',
+      stop_departure_time: '23:00:00'
+    )
+    vehicle_journey.vehicle_journey_at_stops.last.update(
+      arrival_time: '00:30:00',
+      departure_time: '00:30:00',
+      arrival_day_offset: 1,
+      departure_day_offset: 1
+    )
+
+    expect(vehicle_journey).to be_valid
+  end
+
+  describe "vjas_departure_time_must_be_before_next_stop_arrival_time",
+      skip: "Validation currently commented out because it interferes with day offsets" do
     let(:vehicle_journey) { create :vehicle_journey }
     let(:vjas) { vehicle_journey.vehicle_journey_at_stops }
 
@@ -10,7 +27,7 @@ describe Chouette::VehicleJourney, :type => :model do
       vehicle_journey.validate
 
       expect(vjas[0].errors[:departure_time]).not_to be_blank
-      expect(vehicle_journey.errors[:vehicle_journey_at_stops].count).to eq(1)
+      expect(vehicle_journey.errors.count).to eq(1)
       expect(vehicle_journey).not_to be_valid
     end
 
@@ -19,7 +36,7 @@ describe Chouette::VehicleJourney, :type => :model do
       vehicle_journey.validate
 
       expect(vjas[0].errors[:departure_time]).to be_blank
-      expect(vehicle_journey.errors[:vehicle_journey_at_stops]).to be_empty
+      expect(vehicle_journey.errors).to be_empty
       expect(vehicle_journey).to be_valid
     end
 

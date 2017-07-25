@@ -4,7 +4,7 @@ class CalendarObserver < ActiveRecord::Observer
     return unless calendar.shared
 
     User.with_organisation.each do |user|
-      MailerJob.perform_later('CalendarMailer', 'updated', [calendar, user])
+      MailerJob.perform_later('CalendarMailer', 'updated', [calendar.id, user.id])
     end
   end
 
@@ -12,7 +12,7 @@ class CalendarObserver < ActiveRecord::Observer
     return unless calendar.shared
 
     User.with_organisation.each do |user|
-      MailerJob.perform_later('CalendarMailer', 'created', [calendar, user])
+      MailerJob.perform_later('CalendarMailer', 'created', [calendar.id, user.id])
     end
   end
 end

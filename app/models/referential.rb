@@ -130,14 +130,13 @@ class Referential < ActiveRecord::Base
     self
   end
 
-  def self.new_from(from, organisation:)
+  def self.new_from(from)
     Referential.new(
       name: I18n.t("activerecord.copy", :name => from.name),
       slug: "#{from.slug}_clone",
       prefix: from.prefix,
       time_zone: from.time_zone,
       bounds: from.bounds,
-      organisation: organisation,
       line_referential: from.line_referential,
       stop_area_referential: from.stop_area_referential,
       workbench: from.workbench,
@@ -186,7 +185,7 @@ class Referential < ActiveRecord::Base
   before_validation :clone_associations, :on => :create, if: :created_from
   before_validation :assign_slug, :on => :create
   before_validation :assign_prefix, :on => :create
-  before_create :create_schema,  unless: :created_from
+  before_create :create_schema
 
   after_create :clone_schema, if: :created_from
 
@@ -206,7 +205,6 @@ class Referential < ActiveRecord::Base
   end
 
   def clone_associations
-    self.organisation          = created_from.organisation
     self.line_referential      = created_from.line_referential
     self.stop_area_referential = created_from.stop_area_referential
     self.workbench             = created_from.workbench

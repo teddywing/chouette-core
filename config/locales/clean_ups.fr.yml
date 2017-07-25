@@ -23,9 +23,9 @@ fr:
         end_date: "Date de fin de la purge"
   activerecord:
     errors:
-      invalid_period: "Période invalide : tLa date de fin doit être strictement supérieure à la date de début"
       models:
         clean_up:
+          invalid_period: "Période invalide : La date de fin doit être strictement supérieure à la date de début"
           attributes:
             date_type:
               presence: "Une purge doit avoir un type de renseigné"

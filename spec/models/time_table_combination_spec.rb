@@ -8,30 +8,93 @@ describe TimeTableCombination, :type => :model do
   describe '#continuous_dates' do
     it 'should group continuous dates' do
       dates = source.dates.where(in_out: true)
-      expect(source.continuous_dates[0].count).to eq(dates.count)
+      expect(source.continuous_dates.flatten.count).to eq(dates.count)
 
-      # 6 more continuous date, 1 isolated date
+      # 6 more continuous dates, 2 isolated dates
       (10..15).each do |n|
         source.dates.create(date: Date.today + n.day, in_out: true)
       end
-      source.dates.create(date: Date.today + 1.year, in_out: true)
+
+      (1..2).each do |n|
+         source.dates.create(date: Date.today + n.day + 1.year, in_out: true)
+      end
+
       expect(source.reload.continuous_dates[1].count).to eq(6)
-      expect(source.reload.continuous_dates[2].count).to eq(1)
+      expect(source.reload.continuous_dates[2].count).to eq(2)
     end
   end
 
   describe '#convert_continuous_dates_to_periods' do
     it 'should convert continuous dates to periods' do
+      source.dates.clear
+
       (10..12).each do |n|
         source.dates.create(date: Date.today + n.day, in_out: true)
       end
-      source.dates.create(date: Date.today + 1.year, in_out: true)
+
+      (1..3).each do |n|
+         source.dates.create(date: Date.today + n.day + 1.year, in_out: true)
+      end
 
       expect {
         source.reload.convert_continuous_dates_to_periods
       }.to change {source.periods.count}.by(2)
 
-      expect(source.reload.dates.where(in_out: true).count).to eq(1)
+      expect(source.reload.dates.where(in_out: true).count).to eq(0)
+    end
+  end
+
+  describe '#continuous_periods' do
+    it 'should group continuous periods' do
+      source.periods.clear
+
+      start_date = Date.today + 1.year
+      end_date = start_date + 10
+
+      # 6 more continuous dates, 2 isolated dates
+      0.upto(4) do |i|
+        source.periods.create(period_start: start_date, period_end: end_date)
+        start_date = end_date + 1
+        end_date = start_date + 10
+      end
+
+      expect(source.reload.continuous_periods.flatten.count).to eq(5)
+    end
+  end
+
+  describe '#convert_continuous_periods_into_one' do
+    it 'should convert continuous periods into one' do
+      source.periods.clear
+
+      start_date = Date.today + 1.year
+      end_date = start_date + 10
+
+      # 6 more continuous dates, 2 isolated dates
+      0.upto(4) do |i|
+        source.periods.create(period_start: start_date, period_end: end_date)
+        start_date = end_date + 1
+        end_date = start_date + 10
+      end
+
+      expect {
+        source.reload.convert_continuous_periods_into_one
+      }.to change {source.periods.count}.by(-4)
+    end
+  end
+
+  describe '#optimize_continuous_dates_and_periods' do
+    it 'should update period if timetable has in_date just before or after ' do
+      source.dates.clear
+      source.periods.clear
+
+      source.periods.create(period_start: Date.today, period_end: Date.today + 10.day)
+      source.dates.create(date: Date.today - 1.day, in_out: true)
+
+      expect {
+        source.periods = source.optimize_continuous_dates_and_periods
+      }.to change {source.dates.count}.by(-1)
+
+      expect(source.reload.periods.first.period_start).to eq(Date.today - 1.day)
     end
   end
 
@@ -129,4 +192,3 @@ describe TimeTableCombination, :type => :model do
     end
  end
 end
-

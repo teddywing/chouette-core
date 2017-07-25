@@ -16,7 +16,7 @@
   = r.result;
   = r.test_id;
 
-  = I18n.t("activemodel.attributes.compliance_check_result." + r.test_id);
+  = I18n.t("activemodel.attributes.compliance_check_result.#{r.test_id}");
   = Rails.application.config.validation_spec + I18n.locale.to_s + "/" + r.test_id + ".html";
 
   = r.error_count
