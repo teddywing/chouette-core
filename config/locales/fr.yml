@@ -55,4 +55,6 @@ fr:
 
   id_codif: 'ID Codifligne'
   id_reflex: 'ID Reflex'
+  codif_data: 'Données Codifligne'
+  reflex_data: 'Données Reflex'
   objectid: 'ID'

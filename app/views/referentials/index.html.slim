@@ -1,7 +1,7 @@
 / FIXME #827
 - current_organisation.workbenches.each do |workbench|
   h2 = link_to workbench.name, workbench
-  p = "#{workbench.referentials.count} jeu(x) de données à l'heure actuelle"
+  p = t('workbenches.referential_count', count: workbench.referentials.count)
 
 / FIXME #823
 - if false
@@ -11,8 +11,8 @@
 
 - content_for :sidebar do
   ul.actions
-    li = link_to 'Données Reflex', stop_area_referential_path(1)
-    li = link_to 'Données CodifLigne', line_referential_path(1)
+    li = link_to t('reflex_data'), stop_area_referential_path(1)
+    li = link_to t('codif_data'), line_referential_path(1)
     li = link_to t('calendars.standard_calendars'), calendars_path
     - if false
       li = link_to t('referentials.actions.new'), new_referential_path, class: 'add'

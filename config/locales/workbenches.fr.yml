@@ -10,3 +10,7 @@ fr:
         calendars: "Calendriers"
         see: "Voir la liste"
         no_content: "Aucun contenu pour le moment"
+    referential_count:
+      zero: "Aucun jeu de données à l'heure actuelle"
+      one: "1 jeu de données à l'heure actuelle"
+      other: "#{count} jeux de données à l'heure actuelle" 

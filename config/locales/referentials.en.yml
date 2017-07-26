@@ -2,6 +2,8 @@ en:
   referentials:
     filters:
       name_or_number_or_objectid: 'Search by name, number or objectid'
+      name: 'Search by name'
+      line: 'Seach by associated lines'
     search_no_results: 'No data space matching your query'
     index:
       title: 'Data spaces'
@@ -59,7 +61,6 @@ en:
         upper_corner: "Top,Right corner for default bounding box"
         lower_corner: "Bottom,Left corner for default bounding box"
         resources: "Neptune Import File"
-        validity_period: "Validity period"
         no_validity_period: "undefined"
         start_validity_period: "from"
         end_validity_period: "to"
@@ -86,14 +87,16 @@ en:
         data_format: "Favorite format for export"
         timebands: "Time bands"
         routing_constraint_zone: Routing constraint zone
-        validity_period: "Validity period"
+        validity_period: "Inclusive validity period"
         updated_at: "Updated"
         published_at: "Integrated"
         archived_at: "Archived"
+        archived_at_null: "Unarchived"
         created_from: 'Created from'
         updated_at: "Updated"
         created_at: "Created"
         organisation: 'Organisation'
+        number_of_lines: 'No. of lines'
   formtastic:
     titles:
       referential:
@@ -112,6 +115,10 @@ en:
           periods:
             begin: 'Period beginning'
             end: 'Period end'
+        actions:
+          add_period: 'Add a period'
+        placeholders:
+          select_lines: 'Selection of lignes'
 
   notice:
     referentials:
