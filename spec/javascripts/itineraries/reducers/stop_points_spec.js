@@ -164,29 +164,29 @@ describe('stops reducer', () => {
     )
   })
 
-  it('should handle DELETE_STOP', () => {
-    expect(
-      stopPointsReducer(state, {
-        type: 'DELETE_STOP',
-        index: 1
-      })
-    ).toEqual(
-      [
-        {
-          text: 'first',
-          index: 0,
-          stoppoint_id: 72,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        }
-      ]
-    )
-  })
+  // it('should handle DELETE_STOP', () => {
+  //   expect(
+  //     stopPointsReducer(state, {
+  //       type: 'DELETE_STOP',
+  //       index: 1
+  //     })
+  //   ).toEqual(
+  //     [
+  //       {
+  //         text: 'first',
+  //         index: 0,
+  //         stoppoint_id: 72,
+  //         edit: false,
+  //         for_boarding: 'normal',
+  //         for_alighting: 'normal',
+  //         olMap: {
+  //           isOpened: false,
+  //           json: {}
+  //         }
+  //       }
+  //     ]
+  //   )
+  // })
 
   it('should handle UPDATE_INPUT_VALUE', () => {
     expect(
