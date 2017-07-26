@@ -73,13 +73,13 @@ module BreadcrumbHelper
   end
 
   def calendar_breadcrumb(action)
-    add_breadcrumb I18n.t('breadcrumbs.referentials'), referentials_path
+    add_breadcrumb I18n.t('breadcrumbs.referentials'), workbenches_path
     add_breadcrumb I18n.t('calendars.index.title'), calendars_path
     add_breadcrumb @calendar.name if %i(show edit).include? action
   end
 
   def workbench_breadcrumb(action)
-    add_breadcrumb I18n.t("breadcrumbs.referentials"), referentials_path
+    add_breadcrumb I18n.t("breadcrumbs.referentials"), workbenches_path
     add_breadcrumb breadcrumb_label(@workbench), workbench_path(@workbench), :title => breadcrumb_tooltip(@workbench)
   end
 
@@ -215,7 +215,7 @@ module BreadcrumbHelper
   end
 
   def import_breadcrumb (action)
-    add_breadcrumb I18n.t("breadcrumbs.referentials"), referentials_path
+    add_breadcrumb I18n.t("breadcrumbs.referentials"), workbenches_path
     add_breadcrumb breadcrumb_label(@workbench), workbench_path(@workbench), :title => breadcrumb_tooltip(@workbench)
     add_breadcrumb I18n.t("breadcrumbs.imports"), workbench_imports_path(@workbench)
 
@@ -257,7 +257,7 @@ module BreadcrumbHelper
   end
 
   def organisation_breadcrumb (action = :index)
-    add_breadcrumb I18n.t("breadcrumbs.referentials"), referentials_path
+    add_breadcrumb I18n.t("breadcrumbs.referentials"), workbenches_path
     add_breadcrumb breadcrumb_label(@organisation), organisation_path,:title => breadcrumb_tooltip(@organisation) unless action == :index
   end
 
