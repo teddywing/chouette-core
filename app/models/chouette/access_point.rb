@@ -1,9 +1,10 @@
 require 'geokit'
 require 'geo_ruby'
 
-class Chouette::AccessPoint < Chouette::TridentActiveRecord
+class Chouette::AccessPoint < Chouette::ActiveRecord
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
+  include StifReflexAttributesSupport
   include Geokit::Mappable
   include ProjectionFields
 

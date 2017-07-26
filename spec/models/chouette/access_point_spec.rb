@@ -4,7 +4,7 @@ describe Chouette::AccessPoint, :type => :model do
 
   describe '#objectid' do
     subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
+    it { is_expected.to be_kind_of(Chouette::StifReflexObjectid) }
   end
 
   it { is_expected.to validate_presence_of :name }
