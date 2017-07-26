@@ -27,7 +27,7 @@ class Organisation < ActiveRecord::Base
     conf = Rails.application.config.try(:stif_portail_api)
     raise 'Rails.application.config.stif_portail_api configuration is not defined' unless conf
 
-    AF83::HTTPFetcher.get_resource(
+    HTTPService.get_resource(
       host: conf[:url],
       path: '/api/v1/organizations',
       parse_json: true,
