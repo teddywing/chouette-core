@@ -29,5 +29,5 @@
           = p.input :end_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
 
   .actions
-    = link_to t('actions.filter'), @workbench, class: 'btn btn-link'
-    = f.submit t('actions.erase'), class: 'btn btn-default'
+    = link_to t('actions.erase'), @workbench, class: 'btn btn-link'
+    = f.submit t('actions.filter'), class: 'btn btn-default'
