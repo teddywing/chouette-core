@@ -123,7 +123,7 @@ module Stif
       end
 
       def create_or_update_access_point entry, stop_area
-        access = Chouette::AccessPoint.find_or_create_by(objectid: "dummy:AccessPoint:#{entry['id'].tr(':', '')}")
+        access = Chouette::AccessPoint.find_or_create_by(objectid: entry['id'])
         # Hack, on save object_version will be incremented by 1
         entry['version']   = entry['version'].to_i + 1  if access.persisted?
         access.access_type = self.access_point_access_type(entry)
