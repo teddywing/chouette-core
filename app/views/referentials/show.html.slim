@@ -24,7 +24,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { 'Statut' => @referential.archived? ? "<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>".html_safe : "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>".html_safe,
+          { t('activerecord.attributes.referential.status') => @referential.archived? ? "<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>".html_safe : "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>".html_safe,
             @referential.human_attribute_name(:validity_period) => (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-'),
             @referential.human_attribute_name(:organisation) => @referential.organisation.name,
             @referential.human_attribute_name(:published_at) => '-' }
@@ -41,7 +41,7 @@
           = table_builder_2 @reflines,
             [ \
               TableBuilderHelper::Column.new( \
-                name: 'ID Codifligne', \
+                name: t('id_codif'), \
                 attribute: Proc.new { |n| n.objectid.local_id }, \
                 sortable: false \
               ), \
@@ -85,7 +85,7 @@
 = modalbox 'purgeModal' do
   = simple_form_for [@referential, CleanUp.new] do |f|
     .modal-header
-      h4.modal-title Purger le JDD
+      h4.modal-title #{t('simple_form.labels.clean_up.title')}
     .modal-body
       .container-fluid
         .row
@@ -100,6 +100,6 @@
             = f.input :end_date, as: :date, label: t('titles.clean_up.end_date'), wrapper_html: { class: 'date cleanup_end_date_wrapper smart_date', id: "end_date" }
 
     .modal-footer
-      button.btn.btn-link type='button' data-dismiss='modal' Annuler
+      button.btn.btn-link type='button' data-dismiss='modal' #{t('cancel')}
       - unless policy(@referential).archived?
         = f.button :submit, t('actions.clean_up') , class: 'btn btn-primary'
