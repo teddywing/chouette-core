@@ -6,6 +6,15 @@ class Chouette::RoutingConstraintZone < Chouette::TridentActiveRecord
   # validates :stop_point_ids, length: { minimum: 2, too_short: I18n.t('activerecord.errors.models.routing_constraint_zone.attributes.stop_points.not_enough_stop_points') }
   validate :stop_points_belong_to_route, :not_all_stop_points_selected
 
+  scope :order_by_stop_points_count, ->(direction) do
+    order("array_length(stop_point_ids, 1) #{direction}")
+  end
+
+  scope :order_by_route_name, ->(direction) do
+    joins(:route)
+      .order("routes.name #{direction}")
+  end
+
   def stop_points_belong_to_route
     errors.add(:stop_point_ids, I18n.t('activerecord.errors.models.routing_constraint_zone.attributes.stop_points.stop_points_not_from_route')) unless stop_points.all? { |sp| route.stop_points.include? sp }
   end
