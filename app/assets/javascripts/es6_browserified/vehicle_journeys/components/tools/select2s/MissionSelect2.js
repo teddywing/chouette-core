@@ -15,7 +15,6 @@ class BSelect4 extends React.Component{
 
 
   render() {
-    console.log(this.props)
     return (
       <Select2
         data={(this.props.isFilter) ? [this.props.filters.query.journeyPattern.published_name] : ((this.props.selection.selectedJPModal) ? [this.props.selection.selectedJPModal.published_name] : undefined)}
