@@ -6,27 +6,27 @@ describe Chouette::TridentActiveRecord, :type => :model do
 
   subject { create(:time_table) }
 
-  describe "#uniq_objectid" do
+  # describe "#uniq_objectid" do
 
-    it "should rebuild objectid" do
-      tm = create(:time_table)
-      tm.objectid = subject.objectid
-      tm.uniq_objectid
-      expect(tm.objectid).to eq(subject.objectid+"_1")
-    end
+  #   it "should rebuild objectid" do
+  #     tm = create(:time_table)
+  #     tm.objectid = subject.objectid
+  #     tm.uniq_objectid
+  #     expect(tm.objectid).to eq(subject.objectid+"_1")
+  #   end
 
-    it "should rebuild objectid" do
-      tm = create(:time_table)
-      tm.objectid = subject.objectid
-      tm.uniq_objectid
-      tm.save
-      tm = create(:time_table)
-      tm.objectid = subject.objectid
-      tm.uniq_objectid
-      expect(tm.objectid).to eq(subject.objectid+"_2")
-    end
+  #   it "should rebuild objectid" do
+  #     tm = create(:time_table)
+  #     tm.objectid = subject.objectid
+  #     tm.uniq_objectid
+  #     tm.save
+  #     tm = create(:time_table)
+  #     tm.objectid = subject.objectid
+  #     tm.uniq_objectid
+  #     expect(tm.objectid).to eq(subject.objectid+"_2")
+  #   end
 
-  end
+  # end
 
   def create_object(options = {})
     options = {name: "merge1"}.merge options
@@ -34,37 +34,37 @@ describe Chouette::TridentActiveRecord, :type => :model do
     Chouette::TimeTable.new attributes
   end
 
-  describe "#prepare_auto_columns" do
+  # describe "#prepare_auto_columns" do
 
-    it "should left objectid" do
-      tm = create_object :objectid => "first:Timetable:merge1"
-      tm.prepare_auto_columns
-      expect(tm.objectid).to eq("first:Timetable:merge1")
-    end
+  #   it "should left objectid" do
+  #     tm = create_object :objectid => "first:Timetable:merge1"
+  #     tm.prepare_auto_columns
+  #     expect(tm.objectid).to eq("first:Timetable:merge1")
+  #   end
 
-    it "should add pending_id to objectid" do
-      tm = create_object
-      tm.prepare_auto_columns
-      expect(tm.objectid.start_with?("first:Timetable:__pending_id__")).to be_truthy
-    end
+  #   it "should add pending_id to objectid" do
+  #     tm = create_object
+  #     tm.prepare_auto_columns
+  #     expect(tm.objectid.start_with?("first:Timetable:__pending_id__")).to be_truthy
+  #   end
 
-    it "should set id to objectid" do
-      tm = create_object
-      tm.save
-      expect(tm.objectid).to eq("first:Timetable:"+tm.id.to_s)
-    end
+  #   it "should set id to objectid" do
+  #     tm = create_object
+  #     tm.save
+  #     expect(tm.objectid).to eq("first:Timetable:"+tm.id.to_s)
+  #   end
 
-    it "should detect objectid conflicts" do
-      tm = create_object
-      tm.save
-      tm.objectid = "first:Timetable:"+(tm.id+1).to_s
-      tm.save
-      tm = create_object
-      tm.save
-      expect(tm.objectid).to eq("first:Timetable:"+tm.id.to_s+"_1")
-    end
+  #   it "should detect objectid conflicts" do
+  #     tm = create_object
+  #     tm.save
+  #     tm.objectid = "first:Timetable:"+(tm.id+1).to_s
+  #     tm.save
+  #     tm = create_object
+  #     tm.save
+  #     expect(tm.objectid).to eq("first:Timetable:"+tm.id.to_s+"_1")
+  #   end
 
-  end
+  # end
 
   describe "objectid" do
 
