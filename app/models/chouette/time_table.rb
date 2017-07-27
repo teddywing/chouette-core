@@ -26,8 +26,8 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
 
   after_save :save_shortcuts
 
-  def self.object_id_key
-    "Timetable"
+  def local_id
+    "#{self.objectid.local_id}"
   end
 
   accepts_nested_attributes_for :dates, :allow_destroy => :true

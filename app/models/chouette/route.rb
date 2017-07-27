@@ -74,6 +74,10 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   after_commit :journey_patterns_control_route_sections
 
+  def local_id
+    "#{self.line.objectid.local_id}-#{self.objectid.local_id}"
+  end
+
   def geometry_presenter
     Chouette::Geometry::RoutePresenter.new self
   end

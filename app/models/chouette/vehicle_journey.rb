@@ -55,6 +55,10 @@ module Chouette
       end
     end
 
+    def local_id
+      "#{self.route.line.objectid.local_id}-#{self.objectid.local_id}"
+    end
+
     def set_default_values
       if number.nil?
         self.number = 0

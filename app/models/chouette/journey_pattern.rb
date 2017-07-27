@@ -20,6 +20,10 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   attr_accessor  :control_checked
   after_update :control_route_sections, :unless => "control_checked"
 
+  def local_id
+    "#{self.route.line.objectid.local_id}-#{self.objectid.local_id}"
+  end
+
   def self.state_update route, state
     transaction do
       state.each do |item|
