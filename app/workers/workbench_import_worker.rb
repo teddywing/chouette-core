@@ -3,16 +3,17 @@ class WorkbenchImportWorker
   include Rails.application.routes.url_helpers
   include Configurable
 
+  RETRY_DELAYS = [3, 5, 8]
 
   # Workers
   # =======
 
   def perform(import_id)
-    @import = Import.find(import_id)
-    @downloaded = nil
-    download
-    @zip_service = ZipService.new(@zipfile_data)
-    upload
+    @import     = Import.find(import_id)
+    @response   = nil
+    downloaded  = download
+    zip_service = ZipService.new(downloaded)
+    upload zip_service
   end
 
   def download
@@ -21,25 +22,10 @@ class WorkbenchImportWorker
       host: import_host,
       path: import_path,
       params: {token: @import.token_download})
-
-    # TODO: Delete me after stable implementation of #1726
-    # path = File.join(config.dir, import.name.gsub(%r{\s+}, '-'))
-    # unique_path = FileService.unique_filename path
-    # Dir.mkdir unique_path
-    # @downloaded = File.join(unique_path, import.name)
-    # File.open(downloaded, 'wb') do | file |
-    #   file.write zipfile_data
-    # end
   end
 
-
-  def upload
-    @zip_service.entry_group_streams.each(&method(:upload_entry_group))
-  end
-
-  def upload_entry_group key_pair
-    eg_name, eg_stream = key_pair
-    logger.warn  "HTTP POST #{export_url} (for #{complete_entry_group_name(eg_name)})"
+  def execute_post eg_name, eg_stream
+    logger.info  "HTTP POST #{export_url} (for #{complete_entry_group_name(eg_name)})"
     HTTPService.post_resource(
       host: export_host,
       path: export_path,
@@ -48,6 +34,39 @@ class WorkbenchImportWorker
       params: params,
       upload: {file: [eg_stream, 'application/zip', eg_name]})
   end
+
+  def log_failure reason, count
+    logger.info "HTTP POST failed with #{reason}, count = #{count}, response=#{@response}"
+  end
+
+  def try_again
+    raise RetryService::Retry
+  end
+
+  def try_upload_entry_group eg_name, eg_stream
+    result = execute_post eg_name, eg_stream
+    return result if result.status < 400
+    @response = result.body
+    try_again
+  end
+
+  def upload zip_service
+    zip_service.entry_group_streams.each(&method(:upload_entry_group))
+  end
+
+  def upload_entry_group key_pair
+    retry_service = RetryService.new(delay: RETRY_DELAYS, rescue_from: HTTPService::Timeout, &method(:log_failure)) 
+    retry_service.execute(&upload_entry_group_proc(key_pair))
+  end
+
+  def upload_entry_group_proc key_pair
+    eg_name, eg_stream = key_pair
+    # This should be fn.try_upload_entry_group(eg_name, eg_stream) ;(
+    -> do
+      try_upload_entry_group(eg_name, eg_stream)
+    end
+  end
+
 
 
   # Queries

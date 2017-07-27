@@ -96,17 +96,22 @@ RSpec.describe RetryService do
 
   context 'failure callback in constructor' do
     subject do
-      described_class.new(delays: [1]){ @failures += 1}
+      described_class.new(delays: [1, 2], &method(:add2failures))
     end
     before do
-      @failures = 0
+      @failures = []
       @count    = 0
       expect( subject ).to receive(:sleep).with(1)
+      expect( subject ).to receive(:sleep).with(2)
     end
     it 'succeeds the second time and calls the failure_callback once' do
-      subject.execute{ succeed_later(RetryService::Retry){ 42 } }
-      expect( @failures ).to eq(1)
+      subject.execute{ succeed_later(RetryService::Retry, count: 2){ 42 } }
+      expect( @failures ).to eq([1,2])
     end
+  end
+
+  def add2failures( e, c)
+    @failures << c 
   end
 
   def succeed_later error, count: 1, &blk

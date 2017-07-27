@@ -1,5 +1,7 @@
 module HTTPService extend self
 
+  Timeout = Faraday::TimeoutError
+
   def get_resource(host:, path:, token: nil, params: {}, parse_json: false) 
     Faraday.new(url: host) do |c|
       c.headers['Authorization'] = "Token token=#{token.inspect}" if token
