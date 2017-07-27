@@ -15,6 +15,7 @@ class BSelect4 extends React.Component{
 
 
   render() {
+    console.log(this.props)
     return (
       <Select2
         data={(this.props.isFilter) ? [this.props.filters.query.journeyPattern.published_name] : ((this.props.selection.selectedJPModal) ? [this.props.selection.selectedJPModal.published_name] : undefined)}
@@ -34,7 +35,7 @@ class BSelect4 extends React.Component{
             delay: '500',
             data: function(params) {
               return {
-                q: {published_name_or_objectid_or_registration_number_cont: params.term},
+                q: {published_name_cont_or_short_id_or_registration_number_cont: params.term},
               };
             },
             processResults: function(data, params) {
@@ -43,7 +44,7 @@ class BSelect4 extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    { text: "<strong>" + item.published_name + _.last(_.split(item.object_id, ':')) + "</strong><br/><small>" + item.registration_number + "</small>" }
+                    { text: "<strong>" + item.published_name + " - " + item.short_id + "</strong><br/><small>" + item.registration_number + "</small>" }
                   )
                 )
               };
