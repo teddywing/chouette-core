@@ -69,7 +69,7 @@ document.querySelector('input[name=commit]').addEventListener('click', (event)=>
 
   if(state.stopPoints.length >= 2) {
     state.stopPoints.map((stopPoint, i) => {
-      addInput('id', (datas[i]) ? datas[i].stoppoint_id : '', i)
+      addInput('id', stopPoint.stoppoint_id ? stopPoint.stoppoint_id : '', i)
       addInput('stop_area_id',stopPoint.stoparea_id, i)
       addInput('position',i, i)
       addInput('for_boarding',stopPoint.for_boarding, i)
