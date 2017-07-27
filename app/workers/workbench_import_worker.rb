@@ -11,6 +11,7 @@ class WorkbenchImportWorker
   def perform(import_id)
     @import     = Import.find(import_id)
     @response   = nil
+    @import.update_attributes(status: 'running')
     downloaded  = download
     zip_service = ZipService.new(downloaded)
     upload zip_service
@@ -45,18 +46,24 @@ class WorkbenchImportWorker
 
   def try_upload_entry_group eg_name, eg_stream
     result = execute_post eg_name, eg_stream
-    return result if result.status < 400
+    return result if result && result.status < 400
     @response = result.body
     try_again
   end
 
   def upload zip_service
-    zip_service.entry_group_streams.each(&method(:upload_entry_group))
+    entry_group_streams = zip_service.entry_group_streams
+    @import.update_attributes total_steps: entry_group_streams.size
+    entry_group_streams.each_with_index(&method(:upload_entry_group))
+  rescue StopIteration
+    @import.update_attributes( current_step: entry_group_streams.size, status: 'failed' )
   end
 
-  def upload_entry_group key_pair
-    retry_service = RetryService.new(delay: RETRY_DELAYS, rescue_from: HTTPService::Timeout, &method(:log_failure)) 
-    retry_service.execute(&upload_entry_group_proc(key_pair))
+  def upload_entry_group key_pair, element_count
+    @import.update_attributes( current_step: element_count.succ )
+    retry_service = RetryService.new(delays: RETRY_DELAYS, rescue_from: HTTPService::Timeout, &method(:log_failure)) 
+    status, _ = retry_service.execute(&upload_entry_group_proc(key_pair))
+    raise StopIteration unless status == :ok
   end
 
   def upload_entry_group_proc key_pair

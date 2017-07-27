@@ -14,4 +14,8 @@ RSpec.describe ZipService do
     expect( ref1_lines ).to eq %w(multiref/ref1/ multiref/ref1/datum-1 multiref/ref1/datum-2)
     expect( ref2_lines ).to eq %w(multiref/ref2/ multiref/ref2/datum-1 multiref/ref2/datum-2)
   end
+
+  it "exposes it's size" do
+    expect( subject.entry_group_streams.size ).to eq(2)
+  end
 end

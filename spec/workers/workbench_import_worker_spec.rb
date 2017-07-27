@@ -15,48 +15,104 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   let( :downloaded_zip ){ double("downloaded zip") }
   let( :download_token ){ SecureRandom.urlsafe_base64 }
 
+
   let( :upload_path ) { '/api/v1/netex_imports.json' }
 
   let( :entry_group_streams ) do
-    2.times.map{ |i| double( "entry group stream #{i}" ) }
+    entry_count.times.map{ |i| double( "entry group stream #{i}" ) }
   end
   let( :entry_groups ) do
-    2.times.map do | i |
+    entry_count.times.map do | i |
       {"entry_group_name#{i}" => entry_group_streams[i] }
     end
   end
 
   let( :zip_service ){ double("zip service") }
+  let( :zip_file ){ File.join(fixture_path, 'multiref.zip') }
+
+  let( :post_response_ok ){ response(status: 201, boody: "{}") }
 
   before do
+    # Silence Logger
+    allow_any_instance_of(Logger).to receive(:info)
+    allow_any_instance_of(Logger).to receive(:warn)
+
     # That should be `build_stubbed's` job, no?
     allow(Import).to receive(:find).with(import.id).and_return(import)
+
     allow(Api::V1::ApiKey).to receive(:from).and_return(api_key)
     allow(ZipService).to receive(:new).with(downloaded_zip).and_return zip_service
     expect(zip_service).to receive(:entry_group_streams).and_return(entry_groups)
+    expect( import ).to receive(:update_attributes).with(status: 'running')
   end
 
 
-  context 'multireferential zipfile' do
-    let( :zip_file ){ File.join(fixture_path, 'multiref.zip') }
+  context 'multireferential zipfile, no errors' do
+    let( :entry_count ){ 2 }
 
-    it 'downloads a zip file' do
+    it 'downloads a zip file, cuts it, and uploads all pieces' do
+
       expect(HTTPService).to receive(:get_resource)
         .with(host: host, path: path, params: {token: download_token})
         .and_return( downloaded_zip )
 
       entry_groups.each do | entry_group_name, entry_group_stream |
-        expect( HTTPService ).to receive(:post_resource)
-          .with(host: host,
-                path: upload_path,
-                resource_name: 'netex_import',
-                token: api_key.token,
-                params: params,
-                upload: {file: [entry_group_stream, 'application/zip', entry_group_name]})
+        mock_post entry_group_name, entry_group_stream, post_response_ok
       end
+
+      expect( import ).to receive(:update_attributes).with(total_steps: 2)
+      expect( import ).to receive(:update_attributes).with(current_step: 1)
+      expect( import ).to receive(:update_attributes).with(current_step: 2)
+
       worker.perform import.id
 
     end
   end
 
+  context 'multireferential zipfile with error' do
+    let( :entry_count ){ 3 }
+    let( :post_response_failure ){ response(status: 406, boody: {error: 'What was you thinking'}) }
+
+    it 'downloads a zip file, cuts it, and uploads some pieces' do
+      expect(HTTPService).to receive(:get_resource)
+        .with(host: host, path: path, params: {token: download_token})
+        .and_return( downloaded_zip )
+
+      # First entry_group succeeds
+      entry_groups[0..0].each do | entry_group_name, entry_group_stream |
+        mock_post entry_group_name, entry_group_stream, post_response_ok
+      end
+
+      # Second entry_group fails (M I S E R A B L Y)
+      entry_groups[1..1].each do | entry_group_name, entry_group_stream |
+        mock_post entry_group_name, entry_group_stream, post_response_failure
+        WorkbenchImportWorker::RETRY_DELAYS.each do | delay |
+          mock_post entry_group_name, entry_group_stream, post_response_failure
+          expect_any_instance_of(RetryService).to receive(:sleep).with(delay)
+        end
+      end
+
+      expect( import ).to receive(:update_attributes).with(total_steps: 3)
+      expect( import ).to receive(:update_attributes).with(current_step: 1)
+      expect( import ).to receive(:update_attributes).with(current_step: 2)
+      expect( import ).to receive(:update_attributes).with(current_step: 3, status: 'failed')
+
+      worker.perform import.id
+
+    end
+  end
+
+  def mock_post entry_group_name, entry_group_stream, response
+    expect( HTTPService ).to receive(:post_resource)
+      .with(host: host,
+            path: upload_path,
+            resource_name: 'netex_import',
+            token: api_key.token,
+            params: params,
+            upload: {file: [entry_group_stream, 'application/zip', entry_group_name]})
+      .and_return(response)
+  end
+  def response(**opts)
+    OpenStruct.new(opts)
+  end
 end
