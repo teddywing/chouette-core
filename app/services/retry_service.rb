@@ -11,8 +11,8 @@ class RetryService
   def execute &blk
     status, result = execute_protected blk
     return [status, result] if status == :ok
-    @intervals.each do | interval |
-      @failure_callback.try(:call)
+    @intervals.each_with_index do | interval, retry_count |
+      @failure_callback.try(:call, result, retry_count.succ)
       sleep interval
       status, result = execute_protected blk
       return [status, result] if status == :ok

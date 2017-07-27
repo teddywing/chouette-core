@@ -67,11 +67,16 @@ RSpec.describe RetryService do
       @failures = 0
       @count    = 0
       expect( subject ).to receive(:sleep).with(2)
-      subject.register_failure_callback { @failures += 1 }
+      subject.register_failure_callback { |reason, count| @reason=reason; @callback_count=count; @failures += 1 }
     end
     it 'succeeds the second time and calls the failure_callback once' do
       subject.execute{ succeed_later(RetryService::Retry){ 42 } }
       expect( @failures ).to eq(1)
+    end
+    it '... and the failure is passed into the callback' do
+      subject.execute{ succeed_later(RetryService::Retry){ 42 } }
+      expect( @reason ).to be_a(RetryService::Retry)
+      expect( @callback_count ).to eq(1)
     end
   end
 
