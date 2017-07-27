@@ -33,3 +33,7 @@ fr:
               presence: "Une purge doit avoir une date de début"
             end_date:
               presence: "Une purge doit avoir une date de fin"
+  simple_form:
+    labels:
+      clean_up:
+        title: "Purger le JDD"

@@ -29,29 +29,6 @@ class User < ActiveRecord::Base
 
   scope :with_organisation, -> { where.not(organisation_id: nil) }
 
-  def self.destructive_permissions_for(models)
-    models.product( %w{create destroy update} ).map{ |model_action| model_action.join('.') }
-  end
-
-  @@edit_offer_permissions =
-    destructive_permissions_for( %w[
-                                access_points
-                                connection_links
-                                calendars
-      footnotes
-      journey_patterns
-      referentials
-      routes
-      routing_constraint_zones
-      time_tables
-      vehicle_journeys
-    ]) << 'boiv:edit-offer'
-
-  mattr_reader :edit_offer_permissions
-
-  def self.all_permissions
-    edit_offer_permissions
-  end
 
   # Callback invoked by DeviseCasAuthenticable::Model#authernticate_with_cas_ticket
   def cas_extra_attributes=(extra_attributes)
@@ -59,7 +36,7 @@ class User < ActiveRecord::Base
     self.name         = extra[:full_name]
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
-    self.permissions  = extra[:permissions].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
+    self.permissions  = Stif::PermissionTranslator.translate(extra[:permissions])
   end
 
   def self.portail_api_request
@@ -87,7 +64,7 @@ class User < ActiveRecord::Base
       user.locked_at    = el['locked_at']
       user.organisation = Organisation.sync_update el['organization_code'], el['organization_name'], el['functional_scope']
       user.synced_at    = Time.now
-      user.permissions  = el['permissions'].include?('boiv:edit-offer') ? @@edit_offer_permissions : []
+      user.permissions  = Stif::PermissionTranslator.translate(el['permissions'])
       user.save
     end
   end

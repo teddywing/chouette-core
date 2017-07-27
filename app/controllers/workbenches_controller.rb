@@ -7,6 +7,7 @@ class WorkbenchesController < BreadcrumbController
   def index
     # Only display Wb with selected name, according to #4108
     @workbench = current_organisation.workbenches.find_by(name: "Gestion de l'offre")
+    @referentials = @workbench.all_referentials
     @calendars = Calendar.where('organisation_id = ? OR shared = ?', current_organisation.id, true)
   end
 

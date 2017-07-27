@@ -15,6 +15,7 @@ module Support
       %w[
       access_points
       connection_links
+      calendars
       footnotes
       journey_patterns
       referentials

@@ -4,19 +4,15 @@ require 'geo_ruby'
 class Chouette::StopArea < Chouette::ActiveRecord
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
+
   include Geokit::Mappable
+  include StifReflexAttributesSupport
   include ProjectionFields
   include StopAreaRestrictions
+  include StopAreaReferentialSupport
 
   extend Enumerize
   enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
-
-  def self.model_name
-    ActiveModel::Name.new self, Chouette, self.name.demodulize
-  end
-  # Refs #1627
-  # include DefaultAttributesSupport
-  include StopAreaReferentialSupport
 
   with_options dependent: :destroy do |assoc|
     assoc.has_many :stop_points
@@ -56,13 +52,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
 
   after_update :clean_invalid_access_links
   before_save :coordinates_to_lat_lng
-
-  # Refs #1627
-  before_validation :prepare_auto_columns
-  def prepare_auto_columns
-    self.object_version = 1
-    self.creator_id = 'chouette'
-  end
 
   def combine_lat_lng
     if self.latitude.nil? || self.longitude.nil?

@@ -7,7 +7,7 @@ class LoginPolicy
   end
 
   def boiv?
-    !(user.permissions || []).grep(%r{\Aboiv:.}).empty?
+    (user.permissions || []).include?('sessions:create')
   end
 
 end

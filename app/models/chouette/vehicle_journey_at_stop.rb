@@ -3,6 +3,8 @@ module Chouette
     include ForBoardingEnumerations
     include ForAlightingEnumerations
 
+    DAY_OFFSET_MAX = 1
+
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
 
@@ -24,11 +26,46 @@ module Chouette
       end
     end
 
+    validate :day_offset_must_be_within_range
+
     after_initialize :set_virtual_attributes
     def set_virtual_attributes
       @_destroy = false
       @dummy = false
     end
+
+    def day_offset_must_be_within_range
+      if day_offset_outside_range?(arrival_day_offset)
+        errors.add(
+          :arrival_day_offset,
+          I18n.t(
+            'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
+            local_id: vehicle_journey.objectid.local_id,
+            max: DAY_OFFSET_MAX + 1
+          )
+        )
+      end
+
+      if day_offset_outside_range?(departure_day_offset)
+        errors.add(
+          :departure_day_offset,
+          I18n.t(
+            'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
+            local_id: vehicle_journey.objectid.local_id,
+            max: DAY_OFFSET_MAX + 1
+          )
+        )
+      end
+    end
+
+    def day_offset_outside_range?(offset)
+      # At-stops that were created before the database-default of 0 will have
+      # nil offsets. Handle these gracefully by forcing them to a 0 offset.
+      offset ||= 0
+
+      offset < 0 || offset > DAY_OFFSET_MAX
+    end
+
 
   end
 end

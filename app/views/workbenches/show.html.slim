@@ -7,8 +7,8 @@
   / Below is secundary actions & optional contents (filters, ...)
   .row.mb-sm
     .col-lg-12.text-right
-      = link_to t('actions.import'), workbench_imports_path(@workbench), class: 'btn btn-primary'
       - if policy(Referential).create?
+        = link_to t('actions.import'), workbench_imports_path(@workbench), class: 'btn btn-primary'
         = link_to t('actions.add'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
 
 / PageContent
@@ -31,7 +31,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :status, \
-                  attribute: Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>").html_safe} \
+                  attribute: Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :organisation, \
@@ -43,7 +43,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :lines, \
-                  name: 'Nb lignes', \
+                  name: t('activerecord.attributes.referential.number_of_lines'), \
                   attribute: Proc.new {|w| w.lines.count} \
                 ), \
                 TableBuilderHelper::Column.new( \

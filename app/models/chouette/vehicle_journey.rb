@@ -23,7 +23,10 @@ module Chouette
 
     validates_presence_of :route
     validates_presence_of :journey_pattern
-    validates :vehicle_journey_at_stops, :vjas_departure_time_must_be_before_next_stop_arrival_time,
+    validates :vehicle_journey_at_stops,
+      # Validation temporarily removed for day offsets
+      # :vjas_departure_time_must_be_before_next_stop_arrival_time,
+
       vehicle_journey_at_stops_are_in_increasing_time_order: true
     validates_presence_of :number
 
@@ -34,6 +37,12 @@ module Chouette
     before_validation :set_default_values,
       :calculate_vehicle_journey_at_stop_day_offset
 
+    # TODO: Remove this validator
+    # We've eliminated this validation because it prevented vehicle journeys
+    # from being saved with at-stops having a day offset greater than 0,
+    # because these would have times that were "earlier" than the previous
+    # at-stop. TBD by Luc whether we're deleting this validation altogether or
+    # instead rejiggering it to work with day offsets.
     def vjas_departure_time_must_be_before_next_stop_arrival_time
       notice = 'departure time must be before next stop arrival time'
       vehicle_journey_at_stops.each_with_index do |current_stop, index|

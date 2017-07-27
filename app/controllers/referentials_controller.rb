@@ -9,7 +9,7 @@ class ReferentialsController < BreadcrumbController
   def new
     if params[:from]
       source_referential = Referential.find(params[:from])
-      @referential = Referential.new_from(source_referential, organisation: current_organisation)
+      @referential = Referential.new_from(source_referential)
     end
 
     new! do
@@ -118,7 +118,7 @@ class ReferentialsController < BreadcrumbController
   end
 
   def create_resource(referential)
-    referential.organisation = current_organisation unless referential.created_from
+    referential.organisation = current_organisation
     referential.ready = true
     super
   end

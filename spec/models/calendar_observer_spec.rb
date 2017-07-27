@@ -12,14 +12,14 @@ RSpec.describe CalendarObserver, type: :observer do
 
     it 'should schedule mailer on calendar update' do
       calendar.name = 'edited_name'
-      expect(MailerJob).to receive(:perform_later).with 'CalendarMailer', 'updated', [calendar, user]
+      expect(MailerJob).to receive(:perform_later).with 'CalendarMailer', 'updated', [calendar.id, user.id]
       calendar.save
     end
 
     it 'should not schedule mailer for none shared calendar on update' do
       calendar = create(:calendar, shared: false)
       calendar.name = 'edited_name'
-      expect(MailerJob).to_not receive(:perform_later).with 'CalendarMailer', 'updated', [calendar, user]
+      expect(MailerJob).to_not receive(:perform_later).with 'CalendarMailer', 'updated', [calendar.id, user.id]
       calendar.save
     end
   end
@@ -31,12 +31,12 @@ RSpec.describe CalendarObserver, type: :observer do
     end
 
     it 'should schedule mailer on calendar create' do
-      expect(MailerJob).to receive(:perform_later).with 'CalendarMailer', 'created', [anything, user]
+      expect(MailerJob).to receive(:perform_later).with 'CalendarMailer', 'created', [anything, user.id]
       build(:calendar, shared: true).save
     end
 
     it 'should not schedule mailer for none shared calendar on create' do
-      expect(MailerJob).to_not receive(:perform_later).with 'CalendarMailer', 'created', [anything, user]
+      expect(MailerJob).to_not receive(:perform_later).with 'CalendarMailer', 'created', [anything, user.id]
       build(:calendar, shared: false).save
     end
   end
