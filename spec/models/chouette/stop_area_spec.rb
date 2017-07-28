@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Chouette::StopArea, :type => :model do
-  # FIXME !!!!!!!!
+  subject { create(:stop_area) }
+
   let!(:quay) { create :stop_area, :area_type => "zdep" }
-  # let!(:boarding_position) { create :stop_area, :area_type => "BoardingPosition" }
   let!(:commercial_stop_point) { create :stop_area, :area_type => "lda" }
   let!(:stop_place) { create :stop_area, :area_type => "zdlp" }
 

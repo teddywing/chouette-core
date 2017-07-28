@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :line, :class => Chouette::Line do
     sequence(:name) { |n| "Line #{n}" }
-    sequence(:objectid) { |n| "organisation:Line:#{n}:LOC" }
+    sequence(:objectid) { |n| "STIF:CODIFLIGNE:Line:#{n}" }
     sequence(:transport_mode) { |n| "bus" }
     sequence(:number, 1)
 
