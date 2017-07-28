@@ -38,7 +38,6 @@ class BSelect4 extends React.Component{
               };
             },
             processResults: function(data, params) {
-              // console.log(data)
               return {
                 results: data.map(
                   item => _.assign(
