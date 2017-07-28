@@ -35,7 +35,7 @@ module StifNetexAttributesSupport
   end
 
   def local_id
-    'LOCAL_ID'
+    ''
   end
 
   def boiv_id
