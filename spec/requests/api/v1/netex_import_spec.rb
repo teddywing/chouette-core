@@ -32,8 +32,9 @@ RSpec.describe "NetexImport", type: :request do
       let( :authorization ){ authorization_token_header( get_api_key.token ) }
 
 
-      it 'succeeds' do
-        post_request.(netex_import: legal_attributes)
+      it 'succeeds', :wip do
+        legal_attributes # force object creation for correct to change behavior
+        expect{post_request.(netex_import: legal_attributes)}.to change{Referential.count}.by(1)
         expect( response ).to be_success
         expect( json_response_body ).to eq({'id' => NetexImport.last.id, 'type' => 'NetexImport'})
       end
@@ -47,7 +48,8 @@ RSpec.describe "NetexImport", type: :request do
       let( :authorization ){ authorization_token_header( "#{referential.id}-incorrect_token") }
 
       it 'does not succeed' do
-        post_request.(netex_import: legal_attributes)
+        legal_attributes # force object creation for correct to change behavior
+        expect{ post_request.(netex_import: legal_attributes) }.not_to change{Referential.count}
         expect( response.status ).to eq(401)
       end
 
