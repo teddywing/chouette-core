@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Chouette::AccessPoint, :type => :model do
+  subject { create(:access_point) }
 
   describe '#objectid' do
     subject { super().objectid }
@@ -109,7 +110,6 @@ describe Chouette::AccessPoint, :type => :model do
   end
 
   describe "#to_lat_lng" do
-
     it "should return nil if latitude is nil" do
       subject.latitude = nil
       expect(subject.to_lat_lng).to be_nil
@@ -123,12 +123,13 @@ describe Chouette::AccessPoint, :type => :model do
   end
 
   describe "#geometry" do
+    let(:access_point) { create(:access_point) }
 
     it "should be nil when to_lat_lng is nil" do
-      allow(subject).to receive_messages :to_lat_lng => nil
-      expect(subject.geometry).to be_nil
+      allow(access_point).to receive_messages :longitude => nil
+      allow(access_point).to receive_messages :latitude => nil
+      expect(access_point.geometry).to be_nil
     end
-
   end
 
   describe "#generic_access_link_matrix" do
