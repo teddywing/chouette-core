@@ -175,11 +175,10 @@ module TableBuilderHelper
     sort_on,
     sort_direction
   )
-    if !table_is_sortable
+
+    if !table_is_sortable || !column.sortable
       return column.header_label(collection_model)
     end
-
-    return column.name if !column.sortable
 
     direction =
       if column.key.to_s == sort_on && sort_direction == 'desc'
