@@ -6,13 +6,18 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   let( :workbench ){ import.workbench }
   let( :referential ){ import.referential }
   let( :api_key ){ build_stubbed :api_key, referential: referential, token: "#{referential.id}-#{SecureRandom.hex}" }
-  let( :params ){ {referential_id: referential.id, workbench_id: workbench.id} }
+  let( :params ) do
+    { netex_import:
+      { referential_id: referential.id, workbench_id: workbench.id }
+    }
+  end
 
   # http://www.example.com/workbenches/:workbench_id/imports/:id/download
   let( :host ){ Rails.configuration.front_end_host }
   let( :path ){ download_workbench_import_path(workbench, import) }
 
   let( :downloaded_zip ){ double("downloaded zip") }
+  let( :download_zip_response ){ OpenStruct.new( body: downloaded_zip ) }
   let( :download_token ){ SecureRandom.urlsafe_base64 }
 
 
@@ -54,7 +59,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
       expect(HTTPService).to receive(:get_resource)
         .with(host: host, path: path, params: {token: download_token})
-        .and_return( downloaded_zip )
+        .and_return( download_zip_response )
 
       entry_groups.each do | entry_group_name, entry_group_stream |
         mock_post entry_group_name, entry_group_stream, post_response_ok
@@ -76,7 +81,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
     it 'downloads a zip file, cuts it, and uploads some pieces' do
       expect(HTTPService).to receive(:get_resource)
         .with(host: host, path: path, params: {token: download_token})
-        .and_return( downloaded_zip )
+        .and_return( download_zip_response )
 
       # First entry_group succeeds
       entry_groups[0..0].each do | entry_group_name, entry_group_stream |
@@ -106,7 +111,6 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
     expect( HTTPService ).to receive(:post_resource)
       .with(host: host,
             path: upload_path,
-            resource_name: 'netex_import',
             token: api_key.token,
             params: params,
             upload: {file: [entry_group_stream, 'application/zip', entry_group_name]})

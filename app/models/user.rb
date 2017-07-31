@@ -66,10 +66,9 @@ class User < ActiveRecord::Base
     conf = Rails.application.config.try(:stif_portail_api)
     raise 'Rails.application.config.stif_portail_api settings is not defined' unless conf
 
-    HTTPService.get_resource(
+    HTTPService.get_json_resource(
       host: conf[:url],
       path: '/api/v1/users',
-      parse_json: true,
       token: conf[:key])
   end
 
