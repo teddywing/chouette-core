@@ -2,6 +2,7 @@ fr:
   time_tables:
     duplicate_success: "duplication terminée"
     search_no_results: 'Aucun calendrier ne correspond à votre recherche'
+    error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
     time_table:
       empty: "vide"
       bounding: "du %{start} au %{end}"

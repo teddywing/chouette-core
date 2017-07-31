@@ -5,6 +5,7 @@ fr:
       name: 'Indiquez un nom de référentiel...'
       line: 'Indiquez une ligne...'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
+    error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
     index:
       title: 'Jeux de données'
     edit:

@@ -161,7 +161,6 @@ class TimeTablesController < ChouetteController
   private
   def ransack_periode scope
     return scope unless params[:q]
-    return scope unless params[:q]['end_date_lteq(1i)'].present?
 
     begin_range = flatten_date('start_date_gteq')
     end_range   = flatten_date('end_date_lteq')
