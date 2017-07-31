@@ -11,14 +11,14 @@ RSpec.describe ZipService do
   end
 
   context 'single entry' do
-    let( :zip_file ){ fixtures_path 'multiref.zip' }
+    let( :zip_file ){ fixtures_path 'multiple_references_import.zip' }
     let( :expected ){ %w{ref1 ref2} }
 
     it_behaves_like 'a correct zip entry reader'
   end
 
   context 'more entries' do
-    let( :zip_file ){ fixtures_path 'singleref.zip' }
+    let( :zip_file ){ fixtures_path 'single_reference_import.zip' }
     let( :expected ){ %w{ref} }
 
     it_behaves_like 'a correct zip entry reader'

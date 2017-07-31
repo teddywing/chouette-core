@@ -1,6 +1,6 @@
 RSpec.describe ZipService do
   
-  subject{ described_class.new(read_fixture('multiref.zip')) }
+  subject{ described_class.new(read_fixture('multiple_references_import.zip')) }
 
   
   it 'can write itself to a file' do
@@ -15,7 +15,7 @@ RSpec.describe ZipService do
     expect( ref2_lines ).to eq %w(multiref/ref2/ multiref/ref2/datum-1 multiref/ref2/datum-2)
   end
 
-  it "exposes it's size" do
+  it "exposes its size" do
     expect( subject.entry_group_streams.size ).to eq(2)
   end
 end

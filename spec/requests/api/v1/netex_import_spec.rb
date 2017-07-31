@@ -6,7 +6,7 @@ RSpec.describe "NetexImport", type: :request do
     let( :workbench ){ referential.workbench }
 
 
-    let( :file_path ){ fixtures_path 'singleref.zip' }
+    let( :file_path ){ fixtures_path 'single_reference_import.zip' }
     let( :file ){ fixture_file_upload( file_path ) }
 
     let( :post_request ) do

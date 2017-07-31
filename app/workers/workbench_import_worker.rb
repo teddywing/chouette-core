@@ -9,7 +9,7 @@ class WorkbenchImportWorker
   # =======
 
   def perform(import_id)
-    @import     = Import.find(import_id)
+    @import     = WorkbenchImport.find(import_id)
     @response   = nil
     @import.update_attributes(status: 'running')
     downloaded  = download
@@ -18,11 +18,11 @@ class WorkbenchImportWorker
   end
 
   def download
-    logger.warn  "HTTP GET #{import_url}"
+    logger.info  "HTTP GET #{import_url}"
     @zipfile_data = HTTPService.get_resource(
       host: import_host,
       path: import_path,
-      params: {token: @import.token_download})
+      params: {token: @import.token_download}).body
   end
 
   def execute_post eg_name, eg_stream
@@ -30,14 +30,13 @@ class WorkbenchImportWorker
     HTTPService.post_resource(
       host: export_host,
       path: export_path,
-      resource_name: 'netex_import',
       token: token(eg_name),
       params: params,
       upload: {file: [eg_stream, 'application/zip', eg_name]})
   end
 
   def log_failure reason, count
-    logger.info "HTTP POST failed with #{reason}, count = #{count}, response=#{@response}"
+    logger.warn "HTTP POST failed with #{reason}, count = #{count}, response=#{@response}"
   end
 
   def try_again
@@ -61,9 +60,12 @@ class WorkbenchImportWorker
 
   def upload_entry_group key_pair, element_count
     @import.update_attributes( current_step: element_count.succ )
-    retry_service = RetryService.new(delays: RETRY_DELAYS, rescue_from: HTTPService::Timeout, &method(:log_failure)) 
-    status, _ = retry_service.execute(&upload_entry_group_proc(key_pair))
-    raise StopIteration unless status == :ok
+    retry_service = RetryService.new(
+      delays: RETRY_DELAYS,
+      rescue_from: [HTTPService::Timeout],
+      &method(:log_failure)) 
+    status = retry_service.execute(&upload_entry_group_proc(key_pair))
+    raise StopIteration unless status.ok?
   end
 
   def upload_entry_group_proc key_pair
@@ -94,7 +96,7 @@ class WorkbenchImportWorker
     Rails.application.config.front_end_host
   end
   def export_path
-    '/api/v1/netex_imports.json'
+    api_v1_netex_imports_path(format: :json)
   end
   def export_url
     @__export_url__ ||= File.join(export_host, export_path)
@@ -104,13 +106,13 @@ class WorkbenchImportWorker
     Rails.application.config.front_end_host
   end
   def import_path
-    @__import_path__ ||= File.join(download_workbench_import_path(@import.workbench, @import))
+    @__import_path__ ||= download_workbench_import_path(@import.workbench, @import)
   end
   def import_url
     @__import_url__ ||= File.join(import_host, import_path)
   end
 
   def params
-    @__params__ ||= { referential_id: @import.referential_id, workbench_id: @import.workbench_id }
+    @__params__ ||= { netex_import: { referential_id: @import.referential_id, workbench_id: @import.workbench_id } }
   end
 end

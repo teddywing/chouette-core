@@ -4,6 +4,9 @@ module Support
       Rails.root.join( fixture_path, *segments )
     end
 
+    def open_fixture *segments
+      File.open(fixtures_path(*segments))
+    end
     def read_fixture *segments
       File.read(fixtures_path(*segments))
     end

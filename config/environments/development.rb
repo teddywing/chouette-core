@@ -91,7 +91,5 @@ Rails.application.configure do
   # link to validation specification pages
   config.validation_spec = "http://www.chouette.mobi/neptune-validation/v21/"
 
-  # Local zip decompression dir
-  #
   config.i18n.available_locales = [:fr, :en]
 end
