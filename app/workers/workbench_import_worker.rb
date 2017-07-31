@@ -106,7 +106,7 @@ class WorkbenchImportWorker
     Rails.application.config.front_end_host
   end
   def import_path
-    @__import_path__ ||= File.join(download_workbench_import_path(@import.workbench, @import))
+    @__import_path__ ||= download_workbench_import_path(@import.workbench, @import)
   end
   def import_url
     @__import_url__ ||= File.join(import_host, import_path)

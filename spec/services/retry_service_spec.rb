@@ -42,7 +42,7 @@ RSpec.describe RetryService do
       expect( subject ).to receive(:sleep).with(2)
     end
 
-    it 'succeds the second time' do
+    it 'succeeds the second time' do
       expect( subject.execute{ succeed_later(ArgumentError){ 42 } } ).to eq(Result.ok(42))
     end
 
@@ -58,7 +58,8 @@ RSpec.describe RetryService do
       expect( subject ).to receive(:sleep).with(3)
     end
     it 'succeeds the third time with try again (automatically registered exception)' do
-      expect( subject.execute{ succeed_later(RetryService::Retry, count: 2){ 42 } } ).to eq(Result.ok(42))
+      result = subject.execute{ succeed_later(RetryService::Retry, count: 2){ 42 } }  
+      expect( result ).to eq( Result.ok(42) )
     end
   end
 

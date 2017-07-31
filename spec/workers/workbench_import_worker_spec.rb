@@ -1,7 +1,7 @@
 RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
   let( :worker ) { described_class.new }
-  let( :import ){ build_stubbed :import, token_download: download_token, file: File.open(zip_file) }
+  let( :import ){ build_stubbed :import, token_download: download_token, file: zip_file }
 
   let( :workbench ){ import.workbench }
   let( :referential ){ import.referential }
@@ -21,7 +21,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   let( :download_token ){ SecureRandom.urlsafe_base64 }
 
 
-  let( :upload_path ) { '/api/v1/netex_imports.json' }
+  let( :upload_path ) { api_v1_netex_imports_path(format: :json) }
 
   let( :entry_group_streams ) do
     entry_count.times.map{ |i| double( "entry group stream #{i}" ) }
@@ -33,7 +33,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   end
 
   let( :zip_service ){ double("zip service") }
-  let( :zip_file ){ File.join(fixture_path, 'multiref.zip') }
+  let( :zip_file ){ open_fixture('multiref.zip') }
 
   let( :post_response_ok ){ response(status: 201, boody: "{}") }
 
