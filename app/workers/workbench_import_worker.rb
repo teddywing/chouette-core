@@ -9,7 +9,7 @@ class WorkbenchImportWorker
   # =======
 
   def perform(import_id)
-    @import     = Import.find(import_id)
+    @import     = WorkbenchImport.find(import_id)
     @response   = nil
     @import.update_attributes(status: 'running')
     downloaded  = download

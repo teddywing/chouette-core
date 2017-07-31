@@ -33,9 +33,9 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   end
 
   let( :zip_service ){ double("zip service") }
-  let( :zip_file ){ open_fixture('multiref.zip') }
+  let( :zip_file ){ open_fixture('multiple_references_import.zip') }
 
-  let( :post_response_ok ){ response(status: 201, boody: "{}") }
+  let( :post_response_ok ){ response(status: 201, body: "{}") }
 
   before do
     # Silence Logger
@@ -76,7 +76,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
   context 'multireferential zipfile with error' do
     let( :entry_count ){ 3 }
-    let( :post_response_failure ){ response(status: 406, boody: {error: 'What was you thinking'}) }
+    let( :post_response_failure ){ response(status: 406, body: {error: 'What was you thinking'}) }
 
     it 'downloads a zip file, cuts it, and uploads some pieces' do
       expect(HTTPService).to receive(:get_resource)
@@ -117,6 +117,6 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
       .and_return(response)
   end
   def response(**opts)
-    OpenStruct.new(opts)
+    double(**opts)
   end
 end

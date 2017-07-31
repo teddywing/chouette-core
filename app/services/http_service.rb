@@ -12,8 +12,8 @@ module HTTPService extend self
   end
 
   def get_json_resource(host:, path:, token: nil, params: {})
-    # Stupid Ruby!!!
-    resp = get_resource(host: host, path: path, token: token, params: {}) 
+    # Stupid Ruby!!! (I mean I just **need** Pattern Matching, maybe I need to write it myself :O)
+    resp = get_resource(host: host, path: path, token: token, params: params) 
     if resp.status == 200
       return JSON.parse(resp.body)
     else

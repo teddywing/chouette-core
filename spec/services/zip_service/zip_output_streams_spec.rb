@@ -1,6 +1,6 @@
 RSpec.describe ZipService do
   
-  subject{ described_class.new(read_fixture('multiref.zip')) }
+  subject{ described_class.new(read_fixture('multiple_references_import.zip')) }
 
   
   it 'can write itself to a file' do
