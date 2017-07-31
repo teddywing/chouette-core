@@ -34,7 +34,7 @@ class BSelect4 extends React.Component{
             delay: '500',
             data: function(params) {
               return {
-                q: {comment_cont: params.term},
+                q: {short_id_or_comment_cont: params.term},
               };
             },
             processResults: function(data, params) {
@@ -43,7 +43,7 @@ class BSelect4 extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    {text: '<strong>' + (item.color ? "<span class='fa fa-circle' style='color:" + item.color + "'></span> " : '') + item.comment + ' - ' + item.short_id + '</strong><br/><small>' + item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') + '</small>'}
+                    {text: '<strong>' + "<span class='fa fa-circle' style='color:" + (item.color ? item.color : '#4B4B4B') + "'></span> " + item.comment + ' - ' + item.short_id + '</strong><br/><small>' + (item.day_types ? item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') : "") + '</small>'}
                   )
                 )
               };

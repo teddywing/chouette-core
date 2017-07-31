@@ -297,7 +297,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   end
 
   def display_day_types
-    %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join('')
+    %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join(', ')
   end
 
   def day_by_mask(flag)
@@ -461,59 +461,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     optimized.sort { |a,b| a.period_start <=> b.period_start}
   end
 
-  def continuous_periods
-    periods = self.periods.sort_by(&:period_start)
-    chunk = {}
-    group = nil
-    periods.each_with_index do |period, index|
-      group ||= index
-      group = (period.period_start - 1.day == periods[index - 1].period_end) ? group : group + 1
-      chunk[group] ||= []
-      chunk[group] << period
-    end
-    chunk.values.delete_if {|periods| periods.count < 2}
-  end
-
-  def convert_continuous_periods_into_one
-    chunks = self.continuous_periods
-
-    transaction do
-      chunks.each do |chunk|
-        self.periods.create!(period_start: chunk.first.period_start, period_end: chunk.last.period_end)
-        self.periods.delete chunk
-      end
-    end
-  end
-
-  #update a period if a in_day is just before or after
-  def optimize_continuous_dates_and_periods
-    return self.periods if self.included_days.empty? || periods.empty?
-
-    periods = self.clone_periods
-    optimized = []
-
-    i = 0
-    while i < periods.length
-      period = periods[i]
-      j = 0
-      in_days = self.reload.dates.where(in_out: true).sort_by(&:date)
-      while j < in_days.length
-        day = in_days[j]
-        if period.period_start - 1.day === day.date
-          period.period_start = day.date
-          self.dates.delete day
-        elsif period.period_end + 1.day === day.date
-          period.period_end = day.date
-          self.dates.delete day
-        end
-        j += 1
-      end
-      i += 1
-      optimized << period
-    end
-    optimized
-  end
-
   # add a peculiar day or switch it from excluded to included
   def add_included_day(d)
     if self.excluded_date?(d)
@@ -530,28 +477,20 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   # merge effective days from another timetable
   def merge!(another_tt)
     transaction do
-      self.periods = another_tt.clone_periods + self.periods
-
-      # For included dates
-      another_tt.included_days.map{ |d| add_included_day(d) }
-
-      # For excluded dates
-      self.dates.where(in_out: false).each do |d|
-        self.dates.delete d if another_tt.include_in_periods?(d.date) && !another_tt.excluded_date?(d.date)
+      days = [].tap do |array|
+        array.push(*self.included_days_in_dates_and_periods, *another_tt.effective_days)
+        array.uniq!
       end
 
-      another_tt.excluded_days.each do |d|
-        unless self.reload.excluded_date?(d)
-          self.dates << Chouette::TimeTableDate.new(date: d, in_out: false)
-        end
-        self.save!
-      end
+      self.dates.clear
+      self.periods.clear
 
-      self.convert_continuous_dates_to_periods
-      self.periods = self.optimize_continuous_dates_and_periods
-      self.convert_continuous_periods_into_one
-      self.periods = self.optimize_overlapping_periods
+      days.each do |day|
+        self.dates << Chouette::TimeTableDate.new(date: day, in_out: true)
+      end
+      self.save!
     end
+    self.convert_continuous_dates_to_periods
   end
 
   def included_days_in_dates_and_periods
@@ -564,12 +503,18 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     days
   end
 
-  # remove dates form tt which aren't in another_tt
+  # keep common dates with another_tt
   def intersect!(another_tt)
     transaction do
-      days = self.included_days_in_dates_and_periods & another_tt.included_days_in_dates_and_periods
+      days = [].tap do |array|
+        array.push(*self.included_days_in_dates_and_periods)
+        array.delete_if {|day| !another_tt.effective_days.include?(day) }
+        array.uniq!
+      end
+
       self.dates.clear
       self.periods.clear
+
       days.sort.each do |d|
         self.dates << Chouette::TimeTableDate.new(:date => d, :in_out => true)
       end
@@ -578,12 +523,18 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     self.convert_continuous_dates_to_periods
   end
 
-  # remove days from another calendar
+  # remove common dates with another_tt
   def disjoin!(another_tt)
     transaction do
-      days = self.included_days_in_dates_and_periods - another_tt.included_days_in_dates_and_periods
+      days = [].tap do |array|
+        array.push(*self.included_days_in_dates_and_periods)
+        array.delete_if {|day| another_tt.effective_days.include?(day) }
+        array.uniq!
+      end
+
       self.dates.clear
       self.periods.clear
+
       days.sort.each do |d|
         self.dates << Chouette::TimeTableDate.new(:date => d, :in_out => true)
       end

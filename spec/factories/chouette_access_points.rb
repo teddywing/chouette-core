@@ -5,7 +5,7 @@ FactoryGirl.define do
     longitude {10.0 * rand}
     sequence(:name) { |n| "AccessPoint #{n}" }
     access_type "InOut"
-    sequence(:objectid) { |n| "test:AccessPoint:#{n}" }
+    sequence(:objectid) { |n| "FR:#{n}:ADL:#{n}:STIF" }
     association :stop_area, :factory => :stop_area
   end
 

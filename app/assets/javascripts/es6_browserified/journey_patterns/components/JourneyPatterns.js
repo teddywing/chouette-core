@@ -95,7 +95,15 @@ class JourneyPatterns extends Component{
             { _.some(this.props.journeyPatterns, 'errors') && (
               <div className="alert alert-danger mt-sm">
                 <strong>Erreur : </strong>
-                une erreur bloque la validation des modifications.
+                {this.props.journeyPatterns.map((jp, index) =>
+                  jp.errors.map((err, i) => {
+                    return (
+                      <ul key={i}>
+                        <li>{err}</li>
+                      </ul>
+                    )
+                  })
+                )}
               </div>
             )}
 

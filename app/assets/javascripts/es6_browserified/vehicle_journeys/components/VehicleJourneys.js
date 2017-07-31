@@ -96,7 +96,15 @@ class VehicleJourneys extends Component{
             { _.some(this.props.vehicleJourneys, 'errors') && (
               <div className="alert alert-danger mt-sm">
                 <strong>Erreur : </strong>
-                une erreur bloque la validation des modifications.
+                {this.props.vehicleJourneys.map((vj, index) =>
+                  vj.errors.map((err, i) => {
+                    return (
+                      <ul key={i}>
+                        <li>{err}</li>
+                      </ul>
+                    )
+                  })
+                )}
               </div>
             )}
 

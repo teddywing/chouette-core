@@ -16,6 +16,6 @@ module StifReflexAttributesSupport
   end
 
   def objectid
-    Chouette::StifReflexObjectid.new read_attribute(:objectid).to_s
+    Chouette::StifReflexObjectid.new read_attribute(:objectid)
   end
 end

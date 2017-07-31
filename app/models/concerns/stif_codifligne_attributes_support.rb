@@ -16,6 +16,6 @@ module StifCodifligneAttributesSupport
   end
 
   def objectid
-    Chouette::StifCodifligneObjectid.new read_attribute(:objectid).to_s
+    Chouette::StifCodifligneObjectid.new read_attribute(:objectid)
   end
 end

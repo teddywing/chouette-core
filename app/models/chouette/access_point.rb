@@ -1,9 +1,10 @@
 require 'geokit'
 require 'geo_ruby'
 
-class Chouette::AccessPoint < Chouette::TridentActiveRecord
+class Chouette::AccessPoint < Chouette::ActiveRecord
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
+  include StifReflexAttributesSupport
   include Geokit::Mappable
   include ProjectionFields
 
@@ -28,6 +29,10 @@ class Chouette::AccessPoint < Chouette::TridentActiveRecord
   end
 
   before_save :coordinates_to_lat_lng
+
+  def referential
+    @referential ||= Referential.where(:slug => Apartment::Tenant.current).first!
+  end
 
   def combine_lat_lng
     if self.latitude.nil? || self.longitude.nil?

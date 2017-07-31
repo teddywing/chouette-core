@@ -25,6 +25,8 @@ bind_select2_ajax = (el, cfg = {}) ->
       item.text
     templateSelection: (item) ->
       item.text
+    escapeMarkup: (markup) ->
+      markup
 
   bind_select2(el, cfg)
 

@@ -2,6 +2,7 @@ en:
   time_tables:
     duplicate_success: "duplication succeded"
     search_no_results: 'No calendar matching your query'
+    error_period_filter: "The period filter must have valid bounding dates"
     time_table:
       empty: "empty"
       bounding: "from %{start} to %{end}"
