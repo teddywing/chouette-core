@@ -23,11 +23,11 @@ module Chouette
 
     validates_presence_of :route
     validates_presence_of :journey_pattern
-    validates :vehicle_journey_at_stops,
+    # validates :vehicle_journey_at_stops,
       # Validation temporarily removed for day offsets
       # :vjas_departure_time_must_be_before_next_stop_arrival_time,
 
-      vehicle_journey_at_stops_are_in_increasing_time_order: true
+      # vehicle_journey_at_stops_are_in_increasing_time_order: false
     validates_presence_of :number
 
     has_many :vehicle_journey_at_stops, -> { includes(:stop_point).order("stop_points.position") }, :dependent => :destroy
