@@ -20,6 +20,10 @@ class Import < ActiveRecord::Base
   def child_change(child)
   end
 
+  def ready?
+    current_step == total_steps
+  end
+
   private
 
   def initialize_fields
