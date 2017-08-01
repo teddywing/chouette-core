@@ -15,6 +15,7 @@ class Import < ActiveRecord::Base
 
   def notify_parent
     parent.child_change(self)
+    update(notified_parent_at: DateTime.now)
   end
 
   def child_change(child)

@@ -18,9 +18,29 @@ RSpec.describe Import, :type => :model do
         parent: workbench_import
       )
 
+      allow(netex_import).to receive(:update)
+
       expect(workbench_import).to receive(:child_change).with(netex_import)
 
       netex_import.notify_parent
+    end
+
+    it "must update the :notified_parent_at field of the child import" do
+      workbench_import = build_stubbed(:workbench_import)
+      netex_import = build_stubbed(
+        :netex_import,
+        parent: workbench_import
+      )
+
+      allow(workbench_import).to receive(:child_change)
+
+      Timecop.freeze(DateTime.now) do
+        expect(netex_import).to receive(:update).with(
+          notified_parent_at: DateTime.now
+        )
+
+        netex_import.notify_parent
+      end
     end
   end
 
