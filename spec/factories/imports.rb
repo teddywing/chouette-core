@@ -13,9 +13,5 @@ FactoryGirl.define do
     after(:build) do |import|
       import.class.skip_callback(:create, :before, :initialize_fields)
     end
-
-    factory :workbench_import, class: WorkbenchImport do
-      file {File.open(Rails.root.join('spec', 'fixtures', 'terminated_job.json'))}
-    end
   end
 end
