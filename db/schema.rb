@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170715041954) do
+ActiveRecord::Schema.define(version: 20170727130705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -287,6 +287,8 @@ ActiveRecord::Schema.define(version: 20170715041954) do
     t.string   "type",                  limit: 255
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.integer  "current_step",                      default: 0
+    t.integer  "total_steps",                       default: 0
   end
 
   add_index "imports", ["referential_id"], name: "index_imports_on_referential_id", using: :btree

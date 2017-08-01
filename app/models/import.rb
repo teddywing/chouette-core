@@ -9,6 +9,7 @@ class Import < ActiveRecord::Base
   enumerize :status, in: %i(new pending successful failed running aborted canceled)
 
   validates :file, presence: true
+  validates_presence_of :referential, :workbench
 
   before_create do
     self.token_download = SecureRandom.urlsafe_base64
