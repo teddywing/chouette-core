@@ -14,6 +14,10 @@ class Import < ActiveRecord::Base
   before_create :initialize_fields
 
   def notify_parent
+    parent.child_change(self)
+  end
+
+  def child_change(child)
   end
 
   private
