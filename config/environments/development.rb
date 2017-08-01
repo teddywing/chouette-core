@@ -61,15 +61,17 @@ Rails.application.configure do
   config.reflex_api_url = "https://pprod.reflex.stif.info/ws/reflex/V1/service=getData"
   config.codifligne_api_url = "https://pprod.codifligne.stif.info/rest/v1/lc/getlist"
 
-  # config.chouette_authentication_settings = {
-    # type: "database"
-  # }
-  config.chouette_authentication_settings = {
-    type: "cas",
-    cas_server: "http://stif-portail-dev.af83.priv/sessions"
-  }
-  config.stif_portail_api =
-  {
+  if Rails.env.development? && ENV['NO_VPN']
+    config.chouette_authentication_settings = {
+      type: "database"
+    }
+  else
+    config.chouette_authentication_settings = {
+      type: "cas",
+      cas_server: "http://stif-portail-dev.af83.priv/sessions"
+    }
+  end
+  config.stif_portail_api = {
     key: "Ohphie1Voo6the5hohpi",
     url: "http://stif-portail-dev.af83.priv"
   }
@@ -80,7 +82,8 @@ Rails.application.configure do
   config.portal_url = "http://stif-boiv-staging.af83.priv"
 
   # IEV url
-  config.iev_url = "localhost:8080"
+  config.iev_url    = ENV.fetch('IEV_URL', 'http://localhost:8080')
+  config.rails_host = ENV.fetch('FRONT_END_URL', 'http://localhost:3000')
 
   # file to data for demo
   config.demo_data = "tmp/demo.zip"

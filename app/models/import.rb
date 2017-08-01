@@ -3,10 +3,13 @@ class Import < ActiveRecord::Base
   belongs_to :workbench
   belongs_to :referential
 
+  belongs_to :parent, class_name: to_s
+
   extend Enumerize
   enumerize :status, in: %i(new pending successful failed running aborted canceled)
 
   validates :file, presence: true
+  validates_presence_of :referential, :workbench
 
   before_create do
     self.token_download = SecureRandom.urlsafe_base64
