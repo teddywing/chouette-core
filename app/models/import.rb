@@ -18,6 +18,11 @@ class Import < ActiveRecord::Base
   end
 
   def child_change(child)
+    if failing_statuses.include?(child.status)
+     return update(status: 'failed')
+    end
+
+    return update(status: 'successful') if ready?
   end
 
   def ready?
@@ -29,5 +34,9 @@ class Import < ActiveRecord::Base
   def initialize_fields
     self.token_download = SecureRandom.urlsafe_base64
     self.status = Import.status.new
+  end
+
+  def failing_statuses
+    %i(failed aborted canceled).flat_map { |status| [status, status.to_s] }
   end
 end
