@@ -80,8 +80,6 @@ RSpec.describe Import, :type => :model do
 
       workbench_import.child_change(netex_import)
     end
-    # when status is failed, update status to failed
-    # else when ready? update status to successful
   end
 
   describe "#ready?" do
