@@ -82,8 +82,8 @@ Rails.application.configure do
   config.portal_url = "http://stif-boiv-staging.af83.priv"
 
   # IEV url
-  config.iev_url        = ENV.fetch('IEV_URL', 'http://localhost:8080')
-  config.front_end_host = ENV.fetch('FRONT_END_URL', 'http://localhost:3000')
+  config.iev_url    = ENV.fetch('IEV_URL', 'http://localhost:8080')
+  config.rails_host = ENV.fetch('FRONT_END_URL', 'http://localhost:3000')
 
   # file to data for demo
   config.demo_data = "tmp/demo.zip"

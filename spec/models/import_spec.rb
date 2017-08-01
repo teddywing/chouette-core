@@ -1,5 +1,4 @@
 RSpec.describe Import, :type => :model do
-  subject{ build_stubbed :import }
 
   it { should belong_to(:referential) }
   it { should belong_to(:workbench) }

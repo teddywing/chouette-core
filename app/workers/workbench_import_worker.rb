@@ -93,7 +93,7 @@ class WorkbenchImportWorker
   # =========
 
   def export_host
-    Rails.application.config.front_end_host
+    Rails.application.config.rails_host
   end
   def export_path
     api_v1_netex_imports_path(format: :json)
@@ -103,7 +103,7 @@ class WorkbenchImportWorker
   end
 
   def import_host
-    Rails.application.config.front_end_host
+    Rails.application.config.rails_host
   end
   def import_path
     @__import_path__ ||= download_workbench_import_path(@import.workbench, @import)

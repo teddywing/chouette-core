@@ -13,7 +13,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   end
 
   # http://www.example.com/workbenches/:workbench_id/imports/:id/download
-  let( :host ){ Rails.configuration.front_end_host }
+  let( :host ){ Rails.configuration.rails_host }
   let( :path ){ download_workbench_import_path(workbench, import) }
 
   let( :downloaded_zip ){ double("downloaded zip") }
@@ -35,7 +35,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   let( :zip_service ){ double("zip service") }
   let( :zip_file ){ open_fixture('multiple_references_import.zip') }
 
-  let( :post_response_ok ){ response(status: 201, body: "{}") }
+  let( :post_response_ok ){ double(status: 201, body: "{}") }
 
   before do
     # Silence Logger
@@ -76,7 +76,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
   context 'multireferential zipfile with error' do
     let( :entry_count ){ 3 }
-    let( :post_response_failure ){ response(status: 406, body: {error: 'What was you thinking'}) }
+    let( :post_response_failure ){ double(status: 406, body: {error: 'What was you thinking'}) }
 
     it 'downloads a zip file, cuts it, and uploads some pieces' do
       expect(HTTPService).to receive(:get_resource)
@@ -115,8 +115,5 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
             params: params,
             upload: {file: [entry_group_stream, 'application/zip', entry_group_name]})
       .and_return(response)
-  end
-  def response(**opts)
-    double(**opts)
   end
 end
