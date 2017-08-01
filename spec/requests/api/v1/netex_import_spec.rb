@@ -30,10 +30,14 @@ RSpec.describe "NetexImport", type: :request do
     context 'with correct credentials and correct request' do
       let( :authorization ){ authorization_token_header( get_api_key.token ) }
 
-      it 'succeeds' do
+      it 'succeeds', :wip do
         post_request.(netex_import: legal_attributes)
         expect( response ).to be_success
-        expect( json_response_body ).to eq({'id' => NetexImport.last.id, 'type' => 'NetexImport'})
+        expect( json_response_body ).to eq(
+          'id'             => NetexImport.last.id,
+          'referential_id' => Referential.last.id,
+          'workbench_id'   => workbench.id
+        )
       end
 
       it 'creates a NetexImport object in the DB' do
@@ -50,18 +54,16 @@ RSpec.describe "NetexImport", type: :request do
       end
     end
 
+
     context 'with incorrect credentials and correct request' do
       let( :authorization ){ authorization_token_header( "#{referential.id}-incorrect_token") }
 
-      it 'does not succeed' do
+      it 'does not create any DB object and does not succeed' do
         legal_attributes # force object creation for correct to change behavior
         expect{ post_request.(netex_import: legal_attributes) }.not_to change{Referential.count}
         expect( response.status ).to eq(401)
       end
 
-      it 'does not create an Import object' do
-        expect{ post_request.(netex_import: legal_attributes) }.not_to change{Import.count}
-      end
     end
 
     context 'with correct credentials and incorrect request' do
