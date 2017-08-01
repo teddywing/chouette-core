@@ -80,6 +80,27 @@ RSpec.describe Import, :type => :model do
 
       workbench_import.child_change(netex_import)
     end
+
+    it "doesn't update :status if parent import status is finished" do
+      def does_not_receive_update_when_status(finished_status)
+        workbench_import = build_stubbed(
+          :workbench_import,
+          total_steps: 2,
+          current_step: 2,
+          status: finished_status
+        )
+        child = double('Import')
+
+        expect(workbench_import).not_to receive(:update)
+
+        workbench_import.child_change(child)
+      end
+
+      does_not_receive_update_when_status('successful')
+      does_not_receive_update_when_status('failed')
+      does_not_receive_update_when_status('aborted')
+      does_not_receive_update_when_status('canceled')
+    end
   end
 
   describe "#ready?" do

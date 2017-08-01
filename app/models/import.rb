@@ -18,6 +18,8 @@ class Import < ActiveRecord::Base
   end
 
   def child_change(child)
+    return if finished_statuses.include?(status)
+
     if failing_statuses.include?(child.status)
      return update(status: 'failed')
     end
@@ -38,6 +40,10 @@ class Import < ActiveRecord::Base
 
   def failing_statuses
     symbols_with_indifferent_access(%i(failed aborted canceled))
+  end
+
+  def finished_statuses
+    symbols_with_indifferent_access(%i(successful failed aborted canceled))
   end
 
   def symbols_with_indifferent_access(array)
