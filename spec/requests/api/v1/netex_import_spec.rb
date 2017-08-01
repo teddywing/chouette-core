@@ -11,7 +11,7 @@ RSpec.describe "NetexImport", type: :request do
 
     let( :post_request ) do
       -> (attributes) do
-        post "/api/v1/netex_imports.json",
+        post api_v1_netex_imports_path(format: :json),
           attributes,
           authorization
       end
@@ -21,8 +21,7 @@ RSpec.describe "NetexImport", type: :request do
       {
         name: 'hello world',
         file: file,
-        referential_id: referential.id,
-        workbench_id:   workbench.id
+        workbench_id: workbench.id
       }
     end 
 
@@ -33,7 +32,11 @@ RSpec.describe "NetexImport", type: :request do
       it 'succeeds' do
         post_request.(netex_import: legal_attributes)
         expect( response ).to be_success
-        expect( json_response_body ).to eq({'id' => NetexImport.last.id, 'type' => 'NetexImport'})
+        expect( json_response_body ).to eq(
+          'id'             => NetexImport.last.id,
+          'referential_id' => Referential.last.id,
+          'workbench_id'   => workbench.id
+        )
       end
 
       it 'creates a NetexImport object in the DB' do
@@ -50,24 +53,22 @@ RSpec.describe "NetexImport", type: :request do
       end
     end
 
+
     context 'with incorrect credentials and correct request' do
       let( :authorization ){ authorization_token_header( "#{referential.id}-incorrect_token") }
 
-      it 'does not succeed' do
+      it 'does not create any DB object and does not succeed' do
         legal_attributes # force object creation for correct to change behavior
         expect{ post_request.(netex_import: legal_attributes) }.not_to change{Referential.count}
         expect( response.status ).to eq(401)
       end
 
-      it 'does not create an Import object' do
-        expect{ post_request.(netex_import: legal_attributes) }.not_to change{Import.count}
-      end
     end
 
     context 'with correct credentials and incorrect request' do
       let( :authorization ){ authorization_token_header( get_api_key.token ) }
 
-      shared_examples_for 'illegal attributes' do |bad_attribute, illegal_value=nil|
+      shared_examples_for 'illegal attributes' do |bad_attribute, illegal_value=nil, referential_count: 0|
         context "missing #{bad_attribute}" do
           let!( :illegal_attributes ){ legal_attributes.merge( bad_attribute => illegal_value ) }
           it 'does not succeed' do
@@ -80,13 +81,13 @@ RSpec.describe "NetexImport", type: :request do
             expect{ post_request.(netex_import: illegal_attributes) }.not_to change{Import.count}
           end
 
-          it 'does not create a new Referential' do
-            expect{ post_request.(netex_import: illegal_attributes) }.not_to change{Referential.count}
+          it 'might create a referential' do
+            expect{ post_request.(netex_import: illegal_attributes) }.to change{Referential.count}.by(referential_count)
           end
         end
       end
 
-      it_behaves_like 'illegal attributes', :file
+      it_behaves_like 'illegal attributes', :file, referential_count: 1
       it_behaves_like 'illegal attributes', :workbench_id
       context 'name already taken' do
         before do
