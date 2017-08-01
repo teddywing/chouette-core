@@ -37,6 +37,10 @@ class Import < ActiveRecord::Base
   end
 
   def failing_statuses
-    %i(failed aborted canceled).flat_map { |status| [status, status.to_s] }
+    symbols_with_indifferent_access(%i(failed aborted canceled))
+  end
+
+  def symbols_with_indifferent_access(array)
+    array.flat_map { |symbol| [symbol, symbol.to_s] }
   end
 end
