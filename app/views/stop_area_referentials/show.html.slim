@@ -37,6 +37,6 @@
                           td.text-center
                             .fa.fa-circle class="text-#{criticity_class(log.criticity)}"
                           td
-                            - data = log.message_attributs.symbolize_keys!
+                            - data = log.message_attributes.symbolize_keys!
                             - data[:processing_time] = distance_of_time_in_words(data[:processing_time].to_i)
-                            = t("stop_area_referential_sync.message.#{log.message_key}", log.message_attributs.symbolize_keys!).html_safe
+                            = t("stop_area_referential_sync.message.#{log.message_key}", log.message_attributes.symbolize_keys!).html_safe
