@@ -45,10 +45,10 @@ RSpec.describe Import, :type => :model do
   end
 
   describe "#child_change" do
-    it "updates :status to failed when child status indicates failure" do
-      def updates_status_to_failed_when_child_status_indicates_failure(
-        failure_status
-      )
+    shared_examples(
+      "updates :status to failed when child status indicates failure"
+    ) do |failure_status|
+      it "updates :status to failed when child status indicates failure" do
         workbench_import = build_stubbed(:workbench_import)
         allow(workbench_import).to receive(:update)
 
@@ -62,11 +62,20 @@ RSpec.describe Import, :type => :model do
 
         workbench_import.child_change(netex_import)
       end
-
-      updates_status_to_failed_when_child_status_indicates_failure('failed')
-      updates_status_to_failed_when_child_status_indicates_failure('aborted')
-      updates_status_to_failed_when_child_status_indicates_failure('canceled')
     end
+
+    include_examples(
+      "updates :status to failed when child status indicates failure",
+      "failed"
+    )
+    include_examples(
+      "updates :status to failed when child status indicates failure",
+      "aborted"
+    )
+    include_examples(
+      "updates :status to failed when child status indicates failure",
+      "canceled"
+    )
 
     it "updates :status to successful when #ready?" do
       workbench_import = build_stubbed(
@@ -101,8 +110,10 @@ RSpec.describe Import, :type => :model do
       workbench_import.child_change(netex_import)
     end
 
-    it "doesn't update :status if parent import status is finished" do
-      def does_not_receive_update_when_status(finished_status)
+    shared_examples(
+      "doesn't update :status if parent import status is finished"
+    ) do |finished_status|
+      it "doesn't update :status if parent import status is finished" do
         workbench_import = build_stubbed(
           :workbench_import,
           total_steps: 2,
@@ -115,12 +126,24 @@ RSpec.describe Import, :type => :model do
 
         workbench_import.child_change(child)
       end
-
-      does_not_receive_update_when_status('successful')
-      does_not_receive_update_when_status('failed')
-      does_not_receive_update_when_status('aborted')
-      does_not_receive_update_when_status('canceled')
     end
+
+    include_examples(
+      "doesn't update :status if parent import status is finished",
+      "successful"
+    )
+    include_examples(
+      "doesn't update :status if parent import status is finished",
+      "failed"
+    )
+    include_examples(
+      "doesn't update :status if parent import status is finished",
+      "aborted"
+    )
+    include_examples(
+      "doesn't update :status if parent import status is finished",
+      "canceled"
+    )
   end
 
   describe "#ready?" do
