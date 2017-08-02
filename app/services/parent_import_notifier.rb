@@ -8,7 +8,7 @@ class ParentImportNotifier
     Import
       .where(
         notified_parent_at: nil,
-        status: [:failed, :successful, :aborted, :canceled]
+        status: Import.finished_statuses
       )
       .where.not(parent: nil)
   end
