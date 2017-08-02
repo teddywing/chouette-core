@@ -30,7 +30,7 @@ RSpec.describe "NetexImport", type: :request do
     context 'with correct credentials and correct request' do
       let( :authorization ){ authorization_token_header( get_api_key.token ) }
 
-      it 'succeeds', :wip do
+      it 'succeeds' do
         post_request.(netex_import: legal_attributes)
         expect( response ).to be_success
         expect( json_response_body ).to eq(
