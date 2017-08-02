@@ -33,7 +33,7 @@ class Import < ActiveRecord::Base
      return update(status: 'failed')
     end
 
-    return update(status: 'successful') if ready?
+    update(status: 'successful') if ready?
   end
 
   def ready?
