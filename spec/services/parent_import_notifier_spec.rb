@@ -1,4 +1,6 @@
 RSpec.describe ParentImportNotifier do
+  let(:workbench_import) { create(:workbench_import) }
+
   describe ".notify_when_finished" do
     it "calls #notify_parent on finished imports" do
       workbench_import = build_stubbed(:workbench_import)
@@ -22,8 +24,6 @@ RSpec.describe ParentImportNotifier do
     end
 
     it "doesn't call #notify_parent if its `notified_parent_at` is set" do
-      workbench_import = create(:workbench_import)
-
       netex_import = create(
         :netex_import,
         parent: workbench_import,
@@ -39,7 +39,6 @@ RSpec.describe ParentImportNotifier do
 
   describe ".imports_pending_notification" do
     it "includes imports with a parent and `notified_parent_at` unset" do
-      workbench_import = create(:workbench_import)
       netex_import = create(
         :netex_import,
         parent: workbench_import,
@@ -61,7 +60,6 @@ RSpec.describe ParentImportNotifier do
     end
 
     it "doesn't include imports that aren't finished" do
-      workbench_import = create(:workbench_import)
       [:new, :pending, :running].each do |status|
         create(
           :netex_import,
@@ -77,7 +75,6 @@ RSpec.describe ParentImportNotifier do
     end
 
     it "doesn't include imports that have already notified their parent" do
-      workbench_import = create(:workbench_import)
       create(
         :netex_import,
         parent: workbench_import,
