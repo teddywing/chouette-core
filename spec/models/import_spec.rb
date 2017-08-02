@@ -10,14 +10,24 @@ RSpec.describe Import, :type => :model do
   it { should validate_presence_of(:referential) }
   it { should validate_presence_of(:workbench) }
 
+  let(:workbench_import) { build_stubbed(:workbench_import) }
+  let(:workbench_import_with_completed_steps) do
+    workbench_import = build_stubbed(
+      :workbench_import,
+      total_steps: 2,
+      current_step: 2
+    )
+  end
+
+  let(:netex_import) do
+    netex_import = build_stubbed(
+      :netex_import,
+      parent: workbench_import
+    )
+  end
+
   describe "#notify_parent" do
     it "must call #child_change on its parent" do
-      workbench_import = build_stubbed(:workbench_import)
-      netex_import = build_stubbed(
-        :netex_import,
-        parent: workbench_import
-      )
-
       allow(netex_import).to receive(:update)
 
       expect(workbench_import).to receive(:child_change).with(netex_import)
@@ -26,12 +36,6 @@ RSpec.describe Import, :type => :model do
     end
 
     it "must update the :notified_parent_at field of the child import" do
-      workbench_import = build_stubbed(:workbench_import)
-      netex_import = build_stubbed(
-        :netex_import,
-        parent: workbench_import
-      )
-
       allow(workbench_import).to receive(:child_change)
 
       Timecop.freeze(DateTime.now) do
@@ -49,7 +53,6 @@ RSpec.describe Import, :type => :model do
       "updates :status to failed when child status indicates failure"
     ) do |failure_status|
       it "updates :status to failed when child status indicates failure" do
-        workbench_import = build_stubbed(:workbench_import)
         allow(workbench_import).to receive(:update)
 
         netex_import = build_stubbed(
@@ -78,27 +81,12 @@ RSpec.describe Import, :type => :model do
     )
 
     it "updates :status to successful when #ready?" do
-      workbench_import = build_stubbed(
-        :workbench_import,
-        total_steps: 2,
-        current_step: 2
-      )
-      netex_import = build_stubbed(
-        :netex_import,
-        parent: workbench_import
-      )
-
       expect(workbench_import).to receive(:update).with(status: 'successful')
 
       workbench_import.child_change(netex_import)
     end
 
     it "updates :status to failed when #ready? and child is failed" do
-      workbench_import = build_stubbed(
-        :workbench_import,
-        total_steps: 2,
-        current_step: 2
-      )
       netex_import = build_stubbed(
         :netex_import,
         parent: workbench_import,
