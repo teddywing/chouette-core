@@ -166,22 +166,6 @@ ActiveRecord::Schema.define(version: 20170802141224) do
 
   add_index "connection_links", ["objectid"], name: "connection_links_objectid_key", unique: true, using: :btree
 
-  create_table "delayed_jobs", id: :bigserial, force: :cascade do |t|
-    t.integer  "priority",               default: 0
-    t.integer  "attempts",               default: 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by",  limit: 255
-    t.string   "queue",      limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
-
   create_table "exports", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id",  limit: 8
     t.string   "status"
@@ -851,13 +835,9 @@ ActiveRecord::Schema.define(version: 20170802141224) do
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
-  add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", on_delete: :nullify
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
-  add_foreign_key "journey_frequencies", "vehicle_journeys", name: "journey_frequencies_vehicle_journey_id_fk", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify
-  add_foreign_key "journey_pattern_sections", "journey_patterns", name: "journey_pattern_sections_journey_pattern_id_fk", on_delete: :cascade
   add_foreign_key "journey_pattern_sections", "journey_patterns", on_delete: :cascade
-  add_foreign_key "journey_pattern_sections", "route_sections", name: "journey_pattern_sections_route_section_id_fk", on_delete: :cascade
   add_foreign_key "journey_pattern_sections", "route_sections", on_delete: :cascade
   add_foreign_key "journey_patterns", "routes", name: "jp_route_fkey", on_delete: :cascade
   add_foreign_key "journey_patterns", "stop_points", column: "arrival_stop_point_id", name: "arrival_point_fkey", on_delete: :nullify
