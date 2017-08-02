@@ -1,9 +1,7 @@
 class ParentImportNotifier
   def self.notify_when_finished(imports = nil)
     imports ||= imports_pending_notification
-    imports.each do |import|
-      import.notify_parent
-    end
+    imports.each(&:notify_parent)
   end
 
   def self.imports_pending_notification
