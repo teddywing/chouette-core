@@ -1,6 +1,7 @@
 module Api
   module V1
     class NetexImportsController < ChouetteController
+      include ControlFlow
 
       def create
         respond_to do | format |
@@ -11,26 +12,43 @@ module Api
 
       private
 
-      def create_models
-        require 'pry'
-        binding.pry
-        workbench = Workbench.where(id: netex_import_params['workbench_id']).first
-        return render json: {errors: {'workbench_id' => 'missing'}}, status: 406 unless workbench
+      def find_workbench
+        @workbench = Workbench.find(netex_import_params['workbench_id'])
+      rescue ActiveRecord::RecordNotFound
+        render json: {errors: {'workbench_id' => 'missing'}}, status: 406
+        finish_action!
+      end
 
-        @referential = Referential.new(name: netex_import_params['name'], organisation_id: workbench.organisation_id, workbench_id: workbench.id)
-        @netex_import = NetexImport.new(netex_import_params.merge(referential_id: @referential.id))
-        if @netex_import.valid? && @referential.valid?
-          @netex_import.save!
-          @referential.save!
-        else
-          render json: {errors: @netex_import.errors.to_h.merge( @referential.errors.to_h )}, status: 406
-        end
+      def create_models
+        find_workbench
+        create_referential
+        create_netex_import
+      end
+
+      def create_netex_import
+        @netex_import = NetexImport.new(netex_import_params.merge(referential_id: @new_referential.id))
+        @netex_import.save!
+      rescue ActiveRecord::RecordInvalid 
+        render json: {errors: @netex_import.errors}, status: 406
+        finish_action!
+      end
+
+      def create_referential
+        @new_referential =
+          Referential.new(
+            name: netex_import_params['name'],
+            organisation_id: @workbench.organisation_id,
+            workbench_id: @workbench.id)
+        @new_referential.save!
+      rescue ActiveRecord::RecordInvalid
+        render json: {errors: @new_referential.errors}, status: 406
+        finish_action!
       end
 
       def netex_import_params
         params
           .require('netex_import')
-          .permit(:file, :name, :referential_id, :workbench_id)
+          .permit(:file, :name, :workbench_id)
       end
     end
   end
