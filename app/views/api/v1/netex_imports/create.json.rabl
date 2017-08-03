@@ -1,3 +1,3 @@
 
-object @import
-attributes :id, :type
+object @netex_import
+attributes :id, :workbench_id, :referential_id
