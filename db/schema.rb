@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170727130705) do
+ActiveRecord::Schema.define(version: 20170802141224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,7 +247,7 @@ ActiveRecord::Schema.define(version: 20170727130705) do
   create_table "import_messages", id: :bigserial, force: :cascade do |t|
     t.integer  "criticity"
     t.string   "message_key"
-    t.hstore   "message_attributs"
+    t.hstore   "message_attributes"
     t.integer  "import_id",           limit: 8
     t.integer  "resource_id",         limit: 8
     t.datetime "created_at"
@@ -355,7 +355,7 @@ ActiveRecord::Schema.define(version: 20170727130705) do
   create_table "line_referential_sync_messages", id: :bigserial, force: :cascade do |t|
     t.integer  "criticity"
     t.string   "message_key"
-    t.hstore   "message_attributs"
+    t.hstore   "message_attributes"
     t.integer  "line_referential_sync_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -580,7 +580,7 @@ ActiveRecord::Schema.define(version: 20170727130705) do
   create_table "stop_area_referential_sync_messages", id: :bigserial, force: :cascade do |t|
     t.integer  "criticity"
     t.string   "message_key"
-    t.hstore   "message_attributs"
+    t.hstore   "message_attributes"
     t.integer  "stop_area_referential_sync_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"

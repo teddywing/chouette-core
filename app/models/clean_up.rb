@@ -153,13 +153,13 @@ class CleanUp < ActiveRecord::Base
     update_attribute(:started_at, Time.now)
   end
 
-  def log_successful message_attributs
+  def log_successful message_attributes
     update_attribute(:ended_at, Time.now)
-    CleanUpResult.create(clean_up: self, message_key: :successfull, message_attributs: message_attributs)
+    CleanUpResult.create(clean_up: self, message_key: :successfull, message_attributes: message_attributes)
   end
 
-  def log_failed message_attributs
+  def log_failed message_attributes
     update_attribute(:ended_at, Time.now)
-    CleanUpResult.create(clean_up: self, message_key: :failed, message_attributs: message_attributs)
+    CleanUpResult.create(clean_up: self, message_key: :failed, message_attributes: message_attributes)
   end
 end
