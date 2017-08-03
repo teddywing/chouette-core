@@ -10,11 +10,8 @@ FactoryGirl.define do
     started_at nil
     ended_at nil
 
-    factory :netex_import, class: NetexImport do
-      file {File.open(Rails.root.join('spec', 'fixtures', 'terminated_job.json'))}
-    end
-    factory :workbench_import, class: WorkbenchImport do
-      file {File.open(Rails.root.join('spec', 'fixtures', 'terminated_job.json'))}
+    after(:build) do |import|
+      import.class.skip_callback(:create, :before, :initialize_fields)
     end
   end
 end

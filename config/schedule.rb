@@ -38,3 +38,7 @@ end
 every :day, :at => '4:00 am' do
   rake "codifligne:sync"
 end
+
+every 5.minutes do
+  rake "import:notify_parent"
+end
