@@ -9,9 +9,9 @@ class WorkbenchImportWorker
   # =======
 
   def perform(import_id)
-    @import     = WorkbenchImport.find(import_id)
-    @response   = nil
-    @import.update_attributes(status: 'running')
+    @workbench_import = WorkbenchImport.find(import_id)
+    @response         = nil
+    @workbench_import.update_attributes(status: 'running')
     downloaded  = download
     zip_service = ZipService.new(downloaded)
     upload zip_service
@@ -22,7 +22,7 @@ class WorkbenchImportWorker
     @zipfile_data = HTTPService.get_resource(
       host: import_host,
       path: import_path,
-      params: {token: @import.token_download}).body
+      params: {token: @workbench_import.token_download}).body
   end
 
   def execute_post eg_name, eg_stream
@@ -52,14 +52,14 @@ class WorkbenchImportWorker
 
   def upload zip_service
     entry_group_streams = zip_service.entry_group_streams
-    @import.update_attributes total_steps: entry_group_streams.size
+    @workbench_import.update_attributes total_steps: entry_group_streams.size
     entry_group_streams.each_with_index(&method(:upload_entry_group))
   rescue StopIteration
-    @import.update_attributes( current_step: entry_group_streams.size, status: 'failed' )
+    @workbench_import.update_attributes( current_step: entry_group_streams.size, status: 'failed' )
   end
 
   def upload_entry_group key_pair, element_count
-    @import.update_attributes( current_step: element_count.succ )
+    @workbench_import.update_attributes( current_step: element_count.succ )
     retry_service = RetryService.new(
       delays: RETRY_DELAYS,
       rescue_from: [HTTPService::Timeout],
@@ -82,11 +82,11 @@ class WorkbenchImportWorker
   # =======
 
   def complete_entry_group_name entry_group_name
-    [@import.name, entry_group_name].join("--")
+    [@workbench_import.name, entry_group_name].join("--")
   end
 
   def token entry_group_name
-    Api::V1::ApiKey.from(@import.referential, name: complete_entry_group_name(entry_group_name)).token
+    Api::V1::ApiKey.from(@workbench_import.referential, name: complete_entry_group_name(entry_group_name)).token
   end
 
   # Constants
@@ -106,13 +106,13 @@ class WorkbenchImportWorker
     Rails.application.config.rails_host
   end
   def import_path
-    @__import_path__ ||= download_workbench_import_path(@import.workbench, @import)
+    @__import_path__ ||= download_workbench_import_path(@workbench_import.workbench, @workbench_import)
   end
   def import_url
     @__import_url__ ||= File.join(import_host, import_path)
   end
 
   def params
-    @__params__ ||= { netex_import: { referential_id: @import.referential_id, workbench_id: @import.workbench_id } }
+    @__params__ ||= { netex_import: { referential_id: @workbench_import.referential_id, workbench_id: @workbench_import.workbench_id } }
   end
 end
