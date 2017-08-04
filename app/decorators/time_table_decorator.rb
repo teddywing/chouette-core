@@ -21,13 +21,15 @@ class TimeTableDecorator < Draper::Decorator
       )
     end
 
-    links << Link.new(
-      content: h.t('actions.combine'),
-      href: h.new_referential_time_table_time_table_combination_path(
-        context[:referential],
-        object
+    if h.policy(object).edit?
+      links << Link.new(
+        content: h.t('actions.combine'),
+        href: h.new_referential_time_table_time_table_combination_path(
+          context[:referential],
+          object
+        )
       )
-    )
+    end
 
     if h.policy(object).duplicate?
       links << Link.new(
