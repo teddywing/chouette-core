@@ -72,11 +72,6 @@ class RoutesController < ChouetteController
   def duplicate
   end
 
- # def update
-   # update! do |success, failure|
-   #   success.html { redirect_to referential_line_path(@referential,@line) }
-   # end
- # end
   protected
 
   alias_method :route, :resource
