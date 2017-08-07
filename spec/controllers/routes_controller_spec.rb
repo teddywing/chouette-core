@@ -1,7 +1,7 @@
 RSpec.describe RoutesController, :type => :controller do
   login_user
 
-  let!(:route) { create(:route) }
+  let(:route) { create(:route) }
 
   it { is_expected.to be_kind_of(ChouetteController) }
 
