@@ -111,7 +111,7 @@ ChouetteIhm::Application.routes.draw do
           get 'edit_boarding_alighting'
           put 'save_boarding_alighting'
           get 'duplicate'
-          post 'duplicate'
+          post 'duplicate', to: 'routes#post_duplicate'
         end
         resource :journey_patterns_collection, :only => [:show, :update]
         resources :journey_patterns do
