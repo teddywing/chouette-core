@@ -75,4 +75,14 @@ RSpec.describe RoutesController, type: :controller do
     end
   end
 
+  describe "GET /duplicate" do
+    it "returns success" do
+      get :duplicate,
+        referential_id: route.line.line_referential_id,
+        line_id: route.line_id,
+        id: route.id
+
+      expect(response).to be_success
+    end
+  end
 end
