@@ -70,6 +70,7 @@ class RoutesController < ChouetteController
   end
 
   def duplicate
+    @route = Chouette::Route.find(params[:id])
   end
 
   protected
