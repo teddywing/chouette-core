@@ -85,4 +85,21 @@ RSpec.describe RoutesController, type: :controller do
       expect(response).to be_success
     end
   end
+
+  describe "POST /duplicate" do
+    it "creates a new route" do
+      expect do
+        post :duplicate,
+          referential_id: route.line.line_referential_id,
+          line_id: route.line_id,
+          id: route.id,
+          params: {
+            name: '102 Route',
+            published_name: '102 route'
+          }
+      end.to change { Chouette::Route.count }.by(1)
+
+      expect(Chouette::Route.last.name).to eq('102 Route')
+    end
+  end
 end

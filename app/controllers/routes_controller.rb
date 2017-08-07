@@ -75,6 +75,10 @@ class RoutesController < ChouetteController
     build_breadcrumb(:edit)
   end
 
+  def post_duplicate
+    @route = Chouette::Route.find(params[:id])
+  end
+
   protected
 
   alias_method :route, :resource
