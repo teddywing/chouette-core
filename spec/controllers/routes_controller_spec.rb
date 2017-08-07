@@ -10,6 +10,7 @@ RSpec.describe RoutesController, :type => :controller do
       # expect(response).to redirect_to( referential_line_path(referential,route.line) )
     end
   end
+
   shared_examples_for "line and referential linked" do
     it "assigns route.line as @line" do
       expect(assigns[:line]).to eq(route.line)
@@ -19,6 +20,7 @@ RSpec.describe RoutesController, :type => :controller do
       expect(assigns[:referential]).to eq(referential)
     end
   end
+
   shared_examples_for "route, line and referential linked" do
     it "assigns route as @route" do
       expect(assigns[:route]).to eq(route)
@@ -78,4 +80,3 @@ RSpec.describe RoutesController, :type => :controller do
   end
 
 end
-
