@@ -69,6 +69,9 @@ class RoutesController < ChouetteController
     end
   end
 
+  def duplicate
+  end
+
  # def update
    # update! do |success, failure|
    #   success.html { redirect_to referential_line_path(@referential,@line) }
