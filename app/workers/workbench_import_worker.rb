@@ -58,18 +58,18 @@ class WorkbenchImportWorker
     @workbench_import.update_attributes( current_step: entry_group_streams.size, status: 'failed' )
   end
 
-  def upload_entry_group key_pair, element_count
+  def upload_entry_group entry_pair, element_count
     @workbench_import.update_attributes( current_step: element_count.succ )
     retry_service = RetryService.new(
       delays: RETRY_DELAYS,
       rescue_from: [HTTPService::Timeout],
       &method(:log_failure)) 
-    status = retry_service.execute(&upload_entry_group_proc(key_pair))
+    status = retry_service.execute(&upload_entry_group_proc(entry_pair))
     raise StopIteration unless status.ok?
   end
 
-  def upload_entry_group_proc key_pair
-    eg_name, eg_stream = key_pair
+  def upload_entry_group_proc entry_pair
+    eg_name, eg_stream = entry_pair
     # This should be fn.try_upload_entry_group(eg_name, eg_stream) ;(
     -> do
       try_upload_entry_group(eg_name, eg_stream)
