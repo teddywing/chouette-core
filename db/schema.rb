@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170802141224) do
+ActiveRecord::Schema.define(version: 20170808110333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,7 +217,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
-    t.string   "checksum_source"
+    t.text     "checksum_source"
   end
 
   create_table "footnotes_vehicle_journeys", id: false, force: :cascade do |t|
@@ -338,7 +338,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
-    t.string   "checksum_source"
+    t.text     "checksum_source"
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree
@@ -548,7 +548,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
-    t.string   "checksum_source"
+    t.text     "checksum_source"
   end
 
   add_index "routes", ["objectid"], name: "routes_objectid_key", unique: true, using: :btree
@@ -563,7 +563,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.integer  "route_id",        limit: 8
     t.integer  "stop_point_ids",  limit: 8,              array: true
     t.string   "checksum"
-    t.string   "checksum_source"
+    t.text     "checksum_source"
   end
 
   create_table "routing_constraints_lines", id: false, force: :cascade do |t|
@@ -697,7 +697,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.integer "position",                  null: false
     t.boolean "in_out"
     t.string  "checksum"
-    t.string  "checksum_source"
+    t.text    "checksum_source"
   end
 
   add_index "time_table_dates", ["time_table_id"], name: "index_time_table_dates_on_time_table_id", using: :btree
@@ -708,7 +708,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.date    "period_end"
     t.integer "position",                  null: false
     t.string  "checksum"
-    t.string  "checksum_source"
+    t.text    "checksum_source"
   end
 
   add_index "time_table_periods", ["time_table_id"], name: "index_time_table_periods_on_time_table_id", using: :btree
@@ -728,7 +728,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.string   "color"
     t.integer  "created_from_id"
     t.string   "checksum"
-    t.string   "checksum_source"
+    t.text     "checksum_source"
   end
 
   add_index "time_tables", ["calendar_id"], name: "index_time_tables_on_calendar_id", using: :btree
@@ -806,7 +806,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.integer "departure_day_offset",                     default: 0
     t.integer "arrival_day_offset",                       default: 0
     t.string  "checksum"
-    t.string  "checksum_source"
+    t.text    "checksum_source"
   end
 
   add_index "vehicle_journey_at_stops", ["stop_point_id"], name: "index_vehicle_journey_at_stops_on_stop_pointid", using: :btree
@@ -833,7 +833,7 @@ ActiveRecord::Schema.define(version: 20170802141224) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
-    t.string   "checksum_source"
+    t.text     "checksum_source"
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
