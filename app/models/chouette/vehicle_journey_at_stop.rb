@@ -2,6 +2,7 @@ module Chouette
   class VehicleJourneyAtStop < ActiveRecord
     include ForBoardingEnumerations
     include ForAlightingEnumerations
+    include ChecksumSupport
 
     DAY_OFFSET_MAX = 1
 
@@ -66,6 +67,13 @@ module Chouette
       offset < 0 || offset > DAY_OFFSET_MAX
     end
 
-
+    def checksum_attributes
+      [].tap do |attrs|
+        attrs << self.departure_time.try(:to_s, :time)
+        attrs << self.arrival_time.try(:to_s, :time)
+        attrs << self.departure_day_offset.to_s
+        attrs << self.arrival_day_offset.to_s
+      end
+    end
   end
 end

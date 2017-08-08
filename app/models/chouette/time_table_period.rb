@@ -1,4 +1,6 @@
 class Chouette::TimeTablePeriod < Chouette::ActiveRecord
+  include ChecksumSupport
+
   self.primary_key = "id"
   belongs_to :time_table, inverse_of: :periods
   acts_as_list :scope => 'time_table_id = #{time_table_id}',:top_of_list => 0
@@ -7,6 +9,10 @@ class Chouette::TimeTablePeriod < Chouette::ActiveRecord
 
   validate :start_must_be_before_end
 
+  def checksum_attributes
+    attrs = ['period_start', 'period_end']
+    self.slice(*attrs).values
+  end
 
   def self.model_name
     ActiveModel::Name.new Chouette::TimeTablePeriod, Chouette, "TimeTablePeriod"

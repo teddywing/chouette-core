@@ -1,4 +1,6 @@
 class Chouette::RoutingConstraintZone < Chouette::TridentActiveRecord
+  include ChecksumSupport
+
   belongs_to :route
   has_array_of :stop_points, class_name: 'Chouette::StopPoint'
 
@@ -13,6 +15,10 @@ class Chouette::RoutingConstraintZone < Chouette::TridentActiveRecord
   scope :order_by_route_name, ->(direction) do
     joins(:route)
       .order("routes.name #{direction}")
+  end
+
+  def checksum_attributes
+    self.stop_points.map(&:stop_area).map(&:user_objectid)
   end
 
   def stop_points_belong_to_route
