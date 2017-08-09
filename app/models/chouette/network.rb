@@ -1,5 +1,5 @@
 class Chouette::Network < Chouette::ActiveRecord
-  include StifNetexAttributesSupport
+  include StifCodifligneAttributesSupport
   include NetworkRestrictions
   include LineReferentialSupport
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
