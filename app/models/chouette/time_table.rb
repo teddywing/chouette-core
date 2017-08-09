@@ -1,4 +1,5 @@
 class Chouette::TimeTable < Chouette::TridentActiveRecord
+  include ChecksumSupport
   include TimeTableRestrictions
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -25,6 +26,14 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   end
 
   after_save :save_shortcuts
+
+  def checksum_attributes
+    [].tap do |attrs|
+      attrs << self.int_day_types
+      attrs << self.dates.map(&:checksum).map(&:to_s).sort
+      attrs << self.periods.map(&:checksum).map(&:to_s).sort
+    end
+  end
 
   def self.object_id_key
     "Timetable"

@@ -1,6 +1,21 @@
 require 'spec_helper'
 
 RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
+  describe 'checksum' do
+    let(:at_stop) { build_stubbed(:vehicle_journey_at_stop) }
+
+    it_behaves_like 'checksum support', :vehicle_journey_at_stop
+
+    context '#checksum_attributes' do
+      it 'should return attributes' do
+        expected = [at_stop.departure_time.to_s(:time), at_stop.arrival_time.to_s(:time)]
+        expected << at_stop.departure_day_offset.to_s
+        expected << at_stop.arrival_day_offset.to_s
+        expect(at_stop.checksum_attributes).to include(*expected)
+      end
+    end
+  end
+
   describe "#day_offset_outside_range?" do
     let (:at_stop) { build_stubbed(:vehicle_journey_at_stop) }
 

@@ -1,5 +1,6 @@
 class Chouette::Route < Chouette::TridentActiveRecord
   include RouteRestrictions
+  include ChecksumSupport
 
   extend Enumerize
   extend ActiveModel::Naming
@@ -96,6 +97,14 @@ class Chouette::Route < Chouette::TridentActiveRecord
     return unless opposite_route && opposite_wayback
     unless opposite_route_candidates.include?(opposite_route)
       errors.add(:opposite_route_id, :invalid)
+    end
+  end
+
+  def checksum_attributes
+    values = self.slice(*['name', 'published_name', 'wayback']).values
+    values.tap do |attrs|
+      attrs << self.stop_points.map{|sp| "#{sp.stop_area.user_objectid}#{sp.for_boarding}#{sp.for_alighting}" }.join
+      attrs << self.routing_constraint_zones.map(&:checksum)
     end
   end
 
