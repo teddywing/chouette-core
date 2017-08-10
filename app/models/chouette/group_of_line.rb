@@ -1,5 +1,5 @@
 class Chouette::GroupOfLine < Chouette::ActiveRecord
-  include StifNetexAttributesSupport
+  include StifCodifligneAttributesSupport
   include GroupOfLineRestrictions
   include LineReferentialSupport
 
