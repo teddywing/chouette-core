@@ -9,6 +9,8 @@ class Workbench < ActiveRecord::Base
   has_many :group_of_lines, through: :line_referential
   has_many :stop_areas, through: :stop_area_referential
   has_many :imports
+  has_many :workbench_object_identifiers
+
   validates :name, presence: true
   validates :organisation, presence: true
 
