@@ -45,6 +45,8 @@ class WorkbenchImportWorker
 
   def try_upload_entry_group eg_name, eg_stream
     result = execute_post eg_name, eg_stream
+      require 'pry'
+      binding.pry
     return result if result && result.status < 400
     @response = result.body
     try_again

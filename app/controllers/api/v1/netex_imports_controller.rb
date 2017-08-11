@@ -40,6 +40,9 @@ module Api
             organisation_id: @workbench.organisation_id,
             workbench_id: @workbench.id)
         @new_referential.save!
+        #  TODO: >>> REMOVE ME !!!!
+        ReferentialMetadataKludge.make_metadata_from_name! netex_import_params['name'], referential_id: @new_referential.id
+        #  <<< REMOVE ME !!!!
       rescue ActiveRecord::RecordInvalid
         render json: {errors: @new_referential.errors}, status: 406
         finish_action!

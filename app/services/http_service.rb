@@ -39,6 +39,8 @@ module HTTPService extend self
         params.update( name => Faraday::UploadIO.new(value, mime_type, as_name ) )
       end
 
+  require 'pry'
+  binding.pry
       return c.post path, params
     end
   end
