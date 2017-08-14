@@ -13,6 +13,10 @@ class Import < ActiveRecord::Base
 
   before_create :initialize_fields
 
+  def self.model_name
+    ActiveModel::Name.new Import, Import, "Import"
+  end
+
   def self.failing_statuses
     symbols_with_indifferent_access(%i(failed aborted canceled))
   end

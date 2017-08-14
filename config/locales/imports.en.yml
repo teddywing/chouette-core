@@ -1,5 +1,6 @@
 en:
   imports:
+    search_no_results: "No import matching your query"
     actions:
       new: "New import"
       destroy: "Destroy"
@@ -50,6 +51,8 @@ en:
       import:
         resources: "File to import"
         created_at: "Created on"
+        started_at: Started at
+        name: Name
         status: "Status"
         references_type: "Data to be imported"
         no_save: "No save"

@@ -1,5 +1,6 @@
 fr:
   imports:
+    search_no_results: "Aucun import ne correspond à votre recherche"
     actions:
       new: "Nouvel import"
       destroy: "Supprimer cet import"
@@ -50,7 +51,9 @@ fr:
       import:
         resources: "Fichier à importer"
         created_at: "Créé le"
-        status: "Status"
+        started_at: Démarrage
+        name: "Nom de l'import"
+        status: "Statut"
         no_save: "Pas de sauvegarde"
         references_type: "Données à importer"
         rule_parameter_set_id: "Jeu de paramètres pour validation"
