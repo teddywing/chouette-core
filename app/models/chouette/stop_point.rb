@@ -20,6 +20,11 @@ module Chouette
 
     validates_presence_of :stop_area
     validate :stop_area_id_validation
+    def stop_area_id_validation
+      if stop_area_id.nil?
+        errors.add(:stop_area_id, I18n.t("stop_areas.errors.empty"))
+      end
+    end
 
     scope :default_order, -> { order("position") }
 
@@ -34,10 +39,16 @@ module Chouette
       end
     end
 
-    def stop_area_id_validation
-      if stop_area_id.nil?
-        errors.add(:stop_area_id, I18n.t("stop_areas.errors.empty"))
-      end
+    def duplicate(for_route:)
+      new_objectid = [
+        for_route.objectid.split(':').first,
+        *objectid.split(':')[1..2]
+      ].join(':')
+      keys_for_create = attributes.keys - %w{id  created_at updated_at}
+      atts_for_create = attributes
+        .slice(*keys_for_create)
+        .merge('objectid' => new_objectid, 'route_id' => for_route.id)
+      self.class.create!(atts_for_create)
     end
 
     def self.area_candidates
