@@ -96,7 +96,7 @@ class JourneyPatterns extends Component{
               <div className="alert alert-danger mt-sm">
                 <strong>Erreur : </strong>
                 {this.props.journeyPatterns.map((jp, index) =>
-                  jp.errors.map((err, i) => {
+                  jp.errors && jp.errors.map((err, i) => {
                     return (
                       <ul key={i}>
                         <li>{err}</li>

@@ -377,6 +377,7 @@ const actions = {
               dispatch(actions.updateTotalCount(window.currentItemsLength - json.length))
             }
             window.currentItemsLength = json.length
+            dispatch(actions.exitEditMode())
             dispatch(actions.receiveVehicleJourneys(json))
           }
         }

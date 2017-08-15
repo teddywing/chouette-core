@@ -97,7 +97,7 @@ class VehicleJourneys extends Component{
               <div className="alert alert-danger mt-sm">
                 <strong>Erreur : </strong>
                 {this.props.vehicleJourneys.map((vj, index) =>
-                  vj.errors.map((err, i) => {
+                  vj.errors && vj.errors.map((err, i) => {
                     return (
                       <ul key={i}>
                         <li>{err}</li>

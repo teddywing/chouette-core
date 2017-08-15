@@ -19,7 +19,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSubmitJourneyPattern: (next, state) => {
       actions.submitJourneyPattern(dispatch, state, next)
-      dispatch(actions.exitEditMode())
     }
   }
 }

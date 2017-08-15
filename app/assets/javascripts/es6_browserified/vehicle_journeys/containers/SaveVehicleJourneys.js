@@ -20,7 +20,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSubmitVehicleJourneys: (next, state) => {
       actions.submitVehicleJourneys(dispatch, state, next)
-      dispatch(actions.exitEditMode())
     }
   }
 }
