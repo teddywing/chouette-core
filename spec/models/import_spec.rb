@@ -9,6 +9,7 @@ RSpec.describe Import, :type => :model do
   it { should validate_presence_of(:file) }
   it { should validate_presence_of(:referential) }
   it { should validate_presence_of(:workbench) }
+  it { should validate_presence_of(:creator) }
 
   let(:workbench_import) { build_stubbed(:workbench_import) }
   let(:workbench_import_with_completed_steps) do

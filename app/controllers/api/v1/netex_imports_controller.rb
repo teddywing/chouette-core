@@ -26,9 +26,9 @@ module Api
       end
 
       def create_netex_import
-        @netex_import = NetexImport.new(netex_import_params.merge(referential_id: @new_referential.id))
+        @netex_import = NetexImport.new(netex_import_params.merge(referential_id: @new_referential.id, creator: 'Webservice'))
         @netex_import.save!
-      rescue ActiveRecord::RecordInvalid 
+      rescue ActiveRecord::RecordInvalid
         render json: {errors: @netex_import.errors}, status: 406
         finish_action!
       end

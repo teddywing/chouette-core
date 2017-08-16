@@ -853,10 +853,6 @@ ActiveRecord::Schema.define(version: 20170816104020) do
   add_index "workbenches", ["organisation_id"], name: "index_workbenches_on_organisation_id", using: :btree
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
 
-  create_table "yyy", id: false, force: :cascade do |t|
-    t.text "value"
-  end
-
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify

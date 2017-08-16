@@ -9,6 +9,7 @@ FactoryGirl.define do
     status :new
     started_at nil
     ended_at nil
+    creator 'rspec'
 
     after(:build) do |import|
       import.class.skip_callback(:create, :before, :initialize_fields)

@@ -59,6 +59,7 @@ class ImportsController < BreadcrumbController
     # Manage only NetexImports for the moment
     @import ||= NetexImport.new(*resource_params) do |import|
       import.workbench = parent
+      import.creator   = current_user.name
     end
   end
 
