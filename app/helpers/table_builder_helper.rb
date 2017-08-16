@@ -96,7 +96,9 @@ module TableBuilderHelper
         end
 
         # Inserts a blank column for the gear menu
-        hcont << content_tag(:th, '') if has_links
+        if has_links || collection.last.try(:action_links).try(:any?)
+          hcont << content_tag(:th, '')
+        end
 
         hcont.join.html_safe
       end
@@ -132,7 +134,7 @@ module TableBuilderHelper
             end
           end
 
-          if links.any?
+          if links.any? || item.try(:action_links).try(:any?)
             bcont << content_tag(
               :td,
               build_links(item, links),

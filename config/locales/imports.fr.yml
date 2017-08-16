@@ -3,6 +3,7 @@ fr:
     search_no_results: "Aucun import ne correspond à votre recherche"
     actions:
       new: "Nouvel import"
+      show: "Rapport d'import"
       destroy: "Supprimer cet import"
       destroy_confirm: "Etes vous sûr de supprimer cet import ?"
     index:

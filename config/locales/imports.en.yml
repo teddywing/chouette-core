@@ -3,6 +3,7 @@ en:
     search_no_results: "No import matching your query"
     actions:
       new: "New import"
+      show: "Import report"
       destroy: "Destroy"
       destroy_confirm: "Are you sure you want destroy this import?"
     index:

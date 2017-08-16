@@ -6,17 +6,29 @@ class ImportDecorator < Draper::Decorator
   def action_links
     links = []
 
-    if h.policy(object).destroy?
-      links << Link.new(
-        content: t('actions.destroy'),
-        href: h.workbench_import_path(
-          context[:workbench],
-          object
-        ),
-        method: :delete,
-        data: { confirm: h.t('imports.actions.destroy_confirm') }
+    links << Link.new(
+      content: h.t('imports.actions.show'),
+      href: h.workbench_import_path(
+        context[:workbench],
+        object
       )
-    end
+    )
+
+    links << Link.new(
+      content: "Téléch. fichier source",
+      href: object.file.url
+    )
+
+    # if h.policy(object).destroy?
+    links << Link.new(
+      content: h.destroy_link_content,
+      href: h.workbench_import_path(
+        context[:workbench],
+        object
+      ),
+      method: :delete,
+      data: { confirm: h.t('imports.actions.destroy_confirm') }
+    )
 
     links
   end
