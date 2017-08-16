@@ -19,7 +19,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :started_at, \
-                attribute: 'started_at' \
+                attribute: Proc.new { |imp| imp.started_at ? l(imp.started_at, format: :short) : '-' } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
@@ -30,10 +30,12 @@
               #   attribute: '' \
               # ) \
             ],
-            links: [],
+            links: [:show, :destroy],
             cls: 'table has-search'
+            
+            / links to include: show, rapports de controle, dl source, destroy
 
-          / = new_pagination @imports, 'pull-right'
+          = new_pagination @imports, 'pull-right'
 
     - unless @imports.any?
       .row

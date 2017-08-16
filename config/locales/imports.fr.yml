@@ -53,7 +53,7 @@ fr:
         created_at: "Créé le"
         started_at: Démarrage
         name: "Nom de l'import"
-        status: "Statut"
+        status: "Etat"
         no_save: "Pas de sauvegarde"
         references_type: "Données à importer"
         rule_parameter_set_id: "Jeu de paramètres pour validation"
