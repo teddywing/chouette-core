@@ -167,4 +167,13 @@ describe('modal reducer', () => {
       })
     ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
   })
+
+  it('should handle UNSELECT_CP_EDIT_MODAL', () => {
+    let newModalProps = {selectedCompany : undefined}
+    expect(
+      modalReducer(state, {
+        type: 'UNSELECT_CP_EDIT_MODAL'
+      })
+    ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
+  })
 })

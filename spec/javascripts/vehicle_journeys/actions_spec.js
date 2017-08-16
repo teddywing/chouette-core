@@ -432,3 +432,16 @@ describe('when using select2 to pick a company', () => {
     expect(actions.select2Company(selectedCompany)).toEqual(expectedAction)
   })
 })
+describe('when using select2 to unselect a company', () => {
+  it('should create an action to unselect a company inside modal', () => {
+    let selectedCompany = {
+      id: 1,
+      objectid: 2,
+      name: 'test',
+    }
+    const expectedAction = {
+      type: 'UNSELECT_CP_EDIT_MODAL'
+    }
+    expect(actions.unselect2Company()).toEqual(expectedAction)
+  })
+})

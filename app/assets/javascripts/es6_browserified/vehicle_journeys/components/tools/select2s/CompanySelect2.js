@@ -20,10 +20,11 @@ class BSelect4 extends React.Component{
         data={(this.props.company) ? [this.props.company.name] : undefined}
         value={(this.props.company) ? this.props.company.name : undefined}
         onSelect={(e) => this.props.onSelect2Company(e) }
+        onUnselect={() => this.props.onUnselect2Company()}
         multiple={false}
         ref='company_id'
         options={{
-          allowClear: false,
+          allowClear: true,
           theme: 'bootstrap',
           width: '100%',
           placeholder: 'Filtrer par transporteur...',

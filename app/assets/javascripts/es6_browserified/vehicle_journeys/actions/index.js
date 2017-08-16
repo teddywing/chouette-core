@@ -127,6 +127,9 @@ const actions = {
       objectid: selectedCompany.objectid
     }
   }),
+  unselect2Company: () => ({
+    type: 'UNSELECT_CP_EDIT_MODAL',
+  }),
   editVehicleJourney : (data, selectedCompany) => ({
     type: 'EDIT_VEHICLEJOURNEY',
     data,
