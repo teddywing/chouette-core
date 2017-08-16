@@ -52,16 +52,5 @@ describe StopPoint, :type => :model do
     it 'and old stop_area' do
       expect(subject.duplicate(for_route: new_route).stop_area).to eq(subject.stop_area)
     end
-    it 'has an objectid, related to the new route' do
-      new_stop_point = subject.duplicate(for_route: new_route)
-
-      old_objectid_parts   = subject.objectid.split(':')
-      new_objectid_parts   = new_stop_point.objectid.split(':')
-      route_object_id_part = new_route.objectid.split(':').first
-
-      expect(new_objectid_parts.first).to  eq(route_object_id_part)
-      expect(new_objectid_parts.second).to eq(old_objectid_parts.second)
-      expect(new_objectid_parts.third).to  eq(old_objectid_parts.third)
-    end
   end
 end

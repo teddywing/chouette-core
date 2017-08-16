@@ -6,27 +6,43 @@ StopPoint = Chouette::StopPoint
 RSpec.describe Route do
 
   let!( :route ){ create :route }
-  let( :new_objectid ){ [SecureRandom.hex, 'Route', SecureRandom.hex].join(':') }
 
-  context 'duplicates' do 
-    describe 'a route' do
-      it 'by creating a new one' do
-        expect{ route.duplicate new_objectid }.to change{Route.count}.by(1)
-      end
-      it 'with the same values' do
-        route.duplicate new_objectid
+  context '#duplicate' do 
+    describe 'properties' do
+      it 'same attribute values' do
+        route.duplicate
         expect( values_for_create(Route.last, except: %w{objectid}) ).to eq( values_for_create( route, except: %w{objectid} ) )
       end
+      it 'same associated stop_areeas' do
+        expect( route.duplicate.stop_areas.pluck(:id) ).to eq(route.stop_areas.pluck(:id))
+      end
+    end
 
-      it 'and also duplicating its stop points' do
-        expect{ route.duplicate new_objectid }.to change{StopPoint.count}.by(route.stop_points.count)
+    describe 'side_effects' do
+      it {
+        expect{ route.duplicate }.to change{Route.count}.by(1)
+      }
+      it 'duplicates its stop points' do
+        expect{ route.duplicate }.to change{StopPoint.count}.by(route.stop_points.count)
       end
-      it 'but leaving the stop areas alone' do
-        expect{ route.duplicate new_objectid }.not_to change{StopArea.count}
+      it 'does bot duplicate the stop areas' do
+        expect{ route.duplicate }.not_to change{StopArea.count}
       end
-      it "which are still accessible by the new route though" do
-        expect( route.duplicate( new_objectid ).stop_areas.pluck(:id) ).to eq(route.stop_areas.pluck(:id))
+    end
+
+    describe 'is idempotent, concerning' do
+      let( :first_duplicate ){ route.duplicate  }
+      let( :second_duplicate ){ first_duplicate.reload.duplicate }
+      
+      it 'the required attributes' do
+        expect( values_for_create(first_duplicate, except: %w{objectid}) ).to eq( values_for_create( second_duplicate, except: %w{objectid} ) )
+      end 
+
+      it 'the stop areas' do
+        expect( first_duplicate.stop_areas.pluck(:id) ).to eq( route.stop_areas.pluck(:id) )
+        expect( second_duplicate.stop_areas.pluck(:id) ).to eq( first_duplicate.stop_areas.pluck(:id) )
       end
+
     end
   end
 

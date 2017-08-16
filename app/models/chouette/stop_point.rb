@@ -40,14 +40,10 @@ module Chouette
     end
 
     def duplicate(for_route:)
-      new_objectid = [
-        for_route.objectid.split(':').first,
-        *objectid.split(':')[1..2]
-      ].join(':')
-      keys_for_create = attributes.keys - %w{id  created_at updated_at}
+      keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
       atts_for_create = attributes
         .slice(*keys_for_create)
-        .merge('objectid' => new_objectid, 'route_id' => for_route.id)
+        .merge('route_id' => for_route.id)
       self.class.create!(atts_for_create)
     end
 
