@@ -1,6 +1,8 @@
 en:
   imports:
     search_no_results: "No import matching your query"
+    filters:
+      referential: "Select data space..."
     actions:
       new: "New import"
       show: "Import report"

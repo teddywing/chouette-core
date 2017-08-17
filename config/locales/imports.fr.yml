@@ -1,6 +1,8 @@
 fr:
   imports:
     search_no_results: "Aucun import ne correspond à votre recherche"
+    filters:
+      referential: "Sélectionnez un jeu de données..."
     actions:
       new: "Nouvel import"
       show: "Rapport d'import"
