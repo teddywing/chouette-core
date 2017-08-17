@@ -4,6 +4,7 @@ fr:
     actions:
       new: "Nouvel import"
       show: "Rapport d'import"
+      download: "Téléch. fichier source"
       destroy: "Supprimer cet import"
       destroy_confirm: "Etes vous sûr de supprimer cet import ?"
     index:

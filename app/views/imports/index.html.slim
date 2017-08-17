@@ -8,6 +8,11 @@
 / PageContent
 .page_content
   .container-fluid
+    - if params[:q].present? or @imports.any?
+      .row
+        .col-lg-12
+          = render 'filters'
+
     - if @imports.any?
       .row
         .col-lg-12

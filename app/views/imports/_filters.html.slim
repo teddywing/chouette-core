@@ -1,0 +1,16 @@
+= search_form_for @q, url: workbench_imports_path(@workbench), html: { method: :get, class: 'form form-filter' } do |f|
+  .ffg-row
+    .input-group.search_bar
+      = f.search_field :name_cont, class: 'form-control', placeholder: "Indiquez un nom d'importation..."
+      span.input-group-btn
+        button.btn.btn-default#search_btn type='submit'
+          span.fa.fa-search
+
+  .ffg-row
+    .form-group.togglable
+      = f.label Import.human_attribute_name(:status), required: false, class: 'control-label'
+      = f.input :status_eq_any, collection: @imports.map(&:status).uniq.compact, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+
+  .actions
+    = link_to t('actions.erase'), workbench_imports_path(@workbench), class: 'btn btn-link'
+    = f.submit t('actions.filter'), class: 'btn btn-default'

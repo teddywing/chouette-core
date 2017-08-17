@@ -4,6 +4,7 @@ en:
     actions:
       new: "New import"
       show: "Import report"
+      download: "Download original file"
       destroy: "Destroy"
       destroy_confirm: "Are you sure you want destroy this import?"
     index:

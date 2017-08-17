@@ -15,7 +15,7 @@ class ImportDecorator < Draper::Decorator
     )
 
     links << Link.new(
-      content: "Téléch. fichier source",
+      content: h.t('imports.actions.download'),
       href: object.file.url
     )
 
