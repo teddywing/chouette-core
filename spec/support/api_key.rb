@@ -5,7 +5,7 @@ module ApiKeyHelper
   end
 
   def get_api_key
-    Api::V1::ApiKey.first_or_create( :referential_id => referential.id, :name => "test")
+    Api::V1::ApiKey.first_or_create(referential: referential, organisation: organisation)
   end
   def config_formatted_request_with_authorization( format)
     request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials( get_api_key.token)

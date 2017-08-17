@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170816104020) do
+ActiveRecord::Schema.define(version: 20170817122914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,12 +72,15 @@ ActiveRecord::Schema.define(version: 20170816104020) do
   add_index "access_points", ["objectid"], name: "access_points_objectid_key", unique: true, using: :btree
 
   create_table "api_keys", id: :bigserial, force: :cascade do |t|
-    t.integer  "referential_id", limit: 8
+    t.integer  "referential_id",  limit: 8
     t.string   "token"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "organisation_id"
   end
+
+  add_index "api_keys", ["organisation_id"], name: "index_api_keys_on_organisation_id", using: :btree
 
   create_table "calendars", id: :bigserial, force: :cascade do |t|
     t.string    "name"
@@ -854,6 +857,7 @@ ActiveRecord::Schema.define(version: 20170816104020) do
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
+  add_foreign_key "api_keys", "organisations"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify

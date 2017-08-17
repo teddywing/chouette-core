@@ -12,6 +12,7 @@ module ReferentialHelper
     base.class_eval do
       extend ClassMethods
       alias_method :referential, :first_referential
+      alias_method :organisation, :first_organisation
     end
   end
 

@@ -1,34 +1,25 @@
-describe Api::V1::ApiKey, :type => :model do
+require 'rails_helper'
 
-  let(:referential){ create :referential }
+RSpec.describe Api::V1::ApiKey, type: :model do
+  subject { create(:api_key) }
 
-  subject { described_class.create( :name => "test", :referential => referential)}
+  it { should validate_presence_of :organisation }
 
-  it "validity test" do
-    expect_it.to be_valid
-    expect(subject.referential).to eq(referential)
+  it 'should have a valid factory' do
+    expect(build(:api_key)).to be_valid
   end
 
-  context 'Creation' do
-    let( :name ){ SecureRandom.urlsafe_base64 }
-
-    it 'can be created from a referential with a name, iff needed' do
-      # 1st time create a new record
-      expect{ described_class.from(referential, name: name) }.to change{ described_class.count }.by(1)
-      expect( described_class.last.attributes.values_at(*%w{referential_id name}) ).to eq([
-        referential.id, name
-      ])
-
-      # 2nd time get the same record
-      expect{ described_class.from(referential, name: name) }.not_to change{ described_class.count }
-      expect( described_class.last.attributes.values_at(*%w{referential_id name}) ).to eq([
-        referential.id, name
-      ])
+  describe '#referential_from_token' do
+    it 'should return referential' do
+      referential = Api::V1::ApiKey.referential_from_token(subject.token)
+      expect(referential).to eq(subject.referential)
     end
+  end
 
-    it 'cannot be created without a referential' do
-      expect{ described_class.from(nil, name:name) rescue nil }.not_to change{ described_class.count }
+  describe '#organisation_from_token' do
+    it 'should return organisation' do
+      organisation = Api::V1::ApiKey.organisation_from_token(subject.token)
+      expect(organisation).to eq(subject.organisation)
     end
   end
 end
-
