@@ -24,16 +24,16 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :started_at, \
-                attribute: Proc.new { |imp| imp.started_at ? l(imp.started_at, format: :short) : '-' } \
+                attribute: 'started_at' \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
                 attribute: 'name' \
               ), \
-              # TableBuilderHelper::Column.new( \
-              #   name: 'Opérateur', \
-              #   attribute: '' \
-              # ) \
+              TableBuilderHelper::Column.new( \
+                key: :creator, \
+                attribute: 'creator' \
+              ) \
             ],
             links: [],
             cls: 'table has-search'

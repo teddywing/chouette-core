@@ -1,7 +1,7 @@
 = search_form_for @q, url: workbench_imports_path(@workbench), html: { method: :get, class: 'form form-filter' } do |f|
   .ffg-row
     .input-group.search_bar
-      = f.search_field :name_cont, class: 'form-control', placeholder: "Indiquez un nom d'importation..."
+      = f.search_field :name_or_creator_cont, class: 'form-control', placeholder: "Indiquez un nom d'importation..."
       span.input-group-btn
         button.btn.btn-default#search_btn type='submit'
           span.fa.fa-search
