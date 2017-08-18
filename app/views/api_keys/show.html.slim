@@ -12,7 +12,6 @@
 
 - content_for :sidebar do
   ul.actions
-    li = link_to t('api_keys.actions.new'), new_referential_api_key_path(@referential), class: "add"
-    li = link_to t('api_keys.actions.edit'), edit_referential_api_key_path(@referential, @api_key), class: "edit"
-    li = link_to t('api_keys.actions.destroy'), referential_api_key_path(@referential, @api_key), :method => :delete,  :data => {:confirm =>  t('api_keys.actions.destroy_confirm')}, class: "remove"
+    li = link_to t('api_keys.actions.edit'), edit_organisation_api_key_path(@api_key), class: "edit"
+    li = link_to t('api_keys.actions.destroy'), organisation_api_key_path(@api_key), :method => :delete,  :data => {:confirm =>  t('api_keys.actions.destroy_confirm')}, class: "remove"
     br

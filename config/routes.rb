@@ -56,6 +56,7 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resource :organisation, :only => [:show, :edit, :update] do
+    resources :api_keys
     resources :users
     resources :rule_parameter_sets
   end
@@ -78,7 +79,6 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resources :referentials, except: :index do
-    resources :api_keys
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
