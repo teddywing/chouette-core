@@ -19,6 +19,10 @@ module Api
           end
         end
 
+        def model_name
+          ActiveModel::Name.new self, Api::V1, self.name.demodulize
+        end
+
         def organisation_from_token(token)
           array = token.split('-')
           if !array[1].empty? && array.size > 1
