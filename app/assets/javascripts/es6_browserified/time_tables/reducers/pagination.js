@@ -20,8 +20,10 @@ const pagination = (state = {}, action) => {
     case 'CHANGE_PAGE':
       toggleOnConfirmModal()
       return _.assign({}, state, {currentPage : action.page, stateChanged: false})
-    case 'INCLUDE_DATE_IN_PERIOD':
-    case 'EXCLUDE_DATE_FROM_PERIOD':
+    case 'ADD_INCLUDED_DATE':
+    case 'REMOVE_INCLUDED_DATE':
+    case 'ADD_EXCLUDED_DATE':
+    case 'REMOVE_EXCLUDED_DATE':
     case 'DELETE_PERIOD':
     case 'VALIDATE_PERIOD_FORM':
     case 'UPDATE_COMMENT':

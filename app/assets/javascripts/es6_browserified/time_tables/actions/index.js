@@ -112,14 +112,26 @@ const actions = {
     metas,
     timetableInDates
   }),
-  includeDateInPeriod: (index, dayTypes, date) => ({
-    type: 'INCLUDE_DATE_IN_PERIOD',
+  addIncludedDate: (index, dayTypes, date) => ({
+    type: 'ADD_INCLUDED_DATE',
     index,
     dayTypes,
     date
   }),
-  excludeDateFromPeriod: (index, dayTypes, date) => ({
-    type: 'EXCLUDE_DATE_FROM_PERIOD',
+  removeIncludedDate: (index, dayTypes, date) => ({
+    type: 'REMOVE_INCLUDED_DATE',
+    index,
+    dayTypes,
+    date
+  }),
+  addExcludedDate: (index, dayTypes, date) => ({
+    type: 'ADD_EXCLUDED_DATE',
+    index,
+    dayTypes,
+    date
+  }),
+  removeExcludedDate: (index, dayTypes, date) => ({
+    type: 'REMOVE_EXCLUDED_DATE',
     index,
     dayTypes,
     date
@@ -187,11 +199,19 @@ const actions = {
       let bool = isInPeriod(state.current_month[i])
       return _.assign({}, state.current_month[i], {
         in_periods: bool,
-        include_date: bool ? false : state.current_month[i].include_date,
+        // include_date: bool ? false : state.current_month[i].include_date,
         excluded_date: !bool ? false : state.current_month[i].excluded_date
       })
     })
     return improvedCM
+  },
+  updateExcludedDates: (period_start, period_end, dates) => {
+    // We remove excluded dates which was in the updated/deleted period
+    let begin = new Date(period_start)
+    let end = new Date(period_end)
+
+    return _.reject(dates, d => new Date(d.date) >= begin && new Date(d.date) <= end && d.in_out == false)
+
   },
   checkConfirmModal: (event, callback, stateChanged, dispatch, metas, timetable) => {
     if(stateChanged){
@@ -209,7 +229,7 @@ const actions = {
   formatDate: (props) => {
     return props.year + '-' + props.month + '-' + props.day
   },
-  checkErrorsInPeriods: (start, end, index, periods, days) => {
+  checkErrorsInPeriods: (start, end, index, periods) => {
     let error = ''
     start = new Date(start)
     end = new Date(end)
@@ -221,13 +241,13 @@ const actions = {
     })
     return error
   },
-  checkErrorsInDates: (start, end, in_days) => {
+  checkErrorsInDates: (start, end, in_days, dayTypes) => {
     let error = ''
     start = new Date(start)
     end = new Date(end)
 
     _.each(in_days, ({date}) => {
-      if (start <= new Date(date) && end >= new Date(date)) {
+      if (start <= new Date(date) && end >= new Date(date) && dayTypes[new Date(date).getDay()]) {
         error = 'Une période ne peut chevaucher une date dans un calendrier'
       }
     })

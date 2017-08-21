@@ -8,6 +8,15 @@ class ExceptionsInDay extends Component {
     super(props)
   }
 
+  handleClick() {
+    const {index, day, metas: {day_types} } = this.props
+    if (day.in_periods && day_types[day.wday]) {
+      day.excluded_date ? this.props.onRemoveExcludedDate(index, day_types, day.date) : this.props.onAddExcludedDate(index, day_types, day.date)
+    } else {
+      day.include_date ? this.props.onRemoveIncludedDate(index, day_types, day.date) : this.props.onAddIncludedDate(index, day_types, day.date)
+    }
+  }
+
   render() {
     {/* display add or remove link, only if true in daytypes */}
       {/* display add or remove link, according to context (presence in period, or not) */}
@@ -20,14 +29,14 @@ class ExceptionsInDay extends Component {
               data-actiontype='remove'
               onClick={(e) => {
                 $(e.currentTarget).toggleClass('active')
-                this.props.onExcludeDateFromPeriod(this.props.index, this.props.metas.day_types, this.props.currentDate)
+                this.handleClick()
               }}
             >
               <span className='fa fa-times'></span>
             </button>
           </div>
         )
-      } else if(this.props.value.current_month[this.props.index].in_periods == false) {
+      } else {
         return (
           <div className='td'>
             <button
@@ -36,20 +45,21 @@ class ExceptionsInDay extends Component {
               data-actiontype='add'
               onClick={(e) => {
                 $(e.currentTarget).toggleClass('active')
-                this.props.onIncludeDateInPeriod(this.props.index, this.props.metas.day_types, this.props.currentDate)
+                this.handleClick()
               }}
             >
               <span className='fa fa-plus'></span>
             </button>
           </div>
         )
-      } else if(this.props.value.current_month[this.props.index].in_periods == true && this.props.blueDaytype == false){
-        return (
-          <div className='td'></div>
-        )
-      } else{
-        return false
-      }
+      // } else if(this.props.value.current_month[this.props.index].in_periods == true && this.props.blueDaytype == false){
+      //   return (
+      //     <div className='td'></div>
+      //   )
+      // } else{
+      //   return false
+      // }
+    }
   }
 }
 
