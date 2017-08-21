@@ -13,6 +13,22 @@ RSpec.describe Route do
         route.duplicate
         expect( values_for_create(Route.last, except: %w{objectid}) ).to eq( values_for_create( route, except: %w{objectid} ) )
       end
+      it 'but some can be redefined optionally', :wip do
+        excluded_attributes = %w{objectid checksum checksum_source}
+        expected_attributes = values_for_create(
+          route,
+          name: 'new name',
+          published_name: 'new published name',
+          except: excluded_attributes ) 
+
+        route.duplicate name: 'new name', published_name: 'new published name'
+        expect(
+          values_for_create(Route.last, except: excluded_attributes)
+        ).to eq( expected_attributes )
+      end
+      it 'and others cannot' do
+        expect{ route.duplicate name: 'YAN', line_id: 42  }.to raise_error(ArgumentError)
+      end
       it 'same associated stop_areeas' do
         expect( route.duplicate.stop_areas.pluck(:id) ).to eq(route.stop_areas.pluck(:id))
       end
@@ -33,7 +49,7 @@ RSpec.describe Route do
     describe 'is idempotent, concerning' do
       let( :first_duplicate ){ route.duplicate  }
       let( :second_duplicate ){ first_duplicate.reload.duplicate }
-      
+
       it 'the required attributes' do
         expect( values_for_create(first_duplicate, except: %w{objectid}) ).to eq( values_for_create( second_duplicate, except: %w{objectid} ) )
       end 

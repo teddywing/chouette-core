@@ -76,11 +76,16 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   after_commit :journey_patterns_control_route_sections
 
-  def duplicate
+  def duplicate name: nil, published_name: nil
+    overrides = {
+      'name' => name || self.name,
+      'published_name' => published_name || self.published_name,
+      'object_version' => object_version - 1
+    }
     keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
     atts_for_create = attributes
       .slice(*keys_for_create)
-      .merge('object_version' => object_version - 1)
+      .merge(overrides)
     new_route = self.class.create!(atts_for_create)
     duplicate_stop_points(for_route: new_route)
     new_route

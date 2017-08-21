@@ -1,8 +1,11 @@
 module Support::ModelCompareHelpers
   
-  def values_for_create obj, except: []
+  def values_for_create obj, **overrides
+    except = overrides.delete(:except) || []
     keys = obj.attributes.keys - except - %w{id created_at updated_at}
-    obj.attributes.slice(*keys)
+    overrides.inject(obj.attributes.slice(*keys)){ |atts, (k,v)|
+      atts.merge k.to_s => v
+    }
   end
 
 end
