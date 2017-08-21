@@ -31,23 +31,17 @@ class WorkbenchImportWorker
       host: export_host,
       path: export_path,
       token: token(eg_name),
-      params: params,
-      upload: {file: [eg_file, 'application/zip', eg_name]})
+      params: params(eg_file, eg_name))
   end
 
   def log_failure reason, count
     logger.warn "HTTP POST failed with #{reason}, count = #{count}, response=#{@response}"
   end
 
-  def try_again
-    raise RetryService::Retry
-  end
-
   def try_upload_entry_group eg_name, eg_file
     result = execute_post eg_name, eg_file
-    return result if result && result.status < 400
-    @response = result.body
-    try_again
+    return Result.ok(result) if result && result.status < 400
+    Result.error(JSON.parse result.body)
   end
 
   def upload zip_service
@@ -63,6 +57,7 @@ class WorkbenchImportWorker
     retry_service = RetryService.new(
       delays: RETRY_DELAYS,
       rescue_from: [HTTPService::Timeout],
+      logger: logger,
       &method(:log_failure)) 
     status = retry_service.execute(&upload_entry_group_proc(entry_pair))
     raise StopIteration unless status.ok?
@@ -116,7 +111,11 @@ class WorkbenchImportWorker
     @__import_url__ ||= File.join(import_host, import_path)
   end
 
-  def params
-    @__params__ ||= { netex_import: { referential_id: @workbench_import.referential_id, workbench_id: @workbench_import.workbench_id } }
+  def params file, name
+    { netex_import:
+      { referential_id: @workbench_import.referential_id,
+        workbench_id: @workbench_import.workbench_id,
+        name: name,
+        file: HTTPService.upload(file, 'application/zip', name) } }
   end
 end

@@ -16,8 +16,9 @@ class RetryService
   # @param@ block:
   # This optional code is excuted before each retry, it is passed the result of the failed attempt, thus
   # an `Exception` and the number of execution already tried.
-  def initialize( delays: [], rescue_from: [], &blk )
+  def initialize( delays: [], rescue_from: [], logger: nil, &blk )
     @intervals             = delays
+    @logger                = logger
     @registered_exceptions = Array(rescue_from) << Retry
     @failure_callback      = blk
   end
@@ -31,6 +32,7 @@ class RetryService
     result = execute_protected blk
     return result if result.ok?
     @intervals.each_with_index do | interval, retry_count |
+      warn "retry #{retry_count + 1 }; sleeping #{interval}; cause: #{result.value.inspect}"
       sleep interval
       @failure_callback.try(:call, result.value, retry_count + 1)
       result = execute_protected blk
@@ -43,12 +45,19 @@ class RetryService
   private
 
   def execute_protected blk
-    Result.ok(blk.())
+    result = blk.()
+    return result if Result === result
+    Result.ok(result)
   rescue Exception => e
     if @registered_exceptions.any?{ |re| e.is_a? re }
       Result.error(e)
     else
       raise
     end
+  end
+
+  def warn message
+    return unless @logger
+    @logger.try :warn, message
   end
 end

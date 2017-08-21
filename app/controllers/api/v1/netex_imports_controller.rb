@@ -44,7 +44,10 @@ module Api
         ReferentialMetadataKludge.make_metadata_from_name! netex_import_params['name'], referential_id: @new_referential.id
         #  <<< REMOVE ME !!!!
       rescue ActiveRecord::RecordInvalid
-        render json: {errors: @new_referential.errors}, status: 406
+        require 'pry'
+        binding.pry
+        # render json: {errors: @new_referential.errors}, status: 406
+        render json: {errors: ErrorFormat.detailed(@new_referential)}, status: 406
         finish_action!
       end
 

@@ -20,7 +20,6 @@ module HTTPService extend self
       raise "Error on api request status : #{resp.status} => #{resp.body}"
     end
   end
-
   # host: 'http://localhost:3000',
   # path: '/api/v1/netex_imports.json',
   # token: '13-74009c36638f587c9eafb1ce46e95585',
@@ -32,14 +31,14 @@ module HTTPService extend self
       c.request :multipart
       c.request :url_encoded
       c.adapter Faraday.default_adapter
-
-      if upload
-        name = upload.keys.first
-        value, mime_type, as_name = upload.values.first
-        params.update( name => Faraday::UploadIO.new(value, mime_type, as_name ) )
-      end
-
+        require 'pry'
+        binding.pry
       return c.post path, params
     end
+  end
+
+  # Expose this in order to make the service replaceable
+  def upload(*triple)
+    Faraday::UploadIO.new(*triple)
   end
 end
