@@ -25,14 +25,14 @@ class WorkbenchImportWorker
       params: {token: @workbench_import.token_download}).body
   end
 
-  def execute_post eg_name, eg_stream
+  def execute_post eg_name, eg_file
     logger.info  "HTTP POST #{export_url} (for #{complete_entry_group_name(eg_name)})"
     HTTPService.post_resource(
       host: export_host,
       path: export_path,
       token: token(eg_name),
       params: params,
-      upload: {file: [eg_stream, 'application/zip', eg_name]})
+      upload: {file: [eg_file, 'application/zip', eg_name]})
   end
 
   def log_failure reason, count
@@ -43,17 +43,15 @@ class WorkbenchImportWorker
     raise RetryService::Retry
   end
 
-  def try_upload_entry_group eg_name, eg_stream
-    result = execute_post eg_name, eg_stream
-      require 'pry'
-      binding.pry
+  def try_upload_entry_group eg_name, eg_file
+    result = execute_post eg_name, eg_file
     return result if result && result.status < 400
     @response = result.body
     try_again
   end
 
   def upload zip_service
-    entry_group_streams = zip_service.entry_group_streams
+    entry_group_streams = zip_service.subdirs
     @workbench_import.update_attributes total_steps: entry_group_streams.size
     entry_group_streams.each_with_index(&method(:upload_entry_group))
   rescue StopIteration
@@ -71,10 +69,14 @@ class WorkbenchImportWorker
   end
 
   def upload_entry_group_proc entry_pair
-    eg_name, eg_stream = entry_pair
-    # This should be fn.try_upload_entry_group(eg_name, eg_stream) ;(
+    eg_name = entry_pair.name
+    eg_stream = entry_pair.stream
+    eg_file = Tempfile.new("WorkbenchImport_#{eg_name}_#{$$}").tap do |file|
+      eg_stream.read
+    end
+    eg_file.rewind
     -> do
-      try_upload_entry_group(eg_name, eg_stream)
+      try_upload_entry_group(eg_name, eg_file)
     end
   end
 
