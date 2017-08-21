@@ -487,7 +487,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def merge!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods, *another_tt.effective_days)
+        array.push(*self.effective_days, *another_tt.effective_days)
         array.uniq!
       end
 
@@ -516,7 +516,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def intersect!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods)
+        array.push(*self.effective_days)
         array.delete_if {|day| !another_tt.effective_days.include?(day) }
         array.uniq!
       end
@@ -536,7 +536,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def disjoin!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods)
+        array.push(*self.effective_days)
         array.delete_if {|day| another_tt.effective_days.include?(day) }
         array.uniq!
       end
