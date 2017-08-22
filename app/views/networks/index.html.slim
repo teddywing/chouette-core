@@ -40,6 +40,6 @@
           = new_pagination @networks, 'pull-right'
 
     - unless @networks.any?
-      .row
+      .row.mt-xs
         .col-lg-12
           = replacement_msg t('networks.search_no_results')

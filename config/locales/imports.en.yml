@@ -3,6 +3,7 @@ en:
     search_no_results: "No import matching your query"
     filters:
       referential: "Select data space..."
+      name_or_creator_cont: "Select an import or creator name..."
     actions:
       new: "New import"
       show: "Import report"

@@ -1,7 +1,7 @@
 = search_form_for @q, url: workbench_imports_path(@workbench), html: { method: :get, class: 'form form-filter' } do |f|
   .ffg-row
     .input-group.search_bar
-      = f.search_field :name_or_creator_cont, class: 'form-control', placeholder: "Indiquez un nom d'importation..."
+      = f.search_field :name_or_creator_cont, class: 'form-control', placeholder: t('imports.filters.name_or_creator_cont')
       span.input-group-btn
         button.btn.btn-default#search_btn type='submit'
           span.fa.fa-search
@@ -10,6 +10,11 @@
     .form-group.togglable
       = f.label Import.human_attribute_name(:status), required: false, class: 'control-label'
       = f.input :status_eq_any, collection: @imports.map(&:status).uniq.compact, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+
+    .form-group.togglable
+      = f.label Import.human_attribute_name(:started_at), required: false, class: 'control-label'
+      .filter_menu
+        = f.input :started_at_eq, as: :date, label: false, wrapper_html: { class: 'date smart_date filter_menu-item' }, include_blank: true
 
   .actions
     = link_to t('actions.erase'), workbench_imports_path(@workbench), class: 'btn btn-link'
