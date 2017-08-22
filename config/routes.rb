@@ -32,6 +32,7 @@ ChouetteIhm::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :workbenches, only: [:index, :show]
       resources :access_links, only: [:index, :show]
       resources :access_points, only: [:index, :show]
       resources :connection_links, only: [:index, :show]

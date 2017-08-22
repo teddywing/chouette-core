@@ -3,7 +3,7 @@ class ApiKeysController < BreadcrumbController
 
   def create
     @api_key = Api::V1::ApiKey.new(api_key_params.merge(organisation: current_organisation))
-    create! { organisation_api_key_path(resource) }
+    create! { organisation_api_keys_path }
   end
 
   def index
