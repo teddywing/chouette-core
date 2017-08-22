@@ -3,15 +3,13 @@ class WorkbenchImportWorker
   include Rails.application.routes.url_helpers
   include Configurable
 
-  RETRY_DELAYS = [3, 5, 8]
-
   # Workers
   # =======
 
   def perform(import_id)
     @workbench_import = WorkbenchImport.find(import_id)
     @response         = nil
-    @workbench_import.update_attributes(status: 'running')
+    @workbench_import.update(status: 'running')
     downloaded  = download
     zip_service = ZipService.new(downloaded)
     upload zip_service
@@ -34,47 +32,36 @@ class WorkbenchImportWorker
       params: params(eg_file, eg_name))
   end
 
-  def log_failure reason, count
-    logger.warn "HTTP POST failed with #{reason}, count = #{count}, response=#{@response}"
-  end
-
-  def try_upload_entry_group eg_name, eg_file
-    result = execute_post eg_name, eg_file
-    return Result.ok(result) if result && result.status < 400
-    Result.error(JSON.parse result.body)
-  end
-
   def upload zip_service
     entry_group_streams = zip_service.subdirs
-    @workbench_import.update_attributes total_steps: entry_group_streams.size
+    @workbench_import.update total_steps: entry_group_streams.size
     entry_group_streams.each_with_index(&method(:upload_entry_group))
-  rescue StopIteration
-    @workbench_import.update_attributes( current_step: entry_group_streams.size, status: 'failed' )
+  rescue Exception => e
+    logger.error e.message
+    @workbench_import.update( current_step: entry_group_streams.size, status: 'failed' )
+    raise
   end
 
   def upload_entry_group entry_pair, element_count
-    @workbench_import.update_attributes( current_step: element_count.succ )
-    retry_service = RetryService.new(
-      delays: RETRY_DELAYS,
-      rescue_from: [HTTPService::Timeout],
-      logger: logger,
-      &method(:log_failure)) 
-    status = retry_service.execute(&upload_entry_group_proc(entry_pair))
-    raise StopIteration unless status.ok?
-  end
-
-  def upload_entry_group_proc entry_pair
+    @workbench_import.update( current_step: element_count.succ )
+    # status = retry_service.execute(&upload_entry_group_proc(entry_pair))
     eg_name = entry_pair.name
     eg_stream = entry_pair.stream
-    eg_file = Tempfile.new("WorkbenchImport_#{eg_name}_#{$$}").tap do |file|
-      eg_stream.read
+    eg_file = File.new(Rails.root.join('tmp', "WorkbenchImport_#{eg_name}_#{$$}.zip"), 'wb').tap do |file|
+      eg_stream.rewind
+      file.write eg_stream.read
     end
     eg_file.rewind
-    -> do
-      try_upload_entry_group(eg_name, eg_file)
+    result = execute_post eg_name, eg_file
+    if result && result.status < 400
+      result
+    else
+      raise StopIteration, result.body
     end
+  ensure
+    eg_file.close rescue nil
+    eg_file.unlink rescue nil
   end
-
 
 
   # Queries
@@ -112,6 +99,11 @@ class WorkbenchImportWorker
   end
 
   def params file, name
+    if dest = ENV["DEBUG_TEMPFILE"]
+      require 'pry'
+      binding.pry
+      %x{unzip -oqq #{file.path} -d #{dest}}
+    end
     { netex_import:
       { referential_id: @workbench_import.referential_id,
         workbench_id: @workbench_import.workbench_id,

@@ -26,13 +26,11 @@ module HTTPService extend self
   # params: { netex_import: {referential_id: 13, workbench_id: 1}},
   # upload: {file: [StringIO.new('howdy'), 'application/zip', 'greeting']})
   def post_resource(host:, path:, token: nil, params: {}, upload: nil)
-    Faraday.new(url: host) do |c|
+    result = Faraday.new(url: host) do |c|
       c.headers['Authorization'] = "Token token=#{token.inspect}" if token
       c.request :multipart
       c.request :url_encoded
       c.adapter Faraday.default_adapter
-        require 'pry'
-        binding.pry
       return c.post path, params
     end
   end

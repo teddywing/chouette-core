@@ -1,12 +1,15 @@
 class ZipService
+  # TODO: Remove me before merge https://github.com/rubyzip/rubyzip
 
-  class Subdir < Struct.new( :name, :stream)
+  class Subdir < Struct.new(:name, :stream)
   end
 
   attr_reader :current_key, :current_output, :yielder
 
   def initialize data
-    @zip_data = StringIO.new(data)
+    @zip_data       = StringIO.new(data)
+    @current_key    = nil
+    @current_output = nil
   end
 
   def subdirs
@@ -38,6 +41,7 @@ class ZipService
   end
 
   def write_to_current_output input_stream
+    # the condition below is true for directory entries
     return if Zip::NullInputStream == input_stream
     current_output.write input_stream.read 
   end
@@ -58,6 +62,7 @@ class ZipService
   end
 
   def entry_key entry
+    # last dir name File.dirname.split("/").last
     entry.name.split('/', -1)[-2]
   end
 end
