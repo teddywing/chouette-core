@@ -9,7 +9,7 @@ class Import < ActiveRecord::Base
   enumerize :status, in: %i(new pending successful failed running aborted canceled)
 
   validates :file, presence: true
-  validates_presence_of :referential, :workbench, :creator
+  validates_presence_of :workbench, :creator
 
   before_create :initialize_fields
 

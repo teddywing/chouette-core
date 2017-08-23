@@ -7,7 +7,6 @@ RSpec.describe Import, :type => :model do
   it { should enumerize(:status).in("aborted", "canceled", "failed", "new", "pending", "running", "successful") }
 
   it { should validate_presence_of(:file) }
-  it { should validate_presence_of(:referential) }
   it { should validate_presence_of(:workbench) }
   it { should validate_presence_of(:creator) }
 
