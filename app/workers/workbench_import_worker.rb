@@ -51,7 +51,8 @@ class WorkbenchImportWorker
       eg_stream.rewind
       file.write eg_stream.read
     end
-    eg_file.rewind
+    eg_file.close
+    eg_file = File.new(Rails.root.join('tmp', "WorkbenchImport_#{eg_name}_#{$$}.zip"))
     result = execute_post eg_name, eg_file
     if result && result.status < 400
       result
