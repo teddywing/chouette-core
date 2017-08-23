@@ -28,7 +28,9 @@ RSpec.describe Api::V1::ImportsController, type: :controller do
       let(:file) { fixture_file_upload('multiple_references_import.zip') }
 
       it 'should be successful' do
-        post :create, workbench_id: workbench.id, workbench_import: {file: file, creator: 'test'}, format: :json
+        expect {
+          post :create, workbench_id: workbench.id, workbench_import: {file: file, creator: 'test'}, format: :json
+        }.to change{WorkbenchImport.count}.by(1)
         expect(response).to be_success
       end
     end
