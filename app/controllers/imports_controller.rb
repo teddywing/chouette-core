@@ -6,6 +6,10 @@ class ImportsController < BreadcrumbController
 
   def show
     show! do
+      @import = @import.decorate(context: {
+        workbench: @workbench
+      })
+
       build_breadcrumb :show
     end
   end

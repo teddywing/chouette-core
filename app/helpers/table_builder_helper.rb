@@ -42,7 +42,8 @@ require 'table_builder_helper/url'
 #       ),
 #     ],
 #     links: [:show, :edit],
-#     cls: 'table has-search'
+#     cls: 'table has-search',
+#     overhead: [ {title: 'one', width: 1, cls: 'toto'}, {title: 'two <span class="test">Info</span>', width: 2, cls: 'default'} ]
 #   )
 module TableBuilderHelper
   # TODO: rename this after migration from `table_builder`
@@ -65,19 +66,36 @@ module TableBuilderHelper
     links: [],
 
     # A CSS class to apply to the <table>
-    cls: ''
+    cls: '',
+
+    # A set of content, over the th line...
+    overhead: []
   )
     content_tag :table,
-      thead(collection, columns, sortable, selectable, links.any?) +
-        tbody(collection, columns, selectable, links),
+      thead(collection, columns, sortable, selectable, links.any?, overhead) +
+        tbody(collection, columns, selectable, links, overhead),
       class: cls
   end
 
   private
 
-  def thead(collection, columns, sortable, selectable, has_links)
+  def thead(collection, columns, sortable, selectable, has_links, overhead)
     content_tag :thead do
-      content_tag :tr do
+      # Inserts overhead content if any specified
+      over_head = ''
+
+      unless overhead.empty?
+        over_head = content_tag :tr, class: 'overhead' do
+          oh_cont = []
+
+          overhead.each do |h|
+            oh_cont << content_tag(:th, raw(h[:title]), colspan: h[:width], class: h[:cls])
+          end
+          oh_cont.join.html_safe
+        end
+      end
+
+      main_head = content_tag :tr do
         hcont = []
 
         if selectable
@@ -85,14 +103,58 @@ module TableBuilderHelper
         end
 
         columns.each do |column|
-          hcont << content_tag(:th, build_column_header(
-            column,
-            sortable,
-            collection.model,
-            params,
-            params[:sort],
-            params[:direction]
-          ))
+          if overhead.empty?
+            hcont << content_tag(:th, build_column_header(
+              column,
+              sortable,
+              collection.model,
+              params,
+              params[:sort],
+              params[:direction]
+            ))
+
+          else
+            i = columns.index(column)
+
+            if overhead[i].blank?
+              if (i > 0) && (overhead[i - 1][:width] > 1)
+                clsArrayH = overhead[i - 1][:cls].split
+
+                hcont << content_tag(:th, build_column_header(
+                  column,
+                  sortable,
+                  collection.model,
+                  params,
+                  params[:sort],
+                  params[:direction]
+                ), class: td_cls(clsArrayH))
+
+              else
+                hcont << content_tag(:th, build_column_header(
+                  column,
+                  sortable,
+                  collection.model,
+                  params,
+                  params[:sort],
+                  params[:direction]
+                ))
+              end
+
+            else
+              clsArrayH = overhead[i][:cls].split
+
+              hcont << content_tag(:th, build_column_header(
+                column,
+                sortable,
+                collection.model,
+                params,
+                params[:sort],
+                params[:direction]
+              ), class: td_cls(clsArrayH))
+
+            end
+
+          end
         end
 
         # Inserts a blank column for the gear menu
@@ -102,10 +164,12 @@ module TableBuilderHelper
 
         hcont.join.html_safe
       end
+
+      (over_head + main_head).html_safe
     end
   end
 
-  def tbody(collection, columns, selectable, links)
+  def tbody(collection, columns, selectable, links, overhead)
     content_tag :tbody do
       collection.map do |item|
 
@@ -128,9 +192,53 @@ module TableBuilderHelper
                 item,
                 referential
               )
-              bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
+
+              if overhead.empty?
+                bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
+
+              else
+                i = columns.index(column)
+
+                if overhead[i].blank?
+                  if (i > 0) && (overhead[i - 1][:width] > 1)
+                    clsArrayAlt = overhead[i - 1][:cls].split
+
+                    bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir', class: td_cls(clsArrayAlt))
+
+                  else
+                    bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
+                  end
+
+                else
+                  clsArray = overhead[columns.index(column)][:cls].split
+
+                  bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir', class: td_cls(clsArray))
+                end
+              end
+
             else
-              bcont << content_tag(:td, value)
+              if overhead.empty?
+                bcont << content_tag(:td, value)
+
+              else
+                i = columns.index(column)
+
+                if overhead[i].blank?
+                  if (i > 0) && (overhead[i - 1][:width] > 1)
+                    clsArrayAlt = overhead[i - 1][:cls].split
+
+                    bcont << content_tag(:td, value, class: td_cls(clsArrayAlt))
+
+                  else
+                    bcont << content_tag(:td, value)
+                  end
+
+                else
+                  clsArray = overhead[i][:cls].split
+
+                  bcont << content_tag(:td, value, class: td_cls(clsArray))
+                end
+              end
             end
           end
 
@@ -145,6 +253,14 @@ module TableBuilderHelper
           bcont.join.html_safe
         end
       end.join.html_safe
+    end
+  end
+
+  def td_cls(a)
+    if a.include? 'full-border'
+      a.slice!(a.index('full-border'))
+
+      return a.join(' ')
     end
   end
 
