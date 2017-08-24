@@ -198,15 +198,12 @@ describe('vehicleJourneys reducer', () => {
       },
       stop_area_object_id : "FR:92024:ZDE:420553:STIF"
     }]
-    let fakeData = {
-      objectid: {value : '11'},
-      additional_time: {value: '5'}
-    }
+    let addtionalTime = 5
     let newVJ = Object.assign({}, state[0], {vehicle_journey_at_stops: newVJAS})
     expect(
       vjReducer(state, {
         type: 'SHIFT_VEHICLEJOURNEY',
-        data: fakeData
+        addtionalTime
       })
     ).toEqual([newVJ, state[1]])
   })
@@ -225,17 +222,17 @@ describe('vehicleJourneys reducer', () => {
       stop_area_object_id : "FR:92024:ZDE:420553:STIF"
     }]
     let departureDelta = 1
-    let fakeData = {
-      duplicate_number: {value : 1},
-      additional_time: {value: '5'}
-    }
+    let addtionalTime = 5
+    let duplicateNumber = 1
+
     let newVJ = Object.assign({}, state[0], {vehicle_journey_at_stops: newVJAS, selected: false})
     newVJ.published_journey_name = state[0].published_journey_name + '-0'
     delete newVJ['objectid']
     expect(
       vjReducer(state, {
         type: 'DUPLICATE_VEHICLEJOURNEY',
-        data: fakeData,
+        addtionalTime,
+        duplicateNumber,
         departureDelta
       })
     ).toEqual([state[0], newVJ, state[1]])

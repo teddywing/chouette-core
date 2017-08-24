@@ -165,12 +165,12 @@ describe('when updating vjas time', () => {
 })
 describe('when clicking on validate button inside shifting modal', () => {
   it('should create an action to shift a vehiclejourney schedule', () => {
-    const data = {}
+    const addtionalTime = 0
     const expectedAction = {
       type: 'SHIFT_VEHICLEJOURNEY',
-      data
+      addtionalTime
     }
-    expect(actions.shiftVehicleJourney(data)).toEqual(expectedAction)
+    expect(actions.shiftVehicleJourney(addtionalTime)).toEqual(expectedAction)
   })
 })
 describe('when clicking on validate button inside editing modal', () => {
@@ -187,14 +187,16 @@ describe('when clicking on validate button inside editing modal', () => {
 })
 describe('when clicking on validate button inside duplicating modal', () => {
   it('should create an action to duplicate a vehiclejourney schedule', () => {
-    const data = {}
+    const addtionalTime = 0
     const departureDelta = 0
+    const duplicateNumber = 1
     const expectedAction = {
       type: 'DUPLICATE_VEHICLEJOURNEY',
-      data,
+      addtionalTime,
+      duplicateNumber,
       departureDelta
     }
-    expect(actions.duplicateVehicleJourney(data, departureDelta)).toEqual(expectedAction)
+    expect(actions.duplicateVehicleJourney(addtionalTime, duplicateNumber, departureDelta)).toEqual(expectedAction)
   })
 })
 describe('when clicking on edit notes modal', () => {
