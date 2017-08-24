@@ -24,7 +24,7 @@ require "bundler/capistrano"
 require 'whenever/capistrano'
 
 require 'capistrano/npm'
-set :npm_options, '--production --silent --no-progress'
+set :npm_options, '--production --no-progress'
 
 after 'deploy:finalize_update', 'npm:install'
 
