@@ -30,6 +30,10 @@ RSpec.describe "NetexImport", type: :request do
       let( :authorization ){ authorization_token_header( get_api_key.token ) }
 
       it 'succeeds' do
+        # TODO: Handle better when `ReferentialMetadataKludge` is reworked
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108')
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109')
+
         post_request.(netex_import: legal_attributes)
         expect( response ).to be_success
         expect( json_response_body ).to eq(
@@ -40,6 +44,10 @@ RSpec.describe "NetexImport", type: :request do
       end
 
       it 'creates a NetexImport object in the DB' do
+        # TODO: Handle better when `ReferentialMetadataKludge` is reworked
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108')
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109')
+
         expect{ post_request.(netex_import: legal_attributes) }.to change{NetexImport.count}.by(1)
       end
 
@@ -72,6 +80,10 @@ RSpec.describe "NetexImport", type: :request do
         context "missing #{bad_attribute}" do
           let!( :illegal_attributes ){ legal_attributes.merge( bad_attribute => illegal_value ) }
           it 'does not succeed' do
+            # TODO: Handle better when `ReferentialMetadataKludge` is reworked
+            create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108')
+            create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109')
+
             post_request.(netex_import: illegal_attributes)
             expect( response.status ).to eq(406)
             expect( json_response_body['errors'][bad_attribute.to_s] ).not_to be_empty
