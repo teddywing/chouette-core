@@ -48,7 +48,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
     allow(Api::V1::ApiKey).to receive(:from).and_return(api_key)
     allow(ZipService).to receive(:new).with(downloaded_zip).and_return zip_service
     expect(zip_service).to receive(:entry_group_streams).and_return(entry_groups)
-    expect( import ).to receive(:update_attributes).with(status: 'running')
+    expect( import ).to receive(:update).with(status: 'running')
   end
 
 
@@ -65,9 +65,9 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
         mock_post entry_group_name, entry_group_stream, post_response_ok
       end
 
-      expect( import ).to receive(:update_attributes).with(total_steps: 2)
-      expect( import ).to receive(:update_attributes).with(current_step: 1)
-      expect( import ).to receive(:update_attributes).with(current_step: 2)
+      expect( import ).to receive(:update).with(total_steps: 2)
+      expect( import ).to receive(:update).with(current_step: 1)
+      expect( import ).to receive(:update).with(current_step: 2)
 
       worker.perform import.id
 
@@ -93,10 +93,10 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
         mock_post entry_group_name, entry_group_stream, post_response_failure
       end
 
-      expect( import ).to receive(:update_attributes).with(total_steps: 3)
-      expect( import ).to receive(:update_attributes).with(current_step: 1)
-      expect( import ).to receive(:update_attributes).with(current_step: 2)
-      expect( import ).to receive(:update_attributes).with(current_step: 3, status: 'failed')
+      expect( import ).to receive(:update).with(total_steps: 3)
+      expect( import ).to receive(:update).with(current_step: 1)
+      expect( import ).to receive(:update).with(current_step: 2)
+      expect( import ).to receive(:update).with(current_step: 3, status: 'failed')
 
       worker.perform import.id
 
