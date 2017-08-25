@@ -91,10 +91,6 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
       # Second entry_group fails (M I S E R A B L Y)
       entry_groups[1..1].each do | entry_group_name, entry_group_stream |
         mock_post entry_group_name, entry_group_stream, post_response_failure
-        WorkbenchImportWorker::RETRY_DELAYS.each do | delay |
-          mock_post entry_group_name, entry_group_stream, post_response_failure
-          expect_any_instance_of(RetryService).to receive(:sleep).with(delay)
-        end
       end
 
       expect( import ).to receive(:update_attributes).with(total_steps: 3)
