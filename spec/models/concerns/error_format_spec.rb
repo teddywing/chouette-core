@@ -18,9 +18,9 @@ RSpec.describe ErrorFormat do
       it 'if an error is present and validation has been carried out' do
         invalid = build_stubbed(:referential, name: nil)
         expect( invalid ).not_to be_valid
-        expect( described_class.details(invalid) ).to eq([
-          {name: {error: 'doit être rempli(e)', value: nil}}
-        ])
+        expect( described_class.details(invalid) ).to eq({
+          name: { error: 'doit être rempli(e)', value: nil }
+        })
       end
 
       it 'and can even hold many errors' do
@@ -31,10 +31,10 @@ RSpec.describe ErrorFormat do
           slug: 'hello world'
         )
         expect( invalid ).not_to be_valid
-        expect( described_class.details(invalid) ).to eq([
-          {name: {error: "n'est pas disponible", value: 'hello'}},
-          {slug: {error: "n'est pas valide", value: 'hello world'}}
-        ])
+        expect( described_class.details(invalid) ).to eq({
+          name: { error: "n'est pas disponible", value: 'hello' },
+          slug: { error: "n'est pas valide", value: 'hello world' }
+        })
       end
     end
   end

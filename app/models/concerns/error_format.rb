@@ -1,7 +1,9 @@
 module ErrorFormat extend self
 
   def details error_object
-    error_object.errors.messages.map(&partial(:detail, error_object))
+    error_object.errors.messages.inject({}) do |hash, error|
+      hash.merge(partial(:detail, error_object, error).call)
+    end
   end
 
   private
