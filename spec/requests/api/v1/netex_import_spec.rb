@@ -19,7 +19,7 @@ RSpec.describe "NetexImport", type: :request do
 
     let( :legal_attributes ) do
       {
-        name: 'hello world',
+        name: 'offre1',
         file: file,
         workbench_id: workbench.id
       }
