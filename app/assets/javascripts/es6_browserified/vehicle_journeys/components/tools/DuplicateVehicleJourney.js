@@ -7,29 +7,54 @@ var _ = require('lodash')
 class DuplicateVehicleJourney extends Component {
   constructor(props) {
     super(props)
+    this.state = {}
+    this.onFormChange = this.onFormChange.bind(this)
+  }
+
+  componentWillReceiveProps() {
+    if (actions.getSelected(this.props.vehicleJourneys).length > 0) {
+      this.setState((state, props) => {
+        return {
+          duplicate_time_hh: parseInt(this.getDefaultValue('hour')),
+          duplicate_time_mm: parseInt(this.getDefaultValue('minute')),
+          additional_time: 0,
+          duplicate_number: 1
+        }
+      })
+    }
   }
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
       let newDeparture = {
         departure_time : {
-          hour: this.refs.duplicate_time_hh.value,
-          minute: this.refs.duplicate_time_mm.value
+          hour: this.state.duplicate_time_hh,
+          minute: this.state.duplicate_time_mm
         }
       }
       let val = actions.getDuplicateDelta(_.find(actions.getSelected(this.props.vehicleJourneys)[0].vehicle_journey_at_stops, {'dummy': false}), newDeparture)
-      this.refs.additional_time.value = parseInt(this.refs.additional_time.value)
-      this.props.onDuplicateVehicleJourney(this.refs, val)
+      this.props.onDuplicateVehicleJourney(this.state.additional_time, this.state.duplicate_number, val)
       this.props.onModalClose()
       $('#DuplicateVehicleJourneyModal').modal('hide')
     }
+  }
+
+  onFormChange(e) {
+    let {name, value} = e.target
+    this.setState((state, props) => {
+      return {
+        [name]: parseInt(value)
+      }
+    })
   }
 
   getDefaultValue(type) {
     let vjas = _.find(actions.getSelected(this.props.vehicleJourneys)[0].vehicle_journey_at_stops, {'dummy': false})
     return vjas.departure_time[type]
   }
+
   render() {
+
     if(this.props.status.isFetching == true) {
       return false
     }
@@ -65,22 +90,26 @@ class DuplicateVehicleJourney extends Component {
                             <span className={'input-group time' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? ' disabled' : '')}>
                               <input
                                 type='number'
+                                name='duplicate_time_hh'
                                 ref='duplicate_time_hh'
                                 min='00'
                                 max='23'
                                 className='form-control'
-                                defaultValue={this.getDefaultValue('hour')}
-                                disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
+                                value={this.state.duplicate_time_hh}
+                                onChange={e => this.onFormChange(e)}
+                                disabled={actions.getSelected(this.props.vehicleJourneys) && (actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
                                 />
                               <span>:</span>
                               <input
                                 type='number'
+                                name='duplicate_time_mm'
                                 ref='duplicate_time_mm'
                                 min='00'
                                 max='59'
                                 className='form-control'
-                                defaultValue={this.getDefaultValue('minute')}
-                                disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
+                                value={this.state.duplicate_time_mm}
+                                onChange={e => this.onFormChange(e)}
+                                disabled={actions.getSelected(this.props.vehicleJourneys) && (actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'disabled' : '')}
                                 />
                             </span>
                           </span>
@@ -92,11 +121,13 @@ class DuplicateVehicleJourney extends Component {
                             <input
                               type='number'
                               style={{'width': 104}}
+                              name='duplicate_number'
                               ref='duplicate_number'
                               min='1'
                               max='20'
-                              defaultValue='1'
+                              value={this.state.duplicate_number}
                               className='form-control'
+                              onChange={e => this.onFormChange(e)}
                               onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                               required
                               />
@@ -105,19 +136,21 @@ class DuplicateVehicleJourney extends Component {
 
                         <div className='form-group'>
                           <label className='control-label is-required col-sm-8'>Décalage à partir duquel on créé les courses</label>
-                          <div className="col-sm-4">
+                          <span className="col-sm-4">
                             <input
                               type='number'
                               style={{'width': 104}}
+                              name='additional_time'
                               ref='additional_time'
-                              min='-59'
-                              max='59'
-                              defaultValue='0'
-                              className='form-control'
+                              min='-720'
+                              max='720'
+                              value={this.state.additional_time}
+                              className='form-control disabled'
+                              onChange={e => this.onFormChange(e)}
                               onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                               required
-                              />
-                          </div>
+                            />
+                          </span>
                         </div>
                       </div>
 
@@ -131,7 +164,7 @@ class DuplicateVehicleJourney extends Component {
                           Annuler
                         </button>
                         <button
-                          className='btn btn-primary'
+                          className={'btn btn-primary ' + (this.state.additional_time == 0 ? 'disabled' : '')}
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >

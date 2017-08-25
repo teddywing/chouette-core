@@ -21,7 +21,11 @@ const modal = (state = {}, action) => {
       })
     case 'OPEN_ERROR_MODAL':
       $('#ErrorModal').modal('show')
-      return _.assign({}, state, {type: 'error'})
+      newModalProps = _.assign({}, state.modalProps, {error: action.error})
+      return _.assign({}, state, {type: 'error'}, {modalProps: newModalProps})
+    case 'RESET_MODAL_ERRORS':
+      newModalProps = _.assign({}, state.modalProps, {error: ''})
+      return _.assign({}, state, {type: ''}, {modalProps: newModalProps})
     case 'CLOSE_PERIOD_FORM':
       newModalProps = _.assign({}, state.modalProps, {active: false})
       return _.assign({}, state, {modalProps: newModalProps})
@@ -60,7 +64,9 @@ const modal = (state = {}, action) => {
       }
 
       let newPeriods = JSON.parse(JSON.stringify(action.timeTablePeriods))
+      let newDays = JSON.parse(JSON.stringify(action.timetableInDates))
       let error = actions.checkErrorsInPeriods(period_start, period_end, action.modalProps.index, newPeriods)
+      if (error == '') error = actions.checkErrorsInDates(period_start, period_end, newDays)
       newModalProps.error = error
       newModalProps.active = (error == '') ? false : true
       return _.assign({}, state, {modalProps: newModalProps})

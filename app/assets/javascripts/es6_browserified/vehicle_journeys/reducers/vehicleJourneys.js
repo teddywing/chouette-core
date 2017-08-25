@@ -51,17 +51,8 @@ const vehicleJourney= (state = {}, action, keep) => {
       let shiftedArray, shiftedSchedule, shiftedVjas
       shiftedArray = state.vehicle_journey_at_stops.map((vjas, i) => {
         if (!vjas.dummy){
-          shiftedSchedule = {
-            departure_time: {
-              hour: vjas.departure_time.hour,
-              minute: actions.simplePad(parseInt(vjas.departure_time.minute) + parseInt(action.data.additional_time.value))
-            },
-            arrival_time: {
-              hour: vjas.arrival_time.hour,
-              minute: actions.simplePad(parseInt(vjas.arrival_time.minute) + parseInt(action.data.additional_time.value))
-            }
-          }
-          actions.checkSchedules(shiftedSchedule)
+          shiftedSchedule = actions.getShiftedSchedule(vjas, action.addtionalTime)
+
           shiftedVjas =  _.assign({}, state.vehicle_journey_at_stops[i], shiftedSchedule)
           vjas = _.assign({}, state.vehicle_journey_at_stops[i], shiftedVjas)
           if(!keep){
@@ -181,13 +172,13 @@ const vehicleJourneys = (state = [], action) => {
       let dupeVj
       let dupes = []
       let selectedIndex
-      let val = action.data.additional_time.value
+      let val = action.addtionalTime
       let departureDelta = action.departureDelta
       state.map((vj, i) => {
         if(vj.selected){
           selectedIndex = i
-          for (i = 0; i< action.data.duplicate_number.value; i++){
-            action.data.additional_time.value = (parseInt(val) * (i + 1)) + departureDelta
+          for (i = 0; i< action.duplicateNumber; i++){
+            action.addtionalTime = (val * (i + 1)) + departureDelta
             dupeVj = vehicleJourney(vj, action, false)
             dupeVj.published_journey_name = dupeVj.published_journey_name + '-' + i
             dupeVj.selected = false

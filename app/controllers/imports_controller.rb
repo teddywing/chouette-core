@@ -6,12 +6,24 @@ class ImportsController < BreadcrumbController
 
   def show
     show! do
+      @import = @import.decorate(context: {
+        workbench: @workbench
+      })
+
       build_breadcrumb :show
     end
   end
 
   def index
-    index! do
+    index! do |format|
+      format.html {
+        if collection.out_of_bounds?
+          redirect_to params.merge(:page => 1)
+        end
+
+        @imports = decorate_imports(@imports)
+      }
+
       build_breadcrumb :index
     end
   end
@@ -34,16 +46,50 @@ class ImportsController < BreadcrumbController
     end
   end
 
+  protected
+  def collection
+    @q = parent.imports.search(params[:q])
+
+    if sort_column && sort_direction
+      @imports ||= @q.result(distinct: true).order(sort_column + ' ' + sort_direction).paginate(page: params[:page], per_page: 10)
+    else
+      @imports ||= @q.result(distinct: true).order(:name).paginate(page: params[:page], per_page: 10)
+    end
+  end
+
   private
 
   def build_resource
     # Manage only NetexImports for the moment
     @import ||= NetexImport.new(*resource_params) do |import|
       import.workbench = parent
+      import.creator   = current_user.name
     end
   end
 
   def import_params
-    params.require(:import).permit(:name, :file, :type, :referential_id)
+    params.require(:import).permit(
+      :name,
+      :file,
+      :type,
+      :referential_id
+    )
+  end
+
+  def sort_column
+    parent.imports.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  def decorate_imports(imports)
+    ModelDecorator.decorate(
+      imports,
+      with: ImportDecorator,
+      context: {
+        workbench: @workbench
+      }
+    )
   end
 end

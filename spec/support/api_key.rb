@@ -1,20 +1,28 @@
 module ApiKeyHelper
 
-  def get_api_key
-    Api::V1::ApiKey.first_or_create( :referential_id => referential.id, :name => "test")
+  def authorization_token_header(key)
+    {'Authorization' => "Token token=#{key}"}
   end
+
+  def get_api_key
+    Api::V1::ApiKey.first_or_create(referential: referential, organisation: organisation)
+  end
+
   def config_formatted_request_with_authorization( format)
     request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials( get_api_key.token)
     request.accept = format
   end
+
   def config_formatted_request_with_dummy_authorization( format)
     request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials( "dummy")
     request.accept = format
   end
+
   def config_formatted_request_without_authorization( format)
     request.env['HTTP_AUTHORIZATION'] = nil
     request.accept = format
   end
+
   def json_xml_format?
     request.accept == "application/json" || request.accept == "application/xml"
   end

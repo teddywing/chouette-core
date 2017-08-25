@@ -1,5 +1,6 @@
 module Chouette
   class VehicleJourney < TridentActiveRecord
+    include ChecksumSupport
     include VehicleJourneyRestrictions
     include StifTransportModeEnumerations
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
@@ -52,6 +53,16 @@ module Chouette
 
         current_stop.errors.add(:departure_time, notice)
         self.errors.add(:vehicle_journey_at_stops, notice)
+      end
+    end
+
+    def checksum_attributes
+      [].tap do |attrs|
+        attrs << self.published_journey_name
+        attrs << self.published_journey_identifier
+        attrs << self.try(:company).try(:objectid).try(:local_id)
+        attrs << self.footnotes.map(&:checksum).sort
+        attrs << self.vehicle_journey_at_stops.map(&:checksum).sort
       end
     end
 

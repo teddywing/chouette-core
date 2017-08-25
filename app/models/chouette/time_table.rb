@@ -1,4 +1,5 @@
 class Chouette::TimeTable < Chouette::TridentActiveRecord
+  include ChecksumSupport
   include TimeTableRestrictions
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -25,6 +26,14 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   end
 
   after_save :save_shortcuts
+
+  def checksum_attributes
+    [].tap do |attrs|
+      attrs << self.int_day_types
+      attrs << self.dates.map(&:checksum).map(&:to_s).sort
+      attrs << self.periods.map(&:checksum).map(&:to_s).sort
+    end
+  end
 
   def self.object_id_key
     "Timetable"
@@ -478,7 +487,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def merge!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods, *another_tt.effective_days)
+        array.push(*self.effective_days, *another_tt.effective_days)
         array.uniq!
       end
 
@@ -507,7 +516,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def intersect!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods)
+        array.push(*self.effective_days)
         array.delete_if {|day| !another_tt.effective_days.include?(day) }
         array.uniq!
       end
@@ -527,7 +536,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def disjoin!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods)
+        array.push(*self.effective_days)
         array.delete_if {|day| another_tt.effective_days.include?(day) }
         array.uniq!
       end

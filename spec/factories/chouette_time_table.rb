@@ -1,12 +1,4 @@
 FactoryGirl.define do
-
-  factory :time_table_date, :class => Chouette::TimeTableDate do
-    association :time_table, :factory => :time_table
-  end
-
-  factory :time_table_period, :class => Chouette::TimeTablePeriod do
-  end
-
   factory :time_table, :class => Chouette::TimeTable do
     sequence(:comment) { |n| "Timetable #{n}" }
     sequence(:objectid) { |n| "test:Timetable:#{n}" }

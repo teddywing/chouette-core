@@ -17,8 +17,13 @@ describe Chouette::VehicleJourney, :type => :model do
     expect(vehicle_journey).to be_valid
   end
 
+  describe 'checksum' do
+    it_behaves_like 'checksum support', :vehicle_journey
+  end
+
   describe "vjas_departure_time_must_be_before_next_stop_arrival_time",
       skip: "Validation currently commented out because it interferes with day offsets" do
+
     let(:vehicle_journey) { create :vehicle_journey }
     let(:vjas) { vehicle_journey.vehicle_journey_at_stops }
 

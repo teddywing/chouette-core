@@ -4,11 +4,15 @@ describe Chouette::TimeTablePeriod, :type => :model do
 
   let!(:time_table) { create(:time_table)}
   subject { create(:time_table_period ,:time_table => time_table, :period_start => Date.new(2014,6,30), :period_end => Date.new(2014,7,6) ) }
-  let!(:p2) {create(:time_table_period ,:time_table => time_table, :period_start => Date.new(2014,7,6), :period_end => Date.new(2014,7,14) ) } 
+  let!(:p2) {create(:time_table_period ,:time_table => time_table, :period_start => Date.new(2014,7,6), :period_end => Date.new(2014,7,14) ) }
 
   it { is_expected.to validate_presence_of :period_start }
   it { is_expected.to validate_presence_of :period_end }
-  
+
+  describe 'checksum' do
+    it_behaves_like 'checksum support', :time_table_period
+  end
+
   describe "#overlap" do
     context "when periods intersect, " do
       it "should detect period overlap" do

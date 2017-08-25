@@ -525,6 +525,7 @@ GEM
     thread (0.2.2)
     thread_safe (0.3.6)
     tilt (1.4.1)
+    timecop (0.9.1)
     transpec (3.3.0)
       activesupport (>= 3.0, < 6.0)
       astrolabe (~> 1.2)
@@ -669,6 +670,7 @@ DEPENDENCIES
   squeel!
   teaspoon-jasmine
   therubyracer (~> 0.12)
+  timecop
   transpec
   uglifier (~> 2.7.2)
   webmock

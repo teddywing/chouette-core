@@ -96,34 +96,41 @@ const actions = {
   closePeriodForm: () => ({
     type: 'CLOSE_PERIOD_FORM'
   }),
+  resetModalErrors: () => ({
+    type: 'RESET_MODAL_ERRORS'
+  }),
   updatePeriodForm: (val, group, selectType) => ({
     type: 'UPDATE_PERIOD_FORM',
     val,
     group,
     selectType
   }),
-  validatePeriodForm: (modalProps, timeTablePeriods, metas) => ({
+  validatePeriodForm: (modalProps, timeTablePeriods, metas, timetableInDates) => ({
     type: 'VALIDATE_PERIOD_FORM',
     modalProps,
     timeTablePeriods,
-    metas
+    metas,
+    timetableInDates
   }),
-  includeDateInPeriod: (index, dayTypes) => ({
+  includeDateInPeriod: (index, dayTypes, date) => ({
     type: 'INCLUDE_DATE_IN_PERIOD',
     index,
-    dayTypes
+    dayTypes,
+    date
   }),
-  excludeDateFromPeriod: (index, dayTypes) => ({
+  excludeDateFromPeriod: (index, dayTypes, date) => ({
     type: 'EXCLUDE_DATE_FROM_PERIOD',
     index,
-    dayTypes
+    dayTypes,
+    date
   }),
   openConfirmModal : (callback) => ({
     type : 'OPEN_CONFIRM_MODAL',
     callback
   }),
-  showErrorModal: () => ({
-    type: 'OPEN_ERROR_MODAL'
+  showErrorModal: (error) => ({
+    type: 'OPEN_ERROR_MODAL',
+    error
   }),
   closeModal : () => ({
     type : 'CLOSE_MODAL'
@@ -161,16 +168,15 @@ const actions = {
       // We compare periods & currentDate, to determine if it is included or not
       let testDate = false
       periods.map((p, i) => {
-        if(p.deleted){
-          return false
-        }
+        if (p.deleted) return false
+
         let begin = new Date(p.period_start)
         let end = new Date(p.period_end)
 
         if(testDate === false){
           if(currentDate >= begin && currentDate <= end) {
             testDate = true
-            p.include_date = false
+            // p.include_date = false
           }
         }
       })
@@ -187,11 +193,11 @@ const actions = {
     })
     return improvedCM
   },
-
   checkConfirmModal: (event, callback, stateChanged, dispatch, metas, timetable) => {
-    if(stateChanged === true){
-      if(timetable.time_table_periods.length == 0 && _.some(metas.day_types)){
-        return actions.showErrorModal()
+    if(stateChanged){
+      const error = actions.errorModalKey(timetable.time_table_periods, metas.day_types)
+      if(error){
+        return actions.showErrorModal(error)
       }else{
         return actions.openConfirmModal(callback)
       }
@@ -203,7 +209,7 @@ const actions = {
   formatDate: (props) => {
     return props.year + '-' + props.month + '-' + props.day
   },
-  checkErrorsInPeriods: (start, end, index, periods) => {
+  checkErrorsInPeriods: (start, end, index, periods, days) => {
     let error = ''
     start = new Date(start)
     end = new Date(end)
@@ -211,6 +217,18 @@ const actions = {
       if(index !== i && !period.deleted){
         if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end) || (start >= new Date(period.period_start) && end <= new Date(period.period_end)) || (start <= new Date(period.period_start) && end >= new Date(period.period_end)))
         error = 'Les périodes ne peuvent pas se chevaucher'
+      }
+    })
+    return error
+  },
+  checkErrorsInDates: (start, end, in_days) => {
+    let error = ''
+    start = new Date(start)
+    end = new Date(end)
+
+    _.each(in_days, ({date}) => {
+      if (start <= new Date(date) && end >= new Date(date)) {
+        error = 'Une période ne peut chevaucher une date dans un calendrier'
       }
     })
     return error
@@ -275,6 +293,31 @@ const actions = {
           }
         }
       })
+  },
+  errorModalKey: (periods, dayTypes) => {
+    const withoutPeriodsWithDaysTypes = _.reject(periods, 'deleted').length == 0 && _.some(dayTypes) && "withoutPeriodsWithDaysTypes"
+    const withPeriodsWithoutDayTypes = _.reject(periods, 'deleted').length > 0 &&  _.every(dayTypes, dt => dt == false) && "withPeriodsWithoutDayTypes"
+
+    return (withoutPeriodsWithDaysTypes || withPeriodsWithoutDayTypes) && (withoutPeriodsWithDaysTypes ? "withoutPeriodsWithDaysTypes" : "withPeriodsWithoutDayTypes")
+
+  },
+  errorModalMessage: (errorKey) => {
+    switch (errorKey) {
+      case "withoutPeriodsWithDaysTypes":
+        return window.I18n.fr.time_tables.edit.error_modal.withoutPeriodsWithDaysTypes
+      case "withPeriodsWithoutDayTypes":
+        return window.I18n.fr.time_tables.edit.error_modal.withPeriodsWithoutDayTypes
+      default:
+        return errorKey
+
+    }
+  },
+  checkIfTTHasDate: (dates, date) => {
+    if (_.some(dates, date)) {
+       return _.reject(dates, ['date', date.date])
+     } else {
+       return dates.concat(date)
+     }
   }
 }
 

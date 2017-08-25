@@ -6,14 +6,25 @@ var actions = require('../../actions')
 class ShiftVehicleJourney extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      additional_time: 0
+    }
   }
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
-      this.props.onShiftVehicleJourney(this.refs)
+      this.props.onShiftVehicleJourney(this.state.additional_time)
       this.props.onModalClose()
       $('#ShiftVehicleJourneyModal').modal('hide')
     }
+  }
+
+  handleAdditionalTimeChange() {
+    this.setState((state, props) => {
+      return {
+        additional_time: parseInt(this.refs.additional_time.value)
+      }
+    })
   }
 
   render() {
@@ -53,14 +64,16 @@ class ShiftVehicleJourney extends Component {
                               <label className='control-label is-required'>Avec un décalage de</label>
                               <input
                                 type='number'
+                                style={{'width': 104}}
                                 ref='additional_time'
-                                min='-59'
-                                max='59'
+                                min='-720'
+                                max='720'
+                                value={this.state.additional_time}
                                 className='form-control'
-                                defaultValue='0'
+                                onChange={this.handleAdditionalTimeChange.bind(this)}
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                 required
-                                />
+                              />
                             </div>
                           </div>
                         </div>
@@ -75,7 +88,7 @@ class ShiftVehicleJourney extends Component {
                           Annuler
                         </button>
                         <button
-                          className='btn btn-primary'
+                          className={'btn btn-primary ' + (this.state.additional_time == 0 ? 'disabled' : '')}
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >

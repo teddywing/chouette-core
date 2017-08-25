@@ -5,6 +5,7 @@ var SaveVehicleJourneysComponent = require('../components/SaveVehicleJourneys')
 
 const mapStateToProps = (state) => {
   return {
+    editMode: state.editMode,
     vehicleJourneys: state.vehicleJourneys,
     page: state.pagination.page,
     status: state.status,
@@ -12,6 +13,17 @@ const mapStateToProps = (state) => {
   }
 }
 
-const SaveVehicleJourneys = connect(mapStateToProps)(SaveVehicleJourneysComponent)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onEnterEditMode: () => {
+      dispatch(actions.enterEditMode())
+    },
+    onSubmitVehicleJourneys: (next, state) => {
+      actions.submitVehicleJourneys(dispatch, state, next)
+    }
+  }
+}
+
+const SaveVehicleJourneys = connect(mapStateToProps, mapDispatchToProps)(SaveVehicleJourneysComponent)
 
 module.exports = SaveVehicleJourneys

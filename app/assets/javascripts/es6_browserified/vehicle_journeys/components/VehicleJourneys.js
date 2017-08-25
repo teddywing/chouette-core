@@ -97,7 +97,7 @@ class VehicleJourneys extends Component{
               <div className="alert alert-danger mt-sm">
                 <strong>Erreur : </strong>
                 {this.props.vehicleJourneys.map((vj, index) =>
-                  vj.errors.map((err, i) => {
+                  vj.errors && vj.errors.map((err, i) => {
                     return (
                       <ul key={i}>
                         <li>{err}</li>
@@ -131,6 +131,7 @@ class VehicleJourneys extends Component{
                       value={vj}
                       key={index}
                       index={index}
+                      editMode={this.props.editMode}
                       filters={this.props.filters}
                       onUpdateTime={this.props.onUpdateTime}
                       onSelectVehicleJourney={this.props.onSelectVehicleJourney}

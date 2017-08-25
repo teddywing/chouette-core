@@ -12,7 +12,12 @@ module TableBuilderHelper
           polymorph_url << item.stop_area if item.respond_to? :stop_area
           polymorph_url << item if item.respond_to?(:stop_points) || item.is_a?(Chouette::TimeTable)
         elsif item.respond_to? :referential
-          polymorph_url << item.referential
+          if item.respond_to? :workbench
+            polymorph_url << item.workbench
+            polymorph_url << item
+          else
+            polymorph_url << item.referential
+          end
         end
       else
         polymorph_url << item

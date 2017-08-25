@@ -10,6 +10,8 @@ class SaveTimetable extends Component{
   }
 
   render() {
+    const error = actions.errorModalKey(this.props.timetable.time_table_periods, this.props.metas.day_types)
+
     return (
       <div className='row mt-md'>
         <div className='col-lg-12 text-right'>
@@ -19,9 +21,9 @@ class SaveTimetable extends Component{
               type='button'
               onClick={e => {
                 e.preventDefault()
-                if(this.props.timetable.time_table_periods.length == 0 && _.some(this.props.metas.day_types)){
-                  this.props.onShowErrorModal()
-                }else{
+                if (error) {
+                  this.props.onShowErrorModal(error)
+                } else {
                   actions.submitTimetable(this.props.getDispatch(), this.props.timetable, this.props.metas)
                 }
               }}

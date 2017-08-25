@@ -40,11 +40,11 @@ class StopAreaReferentialSync < ActiveRecord::Base
     end
   end
 
-  def create_sync_message criticity, key, message_attributs = {}
+  def create_sync_message criticity, key, message_attributes = {}
     params = {
       criticity: criticity,
       message_key: key,
-      message_attributs: message_attributs
+      message_attributes: message_attributes
     }
     stop_area_referential_sync_messages.create params
   end
@@ -54,13 +54,13 @@ class StopAreaReferentialSync < ActiveRecord::Base
     create_sync_message :info, :pending
   end
 
-  def log_successful message_attributs
+  def log_successful message_attributes
     update_attribute(:ended_at, Time.now)
-    create_sync_message :info, :successful, message_attributs
+    create_sync_message :info, :successful, message_attributes
   end
 
-  def log_failed message_attributs
+  def log_failed message_attributes
     update_attribute(:ended_at, Time.now)
-    create_sync_message :error, :failed, message_attributs
+    create_sync_message :error, :failed, message_attributes
   end
 end

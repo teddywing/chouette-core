@@ -3,13 +3,17 @@ class TimeTableCombinationsController < ChouetteController
     belongs_to :time_table, :parent_class => Chouette::TimeTable
   end
 
+  # include PolicyChecker
+
   def new
     @combination = TimeTableCombination.new(source_id: parent.id)
+    authorize @combination
     @combination.combined_type = 'time_table'
   end
 
   def create
     @combination = TimeTableCombination.new(params[:time_table_combination].merge(source_id: parent.id))
+    authorize @combination
     @combination.valid? ? perform_combination : render(:new)
   end
 

@@ -85,6 +85,67 @@
     border-top: 2px solid $darkgrey
     margin-top: 15px
 
+  // Overhead
+  > thead > tr.overhead
+    > th
+      font-size: 1.4rem
+      text-align: center
+
+      &.overheaded-default
+        background-color: rgba($grey, 0.15)
+        background-clip: padding-box
+        border-left: 2px solid rgba($grey, 0.15)
+        border-right: 2px solid rgba($grey, 0.15)
+
+      &.overheaded-danger
+        background-color: $red
+        border-left: 2px solid $red
+        border-right: 2px solid $red
+        color: #fff
+
+      &.overheaded-warning
+        background-color: $orange
+        border-left: 2px solid $orange
+        border-right: 2px solid $orange
+        color: #fff
+
+      &.overheaded-success
+        background-color: $green
+        border-left: 2px solid $green
+        border-right: 2px solid $green
+        color: #fff
+
+  td, th
+    &.overheaded-default
+      border-left: 2px solid rgba($grey, 0.15)
+      border-right: 2px solid rgba($grey, 0.15)
+
+    &.overheaded-danger
+      border-left: 2px solid $red
+      border-right: 2px solid $red
+
+    &.overheaded-warning
+      border-left: 2px solid $orange
+      border-right: 2px solid $orange
+
+    &.overheaded-success
+      border-left: 2px solid $green
+      border-right: 2px solid $green
+
+  tr:last-child
+    td
+      &.overheaded-default
+        border-bottom: 2px solid rgba($grey, 0.15)
+
+      &.overheaded-danger
+        border-bottom: 2px solid $red
+
+      &.overheaded-warning
+        border-bottom: 2px solid $orange
+
+      &.overheaded-success
+        border-bottom: 2px solid $green
+
   // Specific for tables displaying stop points
   &.has-stoppoints
     tbody
@@ -142,7 +203,6 @@
           left: 2px
           top: 50%
           margin-top: -8px
-
 
 
 // select_toolbox

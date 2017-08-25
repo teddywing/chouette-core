@@ -7,7 +7,7 @@ const mapStateToProps = (state) => {
   return {
     modal: state.modal,
     timetable: state.timetable,
-    metas: state.metas
+    metas: state.metas,
   }
 }
 
@@ -27,8 +27,8 @@ const mapDispatchToProps = (dispatch) => {
       val = (val < 10) ? '0' + String(val) : String(val)
       dispatch(actions.updatePeriodForm(val, group, 'day'))
     },
-    onValidatePeriodForm: (modalProps, timeTablePeriods, metas) => {
-      dispatch(actions.validatePeriodForm(modalProps, timeTablePeriods, metas))
+    onValidatePeriodForm: (modalProps, timeTablePeriods, metas, timetableInDates) => {
+      dispatch(actions.validatePeriodForm(modalProps, timeTablePeriods, metas, timetableInDates))
     }
   }
 }
