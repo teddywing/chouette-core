@@ -5,11 +5,14 @@ class NetexImport < Import
 
   def launch_java_import
     logger.warn  "Call iev get #{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{id}"
-    begin
-      Net::HTTP.get(URI("#{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{id}"))
-    rescue Exception => e
-      logger.error "IEV server error : #{e.message}"
-      logger.error e.backtrace.inspect
+
+    Thread.new do
+      begin
+        Net::HTTP.get(URI("#{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{id}"))
+      rescue Exception => e
+        logger.error "IEV server error : #{e.message}"
+        logger.error e.backtrace.inspect
+      end
     end
   end
 end
