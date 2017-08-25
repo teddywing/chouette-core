@@ -106,8 +106,7 @@ class WorkbenchImportWorker
       %x{unzip -oqq #{file.path} -d #{dest}}
     end
     { netex_import:
-      { referential_id: @workbench_import.referential_id,
-        workbench_id: @workbench_import.workbench_id,
+      { workbench_id: @workbench_import.workbench_id,
         name: name,
         file: HTTPService.upload(file, 'application/zip', name) } }
   end
