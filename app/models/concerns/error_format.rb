@@ -1,3 +1,6 @@
+# TODO: This module should be moved out of concerns to somewhere that makes
+# more sense.
+
 module ErrorFormat extend self
 
   def details error_object
