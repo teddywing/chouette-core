@@ -59,6 +59,17 @@ const timetable = (state = {}, action) => {
       })
       newState = _.assign({}, state, {current_month: newCMe, time_table_dates: newDates})
       return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+    case 'UPDATE_DAY_TYPES':
+      // We get the week days of the activated day types to reject the out_dates that that are out of newDayTypes
+      let weekDays = _.reduce(action.dayTypes, (array, dt, i) => {
+        if (dt) array.push(i)
+        return array
+      }, [])
+
+      newDates =  _.reject(state.time_table_dates, (d) => {
+        return d.in_out == false && !weekDays.includes(new Date(d.date).getDay())
+      })
+      return _.assign({}, state, {time_table_dates: newDates})
     case 'UPDATE_CURRENT_MONTH_FROM_DAYTYPES':
       return _.assign({}, state, {current_month: actions.updateSynthesis(state, action.dayTypes)})
     case 'VALIDATE_PERIOD_FORM':
