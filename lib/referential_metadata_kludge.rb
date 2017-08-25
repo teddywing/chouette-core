@@ -14,10 +14,10 @@ module ReferentialMetadataKludge extend self
   end
 
   def name_to_periods name
-    {'offre1' => [Date.new(2017,3,1)...Date.new(2017,4,1)],
-     'offre2' => [Date.new(2017,3,1)...Date.new(2018,1,1)],
-     'OFFRE_TRANSDEV_20170301122517' => [Date.new(2017,3,1)...Date.new(2017,4,1)],
-     'OFFRE_TRANSDEV_20170301122519' => [Date.new(2017,3,1)...Date.new(2018,1,1)]}.fetch name
+    {'offre1' => [Date.new(2017,3,1)...Date.new(2017,3,29)],
+     'offre2' => [Date.new(2017,4,1)...Date.new(2017,12,31)],
+     'OFFRE_TRANSDEV_20170301122517' => [Date.new(2017,3,1)...Date.new(2017,3,29)],
+     'OFFRE_TRANSDEV_20170301122519' => [Date.new(2017,4,1)...Date.new(2017,12,31)]}.fetch name
   end
 
 end
