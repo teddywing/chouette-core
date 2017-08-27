@@ -9,7 +9,7 @@
     <netex:dataObjects>
         <netex:GeneralFrame id="CITYWAY:GeneralFrame:NETEX_CALENDRIER-1_20170214090012:LOC" version="any">
             <netex:ValidBetween>
-                <netex:FromDate>2017-03-01T00:00:00</netex:FromDate>
+                <netex:FromDate>2017-04-01T00:00:00</netex:FromDate>
                 <netex:ToDate>2017-12-31T00:00:00</netex:ToDate>
             </netex:ValidBetween>
             <netex:TypeOfFrameRef ref="NETEX_CALENDRIER"/>
