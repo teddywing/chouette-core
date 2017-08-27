@@ -44,7 +44,7 @@ class ImportsController < BreadcrumbController
 
   protected
   def collection
-    @q = parent.imports.search(params[:q])
+    @q = parent.imports.where(type: "WorkbenchImport").search(params[:q])
 
     if sort_column && sort_direction
       @imports ||= @q.result(distinct: true).order(sort_column + ' ' + sort_direction).paginate(page: params[:page], per_page: 10)
@@ -60,10 +60,6 @@ class ImportsController < BreadcrumbController
       import.workbench = parent
       import.creator   = current_user.name
     end
-  end
-
-  def collection
-    @imports ||= WorkbenchImport.all
   end
 
   def import_params
