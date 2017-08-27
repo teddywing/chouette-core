@@ -32,9 +32,8 @@ RSpec.describe "NetexImport", type: :request do
       let( :authorization ){ authorization_token_header( get_api_key.token ) }
 
       it 'succeeds' do
-        # TODO: Handle better when `ReferentialMetadataKludge` is reworked
-        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108')
-        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109')
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108', line_referential: workbench.line_referential)
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109', line_referential: workbench.line_referential)
 
         post_request.(netex_import: legal_attributes)
         expect( response ).to be_success
@@ -46,16 +45,15 @@ RSpec.describe "NetexImport", type: :request do
       end
 
       it 'creates a NetexImport object in the DB' do
-        # TODO: Handle better when `ReferentialMetadataKludge` is reworked
-        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108')
-        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109')
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108', line_referential: workbench.line_referential)
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109', line_referential: workbench.line_referential)
 
         expect{ post_request.(netex_import: legal_attributes) }.to change{NetexImport.count}.by(1)
       end
 
       it 'creates a correct Referential' do
-        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108')
-        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109')
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108', line_referential: workbench.line_referential)
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109', line_referential: workbench.line_referential)
 
         legal_attributes # force object creation for correct to change behavior
         expect{post_request.(netex_import: legal_attributes)}.to change{Referential.count}.by(1)

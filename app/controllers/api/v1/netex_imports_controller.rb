@@ -48,10 +48,6 @@ module Api
       end
 
       def create_referential
-        #  TODO: >>> REMOVE ME !!!!
-        metadata = ReferentialMetadataKludge.make_metadata_from_name! netex_import_params['name']
-        #  <<< REMOVE ME !!!!
-
         @new_referential =
           Referential.new(
             name: netex_import_params['name'],
@@ -60,6 +56,24 @@ module Api
             metadatas: [metadata]
           )
         @new_referential.save
+      end
+
+      def metadata
+        metadata = ReferentialMetadata.new
+
+        if netex_import_params['file']
+          netex_file = STIF::NetexFile.new(netex_import_params['file'].to_io)
+          frame = netex_file.frames.first
+
+          if frame
+            metadata.periodes = frame.periods
+
+            line_objectids = frame.line_refs.map { |ref| "STIF:CODIFLIGNE:Line:#{ref}" }
+            metadata.line_ids = @workbench.lines.where(objectid: line_objectids).pluck(:id)
+          end
+        end
+
+        metadata
       end
 
       def netex_import_params
