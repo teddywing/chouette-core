@@ -5,6 +5,8 @@ class Import < ActiveRecord::Base
 
   belongs_to :parent, polymorphic: true
 
+  has_many :messages, class_name: "ImportMessage"
+
   extend Enumerize
   enumerize :status, in: %i(new pending successful failed running aborted canceled)
 
