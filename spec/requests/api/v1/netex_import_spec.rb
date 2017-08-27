@@ -23,7 +23,7 @@ RSpec.describe "NetexImport", type: :request do
         file: file,
         workbench_id: workbench.id
       }
-    end 
+    end
 
 
     context 'with correct credentials and correct request' do
@@ -62,7 +62,7 @@ RSpec.describe "NetexImport", type: :request do
     end
 
 
-    context 'with incorrect credentials and correct request' do
+    context 'with incorrect credentials and correct request', pending: "see #4311" do
       let( :authorization ){ authorization_token_header( "#{referential.id}-incorrect_token") }
 
       it 'does not create any DB object and does not succeed' do
