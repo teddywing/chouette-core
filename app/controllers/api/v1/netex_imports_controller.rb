@@ -3,6 +3,8 @@ module Api
     class NetexImportsController < ChouetteController
       include ControlFlow
 
+      skip_before_action :authenticate
+
       def create
         respond_to do | format |
           format.json(&method(:create_models))
@@ -28,7 +30,7 @@ module Api
       def create_netex_import
         @netex_import = NetexImport.new(netex_import_params.merge(referential_id: @new_referential.id))
         @netex_import.save!
-      rescue ActiveRecord::RecordInvalid 
+      rescue ActiveRecord::RecordInvalid
         render json: {errors: @netex_import.errors}, status: 406
         finish_action!
       end

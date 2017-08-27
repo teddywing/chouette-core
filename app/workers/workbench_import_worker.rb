@@ -28,7 +28,6 @@ class WorkbenchImportWorker
     HTTPService.post_resource(
       host: export_host,
       path: export_path,
-      token: token(eg_name),
       params: params(eg_file, eg_name))
   end
 
@@ -70,10 +69,6 @@ class WorkbenchImportWorker
 
   def complete_entry_group_name entry_group_name
     [@workbench_import.name, entry_group_name].join("--")
-  end
-
-  def token entry_group_name
-    Api::V1::ApiKey.from(@workbench_import.referential, name: complete_entry_group_name(entry_group_name)).token
   end
 
   # Constants
