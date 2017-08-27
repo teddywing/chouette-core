@@ -105,6 +105,6 @@ class WorkbenchImportWorker
           parent_type: @workbench_import.class.name,
           workbench_id: @workbench_import.workbench_id,
           name: name,
-          file: HTTPService.upload(file, 'application/zip', name) } }
+          file: HTTPService.upload(file, 'application/zip', "#{name}.zip") } }
   end
 end
