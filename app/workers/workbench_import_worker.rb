@@ -101,8 +101,10 @@ class WorkbenchImportWorker
       %x{unzip -oqq #{file.path} -d #{dest}}
     end
     { netex_import:
-      { workbench_id: @workbench_import.workbench_id,
-        name: name,
-        file: HTTPService.upload(file, 'application/zip', name) } }
+        { parent_id: @workbench_import.id,
+          parent_type: @workbench_import.class.name,
+          workbench_id: @workbench_import.workbench_id,
+          name: name,
+          file: HTTPService.upload(file, 'application/zip', name) } }
   end
 end
