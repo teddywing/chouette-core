@@ -28,27 +28,37 @@ module Api
       end
 
       def create_netex_import
-        @netex_import = NetexImport.new(netex_import_params.merge(referential_id: @new_referential.id))
+        attributes = netex_import_params
+        if @new_referential.persisted?
+          attributes = attributes.merge referential_id: @new_referential.id, creator: "Webservice"
+        else
+          attributes = attributes.merge status: "failed"
+        end
+
+        @netex_import = NetexImport.new attributes
         @netex_import.save!
+
+        unless @netex_import.referential
+          @netex_import.messages.create criticity: :error, message_key: "cant_create_referential"
+        end
       rescue ActiveRecord::RecordInvalid
         render json: {errors: @netex_import.errors}, status: 406
         finish_action!
       end
 
       def create_referential
+        #  TODO: >>> REMOVE ME !!!!
+        metadata = ReferentialMetadataKludge.make_metadata_from_name! netex_import_params['name']
+        #  <<< REMOVE ME !!!!
+
         @new_referential =
           Referential.new(
             name: netex_import_params['name'],
             organisation_id: @workbench.organisation_id,
-            workbench_id: @workbench.id)
-        @new_referential.save!
-        #  TODO: >>> REMOVE ME !!!!
-        ReferentialMetadataKludge.make_metadata_from_name! netex_import_params['name'], referential_id: @new_referential.id
-        #  <<< REMOVE ME !!!!
-      rescue ActiveRecord::RecordInvalid
-        # render json: {errors: @new_referential.errors}, status: 406
-        render json: {errors: ErrorFormat.details(@new_referential)}, status: 406
-        finish_action!
+            workbench_id: @workbench.id,
+            metadatas: [metadata]
+          )
+        @new_referential.save
       end
 
       def netex_import_params
