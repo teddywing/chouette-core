@@ -132,6 +132,20 @@ RSpec.describe Import, :type => :model do
       "doesn't update :status if parent import status is finished",
       "canceled"
     )
+
+    it "calls #update_status" do
+      allow(workbench_import).to receive(:update)
+
+      expect(workbench_import).to receive(:update_status)
+      workbench_import.child_change
+    end
+
+    it "calls #update_referential" do
+      allow(workbench_import).to receive(:update)
+
+      expect(workbench_import).to receive(:update_referential)
+      workbench_import.child_change
+    end
   end
 
   describe "#ready?" do
