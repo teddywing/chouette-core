@@ -33,14 +33,39 @@ class Import < ActiveRecord::Base
     update(notified_parent_at: DateTime.now)
   end
 
-  def child_change(child)
+  def child_change
     return if self.class.finished_statuses.include?(status)
 
-    if self.class.failing_statuses.include?(child.status)
-     return update(status: 'failed')
+    update_status
+  end
+
+  def update_status
+    status_count = children.group(:status).count
+    children_finished_count = children_failed_count = children_count = 0
+
+    status_count.each do |status, count|
+      if self.class.failing_statuses.include?(status)
+        children_failed_count += count
+      end
+      if self.class.finished_statuses.include?(status)
+        children_finished_count += count
+      end
+      children_count += count
     end
 
-    update(status: 'successful') if ready?
+    attributes = {
+      current_step: children_finished_count
+    }
+
+    status = self.status
+    if children_failed_count > 0
+      status = 'failed'
+    elsif status_count['successful'] == children_count
+      status = 'successful'
+      attributes[:ended_at] = Time.now
+    end
+
+    update attributes.merge(status: status)
   end
 
   def ready?
