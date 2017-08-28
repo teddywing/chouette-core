@@ -53,15 +53,17 @@ RSpec.describe Import, :type => :model do
       "updates :status to failed when child status indicates failure"
     ) do |failure_status|
       it "updates :status to failed when child status indicates failure" do
-        allow(workbench_import).to receive(:update)
-
-        build_stubbed(
+        workbench_import = create(:workbench_import)
+        create(
           :netex_import,
           parent: workbench_import,
           status: failure_status
         )
 
-        expect(workbench_import).to receive(:update).with(status: 'failed')
+        expect(workbench_import).to receive(:update).with(
+          current_step: 1,
+          status: 'failed'
+        )
 
         workbench_import.child_change
       end
