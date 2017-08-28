@@ -30,7 +30,7 @@ RSpec.describe Import, :type => :model do
     it "must call #child_change on its parent" do
       allow(netex_import).to receive(:update)
 
-      expect(workbench_import).to receive(:child_change).with(netex_import)
+      expect(workbench_import).to receive(:child_change)
 
       netex_import.notify_parent
     end
@@ -55,7 +55,7 @@ RSpec.describe Import, :type => :model do
       it "updates :status to failed when child status indicates failure" do
         allow(workbench_import).to receive(:update)
 
-        netex_import = build_stubbed(
+        build_stubbed(
           :netex_import,
           parent: workbench_import,
           status: failure_status
@@ -63,7 +63,7 @@ RSpec.describe Import, :type => :model do
 
         expect(workbench_import).to receive(:update).with(status: 'failed')
 
-        workbench_import.child_change(netex_import)
+        workbench_import.child_change
       end
     end
 
@@ -83,11 +83,11 @@ RSpec.describe Import, :type => :model do
     it "updates :status to successful when #ready?" do
       expect(workbench_import).to receive(:update).with(status: 'successful')
 
-      workbench_import.child_change(netex_import)
+      workbench_import.child_change
     end
 
     it "updates :status to failed when #ready? and child is failed" do
-      netex_import = build_stubbed(
+      build_stubbed(
         :netex_import,
         parent: workbench_import,
         status: :failed
@@ -95,7 +95,7 @@ RSpec.describe Import, :type => :model do
 
       expect(workbench_import).to receive(:update).with(status: 'failed')
 
-      workbench_import.child_change(netex_import)
+      workbench_import.child_change
     end
 
     shared_examples(
@@ -108,11 +108,11 @@ RSpec.describe Import, :type => :model do
           current_step: 2,
           status: finished_status
         )
-        child = double('Import')
+        double('Import')
 
         expect(workbench_import).not_to receive(:update)
 
-        workbench_import.child_change(child)
+        workbench_import.child_change
       end
     end
 
