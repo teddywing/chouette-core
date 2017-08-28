@@ -37,6 +37,7 @@ class Import < ActiveRecord::Base
     return if self.class.finished_statuses.include?(status)
 
     update_status
+    update_referential
   end
 
   def update_status
@@ -66,6 +67,10 @@ class Import < ActiveRecord::Base
     end
 
     update attributes.merge(status: status)
+  end
+
+  def update_referential
+    referential.update(ready: true) if self.class.finished_statuses.include?(status)
   end
 
   def ready?
