@@ -46,12 +46,15 @@ class WorkbenchImportWorker
     # status = retry_service.execute(&upload_entry_group_proc(entry_pair))
     eg_name = entry_pair.name
     eg_stream = entry_pair.stream
-    eg_file = File.new(Rails.root.join('tmp', "WorkbenchImport_#{eg_name}_#{$$}.zip"), 'wb').tap do |file|
+
+    FileUtils.mkdir_p(Rails.root.join('tmp', 'imports'))
+
+    eg_file = File.new(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"), 'wb').tap do |file|
       eg_stream.rewind
       file.write eg_stream.read
     end
     eg_file.close
-    eg_file = File.new(Rails.root.join('tmp', "WorkbenchImport_#{eg_name}_#{$$}.zip"))
+    eg_file = File.new(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"))
     result = execute_post eg_name, eg_file
     if result && result.status < 400
       result
