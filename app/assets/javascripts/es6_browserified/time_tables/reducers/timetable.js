@@ -73,19 +73,13 @@ const timetable = (state = {}, action) => {
     case 'UPDATE_CURRENT_MONTH_FROM_DAYTYPES':
       return _.assign({}, state, {current_month: actions.updateSynthesis(state, action.dayTypes)})
     case 'VALIDATE_PERIOD_FORM':
+      if (action.error != '') return state
+
       let period_start = actions.formatDate(action.modalProps.begin)
       let period_end = actions.formatDate(action.modalProps.end)
-      if(new Date(period_end) <= new Date(period_start)){
-        return state
-      }
-      let newPeriods = JSON.parse(JSON.stringify(action.timeTablePeriods))
-      let newDays = JSON.parse(JSON.stringify(action.timetableInDates))
-      let error = actions.checkErrorsInPeriods(period_start, period_end, action.modalProps.index, newPeriods)
-      if (error == '') error = actions.checkErrorsInDates(period_start, period_end, newDays)
 
-      if(error != ''){
-        return state
-      }
+      let newPeriods = JSON.parse(JSON.stringify(action.timeTablePeriods))
+
       if (action.modalProps.index !== false){
         newPeriods[action.modalProps.index].period_start = period_start
         newPeriods[action.modalProps.index].period_end = period_end
@@ -98,7 +92,6 @@ const timetable = (state = {}, action) => {
       }
       newState =_.assign({}, state, {time_table_periods: newPeriods})
       return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.metas.day_types)})
-
     default:
       return state
   }

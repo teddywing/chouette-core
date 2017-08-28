@@ -231,7 +231,8 @@ describe('timetable reducer with filled state', () => {
         metas: {
           day_types: arrDayTypes
         },
-        timetableInDates: state.time_table_dates.filter(d => d.in_out == true)
+        timetableInDates: state.time_table_dates.filter(d => d.in_out == true),
+        error: modalProps.error
       })
     ).toEqual(newState)
   })

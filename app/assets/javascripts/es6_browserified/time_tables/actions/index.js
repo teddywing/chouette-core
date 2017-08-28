@@ -105,12 +105,13 @@ const actions = {
     group,
     selectType
   }),
-  validatePeriodForm: (modalProps, timeTablePeriods, metas, timetableInDates) => ({
+  validatePeriodForm: (modalProps, timeTablePeriods, metas, timetableInDates, error) => ({
     type: 'VALIDATE_PERIOD_FORM',
     modalProps,
     timeTablePeriods,
     metas,
-    timetableInDates
+    timetableInDates,
+    error
   }),
   includeDateInPeriod: (index, dayTypes, date) => ({
     type: 'INCLUDE_DATE_IN_PERIOD',
@@ -209,16 +210,20 @@ const actions = {
   formatDate: (props) => {
     return props.year + '-' + props.month + '-' + props.day
   },
-  checkErrorsInPeriods: (start, end, index, periods, days) => {
+  checkErrorsInPeriods: (start, end, index, periods) => {
     let error = ''
     start = new Date(start)
     end = new Date(end)
-    _.each(periods, (period, i) => {
-      if(index !== i && !period.deleted){
-        if((new Date(period.period_start) <= start && new Date(period.period_end) >= start) || (new Date(period.period_start) <= end && new Date(period.period_end) >= end) || (start >= new Date(period.period_start) && end <= new Date(period.period_end)) || (start <= new Date(period.period_start) && end >= new Date(period.period_end)))
-        error = 'Les périodes ne peuvent pas se chevaucher'
+
+    for (let i = 0; i < periods.length; i++) {
+      let period = periods[i]
+      if (index !== i && !period.deleted) {
+        if (new Date(period.period_start) <= end && new Date(period.period_end) >= start)  {
+          error = 'Les périodes ne peuvent pas se chevaucher'
+          break
+        }
       }
-    })
+    }
     return error
   },
   checkErrorsInDates: (start, end, in_days) => {
@@ -226,11 +231,12 @@ const actions = {
     start = new Date(start)
     end = new Date(end)
 
-    _.each(in_days, ({date}) => {
-      if (start <= new Date(date) && end >= new Date(date)) {
+    for (let day of in_days) {
+      if (start <= new Date(day.date) && end >= new Date(day.date)) {
         error = 'Une période ne peut chevaucher une date dans un calendrier'
+        break
       }
-    })
+    }
     return error
   },
   fetchTimeTables: (dispatch, nextPage) => {

@@ -159,14 +159,16 @@ describe('actions', () => {
     let timeTablePeriods = []
     let metas = {}
     let timetableInDates = []
+    let error = ''
     const expectedAction = {
       type: 'VALIDATE_PERIOD_FORM',
       modalProps,
       timeTablePeriods,
       metas,
-      timetableInDates
+      timetableInDates,
+      error
     }
-    expect(actions.validatePeriodForm(modalProps, timeTablePeriods, metas, timetableInDates)).toEqual(expectedAction)
+    expect(actions.validatePeriodForm(modalProps, timeTablePeriods, metas, timetableInDates, error)).toEqual(expectedAction)
   })
 
   it('should create an action to include date in period', () => {
