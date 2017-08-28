@@ -9,14 +9,21 @@ class DuplicateVehicleJourney extends Component {
     super(props)
     this.state = {}
     this.onFormChange = this.onFormChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentWillReceiveProps() {
     if (actions.getSelected(this.props.vehicleJourneys).length > 0) {
+      let hour = parseInt(this.getDefaultValue('hour'))
+      let miunte = parseInt(this.getDefaultValue('minute'))
       this.setState((state, props) => {
         return {
-          duplicate_time_hh: parseInt(this.getDefaultValue('hour')),
-          duplicate_time_mm: parseInt(this.getDefaultValue('minute')),
+          originalDT: {
+            hour: hour,
+            minute: miunte
+          },
+          duplicate_time_hh: hour,
+          duplicate_time_mm: miunte,
           additional_time: 0,
           duplicate_number: 1
         }
@@ -54,11 +61,10 @@ class DuplicateVehicleJourney extends Component {
   }
 
   render() {
-
     if(this.props.status.isFetching == true) {
       return false
     }
-    if(this.props.status.fetchSuccess == true) {
+    if(this.props.status.fetchSuccess == true && actions.getSelected(this.props.vehicleJourneys).length > 0) {
       return (
         <li  className='st_action'>
           <button
@@ -164,9 +170,9 @@ class DuplicateVehicleJourney extends Component {
                           Annuler
                         </button>
                         <button
-                          className={'btn btn-primary ' + (this.state.additional_time == 0 ? 'disabled' : '')}
+                          className={'btn btn-primary ' + (this.state.additional_time == 0 && this.state.originalDT.hour == this.state.duplicate_time_hh && this.state.originalDT.minute == this.state.duplicate_time_mm ? 'disabled' : '')}
                           type='button'
-                          onClick={this.handleSubmit.bind(this)}
+                          onClick={this.handleSubmit}
                           >
                           Valider
                         </button>

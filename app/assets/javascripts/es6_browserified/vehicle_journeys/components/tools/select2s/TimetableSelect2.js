@@ -33,8 +33,13 @@ class BSelect4 extends React.Component{
             dataType: 'json',
             delay: '500',
             data: function(params) {
+              let newParmas = params.term.split(" ")
               return {
-                q: {short_id_or_comment_cont: params.term},
+                q: {
+                  objectid_end_any: newParmas,
+                  comment_cont_any: newParmas,
+                  m: 'or'
+                }
               };
             },
             processResults: function(data, params) {

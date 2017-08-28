@@ -34,10 +34,6 @@ class ImportsController < BreadcrumbController
     end
   end
 
-  def create
-    create! { workbench_import_path(parent, resource) }
-  end
-
   def download
     if params[:token] == resource.token_download
       send_file resource.file.path
@@ -48,7 +44,7 @@ class ImportsController < BreadcrumbController
 
   protected
   def collection
-    @q = parent.imports.search(params[:q])
+    @q = parent.imports.where(type: "WorkbenchImport").search(params[:q])
 
     if sort_column && sort_direction
       @imports ||= @q.result(distinct: true).order(sort_column + ' ' + sort_direction).paginate(page: params[:page], per_page: 10)
@@ -60,8 +56,7 @@ class ImportsController < BreadcrumbController
   private
 
   def build_resource
-    # Manage only NetexImports for the moment
-    @import ||= NetexImport.new(*resource_params) do |import|
+    @import ||= WorkbenchImport.new(*resource_params) do |import|
       import.workbench = parent
       import.creator   = current_user.name
     end

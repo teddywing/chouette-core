@@ -178,6 +178,9 @@ const vehicleJourneys = (state = [], action) => {
         if(vj.selected){
           selectedIndex = i
           for (i = 0; i< action.duplicateNumber; i++){
+            // We check if the departureDelta is != 0 to create the first VJ on the updated deparure time if it is the case
+            // let delta = departureDelta == 0 ? 1 : 0
+            // action.addtionalTime = (val * (i + delta)) + departureDelta
             action.addtionalTime = (val * (i + 1)) + departureDelta
             dupeVj = vehicleJourney(vj, action, false)
             dupeVj.published_journey_name = dupeVj.published_journey_name + '-' + i
