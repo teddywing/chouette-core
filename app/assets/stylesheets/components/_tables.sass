@@ -93,29 +93,36 @@
 
       &.overheaded-default
         background-color: rgba($grey, 0.15)
-        background-clip: padding-box
-        border-left: 2px solid rgba($grey, 0.15)
-        border-right: 2px solid rgba($grey, 0.15)
+
+        &.full-border
+          border-left: 2px solid rgba($grey, 0.15)
+          border-right: 2px solid rgba($grey, 0.15)
 
       &.overheaded-danger
         background-color: $red
-        border-left: 2px solid $red
-        border-right: 2px solid $red
         color: #fff
+
+        &.full-border
+          border-left: 2px solid $red
+          border-right: 2px solid $red
 
       &.overheaded-warning
         background-color: $orange
-        border-left: 2px solid $orange
-        border-right: 2px solid $orange
         color: #fff
+
+        &.full-border
+          border-left: 2px solid $orange
+          border-right: 2px solid $orange
 
       &.overheaded-success
         background-color: $green
-        border-left: 2px solid $green
-        border-right: 2px solid $green
         color: #fff
 
-  td, th
+        &.full-border
+          border-left: 2px solid $green
+          border-right: 2px solid $green
+
+  tr:not([class*='overhead']) > th, td
     &.overheaded-default
       border-left: 2px solid rgba($grey, 0.15)
       border-right: 2px solid rgba($grey, 0.15)
