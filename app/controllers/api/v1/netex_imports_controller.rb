@@ -28,9 +28,10 @@ module Api
       end
 
       def create_netex_import
-        attributes = netex_import_params
+        attributes = netex_import_params.merge creator: "Webservice"
+
         if @new_referential.persisted?
-          attributes = attributes.merge referential_id: @new_referential.id, creator: "Webservice"
+          attributes = attributes.merge referential_id: @new_referential.id
         else
           attributes = attributes.merge status: "failed"
         end
