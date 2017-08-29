@@ -152,5 +152,11 @@ RSpec.describe Import, :type => :model do
     end
   end
 
+  describe "#update_status" do
+    it "updates :ended_at to now when status is finished" do
+      pending "Redo the `#update_status` code to make it easier to write this."
+    end
+  end
+
   # TODO: specs for #update_referential
 end
