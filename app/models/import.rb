@@ -61,6 +61,7 @@ class Import < ActiveRecord::Base
     status = self.status
     if children_failed_count > 0
       status = 'failed'
+      # TODO: Update `ended_at`
     elsif status_count['successful'] == children_count
       status = 'successful'
       attributes[:ended_at] = Time.now
