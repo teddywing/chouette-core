@@ -9,10 +9,11 @@ class WorkbenchImportWorker
   def perform(import_id)
     @workbench_import = WorkbenchImport.find(import_id)
     @response         = nil
-    @workbench_import.update(status: 'running')
+    @workbench_import.update_attributes(status: 'running', started_at: Time.now)
     downloaded  = download
     zip_service = ZipService.new(downloaded)
     upload zip_service
+    @workbench_import.update(ended_at: Time.now)
   end
 
   def download
