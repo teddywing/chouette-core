@@ -73,10 +73,6 @@ class Import < ActiveRecord::Base
     referential.update(ready: true) if self.class.finished_statuses.include?(status)
   end
 
-  def ready?
-    current_step == total_steps
-  end
-
   private
 
   def initialize_fields

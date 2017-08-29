@@ -149,26 +149,4 @@ RSpec.describe Import, :type => :model do
       workbench_import.child_change
     end
   end
-
-  describe "#ready?" do
-    it "returns true if #current_step == #total_steps" do
-      import = build_stubbed(
-        :import,
-        total_steps: 4,
-        current_step: 4
-      )
-
-      expect(import.ready?).to be true
-    end
-
-    it "returns false if #current_step != #total_steps" do
-      import = build_stubbed(
-        :import,
-        total_steps: 6,
-        current_step: 3
-      )
-
-      expect(import.ready?).to be false
-    end
-  end
 end
