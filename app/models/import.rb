@@ -58,12 +58,12 @@ class Import < ActiveRecord::Base
       current_step: children_finished_count
     }
 
-    status = self.status
-    if children_failed_count > 0
-      status = 'failed'
-    elsif status_count['successful'] == children_count
-      status = 'successful'
-    end
+    status =
+      if children_failed_count > 0
+        'failed'
+      elsif status_count['successful'] == children_count
+        'successful'
+      end
 
     if self.class.finished_statuses.include?(status)
       attributes[:ended_at] = Time.now
