@@ -222,7 +222,7 @@ module NewapplicationHelper
       # Left part with pageicon & pagetitle & desc
       left = content_tag :div, '', class: 'col-lg-9 col-md-8 col-sm-7 col-xs-7' do
         picon = content_tag :div, '', class: 'page-icon' do
-          content_tag :span, '', class: "fa fa-lg fa-#{pageicon}"
+          content_tag :span, '', class: "sb sb-#{pageicon}"
         end
         ptitle = content_tag :div, '', class: 'page-title' do
           content_tag :h1, pagetitle, title: desc
