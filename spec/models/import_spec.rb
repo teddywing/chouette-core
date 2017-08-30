@@ -49,7 +49,7 @@ RSpec.describe Import, type: :model do
   end
 
   # TODO: Move most of these to #update_status
-  describe "#child_change", skip: "THE CODE CHANGED AND THESE SPECS NO LONGER WORK. FIX THEM ASAP!!!~!~!@~" do
+  describe "#child_change" do
     shared_examples(
       "updates :status to failed when child status indicates failure"
     ) do |failure_status|
@@ -61,12 +61,15 @@ RSpec.describe Import, type: :model do
           status: failure_status
         )
 
-        expect(workbench_import).to receive(:update).with(
-          current_step: 1,
-          status: 'failed'
-        )
+        Timecop.freeze(Time.now) do
+          expect(workbench_import).to receive(:update).with(
+            current_step: 1,
+            ended_at: Time.now,
+            status: 'failed'
+          )
 
-        workbench_import.child_change
+          workbench_import.child_change
+        end
       end
     end
 
