@@ -147,10 +147,10 @@ RSpec.describe Import, type: :model do
       workbench_import.child_change
     end
 
-    it "calls #update_referential" do
+    it "calls #update_referentials" do
       allow(workbench_import).to receive(:update)
 
-      expect(workbench_import).to receive(:update_referential)
+      expect(workbench_import).to receive(:update_referentials)
       workbench_import.child_change
     end
   end
