@@ -9,7 +9,7 @@ class Import < ActiveRecord::Base
   has_many :children, foreign_key: :parent_id, class_name: "Import"
 
   extend Enumerize
-  enumerize :status, in: %i(new pending successful failed running aborted canceled)
+  enumerize :status, in: %i(new pending successful failed running aborted canceled), scope: true
 
   validates :file, presence: true
   validates_presence_of :workbench, :creator
@@ -18,6 +18,10 @@ class Import < ActiveRecord::Base
 
   def self.model_name
     ActiveModel::Name.new Import, Import, "Import"
+  end
+
+  def children_succeedeed
+    children.with_status(:successful).count
   end
 
   def self.failing_statuses

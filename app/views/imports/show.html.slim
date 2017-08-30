@@ -3,7 +3,7 @@
              @import.name,
              '',
              t('last_update', time: l(@import.updated_at, format: :short)) do
-             
+
   / Below is secundary actions & optional contents (filters, ...)
   .row
     .col-lg-12.text-right.mb-sm
@@ -21,115 +21,38 @@
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'), { 'Récupération des données' => '-', "Nom de l'archive" => @import.try(:file_identifier)}
 
-    / .row
-    /   .col-lg-12
-    /     = table_builder_2 @import.children,
-    /       [ \
-    /         TableBuilderHelper::Column.new( \
-    /         key: :name, \
-    /         attribute: 'name' \
-    /         ), \
-    /         TableBuilderHelper::Column.new( \
-    /           key: :status, \
-    /           attribute: 'status' \
-    /         ), \
-    /         TableBuilderHelper::Column.new( \
-    /           key: :started_at, \
-    /           attribute: 'started_at' \
-    /         ), \
-    /         TableBuilderHelper::Column.new( \
-    /           key: :creator, \
-    /           attribute: 'creator' \
-    /         ) \
-    /       ],
-    /       links: [],
-    /       cls: 'table',
-    /       overhead: [ \
-    /         {}, \
-    /         { \
-    /           title: 'Lorem ipsum dolor sit amet', \
-    /           width: 1, \
-    /           cls: 'overheaded-danger full-border' \
-    /         }, { \
-    /           title: 'Toto <span title="Lorem ipsum..." class="fa fa-lg fa-info-circle text-info"></span>', \
-    /           width: 2, \
-    /           cls: 'overheaded-default' \
-    /         } \
-    /       ]
-
     .row
       .col-lg-12
-        / TMP static table
-        table.table
-          thead
-            tr.overhead
-              th
-              th.overheaded-danger.full-border colspan="1"
-                = "1 jeu de données validé sur 3 présents dans l'archive"
-              th.overheaded-default colspan="2"
-                = "Bilan des jeux de contrôles d'import"
-                span.fa.fa-lg.fa-info-circle.text-info.ml-xs title="Lorem ipsum..."
-              th
-
-            tr
-              th Nom du jeu de données
-              th.overheaded-danger.text-center Conformité Netex
-              th.text-center Contrôle STIF
-              th.text-center Contrôle organisation
-              th
-    
-          tbody
-            tr
-              td Nom JDD #1
-              td.text-center.overheaded-danger
-                span.fa.fa-circle.text-success
-              td.text-center
-                span.fa.fa-circle.text-danger
-              td.text-center -
-              td.actions
-                .btn-group
-                  .btn.dropdown-toggle data-toggle='dropdown'
-                    span.fa.fa-cog
-    
-                  ul.dropdown-menu
-                    li
-                      = link_to 'Rapport de contrôle STIF', '#'
-                    li
-                      = link_to 'Rapport de contrôle Orga.', '#'
-    
-            tr
-              td Nom JDD #2
-              td.text-center.overheaded-danger
-                span.fa.fa-circle.text-warning
-              td.text-center
-                span.fa.fa-circle.text-warning
-              td.text-center -
-              td.actions
-                .btn-group
-                  .btn.dropdown-toggle data-toggle='dropdown'
-                    span.fa.fa-cog
-    
-                  ul.dropdown-menu
-                    li
-                      = link_to 'Rapport de contrôle STIF', '#'
-                    li
-                      = link_to 'Rapport de contrôle Orga.', '#'
-    
-            tr
-              td Nom JDD #3
-              td.text-center.overheaded-danger
-                span.fa.fa-circle.text-danger
-              td.text-center
-                span.fa.fa-circle.text-danger
-    
-              td.text-center -
-              td.actions
-                .btn-group
-                  .btn.dropdown-toggle data-toggle='dropdown'
-                    span.fa.fa-cog
-    
-                  ul.dropdown-menu
-                    li
-                      = link_to 'Rapport de contrôle STIF', '#'
-                    li
-                      = link_to 'Rapport de contrôle Orga.', '#'
+        = table_builder_2 @import.children,
+          [ \
+            TableBuilderHelper::Column.new( \
+            name: 'Nom du jeu de données', \
+            attribute: 'name' \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :status, \
+              attribute: 'status' \
+            ), \
+            TableBuilderHelper::Column.new( \
+              name: 'Contrôle STIF', \
+              attribute: '' \
+            ), \
+            TableBuilderHelper::Column.new( \
+              name: 'Contrôle organisation', \
+              attribute: '' \
+            ) \
+          ],
+          links: [],
+          cls: 'table',
+          overhead: [ \
+            {}, \
+            { \
+              title: "#{@import.children_succeedeed} jeu de données validé sur #{@import.children.count} présents dans l'archive", \
+              width: 1, \
+              cls: 'overheaded-danger full-border' \
+            }, { \
+              title: 'Bilan des jeux de contrôles d\'import <span title="Lorem ipsum..." class="fa fa-lg fa-info-circle text-info"></span>', \
+              width: 2, \
+              cls: 'overheaded-default colspan="2"' \
+            } \
+           ]
