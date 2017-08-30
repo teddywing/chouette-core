@@ -143,5 +143,48 @@ RSpec.describe Import, type: :model do
     end
   end
 
-  # TODO: specs for #update_referential
+  describe "#update_referentials" do
+    it "doesn't update referentials if parent status isn't finished" do
+      workbench_import = create(:workbench_import, status: 'pending')
+      netex_import = create(:netex_import, parent: workbench_import)
+      netex_import.referential.update(ready: false)
+
+      workbench_import.update_referentials
+      netex_import.referential.reload
+
+      expect(netex_import.referential.ready).to be false
+    end
+
+    shared_examples(
+      "makes child referentials `ready` when status is finished"
+    ) do |finished_status|
+      it "makes child referentials `ready` when status is finished" do
+        workbench_import = create(:workbench_import, status: finished_status)
+        netex_import = create(:netex_import, parent: workbench_import)
+        netex_import.referential.update(ready: false)
+
+        workbench_import.update_referentials
+        netex_import.referential.reload
+
+        expect(netex_import.referential.ready).to be true
+      end
+    end
+
+    include_examples(
+      "makes child referentials `ready` when status is finished",
+      "successful"
+    )
+    include_examples(
+      "makes child referentials `ready` when status is finished",
+      "failed"
+    )
+    include_examples(
+      "makes child referentials `ready` when status is finished",
+      "aborted"
+    )
+    include_examples(
+      "makes child referentials `ready` when status is finished",
+      "canceled"
+    )
+  end
 end
