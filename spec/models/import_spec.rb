@@ -120,41 +120,6 @@ RSpec.describe Import, type: :model do
     #   workbench_import.child_change
     # end
 
-    shared_examples(
-      "doesn't update :status if parent import status is finished"
-    ) do |finished_status|
-      it "doesn't update :status if parent import status is finished" do
-        workbench_import = build_stubbed(
-          :workbench_import,
-          total_steps: 2,
-          current_step: 2,
-          status: finished_status
-        )
-        double('Import')
-
-        expect(workbench_import).not_to receive(:update)
-
-        workbench_import.update_status
-      end
-    end
-
-    include_examples(
-      "doesn't update :status if parent import status is finished",
-      "successful"
-    )
-    include_examples(
-      "doesn't update :status if parent import status is finished",
-      "failed"
-    )
-    include_examples(
-      "doesn't update :status if parent import status is finished",
-      "aborted"
-    )
-    include_examples(
-      "doesn't update :status if parent import status is finished",
-      "canceled"
-    )
-
     it "updates :ended_at to now when status is finished" do
       skip "Redo the `#update_status` code to make it easier to write this."
     end
