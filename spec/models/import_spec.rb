@@ -76,11 +76,9 @@ RSpec.describe Import, type: :model do
           status: failure_status
         )
 
-        Timecop.freeze(Time.now) do
-          workbench_import.update_status
+        workbench_import.update_status
 
-          expect(workbench_import.status).to eq('failed')
-        end
+        expect(workbench_import.status).to eq('failed')
       end
     end
 
