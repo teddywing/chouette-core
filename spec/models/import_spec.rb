@@ -1,4 +1,4 @@
-RSpec.describe Import, :type => :model do
+RSpec.describe Import, type: :model do
 
   it { should belong_to(:referential) }
   it { should belong_to(:workbench) }
