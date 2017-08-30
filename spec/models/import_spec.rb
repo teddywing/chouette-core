@@ -48,8 +48,23 @@ RSpec.describe Import, type: :model do
     end
   end
 
-  # TODO: Move most of these to #update_status
   describe "#child_change" do
+    it "calls #update_status" do
+      allow(workbench_import).to receive(:update)
+
+      expect(workbench_import).to receive(:update_status)
+      workbench_import.child_change
+    end
+
+    it "calls #update_referentials" do
+      allow(workbench_import).to receive(:update)
+
+      expect(workbench_import).to receive(:update_referentials)
+      workbench_import.child_change
+    end
+  end
+
+  describe "#update_status" do
     shared_examples(
       "updates :status to failed when child status indicates failure"
     ) do |failure_status|
@@ -68,7 +83,7 @@ RSpec.describe Import, type: :model do
             status: 'failed'
           )
 
-          workbench_import.child_change
+          workbench_import.update_status
         end
       end
     end
@@ -119,7 +134,7 @@ RSpec.describe Import, type: :model do
 
         expect(workbench_import).not_to receive(:update)
 
-        workbench_import.child_change
+        workbench_import.update_status
       end
     end
 
@@ -140,22 +155,6 @@ RSpec.describe Import, type: :model do
       "canceled"
     )
 
-    it "calls #update_status" do
-      allow(workbench_import).to receive(:update)
-
-      expect(workbench_import).to receive(:update_status)
-      workbench_import.child_change
-    end
-
-    it "calls #update_referentials" do
-      allow(workbench_import).to receive(:update)
-
-      expect(workbench_import).to receive(:update_referentials)
-      workbench_import.child_change
-    end
-  end
-
-  describe "#update_status" do
     it "updates :ended_at to now when status is finished" do
       skip "Redo the `#update_status` code to make it easier to write this."
     end
