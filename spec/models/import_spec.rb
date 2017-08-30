@@ -109,6 +109,24 @@ RSpec.describe Import, type: :model do
       expect(workbench_import.status).to eq('successful')
     end
 
+    it "Updates :status to failed when any child has failed" do
+      workbench_import = create(:workbench_import)
+      [
+        'failed',
+        'successful'
+      ].each do |status|
+        create(
+          :netex_import,
+          parent: workbench_import,
+          status: status
+        )
+      end
+
+      workbench_import.update_status
+
+      expect(workbench_import.status).to eq('failed')
+    end
+
     it "updates :ended_at to now when status is finished" do
       skip "Redo the `#update_status` code to make it easier to write this."
     end
