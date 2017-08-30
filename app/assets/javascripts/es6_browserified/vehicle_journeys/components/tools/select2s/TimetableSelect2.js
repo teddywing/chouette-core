@@ -36,7 +36,7 @@ class BSelect4 extends React.Component{
               let newParmas = params.term.split(" ")
               return {
                 q: {
-                  objectid_end_any: newParmas,
+                  objectid_cont_any: newParmas,
                   comment_cont_any: newParmas,
                   m: 'or'
                 }
