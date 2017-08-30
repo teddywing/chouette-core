@@ -1,4 +1,4 @@
-RSpec.describe Import, :type => :model do
+RSpec.describe Import, type: :model do
 
   it { should belong_to(:referential) }
   it { should belong_to(:workbench) }
@@ -48,95 +48,7 @@ RSpec.describe Import, :type => :model do
     end
   end
 
-  # TODO: Move most of these to #update_status
-  describe "#child_change", skip: "THE CODE CHANGED AND THESE SPECS NO LONGER WORK. FIX THEM ASAP!!!~!~!@~" do
-    shared_examples(
-      "updates :status to failed when child status indicates failure"
-    ) do |failure_status|
-      it "updates :status to failed when child status indicates failure" do
-        workbench_import = create(:workbench_import)
-        create(
-          :netex_import,
-          parent: workbench_import,
-          status: failure_status
-        )
-
-        expect(workbench_import).to receive(:update).with(
-          current_step: 1,
-          status: 'failed'
-        )
-
-        workbench_import.child_change
-      end
-    end
-
-    include_examples(
-      "updates :status to failed when child status indicates failure",
-      "failed"
-    )
-    include_examples(
-      "updates :status to failed when child status indicates failure",
-      "aborted"
-    )
-    include_examples(
-      "updates :status to failed when child status indicates failure",
-      "canceled"
-    )
-
-    # TODO: rewrite these for new #update_status
-    # it "updates :status to successful when #ready?" do
-    #   expect(workbench_import).to receive(:update).with(status: 'successful')
-    #
-    #   workbench_import.child_change
-    # end
-    #
-    # it "updates :status to failed when #ready? and child is failed" do
-    #   build_stubbed(
-    #     :netex_import,
-    #     parent: workbench_import,
-    #     status: :failed
-    #   )
-    #
-    #   expect(workbench_import).to receive(:update).with(status: 'failed')
-    #
-    #   workbench_import.child_change
-    # end
-
-    shared_examples(
-      "doesn't update :status if parent import status is finished"
-    ) do |finished_status|
-      it "doesn't update :status if parent import status is finished" do
-        workbench_import = build_stubbed(
-          :workbench_import,
-          total_steps: 2,
-          current_step: 2,
-          status: finished_status
-        )
-        double('Import')
-
-        expect(workbench_import).not_to receive(:update)
-
-        workbench_import.child_change
-      end
-    end
-
-    include_examples(
-      "doesn't update :status if parent import status is finished",
-      "successful"
-    )
-    include_examples(
-      "doesn't update :status if parent import status is finished",
-      "failed"
-    )
-    include_examples(
-      "doesn't update :status if parent import status is finished",
-      "aborted"
-    )
-    include_examples(
-      "doesn't update :status if parent import status is finished",
-      "canceled"
-    )
-
+  describe "#child_change" do
     it "calls #update_status" do
       allow(workbench_import).to receive(:update)
 
@@ -144,19 +56,135 @@ RSpec.describe Import, :type => :model do
       workbench_import.child_change
     end
 
-    it "calls #update_referential" do
+    it "calls #update_referentials" do
       allow(workbench_import).to receive(:update)
 
-      expect(workbench_import).to receive(:update_referential)
+      expect(workbench_import).to receive(:update_referentials)
       workbench_import.child_change
     end
   end
 
   describe "#update_status" do
+    shared_examples(
+      "updates :status to failed when >=1 child has failing status"
+    ) do |failure_status|
+      it "updates :status to failed when >=1 child has failing status" do
+        workbench_import = create(:workbench_import)
+        create(
+          :netex_import,
+          parent: workbench_import,
+          status: failure_status
+        )
+
+        workbench_import.update_status
+
+        expect(workbench_import.status).to eq('failed')
+      end
+    end
+
+    include_examples(
+      "updates :status to failed when >=1 child has failing status",
+      "failed"
+    )
+    include_examples(
+      "updates :status to failed when >=1 child has failing status",
+      "aborted"
+    )
+    include_examples(
+      "updates :status to failed when >=1 child has failing status",
+      "canceled"
+    )
+
+    it "updates :status to successful when all children are successful" do
+      workbench_import = create(:workbench_import)
+      create_list(
+        :netex_import,
+        2,
+        parent: workbench_import,
+        status: 'successful'
+      )
+
+      workbench_import.update_status
+
+      expect(workbench_import.status).to eq('successful')
+    end
+
+    it "Updates :status to failed when any child has failed" do
+      workbench_import = create(:workbench_import)
+      [
+        'failed',
+        'successful'
+      ].each do |status|
+        create(
+          :netex_import,
+          parent: workbench_import,
+          status: status
+        )
+      end
+
+      workbench_import.update_status
+
+      expect(workbench_import.status).to eq('failed')
+    end
+
     it "updates :ended_at to now when status is finished" do
-      skip "Redo the `#update_status` code to make it easier to write this."
+      workbench_import = create(:workbench_import)
+      create(
+        :netex_import,
+        parent: workbench_import,
+        status: 'failed'
+      )
+
+      Timecop.freeze(Time.now) do
+        workbench_import.update_status
+
+        expect(workbench_import.ended_at).to eq(Time.now)
+      end
     end
   end
 
-  # TODO: specs for #update_referential
+  describe "#update_referentials" do
+    it "doesn't update referentials if parent status isn't finished" do
+      workbench_import = create(:workbench_import, status: 'pending')
+      netex_import = create(:netex_import, parent: workbench_import)
+      netex_import.referential.update(ready: false)
+
+      workbench_import.update_referentials
+      netex_import.referential.reload
+
+      expect(netex_import.referential.ready).to be false
+    end
+
+    shared_examples(
+      "makes child referentials `ready` when status is finished"
+    ) do |finished_status|
+      it "makes child referentials `ready` when status is finished" do
+        workbench_import = create(:workbench_import, status: finished_status)
+        netex_import = create(:netex_import, parent: workbench_import)
+        netex_import.referential.update(ready: false)
+
+        workbench_import.update_referentials
+        netex_import.referential.reload
+
+        expect(netex_import.referential.ready).to be true
+      end
+    end
+
+    include_examples(
+      "makes child referentials `ready` when status is finished",
+      "successful"
+    )
+    include_examples(
+      "makes child referentials `ready` when status is finished",
+      "failed"
+    )
+    include_examples(
+      "makes child referentials `ready` when status is finished",
+      "aborted"
+    )
+    include_examples(
+      "makes child referentials `ready` when status is finished",
+      "canceled"
+    )
+  end
 end
