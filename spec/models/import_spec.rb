@@ -95,24 +95,19 @@ RSpec.describe Import, type: :model do
       "canceled"
     )
 
-    # TODO: rewrite these for new #update_status
-    # it "updates :status to successful when #ready?" do
-    #   expect(workbench_import).to receive(:update).with(status: 'successful')
-    #
-    #   workbench_import.child_change
-    # end
-    #
-    # it "updates :status to failed when #ready? and child is failed" do
-    #   build_stubbed(
-    #     :netex_import,
-    #     parent: workbench_import,
-    #     status: :failed
-    #   )
-    #
-    #   expect(workbench_import).to receive(:update).with(status: 'failed')
-    #
-    #   workbench_import.child_change
-    # end
+    it "updates :status to successful when all children are successful" do
+      workbench_import = create(:workbench_import)
+      create_list(
+        :netex_import,
+        2,
+        parent: workbench_import,
+        status: 'successful'
+      )
+
+      workbench_import.update_status
+
+      expect(workbench_import.status).to eq('successful')
+    end
 
     it "updates :ended_at to now when status is finished" do
       skip "Redo the `#update_status` code to make it easier to write this."
