@@ -128,7 +128,18 @@ RSpec.describe Import, type: :model do
     end
 
     it "updates :ended_at to now when status is finished" do
-      skip "Redo the `#update_status` code to make it easier to write this."
+      workbench_import = create(:workbench_import)
+      create(
+        :netex_import,
+        parent: workbench_import,
+        status: 'failed'
+      )
+
+      Timecop.freeze(Time.now) do
+        workbench_import.update_status
+
+        expect(workbench_import.ended_at).to eq(Time.now)
+      end
     end
   end
 
