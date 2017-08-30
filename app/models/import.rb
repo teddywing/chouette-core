@@ -29,11 +29,11 @@ class Import < ActiveRecord::Base
   end
 
   def notify_parent
-    parent.child_change(self)
+    parent.child_change
     update(notified_parent_at: DateTime.now)
   end
 
-  def child_change(child)
+  def child_change
     return if self.class.finished_statuses.include?(status)
 
     update_status
