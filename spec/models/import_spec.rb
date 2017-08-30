@@ -66,9 +66,9 @@ RSpec.describe Import, type: :model do
 
   describe "#update_status" do
     shared_examples(
-      "updates :status to failed when child status indicates failure"
+      "updates :status to failed when >=1 child has failing status"
     ) do |failure_status|
-      it "updates :status to failed when child status indicates failure" do
+      it "updates :status to failed when >=1 child has failing status" do
         workbench_import = create(:workbench_import)
         create(
           :netex_import,
@@ -77,27 +77,23 @@ RSpec.describe Import, type: :model do
         )
 
         Timecop.freeze(Time.now) do
-          expect(workbench_import).to receive(:update).with(
-            current_step: 1,
-            ended_at: Time.now,
-            status: 'failed'
-          )
-
           workbench_import.update_status
+
+          expect(workbench_import.status).to eq('failed')
         end
       end
     end
 
     include_examples(
-      "updates :status to failed when child status indicates failure",
+      "updates :status to failed when >=1 child has failing status",
       "failed"
     )
     include_examples(
-      "updates :status to failed when child status indicates failure",
+      "updates :status to failed when >=1 child has failing status",
       "aborted"
     )
     include_examples(
-      "updates :status to failed when child status indicates failure",
+      "updates :status to failed when >=1 child has failing status",
       "canceled"
     )
 
