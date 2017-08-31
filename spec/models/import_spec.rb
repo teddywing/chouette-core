@@ -4,7 +4,7 @@ RSpec.describe Import, type: :model do
   it { should belong_to(:workbench) }
   it { should belong_to(:parent) }
 
-  it { should enumerize(:status).in("aborted", "canceled", "failed", "new", "pending", "running", "successful") }
+  it { should enumerize(:status).in("aborted", "canceled", "failed", "new", "pending", "running", "successful", "warning") }
 
   it { should validate_presence_of(:file) }
   it { should validate_presence_of(:workbench) }
