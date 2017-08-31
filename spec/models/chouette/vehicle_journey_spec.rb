@@ -17,8 +17,13 @@ describe Chouette::VehicleJourney, :type => :model do
     expect(vehicle_journey).to be_valid
   end
 
+  describe 'checksum' do
+    it_behaves_like 'checksum support', :vehicle_journey
+  end
+
   describe "vjas_departure_time_must_be_before_next_stop_arrival_time",
       skip: "Validation currently commented out because it interferes with day offsets" do
+
     let(:vehicle_journey) { create :vehicle_journey }
     let(:vjas) { vehicle_journey.vehicle_journey_at_stops }
 
@@ -558,18 +563,18 @@ describe Chouette::VehicleJourney, :type => :model do
             "0"=>{"id" => subject.vehicle_journey_at_stops[0].id ,"arrival_time" => 1.minutes.ago,"departure_time" => 1.minutes.ago},
             "1"=>{"id" => subject.vehicle_journey_at_stops[1].id, "arrival_time" => (1.minutes.ago + 4.hour),"departure_time" => (1.minutes.ago + 4.hour)}
          }}}
-      it "should return false" do
+      it "should return false", :skip => "Time gap validation is in pending status" do
         expect(subject.update_attributes(params)).to be_falsey
       end
-      it "should make instance invalid" do
+      it "should make instance invalid", :skip => "Time gap validation is in pending status" do
         subject.update_attributes(params)
         expect(subject).not_to be_valid
       end
-      it "should let first vjas without any errors" do
+      it "should let first vjas without any errors", :skip => "Time gap validation is in pending status" do
         subject.update_attributes(params)
         expect(subject.vehicle_journey_at_stops[0].errors).to be_empty
       end
-      it "should add an error on second vjas" do
+      it "should add an error on second vjas", :skip => "Time gap validation is in pending status" do
         subject.update_attributes(params)
         expect(subject.vehicle_journey_at_stops[1].errors[:departure_time]).not_to be_blank
       end

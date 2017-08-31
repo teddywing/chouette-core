@@ -2,6 +2,7 @@ fr:
   time_tables:
     duplicate_success: "duplication terminée"
     search_no_results: 'Aucun calendrier ne correspond à votre recherche'
+    error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
     time_table:
       empty: "vide"
       bounding: "du %{start} au %{end}"
@@ -28,6 +29,10 @@ fr:
       title: "Dupliquer un calendrier"
     edit:
       title: "Editer le calendrier %{time_table}"
+      error_modal:
+        title: "Erreur"
+        withoutPeriodsWithDaysTypes: "Un calendrier d'application ne peut pas avoir de journée(s) d'application sans période(s)."
+        withPeriodsWithoutDayTypes: "Un calendrier d'application ne peut pas avoir de période(s) sans journée(s) d'application."  
     show:
       title: Calendrier %{time_table}
       dates: "Dates d'application"

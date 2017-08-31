@@ -7,7 +7,7 @@ const mapStateToProps = (state) => {
   return {
     modal: state.modal,
     timetable: state.timetable,
-    metas: state.metas
+    metas: state.metas,
   }
 }
 
@@ -27,8 +27,14 @@ const mapDispatchToProps = (dispatch) => {
       val = (val < 10) ? '0' + String(val) : String(val)
       dispatch(actions.updatePeriodForm(val, group, 'day'))
     },
-    onValidatePeriodForm: (modalProps, timeTablePeriods, metas) => {
-      dispatch(actions.validatePeriodForm(modalProps, timeTablePeriods, metas))
+    onValidatePeriodForm: (modalProps, timeTablePeriods, metas, timetableInDates) => {
+      let period_start = actions.formatDate(modalProps.begin)
+      let period_end = actions.formatDate(modalProps.end)
+      let error = ''
+      if (new Date(period_end) <= new Date(period_start)) error = 'La date de départ doit être antérieure à la date de fin'
+      if (error == '') error = actions.checkErrorsInPeriods(period_start, period_end, modalProps.index, timeTablePeriods)
+      if (error == '') error = actions.checkErrorsInDates(period_start, period_end, timetableInDates)
+      dispatch(actions.validatePeriodForm(modalProps, timeTablePeriods, metas, timetableInDates, error))
     }
   }
 }

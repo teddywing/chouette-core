@@ -1,31 +1,34 @@
 require 'spec_helper'
 
 describe Chouette::JourneyPattern, :type => :model do
-
-  context 'validate minimum stop_points size' do
-    let(:journey_pattern) { create :journey_pattern }
-    let(:stop_points) { journey_pattern.stop_points }
-
-    it 'should be valid if it has at least two sp' do
-      journey_pattern.stop_points.first(stop_points.size - 2).each do |sp|
-        journey_pattern.stop_points.delete(sp)
-      end
-      expect(journey_pattern).to be_valid
-    end
-
-    it 'should not be valid if it has less then two sp' do
-      journey_pattern.stop_points.first(stop_points.size - 1).each do |sp|
-        journey_pattern.stop_points.delete(sp)
-      end
-      expect(journey_pattern).to_not be_valid
-      expect(journey_pattern.errors).to have_key(:stop_points)
-    end
-
-    it 'should only validate on update' do
-      jp = build(:journey_pattern_common)
-      expect(jp).to be_valid
-    end
+  describe 'checksum' do
+    it_behaves_like 'checksum support', :journey_pattern
   end
+
+  # context 'validate minimum stop_points size' do
+  #   let(:journey_pattern) { create :journey_pattern }
+  #   let(:stop_points) { journey_pattern.stop_points }
+  #
+  #   it 'should be valid if it has at least two sp' do
+  #     journey_pattern.stop_points.first(stop_points.size - 2).each do |sp|
+  #       journey_pattern.stop_points.delete(sp)
+  #     end
+  #     expect(journey_pattern).to be_valid
+  #   end
+  #
+  #   it 'should not be valid if it has less then two sp' do
+  #     journey_pattern.stop_points.first(stop_points.size - 1).each do |sp|
+  #       journey_pattern.stop_points.delete(sp)
+  #     end
+  #     expect(journey_pattern).to_not be_valid
+  #     expect(journey_pattern.errors).to have_key(:stop_points)
+  #   end
+  #
+  #   it 'should only validate on update' do
+  #     jp = build(:journey_pattern_common)
+  #     expect(jp).to be_valid
+  #   end
+  # end
 
   describe "state_update" do
     def journey_pattern_to_state jp

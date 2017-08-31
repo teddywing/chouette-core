@@ -13,7 +13,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
         subject.vehicle_journey_at_stops[1].departure_time
     end
 
-    it "should make instance invalid if departure time exceeds gap" do
+    it "should make instance invalid if departure time exceeds gap", :skip => "Time gap validation is in pending status" do
       subject.validate
 
       expect(
@@ -31,7 +31,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
     let(:vjas2) { vehicle_journey.vehicle_journey_at_stops[1] }
 
     context "when vjas#arrival_time exceeds gap" do
-      it "should add errors on arrival_time" do
+      it "should add errors on arrival_time", :skip => "Time gap validation is in pending status" do
         vjas1.arrival_time = vjas2.arrival_time - 5.hour
         expect(
           Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
@@ -43,7 +43,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
     end
 
     context "when vjas#departure_time exceeds gap" do
-      it "should add errors on departure_time" do
+      it "should add errors on departure_time", :skip => "Time gap validation is in pending status" do
         vjas1.departure_time = vjas2.departure_time - 5.hour
         expect(
           Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
@@ -55,7 +55,7 @@ describe Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator do
     end
 
     context "when vjas doesn't exceed gap" do
-      it "should not add errors" do
+      it "should not add errors", :skip => "Time gap validation is in pending status" do
         expect(
           Chouette::VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator
             .validate_at_stop_times_must_increase(vjas2, vjas1)

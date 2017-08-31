@@ -15,11 +15,11 @@ class AutocompleteTimeTablesController < InheritedResources::Base
   protected
 
   def select_time_tables
-    scope = referential.time_tables
+    scope = params[:source_id] ? referential.time_tables.where("time_tables.id != ?", params[:source_id]) : referential.time_tables
     if params[:route_id]
       scope = scope.joins(vehicle_journeys: :route).where( "routes.id IN (#{params[:route_id]})")
     end
-    scope
+    scope.distinct
   end
 
   def collection

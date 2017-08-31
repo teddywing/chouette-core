@@ -33,8 +33,13 @@ class BSelect4 extends React.Component{
             dataType: 'json',
             delay: '500',
             data: function(params) {
+              let newParmas = params.term.split(" ")
               return {
-                q: {comment_cont: params.term},
+                q: {
+                  objectid_cont_any: newParmas,
+                  comment_cont_any: newParmas,
+                  m: 'or'
+                }
               };
             },
             processResults: function(data, params) {
@@ -43,7 +48,7 @@ class BSelect4 extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    {text: '<strong>' + (item.color ? "<span class='fa fa-circle' style='color:" + item.color + "'></span> " : '') + item.comment + ' - ' + item.short_id + '</strong><br/><small>' + item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') + '</small>'}
+                    {text: '<strong>' + "<span class='fa fa-circle' style='color:" + (item.color ? item.color : '#4B4B4B') + "'></span> " + item.comment + ' - ' + item.short_id + '</strong><br/><small>' + (item.day_types ? item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') : "") + '</small>'}
                   )
                 )
               };

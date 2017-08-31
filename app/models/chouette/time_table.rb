@@ -1,4 +1,5 @@
 class Chouette::TimeTable < Chouette::TridentActiveRecord
+  include ChecksumSupport
   include TimeTableRestrictions
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -21,13 +22,29 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   belongs_to :created_from, class_name: 'Chouette::TimeTable'
 
   scope :overlapping, -> (date_start, date_end) do
-    joins(:periods).where('(period_start, period_end) OVERLAPS (?, ?)', date_start, date_end)
+    joins("
+      LEFT JOIN time_table_periods ON time_tables.id = time_table_periods.time_table_id
+      LEFT JOIN time_table_dates ON time_tables.id = time_table_dates.time_table_id
+    ")
+    .where("(time_table_periods.period_start <= :end AND time_table_periods.period_end >= :start) OR (time_table_dates.date BETWEEN :start AND :end)", {start: date_start, end: date_end})
   end
 
   after_save :save_shortcuts
 
   def local_id
     "#{self.referential.id}-#{self.id}"
+  end
+
+  def checksum_attributes
+    [].tap do |attrs|
+      attrs << self.int_day_types
+      attrs << self.dates.map(&:checksum).map(&:to_s).sort
+      attrs << self.periods.map(&:checksum).map(&:to_s).sort
+    end
+  end
+
+  def self.object_id_key
+    "Timetable"
   end
 
   accepts_nested_attributes_for :dates, :allow_destroy => :true
@@ -297,7 +314,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   end
 
   def display_day_types
-    %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join('')
+    %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join(', ')
   end
 
   def day_by_mask(flag)
@@ -461,53 +478,6 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     optimized.sort { |a,b| a.period_start <=> b.period_start}
   end
 
-  def continuous_periods
-    periods = self.periods.sort_by(&:period_start)
-    chunk = {}
-    group = nil
-    periods.each_with_index do |period, index|
-      group ||= index
-      group = (period.period_start - 1.day == periods[index - 1].period_end) ? group : group + 1
-      chunk[group] ||= []
-      chunk[group] << period
-    end
-    chunk.values.delete_if {|periods| periods.count < 2}
-  end
-
-  def convert_continuous_periods_into_one
-    chunks = self.continuous_periods
-
-    transaction do
-      chunks.each do |chunk|
-        self.periods.create!(period_start: chunk.first.period_start, period_end: chunk.last.period_end)
-        self.periods.delete(chunk)
-      end
-    end
-  end
-
-  #update a period if a in_day is just before or after
-  def optimize_continuous_dates_and_periods
-
-
-    in_days = self.dates.where(in_out: true).sort_by(&:date)
-    periods = self.clone_periods
-    optimized = []
-
-    periods.each do |period|
-      in_days.each do |day|
-        if period.period_start - 1.day === day.date
-          period.period_start = day.date
-          self.dates.delete(day)
-        elsif period.period_end + 1.day === day.date
-          period.period_end = day.date
-          self.dates.delete(day)
-        end
-      end
-      optimized << period
-    end
-    optimized
-  end
-
   # add a peculiar day or switch it from excluded to included
   def add_included_day(d)
     if self.excluded_date?(d)
@@ -524,24 +494,20 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   # merge effective days from another timetable
   def merge!(another_tt)
     transaction do
-      self.periods = another_tt.clone_periods + self.periods
-
-      # For included dates
-      another_tt.included_days.map{ |d| add_included_day(d) }
-
-      # For excluded dates
-      existing_out_date = self.dates.where(in_out: false).map(&:date)
-      another_tt.dates.where(in_out: false).each do |d|
-        unless existing_out_date.include?(d.date)
-          self.dates << Chouette::TimeTableDate.new(:date => d.date, :in_out => false)
-        end
-        self.save!
+      days = [].tap do |array|
+        array.push(*self.effective_days, *another_tt.effective_days)
+        array.uniq!
       end
-      self.convert_continuous_dates_to_periods
-      self.periods = self.optimize_continuous_dates_and_periods
-      self.convert_continuous_periods_into_one
-      self.periods = self.optimize_overlapping_periods
+
+      self.dates.clear
+      self.periods.clear
+
+      days.each do |day|
+        self.dates << Chouette::TimeTableDate.new(date: day, in_out: true)
+      end
+      self.save!
     end
+    self.convert_continuous_dates_to_periods
   end
 
   def included_days_in_dates_and_periods
@@ -554,12 +520,18 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     days
   end
 
-  # remove dates form tt which aren't in another_tt
+  # keep common dates with another_tt
   def intersect!(another_tt)
     transaction do
-      days = self.included_days_in_dates_and_periods & another_tt.included_days_in_dates_and_periods
+      days = [].tap do |array|
+        array.push(*self.effective_days)
+        array.delete_if {|day| !another_tt.effective_days.include?(day) }
+        array.uniq!
+      end
+
       self.dates.clear
       self.periods.clear
+
       days.sort.each do |d|
         self.dates << Chouette::TimeTableDate.new(:date => d, :in_out => true)
       end
@@ -568,12 +540,18 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
     self.convert_continuous_dates_to_periods
   end
 
-  # remove days from another calendar
+  # remove common dates with another_tt
   def disjoin!(another_tt)
     transaction do
-      days = self.included_days_in_dates_and_periods - another_tt.included_days_in_dates_and_periods
+      days = [].tap do |array|
+        array.push(*self.effective_days)
+        array.delete_if {|day| another_tt.effective_days.include?(day) }
+        array.uniq!
+      end
+
       self.dates.clear
       self.periods.clear
+
       days.sort.each do |d|
         self.dates << Chouette::TimeTableDate.new(:date => d, :in_out => true)
       end

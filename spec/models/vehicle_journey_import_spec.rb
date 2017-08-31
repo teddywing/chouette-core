@@ -86,7 +86,7 @@ describe VehicleJourneyImport, :type => :model do
       expect(Chouette::VehicleJourneyAtStop.all.size).to eq(17)
     end
 
-    it "should not import vehicle_journeys and not create objects when vehicle journey at stops are not in ascendant order" do
+    it "should not import vehicle_journeys and not create objects when vehicle journey at stops are not in ascendant order", :skip => "Time gap validation is in pending status" do
       expect(VehicleJourneyImport.new(:route => route, :file => invalid_file_on_vjas_object).save).to be_falsey
       expect(Chouette::VehicleJourney.all.size).to eq(3)
       expect(Chouette::VehicleJourneyAtStop.all.size).to eq(0)

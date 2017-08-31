@@ -34,6 +34,10 @@ class Chouette::AccessPoint < Chouette::ActiveRecord
     @referential ||= Referential.where(:slug => Apartment::Tenant.current).first!
   end
 
+  def referential
+    @referential ||= Referential.where(:slug => Apartment::Tenant.current).first!
+  end
+
   def combine_lat_lng
     if self.latitude.nil? || self.longitude.nil?
       ""

@@ -14,8 +14,10 @@ class EditVehicleJourney extends Component {
       var company;
       if(this.props.modal.modalProps.selectedCompany) {
         company = this.props.modal.modalProps.selectedCompany
-      } else {
+      } else if (typeof this.props.modal.modalProps.vehicleJourney.company === Object) {
         company = this.props.modal.modalProps.vehicleJourney.company
+      } else {
+        company = undefined
       }
       this.props.onEditVehicleJourney(this.refs, company)
       this.props.onModalClose()
@@ -96,6 +98,7 @@ class EditVehicleJourney extends Component {
                               <CompanySelect2
                                 company = {this.props.modal.modalProps.vehicleJourney.company}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
+                                onUnselect2Company = {() => this.props.onUnselect2Company()}
                               />
                             </div>
                           </div>

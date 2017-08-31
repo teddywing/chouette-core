@@ -2,6 +2,7 @@ en:
   time_tables:
     duplicate_success: "duplication succeded"
     search_no_results: 'No calendar matching your query'
+    error_period_filter: "The period filter must have valid bounding dates"
     time_table:
       empty: "empty"
       bounding: "from %{start} to %{end}"
@@ -28,6 +29,10 @@ en:
       title: "Duplicate timetable"
     edit:
       title: "Update timetable %{time_table}"
+      error_modal:
+        title: "Error"
+        withoutPeriodsWithDaysTypes: "A timetable can't have day type(s) without period(s)."
+        withPeriodsWithoutDayTypes: "A tiemetable can't have period(s) swithout day type(s)."  
     show:
       title: "Timetable %{time_table}"
       dates: "Application dates"

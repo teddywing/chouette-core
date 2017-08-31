@@ -36,7 +36,7 @@ describe 'Workbenches', type: :feature do
 
       context 'without any filter' do
         it 'should have results' do
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
           expect(page).to have_content(referential.name)
           expect(page).to have_content(other_referential.name)
         end
@@ -45,7 +45,7 @@ describe 'Workbenches', type: :feature do
       context 'filter by organisation' do
         it 'should be possible to filter by organisation' do
           find("#q_organisation_name_eq_any_#{@user.organisation.name.parameterize.underscore}").set(true)
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
 
           expect(page).to have_content(referential.name)
           expect(page).not_to have_content(other_referential.name)
@@ -54,7 +54,7 @@ describe 'Workbenches', type: :feature do
         it 'should be possible to filter by multiple organisation' do
           find("#q_organisation_name_eq_any_#{@user.organisation.name.parameterize.underscore}").set(true)
           find("#q_organisation_name_eq_any_#{another_organisation.name.parameterize.underscore}").set(true)
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
 
           expect(page).to have_content(referential.name)
           expect(page).to have_content(other_referential.name)
@@ -63,7 +63,7 @@ describe 'Workbenches', type: :feature do
         it 'should keep filter value on submit' do
           box = "#q_organisation_name_eq_any_#{another_organisation.name.parameterize.underscore}"
           find(box).set(true)
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
           expect(find(box)).to be_checked
         end
       end
@@ -73,7 +73,7 @@ describe 'Workbenches', type: :feature do
           other_referential.update_attribute(:archived_at, Date.today)
           find("#q_archived_at_not_null").set(true)
 
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
           expect(page).to have_content(other_referential.name)
           expect(page).to_not have_content(referential.name)
         end
@@ -83,7 +83,7 @@ describe 'Workbenches', type: :feature do
           find("#q_archived_at_not_null").set(true)
           find("#q_archived_at_null").set(true)
 
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
           expect(page).to have_content(referential.name)
           expect(page).to have_content(other_referential.name)
         end
@@ -92,14 +92,14 @@ describe 'Workbenches', type: :feature do
           other_referential.update_attribute(:archived_at, Date.today)
           find("#q_archived_at_null").set(true)
 
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
           expect(page).to have_content(referential.name)
           expect(page).to_not have_content(other_referential.name)
         end
 
         it 'should keep filter value on submit' do
           find("#q_archived_at_null").set(true)
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
           expect(find("#q_archived_at_null")).to be_checked
         end
       end
@@ -115,7 +115,7 @@ describe 'Workbenches', type: :feature do
           dates = referential.validity_period.to_a
           fill_validity_field dates[0], 'begin_gteq'
           fill_validity_field dates[1], 'end_lteq'
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
 
           expect(page).to have_content(referential.name)
           expect(page).to_not have_content(other_referential.name)
@@ -125,7 +125,7 @@ describe 'Workbenches', type: :feature do
           dates = referential.validity_period.to_a
           fill_validity_field dates[0], 'begin_gteq'
           fill_validity_field dates[1], 'end_lteq'
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
 
           find('a[href*="&sort=validity_period"]').click
 
@@ -136,7 +136,7 @@ describe 'Workbenches', type: :feature do
         it 'should not show results for out off range' do
           fill_validity_field(Date.today - 2.year, 'begin_gteq')
           fill_validity_field(Date.today - 1.year, 'end_lteq')
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
 
           expect(page).to_not have_content(referential.name)
           expect(page).to_not have_content(other_referential.name)
@@ -147,7 +147,7 @@ describe 'Workbenches', type: :feature do
           ['begin_gteq', 'end_lteq'].each_with_index do |field, index|
             fill_validity_field dates[index], field
           end
-          click_button 'Filtrer'
+          click_button I18n.t('actions.filter')
 
           ['begin_gteq', 'end_lteq'].each_with_index do |field, index|
             expect(find("#q_validity_period_#{field}_3i").value).to eq dates[index].day.to_s

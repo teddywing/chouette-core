@@ -1,6 +1,6 @@
 / PageHeader
-= pageheader 'map-marker',
-               t('.title')
+= pageheader 'itl',
+             t('.title')
 
 / PageContent
 .page_content
@@ -12,7 +12,7 @@
           .row
             .col-lg-12
               = form.input :name
-              = form.input :route_id, collection: @line.routes, include_blank: false, input_html: {data: {url: new_referential_line_routing_constraint_zone_path(@referential, @line), object: @routing_constraint_zone.to_json }}
+              = form.input :route_id, collection: @line.routes, include_blank: false, input_html: { class: 'new_routing_constraint_zone_route', data: {url: new_referential_line_routing_constraint_zone_path(@referential, @line), object: @routing_constraint_zone.to_json }}
 
               .separator
 

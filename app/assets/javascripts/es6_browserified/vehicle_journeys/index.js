@@ -19,6 +19,7 @@ if (window.journeyPatternId)
   selectedJP.push(window.journeyPatternId)
 
 var initialState = {
+  editMode: false,
   filters: {
     selectedJourneyPatterns : selectedJP,
     policy: window.perms,
@@ -89,7 +90,7 @@ if (window.jpOrigin){
 
 let store = createStore(
   enableBatching(vehicleJourneysApp),
-  initialState
+  initialState,
   // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 

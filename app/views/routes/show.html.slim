@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'itineraire',
              @route.name,
              '',
              t('last_update', time: l(@route.updated_at, format: :short)),
@@ -37,8 +37,7 @@
             [ \
               TableBuilderHelper::Column.new( \
                 name: 'ID Reflex', \
-                attribute: Proc.new { |s| s.try(:stop_area).try(:user_objectid) }, \
-                sortable: false \
+                attribute: Proc.new { |s| s.try(:stop_area).try(:user_objectid) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
@@ -46,7 +45,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :deleted_at, \
-                attribute: Proc.new { |s| s.try(:stop_area).deleted_at ? t('false') : t('true') } \
+                attribute: Proc.new { |s| s.try(:stop_area).deleted_at ? t('false') : t('true') }, \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :zip_code, \
@@ -63,14 +62,11 @@
               TableBuilderHelper::Column.new( \
                 key: :for_alighting, \
                 attribute: Proc.new { |s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}") } \
-              ), \
-              TableBuilderHelper::Column.new( \
-                key: :position, \
-                attribute: 'position' \
-              ), \
+              ) \
             ],
             links: [:show],
-            cls: 'table'
+            sortable: false,
+            cls: 'table has-stoppoints'
 
         - else
           = replacement_msg t('stop_areas.search_no_results')

@@ -2,7 +2,10 @@ fr:
   referentials:
     filters:
       name_or_number_or_objectid: 'Indiquez un nom de ligne, nom court ou objectid'
+      name: 'Indiquez un nom de référentiel...'
+      line: 'Indiquez une ligne...'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
+    error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
     index:
       title: 'Jeux de données'
     edit:
@@ -59,7 +62,6 @@ fr:
         upper_corner: "Point haut/droite de l'emprise par défaut"
         lower_corner: "Point bas/gauche de l'emprise par défaut"
         resources: "Import Neptune"
-        validity_period: "Période de validité"
         no_validity_period: "non définie"
         start_validity_period: "du"
         end_validity_period: "au"
@@ -91,8 +93,10 @@ fr:
         created_at: "Créé le"
         published_at: "Intégré le"
         archived_at: "Conservé"
+        archived_at_null: "En préparation"
         created_from: 'Créé à partir de'
         organisation: 'Organisation'
+        number_of_lines: 'Nb lignes'
   formtastic:
     titles:
       referential:
@@ -111,6 +115,10 @@ fr:
           periods:
             begin: 'Début de période'
             end: 'Fin de période'
+        actions:
+          add_period: 'Ajouter une période'
+        placeholders:
+          select_lines: 'Sélection de lignes'
   notice:
     referentials:
       deleted: "Les jeux de données on été supprimés"

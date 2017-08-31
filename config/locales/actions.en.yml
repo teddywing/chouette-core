@@ -17,6 +17,8 @@ en:
     combine: 'Combine'
     actualize: 'Actualize'
     import: 'Import'
+    filter: 'Filter'
+    erase: 'Erase'
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"

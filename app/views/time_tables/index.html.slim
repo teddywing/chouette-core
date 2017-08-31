@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'calendrier-application',
              t('time_tables.index.title'),
              '',
              ((policy(Chouette::TimeTable).create? && @referential.organisation == current_organisation) ? link_to(t('actions.add'), new_referential_time_table_path(@referential), class: 'btn btn-default') : '')
@@ -62,3 +62,6 @@
       .row.mt-xs
         .col-lg-12
           = replacement_msg t('time_tables.search_no_results')
+
+= javascript_tag do
+  | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};

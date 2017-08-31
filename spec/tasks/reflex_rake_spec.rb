@@ -5,7 +5,7 @@ describe 'reflex:sync' do
     before(:each) do
       ['getOP', 'getOR'].each do |method|
         stub_request(:get, "#{Rails.application.config.reflex_api_url}/?format=xml&idRefa=0&method=#{method}").
-        to_return(body: File.open("#{fixture_path}/reflex.zip"), status: 200)
+        to_return(body: open_fixture('reflex.zip'), status: 200)
       end
 
       stop_area_ref = create(:stop_area_referential, name: 'Reflex')
@@ -43,7 +43,7 @@ describe 'reflex:sync' do
       before(:each) do
         ['getOP', 'getOR'].each do |method|
           stub_request(:get, "#{Rails.application.config.reflex_api_url}/?format=xml&idRefa=0&method=#{method}").
-          to_return(body: File.open("#{fixture_path}/reflex_updated.zip"), status: 200)
+          to_return(body: open_fixture('reflex_updated.zip'), status: 200)
         end
         Stif::ReflexSynchronization.synchronize
       end

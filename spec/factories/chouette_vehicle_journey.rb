@@ -11,6 +11,7 @@ FactoryGirl.define do
       end
 
       factory :vehicle_journey do
+        association :company, factory: :company
         transient do
           stop_arrival_time '01:00:00'
           stop_departure_time '03:00:00'

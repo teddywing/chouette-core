@@ -55,24 +55,41 @@ class RoutingConstraintZonesController < ChouetteController
   alias_method :line, :parent
 
   def collection
-    @q = current_referential.routing_constraint_zones.search(params[:q])
+    @q = line.routing_constraint_zones.search(params[:q])
 
     @routing_constraint_zones ||= begin
-      if sort_column && sort_direction
-        routing_constraint_zones = @q.result(distinct: true).order(sort_column + ' ' + sort_direction)
-      else
-        routing_constraint_zones = @q.result(distinct: true).order(:name)
-      end
-      routing_constraint_zones = routing_constraint_zones.paginate(page: params[:page], per_page: 10)
+      routing_constraint_zones = sort_collection
+      routing_constraint_zones = routing_constraint_zones.paginate(
+        page: params[:page],
+        per_page: 10
+      )
     end
   end
 
   private
   def sort_column
-    (Chouette::RoutingConstraintZone.column_names).include?(params[:sort]) ? params[:sort] : 'name'
+    (
+      Chouette::RoutingConstraintZone.column_names +
+      [
+        'stop_points_count',
+        'route'
+      ]
+    ).include?(params[:sort]) ? params[:sort] : 'name'
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  def sort_collection
+    sort_by = sort_column
+
+    if sort_by == 'stop_points_count'
+      @q.result.order_by_stop_points_count(sort_direction)
+    elsif sort_by == 'route'
+      @q.result.order_by_route_name(sort_direction)
+    else
+      @q.result.order(sort_column + ' ' + sort_direction)
+    end
   end
 
   def routing_constraint_zone_params

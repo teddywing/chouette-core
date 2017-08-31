@@ -6,7 +6,6 @@ FactoryGirl.define do
     sequence(:comment) { |n| "jp comment #{n}" }
     sequence(:registration_number) { |n| "jp registration_number #{n}" }
     sequence(:objectid) { |n| "organisation:JourneyPattern:lineId-#{n}:LOC" }
-
     association :route, :factory => :route
 
     factory :journey_pattern do

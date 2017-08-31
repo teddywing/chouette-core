@@ -10,6 +10,11 @@ en:
       users: "Users"
       rule_parameter_sets: "Rule parameter sets"
   activerecord:
+    models:
+      organisation:
+        zero: "organization"
+        one: "organization"
+        other: "organizations"
     attributes:
       organisation:
         name: "Name"

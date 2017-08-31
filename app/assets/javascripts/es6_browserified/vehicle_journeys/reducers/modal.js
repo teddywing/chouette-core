@@ -57,6 +57,9 @@ const modal = (state = {}, action) => {
     case 'SELECT_CP_EDIT_MODAL':
       newModalProps = _.assign({}, state.modalProps, {selectedCompany : action.selectedItem})
       return _.assign({}, state, {modalProps: newModalProps})
+    case 'UNSELECT_CP_EDIT_MODAL':
+      newModalProps = _.assign({}, state.modalProps, {selectedCompany : undefined})
+      return _.assign({}, state, {modalProps: newModalProps})
     case 'SELECT_TT_CALENDAR_MODAL':
       newModalProps = _.assign({}, state.modalProps, {selectedTimetable : action.selectedItem})
       return _.assign({}, state, {modalProps: newModalProps})

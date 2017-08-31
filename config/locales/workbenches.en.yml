@@ -10,3 +10,7 @@ en:
         calendars: "Calendars"
         see: "See the list"
         no_content: "No content yet."
+    referential_count:
+      zero: "Currently, there is no referential in your workbench"
+      one: "Currently, there is one referential in your workbench"
+      other: "Currently, there are #{count} referentials in your workbench"

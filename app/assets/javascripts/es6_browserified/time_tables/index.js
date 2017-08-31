@@ -22,7 +22,8 @@ var initialState = {
     current_month: [],
     current_periode_range: '',
     periode_range: [],
-    time_table_periods: []
+    time_table_periods: [],
+    time_table_dates: []
   },
   metas: {
     comment: '',
@@ -61,7 +62,7 @@ var initialState = {
 
 let store = createStore(
   timeTablesApp,
-  initialState
+  initialState,
   // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 

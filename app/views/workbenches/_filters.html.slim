@@ -1,24 +1,24 @@
 = search_form_for @q_for_form, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder, class: 'form form-filter' do |f|
   .ffg-row
     .input-group.search_bar
-      = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de référentiel...'
+      = f.search_field :name_cont, class: 'form-control', placeholder: t('referentials.filters.name')
       span.input-group-btn
         button.btn.btn-default type='submit'
           span.fa.fa-search
 
   .ffg-row
     .form-group
-      = f.label 'Ligne', required: false, class: 'control-label'
-      = f.input :associated_lines_id_eq, as: :select, collection: @workbench.lines.includes(:company).order(:name), input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une ligne...' }, label: false, label_method: :display_name, wrapper_html: { class: 'select2ed'}
+      = f.label t('activerecord.models.line.one').upcase, required: false, class: 'control-label'
+      = f.input :associated_lines_id_eq, as: :select, collection: @workbench.lines.includes(:company).order(:name), input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': t('referentials.filters.line') }, label: false, label_method: :display_name, wrapper_html: { class: 'select2ed'}
 
     .form-group.togglable
       = f.label Referential.human_attribute_name(:status), required: false, class: 'control-label'
       .form-group.checkbox_list
-        = f.input :archived_at_not_null, label: ("<span>Conservé<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox-wrapper' }
-        = f.input :archived_at_null, label: ("<span>En préparation<span class='sb sb-lg sb-preparing'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox-wrapper' }
+        = f.input :archived_at_not_null, label: ("<span>#{t('activerecord.attributes.referential.archived_at')}<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox-wrapper' }
+        = f.input :archived_at_null, label: ("<span>#{t('activerecord.attributes.referential.archived_at_null')}<span class='sb sb-lg sb-preparing'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox-wrapper' }
 
     .form-group.togglable
-      = f.label 'Organisation(s)', required: false, class: 'control-label'
+      = f.label t('activerecord.models.organisation.one'), required: false, class: 'control-label'
       = f.input :organisation_name_eq_any, collection: Organisation.order('name').pluck(:name), as: :check_boxes, label: false, label_method: lambda{|w| ("<span>#{w}</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
     .form-group.togglable
@@ -29,5 +29,5 @@
           = p.input :end_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
 
   .actions
-    = link_to 'Effacer', @workbench, class: 'btn btn-link'
-    = f.submit 'Filtrer', class: 'btn btn-default'
+    = link_to t('actions.erase'), @workbench, class: 'btn btn-link'
+    = f.submit t('actions.filter'), class: 'btn btn-default', id: 'referential_filter_btn'

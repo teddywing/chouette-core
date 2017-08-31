@@ -12,6 +12,7 @@ var App = require('./components/App')
 // var promise = require('redux-promise')
 
 var initialState = {
+  editMode: false,
   status: {
     policy: window.perms,
     fetchSuccess: true,
@@ -35,7 +36,7 @@ var initialState = {
 
 let store = createStore(
   journeyPatternsApp,
-  initialState
+  initialState,
   // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 

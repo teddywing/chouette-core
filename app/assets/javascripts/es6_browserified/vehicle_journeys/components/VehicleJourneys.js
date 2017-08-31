@@ -96,7 +96,15 @@ class VehicleJourneys extends Component{
             { _.some(this.props.vehicleJourneys, 'errors') && (
               <div className="alert alert-danger mt-sm">
                 <strong>Erreur : </strong>
-                une erreur bloque la validation des modifications.
+                {this.props.vehicleJourneys.map((vj, index) =>
+                  vj.errors && vj.errors.map((err, i) => {
+                    return (
+                      <ul key={i}>
+                        <li>{err}</li>
+                      </ul>
+                    )
+                  })
+                )}
               </div>
             )}
 
@@ -123,6 +131,7 @@ class VehicleJourneys extends Component{
                       value={vj}
                       key={index}
                       index={index}
+                      editMode={this.props.editMode}
                       filters={this.props.filters}
                       onUpdateTime={this.props.onUpdateTime}
                       onSelectVehicleJourney={this.props.onSelectVehicleJourney}

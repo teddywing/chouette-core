@@ -1,5 +1,6 @@
 module Chouette
   class VehicleJourney < TridentActiveRecord
+    include ChecksumSupport
     include VehicleJourneyRestrictions
     include StifTransportModeEnumerations
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
@@ -23,11 +24,11 @@ module Chouette
 
     validates_presence_of :route
     validates_presence_of :journey_pattern
-    validates :vehicle_journey_at_stops,
+    # validates :vehicle_journey_at_stops,
       # Validation temporarily removed for day offsets
       # :vjas_departure_time_must_be_before_next_stop_arrival_time,
 
-      vehicle_journey_at_stops_are_in_increasing_time_order: true
+      # vehicle_journey_at_stops_are_in_increasing_time_order: false
     validates_presence_of :number
 
     has_many :vehicle_journey_at_stops, -> { includes(:stop_point).order("stop_points.position") }, :dependent => :destroy
@@ -57,6 +58,16 @@ module Chouette
 
     def local_id
       "#{self.route.line.objectid.local_id}-#{self.objectid.local_id}"
+    end
+
+    def checksum_attributes
+      [].tap do |attrs|
+        attrs << self.published_journey_name
+        attrs << self.published_journey_identifier
+        attrs << self.try(:company).try(:objectid).try(:local_id)
+        attrs << self.footnotes.map(&:checksum).sort
+        attrs << self.vehicle_journey_at_stops.map(&:checksum).sort
+      end
     end
 
     def set_default_values

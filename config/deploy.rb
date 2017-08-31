@@ -24,7 +24,7 @@ require "bundler/capistrano"
 require 'whenever/capistrano'
 
 require 'capistrano/npm'
-set :npm_options, '--production --silent --no-progress'
+set :npm_options, '--production --no-progress'
 
 after 'deploy:finalize_update', 'npm:install'
 
@@ -65,6 +65,7 @@ namespace :deploy do
     run "rm -rf #{release_path}/public/uploads"
     run "ln -nfs #{shared_path}/public/uploads #{release_path}/public/uploads"
     run "ln -nfs #{shared_path}/tmp/uploads #{release_path}/tmp/uploads"
+    run "ln -nfs #{shared_path}/tmp/imports #{release_path}/tmp/imports"
   end
   after 'deploy:update_code', 'deploy:symlink_shared'
   before 'deploy:assets:precompile', 'deploy:symlink_shared'

@@ -55,4 +55,7 @@ en:
 
   id_codif: 'Codifligne ID'
   id_reflex: 'Reflex ID'
+  codif_data: 'Codifligne datas'
+  reflex_data: 'Reflex datas'
   objectid: 'ID'
+  brandname: IBOO

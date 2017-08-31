@@ -20,6 +20,14 @@ const stopPoint = (state = {}, action, length) => {
   }
 }
 
+const updateFormForDeletion = (stop) =>{
+  if (stop.stoppoint_id !== undefined){
+    let now = Date.now()
+    addInput('id', stop.stoppoint_id, now)
+    addInput('_destroy', 'true', now)
+  }
+}
+
 const stopPoints = (state = [], action) => {
   switch (action.type) {
     case 'ADD_STOP':
@@ -30,18 +38,19 @@ const stopPoints = (state = [], action) => {
     case 'MOVE_STOP_UP':
       return [
         ...state.slice(0, action.index - 1),
-        state[action.index],
-        state[action.index - 1],
+        _.assign({}, state[action.index], { stoppoint_id: state[action.index - 1].stoppoint_id }),
+        _.assign({}, state[action.index - 1], { stoppoint_id: state[action.index].stoppoint_id }),
         ...state.slice(action.index + 1)
       ]
     case 'MOVE_STOP_DOWN':
       return [
         ...state.slice(0, action.index),
-        state[action.index + 1],
-        state[action.index],
+        _.assign({}, state[action.index + 1], { stoppoint_id: state[action.index].stoppoint_id }),
+        _.assign({}, state[action.index], { stoppoint_id: state[action.index + 1].stoppoint_id }),
         ...state.slice(action.index + 2)
       ]
     case 'DELETE_STOP':
+      updateFormForDeletion(state[action.index])
       return [
         ...state.slice(0, action.index),
         ...state.slice(action.index + 1).map((stopPoint)=>{
@@ -56,7 +65,7 @@ const stopPoints = (state = [], action) => {
             {},
             t,
             {
-              stoppoint_id: "",
+              stoppoint_id: t.stoppoint_id,
               text: action.text.text,
               stoparea_id: action.text.stoparea_id,
               user_objectid: action.text.user_objectid,

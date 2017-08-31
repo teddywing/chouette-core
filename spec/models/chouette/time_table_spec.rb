@@ -52,12 +52,19 @@ describe Chouette::TimeTable, :type => :model do
       expect(subject.int_day_types).to eq int_day_types
     end
 
-    it 'should merge date in_out false' do
+    it 'should not merge date in_out false' do
       another_tt.dates.last.in_out = false
       another_tt.save
 
       subject.merge!(another_tt)
-      expect(subject.dates.map(&:date)).to include(another_tt.dates.last.date)
+      expect(subject.dates.map(&:date)).not_to include(another_tt.dates.last.date)
+    end
+
+    it 'should remove all date in_out false' do
+      subject.dates.create(in_out: false, date: Date.today + 5.day + 1.year)
+      another_tt.dates.last.in_out = false
+      subject.merge!(another_tt)
+      expect(subject.reload.excluded_days.count).to eq(0)
     end
   end
 
@@ -833,8 +840,6 @@ end
                               :period_end => Date.new(2013, 05, 30))
       expect(time_table.intersects([ Date.new(2013, 05, 27),  Date.new(2013, 05, 28)])).to eq([ Date.new(2013, 05, 27),  Date.new(2013, 05, 28)])
     end
-
-
   end
 
   describe "#include_day?" do
@@ -1038,46 +1043,12 @@ end
     end
   end
 
-  describe "#effective_days_of_periods" do
-      before do
-        subject.periods.clear
-        subject.periods << Chouette::TimeTablePeriod.new(
-                              :period_start => Date.new(2014, 6, 30),
-                              :period_end => Date.new(2014, 7, 6))
-        subject.int_day_types = 4|8|16
-      end
-      it "should return monday to wednesday" do
-        expect(subject.effective_days_of_periods.size).to eq(3)
-        expect(subject.effective_days_of_periods[0]).to eq(Date.new(2014, 6, 30))
-        expect(subject.effective_days_of_periods[1]).to eq(Date.new(2014, 7, 1))
-        expect(subject.effective_days_of_periods[2]).to eq(Date.new(2014, 7, 2))
-      end
-      it "should return thursday" do
-        expect(subject.effective_days_of_periods(Chouette::TimeTable.valid_days(32)).size).to eq(1)
-        expect(subject.effective_days_of_periods(Chouette::TimeTable.valid_days(32))[0]).to eq(Date.new(2014, 7, 3))
-      end
+  # it { is_expected.to validate_presence_of :comment }
+  # it { is_expected.to validate_uniqueness_of :objectid }
 
+  describe 'checksum' do
+    it_behaves_like 'checksum support', :time_table
   end
-
-  describe "#included_days" do
-      before do
-        subject.dates.clear
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,16), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,17), :in_out => false)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,18), :in_out => true)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,19), :in_out => false)
-        subject.dates << Chouette::TimeTableDate.new( :date => Date.new(2014,7,20), :in_out => true)
-      end
-      it "should return 3 dates" do
-        days = subject.included_days
-        expect(days.size).to eq(3)
-        expect(days[0]).to eq(Date.new(2014, 7, 16))
-        expect(days[1]).to eq(Date.new(2014,7, 18))
-        expect(days[2]).to eq(Date.new(2014, 7,20))
-      end
-  end
-
-
 
   describe "#excluded_days" do
       before do
@@ -1124,7 +1095,7 @@ end
 
 
 
-  describe "#optimize_periods" do
+  describe "#optimize_overlapping_periods" do
       before do
         subject.periods.clear
         subject.periods << Chouette::TimeTablePeriod.new(
@@ -1215,5 +1186,4 @@ end
         expect(subject.tag_list.size).to eq(2)
       end
   end
-
 end

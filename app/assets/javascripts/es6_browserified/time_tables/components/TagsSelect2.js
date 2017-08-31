@@ -49,9 +49,9 @@ class TagsSelect2 extends React.Component{
               };
             },
             processResults: function(data, params) {
-
+              let items = _.filter(data, ({name}) => name.includes(params.term) )
               return {
-                results: data.map(
+                results: items.map(
                   item => _.assign(
                     {},
                     item,
@@ -62,7 +62,7 @@ class TagsSelect2 extends React.Component{
             },
             cache: true
           },
-          minimumInputLength: 3,
+          minimumInputLength: 1,
           templateResult: formatRepo
         }}
       />
