@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808124304) do
+ActiveRecord::Schema.define(version: 20170817122914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,12 +72,15 @@ ActiveRecord::Schema.define(version: 20170808124304) do
   add_index "access_points", ["objectid"], name: "access_points_objectid_key", unique: true, using: :btree
 
   create_table "api_keys", id: :bigserial, force: :cascade do |t|
-    t.integer  "referential_id", limit: 8
+    t.integer  "referential_id",  limit: 8
     t.string   "token"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "organisation_id"
   end
+
+  add_index "api_keys", ["organisation_id"], name: "index_api_keys_on_organisation_id", using: :btree
 
   create_table "calendars", id: :bigserial, force: :cascade do |t|
     t.string    "name"
@@ -211,11 +214,13 @@ ActiveRecord::Schema.define(version: 20170808124304) do
   end
 
   create_table "footnotes", id: :bigserial, force: :cascade do |t|
-    t.integer  "line_id",    limit: 8
+    t.integer  "line_id",         limit: 8
     t.string   "code"
     t.string   "label"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "checksum"
+    t.text     "checksum_source"
   end
 
   create_table "footnotes_vehicle_journeys", id: false, force: :cascade do |t|
@@ -247,7 +252,7 @@ ActiveRecord::Schema.define(version: 20170808124304) do
   create_table "import_messages", id: :bigserial, force: :cascade do |t|
     t.integer  "criticity"
     t.string   "message_key"
-    t.hstore   "message_attributs"
+    t.hstore   "message_attributes"
     t.integer  "import_id",           limit: 8
     t.integer  "resource_id",         limit: 8
     t.datetime "created_at"
@@ -285,6 +290,12 @@ ActiveRecord::Schema.define(version: 20170808124304) do
     t.datetime "ended_at"
     t.string   "token_download"
     t.string   "type"
+    t.integer  "parent_id",             limit: 8
+    t.string   "parent_type"
+    t.datetime "notified_parent_at"
+    t.integer  "current_step",                    default: 0
+    t.integer  "total_steps",                     default: 0
+    t.string   "creator"
   end
 
   add_index "imports", ["referential_id"], name: "index_imports_on_referential_id", using: :btree
@@ -330,6 +341,8 @@ ActiveRecord::Schema.define(version: 20170808124304) do
     t.integer  "section_status",                    default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "checksum"
+    t.text     "checksum_source"
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree
@@ -350,7 +363,7 @@ ActiveRecord::Schema.define(version: 20170808124304) do
   create_table "line_referential_sync_messages", id: :bigserial, force: :cascade do |t|
     t.integer  "criticity"
     t.string   "message_key"
-    t.hstore   "message_attributs"
+    t.hstore   "message_attributes"
     t.integer  "line_referential_sync_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -538,6 +551,8 @@ ActiveRecord::Schema.define(version: 20170808124304) do
     t.string   "wayback"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "checksum"
+    t.text     "checksum_source"
   end
 
   add_index "routes", ["objectid"], name: "routes_objectid_key", unique: true, using: :btree
@@ -546,11 +561,13 @@ ActiveRecord::Schema.define(version: 20170808124304) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "objectid",                 null: false
-    t.integer  "object_version", limit: 8
+    t.string   "objectid",                  null: false
+    t.integer  "object_version",  limit: 8
     t.string   "creator_id"
-    t.integer  "route_id",       limit: 8
-    t.integer  "stop_point_ids", limit: 8,              array: true
+    t.integer  "route_id",        limit: 8
+    t.integer  "stop_point_ids",  limit: 8,              array: true
+    t.string   "checksum"
+    t.text     "checksum_source"
   end
 
   create_table "routing_constraints_lines", id: false, force: :cascade do |t|
@@ -575,7 +592,7 @@ ActiveRecord::Schema.define(version: 20170808124304) do
   create_table "stop_area_referential_sync_messages", id: :bigserial, force: :cascade do |t|
     t.integer  "criticity"
     t.string   "message_key"
-    t.hstore   "message_attributs"
+    t.hstore   "message_attributes"
     t.integer  "stop_area_referential_sync_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -679,19 +696,23 @@ ActiveRecord::Schema.define(version: 20170808124304) do
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "time_table_dates", id: :bigserial, force: :cascade do |t|
-    t.integer "time_table_id", limit: 8, null: false
+    t.integer "time_table_id",   limit: 8, null: false
     t.date    "date"
-    t.integer "position",                null: false
+    t.integer "position",                  null: false
     t.boolean "in_out"
+    t.string  "checksum"
+    t.text    "checksum_source"
   end
 
   add_index "time_table_dates", ["time_table_id"], name: "index_time_table_dates_on_time_table_id", using: :btree
 
   create_table "time_table_periods", id: :bigserial, force: :cascade do |t|
-    t.integer "time_table_id", limit: 8, null: false
+    t.integer "time_table_id",   limit: 8, null: false
     t.date    "period_start"
     t.date    "period_end"
-    t.integer "position",                null: false
+    t.integer "position",                  null: false
+    t.string  "checksum"
+    t.text    "checksum_source"
   end
 
   add_index "time_table_periods", ["time_table_id"], name: "index_time_table_periods_on_time_table_id", using: :btree
@@ -710,6 +731,8 @@ ActiveRecord::Schema.define(version: 20170808124304) do
     t.datetime "updated_at"
     t.string   "color"
     t.integer  "created_from_id"
+    t.string   "checksum"
+    t.text     "checksum_source"
   end
 
   add_index "time_tables", ["calendar_id"], name: "index_time_tables_on_calendar_id", using: :btree
@@ -786,6 +809,8 @@ ActiveRecord::Schema.define(version: 20170808124304) do
     t.string  "for_alighting"
     t.integer "departure_day_offset",                     default: 0
     t.integer "arrival_day_offset",                       default: 0
+    t.string  "checksum"
+    t.text    "checksum_source"
   end
 
   add_index "vehicle_journey_at_stops", ["stop_point_id"], name: "index_vehicle_journey_at_stops_on_stop_pointid", using: :btree
@@ -811,6 +836,8 @@ ActiveRecord::Schema.define(version: 20170808124304) do
     t.integer  "journey_category",                          default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "checksum"
+    t.text     "checksum_source"
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
@@ -840,6 +867,7 @@ ActiveRecord::Schema.define(version: 20170808124304) do
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
+  add_foreign_key "api_keys", "organisations"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify
