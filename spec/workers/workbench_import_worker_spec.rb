@@ -38,6 +38,8 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   let( :post_response_ok ){ double(status: 201, body: "{}") }
 
   before do
+    Timecop.freeze(Time.now)
+
     # Silence Logger
     allow_any_instance_of(Logger).to receive(:info)
     allow_any_instance_of(Logger).to receive(:warn)
@@ -48,7 +50,14 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
     allow(Api::V1::ApiKey).to receive(:from).and_return(api_key)
     allow(ZipService).to receive(:new).with(downloaded_zip).and_return zip_service
     expect(zip_service).to receive(:entry_group_streams).and_return(entry_groups)
-    expect( import ).to receive(:update).with(status: 'running')
+    expect( import ).to receive(:update).with(
+      status: 'running',
+      started_at: Time.now
+    )
+  end
+
+  after do
+    Timecop.return
   end
 
 
