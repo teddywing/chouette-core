@@ -107,7 +107,7 @@ gem 'google-analytics-rails'
 # Model
 gem 'will_paginate'
 gem 'ransack'
-gem "squeel", github: 'activerecord-hackery/squeel'
+#gem "squeel", github: 'activerecord-hackery/squeel'
 gem 'active_attr'
 
 gem 'sequel'
