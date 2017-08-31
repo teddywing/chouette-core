@@ -27,7 +27,7 @@ const modal = (state = {}, action) => {
       newModalProps = _.assign({}, state.modalProps, {error: ''})
       return _.assign({}, state, {type: ''}, {modalProps: newModalProps})
     case 'CLOSE_PERIOD_FORM':
-      newModalProps = _.assign({}, state.modalProps, {active: false})
+      newModalProps = _.assign({}, state.modalProps, {active: false, error: ""})
       return _.assign({}, state, {modalProps: newModalProps})
     case 'OPEN_EDIT_PERIOD_FORM':
       period_start = action.period.period_start.split('-')

@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'calendrier-application',
              t('time_tables.index.title'),
              '',
              ((policy(Chouette::TimeTable).create? && @referential.organisation == current_organisation) ? link_to(t('actions.add'), new_referential_time_table_path(@referential), class: 'btn btn-default') : '')

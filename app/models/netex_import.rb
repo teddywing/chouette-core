@@ -5,6 +5,7 @@ class NetexImport < Import
   validates_presence_of :parent
 
   def launch_java_import
+    return if self.class.finished_statuses.include?(status)
     logger.warn  "Call iev get #{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{id}"
 
     Thread.new do

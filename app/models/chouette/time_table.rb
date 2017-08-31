@@ -22,7 +22,11 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   belongs_to :created_from, class_name: 'Chouette::TimeTable'
 
   scope :overlapping, -> (date_start, date_end) do
-    joins(:periods).where('(period_start, period_end) OVERLAPS (?, ?)', date_start, date_end)
+    joins("
+      LEFT JOIN time_table_periods ON time_tables.id = time_table_periods.time_table_id
+      LEFT JOIN time_table_dates ON time_tables.id = time_table_dates.time_table_id
+    ")
+    .where("(time_table_periods.period_start <= :end AND time_table_periods.period_end >= :start) OR (time_table_dates.date BETWEEN :start AND :end)", {start: date_start, end: date_end})
   end
 
   after_save :save_shortcuts
