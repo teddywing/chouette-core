@@ -21,7 +21,7 @@ module StifNetexAttributesSupport
   end
 
   def objectid_format_compliance
-    errors.add :objectid, I18n.t("activerecord.errors.models.stif_netex.invalid_object_id") if !objectid.valid?
+    errors.add :objectid, I18n.t("activerecord.errors.models.trident.invalid_object_id") if !objectid.valid?
   end
 
   def local_id
