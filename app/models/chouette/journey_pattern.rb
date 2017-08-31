@@ -21,8 +21,7 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   after_update :control_route_sections, :unless => "control_checked"
 
   def local_id
-    # In some test we don't have route...
-    "#{self.try(:route).try(:line).try(:objectid).try(:local_id)}-#{self.objectid.local_id}"
+    "#{self.try(:route).try(:line).try(:objectid).try(:local_id)}-#{self.referential.id}-#{self.id}"
   end
 
   def self.state_update route, state
