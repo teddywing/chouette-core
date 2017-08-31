@@ -24,6 +24,10 @@ module StifNetexAttributesSupport
     errors.add :objectid, I18n.t("activerecord.errors.models.stif_netex.invalid_object_id") if !objectid.valid?
   end
 
+  def local_id
+    "#{self.referential.id}-#{self.id}"
+  end
+
   def build_objectid
     if objectid.include? ':__pending_id__'
       self.objectid = Chouette::StifNetexObjectid.create(self.provider_id, self.model_name, self.local_id, self.boiv_id)
