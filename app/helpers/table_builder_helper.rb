@@ -186,6 +186,12 @@ module TableBuilderHelper
           columns.each do |column|
             value = column.value(item)
 
+            if column.linkable?
+              path = column.link_to(item)
+              bcont << content_tag(:td, link_to(value, path), title: 'Voir')
+              next  # TODO: temporary for testing, fix all the stuff below
+            end
+
             if column_is_linkable?(column)
               # Build a link to the `item`
               polymorph_url = URL.polymorphic_url_parts(
