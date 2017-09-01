@@ -46,7 +46,18 @@ require 'table_builder_helper/url'
 #     ],
 #     links: [:show, :edit],
 #     cls: 'table has-search',
-#     overhead: [ {title: 'one', width: 1, cls: 'toto'}, {title: 'two <span class="test">Info</span>', width: 2, cls: 'default'} ]
+#     overhead: [
+#       {
+#         title: 'one',
+#         width: 1,
+#         cls: 'toto'
+#       },
+#       {
+#         title: 'two <span class="test">Info</span>',
+#         width: 2,
+#         cls: 'default'
+#       }
+#     ]
 #   )
 module TableBuilderHelper
   # TODO: rename this after migration from `table_builder`
