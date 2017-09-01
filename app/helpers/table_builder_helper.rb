@@ -26,7 +26,10 @@ require 'table_builder_helper/url'
 #       ),
 #       TableBuilderHelper::Column.new(
 #         key: :name,
-#         attribute: 'name'
+#         attribute: 'name',
+#         link_to: lambda do |company|
+#           referential_company_path(@referential, company)
+#         end
 #       ),
 #       TableBuilderHelper::Column.new(
 #         key: :phone,
