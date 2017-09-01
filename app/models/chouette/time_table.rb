@@ -32,7 +32,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   after_save :save_shortcuts
 
   def local_id
-    "#{self.referential.id}-#{self.id}"
+    "IBOO-#{self.referential.id}-#{self.id}"
   end
 
   def checksum_attributes

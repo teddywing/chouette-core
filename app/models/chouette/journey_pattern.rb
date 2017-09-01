@@ -23,7 +23,7 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
 
 
   def local_id
-    "#{self.try(:route).try(:line).try(:objectid).try(:local_id)}-#{self.referential.id}-#{self.id}"
+    "IBOO-#{self.try(:route).try(:line).try(:objectid).try(:local_id)}-#{self.referential.id}-#{self.id}"
   end
 
   def checksum_attributes

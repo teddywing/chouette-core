@@ -25,7 +25,7 @@ module StifNetexAttributesSupport
   end
 
   def local_id
-    "#{self.referential.id}-#{self.id}"
+    "IBOO-#{self.referential.id}-#{self.id}"
   end
 
   def build_objectid
