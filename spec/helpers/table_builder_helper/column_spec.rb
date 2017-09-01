@@ -58,19 +58,5 @@ describe TableBuilderHelper::Column do
         ).link_to(train)
       ).to eq('TGV')
     end
-
-    it "takes any number of arguments" do
-      train = double('train', kind: 'Shinkansen')
-
-      expect(
-        TableBuilderHelper::Column.new(
-          name: 'unused',
-          attribute: nil,
-          link_to: lambda do |prefix, train|
-            "#{prefix}: #{train.kind}"
-          end
-        ).link_to('Type', train)
-      ).to eq('Type: Shinkansen')
-    end
   end
 end
