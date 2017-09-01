@@ -20,4 +20,20 @@ describe TableBuilderHelper::Column do
       ).to eq('Numéro de téléphone')
     end
   end
+
+  describe "#link_to" do
+    it "calls the block passed in and returns the result" do
+      train = double('train', kind: 'TGV')
+
+      expect(
+        TableBuilderHelper::Column.new(
+          name: 'unused',
+          attribute: nil,
+          link_to: lambda do |train|
+            train.kind
+          end
+        ).link_to(train)
+      ).to eq('TGV')
+    end
+  end
 end

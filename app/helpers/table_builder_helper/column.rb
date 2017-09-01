@@ -2,7 +2,7 @@ module TableBuilderHelper
   class Column
     attr_reader :key, :name, :attribute, :sortable
 
-    def initialize(key: nil, name: '', attribute:, sortable: true)
+    def initialize(key: nil, name: '', attribute:, sortable: true, link_to: nil)
       if key.nil? && name.empty?
         raise ColumnMustHaveKeyOrNameError
       end
@@ -11,6 +11,7 @@ module TableBuilderHelper
       @name = name
       @attribute = attribute
       @sortable = sortable
+      @link_to = link_to
     end
 
     def value(obj)
@@ -28,6 +29,10 @@ module TableBuilderHelper
       model_key = model.to_s.demodulize.underscore
 
       I18n.t("activerecord.attributes.#{model_key}.#{@key}")
+    end
+
+    def link_to(obj)
+      @link_to.call(obj)
     end
   end
 
