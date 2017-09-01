@@ -35,8 +35,8 @@ module TableBuilderHelper
       !@link_to.nil?
     end
 
-    def link_to(obj)
-      @link_to.call(obj)
+    def link_to(*objs)
+      @link_to.call(*objs)
     end
   end
 
