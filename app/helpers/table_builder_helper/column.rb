@@ -31,6 +31,10 @@ module TableBuilderHelper
       I18n.t("activerecord.attributes.#{model_key}.#{@key}")
     end
 
+    def linkable?
+      !@link_to.nil?
+    end
+
     def link_to(obj)
       @link_to.call(obj)
     end

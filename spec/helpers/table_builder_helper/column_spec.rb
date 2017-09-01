@@ -21,6 +21,29 @@ describe TableBuilderHelper::Column do
     end
   end
 
+  describe "#linkable?" do
+    it "returns true if :link_to is not nil" do
+      expect(
+        TableBuilderHelper::Column.new(
+          name: 'unused',
+          attribute: nil,
+          link_to: lambda do
+            train.kind
+          end
+        ).linkable?
+      ).to be true
+    end
+
+    it "returns false if :link_to is nil" do
+      expect(
+        TableBuilderHelper::Column.new(
+          name: 'unused',
+          attribute: nil
+        ).linkable?
+      ).to be false
+    end
+  end
+
   describe "#link_to" do
     it "calls the block passed in and returns the result" do
       train = double('train', kind: 'TGV')
