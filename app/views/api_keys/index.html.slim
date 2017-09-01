@@ -12,7 +12,10 @@
         [ \
           TableBuilderHelper::Column.new( \
             key: :name, \
-            attribute: 'name' \
+            attribute: 'name', \
+            link_to: lambda do |api_key| \
+              organisation_api_key_path(api_key) \
+            end \
           ), \
           TableBuilderHelper::Column.new( \
             key: :token, \
