@@ -31,7 +31,10 @@
               ),
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |network| \
+                  referential_network_path(@referential, network) \
+                end \
               ) \
             ],
             links: [:show],

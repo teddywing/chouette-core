@@ -30,7 +30,10 @@
           [ \
             TableBuilderHelper::Column.new( \
               name: "Arrêts de l'itinéraire", \
-              attribute: 'name' \
+              attribute: 'name', \
+              link_to: lambda do |stop_point| \
+                referential_stop_area_path(@referential, stop_point.stop_area) \
+              end \
             ),
             TableBuilderHelper::Column.new( \
               name: "Arrêts inclus dans l'ITL", \

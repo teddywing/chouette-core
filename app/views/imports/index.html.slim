@@ -28,7 +28,10 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |import| \
+                  workbench_import_path(@workbench, import) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :creator, \

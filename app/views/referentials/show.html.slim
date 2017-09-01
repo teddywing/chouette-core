@@ -51,7 +51,10 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |line| \
+                  referential_line_path(@referential, line) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :deactivated, \
