@@ -96,7 +96,10 @@ describe TableBuilderHelper, type: :helper do
         [
           TableBuilderHelper::Column.new(
             key: :name,
-            attribute: 'name'
+            attribute: 'name',
+            link_to: lambda do |referential|
+              referential_path(referential)
+            end
           ),
           TableBuilderHelper::Column.new(
             key: :status,
@@ -238,7 +241,10 @@ describe TableBuilderHelper, type: :helper do
           ),
           TableBuilderHelper::Column.new(
             key: :name,
-            attribute: 'name'
+            attribute: 'name',
+            link_to: lambda do |company|
+              referential_company_path(referential, company)
+            end
           ),
           TableBuilderHelper::Column.new(
             key: :phone,
@@ -347,7 +353,10 @@ describe TableBuilderHelper, type: :helper do
           ),
           TableBuilderHelper::Column.new(
             key: :name,
-            attribute: 'name'
+            attribute: 'name',
+            link_to: lambda do |company|
+              referential_company_path(referential, company)
+            end
           ),
           TableBuilderHelper::Column.new(
             key: :phone,
