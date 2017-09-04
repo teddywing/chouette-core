@@ -4,7 +4,7 @@ RSpec.describe Import, type: :model do
   it { should belong_to(:workbench) }
   it { should belong_to(:parent) }
 
-  it { should enumerize(:status).in("aborted", "canceled", "failed", "new", "pending", "running", "successful") }
+  it { should enumerize(:status).in("aborted", "canceled", "failed", "new", "pending", "running", "successful", "warning") }
 
   it { should validate_presence_of(:file) }
   it { should validate_presence_of(:workbench) }
@@ -25,6 +25,13 @@ RSpec.describe Import, type: :model do
       parent: workbench_import
     )
   end
+
+  # describe "#destroy" do
+  #   it "must call #destroy on imports children and then import_messages, import_resources linked" do
+  #     TODO
+  #
+  #   end
+  # end
 
   describe "#notify_parent" do
     it "must call #child_change on its parent" do

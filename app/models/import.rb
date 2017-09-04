@@ -5,8 +5,9 @@ class Import < ActiveRecord::Base
 
   belongs_to :parent, polymorphic: true
 
-  has_many :messages, class_name: "ImportMessage"
-  has_many :children, foreign_key: :parent_id, class_name: "Import"
+  has_many :messages, class_name: "ImportMessage", dependent: :destroy
+  has_many :resources, class_name: "ImportResource", dependent: :destroy
+  has_many :children, foreign_key: :parent_id, class_name: "Import", dependent: :destroy
 
   extend Enumerize
   enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true

@@ -99,7 +99,7 @@ module Stif
 
         if entry['parent']
           stop.parent = self.find_by_object_id entry['parent']
-          stop.save! if stop.changed
+          stop.save if stop.changed && stop.valid?
         end
 
         if entry['quays']
@@ -107,7 +107,7 @@ module Stif
             children = self.find_by_object_id id
             next unless children
             children.parent = stop
-            children.save! if children.changed?
+            children.save if children.changed? && children.valid?
           end
         end
       end
@@ -166,7 +166,7 @@ module Stif
           stop.import_xml = entry[:xml]
           prop = stop.new_record? ? :imported_count : :updated_count
           increment_counts prop, 1
-          stop.save!
+          stop.save if stop.valid?
         end
         # Create AccessPoint from StopPlaceEntrance
         if entry[:stop_place_entrances]

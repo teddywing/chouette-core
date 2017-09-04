@@ -21,7 +21,10 @@
             [ \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |calendar| \
+                  calendar_path(calendar) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :short_name, \

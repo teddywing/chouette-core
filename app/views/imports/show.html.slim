@@ -26,20 +26,30 @@
         = table_builder_2 @import.children,
           [ \
             TableBuilderHelper::Column.new( \
-            name: 'Nom du jeu de données', \
-            attribute: 'name' \
+              name: 'Nom du jeu de données', \
+              attribute: 'name', \
+              sortable: false, \
+              link_to: lambda do |import| \
+                referential_path(import.referential) if import.referential.present? \
+              end \
             ), \
             TableBuilderHelper::Column.new( \
               key: :status, \
-              attribute: 'status' \
+              attribute: Proc.new { |n| import_status(n.status) }, \
+              sortable: false, \
+              link_to: lambda do |import| \
+                workbench_import_import_resources_path(import.workbench_id, import) \
+              end \
             ), \
             TableBuilderHelper::Column.new( \
               name: 'Contrôle STIF', \
-              attribute: '' \
+              attribute: '', \
+              sortable: false, \
             ), \
             TableBuilderHelper::Column.new( \
               name: 'Contrôle organisation', \
-              attribute: '' \
+              attribute: '', \
+              sortable: false, \
             ) \
           ],
           links: [],
@@ -49,7 +59,7 @@
             { \
               title: "#{@import.children_succeedeed} jeu de données validé sur #{@import.children.count} présents dans l'archive", \
               width: 1, \
-              cls: 'overheaded-danger full-border' \
+              cls: "#{@import.import_status_css_class} full-border" \
             }, { \
               title: 'Bilan des jeux de contrôles d\'import <span title="Lorem ipsum..." class="fa fa-lg fa-info-circle text-info"></span>', \
               width: 2, \

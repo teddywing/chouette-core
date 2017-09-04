@@ -9,7 +9,8 @@ class ReferentialsController < BreadcrumbController
   def new
     if params[:from]
       source_referential = Referential.find(params[:from])
-      @referential = Referential.new_from(source_referential)
+      @referential = Referential.new_from(source_referential, current_functional_scope)
+      @referential.workbench_id = current_organisation.workbenches.first.id
     end
 
     new! do
@@ -56,6 +57,7 @@ class ReferentialsController < BreadcrumbController
   end
 
   def destroy
+    binding.pry
     workbench = referential.workbench_id
 
     referential.destroy!

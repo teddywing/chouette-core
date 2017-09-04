@@ -26,7 +26,10 @@ require 'table_builder_helper/url'
 #       ),
 #       TableBuilderHelper::Column.new(
 #         key: :name,
-#         attribute: 'name'
+#         attribute: 'name',
+#         link_to: lambda do |company|
+#           referential_company_path(@referential, company)
+#         end
 #       ),
 #       TableBuilderHelper::Column.new(
 #         key: :phone,
@@ -43,7 +46,18 @@ require 'table_builder_helper/url'
 #     ],
 #     links: [:show, :edit],
 #     cls: 'table has-search',
-#     overhead: [ {title: 'one', width: 1, cls: 'toto'}, {title: 'two <span class="test">Info</span>', width: 2, cls: 'default'} ]
+#     overhead: [
+#       {
+#         title: 'one',
+#         width: 1,
+#         cls: 'toto'
+#       },
+#       {
+#         title: 'two <span class="test">Info</span>',
+#         width: 2,
+#         cls: 'default'
+#       }
+#     ]
 #   )
 module TableBuilderHelper
   # TODO: rename this after migration from `table_builder`
@@ -186,15 +200,12 @@ module TableBuilderHelper
           columns.each do |column|
             value = column.value(item)
 
-            if column_is_linkable?(column)
-              # Build a link to the `item`
-              polymorph_url = URL.polymorphic_url_parts(
-                item,
-                referential
-              )
+            if column.linkable?
+              path = column.link_to(item)
+              link = link_to(value, path)
 
               if overhead.empty?
-                bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
+                bcont << content_tag(:td, link, title: 'Voir')
 
               else
                 i = columns.index(column)
@@ -203,16 +214,16 @@ module TableBuilderHelper
                   if (i > 0) && (overhead[i - 1][:width] > 1)
                     clsArrayAlt = overhead[i - 1][:cls].split
 
-                    bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir', class: td_cls(clsArrayAlt))
+                    bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt))
 
                   else
-                    bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir')
+                    bcont << content_tag(:td, link, title: 'Voir')
                   end
 
                 else
                   clsArray = overhead[columns.index(column)][:cls].split
 
-                  bcont << content_tag(:td, link_to(value, polymorph_url), title: 'Voir', class: td_cls(clsArray))
+                  bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray))
                 end
               end
 
@@ -332,10 +343,6 @@ module TableBuilderHelper
         content_tag(:label, '', for: id_name)
       )
     end
-  end
-
-  def column_is_linkable?(column)
-    column.attribute == 'name' || column.attribute == 'comment'
   end
 
   def gear_menu_link(link)

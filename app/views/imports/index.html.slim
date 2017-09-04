@@ -20,15 +20,18 @@
             [ \
               TableBuilderHelper::Column.new( \
                 key: :status, \
-                attribute: 'status' \
+                attribute: Proc.new { |n| import_status(n.status) }, \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :started_at, \
-                attribute: 'started_at' \
+                attribute: Proc.new { |n| l(n.started_at, format: :long) }, \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |import| \
+                  workbench_import_path(@workbench, import) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :creator, \
