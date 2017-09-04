@@ -33,6 +33,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_organisation
 
+  def current_functional_scope
+    JSON.parse(current_organisation.sso_attributes["functional_scope"]) if current_organisation
+  end
+  helper_method :current_functional_scope
+
   def begin_of_association_chain
     current_organisation
   end
