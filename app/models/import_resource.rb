@@ -3,9 +3,9 @@ class ImportResource < ActiveRecord::Base
   belongs_to :import
 
   extend Enumerize
-  enumerize :status, in: %i(new pending successful failed)
+  enumerize :status, in: %i(OK ERROR WARNING IGNORED), scope: true
 
-  validates_presence_of :name, :type, :reference
+  validates_presence_of :name, :resource_type, :reference
 
   aasm column: :status do
     state :new, :initial => true

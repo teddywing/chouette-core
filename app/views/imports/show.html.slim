@@ -26,20 +26,30 @@
         = table_builder_2 @import.children,
           [ \
             TableBuilderHelper::Column.new( \
-            name: 'Nom du jeu de données', \
-            attribute: 'name' \
+              name: 'Nom du jeu de données', \
+              attribute: 'name', \
+              sortable: false, \
+              link_to: lambda do |import| \
+                referential_path(import.referential) \
+              end \
             ), \
             TableBuilderHelper::Column.new( \
               key: :status, \
-              attribute: 'status' \
+              attribute: Proc.new { |n| import_status(n.status) }, \
+              sortable: false, \
+              link_to: lambda do |import| \
+                workbench_import_import_resources_path(import.workbench_id, import) \
+              end \
             ), \
             TableBuilderHelper::Column.new( \
               name: 'Contrôle STIF', \
-              attribute: '' \
+              attribute: '', \
+              sortable: false, \
             ), \
             TableBuilderHelper::Column.new( \
               name: 'Contrôle organisation', \
-              attribute: '' \
+              attribute: '', \
+              sortable: false, \
             ) \
           ],
           links: [],

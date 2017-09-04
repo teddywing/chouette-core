@@ -1,6 +1,24 @@
 # -*- coding: utf-8 -*-
 module ImportsHelper
 
+  # Import statuses helper
+  def import_status(status)
+    if %w[new running pending].include? status
+      content_tag :span, '', class: "fa fa-clock-o"
+    else
+      cls =''
+      cls = 'success' if status == 'successful'
+      cls = 'warning' if status == 'warning'
+      cls = 'danger' if %w[failed aborted canceled].include? status
+
+      content_tag :span, '', class: "fa fa-circle text-#{cls}"
+    end
+  end
+
+  ##############################
+  #      TO CLEAN!!!
+  ##############################
+
   def fields_for_import_task_format(form)
     begin
       render :partial => import_partial_name(form), :locals => { :form => form }

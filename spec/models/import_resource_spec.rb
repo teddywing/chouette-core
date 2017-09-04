@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe ImportResource, :type => :model do
   it { should belong_to(:import) }
 
-  it { should enumerize(:status).in(:new, :pending, :successful, :failed) }
+  it { should enumerize(:status).in(:OK, :ERROR, :WARNING, :IGNORED) }
 
   it { should validate_presence_of(:name) }
-  it { should validate_presence_of(:type) }
+  it { should validate_presence_of(:resource_type) }
   it { should validate_presence_of(:reference) }
 
   describe 'states' do

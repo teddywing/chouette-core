@@ -3,7 +3,7 @@ FactoryGirl.define do
     association :import
     status :new
     sequence(:name) { |n| "Import resource #{n}" }
-    type 'type'
+    resource_type 'type'
     reference 'reference'
   end
 end

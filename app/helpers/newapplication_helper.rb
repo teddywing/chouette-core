@@ -287,18 +287,4 @@ module NewapplicationHelper
     end
   end
 
-  # Import statuses helper
-  def import_status(status)
-    if %w[new running pending].include? status
-      content_tag :span, '', class: "fa fa-clock-o"
-    else
-      cls =''
-      cls = 'success' if status == 'successful'
-      cls = 'warning' if status == 'warning'
-      cls = 'danger' if %w[failed aborted canceled].include? status
-
-      content_tag :span, '', class: "fa fa-circle text-#{cls}"
-    end
-  end
-
 end

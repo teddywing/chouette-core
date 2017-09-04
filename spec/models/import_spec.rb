@@ -26,6 +26,13 @@ RSpec.describe Import, type: :model do
     )
   end
 
+  # describe "#destroy" do
+  #   it "must call #destroy on imports children and then import_messages, import_resources linked" do
+  #     TODO
+  #
+  #   end
+  # end
+
   describe "#notify_parent" do
     it "must call #child_change on its parent" do
       allow(netex_import).to receive(:update)

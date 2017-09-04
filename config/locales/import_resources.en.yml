@@ -1,0 +1,17 @@
+en:
+  import_resources:
+    index:
+      title: "NeTEx conformity"
+      table_state: "%{lines_imported} lines imported on %{lines_in_zipfile} presents in zipfile"
+      table_title: "Satus of anlyzed files"
+      table_explanation: "When calendriers.xml and/or commun.xml are not imported, then all lines file are not processed."
+  activerecord:
+    models:
+      import_resource:
+        zero:  "netex conformity"
+        one:   "netex conformity"
+        other: "netex conformities"
+    attributes:
+      import:
+        name: "Filename"
+        status: "Status"

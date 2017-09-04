@@ -1,0 +1,54 @@
+/ PageHeader
+= pageheader 'importer',
+             t('.title'),
+             '',
+             '',
+             ''
+
+/ PageContent
+.page_content
+  .container-fluid
+    - if @import_resources.any?
+      .row
+        .col-lg-12
+          = definition_list t('metadatas'),{ 'Bilan d\'import' => link_to(@import.parent.name, workbench_import_path(@import.parent.workbench, @import.parent) ),
+              'Jeu de données associé' => ( @import.referential.present? ? link_to(@import.referential.name, referential_path(@import.referential)) : '-' ) }
+
+    - if @import_resources.any?
+      .row
+        .col-lg-12
+          h1
+            span = import_status(@import.status)
+            span = t('.table_state', lines_imported: @import_resources.lines_imported , lines_in_zipfile: @import_resources.lines_in_zipfile )
+        .col-lg-12
+          h2 = t('.table_title')
+        .col-lg-12
+          = t('.table_explanation')
+        .col-lg-12
+          = table_builder_2 @import_resources.where(resource_type: :file),
+            [ \
+              TableBuilderHelper::Column.new( \
+                key: :name, \
+                attribute: 'name', \
+                sortable: false, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :status, \
+                attribute: Proc.new { |n| import_resource_status(n.status) }, \
+                sortable: false, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: 'Résultat des tests' , \
+                key: :resource_type, \
+                attribute: 'resource_type', \
+                sortable: false, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: 'Téléchargement' , \
+                key: :status, \
+                attribute: 'status', \
+                sortable: false, \
+              ), \
+            ],
+            links: [],
+            cls: 'table has-search'
