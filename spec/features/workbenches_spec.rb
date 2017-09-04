@@ -169,7 +169,7 @@ describe 'Workbenches', type: :feature do
         end
 
         context 'user does not have the permission to create referentials' do
-          it 'does not show the clone link for referential' do
+          xit 'does not show the clone link for referential' do
             @user.update_attribute(:permissions, [])
             visit referential_path(referential)
             expect(page).not_to have_link(I18n.t('actions.add'), href: new_referential_path(workbench_id: workbench.id))
