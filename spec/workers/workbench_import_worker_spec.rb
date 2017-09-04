@@ -23,12 +23,17 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
   let( :upload_path ) { api_v1_netex_imports_path(format: :json) }
 
-  let( :entry_group_streams ) do
-    entry_count.times.map{ |i| double( "entry group stream #{i}" ) }
+  let( :subdirs ) do
+    entry_count.times.map do |i|
+      ZipService::Subdir.new(
+        "subdir #{i}",
+        double("subdir #{i}", rewind: 0, read: '')
+      )
+    end
   end
   let( :entry_groups ) do
     entry_count.times.map do | i |
-      {"entry_group_name#{i}" => entry_group_streams[i] }
+      {"entry_group_name#{i}" => subdirs[i] }
     end
   end
 
@@ -49,7 +54,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
     allow(Api::V1::ApiKey).to receive(:from).and_return(api_key)
     allow(ZipService).to receive(:new).with(downloaded_zip).and_return zip_service
-    expect(zip_service).to receive(:entry_group_streams).and_return(entry_groups)
+    expect(zip_service).to receive(:subdirs).and_return(subdirs)
     expect( import ).to receive(:update).with(
       status: 'running',
       started_at: Time.now
