@@ -30,7 +30,7 @@
               attribute: 'name', \
               sortable: false, \
               link_to: lambda do |import| \
-                referential_path(import.referential) \
+                referential_path(import.referential) if import.referential.present? \
               end \
             ), \
             TableBuilderHelper::Column.new( \
@@ -59,7 +59,7 @@
             { \
               title: "#{@import.children_succeedeed} jeu de données validé sur #{@import.children.count} présents dans l'archive", \
               width: 1, \
-              cls: 'overheaded-danger full-border' \
+              cls: "#{@import.import_status_css_class} full-border" \
             }, { \
               title: 'Bilan des jeux de contrôles d\'import <span title="Lorem ipsum..." class="fa fa-lg fa-info-circle text-info"></span>', \
               width: 2, \

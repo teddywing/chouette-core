@@ -39,15 +39,16 @@
               ), \
               TableBuilderHelper::Column.new( \
                 name: 'Résultat des tests' , \
-                key: :resource_type, \
-                attribute: 'resource_type', \
+                attribute: Proc.new { |n| I18n.t('import_resources.index.metrics', n.metrics.deep_symbolize_keys) }, \
                 sortable: false, \
               ), \
               TableBuilderHelper::Column.new( \
                 name: 'Téléchargement' , \
-                key: :status, \
-                attribute: 'status', \
+                attribute: Proc.new { |n| '<i class="fa fa-download" aria-hidden="true"></i>'.html_safe }, \
                 sortable: false, \
+                link_to: lambda do |import_resource| \
+                  workbench_import_import_resource_import_messages_path(import_resource.import.workbench, import_resource.import, import_resource, format: 'csv' ) \
+                end \
               ), \
             ],
             links: [],

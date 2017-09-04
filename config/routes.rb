@@ -5,8 +5,10 @@ ChouetteIhm::Application.routes.draw do
     delete :referentials, on: :member, action: :delete_referentials
     resources :imports do
       get :download, on: :member
-      resources :import_messages, only: [:index]
-      resources :import_resources, only: [:index]
+      resources :import_resources, only: [:index] do
+        resources :import_messages, only: [:index]
+      end
+
     end
   end
 
