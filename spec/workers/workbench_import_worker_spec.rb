@@ -6,11 +6,6 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   let( :workbench ){ import.workbench }
   let( :referential ){ import.referential }
   let( :api_key ){ build_stubbed :api_key, referential: referential, token: "#{referential.id}-#{SecureRandom.hex}" }
-  let( :params ) do
-    { netex_import:
-      { referential_id: referential.id, workbench_id: workbench.id }
-    }
-  end
 
   # http://www.example.com/workbenches/:workbench_id/imports/:id/download
   let( :host ){ Rails.configuration.rails_host }
@@ -29,11 +24,6 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
         "subdir #{i}",
         double("subdir #{i}", rewind: 0, read: '')
       )
-    end
-  end
-  let( :entry_groups ) do
-    entry_count.times.map do | i |
-      {"entry_group_name#{i}" => subdirs[i] }
     end
   end
 
@@ -75,8 +65,8 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
         .with(host: host, path: path, params: {token: download_token})
         .and_return( download_zip_response )
 
-      entry_groups.each do | entry_group_name, entry_group_stream |
-        mock_post entry_group_name, entry_group_stream, post_response_ok
+      subdirs.each do |subdir|
+        mock_post subdir, post_response_ok
       end
 
       expect( import ).to receive(:update).with(total_steps: 2)
@@ -97,14 +87,14 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
         .with(host: host, path: path, params: {token: download_token})
         .and_return( download_zip_response )
 
-      # First entry_group succeeds
-      entry_groups[0..0].each do | entry_group_name, entry_group_stream |
-        mock_post entry_group_name, entry_group_stream, post_response_ok
+      # First subdir succeeds
+      subdirs[0..0].each do |subdir|
+        mock_post subdir, post_response_ok
       end
 
-      # Second entry_group fails (M I S E R A B L Y)
-      entry_groups[1..1].each do | entry_group_name, entry_group_stream |
-        mock_post entry_group_name, entry_group_stream, post_response_failure
+      # Second subdir fails (M I S E R A B L Y)
+      subdirs[1..1].each do |subdir|
+        mock_post subdir, post_response_failure
       end
 
       expect( import ).to receive(:update).with(total_steps: 3)
@@ -117,13 +107,24 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
     end
   end
 
-  def mock_post entry_group_name, entry_group_stream, response
+  def mock_post subdir, response
     expect( HTTPService ).to receive(:post_resource)
-      .with(host: host,
-            path: upload_path,
-            token: api_key.token,
-            params: params,
-            upload: {file: [entry_group_stream, 'application/zip', entry_group_name]})
-      .and_return(response)
+      .with(
+        host: host,
+        path: upload_path,
+        params: {
+          netex_import: {
+            parent_id: import.id,
+            parent_type: import.class.name,
+            workbench_id: workbench.id,
+            name: subdir.name,
+            file: HTTPService.upload(
+              subdir.stream,
+              'application/zip',
+              "#{subdir.name}.zip"
+            )
+          }
+        }
+      ).and_return(response)
   end
 end
