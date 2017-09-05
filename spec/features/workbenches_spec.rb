@@ -169,7 +169,7 @@ describe 'Workbenches', type: :feature do
         end
 
         context 'user does not have the permission to create referentials' do
-          xit 'does not show the clone link for referential' do
+          it 'does not show the clone link for referential' do
             @user.update_attribute(:permissions, [])
             visit referential_path(referential)
             expect(page).not_to have_link(I18n.t('actions.add'), href: new_referential_path(workbench_id: workbench.id))
@@ -178,16 +178,24 @@ describe 'Workbenches', type: :feature do
       end
 
       describe 'create new Referential' do
-        xit "create a new Referential with a specifed line and period" do
-          referential.destroy
+        #TODO Manage functional_scope
+        it "create a new Referential with a specifed line and period" do
+          skip: "The functional scope for the Line collection causes problems" do
+            functional_scope = JSON.generate(Chouette::Line.all.map(&:objectid))
+            lines = Chouette::Line.where(objectid: functional_scope)
 
-          visit workbench_path(workbench)
-          click_link I18n.t('actions.add')
-          fill_in "referential[name]", with: "Referential to test creation"
-          select workbench.lines.first.id, from: 'referential[metadatas_attributes][0][lines][]'
+            @user.organisation.update_attribute(:sso_attributes, { functional_scope: functional_scope } )
+            ref_metadata.update_attribute(:line_ids, lines.map(&:id))
 
-          click_button "Valider"
-          expect(page).to have_css("h1", text: "Referential to test creation")
+            referential.destroy
+            visit workbench_path(workbench)
+            click_link I18n.t('actions.add')
+            fill_in "referential[name]", with: "Referential to test creation"
+            select ref_metadata.line_ids.first, from: 'referential[metadatas_attributes][0][lines][]'
+
+            click_button "Valider"
+            expect(page).to have_css("h1", text: "Referential to test creation")
+          end
         end
       end
     end
