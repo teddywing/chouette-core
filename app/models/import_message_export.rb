@@ -22,7 +22,7 @@ class ImportMessageExport
   end
 
   def column_names
-    ["criticity", "message key"]
+    ["criticity", "message key", "message"]
   end
 
 
@@ -38,7 +38,10 @@ class ImportMessageExport
     CSV.generate(options) do |csv|
       csv << column_names
       import_messages.each do |import_message|
-        csv << [import_message.criticity, import_message.message_key ]
+        puts import_message.inspect
+        puts import_message.message_attributes.deep_symbolize_keys.inspect
+        puts I18n.t("import_messages.#{import_message.message_key}", import_message.message_attributes.deep_symbolize_keys)
+        csv << [import_message.criticity, import_message.message_key, I18n.t("import_messages.#{import_message.message_key}", import_message.message_attributes.deep_symbolize_keys) ]
       end
     end
   end
