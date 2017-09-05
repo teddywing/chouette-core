@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905123421) do
+ActiveRecord::Schema.define(version: 20170905130413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,23 @@ ActiveRecord::Schema.define(version: 20170905123421) do
   add_index "companies", ["line_referential_id"], name: "index_companies_on_line_referential_id", using: :btree
   add_index "companies", ["objectid"], name: "companies_objectid_key", unique: true, using: :btree
   add_index "companies", ["registration_number"], name: "companies_registration_number_key", using: :btree
+
+  create_table "compliance_check_sets", id: :bigserial, force: :cascade do |t|
+    t.integer  "referential_id"
+    t.integer  "compliance_control_set_id"
+    t.integer  "workbench_id"
+    t.string   "creator"
+    t.string   "status"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_check_sets", ["compliance_control_set_id"], name: "index_compliance_check_sets_on_compliance_control_set_id", using: :btree
+  add_index "compliance_check_sets", ["parent_type", "parent_id"], name: "index_compliance_check_sets_on_parent_type_and_parent_id", using: :btree
+  add_index "compliance_check_sets", ["referential_id"], name: "index_compliance_check_sets_on_referential_id", using: :btree
+  add_index "compliance_check_sets", ["workbench_id"], name: "index_compliance_check_sets_on_workbench_id", using: :btree
 
   create_table "compliance_control_blocks", id: :bigserial, force: :cascade do |t|
     t.string   "name"
@@ -893,6 +910,9 @@ ActiveRecord::Schema.define(version: 20170905123421) do
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
+  add_foreign_key "compliance_check_sets", "compliance_control_sets"
+  add_foreign_key "compliance_check_sets", "referentials"
+  add_foreign_key "compliance_check_sets", "workbenches"
   add_foreign_key "compliance_control_blocks", "compliance_control_sets"
   add_foreign_key "compliance_control_sets", "organisations"
   add_foreign_key "compliance_controls", "compliance_control_blocks"
