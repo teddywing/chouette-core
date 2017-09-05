@@ -108,6 +108,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
   end
 
   def mock_post subdir, response
+    allow(HTTPService).to receive(:upload)
     expect( HTTPService ).to receive(:post_resource)
       .with(
         host: host,
