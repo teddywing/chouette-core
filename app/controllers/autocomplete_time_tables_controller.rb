@@ -9,7 +9,7 @@ class AutocompleteTimeTablesController < InheritedResources::Base
   end
 
   def referential
-    @referential ||= current_organisation.referentials.find params[:referential_id]
+    @referential ||= Referential.find params[:referential_id]
   end
 
   protected
