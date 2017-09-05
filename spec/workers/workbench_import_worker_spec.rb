@@ -72,6 +72,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
       expect( import ).to receive(:update).with(total_steps: 2)
       expect( import ).to receive(:update).with(current_step: 1)
       expect( import ).to receive(:update).with(current_step: 2)
+      expect( import ).to receive(:update).with(ended_at: Time.now)
 
       worker.perform import.id
 
