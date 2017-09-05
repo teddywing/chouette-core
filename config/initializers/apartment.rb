@@ -49,7 +49,9 @@ Apartment.configure do |config|
     'ImportResource',
     'ComplianceControl',
     'ComplianceControlSet',
-    'ComplianceControlBlock'
+    'ComplianceControlBlock',
+    'ComplianceCheckSet',
+    'ComplianceCheckBlock'
   ]
 
   # use postgres schemas?

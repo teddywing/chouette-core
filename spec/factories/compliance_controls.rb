@@ -5,7 +5,7 @@ FactoryGirl.define do
     criticity :info
     code "code"
     comment "Text"
-    compliance_control_set
-    compliance_control_block
+    association :compliance_control_set
+    association :compliance_control_block
   end
 end
