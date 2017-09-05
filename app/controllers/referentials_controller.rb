@@ -57,7 +57,6 @@ class ReferentialsController < BreadcrumbController
   end
 
   def destroy
-    binding.pry
     workbench = referential.workbench_id
 
     referential.destroy!
