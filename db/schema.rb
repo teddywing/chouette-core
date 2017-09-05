@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170901132253) do
+ActiveRecord::Schema.define(version: 20170905101656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,15 @@ ActiveRecord::Schema.define(version: 20170901132253) do
   add_index "companies", ["line_referential_id"], name: "index_companies_on_line_referential_id", using: :btree
   add_index "companies", ["objectid"], name: "companies_objectid_key", unique: true, using: :btree
   add_index "companies", ["registration_number"], name: "companies_registration_number_key", using: :btree
+
+  create_table "compliance_control_sets", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.integer  "organisation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "compliance_control_sets", ["organisation_id"], name: "index_compliance_control_sets_on_organisation_id", using: :btree
 
   create_table "connection_links", id: :bigserial, force: :cascade do |t|
     t.integer  "departure_id",                           limit: 8
@@ -292,9 +301,9 @@ ActiveRecord::Schema.define(version: 20170901132253) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -858,6 +867,7 @@ ActiveRecord::Schema.define(version: 20170901132253) do
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
+  add_foreign_key "compliance_control_sets", "organisations"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify
