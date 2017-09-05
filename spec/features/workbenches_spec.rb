@@ -180,7 +180,7 @@ describe 'Workbenches', type: :feature do
       describe 'create new Referential' do
         #TODO Manage functional_scope
         it "create a new Referential with a specifed line and period" do
-          skip: "The functional scope for the Line collection causes problems" do
+          skip "The functional scope for the Line collection causes problems" do
             functional_scope = JSON.generate(Chouette::Line.all.map(&:objectid))
             lines = Chouette::Line.where(objectid: functional_scope)
 
