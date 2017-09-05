@@ -102,7 +102,7 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
       expect( import ).to receive(:update).with(current_step: 2)
       expect( import ).to receive(:update).with(current_step: 3, status: 'failed')
 
-      worker.perform import.id
+      expect { worker.perform import.id }.to raise_error(StopIteration)
 
     end
   end
