@@ -13,7 +13,7 @@
       .row
         .col-lg-12
           = render 'filters'
-          
+
     - if @calendars.any?
       .row
         .col-lg-12
@@ -39,8 +39,10 @@
             cls: 'table has-filter'
 
           = new_pagination @calendars, 'pull-right'
-          
+
     - unless @calendars.any?
       .row.mt-xs
         .col-lg-12
           = replacement_msg t('calendars.search_no_results')
+
+= javascript_include_tag 'filters/calendar.js'
