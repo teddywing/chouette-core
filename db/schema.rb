@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905101656) do
+ActiveRecord::Schema.define(version: 20170905122539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,16 @@ ActiveRecord::Schema.define(version: 20170905101656) do
   add_index "companies", ["line_referential_id"], name: "index_companies_on_line_referential_id", using: :btree
   add_index "companies", ["objectid"], name: "companies_objectid_key", unique: true, using: :btree
   add_index "companies", ["registration_number"], name: "companies_registration_number_key", using: :btree
+
+  create_table "compliance_control_blocks", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.hstore   "condition_attributes"
+    t.integer  "compliance_control_set_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_control_blocks", ["compliance_control_set_id"], name: "index_compliance_control_blocks_on_compliance_control_set_id", using: :btree
 
   create_table "compliance_control_sets", id: :bigserial, force: :cascade do |t|
     t.string   "name"
@@ -867,6 +877,7 @@ ActiveRecord::Schema.define(version: 20170905101656) do
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
+  add_foreign_key "compliance_control_blocks", "compliance_control_sets"
   add_foreign_key "compliance_control_sets", "organisations"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
