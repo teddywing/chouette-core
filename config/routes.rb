@@ -152,23 +152,6 @@ ChouetteIhm::Application.routes.draw do
       end
     end
 
-    resources :compliance_check_tasks, :only => [:new, :create] do
-      collection do
-        get 'references'
-      end
-    end
-
-    resources :compliance_checks, :only => [:index, :show, :destroy] do
-      member do
-        get 'export', defaults: { format: 'zip' }
-        get 'report'
-        get 'rule_parameter_set'
-      end
-      collection do
-        get 'references'
-      end
-    end
-
     resources :companies, controller: "referential_companies"
 
     resources :time_tables do
