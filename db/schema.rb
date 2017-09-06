@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906084628) do
+ActiveRecord::Schema.define(version: 20170906091136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,6 +154,16 @@ ActiveRecord::Schema.define(version: 20170906084628) do
   end
 
   add_index "compliance_check_blocks", ["compliance_check_set_id"], name: "index_compliance_check_blocks_on_compliance_check_set_id", using: :btree
+
+  create_table "compliance_check_resources", id: :bigserial, force: :cascade do |t|
+    t.string   "status"
+    t.string   "name"
+    t.string   "type"
+    t.string   "reference"
+    t.hstore   "metrics"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "compliance_check_sets", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id"
