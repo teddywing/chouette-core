@@ -6,7 +6,6 @@ describe VehicleTranslation, :type => :model do
   # To fix : need to comment :company => company
   # after adding company to apartment excluded models
   let!(:vehicle_journey){ create(:vehicle_journey,
-                                  :objectid => "dummy",
                                   :journey_pattern => journey_pattern,
                                   :route => journey_pattern.route,
                                   # :company => company,
