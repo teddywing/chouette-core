@@ -36,9 +36,9 @@ describe VehicleJourneyImport, :type => :model do
   let!(:journey_pattern) { create(:journey_pattern, :route => route) }
   let!(:other_journey_pattern) { create(:journey_pattern_even, :route => route) }
 
-  let!(:vehicle_journey1) { create(:vehicle_journey_common, :objectid => "import:VehicleJourney:1", :route_id => route.id, :journey_pattern_id => journey_pattern.id) }
-  let!(:vehicle_journey2) { create(:vehicle_journey_common, :objectid => "import:VehicleJourney:2", :route_id => route.id, :journey_pattern_id => other_journey_pattern.id) }
-  let!(:vehicle_journey3) { create(:vehicle_journey_common, :objectid => "import:VehicleJourney:3", :route_id => route.id, :journey_pattern_id => journey_pattern.id) }
+  let!(:vehicle_journey1) { create(:vehicle_journey_common, :objectid => "import:VehicleJourney:1:loc", :route_id => route.id, :journey_pattern_id => journey_pattern.id) }
+  let!(:vehicle_journey2) { create(:vehicle_journey_common, :objectid => "import:VehicleJourney:2:loc", :route_id => route.id, :journey_pattern_id => other_journey_pattern.id) }
+  let!(:vehicle_journey3) { create(:vehicle_journey_common, :objectid => "import:VehicleJourney:3:loc", :route_id => route.id, :journey_pattern_id => journey_pattern.id) }
 
   let!(:stop_point0) { route.stop_points[0] }
   let!(:stop_point1) { route.stop_points[1] }
@@ -86,7 +86,7 @@ describe VehicleJourneyImport, :type => :model do
       expect(Chouette::VehicleJourneyAtStop.all.size).to eq(17)
     end
 
-    it "should not import vehicle_journeys and not create objects when vehicle journey at stops are not in ascendant order", :skip => "Time gap validation is in pending status" do      
+    it "should not import vehicle_journeys and not create objects when vehicle journey at stops are not in ascendant order", :skip => "Time gap validation is in pending status" do
       expect(VehicleJourneyImport.new(:route => route, :file => invalid_file_on_vjas_object).save).to be_falsey
       expect(Chouette::VehicleJourney.all.size).to eq(3)
       expect(Chouette::VehicleJourneyAtStop.all.size).to eq(0)

@@ -10,7 +10,6 @@ class ReferentialsController < BreadcrumbController
     if params[:from]
       source_referential = Referential.find(params[:from])
       @referential = Referential.new_from(source_referential, current_functional_scope)
-      @referential.workbench_id = current_organisation.workbenches.first.id
     end
 
     new! do
@@ -26,7 +25,7 @@ class ReferentialsController < BreadcrumbController
   def show
     resource.switch
     show! do |format|
-      @referential = @referential.decorate
+      @referential = @referential.decorate(context: { workbench_id: params[:workbench_id] } )
       @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
       @reflines = ModelDecorator.decorate(
         @reflines,

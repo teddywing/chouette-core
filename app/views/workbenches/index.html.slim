@@ -41,7 +41,7 @@
           - if @referentials.any?
             .list-group
               - @referentials.each_with_index do |referential, i|
-                = link_to referential.name, referential_path(referential), class: 'list-group-item' if i < 6
+                = link_to referential.name, referential_path(referential, workbench_id: referential.workbench_id), class: 'list-group-item' if i < 6
 
           - else
             .panel-body

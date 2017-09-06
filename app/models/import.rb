@@ -9,13 +9,19 @@ class Import < ActiveRecord::Base
   has_many :resources, class_name: "ImportResource", dependent: :destroy
   has_many :children, foreign_key: :parent_id, class_name: "Import", dependent: :destroy
 
+  scope :started_on_date, ->(date) { where('started_at BETWEEN ? AND ?', date.beginning_of_day, date.end_of_day) }
+
   extend Enumerize
-  enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true
+  enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true, default: :new
 
   validates :file, presence: true
   validates_presence_of :workbench, :creator
 
   before_create :initialize_fields
+
+  def self.ransackable_scopes(auth_object = nil)
+    [:started_on_date]
+  end
 
   def self.model_name
     ActiveModel::Name.new Import, Import, "Import"
@@ -89,7 +95,6 @@ class Import < ActiveRecord::Base
 
   def initialize_fields
     self.token_download = SecureRandom.urlsafe_base64
-    self.status = Import.status.new
   end
 
   def self.symbols_with_indifferent_access(array)

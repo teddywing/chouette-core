@@ -1,6 +1,7 @@
 class ImportsController < BreadcrumbController
   skip_before_action :authenticate_user!, only: [:download]
   defaults resource_class: Import, collection_name: 'imports', instance_name: 'import'
+  before_action :ransack_started_on_date, only: [:index]
   respond_to :html
   belongs_to :workbench
 
@@ -54,6 +55,17 @@ class ImportsController < BreadcrumbController
   end
 
   private
+
+  def ransack_started_on_date
+    date =[]
+    if params[:q] && !params[:q]['started_on_date(1i)'].empty?
+      ['started_on_date(1i)', 'started_on_date(2i)', 'started_on_date(3i)'].each do |key|
+        date << params[:q][key].to_i
+        params[:q].delete(key)
+      end
+      params[:q]['started_on_date'] = DateTime.new(*date) rescue nil
+    end
+  end
 
   def build_resource
     @import ||= WorkbenchImport.new(*resource_params) do |import|

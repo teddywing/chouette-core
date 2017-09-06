@@ -9,7 +9,7 @@ class WorkbenchImportWorker
   def perform(import_id)
     @workbench_import = WorkbenchImport.find(import_id)
     @response         = nil
-    @workbench_import.update_attributes(status: 'running', started_at: Time.now)
+    @workbench_import.update(status: 'running', started_at: Time.now)
     downloaded  = download
     zip_service = ZipService.new(downloaded)
     upload zip_service
@@ -99,11 +99,6 @@ class WorkbenchImportWorker
   end
 
   def params file, name
-    if dest = ENV["DEBUG_TEMPFILE"]
-      require 'pry'
-      binding.pry
-      %x{unzip -oqq #{file.path} -d #{dest}}
-    end
     { netex_import:
         { parent_id: @workbench_import.id,
           parent_type: @workbench_import.class.name,

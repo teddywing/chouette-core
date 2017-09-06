@@ -31,6 +31,10 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
 
   after_save :save_shortcuts
 
+  def local_id
+    "IBOO-#{self.referential.id}-#{self.id}"
+  end
+
   def checksum_attributes
     [].tap do |attrs|
       attrs << self.int_day_types
@@ -557,8 +561,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   end
 
   def duplicate
-    tt = self.deep_clone :include => [:periods, :dates], :except => :object_version
-    tt.uniq_objectid
+    tt = self.deep_clone :include => [:periods, :dates], :except => [:object_version, :objectid]
     tt.tag_list.add(*self.tag_list) unless self.tag_list.empty?
     tt.created_from = self
     tt.comment      = I18n.t("activerecord.copy", :name => self.comment)
