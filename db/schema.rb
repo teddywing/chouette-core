@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905135646) do
+ActiveRecord::Schema.define(version: 20170906084628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,22 @@ ActiveRecord::Schema.define(version: 20170905135646) do
   add_index "compliance_check_sets", ["parent_type", "parent_id"], name: "index_compliance_check_sets_on_parent_type_and_parent_id", using: :btree
   add_index "compliance_check_sets", ["referential_id"], name: "index_compliance_check_sets_on_referential_id", using: :btree
   add_index "compliance_check_sets", ["workbench_id"], name: "index_compliance_check_sets_on_workbench_id", using: :btree
+
+  create_table "compliance_checks", id: :bigserial, force: :cascade do |t|
+    t.integer  "compliance_check_set_id"
+    t.integer  "compliance_check_block_id"
+    t.string   "type"
+    t.json     "control_attributes"
+    t.string   "name"
+    t.string   "code"
+    t.integer  "criticity"
+    t.text     "comment"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_checks", ["compliance_check_block_id"], name: "index_compliance_checks_on_compliance_check_block_id", using: :btree
+  add_index "compliance_checks", ["compliance_check_set_id"], name: "index_compliance_checks_on_compliance_check_set_id", using: :btree
 
   create_table "compliance_control_blocks", id: :bigserial, force: :cascade do |t|
     t.string   "name"
@@ -924,6 +940,8 @@ ActiveRecord::Schema.define(version: 20170905135646) do
   add_foreign_key "compliance_check_sets", "compliance_control_sets"
   add_foreign_key "compliance_check_sets", "referentials"
   add_foreign_key "compliance_check_sets", "workbenches"
+  add_foreign_key "compliance_checks", "compliance_check_blocks"
+  add_foreign_key "compliance_checks", "compliance_check_sets"
   add_foreign_key "compliance_control_blocks", "compliance_control_sets"
   add_foreign_key "compliance_control_sets", "organisations"
   add_foreign_key "compliance_controls", "compliance_control_blocks"

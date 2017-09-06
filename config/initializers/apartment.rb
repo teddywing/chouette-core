@@ -50,6 +50,7 @@ Apartment.configure do |config|
     'ComplianceControl',
     'ComplianceControlSet',
     'ComplianceControlBlock',
+    'ComplianceCheck',
     'ComplianceCheckSet',
     'ComplianceCheckBlock'
   ]
