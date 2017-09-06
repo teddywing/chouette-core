@@ -99,11 +99,6 @@ class WorkbenchImportWorker
   end
 
   def params file, name
-    if dest = ENV["DEBUG_TEMPFILE"]
-      require 'pry'
-      binding.pry
-      %x{unzip -oqq #{file.path} -d #{dest}}
-    end
     { netex_import:
         { parent_id: @workbench_import.id,
           parent_type: @workbench_import.class.name,

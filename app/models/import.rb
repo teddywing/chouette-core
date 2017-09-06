@@ -12,7 +12,7 @@ class Import < ActiveRecord::Base
   scope :started_on_date, ->(date) { where('started_at BETWEEN ? AND ?', date.beginning_of_day, date.end_of_day) }
 
   extend Enumerize
-  enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true
+  enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true, default: :new
 
   validates :file, presence: true
   validates_presence_of :workbench, :creator
@@ -95,7 +95,6 @@ class Import < ActiveRecord::Base
 
   def initialize_fields
     self.token_download = SecureRandom.urlsafe_base64
-    self.status = Import.status.new
   end
 
   def self.symbols_with_indifferent_access(array)
