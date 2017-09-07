@@ -31,16 +31,10 @@
 
         #miTwo.panel-collapse.collapse
           .list-group
-            = link_to '#', class: "list-group-item #{params[:controller] == 'workbenches' ? 'active' : ''}" do
+            = link_to workbench_path(current_offer_workbench), class: "list-group-item #{params[:controller] == 'workbenches' ? 'active' : ''}" do
               span Jeux de données
-
-            - if @workbench
-              = link_to workbench_imports_path(@workbench), class: "list-group-item #{(params[:controller] == 'imports') ? 'active' : ''}" do
+            = link_to workbench_imports_path(current_offer_workbench), class: "list-group-item #{(params[:controller] == 'imports') ? 'active' : ''}" do
                 span Import
-            - else
-              = link_to '#', class: 'list-group-item disabled' do
-                span Import
-
             = link_to calendars_path, class: 'list-group-item' do
               span Modèles de calendrier
             = link_to '#', class: 'list-group-item' do
@@ -62,13 +56,13 @@
                 .list-group
                   = link_to referential_networks_path(current_referential), class: 'list-group-item' do
                     span = t('networks.index.title')
-          
+
                   = link_to referential_companies_path(current_referential), class: 'list-group-item' do
                     span = t('companies.index.title')
-          
+
                   = link_to '#', class: 'list-group-item disabled' do
                     span Tracés
-          
+
                   = link_to referential_time_tables_path(current_referential), class: 'list-group-item' do
                     span = t('time_tables.index.title')
 
@@ -95,7 +89,7 @@
           h4.panel-title
             = link_to '#miFive', data: { toggle: 'collapse', parent: '#menu-items' }, 'aria-expanded' => 'false' do
               |Outils
-              
+
         #miFive.panel-collapse.collapse
           .list-group
             = link_to Rails.application.config.try(:portal_url), target: '_blank', class: 'list-group-item' do
