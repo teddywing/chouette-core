@@ -31,6 +31,10 @@
                 attribute: 'short_name' \
               ), \
               TableBuilderHelper::Column.new( \
+                key: :organisation, \
+                attribute: Proc.new { |c| c.organisation.name } \
+              ), \
+              TableBuilderHelper::Column.new( \
                 key: :shared, \
                 attribute: Proc.new { |c| t("#{c.try(:shared)}") } \
               ) \

@@ -1,3 +1,4 @@
+# coding: utf-8
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
 
@@ -185,7 +186,6 @@ class Referential < ActiveRecord::Base
   before_validation :assign_slug, :on => :create
   before_validation :assign_prefix, :on => :create
   before_create :create_schema
-
   after_create :clone_schema, if: :created_from
 
   before_destroy :destroy_schema
@@ -289,7 +289,9 @@ class Referential < ActiveRecord::Base
   end
 
   def create_schema
-    Apartment::Tenant.create slug
+    unless created_from
+      Apartment::Tenant.create slug
+    end
   end
 
   def assign_slug

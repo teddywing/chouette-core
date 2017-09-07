@@ -34,6 +34,14 @@ module Stif
         Chouette::StopArea.find_by(objectid: objectid)
       end
 
+      def save_if_valid object
+        if object.valid?
+          object.save
+        else
+          Rails.logger.error "Reflex:sync - #{object.class.model_name} with objectid #{object.objectid} and name #{object.name} can't be saved"
+        end
+      end
+
       def synchronize
         reset_counts
         ['getOR', 'getOP'].each do |method|
@@ -99,7 +107,7 @@ module Stif
 
         if entry['parent']
           stop.parent = self.find_by_object_id entry['parent']
-          stop.save if stop.changed && stop.valid?
+          save_if_valid(stop) if stop.changed?
         end
 
         if entry['quays']
@@ -107,7 +115,7 @@ module Stif
             children = self.find_by_object_id id
             next unless children
             children.parent = stop
-            children.save if children.changed? && children.valid?
+            save_if_valid(children) if children.changed?
           end
         end
       end
@@ -138,7 +146,7 @@ module Stif
           access['longitude'] = entry['gml:pos'][:lng]
           access['latitude']  = entry['gml:pos'][:lat]
         end
-        access.save if access.valid? && access.changed?
+        save_if_valid(access) if access.changed?
       end
 
       def create_or_update_stop_area entry
@@ -166,7 +174,7 @@ module Stif
           stop.import_xml = entry[:xml]
           prop = stop.new_record? ? :imported_count : :updated_count
           increment_counts prop, 1
-          stop.save if stop.valid?
+          save_if_valid(stop)
         end
         # Create AccessPoint from StopPlaceEntrance
         if entry[:stop_place_entrances]

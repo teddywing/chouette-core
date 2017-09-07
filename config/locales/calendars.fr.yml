@@ -64,6 +64,7 @@ fr:
         date_ranges: Intervalles de dates
         dates: Dates
         shared: Partagé
+        organisation: Organisation
     errors:
       models:
         calendar:
