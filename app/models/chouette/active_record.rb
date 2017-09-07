@@ -2,10 +2,8 @@
 require 'deep_cloneable'
 module Chouette
   class ActiveRecord < ::ActiveRecord::Base
-
     self.abstract_class = true
-
-    before_save :nil_if_blank
+    before_save :nil_if_blank, :set_data_source_ref
 
     # to be overridden to set nullable attrs when empty
     def self.nullable_attributes
@@ -16,9 +14,14 @@ module Chouette
       self.class.nullable_attributes.each { |attr| self[attr] = nil if self[attr].blank? }
     end
 
-
     def human_attribute_name(*args)
       self.class.human_attribute_name(*args)
+    end
+
+    def set_data_source_ref
+      if self.respond_to?(:data_source_ref)
+        self.data_source_ref ||= 'DATASOURCEREF_EDITION_BOIV'
+      end
     end
 
     # TODO: Can we remove this?
@@ -26,7 +29,7 @@ module Chouette
     #   alias_method :create_reflection_without_chouette_naming, :create_reflection
 
     #   def create_reflection(macro, name, options, active_record)
-    #     options = 
+    #     options =
     #       Reflection.new(macro, name, options, active_record).options_with_default
 
     #     create_reflection_without_chouette_naming(macro, name, options, active_record)
