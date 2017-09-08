@@ -11,7 +11,6 @@ class Referential < ActiveRecord::Base
   # validates_presence_of :lower_corner
 
   validates_uniqueness_of :slug
-  validates_uniqueness_of :name
   validates_format_of :slug, :with => %r{\A[a-z][0-9a-z_]+\Z}
   validates_format_of :prefix, :with => %r{\A[0-9a-zA-Z_]+\Z}
   validates_format_of :upper_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
