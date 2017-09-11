@@ -13,7 +13,7 @@ class ReferentialDecorator < Draper::Decorator
     if policy.clone?
       links << Link.new(
         content: h.t('actions.clone'),
-        href: h.new_referential_path(from: object.id, workbench_id: context[:workbench_id])
+        href: h.new_referential_path(from: object.id, current_workbench_id: context[:current_workbench_id])
       )
     end
     if policy.archive?

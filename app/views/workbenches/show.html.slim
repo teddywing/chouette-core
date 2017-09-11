@@ -29,7 +29,7 @@
                   key: :name, \
                   attribute: 'name', \
                   link_to: lambda do |referential| \
-                    referential_path(referential, workbench_id: referential.workbench_id) \
+                    referential_path(referential, current_workbench_id: params[:id]) \
                   end \
                 ), \
                 TableBuilderHelper::Column.new( \

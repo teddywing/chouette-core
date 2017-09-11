@@ -157,6 +157,7 @@ class ReferentialMetadata < ActiveRecord::Base
 
   def self.new_from(from, functional_scope)
     from.dup.tap do |metadata|
+      metadata.referential_source_id = from.referential_id
       metadata.line_ids = from.referential.lines.where(id: metadata.line_ids, objectid: functional_scope).collect(&:id)
       metadata.referential_id = nil
     end
