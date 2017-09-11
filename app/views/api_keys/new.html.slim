@@ -1,2 +1,12 @@
-= title_tag t('api_keys.new.title')
-== render partial: 'form', locals: {action_url: organisation_api_keys_path}
+/ PageHeader
+= pageheader 'Clé d\'API',
+             t('api_keys.new.title'),
+             'Lorem ipsum dolor sit amet',
+             ''
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        == render 'form'

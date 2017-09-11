@@ -19,6 +19,7 @@ fr:
     import: 'Importer'
     filter: 'Filtrer'
     erase: 'Effacer'
+    create_api_key: "Créer une clé d'API"
   or: "ou"
   cancel: "Annuler"
   search_hint: "Entrez un texte à rechercher"
