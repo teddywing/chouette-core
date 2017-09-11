@@ -1,3 +1,5 @@
+Route = Chouette::Route
+
 RSpec.describe RoutesController, type: :controller do
   login_user
 
@@ -75,31 +77,20 @@ RSpec.describe RoutesController, type: :controller do
     end
   end
 
-  describe "GET /duplicate" do
-    it "returns success" do
-      get :duplicate,
-        referential_id: route.line.line_referential_id,
-        line_id: route.line_id,
-        id: route.id
-
-      expect(response).to be_success
-    end
-  end
 
   describe "POST /duplicate" do
+    let!( :route_prime ){ route }
+
     it "creates a new route" do
       expect do
         post :duplicate,
           referential_id: route.line.line_referential_id,
           line_id: route.line_id,
-          id: route.id,
-          params: {
-            name: '102 Route',
-            published_name: '102 route'
-          }
-      end.to change { Chouette::Route.count }.by(1)
+          id: route.id
+      end.to change { Route.count }.by(1)
 
-      expect(Chouette::Route.last.name).to eq('102 Route')
+      expect(Route.last.name).to eq(route.name)
+      expect(Route.last.published_name).to eq(route.published_name)
     end
   end
 end

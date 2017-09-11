@@ -16,4 +16,8 @@ class RoutePolicy < ApplicationPolicy
   def update?
     !archived? && organisation_match? && user.has_permission?('routes.update')
   end
+
+  def duplicate?
+    create?
+  end
 end

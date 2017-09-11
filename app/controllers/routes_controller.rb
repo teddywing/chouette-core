@@ -70,13 +70,8 @@ class RoutesController < ChouetteController
   end
 
   def duplicate
-    @route = Chouette::Route.find(params[:id])
-    @line = @route.line
-    build_breadcrumb(:edit)
-  end
-
-  def post_duplicate
-    @route = Chouette::Route.find(params[:id])
+    route = Chouette::Route.find(params[:id]).duplicate
+    redirect_to edit_referential_line_route_path(@referential, route.line, route)
   end
 
   protected

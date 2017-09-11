@@ -33,7 +33,7 @@ en:
       for_boarding: "Boarding"
       for_alighting: "Alighting"
     duplicate:
-      title: "Duplicate route %{route}"
+      title: "Duplicate route"
     route:
       no_journey_pattern: "No Journey pattern"
       wayback:

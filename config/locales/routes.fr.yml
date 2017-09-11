@@ -33,7 +33,7 @@ fr:
       for_boarding: "Montée"
       for_alighting: "Descente"
     duplicate:
-      title: "Dupliquer l'itinéraire %{route}"
+      title: "Dupliquer l'itinéraire"
     route:
       no_journey_pattern: "Pas de mission"
       wayback:

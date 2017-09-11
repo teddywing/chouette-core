@@ -76,11 +76,10 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   after_commit :journey_patterns_control_route_sections
 
-  def duplicate name: nil, published_name: nil
+  def duplicate
     overrides = {
-      'name' => name || self.name,
-      'published_name' => published_name || self.published_name,
-      'object_version' => object_version - 1
+      'object_version' => object_version - 1,
+      'opposite_route_id' => nil
     }
     keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
     atts_for_create = attributes
