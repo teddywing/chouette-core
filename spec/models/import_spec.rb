@@ -26,12 +26,35 @@ RSpec.describe Import, type: :model do
     )
   end
 
-  # describe "#destroy" do
-  #   it "must call #destroy on imports children and then import_messages, import_resources linked" do
-  #     TODO
-  #
-  #   end
-  # end
+  describe "#destroy" do
+    it "must destroy all child imports" do
+      workbench_import = create(:workbench_import)
+      create(:netex_import, parent: workbench_import)
+
+      workbench_import.destroy
+
+      expect(workbench_import).to be_destroyed
+      expect(NetexImport.count).to eq(0)
+    end
+
+    it "must destroy all associated ImportMessages" do
+      import = create(:import)
+      create(:import_resource, import: import)
+
+      import.destroy
+
+      expect(ImportResource.count).to eq(0)
+    end
+
+    it "must destroy all associated ImportResources" do
+      import = create(:import)
+      create(:import_message, import: import)
+
+      import.destroy
+
+      expect(ImportMessage.count).to eq(0)
+    end
+  end
 
   describe "#notify_parent" do
     it "must call #child_change on its parent" do
