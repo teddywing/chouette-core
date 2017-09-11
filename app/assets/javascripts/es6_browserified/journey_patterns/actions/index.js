@@ -6,6 +6,12 @@ if (!window.Promise) {
 }
 
 const actions = {
+  enterEditMode: () => ({
+    type: "ENTER_EDIT_MODE"
+  }),
+  exitEditMode: () => ({
+    type: "EXIT_EDIT_MODE"
+  }),
   receiveJourneyPatterns : (json) => ({
     type: "RECEIVE_JOURNEY_PATTERNS",
     json
@@ -84,10 +90,7 @@ const actions = {
   resetValidation: (target) => {
     $(target).parent().removeClass('has-error').children('.help-block').remove()
   },
-  humanOID : (oid) => {
-    var a = oid.split(':')
-    return a[a.length - 1]
-  },
+  humanOID : (oid) => oid.split(':')[2],
   validateFields : (fields) => {
     const test = []
 
@@ -138,6 +141,7 @@ const actions = {
               dispatch(actions.updateTotalCount(window.currentItemsLength - json.length))
             }
             window.currentItemsLength = json.length
+            dispatch(actions.exitEditMode())
             dispatch(actions.receiveJourneyPatterns(json))
           }
         }

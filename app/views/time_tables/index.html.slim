@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'calendrier-application',
              t('time_tables.index.title'),
              '',
              ((policy(Chouette::TimeTable).create? && @referential.organisation == current_organisation) ? link_to(t('actions.add'), new_referential_time_table_path(@referential), class: 'btn btn-default') : '')
@@ -27,7 +27,10 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :comment, \
-                attribute: 'comment' \
+                attribute: 'comment', \
+                link_to: lambda do |time_table| \
+                  referential_time_table_path(@referential, time_table) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 name: "Période englobante", \
@@ -65,3 +68,5 @@
 
 = javascript_tag do
   | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
+
+= javascript_include_tag 'filters/timetable.js'

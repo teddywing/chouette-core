@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'tableau-de-bord',
              t('.title', organisation: current_organisation.name)
 
 / PageContent
@@ -34,15 +34,15 @@
               div
                 = t('.offers.referentials')
                 span.badge.ml-xs = @referentials.count if @referentials.any?
-              
+
               div
                 = link_to '', workbench_path(@workbench), class: ' fa fa-chevron-right pull-right', title: t('.offers.see')
 
           - if @referentials.any?
             .list-group
               - @referentials.each_with_index do |referential, i|
-                = link_to referential.name, referential_path(referential), class: 'list-group-item' if i < 6
-          
+                = link_to referential.name, referential_path(referential, workbench_id: referential.workbench_id, current_workbench_id: @workbench.id), class: 'list-group-item' if i < 6
+
           - else
             .panel-body
               em.small.text-muted = t('.offers.no_content')
@@ -61,7 +61,7 @@
             .list-group
               - @calendars.each_with_index do |calendar, i|
                 = link_to calendar.name, calendar_path(calendar), class: 'list-group-item' if i < 6
-          
+
           - else
             .panel-body
               em.small.text-muted = t('.offers.no_content')

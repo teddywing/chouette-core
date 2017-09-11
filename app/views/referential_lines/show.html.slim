@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'ligne',
              @line.name,
              '',
              t('last_update', time: l(@line.updated_at, format: :short)) do
@@ -51,7 +51,10 @@
                   ), \
                   TableBuilderHelper::Column.new( \
                     key: :name, \
-                    attribute: 'name' \
+                    attribute: 'name', \
+                    link_to: lambda do |route| \
+                      referential_line_route_path(@referential, @line, route) \
+                    end \
                   ), \
                   TableBuilderHelper::Column.new( \
                     key: :published_name, \

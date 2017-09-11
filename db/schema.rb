@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808110333) do
+ActiveRecord::Schema.define(version: 20170907082913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,12 +72,15 @@ ActiveRecord::Schema.define(version: 20170808110333) do
   add_index "access_points", ["objectid"], name: "access_points_objectid_key", unique: true, using: :btree
 
   create_table "api_keys", id: :bigserial, force: :cascade do |t|
-    t.integer  "referential_id", limit: 8
+    t.integer  "referential_id",  limit: 8
     t.string   "token"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "organisation_id"
   end
+
+  add_index "api_keys", ["organisation_id"], name: "index_api_keys_on_organisation_id", using: :btree
 
   create_table "calendars", id: :bigserial, force: :cascade do |t|
     t.string    "name"
@@ -218,6 +221,7 @@ ActiveRecord::Schema.define(version: 20170808110333) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   create_table "footnotes_vehicle_journeys", id: false, force: :cascade do |t|
@@ -261,11 +265,11 @@ ActiveRecord::Schema.define(version: 20170808110333) do
   add_index "import_messages", ["resource_id"], name: "index_import_messages_on_resource_id", using: :btree
 
   create_table "import_resources", id: :bigserial, force: :cascade do |t|
-    t.integer  "import_id",  limit: 8
+    t.integer  "import_id",     limit: 8
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type"
+    t.string   "resource_type"
     t.string   "reference"
     t.string   "name"
     t.hstore   "metrics"
@@ -292,6 +296,7 @@ ActiveRecord::Schema.define(version: 20170808110333) do
     t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
+    t.string   "creator"
   end
 
   add_index "imports", ["referential_id"], name: "index_imports_on_referential_id", using: :btree
@@ -339,6 +344,7 @@ ActiveRecord::Schema.define(version: 20170808110333) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree
@@ -549,6 +555,7 @@ ActiveRecord::Schema.define(version: 20170808110333) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "routes", ["objectid"], name: "routes_objectid_key", unique: true, using: :btree
@@ -564,6 +571,7 @@ ActiveRecord::Schema.define(version: 20170808110333) do
     t.integer  "stop_point_ids",  limit: 8,              array: true
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   create_table "routing_constraints_lines", id: false, force: :cascade do |t|
@@ -729,6 +737,7 @@ ActiveRecord::Schema.define(version: 20170808110333) do
     t.integer  "created_from_id"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "time_tables", ["calendar_id"], name: "index_time_tables_on_calendar_id", using: :btree
@@ -834,6 +843,7 @@ ActiveRecord::Schema.define(version: 20170808110333) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
@@ -853,6 +863,7 @@ ActiveRecord::Schema.define(version: 20170808110333) do
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
+  add_foreign_key "api_keys", "organisations"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify

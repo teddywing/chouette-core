@@ -3,7 +3,7 @@ namespace :ci do
   task :setup do
     cp "config/database/jenkins.yml", "config/database.yml"
     sh "RAILS_ENV=test rake db:migrate"
-    sh "npm install"
+    sh "npm --production --no-progress install"
   end
 
   def git_branch
@@ -27,10 +27,13 @@ namespace :ci do
     sh "bundle exec bundle-audit check --update"
   end
 
+  task :spec do
+    sh "bundle exec rspec --profile"
+  end
+
   task :teaspoon do
     sh "RAILS_ENV=test bundle exec rake teaspoon"
   end
-
 
   desc "Deploy after CI"
   task :deploy do
@@ -44,4 +47,4 @@ namespace :ci do
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "spec", "ci:teaspoon", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "ci:spec", "ci:teaspoon", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]

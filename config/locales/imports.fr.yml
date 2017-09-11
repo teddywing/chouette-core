@@ -1,7 +1,13 @@
 fr:
   imports:
+    search_no_results: "Aucun import ne correspond à votre recherche"
+    filters:
+      referential: "Sélectionnez un jeu de données..."
+      name_or_creator_cont: "Indiquez un nom d'import ou d'opérateur..."
     actions:
       new: "Nouvel import"
+      show: "Rapport d'import"
+      download: "Téléch. fichier source"
       destroy: "Supprimer cet import"
       destroy_confirm: "Etes vous sûr de supprimer cet import ?"
     index:
@@ -50,7 +56,10 @@ fr:
       import:
         resources: "Fichier à importer"
         created_at: "Créé le"
-        status: "Status"
+        started_at: Démarrage
+        name: "Nom de l'import"
+        status: "Etat"
+        creator: "Opérateur"
         no_save: "Pas de sauvegarde"
         references_type: "Données à importer"
         rule_parameter_set_id: "Jeu de paramètres pour validation"

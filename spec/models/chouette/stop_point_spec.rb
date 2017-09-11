@@ -10,7 +10,7 @@ describe StopPoint, :type => :model do
 
   describe '#objectid' do
     subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::ObjectId) }
+    it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
   end
 
   describe "#destroy" do

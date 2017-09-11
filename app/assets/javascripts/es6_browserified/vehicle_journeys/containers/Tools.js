@@ -4,7 +4,9 @@ var actions = require('../actions')
 
 const mapStateToProps = (state) => {
   return {
-    vehicleJourneys: state.vehicleJourneys
+    vehicleJourneys: state.vehicleJourneys,
+    editMode: state.editMode,
+    filters: state.filters
   }
 }
 

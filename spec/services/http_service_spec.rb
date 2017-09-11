@@ -33,9 +33,6 @@ RSpec.describe HTTPService do
     let( :upload_list ){ [value, mime_type, as_name] }
 
     it 'sets authorization and posts data' do
-      expect(Faraday::UploadIO).to receive(:new).with(*upload_list).and_return upload_io
-      expect(params).to receive(:update).with(name => upload_io)
-
       expect(Faraday).to receive(:new).with(url: host).and_yield(faraday_connection)
       expect(faraday_connection).to receive(:adapter).with(Faraday.default_adapter)
       expect(faraday_connection).to receive(:headers).and_return headers

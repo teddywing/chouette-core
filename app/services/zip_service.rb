@@ -1,55 +1,68 @@
 class ZipService
+  # TODO: Remove me before merge https://github.com/rubyzip/rubyzip
 
-  attr_reader :current_entry, :zip_data
+  class Subdir < Struct.new(:name, :stream)
+  end
+
+  attr_reader :current_key, :current_output, :yielder
 
   def initialize data
-    @zip_data = data
-    @current_entry = nil
+    @zip_data       = StringIO.new(data)
+    @current_key    = nil
+    @current_output = nil
   end
 
-  class << self
-    def convert_entries entries
-      -> output_stream do
-        entries.each do |e|
-          output_stream.put_next_entry e.name
-          output_stream.write e.get_input_stream.read
-        end
-      end
-    end
-
-    def entries input_stream
-      Enumerator.new do |enum|
-        loop{ enum << input_stream.get_next_entry }
-      end.lazy.take_while{ |e| e }
+  def subdirs
+    Enumerator.new do |yielder|
+      @yielder = yielder
+      Zip::File.open_buffer(@zip_data, &(method :_subdirs))
     end
   end
 
-  def entry_groups
-    self.class.entries(input_stream).group_by(&method(:entry_key))
+  def _subdirs zip_file
+    zip_file.each do | entry |
+      add_entry entry
+    end
+    finish_current_output
   end
 
-  def entry_group_streams
-    entry_groups.map(&method(:make_stream)).to_h
+  def add_entry entry
+    key = entry_key entry
+    unless key == current_key
+      finish_current_output
+      open_new_output key
+    end
+    add_to_current_output entry
+  end
+
+  def add_to_current_output entry
+    current_output.put_next_entry entry.name
+    write_to_current_output entry.get_input_stream
+  end
+
+  def write_to_current_output input_stream
+    # the condition below is true for directory entries
+    return if Zip::NullInputStream == input_stream
+    current_output.write input_stream.read 
+  end
+
+  def finish_current_output
+    if current_output
+      @yielder  << Subdir.new(
+        current_key,
+        # Second part of the solution, yield the closed stream
+        current_output.close_buffer)
+    end
+  end
+
+  def open_new_output entry_key
+    @current_key    = entry_key
+    # First piece of the solution, use internal way to create a Zip::OutputStream
+    @current_output = Zip::OutputStream.new(StringIO.new(''), true, nil)
   end
 
   def entry_key entry
+    # last dir name File.dirname.split("/").last
     entry.name.split('/', -1)[-2]
-  end
-
-  def make_stream pair
-    name, entries = pair 
-    [name,  make_stream_from( entries )]
-  end
-
-  def make_stream_from entries
-    Zip::OutputStream.write_buffer(&self.class.convert_entries(entries))
-  end
-
-  def next_entry
-    @current_entry = input_stream.get_next_entry
-  end
-
-  def input_stream
-    @__input_stream__ ||= Zip::InputStream.open(StringIO.new(zip_data))
   end
 end

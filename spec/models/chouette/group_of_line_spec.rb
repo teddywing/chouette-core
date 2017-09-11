@@ -3,11 +3,7 @@ require 'spec_helper'
 describe Chouette::GroupOfLine, :type => :model do
 
   subject { create(:group_of_line) }
-
-  it { is_expected.to validate_presence_of :name }
-
-  # it { should validate_presence_of :objectid }
-  it { is_expected.to validate_uniqueness_of :objectid }
+  it { should validate_presence_of :name }
 
   describe "#stop_areas" do
     let!(:line){create(:line, :group_of_lines => [subject])}

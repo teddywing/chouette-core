@@ -1,6 +1,6 @@
 class Chouette::Company < Chouette::ActiveRecord
   include CompanyRestrictions
-  include DefaultNetexAttributesSupport
+  include StifCodifligneAttributesSupport
   include LineReferentialSupport
 
   has_many :lines

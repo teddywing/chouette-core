@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'itineraire',
              @route.name,
              '',
              t('last_update', time: l(@route.updated_at, format: :short)),
@@ -41,7 +41,10 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: Proc.new {|s| s.try(:stop_area).try(:name)} \
+                attribute: Proc.new {|s| s.try(:stop_area).try(:name)}, \
+                link_to: lambda do |stop_point| \
+                  referential_stop_area_path(@referential, stop_point.stop_area) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :deleted_at, \

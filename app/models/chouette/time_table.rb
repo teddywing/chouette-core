@@ -22,10 +22,18 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   belongs_to :created_from, class_name: 'Chouette::TimeTable'
 
   scope :overlapping, -> (date_start, date_end) do
-    joins(:periods).where('(period_start, period_end) OVERLAPS (?, ?)', date_start, date_end)
+    joins("
+      LEFT JOIN time_table_periods ON time_tables.id = time_table_periods.time_table_id
+      LEFT JOIN time_table_dates ON time_tables.id = time_table_dates.time_table_id
+    ")
+    .where("(time_table_periods.period_start <= :end AND time_table_periods.period_end >= :start) OR (time_table_dates.date BETWEEN :start AND :end)", {start: date_start, end: date_end})
   end
 
   after_save :save_shortcuts
+
+  def local_id
+    "IBOO-#{self.referential.id}-#{self.id}"
+  end
 
   def checksum_attributes
     [].tap do |attrs|
@@ -487,7 +495,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def merge!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods, *another_tt.effective_days)
+        array.push(*self.effective_days, *another_tt.effective_days)
         array.uniq!
       end
 
@@ -516,7 +524,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def intersect!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods)
+        array.push(*self.effective_days)
         array.delete_if {|day| !another_tt.effective_days.include?(day) }
         array.uniq!
       end
@@ -536,7 +544,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   def disjoin!(another_tt)
     transaction do
       days = [].tap do |array|
-        array.push(*self.included_days_in_dates_and_periods)
+        array.push(*self.effective_days)
         array.delete_if {|day| another_tt.effective_days.include?(day) }
         array.uniq!
       end
@@ -553,8 +561,7 @@ class Chouette::TimeTable < Chouette::TridentActiveRecord
   end
 
   def duplicate
-    tt = self.deep_clone :include => [:periods, :dates], :except => :object_version
-    tt.uniq_objectid
+    tt = self.deep_clone :include => [:periods, :dates], :except => [:object_version, :objectid]
     tt.tag_list.add(*self.tag_list) unless self.tag_list.empty?
     tt.created_from = self
     tt.comment      = I18n.t("activerecord.copy", :name => self.comment)

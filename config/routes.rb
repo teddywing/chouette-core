@@ -5,6 +5,10 @@ ChouetteIhm::Application.routes.draw do
     delete :referentials, on: :member, action: :delete_referentials
     resources :imports do
       get :download, on: :member
+      resources :import_resources, only: [:index] do
+        resources :import_messages, only: [:index]
+      end
+
     end
   end
 
@@ -32,6 +36,9 @@ ChouetteIhm::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :workbenches, only: [:index, :show] do
+        resources :imports, only: [:index, :show, :create]
+      end
       resources :access_links, only: [:index, :show]
       resources :access_points, only: [:index, :show]
       resources :connection_links, only: [:index, :show]
@@ -56,6 +63,7 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resource :organisation, :only => [:show, :edit, :update] do
+    resources :api_keys
     resources :users
     resources :rule_parameter_sets
   end
@@ -78,7 +86,6 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resources :referentials, except: :index do
-    resources :api_keys
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
@@ -143,23 +150,6 @@ ChouetteIhm::Application.routes.draw do
     resources :exports, :only => [:index, :show, :destroy]  do
       member do
         get "exported_file"
-      end
-    end
-
-    resources :compliance_check_tasks, :only => [:new, :create] do
-      collection do
-        get 'references'
-      end
-    end
-
-    resources :compliance_checks, :only => [:index, :show, :destroy] do
-      member do
-        get 'export', defaults: { format: 'zip' }
-        get 'report'
-        get 'rule_parameter_set'
-      end
-      collection do
-        get 'references'
       end
     end
 

@@ -21,9 +21,13 @@ const modal = (state = {}, action) => {
       })
     case 'OPEN_ERROR_MODAL':
       $('#ErrorModal').modal('show')
-      return _.assign({}, state, {type: 'error'})
+      newModalProps = _.assign({}, state.modalProps, {error: action.error})
+      return _.assign({}, state, {type: 'error'}, {modalProps: newModalProps})
+    case 'RESET_MODAL_ERRORS':
+      newModalProps = _.assign({}, state.modalProps, {error: ''})
+      return _.assign({}, state, {type: ''}, {modalProps: newModalProps})
     case 'CLOSE_PERIOD_FORM':
-      newModalProps = _.assign({}, state.modalProps, {active: false})
+      newModalProps = _.assign({}, state.modalProps, {active: false, error: ""})
       return _.assign({}, state, {modalProps: newModalProps})
     case 'OPEN_EDIT_PERIOD_FORM':
       period_start = action.period.period_start.split('-')
@@ -50,19 +54,9 @@ const modal = (state = {}, action) => {
       newModalProps[action.group][action.selectType] = action.val
       return _.assign({}, state, {modalProps: newModalProps})
     case 'VALIDATE_PERIOD_FORM':
-      period_start = actions.formatDate(action.modalProps.begin)
-      period_end = actions.formatDate(action.modalProps.end)
-      newModalProps = _.assign({}, state.modalProps)
-
-      if(new Date(period_end) <= new Date(period_start)){
-        newModalProps.error = 'La date de départ doit être antérieure à la date de fin'
-        return _.assign({}, state, {modalProps: newModalProps})
-      }
-
-      let newPeriods = JSON.parse(JSON.stringify(action.timeTablePeriods))
-      let error = actions.checkErrorsInPeriods(period_start, period_end, action.modalProps.index, newPeriods)
-      newModalProps.error = error
-      newModalProps.active = (error == '') ? false : true
+      newModalProps = JSON.parse(JSON.stringify(state.modalProps))
+      newModalProps.error = action.error
+      newModalProps.active = (newModalProps.error == '') ? false : true
       return _.assign({}, state, {modalProps: newModalProps})
     default:
       return state

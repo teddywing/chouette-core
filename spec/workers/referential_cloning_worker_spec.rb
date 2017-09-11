@@ -3,7 +3,7 @@ require 'ostruct'
 
 RSpec.describe ReferentialCloningWorker do
 
-  context "given a refererntial cloning" do
+  context "given a referential cloning" do
 
     let( :id ){ double }
 
@@ -33,5 +33,21 @@ RSpec.describe ReferentialCloningWorker do
       worker.perform(id)
     end
   end
+
+  it "should clone an existing Referential" do
+    source_referential = create :referential
+
+    source_referential.switch
+    source_time_table = create :time_table
+
+    target_referential = create :referential, created_from: source_referential
+
+    cloning = ReferentialCloning.create source_referential: source_referential, target_referential: target_referential
+    ReferentialCloningWorker.new.perform(cloning)
+
+    target_referential.switch
+    expect(Chouette::TimeTable.where(objectid: source_time_table.objectid).exists?)
+  end
+
 
 end
