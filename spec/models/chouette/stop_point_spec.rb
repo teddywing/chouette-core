@@ -41,7 +41,7 @@ describe StopPoint, :type => :model do
   end
 
   describe '#duplicate' do
-    let!( :new_route ){ create :route, objectid: 'newroute:Route:1' }
+    let!( :new_route ){ create :route }
 
     it 'creates a new instance' do
       expect{ subject.duplicate(for_route: new_route) }.to change{ StopPoint.count }.by(1)

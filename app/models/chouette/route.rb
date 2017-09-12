@@ -78,7 +78,6 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   def duplicate
     overrides = {
-      'object_version' => object_version - 1,
       'opposite_route_id' => nil
     }
     keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
