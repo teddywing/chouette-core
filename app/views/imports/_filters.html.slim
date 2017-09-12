@@ -9,7 +9,7 @@
   .ffg-row
     .form-group.togglable
       = f.label Import.human_attribute_name(:status), required: false, class: 'control-label'
-      = f.input :status_eq_any, collection: @imports.map(&:status).uniq.compact, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + import_status(l) + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}, input_html: { checked: true}
+      = f.input :status_eq_any, collection: %w(pending successful warning failed), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + import_status(l) + "</span>").html_safe}, required: false, wrapper_html: { class: "checkbox_list"}
 
     .form-group.togglable
       = f.label Import.human_attribute_name(:started_at), required: false, class: 'control-label'

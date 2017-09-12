@@ -2,6 +2,7 @@ class ImportsController < BreadcrumbController
   skip_before_action :authenticate_user!, only: [:download]
   defaults resource_class: Import, collection_name: 'imports', instance_name: 'import'
   before_action :ransack_started_at_params, only: [:index]
+  before_action :ransack_status_params, only: [:index]
   respond_to :html
   belongs_to :workbench
 
@@ -45,11 +46,10 @@ class ImportsController < BreadcrumbController
 
   protected
   def collection
-
     scope = parent.imports.where(type: "WorkbenchImport")
     scope = ransack_period scope
 
-    @q = scope.search(params[:q].try(:except, :started_at))
+    @q = scope.search(params[:q])
 
     if sort_column && sort_direction
       @imports ||= @q.result(distinct: true).order(sort_column + ' ' + sort_direction).paginate(page: params[:page], per_page: 10)
@@ -64,7 +64,7 @@ class ImportsController < BreadcrumbController
     start_date = []
     end_date = []
 
-    if params[:q] && params[:q][:started_at] && !params[:q][:started_at].has_value?(nil)
+    if params[:q] && params[:q][:started_at] && !params[:q][:started_at].has_value?(nil) && !params[:q][:started_at].has_value?("")
       [1, 2, 3].each do |key|
         start_date <<  params[:q][:started_at]["begin(#{key}i)"].to_i
         end_date <<  params[:q][:started_at]["end(#{key}i)"].to_i
@@ -85,6 +85,15 @@ class ImportsController < BreadcrumbController
       scope = scope.where_started_at_between(@begin_range, @end_range)
     end
     scope
+  end
+
+  def ransack_status_params
+    if params[:q]
+      binding.pry
+      return params[:q].delete(:status_eq_any) if params[:q][:status_eq_any].empty? || ( (Import.status.values & params[:q][:status_eq_any]).length >= 4 )
+      params[:q][:status_eq_any].push("new", "running") if params[:q][:status_eq_any].include?("pending")
+      params[:q][:status_eq_any].push("aborted", "canceled") if params[:q][:status_eq_any].include?("failed")
+    end
   end
 
   def build_resource
