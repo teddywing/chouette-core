@@ -4,6 +4,7 @@ require 'geo_ruby'
 class Chouette::AccessPoint < Chouette::ActiveRecord
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
+
   include StifReflexAttributesSupport
   include Geokit::Mappable
   include ProjectionFields
@@ -23,12 +24,15 @@ class Chouette::AccessPoint < Chouette::ActiveRecord
   validates_numericality_of :longitude, :less_than_or_equal_to => 180, :greater_than_or_equal_to => -180, :allow_nil => true
 
   validates_format_of :coordinates, :with => %r{\A *-?(0?[0-9](\.[0-9]*)?|[0-8][0-9](\.[0-9]*)?|90(\.[0]*)?) *\, *-?(0?[0-9]?[0-9](\.[0-9]*)?|1[0-7][0-9](\.[0-9]*)?|180(\.[0]*)?) *\Z}, :allow_nil => true, :allow_blank => true
-
+  before_save :coordinates_to_lat_lng
   def self.nullable_attributes
     [:street_name, :country_code, :comment, :long_lat_type, :zip_code, :city_name]
   end
 
-  before_save :coordinates_to_lat_lng
+
+  def referential
+    @referential ||= Referential.where(:slug => Apartment::Tenant.current).first!
+  end
 
   def referential
     @referential ||= Referential.where(:slug => Apartment::Tenant.current).first!

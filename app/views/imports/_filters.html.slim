@@ -9,13 +9,15 @@
   .ffg-row
     .form-group.togglable
       = f.label Import.human_attribute_name(:status), required: false, class: 'control-label'
-      = f.input :status_eq_any, collection: @imports.map(&:status).uniq.compact, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+      = f.input :status_eq_any, collection: @imports.map(&:status).uniq.compact, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + import_status(l) + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}, input_html: { checked: true}
 
     .form-group.togglable
       = f.label Import.human_attribute_name(:started_at), required: false, class: 'control-label'
       .filter_menu
-        = f.input :started_at_eq, as: :date, label: false, wrapper_html: { class: 'date smart_date filter_menu-item' }, include_blank: true
+        = f.simple_fields_for :started_at do |p|
+          = p.input :begin, as: :date, label: false, wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
+          = p.input :end, as: :date, label: false, wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
 
   .actions
     = link_to t('actions.erase'), workbench_imports_path(@workbench), class: 'btn btn-link'
-    = f.submit t('actions.filter'), class: 'btn btn-default'
+    = f.submit t('actions.filter'), id: 'import_filter_btn', class: 'btn btn-default'

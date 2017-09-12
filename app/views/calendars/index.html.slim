@@ -13,7 +13,7 @@
       .row
         .col-lg-12
           = render 'filters'
-          
+
     - if @calendars.any?
       .row
         .col-lg-12
@@ -31,6 +31,10 @@
                 attribute: 'short_name' \
               ), \
               TableBuilderHelper::Column.new( \
+                key: :organisation, \
+                attribute: Proc.new { |c| c.organisation.name } \
+              ), \
+              TableBuilderHelper::Column.new( \
                 key: :shared, \
                 attribute: Proc.new { |c| t("#{c.try(:shared)}") } \
               ) \
@@ -39,8 +43,10 @@
             cls: 'table has-filter'
 
           = new_pagination @calendars, 'pull-right'
-          
+
     - unless @calendars.any?
       .row.mt-xs
         .col-lg-12
           = replacement_msg t('calendars.search_no_results')
+
+= javascript_include_tag 'filters/calendar.js'

@@ -33,8 +33,14 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_organisation
 
+  def current_offer_workbench
+    current_organisation.workbenches.find_by_name("Gestion de l'offre")
+  end
+  helper_method :current_offer_workbench
+
   def current_functional_scope
-    JSON.parse(current_organisation.sso_attributes["functional_scope"]) if current_organisation
+    functional_scope = current_organisation.sso_attributes.try(:[], "functional_scope") if current_organisation
+    JSON.parse(functional_scope) if functional_scope
   end
   helper_method :current_functional_scope
 

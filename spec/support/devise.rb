@@ -3,10 +3,10 @@ module DeviseRequestHelper
 
   def login_user
     organisation = Organisation.where(:code => "first").first_or_create(attributes_for(:organisation))
-    @user ||= 
+    @user ||=
       create(:user,
              :organisation => organisation,
-             :permissions  => Support::Permissions.all_permissions)
+             :permissions => Support::Permissions.all_permissions)
 
     login_as @user, :scope => :user
     # post_via_redirect user_session_path, 'user[email]' => @user.email, 'user[password]' => @user.password

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906092619) do
+ActiveRecord::Schema.define(version: 20170907082913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -322,6 +322,7 @@ ActiveRecord::Schema.define(version: 20170906092619) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   create_table "footnotes_vehicle_journeys", id: false, force: :cascade do |t|
@@ -444,6 +445,7 @@ ActiveRecord::Schema.define(version: 20170906092619) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree
@@ -654,6 +656,7 @@ ActiveRecord::Schema.define(version: 20170906092619) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "routes", ["objectid"], name: "routes_objectid_key", unique: true, using: :btree
@@ -669,6 +672,7 @@ ActiveRecord::Schema.define(version: 20170906092619) do
     t.integer  "stop_point_ids",  limit: 8,              array: true
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   create_table "routing_constraints_lines", id: false, force: :cascade do |t|
@@ -834,6 +838,7 @@ ActiveRecord::Schema.define(version: 20170906092619) do
     t.integer  "created_from_id"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "time_tables", ["calendar_id"], name: "index_time_tables_on_calendar_id", using: :btree
@@ -939,6 +944,7 @@ ActiveRecord::Schema.define(version: 20170906092619) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree

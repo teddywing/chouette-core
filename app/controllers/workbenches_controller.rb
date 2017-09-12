@@ -20,8 +20,13 @@ class WorkbenchesController < BreadcrumbController
     @q_for_form   = scope.ransack(params[:q])
     @q_for_result = scope.ransack(ransack_params)
     @wbench_refs  = sort_result(@q_for_result.result).paginate(page: params[:page], per_page: 30)
-    @wbench_refs  = ModelDecorator.decorate(@wbench_refs, with: ReferentialDecorator)
-
+    @wbench_refs  = ModelDecorator.decorate(
+      @wbench_refs,
+      with: ReferentialDecorator,
+      context: {
+        current_workbench_id: params[:id]
+      }
+    )
     show! do
       build_breadcrumb :show
     end

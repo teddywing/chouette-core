@@ -9,8 +9,12 @@ class Import < ActiveRecord::Base
   has_many :resources, class_name: "ImportResource", dependent: :destroy
   has_many :children, foreign_key: :parent_id, class_name: "Import", dependent: :destroy
 
+  scope :where_started_at_between, ->(start_date, end_date) do
+     where('started_at BETWEEN ? AND ?', start_date, end_date)
+   end
+
   extend Enumerize
-  enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true
+  enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true, default: :new
 
   validates :file, presence: true
   validates_presence_of :workbench, :creator
@@ -89,7 +93,6 @@ class Import < ActiveRecord::Base
 
   def initialize_fields
     self.token_download = SecureRandom.urlsafe_base64
-    self.status = Import.status.new
   end
 
   def self.symbols_with_indifferent_access(array)

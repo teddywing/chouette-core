@@ -1,13 +1,8 @@
 require 'spec_helper'
 
 describe Chouette::Network, :type => :model do
-
   subject { create(:network) }
-
-  it { is_expected.to validate_presence_of :name }
-
-  # it { should validate_presence_of :objectid }
-  it { is_expected.to validate_uniqueness_of :objectid }
+  it { should validate_presence_of :name }
 
   describe "#stop_areas" do
     let!(:line){create(:line, :network => subject)}

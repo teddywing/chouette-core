@@ -16,6 +16,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
   end
 
   belongs_to :line
+  belongs_to :opposite_route, :class_name => 'Chouette::Route', :foreign_key => :opposite_route_id
 
   has_many :routing_constraint_zones
   has_many :journey_patterns, :dependent => :destroy
@@ -30,7 +31,6 @@ class Chouette::Route < Chouette::TridentActiveRecord
       Chouette::Route.vehicle_journeys_timeless(proxy_association.owner.journey_patterns.pluck( :departure_stop_point_id))
     end
   end
-  belongs_to :opposite_route, :class_name => 'Chouette::Route', :foreign_key => :opposite_route_id
   has_many :stop_points, -> { order("position") }, :dependent => :destroy do
     def find_by_stop_area(stop_area)
       stop_area_ids = Integer === stop_area ? [stop_area] : (stop_area.children_in_depth + [stop_area]).map(&:id)
@@ -56,12 +56,13 @@ class Chouette::Route < Chouette::TridentActiveRecord
   end
   has_many :stop_areas, -> { order('stop_points.position ASC') }, :through => :stop_points do
     def between(departure, arrival)
-      departure, arrival = [departure, arrival].collect do |endpoint|
+      departure, arrival = [departure, arrival].map do |endpoint|
         String === endpoint ? Chouette::StopArea.find_by_objectid(endpoint) : endpoint
       end
       proxy_owner.stop_points.between(departure, arrival).includes(:stop_area).collect(&:stop_area)
     end
   end
+
   accepts_nested_attributes_for :stop_points, :allow_destroy => :true
 
   validates_presence_of :name
@@ -74,6 +75,32 @@ class Chouette::Route < Chouette::TridentActiveRecord
   validates :wayback, inclusion: { in: self.wayback.values }
 
   after_commit :journey_patterns_control_route_sections
+
+  def duplicate
+    overrides = {
+      'opposite_route_id' => nil
+    }
+    keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
+    atts_for_create = attributes
+      .slice(*keys_for_create)
+      .merge(overrides)
+    new_route = self.class.create!(atts_for_create)
+    duplicate_stop_points(for_route: new_route)
+    new_route
+  end
+
+  def duplicate_stop_points(for_route:)
+    stop_points.each(&duplicate_stop_point(for_route: for_route))
+  end
+  def duplicate_stop_point(for_route:)
+    -> stop_point do
+      stop_point.duplicate(for_route: for_route)
+    end
+  end
+
+  def local_id
+    "IBOO-#{self.referential.id}-#{self.line.objectid.local_id}-#{self.id}"
+  end
 
   def geometry_presenter
     Chouette::Geometry::RoutePresenter.new self
