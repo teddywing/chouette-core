@@ -9,7 +9,9 @@ class Import < ActiveRecord::Base
   has_many :resources, class_name: "ImportResource", dependent: :destroy
   has_many :children, foreign_key: :parent_id, class_name: "Import", dependent: :destroy
 
-  scope :started_on_date, ->(date) { where('started_at BETWEEN ? AND ?', date.beginning_of_day, date.end_of_day) }
+  scope :where_started_at_between, ->(start_date, end_date) do
+     where('started_at BETWEEN ? AND ?', start_date, end_date)
+   end
 
   extend Enumerize
   enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true, default: :new
@@ -18,10 +20,6 @@ class Import < ActiveRecord::Base
   validates_presence_of :workbench, :creator
 
   before_create :initialize_fields
-
-  def self.ransackable_scopes(auth_object = nil)
-    [:started_on_date]
-  end
 
   def self.model_name
     ActiveModel::Name.new Import, Import, "Import"

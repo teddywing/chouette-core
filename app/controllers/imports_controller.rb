@@ -1,7 +1,7 @@
 class ImportsController < BreadcrumbController
   skip_before_action :authenticate_user!, only: [:download]
   defaults resource_class: Import, collection_name: 'imports', instance_name: 'import'
-  before_action :ransack_started_on_date, only: [:index]
+  before_action :ransack_started_at_params, only: [:index]
   respond_to :html
   belongs_to :workbench
 
@@ -45,7 +45,11 @@ class ImportsController < BreadcrumbController
 
   protected
   def collection
-    @q = parent.imports.where(type: "WorkbenchImport").search(params[:q])
+
+    scope = parent.imports.where(type: "WorkbenchImport")
+    scope = ransack_period scope
+
+    @q = scope.search(params[:q].try(:except, :started_at))
 
     if sort_column && sort_direction
       @imports ||= @q.result(distinct: true).order(sort_column + ' ' + sort_direction).paginate(page: params[:page], per_page: 10)
@@ -56,15 +60,31 @@ class ImportsController < BreadcrumbController
 
   private
 
-  def ransack_started_on_date
-    date =[]
-    if params[:q] && !params[:q]['started_on_date(1i)'].empty?
-      ['started_on_date(1i)', 'started_on_date(2i)', 'started_on_date(3i)'].each do |key|
-        date << params[:q][key].to_i
-        params[:q].delete(key)
+  def ransack_started_at_params
+    start_date = []
+    end_date = []
+
+    if params[:q] && params[:q][:started_at] && !params[:q][:started_at].has_value?(nil)
+      [1, 2, 3].each do |key|
+        start_date <<  params[:q][:started_at]["begin(#{key}i)"].to_i
+        end_date <<  params[:q][:started_at]["end(#{key}i)"].to_i
       end
-      params[:q]['started_on_date'] = DateTime.new(*date) rescue nil
+      params[:q].delete([:started_at])
+      @begin_range = DateTime.new(*start_date,0,0,0) rescue nil
+      @end_range = DateTime.new(*end_date,23,59,59) rescue nil
     end
+  end
+
+  # Fake ransack filter
+  def ransack_period scope
+    return scope unless !!@begin_range && !!@end_range
+
+    if @begin_range > @end_range
+      flash.now[:error] = t('imports.filters.error_period_filter')
+    else
+      scope = scope.where_started_at_between(@begin_range, @end_range)
+    end
+    scope
   end
 
   def build_resource
