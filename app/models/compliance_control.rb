@@ -1,6 +1,6 @@
-class ComplianceCheck < ActiveRecord::Base
-  belongs_to :compliance_check_set
-  belongs_to :compliance_check_block
+class ComplianceControl < ActiveRecord::Base
+  belongs_to :compliance_control_set
+  belongs_to :compliance_control_block
 
   enum criticity: [:info, :warning, :error]
   validates :criticity, presence: true
