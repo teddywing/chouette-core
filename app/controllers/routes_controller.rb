@@ -69,11 +69,11 @@ class RoutesController < ChouetteController
     end
   end
 
- # def update
-   # update! do |success, failure|
-   #   success.html { redirect_to referential_line_path(@referential,@line) }
-   # end
- # end
+  def duplicate
+    route = Chouette::Route.find(params[:id]).duplicate
+    redirect_to edit_referential_line_route_path(@referential, route.line, route)
+  end
+
   protected
 
   alias_method :route, :resource

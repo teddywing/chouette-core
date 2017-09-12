@@ -58,6 +58,18 @@ class RouteDecorator < Draper::Decorator
       )
     end
 
+    if h.policy(object).duplicate?
+      links << Link.new(
+        content: h.t('routes.duplicate.title'),
+        href: h.duplicate_referential_line_route_path(
+          context[:referential],
+          context[:line],
+          object
+        ),
+        method: :post
+      )
+    end
+
     links
   end
 end
