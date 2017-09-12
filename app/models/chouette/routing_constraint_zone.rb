@@ -9,7 +9,7 @@ class Chouette::RoutingConstraintZone < Chouette::TridentActiveRecord
   validate :stop_points_belong_to_route, :not_all_stop_points_selected
 
   def local_id
-    "IBOO-#{self.route.line.objectid.local_id}-#{self.route.objectid.local_id}-#{self.referential.id}-#{self.id}"
+    "IBOO-#{self.referential.id}-#{self.route.line.objectid.local_id}-#{self.route.objectid.local_id}-#{self.id}"
   end
 
   scope :order_by_stop_points_count, ->(direction) do
