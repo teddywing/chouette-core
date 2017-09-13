@@ -11,7 +11,7 @@ class ReferentialLinesController < ChouetteController
   belongs_to :referential
 
   def show
-    @routes = resource.routes
+    @routes = resource.routes.order(:objectid)
 
     case sort_route_column
     when "stop_points", "journey_patterns"

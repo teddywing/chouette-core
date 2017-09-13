@@ -45,6 +45,18 @@ class RouteDecorator < Draper::Decorator
       )
     )
 
+    if h.policy(object).duplicate?
+      links << Link.new(
+        content: h.t('routes.duplicate.title'),
+        href: h.duplicate_referential_line_route_path(
+          context[:referential],
+          context[:line],
+          object
+        ),
+        method: :post
+      )
+    end
+
     if h.policy(object).destroy?
       links << Link.new(
         content: h.destroy_link_content,
@@ -55,18 +67,6 @@ class RouteDecorator < Draper::Decorator
         ),
         method: :delete,
         data: { confirm: h.t('routes.actions.destroy_confirm') }
-      )
-    end
-
-    if h.policy(object).duplicate?
-      links << Link.new(
-        content: h.t('routes.duplicate.title'),
-        href: h.duplicate_referential_line_route_path(
-          context[:referential],
-          context[:line],
-          object
-        ),
-        method: :post
       )
     end
 
