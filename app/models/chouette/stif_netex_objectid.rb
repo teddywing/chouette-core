@@ -26,6 +26,10 @@ class Chouette::StifNetexObjectid < String
     parts.try(:fourth)
   end
 
+  def short_id
+    local_id.try(:split, "-").try(:[], -1)
+  end
+
   def self.create(provider_id, object_type, local_id, boiv_id)
     new [provider_id, object_type, local_id, boiv_id].join(":")
   end

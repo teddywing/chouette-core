@@ -5,7 +5,7 @@ class Chouette::NetexObjectId < String
   end
   alias_method :objectid?, :valid?
 
-  @@format = /^([A-Za-z_]+):([0-9A-Za-z_]+):([A-Za-z]+):([0-9A-Za-z_-]+)$/ 
+  @@format = /^([A-Za-z_]+):([0-9A-Za-z_]+):([A-Za-z]+):([0-9A-Za-z_-]+)$/
   cattr_reader :format
 
   def parts
@@ -27,7 +27,7 @@ class Chouette::NetexObjectId < String
   def local_id
     parts.try(:fourth)
   end
-  
+
   def self.create(provider_id, system_id, object_type, local_id)
     new [provider_id, system_id, object_type, local_id].join(":")
   end
