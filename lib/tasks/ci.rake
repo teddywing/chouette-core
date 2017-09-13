@@ -2,7 +2,7 @@ namespace :ci do
   desc "Prepare CI build"
   task :setup do
     cp "config/database/jenkins.yml", "config/database.yml"
-    sh "RAILS_ENV=test rake db:drop d:create db:migrate"
+    sh "RAILS_ENV=test rake db:drop db:create db:migrate"
     sh "npm --production --no-progress install"
   end
 
