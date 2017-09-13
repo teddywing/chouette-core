@@ -2,6 +2,7 @@ var _ = require('lodash')
 var React = require('react')
 var PropTypes = require('react').PropTypes
 var Select2 = require('react-select2')
+var humanOID = require('../../../actions').humanOID
 
 // get JSON full path
 var origin = window.location.origin
@@ -34,7 +35,7 @@ class BSelect4 extends React.Component{
             delay: '500',
             data: function(params) {
               return {
-                q: {published_name_cont_or_short_id_or_registration_number_cont: params.term},
+                q: {published_name_or_objectid_or_registration_number_cont: params.term},
               };
             },
             processResults: function(data, params) {
@@ -43,7 +44,7 @@ class BSelect4 extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    { text: "<strong>" + item.published_name + " - " + item.short_id + "</strong><br/><small>" + item.registration_number + "</small>" }
+                    { text: "<strong>" + item.published_name + " - " + humanOID(item.object_id) + "</strong><br/><small>" + item.registration_number + "</small>" }
                   )
                 )
               };
