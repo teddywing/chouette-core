@@ -32,6 +32,8 @@ en:
       stop_area_name: "Stop area name"
       for_boarding: "Boarding"
       for_alighting: "Alighting"
+    duplicate:
+      title: "Duplicate route"
     route:
       no_journey_pattern: "No Journey pattern"
       wayback:

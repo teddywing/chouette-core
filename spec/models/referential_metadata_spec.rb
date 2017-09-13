@@ -30,8 +30,8 @@ RSpec.describe ReferentialMetadata, :type => :model do
       expect(new_referential_metadata.referential).to be(nil)
     end
 
-    it "should have the same referential_source" do
-      expect(new_referential_metadata.referential_source).to eq(referential_metadata.referential_source)
+    it "should have the right referential_source" do
+      expect(new_referential_metadata.referential_source).to eq(referential_metadata.referential)
     end
 
   end

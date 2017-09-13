@@ -24,7 +24,7 @@ class WorkbenchesController < BreadcrumbController
       @wbench_refs,
       with: ReferentialDecorator,
       context: {
-        workbench_id: params[:id]
+        current_workbench_id: params[:id]
       }
     )
     show! do
