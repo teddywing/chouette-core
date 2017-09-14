@@ -90,7 +90,7 @@ const actions = {
   resetValidation: (target) => {
     $(target).parent().removeClass('has-error').children('.help-block').remove()
   },
-  humanOID : (oid) => oid.split(':')[2],
+  humanOID : (oid) => oid.split(':')[2].split("-").pop(),
   validateFields : (fields) => {
     const test = []
 

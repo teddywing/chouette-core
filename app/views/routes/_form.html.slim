@@ -7,11 +7,11 @@
 
       .form-group.has_switch
         = f.label :wayback, class: 'col-sm-4 col-xs-5 control-label'
-        = f.input :wayback, as: :boolean, checked_value: :straight_forward, unchecked_value: :backward, label: content_tag(:span, @route.wayback_text, class: 'switch-label', data: {checkedValue: t('enumerize.route.direction.straight_forward'), uncheckedValue: t('enumerize.route.direction.backward')}), wrapper_html: { class: 'col-sm-8 col-xs-7'}
+        = f.input :wayback, as: :boolean, checked_value: :outbound, unchecked_value: :inbound, label: content_tag(:span, @route.wayback_text, class: 'switch-label', data: {checkedValue: t('enumerize.route.wayback.outbound'), uncheckedValue: t('enumerize.route.wayback.inbound')}), wrapper_html: { class: 'col-sm-8 col-xs-7'}
 
-      = f.input :opposite_route_id, collection: @forward, disabled: @route.wayback.straight_forward?, wrapper_html: {class: input_opposite_route_id_css(@route, 'straight_forward')}
+      = f.input :opposite_route_id, collection: @forward, disabled: @route.wayback.outbound?, wrapper_html: {class: input_opposite_route_id_css(@route, 'outbound')}
 
-      = f.input :opposite_route_id, collection: @backward, disabled: @route.wayback.backward?, wrapper_html: {class: input_opposite_route_id_css(@route, 'backward')}
+      = f.input :opposite_route_id, collection: @backward, disabled: @route.wayback.inbound?, wrapper_html: {class: input_opposite_route_id_css(@route, 'inbound')}
 
 
 

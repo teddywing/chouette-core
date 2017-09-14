@@ -1,6 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-require 'simplecov'
 unless ENV['NO_RCOV']
+  require 'simplecov'
+
   if ENV['JOB_NAME']
     require 'simplecov-rcov'
     SimpleCov.formatters = [
@@ -8,8 +9,12 @@ unless ENV['NO_RCOV']
       SimpleCov::Formatter::RcovFormatter
     ]
   end
+
   SimpleCov.start 'rails' do
     add_filter 'vendor'
+    add_filter 'app/exporters/chouette/hub'
+    add_filter 'app/maps'
+    add_filter 'lib/ievkit'
   end
 end
 

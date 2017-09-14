@@ -1,7 +1,9 @@
-= simple_form_for @api_key, url: action_url do |f|
-    = f.input :name
-    - unless @api_key.new_record?
-      = f.input :token, :input_html => { readonly: true }
+= simple_form_for @api_key, html: {class: 'form-horizontal', id: 'api_key_form'}, wrapper: :horizontal_form do |f|
+  .row
+    .col-lg-12
+      = f.input :name
+      - unless @api_key.new_record?
+        = f.input :token, :input_html => { readonly: true }
 
-    = f.association :referential
-    = f.button :submit, 'submit', class: 'btn-primary'
+      / = f.association :referential
+      = f.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'api_key_form'

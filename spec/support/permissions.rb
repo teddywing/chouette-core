@@ -13,6 +13,7 @@ module Support
 
     def _permitted_resources
       %w[
+      api_keys
       access_points
       connection_links
       calendars

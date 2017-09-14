@@ -38,7 +38,7 @@ module Stif
         if object.valid?
           object.save
         else
-          Rails.logger.error "Reflex:sync - #{object.class.model_name} with objectid #{object.objectid} and name #{object.name} can't be saved"
+          Rails.logger.error "Reflex:sync - #{object.class.model_name} with objectid #{object.objectid} can't be saved - errors : #{object.errors.messages}"
         end
       end
 

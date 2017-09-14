@@ -63,10 +63,11 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resource :organisation, :only => [:show, :edit, :update] do
-    resources :api_keys
     resources :users
     resources :rule_parameter_sets
   end
+
+  resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
 
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
@@ -117,6 +118,7 @@ ChouetteIhm::Application.routes.draw do
         member do
           get 'edit_boarding_alighting'
           put 'save_boarding_alighting'
+          post 'duplicate', to: 'routes#duplicate'
         end
         resource :journey_patterns_collection, :only => [:show, :update]
         resources :journey_patterns do

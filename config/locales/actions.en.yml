@@ -19,6 +19,7 @@ en:
     import: 'Import'
     filter: 'Filter'
     erase: 'Erase'
+    create_api_key: "Create an API key"
   or: "or"
   cancel: "Cancel"
   search_hint: "Type in a search term"

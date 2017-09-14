@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907082913) do
+ActiveRecord::Schema.define(version: 20170913074922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,6 +145,107 @@ ActiveRecord::Schema.define(version: 20170907082913) do
   add_index "companies", ["objectid"], name: "companies_objectid_key", unique: true, using: :btree
   add_index "companies", ["registration_number"], name: "companies_registration_number_key", using: :btree
 
+  create_table "compliance_check_blocks", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.hstore   "condition_attributes"
+    t.integer  "compliance_check_set_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "compliance_check_blocks", ["compliance_check_set_id"], name: "index_compliance_check_blocks_on_compliance_check_set_id", using: :btree
+
+  create_table "compliance_check_resources", id: :bigserial, force: :cascade do |t|
+    t.string   "status"
+    t.string   "name"
+    t.string   "type"
+    t.string   "reference"
+    t.hstore   "metrics"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "compliance_check_results", id: :bigserial, force: :cascade do |t|
+    t.integer  "compliance_check_id"
+    t.integer  "compliance_check_resource_id"
+    t.string   "message_key"
+    t.hstore   "message_attributes"
+    t.hstore   "resource_attributes"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "compliance_check_results", ["compliance_check_id"], name: "index_compliance_check_results_on_compliance_check_id", using: :btree
+  add_index "compliance_check_results", ["compliance_check_resource_id"], name: "index_compliance_check_results_on_compliance_check_resource_id", using: :btree
+
+  create_table "compliance_check_sets", id: :bigserial, force: :cascade do |t|
+    t.integer  "referential_id"
+    t.integer  "compliance_control_set_id"
+    t.integer  "workbench_id"
+    t.string   "creator"
+    t.string   "status"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_check_sets", ["compliance_control_set_id"], name: "index_compliance_check_sets_on_compliance_control_set_id", using: :btree
+  add_index "compliance_check_sets", ["parent_type", "parent_id"], name: "index_compliance_check_sets_on_parent_type_and_parent_id", using: :btree
+  add_index "compliance_check_sets", ["referential_id"], name: "index_compliance_check_sets_on_referential_id", using: :btree
+  add_index "compliance_check_sets", ["workbench_id"], name: "index_compliance_check_sets_on_workbench_id", using: :btree
+
+  create_table "compliance_checks", id: :bigserial, force: :cascade do |t|
+    t.integer  "compliance_check_set_id"
+    t.integer  "compliance_check_block_id"
+    t.string   "type"
+    t.json     "control_attributes"
+    t.string   "name"
+    t.string   "code"
+    t.integer  "criticity"
+    t.text     "comment"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_checks", ["compliance_check_block_id"], name: "index_compliance_checks_on_compliance_check_block_id", using: :btree
+  add_index "compliance_checks", ["compliance_check_set_id"], name: "index_compliance_checks_on_compliance_check_set_id", using: :btree
+
+  create_table "compliance_control_blocks", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.hstore   "condition_attributes"
+    t.integer  "compliance_control_set_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_control_blocks", ["compliance_control_set_id"], name: "index_compliance_control_blocks_on_compliance_control_set_id", using: :btree
+
+  create_table "compliance_control_sets", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.integer  "organisation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "compliance_control_sets", ["organisation_id"], name: "index_compliance_control_sets_on_organisation_id", using: :btree
+
+  create_table "compliance_controls", id: :bigserial, force: :cascade do |t|
+    t.integer  "compliance_control_set_id"
+    t.integer  "compliance_control_block_id"
+    t.string   "type"
+    t.json     "control_attributes"
+    t.string   "name"
+    t.string   "code"
+    t.integer  "criticity"
+    t.text     "comment"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "compliance_controls", ["compliance_control_block_id"], name: "index_compliance_controls_on_compliance_control_block_id", using: :btree
+  add_index "compliance_controls", ["compliance_control_set_id"], name: "index_compliance_controls_on_compliance_control_set_id", using: :btree
+
   create_table "connection_links", id: :bigserial, force: :cascade do |t|
     t.integer  "departure_id",                           limit: 8
     t.integer  "arrival_id",                             limit: 8
@@ -168,6 +269,22 @@ ActiveRecord::Schema.define(version: 20170907082913) do
   end
 
   add_index "connection_links", ["objectid"], name: "connection_links_objectid_key", unique: true, using: :btree
+
+  create_table "delayed_jobs", id: :bigserial, force: :cascade do |t|
+    t.integer  "priority",               default: 0
+    t.integer  "attempts",               default: 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by",  limit: 255
+    t.string   "queue",      limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "exports", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id",  limit: 8
@@ -290,12 +407,12 @@ ActiveRecord::Schema.define(version: 20170907082913) do
     t.datetime "started_at"
     t.datetime "ended_at"
     t.string   "token_download"
-    t.string   "type"
+    t.string   "type",                  limit: 255
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.integer  "current_step",                      default: 0
+    t.integer  "total_steps",                       default: 0
     t.datetime "notified_parent_at"
-    t.integer  "current_step",                    default: 0
-    t.integer  "total_steps",                     default: 0
     t.string   "creator"
   end
 
@@ -446,6 +563,11 @@ ActiveRecord::Schema.define(version: 20170907082913) do
   add_index "networks", ["line_referential_id"], name: "index_networks_on_line_referential_id", using: :btree
   add_index "networks", ["objectid"], name: "networks_objectid_key", unique: true, using: :btree
   add_index "networks", ["registration_number"], name: "networks_registration_number_key", using: :btree
+
+  create_table "object_id_factories", id: :bigserial, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "organisations", id: :bigserial, force: :cascade do |t|
     t.string   "name"
@@ -623,7 +745,7 @@ ActiveRecord::Schema.define(version: 20170907082913) do
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
     t.integer  "parent_id",                       limit: 8
-    t.string   "objectid",                                                            null: false
+    t.string   "objectid",                                                              null: false
     t.integer  "object_version",                  limit: 8
     t.string   "creator_id"
     t.string   "name"
@@ -632,8 +754,8 @@ ActiveRecord::Schema.define(version: 20170907082913) do
     t.string   "registration_number"
     t.string   "nearest_topic_name"
     t.integer  "fare_code"
-    t.decimal  "longitude",                                 precision: 19, scale: 16
-    t.decimal  "latitude",                                  precision: 19, scale: 16
+    t.decimal  "longitude",                                   precision: 19, scale: 16
+    t.decimal  "latitude",                                    precision: 19, scale: 16
     t.string   "long_lat_type"
     t.string   "country_code"
     t.string   "street_name"
@@ -651,7 +773,7 @@ ActiveRecord::Schema.define(version: 20170907082913) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "stif_type"
+    t.string   "stif_type",                       limit: 255
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree
@@ -722,18 +844,18 @@ ActiveRecord::Schema.define(version: 20170907082913) do
   add_index "time_table_periods", ["time_table_id"], name: "index_time_table_periods_on_time_table_id", using: :btree
 
   create_table "time_tables", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                              null: false
-    t.integer  "object_version",  limit: 8, default: 1
+    t.string   "objectid",                                null: false
+    t.integer  "object_version",  limit: 8,   default: 1
     t.string   "creator_id"
     t.string   "version"
     t.string   "comment"
-    t.integer  "int_day_types",             default: 0
+    t.integer  "int_day_types",               default: 0
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "calendar_id",     limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color"
+    t.string   "color",           limit: 255
     t.integer  "created_from_id"
     t.string   "checksum"
     t.text     "checksum_source"
@@ -864,10 +986,26 @@ ActiveRecord::Schema.define(version: 20170907082913) do
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
+  add_foreign_key "compliance_check_blocks", "compliance_check_sets"
+  add_foreign_key "compliance_check_results", "compliance_check_resources"
+  add_foreign_key "compliance_check_results", "compliance_checks"
+  add_foreign_key "compliance_check_sets", "compliance_control_sets"
+  add_foreign_key "compliance_check_sets", "referentials"
+  add_foreign_key "compliance_check_sets", "workbenches"
+  add_foreign_key "compliance_checks", "compliance_check_blocks"
+  add_foreign_key "compliance_checks", "compliance_check_sets"
+  add_foreign_key "compliance_control_blocks", "compliance_control_sets"
+  add_foreign_key "compliance_control_sets", "organisations"
+  add_foreign_key "compliance_controls", "compliance_control_blocks"
+  add_foreign_key "compliance_controls", "compliance_control_sets"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
+  add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", on_delete: :nullify
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
+  add_foreign_key "journey_frequencies", "vehicle_journeys", name: "journey_frequencies_vehicle_journey_id_fk", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify
+  add_foreign_key "journey_pattern_sections", "journey_patterns", name: "journey_pattern_sections_journey_pattern_id_fk", on_delete: :cascade
   add_foreign_key "journey_pattern_sections", "journey_patterns", on_delete: :cascade
+  add_foreign_key "journey_pattern_sections", "route_sections", name: "journey_pattern_sections_route_section_id_fk", on_delete: :cascade
   add_foreign_key "journey_pattern_sections", "route_sections", on_delete: :cascade
   add_foreign_key "journey_patterns", "routes", name: "jp_route_fkey", on_delete: :cascade
   add_foreign_key "journey_patterns", "stop_points", column: "arrival_stop_point_id", name: "arrival_point_fkey", on_delete: :nullify

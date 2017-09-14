@@ -1,21 +1,30 @@
 class ApiKeysController < BreadcrumbController
   defaults resource_class: Api::V1::ApiKey
+  include PolicyChecker
 
   def create
     @api_key = Api::V1::ApiKey.new(api_key_params.merge(organisation: current_organisation))
-    create! { organisation_api_keys_path }
-  end
-
-  def index
-    @api_keys = decorate_api_keys(current_organisation.api_keys.paginate(page: params[:page]))
+    create! do |format|
+      format.html {
+        redirect_to workbenches_path
+      }
+    end
   end
 
   def update
-    update! { organisation_api_key_path(resource) }
+    update! do |format|
+      format.html {
+        redirect_to workbenches_path
+      }
+    end
   end
 
   def destroy
-    destroy! { organisation_api_keys_path }
+    destroy! do |format|
+      format.html {
+        redirect_to workbenches_path
+      }
+    end
   end
 
   private

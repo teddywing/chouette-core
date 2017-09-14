@@ -2,6 +2,13 @@
 = pageheader 'tableau-de-bord',
              t('.title', organisation: current_organisation.name)
 
+  / Below is secundary actions & optional contents (filters, ...)
+  .row.mb-sm
+   .col-lg-12.text-right
+     - if policy(Api::V1::ApiKey).create?
+       = link_to t('actions.create_api_key'), new_api_key_path, class: 'btn btn-primary'
+
+
 / PageContent
 .page_content
   .container-fluid
@@ -27,6 +34,19 @@
           .panel-body
             em.small.text-muted = t('.offers.no_content')
 
+        .panel.panel-default
+          .panel-heading
+            h3.panel-title
+              = t('.offers.api_keys')
+              span.badge.ml-xs = current_organisation.api_keys.count if current_organisation.api_keys.any?
+          - if current_organisation.api_keys.any?
+            - current_organisation.api_keys.each do |api_key|
+              .list-group
+                = policy(api_key).edit? ? link_to( "#{api_key.name} : #{api_key.token}", edit_api_key_path(api_key), class: 'list-group-item') : "#{api_key.name} : #{api_key.token}"
+          - else
+            .panel-body
+              em.small.text-muted = t('.offers.no_content')
+
       .col-lg-6.col-md-6.col-sm-6.col-xs-12
         .panel.panel-default
           .panel-heading
@@ -41,7 +61,7 @@
           - if @referentials.any?
             .list-group
               - @referentials.each_with_index do |referential, i|
-                = link_to referential.name, referential_path(referential, workbench_id: referential.workbench_id), class: 'list-group-item' if i < 6
+                = link_to referential.name, referential_path(referential, workbench_id: referential.workbench_id, current_workbench_id: @workbench.id), class: 'list-group-item' if i < 6
 
           - else
             .panel-body

@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_organisation
 
   def current_offer_workbench
-    current_organisation.workbenches.where(name: "Gestion de l'offre")
+    current_organisation.workbenches.find_by_name("Gestion de l'offre")
   end
   helper_method :current_offer_workbench
 

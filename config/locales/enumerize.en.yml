@@ -61,8 +61,8 @@ en:
         east: 'East'
         north_east: 'North East'
       wayback:
-        straight_forward: 'Straight Forward'
-        backward: 'Backward'
+        outbound: 'Straight Forward'
+        inbound: 'Backward'
     vehicle_journey:
       transport_mode:
         interchange: Interchange

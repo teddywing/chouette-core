@@ -120,6 +120,73 @@ describe "Referentials", :type => :feature do
 
   end
 
+  describe "new_from" do
+    # let(:cloning)
+    let(:worker) { ReferentialCloningWorker.new }
+
+    let(:line) { create(:line_with_stop_areas) }
+    let(:jp) { create(:journey_pattern, route: line.routes.first) }
+    let(:tt) { create(:time_table) }
+    let(:vj) { create(:vehicle_journey, journey_pattern: jp, time_table: tt) }
+    let(:ref_metadata) { create(:referential_metadata, lines: [line], referential: referential) }
+
+    context "when user is from the same organisation" do
+
+      xit "should" do
+        visit new_referential_path(from: referential.id, current_workbench_id: @user.organisation.workbenches.first.id)
+
+        select "2018", :from => "referential_metadatas_attributes_0_periods_attributes_0_begin_1i"
+
+        select "2018", :from => "referential_metadatas_attributes_0_periods_attributes_0_end_1i"
+
+        click_button "Valider"
+
+        clone = Referential.where(name: "Copie de first")
+
+        expect(clone.lines).to include(line)
+        expect(clone.lines.first.routes).to match_array(referential.lines.first.routes)
+
+        clone_jp = clone.lines.first.routes.first.journey_patterns
+        expect(clone_jp).to include(jp)
+
+        clone_vj = clone.lines.first.routes.first.journey_patterns.first.vehicle_journeys
+        expect(clone_vj).to include(vj)
+
+        clone_tt = clone.lines.first.routes.first.journey_patterns.first.vehicle_journeys.first.time_tables
+        expect(clone_tt).to include(tt)
+      end
+
+      # it "should have the lines from source" do
+      #   expect(clone.lines).to include(line)
+      # end
+      #
+      # it "should have the routes from source" do
+      #   expect(clone.lines.first.routes).to match_array(referential.lines.first.routes)
+      # end
+      #
+      # it "should have the journey patterns from source" do
+      #   clone_jp = clone.lines.first.routes.first.journey_patterns
+      #   expect(clone_jp).to include(jp)
+      # end
+      #
+      # it "should have the vehicle journeys from source" do
+      #   clone_vj = clone.lines.first.routes.first.journey_patterns.first.vehicle_journeys
+      #   expect(clone_vj).to include(vj)
+      # end
+      #
+      # it "should have the timetables from source" do
+      #   clone_tt = clone.lines.first.routes.first.journey_patterns.first.vehicle_journeys.first.time_tables
+      #   expect(clone_tt).to include(tt)
+      # end
+    end
+
+    # context "when user is from another organisation" do
+    #   before :each do
+    #
+    #   end
+    # end
+  end
+
   describe "destroy" do
     let(:referential) {  create(:referential, :organisation => @user.organisation) }
 

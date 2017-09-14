@@ -32,6 +32,8 @@ fr:
       stop_area_name: "Nom de l'arrêt"
       for_boarding: "Montée"
       for_alighting: "Descente"
+    duplicate:
+      title: "Dupliquer l'itinéraire"
     route:
       no_journey_pattern: "Pas de mission"
       wayback:

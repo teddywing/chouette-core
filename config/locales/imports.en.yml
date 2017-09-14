@@ -4,6 +4,7 @@ en:
     filters:
       referential: "Select data space..."
       name_or_creator_cont: "Select an import or creator name..."
+      error_period_filter: "End date must be greater or equal than begin date"
     actions:
       new: "New import"
       show: "Import report"
