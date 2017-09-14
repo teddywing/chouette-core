@@ -16,14 +16,13 @@ module Stif
 
     def all_resources
       %w[
-        access_points
-         connection_links calendars
-         footnotes
-         journey_patterns
-         referentials routes routing_constraint_zones
-         time_tables
-         vehicle_journeys
-         api_keys
+        access_points api_keys
+        connection_links calendars
+        footnotes
+        journey_patterns
+        referentials routes routing_constraint_zones
+        time_tables
+        vehicle_journeys
       ]
     end
 

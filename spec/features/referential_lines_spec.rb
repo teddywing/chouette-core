@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-require 'spec_helper'
-
 describe 'ReferentialLines', type: :feature do
   login_user
   let!(:referential_metadata) { create :referential_metadata, referential: referential }
