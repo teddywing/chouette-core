@@ -1,0 +1,51 @@
+/ PageHeader
+- header_params = ['jeux-de-donnees',
+        t('compliance_control_sets.index.title'),
+        '']
+- header_params << link_to(t('compliance_control_sets.actions.new'), new_compliance_control_set_path, class: 'btn btn-default')  if policy(Calendar).create?
+= pageheader(*header_params) do
+
+  / Below is secundary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-12
+        /= render 'filters'
+      .row
+        .col-lg-12
+          .select_table
+            = table_builder_2 @compliance_control_sets,
+                    [ \
+                TableBuilderHelper::Column.new( \
+                  key: :name, \
+                  attribute: 'name', \
+                  link_to: lambda do |compliance_control_set| \
+                      compliance_control_set_path(@compliance_control_sets, compliance_control_set) \
+                    end \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :assignment, \
+                  attribute: 'assignment' \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :owner_jdc, \
+                  attribute: 'owner_jdc' \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :control_numbers, \
+                  attribute: 'control_numbers' \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :update, \
+                  attribute: '' \
+                ) \
+              ],
+                    sortable: true,
+                    links: [:show],
+                    cls: 'table has-filter has-search'
+
+

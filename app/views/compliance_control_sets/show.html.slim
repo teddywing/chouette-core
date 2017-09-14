@@ -1,0 +1,82 @@
+/ PageHeader
+= pageheader 'jeux-de-donnees',
+              @compliance_control_set.name,
+             'Lorem ipsum dolor sit amet'
+
+  / Below is secondary actions & optional contents (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      /- @compliance_control_set.action_links.each do |link|
+      /  - if link.is_a?(HTMLElement)
+      /    = link.to_html(class: 'btn btn-primary')
+      /  - else
+      /    = link_to link.href,
+      /        method: link.method,
+      /        data: link.data,
+      /        class: 'btn btn-primary' do
+      /          = link.content
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        /= definition_list t('metadatas'),
+        /  { t('activerecord.attributes.referential.status') => @referential.archived? ? "<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>".html_safe : "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>".html_safe,
+        /    @referential.human_attribute_name(:validity_period) => (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-'),
+        /    @referential.human_attribute_name(:organisation) => @referential.organisation.name,
+        /    @referential.human_attribute_name(:published_at) => '-' }
+
+    /- if params[:q].present? or @reflines.any?
+      .row
+        .col-lg-12
+          /= render 'filters'
+
+    /- if @reflines.any?
+      .row
+        .col-lg-12
+          / ID Codif, nom court, nom de la ligne, réseau, mode, transporteur principal, actions = [show, edit_notes]
+          = table_builder_2 @reflines,
+            [ \
+              TableBuilderHelper::Column.new( \
+                name: t('id_codif'), \
+                attribute: Proc.new { |n| n.objectid.local_id }, \
+                sortable: false \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :number, \
+                attribute: 'number' \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :name, \
+                attribute: 'name', \
+                link_to: lambda do |line| \
+                  referential_line_path(@referential, line) \
+                end \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :deactivated, \
+                attribute: Proc.new { |n| n.deactivated? ? t('false') : t('true') } \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :transport_mode, \
+                attribute: Proc.new { |n| n.transport_mode ? t("enumerize.line.transport_mode.#{n.transport_mode}") : '' }, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: 'networks.name', \
+                attribute: Proc.new { |n| n.try(:network).try(:name) } \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: 'companies.name', \
+                attribute: Proc.new { |n| n.try(:company).try(:name) } \
+              ) \
+            ],
+            links: [:show],
+            cls: 'table has-filter has-search'
+
+          = new_pagination @reflines, 'pull-right'
+
+    /- unless @reflines.any?
+      .row.mt-xs
+        .col-lg-12
+          = replacement_msg t('referential_lines.search_no_results')
