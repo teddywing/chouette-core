@@ -10,7 +10,7 @@ class ApiKeyPolicy < ApplicationPolicy
   end
 
   def create?
-    organisation_match? && user.has_permission?('api_keys.create')
+    user.has_permission?('api_keys.create')
   end
 
   def update?

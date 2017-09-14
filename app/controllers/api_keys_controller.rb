@@ -1,5 +1,6 @@
 class ApiKeysController < BreadcrumbController
   defaults resource_class: Api::V1::ApiKey
+  include PolicyChecker
 
   def create
     @api_key = Api::V1::ApiKey.new(api_key_params.merge(organisation: current_organisation))
