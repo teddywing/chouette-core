@@ -23,6 +23,7 @@ module Stif
         referentials routes routing_constraint_zones
         time_tables
         vehicle_journeys
+        api_keys
       ]
     end
 
