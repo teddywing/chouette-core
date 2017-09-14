@@ -17,7 +17,7 @@ RSpec.describe Devise::CasSessionsController, type: :controller do
     end
   end
 
-  context 'user does not have permission sessions:create' do
+  context 'user does not have permission sessions.create' do
     let( :signed_in_user ){ build_stubbed :user }
 
     it 'cannot login and will be redirected to the login page, with a corresponding message' do
@@ -27,11 +27,11 @@ RSpec.describe Devise::CasSessionsController, type: :controller do
     end
   end
 
-  context 'user does have permission sessions:create' do
+  context 'user does have permission sessions.create' do
     let( :signed_in_user ){ build_stubbed :allmighty_user }
 
     it 'can login and will be redirected to the referentials page' do
-      @user.permissions << 'sessions:create'
+      @user.permissions << 'sessions.create'
       get :service
       expect(response).to redirect_to(authenticated_root_path)
     end
