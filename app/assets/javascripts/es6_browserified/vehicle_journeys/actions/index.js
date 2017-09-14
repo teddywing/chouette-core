@@ -269,7 +269,7 @@ const actions = {
     type: 'RECEIVE_TOTAL_COUNT',
     total
   }),
-  humanOID: (oid) => oid.split(':')[2],
+  humanOID: (oid) => oid.split(':')[2].split("-").pop(),
   fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
     if(currentPage == undefined){
       currentPage = 1

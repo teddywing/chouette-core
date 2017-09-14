@@ -46,7 +46,7 @@
                 [ \
                   TableBuilderHelper::Column.new( \
                     name: 'ID', \
-                    attribute: Proc.new { |n| n.objectid.local_id }, \
+                    attribute: Proc.new { |n| n.objectid.short_id }, \
                     sortable: false \
                   ), \
                   TableBuilderHelper::Column.new( \

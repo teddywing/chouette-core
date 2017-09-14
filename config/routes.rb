@@ -63,10 +63,11 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resource :organisation, :only => [:show, :edit, :update] do
-    resources :api_keys
     resources :users
     resources :rule_parameter_sets
   end
+
+  resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
 
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
