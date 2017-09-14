@@ -3,8 +3,11 @@ class Api::V1::ImportsController < Api::V1::IbooController
   belongs_to :workbench
 
   def create
+    binding.pry
     args    = workbench_import_params.merge(creator: 'Webservice')
+    binding.pry
     @import = parent.workbench_imports.create(args)
+    binding.pry
     create!
   end
 
