@@ -18,7 +18,30 @@ RSpec.describe ApiKeyPolicy do
   end
 
   permissions :update? do
-    it_behaves_like 'permitted policy and same organisation', 'api_keys.update'
+    context 'permission absent → ' do
+      it "denies a user with a different organisation" do
+        expect_it.not_to permit(user_context, record)
+      end
+      it 'and also a user with the same organisation' do
+        user.organisation_id = record.organisation_id
+        expect_it.not_to permit(user_context, record)
+      end
+    end
+
+    context 'permission present → '  do
+      before do
+        add_permissions('api_keys.update', for_user: user)
+      end
+
+      it 'denies a user with a different organisation' do
+        expect_it.not_to permit(user_context, record)
+      end
+
+      it 'but allows it for a user with the same organisation' do
+        user.organisation_id = record.organisation_id
+        expect_it.to permit(user_context, record)
+      end
+    end
   end
 
   permissions :destroy? do
