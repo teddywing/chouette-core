@@ -5,23 +5,23 @@ RSpec.describe ApiKeyPolicy do
 
   subject { described_class }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+  permissions :index? do
+    it_behaves_like 'always allowed'
   end
 
   permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'always allowed'
   end
 
   permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'permitted policy and same organisation', 'api_keys.create'
   end
 
   permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'permitted policy and same organisation', 'api_keys.update'
   end
 
   permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'permitted policy and same organisation', 'api_keys.destroy'
   end
 end
