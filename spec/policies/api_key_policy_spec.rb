@@ -1,8 +1,7 @@
-require 'rails_helper'
-
 RSpec.describe ApiKeyPolicy do
 
-  let(:user) { User.new }
+  let( :record ){ build_stubbed :api_key }
+  before { stub_policy_scope(record) }
 
   subject { described_class }
 
