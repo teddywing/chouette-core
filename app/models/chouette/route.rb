@@ -6,7 +6,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
   extend ActiveModel::Naming
 
   enumerize :direction, in: %i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)
-  enumerize :wayback, in: %i(straight_forward backward), default: :straight_forward
+  enumerize :wayback, in: %i(outbound inbound), default: :outbound
 
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
@@ -106,7 +106,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
     Chouette::Geometry::RoutePresenter.new self
   end
 
-  @@opposite_waybacks = { straight_forward: :backward, backward: :straight_forward}
+  @@opposite_waybacks = { outbound: :inbound, inbound: :outbound}
   def opposite_wayback
     @@opposite_waybacks[wayback.to_sym]
   end

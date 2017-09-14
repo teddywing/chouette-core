@@ -1,5 +1,5 @@
 en:
   waybacks:
     label:
-      straight_forward: "straight forward"
-      backward: "backward"
+      outbound: "straight forward"
+      inbound: "backward"

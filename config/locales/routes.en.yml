@@ -36,9 +36,6 @@ en:
       title: "Duplicate route"
     route:
       no_journey_pattern: "No Journey pattern"
-      wayback:
-        positive: "forward"
-        negative: "backward"
       opposite: "Opposite route"
       no_opposite: "No opposite route"
   activerecord:

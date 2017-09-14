@@ -94,8 +94,8 @@ class RoutesController < ChouetteController
     else
       parent.routes.where(opposite_route: nil)
     end
-    @forward  = scope.where(wayback: :straight_forward)
-    @backward = scope.where(wayback: :backward)
+    @forward  = scope.where(wayback: :outbound)
+    @backward = scope.where(wayback: :inbound)
   end
 
   private
