@@ -14,7 +14,17 @@ RSpec.describe ApiKeyPolicy do
   end
 
   permissions :create? do
-    it_behaves_like 'permitted policy and same organisation', 'api_keys.create'
+    context 'permission absent → ' do
+      it "denies a user without organisation" do
+        expect_it.not_to permit(user_context, record)
+      end
+    end
+    context 'permission present → '  do
+      it 'allows a user with a different organisation' do
+        add_permissions('api_keys.create', for_user: user)
+        expect_it.to permit(user_context, record)
+      end
+    end
   end
 
   permissions :update? do

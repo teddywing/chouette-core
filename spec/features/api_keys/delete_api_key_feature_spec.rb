@@ -8,7 +8,7 @@ RSpec.describe 'New API Key', type: :feature do
     let( :edit_label ){ "#{api_key.name} : #{api_key.token}" }
     let( :destroy_label ){ "Supprimer" }
 
-    it 'complete workflow' do
+    xit 'complete workflow' do
       # /workbenches
       visit workbenches_path 
       # the api_key is visible
