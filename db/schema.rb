@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170915100935) do
+ActiveRecord::Schema.define(version: 20170918103913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,17 +155,7 @@ ActiveRecord::Schema.define(version: 20170915100935) do
 
   add_index "compliance_check_blocks", ["compliance_check_set_id"], name: "index_compliance_check_blocks_on_compliance_check_set_id", using: :btree
 
-  create_table "compliance_check_resources", id: :bigserial, force: :cascade do |t|
-    t.string   "status"
-    t.string   "name"
-    t.string   "type"
-    t.string   "reference"
-    t.hstore   "metrics"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "compliance_check_results", id: :bigserial, force: :cascade do |t|
+  create_table "compliance_check_messages", id: :bigserial, force: :cascade do |t|
     t.integer  "compliance_check_id"
     t.integer  "compliance_check_resource_id"
     t.string   "message_key"
@@ -175,8 +165,18 @@ ActiveRecord::Schema.define(version: 20170915100935) do
     t.datetime "updated_at",                   null: false
   end
 
-  add_index "compliance_check_results", ["compliance_check_id"], name: "index_compliance_check_results_on_compliance_check_id", using: :btree
-  add_index "compliance_check_results", ["compliance_check_resource_id"], name: "index_compliance_check_results_on_compliance_check_resource_id", using: :btree
+  add_index "compliance_check_messages", ["compliance_check_id"], name: "index_compliance_check_messages_on_compliance_check_id", using: :btree
+  add_index "compliance_check_messages", ["compliance_check_resource_id"], name: "index_compliance_check_messages_on_compliance_check_resource_id", using: :btree
+
+  create_table "compliance_check_resources", id: :bigserial, force: :cascade do |t|
+    t.string   "status"
+    t.string   "name"
+    t.string   "type"
+    t.string   "reference"
+    t.hstore   "metrics"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "compliance_check_sets", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id"
@@ -394,9 +394,9 @@ ActiveRecord::Schema.define(version: 20170915100935) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -966,8 +966,8 @@ ActiveRecord::Schema.define(version: 20170915100935) do
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
   add_foreign_key "compliance_check_blocks", "compliance_check_sets"
-  add_foreign_key "compliance_check_results", "compliance_check_resources"
-  add_foreign_key "compliance_check_results", "compliance_checks"
+  add_foreign_key "compliance_check_messages", "compliance_check_resources"
+  add_foreign_key "compliance_check_messages", "compliance_checks"
   add_foreign_key "compliance_check_sets", "compliance_control_sets"
   add_foreign_key "compliance_check_sets", "referentials"
   add_foreign_key "compliance_check_sets", "workbenches"
