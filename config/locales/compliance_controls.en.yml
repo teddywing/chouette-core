@@ -19,6 +19,8 @@ en:
     attributes:
       compliance_control:
         name: Name
+        criticity: Criticity
+        comment: Comment
         code: Code
     route:
       zdl_stop_area:
@@ -27,14 +29,14 @@ en:
         description: Two stop points which belong to the same ZDL cannot follow one another in a route
       opposite_route:
         messages:
-          3_route_2: The route with % objectid references an incoherent oppposite route : %
+          3_route_2: The route with % objectid references an incoherent oppposite route %
         description: |
           'If the route has an opposite route, it must :
             - reference the opposite route
             - have an opposite route in relation with the tested route'
       duplicates:
         messages:
-          3_route_4: The route with % objectid is identical with another route : %
+          3_route_4: The route with % objectid is identical with another route %
         description: 2 routes cannot connect the same stop points with the same order and the same boarding and alighting characteristics
       minimum_length:
         messages:
@@ -51,17 +53,17 @@ en:
       journey_pattern:
         duplicates:
           messages:
-            3_journeypattern_1: The journey pattern with objectid % is identical with another one : %
+            3_journeypattern_1: The journey pattern with objectid % is identical with another one %
           description: Two journey patterns belonging to the same line must not connect the same stop points in the same order
       vehicle_journey:
         waiting_time:
           messages:
-            3_vehiclejourney_1: On the following vehicle journey : %, the waiting time % a this stop point : % (%) is greater than the threshold (%)
+            3_vehiclejourney_1: On the following vehicle journey %, the waiting time % a this stop point % (%) is greater than the threshold (%)
           description: The waiting time at a specific stop point cannot be too big
         speed:
           messages:
-            3_vehiclejourney_2_1: On the following vehicle journey : %, the computed speed % between the stop points % (%) and % (%) is greater than the threshold (%)
-            3_vehiclejourney_2_2: On the following vehicle journey : %, the computed speed % between the stop points % (%) and % (%) is smaller than the threshold (%)
+            3_vehiclejourney_2_1: On the following vehicle journey %, the computed speed % between the stop points % (%) and % (%) is greater than the threshold (%)
+            3_vehiclejourney_2_2: On the following vehicle journey %, the computed speed % between the stop points % (%) and % (%) is smaller than the threshold (%)
           description: The speed between 2 stop points should be confined between two thresholds
         delta:
           messages:
@@ -79,5 +81,5 @@ en:
       routing_constraint_zone:
         vehicle_journey_at_stops:
           messages:
-            3_itl_1: The Routing Constraint Zone % references an unactivated stop point (ZDEp) : % (%)
+            3_itl_1: The Routing Constraint Zone % references an unactivated stop point (ZDEp) % (%)
           description: The stop points of a Routing Constraint Zone must be activated
