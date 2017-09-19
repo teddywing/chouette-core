@@ -16,7 +16,7 @@ module Stif
 
     def all_resources
       %w[
-        access_points api_keys
+        access_points
         connection_links calendars
         footnotes
         journey_patterns
