@@ -1,12 +1,12 @@
 class ModelAttribute
-  cattr_reader :all
-
-  @@all = []
-
   attr_reader :klass, :name, :data_type
 
+  def self.all
+    @__all__ ||= []
+  end
+
   def self.define(klass, name, data_type)
-    @@all << new(klass, name, data_type)
+    all << new(klass, name, data_type)
   end
 
   def initialize(klass, name, data_type)
