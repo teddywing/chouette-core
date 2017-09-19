@@ -1,8 +1,8 @@
-module RouteControl
-  class Duplicates < ComplianceControl
+module VehicleJourneyControl
+  class WatingTime < ComplianceControl
 
     @@default_criticity = :warning
-    @@default_code = "3-Route-4"
+    @@default_code = "3-VehicleJourney-1"
 
     after_initialize do
       self.name = self.class.name

@@ -1,6 +1,15 @@
 class ComplianceControlsController < BreadcrumbController
+  include PolicyChecker
   defaults resource_class: ComplianceControl
   belongs_to :compliance_control_set
+
+  def index
+    index! do |format|
+      format.html {
+        @compliance_controls = decorate_compliance_controls(@compliance_controls)
+      }
+    end
+  end
 
   def create
     create!(notice: t('notice.compliance_control.created'))
@@ -16,6 +25,13 @@ class ComplianceControlsController < BreadcrumbController
   end
 
   private
+  def decorate_compliance_controls(compliance_controls)
+    ModelDecorator.decorate(
+      compliance_controls,
+      with: ComplianceControlDecorator,
+    )
+  end
+
   def compliance_control_params
     params.require(:compliance_control).permit(:name, :code, :criticity, :comment, :control_attributes)
   end
