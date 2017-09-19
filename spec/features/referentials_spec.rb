@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 describe "Referentials", :type => :feature do
   login_user
 
