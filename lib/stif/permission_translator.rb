@@ -24,6 +24,7 @@ module Stif
         time_tables
         vehicle_journeys
         api_keys
+        compliance_controls
       ]
     end
 
