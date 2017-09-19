@@ -14,4 +14,6 @@ class ModelAttribute
     @name = name
     @data_type = data_type
   end
+
+  define :journey_pattern, :name, :string
 end
