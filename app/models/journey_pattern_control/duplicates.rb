@@ -1,8 +1,8 @@
-module RouteControl
+module JourneyPatternControl
   class Duplicates < ComplianceControl
 
     @@default_criticity = :warning
-    @@default_code = "3-Route-4"
+    @@default_code = "3-JourneyPattern-1"
 
     after_initialize do
       self.name = self.class.name
