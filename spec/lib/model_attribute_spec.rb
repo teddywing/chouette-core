@@ -14,11 +14,37 @@ RSpec.describe ModelAttribute do
     end
   end
 
+  describe ".methods_by_class" do
+    it "returns all ModelAttributes for a given class" do
+      ModelAttribute.instance_variable_set(:@__all__, [
+        ModelAttribute.new(:route, :name, :string),
+        ModelAttribute.new(:route, :published_name, :string),
+        ModelAttribute.new(:route, :direction, :string),
+        ModelAttribute.new(:journey_pattern, :name, :string)
+      ])
+
+      expect(ModelAttribute.methods_by_class('Route')).to match_array([
+        ModelAttribute.new(:route, :name, :string),
+        ModelAttribute.new(:route, :published_name, :string),
+        ModelAttribute.new(:route, :direction, :string)
+      ])
+    end
+  end
+
   describe "#code" do
     it "returns a string representation of the attribute" do
       model_attr = ModelAttribute.new(:route, :name, :string)
 
       expect(model_attr.code).to eq('route#name')
+    end
+  end
+
+  describe "#==" do
+    it "returns true when :klass, :name, and :data_type attributes match" do
+      route_name = ModelAttribute.new(:route, :name, :string)
+      other_route_name = ModelAttribute.new(:route, :name, :string)
+
+      expect(route_name == other_route_name).to be true
     end
   end
 end

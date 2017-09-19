@@ -9,6 +9,12 @@ class ModelAttribute
     all << new(klass, name, data_type)
   end
 
+  def self.methods_by_class(klass)
+    all.select do |model_attr|
+      model_attr.klass == klass.downcase.to_sym
+    end
+  end
+
   def initialize(klass, name, data_type)
     @klass = klass
     @name = name
@@ -58,5 +64,11 @@ class ModelAttribute
 
   def code
     "#{@klass}##{@name}"
+  end
+
+  def ==(other)
+    klass == other.klass &&
+      name == other.name &&
+      data_type == other.data_type
   end
 end
