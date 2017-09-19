@@ -50,6 +50,8 @@ module BreadcrumbHelper
       compliance_check_breadcrumb action
     when "ComplianceCheckTask"
       compliance_check_task_breadcrumb action
+    when "ComplianceControlSets"
+      compliance_control_sets_breadcrumb action
     when "RuleParameterSet"
       rule_parameter_breadcrumb action
     when "User"
@@ -237,6 +239,11 @@ module BreadcrumbHelper
     referential_breadcrumb
     add_breadcrumb Referential.human_attribute_name("compliance_check_tasks"), referential_compliance_check_tasks_path(@referential) unless action == :index
     add_breadcrumb breadcrumb_label(@compliance_check_task), referential_compliance_check_task_path(@referential, @compliance_check_task),:title => breadcrumb_tooltip(@compliance_check_task) if action == :edit
+  end
+
+  def compliance_control_sets_breadcrumb (action)
+    add_breadcrumb I18n.t("breadcrumbs.referentials"), workbenches_path
+    #add_breadcrumb breadcrumb_label(@workbench), workbench_path(@workbench), :title => breadcrumb_tooltip(@workbench)
   end
 
   def rule_parameter_breadcrumb (action)

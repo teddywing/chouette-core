@@ -344,7 +344,6 @@ module TableBuilderHelper
       )
     end
   end
-
   def gear_menu_link(link)
     content_tag(
       :li,

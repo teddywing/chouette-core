@@ -1,0 +1,21 @@
+fr:
+  compliance_control_sets:
+    index:
+      title: Jeux de contrôle
+      new: Création d'un jeux de contrôle
+      edit: Édition d'un jeux de contrôle
+    actions:
+          new: Ajouter
+          edit: Editer
+          destroy: Supprimer
+          destroy_confirm: Etes vous sûr de supprimer ce jeux de contrôle ?
+  activerecord:
+          models:
+            compliance_control_set: Calendrier
+          attributes:
+            compliance_control_set:
+              name: Nom
+              assignment: Affectation
+              owner_jdc: Propriétaire du jeu de contrôle
+              control_numbers: Nb contrôle
+              update: Mis a jour

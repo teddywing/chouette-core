@@ -12,6 +12,8 @@ ChouetteIhm::Application.routes.draw do
     end
   end
 
+  resources :compliance_control_sets
+
   devise_for :users, :controllers => {
     :registrations => 'users/registrations', :invitations => 'users/invitations'
   }
@@ -68,6 +70,10 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
+
+  resources :compliance_control_sets do
+    resources :compliance_controls
+  end
 
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member

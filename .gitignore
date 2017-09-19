@@ -23,6 +23,7 @@ public/assets/
 chouette2.war
 vendor/bundle
 .ruby-version
+.byebug_history
 start.sh
 coverage
 
