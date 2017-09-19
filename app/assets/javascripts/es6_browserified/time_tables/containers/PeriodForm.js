@@ -28,7 +28,13 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.updatePeriodForm(val, group, 'day'))
     },
     onValidatePeriodForm: (modalProps, timeTablePeriods, metas, timetableInDates) => {
-      dispatch(actions.validatePeriodForm(modalProps, timeTablePeriods, metas, timetableInDates))
+      let period_start = actions.formatDate(modalProps.begin)
+      let period_end = actions.formatDate(modalProps.end)
+      let error = ''
+      if (new Date(period_end) <= new Date(period_start)) error = 'La date de départ doit être antérieure à la date de fin'
+      if (error == '') error = actions.checkErrorsInPeriods(period_start, period_end, modalProps.index, timeTablePeriods)
+      if (error == '') error = actions.checkErrorsInDates(period_start, period_end, timetableInDates)
+      dispatch(actions.validatePeriodForm(modalProps, timeTablePeriods, metas, timetableInDates, error))
     }
   }
 }

@@ -6,6 +6,7 @@ fr:
         title: "Offres de transport"
         organisation: "Offres de mon organisation"
         idf: "Offres IDF"
+        api_keys: "Clés d'API"
         referentials: "Jeux de données"
         calendars: "Calendriers"
         see: "Voir la liste"
@@ -13,4 +14,4 @@ fr:
     referential_count:
       zero: "Aucun jeu de données à l'heure actuelle"
       one: "1 jeu de données à l'heure actuelle"
-      other: "#{count} jeux de données à l'heure actuelle" 
+      other: "#{count} jeux de données à l'heure actuelle"

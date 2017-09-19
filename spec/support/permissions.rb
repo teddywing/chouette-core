@@ -2,7 +2,7 @@ module Support
   module Permissions extend self
 
     def all_permissions
-      @__all_permissions__ ||= _destructive_permissions << 'sessions:create'
+      @__all_permissions__ ||= _destructive_permissions << 'sessions.create'
     end
 
     private
@@ -13,6 +13,7 @@ module Support
 
     def _permitted_resources
       %w[
+      api_keys
       access_points
       connection_links
       calendars

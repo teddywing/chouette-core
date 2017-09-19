@@ -5,8 +5,14 @@ ChouetteIhm::Application.routes.draw do
     delete :referentials, on: :member, action: :delete_referentials
     resources :imports do
       get :download, on: :member
+      resources :import_resources, only: [:index] do
+        resources :import_messages, only: [:index]
+      end
+
     end
   end
+
+  resources :compliance_control_sets
 
   devise_for :users, :controllers => {
     :registrations => 'users/registrations', :invitations => 'users/invitations'
@@ -32,6 +38,9 @@ ChouetteIhm::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :workbenches, only: [:index, :show] do
+        resources :imports, only: [:index, :show, :create]
+      end
       resources :access_links, only: [:index, :show]
       resources :access_points, only: [:index, :show]
       resources :connection_links, only: [:index, :show]
@@ -60,6 +69,12 @@ ChouetteIhm::Application.routes.draw do
     resources :rule_parameter_sets
   end
 
+  resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
+
+  resources :compliance_control_sets do
+    resources :compliance_controls
+  end
+
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
     resources :stop_areas
@@ -78,7 +93,6 @@ ChouetteIhm::Application.routes.draw do
   end
 
   resources :referentials, except: :index do
-    resources :api_keys
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
@@ -110,6 +124,7 @@ ChouetteIhm::Application.routes.draw do
         member do
           get 'edit_boarding_alighting'
           put 'save_boarding_alighting'
+          post 'duplicate', to: 'routes#duplicate'
         end
         resource :journey_patterns_collection, :only => [:show, :update]
         resources :journey_patterns do
@@ -142,23 +157,6 @@ ChouetteIhm::Application.routes.draw do
     resources :exports, :only => [:index, :show, :destroy]  do
       member do
         get "exported_file"
-      end
-    end
-
-    resources :compliance_check_tasks, :only => [:new, :create] do
-      collection do
-        get 'references'
-      end
-    end
-
-    resources :compliance_checks, :only => [:index, :show, :destroy] do
-      member do
-        get 'export', defaults: { format: 'zip' }
-        get 'report'
-        get 'rule_parameter_set'
-      end
-      collection do
-        get 'references'
       end
     end
 

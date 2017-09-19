@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170816104020) do
+ActiveRecord::Schema.define(version: 20170918103913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,12 +72,15 @@ ActiveRecord::Schema.define(version: 20170816104020) do
   add_index "access_points", ["objectid"], name: "access_points_objectid_key", unique: true, using: :btree
 
   create_table "api_keys", id: :bigserial, force: :cascade do |t|
-    t.integer  "referential_id", limit: 8
+    t.integer  "referential_id",  limit: 8
     t.string   "token"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "organisation_id"
   end
+
+  add_index "api_keys", ["organisation_id"], name: "index_api_keys_on_organisation_id", using: :btree
 
   create_table "calendars", id: :bigserial, force: :cascade do |t|
     t.string    "name"
@@ -141,6 +144,107 @@ ActiveRecord::Schema.define(version: 20170816104020) do
   add_index "companies", ["line_referential_id"], name: "index_companies_on_line_referential_id", using: :btree
   add_index "companies", ["objectid"], name: "companies_objectid_key", unique: true, using: :btree
   add_index "companies", ["registration_number"], name: "companies_registration_number_key", using: :btree
+
+  create_table "compliance_check_blocks", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.hstore   "condition_attributes"
+    t.integer  "compliance_check_set_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "compliance_check_blocks", ["compliance_check_set_id"], name: "index_compliance_check_blocks_on_compliance_check_set_id", using: :btree
+
+  create_table "compliance_check_messages", id: :bigserial, force: :cascade do |t|
+    t.integer  "compliance_check_id"
+    t.integer  "compliance_check_resource_id"
+    t.string   "message_key"
+    t.hstore   "message_attributes"
+    t.hstore   "resource_attributes"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "compliance_check_messages", ["compliance_check_id"], name: "index_compliance_check_messages_on_compliance_check_id", using: :btree
+  add_index "compliance_check_messages", ["compliance_check_resource_id"], name: "index_compliance_check_messages_on_compliance_check_resource_id", using: :btree
+
+  create_table "compliance_check_resources", id: :bigserial, force: :cascade do |t|
+    t.string   "status"
+    t.string   "name"
+    t.string   "type"
+    t.string   "reference"
+    t.hstore   "metrics"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "compliance_check_sets", id: :bigserial, force: :cascade do |t|
+    t.integer  "referential_id"
+    t.integer  "compliance_control_set_id"
+    t.integer  "workbench_id"
+    t.string   "creator"
+    t.string   "status"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_check_sets", ["compliance_control_set_id"], name: "index_compliance_check_sets_on_compliance_control_set_id", using: :btree
+  add_index "compliance_check_sets", ["parent_type", "parent_id"], name: "index_compliance_check_sets_on_parent_type_and_parent_id", using: :btree
+  add_index "compliance_check_sets", ["referential_id"], name: "index_compliance_check_sets_on_referential_id", using: :btree
+  add_index "compliance_check_sets", ["workbench_id"], name: "index_compliance_check_sets_on_workbench_id", using: :btree
+
+  create_table "compliance_checks", id: :bigserial, force: :cascade do |t|
+    t.integer  "compliance_check_set_id"
+    t.integer  "compliance_check_block_id"
+    t.string   "type"
+    t.json     "control_attributes"
+    t.string   "name"
+    t.string   "code"
+    t.integer  "criticity"
+    t.text     "comment"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_checks", ["compliance_check_block_id"], name: "index_compliance_checks_on_compliance_check_block_id", using: :btree
+  add_index "compliance_checks", ["compliance_check_set_id"], name: "index_compliance_checks_on_compliance_check_set_id", using: :btree
+
+  create_table "compliance_control_blocks", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.hstore   "condition_attributes"
+    t.integer  "compliance_control_set_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "compliance_control_blocks", ["compliance_control_set_id"], name: "index_compliance_control_blocks_on_compliance_control_set_id", using: :btree
+
+  create_table "compliance_control_sets", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.integer  "organisation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "compliance_control_sets", ["organisation_id"], name: "index_compliance_control_sets_on_organisation_id", using: :btree
+
+  create_table "compliance_controls", id: :bigserial, force: :cascade do |t|
+    t.integer  "compliance_control_set_id"
+    t.integer  "compliance_control_block_id"
+    t.string   "type"
+    t.json     "control_attributes"
+    t.string   "name"
+    t.string   "code"
+    t.string   "criticity"
+    t.text     "comment"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "compliance_controls", ["compliance_control_block_id"], name: "index_compliance_controls_on_compliance_control_block_id", using: :btree
+  add_index "compliance_controls", ["compliance_control_set_id"], name: "index_compliance_controls_on_compliance_control_set_id", using: :btree
 
   create_table "connection_links", id: :bigserial, force: :cascade do |t|
     t.integer  "departure_id",                           limit: 8
@@ -218,6 +322,7 @@ ActiveRecord::Schema.define(version: 20170816104020) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   create_table "footnotes_vehicle_journeys", id: false, force: :cascade do |t|
@@ -261,11 +366,11 @@ ActiveRecord::Schema.define(version: 20170816104020) do
   add_index "import_messages", ["resource_id"], name: "index_import_messages_on_resource_id", using: :btree
 
   create_table "import_resources", id: :bigserial, force: :cascade do |t|
-    t.integer  "import_id",  limit: 8
+    t.integer  "import_id",     limit: 8
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type"
+    t.string   "resource_type"
     t.string   "reference"
     t.string   "name"
     t.hstore   "metrics"
@@ -340,6 +445,7 @@ ActiveRecord::Schema.define(version: 20170816104020) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree
@@ -550,6 +656,7 @@ ActiveRecord::Schema.define(version: 20170816104020) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "routes", ["objectid"], name: "routes_objectid_key", unique: true, using: :btree
@@ -565,6 +672,7 @@ ActiveRecord::Schema.define(version: 20170816104020) do
     t.integer  "stop_point_ids",  limit: 8,              array: true
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   create_table "routing_constraints_lines", id: false, force: :cascade do |t|
@@ -730,6 +838,7 @@ ActiveRecord::Schema.define(version: 20170816104020) do
     t.integer  "created_from_id"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "time_tables", ["calendar_id"], name: "index_time_tables_on_calendar_id", using: :btree
@@ -835,6 +944,7 @@ ActiveRecord::Schema.define(version: 20170816104020) do
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
+    t.string   "data_source_ref"
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
@@ -854,6 +964,19 @@ ActiveRecord::Schema.define(version: 20170816104020) do
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
+  add_foreign_key "api_keys", "organisations"
+  add_foreign_key "compliance_check_blocks", "compliance_check_sets"
+  add_foreign_key "compliance_check_messages", "compliance_check_resources"
+  add_foreign_key "compliance_check_messages", "compliance_checks"
+  add_foreign_key "compliance_check_sets", "compliance_control_sets"
+  add_foreign_key "compliance_check_sets", "referentials"
+  add_foreign_key "compliance_check_sets", "workbenches"
+  add_foreign_key "compliance_checks", "compliance_check_blocks"
+  add_foreign_key "compliance_checks", "compliance_check_sets"
+  add_foreign_key "compliance_control_blocks", "compliance_control_sets"
+  add_foreign_key "compliance_control_sets", "organisations"
+  add_foreign_key "compliance_controls", "compliance_control_blocks"
+  add_foreign_key "compliance_controls", "compliance_control_sets"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify

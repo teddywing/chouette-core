@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class VehicleJourneyImport   
+class VehicleJourneyImport
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend  ActiveModel::Naming
@@ -8,11 +8,11 @@ class VehicleJourneyImport
   attr_accessor :file, :route
   attr_accessor :created_vehicle_journey_count,:updated_vehicle_journey_count,:deleted_vehicle_journey_count
   attr_accessor :created_journey_pattern_count,:error_count
-  
+
   validates_presence_of :file
   validates_presence_of :route
 
-  def initialize(attributes = {})    
+  def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) } if attributes
     self.created_vehicle_journey_count = 0
     self.updated_vehicle_journey_count = 0
@@ -20,15 +20,15 @@ class VehicleJourneyImport
     self.deleted_vehicle_journey_count = 0
     self.error_count = 0
   end
-  
+
   def persisted?
     false
   end
-  
+
   def save
     begin
-      Chouette::VehicleJourney.transaction do        
-        if imported_vehicle_journeys.map(&:valid?).all? 
+      Chouette::VehicleJourney.transaction do
+        if imported_vehicle_journeys.map(&:valid?).all?
           imported_vehicle_journeys.each(&:save!)
           true
         else
@@ -46,8 +46,8 @@ class VehicleJourneyImport
       errors.add :base, I18n.t("vehicle_journey_imports.errors.exception")
       false
     end
-  end   
-  
+  end
+
   def imported_vehicle_journeys
     @imported_vehicle_journeys ||= load_imported_vehicle_journeys
   end
@@ -61,31 +61,31 @@ class VehicleJourneyImport
 
     if stop_points_used.length == 1
       errors.add :base, I18n.t("vehicle_journey_imports.errors.one_stop_point_used", :column => column)
-      raise 
+      raise
     end
-    
+
     journey_pattern_founded = route.journey_patterns.select{ |jp| jp.stop_points.collect(&:id) == stop_points_used }.first
-    
+
     # If no journey pattern founded, create a new one
     self.created_journey_pattern_count += 1  if journey_pattern_founded.nil?
     journey_pattern_founded ? journey_pattern_founded :  route.journey_patterns.create(:stop_points => Chouette::StopPoint.find(stop_points_used) )
   end
-  
+
   def as_integer(v)
     v.blank? ? nil : v.to_i
   end
-  
+
   def as_boolean(v)
     v.blank? ? nil : (v[1..1].downcase != "n")
   end
-  
+
   def update_time_tables(vj,tm_ids)
     vj.time_tables.clear
     return unless tm_ids.present?
     ids = tm_ids.split(",").map(&:to_i)
     vj.time_tables << Chouette::TimeTable.where(:id => ids)
   end
-  
+
   def update_footnotes(vj,ftn_ids)
     vj.footnotes.clear
     return unless ftn_ids.present?
@@ -94,13 +94,13 @@ class VehicleJourneyImport
   end
 
   def load_imported_vehicle_journeys
-    
+
     spreadsheet = open_spreadsheet(file)
-    
+
     vehicle_journeys = []
-    
+
     first_column = spreadsheet.column(1)
-    
+
     # fixed rows (first = 1)
     number_row = 2
     published_journey_name_row = 3
@@ -111,7 +111,7 @@ class VehicleJourneyImport
 
     # rows in column (first = 0)
     first_stop_row_index = 8
-    
+
     stop_point_ids = first_column[first_stop_row_index..spreadsheet.last_row].map(&:to_i)
     # blank lines at end of file will produce id = 0 ; ignore them
     last_stop_row_index = stop_point_ids.length + 7
@@ -119,50 +119,50 @@ class VehicleJourneyImport
       stop_point_ids = stop_point_ids[0..-2]
       last_stop_row_index -= 1
     end
-    
+
     unless route.stop_points.collect(&:id) == stop_point_ids
       errors.add :base, I18n.t("vehicle_journey_imports.errors.not_same_stop_points", :route => route.id)
       raise
-    end    
-           
+    end
+
     (3..spreadsheet.last_column).each do |i|
       vehicle_journey_id = spreadsheet.column(i)[0]
       hours_by_stop_point_ids = Hash[[stop_point_ids, spreadsheet.column(i)[first_stop_row_index..last_stop_row_index]].transpose]
-      
+
       journey_pattern = find_journey_pattern_schedule(i,hours_by_stop_point_ids)
-      
+
       vehicle_journey = route.vehicle_journeys.where(:id => vehicle_journey_id, :route_id => route.id).first_or_initialize
 
       if journey_pattern.nil?
-        if vehicle_journey.id.present? 
+        if vehicle_journey.id.present?
           self.deleted_vehicle_journey_count += 1
           vehicle_journey.delete
         end
         next
       end
-      if vehicle_journey.id.present? 
+      if vehicle_journey.id.present?
         self.updated_vehicle_journey_count += 1
       else
         self.created_vehicle_journey_count += 1
       end
-      
+
       # number
       vehicle_journey.number = as_integer(spreadsheet.row(number_row)[i-1])
-      
+
       # published_name
       vehicle_journey.published_journey_name = spreadsheet.row(published_journey_name_row)[i-1]
-      
+
       # flexible_service
       vehicle_journey.flexible_service = as_boolean(spreadsheet.row(flexible_service_row)[i-1])
-      
+
       # mobility
       vehicle_journey.mobility_restricted_suitability = as_boolean(spreadsheet.row(mobility_row)[i-1])
-      
+
       # time_tables
       update_time_tables(vehicle_journey,spreadsheet.row(time_tables_row)[i-1])
-      
+
       update_footnotes(vehicle_journey,spreadsheet.row(footnotes_row)[i-1])
-      
+
       # journey_pattern
       vehicle_journey.journey_pattern = journey_pattern
       vehicle_journey.vehicle_journey_at_stops.clear
@@ -171,7 +171,7 @@ class VehicleJourneyImport
       hours_by_stop_point_ids.each_pair do |key, value|
         line += 1
         if value.present? # Create a vehicle journey at stop when time is present
-          begin 
+          begin
             # force UTC to ignore timezone effects
             main_time = Time.parse(value+" UTC")
             if main_time.present?
@@ -182,14 +182,14 @@ class VehicleJourneyImport
             errors.add :base, I18n.t("vehicle_journey_imports.errors.invalid_vehicle_journey_at_stop", :column => i, :line => line, :time => value)
             raise exception
           end
-        end         
+        end
       end
       vehicle_journeys << vehicle_journey
     end
-    
+
     vehicle_journeys
   end
-  
+
   def open_spreadsheet(file)
     case File.extname(file.original_filename)
     when '.csv' then Roo::CSV.new(file.path, csv_options: {col_sep: ";"})
@@ -199,5 +199,5 @@ class VehicleJourneyImport
       raise "Unknown file type: #{file.original_filename}"
     end
   end
-  
+
 end

@@ -1,9 +1,14 @@
 en:
   imports:
     search_no_results: "No import matching your query"
+    filters:
+      referential: "Select data space..."
+      name_or_creator_cont: "Select an import or creator name..."
+      error_period_filter: "End date must be greater or equal than begin date"
     actions:
       new: "New import"
       show: "Import report"
+      download: "Download original file"
       destroy: "Destroy"
       destroy_confirm: "Are you sure you want destroy this import?"
     index:
@@ -55,6 +60,7 @@ en:
         started_at: Started at
         name: Name
         status: "Status"
+        creator: "Creator"
         references_type: "Data to be imported"
         no_save: "No save"
         rule_parameter_set_id: "Rule parameter set for compliance check"

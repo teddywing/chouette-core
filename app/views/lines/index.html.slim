@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'ligne',
              t('lines.index.title'),
              'Lorem ipsum dolor sit amet',
              '',
@@ -29,7 +29,10 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |line| \
+                  line_referential_line_path(@line_referential, line) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :deactivated, \

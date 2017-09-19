@@ -225,6 +225,19 @@ describe('timetable reducer with filled state', () => {
     ).toEqual(newState)
   })
 
+  it('should handle UPDATE_DAY_TYPES and remove out_day that are out of day types', () => {
+    state.time_table_dates = [{date: "2017-05-01", in_out: false}]
+    let newArrDayTypes = arrDayTypes.slice(0)
+    newArrDayTypes[1] = false
+    let newState = Object.assign({}, state, {time_table_dates: []})
+    expect(
+      timetableReducer(state, {
+        type: 'UPDATE_DAY_TYPES',
+        dayTypes: newArrDayTypes
+      }).time_table_dates
+    ).toEqual([])
+  })
+
   it('should handle VALIDATE_PERIOD_FORM and add period if modalProps index = false', () => {
     let newPeriods = state.time_table_periods.concat({"period_start": "2018-05-15", "period_end": "2018-05-24"})
     let newState = Object.assign({}, state, {time_table_periods: newPeriods})
@@ -251,7 +264,8 @@ describe('timetable reducer with filled state', () => {
         metas: {
           day_types: arrDayTypes
         },
-        timetableInDates: state.time_table_dates.filter(d => d.in_out == true)
+        timetableInDates: state.time_table_dates.filter(d => d.in_out == true),
+        error: modalProps.error
       })
     ).toEqual(newState)
   })

@@ -1,3 +1,4 @@
+# coding: utf-8
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
 
@@ -10,7 +11,9 @@ class Referential < ActiveRecord::Base
   # validates_presence_of :lower_corner
 
   validates_uniqueness_of :slug
-  validates_uniqueness_of :name
+
+  validates_presence_of :line_referential
+  validates_presence_of :stop_area_referential
   validates_format_of :slug, :with => %r{\A[a-z][0-9a-z_]+\Z}
   validates_format_of :prefix, :with => %r{\A[0-9a-zA-Z_]+\Z}
   validates_format_of :upper_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
@@ -130,7 +133,7 @@ class Referential < ActiveRecord::Base
     self
   end
 
-  def self.new_from(from)
+  def self.new_from(from, functional_scope)
     Referential.new(
       name: I18n.t("activerecord.copy", :name => from.name),
       slug: "#{from.slug}_clone",
@@ -139,9 +142,8 @@ class Referential < ActiveRecord::Base
       bounds: from.bounds,
       line_referential: from.line_referential,
       stop_area_referential: from.stop_area_referential,
-      workbench: from.workbench,
       created_from: from,
-      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m) }
+      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, functional_scope) }
     )
   end
 
@@ -181,12 +183,10 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
-  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench, unless: :created_from
-  before_validation :clone_associations, :on => :create, if: :created_from
+  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
   before_validation :assign_slug, :on => :create
   before_validation :assign_prefix, :on => :create
   before_create :create_schema
-
   after_create :clone_schema, if: :created_from
 
   before_destroy :destroy_schema
@@ -201,18 +201,6 @@ class Referential < ActiveRecord::Base
       date_range = attributes.delete :default_date_range
       metadata = metadatas.build attributes
       metadata.periodes = [date_range] if date_range
-    end
-  end
-
-  def clone_associations
-    self.line_referential      = created_from.line_referential
-    self.stop_area_referential = created_from.stop_area_referential
-    self.workbench             = created_from.workbench
-  end
-
-  def clone_metadatas
-    created_from.metadatas.each do |meta|
-      self.metadatas << ReferentialMetadata.new_from(meta)
     end
   end
 
@@ -290,7 +278,9 @@ class Referential < ActiveRecord::Base
   end
 
   def create_schema
-    Apartment::Tenant.create slug
+    unless created_from
+      Apartment::Tenant.create slug
+    end
   end
 
   def assign_slug

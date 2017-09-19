@@ -14,10 +14,10 @@ fr:
         canceled: Annulé
     import_resource:
       status:
-        new: Nouveau
-        pending: En file d'attente
-        successful: Réussi
-        failed: Echoué
+        OK: ok
+        ERROR: error
+        WARNING: warning
+        IGNORED: "n/a"
     for_boarding:
       normal: "Montée autorisée"
       forbidden: "Montée interdite"
@@ -61,8 +61,8 @@ fr:
         east: 'Est'
         north_east: 'Nord Est'
       wayback:
-        straight_forward: 'Aller'
-        backward: 'Retour'
+        outbound: 'Aller'
+        inbound: 'Retour'
     vehicle_journey:
       transport_mode:
         interchange: Interconnection

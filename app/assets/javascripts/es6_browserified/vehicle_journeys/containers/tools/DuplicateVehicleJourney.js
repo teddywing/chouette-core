@@ -19,8 +19,8 @@ const mapDispatchToProps = (dispatch) => {
     onOpenDuplicateModal: () =>{
       dispatch(actions.openDuplicateModal())
     },
-    onDuplicateVehicleJourney: (data, departureDelta) =>{
-      dispatch(actions.duplicateVehicleJourney(data, departureDelta))
+    onDuplicateVehicleJourney: (addtionalTime, duplicateNumber, departureDelta) =>{
+      dispatch(actions.duplicateVehicleJourney(addtionalTime, duplicateNumber, departureDelta))
     }
   }
 }

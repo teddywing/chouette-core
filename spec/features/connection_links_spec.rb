@@ -34,7 +34,7 @@ RSpec.describe "ConnectionLinks", :type => :feature do
       visit referential_connection_links_path(referential)
       click_link "Ajouter une correspondance"
       fill_in "Nom", :with => "ConnectionLink 1"
-      fill_in "Identifiant Neptune", :with => "test:ConnectionLink:1"
+      fill_in "Identifiant Neptune", :with => "test:ConnectionLink:1:LOC"
       click_button("Créer correspondance")
       expect(page).to have_content("ConnectionLink 1")
     end

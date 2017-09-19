@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'itineraire',
              @route.name,
              '',
              t('last_update', time: l(@route.updated_at, format: :short)),
@@ -21,7 +21,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { t('id_codif') => @route.try(:objectid).try(:local_id),
+          { t('objectid') => @route.objectid.short_id,
             t('activerecord.attributes.route.published_name') => (@route.published_name ? @route.published_name : '-'),
             @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
             @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }
@@ -29,7 +29,7 @@
       - if @route_sp.any?
         .col-lg-6.col-md-6.col-sm-12.col-xs-12
           #route_map.map.mb-lg
-      
+
     .row
       .col-lg-12
         - if @route_sp.any?
@@ -41,7 +41,10 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: Proc.new {|s| s.try(:stop_area).try(:name)} \
+                attribute: Proc.new {|s| s.try(:stop_area).try(:name)}, \
+                link_to: lambda do |stop_point| \
+                  referential_stop_area_path(@referential, stop_point.stop_area) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :deleted_at, \

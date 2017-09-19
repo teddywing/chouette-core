@@ -1,6 +1,6 @@
 / PageHeader
 
-- header_params = ['map-marker',
+- header_params = ['modele-calendrier',
                    t('.title'),
                    '']
 - header_params << link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')  if policy(Calendar).create?
@@ -13,7 +13,7 @@
       .row
         .col-lg-12
           = render 'filters'
-          
+
     - if @calendars.any?
       .row
         .col-lg-12
@@ -21,11 +21,18 @@
             [ \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |calendar| \
+                  calendar_path(calendar) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :short_name, \
                 attribute: 'short_name' \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :organisation, \
+                attribute: Proc.new { |c| c.organisation.name } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :shared, \
@@ -36,8 +43,10 @@
             cls: 'table has-filter'
 
           = new_pagination @calendars, 'pull-right'
-          
+
     - unless @calendars.any?
       .row.mt-xs
         .col-lg-12
           = replacement_msg t('calendars.search_no_results')
+
+= javascript_include_tag 'filters/calendar.js'

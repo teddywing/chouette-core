@@ -7,17 +7,19 @@ class ReferentialsController < BreadcrumbController
   respond_to :js, :only => :show
 
   def new
-    if params[:from]
-      source_referential = Referential.find(params[:from])
-      @referential = Referential.new_from(source_referential)
-    end
-
     new! do
-      @referential.data_format = current_organisation.data_format
-      @referential.workbench_id ||= params[:workbench_id]
+      build_referenial
+    end
+  end
 
-      if @referential.in_workbench?
-        @referential.init_metadatas default_date_range: Range.new(Date.today, Date.today.advance(months: 1))
+  def create
+    create! do |format|
+      build_referenial
+
+      if !!@referential.created_from_id
+        format.html { redirect_to workbench_path(@referential.workbench) }
+      else
+        build_breadcrumb :new
       end
     end
   end
@@ -25,7 +27,7 @@ class ReferentialsController < BreadcrumbController
   def show
     resource.switch
     show! do |format|
-      @referential = @referential.decorate
+      @referential = @referential.decorate(context: { current_workbench_id: params[:current_workbench_id] } )
       @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
       @reflines = ModelDecorator.decorate(
         @reflines,
@@ -121,6 +123,21 @@ class ReferentialsController < BreadcrumbController
     referential.organisation = current_organisation
     referential.ready = true
     super
+  end
+
+  def build_referenial
+    if params[:from]
+      source_referential = Referential.find(params[:from])
+      @referential = Referential.new_from(source_referential, current_functional_scope)
+      @referential.workbench_id = params[:current_workbench_id]
+    end
+
+    @referential.data_format = current_organisation.data_format
+    @referential.workbench_id ||= params[:workbench_id]
+
+    if @referential.in_workbench?
+      @referential.init_metadatas default_date_range: Range.new(Date.today, Date.today.advance(months: 1))
+    end
   end
 
   private

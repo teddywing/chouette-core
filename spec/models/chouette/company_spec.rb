@@ -1,13 +1,8 @@
 require 'spec_helper'
 
 describe Chouette::Company, :type => :model do
-
   subject { create(:company) }
-
-  it { is_expected.to validate_presence_of :name }
-
-  # it { should validate_presence_of :objectid }
-  it { is_expected.to validate_uniqueness_of :objectid }
+  it { should validate_presence_of :name }
 
   describe "#nullables empty" do
     it "should set null empty nullable attributes" do

@@ -7,6 +7,8 @@ fr:
       destroy_confirm: "Etes vous sûr de vouloir détruire la clé d'accès API ?"
     show:
       title: "Clé d'accès API"
+    index:
+      title: Clé d'accès API
     new:
       title: "Ajouter une clé d'accès API"
     edit:

@@ -46,7 +46,14 @@ Apartment.configure do |config|
     'NetexImport',
     'WorkbenchImport',
     'ImportMessage',
-    'ImportResource'
+    'ImportResource',
+    'ComplianceControl',
+    'ComplianceControlSet',
+    'ComplianceControlBlock',
+    'ComplianceCheck',
+    'ComplianceCheckSet',
+    'ComplianceCheckBlock',
+    'ComplianceCheckResource',
   ]
 
   # use postgres schemas?

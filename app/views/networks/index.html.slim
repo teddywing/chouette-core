@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'reseau',
              t('networks.index.title'),
              'Lorem ipsum dolor sit amet',
              '',
@@ -31,7 +31,10 @@
               ),
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |network| \
+                  line_referential_network_path(@line_referential, network) \
+                end \
               ), \
             ],
             links: [:show],
@@ -40,6 +43,6 @@
           = new_pagination @networks, 'pull-right'
 
     - unless @networks.any?
-      .row
+      .row.mt-xs
         .col-lg-12
           = replacement_msg t('networks.search_no_results')

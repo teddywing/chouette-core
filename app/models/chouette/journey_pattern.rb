@@ -21,6 +21,11 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   attr_accessor  :control_checked
   after_update :control_route_sections, :unless => "control_checked"
 
+
+  def local_id
+    "IBOO-#{self.referential.id}-#{self.try(:route).try(:line).try(:objectid).try(:local_id)}-#{self.id}"
+  end
+
   def checksum_attributes
     values = self.slice(*['name', 'published_name', 'registration_number']).values
     values << self.stop_points.map(&:stop_area).map(&:user_objectid)

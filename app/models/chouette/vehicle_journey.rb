@@ -56,6 +56,10 @@ module Chouette
       end
     end
 
+    def local_id
+      "IBOO-#{self.referential.id}-#{self.route.line.objectid.local_id}-#{self.id}"
+    end
+
     def checksum_attributes
       [].tap do |attrs|
         attrs << self.published_journey_name

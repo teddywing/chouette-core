@@ -820,13 +820,13 @@ end
 
   describe "#intersects" do
     it "should return day if a date equal day" do
-      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1")
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc")
       time_table.dates << Chouette::TimeTableDate.new( :date => Date.today, :in_out => true)
       expect(time_table.intersects([Date.today])).to eq([Date.today])
     end
 
     it "should return [] if a period not include days" do
-      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1", :int_day_types => 12)
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc", :int_day_types => 12)
       time_table.periods << Chouette::TimeTablePeriod.new(
                               :period_start => Date.new(2013, 05, 27),
                               :period_end => Date.new(2013, 05, 30))
@@ -834,11 +834,212 @@ end
     end
 
     it "should return days if a period include day" do
-      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1", :int_day_types => 12) # Day type monday and tuesday
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc", :int_day_types => 12) # Day type monday and tuesday
       time_table.periods << Chouette::TimeTablePeriod.new(
                               :period_start => Date.new(2013, 05, 27),
                               :period_end => Date.new(2013, 05, 30))
       expect(time_table.intersects([ Date.new(2013, 05, 27),  Date.new(2013, 05, 28)])).to eq([ Date.new(2013, 05, 27),  Date.new(2013, 05, 28)])
+    end
+  end
+
+  describe "#include_day?" do
+    it "should return true if a date equal day" do
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc")
+      time_table.dates << Chouette::TimeTableDate.new( :date => Date.today, :in_out => true)
+      expect(time_table.include_day?(Date.today)).to eq(true)
+    end
+
+    it "should return true if a period include day" do
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc", :int_day_types => 12) # Day type monday and tuesday
+      time_table.periods << Chouette::TimeTablePeriod.new(
+                              :period_start => Date.new(2013, 05, 27),
+                              :period_end => Date.new(2013, 05, 29))
+      expect(time_table.include_day?( Date.new(2013, 05, 27))).to eq(true)
+    end
+  end
+
+  describe "#include_in_dates?" do
+    it "should return true if a date equal day" do
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc")
+      time_table.dates << Chouette::TimeTableDate.new( :date => Date.today, :in_out => true)
+      expect(time_table.include_in_dates?(Date.today)).to eq(true)
+    end
+
+    it "should return false if a period include day  but that is exclued" do
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc", :int_day_types => 12) # Day type monday and tuesday
+      excluded_date = Date.new(2013, 05, 27)
+      time_table.dates << Chouette::TimeTableDate.new( :date => excluded_date, :in_out => false)
+      expect(time_table.include_in_dates?( excluded_date)).to be_falsey
+    end
+  end
+
+  describe "#include_in_periods?" do
+    it "should return true if a period include day" do
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc", :int_day_types => 4)
+      time_table.periods << Chouette::TimeTablePeriod.new(
+                              :period_start => Date.new(2012, 1, 1),
+                              :period_end => Date.new(2012, 01, 30))
+      expect(time_table.include_in_periods?(Date.new(2012, 1, 2))).to eq(true)
+    end
+
+    it "should return false if a period include day  but that is exclued" do
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc", :int_day_types => 12) # Day type monday and tuesday
+      excluded_date = Date.new(2013, 05, 27)
+      time_table.dates << Chouette::TimeTableDate.new( :date => excluded_date, :in_out => false)
+      time_table.periods << Chouette::TimeTablePeriod.new(
+                              :period_start => Date.new(2013, 05, 27),
+                              :period_end => Date.new(2013, 05, 29))
+      expect(time_table.include_in_periods?( excluded_date)).to be_falsey
+    end
+  end
+
+  describe "#include_in_overlap_dates?" do
+    it "should return true if a day is included in overlap dates" do
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc", :int_day_types => 4)
+      time_table.periods << Chouette::TimeTablePeriod.new(
+                              :period_start => Date.new(2012, 1, 1),
+                              :period_end => Date.new(2012, 01, 30))
+      time_table.dates << Chouette::TimeTableDate.new( :date => Date.new(2012, 1, 2), :in_out => true)
+      expect(time_table.include_in_overlap_dates?(Date.new(2012, 1, 2))).to eq(true)
+    end
+    it "should return false if the day is excluded" do
+      time_table = Chouette::TimeTable.create!(:comment => "Test", :objectid => "test:Timetable:1:loc", :int_day_types => 4)
+      time_table.periods << Chouette::TimeTablePeriod.new(
+                              :period_start => Date.new(2012, 1, 1),
+                              :period_end => Date.new(2012, 01, 30))
+      time_table.dates << Chouette::TimeTableDate.new( :date => Date.new(2012, 1, 2), :in_out => false)
+      expect(time_table.include_in_overlap_dates?(Date.new(2012, 1, 2))).to be_falsey
+    end
+  end
+
+  describe "#dates" do
+    it "should have with position 0" do
+      expect(subject.dates.first.position).to eq(0)
+    end
+    context "when first date has been removed" do
+      before do
+        subject.dates.first.destroy
+      end
+      it "should begin with position 0" do
+        expect(subject.dates.first.position).to eq(0)
+      end
+    end
+  end
+  describe "#validity_out_between?" do
+    let(:empty_tm) {build(:time_table)}
+    it "should be false if empty calendar" do
+      expect(empty_tm.validity_out_between?( Date.today, Date.today + 7.day)).to be_falsey
+    end
+    it "should be true if caldendar is out during start_date and end_date period" do
+      start_date = subject.bounding_dates.max - 2.day
+      end_date = subject.bounding_dates.max + 2.day
+      expect(subject.validity_out_between?( start_date, end_date)).to be_truthy
+    end
+    it "should be false if calendar is out on start date" do
+      start_date = subject.bounding_dates.max
+      end_date = subject.bounding_dates.max + 2.day
+      expect(subject.validity_out_between?( start_date, end_date)).to be_falsey
+    end
+    it "should be false if calendar is out on end date" do
+      start_date = subject.bounding_dates.max - 2.day
+      end_date = subject.bounding_dates.max
+      expect(subject.validity_out_between?( start_date, end_date)).to be_truthy
+    end
+    it "should be false if calendar is out after start_date" do
+      start_date = subject.bounding_dates.max + 2.day
+      end_date = subject.bounding_dates.max + 4.day
+      expect(subject.validity_out_between?( start_date, end_date)).to be_falsey
+    end
+  end
+  describe "#validity_out_from_on?" do
+    let(:empty_tm) {build(:time_table)}
+    it "should be false if empty calendar" do
+      expect(empty_tm.validity_out_from_on?( Date.today)).to be_falsey
+    end
+    it "should be true if caldendar ends on expected date" do
+      expected_date = subject.bounding_dates.max
+      expect(subject.validity_out_from_on?( expected_date)).to be_truthy
+    end
+    it "should be true if calendar ends before expected date" do
+      expected_date = subject.bounding_dates.max + 30.day
+      expect(subject.validity_out_from_on?( expected_date)).to be_truthy
+    end
+    it "should be false if calendars ends after expected date" do
+      expected_date = subject.bounding_dates.max - 30.day
+      expect(subject.validity_out_from_on?( expected_date)).to be_falsey
+    end
+  end
+  describe "#bounding_dates" do
+    context "when timetable contains only periods" do
+      before do
+        subject.dates = []
+        subject.save
+      end
+      it "should retreive periods.period_start.min and periods.period_end.max" do
+        expect(subject.bounding_dates.min).to eq(subject.periods.map(&:period_start).min)
+        expect(subject.bounding_dates.max).to eq(subject.periods.map(&:period_end).max)
+      end
+    end
+    context "when timetable contains only dates" do
+      before do
+        subject.periods = []
+        subject.save
+      end
+      it "should retreive dates.min and dates.max" do
+        expect(subject.bounding_dates.min).to eq(subject.dates.map(&:date).min)
+        expect(subject.bounding_dates.max).to eq(subject.dates.map(&:date).max)
+      end
+    end
+    it "should contains min date" do
+      min_date = subject.bounding_dates.min
+      subject.dates.each do |tm_date|
+        expect(min_date <= tm_date.date).to be_truthy
+      end
+      subject.periods.each do |tm_period|
+        expect(min_date <= tm_period.period_start).to be_truthy
+      end
+
+    end
+    it "should contains max date" do
+      max_date = subject.bounding_dates.max
+      subject.dates.each do |tm_date|
+        expect(tm_date.date <= max_date).to be_truthy
+      end
+      subject.periods.each do |tm_period|
+        expect(tm_period.period_end <= max_date).to be_truthy
+      end
+
+    end
+  end
+  describe "#periods" do
+    it "should begin with position 0" do
+      expect(subject.periods.first.position).to eq(0)
+    end
+    context "when first period has been removed" do
+      before do
+        subject.periods.first.destroy
+      end
+      it "should begin with position 0" do
+        expect(subject.periods.first.position).to eq(0)
+      end
+    end
+    it "should have period_start before period_end" do
+      period = Chouette::TimeTablePeriod.new
+      period.period_start = Date.today
+      period.period_end = Date.today + 10
+      expect(period.valid?).to be_truthy
+    end
+    it "should not have period_start after period_end" do
+      period = Chouette::TimeTablePeriod.new
+      period.period_start = Date.today
+      period.period_end = Date.today - 10
+      expect(period.valid?).to be_falsey
+    end
+    it "should not have period_start equal to period_end" do
+      period = Chouette::TimeTablePeriod.new
+      period.period_start = Date.today
+      period.period_end = Date.today
+      expect(period.valid?).to be_falsey
     end
   end
 
@@ -964,7 +1165,6 @@ end
         target=subject.duplicate
         expect(target.id).to be_nil
         expect(target.comment).to eq(I18n.t("activerecord.copy", name: subject.comment))
-        expect(target.objectid).to eq(subject.objectid+"_1")
         expect(target.int_day_types).to eq(subject.int_day_types)
         expect(target.dates.size).to eq(subject.dates.size)
         target.dates.each do |d|

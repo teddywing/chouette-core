@@ -17,12 +17,13 @@ module Stif
     def all_resources
       %w[
         access_points
-         connection_links calendars
-         footnotes
-         journey_patterns
-         referentials routes routing_constraint_zones
-         time_tables
-         vehicle_journeys
+        connection_links calendars
+        footnotes
+        journey_patterns
+        referentials routes routing_constraint_zones
+        time_tables
+        vehicle_journeys
+        api_keys
       ]
     end
 
@@ -37,8 +38,8 @@ module Stif
 
     def translation_table
       {
-        "boiv:read-offer" => %w{sessions:create},
-        "boiv:edit-offer" => all_destructive_permissions + %w{sessions:create},
+        "boiv:read-offer" => %w{sessions.create},
+        "boiv:edit-offer" => all_destructive_permissions + %w{sessions.create},
       }
     end
   end

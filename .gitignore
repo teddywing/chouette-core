@@ -23,6 +23,7 @@ public/assets/
 chouette2.war
 vendor/bundle
 .ruby-version
+.byebug_history
 start.sh
 coverage
 
@@ -41,3 +42,6 @@ bin/
 /bin/rake
 /bin/rails
 /bin/rspec
+
+# FIXME Ignore ./spec/services/zip_service/regression_4273_spec.rb files
+/spec/fixtures/target_*.zip

@@ -1,3 +1,18 @@
-= title_tag t('api_keys.edit.title')
+/ PageHeader
+= pageheader 'Clé d\'API',
+             t('api_keys.edit.title'),
+             'Lorem ipsum dolor sit amet',
+             t('last_update', time: l(@api_key.updated_at, format: :short)),
+             ''
 
-== render 'form'
+  / Below are secondary actions & optional content (filters, ...)
+  .row.mb-sm
+    .col-lg-12.text-right
+      = ( policy(@api_key).destroy? ? link_to(t('actions.destroy'), api_key_path(@api_key), :method => :delete, class: 'btn btn-default') : '' )
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        == render 'form'

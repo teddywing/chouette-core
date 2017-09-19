@@ -1,22 +1,41 @@
-class ApiKeysController < ChouetteController
-  defaults :resource_class => Api::V1::ApiKey
-
-  belongs_to :referential
+class ApiKeysController < BreadcrumbController
+  defaults resource_class: Api::V1::ApiKey
+  include PolicyChecker
 
   def create
-    create! { referential_path(@referential) }
+    @api_key = Api::V1::ApiKey.new(api_key_params.merge(organisation: current_organisation))
+    create! do |format|
+      format.html {
+        redirect_to workbenches_path
+      }
+    end
   end
+
   def update
-    update! { referential_path(@referential) }
+    update! do |format|
+      format.html {
+        redirect_to workbenches_path
+      }
+    end
   end
+
   def destroy
-    destroy! { referential_path(@referential) }
+    destroy! do |format|
+      format.html {
+        redirect_to workbenches_path
+      }
+    end
   end
 
   private
   def api_key_params
-    params.require(:api_key).permit( :name )
-  end  
-  
-end
+    params.require(:api_key).permit(:name, :referential_id)
+  end
 
+  def decorate_api_keys(api_keys)
+    ModelDecorator.decorate(
+      api_keys,
+      with: ApiKeyDecorator,
+    )
+  end
+end

@@ -69,11 +69,11 @@ class RoutesController < ChouetteController
     end
   end
 
- # def update
-   # update! do |success, failure|
-   #   success.html { redirect_to referential_line_path(@referential,@line) }
-   # end
- # end
+  def duplicate
+    route = Chouette::Route.find(params[:id]).duplicate
+    redirect_to edit_referential_line_route_path(@referential, route.line, route)
+  end
+
   protected
 
   alias_method :route, :resource
@@ -94,8 +94,8 @@ class RoutesController < ChouetteController
     else
       parent.routes.where(opposite_route: nil)
     end
-    @forward  = scope.where(wayback: :straight_forward)
-    @backward = scope.where(wayback: :backward)
+    @forward  = scope.where(wayback: :outbound)
+    @backward = scope.where(wayback: :inbound)
   end
 
   private

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 class StopAreaCopy
   include ActiveModel::Validations
   include ActiveModel::Conversion

@@ -12,6 +12,7 @@ module ReferentialHelper
     base.class_eval do
       extend ClassMethods
       alias_method :referential, :first_referential
+      alias_method :organisation, :first_organisation
     end
   end
 
@@ -51,7 +52,7 @@ RSpec.configure do |config|
       referential.add_member organisation, owner: true
     end
 
-    workbench = Workbench.create!(:name => "first", organisation: organisation, line_referential: line_referential, stop_area_referential: stop_area_referential)
+    workbench = Workbench.create!(:name => "Gestion de l'offre", organisation: organisation, line_referential: line_referential, stop_area_referential: stop_area_referential)
     referential = Referential.create! prefix: "first", name: "first", slug: "first", organisation: organisation, workbench: workbench
   end
 

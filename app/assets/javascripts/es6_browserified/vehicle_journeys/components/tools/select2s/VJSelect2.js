@@ -2,6 +2,7 @@ var _ = require('lodash')
 var React = require('react')
 var PropTypes = require('react').PropTypes
 var Select2 = require('react-select2')
+var humanOID = require('../../../actions').humanOID
 
 // get JSON full path
 var origin = window.location.origin
@@ -11,10 +12,6 @@ var path = window.location.pathname.split('/', 7).join('/')
 class BSelect4b extends React.Component{
   constructor(props) {
     super(props)
-  }
-  humanOID(oid) {
-    var a = oid.split(':')
-    return a[a.length - 1]
   }
 
   render() {
@@ -46,7 +43,7 @@ class BSelect4b extends React.Component{
                   item => _.assign(
                     {},
                     item,
-                    { id: item.objectid, text: _.last(_.split(item.objectid, ':')) }
+                    { id: item.objectid, text: humanOID(item.objectid) }
                   )
                 )
               };

@@ -6,6 +6,10 @@ RSpec.describe RoutePolicy, type: :policy do
     it_behaves_like 'permitted policy and same organisation', 'routes.create', archived: true
   end
 
+  permissions :duplicate? do
+    it_behaves_like 'permitted policy and same organisation', 'routes.create', archived: true
+  end
+
   permissions :destroy? do
     it_behaves_like 'permitted policy and same organisation', 'routes.destroy', archived: true
   end

@@ -4,6 +4,7 @@ class Organisation < ActiveRecord::Base
   has_many :users, :dependent => :destroy
   has_many :referentials, :dependent => :destroy
   has_many :rule_parameter_sets, :dependent => :destroy
+  has_many :compliance_control_sets, :dependent => :destroy
 
   has_many :stop_area_referential_memberships
   has_many :stop_area_referentials, through: :stop_area_referential_memberships
@@ -13,6 +14,7 @@ class Organisation < ActiveRecord::Base
 
   has_many :workbenches
   has_many :calendars
+  has_many :api_keys, class_name: 'Api::V1::ApiKey'
 
   validates_presence_of :name
   validates_uniqueness_of :code

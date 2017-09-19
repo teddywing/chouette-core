@@ -1,0 +1,6 @@
+FactoryGirl.define do
+  factory :compliance_check_block do
+    sequence(:name) { |n| "Compliance check block #{n}" }
+    association :compliance_check_set
+  end
+end

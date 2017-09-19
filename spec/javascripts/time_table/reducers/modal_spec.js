@@ -154,7 +154,7 @@ describe('modal reducer', () => {
       error: ''
     }
     let newModalProps = {
-      active: false,
+      active: true,
       begin: {
         day: '01',
         month: '01',
@@ -179,7 +179,8 @@ describe('modal reducer', () => {
         modalProps : modProps,
         timeTablePeriods: ttperiods,
         metas: metas,
-        timetableInDates: ttdates
+        timetableInDates: ttdates,
+        error: 'La date de départ doit être antérieure à la date de fin'
       })
     ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
   })
@@ -249,7 +250,8 @@ describe('modal reducer', () => {
         type: 'VALIDATE_PERIOD_FORM',
         modalProps : modProps2,
         timeTablePeriods: ttperiods2,
-        timetableInDates: ttdates2
+        timetableInDates: ttdates2,
+        error: "Les périodes ne peuvent pas se chevaucher"
       })
     ).toEqual(Object.assign({}, state2, {modalProps: newModalProps2}))
   })
@@ -275,7 +277,7 @@ describe('modal reducer', () => {
       type: ''
     }
     let modProps3 = {
-      active: false,
+      active: true,
       begin: {
         day: '01',
         month: '08',
@@ -318,7 +320,8 @@ describe('modal reducer', () => {
         modalProps : modProps3,
         timeTablePeriods: ttperiods3,
         timetableInDates: ttdates3,
-        metas: metas
+        metas: metas,
+        error: "Une période ne peut chevaucher une date dans un calendrier"
       })
     ).toEqual(Object.assign({}, state3, {modalProps: newModalProps3}))
   })

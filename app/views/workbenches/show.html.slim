@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'jeux-de-donnees',
              t('referentials.index.title'),
              '',
              '' do
@@ -27,7 +27,10 @@
               [ \
                 TableBuilderHelper::Column.new( \
                   key: :name, \
-                  attribute: 'name' \
+                  attribute: 'name', \
+                  link_to: lambda do |referential| \
+                    referential_path(referential, current_workbench_id: params[:id]) \
+                  end \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :status, \
@@ -74,3 +77,5 @@
 
 = javascript_tag do
   | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
+
+= javascript_include_tag 'filters/workbench.js'

@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'map-marker',
+= pageheader 'itl',
              t('routing_constraint_zones.index.title'),
              '',
              '',
@@ -25,7 +25,14 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: 'name' \
+                attribute: 'name', \
+                link_to: lambda do |routing_constraint_zone| \
+                  referential_line_routing_constraint_zone_path( \
+                    @referential, \
+                    @line, \
+                    routing_constraint_zone \
+                  ) \
+                end \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :stop_points_count, \

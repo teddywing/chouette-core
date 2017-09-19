@@ -64,6 +64,7 @@ en:
         date_ranges: Date ranges
         dates: Dates
         shared: Shared
+        organisation: Organisation
     errors:
       models:
         calendar:
