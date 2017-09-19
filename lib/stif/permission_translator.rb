@@ -38,8 +38,8 @@ module Stif
 
     def translation_table
       {
-        "boiv:read-offer" => %w{sessions:create},
-        "boiv:edit-offer" => all_destructive_permissions + %w{sessions:create},
+        "boiv:read-offer" => %w{sessions.create},
+        "boiv:edit-offer" => all_destructive_permissions + %w{sessions.create},
       }
     end
   end
