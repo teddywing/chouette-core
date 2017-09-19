@@ -1,0 +1,30 @@
+fr:
+  compliance_controls:
+    route_control:
+      zdl_stop_area:
+        messages:
+          3_route_1: L'itinéraire % dessert successivement les arrêts % % et % % de la même zone de lieu
+        description: Deux arrêts d’une même ZDL ne peuvent pas se succéder dans un itinéraire
+      opposite_route:
+        messages:
+          3_route_2: L'itinéraire {objectId} référence un itinéraire retour % incohérent
+        description: |
+          'Si l'itinéraire référence un itinéraire inverse, celui-ci doit :
+            - référencer l'itinéraire inverse
+            - avoir un sens opposé à l'itinéraire testé'
+      duplicates:
+        messages:
+          3_route_4: L'itinéraire % est identique à l'itinéraire %
+        description: 2 itinéraires ne doivent pas desservir strictement les mêmes arrêts dans le même ordre avec les mêmes critères de monté/descente
+      minimum_length:
+        messages:
+          3_route_6: L'itinéraire % ne dessert pas assez d'arrêts (minimum 2 requis)
+        description: Un itinéraire doit référencer au moins 2 arrêts
+      omnibus_journey_pattern:
+        messages:
+          3_route_9: L'itinéraire % n'a aucune mission desservant l'ensemble de ses arrêts
+        description: Une mission de l'itinéraire devrait desservir l'ensemble des arrêts de celui-ci
+      unactivated_stop_point:
+        messages:
+          3_route_10: L'itinéraire % référence un arrêt (ZDEp) désactivé % (%)
+        description: Les arrêts d'un itinéraire ne doivent pas être désactivés
