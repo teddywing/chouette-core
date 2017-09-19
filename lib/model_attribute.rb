@@ -55,4 +55,8 @@ class ModelAttribute
 
   # Chouette::RoutingConstraintZone
   define :routing_constraint_zone, :name, :string
+
+  def code
+    "#{@klass}##{@name}"
+  end
 end
