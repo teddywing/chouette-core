@@ -1,4 +1,4 @@
-fr:
+en:
   compliance_controls:
     route_control:
       zdl_stop_area:
@@ -28,3 +28,23 @@ fr:
         messages:
           3_route_10: L'itinéraire % référence un arrêt (ZDEp) désactivé % (%)
         description: Les arrêts d'un itinéraire ne doivent pas être désactivés
+    actions:
+      new: Add a new compliance control
+      edit: Edit this compliance control
+      destroy: Remove this compliance control
+      destroy_confirm: Are you sure you want destroy this compliance control?
+    show:
+      title: Compliance control
+    index:
+      title: Compliance control
+    new:
+      title: Add a new compliance control
+    edit:
+      title: Update compliance control
+  activerecord:
+    models:
+      compliance_control: compliance control
+    attributes:
+      compliance_control:
+        name: Name
+        code: Code
