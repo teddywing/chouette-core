@@ -11,7 +11,7 @@ class ModelAttribute
 
   def self.methods_by_class(klass)
     all.select do |model_attr|
-      model_attr.klass == klass.downcase.to_sym
+      model_attr.klass == klass
     end
   end
 

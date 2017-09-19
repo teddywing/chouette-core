@@ -23,7 +23,7 @@ RSpec.describe ModelAttribute do
         ModelAttribute.new(:journey_pattern, :name, :string)
       ])
 
-      expect(ModelAttribute.methods_by_class('Route')).to match_array([
+      expect(ModelAttribute.methods_by_class(:route)).to match_array([
         ModelAttribute.new(:route, :name, :string),
         ModelAttribute.new(:route, :published_name, :string),
         ModelAttribute.new(:route, :direction, :string)
