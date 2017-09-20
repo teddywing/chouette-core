@@ -80,10 +80,12 @@ const timetable = (state = {}, action) => {
 
       newDates =  _.reject(state.time_table_dates, (d) => {
         let weekDay = new Date(d.date).getDay()
-        let excludedDatesToRemove = d.in_out == false && !weekDays.includes(weekDay)
-        let includedDatesToRemove = d.in_out == true && actions.isInPeriod(state.time_table_periods, d.date) && weekDays.includes(weekDay)
 
-        return excludedDatesToRemove || includedDatesToRemove
+        if (d.in_out) {
+          return actions.isInPeriod(state.time_table_periods, d.date) && weekDays.includes(weekDay)
+        } else {
+          return !weekDays.includes(weekDay)
+        }
       })
       return _.assign({}, state, {time_table_dates: newDates})
     case 'UPDATE_CURRENT_MONTH_FROM_DAYTYPES':

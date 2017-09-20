@@ -256,7 +256,7 @@ const actions = {
     }
     return error
   },
-  checkErrorsInDates: (start, end, in_days, dayTypes) => {
+  checkErrorsInDates: (start, end, in_days) => {
     let error = ''
     start = new Date(start)
     end = new Date(end)
