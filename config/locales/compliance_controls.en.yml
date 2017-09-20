@@ -18,68 +18,68 @@ en:
       compliance_control: "compliance control"
     attributes:
       compliance_control:
-        name: Name
-        criticity: Criticity
-        comment: Comment
-        code: Code
+        name: "Name"
+        criticity: "Criticity"
+        comment: "Comment"
+        code: "Code"
   route:
     zdl_stop_area:
       messages:
-        3_route_1: The route with % objectid connect the stop points % % et % % which belong to the same ZDL
-      description: Two stop points which belong to the same ZDL cannot follow one another in a route
+        3_route_1: "The route with % objectid connect the stop points % % et % % which belong to the same ZDL"
+      description: "Two stop points which belong to the same ZDL cannot follow one another in a route"
     opposite_route:
       messages:
-        3_route_2: The route with % objectid references an incoherent oppposite route %
+        3_route_2: "The route with % objectid references an incoherent oppposite route %"
       description: |
-        'If the route has an opposite route, it must :
+        "If the route has an opposite route, it must :
           - reference the opposite route
-          - have an opposite route in relation with the tested route'
+          - have an opposite route in relation with the tested route"
     duplicates:
       messages:
-        3_route_4: The route with % objectid is identical with another route %
-      description: 2 routes cannot connect the same stop points with the same order and the same boarding and alighting characteristics
+        3_route_4: "The route with % objectid is identical with another route %"
+      description: "2 routes cannot connect the same stop points with the same order and the same boarding and alighting characteristics"
     minimum_length:
       messages:
-        3_route_6: The route with % objectid does not connect enough stop points (required 2 stop points)
-      description: A route must have at least 2 stop points
+        3_route_6: "The route with % objectid does not connect enough stop points (required 2 stop points)"
+      description: "A route must have at least 2 stop points"
     omnibus_journey_pattern:
       messages:
-        3_route_9: The route with % objectid does not have a journey pattern that connect all of its stop points
-      description: A journey pattern of a route should connect all of a route's stop points
+        3_route_9: "The route with % objectid does not have a journey pattern that connect all of its stop points"
+      description: "A journey pattern of a route should connect all of a route's stop points"
     unactivated_stop_point:
       messages:
-        3_route_10: L'itinéraire % référence un arrêt (ZDEp) désactivé % (%)
-      description: Les arrêts d'un itinéraire ne doivent pas être désactivés
+        3_route_10: "L'itinéraire % référence un arrêt (ZDEp) désactivé % (%)"
+      description: "Les arrêts d'un itinéraire ne doivent pas être désactivés"
   journey_pattern:
     duplicates:
       messages:
-        3_journeypattern_1: The journey pattern with objectid % is identical with another one %
-      description: Two journey patterns belonging to the same line must not connect the same stop points in the same order
+        3_journeypattern_1: "The journey pattern with objectid % is identical with another one %"
+      description: "Two journey patterns belonging to the same line must not connect the same stop points in the same order"
   vehicle_journey:
     waiting_time:
       messages:
-        3_vehiclejourney_1: On the following vehicle journey %, the waiting time % a this stop point % (%) is greater than the threshold (%)
-      description: The waiting time at a specific stop point cannot be too big
+        3_vehiclejourney_1: "On the following vehicle journey %, the waiting time % a this stop point % (%) is greater than the threshold (%)"
+      description: "The waiting time at a specific stop point cannot be too big"
     speed:
       messages:
-        3_vehiclejourney_2_1: On the following vehicle journey %, the computed speed % between the stop points % (%) and % (%) is greater than the threshold (%)
-        3_vehiclejourney_2_2: On the following vehicle journey %, the computed speed % between the stop points % (%) and % (%) is smaller than the threshold (%)
-      description: The speed between 2 stop points should be confined between two thresholds
+        3_vehiclejourney_2_1: "On the following vehicle journey %, the computed speed % between the stop points % (%) and % (%) is greater than the threshold (%)"
+        3_vehiclejourney_2_2: "On the following vehicle journey %, the computed speed % between the stop points % (%) and % (%) is smaller than the threshold (%)"
+      description: "The speed between 2 stop points should be confined between two thresholds"
     delta:
       messages:
-        3_vehiclejourney_3: The travel time on the vehicle journey with % objectid between the stop points % (%) and % (% is too far off % the average waiting on the journey pattern
-      description: The travel time between two following stop points must be close to all the vehicle journey of a journey pattern
+        3_vehiclejourney_3: "The travel time on the vehicle journey with % objectid between the stop points % (%) and % (% is too far off % the average waiting on the journey pattern"
+      description: "The travel time between two following stop points must be close to all the vehicle journey of a journey pattern"
     time_table:
       messages:
-        3_vehiclejourney_4: The vehicle journey with % objectid does not have a timetable
-      description: A vehicle journey must have at least one timetable
+        3_vehiclejourney_4: "The vehicle journey with % objectid does not have a timetable"
+      description: "A vehicle journey must have at least one timetable"
     vehicle_journey_at_stops:
       messages:
-        3_vehiclejourney_5_1: The vehicle journey with % objectid has an arrival time % greater than the departure time % at the stop point % (%)
-        3_vehiclejourney_5_2: The vehicle journey with % objectid has an departure time % at stop point % (%) greater than the arrival % at the next stop point
-      description: The arrival time of a stop point must be smaller than the departure time of this stop point AND the departure time of the stop points must be in chronological order
+        3_vehiclejourney_5_1: "The vehicle journey with % objectid has an arrival time % greater than the departure time % at the stop point % (%)"
+        3_vehiclejourney_5_2: "The vehicle journey with % objectid has an departure time % at stop point % (%) greater than the arrival % at the next stop point"
+      description: "The arrival time of a stop point must be smaller than the departure time of this stop point AND the departure time of the stop points must be in chronological order"
   routing_constraint_zone:
     vehicle_journey_at_stops:
       messages:
-        3_itl_1: The Routing Constraint Zone % references an unactivated stop point (ZDEp) % (%)
-      description: The stop points of a Routing Constraint Zone must be activated
+        3_itl_1: "The Routing Constraint Zone % references an unactivated stop point (ZDEp) % (%)"
+      description: "The stop points of a Routing Constraint Zone must be activated"
