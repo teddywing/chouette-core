@@ -26,11 +26,11 @@ namespace :referential do
         route_attrs = { line: line, name: "Route #{name}", published_name: "Published #{name}" }
 
         if i.even?
-          route_attrs[:wayback] = :straight_forward
+          route_attrs[:wayback] = :outbound
           route = Chouette::Route.create!(route_attrs)
           route.stop_areas = stop_areas
         else
-          route_attrs[:wayback] = :backward
+          route_attrs[:wayback] = :inbound
           route_attrs[:opposite_route] = Chouette::Route.last if i == 3
           route = Chouette::Route.create!(route_attrs)
           route.stop_areas = stop_areas.reverse

@@ -14,7 +14,7 @@
   .container-fluid
     .row
       .col-lg-12
-        /= render 'filters'
+        = render 'filters'
       .row
         .col-lg-12
           .select_table
@@ -40,11 +40,15 @@
                   attribute: 'control_numbers' \
                 ), \
                 TableBuilderHelper::Column.new( \
-                  key: :update, \
-                  attribute: '' \
+                  key: :updated_at, \
+                  attribute: Proc.new { |n| l(n.updated_at, format: :long) if n.updated_at }, \
                 ) \
               ],
                     sortable: true,
                     cls: 'table has-filter has-search'
+    - unless @compliance_control_sets.any?
+      .row.mt-xs
+        .col-lg-12
+          = replacement_msg t('compliance_control_sets.search_no_results')
 
 

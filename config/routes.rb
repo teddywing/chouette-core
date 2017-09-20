@@ -12,8 +12,6 @@ ChouetteIhm::Application.routes.draw do
     end
   end
 
-  resources :compliance_control_sets
-
   devise_for :users, :controllers => {
     :registrations => 'users/registrations', :invitations => 'users/invitations'
   }

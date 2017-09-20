@@ -6,7 +6,7 @@ class ComplianceControlPolicy < ApplicationPolicy
   end
 
   def destroy?
-    organisation_match? && user.has_permission?('compliance_controls.destroy')
+    user.has_permission?('compliance_controls.destroy')
   end
 
   def create?
@@ -14,6 +14,6 @@ class ComplianceControlPolicy < ApplicationPolicy
   end
 
   def update?
-    organisation_match? && user.has_permission?('compliance_controls.update')
+    user.has_permission?('compliance_controls.update')
   end
 end
