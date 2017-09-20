@@ -1,27 +1,5 @@
 en:
   compliance_controls:
-    actions:
-      new: "Add a new compliance control"
-      edit: "Edit this compliance control"
-      destroy: "Remove this compliance control"
-      destroy_confirm: "Are you sure you want destroy this compliance control?"
-    show:
-      title: "Compliance control"
-    index:
-      title: "Compliance control"
-    new:
-      title: "Add a new compliance control"
-    edit:
-      title: "Update compliance control"
-  activerecord:
-    models:
-      compliance_control: "compliance control"
-    attributes:
-      compliance_control:
-        name: "Name"
-        criticity: "Criticity"
-        comment: "Comment"
-        code: "Code"
   route:
     zdl_stop_area:
       messages:
@@ -34,10 +12,18 @@ en:
         "If the route has an opposite route, it must :
           - reference the opposite route
           - have an opposite route in relation with the tested route"
+    journey_pattern:
+      messages:
+        3_route_3: "The route with % objectid doesn't have any journey pattern"
+      description: "A route must have at least one journey pattern"
     duplicates:
       messages:
         3_route_4: "The route with % objectid is identical with another route %"
       description: "2 routes cannot connect the same stop points with the same order and the same boarding and alighting characteristics"
+    opposite_route_terminus:
+      messages:
+        3_route_5: "The route with % objectid has a first stop from the % ZDL whereas its oppoite route's last stop is from the ZDL %"
+      description: "Deux itinéraires en aller/retour doivent desservir les mêmes terminus"
     minimum_length:
       messages:
         3_route_6: "The route with % objectid does not connect enough stop points (required 2 stop points)"
@@ -55,6 +41,10 @@ en:
       messages:
         3_journeypattern_1: "The journey pattern with objectid % is identical with another one %"
       description: "Two journey patterns belonging to the same line must not connect the same stop points in the same order"
+    vehicle_journey:
+      messages:
+        3_journeypattern_2: "The journey pattern with % objectid doesn't have any vehicle journey"
+      description: "A journey pattern must have at least one vehicle journey"
   vehicle_journey:
     waiting_time:
       messages:
@@ -83,3 +73,30 @@ en:
       messages:
         3_itl_1: "The Routing Constraint Zone % references an unactivated stop point (ZDEp) % (%)"
       description: "The stop points of a Routing Constraint Zone must be activated"
+    maximum_length:
+      messages:
+        3_itl_2: "The Routing Constraint Zone % covers all the stop points of its related route : % %."
+      description: "A Routing Constraint Zone cannot cover all the stop points of a route"
+    minimum_length:
+      messages:
+        3_itl_3: "The Routing Constraint Zone % has less than 2 stop points"
+      description: "A Routing Constraint Zone must have at least 2 stop points"
+  line:
+    route:
+      messages:
+        3_line_1: "On line : % (%), no route has an opposite route"
+      description: "The routes of a line must have an opposite route"
+  generic:
+    content:
+      messages:
+        3_generic_1: "% : the % attribute value (%) does not respect the following pattern : %"
+      description: "The object attribute must respect a patten (regular expression)"
+    min_max:
+      messages:
+        3_generic_2_1: "% : the % attributes's value (%) is greater than the authorized maximum value : %"
+        3_generic_2_2: "% : the % attributes's value (%) is smaller than the authorized minimum value %"
+      description: "The numeric value of an attribute must be contained between 2 values"
+    uniqueness:
+      messages:
+        3_generic_3: "% : the % attribute's value (%) of % is in conflict with : %"
+      description: "The attribute's value must be unique compared to the other objects ofthe same type (related to the same line)"
