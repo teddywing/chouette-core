@@ -1,5 +1,4 @@
 class ComplianceControlsController < BreadcrumbController
-  include PolicyChecker
   defaults resource_class: ComplianceControl
   belongs_to :compliance_control_set
 
