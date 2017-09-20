@@ -1,4 +1,13 @@
 fr:
+  activerecord:
+    models:
+      compliance_control: "Jeu de controle"
+    attributes:
+      compliance_control:
+        name: "Nom"
+        criticity: "Criticité"
+        comment: "Commentaire"
+        code: "Code"
   compliance_controls:
     actions:
       new: "Ajouter un jeu de controle"
@@ -12,74 +21,104 @@ fr:
     new:
       title: "Ajouter un jeu de controle"
     edit:
-      title: "Editer le jeu de controle"
-  activerecord:
-    models:
-      compliance_control: "Jeu de controle"
-    attributes:
-      compliance_control:
-        name: "Nom"
-        criticity: "Criticité"
-        comment: "Commentaire"
-        code: "Code"
-  route:
-    zdl_stop_area:
-      messages:
-        3_route_1: "L'itinéraire % dessert successivement les arrêts % % et % % de la même zone de lieu"
-      description: "Deux arrêts d’une même ZDL ne peuvent pas se succéder dans un itinéraire"
-    opposite_route:
-      messages:
-        3_route_2: "L'itinéraire % référence un itinéraire retour % incohérent"
-      description: |
-        "Si l'itinéraire référence un itinéraire inverse, celui-ci doit :
-          - référencer l'itinéraire inverse
-          - avoir un sens opposé à l'itinéraire testé"
-    duplicates:
-      messages:
-        3_route_4: "L'itinéraire % est identique à l'itinéraire %"
-      description: "2 itinéraires ne doivent pas desservir strictement les mêmes arrêts dans le même ordre avec les mêmes critères de monté/descente"
-    minimum_length:
-      messages:
-        3_route_6: "L'itinéraire % ne dessert pas assez d'arrêts (minimum 2 requis)"
-      description: "Un itinéraire doit référencer au moins 2 arrêts"
-    omnibus_journey_pattern:
-      messages:
-        3_route_9: "L'itinéraire % n'a aucune mission desservant l'ensemble de ses arrêts"
-      description: "Une mission de l'itinéraire devrait desservir l'ensemble des arrêts de celui-ci"
-    unactivated_stop_point:
-      messages:
-        3_route_10: "L'itinéraire % référence un arrêt (ZDEp) désactivé % (%)"
-      description: "Les arrêts d'un itinéraire ne doivent pas être désactivés"
-  journey_pattern:
-    duplicates:
-      messages:
-        3_journeypattern_1: "La mission % est identique à la mission %"
-      description: "Deux missions de la même ligne ne doivent pas desservir les mêmes arrêts dans le même ordre"
-  vehicle_journey:
-    waiting_time:
-      messages:
-        3_vehiclejourney_1: "Sur la course %, le temps d'attente % à l'arrêt % (%) est supérieur au seuil toléré (%)"
-      description: "La durée d’attente à un arrêt ne doit pas être trop grande"
-    speed:
-      messages:
-        3_vehiclejourney_2_1: "Sur la course %, la vitesse calculée % entre les arrêts % (%) et % (%) est supérieur au seuil toléré (%)"
-        3_vehiclejourney_2_2: "Sur la course %, la vitesse calculée % entre les arrêts % (%) et % (%) est inférieur au seuil toléré (%)"
-      description: "La vitesse entre deux arrêts doit être dans une fourchette paramétrable"
-    delta:
-      messages:
-        3_vehiclejourney_3: "Le temps de parcours sur la course % entre les arrêts % (%) et % (% s'écarte de % du temps moyen constaté sur la mission"
-      description: "Les temps de parcours entre 2 arrêts successifs doivent être similaires pour toutes les courses d’une même mission"
-    time_table:
-      messages:
-        3_vehiclejourney_4: "La course % n'a pas de calendrier d'application"
-      description: "Une course doit avoir au moins un calendrier d’application"
-    vehicle_journey_at_stops:
-      messages:
-        3_vehiclejourney_5_1: "La course % a un horaire d'arrivé % supérieur à l'horaire de départ % à l'arrêt {nomArrêt} (%)"
-        3_vehiclejourney_5_2: "La course % a un horaire de départ % à l'arrêt {nomArrêt} (%) supérieur à l'horaire d'arrivé % à l'arrêt suivant"
-      description: "L'horaire d'arrivée à un arrêt doit être antérieur à l'horaire de départ de cet arrêt ET les horaires de départ aux arrêts doivent être dans l'ordre chronologique croissant."
-  routing_constraint_zone:
-    vehicle_journey_at_stops:
-      messages:
-        3_itl_1: "L'ITL % référence un arrêt (ZDEp) désactivé % (%)"
-      description: "Les arrêts d'une ITL ne doivent pas être désactivés"
+      title: "Editer le jeu de controle"  
+    route:
+      zdl_stop_area:
+        messages:
+          3_route_1: "L'itinéraire % dessert successivement les arrêts % % et % % de la même zone de lieu"
+        description: "Deux arrêts d’une même ZDL ne peuvent pas se succéder dans un itinéraire"
+      opposite_route:
+        messages:
+          3_route_2: "L'itinéraire % référence un itinéraire retour % incohérent"
+        description: |
+          "Si l'itinéraire référence un itinéraire inverse, celui-ci doit :
+            - référencer l'itinéraire inverse
+            - avoir un sens opposé à l'itinéraire testé"
+      journey_pattern:
+        messages:
+          3_route_3: "L'itinéraire % n'a pas de mission"
+        description: "Un itinéraire doit avoir au moins une mission"
+      duplicates:
+        messages:
+          3_route_4: "L'itinéraire % est identique à l'itinéraire %"
+        description: "2 itinéraires ne doivent pas desservir strictement les mêmes arrêts dans le même ordre avec les mêmes critères de monté/descente"
+      opposite_route_terminus:
+        messages:
+          3_route_5: "L'itinéraire % dessert au départ un arrêt de la ZDL % alors que l'itinéraire inverse dessert à l'arrivée un arrêt de la ZDL %"
+        description: "Deux itinéraires en aller/retour doivent desservir les mêmes terminus"
+      minimum_length:
+        messages:
+          3_route_6: "L'itinéraire % ne dessert pas assez d'arrêts (minimum 2 requis)"
+        description: "Un itinéraire doit référencer au moins 2 arrêts"
+      omnibus_journey_pattern:
+        messages:
+          3_route_9: "L'itinéraire % n'a aucune mission desservant l'ensemble de ses arrêts"
+        description: "Une mission de l'itinéraire devrait desservir l'ensemble des arrêts de celui-ci"
+      unactivated_stop_point:
+        messages:
+          3_route_10: "L'itinéraire % référence un arrêt (ZDEp) désactivé % (%)"
+        description: "Les arrêts d'un itinéraire ne doivent pas être désactivés"
+    journey_pattern:
+      duplicates:
+        messages:
+          3_journeypattern_1: "La mission % est identique à la mission %"
+        description: "Deux missions de la même ligne ne doivent pas desservir les mêmes arrêts dans le même ordre"
+      vehicle_journey:
+        messages:
+          3_journeypattern_2: "La mission % n'a pas de course"
+        description: "Une mission doit avoir au moins une course"
+    vehicle_journey:
+      waiting_time:
+        messages:
+          3_vehiclejourney_1: "Sur la course %, le temps d'attente % à l'arrêt % (%) est supérieur au seuil toléré (%)"
+        description: "La durée d’attente à un arrêt ne doit pas être trop grande"
+      speed:
+        messages:
+          3_vehiclejourney_2_1: "Sur la course %, la vitesse calculée % entre les arrêts % (%) et % (%) est supérieur au seuil toléré (%)"
+          3_vehiclejourney_2_2: "Sur la course %, la vitesse calculée % entre les arrêts % (%) et % (%) est inférieur au seuil toléré (%)"
+        description: "La vitesse entre deux arrêts doit être dans une fourchette paramétrable"
+      delta:
+        messages:
+          3_vehiclejourney_3: "Le temps de parcours sur la course % entre les arrêts % (%) et % (% s'écarte de % du temps moyen constaté sur la mission"
+        description: "Les temps de parcours entre 2 arrêts successifs doivent être similaires pour toutes les courses d’une même mission"
+      time_table:
+        messages:
+          3_vehiclejourney_4: "La course % n'a pas de calendrier d'application"
+        description: "Une course doit avoir au moins un calendrier d’application"
+      vehicle_journey_at_stops:
+        messages:
+          3_vehiclejourney_5_1: "La course % a un horaire d'arrivé % supérieur à l'horaire de départ % à l'arrêt {nomArrêt} (%)"
+          3_vehiclejourney_5_2: "La course % a un horaire de départ % à l'arrêt {nomArrêt} (%) supérieur à l'horaire d'arrivé % à l'arrêt suivant"
+        description: "L'horaire d'arrivée à un arrêt doit être antérieur à l'horaire de départ de cet arrêt ET les horaires de départ aux arrêts doivent être dans l'ordre chronologique croissant."
+    routing_constraint_zone:
+      vehicle_journey_at_stops:
+        messages:
+          3_itl_1: "L'ITL % référence un arrêt (ZDEp) désactivé % (%)"
+        description: "Les arrêts d'une ITL ne doivent pas être désactivés"
+      maximum_length:
+        messages:
+          3_itl_2: "L'ITL % couvre tous les arrêts de l'itinéraire %."
+        description: "Une ITL ne peut pas couvrir l'ensemble des arrêts de l'itinéraire"
+      minimum_length:
+        messages:
+          3_itl_3: "L'ITL % n'a pas suffisament d'arrêts (minimum 2 arrêts requis)"
+        description: "Une ITL doit référencer au moins 2 arrêts"
+    line:
+      route:
+        messages:
+          3_line_1: "Sur la ligne % (%), aucun itinéraire n'a d'itinéraire inverse"
+        description: "Les itinéraires d'une ligne doivent être associés en aller/retour"
+    generic:
+      content:
+        messages:
+          3_generic_1: "% : l'attribut % à une valeur % qui ne respecte pas le motif %"
+        description: "l'attribut de l'objet doit respecter un motif (expression régulière)"
+      min_max:
+        messages:
+          3_generic_2_1: "% : l'attribut % à une valeur % supérieure à la valeur maximale autorisée %"
+          3_generic_2_2: "% : l'attribut % à une valeur % inférieure à la valeur minimale autorisée %"
+        description: "La valeur numérique de l'attribut doit rester comprise entre 2 valeurs"
+      uniqueness:
+        messages:
+          3_generic_3: "La valeur de l'attribut doit être unique au sein des objets de la ligne"
+        description: "% : l'attribut % de % à une valeur % en conflit avec %"
