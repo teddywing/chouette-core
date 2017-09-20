@@ -169,7 +169,6 @@ const actions = {
     let date = new Date(strDate)
     return date.toLocaleDateString()
   },
-
   updateSynthesis: (state, daytypes) => {
     let periods = state.time_table_periods
 
@@ -205,6 +204,17 @@ const actions = {
       })
     })
     return improvedCM
+  },
+  isInPeriod: (periods, date) => {
+    date = new Date(date)
+
+    for (let period of periods) {
+      let begin = new Date(period.period_start)
+      let end = new Date(period.period_end) 
+      if (date >= begin && date <= end) return true
+    }
+
+    return false
   },
   updateExcludedDates: (period_start, period_end, dates) => {
     // We remove excluded dates which was in the updated/deleted period

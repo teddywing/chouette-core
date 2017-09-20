@@ -42,47 +42,35 @@ const timetable = (state = {}, action) => {
       let deletedPeriod = state.time_table_periods[action.index]
       newDates = actions.updateExcludedDates(deletedPeriod.period_start, deletedPeriod.period_end, state.time_table_dates)
       newState = _.assign({}, state, {time_table_periods : newPeriods, time_table_dates: newDates})
-      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+      return _.assign({}, newState, { current_month: actions.updateSynthesis(newState, action.dayTypes)})
     case 'ADD_INCLUDED_DATE':
       newDates = state.time_table_dates.concat({date: action.date, in_out: true})
       newCM = state.current_month.map((d, i) => {
-        if (i == action.index){
-          d.include_date = true
-        }
+        if (i == action.index) d.include_date = true
         return d
       })
-      newState = _.assign({}, state, {current_month: newCM, time_table_dates: newDates})
-      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+      return _.assign({}, state, {current_month: newCM, time_table_dates: newDates})
     case 'REMOVE_INCLUDED_DATE':
       newDates = _.reject(state.time_table_dates, ['date', action.date])
       newCM = state.current_month.map((d, i) => {
-        if (i == action.index){
-          d.include_date = false
-        }
+        if (i == action.index) d.include_date = false
         return d
       })
-      newState = _.assign({}, state, {current_month: newCM, time_table_dates: newDates})
-      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+      return _.assign({}, state, {current_month: newCM, time_table_dates: newDates})
     case 'ADD_EXCLUDED_DATE':
       newDates = state.time_table_dates.concat({date: action.date, in_out: false})
       newCM = state.current_month.map((d, i) => {
-        if (i == action.index){
-          d.excluded_date = true
-        }
+        if (i == action.index) d.excluded_date = true
         return d
       })
-      newState = _.assign({}, state, {current_month: newCM, time_table_dates: newDates})
-      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+      return _.assign({}, state, {current_month: newCM, time_table_dates: newDates})
     case 'REMOVE_EXCLUDED_DATE':
       newDates = _.reject(state.time_table_dates, ['date', action.date])
       newCM = state.current_month.map((d, i) => {
-        if (i == action.index){
-          d.excluded_date = false
-        }
+        if (i == action.index) d.excluded_date = false
         return d
       })
-      newState = _.assign({}, state, {current_month: newCM, time_table_dates: newDates})
-      return _.assign({}, newState, {current_month: actions.updateSynthesis(newState, action.dayTypes)})
+      return _.assign({}, state, {current_month: newCM, time_table_dates: newDates})
     case 'UPDATE_DAY_TYPES':
       // We get the week days of the activated day types to reject the out_dates that that are out of newDayTypes
       let weekDays = _.reduce(action.dayTypes, (array, dt, i) => {
@@ -91,7 +79,11 @@ const timetable = (state = {}, action) => {
       }, [])
 
       newDates =  _.reject(state.time_table_dates, (d) => {
-        return d.in_out == false && !weekDays.includes(new Date(d.date).getDay())
+        let weekDay = new Date(d.date).getDay()
+        let excludedDatesToRemove = d.in_out == false && !weekDays.includes(weekDay)
+        let includedDatesToRemove = d.in_out == true && actions.isInPeriod(state.time_table_periods, d.date) && weekDays.includes(weekDay)
+
+        return excludedDatesToRemove || includedDatesToRemove
       })
       return _.assign({}, state, {time_table_dates: newDates})
     case 'UPDATE_CURRENT_MONTH_FROM_DAYTYPES':
