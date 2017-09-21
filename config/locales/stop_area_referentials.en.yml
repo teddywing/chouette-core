@@ -5,3 +5,8 @@ en:
       cancel_sync: "Cancel reflex synchronization"
     show:
       title: 'Synchronization iCAR'
+  activerecord:
+    models:
+      stop_area_referential:
+        one: "stop area referential"
+        other: "stop area referentials"

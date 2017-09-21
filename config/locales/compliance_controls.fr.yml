@@ -15,7 +15,8 @@ fr:
       title: "Editer le jeu de controle"
   activerecord:
     models:
-      compliance_control: "Jeu de controle"
+      one: "jeu de controle"
+      other: "jeux de controle"
     attributes:
       compliance_control:
         name: "Nom"

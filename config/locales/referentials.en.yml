@@ -48,9 +48,9 @@ en:
   activerecord:
     models:
       referential:
-        zero: "Data space"
-        one: "Data space"
-        other: "Data spaces"
+        zero: "data space"
+        one: "data space"
+        other: "data spaces"
     attributes:
       referential:
         name: "Data space name"

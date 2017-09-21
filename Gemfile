@@ -102,6 +102,7 @@ gem 'roo'
 
 # Controller
 gem 'inherited_resources'
+gem 'responders'
 gem 'google-analytics-rails'
 
 # Model

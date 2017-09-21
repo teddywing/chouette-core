@@ -642,6 +642,7 @@ DEPENDENCIES
   rb-fsevent
   rb-inotify
   reflex!
+  responders
   rgeo (~> 0.5.2)
   roo
   rspec-rails (~> 3.5.0)

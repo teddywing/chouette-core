@@ -15,3 +15,9 @@ fr:
       zero: "Aucun jeu de données à l'heure actuelle"
       one: "1 jeu de données à l'heure actuelle"
       other: "#{count} jeux de données à l'heure actuelle"
+  activerecord:
+    models:
+      workbench:
+        zero: "espace de travail"
+        one: "espace de travail"
+        other: "espaces de travail"
