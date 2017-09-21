@@ -24,6 +24,12 @@ class ComplianceControlSetsController < BreadcrumbController
     )
   end
 
+  protected
+
+  def begin_of_association_chain
+    current_organisation
+  end
+
   private
 
   def compliance_control_set_params
