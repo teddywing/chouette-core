@@ -1,0 +1,25 @@
+en:
+  compliance_control_sets:
+    index:
+      title: Compliance control set
+      new: New compliance control set
+      edit: Edit compliance control set
+    actions:
+      new: Add
+      edit: Edit
+      destroy: Destroy
+      add_compliance_control: Add a compliance control
+      destroy_confirm: Are you sur ?
+    filters:
+      name: 'Enter name ...'
+    search_no_results: 'No compliance control set found'
+  activerecord:
+    models:
+      compliance_control_set: Calendar
+    attributes:
+      compliance_control_set:
+        name: Name
+        assignment: Assignment
+        owner_jdc: Owner
+        control_numbers: Control number
+        updated_at: Updated at
