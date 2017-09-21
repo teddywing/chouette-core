@@ -1,4 +1,4 @@
 en:
   vehicle_journey_at_stops:
     errors:
-      day_offset_must_not_exceed_max: "The vehicle journey with ID %{local_id} cannot have times exceeding %{max} days"
+      day_offset_must_not_exceed_max: "The vehicle journey with ID %{short_id} cannot have times exceeding %{max} days"

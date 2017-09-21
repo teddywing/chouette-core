@@ -7,7 +7,7 @@ class LoginPolicy
   end
 
   def boiv?
-    (user.permissions || []).include?('sessions:create')
+    (user.permissions || []).include?('sessions.create')
   end
 
 end

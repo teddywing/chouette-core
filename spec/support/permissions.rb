@@ -2,7 +2,7 @@ module Support
   module Permissions extend self
 
     def all_permissions
-      @__all_permissions__ ||= _destructive_permissions << 'sessions:create'
+      @__all_permissions__ ||= _destructive_permissions << 'sessions.create'
     end
 
     private
@@ -24,6 +24,7 @@ module Support
       routing_constraint_zones
       time_tables
       vehicle_journeys
+      compliance_controls
       ]
     end
   end

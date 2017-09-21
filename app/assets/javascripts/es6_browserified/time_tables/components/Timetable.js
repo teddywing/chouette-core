@@ -60,13 +60,14 @@ class Timetable extends Component{
                 {this.props.timetable.current_month.map((d, i) =>
                   <div
                     key={i}
-                    className={'td-group' + (this.props.metas.day_types[d.wday] || !d.in_periods ? '' : ' out_from_daytypes') + (d.wday == 0 ? ' last_wday' : '')}
+                    className={'td-group'+ (d.wday == 0 ? ' last_wday' : '')}
                   >
                     {/* day_types */}
-                    <div className="td"></div>
+                    <div className={"td" + (this.props.metas.day_types[d.wday] || !d.in_periods ? '' : ' out_from_daytypes') }></div>
 
                     {/* periods */}
                     <PeriodsInDay
+                      day={d}
                       index={i}
                       value={this.props.timetable.time_table_periods}
                       currentDate={this.currentDate(this.props.timetable.current_periode_range, d.mday)}
@@ -77,11 +78,16 @@ class Timetable extends Component{
 
                     {/* exceptions */}
                     <ExceptionsInDay
+                      day={d}
                       index={i}
                       value={this.props.timetable}
                       currentDate={d.date}
                       metas={this.props.metas}
                       blueDaytype={this.props.metas.day_types[d.wday]}
+                      onAddIncludedDate={this.props.onAddIncludedDate}
+                      onRemoveIncludedDate={this.props.onRemoveIncludedDate}
+                      onAddExcludedDate={this.props.onAddExcludedDate}
+                      onRemoveExcludedDate={this.props.onRemoveExcludedDate}
                       onExcludeDateFromPeriod={this.props.onExcludeDateFromPeriod}
                       onIncludeDateInPeriod={this.props.onIncludeDateInPeriod}
                     />

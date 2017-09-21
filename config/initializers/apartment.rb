@@ -54,6 +54,7 @@ Apartment.configure do |config|
     'ComplianceCheckSet',
     'ComplianceCheckBlock',
     'ComplianceCheckResource',
+    'ComplianceCheckMessage'
   ]
 
   # use postgres schemas?

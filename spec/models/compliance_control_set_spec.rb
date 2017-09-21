@@ -6,4 +6,7 @@ RSpec.describe ComplianceControlSet, type: :model do
   end
 
   it { should belong_to :organisation }
+  it { should have_many :compliance_controls }
+
+  it { should validate_presence_of :name }
 end

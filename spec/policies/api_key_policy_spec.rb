@@ -1,28 +1,60 @@
-require 'rails_helper'
-
 RSpec.describe ApiKeyPolicy do
 
-  let(:user) { User.new }
+  let( :record ){ build_stubbed :api_key }
+  before { stub_policy_scope(record) }
 
   subject { described_class }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
+  permissions :index? do
+    it_behaves_like 'always allowed'
   end
 
   permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'always allowed'
   end
 
   permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    context 'permission absent → ' do
+      it "denies a user without organisation" do
+        expect_it.not_to permit(user_context, record)
+      end
+    end
+    context 'permission present → '  do
+      it 'allows a user with a different organisation' do
+        add_permissions('api_keys.create', for_user: user)
+        expect_it.to permit(user_context, record)
+      end
+    end
   end
 
   permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    context 'permission absent → ' do
+      it "denies a user with a different organisation" do
+        expect_it.not_to permit(user_context, record)
+      end
+      it 'and also a user with the same organisation' do
+        user.organisation_id = record.organisation_id
+        expect_it.not_to permit(user_context, record)
+      end
+    end
+
+    context 'permission present → '  do
+      before do
+        add_permissions('api_keys.update', for_user: user)
+      end
+
+      it 'denies a user with a different organisation' do
+        expect_it.not_to permit(user_context, record)
+      end
+
+      it 'but allows it for a user with the same organisation' do
+        user.organisation_id = record.organisation_id
+        expect_it.to permit(user_context, record)
+      end
+    end
   end
 
   permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'permitted policy and same organisation', 'api_keys.destroy'
   end
 end

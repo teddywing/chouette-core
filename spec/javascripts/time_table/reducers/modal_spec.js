@@ -171,12 +171,14 @@ describe('modal reducer', () => {
 
     let ttperiods = []
     let ttdates = []
+    let metas = []
 
     expect(
       modalReducer(state, {
         type: 'VALIDATE_PERIOD_FORM',
         modalProps : modProps,
         timeTablePeriods: ttperiods,
+        metas: metas,
         timetableInDates: ttdates,
         error: 'La date de départ doit être antérieure à la date de fin'
       })
@@ -289,9 +291,12 @@ describe('modal reducer', () => {
       index: false,
       error: ''
     }
-    let ttperiods3 = []
 
+    let ttperiods3 = []
     let ttdates3 = [{date: "2017-08-04", include_date: true}]
+    let metas = {
+      day_types: [true,true,true,true,true,true,true]
+    }
 
     let newModalProps3 = {
       active: true,
@@ -315,6 +320,7 @@ describe('modal reducer', () => {
         modalProps : modProps3,
         timeTablePeriods: ttperiods3,
         timetableInDates: ttdates3,
+        metas: metas,
         error: "Une période ne peut chevaucher une date dans un calendrier"
       })
     ).toEqual(Object.assign({}, state3, {modalProps: newModalProps3}))

@@ -170,28 +170,52 @@ describe('actions', () => {
     expect(actions.validatePeriodForm(modalProps, timeTablePeriods, metas, timetableInDates, error)).toEqual(expectedAction)
   })
 
-  it('should create an action to include date in period', () => {
+  it('should create an action to add an included date', () => {
     let index = 1
     let date = actions.formatDate(new Date)
     const expectedAction = {
-      type: 'INCLUDE_DATE_IN_PERIOD',
+      type: 'ADD_INCLUDED_DATE',
       index,
       dayTypes,
       date
     }
-    expect(actions.includeDateInPeriod(index, dayTypes, date)).toEqual(expectedAction)
+    expect(actions.addIncludedDate(index, dayTypes, date)).toEqual(expectedAction)
   })
 
-  it('should create an action to exclude date from period', () => {
+  it('should create an action to remove an included dat', () => {
     let index = 1
     let date = actions.formatDate(new Date)
     const expectedAction = {
-      type: 'EXCLUDE_DATE_FROM_PERIOD',
+      type: 'REMOVE_INCLUDED_DATE',
       index,
       dayTypes,
       date
     }
-    expect(actions.excludeDateFromPeriod(index, dayTypes, date)).toEqual(expectedAction)
+    expect(actions.removeIncludedDate(index, dayTypes, date)).toEqual(expectedAction)
+  })
+
+  it('should create an action to add an excluded date in period', () => {
+    let index = 1
+    let date = actions.formatDate(new Date)
+    const expectedAction = {
+      type: 'ADD_EXCLUDED_DATE',
+      index,
+      dayTypes,
+      date
+    }
+    expect(actions.addExcludedDate(index, dayTypes, date)).toEqual(expectedAction)
+  })
+
+  it('should create an action to remove an excluded date from period', () => {
+    let index = 1
+    let date = actions.formatDate(new Date)
+    const expectedAction = {
+      type: 'REMOVE_EXCLUDED_DATE',
+      index,
+      dayTypes,
+      date
+    }
+    expect(actions.removeExcludedDate(index, dayTypes, date)).toEqual(expectedAction)
   })
 
   it('should create an action to open confirm modal', () => {

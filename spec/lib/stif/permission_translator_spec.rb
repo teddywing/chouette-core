@@ -1,4 +1,3 @@
-# coding: utf-8
 RSpec.describe Stif::PermissionTranslator do
 
   context "No SSO Permissions" do
@@ -7,8 +6,8 @@ RSpec.describe Stif::PermissionTranslator do
 
   context "SSO Permission boiv:read-offer →" do
 
-    it "sessions:create only" do
-      expect( described_class.translate(%w{boiv:read-offer}) ).to eq(%w{sessions:create})
+    it "sessions.create only" do
+      expect( described_class.translate(%w{boiv:read-offer}) ).to eq(%w{sessions.create})
     end
 
   end
@@ -34,7 +33,7 @@ RSpec.describe Stif::PermissionTranslator do
     end
 
     it "remains at boiv:read-offer level" do
-      expect( described_class.translate(%w{referentials.create boiv:read-offer calendars.delete}) ).to eq(%w{sessions:create})
+      expect( described_class.translate(%w{referentials.create boiv:read-offer calendars.delete}) ).to eq(%w{sessions.create})
     end
 
     it "does not add garbage or doubletons for boiv:edit-offer level" do

@@ -69,6 +69,10 @@ ChouetteIhm::Application.routes.draw do
 
   resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
 
+  resources :compliance_control_sets do
+    resources :compliance_controls
+  end
+
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
     resources :stop_areas
