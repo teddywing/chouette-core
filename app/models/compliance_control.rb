@@ -14,3 +14,7 @@ class ComplianceControl < ActiveRecord::Base
     ComplianceControlPolicy
   end
 end
+
+# Ensure STI subclasses are loaded
+# http://guides.rubyonrails.org/autoloading_and_reloading_constants.html#autoloading-and-sti
+require_dependency 'generic_attribute_min_max'
