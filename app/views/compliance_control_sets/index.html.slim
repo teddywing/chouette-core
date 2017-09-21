@@ -24,7 +24,7 @@
                   key: :name, \
                   attribute: 'name', \
                   link_to: lambda do |compliance_control_set| \
-                      compliance_control_set_path(@compliance_control_sets, compliance_control_set) \
+                      compliance_control_set_path(compliance_control_set) \
                     end \
                 ), \
                 TableBuilderHelper::Column.new( \
@@ -45,6 +45,7 @@
                 ) \
               ],
                     sortable: true,
+                    links: [:show],
                     cls: 'table has-filter has-search'
     - unless @compliance_control_sets.any?
       .row.mt-xs
