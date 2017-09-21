@@ -9,4 +9,8 @@ class ComplianceControl < ActiveRecord::Base
   validates :name, presence: true
   validates :code, presence: true
   validates :compliance_control_set, presence: true
+
+  def self.policy_class
+    ComplianceControlPolicy
+  end
 end
