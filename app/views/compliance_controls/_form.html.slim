@@ -2,7 +2,7 @@
   .row
     .col-lg-12
       = f.input :name
-      = f.input :type
+      = f.input :type, as: :select, collection: ComplianceControl.subclasses
       = f.input :code
       = f.input :criticity
       = f.input :comment
