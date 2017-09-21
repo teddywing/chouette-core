@@ -169,38 +169,16 @@ const actions = {
     let date = new Date(strDate)
     return date.toLocaleDateString()
   },
-  updateSynthesis: (state, daytypes) => {
-    let periods = state.time_table_periods
+  updateSynthesis: ({current_month, time_table_dates: dates, time_table_periods: periods}) => {
+    let newPeriods = _.reject(periods, 'deleted')
+    let improvedCM = current_month.map((d, i) => {
+      let isInPeriod = actions.isInPeriod(newPeriods, d.date)
+      let isIncluded = _.some(dates, {'date': d.date, 'in_out': true})
 
-    let isInPeriod = function(d){
-      let currentMonth = state.current_periode_range.split('-')
-      let twodigitsDay = d.mday < 10 ? ('0' + d.mday) : d.mday
-      let currentDate = new Date(currentMonth[0] + '-' + currentMonth[1] + '-' + twodigitsDay)
-
-      // We compare periods & currentDate, to determine if it is included or not
-      let testDate = false
-      periods.map((p, i) => {
-        if (p.deleted) return false
-
-        let begin = new Date(p.period_start)
-        let end = new Date(p.period_end)
-
-        if(testDate === false){
-          if(currentDate >= begin && currentDate <= end) {
-            testDate = true
-            // p.include_date = false
-          }
-        }
-      })
-      return testDate
-    }
-
-    let improvedCM = state.current_month.map((d, i) => {
-      let bool = isInPeriod(state.current_month[i])
-      return _.assign({}, state.current_month[i], {
-        in_periods: bool,
-        // include_date: bool ? false : state.current_month[i].include_date,
-        excluded_date: !bool ? false : state.current_month[i].excluded_date
+      return _.assign({}, current_month[i], {
+        in_periods: isInPeriod,
+        include_date: isIncluded,
+        excluded_date: !isInPeriod ? false : current_month[i].excluded_date
       })
     })
     return improvedCM
@@ -215,14 +193,6 @@ const actions = {
     }
 
     return false
-  },
-  updateExcludedDates: (period_start, period_end, dates) => {
-    // We remove excluded dates which was in the updated/deleted period
-    let begin = new Date(period_start)
-    let end = new Date(period_end)
-
-    return _.reject(dates, d => new Date(d.date) >= begin && new Date(d.date) <= end && d.in_out == false)
-
   },
   checkConfirmModal: (event, callback, stateChanged, dispatch, metas, timetable) => {
     if(stateChanged){
@@ -348,13 +318,6 @@ const actions = {
 
     }
   },
-  checkIfTTHasDate: (dates, date) => {
-    if (_.some(dates, date)) {
-       return _.reject(dates, ['date', date.date])
-     } else {
-       return dates.concat(date)
-     }
-  }
 }
 
 module.exports = actions
