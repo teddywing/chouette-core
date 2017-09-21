@@ -13,13 +13,6 @@ RSpec.describe ComplianceControlsController, type: :controller do
     end
   end
 
-  describe "GET index" do
-    it 'should be successful' do
-      get :index, compliance_control_set_id: compliance_control_set.id
-      expect(response).to be_success
-    end
-  end
-
   describe 'GET #edit' do
     it 'should be successful' do
       get :edit, compliance_control_set_id: compliance_control_set.id, id: compliance_control.id
