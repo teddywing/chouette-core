@@ -6,7 +6,6 @@ RSpec.describe ComplianceControl, type: :model do
   end
 
   it { should belong_to :compliance_control_set }
-  it { should belong_to :compliance_control_block }
 
   it { should validate_presence_of :criticity }
   it { should validate_presence_of :name }
