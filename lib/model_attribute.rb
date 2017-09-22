@@ -15,6 +15,12 @@ class ModelAttribute
     end
   end
 
+  def self.methods_by_class_and_type(klass, type)
+    methods_by_class(klass).select do |model_attr|
+      model_attr.data_type == type
+    end
+  end
+
   def initialize(klass, name, data_type)
     @klass = klass
     @name = name

@@ -31,6 +31,21 @@ RSpec.describe ModelAttribute do
     end
   end
 
+  describe ".methods_by_class_and_type" do
+    it "returns ModelAttributes of a certain class and type" do
+      ModelAttribute.instance_variable_set(:@__all__, [
+        ModelAttribute.new(:route, :name, :string),
+        ModelAttribute.new(:route, :checked_at, :date),
+        ModelAttribute.new(:journey_pattern, :name, :string),
+        ModelAttribute.new(:journey_pattern, :section_status, :integer)
+      ])
+
+      expect(ModelAttribute.methods_by_class_and_type(:route, :string)).to match_array([
+        ModelAttribute.new(:route, :name, :string)
+      ])
+    end
+  end
+
   describe "#code" do
     it "returns a string representation of the attribute" do
       model_attr = ModelAttribute.new(:route, :name, :string)
