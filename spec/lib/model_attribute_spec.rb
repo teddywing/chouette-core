@@ -30,6 +30,18 @@ RSpec.describe ModelAttribute do
     end
   end
 
+  describe ".from_code" do
+    it "returns a ModelAttribute from a given code" do
+      ModelAttribute.instance_variable_set(:@__all__, [
+        ModelAttribute.new(:journey_pattern, :name, :string)
+      ])
+
+      expect(ModelAttribute.from_code('journey_pattern#name')).to eq(
+        ModelAttribute.new(:journey_pattern, :name, :string)
+      )
+    end
+  end
+
   describe ".group_by_class" do
     it "returns all ModelAttributes grouped by klass" do
       ModelAttribute.instance_variable_set(:@__all__, [

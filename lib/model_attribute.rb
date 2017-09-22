@@ -21,6 +21,14 @@ class ModelAttribute
     all.group_by(&:klass)
   end
 
+  def self.from_code(code)
+    klass, name = code.split('#').map(&:to_sym)
+
+    methods_by_class(klass).select do |model_attr|
+      model_attr.name == name
+    end.first
+  end
+
   def self.methods_by_class(klass)
     all.select do |model_attr|
       model_attr.klass == klass
