@@ -30,6 +30,30 @@ RSpec.describe ModelAttribute do
     end
   end
 
+  describe ".group_by_class" do
+    it "returns all ModelAttributes grouped by klass" do
+      ModelAttribute.instance_variable_set(:@__all__, [
+        ModelAttribute.new(:route, :name, :string),
+        ModelAttribute.new(:route, :published_name, :string),
+        ModelAttribute.new(:journey_pattern, :name, :string),
+        ModelAttribute.new(:vehicle_journey, :number, :integer)
+      ])
+
+      expect(ModelAttribute.group_by_class).to eq({
+        route: [
+          ModelAttribute.new(:route, :name, :string),
+          ModelAttribute.new(:route, :published_name, :string),
+        ],
+        journey_pattern: [
+          ModelAttribute.new(:journey_pattern, :name, :string),
+        ],
+        vehicle_journey: [
+          ModelAttribute.new(:vehicle_journey, :number, :integer)
+        ]
+      })
+    end
+  end
+
   describe ".methods_by_class" do
     it "returns all ModelAttributes for a given class" do
       ModelAttribute.instance_variable_set(:@__all__, [
