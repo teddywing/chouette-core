@@ -1,6 +1,6 @@
 RSpec.describe ModelAttribute do
   describe ".define" do
-    it "adds a new instance of ModelAttribute to @@all" do
+    it "adds a new instance of ModelAttribute to .all" do
       expect do
         ModelAttribute.define(:route, :name, :string)
       end.to change { ModelAttribute.all.length }.by(1)
