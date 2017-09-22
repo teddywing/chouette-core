@@ -14,6 +14,22 @@ RSpec.describe ModelAttribute do
     end
   end
 
+  describe ".classes" do
+    it "returns the list of classes of ModelAttributes in .all" do
+      ModelAttribute.instance_variable_set(:@__all__, [
+        ModelAttribute.new(:route, :name, :string),
+        ModelAttribute.new(:journey_pattern, :name, :string),
+        ModelAttribute.new(:time_table, :start_date, :date)
+      ])
+
+      expect(ModelAttribute.classes).to match_array([
+        'Route',
+        'JourneyPattern',
+        'TimeTable'
+      ])
+    end
+  end
+
   describe ".methods_by_class" do
     it "returns all ModelAttributes for a given class" do
       ModelAttribute.instance_variable_set(:@__all__, [

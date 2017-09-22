@@ -9,6 +9,14 @@ class ModelAttribute
     all << new(klass, name, data_type)
   end
 
+  def self.classes
+    all
+      .map(&:klass)
+      .map(&:to_s)
+      .map(&:camelize)
+      .uniq
+  end
+
   def self.methods_by_class(klass)
     all.select do |model_attr|
       model_attr.klass == klass
