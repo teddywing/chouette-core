@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170918103913) do
+ActiveRecord::Schema.define(version: 20170922161352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -601,6 +601,16 @@ ActiveRecord::Schema.define(version: 20170918103913) do
   add_index "referential_metadata", ["line_ids"], name: "index_referential_metadata_on_line_ids", using: :gin
   add_index "referential_metadata", ["referential_id"], name: "index_referential_metadata_on_referential_id", using: :btree
   add_index "referential_metadata", ["referential_source_id"], name: "index_referential_metadata_on_referential_source_id", using: :btree
+
+  create_table "referential_suites", id: :bigserial, force: :cascade do |t|
+    t.integer  "new_id",     limit: 8
+    t.integer  "current_id", limit: 8
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "referential_suites", ["current_id"], name: "index_referential_suites_on_current_id", using: :btree
+  add_index "referential_suites", ["new_id"], name: "index_referential_suites_on_new_id", using: :btree
 
   create_table "referentials", id: :bigserial, force: :cascade do |t|
     t.string   "name"
