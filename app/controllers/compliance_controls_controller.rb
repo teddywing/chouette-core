@@ -18,6 +18,6 @@ class ComplianceControlsController < BreadcrumbController
 
   private
   def compliance_control_params
-    params.require(:compliance_control).permit(:name, :code, :criticity, :comment, :control_attributes, :type)
+    params.require(:compliance_control).permit(:name, :code, :criticity, :comment, :control_attributes, :type, compliance_control_block_attributes: [:name])
   end
 end

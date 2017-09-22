@@ -1,8 +1,10 @@
 class ComplianceControl < ActiveRecord::Base
-  belongs_to :compliance_control_set
-  belongs_to :compliance_control_block
-
   extend Enumerize
+  belongs_to :compliance_control_set
+
+  has_one :compliance_control_block, dependent: :destroy
+  accepts_nested_attributes_for :compliance_control_block
+
   enumerize :criticity, in: %i(info warning error), scope: true, default: :info
 
   validates :criticity, presence: true
