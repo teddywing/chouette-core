@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170918103913) do
+ActiveRecord::Schema.define(version: 20170922121609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,8 +217,10 @@ ActiveRecord::Schema.define(version: 20170918103913) do
     t.integer  "compliance_control_set_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.integer  "compliance_control_id"
   end
 
+  add_index "compliance_control_blocks", ["compliance_control_id"], name: "index_compliance_control_blocks_on_compliance_control_id", using: :btree
   add_index "compliance_control_blocks", ["compliance_control_set_id"], name: "index_compliance_control_blocks_on_compliance_control_set_id", using: :btree
 
   create_table "compliance_control_sets", id: :bigserial, force: :cascade do |t|
@@ -974,6 +976,7 @@ ActiveRecord::Schema.define(version: 20170918103913) do
   add_foreign_key "compliance_checks", "compliance_check_blocks"
   add_foreign_key "compliance_checks", "compliance_check_sets"
   add_foreign_key "compliance_control_blocks", "compliance_control_sets"
+  add_foreign_key "compliance_control_blocks", "compliance_controls"
   add_foreign_key "compliance_control_sets", "organisations"
   add_foreign_key "compliance_controls", "compliance_control_blocks"
   add_foreign_key "compliance_controls", "compliance_control_sets"
