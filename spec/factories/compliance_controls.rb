@@ -6,6 +6,5 @@ FactoryGirl.define do
     code "code"
     comment "Text"
     association :compliance_control_set
-    association :compliance_control_block
   end
 end
