@@ -49,7 +49,7 @@ module StifNetexAttributesSupport
   end
 
   def provider_id
-    self.referential.workbench.organisation.name.parameterize
+    self.referential.workbench.organisation.name.parameterize.underscore
   end
 
   def boiv_id
