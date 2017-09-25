@@ -1,19 +1,20 @@
 const _ = require('lodash')
+const { I18n } = window
 
 const actions = {
-  strToArrayDayTypes: (str) =>{
-    let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
-    return weekDays.map((day, i) => str.indexOf(day) !== -1)
+  weekDays: (index) => {
+    return _.range(1, 8).map(n => I18n.time_tables.edit.metas.days[n])
   },
-  arrayToStrDayTypes: (arr) => {
-    let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
-    let str = []
-    arr.map((dayActive, i) => {
-      if(dayActive){
-        str.push(weekDays[i])
-      }
-    })
-    return str.join(',')
+  strToArrayDayTypes: (str) =>{
+    return actions.weekDays().map(day => str.indexOf(day) !== -1)
+  },
+  arrayToStrDayTypes: (dayTypes) => {
+    let newDayTypes = dayTypes.reduce((arr, dayActive, i) => {
+      if (dayActive) arr.push(actions.weekDays()[i])
+      return arr
+    }, [])
+
+    return newDayTypes.join(',')
   },
   fetchingApi: () =>({
     type: 'FETCH_API'
@@ -149,8 +150,8 @@ const actions = {
     type : 'CLOSE_MODAL'
   }),
   monthName(strDate) {
-    let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
-    var date = new Date(strDate)
+    let monthList = _.range(1,13).map(n => I18n.calendars.months[n])
+    let date = new Date(strDate)
     return monthList[date.getMonth()]
   },
   getHumanDate(strDate, mLimit) {
@@ -219,7 +220,7 @@ const actions = {
       let period = periods[i]
       if (index !== i && !period.deleted) {
         if (new Date(period.period_start) <= end && new Date(period.period_end) >= start)  {
-          error = 'Les périodes ne peuvent pas se chevaucher'
+          error = I18n.time_tables.edit.error_submit.periods_overlaps
           break
         }
       }
@@ -233,7 +234,7 @@ const actions = {
 
     for (let day of in_days) {
       if (start <= new Date(day.date) && end >= new Date(day.date)) {
-        error = 'Une période ne peut chevaucher une date dans un calendrier'
+        error = I18n.time_tables.edit.error_submit.dates_overlaps
         break
       }
     }
@@ -241,7 +242,6 @@ const actions = {
   },
   fetchTimeTables: (dispatch, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/')
-    // console.log(nextPage)
     if(nextPage) {
       urlJSON += "/month.json?date=" + nextPage
     }else{
@@ -310,9 +310,9 @@ const actions = {
   errorModalMessage: (errorKey) => {
     switch (errorKey) {
       case "withoutPeriodsWithDaysTypes":
-        return window.I18n.fr.time_tables.edit.error_modal.withoutPeriodsWithDaysTypes
+        return I18n.time_tables.edit.error_modal.withoutPeriodsWithDaysTypes
       case "withPeriodsWithoutDayTypes":
-        return window.I18n.fr.time_tables.edit.error_modal.withPeriodsWithoutDayTypes
+        return I18n.time_tables.edit.error_modal.withPeriodsWithoutDayTypes
       default:
         return errorKey
 

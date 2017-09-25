@@ -22,6 +22,7 @@ fr:
     create_api_key: "Créer une clé d'API"
   or: "ou"
   cancel: "Annuler"
+  back: "Retour"
   search_hint: "Entrez un texte à rechercher"
   no_result_text: "Aucun résultat"
   searching_term: "Recherche en cours..."
