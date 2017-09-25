@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe CompaniesController do
   describe "routing" do
     it "not recognize #routes" do

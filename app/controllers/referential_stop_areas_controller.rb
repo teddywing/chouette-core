@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 class ReferentialStopAreasController  < ChouetteController
   defaults :resource_class => Chouette::StopArea, :collection_name => 'stop_areas', :instance_name => 'stop_area'
 

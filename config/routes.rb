@@ -5,6 +5,8 @@ ChouetteIhm::Application.routes.draw do
 
   resources :workbenches, only: [:show, :index] do
     delete :referentials, on: :member, action: :delete_referentials
+
+    get :output, to: 'referential_suites#index' 
     resources :imports do
       get :download, on: :member
       resources :import_resources, only: [:index] do
