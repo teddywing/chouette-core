@@ -29,10 +29,39 @@ en:
       title: "Duplicate timetable"
     edit:
       title: "Update timetable %{time_table}"
+      day_types: Day types
+      periods: Periods
+      exceptions: Exceptions
+      synthesis: Synthesis
       error_modal:
         title: "Error"
         withoutPeriodsWithDaysTypes: "A timetable can't have day type(s) without period(s)."
-        withPeriodsWithoutDayTypes: "A tiemetable can't have period(s) swithout day type(s)."  
+        withPeriodsWithoutDayTypes: "A tiemetable can't have period(s) swithout day type(s)." 
+      error_submit:
+        periods_overlaps: "Periods cannot overlap in a timetable"
+        dates_overlaps: "A period cannot overlap a date in a timetable"
+      confirm_modal:
+        title: "Confirm"
+        message: "You are about to change pages. Do you want to validate your changes before this?"
+      metas:
+        name: Name
+        calendar: Associated calendar
+        no_calendar: None
+        day_types: Periods day tpes
+        days:
+          1: Su
+          2: Mo
+          3: Tu
+          4: We
+          5: Th
+          6: Fr
+          7: Sa
+      select2:
+        tag:
+          placeholder: Add or search a tag...
+      period_form:
+        begin: Period start
+        end: Period end
     show:
       title: "Timetable %{time_table}"
       dates: "Application dates"

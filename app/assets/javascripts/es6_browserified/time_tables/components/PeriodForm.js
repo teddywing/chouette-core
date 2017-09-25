@@ -1,5 +1,5 @@
 var React = require('react')
-var PropTypes = require('react').PropTypes
+var { PropTypes } = require('react')
 var _ = require('lodash')
 let monthsArray = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
 
@@ -32,7 +32,7 @@ const makeYearsOptions = (yearSelected) => {
   return arr
 }
 
-const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriodForm, onUpdatePeriodForm, onValidatePeriodForm}) => (
+const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriodForm, onUpdatePeriodForm, onValidatePeriodForm}, {I18n}) => (
   <div className="container-fluid">
     <div className="row">
       <div className="col lg-6 col-lg-offset-3">
@@ -44,7 +44,7 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
                   <div>
                     <div className="form-group">
                       <label htmlFor="" className="control-label required">
-                        Début de période
+                        {I18n.time_tables.edit.period_form.begin}
                         <abbr title="requis">*</abbr>
                       </label>
                     </div>
@@ -52,7 +52,7 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
                   <div>
                     <div className="form-group">
                       <label htmlFor="" className="control-label required">
-                        Fin de période
+                      {I18n.time_tables.edit.period_form.end}
                         <abbr title="requis">*</abbr>
                       </label>
                     </div>
@@ -103,14 +103,14 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
                   className='btn btn-link'
                   onClick={onClosePeriodForm}
                 >
-                  Annuler
+                  {I18n.cancel}
                 </button>
                 <button
                   type='button'
                   className='btn btn-outline-primary mr-sm'
                   onClick={() => onValidatePeriodForm(modal.modalProps, timetable.time_table_periods, metas, _.filter(timetable.time_table_dates, ['in_out', true]))}
                 >
-                  Valider
+                  {I18n.actions.submit}
                 </button>
               </div>
             </div>
@@ -122,7 +122,7 @@ const PeriodForm = ({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriod
                 className='btn btn-outline-primary'
                 onClick={onOpenAddPeriodForm}
                 >
-                Ajouter une période
+                {I18n.time_tables.actions.add_period}
               </button>
             </div>
           }
@@ -140,6 +140,10 @@ PeriodForm.propTypes = {
   onUpdatePeriodForm: PropTypes.func.isRequired,
   onValidatePeriodForm: PropTypes.func.isRequired,
   timetable: PropTypes.object.isRequired
+}
+
+PeriodForm.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = PeriodForm

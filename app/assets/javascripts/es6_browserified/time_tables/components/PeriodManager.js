@@ -1,11 +1,10 @@
 var React = require('react')
-var Component = require('react').Component
-var PropTypes = require('react').PropTypes
+var { Component, PropTypes } = require('react')
 var actions = require('../actions')
 
 class PeriodManager extends Component {
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
   }
 
   toEndPeriod(curr, end) {
@@ -80,6 +79,10 @@ PeriodManager.propTypes = {
   currentDate: PropTypes.object.isRequired,
   onDeletePeriod: PropTypes.func.isRequired,
   onOpenEditPeriodForm: PropTypes.func.isRequired
+}
+
+PeriodManager.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = PeriodManager

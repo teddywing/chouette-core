@@ -1,6 +1,5 @@
 var React = require('react')
-var Component = require('react').Component
-var PropTypes = require('react').PropTypes
+var { Component, PropTypes } = require('react')
 
 class TimeTableDay extends Component {
   constructor(props) {

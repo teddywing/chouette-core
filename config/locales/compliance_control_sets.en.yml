@@ -1,0 +1,24 @@
+fr:
+  compliance_control_sets:
+    index:
+      title: Control games
+      new: Creating a control set
+      edit: Editing a Control Game
+    actions:
+          new: Add
+          edit: Edit
+          destroy: Delete
+          destroy_confirm: Are you sure to remove the control games ?
+    filters:
+          name: Specify a control game name...
+    search_no_results: No control game matches your search
+  activerecord:
+          models:
+            compliance_control_set: Calendar
+          attributes:
+            compliance_control_set:
+              name: Name
+              assignment: Affectation
+              owner_jdc: Owner of the control game
+              control_numbers: Nb contrôle
+              updated_at: Update
