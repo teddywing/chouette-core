@@ -3,7 +3,7 @@ class Chouette::StifNetexObjectid < String
     parts.present?
   end
 
-  @@format = /^([A-Za-z_]+):([A-Za-z]+):([0-9A-Za-z_-]+):([A-Za-z]+)$/
+  @@format = /^([A-Za-z_-]+):([A-Za-z]+):([0-9A-Za-z_-]+):([A-Za-z]+)$/
   cattr_reader :format
 
   def parts

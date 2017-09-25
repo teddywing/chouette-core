@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170918103913) do
+ActiveRecord::Schema.define(version: 20170922165315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -602,6 +602,16 @@ ActiveRecord::Schema.define(version: 20170918103913) do
   add_index "referential_metadata", ["referential_id"], name: "index_referential_metadata_on_referential_id", using: :btree
   add_index "referential_metadata", ["referential_source_id"], name: "index_referential_metadata_on_referential_source_id", using: :btree
 
+  create_table "referential_suites", id: :bigserial, force: :cascade do |t|
+    t.integer  "new_id",     limit: 8
+    t.integer  "current_id", limit: 8
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "referential_suites", ["current_id"], name: "index_referential_suites_on_current_id", using: :btree
+  add_index "referential_suites", ["new_id"], name: "index_referential_suites_on_new_id", using: :btree
+
   create_table "referentials", id: :bigserial, force: :cascade do |t|
     t.string   "name"
     t.string   "slug"
@@ -622,9 +632,11 @@ ActiveRecord::Schema.define(version: 20170918103913) do
     t.datetime "archived_at"
     t.integer  "created_from_id",          limit: 8
     t.boolean  "ready",                              default: false
+    t.integer  "referential_suite_id",     limit: 8
   end
 
   add_index "referentials", ["created_from_id"], name: "index_referentials_on_created_from_id", using: :btree
+  add_index "referentials", ["referential_suite_id"], name: "index_referentials_on_referential_suite_id", using: :btree
 
   create_table "route_sections", id: :bigserial, force: :cascade do |t|
     t.integer  "departure_id",       limit: 8
@@ -987,6 +999,7 @@ ActiveRecord::Schema.define(version: 20170918103913) do
   add_foreign_key "journey_patterns", "stop_points", column: "departure_stop_point_id", name: "departure_point_fkey", on_delete: :nullify
   add_foreign_key "journey_patterns_stop_points", "journey_patterns", name: "jpsp_jp_fkey", on_delete: :cascade
   add_foreign_key "journey_patterns_stop_points", "stop_points", name: "jpsp_stoppoint_fkey", on_delete: :cascade
+  add_foreign_key "referentials", "referential_suites"
   add_foreign_key "route_sections", "stop_areas", column: "arrival_id"
   add_foreign_key "route_sections", "stop_areas", column: "departure_id"
   add_foreign_key "routes", "routes", column: "opposite_route_id", name: "route_opposite_route_fkey"
