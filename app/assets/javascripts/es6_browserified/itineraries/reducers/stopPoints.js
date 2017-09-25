@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var addInput = require('../form_helper')
+var { addInput } = require('../form_helper')
 
 const stopPoint = (state = {}, action, length) => {
   switch (action.type) {
