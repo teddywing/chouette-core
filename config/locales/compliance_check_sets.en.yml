@@ -1,0 +1,24 @@
+fr:
+  compliance_check_sets:
+    index:
+      title: Control reports
+      new: Creating a Control Report
+      edit: Editing a Control Report
+    actions:
+          new: Add
+          edit: Edit
+          destroy: Delete
+          destroy_confirm: Are you sure to delete this control report ?
+    filters:
+          name: Specify a control report name...
+    search_no_results: No control reports match your search
+  activerecord:
+          models:
+            compliance_check_set: Calendrier
+          attributes:
+            compliance_check_set:
+              ref: réf
+              creation_date: Date and time of creation
+              associated_object: Associated object
+              assignment: Affectation
+              control_game: Control Game

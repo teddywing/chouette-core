@@ -1,0 +1,12 @@
+/ PageHeader
+= pageheader 'jeux-de-donnees',
+              @compliance_check_set.referential.name,
+             'Lorem ipsum dolor sit amet'
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+            ComplianceCheckSet.human_attribute_name(:id) => @compliance_check_set.referential.id,
+            ComplianceCheckSet.human_attribute_name(:name) => @compliance_check_set.referential.name
