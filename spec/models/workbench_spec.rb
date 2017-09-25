@@ -20,6 +20,8 @@ RSpec.describe Workbench, :type => :model do
 
   it { should have_many(:stop_areas).through(:stop_area_referential) }
 
+  it { should validate_presence_of(:output) }
+
   context '.lines' do
     let!(:ids) { ['STIF:CODIFLIGNE:Line:C00840', 'STIF:CODIFLIGNE:Line:C00086'] }
     let!(:organisation) { create :organisation, sso_attributes: { functional_scope: ids.to_json } }

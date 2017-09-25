@@ -5,5 +5,6 @@ FactoryGirl.define do
     association :organisation
     association :line_referential
     association :stop_area_referential
+    association :output, factory: :referential_suite
   end
 end

@@ -14,6 +14,7 @@ class Workbench < ActiveRecord::Base
 
   validates :name, presence: true
   validates :organisation, presence: true
+  validates :output, presence: true
 
   has_many :referentials
   has_many :referential_metadatas, through: :referentials, source: :metadatas
