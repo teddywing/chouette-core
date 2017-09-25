@@ -1,4 +1,8 @@
 RSpec.describe ModelAttribute do
+  before(:each) do
+    ModelAttribute.instance_variable_set(:@__all__, [])
+  end
+
   describe ".define" do
     it "adds a new instance of ModelAttribute to .all" do
       expect do
@@ -16,11 +20,9 @@ RSpec.describe ModelAttribute do
 
   describe ".classes" do
     it "returns the list of classes of ModelAttributes in .all" do
-      ModelAttribute.instance_variable_set(:@__all__, [
-        ModelAttribute.new(:route, :name, :string),
-        ModelAttribute.new(:journey_pattern, :name, :string),
-        ModelAttribute.new(:time_table, :start_date, :date)
-      ])
+      ModelAttribute.define(:route, :name, :string)
+      ModelAttribute.define(:journey_pattern, :name, :string)
+      ModelAttribute.define(:time_table, :start_date, :date)
 
       expect(ModelAttribute.classes).to match_array([
         'Route',
@@ -32,9 +34,7 @@ RSpec.describe ModelAttribute do
 
   describe ".from_code" do
     it "returns a ModelAttribute from a given code" do
-      ModelAttribute.instance_variable_set(:@__all__, [
-        ModelAttribute.new(:journey_pattern, :name, :string)
-      ])
+      ModelAttribute.define(:journey_pattern, :name, :string)
 
       expect(ModelAttribute.from_code('journey_pattern#name')).to eq(
         ModelAttribute.new(:journey_pattern, :name, :string)
@@ -44,12 +44,10 @@ RSpec.describe ModelAttribute do
 
   describe ".group_by_class" do
     it "returns all ModelAttributes grouped by klass" do
-      ModelAttribute.instance_variable_set(:@__all__, [
-        ModelAttribute.new(:route, :name, :string),
-        ModelAttribute.new(:route, :published_name, :string),
-        ModelAttribute.new(:journey_pattern, :name, :string),
-        ModelAttribute.new(:vehicle_journey, :number, :integer)
-      ])
+      ModelAttribute.define(:route, :name, :string)
+      ModelAttribute.define(:route, :published_name, :string)
+      ModelAttribute.define(:journey_pattern, :name, :string)
+      ModelAttribute.define(:vehicle_journey, :number, :integer)
 
       expect(ModelAttribute.group_by_class).to eq({
         route: [
@@ -68,12 +66,10 @@ RSpec.describe ModelAttribute do
 
   describe ".methods_by_class" do
     it "returns all ModelAttributes for a given class" do
-      ModelAttribute.instance_variable_set(:@__all__, [
-        ModelAttribute.new(:route, :name, :string),
-        ModelAttribute.new(:route, :published_name, :string),
-        ModelAttribute.new(:route, :direction, :string),
-        ModelAttribute.new(:journey_pattern, :name, :string)
-      ])
+      ModelAttribute.define(:route, :name, :string)
+      ModelAttribute.define(:route, :published_name, :string)
+      ModelAttribute.define(:route, :direction, :string)
+      ModelAttribute.define(:journey_pattern, :name, :string)
 
       expect(ModelAttribute.methods_by_class(:route)).to match_array([
         ModelAttribute.new(:route, :name, :string),
@@ -85,12 +81,10 @@ RSpec.describe ModelAttribute do
 
   describe ".methods_by_class_and_type" do
     it "returns ModelAttributes of a certain class and type" do
-      ModelAttribute.instance_variable_set(:@__all__, [
-        ModelAttribute.new(:route, :name, :string),
-        ModelAttribute.new(:route, :checked_at, :date),
-        ModelAttribute.new(:journey_pattern, :name, :string),
-        ModelAttribute.new(:journey_pattern, :section_status, :integer)
-      ])
+      ModelAttribute.define(:route, :name, :string)
+      ModelAttribute.define(:route, :checked_at, :date)
+      ModelAttribute.define(:journey_pattern, :name, :string)
+      ModelAttribute.define(:journey_pattern, :section_status, :integer)
 
       expect(ModelAttribute.methods_by_class_and_type(:route, :string)).to match_array([
         ModelAttribute.new(:route, :name, :string)
