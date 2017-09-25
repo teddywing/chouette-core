@@ -20,7 +20,14 @@ RSpec.describe Workbench, :type => :model do
 
   it { should have_many(:stop_areas).through(:stop_area_referential) }
 
-  it { should validate_presence_of(:output) }
+  it do
+    # This callback interferes with the validation test
+    Workbench.skip_callback(:validation, :before, :initialize_output)
+
+    should validate_presence_of(:output)
+
+    Workbench.set_callback(:validation, :before, :initialize_output)
+  end
 
   context '.lines' do
     let!(:ids) { ['STIF:CODIFLIGNE:Line:C00840', 'STIF:CODIFLIGNE:Line:C00086'] }
@@ -34,6 +41,20 @@ RSpec.describe Workbench, :type => :model do
       lines = workbench.lines
       expect(lines.count).to eq 2
       expect(lines.map(&:objectid)).to include(*ids)
+    end
+  end
+
+  describe ".create" do
+    it "must automatically create a ReferentialSuite when being created" do
+      workbench = Workbench.create
+      expect(workbench.output).to be_an_instance_of(ReferentialSuite)
+    end
+
+    it "must not overwrite a given ReferentialSuite" do
+      referential_suite = ReferentialSuite.create
+      workbench = Workbench.create(output: referential_suite)
+
+      expect(workbench.output).to eq(referential_suite)
     end
   end
 end

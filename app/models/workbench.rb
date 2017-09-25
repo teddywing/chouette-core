@@ -19,6 +19,8 @@ class Workbench < ActiveRecord::Base
   has_many :referentials
   has_many :referential_metadatas, through: :referentials, source: :metadatas
 
+  before_validation :initialize_output
+
 
   def all_referentials
     if line_ids.empty?
@@ -28,4 +30,12 @@ class Workbench < ActiveRecord::Base
     end
   end
 
+  private
+
+  def initialize_output
+    # Don't reset `output` if it's already initialised
+    return if !output.nil?
+
+    self.output = ReferentialSuite.create
+  end
 end
