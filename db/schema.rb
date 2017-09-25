@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170922165315) do
+ActiveRecord::Schema.define(version: 20170925123159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -969,6 +969,7 @@ ActiveRecord::Schema.define(version: 20170922165315) do
     t.datetime "updated_at"
     t.integer  "line_referential_id",      limit: 8
     t.integer  "stop_area_referential_id", limit: 8
+    t.integer  "output_id",                limit: 8
   end
 
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
