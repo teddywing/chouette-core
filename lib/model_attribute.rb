@@ -93,7 +93,8 @@ class ModelAttribute
   end
 
   def ==(other)
-    klass == other.klass &&
+    self.class === other &&
+      klass == other.klass &&
       name == other.name &&
       data_type == other.data_type
   end
