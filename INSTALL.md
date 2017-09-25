@@ -128,8 +128,22 @@ To create `Referential` objects with some data (`Route`, `JourneyPattern`, `Vehi
 
 # Troubleshooting
 
+## Postgres
+
 If Postgres complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
 
       bundle exec rake db:test:purge
 
 Thanks to `lib/tasks/extensions.rake`.
+
+## macOS
+
+### Nokogiri
+
+http://www.nokogiri.org/tutorials/installing_nokogiri.html tells us that `xz` can cause troubles, here is what to do 
+
+```
+brew unlink xz
+gem install nokogiri # or bundle install
+brew link xz
+```
