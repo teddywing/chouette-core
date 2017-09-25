@@ -52,14 +52,11 @@ RSpec.configure do |config|
       referential.add_member organisation, owner: true
     end
 
-    referential_suite = ReferentialSuite.create
-
     workbench = Workbench.create!(
       name: "Gestion de l'offre",
       organisation: organisation,
       line_referential: line_referential,
-      stop_area_referential: stop_area_referential,
-      output: referential_suite
+      stop_area_referential: stop_area_referential
     )
     referential = Referential.create! prefix: "first", name: "first", slug: "first", organisation: organisation, workbench: workbench
   end
