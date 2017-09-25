@@ -12,9 +12,9 @@ class ModelAttribute
   def self.classes
     all
       .map(&:klass)
+      .uniq
       .map(&:to_s)
       .map(&:camelize)
-      .uniq
   end
 
   def self.group_by_class
