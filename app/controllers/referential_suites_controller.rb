@@ -1,4 +1,4 @@
-class ReferentialSuitesController < BreadcrumbController
+class ReferentialSuitesController < ApplicationController
 
   defaults resource_class: ReferentialSuite
 
@@ -10,6 +10,5 @@ class ReferentialSuitesController < BreadcrumbController
     index! do
       build_breadcrumb :index
     end
-
   end
 end 
