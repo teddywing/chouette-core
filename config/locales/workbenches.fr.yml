@@ -1,4 +1,7 @@
 fr:
+  referential_suites:
+    index:
+      title: 'Offres de mon organisation'
   workbenches:
     referential_count:
       zero: "Aucun jeu de données dans cet espace de travail"

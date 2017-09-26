@@ -8,10 +8,8 @@ RSpec.describe 'ReferentialSuites', type: :feature do
   describe 'index' do
     before(:each) { visit workbench_output_path(workbench) }
 
-    it 'has a page ;)' do
-      require 'pry'; binding.pry
-      expect( page ).to be_true
-
+    it 'has a page with the correct information' do
+      expect( page ).to have_text('Offres de mon organisation')
     end
 
   end

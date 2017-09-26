@@ -1,4 +1,7 @@
 en:
+  referential_suites:
+    index:
+      title: 'Workbenches of my organisation'
   workbenches:
     index:
       title: "%{organisation} dashboard"

@@ -1,0 +1,6 @@
+/ PageHeader
+- header_params = ['modele-referential-suite',
+                   t('.title'),
+                   '']
+- header_params # << link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')  if policy(Calendar).create?
+= pageheader(*header_params)
