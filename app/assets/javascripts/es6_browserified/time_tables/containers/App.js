@@ -9,7 +9,9 @@ var PeriodForm = require('./PeriodForm')
 var SaveTimetable = require('./SaveTimetable')
 var ConfirmModal = require('./ConfirmModal')
 var ErrorModal = require('./ErrorModal')
-const { I18n } = window
+
+const clone = require('../../helpers/clone')
+const I18n = clone(window, "I18n", true)
 
 class App extends Component {
   componentDidMount(){

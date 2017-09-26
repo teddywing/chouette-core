@@ -1,6 +1,6 @@
 var _ = require('lodash')
 var React = require('react')
-var PropTypes = require('react').PropTypes
+var { Component, PropTypes } = require('react')
 var Select2 = require('react-select2')
 
 
@@ -9,9 +9,9 @@ var origin = window.location.origin
 var path = window.location.pathname.split('/', 3).join('/')
 
 
-class BSelect3 extends React.Component{
-  constructor(props) {
-    super(props)
+class BSelect3 extends Component{
+  constructor(props, context) {
+    super(props, context)
   }
   onChange(e) {
     this.props.onChange(this.props.index, {
@@ -73,7 +73,7 @@ class BSelect3 extends React.Component{
   }
 }
 
-class BSelect2 extends React.Component{
+class BSelect2 extends Component{
   componentDidMount() {
     this.refs.newSelect.el.select2('open')
   }
@@ -85,7 +85,7 @@ class BSelect2 extends React.Component{
         onSelect={ this.props.onSelect }
         ref='newSelect'
         options={{
-          placeholder: 'Sélectionnez un arrêt existant...',
+          placeholder: this.context.I18n.routes.edit.select2.placeholder,
           allowClear: true,
           language: 'fr', /* Doesn't seem to work... :( */
           theme: 'bootstrap',
@@ -119,6 +119,10 @@ class BSelect2 extends React.Component{
       />
     )
   }
+}
+
+BSelect2.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = BSelect3

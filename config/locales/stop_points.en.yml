@@ -52,5 +52,6 @@ en:
   simple_form:
     labels:
       stop_point:
+        name: Stop Point
         for_boarding: "Pickup"
         for_alighting: "Drop off"

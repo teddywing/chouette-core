@@ -1,5 +1,6 @@
 const _ = require('lodash')
-const { I18n } = window
+const clone = require('../../helpers/clone')
+const I18n = clone(window, "I18n")
 
 const actions = {
   weekDays: (index) => {

@@ -17,6 +17,25 @@ fr:
       title: "Ajouter un itinéraire"
     edit:
       title: "Editer l'itinéraire %{route}"
+      select2:
+        placeholder: "Sélectionnez un arrêt existant..."
+      map:
+        stop_point_type: Type d'arrêt
+        short_name: Nom court
+        coordinates: Coordonnées
+        proj: Proj
+        lat: Lat
+        lon: Lon
+        postal_code: Code Postal
+        city: Commune
+        comment: Commentaire
+      stop_point:
+        boarding:
+          normal: Montée autorisée
+          forbidden: Montée interdite
+        alighting:
+          normal: Descente autorisée
+          forbidden: Descente interdite
     show:
       title: "Itinéraire %{route} de la ligne %{line}"
       stop_points: "Liste des arrêts de l'itinéraire"

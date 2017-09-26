@@ -20,6 +20,7 @@ fr:
     filter: 'Filtrer'
     erase: 'Effacer'
     create_api_key: "Créer une clé d'API"
+    select: Sélectionner
   or: "ou"
   cancel: "Annuler"
   back: "Retour"

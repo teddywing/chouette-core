@@ -1,4 +1,7 @@
+const clone = require('../helpers/clone')
+let route = clone(window, "route", true)
 route = JSON.parse(decodeURIComponent(route))
+
 const geoColPts = []
 const geoColLns= []
 const geoColEdges = [
