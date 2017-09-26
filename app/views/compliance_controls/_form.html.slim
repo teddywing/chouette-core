@@ -7,8 +7,9 @@
       = f.input :criticity
       = f.input :comment
 
-      = f.fields_for :compliance_control_block, ComplianceControlBlock.new do |c|
+      = f.simple_fields_for :compliance_control_block do |c|
         = c.input :name
+        = c.input :transport_mode, as: :select, collection:StifTransportModeEnumerations.transport_mode.options
       end
   .separator
 

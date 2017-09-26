@@ -4,6 +4,8 @@ class ComplianceControlBlock < ActiveRecord::Base
 
   before_save :set_compliance_control_set
 
+  hstore_accessor :condition_attributes, transport_mode: :string
+
   def set_compliance_control_set
     self.compliance_control_set = self.compliance_control.compliance_control_set
   end
