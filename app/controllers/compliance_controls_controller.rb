@@ -9,17 +9,9 @@ class ComplianceControlsController < BreadcrumbController
     @compliance_control.build_compliance_control_block
   end
 
-  def create
-    create!(notice: t('notice.compliance_control.created'))
-  end
-
   def update
     path = compliance_control_set_compliance_control_path(parent, resource)
     update!(notice: t('notice.compliance_control.updated')) { path }
-  end
-
-  def destroy
-    destroy!(notice: t('notice.compliance_control.destroyed'))
   end
 
   private
