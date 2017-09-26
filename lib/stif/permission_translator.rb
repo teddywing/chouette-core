@@ -19,6 +19,7 @@ module Stif
         access_points
         connection_links calendars
         footnotes
+        imports
         journey_patterns
         referentials routes routing_constraint_zones
         time_tables
