@@ -40,7 +40,7 @@
                 ), \
                 TableBuilderHelper::Column.new(\
                   key: :control_game, \
-                  attribute: 'control_game' \
+                  attribute: Proc.new{ |n| (n.compliance_control_set.name) if n.compliance_control_set} \
                 ), \
               ],
                     sortable: true,
