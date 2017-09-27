@@ -51,8 +51,8 @@ RSpec.describe Workbench, :type => :model do
     end
 
     it "must not overwrite a given ReferentialSuite" do
-      referential_suite = ReferentialSuite.create
-      workbench = Workbench.create(output: referential_suite)
+      referential_suite = create(:referential_suite)
+      workbench = create(:workbench, output: referential_suite)
 
       expect(workbench.output).to eq(referential_suite)
     end
