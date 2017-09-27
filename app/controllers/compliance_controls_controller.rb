@@ -4,7 +4,7 @@ class ComplianceControlsController < BreadcrumbController
 
   def new
     @compliance_control_set = parent
-    @compliance_control = GenericAttributeMinMax.new
+    @compliance_control = GenericAttributeControl::MinMax.new
     @compliance_control.build_compliance_control_block
   end
 

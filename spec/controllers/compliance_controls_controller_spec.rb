@@ -6,7 +6,7 @@ RSpec.describe ComplianceControlsController, type: :controller do
 
   let(:compliance_control)        { create(:compliance_control) }
   let!(:compliance_control_set)   { compliance_control.compliance_control_set }
-  let(:compliance_control_params) { compliance_control.as_json.merge(type: 'GenericAttributeMinMax') }
+  let(:compliance_control_params) { compliance_control.as_json.merge(type: 'GenericAttributeControl::MinMax') }
 
   describe "GET show" do
     it 'should be successful' do
@@ -47,7 +47,7 @@ RSpec.describe ComplianceControlsController, type: :controller do
     it 'should be successful' do
       expect {
         delete :destroy, compliance_control_set_id: compliance_control_set.id, id: compliance_control.id
-      }.to change(GenericAttributeMinMax, :count).by(-1)
+      }.to change(GenericAttributeControl::MinMax, :count).by(-1)
       expect(response).to have_http_status(302)
     end
   end
