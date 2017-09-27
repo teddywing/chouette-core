@@ -49,6 +49,7 @@ Apartment.configure do |config|
     'ImportMessage',
     'ImportResource',
     'ComplianceControl',
+    'GenericAttributeControl::MinMax',
     'ComplianceControlSet',
     'ComplianceControlBlock',
     'ComplianceCheck',
