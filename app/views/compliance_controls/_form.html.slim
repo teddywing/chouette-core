@@ -7,6 +7,10 @@
       = f.input :criticity
       = f.input :comment
 
+      - f.object.class.dynamic_attributes.each do |attribute|
+        = f.input attribute.to_sym
+      end
+
       = f.simple_fields_for :compliance_control_block do |c|
         = c.input :name
         = c.input :transport_mode, as: :select, collection:StifTransportModeEnumerations.transport_mode.options
