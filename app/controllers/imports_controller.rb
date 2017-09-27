@@ -1,4 +1,5 @@
 class ImportsController < BreadcrumbController
+  include PolicyChecker
   skip_before_action :authenticate_user!, only: [:download]
   defaults resource_class: Import, collection_name: 'imports', instance_name: 'import'
   before_action :ransack_started_at_params, only: [:index]
@@ -89,7 +90,6 @@ class ImportsController < BreadcrumbController
 
   def ransack_status_params
     if params[:q]
-      binding.pry
       return params[:q].delete(:status_eq_any) if params[:q][:status_eq_any].empty? || ( (Import.status.values & params[:q][:status_eq_any]).length >= 4 )
       params[:q][:status_eq_any].push("new", "running") if params[:q][:status_eq_any].include?("pending")
       params[:q][:status_eq_any].push("aborted", "canceled") if params[:q][:status_eq_any].include?("failed")

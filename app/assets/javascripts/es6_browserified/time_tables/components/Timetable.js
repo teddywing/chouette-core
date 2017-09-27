@@ -1,14 +1,13 @@
 var React = require('react')
-var Component = require('react').Component
-var PropTypes = require('react').PropTypes
+var { Component, PropTypes}  = require('react')
 var TimeTableDay = require('./TimeTableDay')
 var PeriodsInDay = require('./PeriodsInDay')
 var ExceptionsInDay = require('./ExceptionsInDay')
 var actions = require('../actions')
 
 class Timetable extends Component{
-  constructor(props){
-    super(props)
+  constructor(props, context){
+    super(props, context)
   }
 
   currentDate(mFirstday, day) {
@@ -31,11 +30,11 @@ class Timetable extends Component{
         <div className="table table-2entries mb-sm">
           <div className="t2e-head w20">
             <div className="th">
-              <div className="strong">Synthèse</div>
+              <div className="strong">{this.context.I18n.time_tables.synthesis}</div>
             </div>
-            <div className="td"><span>Journées d'application</span></div>
-            <div className="td"><span>Périodes</span></div>
-            <div className="td"><span>Exceptions</span></div>
+            <div className="td"><span>{this.context.I18n.time_tables.edit.day_types}</span></div>
+            <div className="td"><span>{this.context.I18n.time_tables.edit.periods}</span></div>
+            <div className="td"><span>{this.context.I18n.time_tables.edit.exceptions}</span></div>
           </div>
           <div className="t2e-item-list w80">
             <div>
@@ -60,13 +59,14 @@ class Timetable extends Component{
                 {this.props.timetable.current_month.map((d, i) =>
                   <div
                     key={i}
-                    className={'td-group' + (this.props.metas.day_types[d.wday] || !d.in_periods ? '' : ' out_from_daytypes') + (d.wday == 0 ? ' last_wday' : '')}
+                    className={'td-group'+ (d.wday == 0 ? ' last_wday' : '')}
                   >
                     {/* day_types */}
-                    <div className="td"></div>
+                    <div className={"td" + (this.props.metas.day_types[d.wday] || !d.in_periods ? '' : ' out_from_daytypes') }></div>
 
                     {/* periods */}
                     <PeriodsInDay
+                      day={d}
                       index={i}
                       value={this.props.timetable.time_table_periods}
                       currentDate={this.currentDate(this.props.timetable.current_periode_range, d.mday)}
@@ -77,11 +77,16 @@ class Timetable extends Component{
 
                     {/* exceptions */}
                     <ExceptionsInDay
+                      day={d}
                       index={i}
                       value={this.props.timetable}
                       currentDate={d.date}
                       metas={this.props.metas}
                       blueDaytype={this.props.metas.day_types[d.wday]}
+                      onAddIncludedDate={this.props.onAddIncludedDate}
+                      onRemoveIncludedDate={this.props.onRemoveIncludedDate}
+                      onAddExcludedDate={this.props.onAddExcludedDate}
+                      onRemoveExcludedDate={this.props.onRemoveExcludedDate}
                       onExcludeDateFromPeriod={this.props.onExcludeDateFromPeriod}
                       onIncludeDateInPeriod={this.props.onIncludeDateInPeriod}
                     />
@@ -103,6 +108,10 @@ Timetable.propTypes = {
   onDeletePeriod: PropTypes.func.isRequired,
   onExcludeDateFromPeriod: PropTypes.func.isRequired,
   onIncludeDateInPeriod: PropTypes.func.isRequired
+}
+
+Timetable.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = Timetable

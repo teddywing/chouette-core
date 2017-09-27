@@ -1,9 +1,9 @@
 var React = require('react')
-var PropTypes = require('react').PropTypes
-let weekDays = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S']
+var  { PropTypes }  = require('react')
+const { weekDays } = require('../actions')
 var TagsSelect2 = require('./TagsSelect2')
 
-const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelect2Tags, onUnselect2Tags}) => {
+const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelect2Tags, onUnselect2Tags}, {I18n}) => {
   let colorList = ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"]
   return (
     <div className='form-horizontal'>
@@ -12,7 +12,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
           {/* comment (name) */}
           <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4 required">
-              Nom <abbr title="Champ requis">*</abbr>
+              {I18n.time_tables.edit.metas.name} <abbr title="">*</abbr>
             </label>
             <div className="col-sm-8">
               <input
@@ -27,7 +27,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
 
           {/* color */}
           <div className="form-group">
-            <label htmlFor="" className="control-label col-sm-4">Couleur associée</label>
+            <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.color}</label>
             <div className="col-sm-8">
               <div className="dropdown color_selector">
                 <button
@@ -72,7 +72,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
 
           {/* tags */}
           <div className="form-group">
-            <label htmlFor="" className="control-label col-sm-4">Etiquettes</label>
+            <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.tag_list}</label>
             <div className="col-sm-8">
               <TagsSelect2
                 initialTags={metas.initial_tags}
@@ -85,16 +85,16 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
 
           {/* calendar */}
           <div className="form-group">
-            <label htmlFor="" className="control-label col-sm-4">Modèle de calendrier associé</label>
+            <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.calendar}</label>
             <div className="col-sm-8">
-              <span>{metas.calendar ? metas.calendar.name : 'Aucun'}</span>
+              <span>{metas.calendar ? metas.calendar.name : I18n.time_tables.edit.metas.no_calendar}</span>
             </div>
           </div>
 
           {/* day_types */}
           <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4">
-              Journées d'applications pour les périodes ci-dessous
+              {I18n.time_tables.edit.metas.day_types}
             </label>
             <div className="col-sm-8">
               <div className="form-group labelled-checkbox-group">
@@ -112,7 +112,7 @@ const Metas = ({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelec
                           type="checkbox"
                           checked={day ? 'checked' : ''}
                           />
-                        <span className='lcbx-group-item-label'>{weekDays[i]}</span>
+                        <span className='lcbx-group-item-label'>{weekDays()[i]}</span>
                       </label>
                     </div>
                   </div>
@@ -133,6 +133,10 @@ Metas.propTypes = {
   onUpdateColor: PropTypes.func.isRequired,
   onSelect2Tags: PropTypes.func.isRequired,
   onUnselect2Tags: PropTypes.func.isRequired
+}
+
+Metas.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = Metas

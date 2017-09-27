@@ -76,20 +76,38 @@ describe('pagination reducer', () => {
     ).toEqual(Object.assign({}, state, {currentPage : page, stateChanged: false}))
   })
 
-  it('should handle INCLUDE_DATE_IN_PERIOD', () => {
+  it('should handle ADD_INCLUDED_DATE', () => {
     expect(
       paginationReducer(state, {
-        type: 'INCLUDE_DATE_IN_PERIOD'
+        type: 'ADD_INCLUDED_DATE'
       })
     ).toEqual(Object.assign({}, state, {stateChanged: true}))
   })
-  it('should handle EXCLUDE_DATE_FROM_PERIOD', () => {
+
+  it('should handle REMOVE_INCLUDED_DATE', () => {
     expect(
       paginationReducer(state, {
-        type: 'EXCLUDE_DATE_FROM_PERIOD'
+        type: 'REMOVE_INCLUDED_DATE'
       })
     ).toEqual(Object.assign({}, state, {stateChanged: true}))
   })
+
+  it('should handle ADD_EXCLUDED_DATE', () => {
+    expect(
+      paginationReducer(state, {
+        type: 'ADD_EXCLUDED_DATE'
+      })
+    ).toEqual(Object.assign({}, state, {stateChanged: true}))
+  })
+
+  it('should handle REMOVE_EXCLUDED_DATE', () => {
+    expect(
+      paginationReducer(state, {
+        type: 'REMOVE_EXCLUDED_DATE'
+      })
+    ).toEqual(Object.assign({}, state, {stateChanged: true}))
+  })
+
   it('should handle DELETE_PERIOD', () => {
     expect(
       paginationReducer(state, {

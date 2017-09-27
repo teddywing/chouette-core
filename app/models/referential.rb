@@ -45,6 +45,8 @@ class Referential < ActiveRecord::Base
   has_many :stop_areas, through: :stop_area_referential
   belongs_to :workbench
 
+  belongs_to :referential_suite
+
   scope :ready, -> { where(ready: true) }
   scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }
   scope :include_metadatas_lines, ->(line_ids) { where('referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids) }

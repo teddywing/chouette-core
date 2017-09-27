@@ -3,7 +3,7 @@ var PropTypes = require('react').PropTypes
 var BSelect2 = require('./BSelect2')
 var OlMap = require('./OlMap')
 
-const StopPoint = (props) => {
+const StopPoint = (props, {I18n}) => {
   return (
     <div className='nested-fields'>
       <div className='wrapper'>
@@ -17,15 +17,15 @@ const StopPoint = (props) => {
 
         <div>
           <select className='form-control' value={props.value.for_boarding} id="for_boarding" onChange={props.onSelectChange}>
-            <option value="normal">Montée autorisée</option>
-            <option value="forbidden">Montée interdite</option>
+            <option value="normal">{I18n.routes.edit.stop_point.boarding.normal}</option>
+            <option value="forbidden">{I18n.routes.edit.stop_point.boarding.forbidden}</option>
           </select>
         </div>
 
         <div>
           <select className='form-control' value={props.value.for_alighting} id="for_alighting" onChange={props.onSelectChange}>
-            <option value="normal">Descente autorisée</option>
-            <option value="forbidden">Descente interdite</option>
+            <option value="normal">{I18n.routes.edit.stop_point.alighting.normal}</option>
+            <option value="forbidden">{I18n.routes.edit.stop_point.alighting.forbidden}</option>
           </select>
         </div>
 
@@ -88,6 +88,10 @@ StopPoint.propTypes = {
   last: PropTypes.bool,
   index: PropTypes.number,
   value: PropTypes.object
+}
+
+StopPoint.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = StopPoint

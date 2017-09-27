@@ -5,6 +5,9 @@ var createStore = require('redux').createStore
 var timeTablesApp = require('./reducers')
 var App = require('./containers/App')
 
+const clone = require('../helpers/clone')
+const actionType = clone(window, "actionType", true)
+
 // logger, DO NOT REMOVE
 // var applyMiddleware = require('redux').applyMiddleware
 // var createLogger = require('redux-logger')
@@ -13,7 +16,7 @@ var App = require('./containers/App')
 
 var initialState = {
   status: {
-    actionType: window.actionType,
+    actionType: actionType,
     policy: window.perms,
     fetchSuccess: true,
     isFetching: false

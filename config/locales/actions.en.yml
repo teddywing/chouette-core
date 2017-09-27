@@ -20,8 +20,10 @@ en:
     filter: 'Filter'
     erase: 'Erase'
     create_api_key: "Create an API key"
+    select: Select
   or: "or"
   cancel: "Cancel"
+  back: "Go Back"
   search_hint: "Type in a search term"
   no_result_text: "No Results"
   searching_term: "Searching..."

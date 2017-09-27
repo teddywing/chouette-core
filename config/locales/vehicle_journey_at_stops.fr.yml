@@ -1,4 +1,4 @@
 fr:
   vehicle_journey_at_stops:
     errors:
-      day_offset_must_not_exceed_max: "La course avec l'identifiant %{local_id} ne peut pas avoir des horaires sur plus de %{max} jours"
+      day_offset_must_not_exceed_max: "La course avec l'identifiant %{short_id} ne peut pas avoir des horaires sur plus de %{max} jours"

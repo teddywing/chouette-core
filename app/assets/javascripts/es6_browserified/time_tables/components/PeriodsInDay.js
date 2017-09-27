@@ -35,7 +35,7 @@ class PeriodsInDay extends Component {
   render() {
     return (
       <div
-        className={this.isIn(this.props.currentDate)}
+        className={this.isIn(this.props.currentDate) + (this.props.metas.day_types[this.props.day.wday] || !this.props.day.in_periods ? '' : ' out_from_daytypes')}
       >
         {this.props.value.map((p, i) => {
           if(!p.deleted){

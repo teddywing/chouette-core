@@ -1,19 +1,21 @@
 const _ = require('lodash')
+const clone = require('../../helpers/clone')
+const I18n = clone(window, "I18n")
 
 const actions = {
-  strToArrayDayTypes: (str) =>{
-    let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
-    return weekDays.map((day, i) => str.indexOf(day) !== -1)
+  weekDays: (index) => {
+    return _.range(1, 8).map(n => I18n.time_tables.edit.metas.days[n])
   },
-  arrayToStrDayTypes: (arr) => {
-    let weekDays = ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
-    let str = []
-    arr.map((dayActive, i) => {
-      if(dayActive){
-        str.push(weekDays[i])
-      }
-    })
-    return str.join(',')
+  strToArrayDayTypes: (str) =>{
+    return actions.weekDays().map(day => str.indexOf(day) !== -1)
+  },
+  arrayToStrDayTypes: (dayTypes) => {
+    let newDayTypes = dayTypes.reduce((arr, dayActive, i) => {
+      if (dayActive) arr.push(actions.weekDays()[i])
+      return arr
+    }, [])
+
+    return newDayTypes.join(',')
   },
   fetchingApi: () =>({
     type: 'FETCH_API'
@@ -113,14 +115,26 @@ const actions = {
     timetableInDates,
     error
   }),
-  includeDateInPeriod: (index, dayTypes, date) => ({
-    type: 'INCLUDE_DATE_IN_PERIOD',
+  addIncludedDate: (index, dayTypes, date) => ({
+    type: 'ADD_INCLUDED_DATE',
     index,
     dayTypes,
     date
   }),
-  excludeDateFromPeriod: (index, dayTypes, date) => ({
-    type: 'EXCLUDE_DATE_FROM_PERIOD',
+  removeIncludedDate: (index, dayTypes, date) => ({
+    type: 'REMOVE_INCLUDED_DATE',
+    index,
+    dayTypes,
+    date
+  }),
+  addExcludedDate: (index, dayTypes, date) => ({
+    type: 'ADD_EXCLUDED_DATE',
+    index,
+    dayTypes,
+    date
+  }),
+  removeExcludedDate: (index, dayTypes, date) => ({
+    type: 'REMOVE_EXCLUDED_DATE',
     index,
     dayTypes,
     date
@@ -137,8 +151,8 @@ const actions = {
     type : 'CLOSE_MODAL'
   }),
   monthName(strDate) {
-    let monthList = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
-    var date = new Date(strDate)
+    let monthList = _.range(1,13).map(n => I18n.calendars.months[n])
+    let date = new Date(strDate)
     return monthList[date.getMonth()]
   },
   getHumanDate(strDate, mLimit) {
@@ -157,42 +171,30 @@ const actions = {
     let date = new Date(strDate)
     return date.toLocaleDateString()
   },
+  updateSynthesis: ({current_month, time_table_dates: dates, time_table_periods: periods}) => {
+    let newPeriods = _.reject(periods, 'deleted')
+    let improvedCM = current_month.map((d, i) => {
+      let isInPeriod = actions.isInPeriod(newPeriods, d.date)
+      let isIncluded = _.some(dates, {'date': d.date, 'in_out': true})
 
-  updateSynthesis: (state, daytypes) => {
-    let periods = state.time_table_periods
-
-    let isInPeriod = function(d){
-      let currentMonth = state.current_periode_range.split('-')
-      let twodigitsDay = d.mday < 10 ? ('0' + d.mday) : d.mday
-      let currentDate = new Date(currentMonth[0] + '-' + currentMonth[1] + '-' + twodigitsDay)
-
-      // We compare periods & currentDate, to determine if it is included or not
-      let testDate = false
-      periods.map((p, i) => {
-        if (p.deleted) return false
-
-        let begin = new Date(p.period_start)
-        let end = new Date(p.period_end)
-
-        if(testDate === false){
-          if(currentDate >= begin && currentDate <= end) {
-            testDate = true
-            // p.include_date = false
-          }
-        }
-      })
-      return testDate
-    }
-
-    let improvedCM = state.current_month.map((d, i) => {
-      let bool = isInPeriod(state.current_month[i])
-      return _.assign({}, state.current_month[i], {
-        in_periods: bool,
-        include_date: bool ? false : state.current_month[i].include_date,
-        excluded_date: !bool ? false : state.current_month[i].excluded_date
+      return _.assign({}, current_month[i], {
+        in_periods: isInPeriod,
+        include_date: isIncluded,
+        excluded_date: !isInPeriod ? false : current_month[i].excluded_date
       })
     })
     return improvedCM
+  },
+  isInPeriod: (periods, date) => {
+    date = new Date(date)
+
+    for (let period of periods) {
+      let begin = new Date(period.period_start)
+      let end = new Date(period.period_end) 
+      if (date >= begin && date <= end) return true
+    }
+
+    return false
   },
   checkConfirmModal: (event, callback, stateChanged, dispatch, metas, timetable) => {
     if(stateChanged){
@@ -219,7 +221,7 @@ const actions = {
       let period = periods[i]
       if (index !== i && !period.deleted) {
         if (new Date(period.period_start) <= end && new Date(period.period_end) >= start)  {
-          error = 'Les périodes ne peuvent pas se chevaucher'
+          error = I18n.time_tables.edit.error_submit.periods_overlaps
           break
         }
       }
@@ -233,7 +235,7 @@ const actions = {
 
     for (let day of in_days) {
       if (start <= new Date(day.date) && end >= new Date(day.date)) {
-        error = 'Une période ne peut chevaucher une date dans un calendrier'
+        error = I18n.time_tables.edit.error_submit.dates_overlaps
         break
       }
     }
@@ -241,7 +243,6 @@ const actions = {
   },
   fetchTimeTables: (dispatch, nextPage) => {
     let urlJSON = window.location.pathname.split('/', 5).join('/')
-    // console.log(nextPage)
     if(nextPage) {
       urlJSON += "/month.json?date=" + nextPage
     }else{
@@ -310,21 +311,14 @@ const actions = {
   errorModalMessage: (errorKey) => {
     switch (errorKey) {
       case "withoutPeriodsWithDaysTypes":
-        return window.I18n.fr.time_tables.edit.error_modal.withoutPeriodsWithDaysTypes
+        return I18n.time_tables.edit.error_modal.withoutPeriodsWithDaysTypes
       case "withPeriodsWithoutDayTypes":
-        return window.I18n.fr.time_tables.edit.error_modal.withPeriodsWithoutDayTypes
+        return I18n.time_tables.edit.error_modal.withPeriodsWithoutDayTypes
       default:
         return errorKey
 
     }
   },
-  checkIfTTHasDate: (dates, date) => {
-    if (_.some(dates, date)) {
-       return _.reject(dates, ['date', date.date])
-     } else {
-       return dates.concat(date)
-     }
-  }
 }
 
 module.exports = actions

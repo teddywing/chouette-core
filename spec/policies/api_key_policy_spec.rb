@@ -21,7 +21,7 @@ RSpec.describe ApiKeyPolicy do
     end
     context 'permission present → '  do
       it 'allows a user with a different organisation' do
-        add_permissions('api_keys.create', for_user: user)
+        add_permissions('api_keys.create', to_user: user)
         expect_it.to permit(user_context, record)
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe ApiKeyPolicy do
 
     context 'permission present → '  do
       before do
-        add_permissions('api_keys.update', for_user: user)
+        add_permissions('api_keys.update', to_user: user)
       end
 
       it 'denies a user with a different organisation' do

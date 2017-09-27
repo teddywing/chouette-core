@@ -10,6 +10,7 @@ describe Referential, :type => :model do
 
   it { should have_many(:metadatas) }
   it { should belong_to(:workbench) }
+  it { should belong_to(:referential_suite) }
 
   context ".referential_ids_in_periode" do
     it 'should retrieve referential id in periode range' do

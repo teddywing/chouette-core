@@ -4,8 +4,10 @@ var Provider = require('react-redux').Provider
 var createStore = require('redux').createStore
 var reducers = require('./reducers')
 var App = require('./components/App')
-var addInput = require('./form_helper')
-let datas = JSON.parse(decodeURIComponent(window.itinerary_stop))
+var { handleForm, handleStopPoints } = require('./form_helper')
+let clone = require('../helpers/clone')
+let datas = clone(window, "itinerary_stop", true)
+datas = JSON.parse(decodeURIComponent(datas))
 
 // logger, DO NOT REMOVE
 // var applyMiddleware = require('redux').applyMiddleware
@@ -67,17 +69,12 @@ render(
 document.querySelector('input[name=commit]').addEventListener('click', (event)=>{
   let state = store.getState()
 
-  if(state.stopPoints.length >= 2) {
-    state.stopPoints.map((stopPoint, i) => {
-      addInput('id', stopPoint.stoppoint_id ? stopPoint.stoppoint_id : '', i)
-      addInput('stop_area_id',stopPoint.stoparea_id, i)
-      addInput('position',i, i)
-      addInput('for_boarding',stopPoint.for_boarding, i)
-      addInput('for_alighting',stopPoint.for_alighting, i)
-    })
-  } else {
+  let name = $("#route_name").val()
+  let publicName = $("#route_published_name").val()
+  if (name == "" || publicName == "") {
     event.preventDefault()
-    let msg = "L'itinéraire doit comporter au moins deux arrêts"
-    $('#stop_points').find('.subform').after("<div class='alert alert-danger'><span class='fa fa-lg fa-exclamation-circle'></span><span>" + msg + "</span></div>")
+    handleForm("#route_name", "#route_published_name")
   }
+    
+  handleStopPoints(event, state)
 })
