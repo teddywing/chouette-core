@@ -3,8 +3,10 @@ require 'rails_helper'
 RSpec.describe ComplianceControlsController, type: :controller do
   login_user
 
-  let(:compliance_control)     { create :compliance_control }
-  let(:compliance_control_set) { compliance_control.compliance_control_set }
+
+  let(:compliance_control)        { create(:compliance_control) }
+  let!(:compliance_control_set)   { compliance_control.compliance_control_set }
+  let(:compliance_control_params) { compliance_control.as_json.merge(type: 'GenericAttributeMinMax') }
 
   describe "GET show" do
     it 'should be successful' do
@@ -29,24 +31,24 @@ RSpec.describe ComplianceControlsController, type: :controller do
 
   describe 'POST #create' do
     it 'should be successful' do
-      post :create, compliance_control_set_id: compliance_control_set.id, compliance_control: build(:compliance_control).as_json
+      post :create, compliance_control_set_id: compliance_control_set.id, compliance_control: compliance_control_params
       expect(response).to have_http_status(302)
-      expect(flash[:notice]).to eq(I18n.t('notice.compliance_control.created'))
     end
   end
 
   describe 'POST #update' do
     it 'should be successful' do
-      post :update, compliance_control_set_id: compliance_control_set.id, id: compliance_control.id, compliance_control: compliance_control.as_json
+      post :update, compliance_control_set_id: compliance_control_set.id, id: compliance_control.id, compliance_control: compliance_control_params
       expect(response).to redirect_to compliance_control_set_compliance_control_path(compliance_control_set, compliance_control)
-      expect(flash[:notice]).to eq(I18n.t('notice.compliance_control.updated'))
     end
   end
 
   describe 'DELETE #destroy' do
     it 'should be successful' do
-      delete :destroy, compliance_control_set_id: compliance_control_set.id, id: compliance_control.id
-      expect(flash[:notice]).to eq I18n.t('notice.compliance_control.destroyed')
+      expect {
+        delete :destroy, compliance_control_set_id: compliance_control_set.id, id: compliance_control.id
+      }.to change(GenericAttributeMinMax, :count).by(-1)
+      expect(response).to have_http_status(302)
     end
   end
 end
