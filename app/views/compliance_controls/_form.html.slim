@@ -13,7 +13,7 @@
 
       = f.simple_fields_for :compliance_control_block do |c|
         = c.input :name
-        = c.input :transport_mode, as: :select, collection:StifTransportModeEnumerations.transport_mode.options
+        = c.input :transport_mode, as: :select, collection:ComplianceControlBlock.transport_modes
       end
   .separator
 

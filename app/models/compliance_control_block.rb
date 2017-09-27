@@ -9,4 +9,8 @@ class ComplianceControlBlock < ActiveRecord::Base
   def set_compliance_control_set
     self.compliance_control_set = self.compliance_control.compliance_control_set
   end
+
+  def self.transport_modes
+    ["all"] + StifTransportModeEnumerations.transport_mode.values
+  end
 end
