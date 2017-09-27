@@ -115,7 +115,7 @@ gem 'sequel'
 
 gem 'draper'
 
-gem 'enumerize', '~> 0.10.0'
+gem 'enumerize', '~> 2.1.2'
 gem 'deep_cloneable', '~> 2.0.0'
 gem 'acts-as-taggable-on', '~> 4.0.0'
 
