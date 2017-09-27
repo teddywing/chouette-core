@@ -4,12 +4,17 @@ RSpec.describe 'ReferentialSuites', type: :feature do
 
   let(:workbench) { create :workbench }
   let(:referential_suite) { workbench.output }
-  let!(:referentials) do
-    3.times.map { |_| create :referential, workbench: workbench, referential_suite: referential_suite }
+  let(:referentials) do
+    3.times.map { |_| create :referential, workbench_id: workbench.id, referential_suite_id: referential_suite.id }
   end
+  let( :referential ){ referentials.first }
+
 
   describe 'index' do
-    before(:each) { visit workbench_output_path(workbench) }
+    before(:each) do
+      referentials
+      visit workbench_output_path(workbench)
+    end
 
     it 'has a page with the correct information' do
       # Breadcrumb
@@ -21,8 +26,9 @@ RSpec.describe 'ReferentialSuites', type: :feature do
     end
 
     it 'filtering with Ransack' do
-      fill_in 'q[name_or_objectid_cont]', with: referential_suite.name
-      
+      pending 'WIP'
+      fill_in 'q[name_or_objectid_cont]', with: referential.name
+
     end
 
   end
