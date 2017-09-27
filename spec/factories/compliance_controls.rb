@@ -4,6 +4,7 @@ FactoryGirl.define do
     type "GenericAttributeMinMax"
     criticity :warning
     code "code"
+    origin_code "code"
     comment "Text"
     association :compliance_control_set
   end

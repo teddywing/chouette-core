@@ -29,10 +29,10 @@ class ComplianceControl < ActiveRecord::Base
   end
 
   before_validation(on: :create) do
-    self.name = self.class.name
-    self.code = @@default_code
-    self.origin_code = @@default_code
-    self.criticity = @@default_criticity
+   self.name ||= self.class.name
+   self.code ||= @@default_code
+   self.origin_code ||= @@default_code
+   self.criticity ||= @@default_criticity
   end
 
 end
