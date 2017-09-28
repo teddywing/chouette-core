@@ -4,6 +4,7 @@ FactoryGirl.define do
     type "Type"
     criticity :info
     code "code"
+    origin_code "code"
     comment "Text"
     association :compliance_check_set
     association :compliance_check_block
