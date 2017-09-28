@@ -52,8 +52,21 @@ RSpec.configure do |config|
       referential.add_member organisation, owner: true
     end
 
-    workbench = Workbench.create!(:name => "Gestion de l'offre", organisation: organisation, line_referential: line_referential, stop_area_referential: stop_area_referential)
-    referential = Referential.create! prefix: "first", name: "first", slug: "first", organisation: organisation, workbench: workbench
+    workbench = FactoryGirl.create(
+      :workbench,
+      name: "Gestion de l'offre",
+      organisation: organisation,
+      line_referential: line_referential,
+      stop_area_referential: stop_area_referential
+    )
+    referential = FactoryGirl.create(
+      :referential,
+      prefix: "first",
+      name: "first",
+      slug: "first",
+      organisation: organisation,
+      workbench: workbench
+    )
   end
 
   config.before(:each) do
