@@ -1,7 +1,7 @@
 class CreateComplianceChecks < ActiveRecord::Migration
   def change
     create_table :compliance_checks do |t|
-      t.references :compliance_check_sets, index: true, foreign_key: true
+      t.references :compliance_check_set, index: true, foreign_key: true
       t.references :compliance_check_block, index: true, foreign_key: true
       t.string :type
       t.json :control_attributes
