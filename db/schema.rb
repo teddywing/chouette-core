@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170925154017) do
+ActiveRecord::Schema.define(version: 20170928090016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,6 +206,7 @@ ActiveRecord::Schema.define(version: 20170925154017) do
     t.text     "comment"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "origin_code"
   end
 
   add_index "compliance_checks", ["compliance_check_block_id"], name: "index_compliance_checks_on_compliance_check_block_id", using: :btree
@@ -217,10 +218,8 @@ ActiveRecord::Schema.define(version: 20170925154017) do
     t.integer  "compliance_control_set_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
-    t.integer  "compliance_control_id"
   end
 
-  add_index "compliance_control_blocks", ["compliance_control_id"], name: "index_compliance_control_blocks_on_compliance_control_id", using: :btree
   add_index "compliance_control_blocks", ["compliance_control_set_id"], name: "index_compliance_control_blocks_on_compliance_control_set_id", using: :btree
 
   create_table "compliance_control_sets", id: :bigserial, force: :cascade do |t|
@@ -240,10 +239,13 @@ ActiveRecord::Schema.define(version: 20170925154017) do
     t.string   "code"
     t.string   "criticity"
     t.text     "comment"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "origin_code"
+    t.integer  "compliance_control_block_id"
   end
 
+  add_index "compliance_controls", ["compliance_control_block_id"], name: "index_compliance_controls_on_compliance_control_block_id", using: :btree
   add_index "compliance_controls", ["compliance_control_set_id"], name: "index_compliance_controls_on_compliance_control_set_id", using: :btree
 
   create_table "connection_links", id: :bigserial, force: :cascade do |t|
@@ -987,8 +989,8 @@ ActiveRecord::Schema.define(version: 20170925154017) do
   add_foreign_key "compliance_checks", "compliance_check_blocks"
   add_foreign_key "compliance_checks", "compliance_check_sets"
   add_foreign_key "compliance_control_blocks", "compliance_control_sets"
-  add_foreign_key "compliance_control_blocks", "compliance_controls"
   add_foreign_key "compliance_control_sets", "organisations"
+  add_foreign_key "compliance_controls", "compliance_control_blocks"
   add_foreign_key "compliance_controls", "compliance_control_sets"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
