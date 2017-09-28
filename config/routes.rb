@@ -9,8 +9,8 @@ ChouetteIhm::Application.routes.draw do
         resources :import_messages, only: [:index]
       end
     end
-    resources :compliance_check_sets, :only => [:index, :show] do
-      resources :compliance_checks, :only => [:show]
+    resources :compliance_check_sets, only: [:index, :show] do
+      resources :compliance_checks, only: [:show]
     end
   end
 

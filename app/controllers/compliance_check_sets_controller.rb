@@ -10,17 +10,14 @@ class ComplianceCheckSetsController < BreadcrumbController
       scope = ransack_period @compliance_check_sets
       @q_for_form = scope.ransack(params[:q])
       format.html {
-        @compliance_check_sets = decorate_compliance_check_sets(@q_for_form.result)
+        @compliance_check_sets = ModelDecorator.decorate(
+          @q_for_form.result,
+          with: ComplianceCheckSetDecorator
+        )
       }
     end
   end
 
-  def decorate_compliance_check_sets(compliance_check_sets)
-    ModelDecorator.decorate(
-      compliance_check_sets,
-      with: ComplianceCheckSetDecorator
-    )
-  end
 
   private
 
@@ -44,7 +41,7 @@ class ComplianceCheckSetsController < BreadcrumbController
     return scope unless !!@begin_range && !!@end_range
 
     if @begin_range > @end_range
-      flash.now[:error] = t('imports.filters.error_period_filter')
+      flash.now[:error] = t('compliance_check_sets.filters.error_period_filter')
     else
       scope = scope.where_created_at_between(@begin_range, @end_range)
     end

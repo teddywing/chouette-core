@@ -11,6 +11,7 @@ fr:
           destroy_confirm: Are you sure to delete this control report ?
     filters:
           name: Specify a control report name...
+          error_period_filter: End date must be greater or equal than begin date
     search_no_results: No control reports match your search
   activerecord:
           models:

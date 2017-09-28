@@ -11,6 +11,7 @@ fr:
           destroy_confirm: Etes vous sûr de supprimer ce rapport de contrôle ?
     filters:
           name: Indiquez un nom d'un objet associé...
+          error_period_filter: La date de fin doit être supérieure ou égale à la date de début
     search_no_results: Aucun rapport de contrôle ne correspond à votre recherche
   activerecord:
           models:
