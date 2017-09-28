@@ -21,10 +21,15 @@ class ComplianceControlBlocksController < BreadcrumbController
     end 
   end
 
+  def destroy
+    destroy! do |format|
+      format.html { redirect_to compliance_control_set_path(@compliance_control_set) }  
+    end 
+  end
+
   private
 
   def create_resource compliance_control_block
-    binding.pry
     compliance_control_block.transport_mode = params[:compliance_control_block][:transport_mode]
     super
   end
