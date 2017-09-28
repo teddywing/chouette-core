@@ -26,8 +26,7 @@ RSpec.describe 'ReferentialSuites', type: :feature do
     end
 
     it 'filtering with Ransack' do
-      pending 'WIP'
-      fill_in 'q[name_or_objectid_cont]', with: referential.name
+      fill_in 'q[status]', with: 'Courant'
 
     end
 

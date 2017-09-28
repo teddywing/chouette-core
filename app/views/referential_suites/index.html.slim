@@ -4,3 +4,11 @@
                    '']
 - header_params # << link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')  if policy(Calendar).create?
 = pageheader(*header_params)
+
+/ PageContent
+.page_content
+  .container-fluid
+    - if params[:q].present? || @referentials.any?
+      .row
+        .col-lg-12
+          = render 'filters'
