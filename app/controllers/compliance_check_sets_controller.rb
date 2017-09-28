@@ -30,7 +30,7 @@ class ComplianceCheckSetsController < BreadcrumbController
         start_date << params[:q][:created_at]["begin(#{key}i)"].to_i
         end_date << params[:q][:created_at]["end(#{key}i)"].to_i
       end
-      params[:q].delete([:created_at])
+      params[:q].delete(:created_at)
       @begin_range = DateTime.new(*start_date, 0, 0, 0) rescue nil
       @end_range = DateTime.new(*end_date, 23, 59, 59) rescue nil
     end

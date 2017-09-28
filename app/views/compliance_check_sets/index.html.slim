@@ -35,11 +35,11 @@
                   end \
                 ), \
                 TableBuilderHelper::Column.new( \
-                  key: :assignment, \
+                  key: :assigned_to, \
                   attribute: 'parent_type' \
                 ), \
                 TableBuilderHelper::Column.new(\
-                  key: :control_game, \
+                  key: :compliance_control_set, \
                   attribute: Proc.new{ |n| (n.compliance_control_set.name) if n.compliance_control_set} \
                 ), \
               ],

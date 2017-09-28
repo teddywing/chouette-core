@@ -11,15 +11,13 @@ fr:
           destroy_confirm: Etes vous sûr de supprimer ce rapport de contrôle ?
     filters:
           name: Indiquez un nom d'un objet associé...
-          error_period_filter: La date de fin doit être supérieure ou égale à la date de début
+          error_period_filter: La date de fin doit être supérieure ou égale à la date de début0
     search_no_results: Aucun rapport de contrôle ne correspond à votre recherche
   activerecord:
-          models:
-            compliance_check_set: Calendrier
           attributes:
             compliance_check_set:
               ref: réf
               creation_date: Date et heure de création
               associated_object: Objet associé
-              assignment: Affectation
-              control_game: jeu de contrôle
+              assigned_to: Affectation
+              compliance_control_set: jeu de contrôle

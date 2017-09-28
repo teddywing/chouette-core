@@ -18,7 +18,7 @@ fr:
           attributes:
             compliance_control_set:
               name: Nom
-              assignment: Affectation
+              assigned_to: Affectation
               owner_jdc: Propriétaire du jeu de contrôle
               control_numbers: Nb contrôle
               updated_at: Mis a jour

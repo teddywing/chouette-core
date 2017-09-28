@@ -1,25 +1,23 @@
-fr:
+en:
   compliance_check_sets:
     index:
       title: Control reports
       new: Creating a Control Report
-      edit: Editing a Control Report
+      edit: Update a Control Report
     actions:
-          new: Add
-          edit: Edit
+          new: Add a control report
+          edit: Edit a control report
           destroy: Delete
-          destroy_confirm: Are you sure to delete this control report ?
+          destroy_confirm: Are you sure you want to delete this control report?
     filters:
           name: Specify a control report name...
-          error_period_filter: End date must be greater or equal than begin date
+          error_period_filter: End date must be greater than or equal to begin date
     search_no_results: No control reports match your search
   activerecord:
-          models:
-            compliance_check_set: Calendrier
           attributes:
             compliance_check_set:
               ref: réf
-              creation_date: Date and time of creation
+              creation_date: Created at
               associated_object: Associated object
-              assignment: Affectation
-              control_game: Control Game
+              assigned_to: Assigned to
+              compliance_control_set: Compliance control set

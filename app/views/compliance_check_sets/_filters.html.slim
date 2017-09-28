@@ -8,7 +8,7 @@
 
   .ffg-row
     .form-group.togglable
-      = f.label t('activerecord.attributes.compliance_check_set.assignment'), required: false, class: 'control-label'
+      = f.label t('activerecord.attributes.compliance_check_set.assigned_to'), required: false, class: 'control-label'
       = f.input :parent_type_eq_any, collection: ComplianceCheckSet.order('parent_type'), as: :check_boxes, label: false, label_method: lambda {|w| ("<span>#{w}</span>").html_safe}, required: false, wrapper_html: {class: 'checkbox_list'}
 
     .form-group.togglable

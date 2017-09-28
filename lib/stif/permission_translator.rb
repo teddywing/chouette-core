@@ -21,7 +21,8 @@ module Stif
         calendars
         footnotes
         journey_patterns
-        referentials routes
+        referentials
+        routes
         routing_constraint_zones
         time_tables
         vehicle_journeys
