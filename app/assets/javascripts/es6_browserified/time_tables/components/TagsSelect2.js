@@ -9,8 +9,8 @@ var path = window.location.pathname.split('/', 4).join('/')
 var _ = require('lodash')
 
 class TagsSelect2 extends React.Component{
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
   }
 
   mapKeys(array){
@@ -38,7 +38,7 @@ class TagsSelect2 extends React.Component{
           allowClear: true,
           theme: 'bootstrap',
           width: '100%',
-          placeholder: 'Ajoutez ou cherchez une étiquette...',
+          placeholder: this.context.I18n.time_tables.edit.select2.tag.placeholder,
           ajax: {
             url: origin + path + '/tags.json',
             dataType: 'json',
@@ -72,6 +72,10 @@ class TagsSelect2 extends React.Component{
 
 const formatRepo = (props) => {
   if(props.name) return props.name
+}
+
+TagsSelect2.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = TagsSelect2

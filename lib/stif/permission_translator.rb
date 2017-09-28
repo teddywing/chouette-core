@@ -20,6 +20,7 @@ module Stif
         connection_links
         calendars
         footnotes
+        imports
         journey_patterns
         referentials
         routes
@@ -34,7 +35,6 @@ module Stif
     end
 
     def destructive_permissions_for(models)
-      @__destructive_permissions_for__ ||=
         models.product( %w{create destroy update} ).map{ |model_action| model_action.join('.') }
     end
 

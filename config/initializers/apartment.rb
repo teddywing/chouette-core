@@ -20,6 +20,7 @@ Apartment.configure do |config|
   config.excluded_models = [
     'Referential',
     'ReferentialMetadata',
+    'ReferentialSuite',
     'Organisation',
     'User',
     'Api::V1::ApiKey',
@@ -48,6 +49,7 @@ Apartment.configure do |config|
     'ImportMessage',
     'ImportResource',
     'ComplianceControl',
+    'GenericAttributeControl::MinMax',
     'ComplianceControlSet',
     'ComplianceControlBlock',
     'ComplianceCheck',

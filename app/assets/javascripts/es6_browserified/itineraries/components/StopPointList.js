@@ -2,29 +2,29 @@ var React = require('react')
 var PropTypes = require('react').PropTypes
 var StopPoint = require('./StopPoint')
 
-const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onToggleEdit, onSelectMarker, onUnselectMarker, onUpdateViaOlMap }) => {
+const StopPointList = ({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onToggleEdit, onSelectMarker, onUnselectMarker, onUpdateViaOlMap }, {I18n}) => {
   return (
     <div className='subform'>
       <div className='nested-head'>
         <div className="wrapper">
           <div style={{width: 100}}>
             <div className="form-group">
-              <label className="control-label">ID Reflex</label>
+              <label className="control-label">{I18n.reflex_id}</label>
             </div>
           </div>
           <div>
             <div className="form-group">
-              <label className="control-label">Arrêt</label>
+              <label className="control-label">{I18n.simple_form.labels.stop_point.name}</label>
             </div>
           </div>
           <div>
             <div className="form-group">
-              <label className="control-label">Montée</label>
+              <label className="control-label">{I18n.simple_form.labels.stop_point.for_boarding}</label>
             </div>
           </div>
           <div>
             <div className="form-group">
-              <label className="control-label">Descente</label>
+              <label className="control-label">{I18n.simple_form.labels.stop_point.for_alighting}</label>
             </div>
           </div>
           <div className='actions-5'></div>
@@ -63,6 +63,10 @@ StopPointList.propTypes = {
   onSelectChange: PropTypes.func.isRequired,
   onSelectMarker: PropTypes.func.isRequired,
   onUnselectMarker : PropTypes.func.isRequired
+}
+
+StopPointList.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = StopPointList

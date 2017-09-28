@@ -1,6 +1,6 @@
 var React = require('react')
 var connect = require('react-redux').connect
-var Component = require('react').Component
+var { Component, PropTypes} = require('react')
 var actions = require('../actions')
 var Metas = require('./Metas')
 var Timetable = require('./Timetable')
@@ -10,9 +10,16 @@ var SaveTimetable = require('./SaveTimetable')
 var ConfirmModal = require('./ConfirmModal')
 var ErrorModal = require('./ErrorModal')
 
+const clone = require('../../helpers/clone')
+const I18n = clone(window, "I18n", true)
+
 class App extends Component {
   componentDidMount(){
     this.props.onLoadFirstPage()
+  }
+
+  getChildContext() {
+    return { I18n }
   }
 
   render(){
@@ -39,6 +46,10 @@ const mapDispatchToProps = (dispatch) => {
       actions.fetchTimeTables(dispatch)
     }
   }
+}
+
+App.childContextTypes = {
+  I18n: PropTypes.object
 }
 
 const timeTableApp = connect(null, mapDispatchToProps)(App)

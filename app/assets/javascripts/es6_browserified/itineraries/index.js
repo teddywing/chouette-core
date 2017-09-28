@@ -5,7 +5,9 @@ var createStore = require('redux').createStore
 var reducers = require('./reducers')
 var App = require('./components/App')
 var { handleForm, handleStopPoints } = require('./form_helper')
-let datas = JSON.parse(decodeURIComponent(window.itinerary_stop))
+let clone = require('../helpers/clone')
+let datas = clone(window, "itinerary_stop", true)
+datas = JSON.parse(decodeURIComponent(datas))
 
 // logger, DO NOT REMOVE
 // var applyMiddleware = require('redux').applyMiddleware

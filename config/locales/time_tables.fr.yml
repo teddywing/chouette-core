@@ -29,10 +29,39 @@ fr:
       title: "Dupliquer un calendrier"
     edit:
       title: "Editer le calendrier %{time_table}"
+      day_types: Journées d'application
+      periods: Périodes
+      exceptions: Exceptions
+      synthesis: Synthèse
       error_modal:
         title: "Erreur"
         withoutPeriodsWithDaysTypes: "Un calendrier d'application ne peut pas avoir de journée(s) d'application sans période(s)."
-        withPeriodsWithoutDayTypes: "Un calendrier d'application ne peut pas avoir de période(s) sans journée(s) d'application."  
+        withPeriodsWithoutDayTypes: "Un calendrier d'application ne peut pas avoir de période(s) sans journée(s) d'application."
+      error_submit:
+        periods_overlaps: "Les périodes ne peuvent pas se chevaucher"
+        dates_overlaps: "Une période ne peut chevaucher une date dans un calendrier"
+      confirm_modal:
+        title: "Confirmation"
+        message: "Vous vous apprêtez à changer de page. Voulez-vous valider vos modifications avant cela ?"
+      metas:
+        name: Nom
+        calendar: Modèle de calendrier associée
+        no_calendar: Aucun
+        day_types: Journées d'applications pour les périodes ci-dessous
+        days:
+          1: Di
+          2: Lu
+          3: Ma
+          4: Me
+          5: Je
+          6: Ve
+          7: Sa
+      select2:
+        tag:
+          placeholder: Ajoutez ou cherchez une étiquette...
+      period_form:
+        begin: Début de période
+        end: Fin de période
     show:
       title: Calendrier %{time_table}
       dates: "Dates d'application"

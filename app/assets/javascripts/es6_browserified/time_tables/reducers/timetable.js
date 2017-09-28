@@ -96,9 +96,9 @@ const timetable = (state = {}, action) => {
       let newPeriods = JSON.parse(JSON.stringify(action.timeTablePeriods))
 
       if (action.modalProps.index !== false){
-        updatePeriod = newPeriods[action.modalProps.index]
-        updatePeriod.period_start = period_start
-        updatePeriod.period_end = period_end
+        let updatedPeriod = newPeriods[action.modalProps.index]
+        updatedPeriod.period_start = period_start
+        updatedPeriod.period_end = period_end
         newDates = _.reject(state.time_table_dates, d => actions.isInPeriod(newPeriods, d.date) && !d.in_out)
       }else{
         let newPeriod = {

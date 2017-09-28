@@ -1,11 +1,10 @@
 var _ = require('lodash')
 var React = require('react')
-var Component = require('react').Component
-var PropTypes = require('react').PropTypes
+var { Component, PropTypes } = require('react')
 
 class OlMap extends Component{
-  constructor(props){
-    super(props)
+  constructor(props, context){
+    super(props, context)
   }
 
   fetchApiURL(id){
@@ -116,40 +115,40 @@ class OlMap extends Component{
               <strong>{this.props.value.olMap.json.name}</strong>
             </p>
             <p>
-              <strong>Type d'arrêt : </strong>
+              <strong>{this.context.I18n.routes.edit.stop_point_type} : </strong>
               {this.props.value.olMap.json.area_type}
             </p>
             <p>
-              <strong>Nom court : </strong>
+              <strong>{this.context.I18n.routes.edit.short_name} : </strong>
               {this.props.value.olMap.json.short_name}
             </p>
             <p>
-              <strong>ID Reflex : </strong>
+              <strong>{this.context.I18n.id_reflex} : </strong>
               {this.props.value.olMap.json.user_objectid}
             </p>
 
-            <p><strong>Coordonnées : </strong></p>
+            <p><strong>{this.context.I18n.routes.edit.map.coordinates} : </strong></p>
             <p style={{paddingLeft: 10, marginTop: 0}}>
-              <em>Proj.: </em>WSG84<br/>
-              <em>Lat.: </em>{this.props.value.olMap.json.latitude} <br/>
-              <em>Lon.: </em>{this.props.value.olMap.json.longitude}
+              <em>{this.context.I18n.routes.edit.map.proj}.: </em>WSG84<br/>
+              <em>{this.context.I18n.routes.edit.map.lat}.: </em>{this.props.value.olMap.json.latitude} <br/>
+              <em>{this.context.I18n.routes.edit.map.lon}.: </em>{this.props.value.olMap.json.longitude}
             </p>
             <p>
-              <strong>Code Postal : </strong>
+              <strong>{this.context.I18n.routes.edit.map.postal_code} : </strong>
               {this.props.value.olMap.json.zip_code}
             </p>
             <p>
-              <strong>Commune : </strong>
+              <strong>{this.context.I18n.routes.edit.map.city} : </strong>
               {this.props.value.olMap.json.city_name}
             </p>
             <p>
-              <strong>Commentaire : </strong>
+              <strong>{this.context.I18n.routes.edit.map.comment} : </strong>
               {this.props.value.olMap.json.comment}
             </p>
             {(this.props.value.stoparea_id != this.props.value.olMap.json.stoparea_id) &&(
               <div className='btn btn-outline-primary btn-sm'
                 onClick= {() => {this.props.onUpdateViaOlMap(this.props.index, this.props.value.olMap.json)}}
-              >Sélectionner</div>
+              >{this.context.I18n.actions.select}</div>
             )}
           </div>
             <div className='map_content'>
@@ -163,7 +162,11 @@ class OlMap extends Component{
   }
 }
 
-OlMap.propTypes = {
+OlMap.PropTypes = {
+}
+
+OlMap.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = OlMap

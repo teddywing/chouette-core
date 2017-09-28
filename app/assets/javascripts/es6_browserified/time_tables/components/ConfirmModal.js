@@ -1,18 +1,17 @@
 var React = require('react')
-var Component = require('react').Component
-var PropTypes = require('react').PropTypes
+var { PropTypes } = require('react')
 
-const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, timetable, metas}) => (
+const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, timetable, metas}, {I18n}) => (
   <div className={ 'modal fade ' + ((modal.type == 'confirm') ? 'in' : '') } id='ConfirmModal'>
     <div className='modal-container'>
       <div className='modal-dialog'>
         <div className='modal-content'>
           <div className='modal-header'>
-            <h4 className='modal-title'>Confirmation</h4>
+            <h4 className='modal-title'>{I18n.time_tables.edit.confirm_modal.title}</h4>
           </div>
           <div className='modal-body'>
             <div className='mt-md mb-md'>
-              <p>Vous vous apprêtez à changer de page. Voulez-vous valider vos modifications avant cela ?</p>
+              <p>{I18n.time_tables.edit.confirm_modal.message}</p>
             </div>
           </div>
           <div className='modal-footer'>
@@ -22,7 +21,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, timetable,
               type='button'
               onClick= {() => {onModalCancel(modal.confirmModal.callback)}}
               >
-              Ne pas valider
+              {I18n.cancel}
             </button>
             <button
               className='btn btn-primary'
@@ -30,7 +29,7 @@ const ConfirmModal = ({dispatch, modal, onModalAccept, onModalCancel, timetable,
               type='button'
               onClick = {() => {onModalAccept(modal.confirmModal.callback, timetable, metas)}}
               >
-              Valider
+              {I18n.actions.submit}
             </button>
           </div>
         </div>
@@ -43,6 +42,10 @@ ConfirmModal.propTypes = {
   modal: PropTypes.object.isRequired,
   onModalAccept: PropTypes.func.isRequired,
   onModalCancel: PropTypes.func.isRequired
+}
+
+ConfirmModal.contextTypes = {
+  I18n: PropTypes.object
 }
 
 module.exports = ConfirmModal

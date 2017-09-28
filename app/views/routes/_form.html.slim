@@ -26,7 +26,8 @@
 
 // Get JSON data for route stop points
 = javascript_tag do
-  | window.itinerary_stop = "#{URI.escape(route_json_for_edit(@route))}"
+  | window.itinerary_stop = "#{URI.escape(route_json_for_edit(@route))}";
+  | window.I18n = #{(I18n.backend.send(:translations)[I18n.locale].to_json).html_safe};
 
 / StopPoints Reactux component
 = javascript_include_tag 'es6_browserified/itineraries/index.js'

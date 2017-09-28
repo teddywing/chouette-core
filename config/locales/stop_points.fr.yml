@@ -52,5 +52,6 @@ fr:
   simple_form:
     labels:
       stop_point:
+        name: Arrêt 
         for_boarding: "Montée"
         for_alighting: "Descente"

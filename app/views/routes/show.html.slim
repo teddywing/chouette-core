@@ -48,7 +48,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :deleted_at, \
-                attribute: Proc.new { |s| s.try(:stop_area).deleted_at ? t('false') : t('true') }, \
+                attribute: Proc.new { |s| line_status(s.try(:stop_area).deleted_at) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :zip_code, \

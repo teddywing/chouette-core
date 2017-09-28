@@ -6,4 +6,5 @@ class ComplianceCheck < ActiveRecord::Base
   validates :criticity, presence: true
   validates :name, presence: true
   validates :code, presence: true
+  validates :origin_code, presence: true
 end

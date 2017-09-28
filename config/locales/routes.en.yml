@@ -17,6 +17,25 @@ en:
       title: "Add a new route"
     edit:
       title: "Update route %{route}"
+      select2:
+        placeholder: "Select a stop point..."
+      map:
+        stop_point_type: Stop point type
+        short_name: Short name
+        coordinates: Coordinates
+        proj: Proj
+        lat: Lat
+        lon: Lon
+        postal_code: Zip Code
+        city: City
+        comment: Comment
+      stop_point:
+        boarding:
+          normal: Normal boarding
+          forbidden: Forbidden boarding
+        alighting:
+          normal: Normal alighting
+          forbidden: Forbidden alighting
     show:
       title: "Route %{route}"
       stop_points: "Stop point on route list"
