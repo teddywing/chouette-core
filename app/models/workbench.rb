@@ -11,6 +11,7 @@ class Workbench < ActiveRecord::Base
   has_many :stop_areas, through: :stop_area_referential
   has_many :imports
   has_many :workbench_imports
+  has_many :compliance_check_sets
 
   validates :name, presence: true
   validates :organisation, presence: true

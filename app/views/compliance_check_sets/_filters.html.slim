@@ -1,0 +1,24 @@
+= search_form_for @q_for_form, url: workbench_compliance_check_sets_path(current_offer_workbench), builder: SimpleForm::FormBuilder, class: 'form form-filter' do |f|
+  .ffg-row
+    .input-group.search_bar
+      = f.search_field :referential_name_cont, class: 'form-control', placeholder: t('compliance_check_sets.filters.name')
+      span.input-group-btn
+        button.btn.btn-default type='submit'
+          span.fa.fa-search
+
+  .ffg-row
+    .form-group.togglable
+      = f.label t('activerecord.attributes.compliance_check_set.assigned_to'), required: false, class: 'control-label'
+      = f.input :parent_type_eq_any, collection: ComplianceCheckSet.order('parent_type'), as: :check_boxes, label: false, label_method: lambda {|w| ("<span>#{w}</span>").html_safe}, required: false, wrapper_html: {class: 'checkbox_list'}
+
+    .form-group.togglable
+      = f.label Import.human_attribute_name(:created_at), required: false, class: 'control-label'
+      .filter_menu
+        = f.simple_fields_for :created_at do |p|
+          = p.input :begin, as: :date, label: false, wrapper_html: {class: 'date smart_date filter_menu-item'}, default: @begin_range, include_blank: @begin_range ? false : true
+          = p.input :end, as: :date, label: false, wrapper_html: {class: 'date smart_date filter_menu-item'}, default: @end_range, include_blank: @end_range ? false : true
+
+  .actions
+    = link_to t('actions.erase'), @compliance_checks_sets, class: 'btn btn-link'
+    = f.submit t('actions.filter'), class: 'btn btn-default', id: 'referential_filter_btn'
+
