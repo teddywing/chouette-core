@@ -75,6 +75,7 @@ ChouetteIhm::Application.routes.draw do
     resources :compliance_controls, except: :index do
       get :select_type, on: :collection
     end
+    resources :compliance_control_blocks, :except => [:show, :index]
   end
 
   resources :stop_area_referentials, :only => [:show] do
