@@ -5,5 +5,5 @@ RSpec.describe ComplianceCheckResource, type: :model do
     expect(FactoryGirl.build(:compliance_check_resource)).to be_valid
   end
 
-  it { is_expected.to validate_presence_of(:compliance_check_set) }
+  it { should validate_presence_of(:compliance_check_set) }
 end
