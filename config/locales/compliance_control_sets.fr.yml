@@ -14,12 +14,12 @@ fr:
       name: 'Indiquez un nom de jeux de contrôle...'
     search_no_results: 'Aucun jeu de contrôle ne correspond à votre recherche'
   activerecord:
-    models:
-      compliance_control_set: Calendrier
-    attributes:
-      compliance_control_set:
-        name: Nom
-        assignment: Affectation
-        owner_jdc: Propriétaire du jeu de contrôle
-        control_numbers: Nb contrôle
-        updated_at: Mis a jour
+          models:
+            compliance_control_set: Calendrier
+          attributes:
+            compliance_control_set:
+              name: Nom
+              assigned_to: Affectation
+              owner_jdc: Propriétaire du jeu de contrôle
+              control_numbers: Nb contrôle
+              updated_at: Mis a jour

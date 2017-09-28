@@ -11,4 +11,5 @@ RSpec.describe ComplianceCheck, type: :model do
   it { should validate_presence_of :criticity }
   it { should validate_presence_of :name }
   it { should validate_presence_of :code }
+  it { should validate_presence_of :origin_code }
 end

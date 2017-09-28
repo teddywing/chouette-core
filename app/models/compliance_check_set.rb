@@ -7,4 +7,9 @@ class ComplianceCheckSet < ActiveRecord::Base
   belongs_to :parent, polymorphic: true
 
   enumerize :status, in: %w[new pending successful warning failed running aborted canceled]
+
+  scope :where_created_at_between, ->(start_date, end_date) do
+    where('created_at BETWEEN ? AND ?', start_date, end_date)
+  end
+
 end

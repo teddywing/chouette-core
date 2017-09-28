@@ -19,7 +19,7 @@
         .col-lg-12
           .select_table
             = table_builder_2 @compliance_control_sets,
-                    [ \
+              [ \
                 TableBuilderHelper::Column.new( \
                   key: :name, \
                   attribute: 'name', \
@@ -28,7 +28,7 @@
                     end \
                 ), \
                 TableBuilderHelper::Column.new( \
-                  key: :assignment, \
+                  key: :assigned_to, \
                   attribute: 'assignment' \
                 ), \
                 TableBuilderHelper::Column.new( \
@@ -44,9 +44,9 @@
                   attribute: Proc.new { |n| l(n.updated_at, format: :long) if n.updated_at }, \
                 ) \
               ],
-                    sortable: true,
-                    links: [:show],
-                    cls: 'table has-filter has-search'
+              sortable: true,
+              links: [:show],
+              cls: 'table has-filter has-search'
     - unless @compliance_control_sets.any?
       .row.mt-xs
         .col-lg-12
