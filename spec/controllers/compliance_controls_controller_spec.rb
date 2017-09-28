@@ -24,7 +24,14 @@ RSpec.describe ComplianceControlsController, type: :controller do
 
   describe 'GET #new' do
     it 'should be successful' do
-      get :new, compliance_control_set_id: compliance_control_set.id
+      get :new, compliance_control_set_id: compliance_control_set.id, sti_class: 'GenericAttributeControl::MinMax'
+      expect(response).to be_success
+    end
+  end
+
+  describe 'GET #select_type' do
+    it 'should be successful' do
+      get :select_type, compliance_control_set_id: compliance_control_set.id
       expect(response).to be_success
     end
   end

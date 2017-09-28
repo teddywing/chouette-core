@@ -72,7 +72,9 @@ ChouetteIhm::Application.routes.draw do
   resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
 
   resources :compliance_control_sets do
-    resources :compliance_controls, except: :index
+    resources :compliance_controls, except: :index do
+      get :select_type, on: :collection
+    end
   end
 
   resources :stop_area_referentials, :only => [:show] do
