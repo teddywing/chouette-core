@@ -1,0 +1,8 @@
+= form_tag(new_compliance_control_set_compliance_control_path, method: :get) do
+  - @sti_subclasses.each do |klass|
+    = radio_button_tag(:sti_class, klass)
+    = label_tag(:sti_class, klass)
+  end
+  = submit_tag("suivant")
+end
+

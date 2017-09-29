@@ -2,15 +2,14 @@ class ComplianceControlsController < BreadcrumbController
   defaults resource_class: ComplianceControl
   belongs_to :compliance_control_set
 
-  def new
-    @compliance_control_set = parent
-    @compliance_control = GenericAttributeControl::MinMax.new
-    @compliance_control.build_compliance_control_block
+  def select_type
+    @sti_subclasses = ComplianceControl.subclasses
   end
 
-  def update
-    path = compliance_control_set_compliance_control_path(parent, resource)
-    update!(notice: t('notice.compliance_control.updated')) { path }
+  def new
+    redirect_to(action: :select_type) unless params[:sti_class]
+    @compliance_control_set = parent
+    @compliance_control     = params[:sti_class].constantize.new
   end
 
   private
