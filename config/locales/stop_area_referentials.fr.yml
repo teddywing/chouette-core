@@ -5,3 +5,8 @@ fr:
       cancel_sync: "Annuler la synchronisation Reflex"
     show:
       title: 'Synchronisation iCAR'
+  activerecord:
+    models:
+      stop_area_referential:
+        one: "référentiel d'arrêt"
+        other: "référentiel d'arrêts"

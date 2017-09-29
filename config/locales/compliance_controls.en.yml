@@ -1,7 +1,8 @@
 en:
   activerecord:
     models:
-      compliance_control: "compliance control"
+      one: "compliance control"
+      other: "compliance controls"
     attributes:
       compliance_control:
         name: "Name"

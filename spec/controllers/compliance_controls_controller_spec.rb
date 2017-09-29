@@ -40,6 +40,7 @@ RSpec.describe ComplianceControlsController, type: :controller do
     it 'should be successful' do
       post :create, compliance_control_set_id: compliance_control_set.id, compliance_control: compliance_control_params
       expect(response).to have_http_status(302)
+      expect(response).to redirect_to compliance_control_set_path(compliance_control_set)
     end
   end
 

@@ -14,3 +14,9 @@ en:
       zero: "Currently, there is no referential in your workbench"
       one: "Currently, there is one referential in your workbench"
       other: "Currently, there are #{count} referentials in your workbench"
+  activerecord:
+    models:
+      workbench:
+        zero: "workbench"
+        one: "workbench"
+        other: "workbenches"

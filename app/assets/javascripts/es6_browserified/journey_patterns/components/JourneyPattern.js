@@ -57,6 +57,10 @@ class JourneyPattern extends Component{
     )
   }
 
+  isDisabled(action) {
+    return !this.props.status.policy[`journey_patterns.${action}`] && !this.props.editMode
+  }
+
   render() {
     this.previousCity = undefined
 
@@ -78,9 +82,10 @@ class JourneyPattern extends Component{
               <span className='fa fa-cog'></span>
             </div>
             <ul className='dropdown-menu'>
-              <li className={(this.props.status.policy['journey_patterns.update'] == false || this.props.editMode == false) ? 'disabled' : ''}>
+              <li className={this.isDisabled('update') ? 'disabled' : ''}>
                 <button
                   type='button'
+                  disabled={this.isDisabled('update')}
                   onClick={this.props.onOpenEditModal}
                   data-toggle='modal'
                   data-target='#JourneyPatternModal'
@@ -91,10 +96,10 @@ class JourneyPattern extends Component{
               <li className={this.props.value.object_id ? '' : 'disabled'}>
                 {this.vehicleJourneyURL(this.props.value.object_id)}
               </li>
-              <li className={'delete-action' + ((this.props.status.policy['journey_patterns.destroy'] == false || this.props.editMode == false) ? ' disabled' : '')}>
+              <li className={'delete-action' + (this.isDisabled('destroy') ? ' disabled' : '')}>
                 <button
                   type='button'
-                  disabled={(this.props.status.policy['journey_patterns.destroy'] == false || this.props.editMode == false)? 'disabled' : ''}
+                  disabled={this.isDisabled('destroy') ? 'disabled' : ''}
                   onClick={(e) => {
                     e.preventDefault()
                     this.props.onDeleteJourneyPattern(this.props.index)}

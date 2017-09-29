@@ -1,7 +1,8 @@
 fr:
   activerecord:
     models:
-      compliance_control: "Jeu de controle"
+      one: "jeu de controle"
+      other: "jeux de controle"
     attributes:
       compliance_control:
         name: "Nom"
@@ -21,7 +22,7 @@ fr:
     new:
       title: "Ajouter un jeu de controle"
     edit:
-      title: "Editer le jeu de controle"  
+      title: "Editer le jeu de controle"
     route:
       zdl_stop_area:
         messages:
