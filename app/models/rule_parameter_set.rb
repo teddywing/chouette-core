@@ -65,8 +65,26 @@ class RuleParameterSet < ActiveRecord::Base
   end
 
   def self.all_modes
-    # Chouette::TransportMode.all.map { |m| m.to_s}
-    []
+    ["interchange",
+ "unknown",
+ "coach",
+ "air",
+ "waterborne",
+ "bus",
+ "ferry",
+ "walk",
+ "metro",
+ "shuttle",
+ "rapid_transit",
+ "taxi",
+ "local_train",
+ "train",
+ "long_distance_train",
+ "tramway",
+ "trolleybus",
+ "private_vehicle",
+ "bicycle",
+ "other"]
   end
 
   def self.mode_attribute?( method_name )
