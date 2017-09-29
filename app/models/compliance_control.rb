@@ -3,6 +3,7 @@ class ComplianceControl < ActiveRecord::Base
   belongs_to :compliance_control_set
   belongs_to :compliance_control_block
 
+  cattr_reader :default_criticity, :default_code
   @@default_criticity = :warning
   @@default_code = ""
 

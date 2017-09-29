@@ -2,6 +2,7 @@ module GenericAttributeControl
   class MinMax < ComplianceControl
     hstore_accessor :control_attributes, minimum: :integer, maximum: :integer
 
+    cattr_reader :default_criticity, :default_code
     @@default_criticity = :warning
     @@default_code = "3-Generic-2"
 
