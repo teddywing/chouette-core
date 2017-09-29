@@ -12,7 +12,7 @@ RSpec.describe LineReferential, :type => :model do
 
   describe "#transport_modes" do
     it 'returns a list of all transport modes' do
-      expect(FactoryGirl.create(:line_referential).transport_mode).to match_array(StifTransportModeEnumerations.transport_mode )
+      expect(FactoryGirl.create(:line_referential).transport_modes).to match_array(StifTransportModeEnumerations.transport_mode.options.map(&:first) )
     end
   end
 end
