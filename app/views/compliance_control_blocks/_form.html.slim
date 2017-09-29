@@ -1,8 +1,9 @@
 = simple_form_for [@compliance_control_set, @compliance_control_block], html: { class: 'form-horizontal', id: 'compliance_control_block_form' }, wrapper: :horizontal_form do |f|
   .row
     .col-lg-12
-      = f.input :transport_mode, as: :select, collection: ComplianceControlBlock.transport_modes
-      / = f.input :sub_transport_mode
+      .form-group
+        = f.input :transport_mode, as: :select, collection: ComplianceControlBlock.transport_modes, label: t('activerecord.attributes.compliance_control_block.transport_mode') 
+        = f.input :transport_sub_mode, as: :select, collection: ComplianceControlBlock.transport_sub_modes, label: t('activerecord.attributes.compliance_control_block.transport_sub_mode')
 
   .separator
 
