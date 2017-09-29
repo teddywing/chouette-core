@@ -1,3 +1,4 @@
+require_relative 'hash'
 module Support
   module DataModifier
     module Box
@@ -7,9 +8,7 @@ module Support
 
       class << self
         def unbox atts
-          atts.inject Hash.new do | h, (k,v) |
-            h.merge(k => value_of(v))
-          end
+          Hash.map_values(atts, method(:value_of))
         end
         def value_of v
           self === v ? v.value : v

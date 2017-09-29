@@ -7,8 +7,12 @@ module Support
       SecureRandom.hex
     end
 
-    def random_int
-      (random_number * PRETTY_LARGE_INT).to_i
+    def random_element from
+      from[random_int(from.size)]
+    end
+
+    def random_int max_plus_one=PRETTY_LARGE_INT
+      (random_number * max_plus_one).to_i
     end
 
     def random_number

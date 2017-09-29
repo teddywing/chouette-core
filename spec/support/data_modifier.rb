@@ -1,4 +1,5 @@
 require_relative 'data_modifier/enum'
+require_relative 'data_modifier/hash'
 module Support
   module DataModifier
     module InstanceMethods
@@ -48,4 +49,5 @@ end
 
 RSpec.configure do | c |
   c.include Support::DataModifier::InstanceMethods, type: :checksum
+  c.include Support::DataModifier::InstanceMethods, type: :model
 end
