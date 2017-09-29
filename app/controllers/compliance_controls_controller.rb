@@ -15,6 +15,10 @@ class ComplianceControlsController < BreadcrumbController
     end
   end
 
+  def create
+    create! { compliance_control_set_path(parent) }
+  end
+
   private
   def dynamic_attributes_params
     params.require(:compliance_control).permit(:type).values[0].constantize.dynamic_attributes
