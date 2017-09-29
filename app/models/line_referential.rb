@@ -1,4 +1,6 @@
 class LineReferential < ActiveRecord::Base
+  include StifTransportModeEnumerations
+  
   has_many :line_referential_memberships
   has_many :organisations, through: :line_referential_memberships
   has_many :lines, class_name: 'Chouette::Line'
@@ -24,9 +26,5 @@ class LineReferential < ActiveRecord::Base
 
   def last_sync
     line_referential_syncs.last
-  end
-
-  def transport_modes
-    Chouette::TransportMode.all.select { |tm| tm.to_i > 0 }
   end
 end

@@ -2,8 +2,8 @@
   .row
     .col-lg-12
       .form-group
-        = f.input :transport_mode, as: :select, collection: ComplianceControlBlock.transport_modes, label: t('activerecord.attributes.compliance_control_block.transport_mode') 
-        = f.input :transport_sub_mode, as: :select, collection: ComplianceControlBlock.transport_sub_modes, label: t('activerecord.attributes.compliance_control_block.transport_sub_mode')
+        = f.input :transport_mode, as: :select, collection: ComplianceControlBlock.transport_modes, label: t('activerecord.attributes.compliance_control_blocks.transport_mode') 
+        = f.input :transport_sub_mode, as: :select, collection: ComplianceControlBlock.transport_sub_modes, label: t('activerecord.attributes.compliance_control_blocks.transport_submode')
 
   .separator
 

@@ -3,11 +3,6 @@ class ComplianceControlBlocksController < BreadcrumbController
   belongs_to :compliance_control_set
   actions :all, :except => [:show, :index]
 
-  def new
-    @compliance_control_set = parent
-    @compliance_control_block = ComplianceControlBlock.new(compliance_control_set: @compliance_control_set)
-  end
-
   private
 
   def compliance_control_block_params

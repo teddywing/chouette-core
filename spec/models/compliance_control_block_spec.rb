@@ -9,4 +9,5 @@ RSpec.describe ComplianceControlBlock, type: :model do
 
   it { should belong_to :compliance_control_set }
   it { should have_many(:compliance_controls).dependent(:destroy) }
+  it { should validate_presence_of(:transport_mode) }
 end

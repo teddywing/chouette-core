@@ -62,7 +62,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :transport_mode, \
-                attribute: Proc.new { |n| n.transport_mode ? t("enumerize.line.transport_mode.#{n.transport_mode}") : '' }, \
+                attribute: Proc.new { |n| n.transport_mode ? t("enumerize.transport_mode.#{n.transport_mode}") : '' }, \
               ), \
               TableBuilderHelper::Column.new( \
                 key: 'networks.name', \

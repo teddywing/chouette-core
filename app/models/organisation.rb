@@ -19,7 +19,7 @@ class Organisation < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :code
 
-  after_create :add_rule_parameter_set
+  # after_create :add_rule_parameter_set
 
   def add_rule_parameter_set
     RuleParameterSet.default_for_all_modes( self).save

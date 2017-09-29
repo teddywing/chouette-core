@@ -65,7 +65,8 @@ class RuleParameterSet < ActiveRecord::Base
   end
 
   def self.all_modes
-    Chouette::TransportMode.all.map { |m| m.to_s}
+    # Chouette::TransportMode.all.map { |m| m.to_s}
+    []
   end
 
   def self.mode_attribute?( method_name )

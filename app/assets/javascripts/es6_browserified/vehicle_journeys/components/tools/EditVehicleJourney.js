@@ -111,7 +111,7 @@ class EditVehicleJourney extends Component {
                               <input
                                 type='text'
                                 className='form-control'
-                                value={window.I18n.fr.enumerize.line.transport_mode[this.props.modal.modalProps.vehicleJourney.transport_mode]}
+                                value={window.I18n.fr.enumerize.transport_mode[this.props.modal.modalProps.vehicleJourney.transport_mode]}
                                 disabled={true}
                               />
                             </div>
@@ -122,7 +122,7 @@ class EditVehicleJourney extends Component {
                               <input
                                 type='text'
                                 className='form-control'
-                                value={window.I18n.fr.enumerize.line.transport_submode[this.props.modal.modalProps.vehicleJourney.transport_submode]}
+                                value={window.I18n.fr.enumerize.transport_submode[this.props.modal.modalProps.vehicleJourney.transport_submode]}
                                 disabled={true}
                               />
                             </div>

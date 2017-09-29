@@ -1,11 +1,14 @@
 fr:
   activerecord:
     models:
-      compliance_control_blocks: Groupes de contrôles
+      compliance_control_block: 
+        zero:  "Groupe de contrôle"
+        one:   "Groupe de contrôle"
+        other: "Groupes de contrôles"
     attributes:
       compliance_control_blocks:
         transport_mode: Mode de transport
-        sub_transport_mode: Sous-mode de transport
+        transport_submode: Sous-mode de transport
   compliance_control_blocks:
     actions:
       destroy_confirm: Etes vous sûr de supprimer ce bloc ?
