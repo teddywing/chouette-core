@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170928090016) do
+ActiveRecord::Schema.define(version: 20170928144740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,6 +163,7 @@ ActiveRecord::Schema.define(version: 20170928090016) do
     t.hstore   "resource_attributes"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.string   "status"
   end
 
   add_index "compliance_check_messages", ["compliance_check_id"], name: "index_compliance_check_messages_on_compliance_check_id", using: :btree
@@ -174,9 +175,12 @@ ActiveRecord::Schema.define(version: 20170928090016) do
     t.string   "type"
     t.string   "reference"
     t.hstore   "metrics"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "compliance_check_set_id"
   end
+
+  add_index "compliance_check_resources", ["compliance_check_set_id"], name: "index_compliance_check_resources_on_compliance_check_set_id", using: :btree
 
   create_table "compliance_check_sets", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id"
@@ -983,6 +987,7 @@ ActiveRecord::Schema.define(version: 20170928090016) do
   add_foreign_key "compliance_check_blocks", "compliance_check_sets"
   add_foreign_key "compliance_check_messages", "compliance_check_resources"
   add_foreign_key "compliance_check_messages", "compliance_checks"
+  add_foreign_key "compliance_check_resources", "compliance_check_sets"
   add_foreign_key "compliance_check_sets", "compliance_control_sets"
   add_foreign_key "compliance_check_sets", "referentials"
   add_foreign_key "compliance_check_sets", "workbenches"

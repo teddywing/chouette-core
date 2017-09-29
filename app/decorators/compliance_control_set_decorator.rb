@@ -20,12 +20,6 @@ class ComplianceControlSetDecorator < Draper::Decorator
       )
     # end
 
-    # if h.policy(ComplianceControl).create?
-      links << Link.new(
-        content: h.t('compliance_control_sets.actions.add_compliance_control'),
-        href:  h.select_type_compliance_control_set_compliance_controls_path(object.id)
-      )
-    # end
     links
   end
 
