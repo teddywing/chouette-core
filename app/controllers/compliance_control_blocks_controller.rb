@@ -6,7 +6,7 @@ class ComplianceControlBlocksController < BreadcrumbController
   private
 
   def compliance_control_block_params
-    params.require(:compliance_control_block).permit(:transport_mode, :transport_sub_mode)
+    params.require(:compliance_control_block).permit(:transport_mode, :transport_submode)
   end
 
 end

@@ -4,15 +4,15 @@ class ComplianceControlBlock < ActiveRecord::Base
 
   hstore_accessor :condition_attributes, 
     transport_mode: :string, 
-    transport_sub_mode: :string
+    transport_submode: :string
 
     validates_presence_of :transport_mode
 
   def self.transport_modes
-    StifTransportModeEnumerations.transport_mode.options
+    StifTransportModeEnumerations.transport_modes
   end
 
-  def self.transport_sub_modes
-    StifTransportSubmodeEnumerations.transport_submode.options
+  def self.transport_submodes
+    StifTransportSubmodeEnumerations.transport_submodes
   end
 end
