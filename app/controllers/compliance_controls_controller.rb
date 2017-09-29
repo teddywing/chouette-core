@@ -7,9 +7,12 @@ class ComplianceControlsController < BreadcrumbController
   end
 
   def new
-    redirect_to(action: :select_type) unless params[:sti_class]
-    @compliance_control_set = parent
-    @compliance_control     = params[:sti_class].constantize.new
+    if params[:sti_class]
+      @compliance_control_set = parent
+      @compliance_control     = params[:sti_class].constantize.new
+    else
+      redirect_to(action: :select_type)
+    end
   end
 
   private
