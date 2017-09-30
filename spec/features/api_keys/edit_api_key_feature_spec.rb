@@ -1,4 +1,4 @@
-RSpec.describe 'New API Key', type: :feature do
+RSpec.describe 'Edit API Key', type: :feature do
   login_user
 
   describe "api_keys#edit" do
