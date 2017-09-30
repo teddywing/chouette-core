@@ -1,0 +1,4 @@
+fr:
+  dashboards:
+    show:
+      title: "Tableau de bord %{organisation}"

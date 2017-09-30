@@ -11,3 +11,7 @@ Rails.application.config.to_prepare do
     end
   end
 end unless Rails.env.test?
+
+Rails.application.config.to_prepare do
+  Dashboard.default_class = Stif::Dashboard
+end

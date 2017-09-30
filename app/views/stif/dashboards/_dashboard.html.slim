@@ -1,0 +1,73 @@
+.row
+  .col-lg-12
+    h2.content_header = t('.subtitle')
+
+.row
+  .col-lg-6.col-md-6.col-sm-6.col-xs-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title
+          = t('.organisation')
+
+      .panel-body
+        em.small.text-muted = t('.no_content')
+
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title
+          = t('.idf')
+
+      .panel-body
+        em.small.text-muted = t('.no_content')
+
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title
+          = t('.api_keys')
+          span.badge.ml-xs = current_organisation.api_keys.count if current_organisation.api_keys.present?
+      - if current_organisation.api_keys.present?
+        - current_organisation.api_keys.each do |api_key|
+          .list-group
+            = policy(api_key).edit? ? link_to( "#{api_key.name} : #{api_key.token}", edit_api_key_path(api_key), class: 'list-group-item') : "#{api_key.name} : #{api_key.token}"
+      - else
+        .panel-body
+          em.small.text-muted = t('.no_content')
+
+  .col-lg-6.col-md-6.col-sm-6.col-xs-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title.with_actions
+          div
+            = t('.referentials')
+            span.badge.ml-xs = @referentials.count if @referentials.present?
+
+          div
+            = link_to '', workbench_path(@dashboard.workbench), class: ' fa fa-chevron-right pull-right', title: t('.see')
+
+      - if @referentials.present?
+        .list-group
+          - @referentials.each_with_index do |referential, i|
+            = link_to referential.name, referential_path(referential, workbench_id: referential.workbench_id, current_workbench_id: @dashboard.workbench.id), class: 'list-group-item' if i < 6
+
+      - else
+        .panel-body
+          em.small.text-muted = t('.no_content')
+
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title.with_actions
+          div
+            = t('.calendars')
+            span.badge.ml-xs = @dashboard.calendars.count if @dashboard.calendars.present?
+
+          div
+            = link_to '', calendars_path, class: ' fa fa-chevron-right pull-right', title: t('.see')
+
+      - if @dashboard.calendars.present?
+        .list-group
+          - @dashboard.calendars.each_with_index do |calendar, i|
+            = link_to calendar.name, calendar_path(calendar), class: 'list-group-item' if i < 6
+
+      - else
+        .panel-body
+          em.small.text-muted = t('.no_content')
