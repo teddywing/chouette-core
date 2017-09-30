@@ -1,4 +1,5 @@
 class ComplianceControlSetsController < BreadcrumbController
+  belongs_to :workbench
   defaults resource_class: ComplianceControlSet
   before_action :ransack_updated_at_params, only: [:index]
   respond_to :html
