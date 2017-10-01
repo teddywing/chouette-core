@@ -52,6 +52,7 @@ class ReferentialsController < BreadcrumbController
   def edit
     edit! do
       if @referential.in_workbench?
+        @workbench = @referential.workbench
         @referential.init_metadatas default_date_range: Range.new(Date.today, Date.today.advance(months: 1))
       end
     end
@@ -141,6 +142,8 @@ class ReferentialsController < BreadcrumbController
     if @referential.in_workbench?
       @referential.init_metadatas default_date_range: Range.new(Date.today, Date.today.advance(months: 1))
     end
+
+    @workbench = @referential.workbench
   end
 
   private
