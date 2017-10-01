@@ -128,8 +128,11 @@ class ReferentialsController < BreadcrumbController
   def build_referenial
     if params[:from]
       source_referential = Referential.find(params[:from])
-      @referential = Referential.new_from(source_referential, current_functional_scope)
-      @referential.workbench_id = params[:current_workbench_id]
+
+      overrides = {}
+      overrides[:workbench] = Workbench.find params[:current_workbench_id] if params[:current_workbench_id]
+
+      @referential = Referential.new_from(source_referential, overrides)
     end
 
     @referential.data_format = current_organisation.data_format
