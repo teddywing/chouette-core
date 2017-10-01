@@ -155,10 +155,15 @@ class ReferentialMetadata < ActiveRecord::Base
   end
   private :clear_periods
 
-  def self.new_from(from, functional_scope)
+  def self.new_from(from, scopes = {})
+    line_ids = from.line_ids
+    if scopes[:line_scope]
+      line_ids = scopes[:line_scope].where(id: line_ids).pluck(:id)
+    end
+
     from.dup.tap do |metadata|
       metadata.referential_source_id = from.referential_id
-      metadata.line_ids = from.referential.lines.where(id: metadata.line_ids, objectid: functional_scope).collect(&:id)
+      metadata.line_ids =  line_ids
       metadata.referential_id = nil
     end
   end

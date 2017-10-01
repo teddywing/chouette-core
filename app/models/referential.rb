@@ -135,18 +135,24 @@ class Referential < ActiveRecord::Base
     self
   end
 
-  def self.new_from(from, functional_scope)
-    Referential.new(
+  def self.new_from(from, overrides = {})
+    attributes = {
       name: I18n.t("activerecord.copy", :name => from.name),
       slug: "#{from.slug}_clone",
+      workbench: from.workbench,
       prefix: from.prefix,
       time_zone: from.time_zone,
       bounds: from.bounds,
       line_referential: from.line_referential,
       stop_area_referential: from.stop_area_referential,
-      created_from: from,
-      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, functional_scope) }
-    )
+      created_from: from
+    }.merge(overrides)
+
+    Referential.new(attributes).tap do |referential|
+      referential.metadatas = from.metadatas.map do |m|
+        ReferentialMetadata.new_from(m, line_scope: referential.workbench.lines)
+      end
+    end
   end
 
   def self.available_srids
