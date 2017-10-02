@@ -13,7 +13,7 @@ RSpec.describe GenericAttributeControl::Pattern, type: :model do
     end
   end
   context 'are used in instantiation' do
-    let( :record ){ create :uniqueness }
+    let( :record ){ create :pattern }
     let( :default_att_names ){%w[ code origin_code criticity ]}
 
     it 'all defaults' do
@@ -43,7 +43,7 @@ RSpec.describe GenericAttributeControl::Pattern, type: :model do
         expected_values = expected.values_at(*default_att_names)
         # Remove key to be tested from atts passed to `#create`
         construction_atts = H.first_values(atts).merge(key => nil).compact
-        explicit = create :uniqueness, construction_atts 
+        explicit = create :pattern, construction_atts 
 
         expect( explicit.attributes.values_at(*default_att_names ))
           .to eq(expected_values)
