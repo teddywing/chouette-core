@@ -1,4 +1,4 @@
-= search_form_for @q_for_form, url: workbench_compliance_check_sets_path(current_offer_workbench), builder: SimpleForm::FormBuilder, class: 'form form-filter' do |f|
+= search_form_for @q_for_form, url: workbench_compliance_check_sets_path(@workbench), builder: SimpleForm::FormBuilder, class: 'form form-filter' do |f|
   .ffg-row
     .input-group.search_bar
       = f.search_field :referential_name_cont, class: 'form-control', placeholder: t('compliance_check_sets.filters.name')
@@ -21,4 +21,3 @@
   .actions
     = link_to t('actions.erase'), @compliance_checks_sets, class: 'btn btn-link'
     = f.submit t('actions.filter'), class: 'btn btn-default', id: 'referential_filter_btn'
-

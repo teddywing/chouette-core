@@ -1,7 +1,10 @@
 fr:
   activerecord:
     models:
-      compliance_control_blocks: Control blocks
+      compliance_control_block: 
+        zero:  Control blocks
+        one:   Control block
+        other: Control blocks
     attributes:
       compliance_control_blocks:
         transport_mode: Transport mode

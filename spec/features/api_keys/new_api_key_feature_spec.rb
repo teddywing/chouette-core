@@ -1,3 +1,4 @@
+# coding: utf-8
 RSpec.describe 'New API Key', type: :feature do
   login_user
 
@@ -13,21 +14,21 @@ RSpec.describe 'New API Key', type: :feature do
 
     it 'complete workflow' do
       # /workbenches
-      visit workbenches_path 
+      visit dashboard_path
       expect(page).to have_link(create_label, href: new_api_key_path)
       # to be created api_key does not exist yet
       expect( page ).not_to have_content(unique_name)
 
       # /api_keys/new
-      click_link create_label 
-      fill_in(name_label, with: unique_name) 
+      click_link create_label
+      fill_in(name_label, with: unique_name)
       click_button validate_label
 
       # check impact on DB
       expect(last_api_key.name).to eq(unique_name)
 
       # check redirect and changed display
-      expect(page.current_path).to eq(workbenches_path)
+      expect(page.current_path).to eq(dashboard_path)
       # to be created api_key exists now
       expect( page ).to have_content(unique_name)
     end
@@ -35,4 +36,3 @@ RSpec.describe 'New API Key', type: :feature do
   end
 
 end
-  

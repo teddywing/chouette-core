@@ -6,7 +6,8 @@ class ComplianceCheckSet < ActiveRecord::Base
   belongs_to :workbench
   belongs_to :parent, polymorphic: true
 
-  has_many :compliance_check_set
+  has_many :compliance_check_resources
+  has_many :compliance_check_messages
 
   enumerize :status, in: %w[new pending successful warning failed running aborted canceled]
 

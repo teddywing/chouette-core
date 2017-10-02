@@ -1,6 +1,8 @@
 require 'sidekiq/web'
 
 ChouetteIhm::Application.routes.draw do
+  resource :dashboard
+
   resources :workbenches, only: [:show, :index] do
     delete :referentials, on: :member, action: :delete_referentials
     resources :imports do
@@ -216,7 +218,7 @@ ChouetteIhm::Application.routes.draw do
     end
   end
 
-  root :to => "workbenches#index"
+  root :to => "dashboards#show"
 
   get '/help/(*slug)' => 'help#show'
 

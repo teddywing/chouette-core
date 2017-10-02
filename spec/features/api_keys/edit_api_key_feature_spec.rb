@@ -1,4 +1,4 @@
-RSpec.describe 'New API Key', type: :feature do
+RSpec.describe 'Edit API Key', type: :feature do
   login_user
 
   describe "api_keys#edit" do
@@ -12,8 +12,7 @@ RSpec.describe 'New API Key', type: :feature do
     let( :unique_name ){ SecureRandom.uuid }
 
     it 'complete workflow' do
-      # /workbenches
-      visit workbenches_path 
+      visit dashboard_path
       # api_key's new name does not exist yet
       expect( page ).not_to have_content(unique_name)
       # the api_key is visible
@@ -28,7 +27,7 @@ RSpec.describe 'New API Key', type: :feature do
       expect(api_key.reload.name).to eq(unique_name)
 
       # check redirect and changed display
-      expect(page.current_path).to eq(workbenches_path)
+      expect(page.current_path).to eq(dashboard_path)
       # changed api_key's name exists now
       expect( page ).to have_content(unique_name)
     end
@@ -36,4 +35,3 @@ RSpec.describe 'New API Key', type: :feature do
   end
 
 end
-  

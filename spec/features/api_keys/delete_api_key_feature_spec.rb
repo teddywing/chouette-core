@@ -10,7 +10,7 @@ RSpec.describe 'New API Key', type: :feature do
 
     xit 'complete workflow' do
       # /workbenches
-      visit workbenches_path 
+      visit dashboard_path
       # the api_key is visible
       click_link edit_label
 
@@ -23,7 +23,7 @@ RSpec.describe 'New API Key', type: :feature do
       # expect(Api::V1::ApiKey.where(id: api_key.id)).to be_empty
 
       # # check redirect and changed display
-      # expect(page.current_path).to eq(workbenches_path)
+      # expect(page.current_path).to eq(dashboard_path)
       # # deleted api_key's not shown anymore
       # expect( page ).not_to have_content(edit_label)
     end
@@ -31,4 +31,3 @@ RSpec.describe 'New API Key', type: :feature do
   end
 
 end
-  
