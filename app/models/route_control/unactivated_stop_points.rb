@@ -1,5 +1,5 @@
 module RouteControl
-  class UnactivatedStopPoint < ComplianceControl
+  class UnactivatedStopPoints < ComplianceControl
 
     @@default_code = "3-Route-10"
   end

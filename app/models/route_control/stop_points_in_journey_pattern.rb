@@ -1,5 +1,5 @@
 module RouteControl
-  class StopPointInJourneyPattern < ComplianceControl
+  class StopPointsInJourneyPattern < ComplianceControl
 
     @@default_code = "3-Route-6"
   end

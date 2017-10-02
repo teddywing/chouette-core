@@ -1,14 +1,12 @@
-
 FactoryGirl.define do
 
-  factory :journey_pattern_control_duplicates, class: 'JourneyPatternControl::Duplicates' do
+  factory :vehicle_journey_control_wating_time, class: 'vehicleJourneyControl::WatingTime' do
     association :compliance_control_set
     association :compliance_control_block
   end
 
-  factory :journey_pattern_control_vehicle_journey, class: 'JourneyPatternControl::VehicleJourney' do
+  factory :vehicle_journey_control_delta, class: 'vehicleJourneyControl::Delta' do
     association :compliance_control_set
     association :compliance_control_block
   end
-
 end

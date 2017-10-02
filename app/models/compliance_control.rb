@@ -33,10 +33,6 @@ class ComplianceControl < ActiveRecord::Base
    self.name ||= self.class.name
    self.code ||= self.class.default_code
    self.origin_code ||= self.class.default_code
-   # TODO: Remove this very ambigous line, as a matter of fact it is never triggered
-   # **unless** `criticity` is **explicitly** set to nil, thusly bypassing the att's
-   # initialisation by `Enumerize`'s default.
-   self.criticity ||= self.class.default_criticity
   end
 
 end

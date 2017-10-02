@@ -1,4 +1,4 @@
-module VehicleJourneyControl
+module RouteControl
   class VehicleJourneyAtStops < ComplianceControl
 
     @@default_code = "3-VehicleJourney-5"

@@ -1,6 +1,6 @@
 
-RSpec.describe RouteControl::StopPointInJourneyPattern, type: :model do
-  let( :default_code ){ "3-Generic-2" }
+RSpec.describe RouteControl::StopPointsInJourneyPattern, type: :model do
+  let( :default_code ){ "3-Route-6" }
   let( :factory ){ :route_control_stop_point_in_journey_pattern }
 
   it_behaves_like 'ComplianceControl Class Level Defaults' 
