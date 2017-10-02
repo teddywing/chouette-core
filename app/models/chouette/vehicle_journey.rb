@@ -2,7 +2,7 @@ module Chouette
   class VehicleJourney < TridentActiveRecord
     include ChecksumSupport
     include VehicleJourneyRestrictions
-    include StifTransportModeEnumerations
+    extend StifTransportModeEnumerations
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
 

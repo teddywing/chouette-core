@@ -2,8 +2,8 @@ class Chouette::Line < Chouette::ActiveRecord
   include StifCodifligneAttributesSupport
   include LineRestrictions
   include LineReferentialSupport
-  include StifTransportModeEnumerations
-  include StifTransportSubmodeEnumerations
+  extend StifTransportModeEnumerations
+  extend StifTransportSubmodeEnumerations
 
   extend ActiveModel::Naming
 
