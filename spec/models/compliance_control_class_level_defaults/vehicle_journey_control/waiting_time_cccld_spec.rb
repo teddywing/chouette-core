@@ -1,5 +1,5 @@
 
-RSpec.describe VehicleJourneyControl::WatingTime, type: :model do
+RSpec.describe VehicleJourneyControl::WaitingTime, type: :model do
   let( :default_code ){ "3-VehicleJourney-1" }
   let( :factory ){ :vehicle_journey_control_wating_time }
 

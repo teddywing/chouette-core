@@ -1,5 +1,10 @@
 FactoryGirl.define do
 
+  factory :route_control_duplicates, class: 'RouteControl::Duplicates' do
+    association :compliance_control_set
+    association :compliance_control_block
+  end
+
   factory :route_control_journey_pattern, class: 'RouteControl::JourneyPattern' do
     association :compliance_control_set
     association :compliance_control_block
@@ -25,7 +30,7 @@ FactoryGirl.define do
     association :compliance_control_block
   end
 
-  factory :route_control_stop_point_in_journey_pattern, class: 'RouteControl::StopPointInJourneyPattern' do
+  factory :route_control_stop_points_in_journey_pattern, class: 'RouteControl::StopPointsInJourneyPattern' do
     association :compliance_control_set
     association :compliance_control_block
   end
@@ -35,22 +40,22 @@ FactoryGirl.define do
     association :compliance_control_block
   end
 
-  factory :route_control_zdl_stop_area, class: 'RouteControl::ZdlStopArea' do
+  factory :route_control_zdl_stop_area, class: 'RouteControl::ZDLStopArea' do
     association :compliance_control_set
     association :compliance_control_block
   end
 
-  factory :route_control_control_speed, class: 'RouteControl::ControlSpeed' do
+  factory :route_control_speed, class: 'RouteControl::Speed' do
     association :compliance_control_set
     association :compliance_control_block
   end
 
-  factory :route_control_control_time_table, class: 'RouteControl::ControlTimeTable' do
+  factory :route_control_time_table, class: 'RouteControl::TimeTable' do
     association :compliance_control_set
     association :compliance_control_block
   end
 
-  factory :route_control_control_vehicle_journey_at_stops, class: 'RouteControl::ControlVehicleJourneyAtStops' do
+  factory :route_control_control_vehicle_journey_at_stops, class: 'RouteControl::VehicleJourneyAtStops' do
     association :compliance_control_set
     association :compliance_control_block
   end

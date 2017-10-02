@@ -1,6 +1,6 @@
 module VehicleJourneyControl
-  class WatingTime < ComplianceControl
+  class WaitingTime < ComplianceControl
 
-    @@default_code = "3-VehicleJourney-1"
+    def self.default_code; "3-VehicleJourney-1" end
   end
 end

@@ -1,6 +1,6 @@
 module RouteControl
   class OmnibusJourneyPattern < ComplianceControl
 
-    @@default_code = "3-Route-9"
+    def self.default_code; "3-Route-9" end
   end
 end
