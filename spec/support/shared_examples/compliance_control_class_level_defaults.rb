@@ -1,3 +1,5 @@
+require_relative '../data_modifier'
+
 H = Support::DataModifier::Hash
 RSpec.shared_examples_for 'ComplianceControl Class Level Defaults' do
     context 'class attributes' do
