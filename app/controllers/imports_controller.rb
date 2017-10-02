@@ -1,8 +1,11 @@
 class ImportsController < BreadcrumbController
   include PolicyChecker
+  include RansackDateFilter
+  set_date_param "started_at", DateTime
+  before_action :set_date_time_params, only: [:index]
+
   skip_before_action :authenticate_user!, only: [:download]
   defaults resource_class: Import, collection_name: 'imports', instance_name: 'import'
-  before_action :ransack_started_at_params, only: [:index]
   before_action :ransack_status_params, only: [:index]
   respond_to :html
   belongs_to :workbench
@@ -48,7 +51,8 @@ class ImportsController < BreadcrumbController
   protected
   def collection
     scope = parent.imports.where(type: "WorkbenchImport")
-    scope = ransack_period scope
+
+    scope = ransack_period_range(scope: scope, error_message:  t('imports.filters.error_period_filter'), query: :where_started_at_in)
 
     @q = scope.search(params[:q])
 
@@ -77,16 +81,16 @@ class ImportsController < BreadcrumbController
   end
 
   # Fake ransack filter
-  def ransack_period scope
-    return scope unless !!@begin_range && !!@end_range
+  # def ransack_period scope
+  #   return scope unless !!@begin_range && !!@end_range
 
-    if @begin_range > @end_range
-      flash.now[:error] = t('imports.filters.error_period_filter')
-    else
-      scope = scope.where_started_at_between(@begin_range, @end_range)
-    end
-    scope
-  end
+  #   if @begin_range > @end_range
+  #     flash.now[:error] = t('imports.filters.error_period_filter')
+  #   else
+  #     scope = scope.where_started_at_between(@begin_range..@end_range)
+  #   end
+  #   scope
+  # end
 
   def ransack_status_params
     if params[:q]

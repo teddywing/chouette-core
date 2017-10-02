@@ -4,7 +4,7 @@ class ComplianceControlSet < ActiveRecord::Base
   has_many :compliance_controls, dependent: :destroy
 
   validates :name, presence: true
-  scope :where_updated_at_between, ->(start_date, end_date) do
-    where('updated_at BETWEEN ? AND ?', start_date, end_date)
+  scope :where_updated_at_between, ->(period_range) do
+    where('updated_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)
   end
 end

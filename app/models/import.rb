@@ -9,8 +9,8 @@ class Import < ActiveRecord::Base
   has_many :resources, class_name: "ImportResource", dependent: :destroy
   has_many :children, foreign_key: :parent_id, class_name: "Import", dependent: :destroy
 
-  scope :where_started_at_between, ->(start_date, end_date) do
-     where('started_at BETWEEN ? AND ?', start_date, end_date)
+  scope :where_started_at_in, ->(period_range) do
+    where('started_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)
    end
 
   extend Enumerize

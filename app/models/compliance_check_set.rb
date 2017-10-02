@@ -11,8 +11,8 @@ class ComplianceCheckSet < ActiveRecord::Base
 
   enumerize :status, in: %w[new pending successful warning failed running aborted canceled]
 
-  scope :where_created_at_between, ->(start_date, end_date) do
-    where('created_at BETWEEN ? AND ?', start_date, end_date)
+  scope :where_created_at_between, ->(period_range) do
+    where('created_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)
   end
 
 end

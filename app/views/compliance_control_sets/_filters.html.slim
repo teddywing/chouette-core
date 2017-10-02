@@ -14,8 +14,8 @@
       = f.label Import.human_attribute_name(:updated_at), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :updated_at do |p|
-          = p.input :begin, as: :date, label: false, wrapper_html: {class: 'date smart_date filter_menu-item'}, default: @begin_range, include_blank: @begin_range ? false : true
-          = p.input :end, as: :date, label: false, wrapper_html: {class: 'date smart_date filter_menu-item'}, default: @end_range, include_blank: @end_range ? false : true
+          = p.input :start_date, as: :date, label: false, wrapper_html: {class: 'date smart_date filter_menu-item'}, default: @begin_range, include_blank: @begin_range ? false : true
+          = p.input :end_date, as: :date, label: false, wrapper_html: {class: 'date smart_date filter_menu-item'}, default: @end_range, include_blank: @end_range ? false : true
 
   .actions
     = link_to t('actions.erase'), @compliance_control_set, class: 'btn btn-link'

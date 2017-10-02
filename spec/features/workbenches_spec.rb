@@ -113,8 +113,8 @@ describe 'Workbenches', type: :feature do
 
         it 'should show results for referential in range' do
           dates = referential.validity_period.to_a
-          fill_validity_field dates[0], 'begin_gteq'
-          fill_validity_field dates[1], 'end_lteq'
+          fill_validity_field dates[0], 'start_date'
+          fill_validity_field dates[1], 'end_date'
           click_button I18n.t('actions.filter')
 
           expect(page).to have_content(referential.name)
@@ -123,8 +123,8 @@ describe 'Workbenches', type: :feature do
 
         it 'should keep filtering on sort' do
           dates = referential.validity_period.to_a
-          fill_validity_field dates[0], 'begin_gteq'
-          fill_validity_field dates[1], 'end_lteq'
+          fill_validity_field dates[0], 'start_date'
+          fill_validity_field dates[1], 'end_date'
           click_button I18n.t('actions.filter')
 
           find('a[href*="&sort=validity_period"]').click
@@ -134,8 +134,8 @@ describe 'Workbenches', type: :feature do
         end
 
         it 'should not show results for out off range' do
-          fill_validity_field(Date.today - 2.year, 'begin_gteq')
-          fill_validity_field(Date.today - 1.year, 'end_lteq')
+          fill_validity_field(Date.today - 2.year, 'start_date')
+          fill_validity_field(Date.today - 1.year, 'end_date')
           click_button I18n.t('actions.filter')
 
           expect(page).to_not have_content(referential.name)
@@ -144,12 +144,12 @@ describe 'Workbenches', type: :feature do
 
         it 'should keep value on submit' do
           dates = referential.validity_period.to_a
-          ['begin_gteq', 'end_lteq'].each_with_index do |field, index|
+          ['start_date', 'end_date'].each_with_index do |field, index|
             fill_validity_field dates[index], field
           end
           click_button I18n.t('actions.filter')
 
-          ['begin_gteq', 'end_lteq'].each_with_index do |field, index|
+          ['start_date', 'end_date'].each_with_index do |field, index|
             expect(find("#q_validity_period_#{field}_3i").value).to eq dates[index].day.to_s
             expect(find("#q_validity_period_#{field}_2i").value).to eq dates[index].month.to_s
             expect(find("#q_validity_period_#{field}_1i").value).to eq dates[index].year.to_s
