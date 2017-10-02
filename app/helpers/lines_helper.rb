@@ -6,11 +6,11 @@ module LinesHelper
   end
 
   def sorted_transport_submode
-    Chouette::Line.transport_submode.values.sort_by{|m| t("enumerize.transport_submode.#{m}").parameterize }
+    Chouette::Line.transport_submodes.sort_by{|m| t("enumerize.transport_submode.#{m}").parameterize }
   end
 
   def sorted_transport_mode
-    Chouette::Line.transport_mode.values.sort_by{|m| t("enumerize.transport_mode.#{m}").parameterize }
+    Chouette::Line.transport_modes.sort_by{|m| t("enumerize.transport_mode.#{m}").parameterize }
   end
 
   def colors?(line)
