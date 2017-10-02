@@ -7,6 +7,7 @@ fr:
     actions:
       new: Ajouter
       edit: Editer
+      show: Consulter
       destroy: Supprimer
       add_compliance_control: Ajouter un JDC
       destroy_confirm: Etes vous sûr de supprimer ce jeux de contrôle ?

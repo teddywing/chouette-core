@@ -9,16 +9,25 @@ class ComplianceControlDecorator < Draper::Decorator
         content: h.destroy_link_content,
         href: h.compliance_control_set_compliance_control_path(object.compliance_control_set.id, object.id),
         method: :delete,
-        data: { confirm: h.t('compliance_controls.actions.destroy_confirm') }
+        data: { confirm: h.t('compliance_control_sets.actions.destroy_confirm') }
       )
     # end
 
     # if h.policy(object).edit?
       links << Link.new(
-        content: h.t('compliance_controls.actions.edit'),
+        content: h.t('compliance_control_sets.actions.edit'),
         href:  h.edit_compliance_control_set_compliance_control_path(object.compliance_control_set.id, object.id)
       )
     # end
+
+
+    # if h.policy(object).show?
+    links << Link.new(
+      content: h.t('compliance_control_sets.actions.show'),
+      href:  h.compliance_control_set_compliance_control_path(object.compliance_control_set.id, object.id)
+    )
+    # end
+
     links
   end
 

@@ -14,7 +14,7 @@
               method: link.method,
               data: link.data,
               class: 'btn btn-primary' do
-                = link.content
+            = link.content
 
 / PageContent
 .page_content
@@ -54,6 +54,7 @@
                 ), \
               ],
               sortable: true,
+              #links: [:show],
               cls: 'table has-filter has-search'
 
         .select_toolbox
