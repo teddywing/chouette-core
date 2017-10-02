@@ -17,17 +17,9 @@ class ComplianceControlSetsController < BreadcrumbController
     show! do |format|
       format.html {
         @compliance_control_set = @compliance_control_set.decorate
-        @compliance_controls = decorate_compliance_controls(@compliance_control_set.compliance_controls)
+        @compliance_controls_without_block = decorate_compliance_controls(@compliance_control_set.compliance_controls.where(compliance_control_block_id: nil))
       }
     end
-  end
-
-  private
-  def decorate_compliance_control_sets(compliance_control_sets)
-    ModelDecorator.decorate(
-      compliance_control_sets,
-      with: ComplianceControlSetDecorator
-    )
   end
 
   protected
@@ -37,6 +29,14 @@ class ComplianceControlSetsController < BreadcrumbController
   # end
 
   private
+
+  def decorate_compliance_control_sets(compliance_control_sets)
+    ModelDecorator.decorate(
+      compliance_control_sets,
+      with: ComplianceControlSetDecorator
+    )
+  end
+
   def decorate_compliance_controls(compliance_controls)
     ModelDecorator.decorate(
       compliance_controls,
