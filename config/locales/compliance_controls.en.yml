@@ -1,20 +1,5 @@
 en:
-  activerecord:
-    models:
-      one: "compliance control"
-      other: "compliance controls"
-    attributes:
-      compliance_control:
-        name: "Name"
-        criticity: "Criticity"
-        comment: "Comment"
-        code: "Code"
   compliance_controls:
-    actions:
-      new: "Add a new compliance control"
-      edit: "Edit this compliance control"
-      destroy: "Remove this compliance control"
-      destroy_confirm: "Are you sure you want destroy this compliance control?"
     show:
       title: "Compliance control"
     index:
@@ -123,3 +108,13 @@ en:
         messages:
           3_generic_3: "% : the % attribute's value (%) of % is in conflict with : %"
         description: "The attribute's value must be unique compared to the other objects ofthe same type (related to the same line)"
+  activerecord:
+    models:
+      one: "compliance control"
+      other: "compliance controls"
+    attributes:
+      compliance_control:
+        name: "Name"
+        criticity: "Criticity"
+        comment: "Comment"
+        code: "Code"

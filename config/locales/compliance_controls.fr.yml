@@ -1,20 +1,5 @@
 fr:
-  activerecord:
-    models:
-      one: "jeu de controle"
-      other: "jeux de controle"
-    attributes:
-      compliance_control:
-        name: "Nom"
-        criticity: "Criticité"
-        comment: "Commentaire"
-        code: "Code"
   compliance_controls:
-    actions:
-      new: "Ajouter un jeu de controle"
-      edit: "Editer un jeu de controle"
-      destroy: "Supprimer un jeu de controle"
-      destroy_confirm: "Etes vous sûr de vouloir détruire le jeu de controle ?"
     show:
       title: "Jeu de controle"
     index:
@@ -123,3 +108,13 @@ fr:
         messages:
           3_generic_3: "La valeur de l'attribut doit être unique au sein des objets de la ligne"
         description: "% : l'attribut % de % à une valeur % en conflit avec %"
+  activerecord:
+    models:
+      one: "controle"
+      other: "contrôles"
+    attributes:
+      compliance_control:
+        name: "Nom"
+        criticity: "Criticité"
+        comment: "Commentaire"
+        code: "Code"
