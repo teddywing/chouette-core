@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe ComplianceControlsController, type: :controller do
   login_user
 
