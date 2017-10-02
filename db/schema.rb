@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20170928144740) do
-=======
 ActiveRecord::Schema.define(version: 20171002080526) do
->>>>>>> eaf5b3fd868d68856ef94e18656dac39096d866b
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -168,10 +164,7 @@ ActiveRecord::Schema.define(version: 20171002080526) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.string   "status"
-<<<<<<< HEAD
-=======
     t.integer  "compliance_check_set_id"
->>>>>>> eaf5b3fd868d68856ef94e18656dac39096d866b
   end
 
   add_index "compliance_check_messages", ["compliance_check_id"], name: "index_compliance_check_messages_on_compliance_check_id", using: :btree
@@ -409,9 +402,9 @@ ActiveRecord::Schema.define(version: 20171002080526) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
