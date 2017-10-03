@@ -13,14 +13,14 @@ module RansackDateFilter
             start_date <<  params[:q][@@date_param]["start_date(#{key}i)"].to_i
             end_date <<  params[:q][@@date_param]["end_date(#{key}i)"].to_i
           end
-        params[:q].delete([@@date_param])
+          params[:q].delete([@@date_param])
 
-        if @@klass == DateTime
-          @begin_range = @@klass.new(*start_date,0,0,0) rescue nil
-          @end_range = @@klass.new(*end_date,23,59,59) rescue nil
-        else
-          @begin_range = @@klass.new(*start_date) rescue nil
-          @end_range = @@klass.new(*end_date) rescue nil
+          if @@klass == DateTime
+            @begin_range = @@klass.new(*start_date,0,0,0) rescue nil
+            @end_range = @@klass.new(*end_date,23,59,59) rescue nil
+          else
+            @begin_range = @@klass.new(*start_date) rescue nil
+            @end_range = @@klass.new(*end_date) rescue nil
         end
       end
 
