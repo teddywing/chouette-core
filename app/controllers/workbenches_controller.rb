@@ -1,9 +1,7 @@
 class WorkbenchesController < BreadcrumbController
   before_action :query_params, only: [:show]
   include RansackDateFilter
-  set_date_param "validity_period", Date
-  before_action :set_date_time_params, only: [:show]
-
+  before_action only: [:show] { set_date_time_params("validity_period", Date) }
   defaults resource_class: Workbench
   respond_to :html, only: [:show, :index]
 
@@ -14,7 +12,7 @@ class WorkbenchesController < BreadcrumbController
   def show
     scope = resource.all_referentials
     scope = ransack_associated_lines(scope)
-    scope = ransack_period_range(scope: scope, error_message:  t('referentials.errors.validity_period'), query: :in_periode)
+    scope = self.ransack_period_range(scope: scope, error_message:  t('referentials.errors.validity_period'), query: :in_periode)
     scope = ransack_status(scope)
 
     @q_for_form   = scope.ransack(params[:q])

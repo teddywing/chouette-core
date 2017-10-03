@@ -15,8 +15,8 @@
       = f.label Chouette::TimeTable.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :bounding_dates do |p|
-          = f.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
-          = f.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
+          = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
+          = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
 
 
   .actions
