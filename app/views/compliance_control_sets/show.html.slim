@@ -30,7 +30,8 @@
           /= render 'filters'
     .row
       .col-lg-12
-        = "Tous mode de transport"
+        h2
+          = transport_mode("", "")
       .col-lg-12
         .select_table
           = table_builder_2 @compliance_controls_without_block,
@@ -61,7 +62,8 @@
     - @compliance_control_set.compliance_control_blocks.each do |block|
         .row
           .col-lg-12
-            = "#{block.transport_mode} / #{block.transport_mode}"
+            h2
+              = transport_mode(block.transport_mode, block.transport_submode)
         .row
           .col-lg-12
             .select_table
