@@ -1,13 +1,12 @@
 class ComplianceControlSetsController < BreadcrumbController
   defaults resource_class: ComplianceControlSet
   include RansackDateFilter
-  set_date_param "updated_at", DateTime
-  before_action :set_date_time_params, only: [:index]
+  before_action only: [:index] { set_date_time_params("updated_at", DateTime) }
   respond_to :html
 
   def index
     index! do |format|
-      scope = ransack_period_range(scope: @compliance_control_sets, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
+      scope = self.ransack_period_range(scope: @compliance_control_sets, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
       @q_for_form = scope.ransack(params[:q])
       format.html {
         @compliance_control_sets = decorate_compliance_control_sets(@q_for_form.result)
