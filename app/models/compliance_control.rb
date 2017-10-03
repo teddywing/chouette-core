@@ -13,6 +13,11 @@ class ComplianceControl < ActiveRecord::Base
   validates :compliance_control_set, presence: true
 
   class << self
+    def create *args
+      super.tap do | x |
+        require 'pry'; binding.pry
+      end
+    end
     def default_criticity; :warning end
     def default_code; "" end
     def dynamic_attributes
