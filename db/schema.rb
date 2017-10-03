@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171003123007) do
+ActiveRecord::Schema.define(version: 20171003130549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,12 @@ ActiveRecord::Schema.define(version: 20171003123007) do
     t.string   "parent_type"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "current_step_id"
+    t.string   "string"
+    t.float    "current_step_progress"
+    t.string   "name"
+    t.datetime "started_at"
+    t.datetime "ended_at"
   end
 
   add_index "compliance_check_sets", ["compliance_control_set_id"], name: "index_compliance_check_sets_on_compliance_control_set_id", using: :btree
