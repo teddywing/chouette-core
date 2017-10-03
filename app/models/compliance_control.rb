@@ -12,6 +12,13 @@ class ComplianceControl < ActiveRecord::Base
   validates :origin_code, presence: true
   validates :compliance_control_set, presence: true
 
+  validate def coherent_control_set
+    return true if compliance_control_block_id.nil?
+    ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
+    return true if ids.first == ids.last
+    errors.add(:coherent_control_set, I18n.t('compliance_controls.errors.incoherent_control_sets', indirect_set_id: ids.first, direct_set_id: ids.last)) 
+  end
+
   class << self
     def create *args
       super.tap do | x |
