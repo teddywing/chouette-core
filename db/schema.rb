@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171002080526) do
+ActiveRecord::Schema.define(version: 20171003123007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 20171002080526) do
     t.integer  "compliance_check_set_id"
     t.integer  "compliance_check_block_id"
     t.string   "type"
-    t.json     "control_attributes"
+    t.hstore   "control_attributes"
     t.string   "name"
     t.string   "code"
     t.integer  "criticity"
@@ -240,7 +240,7 @@ ActiveRecord::Schema.define(version: 20171002080526) do
   create_table "compliance_controls", id: :bigserial, force: :cascade do |t|
     t.integer  "compliance_control_set_id"
     t.string   "type"
-    t.json     "control_attributes"
+    t.hstore   "control_attributes"
     t.string   "name"
     t.string   "code"
     t.string   "criticity"
@@ -402,9 +402,9 @@ ActiveRecord::Schema.define(version: 20171002080526) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
-    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
+    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
