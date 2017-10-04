@@ -12,4 +12,7 @@ class ComplianceControlBlock < ActiveRecord::Base
   validates :transport_mode, presence: true
   validates :compliance_control_set, presence: true
 
+  def label_method
+    [transport_mode, transport_submode].compact.map {|x| "[#{x}]"}.join
+  end
 end

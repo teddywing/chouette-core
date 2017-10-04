@@ -25,7 +25,7 @@ class ComplianceControlsController < BreadcrumbController
   end
 
   def compliance_control_params
-    base = [:name, :code, :origin_code, :criticity, :comment, :control_attributes, :type]
+    base = [:name, :code, :origin_code, :criticity, :comment, :control_attributes, :type, :compliance_control_block_id]
     permited = base + dynamic_attributes_params
     params.require(:compliance_control).permit(permited)
   end
