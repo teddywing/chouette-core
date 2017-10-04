@@ -70,7 +70,7 @@
         .row
           .col-lg-12
             .select_table
-              = table_builder_2 block.compliance_controls,
+              = table_builder_2 ModelDecorator.decorate(block.compliance_controls, with: ComplianceControlDecorator),
                       [ \
                   TableBuilderHelper::Column.new( \
                     key: :code, \
