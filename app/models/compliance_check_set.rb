@@ -6,6 +6,9 @@ class ComplianceCheckSet < ActiveRecord::Base
   belongs_to :workbench
   belongs_to :parent, polymorphic: true
 
+  has_many :compliance_check_blocks
+  has_many :compliance_checks
+
   has_many :compliance_check_resources
   has_many :compliance_check_messages
 
