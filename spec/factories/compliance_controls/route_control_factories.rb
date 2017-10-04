@@ -36,10 +36,6 @@ FactoryGirl.define do
     association :compliance_control_set
   end
 
-  factory :route_control_speed, class: 'RouteControl::Speed' do
-    association :compliance_control_set
-  end
-
   factory :route_control_time_table, class: 'RouteControl::TimeTable' do
     association :compliance_control_set
   end
