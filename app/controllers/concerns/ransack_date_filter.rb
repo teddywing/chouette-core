@@ -1,6 +1,5 @@
 module RansackDateFilter
   extend ActiveSupport::Concern
-  cattr_accessor :date_param
 
   included do
 
