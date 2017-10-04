@@ -5,14 +5,6 @@ module LinesHelper
     line.number
   end
 
-  def sorted_transport_submode
-    Chouette::Line.transport_submodes.sort_by{|m| t("enumerize.transport_submode.#{m}").parameterize }
-  end
-
-  def sorted_transport_mode
-    Chouette::Line.transport_modes.sort_by{|m| t("enumerize.transport_mode.#{m}").parameterize }
-  end
-
   def colors?(line)
     line.text_color.present? || line.color.present?
   end
