@@ -1,7 +1,7 @@
 en:
   compliance_controls:
     errors:
-      incoherent_control_sets: "Directly associated control_set (id: %{direct_set_id}) and indirectly associated one (id: %{indirect_set_id}) differ"
+      consistent_control_set: "Directly associated control_set (id: %{direct_id}) and indirectly associated one (id: %{indirect_id}) differ"
     show:
       title: "Compliance control"
     index:

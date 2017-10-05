@@ -1,7 +1,15 @@
 class ComplianceControl < ActiveRecord::Base
   extend Enumerize
-  belongs_to :compliance_control_set
-  belongs_to :compliance_control_block
+  # belongs_to :compliance_control_set
+  # belongs_to :compliance_control_block
+  # validate def coherent_control_set
+  #   return true if compliance_control_block_id.nil?
+  #   ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
+  #   return true if ids.first == ids.last
+  #   errors.add(:coherent_control_set, I18n.t('compliance_controls.errors.incoherent_control_sets', indirect_set_id: ids.first, direct_set_id: ids.last)) 
+  # end
+  extend UNameIt
+  belongs_to_through_if :compliance_control_set, parent: :compliance_control_block, as: :consistent_control_set
 
   enumerize :criticity, in: %i(info warning error), scope: true, default: :info
   hstore_accessor :control_attributes, {}
@@ -12,12 +20,6 @@ class ComplianceControl < ActiveRecord::Base
   validates :origin_code, presence: true
   validates :compliance_control_set, presence: true
 
-  validate def coherent_control_set
-    return true if compliance_control_block_id.nil?
-    ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
-    return true if ids.first == ids.last
-    errors.add(:coherent_control_set, I18n.t('compliance_controls.errors.incoherent_control_sets', indirect_set_id: ids.first, direct_set_id: ids.last)) 
-  end
 
   class << self
     def create *args

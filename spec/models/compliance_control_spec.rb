@@ -44,7 +44,7 @@ RSpec.describe ComplianceControl, type: :model do
         compliance_control_set_id: create( :compliance_control_set ).id
       expect(compliance_control).to_not be_valid
       selected_error_message =
-        compliance_control.errors.messages[:coherent_control_set].grep(%r{ControlSet associé})
+        compliance_control.errors.messages[:consistent_control_set].grep(%r{ControlSet associé})
       expect( selected_error_message ).to_not be_empty
     end
   end
