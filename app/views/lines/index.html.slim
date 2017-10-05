@@ -48,11 +48,11 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :transport_mode, \
-                attribute: Proc.new { |n| n.transport_mode.nil? ? '-' :  t("enumerize.transport_mode.#{n.try(:transport_mode)}") } \
+                attribute: Proc.new { |n| n.transport_mode.present? ? t("enumerize.transport_mode.#{n.try(:transport_mode)}") : "-" } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :transport_submode, \
-                attribute: Proc.new { |n| n.transport_submode.nil? ? '-' :  t("enumerize.transport_submode.#{n.try(:transport_submode)}") } \
+                attribute: Proc.new { |n| n.transport_submode.present? ? t("enumerize.transport_submode.#{n.try(:transport_submode)}") : "-" } \
               ) \
             ],
             links: [:show],
