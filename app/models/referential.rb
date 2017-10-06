@@ -369,4 +369,9 @@ class Referential < ActiveRecord::Base
     not metadatas_overlap?
   end
 
+  def status
+    I18n.t( "#{self.class.name.underscore.pluralize}.#{archived? ? :archived : :unarchived}" )
+
+  end
+
 end

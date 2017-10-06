@@ -1,5 +1,8 @@
 en:
   referentials:
+    archived: Archived
+    unarchived: Current
+
     filters:
       name_or_number_or_objectid: 'Search by name, number or objectid'
       name: 'Search by name'
@@ -100,6 +103,11 @@ en:
         created_at: "Created"
         organisation: 'Organisation'
         number_of_lines: 'No. of lines'
+
+        # For Workbench/<id>/output → referential_suites#index
+        ready: 'Integration State'
+        status: 'Status'
+
   formtastic:
     titles:
       referential:

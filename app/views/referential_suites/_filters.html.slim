@@ -1,2 +1,2 @@
-
-= search_form_for @q, url: workbench_output_path(@workbench)
+= search_form_for @q, builder: SimpleForm::FormBuilder, url: workbench_output_path(@workbench), class: 'form for-filter' do |f|
+  .ffg-row

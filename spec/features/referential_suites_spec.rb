@@ -25,7 +25,7 @@ RSpec.describe 'ReferentialSuites', type: :feature do
       expect( page ).to have_text('Offres de mon organisation')
     end
 
-    it 'filtering with Ransack' do
+    xit 'filtering with Ransack' do
       fill_in 'q[status]', with: 'Courant'
 
     end

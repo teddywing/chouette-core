@@ -1,5 +1,8 @@
 fr:
   referentials:
+    archived: 'Historisé'
+    unarchived: 'Courant'
+
     filters:
       name_or_number_or_objectid: 'Indiquez un nom de ligne, nom court ou objectid'
       name: 'Indiquez un nom de jeu de données...'
@@ -99,6 +102,11 @@ fr:
         created_from: 'Créé à partir de'
         organisation: 'Organisation'
         number_of_lines: 'Nb lignes'
+
+        # For Workbench/<id>/output → referential_suites#index
+        ready: 'État Integration'
+        status: 'Statut'
+
   formtastic:
     titles:
       referential:

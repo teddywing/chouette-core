@@ -4,7 +4,7 @@ class ReferentialSuitesController < BreadcrumbController
 
   def index
     @workbench = Workbench.find(params[:workbench_id])
-    @referentials = @workbench.output.try(:referentials) || []
+    @referentials = ModelDecorator.decorate(@workbench.output.try(:referentials) || [], with: ReferentialDecorator)
     index! do
       build_breadcrumb :index
     end
