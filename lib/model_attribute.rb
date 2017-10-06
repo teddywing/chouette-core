@@ -5,6 +5,20 @@ class ModelAttribute
     @__all__ ||= []
   end
 
+  def self.grouped_options(type)
+    {}.tap do |el|
+      group_by_class.each do |key, values|
+        values.reject!{ |x| x.data_type != type }
+        el[I18n.t("activerecord.models.#{key}.one")] = values.map do |i|
+          [
+            I18n.t("activerecord.attributes.#{i.klass}.#{i.name}"),
+            "#{i.klass}.#{i.name}"
+          ]
+        end
+      end
+    end
+  end
+
   def self.define(klass, name, data_type)
     all << new(klass, name, data_type)
   end

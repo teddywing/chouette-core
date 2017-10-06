@@ -7,9 +7,11 @@
       = f.input :criticity
       = f.association :compliance_control_block, collection: @compliance_control_set.compliance_control_blocks, label_method: :label_method
       = f.input :comment
-
       - f.object.class.dynamic_attributes.each do |attribute|
-        = f.input attribute.to_sym
+        - if attribute == :target
+          = f.input :target, as: :grouped_select, collection: ModelAttribute.grouped_options(@compliance_control.class.attribute_type), :group_method => :last
+        - else
+          = f.input attribute.to_sym
       end
   .separator
 
