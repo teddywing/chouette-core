@@ -28,7 +28,7 @@ module ChouetteIhm
     config.i18n.default_locale = ENV.fetch('RAILS_LOCALE', 'fr').to_sym
 
     # Configure Browserify to use babelify to compile ES6
-    config.browserify_rails.commandline_options = "-t [ babelify --presets [ react es2015 ] ]"
+    # config.browserify_rails.commandline_options = "-t [ babelify --presets [ react es2015 ] ]"
 
     config.active_record.observers = [:route_observer, :calendar_observer]
     config.active_record.raise_in_transactional_callbacks = true
@@ -40,9 +40,9 @@ module ChouetteIhm
         Rails.application.config.assets.precompile += %w(spec_helper.js)
         # Make sure Browserify is triggered when
         # asked to serve javascript spec files
-        config.browserify_rails.paths << lambda { |p|
-            p.start_with?(Rails.root.join("spec/javascripts").to_s)
-        }
+        # config.browserify_rails.paths << lambda { |p|
+        #     p.start_with?(Rails.root.join("spec/javascripts").to_s)
+        # }
     end
   end
 end
