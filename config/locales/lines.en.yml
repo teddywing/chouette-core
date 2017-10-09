@@ -26,6 +26,7 @@ en:
     index:
       deactivated: "Disabled line"
       title: "Lines"
+      line: "Ligne"
       name_or_number_or_objectid: "Search by name, short name or ID Codif..."
       no_networks: "No networks"
       no_companies: "No companies"

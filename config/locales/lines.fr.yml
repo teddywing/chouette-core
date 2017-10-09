@@ -26,6 +26,7 @@ fr:
     index:
       deactivated: "Ligne désactivée"
       title: "Lignes"
+      line: "Ligne"
       name_or_number_or_objectid: "Recherche par nom, nom court ou ID Codif..."
       no_networks: "Aucun réseaux"
       no_companies: "Aucun transporteurs"

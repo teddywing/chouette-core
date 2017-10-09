@@ -1,6 +1,6 @@
 / PageHeader
 = pageheader 'itineraire',
-             @route.name,
+        t('routes.index.itinerarie') + " " + @route.name,
              '',
              t('last_update', time: l(@route.updated_at, format: :short)),
              (policy(@route).edit? ? link_to(t('actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'btn btn-default') : '') do
@@ -32,6 +32,7 @@
 
     .row
       .col-lg-12
+        .h3 = t('routes.show.itineraries')
         - if @route_sp.any?
           = table_builder_2 @route_sp,
             [ \

@@ -39,11 +39,13 @@ en:
     show:
       title: "Route %{route}"
       stop_points: "Stop point on route list"
+      itineraries: "List of routes"
       journey_patterns: "Route journey patterns list"
       no_opposite_route: "No reversed route associated"
       undefined: "Undefined"
     index:
       title: "Routes"
+      itinerarie: "Route"
       selection: "Selection"
       selection_all: "All"
     edit_boarding_alighting:
