@@ -1,13 +1,17 @@
-const calendarDF = require('./calendar')
-const complianceControlSetDF = require('./compliance_control_set')
-const timetableDF = require('./time_table')
-const importDF = require('./import')
-const workbenchDF = require('./workbench')
+import calendarDF from './calendar'
+import complianceControlSetDF from './compliance_control_set'
+import complianceCheckSetDF from './compliance_check_set'
+import timetableDF from './time_table'
+import importDF from './import'
+import workbenchDF from './workbench'
 
-module.exports = {
-  calendarDF: () => calendarDF,
-  complianceControlSetDF: () => complianceControlSetDF,
-  timetableDF: () => timetableDF,
-  importDF: () => importDF,
-  workbenchDF: () => workbenchDF
+const DateFilters = {
+  calendarDF,
+  complianceCheckSetDF,
+  complianceControlSetDF,
+  importDF,
+  timetableDF,
+  workbenchDF
 }
+
+export default DateFilters

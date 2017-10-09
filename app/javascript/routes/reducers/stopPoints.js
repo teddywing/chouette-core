@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { addInput } from '../form_helper'
+import formHelper from '../form_helper'
 
 const stopPoint = (state = {}, action, length) => {
   switch (action.type) {
@@ -23,8 +23,8 @@ const stopPoint = (state = {}, action, length) => {
 const updateFormForDeletion = (stop) =>{
   if (stop.stoppoint_id !== undefined){
     let now = Date.now()
-    addInput('id', stop.stoppoint_id, now)
-    addInput('_destroy', 'true', now)
+    formHelper.addInput('id', stop.stoppoint_id, now)
+    formHelper.addInput('_destroy', 'true', now)
   }
 }
 

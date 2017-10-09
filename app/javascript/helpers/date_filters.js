@@ -1,11 +1,11 @@
 export default function DateFilter(buttonId, message, ...inputIds) {
-  this.buttonId = buttonId
+  this.button = document.getElementById(buttonId)
   this.inputIds = inputIds
   this.message = message
 
   const getVal = (str, key) => {
     let newStr = str.replace(/NUM/, key)
-    return $(newStr).val()
+    return document.getElementById(newStr).value
   }
 
   const getDates = () => {
@@ -13,20 +13,14 @@ export default function DateFilter(buttonId, message, ...inputIds) {
       let newIds = [1, 2, 3].map(key => getVal(id, key))
       arr.push(...newIds)
       return arr
-    },[])
+    }, [])
   }
 
-  const allInputFilled = () => {
-    return getDates().every(date => !!date)
-  }
+  const allInputFilled = () => getDates().every(date => !!date)
 
-  const noInputFilled = () => {
-    return getDates().every(date => !date)
-  }
-
-  const button = document.getElementById(this.buttonId)
-
-  button && button.addEventListener('click', (event) => {
+  const noInputFilled = () => getDates().every(date => !date)
+  
+  this.button && this.button.addEventListener('click', (event) => {
     if (!allInputFilled() && !noInputFilled()) {
       event.preventDefault()
       alert(this.message)

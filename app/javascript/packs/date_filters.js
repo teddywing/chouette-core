@@ -1,1 +1,1 @@
-const DateFilter = require('../date_filters/index')
+import DateFilter from '../date_filters'

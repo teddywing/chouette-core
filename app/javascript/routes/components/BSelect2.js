@@ -1,6 +1,6 @@
 import _ from'lodash'
 import React, { Component, PropTypes } from 'react'
-import Select2 from 'react-select2-wrapper'
+import Select2 from 'react-select2'
 
 
 // get JSON full path
@@ -8,7 +8,7 @@ var origin = window.location.origin
 var path = window.location.pathname.split('/', 3).join('/')
 
 
-class BSelect3 extends Component{
+export default class BSelect3 extends Component {
   constructor(props, context) {
     super(props, context)
   }
@@ -72,7 +72,7 @@ class BSelect3 extends Component{
   }
 }
 
-export default class BSelect2 extends Component{
+class BSelect2 extends Component{
   componentDidMount() {
     this.refs.newSelect.el.select2('open')
   }

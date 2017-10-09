@@ -1,21 +1,20 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { PropTypes } from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import reducers from '../../routes/reducers'
 import App from '../../routes/components/App'
-import { handleForm, handleStopPoints } from '../../routes/form_helper'
+import formHelper from '../../routes/form_helper'
 import clone from '../../helpers/clone'
 let datas = clone(window, "itinerary_stop", true)
 datas = JSON.parse(decodeURIComponent(datas))
 
 // logger, DO NOT REMOVE
-// var applyMiddleware = require('redux').applyMiddleware
-// var createLogger = require('redux-logger')
-// var thunkMiddleware = require('redux-thunk').default
-// var promise = require('redux-promise')
+var applyMiddleware = require('redux').applyMiddleware
+var createLogger = require('redux-logger')
+var thunkMiddleware = require('redux-thunk').default
+var promise = require('redux-promise')
 
 const getInitialState = () => {
   let state = []
@@ -54,11 +53,11 @@ const getInitialState = () => {
 }
 
 var initialState = { stopPoints: getInitialState() }
-// const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger()
 let store = createStore(
   reducers,
-  initialState
-  // applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
+  initialState,
+  applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
 )
 
 render(
@@ -75,8 +74,8 @@ document.querySelector('input[name=commit]').addEventListener('click', (event) =
   let publicName = $("#route_published_name").val()
   if (name == "" || publicName == "") {
     event.preventDefault()
-    handleForm("#route_name", "#route_published_name")
+    formHelper.handleForm("#route_name", "#route_published_name")
   }
 
-  handleStopPoints(event, state)
+  formHelper.handleStopPoints(event, state)
 })

@@ -78,5 +78,4 @@
 = javascript_tag do
   | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
 
-/ = javascript_pack_tag 'date_filters/workbench'
 = javascript_pack_tag 'date_filters'

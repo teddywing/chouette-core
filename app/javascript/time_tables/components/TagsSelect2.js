@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import _ from 'lodash'
-import Select2 from 'react-select2-wrapper'
+import Select2 from 'react-select2'
 
 // get JSON full path
 let origin = window.location.origin
