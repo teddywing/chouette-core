@@ -1,7 +1,7 @@
 fr:
   compliance_controls:
     errors:
-      incoherent_control_sets: "ControlSet associé directement (id: %{direct_set_id}) et indirectement (id: %{indirect_set_id}) ne sont pas égeaux"
+      incoherent_control_sets: "Le contrôle ne peut pas être associé à un jeu de contrôle (id: %{direct_set_name}) différent de celui de son groupe (id: %{indirect_set_name})"
     show:
       title: "Jeu de controle"
     index:

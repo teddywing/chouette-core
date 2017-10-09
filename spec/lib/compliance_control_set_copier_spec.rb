@@ -1,4 +1,4 @@
-RSpec.describe AF83::ComplianceControlSetCopier do
+RSpec.describe ComplianceControlSetCopier do
 
   subject{ described_class.new }
 

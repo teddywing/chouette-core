@@ -16,15 +16,14 @@ class ComplianceControl < ActiveRecord::Base
     return true if compliance_control_block_id.nil?
     ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
     return true if ids.first == ids.last
-    errors.add(:coherent_control_set, I18n.t('compliance_controls.errors.incoherent_control_sets', indirect_set_id: ids.first, direct_set_id: ids.last)) 
+    names = ids.map{|id| ComplianceControlSet.find(id).name}
+    errors.add(:coherent_control_set,
+               I18n.t('compliance_controls.errors.incoherent_control_sets',
+                      indirect_set_name: names.first,
+                      direct_set_name: names.last)) 
   end
 
   class << self
-    def create *args
-      super.tap do | x |
-        require 'pry'; binding.pry
-      end
-    end
     def default_criticity; :warning end
     def default_code; "" end
     def dynamic_attributes

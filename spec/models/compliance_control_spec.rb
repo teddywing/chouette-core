@@ -43,9 +43,17 @@ RSpec.describe ComplianceControl, type: :model do
         compliance_control_block_id: compliance_control_block.id,
         compliance_control_set_id: create( :compliance_control_set ).id
       expect(compliance_control).to_not be_valid
+
+      direct_name      = compliance_control.compliance_control_set.name
+      indirect_name    = compliance_control_block.compliance_control_set.name
+      expected_message = "Le contrôle ne peut pas être associé à un jeu de contrôle (id: #{direct_name}) différent de celui de son groupe (id: #{indirect_name})"
+
       selected_error_message =
-        compliance_control.errors.messages[:coherent_control_set].grep(%r{ControlSet associé})
-      expect( selected_error_message ).to_not be_empty
+        compliance_control
+          .errors
+          .messages[:coherent_control_set]
+          .first
+      expect( selected_error_message ).to eq(expected_message)
     end
   end
 end
