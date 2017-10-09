@@ -20,7 +20,7 @@ class ComplianceControl < ActiveRecord::Base
     errors.add(:coherent_control_set,
                I18n.t('compliance_controls.errors.incoherent_control_sets',
                       indirect_set_name: names.first,
-                      direct_set_name: names.last)) 
+                      direct_set_name: names.last))
   end
 
   class << self
