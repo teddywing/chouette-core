@@ -1,5 +1,7 @@
 en:
   compliance_controls:
+    errors:
+      incoherent_control_sets: "Impossible to assign a control to a set (id: %{direct_set_name}) differing from the one of its group (id: %{indirect_set_name})"
     show:
       title: "Compliance control"
     index:

@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe ComplianceCheck, type: :model do
   it 'should have a valid factory' do
     expect(FactoryGirl.build(:compliance_check)).to be_valid
