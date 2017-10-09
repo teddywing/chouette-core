@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import assign from 'lodash/assign'
 import actions from '../actions'
 
 let newModalProps = {}
@@ -13,7 +13,7 @@ export default function modal(state = {}, action) {
   switch (action.type) {
     case 'OPEN_CONFIRM_MODAL':
       $('#ConfirmModal').modal('show')
-      return _.assign({}, state, {
+      return assign({}, state, {
         type: 'confirm',
         confirmModal: {
           callback: action.callback,
@@ -21,14 +21,14 @@ export default function modal(state = {}, action) {
       })
     case 'OPEN_ERROR_MODAL':
       $('#ErrorModal').modal('show')
-      newModalProps = _.assign({}, state.modalProps, {error: action.error})
-      return _.assign({}, state, {type: 'error'}, {modalProps: newModalProps})
+      newModalProps = assign({}, state.modalProps, {error: action.error})
+      return assign({}, state, {type: 'error'}, {modalProps: newModalProps})
     case 'RESET_MODAL_ERRORS':
-      newModalProps = _.assign({}, state.modalProps, {error: ''})
-      return _.assign({}, state, {type: ''}, {modalProps: newModalProps})
+      newModalProps = assign({}, state.modalProps, {error: ''})
+      return assign({}, state, {type: ''}, {modalProps: newModalProps})
     case 'CLOSE_PERIOD_FORM':
-      newModalProps = _.assign({}, state.modalProps, {active: false, error: ""})
-      return _.assign({}, state, {modalProps: newModalProps})
+      newModalProps = assign({}, state.modalProps, {active: false, error: ""})
+      return assign({}, state, {modalProps: newModalProps})
     case 'OPEN_EDIT_PERIOD_FORM':
       period_start = action.period.period_start.split('-')
       period_end = action.period.period_end.split('-')
@@ -45,19 +45,19 @@ export default function modal(state = {}, action) {
       newModalProps.active = true
       newModalProps.index = action.index
       newModalProps.error = ''
-      return _.assign({}, state, {modalProps: newModalProps})
+      return assign({}, state, {modalProps: newModalProps})
     case 'OPEN_ADD_PERIOD_FORM':
-      newModalProps = _.assign({}, state.modalProps, {active: true, begin: emptyDate, end: emptyDate, index: false, error: ''})
-      return _.assign({}, state, {modalProps: newModalProps})
+      newModalProps = assign({}, state.modalProps, {active: true, begin: emptyDate, end: emptyDate, index: false, error: ''})
+      return assign({}, state, {modalProps: newModalProps})
     case 'UPDATE_PERIOD_FORM':
       newModalProps = JSON.parse(JSON.stringify(state.modalProps))
       newModalProps[action.group][action.selectType] = action.val
-      return _.assign({}, state, {modalProps: newModalProps})
+      return assign({}, state, {modalProps: newModalProps})
     case 'VALIDATE_PERIOD_FORM':
       newModalProps = JSON.parse(JSON.stringify(state.modalProps))
       newModalProps.error = action.error
       newModalProps.active = (newModalProps.error == '') ? false : true
-      return _.assign({}, state, {modalProps: newModalProps})
+      return assign({}, state, {modalProps: newModalProps})
     default:
       return state
   }

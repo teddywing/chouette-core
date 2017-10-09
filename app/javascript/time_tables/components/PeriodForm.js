@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import _ from 'lodash'
+import filter from 'lodash/filter'
 let monthsArray = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
 
 const formatNumber = (val) => {
@@ -108,7 +108,7 @@ export default function PeriodForm({modal, timetable, metas, onOpenAddPeriodForm
                   <button
                     type='button'
                     className='btn btn-outline-primary mr-sm'
-                    onClick={() => onValidatePeriodForm(modal.modalProps, timetable.time_table_periods, metas, _.filter(timetable.time_table_dates, ['in_out', true]))}
+                    onClick={() => onValidatePeriodForm(modal.modalProps, timetable.time_table_periods, metas, filter(timetable.time_table_dates, ['in_out', true]))}
                   >
                     {I18n.actions.submit}
                   </button>

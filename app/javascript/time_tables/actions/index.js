@@ -1,10 +1,14 @@
-import _ from 'lodash'
+import range from 'lodash/range'
+import assign from 'lodash/assign'
+import reject from 'lodash/reject'
+import some from 'lodash/some'
+import every from 'lodash/every'
 import clone from '../../helpers/clone'
 const I18n = clone(window, "I18n")
 
 const actions = {
   weekDays: (index) => {
-    return _.range(1, 8).map(n => I18n.time_tables.edit.metas.days[n])
+    return range(1, 8).map(n => I18n.time_tables.edit.metas.days[n])
   },
   strToArrayDayTypes: (str) =>{
     return actions.weekDays().map(day => str.indexOf(day) !== -1)
@@ -151,7 +155,7 @@ const actions = {
     type : 'CLOSE_MODAL'
   }),
   monthName(strDate) {
-    let monthList = _.range(1,13).map(n => I18n.calendars.months[n])
+    let monthList = range(1,13).map(n => I18n.calendars.months[n])
     let date = new Date(strDate)
     return monthList[date.getMonth()]
   },
@@ -172,12 +176,12 @@ const actions = {
     return date.toLocaleDateString()
   },
   updateSynthesis: ({current_month, time_table_dates: dates, time_table_periods: periods}) => {
-    let newPeriods = _.reject(periods, 'deleted')
+    let newPeriods = reject(periods, 'deleted')
     let improvedCM = current_month.map((d, i) => {
       let isInPeriod = actions.isInPeriod(newPeriods, d.date)
-      let isIncluded = _.some(dates, {'date': d.date, 'in_out': true})
+      let isIncluded = some(dates, {'date': d.date, 'in_out': true})
 
-      return _.assign({}, current_month[i], {
+      return assign({}, current_month[i], {
         in_periods: isInPeriod,
         include_date: isIncluded,
         excluded_date: !isInPeriod ? false : current_month[i].excluded_date
@@ -271,8 +275,8 @@ const actions = {
   submitTimetable: (dispatch, timetable, metas, next) => {
     dispatch(actions.fetchingApi())
     let strDayTypes = actions.arrayToStrDayTypes(metas.day_types)
-    metas.day_types= strDayTypes
-    let sentState = _.assign({}, timetable, metas)
+    metas.day_types = strDayTypes
+    let sentState = assign({}, timetable, metas)
     let urlJSON = window.location.pathname.split('/', 5).join('/')
     let hasError = false
     fetch(urlJSON + '.json', {
@@ -302,8 +306,8 @@ const actions = {
       })
   },
   errorModalKey: (periods, dayTypes) => {
-    const withoutPeriodsWithDaysTypes = _.reject(periods, 'deleted').length == 0 && _.some(dayTypes) && "withoutPeriodsWithDaysTypes"
-    const withPeriodsWithoutDayTypes = _.reject(periods, 'deleted').length > 0 &&  _.every(dayTypes, dt => dt == false) && "withPeriodsWithoutDayTypes"
+    const withoutPeriodsWithDaysTypes = reject(periods, 'deleted').length == 0 && some(dayTypes) && "withoutPeriodsWithDaysTypes"
+    const withPeriodsWithoutDayTypes = reject(periods, 'deleted').length > 0 &&  every(dayTypes, dt => dt == false) && "withPeriodsWithoutDayTypes"
 
     return (withoutPeriodsWithDaysTypes || withPeriodsWithoutDayTypes) && (withoutPeriodsWithDaysTypes ? "withoutPeriodsWithDaysTypes" : "withPeriodsWithoutDayTypes")
 

@@ -1,14 +1,14 @@
-import _ from 'lodash'
+import assign from 'lodash/assign'
 
 export default function status(state = {}, action) {
   switch (action.type) {
     case 'UNAVAILABLE_SERVER':
-      return _.assign({}, state, {fetchSuccess: false})
+      return assign({}, state, {fetchSuccess: false})
     case 'FETCH_API':
-      return _.assign({}, state, {isFetching: true})
+      return assign({}, state, {isFetching: true})
     case 'RECEIVE_TIME_TABLES':
     case 'RECEIVE_MONTH':
-      return _.assign({}, state, {fetchSuccess: true, isFetching: false})
+      return assign({}, state, {fetchSuccess: true, isFetching: false})
     default:
       return state
   }

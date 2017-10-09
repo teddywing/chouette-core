@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import _ from 'lodash'
+import assign from 'lodash/assign'
 import actions from '../actions'
 import PeriodFormComponent from '../components/PeriodForm'
 
@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUpdatePeriodForm: (e, group, selectType, modalProps) => {
       dispatch(actions.updatePeriodForm(e.currentTarget.value, group, selectType))
-      let mProps = _.assign({}, modalProps)
+      let mProps = assign({}, modalProps)
       mProps[group][selectType] = e.currentTarget.value
       let val = window.correctDay([parseInt(mProps[group]['day']), parseInt(mProps[group]['month']), parseInt(mProps[group]['year'])])
       val = (val < 10) ? '0' + String(val) : String(val)

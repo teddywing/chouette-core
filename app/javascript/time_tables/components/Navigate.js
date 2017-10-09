@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import _ from 'lodash'
+import map from 'lodash/map'
 import actions from '../actions'
 
 export default function Navigate({ dispatch, metas, timetable, pagination, status, filters}) {
@@ -30,7 +30,7 @@ export default function Navigate({ dispatch, metas, timetable, pagination, statu
                 className='dropdown-menu'
                 aria-labelledby='date_selector'
                 >
-                {_.map(pagination.periode_range, (month, i) => (
+                {map(pagination.periode_range, (month, i) => (
                   <li key={i}>
                     <button
                       type='button'

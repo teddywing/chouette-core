@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from 'react'
-import _ from 'lodash'
+import mapKeys from 'lodash/mapKeys'
+import map from 'lodash/map'
+import filter from 'lodash/filter'
+import assign from 'lodash/assign'
 import Select2 from 'react-select2'
 
 // get JSON full path
@@ -13,7 +16,7 @@ export default class TagsSelect2 extends Component {
 
   mapKeys(array){
     return array.map((item) =>
-      _.mapKeys(item, (v, k) =>
+      mapKeys(item, (v, k) =>
         ((k == 'name') ? 'text' : k)
       )
     )
@@ -22,7 +25,7 @@ export default class TagsSelect2 extends Component {
   render() {
     return (
       <Select2
-        value={(this.props.tags.length) ? _.map(this.props.tags, 'id') : undefined}
+        value={(this.props.tags.length) ? map(this.props.tags, 'id') : undefined}
         data={(this.props.initialTags.length) ? this.mapKeys(this.props.initialTags) : undefined}
         onSelect={(e) => this.props.onSelect2Tags(e)}
         onUnselect={(e) => setTimeout( () => this.props.onUnselect2Tags(e, 150))}
@@ -47,10 +50,10 @@ export default class TagsSelect2 extends Component {
               };
             },
             processResults: function(data, params) {
-              let items = _.filter(data, ({name}) => name.includes(params.term) )
+              let items = filter(data, ({name}) => name.includes(params.term) )
               return {
                 results: items.map(
-                  item => _.assign(
+                  item => assign(
                     {},
                     item,
                     {text: item.name}
