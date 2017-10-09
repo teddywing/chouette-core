@@ -11,8 +11,7 @@
     - if params[:q].present? || @referentials.any?
       .row
         .col-lg-12
-          - if params[:q].present?
-            = render 'filters'
+          = render 'filters'
 
     - if @referentials.any?
       .row

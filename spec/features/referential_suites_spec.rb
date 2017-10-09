@@ -11,24 +11,41 @@ RSpec.describe 'ReferentialSuites', type: :feature do
 
 
   describe 'index' do
-    before(:each) do
-      referentials
-      visit workbench_output_path(workbench)
-    end
+    context 'no referentials present' do
+      before(:each) do
+        visit workbench_output_path(workbench)
+      end
+      it 'has a page with the correct information' do
+        # Breadcrumb
+        expect( page ).to have_text('Accueil')
+        expect( page ).to have_text("Gestion de l'offre")
 
-    it 'has a page with the correct information' do
-      # Breadcrumb
-      expect( page ).to have_text('Accueil')
-      expect( page ).to have_text("Gestion de l'offre")
-
-      # Title
-      expect( page ).to have_text('Offres de mon organisation')
-    end
-
-    xit 'filtering with Ransack' do
-      fill_in 'q[status]', with: 'Courant'
+        # Title
+        expect( page ).to have_text('Offres de mon organisation')
+      end
 
     end
 
+    context 'referentials present' do
+      before(:each) do
+        referentials
+        visit workbench_output_path(workbench)
+      end
+
+      it 'has a page with the correct information' do
+        # Breadcrumb
+        expect( page ).to have_text('Accueil')
+        expect( page ).to have_text("Gestion de l'offre")
+
+        # Title
+        expect( page ).to have_text('Offres de mon organisation')
+      end
+
+      xit 'filtering with Ransack' do
+        fill_in 'q[status]', with: 'Courant'
+
+      end
+
+    end
   end
 end
