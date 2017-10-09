@@ -44,16 +44,16 @@ RSpec.describe ComplianceControlSetCopier do
       let( :ccks ){ cck_set.compliance_checks }
 
       it 'correctly creates a cck_set for a complete DAG' do
-        # Slowness of tests constrain us to create a minimum of objects in the DB,
+        # Slowness of tests constrains us to create a minimum of objects in the DB,
         # hence only one example :(
         counts = object_counts
         subject.copy(cc_set.id, ref.id)
 
         # Did not change the original objects
         # Correct numbers
-        expect( ComplianceControlSet.count).to eq(counts.cc_set_count)
-        expect( ComplianceControlBlock.count).to eq(counts.cc_block_count)
-        expect( ComplianceControl.count).to eq(counts.cc_count)
+        expect( ComplianceControlSet.count ).to eq(counts.cc_set_count)
+        expect( ComplianceControlBlock.count ).to eq(counts.cc_block_count)
+        expect( ComplianceControl.count ).to eq(counts.cc_count)
 
         expect( ComplianceCheckSet.count ).to eq(counts.cck_set_count + 1)
         expect( cck_blox.count ).to eq(counts.cck_block_count + cc_blox.size)
