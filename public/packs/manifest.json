@@ -1,9 +1,0 @@
-{
-  "application.js": "/packs/application-e1c33d0d0d3c8ae6f576.js",
-  "date_filters.js": "/packs/date_filters-917406905b35ee2719ab.js",
-  "journey_patterns/index.js": "/packs/journey_patterns/index-9d6cd7e3a3d127e9d3c4.js",
-  "routes/edit.js": "/packs/routes/edit-285338a2f90d669dbbe6.js",
-  "routes/show.js": "/packs/routes/show-65199d0c439679664020.js",
-  "time_tables/edit.js": "/packs/time_tables/edit-fcf028cce8247615e287.js",
-  "vehicle_journeys/index.js": "/packs/vehicle_journeys/index-20e8a2e46b3acf5002fd.js"
-}
