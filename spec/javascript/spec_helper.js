@@ -6,7 +6,7 @@
 // require support/your-support-file
 //= require jquery
 //= require bootstrap-sass-official
-require('es6-object-assign').polyfill();
+import { polyfill } from 'es6-object-assign'
 //
 // PhantomJS (Teaspoons default driver) doesn't have support for Function.prototype.bind, which has caused confusion.
 // Use this polyfill to avoid the confusion.

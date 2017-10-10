@@ -1,4 +1,4 @@
-var actions = require('es6_browserified/journey_patterns/actions')
+import actions from '../../app/javascript/journey_patterns/actions'
 
 const dispatch = function(){}
 const currentPage = 1

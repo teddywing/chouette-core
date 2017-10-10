@@ -1,4 +1,4 @@
-var stopPointsReducer = require('es6_browserified/itineraries/reducers/stopPoints')
+import stopPointsReducer from '../../../app/javascript/routes/reducers/stopPoints'
 
 let state = []
 

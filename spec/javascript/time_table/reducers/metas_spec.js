@@ -1,4 +1,4 @@
-var metasReducer = require('es6_browserified/time_tables/reducers/metas')
+import metasReducer from '../../../app/javascript/time_tables/reducers/metas'
 
 let state = {}
 

@@ -11,8 +11,7 @@ let pathsToClean = [
 let cleanOptions = {
   root: __dirname + '/../../',
   verbose: true,
-  dry: false,
-  watch: true
+  dry: false
 };
 
 
@@ -21,14 +20,6 @@ environment.plugins.set(
   new CleanWebpackPlugin(pathsToClean, cleanOptions)
 )
 
-environment.plugins.set(
-  'UglifyJs',
-  new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false
-    }
-  })
-)
 // environment.plugins.set('Provide', new webpack.ProvidePlugin({
 //     $: 'jquery',
 //     jQuery: 'jquery',

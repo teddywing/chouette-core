@@ -1,4 +1,4 @@
-var actions = require('es6_browserified/vehicle_journeys/actions')
+import actions from 'vehicle_journeys/actions/index'
 
 const dispatch = function(){}
 const currentPage = 1

@@ -1,4 +1,4 @@
-var modalReducer = require('es6_browserified/time_tables/reducers/modal')
+import modalReducer from '../../../app/javascript/time_tables/reducers/modal'
 
 let state = {}
 

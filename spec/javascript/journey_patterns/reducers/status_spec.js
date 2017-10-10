@@ -1,7 +1,13 @@
-var statusReducer = require('es6_browserified/vehicle_journeys/reducers/status')
+import statusReducer from '../../../app/javascript/journey_patterns/reducers/status'
 
 let state = {}
 
+let pagination = {
+  page : 2,
+  totalCount : 25,
+  stateChanged: false,
+  perPage: 12
+}
 const dispatch = function(){}
 
 describe('status reducer', () => {
@@ -26,10 +32,10 @@ describe('status reducer', () => {
     ).toEqual(Object.assign({}, state, {fetchSuccess: false}))
   })
 
-  it('should handle RECEIVE_VEHICLE_JOURNEYS', () => {
+  it('should handle RECEIVE_JOURNEY_PATTERNS', () => {
     expect(
       statusReducer(state, {
-        type: 'RECEIVE_VEHICLE_JOURNEYS'
+        type: 'RECEIVE_JOURNEY_PATTERNS'
       })
     ).toEqual(Object.assign({}, state, {fetchSuccess: true, isFetching: false}))
   })

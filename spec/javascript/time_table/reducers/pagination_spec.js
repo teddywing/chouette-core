@@ -1,4 +1,4 @@
-var paginationReducer = require('es6_browserified/time_tables/reducers/pagination')
+import paginationReducer from '../../../app/javascript/time_tables/reducers/pagination'
 
 const dispatch = function(){}
 

@@ -1,4 +1,4 @@
-var vjReducer = require('es6_browserified/vehicle_journeys/reducers/vehicleJourneys')
+import vjReducer from '../../../app/javascript/vehicle_journeys/reducers/vehicleJourneys'
 
 let state = []
 let stateModal = {

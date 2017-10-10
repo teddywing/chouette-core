@@ -1,4 +1,4 @@
-var modalReducer = require('es6_browserified/journey_patterns/reducers/modal')
+import modalReducer from '../../../app/javascript/journey_patterns/reducers/modal'
 
 let state = {}
 

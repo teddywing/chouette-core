@@ -1,4 +1,5 @@
-var jpReducer = require('es6_browserified/journey_patterns/reducers/journeyPatterns')
+import jpReducer from '../../../app/javascript/journey_patterns/reducers/journeyPatterns'
+
 let state = []
 let fakeStopPoints = [{
   area_type : "lda",

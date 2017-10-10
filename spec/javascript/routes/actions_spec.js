@@ -1,4 +1,4 @@
-var actions = require('es6_browserified/itineraries/actions')
+import actions from '../../app/javascript/routes/actions'
 
 describe('actions', () => {
   it('should create an action to add a stop', () => {
