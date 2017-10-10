@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :compliance_check do
     sequence(:name) { |n| "Compliance check #{n}" }
     type "Type"
-    criticity :info
+    criticity "info"
     code "code"
     origin_code "code"
     comment "Text"

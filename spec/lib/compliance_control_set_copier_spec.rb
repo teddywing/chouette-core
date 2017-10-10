@@ -92,7 +92,7 @@ RSpec.describe ComplianceControlSetCopier do
           expect( cck_block.condition_attributes ).to eq(cc_block.condition_attributes)
 
           # Control/Check
-          att_names = %w{ type control_attributes code criticity comment origin_code }
+          att_names = %w{  control_attributes code criticity comment origin_code }
           expected  = control.attributes.values_at(*att_names) << mk_name(control.name)
           actual    = cck.attributes.values_at(*(att_names << 'name')) 
 

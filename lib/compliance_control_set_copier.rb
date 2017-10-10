@@ -59,8 +59,10 @@ class ComplianceControlSetCopier
   end
   def make_compliance_check(compliance_control)
     cck_set.compliance_checks.create(
+      control_attributes: compliance_control.control_attributes,
       criticity: compliance_control.criticity,
       name: name_with_refid(compliance_control.name),
+      comment: compliance_control.comment,
       code: compliance_control.code,
       origin_code: compliance_control.origin_code
     ).tap do | compliance_check |
