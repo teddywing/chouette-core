@@ -9,7 +9,10 @@ en:
       title: "Footnotes"
   activerecord:
     models:
-      footnote: "footnote"
+      footnote:
+        zero: "note"
+        one: "note"
+        other: "notes"
     attributes:
       footnote:
         code: "number"

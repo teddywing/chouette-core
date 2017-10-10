@@ -1,8 +1,10 @@
 en:
   activerecord:
     models:
-      one: routing constraint zone
-      other: routing constraint zones
+      routing_constraint_zone:
+        zero: routing constraint zone
+        one: routing constraint zone
+        other: routing constraint zones
     attributes:
       routing_constraint_zone:
         name: Name

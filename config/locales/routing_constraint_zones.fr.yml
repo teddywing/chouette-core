@@ -1,8 +1,10 @@
 fr:
   activerecord:
     models:
-      one: zone de contrainte
-      other: zone de contraintes
+      routing_constraint_zone:
+        zero: zone de contrainte
+        one: zone de contrainte
+        other: zone de contraintes
     attributes:
       routing_constraint_zone:
         name: Nom
