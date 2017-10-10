@@ -73,12 +73,30 @@ RSpec.describe ComplianceControlSetCopier do
         let( :cc_block ){ create :compliance_control_block, compliance_control_set: cc_set }
 
         let!( :control ){ create :compliance_control,
-                                  compliance_control_set: cc_set,
-                                  compliance_control_block: cc_block,
-                                  name: 'control' }
+                          compliance_control_set: cc_set,
+                          compliance_control_block: cc_block,
+                          name: 'control' }
 
-        it 'indeed' do
-          require 'pry'; binding.pry
+        let( :cck_set )    { ComplianceCheckSet.last }
+        let( :cck_block )  { ComplianceCheckBlock.last }
+        let( :cck )        { ComplianceCheck.last }
+
+        it 'into the compliance_check nodes' do
+          subject.copy(cc_set.id, ref.id)
+
+          # Set
+          expect( cck_set.name ).to eq(mk_name(cc_set.name))
+
+          # Block
+          expect( cck_block.name ).to eq(mk_name(cc_block.name))
+          expect( cck_block.condition_attributes ).to eq(cc_block.condition_attributes)
+
+          # Control/Check
+          att_names = %w{ type control_attributes code criticity comment origin_code }
+          expected  = control.attributes.values_at(*att_names) << mk_name(control.name)
+          actual    = cck.attributes.values_at(*(att_names << 'name')) 
+
+          expect( actual ).to eq( expected )
 
         end
       end

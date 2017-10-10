@@ -36,7 +36,8 @@ class ComplianceControlSetCopier
   # Copy Blocks:
   def make_cck_block cc_block
     cck_set.compliance_check_blocks.create(
-      name: name_with_refid(cc_block.name)).tap do | cck_block |
+      name: name_with_refid(cc_block.name),
+      condition_attributes: cc_block.condition_attributes).tap do | cck_block |
         relink_checks_to_block cc_block, cck_block
       end
   end
