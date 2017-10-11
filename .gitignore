@@ -30,7 +30,6 @@ coverage
 # IDE
 .idea
 
-bin/
 
 # Ignore uploaded files
 /public/uploads
@@ -43,6 +42,7 @@ bin/
 /bin/rake
 /bin/rails
 /bin/rspec
+/bin/spring
 
 # FIXME Ignore ./spec/services/zip_service/regression_4273_spec.rb files
 /spec/fixtures/target_*.zip/public/packs
