@@ -1,5 +1,10 @@
 fr:
+  # referential_suites key is in this file because of a Capybara/RSpec issue if
+  # we put it into referential_suites.<locale>.yml ;(
   referential_suites:
+    filters:
+      publication_date_from: 'Date de publication du'
+      publication_date_to: 'au'
     index:
       title: 'Offres de mon organisation'
   workbenches:
