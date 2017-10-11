@@ -1,4 +1,7 @@
 class ComplianceCheck < ActiveRecord::Base
+
+  self.inheritance_column = nil
+
   extend Enumerize
   belongs_to :compliance_check_set
   belongs_to :compliance_check_block

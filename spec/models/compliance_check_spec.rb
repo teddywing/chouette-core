@@ -3,6 +3,10 @@ RSpec.describe ComplianceCheck, type: :model do
     expect(FactoryGirl.build(:compliance_check)).to be_valid
   end
 
+  it 'has STI disabled' do
+    expect( described_class.inheritance_column ).to be_blank
+  end
+
   it { should belong_to :compliance_check_set }
   it { should belong_to :compliance_check_block }
 
