@@ -32,7 +32,7 @@ namespace :ci do
   end
 
   task :spec do
-    sh "rspec --profile"
+    sh "bundle exec rake spec"
   end
 
   desc "Deploy after CI"
