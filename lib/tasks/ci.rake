@@ -32,11 +32,7 @@ namespace :ci do
   end
 
   task :spec do
-    sh "bundle exec rspec --profile"
-  end
-
-  task :teaspoon do
-    sh "RAILS_ENV=test bundle exec rake teaspoon"
+    sh "rspec --profile"
   end
 
   desc "Deploy after CI"
@@ -55,4 +51,4 @@ namespace :ci do
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "rspec", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "ci:spec", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
