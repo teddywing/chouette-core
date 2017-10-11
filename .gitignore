@@ -34,6 +34,7 @@ bin/
 
 # Ignore uploaded files
 /public/uploads
+/public/packs
 
 # Ignore node modules
 /node_modules
@@ -44,4 +45,6 @@ bin/
 /bin/rspec
 
 # FIXME Ignore ./spec/services/zip_service/regression_4273_spec.rb files
-/spec/fixtures/target_*.zip
+/spec/fixtures/target_*.zip/public/packs
+/public/packs-test
+/node_modules

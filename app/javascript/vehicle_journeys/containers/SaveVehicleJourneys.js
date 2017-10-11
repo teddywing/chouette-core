@@ -1,0 +1,28 @@
+import actions from '../actions'
+import { connect } from 'react-redux'
+import SaveVehicleJourneysComponent from '../components/SaveVehicleJourneys'
+
+const mapStateToProps = (state) => {
+  return {
+    editMode: state.editMode,
+    vehicleJourneys: state.vehicleJourneys,
+    page: state.pagination.page,
+    status: state.status,
+    filters: state.filters
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onEnterEditMode: () => {
+      dispatch(actions.enterEditMode())
+    },
+    onSubmitVehicleJourneys: (next, state) => {
+      actions.submitVehicleJourneys(dispatch, state, next)
+    }
+  }
+}
+
+const SaveVehicleJourneys = connect(mapStateToProps, mapDispatchToProps)(SaveVehicleJourneysComponent)
+
+export default SaveVehicleJourneys
