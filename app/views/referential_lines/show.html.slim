@@ -1,6 +1,6 @@
 / PageHeader
 = pageheader 'ligne',
-            t('lines.index.line') + " " + @line.name,
+            t('lines.index.line', line: @line.name),
              '',
              t('last_update', time: l(@line.updated_at, format: :short)) do
 
@@ -34,7 +34,7 @@
 
     .row
       .col-lg-12
-        .h3 = t('routes.show.itineraries')
+        .h3 = t('lines.show.routes.title', route: "", line: "")
         - if params[:q].present? or @routes.any?
           .row
             .col-lg-12
