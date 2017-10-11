@@ -3,7 +3,10 @@ module StifTransportModeEnumerations
   extend Enumerize
   extend self
 
-  enumerize :transport_mode, in: %w(air bus coach ferry metro rail trolleyBus tram water cableway funicular other)
+  enumerize :transport_mode, in: %w(bus
+                                    metro
+                                    rail
+                                    tram)
 
   def transport_modes
     StifTransportModeEnumerations.transport_mode.values
