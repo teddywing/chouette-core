@@ -3,7 +3,7 @@ namespace :ci do
   task :setup do
     cp "config/database/jenkins.yml", "config/database.yml"
     sh "RAILS_ENV=test rake db:drop db:create db:migrate"
-    sh "npm --production --no-progress install"
+    sh "yarn --production --no-progress install"
   end
 
   def git_branch

@@ -1,4 +1,6 @@
 const environment = require('./environment')
+const webpack = require('webpack')
+const UglifyJsPlugin = require('uglify-js')
 
 environment.plugins.set(
   'UglifyJs',
