@@ -1,6 +1,4 @@
 const { environment } = require('@rails/webpacker')
-const webpack = require('webpack')
-const UglifyJsPlugin = require('uglify-js')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 let pathsToClean = [
