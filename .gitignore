@@ -30,13 +30,15 @@ coverage
 # IDE
 .idea
 
-
 # Ignore uploaded files
 /public/uploads
-/public/packs
 
 # Ignore node modules
 /node_modules
+
+# Ignore webpack public files
+/public/packs
+/public/packs-test
 
 # Every machine shall create its binstubs
 /bin/rake
@@ -45,6 +47,4 @@ coverage
 /bin/spring
 
 # FIXME Ignore ./spec/services/zip_service/regression_4273_spec.rb files
-/spec/fixtures/target_*.zip/public/packs
-/public/packs-test
-/node_modules
+/spec/fixtures/target_*.zip
