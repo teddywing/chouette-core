@@ -6,7 +6,7 @@ class ComplianceCheck < ActiveRecord::Base
   belongs_to :compliance_check_set
   belongs_to :compliance_check_block
   
-  enumerize :criticity, in: %i(info warning error), scope: true, default: :warning
+  enumerize :criticity, in: %i(warning error), scope: true, default: :warning
   validates :criticity, presence: true
   validates :name, presence: true
   validates :code, presence: true
