@@ -4,7 +4,7 @@ RSpec.describe GenericAttributeControl::Pattern do
   subject{ build factory }
 
   context "is valid" do
-    if 'the pattern contains a basic regex' do
+    it 'if the pattern contains a basic regex' do
       subject.pattern = 'hel+o?'
       expect_it.to be_valid
     end
