@@ -13,6 +13,6 @@
           - @sti_subclasses.each do |klass|
             .radio
               = radio_button_tag(:sti_class, klass)
-              = label_tag(:sti_class, klass)
+              = I18n.t("activerecord.models.#{klass.name.underscore}.one")
           .text-right
             = submit_tag t('compliance_control_sets.actions.loaded'), class: "btn btn-outline-primary"

@@ -10,18 +10,18 @@ fr:
       title: "Ajouter un jeu de controle"
     edit:
       title: "Editer le jeu de controle"
-    route:
-      zdl_stop_area:
-        messages:
-          3_route_1: "L'itinéraire % dessert successivement les arrêts % % et % % de la même zone de lieu"
-        description: "Deux arrêts d’une même ZDL ne peuvent pas se succéder dans un itinéraire"
-      opposite_route:
-        messages:
-          3_route_2: "L'itinéraire % référence un itinéraire retour % incohérent"
-        description: |
-          "Si l'itinéraire référence un itinéraire inverse, celui-ci doit :
-            - référencer l'itinéraire inverse
-            - avoir un sens opposé à l'itinéraire testé"
+    route_control/zdl_stop_area:
+      messages:
+        3_route_1: "L'itinéraire % dessert successivement les arrêts % % et % % de la même zone de lieu"
+      description: "Deux arrêts d’une même ZDL ne peuvent pas se succéder dans un itinéraire"
+    route_control/opposite_route:
+      messages:
+        3_route_2: "L'itinéraire % référence un itinéraire retour % incohérent"
+      description: |
+        "Si l'itinéraire référence un itinéraire inverse, celui-ci doit :
+          - référencer l'itinéraire inverse
+          - avoir un sens opposé à l'itinéraire testé"
+    route_control:
       journey_pattern:
         messages:
           3_route_3: "L'itinéraire % n'a pas de mission"
@@ -112,11 +112,61 @@ fr:
         description: "% : l'attribut % de % à une valeur % en conflit avec %"
   activerecord:
     models:
-      one: "controle"
-      other: "contrôles"
+      compliance_control:
+        one: "controle"
+        other: "contrôles"
+      route_control/zdl_stop_area:
+        one: ""
+      route_control/opposite_route:
+        one: ""
+      route_control/journey_pattern:
+        one:
+      route_control/duplicates:
+        one: ""
+      route_control/opposite_route_terminus:
+        one: ""
+      route_control/minimum_length:
+        one: ""
+      route_control/omnibus_journey_pattern:
+        one: ""
+      route_control/unactivated_stop_point:
+        one: ""
+      journey_pattern_control/duplicates:
+        one: ""
+      journey_pattern_control/vehicle_journey:
+        one: ""
+      vehicle_journey_control/waiting_time:
+        one: ""
+      vehicle_journey_control/speed:
+        one: ""
+      vehicle_journey_control/delta:
+        one: ""
+      vehicle_journey_control/time_table:
+        one: ""
+      vehicle_journey_control/vehicle_journey_at_stops:
+        one: ""
+      routing_constraint_zone_control/vehicle_journey_at_stops:
+        one: ""
+      routing_constraint_zone_control/maximum_length:
+        one: ""
+      routing_constraint_zone_control/minimum_length:
+        one: ""
+      line_control/route:
+        one: ""
+      generic_attribute_control/content:
+        one: ""
+      generic_attribute_control/min_max:
+        one: ""
+      generic_attribute_control/uniqueness:
+        one: ""
+
     attributes:
       compliance_control:
         name: "Nom"
         criticity: "Criticité"
         comment: "Commentaire"
         code: "Code"
+        compliance_control_block: "Groupe de contrôle"
+        minimum: "Minimum"
+        maximum: "Maximum"
+        target: "Cible"
