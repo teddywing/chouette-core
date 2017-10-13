@@ -39,11 +39,13 @@ fr:
     show:
       title: "Itinéraire %{route} de la ligne %{line}"
       stop_points: "Liste des arrêts de l'itinéraire"
+      stop_areas:
+        title: "Liste des arrêts"
       journey_patterns: "Liste des missions"
       no_opposite_route: "Aucun itinéraire associé"
       undefined: "Non défini"
     index:
-      title: "Itinéraires"
+      title: "Itinéraire %{route}"
       selection: "Sélection"
       selection_all: "Tous"
     edit_boarding_alighting:
