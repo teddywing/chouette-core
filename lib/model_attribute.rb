@@ -12,7 +12,7 @@ class ModelAttribute
         el[I18n.t("activerecord.models.#{key}.one")] = values.map do |i|
           [
             I18n.t("activerecord.attributes.#{i.klass}.#{i.name}"),
-            "#{i.klass}.#{i.name}"
+            "#{i.klass}\##{i.name}"
           ]
         end
       end

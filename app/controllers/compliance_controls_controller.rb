@@ -7,26 +7,42 @@ class ComplianceControlsController < BreadcrumbController
   end
 
   def new
-    if params[:sti_class]
-      @compliance_control_set = parent
-      @compliance_control     = params[:sti_class].constantize.new
-    else
+    if params[:sti_class].blank?
+      flash[:notice] = I18n.t("compliance_controls.errors.mandatory_control_type")
       redirect_to(action: :select_type)
     end
+    new!
   end
 
   def create
-    create! { compliance_control_set_path(parent) }
+    create! do |success, failure|
+      success.html { redirect_to compliance_control_set_path(parent) }
+      failure.html { render( :action => 'new' ) }
+    end
+  end
+
+  protected
+
+  alias_method :compliance_control_set, :parent
+  alias_method :compliance_control, :resource
+
+  def build_resource
+    @compliance_control ||= compliance_control_class.new compliance_control_set: parent
   end
 
   private
+
+  def compliance_control_class
+    (params[:sti_class] || params[:compliance_control][:type]).constantize
+  end
+
   def dynamic_attributes_params
-    params.require(:compliance_control).permit(:type).values[0].constantize.dynamic_attributes
+    compliance_control_class.dynamic_attributes
   end
 
   def compliance_control_params
     base = [:name, :code, :origin_code, :criticity, :comment, :control_attributes, :type, :compliance_control_block_id]
-    permited = base + dynamic_attributes_params
-    params.require(:compliance_control).permit(permited)
+    permitted = base + dynamic_attributes_params
+    params.require(:compliance_control).permit(permitted)
   end
 end

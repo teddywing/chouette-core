@@ -35,12 +35,4 @@ FactoryGirl.define do
   factory :route_control_zdl_stop_area, class: 'RouteControl::ZDLStopArea' do
     association :compliance_control_set
   end
-
-  factory :route_control_time_table, class: 'RouteControl::TimeTable' do
-    association :compliance_control_set
-  end
-
-  factory :route_control_control_vehicle_journey_at_stops, class: 'RouteControl::VehicleJourneyAtStops' do
-    association :compliance_control_set
-  end
 end

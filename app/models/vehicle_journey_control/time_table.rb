@@ -1,4 +1,4 @@
-module RouteControl
+module VehicleJourneyControl
   class TimeTable < ComplianceControl
 
     def self.default_code; "3-VehicleJourney-4" end

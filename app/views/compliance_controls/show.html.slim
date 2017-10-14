@@ -16,8 +16,8 @@
                 ComplianceControl.human_attribute_name(:comment) => @compliance_control.comment,
               }.merge( \
                 {}.tap do |hash| \
-                  @compliance_control.control_attributes.each do |k, v| \
-                    hash[ComplianceControl.human_attribute_name(k)] = v \
+                  @compliance_control.class.dynamic_attributes.each do |attribute| \
+                    hash[ComplianceControl.human_attribute_name(attribute)] = @compliance_control.send(attribute) \
                   end \
                 end \
               )

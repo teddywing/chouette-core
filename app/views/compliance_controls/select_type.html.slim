@@ -12,7 +12,7 @@
         = form_tag(new_compliance_control_set_compliance_control_path, method: :get) do
           - @sti_subclasses.each do |klass|
             .radio
-              = radio_button_tag(:sti_class, klass)
-              = I18n.t("activerecord.models.#{klass.name.underscore}.one")
+              = radio_button_tag(:sti_class, klass, @sti_subclasses.first)
+              = "#{klass.default_code} - #{I18n.t("activerecord.models.#{klass.name.underscore}.one")}"
           .text-right
             = submit_tag t('compliance_control_sets.actions.loaded'), class: "btn btn-outline-primary"

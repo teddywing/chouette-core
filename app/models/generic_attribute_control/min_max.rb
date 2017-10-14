@@ -2,6 +2,9 @@ module GenericAttributeControl
   class MinMax < ComplianceControl
     hstore_accessor :control_attributes, minimum: :integer, maximum: :integer, target: :string
 
+    validates :minimum, numericality: true, allow_nil: true
+    validates :maximum, numericality: true, allow_nil: true
+    #validates :target, presence: true
     validate :min_max_values
     def min_max_values
       true
