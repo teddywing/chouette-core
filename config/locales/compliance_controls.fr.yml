@@ -4,13 +4,13 @@ fr:
       incoherent_control_sets: "Le contrôle ne peut pas être associé à un jeu de contrôle (id: %{direct_set_name}) différent de celui de son groupe (id: %{indirect_set_name})"
       mandatory_control_type: "Un type de contrôle doit être sélectionné"
     show:
-      title: "Jeu de controle"
-    index:
-      title: "Jeux de controles"
+      title: "Consulter un contrôle"
     new:
-      title: "Ajouter un jeu de controle"
+      title: "Ajouter un contrôle"
     edit:
-      title: "Editer le jeu de controle"
+      title: "Editer un contrôle"
+    select_type:
+      title: "Sélectionner un type de contrôle"
     route_control/zdl_stop_area:
       messages:
         3_route_1: "L'itinéraire % dessert successivement les arrêts % % et % % de la même zone de lieu"

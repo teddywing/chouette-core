@@ -1,11 +1,13 @@
 fr:
   compliance_control_sets:
     index:
-      title: Jeux de contrôle
-      new: Création d'un jeux de contrôle
-      new_control: Création d'un contrôle
-      select_types: Séléction du type de contrôle
-      edit: Édition d'un jeux de contrôle
+      title: "Liste des jeux de contrôles"
+    edit:
+      title: "Editer le jeu de contrôles %{name}"
+    show:
+      title: "Consulter le jeu de contrôles %{name}"
+    new:
+      title: "Créer un jeu de contrôles"
     actions:
       new: Ajouter
       edit: Editer
