@@ -1,4 +1,4 @@
-import actions from 'vehicle_journeys/actions/index'
+import actions from '../../../app/javascript/vehicle_journeys/actions/index'
 
 const dispatch = function(){}
 const currentPage = 1

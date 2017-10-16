@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import actions from "../actions"
 
-export default function journeyPattern(state = {}, action) {
+const journeyPattern = (state = {}, action) =>{
   switch (action.type) {
     case 'ADD_JOURNEYPATTERN':
       let stopPoints = window.stopPoints
@@ -33,7 +33,7 @@ export default function journeyPattern(state = {}, action) {
   }
 }
 
-const journeyPatterns = (state = [], action) => {
+export default function journeyPatterns (state = [], action)  {
   switch (action.type) {
     case 'RECEIVE_JOURNEY_PATTERNS':
       return [...action.json]
