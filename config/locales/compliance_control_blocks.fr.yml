@@ -10,6 +10,8 @@ fr:
         transport_mode: Mode de transport
         transport_submode: Sous-mode de transport
   compliance_control_blocks:
+    clone:
+      prefix: 'Copie de'
     actions:
       destroy_confirm: Etes vous sûr de supprimer ce bloc ?
     new:

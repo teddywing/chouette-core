@@ -10,6 +10,8 @@ fr:
         transport_mode: Transport mode
         sub_transport_mode: Transport submode
   compliance_control_blocks:
+    clone:
+      prefix: 'Copy of'
     actions:
       destroy_confirm: Are you sure you want to destroy this block ?
     new:

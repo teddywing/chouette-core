@@ -1,5 +1,7 @@
 fr:
   compliance_control_sets:
+    clone:
+      prefix: 'Copy of'
     index:
       title: "Liste des jeux de contrôles"
     edit:
