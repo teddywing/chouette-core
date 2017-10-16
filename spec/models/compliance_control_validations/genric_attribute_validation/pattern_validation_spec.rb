@@ -11,13 +11,14 @@ RSpec.describe GenericAttributeControl::Pattern do
   end
 
   context "is invalid" do
-    it 'if no pattern has been provided' do
-      expect_it.not_to be_valid
-    end
-    it 'if the pattern is empty' do
-      subject.pattern = '  '
-      expect_it.not_to be_valid
-    end
+    pending "Behavior to be defined"
+    # it 'if no pattern has been provided' do
+    #   expect_it.not_to be_valid
+    # end
+    # it 'if the pattern is empty' do
+    #   subject.pattern = '  '
+    #   expect_it.not_to be_valid
+    # end
 
   end
 end
