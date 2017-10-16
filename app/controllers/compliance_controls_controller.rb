@@ -15,6 +15,7 @@ class ComplianceControlsController < BreadcrumbController
   end
 
   def create
+    puts build_resource.inspect
     create! do |success, failure|
       success.html { redirect_to compliance_control_set_path(parent) }
       failure.html { render( :action => 'new' ) }
