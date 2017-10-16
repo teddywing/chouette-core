@@ -8,7 +8,7 @@ class ComplianceControl < ActiveRecord::Base
 
   validates :criticity, presence: true
   validates :name, presence: true
-  validates :code, presence: true
+  validates :code, presence: true, uniqueness: { scope: :compliance_control_set }
   validates :origin_code, presence: true
   validates :compliance_control_set, presence: true
 
