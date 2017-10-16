@@ -6,6 +6,7 @@ RSpec.describe GenericAttributeControl::Pattern do
   context "is valid" do
     it 'if the pattern contains a basic regex' do
       subject.pattern = 'hel+o?'
+      subject.target  = 'world'
       expect_it.to be_valid
     end
   end
