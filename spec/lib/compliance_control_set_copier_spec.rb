@@ -26,7 +26,7 @@ RSpec.describe ComplianceControlSetCopier do
           3.times.map{ |_| create :compliance_control_block, compliance_control_set: cc_set }
         }
         let!(:direct_ccs){
-          3.times.map{ |n| create :compliance_control, compliance_control_set: cc_set, name: "direct #{n.succ}" }
+          3.times.map{ |n| create :compliance_control, compliance_control_set: cc_set, name: "direct #{n.succ}", code: "direct-#{n.succ}" }
         }
         # Needed to check we do not dulicate a node (compliance_control) twice
         let!(:indirect_ccs){
@@ -36,7 +36,7 @@ RSpec.describe ComplianceControlSetCopier do
             cc.update compliance_control_block_id: cc_block.id
           end
           cc_blox.each_with_index.map{ | cc_block, n |
-            create(:compliance_control, compliance_control_set: cc_set, compliance_control_block: cc_block, name: "indirect #{n.succ}")
+            create(:compliance_control, compliance_control_set: cc_set, compliance_control_block: cc_block, name: "indirect #{n.succ}", code: "indirect-#{n.succ}")
           }
         }
 
@@ -94,7 +94,7 @@ RSpec.describe ComplianceControlSetCopier do
           # Control/Check
           att_names = %w{  control_attributes code criticity comment origin_code }
           expected  = control.attributes.values_at(*att_names) << mk_name(control.name)
-          actual    = cck.attributes.values_at(*(att_names << 'name')) 
+          actual    = cck.attributes.values_at(*(att_names << 'name'))
 
           expect( actual ).to eq( expected )
 
