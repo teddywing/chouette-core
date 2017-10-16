@@ -1,6 +1,8 @@
 require 'sidekiq/web'
 
 ChouetteIhm::Application.routes.draw do
+  resource :dashboard
+
   resources :workbenches, only: [:show, :index] do
     delete :referentials, on: :member, action: :delete_referentials
     resources :imports do
@@ -8,7 +10,9 @@ ChouetteIhm::Application.routes.draw do
       resources :import_resources, only: [:index] do
         resources :import_messages, only: [:index]
       end
-
+    end
+    resources :compliance_check_sets, only: [:index, :show] do
+      resources :compliance_checks, only: [:show]
     end
   end
 
@@ -70,7 +74,10 @@ ChouetteIhm::Application.routes.draw do
   resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
 
   resources :compliance_control_sets do
-    resources :compliance_controls
+    resources :compliance_controls, except: :index do
+      get :select_type, on: :collection
+    end
+    resources :compliance_control_blocks, :except => [:show, :index]
   end
 
   resources :stop_area_referentials, :only => [:show] do
@@ -211,7 +218,7 @@ ChouetteIhm::Application.routes.draw do
     end
   end
 
-  root :to => "workbenches#index"
+  root :to => "dashboards#show"
 
   get '/help/(*slug)' => 'help#show'
 

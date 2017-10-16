@@ -48,9 +48,9 @@ fr:
   activerecord:
     models:
       referential:
-        zero: "Jeu de Données"
-        one: "Jeu de Données"
-        other: "Jeux de Données"
+        zero: "jeu de Données"
+        one: "jeu de Données"
+        other: "jeux de Données"
     attributes:
       referential:
         name: "Nom"

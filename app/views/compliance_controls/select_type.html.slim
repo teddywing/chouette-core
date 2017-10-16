@@ -1,0 +1,18 @@
+/ PageHeader
+- header_params = ['jeux-de-donnees',
+        t('compliance_controls.select_type.title'),
+        '']
+= pageheader(*header_params) do
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        = form_tag(new_compliance_control_set_compliance_control_path, method: :get) do
+          - @sti_subclasses.each do |klass|
+            .radio
+              = radio_button_tag(:sti_class, klass, @sti_subclasses.first)
+              = "#{klass.default_code} - #{I18n.t("activerecord.models.#{klass.name.underscore}.one")}"
+          .text-right
+            = submit_tag t('compliance_control_sets.actions.loaded'), class: "btn btn-outline-primary"

@@ -21,11 +21,13 @@ en:
       title: "Update line %{line}"
     show:
       title: "Line %{line}"
-      itineraries: "Line's route list"
+      routes:
+        title: "Routes list"
       group_of_lines: "Groups of lines"
     index:
       deactivated: "Disabled line"
       title: "Lines"
+      line: "Line %{line}"
       name_or_number_or_objectid: "Search by name, short name or ID Codif..."
       no_networks: "No networks"
       no_companies: "No companies"

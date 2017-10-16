@@ -144,5 +144,5 @@ Rails.application.configure do
   config.rails_host = ENV.fetch('RAILS_HOST')
 
   # Set node env for browserify-rails
-  config.browserify_rails.node_env = "production"
+  # config.browserify_rails.node_env = "production"
 end

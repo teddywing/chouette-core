@@ -15,8 +15,8 @@ gem 'uglifier', '~> 2.7.2'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 
-# ES6 powa
-gem 'browserify-rails'
+# Webpacker
+gem 'webpacker', '~> 3.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
@@ -102,6 +102,7 @@ gem 'roo'
 
 # Controller
 gem 'inherited_resources'
+gem 'responders'
 gem 'google-analytics-rails'
 
 # Model
@@ -114,7 +115,7 @@ gem 'sequel'
 
 gem 'draper'
 
-gem 'enumerize', '~> 0.10.0'
+gem 'enumerize', '~> 2.1.2'
 gem 'deep_cloneable', '~> 2.0.0'
 gem 'acts-as-taggable-on', '~> 4.0.0'
 
@@ -139,7 +140,7 @@ gem 'letter_opener'
 group :development do
   gem 'capistrano', '2.13.5'
   gem 'capistrano-ext'
-  gem 'capistrano-npm', require: false
+  #gem 'capistrano-npm', require: false
   # Issue #3017 Requires ruby_dep which requires ruby > 2.2.3
   # gem 'guard'
   # gem 'guard-rspec', "~> 4.5.0"

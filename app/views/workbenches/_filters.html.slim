@@ -25,8 +25,8 @@
       = f.label Referential.human_attribute_name(:validity_period), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :validity_period do |p|
-          = p.input :begin_gteq, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
-          = p.input :end_lteq, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
+          = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
+          = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
 
   .actions
     = link_to t('actions.erase'), @workbench, class: 'btn btn-link'

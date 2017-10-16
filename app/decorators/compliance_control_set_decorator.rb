@@ -19,6 +19,7 @@ class ComplianceControlSetDecorator < Draper::Decorator
         href:  h.edit_compliance_control_set_path(object.id)
       )
     # end
+
     links
   end
 

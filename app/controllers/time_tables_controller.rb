@@ -1,5 +1,7 @@
 class TimeTablesController < ChouetteController
   include TimeTablesHelper
+  include RansackDateFilter
+  before_action only: [:index] { set_date_time_params("bounding_dates", Date) }
   defaults :resource_class => Chouette::TimeTable
   respond_to :html
   respond_to :xml
@@ -131,7 +133,7 @@ class TimeTablesController < ChouetteController
       params[:q].delete("tag_search")
       scope = select_time_tables.tagged_with(tags, :any => true) if tags.any?
     end
-    scope = ransack_periode(scope)
+    scope = self.ransack_period_range(scope: scope, error_message: t('referentials.errors.validity_period'), query: :overlapping)
     @q = scope.search(params[:q])
 
     if sort_column && sort_direction
@@ -159,28 +161,6 @@ class TimeTablesController < ChouetteController
   end
 
   private
-  def ransack_periode scope
-    return scope unless params[:q]
-    return scope unless params[:q]['end_date_lteq(1i)'].present?
-
-    begin_range = flatten_date('start_date_gteq')
-    end_range   = flatten_date('end_date_lteq')
-
-    if begin_range > end_range
-      flash.now[:error] = t('referentials.errors.validity_period')
-    else
-      scope        = scope.overlapping(begin_range, end_range)
-      params[:q]   = params[:q].slice('comment_cont', 'color_cont_any')
-      @begin_range = begin_range
-      @end_range   = end_range
-    end
-    scope
-  end
-
-  def flatten_date key
-    date_int = %w(1 2 3).map {|e| params[:q]["#{key}(#{e}i)"].to_i }
-    Date.new(*date_int)
-  end
 
   def sort_column
     referential.time_tables.column_names.include?(params[:sort]) ? params[:sort] : 'comment'

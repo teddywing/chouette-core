@@ -17,14 +17,35 @@ en:
       title: "Add a new route"
     edit:
       title: "Update route %{route}"
+      select2:
+        placeholder: "Select a stop point..."
+      map:
+        stop_point_type: Stop point type
+        short_name: Short name
+        coordinates: Coordinates
+        proj: Proj
+        lat: Lat
+        lon: Lon
+        postal_code: Zip Code
+        city: City
+        comment: Comment
+      stop_point:
+        boarding:
+          normal: Normal boarding
+          forbidden: Forbidden boarding
+        alighting:
+          normal: Normal alighting
+          forbidden: Forbidden alighting
     show:
       title: "Route %{route}"
       stop_points: "Stop point on route list"
+      stop_areas:
+        title: "Stop area list"
       journey_patterns: "Route journey patterns list"
       no_opposite_route: "No reversed route associated"
       undefined: "Undefined"
     index:
-      title: "Routes"
+      title: "Routes %{route}"
       selection: "Selection"
       selection_all: "All"
     edit_boarding_alighting:

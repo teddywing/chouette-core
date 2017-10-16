@@ -2,6 +2,7 @@ class Workbench < ActiveRecord::Base
   belongs_to :organisation
   belongs_to :line_referential
   belongs_to :stop_area_referential
+  belongs_to :output, class_name: 'ReferentialSuite'
 
   has_many :lines, -> (workbench) { Stif::MyWorkbenchScopes.new(workbench).line_scope(self) }, through: :line_referential
   has_many :networks, through: :line_referential
@@ -10,12 +11,17 @@ class Workbench < ActiveRecord::Base
   has_many :stop_areas, through: :stop_area_referential
   has_many :imports
   has_many :workbench_imports
+  has_many :compliance_check_sets
+  has_many :compliance_control_sets
 
   validates :name, presence: true
   validates :organisation, presence: true
+  validates :output, presence: true
 
   has_many :referentials
   has_many :referential_metadatas, through: :referentials, source: :metadatas
+
+  before_validation :initialize_output
 
 
   def all_referentials
@@ -26,4 +32,12 @@ class Workbench < ActiveRecord::Base
     end
   end
 
+  private
+
+  def initialize_output
+    # Don't reset `output` if it's already initialised
+    return if !output.nil?
+
+    self.output = ReferentialSuite.create
+  end
 end

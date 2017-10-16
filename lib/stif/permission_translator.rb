@@ -17,19 +17,25 @@ module Stif
     def all_resources
       %w[
         access_points
-        connection_links calendars
+        connection_links
+        calendars
         footnotes
+        imports
         journey_patterns
-        referentials routes routing_constraint_zones
+        referentials
+        routes
+        routing_constraint_zones
         time_tables
         vehicle_journeys
         api_keys
         compliance_controls
+        compliance_controls_sets
+        compliance_controls_blocks
+        compliance_check_sets
       ]
     end
 
     def destructive_permissions_for(models)
-      @__destructive_permissions_for__ ||=
         models.product( %w{create destroy update} ).map{ |model_action| model_action.join('.') }
     end
 

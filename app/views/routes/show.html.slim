@@ -1,6 +1,6 @@
 / PageHeader
 = pageheader 'itineraire',
-             @route.name,
+        t('routes.index.title', route: @route.name),
              '',
              t('last_update', time: l(@route.updated_at, format: :short)),
              (policy(@route).edit? ? link_to(t('actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'btn btn-default') : '') do
@@ -32,6 +32,7 @@
 
     .row
       .col-lg-12
+        .h3 = t('routes.show.stop_areas.title')
         - if @route_sp.any?
           = table_builder_2 @route_sp,
             [ \
@@ -48,7 +49,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :deleted_at, \
-                attribute: Proc.new { |s| s.try(:stop_area).deleted_at ? t('false') : t('true') }, \
+                attribute: Proc.new { |s| line_status(s.try(:stop_area).deleted_at) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :zip_code, \
@@ -76,4 +77,5 @@
 
 = javascript_tag do
   | window.route = "#{URI.escape(route_json_for_edit(@route))}"
-= javascript_include_tag 'es6_browserified/itineraries/show.js'
+
+= javascript_pack_tag 'routes/show.js'

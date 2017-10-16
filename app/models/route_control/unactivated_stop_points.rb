@@ -1,13 +1,6 @@
 module RouteControl
-  class UnactivatedStopPoint < ComplianceControl
+  class UnactivatedStopPoints < ComplianceControl
 
-    @@default_criticity = :warning
-    @@default_code = "3-Route-10"
-
-    after_initialize do
-      self.name = self.class.name
-      self.code = @@default_code
-      self.criticity = @@default_criticity
-    end
+    def self.default_code; "3-Route-10" end
   end
 end

@@ -41,6 +41,7 @@ en:
         name: "Name"
         published_name: "Published name"
         comment: "Comments"
+        section_status: "Section status"
         registration_number: "Registration number"
         stop_point_ids: "Route's stop selection"
         objectid: "Neptune identifier"

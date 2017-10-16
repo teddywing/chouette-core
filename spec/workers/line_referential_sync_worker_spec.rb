@@ -1,4 +1,3 @@
-require 'rails_helper'
 RSpec.describe LineReferentialSyncWorker, type: :worker do
   let!(:line_referential_sync) { create :line_referential_sync }
 

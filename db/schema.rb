@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170922165315) do
+ActiveRecord::Schema.define(version: 20171016074044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,10 +163,13 @@ ActiveRecord::Schema.define(version: 20170922165315) do
     t.hstore   "resource_attributes"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.string   "status"
+    t.integer  "compliance_check_set_id"
   end
 
   add_index "compliance_check_messages", ["compliance_check_id"], name: "index_compliance_check_messages_on_compliance_check_id", using: :btree
   add_index "compliance_check_messages", ["compliance_check_resource_id"], name: "index_compliance_check_messages_on_compliance_check_resource_id", using: :btree
+  add_index "compliance_check_messages", ["compliance_check_set_id"], name: "index_compliance_check_messages_on_compliance_check_set_id", using: :btree
 
   create_table "compliance_check_resources", id: :bigserial, force: :cascade do |t|
     t.string   "status"
@@ -174,9 +177,12 @@ ActiveRecord::Schema.define(version: 20170922165315) do
     t.string   "type"
     t.string   "reference"
     t.hstore   "metrics"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "compliance_check_set_id"
   end
+
+  add_index "compliance_check_resources", ["compliance_check_set_id"], name: "index_compliance_check_resources_on_compliance_check_set_id", using: :btree
 
   create_table "compliance_check_sets", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id"
@@ -188,6 +194,11 @@ ActiveRecord::Schema.define(version: 20170922165315) do
     t.string   "parent_type"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "current_step_id"
+    t.float    "current_step_progress"
+    t.string   "name"
+    t.datetime "started_at"
+    t.datetime "ended_at"
   end
 
   add_index "compliance_check_sets", ["compliance_control_set_id"], name: "index_compliance_check_sets_on_compliance_control_set_id", using: :btree
@@ -199,13 +210,14 @@ ActiveRecord::Schema.define(version: 20170922165315) do
     t.integer  "compliance_check_set_id"
     t.integer  "compliance_check_block_id"
     t.string   "type"
-    t.json     "control_attributes"
+    t.hstore   "control_attributes"
     t.string   "name"
     t.string   "code"
-    t.integer  "criticity"
+    t.string   "criticity"
     t.text     "comment"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "origin_code"
   end
 
   add_index "compliance_checks", ["compliance_check_block_id"], name: "index_compliance_checks_on_compliance_check_block_id", using: :btree
@@ -232,17 +244,19 @@ ActiveRecord::Schema.define(version: 20170922165315) do
 
   create_table "compliance_controls", id: :bigserial, force: :cascade do |t|
     t.integer  "compliance_control_set_id"
-    t.integer  "compliance_control_block_id"
     t.string   "type"
-    t.json     "control_attributes"
+    t.hstore   "control_attributes"
     t.string   "name"
     t.string   "code"
     t.string   "criticity"
     t.text     "comment"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.string   "origin_code"
+    t.integer  "compliance_control_block_id"
   end
 
+  add_index "compliance_controls", ["code", "compliance_control_set_id"], name: "index_compliance_controls_on_code_and_compliance_control_set_id", unique: true, using: :btree
   add_index "compliance_controls", ["compliance_control_block_id"], name: "index_compliance_controls_on_compliance_control_block_id", using: :btree
   add_index "compliance_controls", ["compliance_control_set_id"], name: "index_compliance_controls_on_compliance_control_set_id", using: :btree
 
@@ -394,9 +408,9 @@ ActiveRecord::Schema.define(version: 20170922165315) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
-    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
+    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -969,6 +983,7 @@ ActiveRecord::Schema.define(version: 20170922165315) do
     t.datetime "updated_at"
     t.integer  "line_referential_id",      limit: 8
     t.integer  "stop_area_referential_id", limit: 8
+    t.integer  "output_id",                limit: 8
   end
 
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
@@ -979,7 +994,9 @@ ActiveRecord::Schema.define(version: 20170922165315) do
   add_foreign_key "api_keys", "organisations"
   add_foreign_key "compliance_check_blocks", "compliance_check_sets"
   add_foreign_key "compliance_check_messages", "compliance_check_resources"
+  add_foreign_key "compliance_check_messages", "compliance_check_sets"
   add_foreign_key "compliance_check_messages", "compliance_checks"
+  add_foreign_key "compliance_check_resources", "compliance_check_sets"
   add_foreign_key "compliance_check_sets", "compliance_control_sets"
   add_foreign_key "compliance_check_sets", "referentials"
   add_foreign_key "compliance_check_sets", "workbenches"

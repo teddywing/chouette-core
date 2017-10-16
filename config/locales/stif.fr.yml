@@ -1,0 +1,12 @@
+fr:
+  stif:
+    dashboards:
+      dashboard:
+        subtitle: "Offres de transport"
+        organisation: "Offres de mon organisation"
+        idf: "Offres IDF"
+        api_keys: "Clés d'API"
+        referentials: "Jeux de données"
+        calendars: "Calendriers"
+        see: "Voir la liste"
+        no_content: "Aucun contenu pour le moment"

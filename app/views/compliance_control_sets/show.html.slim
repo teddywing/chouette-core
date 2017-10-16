@@ -1,6 +1,6 @@
 / PageHeader
 = pageheader 'jeux-de-donnees',
-              @compliance_control_set.name,
+              t('compliance_control_sets.show.title', name: @compliance_control_set.name),
              'Lorem ipsum dolor sit amet'
 
   / Below is secondary actions & optional contents (filters, ...)
@@ -14,7 +14,7 @@
               method: link.method,
               data: link.data,
               class: 'btn btn-primary' do
-                = link.content
+            = link.content
 
 / PageContent
 .page_content
@@ -23,3 +23,82 @@
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
             ComplianceControlSet.human_attribute_name(:name) => @compliance_control_set.name
+    .row
+      .col-lg-12
+        h2
+          = transport_mode("", "")
+      .row
+        .col-lg-12
+          .select_table
+            = table_builder_2 @compliance_controls_without_block,
+                    [ \
+                TableBuilderHelper::Column.new( \
+                  key: :code, \
+                  attribute: 'code' \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :name, \
+                  attribute: 'name', \
+                  link_to: lambda do |compliance_control| \
+                      compliance_control_set_compliance_control_path(@compliance_control_set, compliance_control) \
+                    end \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :criticity, \
+                  attribute: 'criticity' \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :comment, \
+                  attribute: 'comment' \
+                ), \
+              ],
+              sortable: true,
+              cls: 'table has-filter has-search'
+
+    - @compliance_control_set.compliance_control_blocks.each do |block|
+      .row
+        .col-lg-12
+          h2
+            = transport_mode(block.transport_mode, block.transport_submode)
+            .btn-group
+              .btn.dropdown-toggle{ data-toggle="dropdown" }
+                .span.fa.fa-cog
+              ul.dropdown-menu
+                li
+                  = link_to t('compliance_control_sets.actions.edit'), edit_compliance_control_set_compliance_control_block_path(@compliance_control_set.id, block.id)
+                  = link_to t('compliance_control_sets.actions.destroy'), compliance_control_set_compliance_control_block_path(@compliance_control_set.id, block.id), :method => :delete, :data => {:confirm =>  t('compliance_control_sets.actions.destroy_confirm')}
+        .row
+          .col-lg-12
+            .select_table
+              = table_builder_2 ModelDecorator.decorate(block.compliance_controls, with: ComplianceControlDecorator),
+                      [ \
+                  TableBuilderHelper::Column.new( \
+                    key: :code, \
+                    attribute: 'code' \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    key: :name, \
+                    attribute: 'name', \
+                    link_to: lambda do |compliance_control| \
+                        compliance_control_set_compliance_control_path(@compliance_control_set, compliance_control) \
+                      end \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    key: :criticity, \
+                    attribute: 'criticity' \
+                  ), \
+                  TableBuilderHelper::Column.new( \
+                    key: :comment, \
+                    attribute: 'comment' \
+                  ), \
+                ],
+                sortable: true,
+                cls: 'table has-filter has-search'
+    .select_toolbox
+      ul
+        li.st_action
+          = link_to select_type_compliance_control_set_compliance_controls_path(@compliance_control_set.id)
+            span.fa.fa-plus
+        li.st_action
+          = link_to new_compliance_control_set_compliance_control_block_path(@compliance_control_set.id)
+            span.fa.fa-plus-square

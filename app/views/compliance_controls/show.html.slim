@@ -1,0 +1,32 @@
+/ PageHeader
+= pageheader 'jeux-de-donnees',
+        t('compliance_controls.show.title'),
+        ''
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        /- @compliance_control.control_attributes.each_with_index do |(key,value), index|
+        = definition_list t('metadatas'),
+              { \
+                ComplianceControl.human_attribute_name(:name) => @compliance_control.name,
+                ComplianceControl.human_attribute_name(:code) => @compliance_control.code,
+                ComplianceControl.human_attribute_name(:criticity) => @compliance_control.criticity,
+                ComplianceControl.human_attribute_name(:comment) => @compliance_control.comment,
+              }.merge( \
+                {}.tap do |hash| \
+                  @compliance_control.class.dynamic_attributes.each do |attribute| \
+                    hash[ComplianceControl.human_attribute_name(attribute)] = @compliance_control.send(attribute) \
+                  end \
+                end \
+              )
+        - if @compliance_control.compliance_control_block
+          = definition_list t('metadatas'),
+                  {}.merge( \
+                    {}.tap do |hash| \
+              @compliance_control.compliance_control_block.condition_attributes.each do |k, v| \
+                hash[ComplianceControl.human_attribute_name(k)] = v \
+              end \
+            end \
+          )

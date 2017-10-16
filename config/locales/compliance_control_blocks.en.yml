@@ -1,0 +1,18 @@
+fr:
+  activerecord:
+    models:
+      compliance_control_block: 
+        zero:  Control blocks
+        one:   Control block
+        other: Control blocks
+    attributes:
+      compliance_control_blocks:
+        transport_mode: Transport mode
+        sub_transport_mode: Transport submode
+  compliance_control_blocks:
+    actions:
+      destroy_confirm: Are you sure you want to destroy this block ?
+    new:
+      title: Create a control block
+    edit:
+      title: "Edit the control block : %{compliance_control_block}"

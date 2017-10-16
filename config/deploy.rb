@@ -23,10 +23,10 @@ ssh_options[:forward_agent] = true
 require "bundler/capistrano"
 require 'whenever/capistrano'
 
-require 'capistrano/npm'
-set :npm_options, '--production --no-progress'
+#require 'capistrano/npm'
+#set :npm_options, '--production --no-progress'
 
-after 'deploy:finalize_update', 'npm:install'
+#after 'deploy:finalize_update', 'npm:install'
 
 # Whenever
 set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/2.2.0/bin'" } # invoke bin/bundle to use 'correct' ruby environment

@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe ComplianceCheckMessage, type: :model do
   it 'should have a valid factory' do
     expect(FactoryGirl.build(:compliance_check_message)).to be_valid
@@ -7,4 +5,5 @@ RSpec.describe ComplianceCheckMessage, type: :model do
 
   it { should belong_to :compliance_check }
   it { should belong_to :compliance_check_resource }
+  it { should belong_to :compliance_check_set }
 end

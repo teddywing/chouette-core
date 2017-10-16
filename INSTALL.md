@@ -21,6 +21,8 @@ Go into your local repro and install the gems
 
 ### Installation Caveats
 
+#### Node Related Issue, libv8
+
 `libv8` might cause you troubles, depending on your local configuration. If you have `libv8` installed (probably because of `node.js`) you might need to tell bundler/Rubygems to use the system version.
 
 
@@ -32,6 +34,19 @@ or
         bundle
 
 You will get the correct value of `<version>` from bundler's error message.
+
+#### Node Related Issue, therubyracer
+
+Even after `libv8` installation working, the gem `therubyracer` might not like the `libv8` version chosen.
+
+In that case however we can let the gem make its own choice:
+
+        gem uninstall libv8
+        gem install therubyracer -v '<version>'
+
+The version to be installed is indicated in the error message bundler gave us in the first place.
+
+This will install an appropriate `libv8` version and we can continue with `bundle`.
 
 ## Rails
 
