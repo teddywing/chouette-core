@@ -27,7 +27,7 @@ class ComplianceControlsController < BreadcrumbController
   alias_method :compliance_control, :resource
 
   def build_resource
-    @compliance_control ||= compliance_control_class.new compliance_control_set: parent
+    @compliance_control = compliance_control_class.new compliance_control_set: parent, **(params.fetch('compliance_control', {}))
   end
 
   private
