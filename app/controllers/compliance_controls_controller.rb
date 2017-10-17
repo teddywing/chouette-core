@@ -15,6 +15,7 @@ class ComplianceControlsController < BreadcrumbController
   end
 
   def create
+    puts build_resource.inspect
     create! do |success, failure|
       success.html { redirect_to compliance_control_set_path(parent) }
       failure.html { render( :action => 'new' ) }
@@ -27,7 +28,7 @@ class ComplianceControlsController < BreadcrumbController
   alias_method :compliance_control, :resource
 
   def build_resource
-    @compliance_control ||= compliance_control_class.new compliance_control_set: parent
+    get_resource_ivar || set_resource_ivar(compliance_control_class.send(:new, *resource_params))
   end
 
   private
@@ -41,7 +42,7 @@ class ComplianceControlsController < BreadcrumbController
   end
 
   def compliance_control_params
-    base = [:name, :code, :origin_code, :criticity, :comment, :control_attributes, :type, :compliance_control_block_id]
+    base = [:name, :code, :origin_code, :criticity, :comment, :control_attributes, :type, :compliance_control_block_id, :compliance_control_set_id]
     permitted = base + dynamic_attributes_params
     params.require(:compliance_control).permit(permitted)
   end

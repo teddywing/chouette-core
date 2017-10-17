@@ -1,4 +1,4 @@
-import stopPointsReducer from '../../../app/javascript/routes/reducers/stopPoints'
+import stopPointsReducer from '../../../../app/javascript/routes/reducers/stopPoints'
 
 let state = []
 

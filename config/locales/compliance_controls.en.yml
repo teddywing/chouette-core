@@ -110,7 +110,7 @@ en:
       messages:
         3_generic_3: "%{source_objectid}  : the %{source_label} attribute's value (%{error_value}) is in conflict with : %{reference_value}"
       description: "The attribute's value must be unique compared to the other objects ofthe same type (related to the same line)"
-        shape_control:
+    shape_control:
       3_shape_1: "Tracé %{source_objectid} : le tracé passe trop loin de l'arrêt %{target_0_label} (%{target_0_objectid}) : %{error_value} > %{reference_value}"
       3_shape_2: "Tracé %{source_objectid} : le tracé n'est pas défini entre les arrêts %{target_0_label} (%{target_0_objectid}) et %{target_1_label} (%{target_1_objectid})"
       3_shape_3: "Le tracé de l'itinéraire %{source_objectid} est en écart avec la voirie sur %{error_value} sections"

@@ -18,13 +18,6 @@ environment.plugins.set(
   new CleanWebpackPlugin(pathsToClean, cleanOptions)
 )
 
-// environment.plugins.set('Provide', new webpack.ProvidePlugin({
-//     $: 'jquery',
-//     jQuery: 'jquery',
-//     jquery: 'jquery'
-//   })
-// )
-
 // const config = environment.toWebpackConfig()
 
 // config.resolve.alias = {

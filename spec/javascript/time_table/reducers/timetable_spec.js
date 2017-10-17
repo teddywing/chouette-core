@@ -1,5 +1,5 @@
 require('whatwg-fetch')
-import timetableReducer from '../../../app/javascript/time_tables/reducers/timetable'
+import timetableReducer from '../../../../app/javascript/time_tables/reducers/timetable'
 
 let state = {}
 const dispatch = function(){}
@@ -21,6 +21,8 @@ let json = {
   day_types: strDayTypes,
   time_table_dates: time_table_dates
 }
+
+
 
 describe('timetable reducer with empty state', () => {
   beforeEach(() => {
