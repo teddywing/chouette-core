@@ -37,6 +37,10 @@ namespace :ci do
     sh "RAILS_ENV=test bundle exec rake assets:precompile"
   end
 
+  task :jest => "ci:assets" do
+    sh "node_modules/.bin/jest"
+  end
+
   desc "Deploy after CI"
   task :deploy do
     if deploy_env
@@ -54,4 +58,4 @@ namespace :ci do
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "ci:spec", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "ci:spec", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
