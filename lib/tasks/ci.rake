@@ -31,8 +31,10 @@ namespace :ci do
     sh "bundle exec bundle-audit check --update"
   end
 
-  task :spec do
-    sh "bundle exec rake spec"
+  task :spec => ["ci:assets","spec"]
+
+  task :assets do
+    sh "RAILS_ENV=test bundle exec rake assets:precompile"
   end
 
   desc "Deploy after CI"
@@ -47,6 +49,7 @@ namespace :ci do
   desc "Clean test files"
   task :clean do
     sh "rm -rf log/test.log"
+    sh "RAILS_ENV=test bundle exec rake assets:clobber"
   end
 end
 
