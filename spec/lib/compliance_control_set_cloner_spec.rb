@@ -51,7 +51,7 @@ RSpec.describe ComplianceControlSetCloner do
           3.times.map{ |_| create :compliance_control_block, compliance_control_set: source_set }
         }
         let(:direct_ccs){
-          3.times.map{ |n| create :compliance_control, compliance_control_set: source_set, name: "direct #{n.succ}", code: "direct-#{n.succ}" }
+          3.times.map{ |n| create :generic_attribute_control_min_max, compliance_control_set: source_set, name: "direct #{n.succ}", code: "direct-#{n.succ}" }
         }
         # Needed to check we do not dulicate a node (compliance_control) twice
         let(:indirect_ccs){
@@ -61,7 +61,7 @@ RSpec.describe ComplianceControlSetCloner do
             cc.update compliance_control_block_id: source_block.id
           end
           source_blox.each_with_index.map{ | source_block, n |
-            create(:compliance_control, compliance_control_set: source_set, compliance_control_block: source_block, name: "indirect #{n.succ}", code: "indirect-#{n.succ}")
+            create(:generic_attribute_control_min_max, compliance_control_set: source_set, compliance_control_block: source_block, name: "indirect #{n.succ}", code: "indirect-#{n.succ}")
           }
         }
         let( :sources ){ source_set.compliance_controls.order(:id) }
