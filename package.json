@@ -41,7 +41,7 @@
       "<rootDir>/spec/javascript"
     ],
     "setupFiles": [
-      "<rootDir>/config/webpack/test.js"
+      "<rootDir>/spec/javascript/spec_helper.js"
     ]
   }
 }

@@ -31,8 +31,14 @@ namespace :ci do
     sh "bundle exec bundle-audit check --update"
   end
 
-  task :spec do
-    sh "bundle exec rake spec"
+  task :spec => ["ci:assets","spec"]
+
+  task :assets do
+    sh "RAILS_ENV=test bundle exec rake assets:precompile"
+  end
+
+  task :jest => "ci:assets" do
+    sh "node_modules/.bin/jest"
   end
 
   desc "Deploy after CI"
@@ -47,8 +53,9 @@ namespace :ci do
   desc "Clean test files"
   task :clean do
     sh "rm -rf log/test.log"
+    sh "RAILS_ENV=test bundle exec rake assets:clobber"
   end
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "ci:spec", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "ci:spec", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
