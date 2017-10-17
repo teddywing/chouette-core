@@ -1,7 +1,9 @@
 / PageHeader
-= pageheader 'jeux-de-donnees',
+- header_params = ['jeux-de-controle',
         t('compliance_controls.show.title'),
-        ''
+        '']
+= pageheader(*header_params) do
+
 / PageContent
 .page_content
   .container-fluid

@@ -9,7 +9,7 @@
   .ffg-row
     .form-group
       = f.label Chouette::TimeTable.human_attribute_name(:tag_search), required: false, class: 'control-label'
-      = f.input :tag_search, as: :tags, collection: Chouette::TimeTable.tags_on(:tags).pluck(:name), label: false, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une étiquette...' }, wrapper_html: { class: 'select2ed'}, include_blank: false
+      = f.input :tag_search, as: :tags, collection: Chouette::TimeTable.tags_on(:tags).pluck(:name), label: false, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une étiquette...' }, wrapper_html: { class: 'select2ed'}, include_blank: false, selected: params[:q] ? params[:q]['tag_search'] : nil
 
     .form-group.togglable
       = f.label Chouette::TimeTable.human_attribute_name(:bounding_dates), required: false, class: 'control-label'

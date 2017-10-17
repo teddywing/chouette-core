@@ -1,5 +1,7 @@
 en:
   compliance_control_sets:
+    clone:
+      prefix: 'Copie de'
     index:
       title: Compliance control set
       new: New compliance control set
