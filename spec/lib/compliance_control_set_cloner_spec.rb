@@ -2,6 +2,8 @@ RSpec.describe ComplianceControlSetCloner do
 
   subject{ described_class.new }
 
+  let( :new_organisation ){ create :organisation }
+
   let( :source_set ){ create :compliance_control_set }
   let( :set_prefix ){ I18n.t('compliance_control_sets.clone.prefix') }
   let( :block_prefix ){ I18n.t('compliance_control_blocks.clone.prefix') }
@@ -80,11 +82,11 @@ RSpec.describe ComplianceControlSetCloner do
           #
           #  Execute copy and keep count
           counts = object_counts
-          subject.copy(source_set.id)
+          subject.copy(source_set.id, new_organisation.id)
           delta  = count_diff counts, object_counts
 
           # Check correctly copied set
-          expect(target_set.organisation).to eq(source_set.organisation)
+          expect(target_set.organisation).to eq(new_organisation)
           expect(target_set.name).to eq( [set_prefix, source_set.name].join(' ') )
 
           # Check correctly copied controls

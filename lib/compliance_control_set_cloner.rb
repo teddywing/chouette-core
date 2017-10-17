@@ -4,10 +4,11 @@ class ComplianceControlSetCloner
   #                    abbreviate compliance_control to cc and
   #                    compliance_check to cck iff used as prefixes.
 
-  attr_reader :source_set_id
-
-  def copy source_set_id
+  attr_reader :organisation_id, :source_set_id
+  
+  def copy source_set_id, organisation_id
     @source_set_id = source_set_id
+    @organisation_id = organisation_id
     copy_set
   end
 
@@ -71,12 +72,15 @@ class ComplianceControlSetCloner
 
   # Lazy Values
   # -----------
+  def organisation
+    @__organisation__ ||= Organisation.find(organisation_id)
+  end
   def source_set
     @__source_set__ ||= ComplianceControlSet.find(source_set_id)
   end
   def target_set
     @__target_set__ ||= ComplianceControlSet.create!(
-      organisation: source_set.organisation,
+      organisation: organisation,
       name: name_of_copy(:compliance_control_sets, source_set.name)
     )
   end

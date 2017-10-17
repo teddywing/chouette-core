@@ -1,8 +1,8 @@
 class ComplianceControlSetCloningWorker
   include Sidekiq::Worker
 
-  def perform id
-    ComplianceControlSetCloner.new.copy id
+  def perform id, organisation_id
+    ComplianceControlSetCloner.new.copy id, organisation_id
   end
 
 end

@@ -6,9 +6,10 @@ RSpec.describe ComplianceControlSetCloningWorker do
   end
 
   it 'delegates perform to the correct lib call' do
-    id = random_int
-    expect_any_instance_of(ComplianceControlSetCloner).to receive(:copy).with(id) 
-    described_class.new.perform(id)
+    id = double('id')
+    organisation_id = double('organisation_id')
+    expect_any_instance_of(ComplianceControlSetCloner).to receive(:copy).with(id, organisation_id) 
+    described_class.new.perform(id, organisation_id)
   end
   
 end
