@@ -24,7 +24,6 @@ class ComplianceControl < ActiveRecord::Base
   end
 
   class << self
-    def default_criticity; :warning end
     def default_code; "" end
     def dynamic_attributes
       hstore_metadata_for_control_attributes.keys
