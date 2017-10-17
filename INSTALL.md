@@ -19,6 +19,19 @@ Go into your local repro and install the gems
 
         bundle
 
+## Node and Yarn
+
+Yarn needs a node version ≥ 6, if you use Node Version Manager [NVM](https://github.com/creationix/nvm)  you can rely on the content of `.nvmrc`.
+
+Otherwise please make sure to use a compatible version, still best to use the same as indicated by `.nvrmc`.
+
+Then install yarn (`brew install yarn` does nicely on macOS).
+
+## Webpack
+
+... is managed by the webpacker gem, thusly at latest
+ before starting your server and tests, setup webpacker with `bundle exec rake webpacker:install`.
+
 ### Installation Caveats
 
 #### Node Related Issue, libv8
