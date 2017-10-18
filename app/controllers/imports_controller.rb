@@ -13,8 +13,6 @@ class ImportsController < BreadcrumbController
       @import = @import.decorate(context: {
         workbench: @workbench
       })
-
-      build_breadcrumb :show
     end
   end
 
@@ -24,17 +22,8 @@ class ImportsController < BreadcrumbController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
-
         @imports = decorate_imports(@imports)
       }
-
-      build_breadcrumb :index
-    end
-  end
-
-  def new
-    new! do
-      build_breadcrumb :new
     end
   end
 

@@ -25,9 +25,7 @@ class WorkbenchesController < BreadcrumbController
         current_workbench_id: params[:id]
       }
     )
-    show! do
-      build_breadcrumb :show
-    end
+    show!
   end
 
   def delete_referentials

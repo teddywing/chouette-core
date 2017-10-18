@@ -18,8 +18,6 @@ class ReferentialsController < BreadcrumbController
 
       if !!@referential.created_from_id
         format.html { redirect_to workbench_path(@referential.workbench) }
-      else
-        build_breadcrumb :new
       end
     end
   end
@@ -45,7 +43,6 @@ class ReferentialsController < BreadcrumbController
                :time_tables_count => resource.time_tables.count,
                :referential_id => resource.id}
       }
-      format.html { build_breadcrumb :show}
     end
   end
 
