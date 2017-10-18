@@ -4,6 +4,13 @@ class ComplianceControlSetDecorator < Draper::Decorator
   def action_links
     links = []
 
+    # if policy.clone?
+      links << Link.new(
+        content: h.t('actions.clone'),
+        href: h.clone_compliance_control_set_path(object.id)
+      )
+    # end
+
     # if h.policy(object).destroy?
       links << Link.new(
         content: h.destroy_link_content,

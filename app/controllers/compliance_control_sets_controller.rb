@@ -23,11 +23,18 @@ class ComplianceControlSetsController < BreadcrumbController
     end
   end
 
-  protected
-
   def begin_of_association_chain
     current_organisation
   end
+
+  def clone
+    ComplianceControlSetCloner.new.copy(params[:id], current_organisation)
+    flash[:notice] = I18n.t("compliance_control_sets.errors.operation_in_progress")
+    redirect_to(compliance_control_sets_path)
+  end
+
+  protected
+
 
   private
 
