@@ -31,6 +31,15 @@ crumb :compliance_check_set do |workbench, compliance_check_set|
   parent :compliance_check_sets, workbench
 end
 
+crumb :imports do |workbench|
+  link :imports, workbench_imports_path(workbench)
+  parent :workbench, workbench
+end
+
+crumb :import do |workbench, import|
+  link import.name, workbench_import_path(workbench, import)
+  parent :imports, workbench
+end
 # crumb :project do |project|
 #   link project.name, project_path(project)
 #   parent :projects
