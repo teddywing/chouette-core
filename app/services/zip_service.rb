@@ -1,10 +1,9 @@
 class ZipService
-  # TODO: Remove me before merge https://github.com/rubyzip/rubyzip
 
-  class Subdir < Struct.new(:name, :stream)
+  class Subdir < Struct.new(:name, :stream, :spurious)
   end
 
-  attr_reader :current_key, :current_output, :yielder
+  attr_reader :current_key, :current_output, :current_spurious, :yielder
 
   def initialize data
     @zip_data       = StringIO.new(data)
@@ -36,6 +35,7 @@ class ZipService
   end
 
   def add_to_current_output entry
+    return if is_spurious! entry.name
     current_output.put_next_entry entry.name
     write_to_current_output entry.get_input_stream
   end
@@ -51,7 +51,8 @@ class ZipService
       @yielder  << Subdir.new(
         current_key,
         # Second part of the solution, yield the closed stream
-        current_output.close_buffer)
+        current_output.close_buffer,
+        current_spurious)
     end
   end
 
@@ -59,10 +60,19 @@ class ZipService
     @current_key    = entry_key
     # First piece of the solution, use internal way to create a Zip::OutputStream
     @current_output = Zip::OutputStream.new(StringIO.new(''), true, nil)
+    @current_spurious = []
   end
 
   def entry_key entry
     # last dir name File.dirname.split("/").last
     entry.name.split('/', -1)[-2]
+  end
+
+  def is_spurious! entry_name
+    segments = entry_name.split('/', 3)
+    return false if segments.size < 3
+
+    current_spurious << segments.second
+    return true
   end
 end
