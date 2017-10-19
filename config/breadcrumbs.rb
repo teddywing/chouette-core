@@ -59,6 +59,23 @@ crumb :compliance_control do |compliance_control|
   parent :compliance_control_set, compliance_control.compliance_control_set
 end
 
+crumb :stop_area_referential do |stop_area_referential|
+  link I18n.t('stop_area_referentials.show.title'), stop_area_referential_path(stop_area_referential)
+end
+
+crumb :line_referential do |line_referential|
+  link I18n.t('line_referentials.show.title'), line_referential_path(line_referential)
+end
+
+crumb :companies do |line_referential|
+  link I18n.t('companies.index.title'), line_referential_companies_path
+  parent :line_referential, line_referential
+end
+
+crumb :company do |company|
+  link company.name, line_referential_company_path(company.line_referential, company)
+  parent :companies, company.line_referential
+end
 # crumb :compliance_controls do|compliance_control_sets|
 #   link
 #   parent :compliance_control_sets, compliance_control_sets
