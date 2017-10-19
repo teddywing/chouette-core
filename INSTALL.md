@@ -78,7 +78,7 @@ rake aborted!
 LoadError: library names list must not be empty
 ```
 
-you need to install `libproj4-dev` (macOS) or `libproj-dev` (Linux) on your system.
+you need to install `proj` (macOS) or `libproj-dev` (Linux) on your system.
 
 
 ### Postgres
