@@ -1,8 +1,8 @@
 / PageHeader
-- header_params = ['jeux-de-controle',
+= pageheader 'jeux-de-controle',
         t('compliance_controls.show.title'),
-        '']
-= pageheader(*header_params) do
+        '',
+        link_to(t('actions.edit'), edit_compliance_control_set_compliance_control_path(params[:compliance_control_set_id], params[:id]), class: 'btn btn-default') do
 
 / PageContent
 .page_content

@@ -7,7 +7,6 @@ module GenericAttributeControl
 
     class << self
       def attribute_type; :string end
-      def default_criticity; :warning end
       def default_code; "3-Generic-1" end
     end
   end
