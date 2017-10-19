@@ -40,6 +40,12 @@ crumb :import do |workbench, import|
   link import.name, workbench_import_path(workbench, import)
   parent :imports, workbench
 end
+
+crumb :organisation do |organisation|
+  link organisation.name, organisation_path(organisation)
+end
+
+
 # crumb :project do |project|
 #   link project.name, project_path(project)
 #   parent :projects
