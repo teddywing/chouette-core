@@ -17,8 +17,6 @@ class NetworksController < BreadcrumbController
       @network = @network.decorate(context: {
         line_referential: line_referential
       })
-
-      build_breadcrumb :show
     end
   end
 
@@ -43,8 +41,6 @@ class NetworksController < BreadcrumbController
       format.js {
         @networks = decorate_networks(@networks)
       }
-
-      build_breadcrumb :index
     end
   end
 

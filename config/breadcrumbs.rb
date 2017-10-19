@@ -76,6 +76,27 @@ crumb :company do |company|
   link company.name, line_referential_company_path(company.line_referential, company)
   parent :companies, company.line_referential
 end
+
+crumb :networks do |line_referential|
+  link I18n.t('networks.index.title'), line_referential_networks_path
+  parent :line_referential, line_referential
+end
+
+crumb :network do |network|
+  link network.name, line_referential_network_path(network.line_referential, network)
+  parent :networks, network.line_referential
+end
+
+crumb :lines do |line_referential|
+  link I18n.t('lines.index.title'), line_referential_lines_path
+  parent :line_referential, line_referential
+end
+
+crumb :line do |line|
+  link line.name, line_referential_line_path(line.line_referential, line)
+  parent :lines, line.line_referential
+end
+
 # crumb :compliance_controls do|compliance_control_sets|
 #   link
 #   parent :compliance_control_sets, compliance_control_sets
