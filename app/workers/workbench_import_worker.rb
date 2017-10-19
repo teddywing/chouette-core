@@ -14,11 +14,13 @@ class WorkbenchImportWorker
     zip_service = ZipService.new(downloaded)
     upload zip_service
     @workbench_import.update(ended_at: Time.now)
+  rescue Zip::Error
+    handle_corrupt_zip_file
   end
 
   def download
     logger.info  "HTTP GET #{import_url}"
-    @zipfile_data = HTTPService.get_resource(
+    HTTPService.get_resource(
       host: import_host,
       path: import_path,
       params: {token: @workbench_import.token_download}).body
@@ -30,6 +32,10 @@ class WorkbenchImportWorker
       host: export_host,
       path: export_path,
       params: params(eg_file, eg_name))
+  end
+
+  def handle_corrupt_zip_file
+    @workbench_import.messages.create(criticity: :error)
   end
 
   def upload zip_service
