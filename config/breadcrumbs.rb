@@ -21,6 +21,16 @@ crumb :time_table do |referential, time_table|
   parent :time_tables, referential
 end
 
+crumb :compliance_check_sets do |workbench|
+  link :compliance_check_sets, workbench_compliance_check_sets_path(workbench)
+  parent :workbench, workbench
+end
+
+crumb :compliance_check_set do |workbench, compliance_check_set|
+  link :compliance_check_set, workbench_compliance_check_set_path(workbench, compliance_check_set)
+  parent :compliance_check_sets, workbench
+end
+
 # crumb :project do |project|
 #   link project.name, project_path(project)
 #   parent :projects

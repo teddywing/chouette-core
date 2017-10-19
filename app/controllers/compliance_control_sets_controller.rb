@@ -3,6 +3,7 @@ class ComplianceControlSetsController < BreadcrumbController
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("updated_at", DateTime) }
   respond_to :html
+  belong_to :workbench
 
   def index
     index! do |format|
