@@ -12,7 +12,7 @@ crumb :referential do |referential|
 end
 
 crumb :time_tables do |referential|
-  link :time_tables, referential_time_tables_path(referential)
+  link t('time_tables.index.title'), referential_time_tables_path(referential)
   parent :referential, referential
 end
 
@@ -22,17 +22,17 @@ crumb :time_table do |referential, time_table|
 end
 
 crumb :compliance_check_sets do |workbench|
-  link :compliance_check_sets, workbench_compliance_check_sets_path(workbench)
+  link I18n.t('compliance_check_sets.index.title'), workbench_compliance_check_sets_path(workbench)
   parent :workbench, workbench
 end
 
 crumb :compliance_check_set do |workbench, compliance_check_set|
-  link :compliance_check_set, workbench_compliance_check_set_path(workbench, compliance_check_set)
+  link compliance_check_set.name, workbench_compliance_check_set_path(workbench, compliance_check_set)
   parent :compliance_check_sets, workbench
 end
 
 crumb :imports do |workbench|
-  link :imports, workbench_imports_path(workbench)
+  link I18n.t('imports.index.title'), workbench_imports_path(workbench)
   parent :workbench, workbench
 end
 
@@ -45,6 +45,19 @@ crumb :organisation do |organisation|
   link organisation.name, organisation_path(organisation)
 end
 
+crumb :compliance_control_sets do
+  link I18n.t('compliance_control_sets.index.title'), compliance_control_sets_path
+end
+
+crumb :compliance_control_set do |compliance_control_set|
+  link compliance_control_set.name, compliance_control_sets_path
+  parent :compliance_control_sets
+end
+
+# crumb :compliance_controls do|compliance_control_sets|
+#   link
+#   parent :compliance_control_sets, compliance_control_sets
+# end
 
 # crumb :project do |project|
 #   link project.name, project_path(project)
