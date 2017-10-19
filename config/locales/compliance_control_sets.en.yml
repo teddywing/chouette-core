@@ -13,7 +13,8 @@ en:
       edit: Edit
       show: Show
       destroy: Destroy
-      add_compliance_control: Add a compliance control
+      add_compliance_control: Compliance Control
+      add_compliance_control_block: Compliance Control Block
       destroy_confirm: Are you sur ?
     filters:
       name: 'Enter name ...'

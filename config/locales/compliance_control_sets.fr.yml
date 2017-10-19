@@ -15,7 +15,8 @@ fr:
       edit: Editer
       show: Consulter
       destroy: Supprimer
-      add_compliance_control: Ajouter un JDC
+      add_compliance_control: Contrôle
+      add_compliance_control_block: Groupe de contrôles
       loaded: Charger le contrôle
       destroy_confirm: Etes vous sûr de supprimer ce jeux de contrôle ?
     filters:
