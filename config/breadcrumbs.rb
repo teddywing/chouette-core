@@ -50,8 +50,13 @@ crumb :compliance_control_sets do
 end
 
 crumb :compliance_control_set do |compliance_control_set|
-  link compliance_control_set.name, compliance_control_sets_path
+  link compliance_control_set.name, compliance_control_set_path(compliance_control_set)
   parent :compliance_control_sets
+end
+
+crumb :compliance_control do |compliance_control|
+  link compliance_control.name, compliance_control_set_compliance_control_path(compliance_control.compliance_control_set, compliance_control)
+  parent :compliance_control_set, compliance_control.compliance_control_set
 end
 
 # crumb :compliance_controls do|compliance_control_sets|
