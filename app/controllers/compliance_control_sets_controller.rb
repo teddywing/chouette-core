@@ -24,7 +24,7 @@ class ComplianceControlSetsController < BreadcrumbController
   end
 
   def clone
-    ComplianceControlSetCloner.new.copy(params[:id], current_organisation)
+    ComplianceControlSetCloner.new.copy(params[:id], current_organisation.id)
     flash[:notice] = I18n.t("compliance_control_sets.errors.operation_in_progress")
     redirect_to(compliance_control_sets_path)
   end
