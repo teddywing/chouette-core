@@ -48,11 +48,19 @@ class WorkbenchImportWorker
     raise
   end
 
-  def upload_entry_group entry_pair, element_count
-    @workbench_import.update( current_step: element_count.succ )
-    # status = retry_service.execute(&upload_entry_group_proc(entry_pair))
-    eg_name = entry_pair.name
-    eg_stream = entry_pair.stream
+  def update_object_state entry, count
+    @workbench_import.update( current_step: count )
+    # TODO: Determine the other attributes of the message, especially how to add the names
+    # of the spurious dirs entry.spurious
+    unless entry.spurious.empty?
+      @workbench_import.messages.create(criticity: :warning, message_key: 'xxx') 
+    end
+  end
+  def upload_entry_group entry, element_count
+    update_object_state entry, element_count.succ
+    # status = retry_service.execute(&upload_entry_group_proc(entry))
+    eg_name = entry.name
+    eg_stream = entry.stream
 
     FileUtils.mkdir_p(Rails.root.join('tmp', 'imports'))
 

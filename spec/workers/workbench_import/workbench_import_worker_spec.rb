@@ -17,11 +17,13 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
 
   let( :upload_path ) { api_v1_netex_imports_path(format: :json) }
 
+  let( :spurious ){ [[], [], []] }
   let( :subdirs ) do
     entry_count.times.map do |i|
       ZipService::Subdir.new(
         "subdir #{i}",
-        double("subdir #{i}", rewind: 0, read: '')
+        double("subdir #{i}", rewind: 0, read: ''),
+        spurious[i]
       )
     end
   end
@@ -103,8 +105,41 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
       expect( import ).to receive(:update).with(current_step: 3, status: 'failed')
 
       expect { worker.perform import.id }.to raise_error(StopIteration)
+    end
+  end
+
+  context 'multireferential zipfile with spurious directories' do 
+    let( :entry_count ){ 2 }
+    let( :spurious1 ){ [random_string] }
+    let( :spurious2 ){ [random_string, random_string] }
+    let( :spurious ){ [spurious1, spurious2] }
+    let( :messages ){ double('messages') }
+
+    before do
+      allow(import).to receive(:messages).and_return(messages)
+    end
+
+    it 'downloads a zip file, cuts it, and uploads all pieces and adds messages' do
+
+      expect(HTTPService).to receive(:get_resource)
+        .with(host: host, path: path, params: {token: download_token})
+        .and_return( download_zip_response )
+
+      subdirs.each do |subdir|
+        mock_post subdir, post_response_ok
+      end
+
+      expect( import ).to receive(:update).with(total_steps: 2)
+      expect( import ).to receive(:update).with(current_step: 1)
+      expect( messages ).to receive(:create).with(criticity: :warning, message_key: 'xxx')
+      expect( import ).to receive(:update).with(current_step: 2)
+      expect( messages ).to receive(:create).with(criticity: :warning, message_key: 'xxx')
+      expect( import ).to receive(:update).with(ended_at: Time.now)
+
+      worker.perform import.id
 
     end
+    
   end
 
   def mock_post subdir, response

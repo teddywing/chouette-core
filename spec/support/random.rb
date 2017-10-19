@@ -25,7 +25,7 @@ module Support
 
     def very_random(veryness=3, joiner: '-')
       raise ArgumentError, 'not very random' unless veryness > 1
-      3.times.map{ SecureRandom.uuid }.join(joiner)
+      veryness.times.map{ SecureRandom.uuid }.join(joiner)
     end
 
   end
