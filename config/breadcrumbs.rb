@@ -1,5 +1,5 @@
 crumb :root do
-  link "Accueil", dashboard_path
+  link "Accueil", root_path
 end
 
 crumb :workbench do |workbench|
@@ -12,7 +12,7 @@ crumb :referential do |referential|
 end
 
 crumb :time_tables do |referential|
-  link t('time_tables.index.title'), referential_time_tables_path(referential)
+  link I18n.t('time_tables.index.title'), referential_time_tables_path(referential)
   parent :referential, referential
 end
 
@@ -107,6 +107,14 @@ crumb :line do |line|
   parent :lines, line.line_referential
 end
 
+crumb :calendars do
+  link I18n.t('calendars.index.title'), calendars_path
+end
+
+crumb :calendar do |calendar|
+  link calendar.name, calendar_path(calendar)
+  parent :calendars
+end
 # crumb :compliance_controls do|compliance_control_sets|
 #   link
 #   parent :compliance_control_sets, compliance_control_sets
