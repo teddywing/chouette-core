@@ -156,6 +156,11 @@ crumb :referential_stop_area do |referential, stop_area|
   parent :referential_stop_areas, referential
 end
 
+crumb :vehicle_journeys do |referential, route|
+  link I18n.t('vehicle_journeys.index.title', route: route.name), referential_line_route_vehicle_journeys_path(referential, route.line, route)
+  parent :route, referential, route
+end
+
 # crumb :compliance_controls do|compliance_control_sets|
 #   link
 #   parent :compliance_control_sets, compliance_control_sets
