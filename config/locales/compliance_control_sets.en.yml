@@ -2,6 +2,8 @@ en:
   compliance_control_sets:
     clone:
       prefix: 'Copie de'
+    errors:
+      operation_in_progress: "The clone operation is in progress. Please wait and refresh the page in a few moments"
     index:
       title: Compliance control set
       new: New compliance control set
@@ -13,7 +15,8 @@ en:
       edit: Edit
       show: Show
       destroy: Destroy
-      add_compliance_control: Add a compliance control
+      add_compliance_control: Compliance Control
+      add_compliance_control_block: Compliance Control Block
       destroy_confirm: Are you sur ?
     filters:
       name: 'Enter name ...'

@@ -2,6 +2,8 @@ fr:
   compliance_control_sets:
     clone:
       prefix: 'Copy of'
+    errors:
+      operation_in_progress: "L'opération de clone est en cours. Veuillez patienter et raffraichir la page dans quelques instants"
     index:
       title: "Liste des jeux de contrôles"
     edit:
@@ -15,7 +17,8 @@ fr:
       edit: Editer
       show: Consulter
       destroy: Supprimer
-      add_compliance_control: Ajouter un JDC
+      add_compliance_control: Contrôle
+      add_compliance_control_block: Groupe de contrôles
       loaded: Charger le contrôle
       destroy_confirm: Etes vous sûr de supprimer ce jeux de contrôle ?
     filters:
