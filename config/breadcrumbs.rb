@@ -123,17 +123,22 @@ end
 
 crumb :line_footnotes do |referential, line|
   link line.name, referential_line_footnotes_path(referential, line)
-  parent :referential_line, line, referential
+  parent :referential_line, referential, line
 end
 
 crumb :routing_constraint_zones do |referential, line|
   link I18n.t('routing_constraint_zones.index.title'), referential_line_routing_constraint_zones_path(referential, line)
-  parent :referential_line, line, referential
+  parent :referential_line, referential, line
 end
 
 crumb :routing_constraint_zone do |referential, line, routing_constraint_zone|
   link routing_constraint_zone.name, referential_line_routing_constraint_zone_path(referential, line, routing_constraint_zone)
-  parent :routing_constraint_zones, line, referential
+  parent :routing_constraint_zones, referential, line
+end
+
+crumb :route do |referential, line, route|
+  link I18n.t('routes.index.title', route: route.name), referential_line_route_path(referential, line, route)
+  parent :referential_line, referential, line
 end
 
 # crumb :compliance_controls do|compliance_control_sets|
