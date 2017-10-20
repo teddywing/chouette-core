@@ -136,9 +136,14 @@ crumb :routing_constraint_zone do |referential, line, routing_constraint_zone|
   parent :routing_constraint_zones, referential, line
 end
 
-crumb :route do |referential, line, route|
-  link I18n.t('routes.index.title', route: route.name), referential_line_route_path(referential, line, route)
-  parent :referential_line, referential, line
+crumb :route do |referential, route|
+  link I18n.t('routes.index.title', route: route.name), referential_line_route_path(referential, route.line, route)
+  parent :referential_line, referential, route.line
+end
+
+crumb :journey_patterns do |referential, route|
+  link I18n.t('journey_patterns.index.title'), referential_line_route_journey_patterns_collection_path(referential, route.line, route)
+  parent :route, referential, route
 end
 
 # crumb :compliance_controls do|compliance_control_sets|

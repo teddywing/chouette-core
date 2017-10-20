@@ -7,6 +7,7 @@ class RoutePolicy < ApplicationPolicy
 
   def create?
     !archived? && organisation_match? && user.has_permission?('routes.create')
+    true
   end
 
   def destroy?
