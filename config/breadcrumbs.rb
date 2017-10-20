@@ -115,6 +115,27 @@ crumb :calendar do |calendar|
   link calendar.name, calendar_path(calendar)
   parent :calendars
 end
+
+crumb :referential_line do |referential, line|
+  link line.name, referential_line_path(referential, line)
+  parent :referential, referential
+end
+
+crumb :line_footnotes do |referential, line|
+  link line.name, referential_line_footnotes_path(referential, line)
+  parent :referential_line, line, referential
+end
+
+crumb :routing_constraint_zones do |referential, line|
+  link I18n.t('routing_constraint_zones.index.title'), referential_line_routing_constraint_zones_path(referential, line)
+  parent :referential_line, line, referential
+end
+
+crumb :routing_constraint_zone do |referential, line, routing_constraint_zone|
+  link routing_constraint_zone.name, referential_line_routing_constraint_zone_path(referential, line, routing_constraint_zone)
+  parent :routing_constraint_zones, line, referential
+end
+
 # crumb :compliance_controls do|compliance_control_sets|
 #   link
 #   parent :compliance_control_sets, compliance_control_sets

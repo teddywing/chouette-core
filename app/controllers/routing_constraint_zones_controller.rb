@@ -20,8 +20,6 @@ class RoutingConstraintZonesController < ChouetteController
           line: parent
         }
       )
-
-      build_breadcrumb :index
     end
   end
 
@@ -31,8 +29,6 @@ class RoutingConstraintZonesController < ChouetteController
         referential: referential,
         line: parent
       })
-
-      build_breadcrumb :show
     end
   end
 
