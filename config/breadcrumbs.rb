@@ -146,6 +146,16 @@ crumb :journey_patterns do |referential, route|
   parent :route, referential, route
 end
 
+crumb :referential_stop_areas do |referential|
+  link I18n.t('stop_areas.index.title'), referential_stop_areas_path(referential)
+  parent :referential, referential
+end
+
+crumb :referential_stop_area do |referential, stop_area|
+  link stop_area.name, referential_stop_area_path(referential, stop_area)
+  parent :referential_stop_areas, referential
+end
+
 # crumb :compliance_controls do|compliance_control_sets|
 #   link
 #   parent :compliance_control_sets, compliance_control_sets
