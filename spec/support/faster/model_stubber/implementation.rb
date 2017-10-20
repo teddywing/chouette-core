@@ -28,7 +28,7 @@ module ModelStubber
     end
 
     def setup_belongs_to reflection, model, key, value
-      model.stub(key){value}
+      mystub(model, key){value}
       has_manys = 
         value.class.reflect_on_all_associations(:has_many).select{|v| v.foreign_type == "#{model.class.name.underscore.pluralize}_type" }
       has_manys.each do | has_many |

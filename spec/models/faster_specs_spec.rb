@@ -1,13 +1,17 @@
 RSpec.describe 'Faster Specs', type: :faster do
-  
+
+  N = (ENV['N'] || 50).to_i
+
   shared_examples_for 'correct behavior' do
 
-    it 'finds workbench' do
-      expect( referential.workbench ).to eq(workbench)
-    end
+    N.times do
+      it 'finds workbench' do
+        expect( referential.workbench ).to eq(workbench)
+      end
 
-    it 'finds referentials' do
-      expect( workbench.referentials ).to eq([referential])
+      it 'finds referentials' do
+        expect( workbench.referentials ).to eq([referential])
+      end
     end
 
   end
@@ -15,16 +19,20 @@ RSpec.describe 'Faster Specs', type: :faster do
   context 'in DB' do 
     let( :workbench ){ create :workbench }
     let( :referential ){ create(:referential, workbench: workbench) }
-    
+
     it_behaves_like 'correct behavior'
   end
 
   context 'stubbed' do 
     let( :workbench ){ stub_model Workbench }
     let( :referential ){ stub_model( Referential, workbench: workbench ) }
-    
+
     it_behaves_like 'correct behavior'
 
+  end
+
+  context 'meta' do
+    let( :workbench ){ stub_model Workbench }
     context 'workbench belongs to organisation' do
       it 'workbench has no orgnaisation' do
         expect( workbench.organisation ).to be_nil
@@ -46,5 +54,6 @@ RSpec.describe 'Faster Specs', type: :faster do
         expect( organisation.workbenches ).to be_eql([workbench])
       end
     end
+
   end
 end
