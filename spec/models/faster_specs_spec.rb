@@ -1,6 +1,6 @@
 RSpec.describe 'Faster Specs', type: :faster do
 
-  N = (ENV['N'] || 50).to_i
+  N = (ENV['N'] || 1).to_i
 
   shared_examples_for 'correct behavior' do
 
@@ -28,7 +28,13 @@ RSpec.describe 'Faster Specs', type: :faster do
     let( :referential ){ stub_model( Referential, workbench: workbench ) }
 
     it_behaves_like 'correct behavior'
+  end
 
+  context 'with FactoryGirl' do 
+    let( :workbench ){ stub_model :workbench }
+    let( :referential ){ stub_model( :referential, workbench: workbench ) }
+
+    it_behaves_like 'correct behavior'
   end
 
   context 'meta' do

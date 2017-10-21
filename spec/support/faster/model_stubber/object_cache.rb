@@ -7,13 +7,13 @@ module ModelStubber
     end
 
     def empty_cache!
-       @__cache__ = _cache
+      @__cache__ = _cache
     end
 
     private
 
     def cache
-       @__cache__ ||= _cache 
+      @__cache__ ||= _cache 
     end
     def _cache
       Hash.new { |h, k| h[k] = {} }
