@@ -38,6 +38,13 @@ class ImportsController < BreadcrumbController
     end
   end
 
+  def create
+    create! do |success, failure|
+      success.html { redirect_to workbench_imports_path }
+      failure.html { flash.now[:error] = @import.errors[:wrong_file_extension][0] if @import.file.file; render :new }
+    end
+  end
+
   def download
     if params[:token] == resource.token_download
       send_file resource.file.path

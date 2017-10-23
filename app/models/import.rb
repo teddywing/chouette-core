@@ -19,6 +19,12 @@ class Import < ActiveRecord::Base
   validates :file, presence: true
   validates_presence_of :workbench, :creator
 
+  validate def file_extension_must_be_zip
+    if self.file.file
+      errors.add(:wrong_file_extension, I18n.t('activerecord.errors.models.imports.wrong_file_extension')) unless self.file.file.extension == "zip"
+    end
+  end
+
   before_create :initialize_fields
 
   def self.model_name

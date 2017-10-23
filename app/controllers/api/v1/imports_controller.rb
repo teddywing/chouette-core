@@ -5,7 +5,12 @@ class Api::V1::ImportsController < Api::V1::IbooController
   def create
     args    = workbench_import_params.merge(creator: 'Webservice')
     @import = parent.workbench_imports.create(args)
-    create!
+    if @import.valid? 
+      create!
+    else
+      binding.pry
+      render json: { status: "error", messages: @import.errors.full_messages }
+    end
   end
 
   private
