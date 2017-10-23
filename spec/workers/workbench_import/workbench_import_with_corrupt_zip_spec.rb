@@ -18,8 +18,12 @@ RSpec.describe WorkbenchImportWorker do
     end
 
     it 'does create a message' do
-      expect{  subject.perform(workbench_import.id) }.to change{ workbench_import.messages.count }.by(1)
-      expect( workbench_import.messages.last.criticity ).to eq('error')
+      expect{ subject.perform(workbench_import.id) }.to change{ workbench_import.messages.count }.by(1)
+
+      message = workbench_import.messages.last
+      expect( message.criticity ).to eq('error')
+      expect( message.message_key ).to eq('corrupt_zip_file')
+      expect( message.message_attributes ).to eq( 'import_name' => workbench_import.name )
     end
 
     it 'does not change current step' do
