@@ -50,12 +50,17 @@ class WorkbenchImportWorker
 
   def update_object_state entry, count
     @workbench_import.update( current_step: count )
-    # TODO: Determine the other attributes of the message, especially how to add the names
-    # of the spurious dirs entry.spurious
     unless entry.spurious.empty?
-      @workbench_import.messages.create(criticity: :warning, message_key: 'xxx') 
+      @workbench_import.messages.create(
+        criticity: :warning,
+        message_key: 'inconsistent_zip_file',
+        message_attributes: {
+          'import_name' => @workbench_import.name,
+          'spurious_dirs' => entry.spurious.inspect
+        }) 
     end
   end
+
   def upload_entry_group entry, element_count
     update_object_state entry, element_count.succ
     # status = retry_service.execute(&upload_entry_group_proc(entry))
