@@ -59,7 +59,6 @@ class ComplianceControlSetCloner
       criticity: compliance_control.criticity,
       name: name_of_copy(:compliance_controls, compliance_control.name),
       origin_code: compliance_control.origin_code,
-      target: compliance_control.target,
       type: compliance_control.type
     ).tap do | control |
       control_id_map.update compliance_control.id => control
