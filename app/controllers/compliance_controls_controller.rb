@@ -1,6 +1,7 @@
 class ComplianceControlsController < BreadcrumbController
   defaults resource_class: ComplianceControl
   belongs_to :compliance_control_set
+  actions :all, :except => [:show, :index]
 
   def select_type
     @sti_subclasses = ComplianceControl.subclasses
