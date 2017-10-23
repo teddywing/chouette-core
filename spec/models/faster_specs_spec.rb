@@ -31,8 +31,8 @@ RSpec.describe 'Faster Specs', type: :faster do
   end
 
   context 'with FactoryGirl' do 
-    let( :workbench ){ stub_model :workbench }
-    let( :referential ){ stub_model( :referential, workbench: workbench ) }
+    let( :workbench ){ stub_model :fast_workbench }
+    let( :referential ){ stub_model( :fast_referential, workbench: workbench ) }
 
     it_behaves_like 'correct behavior'
   end
@@ -68,9 +68,14 @@ RSpec.describe 'Faster Specs', type: :faster do
   end
 
   context 'FactoryGirlMeta' do
-    let( :workbench ){ stub_model :workbench }
+    let( :workbench ){ stub_model :fast_workbench }
 
     it_behaves_like 'meta', :organisation
+
+    it 'check for associations in FactoryGirl' do
+      require 'pry'; binding.pry
+      
+    end
 
   end
 end
