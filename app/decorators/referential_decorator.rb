@@ -16,6 +16,14 @@ class ReferentialDecorator < Draper::Decorator
         href: h.new_referential_path(from: object.id, current_workbench_id: context[:current_workbench_id])
       )
     end
+
+    # if policy.validate?
+      links << Link.new(
+        content: h.t('actions.validate'),
+        href: h.compliance_control_set_select_compliance_control_set_path(object.id, referential_id: context[:referential_id])
+      )
+    # end
+
     if policy.archive?
       links << Link.new(
         content: h.t('actions.archive'),

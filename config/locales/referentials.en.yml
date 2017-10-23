@@ -31,6 +31,8 @@ en:
       duplicated:
         title: 'Clone a data space'
       submit: "Create a data space"
+    select_jdc:
+        title: "Select a Compliance Control Set"
     actions:
       new: "Add a data space"
       destroy_confirm: "Do you confirm to destroy this data space ?"

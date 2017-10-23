@@ -31,6 +31,8 @@ fr:
       duplicated:
         title: 'Dupliquer un jeu de données'
       submit: "Valider"
+    select_jdc:
+      title: "Sélection du jeu de contôle"
     actions:
       new: "Créer un jeu de données"
       destroy_confirm: "Etes vous sûr de vouloir supprimer ce jeu de données ?"

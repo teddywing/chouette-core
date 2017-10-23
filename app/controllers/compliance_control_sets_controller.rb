@@ -29,6 +29,10 @@ class ComplianceControlSetsController < BreadcrumbController
     redirect_to(compliance_control_sets_path)
   end
 
+  def select_compliance_control_set
+    @compliance_control_sets = ComplianceControlSet.all
+  end
+
   protected
 
   def begin_of_association_chain
