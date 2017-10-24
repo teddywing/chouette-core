@@ -10,6 +10,9 @@ RSpec.describe Import, type: :model do
   it { should validate_presence_of(:workbench) }
   it { should validate_presence_of(:creator) }
 
+  it { should allow_value('file.zip').for(:file).with_message(I18n.t('activerecord.errors.models.imports.wrong_file_extension')) }
+  it { should_not allow_values('file.json', 'file.png', 'file.pdf').for(:file) }
+
   let(:workbench_import) { build_stubbed(:workbench_import) }
   let(:workbench_import_with_completed_steps) do
     workbench_import = build_stubbed(

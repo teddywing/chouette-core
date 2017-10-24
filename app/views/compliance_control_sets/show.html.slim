@@ -1,5 +1,5 @@
 / PageHeader
-= pageheader 'jeux-de-donnees',
+= pageheader 'jeux-de-controle',
               t('compliance_control_sets.show.title', name: @compliance_control_set.name),
              'Lorem ipsum dolor sit amet'
 
@@ -96,9 +96,13 @@
                 cls: 'table has-filter has-search'
     .select_toolbox
       ul
-        li.st_action
+        li.st_action.with_text
           = link_to select_type_compliance_control_set_compliance_controls_path(@compliance_control_set.id)
             span.fa.fa-plus
-        li.st_action
+            span
+              = t('compliance_control_sets.actions.add_compliance_control')
+        li.st_action.with_text
           = link_to new_compliance_control_set_compliance_control_block_path(@compliance_control_set.id)
-            span.fa.fa-plus-square
+            span.fa.fa-plus
+            span
+              = t('compliance_control_sets.actions.add_compliance_control_block')

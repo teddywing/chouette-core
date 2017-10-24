@@ -130,7 +130,6 @@ class TimeTablesController < ChouetteController
     scope = select_time_tables
     if params[:q] && params[:q]["tag_search"]
       tags = params[:q]["tag_search"].reject {|c| c.empty?}
-      params[:q].delete("tag_search")
       scope = select_time_tables.tagged_with(tags, :any => true) if tags.any?
     end
     scope = self.ransack_period_range(scope: scope, error_message: t('referentials.errors.validity_period'), query: :overlapping)
