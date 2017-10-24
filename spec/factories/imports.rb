@@ -14,8 +14,9 @@ FactoryGirl.define do
     after(:build) do |import|
       import.class.skip_callback(:create, :before, :initialize_fields)
     end
+  end
 
-    factory :badimport do
+  factory :bad_import do
     sequence(:name) { |n| "Import #{n}" }
     current_step_id "MyString"
     current_step_progress 1.5
