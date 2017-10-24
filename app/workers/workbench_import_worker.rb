@@ -14,11 +14,13 @@ class WorkbenchImportWorker
     zip_service = ZipService.new(downloaded)
     upload zip_service
     @workbench_import.update(ended_at: Time.now)
+  rescue Zip::Error
+    handle_corrupt_zip_file
   end
 
   def download
     logger.info  "HTTP GET #{import_url}"
-    @zipfile_data = HTTPService.get_resource(
+    HTTPService.get_resource(
       host: import_host,
       path: import_path,
       params: {token: @workbench_import.token_download}).body
@@ -32,6 +34,10 @@ class WorkbenchImportWorker
       params: params(eg_file, eg_name))
   end
 
+  def handle_corrupt_zip_file
+    @workbench_import.messages.create(criticity: :error, message_key: 'corrupt_zip_file', message_attributes: {import_name: @workbench_import.name})
+  end
+
   def upload zip_service
     entry_group_streams = zip_service.subdirs
     @workbench_import.update total_steps: entry_group_streams.size
@@ -42,11 +48,24 @@ class WorkbenchImportWorker
     raise
   end
 
-  def upload_entry_group entry_pair, element_count
-    @workbench_import.update( current_step: element_count.succ )
-    # status = retry_service.execute(&upload_entry_group_proc(entry_pair))
-    eg_name = entry_pair.name
-    eg_stream = entry_pair.stream
+  def update_object_state entry, count
+    @workbench_import.update( current_step: count )
+    unless entry.spurious.empty?
+      @workbench_import.messages.create(
+        criticity: :warning,
+        message_key: 'inconsistent_zip_file',
+        message_attributes: {
+          'import_name' => @workbench_import.name,
+          'spurious_dirs' => entry.spurious.join(', ')
+        }) 
+    end
+  end
+
+  def upload_entry_group entry, element_count
+    update_object_state entry, element_count.succ
+    # status = retry_service.execute(&upload_entry_group_proc(entry))
+    eg_name = entry.name
+    eg_stream = entry.stream
 
     FileUtils.mkdir_p(Rails.root.join('tmp', 'imports'))
 

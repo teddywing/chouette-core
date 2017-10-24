@@ -22,6 +22,12 @@ module Support
     def random_string
       SecureRandom.urlsafe_base64
     end
+
+    def very_random(veryness=3, joiner: '-')
+      raise ArgumentError, 'not very random' unless veryness > 1
+      veryness.times.map{ SecureRandom.uuid }.join(joiner)
+    end
+
   end
 end
 
