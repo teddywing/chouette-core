@@ -7,9 +7,9 @@ namespace :generate do
     sh "bundle exec rake erd only='Organisation,StopAreaReferential,StopAreaReferentialSync,StopAreaReferentialSyncMessage,StopAreaReferentialMembership,LineReferential,LineReferentialSync,LineReferentialSyncMessage,LineReferentialMembership' filename='referentiels_externes' title='Référentiels externes'"
     sh "bundle exec rake erd only='NetexImport,Import,WorkbenchImport,ImportResource,ImportMessage' filename='import' title='Import'"
     sh "bundle exec rake erd only='ComplianceControlSet,ComplianceControlBlock,ComplianceControl,ComplianceCheckSet,ComplianceCheckBlock,ComplianceCheck,ComplianceCheckResource,ComplianceCheckMessage' filename='validation' title='Validation'"
+    sh "bundle exec rake erd only='Organisation,Workbench,ReferentialSuite,Referential' filename='merge' title='Merge'"
     #sh "bundle exec rake erd only='VehicleJourney,VehicleJourneyExport' filename='export' title='Export'"
-    #sh "bundle exec rake erd only='' filename='intégration' title='Integration'"
-    #sh "bundle exec rake erd only='' filename='fusion' title='Fusion'"
+    #sh "bundle exec rake erd only='' filename='integration' title='Integration'"
     #sh "bundle exec rake erd only='' filename='publication' title='Publication'"
   end
 
