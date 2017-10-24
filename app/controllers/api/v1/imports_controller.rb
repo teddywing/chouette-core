@@ -8,7 +8,6 @@ class Api::V1::ImportsController < Api::V1::IbooController
     if @import.valid? 
       create!
     else
-      binding.pry
       render json: { status: "error", messages: @import.errors.full_messages }
     end
   end
