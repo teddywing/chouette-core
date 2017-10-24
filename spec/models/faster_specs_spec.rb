@@ -5,27 +5,31 @@ RSpec.describe 'Faster Specs', type: :faster do
   shared_examples_for 'correct behavior' do
 
     N.times do
-      it 'finds workbench' do
+      it 'finds associated workbench' do
         expect( referential.workbench ).to eq(workbench)
       end
 
-      it 'finds referentials' do
+      it 'finds associated referentials' do
         expect( workbench.referentials ).to eq([referential])
+      end
+
+      it 'finds models from class' do
+        expect( Workbench.find(workbench.id) ).to eq(workbench)
       end
     end
 
   end
 
-  context 'in DB' do 
-    let( :workbench ){ create :workbench }
-    let( :referential ){ create(:referential, workbench: workbench) }
+  context 'stubbed' do 
+    let( :workbench ){ stub_model Workbench }
+    let( :referential ){ stub_model( Referential, workbench: workbench ) }
 
     it_behaves_like 'correct behavior'
   end
 
-  context 'stubbed' do 
-    let( :workbench ){ stub_model Workbench }
-    let( :referential ){ stub_model( Referential, workbench: workbench ) }
+  context 'in DB' do 
+    let( :workbench ){ create :workbench }
+    let( :referential ){ create(:referential, workbench: workbench) }
 
     it_behaves_like 'correct behavior'
   end
@@ -71,11 +75,5 @@ RSpec.describe 'Faster Specs', type: :faster do
     let( :workbench ){ stub_model :fast_workbench }
 
     it_behaves_like 'meta', :organisation
-
-    it 'check for associations in FactoryGirl' do
-      require 'pry'; binding.pry
-      
-    end
-
   end
 end
