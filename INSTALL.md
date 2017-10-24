@@ -27,11 +27,6 @@ Otherwise please make sure to use a compatible version, still best to use the sa
 
 Then install yarn (`brew install yarn` does nicely on macOS).
 
-## Webpack
-
-... is managed by the webpacker gem, thusly at latest
- before starting your server and tests, setup webpacker with `bundle exec rake webpacker:install`.
-
 ### Installation Caveats
 
 #### Node Related Issue, libv8

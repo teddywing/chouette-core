@@ -56,7 +56,7 @@ class WorkbenchImportWorker
         message_key: 'inconsistent_zip_file',
         message_attributes: {
           'import_name' => @workbench_import.name,
-          'spurious_dirs' => entry.spurious.inspect
+          'spurious_dirs' => entry.spurious.join(', ')
         }) 
     end
   end

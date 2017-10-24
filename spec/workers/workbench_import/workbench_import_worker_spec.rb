@@ -115,8 +115,8 @@ RSpec.describe WorkbenchImportWorker, type: [:worker, :request] do
     let( :spurious ){ [spurious1, spurious2] }
     let( :messages ){ double('messages') }
     let( :message_attributes ){{criticity: :warning, message_key: 'inconsistent_zip_file'}}
-    let( :message1_attributes ){ message_attributes.merge(message_attributes: {'import_name' => import.name, 'spurious_dirs' => spurious1.inspect}) }
-    let( :message2_attributes ){ message_attributes.merge(message_attributes: {'import_name' => import.name, 'spurious_dirs' => spurious2.inspect}) }
+    let( :message1_attributes ){ message_attributes.merge(message_attributes: {'import_name' => import.name, 'spurious_dirs' => spurious1.join(', ')}) }
+    let( :message2_attributes ){ message_attributes.merge(message_attributes: {'import_name' => import.name, 'spurious_dirs' => spurious2.join(', ')}) }
 
     before do
       allow(import).to receive(:messages).and_return(messages)
