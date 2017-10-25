@@ -22,32 +22,27 @@ class StopAreasController < BreadcrumbController
   def select_parent
     @stop_area = stop_area
     @parent = stop_area.parent
-    build_breadcrumb :edit
   end
 
   def add_children
     authorize stop_area
     @stop_area = stop_area
     @children = stop_area.children
-    build_breadcrumb :edit
   end
 
   def add_routing_lines
     @stop_area = stop_area
     @lines = stop_area.routing_lines
-    build_breadcrumb :edit
   end
 
   def add_routing_stops
     @stop_area = stop_area
-    build_breadcrumb :edit
   end
 
   def access_links
     @stop_area = stop_area
     @generic_access_links = stop_area.generic_access_link_matrix
     @detail_access_links = stop_area.detail_access_link_matrix
-    build_breadcrumb :edit
   end
 
   def index
@@ -64,8 +59,6 @@ class StopAreasController < BreadcrumbController
           @stop_areas,
           with: StopAreaDecorator
         )
-
-        build_breadcrumb :index
       }
     end
   end
@@ -74,9 +67,7 @@ class StopAreasController < BreadcrumbController
     authorize resource_class
     @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
     @map.editable = true
-    new! do
-      build_breadcrumb :show
-    end
+    new!
   end
 
   def create
@@ -99,8 +90,6 @@ class StopAreasController < BreadcrumbController
       end
 
       @stop_area = @stop_area.decorate
-
-      build_breadcrumb :show
     end
   end
 
@@ -109,7 +98,6 @@ class StopAreasController < BreadcrumbController
     edit! do
       stop_area.position ||= stop_area.default_position
       map.editable = true
-      build_breadcrumb :edit
    end
   end
 

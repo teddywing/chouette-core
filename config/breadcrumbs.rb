@@ -11,6 +11,16 @@ crumb :referential do |referential|
   parent :workbench, referential.workbench
 end
 
+crumb :referential_companies do |referential|
+  link I18n.t('companies.index.title'), referential_companies_path(referential)
+  parent :referential, referential
+end
+
+crumb :referential_company do |referential, company|
+  link company.name, referential_company_path(referential, company)
+  parent :referential_companies, referential
+end
+
 crumb :time_tables do |referential|
   link I18n.t('time_tables.index.title'), referential_time_tables_path(referential)
   parent :referential, referential
@@ -61,6 +71,16 @@ end
 
 crumb :stop_area_referential do |stop_area_referential|
   link I18n.t('stop_area_referentials.show.title'), stop_area_referential_path(stop_area_referential)
+end
+
+crumb :stop_areas do |stop_area_referential|
+  link I18n.t('stop_areas.index.title'), stop_area_referential_stop_areas_path(stop_area_referential)
+  parent :stop_area_referential, stop_area_referential
+end
+
+crumb :stop_area do |stop_area_referential, stop_area|
+  link stop_area.name, stop_area_referential_stop_area_path(stop_area_referential, stop_area)
+  parent :stop_areas, stop_area_referential
 end
 
 crumb :line_referential do |line_referential|
