@@ -31,6 +31,15 @@ crumb :referential_network do |referential, network|
   parent :referential_networks, referential
 end
 
+crumb :referential_group_of_lines do |referential|
+  link I18n.t('group_of_lines.index.title'), referential_networks_path(referential)
+  parent :referential, referential
+end
+
+crumb :referential_group_of_line do |referential, group_of_line|
+  link  group_of_line.name, referential_group_of_line_path(referential, group_of_line)
+  parent :referential_group_of_lines, referential
+end
 
 crumb :time_tables do |referential|
   link I18n.t('time_tables.index.title'), referential_time_tables_path(referential)
