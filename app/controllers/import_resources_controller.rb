@@ -8,8 +8,6 @@ class ImportResourcesController < BreadcrumbController
       format.html {
         @import_resources = decorate_import_resources(@import_resources)
       }
-
-      build_breadcrumb :index
     end
   end
 
