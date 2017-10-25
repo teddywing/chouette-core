@@ -30,6 +30,12 @@ en:
       title: "Update compliance control"
     metas:
       no_prerequisite: "None"
+    actions:
+      new: Add
+      edit: Edit
+      show: Show
+      destroy: Destroy
+      destroy_confirm: Are you sure ?
     route_control/zdl_stop_area:
       messages:
         3_route_1: "The route with %{source_objectid} objectid connect the stop points %{target_0_label} (%{target_0_objectid}) and %{target_1_label} (%{target_1_objectid}) which belong to the same ZDL"
