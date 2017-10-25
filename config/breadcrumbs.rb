@@ -21,6 +21,17 @@ crumb :referential_company do |referential, company|
   parent :referential_companies, referential
 end
 
+crumb :referential_networks do |referential|
+  link I18n.t('networks.index.title'), referential_networks_path
+  parent :referential, referential
+end
+
+crumb :referential_network do |referential, network|
+  link  network.name, referential_network_path(referential, network)
+  parent :referential_networks, referential
+end
+
+
 crumb :time_tables do |referential|
   link I18n.t('time_tables.index.title'), referential_time_tables_path(referential)
   parent :referential, referential
