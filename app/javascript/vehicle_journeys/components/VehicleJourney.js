@@ -77,13 +77,14 @@ export default class VehicleJourney extends Component {
             <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
                 <div data-headline='Arrivée à'>
-                  <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false || this.props.editMode == false) ? 'disabled ' : '') + 'input-group time'}>
+                  <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
                       min='00'
                       max='23'
                       className='form-control'
-                      disabled={(this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false || this.props.editMode == false)}
+                      disabled={this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false}
+                      readOnly={!this.props.editMode && !vj.dummy}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
                       value={vj.arrival_time['hour']}
                       />
@@ -93,7 +94,8 @@ export default class VehicleJourney extends Component {
                       min='00'
                       max='59'
                       className='form-control'
-                      disabled={((this.isDisabled(this.props.value.deletable), vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false || this.props.editMode == false)}
+                      disabled={this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false}
+                      readOnly={!this.props.editMode && !vj.dummy}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'minute', false, false)}}
                       value={vj.arrival_time['minute']}
                       />
@@ -106,13 +108,14 @@ export default class VehicleJourney extends Component {
                   }
                 </div>
                 <div data-headline='Départ à'>
-                  <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false || this.props.editMode == false) ? 'disabled ' : '') + 'input-group time'}>
+                  <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
                       min='00'
                       max='23'
                       className='form-control'
-                      disabled={(this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false || this.props.editMode == false)}
+                      disabled={this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false}
+                      readOnly={!this.props.editMode && !vj.dummy}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', true, this.props.filters.toggleArrivals)}}
                       value={vj.departure_time['hour']}
                       />
@@ -122,7 +125,8 @@ export default class VehicleJourney extends Component {
                       min='00'
                       max='59'
                       className='form-control'
-                      disabled={(this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false || this.props.editMode == false)}
+                      disabled={this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false}
+                      readOnly={!this.props.editMode && !vj.dummy}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals)}}
                       value={vj.departure_time['minute']}
                       />
