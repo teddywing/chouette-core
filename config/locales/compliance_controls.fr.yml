@@ -25,6 +25,12 @@ fr:
       title: "Editer un contrôle"
     select_type:
       title: "Sélectionner un type de contrôle"
+    actions:
+      new: Ajouter
+      edit: Editer
+      show: Consulter
+      destroy: Supprimer
+      destroy_confirm: Etes vous sûr de supprimer ce contrôle ?
     route_control/zdl_stop_area:
       messages:
         3_route_1: "L'itinéraire %{source_objectid} dessert successivement les arrêts %{target_0_label} (%{target_0_objectid}) et %{target_1_label} (%{target_1_objectid}) de la même zone de lieu"

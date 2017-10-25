@@ -2,27 +2,18 @@ require 'rails_helper'
 
 RSpec.describe ComplianceControlPolicy do
 
-  let(:user) { User.new }
-
-  subject { described_class }
-
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
-  permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+  let( :record ){ build_stubbed :compliance_control }
+  before { stub_policy_scope(record) }
 
   permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'permitted policy outside referential', 'compliance_controls.create'
   end
 
   permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'permitted policy outside referential', 'compliance_controls.update'
   end
 
   permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it_behaves_like 'permitted policy outside referential', 'compliance_controls.destroy'
   end
 end
