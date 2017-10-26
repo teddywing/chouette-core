@@ -458,6 +458,10 @@ const actions = {
       }
     }
   },
+  escapeWildcardCharacters(search) {
+    let newSearch = search.replace(/^_/, "\\_")
+    return newSearch.replace(/^%/, "\\%")
+  }
 }
 
 export default actions

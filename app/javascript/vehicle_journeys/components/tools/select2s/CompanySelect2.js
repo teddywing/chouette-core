@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { PropTypes, Component } from 'react'
 import Select2 from 'react-select2'
+import actions from '../../../actions'
 
 // get JSON full path
 let origin = window.location.origin
@@ -34,7 +35,7 @@ export default class BSelect4 extends Component {
             delay: '500',
             data: function(params) {
               return {
-                q: {name_cont: params.term},
+                q: { name_cont: actions.escapeWildcardCharacters(params.term)},
               };
             },
             processResults: function(data, params) {
