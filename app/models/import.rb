@@ -35,7 +35,7 @@ class Import < ActiveRecord::Base
   end
 
   def self.finished_statuses
-    symbols_with_indifferent_access(%i(successful failed aborted canceled))
+    symbols_with_indifferent_access(%i(successful failed warning aborted canceled))
   end
 
   def notify_parent
