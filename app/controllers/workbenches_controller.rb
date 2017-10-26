@@ -1,4 +1,4 @@
-class WorkbenchesController < BreadcrumbController
+class WorkbenchesController < InheritedResources::Base
   before_action :query_params, only: [:show]
   include RansackDateFilter
   before_action only: [:show] { set_date_time_params("validity_period", Date) }

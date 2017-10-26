@@ -1,4 +1,4 @@
-class StopAreaReferentialsController < BreadcrumbController
+class StopAreaReferentialsController < InheritedResources::Base
 
   defaults :resource_class => StopAreaReferential
   def sync

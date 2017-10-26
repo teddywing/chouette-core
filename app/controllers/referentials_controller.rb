@@ -1,4 +1,4 @@
-class ReferentialsController < BreadcrumbController
+class ReferentialsController < InheritedResources::Base
   defaults :resource_class => Referential
   include PolicyChecker
 

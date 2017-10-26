@@ -1,4 +1,4 @@
-class NetworksController < BreadcrumbController
+class NetworksController < InheritedResources::Base
   include ApplicationHelper
   include PolicyChecker
   defaults :resource_class => Chouette::Network

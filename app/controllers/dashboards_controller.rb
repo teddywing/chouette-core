@@ -3,7 +3,7 @@
 # this controller will use a custom partial like
 # custom/dashboards/_dashboard.html.slim for Custom::Dashboard
 #
-class DashboardsController < BreadcrumbController
+class DashboardsController < InheritedResources::Base
   respond_to :html, only: [:show]
 
   def show

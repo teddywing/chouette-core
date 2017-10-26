@@ -1,4 +1,4 @@
-class LinesController < BreadcrumbController
+class LinesController < InheritedResources::Base
   include ApplicationHelper
   include PolicyChecker
   defaults :resource_class => Chouette::Line

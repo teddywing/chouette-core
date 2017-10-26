@@ -1,4 +1,4 @@
-class RuleParameterSetsController < BreadcrumbController
+class RuleParameterSetsController < InheritedResources::Base
   defaults :resource_class => RuleParameterSet
   respond_to :html
   respond_to :js, :only => [ :mode ]

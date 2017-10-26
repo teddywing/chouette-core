@@ -1,4 +1,4 @@
-class ImportsController < BreadcrumbController
+class ImportsController < InheritedResources::Base
   include PolicyChecker
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("started_at", DateTime) }

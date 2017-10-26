@@ -1,4 +1,4 @@
-class ImportResourcesController < BreadcrumbController
+class ImportResourcesController < InheritedResources::Base
   defaults resource_class: ImportResource, collection_name: 'import_resources', instance_name: 'import_resource'
   respond_to :html
   belongs_to :import

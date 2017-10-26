@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-class StopAreasController < BreadcrumbController
+class StopAreasController < InheritedResources::Base
   include ApplicationHelper
 
   defaults :resource_class => Chouette::StopArea

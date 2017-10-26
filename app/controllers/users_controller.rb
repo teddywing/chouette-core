@@ -1,4 +1,4 @@
-class UsersController < BreadcrumbController
+class UsersController < InheritedResources::Base
 
   defaults :resource_class => User
 
