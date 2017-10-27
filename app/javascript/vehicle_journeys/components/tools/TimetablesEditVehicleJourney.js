@@ -5,12 +5,19 @@ import TimetableSelect2 from './select2s/TimetableSelect2'
 export default class TimetablesEditVehicleJourney extends Component {
   constructor(props) {
     super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.timeTableURL = this.timeTableURL.bind(this)
   }
 
   handleSubmit() {
     this.props.onTimetablesEditVehicleJourney(this.props.modal.modalProps.vehicleJourneys, this.props.modal.modalProps.timetables)
     this.props.onModalClose()
     $('#CalendarsEditVehicleJourneyModal').modal('hide')
+  }
+
+  timeTableURL(tt) {
+    let refURL = window.location.pathname.split('/', 3).join('/')
+    return refURL + '/time_tables/' + tt.id
   }
 
   render() {
@@ -57,7 +64,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                               {this.props.modal.modalProps.timetables.map((tt, i) =>
                                 <div className='nested-fields' key={i}>
                                   <div className='wrapper'>
-                                    <div>{tt.comment}</div>
+                                    <div> <a href={this.timeTableURL(tt)} target="_blank">{tt.comment}</a> </div>
                                     <div>
                                       <a
                                         href='#'
@@ -101,7 +108,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                         <button
                           className='btn btn-primary'
                           type='button'
-                          onClick={this.handleSubmit.bind(this)}
+                          onClick={this.handleSubmit}
                           >
                           Valider
                         </button>
