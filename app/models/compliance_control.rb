@@ -1,9 +1,31 @@
 class ComplianceControl < ActiveRecord::Base
+
+  class << self
+    def criticities; %i(warning error) end
+    def default_code; "" end
+    def dynamic_attributes
+      hstore_metadata_for_control_attributes.keys
+    end
+
+    def policy_class
+      ComplianceControlPolicy
+    end
+
+    def inherited(child)
+      child.instance_eval do
+        def model_name
+          ComplianceControl.model_name
+        end
+      end
+      super
+    end
+  end
+
   extend Enumerize
   belongs_to :compliance_control_set
   belongs_to :compliance_control_block
 
-  enumerize :criticity, in: %i(warning error), scope: true, default: :warning
+  enumerize :criticity, in: criticities, scope: true, default: :warning
   hstore_accessor :control_attributes, {}
 
   validates :criticity, presence: true
@@ -23,25 +45,6 @@ class ComplianceControl < ActiveRecord::Base
                       direct_set_name: names.last))
   end
 
-  class << self
-    def default_code; "" end
-    def dynamic_attributes
-      hstore_metadata_for_control_attributes.keys
-    end
-
-    def policy_class
-      ComplianceControlPolicy
-    end
-
-    def inherited(child)
-      child.instance_eval do
-        def model_name
-          ComplianceControl.model_name
-        end
-      end
-      super
-    end
-  end
 
   def initialize(attributes = {})
     super
