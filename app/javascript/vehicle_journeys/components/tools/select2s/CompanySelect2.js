@@ -21,10 +21,11 @@ export default class BSelect4 extends Component {
         value={(this.props.company) ? this.props.company.name : undefined}
         onSelect={(e) => this.props.onSelect2Company(e) }
         onUnselect={() => this.props.onUnselect2Company()}
+        disabled={!this.props.editMode}
         multiple={false}
         ref='company_id'
         options={{
-          allowClear: true,
+          allowClear: this.props.editMode,
           theme: 'bootstrap',
           width: '100%',
           placeholder: 'Filtrer par transporteur...',

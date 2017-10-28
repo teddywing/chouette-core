@@ -2,8 +2,9 @@ import actions from '../../actions'
 import { connect } from 'react-redux'
 import DuplicateVJComponent from '../../components/tools/DuplicateVehicleJourney'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
+    disabled: ownProps.disabled,
     modal: state.modal,
     vehicleJourneys: state.vehicleJourneys,
     status: state.status,

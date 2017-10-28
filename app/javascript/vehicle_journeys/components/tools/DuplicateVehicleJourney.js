@@ -73,12 +73,12 @@ export default class DuplicateVehicleJourney extends Component {
     if(this.props.status.isFetching == true) {
       return false
     }
-    if(this.props.status.fetchSuccess == true && actions.getSelected(this.props.vehicleJourneys).length > 0) {
+    if(this.props.status.fetchSuccess == true) {
       return (
         <li  className='st_action'>
           <button
             type='button'
-            disabled={((actions.getSelected(this.props.vehicleJourneys).length >= 1 && this.props.filters.policy['vehicle_journeys.update']) ? '' : 'disabled')}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length == 0 || this.props.disabled)}
             data-toggle='modal'
             data-target='#DuplicateVehicleJourneyModal'
             onClick={this.props.onOpenDuplicateModal}
@@ -94,6 +94,7 @@ export default class DuplicateVehicleJourney extends Component {
                     <h4 className='modal-title'>
                       Dupliquer { actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'plusieurs courses' : 'une course' }
                     </h4>
+                    <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
                   {(this.props.modal.type == 'duplicate') && (
@@ -204,5 +205,5 @@ export default class DuplicateVehicleJourney extends Component {
 DuplicateVehicleJourney.propTypes = {
   onOpenDuplicateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
+  disabled: PropTypes.bool.isRequired
 }

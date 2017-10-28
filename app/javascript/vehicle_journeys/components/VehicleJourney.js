@@ -57,22 +57,18 @@ export default class VehicleJourney extends Component {
             )}
             {time_tables.length > 3 && <span className='vj_tt'> + {time_tables.length - 3}</span>}
           </div>
-
-          {(this.props.filters.policy['vehicle_journeys.update'] == true && this.props.editMode) &&
-            <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
-              <input
-                id={this.props.index}
-                name={this.props.index}
-                style={{display: 'none'}}
-                onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
-                type='checkbox'
-                disabled={this.props.value.deletable}
-                checked={this.props.value.selected}
-              ></input>
-              <label htmlFor={this.props.index}></label>
-            </div>
-        }
-
+          <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
+            <input
+              id={this.props.index}
+              name={this.props.index}
+              style={{display: 'none'}}
+              onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
+              type='checkbox'
+              disabled={this.props.value.deletable}
+              checked={this.props.value.selected}
+            ></input>
+            <label htmlFor={this.props.index}></label>
+          </div>
         </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>

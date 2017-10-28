@@ -2,12 +2,12 @@ import actions from '../../actions'
 import { connect } from 'react-redux'
 import ShiftVJComponent from '../../components/tools/ShiftVehicleJourney'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
     modal: state.modal,
     vehicleJourneys: state.vehicleJourneys,
     status: state.status,
-    filters: state.filters
+    disabled: ownProps.disabled
   }
 }
 
