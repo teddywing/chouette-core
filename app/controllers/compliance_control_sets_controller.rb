@@ -17,23 +17,12 @@ class ComplianceControlSetsController < InheritedResources::Base
   def show
     show! do |format|
       format.html {
+        @q_controls_form        = @compliance_control_set.compliance_controls.ransack(params[:q])
         @compliance_control_set = @compliance_control_set.decorate
-        @compliance_controls    = @compliance_control_set.compliance_controls
-        @q_controls_form        = @compliance_controls.ransack(params[:q])
         @compliance_controls    =
-          decorate_compliance_controls( @compliance_controls)
+          decorate_compliance_controls( @q_controls_form.result)
             .group_by(&:compliance_control_block)
       }
-    end
-  end
-
-  def simple
-    show! do | format |
-      format.html do
-        @compliance_controls    = @compliance_control_set.compliance_controls
-        @q_controls_form        = @compliance_controls.ransack(params[:q])
-        @compliance_control_set = @compliance_control_set.decorate
-      end
     end
   end
 

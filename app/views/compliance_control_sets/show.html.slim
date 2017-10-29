@@ -35,7 +35,7 @@
           = transport_mode("", "")
       - direct_controls = @compliance_controls.delete nil
 
-      - if direct_controls.any?
+      - if direct_controls.try(:any?)
         .row
           .col-lg-12
             .select_table
@@ -67,7 +67,7 @@
 
     - @compliance_controls.each do |block, compliance_controls|
 
-      - if compliance_controls.any?
+      - if compliance_controls.try(:any?)
         .row
           .col-lg-12
             h2
@@ -107,6 +107,7 @@
                   sortable: true,
                   cls: 'table has-filter has-search',
                   model: ComplianceControl
+
     .select_toolbox
       ul
         li.st_action.with_text
