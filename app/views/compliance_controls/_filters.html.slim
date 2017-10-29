@@ -13,7 +13,7 @@
           span.fa.fa-search
 
   .ffg-row
-    .form-group.togglable
+    .form-group.togglable#compliance_control_block-filter
       = f.label t('activerecord.models.compliance_control_block.one'), required: false, class: 'control-label'
       = f.input :compliance_control_block_id_eq_any,
         collection: @compliance_control_set.compliance_control_blocks,
@@ -22,7 +22,7 @@
         label_method: lambda {|w| ("<span>#{transport_mode(w.transport_mode, w.transport_submode)}</span>").html_safe},
         required: false,
         wrapper_html: {class: 'checkbox_list'}
-    .form-group.togglable
+    .form-group.togglable#severity-filter
       = f.label t('compliance_controls.filters.criticity'), required: false, class: 'control-label'
       = f.input :criticity_eq_any,
         collection: ComplianceControl.criticities,
