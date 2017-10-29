@@ -15,26 +15,20 @@
   .ffg-row
     .form-group.togglable
       = f.label t('activerecord.models.compliance_control_block.one'), required: false, class: 'control-label'
-      = f.input :compliance_control_block_name_eq_any,
+      = f.input :compliance_control_block_id_eq_any,
         collection: @compliance_control_set.compliance_control_blocks,
         as: :check_boxes,
-        label: true,
-        label_method: lambda {|w| ("<span>#{w.name}</span>").html_safe},
+        label: false,
+        label_method: lambda {|w| ("<span>#{transport_mode(w.transport_mode, w.transport_submode)}</span>").html_safe},
         required: false,
         wrapper_html: {class: 'checkbox_list'}
     .form-group.togglable
-      = f.label t('compliance_controls.filters.comment'), required: false, class: 'control-label'
-      = f.collection_check_boxes :comment_eq_any,
-        @compliance_control_set.compliance_controls,
-        :id, :comment,
-        label: true,
-        wrapper_html: {class: 'checkbox_list'}
-    .form-group.togglable
       = f.label t('compliance_controls.filters.criticity'), required: false, class: 'control-label'
-      = f.input :criticity_eq,
+      = f.input :criticity_eq_any,
         collection: ComplianceControl.criticities,
         as: :check_boxes,
-        label: true,
+        label: false,
+        label_method: lambda {|w| ("<span>#{w}</span>").html_safe},
         required: false,
         wrapper_html: {class: 'checkbox_list'}
 
