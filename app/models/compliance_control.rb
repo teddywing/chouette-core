@@ -11,6 +11,17 @@ class ComplianceControl < ActiveRecord::Base
       ComplianceControlPolicy
     end
 
+    def subclass_patterns
+      { 
+        generic: 'Generic',
+        journey_pattern: 'JourneyPattern',
+        line: 'Line',
+        route: 'Route',
+        routing_constraint_zone: 'RoutingConstraint',
+        vehicle_journey: 'VehicleJourney'
+      }
+    end
+
     def inherited(child)
       child.instance_eval do
         def model_name
@@ -35,23 +46,23 @@ class ComplianceControl < ActiveRecord::Base
   validates :compliance_control_set, presence: true
 
   validate def coherent_control_set
-    return true if compliance_control_block_id.nil?
-    ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
-    return true if ids.first == ids.last
-    names = ids.map{|id| ComplianceControlSet.find(id).name}
-    errors.add(:coherent_control_set,
-               I18n.t('compliance_controls.errors.incoherent_control_sets',
-                      indirect_set_name: names.first,
-                      direct_set_name: names.last))
-  end
+  return true if compliance_control_block_id.nil?
+  ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
+  return true if ids.first == ids.last
+  names = ids.map{|id| ComplianceControlSet.find(id).name}
+  errors.add(:coherent_control_set,
+             I18n.t('compliance_controls.errors.incoherent_control_sets',
+                    indirect_set_name: names.first,
+                    direct_set_name: names.last))
+end
 
 
-  def initialize(attributes = {})
-    super
-    self.name ||= I18n.t("activerecord.models.#{self.class.name.underscore}.one")
-    self.code ||= self.class.default_code
-    self.origin_code ||= self.class.default_code
-  end
+def initialize(attributes = {})
+  super
+  self.name ||= I18n.t("activerecord.models.#{self.class.name.underscore}.one")
+  self.code ||= self.class.default_code
+  self.origin_code ||= self.class.default_code
+end
 
 end
 
