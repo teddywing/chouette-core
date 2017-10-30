@@ -22,6 +22,15 @@
         label_method: lambda {|w| ("<span>#{transport_mode(w.transport_mode, w.transport_submode)}</span>").html_safe},
         required: false,
         wrapper_html: {class: 'checkbox_list'}
+    .form-group.togglable#subclass-filter
+      = f.label t('compliance_controls.filters.subclass'), required: false, class: 'control-label'
+      = f.input :origin_code_cont_any,
+        collection: subclass_selection_list,
+        as: :check_boxes,
+        label: false,
+        label_method: lambda {|w| ("<span>#{w.first}</span>").html_safe},
+        required: false,
+        wrapper_html: {class: 'checkbox_list'}
     .form-group.togglable#severity-filter
       = f.label t('compliance_controls.filters.criticity'), required: false, class: 'control-label'
       = f.input :criticity_eq_any,

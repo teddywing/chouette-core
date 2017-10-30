@@ -3,9 +3,16 @@ en:
     clone:
       prefix: 'Copy of'
     filters:
-      comment: Object
       criticity: Severity
       name: "Search by a control's name or code"
+      subclass: Object
+      subclasses:
+        generic: 'Generic'
+        journey_pattern: 'JourneyPattern'
+        line: 'Line'
+        route: 'Route'
+        routing_constraint_zone: 'RoutingConstraint'
+        vehicle_journey: 'VehicleJourney'
     min_max_values: "the minimum (%{min}) is not supposed to be greater than the maximum (%{max})"
     errors:
       incoherent_control_sets: "Impossible to assign a control to a set (id: %{direct_set_name}) differing from the one of its group (id: %{indirect_set_name})"

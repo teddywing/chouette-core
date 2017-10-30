@@ -3,9 +3,16 @@ fr:
     clone:
       prefix: 'Copie de'
     filters:
-      comment: Objet
       criticity: Criticité
       name: "Chercher le nom ou code d'un contrôl"
+      subclass: Objet  
+      subclasses:
+        generic: 'Généric'
+        journey_pattern: 'JourneyPattern'
+        line: 'Ligne'
+        route: 'Route'
+        routing_constraint_zone: 'ITL'
+        vehicle_journey: 'Course'
     min_max_values: "la valeur de minimum (%{min}) ne doit pas être superieur à la valuer du maximum (%{max})"
     errors:
       incoherent_control_sets: "Le contrôle ne peut pas être associé à un jeu de contrôle (id: %{direct_set_name}) différent de celui de son groupe (id: %{indirect_set_name})"
