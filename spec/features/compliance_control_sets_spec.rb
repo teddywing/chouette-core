@@ -10,8 +10,6 @@ RSpec.describe "ComplianceControlSets", type: :feature do
   let(:blox){
     2.times.map{ | _ | create :compliance_control_block, compliance_control_set: control_set }
   }
-  let( :controls_hash ){ Hash.new{ |h, k| h[k] = [] } }
-
 
   before do
     blox.first.update transport_mode: 'bus', transport_submode: 'bus'
@@ -33,18 +31,38 @@ RSpec.describe "ComplianceControlSets", type: :feature do
       end
     end
 
-    it 'we can apply a filter' do
+    it 'we can apply a severity filter' do
+      controls.take(2).each do | control |
+        control.update criticity: 'error'
+      end
       within('#severity-filter') do
         find('input[value="error"]').click
       end
       click_on('Filtrer')
-      controls_hash['error'].each do
+      controls.take(2).each do | control |
         expect( page ).to have_content(control.code)
       end
-      controls_hash['warning'].each do
+      controls.drop(2).each do | control |
         expect( page ).not_to have_content(control.code)
       end
     end
+
+    # it 'we can apply a subclass filter' do
+    #   controls.first.update(origin_code: 'x-Route-y')
+    #   controls.second.update(origin_code: 'x-Line-y')
+
+    #   within('#subclass-filter') do
+    #     find('input[value="Itinéraire"]').click
+    #     find('input[value="Ligne"]').click
+    #   end
+    #   click_on('Filtrer')
+    #   controls.take(2).each do | control |
+    #     expect( page ).to have_content(control.code)
+    #   end
+    #   controls.drop(2).each do | control |
+    #     expect( page ).not_to have_content(control.code)
+    #   end
+    # end
 
   end
 
@@ -58,10 +76,7 @@ RSpec.describe "ComplianceControlSets", type: :feature do
       create( :generic_attribute_control_min_max,
         code: random_string,
         compliance_control_block: ccblock,
-        compliance_control_set: control_set,
-        criticity: severity ).tap do | ctrl |
-          controls_hash[severity] << ctrl
-        end
+        compliance_control_set: control_set)
   end
 
 end
