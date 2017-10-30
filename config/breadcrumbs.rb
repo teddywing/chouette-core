@@ -8,7 +8,7 @@ end
 
 crumb :referential do |referential|
   link referential.name, referential_path(referential)
-  parent :workbench, referential.workbench
+  parent :workbench, current_offer_workbench
 end
 
 crumb :referential_companies do |referential|
