@@ -149,7 +149,7 @@ fr:
       route_control/unactivated_stop_points:
         one: "Itinéraire & arrêt désactivé"
       route_control/stop_points_in_journey_pattern:
-        one: "Un itinéraire doit contenir au moins 2 arrêts"
+        one: "Les arrêts de l'itinéraire doivent être desservis par au moins une mission"
       journey_pattern_control/duplicates:
         one: "Doublon de missions dans une ligne"
       journey_pattern_control/vehicle_journey:
