@@ -90,7 +90,10 @@ const actions = {
   resetValidation: (target) => {
     $(target).parent().removeClass('has-error').children('.help-block').remove()
   },
-  humanOID : (oid) => oid.split(':')[2].split("-").pop(),
+  humanOID : (oid) => {
+    let shortOId = oid.split(':')[2].split("-").pop()
+    return shortOId.length > 10 ? `${shortOId.slice(0, 10)}...` : shortOId
+  },
   validateFields : (fields) => {
     const test = []
 

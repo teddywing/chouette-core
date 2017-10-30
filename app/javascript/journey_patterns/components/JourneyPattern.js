@@ -56,7 +56,7 @@ export default class JourneyPattern extends Component{
   }
 
   isDisabled(action) {
-    return !this.props.status.policy[`journey_patterns.${action}`] && !this.props.editMode
+    return !this.props.status.policy[`journey_patterns.${action}`]
   }
 
   render() {
@@ -88,16 +88,17 @@ export default class JourneyPattern extends Component{
                   data-toggle='modal'
                   data-target='#JourneyPatternModal'
                   >
-                  Editer
+                  {this.props.editMode ? 'Editer' : 'Consulter'}
                 </button>
               </li>
               <li className={this.props.value.object_id ? '' : 'disabled'}>
                 {this.vehicleJourneyURL(this.props.value.object_id)}
               </li>
-              <li className={'delete-action' + (this.isDisabled('destroy') ? ' disabled' : '')}>
+              <li className={'delete-action' + (this.isDisabled('destroy') || !this.props.editMode ? ' disabled' : '')}>
                 <button
                   type='button'
-                  disabled={this.isDisabled('destroy') ? 'disabled' : ''}
+                  className="disabled"
+                  disabled={this.isDisabled('destroy') || !this.props.editMode}
                   onClick={(e) => {
                     e.preventDefault()
                     this.props.onDeleteJourneyPattern(this.props.index)}
