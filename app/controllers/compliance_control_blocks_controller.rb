@@ -1,4 +1,4 @@
-class ComplianceControlBlocksController < BreadcrumbController
+class ComplianceControlBlocksController < InheritedResources::Base
   defaults resource_class: ComplianceControlBlock
   belongs_to :compliance_control_set
   actions :all, :except => [:show, :index]

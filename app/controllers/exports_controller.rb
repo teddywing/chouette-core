@@ -3,16 +3,14 @@ require 'open-uri'
 
 class ExportsController < ChouetteController
   defaults :resource_class => Export
-  
+
   respond_to :html, :only => [:show, :index, :destroy, :exported_file]
   respond_to :js, :only => [:index]
   belongs_to :referential
 
   def index
     begin
-      index! do 
-        build_breadcrumb :index
-      end
+      index!
     rescue Ievkit::Error, Faraday::Error => error
       logger.error("Iev failure : #{error.message}")
       flash[:error] = t(error.locale_for_error)
@@ -22,9 +20,7 @@ class ExportsController < ChouetteController
 
   def show
     begin
-      show! do 
-        build_breadcrumb :show
-      end
+      show!
     rescue Ievkit::Error, Faraday::Error => error
       logger.error("Iev failure : #{error.message}")
       flash[:error] = t(error.locale_for_error)
@@ -32,7 +28,7 @@ class ExportsController < ChouetteController
     end
   end
 
-  def destroy    
+  def destroy
     begin
       destroy!
     rescue Ievkit::Error, Faraday::Error => error
@@ -57,11 +53,11 @@ class ExportsController < ChouetteController
   end
 
   protected
-  
+
   def export_service
     ExportService.new(@referential)
   end
-  
+
   def resource
     @export ||= export_service.find( params[:id] )
     @line_items = @export.report.line_items

@@ -44,8 +44,6 @@ class ReferentialLinesController < ChouetteController
           current_organisation: current_organisation
         }
       )
-
-      build_breadcrumb :show
     end
   end
 

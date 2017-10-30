@@ -1,4 +1,4 @@
-class CalendarsController < BreadcrumbController
+class CalendarsController < InheritedResources::Base
   include PolicyChecker
   defaults resource_class: Calendar
   before_action :ransack_contains_date, only: [:index]
@@ -8,16 +8,12 @@ class CalendarsController < BreadcrumbController
   def index
     index! do
       @calendars = ModelDecorator.decorate(@calendars, with: CalendarDecorator)
-
-      build_breadcrumb :index
     end
   end
 
   def show
     show! do
       @calendar = @calendar.decorate
-
-      build_breadcrumb :show
     end
   end
 

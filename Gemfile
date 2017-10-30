@@ -93,7 +93,7 @@ gem 'RedCloth', '~> 4.3.0'
 gem 'simple_form', '~> 3.1.0'
 gem 'font-awesome-sass', '~> 4.7'
 gem 'will_paginate-bootstrap'
-gem 'breadcrumbs_on_rails'
+gem 'gretel'
 
 # Format Output
 gem 'json'

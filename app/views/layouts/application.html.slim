@@ -13,15 +13,10 @@ html lang=I18n.locale
 
     = javascript_pack_tag 'application'
     = javascript_include_tag 'application'
-    
-
 
   body
     = render 'layouts/navigation/main_nav'
-    
     = render 'layouts/flash_messages', flash: flash
-    
     = yield
-
     #sidebar
       = yield :sidebar

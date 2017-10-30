@@ -1,3 +1,4 @@
+- breadcrumb :referential_stop_areas, @referential
 = title_tag t('stop_areas.index.title')
 
 = search_form_for @q, :url => referential_stop_areas_path(@referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|

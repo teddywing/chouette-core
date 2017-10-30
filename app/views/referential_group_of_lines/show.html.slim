@@ -1,8 +1,9 @@
+- breadcrumb :referential_group_of_line, @referential, @group_of_line
 = title_tag t('group_of_lines.show.title', :group_of_line => @group_of_line.name )
 
 .group_of_line_show
   = @map.to_html
-  
+
   .summary
     p
       label = "#{@group_of_line.human_attribute_name('registration_number')} : "
@@ -13,10 +14,10 @@
       = @group_of_line.comment
 
   p.after_map
-  
+
   h3.group_of_line_lines = t('.lines')
   .lines_detail
-    == render partial: "lines_detail" 
+    == render partial: "lines_detail"
 
 - content_for :sidebar do
   ul.actions
