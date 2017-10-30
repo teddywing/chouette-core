@@ -19,6 +19,7 @@ RSpec.describe ComplianceControlSetCopyWorker do
       :get,
       "#{Rails.configuration.iev_url}/boiv_iev/referentials/validator/new?id=#{control_set_id}"
     )
+    allow_any_instance_of(ComplianceControlSetCopier).to receive(:copy).and_return(check_set)
 
     ComplianceControlSetCopyWorker.new.perform(control_set_id, referential_id)
 
