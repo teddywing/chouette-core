@@ -1,8 +1,8 @@
 en:
   import_messages:
     compliance_check_messages:
-      corrupt_zip_file: "The zip file of WorkbenchImport %{import_name} is corrupted and cannot be read"
-      inconsistent_zip_file: "The zip file of WorkbenchImport %{import_name} contains the following spurious directories %{spurious_dirs}, which are ignored"
+      corrupt_zip_file: "The zip file %{source_filename} is corrupted and cannot be read"
+      inconsistent_zip_file: "The zip file %{source_filename} contains unexpected directories: %{spurious_dirs}, which are ignored"
       referential_creation: "Le référentiel n'a pas pu être créé car un référentiel existe déjà sur les même périodes et lignes"
       1_netexstif_2: "Le fichier %{source_filename} ne respecte pas la syntaxe XML ou la XSD NeTEx : erreur '%{error_value}' rencontré"
       1_netexstif_5: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet %{source_label} d'identifiant %{source_objectid} a une date de mise à jour dans le futur"

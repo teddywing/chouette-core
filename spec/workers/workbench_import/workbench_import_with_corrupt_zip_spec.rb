@@ -1,6 +1,5 @@
 RSpec.describe WorkbenchImportWorker do
 
-
   shared_examples_for 'corrupt zipfile data' do
     subject { described_class.new }
     let( :workbench_import ){ create :workbench_import, status: :pending }
@@ -23,7 +22,7 @@ RSpec.describe WorkbenchImportWorker do
       message = workbench_import.messages.last
       expect( message.criticity ).to eq('error')
       expect( message.message_key ).to eq('corrupt_zip_file')
-      expect( message.message_attributes ).to eq( 'import_name' => workbench_import.name )
+      expect( message.message_attributes ).to eq( 'source_filename' => workbench_import.name )
     end
 
     it 'does not change current step' do
