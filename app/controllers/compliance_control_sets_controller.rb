@@ -22,6 +22,7 @@ class ComplianceControlSetsController < InheritedResources::Base
         @compliance_controls    =
           decorate_compliance_controls( @q_controls_form.result)
             .group_by(&:compliance_control_block)
+        @indirect_compliance_controls = @compliance_controls.delete nil
       }
     end
   end
