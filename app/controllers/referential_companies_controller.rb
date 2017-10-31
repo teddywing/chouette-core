@@ -20,8 +20,6 @@ class ReferentialCompaniesController < ChouetteController
       format.js {
         @companies = decorate_companies(@companies)
       }
-
-      build_breadcrumb :index
     end
   end
 

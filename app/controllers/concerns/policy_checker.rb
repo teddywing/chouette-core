@@ -1,4 +1,5 @@
 module PolicyChecker
+  include Pundit
   extend ActiveSupport::Concern
 
   included do

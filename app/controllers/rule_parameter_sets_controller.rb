@@ -1,15 +1,13 @@
-class RuleParameterSetsController < BreadcrumbController
+class RuleParameterSetsController < InheritedResources::Base
   defaults :resource_class => RuleParameterSet
   respond_to :html
   respond_to :js, :only => [ :mode ]
 
   def new
     @rule_parameter_set = RuleParameterSet.default( current_organisation)
-    new! do
-      build_breadcrumb :new
-    end
+    new!
   end
-  
+
   def destroy
     if current_organisation.rule_parameter_sets.count == 1
       flash[:alert] = t('rule_parameter_sets.destroy.last_rps_protected')

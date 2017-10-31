@@ -44,6 +44,7 @@ export default class VehicleJourney extends Component {
 
   render() {
     this.previousCity = undefined
+    let {time_tables} = this.props.value
 
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.errors ? ' has-error': '')}>
@@ -51,26 +52,23 @@ export default class VehicleJourney extends Component {
           <div className='strong mb-xs'>{this.props.value.objectid ? actions.humanOID(this.props.value.objectid) : '-'}</div>
           <div>{actions.humanOID(this.props.value.journey_pattern.objectid)}</div>
           <div>
-            {this.props.value.time_tables.map((tt, i)=>
+            {time_tables.slice(0,3).map((tt, i)=>
               <span key={i} className='vj_tt'>{this.timeTableURL(tt)}</span>
             )}
+            {time_tables.length > 3 && <span className='vj_tt'> + {time_tables.length - 3}</span>}
           </div>
-
-          {(this.props.filters.policy['vehicle_journeys.update'] == true && this.props.editMode) &&
-            <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
-              <input
-                id={this.props.index}
-                name={this.props.index}
-                style={{display: 'none'}}
-                onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
-                type='checkbox'
-                disabled={this.props.value.deletable}
-                checked={this.props.value.selected}
-              ></input>
-              <label htmlFor={this.props.index}></label>
-            </div>
-        }
-
+          <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
+            <input
+              id={this.props.index}
+              name={this.props.index}
+              style={{display: 'none'}}
+              onChange={(e) => this.props.onSelectVehicleJourney(this.props.index)}
+              type='checkbox'
+              disabled={this.props.value.deletable}
+              checked={this.props.value.selected}
+            ></input>
+            <label htmlFor={this.props.index}></label>
+          </div>
         </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>

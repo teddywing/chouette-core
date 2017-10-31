@@ -2,12 +2,13 @@ import actions from '../../actions'
 import { connect } from 'react-redux'
 import TimetablesEditComponent from '../../components/tools/TimetablesEditVehicleJourney'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
+    editMode: state.editMode,
     modal: state.modal,
     vehicleJourneys: state.vehicleJourneys,
     status: state.status,
-    filters: state.filters
+    disabled: ownProps.disabled
   }
 }
 

@@ -1,4 +1,4 @@
-class LinesController < BreadcrumbController
+class LinesController < InheritedResources::Base
   include ApplicationHelper
   include PolicyChecker
   defaults :resource_class => Chouette::Line
@@ -26,7 +26,6 @@ class LinesController < BreadcrumbController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
-        build_breadcrumb :index
       }
     end
   end
@@ -38,8 +37,6 @@ class LinesController < BreadcrumbController
         line_referential: @line_referential,
         current_organisation: current_organisation
       })
-
-      build_breadcrumb :show
     end
   end
 

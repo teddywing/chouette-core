@@ -1,4 +1,4 @@
-class LineReferentialsController < BreadcrumbController
+class LineReferentialsController < InheritedResources::Base
 
   defaults :resource_class => LineReferential
 

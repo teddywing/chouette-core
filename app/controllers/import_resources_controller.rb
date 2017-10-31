@@ -1,4 +1,4 @@
-class ImportResourcesController < BreadcrumbController
+class ImportResourcesController < InheritedResources::Base
   defaults resource_class: ImportResource, collection_name: 'import_resources', instance_name: 'import_resource'
   respond_to :html
   belongs_to :import
@@ -8,8 +8,6 @@ class ImportResourcesController < BreadcrumbController
       format.html {
         @import_resources = decorate_import_resources(@import_resources)
       }
-
-      build_breadcrumb :index
     end
   end
 

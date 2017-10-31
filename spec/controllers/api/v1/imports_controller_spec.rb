@@ -29,7 +29,7 @@ RSpec.describe Api::V1::ImportsController, type: :controller do
 
       it 'should be successful' do
         expect {
-          post :create, workbench_id: workbench.id, workbench_import: {file: file, creator: 'test'}, format: :json
+          post :create, workbench_id: workbench.id, workbench_import: {name: "test", file: file, creator: 'test'}, format: :json
         }.to change{WorkbenchImport.count}.by(1)
         expect(response).to be_success
       end

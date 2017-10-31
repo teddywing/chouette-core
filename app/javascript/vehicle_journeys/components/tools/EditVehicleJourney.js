@@ -32,7 +32,7 @@ export default class EditVehicleJourney extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.update']) ? '' : 'disabled'}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length != 1 || this.props.disabled)}
             data-toggle='modal'
             data-target='#EditVehicleJourneyModal'
             onClick={() => this.props.onOpenEditModal(actions.getSelected(this.props.vehicleJourneys)[0])}
@@ -46,6 +46,7 @@ export default class EditVehicleJourney extends Component {
                 <div className='modal-content'>
                   <div className='modal-header'>
                     <h4 className='modal-title'>Informations</h4>
+                    <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
                   {(this.props.modal.type == 'edit') && (
@@ -59,6 +60,7 @@ export default class EditVehicleJourney extends Component {
                                 type='text'
                                 ref='published_journey_name'
                                 className='form-control'
+                                disabled={!this.props.editMode}
                                 defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_name}
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                 />
@@ -85,6 +87,7 @@ export default class EditVehicleJourney extends Component {
                                 type='text'
                                 ref='published_journey_identifier'
                                 className='form-control'
+                                disabled={!this.props.editMode}
                                 defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_identifier}
                                 onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                               />
@@ -94,6 +97,7 @@ export default class EditVehicleJourney extends Component {
                             <div className='form-group'>
                               <label className='control-label'>Transporteur</label>
                               <CompanySelect2
+                                editMode={this.props.editMode}
                                 company = {this.props.modal.modalProps.vehicleJourney.company}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
                                 onUnselect2Company = {() => this.props.onUnselect2Company()}
@@ -127,24 +131,26 @@ export default class EditVehicleJourney extends Component {
                           </div>
                         </div>
                       </div>
-
-                      <div className='modal-footer'>
-                        <button
-                          className='btn btn-link'
-                          data-dismiss='modal'
-                          type='button'
-                          onClick={this.props.onModalClose}
+                      {
+                        this.props.editMode && 
+                        <div className='modal-footer'>
+                          <button
+                            className='btn btn-link'
+                            data-dismiss='modal'
+                            type='button'
+                            onClick={this.props.onModalClose}
                           >
-                          Annuler
+                            Annuler
                         </button>
-                        <button
-                          className='btn btn-primary'
-                          type='button'
-                          onClick={this.handleSubmit.bind(this)}
+                          <button
+                            className='btn btn-primary'
+                            type='button'
+                            onClick={this.handleSubmit.bind(this)}
                           >
-                          Valider
+                            Valider
                         </button>
-                      </div>
+                        </div>
+                      }     
                     </form>
                   )}
 
@@ -163,5 +169,5 @@ export default class EditVehicleJourney extends Component {
 EditVehicleJourney.propTypes = {
   onOpenEditModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
+  disabled: PropTypes.bool.isRequired
 }
