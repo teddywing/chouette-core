@@ -74,6 +74,7 @@ ChouetteIhm::Application.routes.draw do
   resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
 
   resources :compliance_control_sets do
+    get :simple, on: :member
     get :clone, on: :member
     resources :compliance_controls, except: :index do
       get :select_type, on: :collection
