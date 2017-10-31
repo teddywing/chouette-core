@@ -269,7 +269,10 @@ const actions = {
     type: 'RECEIVE_TOTAL_COUNT',
     total
   }),
-  humanOID: (oid) => oid.split(':')[2].split("-").pop(),
+  humanOID: (oid) => {
+   let shortOId = oid.split(':')[2].split("-").pop()
+   return shortOId.length > 10 ? `${shortOId.slice(0, 10)}...` : shortOId
+  },
   fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
     if(currentPage == undefined){
       currentPage = 1
@@ -458,6 +461,10 @@ const actions = {
       }
     }
   },
+  escapeWildcardCharacters(search) {
+    let newSearch = search.replace(/^_/, "\\_")
+    return newSearch.replace(/^%/, "\\%")
+  }
 }
 
 export default actions

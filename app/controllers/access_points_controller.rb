@@ -6,7 +6,6 @@ class AccessPointsController < ChouetteController
   end
 
   respond_to :html, :kml, :xml, :json
-
   include PolicyChecker
 
   def index
@@ -32,7 +31,6 @@ class AccessPointsController < ChouetteController
         }
 
       end
-      format.html {build_breadcrumb :show}
     end
   end
 
@@ -40,9 +38,7 @@ class AccessPointsController < ChouetteController
   def edit
     access_point.position ||= access_point.default_position
     map.editable = true
-    edit! do
-      build_breadcrumb :edit
-    end
+    edit!
   end
 
 

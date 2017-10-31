@@ -1,4 +1,4 @@
-class GroupOfLinesController < BreadcrumbController
+class GroupOfLinesController < InheritedResources::Base
   include ApplicationHelper
   include PolicyChecker
   defaults :resource_class => Chouette::GroupOfLine
@@ -13,9 +13,7 @@ class GroupOfLinesController < BreadcrumbController
   def show
     @map = GroupOfLineMap.new(resource).with_helpers(self)
     @lines = resource.lines.order(:name)
-    show! do
-      build_breadcrumb :show
-    end
+    show!
   end
 
   def index
@@ -24,7 +22,6 @@ class GroupOfLinesController < BreadcrumbController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
-        build_breadcrumb :index
       }
     end
   end

@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import React, { PropTypes, Component } from 'react'
 import Select2 from 'react-select2'
+import actions from '../../../actions'
 
 // get JSON full path
 let origin = window.location.origin
@@ -20,10 +21,11 @@ export default class BSelect4 extends Component {
         value={(this.props.company) ? this.props.company.name : undefined}
         onSelect={(e) => this.props.onSelect2Company(e) }
         onUnselect={() => this.props.onUnselect2Company()}
+        disabled={!this.props.editMode}
         multiple={false}
         ref='company_id'
         options={{
-          allowClear: true,
+          allowClear: this.props.editMode,
           theme: 'bootstrap',
           width: '100%',
           placeholder: 'Filtrer par transporteur...',
@@ -34,7 +36,7 @@ export default class BSelect4 extends Component {
             delay: '500',
             data: function(params) {
               return {
-                q: {name_cont: params.term},
+                q: { name_cont: actions.escapeWildcardCharacters(params.term)},
               };
             },
             processResults: function(data, params) {

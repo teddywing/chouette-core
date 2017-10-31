@@ -1,6 +1,8 @@
 en:
   import_messages:
     compliance_check_messages:
+      corrupt_zip_file: "The zip file of WorkbenchImport %{import_name} is corrupted and cannot be read"
+      inconsistent_zip_file: "The zip file of WorkbenchImport %{import_name} contains the following spurious directories %{spurious_dirs}, which are ignored"
       referential_creation: "Le référentiel n'a pas pu être créé car un référentiel existe déjà sur les même périodes et lignes"
       1_netexstif_2: "Le fichier %{source_filename} ne respecte pas la syntaxe XML ou la XSD NeTEx : erreur '%{error_value}' rencontré"
       1_netexstif_5: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet %{source_label} d'identifiant %{source_objectid} a une date de mise à jour dans le futur"
@@ -13,6 +15,7 @@ en:
       2_netexstif_3_3: "la frame NETEX_OFFRE_LIGNE du fichier %{source_filename} ne contient pas la frame %{error_value} obligatoire"
       2_netexstif_3_4: "la frame NETEX_OFFRE_LIGNE du fichier %{source_filename} contient une frame %{error_value} non acceptée"
       2_netexstif_4: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'identifiant %{source_objectid} de l'objet %{error_value} ne respecte pas la syntaxe %{reference_value}"
+      2_netexstif_5: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet %{error_value} d'identifiant %{source_objectid} a une date de mise à jour dans le futur"
       2_netexstif_6: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet %{source_label} d'identifiant %{source_objectid} a un état de modification interdit : 'delete'"
       2_netexstif_7: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet %{source_label} d'identifiant %{source_objectid} définit une référence %{reference_value} de syntaxe invalide : %{error_value}"
       2_netexstif_8_1: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet %{source_label} d'identifiant %{source_objectid} définit une référence %{error_value} de type externe : référence interne attendue"

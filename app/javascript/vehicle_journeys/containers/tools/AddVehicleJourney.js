@@ -2,13 +2,13 @@ import actions from '../../actions'
 import { connect } from 'react-redux'
 import CreateModal from '../../components/tools/CreateModal'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
+    disabled: ownProps.disabled,
     modal: state.modal,
     vehicleJourneys: state.vehicleJourneys,
     status: state.status,
     stopPointsList: state.stopPointsList,
-    filters: state.filters
   }
 }
 

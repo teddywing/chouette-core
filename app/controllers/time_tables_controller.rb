@@ -19,7 +19,6 @@ class TimeTablesController < ChouetteController
       @time_table = @time_table.decorate(context: {
         referential: @referential
       })
-      build_breadcrumb :show
     end
   end
 
@@ -30,9 +29,7 @@ class TimeTablesController < ChouetteController
 
   def new
     @autocomplete_items = ActsAsTaggableOn::Tag.all
-    new! do
-      build_breadcrumb :new
-    end
+    new!
   end
 
   def create
@@ -66,7 +63,6 @@ class TimeTablesController < ChouetteController
 
   def edit
     edit! do
-      build_breadcrumb :edit
       @autocomplete_items = ActsAsTaggableOn::Tag.all
     end
   end
@@ -89,8 +85,6 @@ class TimeTablesController < ChouetteController
         end
 
         @time_tables = decorate_time_tables(@time_tables)
-
-        build_breadcrumb :index
       }
 
       format.js {
@@ -101,8 +95,6 @@ class TimeTablesController < ChouetteController
 
   def duplicate
     @time_table = Chouette::TimeTable.find params[:id]
-    # prepare breadcrumb before prepare data for new timetable
-    build_breadcrumb :edit
     @time_table = @time_table.duplicate
     render :new
   end

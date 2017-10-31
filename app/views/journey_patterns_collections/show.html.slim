@@ -1,3 +1,4 @@
+- breadcrumb :journey_patterns, @referential, @route
 / pageheader
 = pageheader 'mission',
              "Missions de #{@route.try(:stop_points).first.try(:stop_area).name} vers #{@route.try(:stop_points).last.try(:stop_area).name}",
@@ -5,8 +6,8 @@
              ''
 - @journey_patterns.each do |jp|
   - jp.errors.each do |error_message|
-    = error_message   
-    
+    = error_message
+
 / PageContent
 .page_content
   .container-fluid

@@ -5,6 +5,7 @@ import CreateModal from '../components/CreateModal'
 
 const mapStateToProps = (state) => {
   return {
+    editMode: state.editMode,
     modal: state.modal,
     journeyPattern: state.journeyPattern
   }

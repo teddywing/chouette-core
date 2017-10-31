@@ -1,3 +1,4 @@
+- breadcrumb :referential_networks, @referential
 / PageHeader
 = pageheader 'reseau',
              t('networks.index.title'),
@@ -39,7 +40,7 @@
             ],
             links: [:show],
             cls: 'table has-search'
-      
+
           = new_pagination @networks, 'pull-right'
 
     - unless @networks.any?

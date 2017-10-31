@@ -1,4 +1,4 @@
-class ComplianceControlSetsController < BreadcrumbController
+class ComplianceControlSetsController < InheritedResources::Base
   defaults resource_class: ComplianceControlSet
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("updated_at", DateTime) }

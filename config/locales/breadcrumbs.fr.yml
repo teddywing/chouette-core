@@ -1,7 +1,0 @@
-fr:
-  breadcrumbs:
-    vehicle_journeys: "Horaires"
-    vehicle_journey_frequencies: "Créneaux horaires"
-    root: "Accueil"
-    users: "Utilisateurs"
-    imports: Imports

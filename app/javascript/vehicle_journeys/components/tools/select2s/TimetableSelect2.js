@@ -32,12 +32,9 @@ export default class BSelect4 extends Component {
             dataType: 'json',
             delay: '500',
             data: function(params) {
-              let newParmas = params.term.split(" ")
               return {
                 q: {
-                  objectid_cont_any: newParmas,
-                  comment_cont_any: newParmas,
-                  m: 'or'
+                  comment_or_objectid_cont_any: actions.escapeWildcardCharacters(params.term)
                 }
               };
             },

@@ -14,31 +14,26 @@ class ReferentialStopAreasController  < ChouetteController
   def select_parent
     @stop_area = stop_area
     @parent = stop_area.parent
-    build_breadcrumb :edit
   end
 
   def add_children
     @stop_area = stop_area
     @children = stop_area.children
-    build_breadcrumb :edit
   end
 
   def add_routing_lines
     @stop_area = stop_area
     @lines = stop_area.routing_lines
-    build_breadcrumb :edit
   end
 
   def add_routing_stops
     @stop_area = stop_area
-    build_breadcrumb :edit
   end
 
   def access_links
     @stop_area = stop_area
     @generic_access_links = stop_area.generic_access_link_matrix
     @detail_access_links = stop_area.detail_access_link_matrix
-    build_breadcrumb :edit
   end
 
   def index
@@ -49,7 +44,6 @@ class ReferentialStopAreasController  < ChouetteController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
-        build_breadcrumb :index
       }
     end
   end
@@ -57,9 +51,7 @@ class ReferentialStopAreasController  < ChouetteController
   def new
     @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
     @map.editable = true
-    new! do
-      build_breadcrumb :show
-    end
+    new!
   end
 
   def create
@@ -81,8 +73,6 @@ class ReferentialStopAreasController  < ChouetteController
       end
 
       @stop_area = @stop_area.decorate
-
-      build_breadcrumb :show
     end
   end
 
@@ -90,7 +80,6 @@ class ReferentialStopAreasController  < ChouetteController
     edit! do
       stop_area.position ||= stop_area.default_position
       map.editable = true
-      build_breadcrumb :edit
    end
   end
 

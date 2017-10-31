@@ -8,13 +8,8 @@ class RouteSectionsController < ChouetteController
   belongs_to :referential
 
   before_action :save_return_to_path, only: [:edit, :create_to_edit]
-  before_action ->(controller) { build_breadcrumb controller.action_name }
 
   helper_method :search
-
-  def index
-    index!
-  end
 
   def new
     @stop_areas = referential.stop_areas.with_geometry.order :name

@@ -45,7 +45,6 @@ class JourneyPatternsCollectionsController < ChouetteController
       }
     end
     @stop_points_list = @stop_points_list.sort_by {|a| a[:position] }
-    build_breadcrumb :index
   end
 
   def user_permissions

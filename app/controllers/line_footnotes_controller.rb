@@ -5,12 +5,6 @@ class LineFootnotesController < ChouetteController
   before_action :authorize_resource, only: [:destroy_footnote, :edit_footnote, :show_footnote, :update_footnote]
   before_action :authorize_resource_class, only: [:create_footnote, :index_footnote, :new_footnote]
 
-  def edit
-    edit! do
-      build_breadcrumb :edit
-    end
-  end
-
   def update
     update! do |success, failure|
       success.html { redirect_to referential_line_footnotes_path(@referential, @line) , notice: t('notice.footnotes.updated') }
