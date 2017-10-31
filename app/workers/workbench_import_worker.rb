@@ -35,7 +35,7 @@ class WorkbenchImportWorker
   end
 
   def handle_corrupt_zip_file
-    @workbench_import.messages.create(criticity: :error, message_key: 'corrupt_zip_file', message_attributes: {source_filename: @workbench_import.name})
+    @workbench_import.messages.create(criticity: :error, message_key: 'corrupt_zip_file', message_attributes: {source_filename: @workbench_import.file.file.file})
   end
 
   def upload zip_service

@@ -22,7 +22,7 @@ RSpec.describe WorkbenchImportWorker do
       message = workbench_import.messages.last
       expect( message.criticity ).to eq('error')
       expect( message.message_key ).to eq('corrupt_zip_file')
-      expect( message.message_attributes ).to eq( 'source_filename' => workbench_import.name )
+      expect( message.message_attributes ).to eq( 'source_filename' => workbench_import.file.file.file )
     end
 
     it 'does not change current step' do
