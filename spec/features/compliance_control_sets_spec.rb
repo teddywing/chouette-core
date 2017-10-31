@@ -35,34 +35,34 @@ RSpec.describe "ComplianceControlSets", type: :feature do
       controls.take(2).each do | control |
         control.update criticity: 'error'
       end
-      within('#severity-filter') do
-        find('input[value="error"]').click
-      end
+      check('error')
       click_on('Filtrer')
-      controls.take(2).each do | control |
-        expect( page ).to have_content(control.code)
-      end
-      controls.drop(2).each do | control |
-        expect( page ).not_to have_content(control.code)
+      controls.each do | control |
+        if control.criticity == 'error'
+          expect( page ).to have_content(control.code)
+        else
+          expect( page ).not_to have_content(control.code)
+        end
       end
     end
 
-    # it 'we can apply a subclass filter' do
-    #   controls.first.update(origin_code: 'x-Route-y')
-    #   controls.second.update(origin_code: 'x-Line-y')
+    it 'we can apply a subclass filter' do
+      controls.first.update(origin_code: 'x-Route-y')
+      controls.second.update(origin_code: 'x-Line-y')
 
-    #   within('#subclass-filter') do
-    #     find('input[value="Itinéraire"]').click
-    #     find('input[value="Ligne"]').click
-    #   end
-    #   click_on('Filtrer')
-    #   controls.take(2).each do | control |
-    #     expect( page ).to have_content(control.code)
-    #   end
-    #   controls.drop(2).each do | control |
-    #     expect( page ).not_to have_content(control.code)
-    #   end
-    # end
+      within('#subclass-filter') do
+        check('Itinéraire')
+        check('Ligne')
+      end
+      click_on('Filtrer')
+      controls.each do | control |
+        if control.origin_code[/-Generic-/]
+          expect( page ).not_to have_content(control.code)
+        else
+          expect( page ).to have_content(control.code)
+        end
+      end
+    end
 
   end
 

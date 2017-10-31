@@ -10,7 +10,7 @@ fr:
         generic: 'Généric'
         journey_pattern: 'JourneyPattern'
         line: 'Ligne'
-        route: 'Route'
+        route: 'Itinéraire'
         routing_constraint_zone: 'ITL'
         vehicle_journey: 'Course'
     min_max_values: "la valeur de minimum (%{min}) ne doit pas être superieur à la valuer du maximum (%{max})"
