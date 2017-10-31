@@ -55,8 +55,8 @@ class WorkbenchImportWorker
         criticity: :warning,
         message_key: 'inconsistent_zip_file',
         message_attributes: {
-          'import_name' => @workbench_import.name,
-          'spurious_dirs' => entry.spurious.join(', ')
+          'source_filename' => @workbench_import.file.file.file,
+          'spurious_dirs'   => entry.spurious.join(', ')
         }) 
     end
   end
