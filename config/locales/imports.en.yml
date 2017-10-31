@@ -55,8 +55,10 @@ en:
         other: "imports"
     errors:
       models:
-        imports:
-          wrong_file_extension: "The imported file must be a zip file"
+        import:
+          attributes:
+            file:
+              wrong_file_extension: "The imported file must be a zip file"
     attributes:
       import:
         resources: "File to import"
