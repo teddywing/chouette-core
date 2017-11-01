@@ -298,7 +298,7 @@ class Referential < ActiveRecord::Base
   end
 
   def assign_prefix
-    self.prefix = self.organisation.name.parameterize.gsub('-', '_')
+    self.prefix = organisation.name.parameterize.gsub('-', '_')
   end
 
   def assign_line_and_stop_area_referential
