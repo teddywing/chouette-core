@@ -2,7 +2,7 @@ fr:
   referentials:
     filters:
       name_or_number_or_objectid: 'Indiquez un nom de ligne, nom court ou objectid'
-      name: 'Indiquez un nom de référentiel...'
+      name: 'Indiquez un nom de jeu de données...'
       line: 'Indiquez une ligne...'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
     error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
@@ -103,8 +103,8 @@ fr:
       referential:
         slug: "caractères autorisés : alphanumériques minuscules et 'souligné' et doit commencer par une lettre"
         prefix: "caractères autorisés : alphanumériques et 'souligné'"
-        upper_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
-        lower_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
+        upper_corner: "latitude,longitude dans le jeu de données WGS84, le séparateur de décimales est 'point'"
+        lower_corner: "latitude,longitude dans le jeu de données WGS84, le séparateur de décimales est 'point'"
 
   simple_form:
     labels:
