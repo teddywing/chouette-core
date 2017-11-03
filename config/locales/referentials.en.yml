@@ -38,7 +38,7 @@ en:
       edit: "Edit this data space"
       clone: "Clone this data space"
     errors:
-      inconsistent_organisation: "Organisation of asscociated workstation is (%{indirect_name}), while directly associated organisation is (%{direct_name}), they need to be equal"
+      inconsistent_organisation: "Organisation of asscociated workbench is (%{indirect_name}), while directly associated organisation is (%{direct_name}), they need to be equal"
       validity_period: "Invalid validity periode"
       pg_excluded: "can't begins with pg_"
       public_excluded: "public is a reserved value"
