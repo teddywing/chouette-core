@@ -1,29 +1,7 @@
 class ComplianceControl < ActiveRecord::Base
-  extend Enumerize
-  belongs_to :compliance_control_set
-  belongs_to :compliance_control_block
-
-  enumerize :criticity, in: %i(warning error), scope: true, default: :warning
-  hstore_accessor :control_attributes, {}
-
-  validates :criticity, presence: true
-  validates :name, presence: true
-  validates :code, presence: true, uniqueness: { scope: :compliance_control_set }
-  validates :origin_code, presence: true
-  validates :compliance_control_set, presence: true
-
-  validate def coherent_control_set
-    return true if compliance_control_block_id.nil?
-    ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
-    return true if ids.first == ids.last
-    names = ids.map{|id| ComplianceControlSet.find(id).name}
-    errors.add(:coherent_control_set,
-               I18n.t('compliance_controls.errors.incoherent_control_sets',
-                      indirect_set_name: names.first,
-                      direct_set_name: names.last))
-  end
 
   class << self
+    def criticities; %i(warning error) end
     def default_code; "" end
     def dynamic_attributes
       hstore_metadata_for_control_attributes.keys
@@ -31,6 +9,17 @@ class ComplianceControl < ActiveRecord::Base
 
     def policy_class
       ComplianceControlPolicy
+    end
+
+    def subclass_patterns
+      { 
+        generic: 'Generic',
+        journey_pattern: 'JourneyPattern',
+        line: 'Line',
+        route: 'Route',
+        routing_constraint_zone: 'RoutingConstraint',
+        vehicle_journey: 'VehicleJourney'
+      }
     end
 
     def inherited(child)
@@ -43,12 +32,37 @@ class ComplianceControl < ActiveRecord::Base
     end
   end
 
-  def initialize(attributes = {})
-    super
-    self.name ||= I18n.t("activerecord.models.#{self.class.name.underscore}.one")
-    self.code ||= self.class.default_code
-    self.origin_code ||= self.class.default_code
-  end
+  extend Enumerize
+  belongs_to :compliance_control_set
+  belongs_to :compliance_control_block
+
+  enumerize :criticity, in: criticities, scope: true, default: :warning
+  hstore_accessor :control_attributes, {}
+
+  validates :criticity, presence: true
+  validates :name, presence: true
+  validates :code, presence: true, uniqueness: { scope: :compliance_control_set }
+  validates :origin_code, presence: true
+  validates :compliance_control_set, presence: true
+
+  validate def coherent_control_set
+  return true if compliance_control_block_id.nil?
+  ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
+  return true if ids.first == ids.last
+  names = ids.map{|id| ComplianceControlSet.find(id).name}
+  errors.add(:coherent_control_set,
+             I18n.t('compliance_controls.errors.incoherent_control_sets',
+                    indirect_set_name: names.first,
+                    direct_set_name: names.last))
+end
+
+
+def initialize(attributes = {})
+  super
+  self.name ||= I18n.t("activerecord.models.#{self.class.name.underscore}.one")
+  self.code ||= self.class.default_code
+  self.origin_code ||= self.class.default_code
+end
 
 end
 

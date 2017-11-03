@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 class StopAreasController < InheritedResources::Base
   include ApplicationHelper
 

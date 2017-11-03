@@ -17,8 +17,12 @@ class ComplianceControlSetsController < InheritedResources::Base
   def show
     show! do |format|
       format.html {
+        @q_controls_form        = @compliance_control_set.compliance_controls.ransack(params[:q])
         @compliance_control_set = @compliance_control_set.decorate
-        @compliance_controls_without_block = decorate_compliance_controls(@compliance_control_set.compliance_controls.where(compliance_control_block_id: nil))
+        @compliance_controls    =
+          decorate_compliance_controls( @q_controls_form.result)
+            .group_by(&:compliance_control_block)
+        @indirect_compliance_controls = @compliance_controls.delete nil
       }
     end
   end

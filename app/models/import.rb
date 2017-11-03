@@ -16,9 +16,10 @@ class Import < ActiveRecord::Base
   extend Enumerize
   enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true, default: :new
 
+  validates :name, presence: true
   validates :file, presence: true
   validates_presence_of :workbench, :creator
-  validates_format_of :file, with: %r{\.zip\z}i, message: I18n.t('activerecord.errors.models.imports.wrong_file_extension')
+  validates_format_of :file, with: %r{\.zip\z}i, message: I18n.t('activerecord.errors.models.import.attributes.file.wrong_file_extension')
 
   before_create :initialize_fields
 
