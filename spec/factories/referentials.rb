@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :referential, class: 'Referential' do
+  factory :referential do
     sequence(:name) { |n| "Test #{n}" }
     sequence(:slug) { |n| "test_#{n}" }
     sequence(:prefix) { |n| "test_#{n}" }
