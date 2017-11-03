@@ -11,6 +11,8 @@ class ComplianceControlSetCopier
     @referential_id = referential_id
     check_organisation_coherence!
     copy_set
+
+    cck_set
   end
 
 

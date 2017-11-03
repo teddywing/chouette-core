@@ -99,6 +99,10 @@ RSpec.describe ComplianceControlSetCopier do
           expect( actual ).to eq( expected )
 
         end
+
+        it 'returns the newly-created ComplianceCheckSet' do
+          expect(subject.copy(cc_set.id, ref.id)).to eq(cck_set)
+        end
       end
 
     end

@@ -62,6 +62,9 @@ Rails.application.configure do
   # Reflex api url
   config.reflex_api_url = "https://195.46.215.128/ws/reflex/V1/service=getData"
 
+  # IEV url
+  config.iev_url = ENV.fetch('IEV_URL', 'http://localhost:8080')
+
   config.rails_host = "http://www.example.com"
   # file to data for demo
   config.demo_data = "tmp/demo.zip"
