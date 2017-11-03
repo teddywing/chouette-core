@@ -48,6 +48,8 @@
               sortable: true,
               links: [:show],
               cls: 'table has-filter has-search'
+
+          = new_pagination @compliance_control_sets, 'pull-right'
     - unless @compliance_control_sets.any?
       .row.mt-xs
         .col-lg-12
