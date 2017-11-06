@@ -1,3 +1,6 @@
 fr:
   compliance_checks:
+    filters:
+      subclass: Objét
+      criticity: Criticité
     

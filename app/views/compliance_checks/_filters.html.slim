@@ -1,0 +1,39 @@
+/ Compliance Check Filter
+= search_form_for @q_checks_form,
+  url: compliance_check_set_path(@compliance_check_set),
+  builder: SimpleForm::FormBuilder,
+  class: 'form form-filter' do |f|
+
+  .ffg-row
+    .input-group.search_bar
+      = f.search_field :name_cont,
+        class: 'form-control',
+        placeholder: t('compliance_checks.filters.name')
+      span.input-group-btn
+        button.btn.btn-default type='submit'
+          span.fa.fa-search
+
+  .ffg-row
+    .form-group.togglable#compliance_check_block-filter
+    .form-group.togglable#subclass-filter
+      = f.label t('compliance_checks.filters.subclass'), required: false, class: 'control-label'
+      = f.input :origin_code_cont_any,
+        collection: subclass_selection_list,
+        as: :check_boxes,
+        label: false,
+        label_method: lambda {|w| ("<span>#{w.first}</span>").html_safe},
+        required: false,
+        wrapper_html: {class: 'checkbox_list'}
+    .form-group.togglable#severity-filter
+      = f.label t('compliance_checks.filters.criticity'), required: false, class: 'control-label'
+      = f.input :criticity_eq_any,
+        collection: ComplianceControl.criticities,
+        as: :check_boxes,
+        label: false,
+        label_method: lambda {|w| ("<span>#{w}</span>").html_safe},
+        required: false,
+        wrapper_html: {class: 'checkbox_list'}
+
+  .actions
+    = link_to t('actions.erase'), @compliance_check_set, class: 'btn btn-link'
+    = f.submit t('actions.filter'), class: 'btn btn-default', id: 'compliance_check_set_compliance_checks_filter_btn'

@@ -1,9 +1,5 @@
 fr:
   compliance_check_sets:
-    index:
-      title: Rapports de contrôle
-      new: Création d'un rapport de contrôle
-      edit: Édition d'un rapport de contrôle
     actions:
           new: Ajouter
           edit: Editer
@@ -12,7 +8,13 @@ fr:
     filters:
           name: Indiquez un nom d'un objet associé...
           error_period_filter: La date de fin doit être supérieure ou égale à la date de début0
+    index:
+      title: Rapports de contrôle
+      new: Création d'un rapport de contrôle
+      edit: Édition d'un rapport de contrôle
     search_no_results: Aucun rapport de contrôle ne correspond à votre recherche
+    show:
+      title: Rapport de contrôle %{name}
   activerecord:
           attributes:
             compliance_check_set:
@@ -21,3 +23,4 @@ fr:
               associated_object: Objet associé
               assigned_to: Affectation
               compliance_control_set: jeu de contrôle
+              name: Nom

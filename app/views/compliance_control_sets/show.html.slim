@@ -25,7 +25,7 @@
         = definition_list t('metadatas'),
             ComplianceControlSet.human_attribute_name(:name) => @compliance_control_set.name,
             I18n.t('activerecord.attributes.compliance_control_set.owner_jdc') => @compliance_control_set.organisation.name
-  - if params[:q].present? or @compliance_controls.any?
+  - if params[:q].present? || @compliance_controls.any? || @direct_compliance_controls
     .row
       .col-lg-12
         = render '/compliance_controls/filters'
