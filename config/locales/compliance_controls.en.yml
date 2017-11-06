@@ -19,6 +19,9 @@ en:
       mandatory_control_type: "A control type must be selected"
     show:
       title: "Compliance control"
+      metadatas:
+        compliance_control_block: "Control block informations"
+    new:
     index:
       title: "Compliance control"
     new:

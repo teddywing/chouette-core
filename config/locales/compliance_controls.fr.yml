@@ -19,6 +19,8 @@ fr:
       mandatory_control_type: "Un type de contrôle doit être sélectionné"
     show:
       title: "Consulter un contrôle"
+      metadatas:
+        compliance_control_block: "Informations sur le groupe de contrôle"
     new:
       title: "Ajouter un contrôle"
     edit:
