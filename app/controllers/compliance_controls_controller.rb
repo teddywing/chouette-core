@@ -1,7 +1,7 @@
 class ComplianceControlsController < InheritedResources::Base
   defaults resource_class: ComplianceControl
   belongs_to :compliance_control_set
-  actions :all, :except => [:show, :index]
+  actions :all, :except => [:index]
 
   def select_type
     @sti_subclasses = ComplianceControl.subclasses
