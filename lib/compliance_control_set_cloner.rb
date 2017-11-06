@@ -57,7 +57,7 @@ class ComplianceControlSetCloner
       comment: compliance_control.comment,
       control_attributes: compliance_control.control_attributes,
       criticity: compliance_control.criticity,
-      name: name_of_copy(:compliance_controls, compliance_control.name),
+      name: compliance_control.name,
       origin_code: compliance_control.origin_code,
       type: compliance_control.type
     ).tap do | control |
