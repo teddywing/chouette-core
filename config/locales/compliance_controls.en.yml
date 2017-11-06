@@ -25,6 +25,8 @@ en:
       title: "Add a new compliance control"
     edit:
       title: "Update compliance control"
+    metas:
+      no_prerequisite: "None"
     route_control/zdl_stop_area:
       messages:
         3_route_1: "The route with %{source_objectid} objectid connect the stop points %{target_0_label} (%{target_0_objectid}) and %{target_1_label} (%{target_1_objectid}) which belong to the same ZDL"
@@ -36,6 +38,7 @@ en:
         "If the route has an opposite route, it must :
           - reference the opposite route
           - have an opposite route in relation with the tested route"
+      prerequisite: "Présence d'itinéraire référençant un itinéraire inverse"
     route_control/journey_pattern:
       messages:
         3_route_3: "The route with %{source_objectid} objectid doesn't have any journey pattern"
@@ -48,6 +51,7 @@ en:
       messages:
         3_route_5: "The route with %{source_objectid} objectid has a first stop from the %{target_0_label} ZDL whereas its oppoite route's last stop is from the ZDL %{target_1_label}"
       description: "Deux itinéraires en aller/retour doivent desservir les mêmes terminus"
+      prerequisite: "Présence d'itinéraire référençant un itinéraire inverse"
     route_control/minimum_length:
       messages:
         3_route_6: "The route with %{source_objectid} objectid does not connect enough stop points (required 2 stop points)"
@@ -110,6 +114,7 @@ en:
       messages:
         3_line_1: "On line :%{source_label} (%{source_objectid}), no route has an opposite route"
       description: "The routes of a line must have an opposite route"
+      prerequisite: Lign has multiple routes
     generic_attribute_control/pattern:
       messages:
         3_generic_1: "%{source_objectid} : the %{source_label} attribute value (%{error_value}) does not respect the following pattern : %{reference_value}"
@@ -191,3 +196,5 @@ en:
         minimum: "Minimum"
         maximum: "Maximum"
         target: "Target"
+        prerequisite: "Prerequisite"
+        predicate: "Predicate"

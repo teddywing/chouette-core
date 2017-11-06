@@ -25,6 +25,8 @@ fr:
       title: "Editer un contrôle"
     select_type:
       title: "Sélectionner un type de contrôle"
+    metas:
+      no_prerequisite: "Aucun"
     route_control/zdl_stop_area:
       messages:
         3_route_1: "L'itinéraire %{source_objectid} dessert successivement les arrêts %{target_0_label} (%{target_0_objectid}) et %{target_1_label} (%{target_1_objectid}) de la même zone de lieu"
@@ -36,6 +38,7 @@ fr:
         "Si l'itinéraire référence un itinéraire inverse, celui-ci doit :
           - référencer l'itinéraire inverse
           - avoir un sens opposé à l'itinéraire testé"
+      prerequisite: "Présence d'itinéraire référençant un itinéraire inverse"
     route_control/journey_pattern:
       messages:
         3_route_3: "L'itinéraire %{source_objectid} n'a pas de mission"
@@ -48,6 +51,7 @@ fr:
       messages:
         3_route_5: "L'itinéraire %{source_objectid} dessert au départ un arrêt de la ZDL %{target_0_label} alors que l'itinéraire inverse dessert à l'arrivée un arrêt de la ZDL %{target_1_label}"
       description: "Deux itinéraires en aller/retour doivent desservir les mêmes terminus"
+      prerequisite: "Présence d'itinéraire référençant un itinéraire inverse"
     route_control/minimum_length:
       messages:
         3_route_6: "L'itinéraire %{source_objectid} ne dessert pas assez d'arrêts (minimum 2 requis)"
@@ -110,6 +114,7 @@ fr:
       messages:
         3_line_1: "Sur la ligne %{source_label} (%{source_objectid}), aucun itinéraire n'a d'itinéraire inverse"
       description: "Les itinéraires d'une ligne doivent être associés en aller/retour"
+      prerequisite: Ligne disposant de plusieurs itinéraires
     generic_attribute_control/pattern:
       messages:
         3_generic_1: "%{source_objectid} : l'attribut % à une valeur %{error_value} qui ne respecte pas le motif %{reference_value}"
@@ -149,7 +154,7 @@ fr:
       route_control/unactivated_stop_points:
         one: "Itinéraire & arrêt désactivé"
       route_control/stop_points_in_journey_pattern:
-        one: "Les arrêts de l'itinéraire doivent être desservis par au moins une mission"
+        one: "Utilisation des arrêts par les missions"
       journey_pattern_control/duplicates:
         one: "Doublon de missions dans une ligne"
       journey_pattern_control/vehicle_journey:
@@ -191,3 +196,5 @@ fr:
         minimum: "Minimum"
         maximum: "Maximum"
         target: "Cible"
+        prerequisite: "Prérequis"
+        predicate: "Prédicat"

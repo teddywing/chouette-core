@@ -3,6 +3,8 @@ class ComplianceControl < ActiveRecord::Base
   class << self
     def criticities; %i(warning error) end
     def default_code; "" end
+    def prerequisite; I18n.t('compliance_controls.metas.no_prerequisite'); end
+    def predicate; I18n.t("compliance_controls.#{self.name.underscore}.description") end
     def dynamic_attributes
       hstore_metadata_for_control_attributes.keys
     end

@@ -11,3 +11,7 @@
     .row
       .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
         = render 'form'
+
+        = definition_list t('metadatas'),
+          I18n.t('activerecord.attributes.compliance_control.predicate') => @compliance_control.class.predicate,
+          I18n.t('activerecord.attributes.compliance_control.prerequisite') => @compliance_control.class.prerequisite
