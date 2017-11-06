@@ -34,7 +34,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :owner_jdc, \
-                  attribute: 'owner_jdc' \
+                  attribute: Proc.new {|n| n.organisation.name } \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :control_numbers, \

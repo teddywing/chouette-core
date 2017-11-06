@@ -23,7 +23,8 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-            ComplianceControlSet.human_attribute_name(:name) => @compliance_control_set.name
+            ComplianceControlSet.human_attribute_name(:name) => @compliance_control_set.name,
+            I18n.t('activerecord.attributes.compliance_control_set.owner_jdc') => @compliance_control_set.organisation.name
   - if params[:q].present? or @compliance_controls.any?
     .row
       .col-lg-12
