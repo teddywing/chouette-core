@@ -2,7 +2,7 @@ fr:
   referentials:
     filters:
       name_or_number_or_objectid: 'Indiquez un nom de ligne, nom court ou objectid'
-      name: 'Indiquez un nom de référentiel...'
+      name: 'Indiquez un nom de jeu de données...'
       line: 'Indiquez une ligne...'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
     error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
@@ -38,6 +38,7 @@ fr:
       edit: "Editer ce jeu de données"
       clone: "Cloner ce jeu de données"
     errors:
+      inconsistent_organisation: "L'organisation asscociée par espace de travail est (%{indirect_name}), mais l'organisation associée directement est (%{direct_name}), elles doivent être identiques."
       validity_period: "Période de validité invalide"
       pg_excluded: "ne peut pas commencer par pg_ (valeurs réservées)"
       public_excluded: "public est une valeur réservée"
@@ -102,8 +103,8 @@ fr:
       referential:
         slug: "caractères autorisés : alphanumériques minuscules et 'souligné' et doit commencer par une lettre"
         prefix: "caractères autorisés : alphanumériques et 'souligné'"
-        upper_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
-        lower_corner: "latitude,longitude dans le référentiel WGS84, le séparateur de décimales est 'point'"
+        upper_corner: "latitude,longitude dans le jeu de données WGS84, le séparateur de décimales est 'point'"
+        lower_corner: "latitude,longitude dans le jeu de données WGS84, le séparateur de décimales est 'point'"
 
   simple_form:
     labels:

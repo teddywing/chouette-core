@@ -7,7 +7,7 @@ end
 describe TableBuilderHelper, type: :helper do
   describe "#table_builder_2" do
     it "builds a table" do
-      referential = build_stubbed(:referential)
+      referential = build_stubbed(:workbench_referential)
       workbench = referential.workbench
 
       user_context = UserContext.new(

@@ -1,2 +1,5 @@
-fr:
+en:
   referential_suites:
+    errors:
+      inconsistent_current: "Le current referential (%{name}) n'appartient pas à cette referential suite"
+      inconsistent_new: "Le new referential (%{name}) n'appartient pas à cette referential suite"
