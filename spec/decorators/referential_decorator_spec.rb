@@ -34,6 +34,7 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
           expect_action_link_hrefs.to eq([
             referential_time_tables_path(object),
             new_referential_path(from: object),
+            referential_select_compliance_control_set_path(object)
           ])
         end
       end
@@ -46,6 +47,7 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
           expect_action_link_hrefs.to eq([
             referential_time_tables_path(object),
             new_referential_path(from: object),
+            referential_select_compliance_control_set_path(object),
             archive_referential_path(object),
             referential_path(object)
           ])
