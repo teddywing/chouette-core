@@ -5,6 +5,7 @@ en:
       name: 'Search by name'
       line: 'Seach by associated lines'
     search_no_results: 'No data space matching your query'
+    operation_in_progress: The validation process is in progress
     error_period_filter: "The period filter must have valid bounding dates"
     index:
       title: 'Data spaces'

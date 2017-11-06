@@ -17,12 +17,12 @@ class ReferentialDecorator < Draper::Decorator
       )
     end
 
-    # if policy.validate?
+    if policy.validate?
       links << Link.new(
         content: h.t('actions.validate'),
-        href: h.compliance_control_set_select_compliance_control_set_path(object.id, referential_id: context[:referential_id])
+        href: h.referential_select_compliance_control_set_path(object.id)
       )
-    # end
+    end
 
     if policy.archive?
       links << Link.new(

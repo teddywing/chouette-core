@@ -5,6 +5,7 @@ fr:
       name: 'Indiquez un nom de référentiel...'
       line: 'Indiquez une ligne...'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
+    operation_in_progress: L'opération de validation est en cours
     error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
     index:
       title: 'Jeux de données'
@@ -31,7 +32,7 @@ fr:
       duplicated:
         title: 'Dupliquer un jeu de données'
       submit: "Valider"
-    select_jdc:
+    select_compliance_control_set:
       title: "Sélection du jeu de contôle"
     actions:
       new: "Créer un jeu de données"
