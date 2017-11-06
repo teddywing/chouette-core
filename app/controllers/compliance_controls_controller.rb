@@ -22,6 +22,13 @@ class ComplianceControlsController < InheritedResources::Base
     end
   end
 
+  def update
+    update! do |success, failure|
+      success.html { redirect_to compliance_control_set_path(parent) }
+      failure.html { render( :action => 'edit' ) }
+    end
+  end
+
   protected
 
   alias_method :compliance_control_set, :parent
