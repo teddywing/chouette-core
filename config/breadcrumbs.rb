@@ -3,11 +3,11 @@ crumb :root do
 end
 
 crumb :workbench do |workbench|
-  link workbench.name, workbench_path(workbench)
+  link breadcrumb_name(workbench), workbench_path(workbench)
 end
 
 crumb :referential do |referential|
-  link referential.name, referential_path(referential)
+  link breadcrumb_name(referential), referential_path(referential)
   parent :workbench, current_offer_workbench
 end
 
@@ -17,7 +17,7 @@ crumb :referential_companies do |referential|
 end
 
 crumb :referential_company do |referential, company|
-  link company.name, referential_company_path(referential, company)
+  link breadcrumb_name(company), referential_company_path(referential, company)
   parent :referential_companies, referential
 end
 
@@ -27,7 +27,7 @@ crumb :referential_networks do |referential|
 end
 
 crumb :referential_network do |referential, network|
-  link  network.name, referential_network_path(referential, network)
+  link  breadcrumb_name(network), referential_network_path(referential, network)
   parent :referential_networks, referential
 end
 
@@ -37,7 +37,7 @@ crumb :referential_group_of_lines do |referential|
 end
 
 crumb :referential_group_of_line do |referential, group_of_line|
-  link  group_of_line.name, referential_group_of_line_path(referential, group_of_line)
+  link  breadcrumb_name(group_of_line), referential_group_of_line_path(referential, group_of_line)
   parent :referential_group_of_lines, referential
 end
 
@@ -47,7 +47,7 @@ crumb :referential_route_sections do |referential|
 end
 
 crumb :referential_route_section do |referential, route_section|
-  link  route_section.departure.name, referential_route_section_path(referential, route_section)
+  link  breadcrumb_name(route_section.departure), referential_route_section_path(referential, route_section)
   parent :referential_route_sections, referential
 end
 
@@ -58,7 +58,7 @@ crumb :time_tables do |referential|
 end
 
 crumb :time_table do |referential, time_table|
-  link time_table.comment, referential_time_table_path(referential, time_table)
+  link breadcrumb_name(time_table, 'comment'), referential_time_table_path(referential, time_table)
   parent :time_tables, referential
 end
 
@@ -68,7 +68,7 @@ crumb :timebands do |referential|
 end
 
 crumb :timeband do |referential, timeband|
-  link timeband.name, referential_timeband_path(referential, timeband)
+  link breadcrumb_name(timeband), referential_timeband_path(referential, timeband)
   parent :timebands, referential
 end
 
@@ -78,7 +78,7 @@ crumb :compliance_check_sets do |workbench|
 end
 
 crumb :compliance_check_set do |workbench, compliance_check_set|
-  link compliance_check_set.name, workbench_compliance_check_set_path(workbench, compliance_check_set)
+  link breadcrumb_name(compliance_check_set), workbench_compliance_check_set_path(workbench, compliance_check_set)
   parent :compliance_check_sets, workbench
 end
 
@@ -88,12 +88,12 @@ crumb :imports do |workbench|
 end
 
 crumb :import do |workbench, import|
-  link import.name, workbench_import_path(workbench, import)
+  link breadcrumb_name(import), workbench_import_path(workbench, import)
   parent :imports, workbench
 end
 
 crumb :organisation do |organisation|
-  link organisation.name, organisation_path(organisation)
+  link breadcrumb_name(organisation), organisation_path(organisation)
 end
 
 crumb :compliance_control_sets do
@@ -101,12 +101,12 @@ crumb :compliance_control_sets do
 end
 
 crumb :compliance_control_set do |compliance_control_set|
-  link compliance_control_set.name, compliance_control_set_path(compliance_control_set)
+  link breadcrumb_name(compliance_control_set), compliance_control_set_path(compliance_control_set)
   parent :compliance_control_sets
 end
 
 crumb :compliance_control do |compliance_control|
-  link compliance_control.name, compliance_control_set_compliance_control_path(compliance_control.compliance_control_set, compliance_control)
+  link breadcrumb_name(compliance_control), compliance_control_set_compliance_control_path(compliance_control.compliance_control_set, compliance_control)
   parent :compliance_control_set, compliance_control.compliance_control_set
 end
 
@@ -120,7 +120,7 @@ crumb :stop_areas do |stop_area_referential|
 end
 
 crumb :stop_area do |stop_area_referential, stop_area|
-  link stop_area.name, stop_area_referential_stop_area_path(stop_area_referential, stop_area)
+  link breadcrumb_name(stop_area), stop_area_referential_stop_area_path(stop_area_referential, stop_area)
   parent :stop_areas, stop_area_referential
 end
 
@@ -134,7 +134,7 @@ crumb :companies do |line_referential|
 end
 
 crumb :company do |company|
-  link company.name, line_referential_company_path(company.line_referential, company)
+  link breadcrumb_name(company), line_referential_company_path(company.line_referential, company)
   parent :companies, company.line_referential
 end
 
@@ -144,7 +144,7 @@ crumb :networks do |line_referential|
 end
 
 crumb :network do |network|
-  link network.name, line_referential_network_path(network.line_referential, network)
+  link breadcrumb_name(network), line_referential_network_path(network.line_referential, network)
   parent :networks, network.line_referential
 end
 
@@ -154,7 +154,7 @@ crumb :group_of_lines do |line_referential|
 end
 
 crumb :group_of_line do |group_of_line|
-  link group_of_line.name, line_referential_group_of_line_path(group_of_line.line_referential, group_of_line)
+  link breadcrumb_name(group_of_line), line_referential_group_of_line_path(group_of_line.line_referential, group_of_line)
   parent :group_of_lines, group_of_line.line_referential
 end
 
@@ -164,7 +164,7 @@ crumb :lines do |line_referential|
 end
 
 crumb :line do |line|
-  link line.name, line_referential_line_path(line.line_referential, line)
+  link breadcrumb_name(line), line_referential_line_path(line.line_referential, line)
   parent :lines, line.line_referential
 end
 
@@ -173,17 +173,17 @@ crumb :calendars do
 end
 
 crumb :calendar do |calendar|
-  link calendar.name, calendar_path(calendar)
+  link breadcrumb_name(calendar), calendar_path(calendar)
   parent :calendars
 end
 
 crumb :referential_line do |referential, line|
-  link line.name, referential_line_path(referential, line)
+  link breadcrumb_name(line), referential_line_path(referential, line)
   parent :referential, referential
 end
 
 crumb :line_footnotes do |referential, line|
-  link line.name, referential_line_footnotes_path(referential, line)
+  link breadcrumb_name(line), referential_line_footnotes_path(referential, line)
   parent :referential_line, referential, line
 end
 
@@ -193,7 +193,7 @@ crumb :routing_constraint_zones do |referential, line|
 end
 
 crumb :routing_constraint_zone do |referential, line, routing_constraint_zone|
-  link routing_constraint_zone.name, referential_line_routing_constraint_zone_path(referential, line, routing_constraint_zone)
+  link breadcrumb_name(routing_constraint_zone), referential_line_routing_constraint_zone_path(referential, line, routing_constraint_zone)
   parent :routing_constraint_zones, referential, line
 end
 
@@ -213,7 +213,7 @@ crumb :referential_stop_areas do |referential|
 end
 
 crumb :referential_stop_area do |referential, stop_area|
-  link stop_area.name, referential_stop_area_path(referential, stop_area)
+  link breadcrumb_name(stop_area), referential_stop_area_path(referential, stop_area)
   parent :referential_stop_areas, referential
 end
 

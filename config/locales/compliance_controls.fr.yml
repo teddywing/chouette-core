@@ -5,7 +5,7 @@ fr:
     filters:
       criticity: Criticité
       name: "Chercher le nom ou code d'un contrôl"
-      subclass: Objet  
+      subclass: Objet
       subclasses:
         generic: 'Généric'
         journey_pattern: 'JourneyPattern'
