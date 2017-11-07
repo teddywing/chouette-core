@@ -19,7 +19,6 @@ class RoutesController < ChouetteController
 
   def edit_boarding_alighting
     @route = route
-    build_breadcrumb :edit
   end
 
   def save_boarding_alighting
@@ -51,8 +50,6 @@ class RoutesController < ChouetteController
         @route_sp,
         with: StopPointDecorator
       )
-
-      build_breadcrumb :show
     end
   end
 

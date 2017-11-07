@@ -6,7 +6,8 @@ module StifTransportModeEnumerations
   enumerize :transport_mode, in: %w(bus
                                     metro
                                     rail
-                                    tram)
+                                    tram
+                                    funicular)
 
   def transport_modes
     StifTransportModeEnumerations.transport_mode.values

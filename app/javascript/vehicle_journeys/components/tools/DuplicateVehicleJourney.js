@@ -8,6 +8,7 @@ export default class DuplicateVehicleJourney extends Component {
     this.state = {}
     this.onFormChange = this.onFormChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.disableValidateButton = this.disableValidateButton.bind(this)
   }
 
   componentWillReceiveProps() {
@@ -58,16 +59,26 @@ export default class DuplicateVehicleJourney extends Component {
     return vjas.departure_time[type]
   }
 
+  disableValidateButton() {
+    /* We disable the button in two cases : 
+    - if the additional_time_hh or additional_time_mm are above their input max value
+    - if if their is no change in the other inputs to avoid making a coping of the selected VJ 
+    */
+    let incorrectDT = isNaN(this.state.duplicate_time_hh) || isNaN(this.state.duplicate_time_mm) || this.state.duplicate_time_hh > 23 || this.state.duplicate_time_mm > 59
+    let noInputChanges = this.state.additional_time == 0 && this.state.originalDT.hour == this.state.duplicate_time_hh && this.state.originalDT.minute == this.state.duplicate_time_mm
+    return incorrectDT || noInputChanges
+  }
+
   render() {
     if(this.props.status.isFetching == true) {
       return false
     }
-    if(this.props.status.fetchSuccess == true && actions.getSelected(this.props.vehicleJourneys).length > 0) {
+    if(this.props.status.fetchSuccess == true) {
       return (
         <li  className='st_action'>
           <button
             type='button'
-            disabled={((actions.getSelected(this.props.vehicleJourneys).length >= 1 && this.props.filters.policy['vehicle_journeys.update']) ? '' : 'disabled')}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length == 0 || this.props.disabled)}
             data-toggle='modal'
             data-target='#DuplicateVehicleJourneyModal'
             onClick={this.props.onOpenDuplicateModal}
@@ -83,6 +94,7 @@ export default class DuplicateVehicleJourney extends Component {
                     <h4 className='modal-title'>
                       Dupliquer { actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'plusieurs courses' : 'une course' }
                     </h4>
+                    <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
                   {(this.props.modal.type == 'duplicate') && (
@@ -171,6 +183,7 @@ export default class DuplicateVehicleJourney extends Component {
                           className={'btn btn-primary ' + (this.state.additional_time == 0 && this.state.originalDT.hour == this.state.duplicate_time_hh && this.state.originalDT.minute == this.state.duplicate_time_mm ? 'disabled' : '')}
                           type='button'
                           onClick={this.handleSubmit}
+                          disabled={this.disableValidateButton()}
                           >
                           Valider
                         </button>
@@ -192,5 +205,5 @@ export default class DuplicateVehicleJourney extends Component {
 DuplicateVehicleJourney.propTypes = {
   onOpenDuplicateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
+  disabled: PropTypes.bool.isRequired
 }

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Referential, :type => :model do
-  let(:ref) { create :referential, metadatas: [create(:referential_metadata)] }
+  let(:ref) { create :workbench_referential, metadatas: [create(:referential_metadata)] }
 
   # it "create a rule_parameter_set" do
   #   referential = create(:referential)

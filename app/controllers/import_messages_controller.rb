@@ -1,4 +1,4 @@
-class ImportMessagesController < BreadcrumbController
+class ImportMessagesController < InheritedResources::Base
   defaults resource_class: ImportMessage, collection_name: 'import_messages', instance_name: 'import_message'
   respond_to :csv
   belongs_to :import, :parent_class => Import do

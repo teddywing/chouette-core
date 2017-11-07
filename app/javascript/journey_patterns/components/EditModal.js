@@ -13,6 +13,19 @@ export default class EditModal extends Component {
     }
   }
 
+  renderModalTitle() {
+    if (this.props.editMode) {
+      return (
+        <h4 className='modal-title'>
+          Editer la mission
+          {this.props.modal.type == 'edit' && <em> "{this.props.modal.modalProps.journeyPattern.name}"</em>}
+        </h4>
+      )
+    } else {
+      return <h4 className='modal-title'> Informations </h4>
+    }
+  }
+
   render() {
     return (
       <div className={ 'modal fade ' + ((this.props.modal.type == 'edit') ? 'in' : '') } id='JourneyPatternModal'>
@@ -20,12 +33,8 @@ export default class EditModal extends Component {
           <div className='modal-dialog'>
             <div className='modal-content'>
               <div className='modal-header'>
-                <h4 className='modal-title'>
-                  Editer la mission
-                  {(this.props.modal.type == 'edit') && (
-                    <em> "{this.props.modal.modalProps.journeyPattern.name}"</em>
-                  )}
-                </h4>
+                {this.renderModalTitle()}
+                <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
               </div>
 
               {(this.props.modal.type == 'edit') && (
@@ -37,6 +46,7 @@ export default class EditModal extends Component {
                         type='text'
                         ref='name'
                         className='form-control'
+                        disabled={!this.props.editMode}
                         id={this.props.modal.modalProps.index}
                         defaultValue={this.props.modal.modalProps.journeyPattern.name}
                         onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
@@ -52,6 +62,7 @@ export default class EditModal extends Component {
                             type='text'
                             ref='published_name'
                             className='form-control'
+                            disabled={!this.props.editMode}
                             id={this.props.modal.modalProps.index}
                             defaultValue={this.props.modal.modalProps.journeyPattern.published_name}
                             onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
@@ -66,6 +77,7 @@ export default class EditModal extends Component {
                             type='text'
                             ref='registration_number'
                             className='form-control'
+                            disabled={!this.props.editMode}
                             id={this.props.modal.modalProps.index}
                             defaultValue={this.props.modal.modalProps.journeyPattern.registration_number}
                             onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
@@ -74,24 +86,26 @@ export default class EditModal extends Component {
                       </div>
                     </div>
                   </div>
-
-                  <div className='modal-footer'>
-                    <button
-                      className='btn btn-link'
-                      data-dismiss='modal'
-                      type='button'
-                      onClick={this.props.onModalClose}
+                  {
+                    this.props.editMode &&
+                    <div className='modal-footer'>
+                      <button
+                        className='btn btn-link'
+                        data-dismiss='modal'
+                        type='button'
+                        onClick={this.props.onModalClose}
                       >
-                      Annuler
-                    </button>
-                    <button
-                      className='btn btn-primary'
-                      type='button'
-                      onClick={this.handleSubmit.bind(this)}
+                        Annuler
+                      </button>
+                      <button
+                        className='btn btn-primary'
+                        type='button'
+                        onClick={this.handleSubmit.bind(this)}
                       >
-                      Valider
-                    </button>
-                  </div>
+                        Valider
+                      </button>
+                    </div>
+                  }
                 </form>
               )}
             </div>

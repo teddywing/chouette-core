@@ -1,4 +1,4 @@
-class CompaniesController < BreadcrumbController
+class CompaniesController < InheritedResources::Base
   include ApplicationHelper
   include PolicyChecker
   defaults :resource_class => Chouette::Company
@@ -22,8 +22,6 @@ class CompaniesController < BreadcrumbController
       format.json {
         @companies = decorate_companies(@companies)
       }
-
-      build_breadcrumb :index
     end
   end
 

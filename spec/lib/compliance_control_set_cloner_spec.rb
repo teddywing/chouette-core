@@ -7,7 +7,6 @@ RSpec.describe ComplianceControlSetCloner do
   let( :source_set ){ create :compliance_control_set }
   let( :set_prefix ){ I18n.t('compliance_control_sets.clone.prefix') }
   let( :block_prefix ){ I18n.t('compliance_control_blocks.clone.prefix') }
-  let( :control_prefix ){ I18n.t('compliance_controls.clone.prefix') }
 
 
   context 'Copying empty set' do
@@ -96,7 +95,7 @@ RSpec.describe ComplianceControlSetCloner do
             expect( target.compliance_control_set ).to eq( target_set )
             expect( target.control_attributes ).to eq(source.control_attributes)
             expect( target.criticity ).to eq(source.criticity )
-            expect( target.name ).to eq([control_prefix, source.name].join(' '))
+            expect( target.name ).to eq(source.name)
             expect( target.origin_code ).to eq(source.origin_code )
             expect( target.type ).to eq(source.type)
           end

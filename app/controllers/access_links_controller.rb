@@ -21,9 +21,7 @@ class AccessLinksController < ChouetteController
     @access_point = Chouette::AccessPoint.find(params[:access_point_id])
     #@access_link = Chouette::AccessLink.find(params[:id])
     @stop_area = @access_link.stop_area
-    show! do |format|
-      format.html {build_breadcrumb :show}
-    end
+    show!
   end
 
   def new
@@ -41,9 +39,7 @@ class AccessLinksController < ChouetteController
       data[:name] = name
     end
     @access_link = Chouette::AccessLink.new(data.permit!)
-    new! do
-      build_breadcrumb :new
-    end
+    new!
   end
 
   def create
@@ -59,9 +55,7 @@ class AccessLinksController < ChouetteController
     @access_link = Chouette::AccessLink.find(params[:id])
     @stop_area = @access_link.stop_area
     @orientation = @access_link.link_orientation_type
-    edit! do
-      build_breadcrumb :edit
-    end
+    edit!
   end
 
   def update
@@ -69,9 +63,7 @@ class AccessLinksController < ChouetteController
     @access_link = Chouette::AccessLink.find(params[:id])
     @stop_area = @access_link.stop_area
     @orientation = @access_link.link_orientation_type
-    update! do |success, failure|
-      build_breadcrumb :edit
-    end
+    update!
   end
 
   protected

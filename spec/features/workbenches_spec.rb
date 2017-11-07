@@ -1,6 +1,4 @@
-# coding: utf-8
-
-describe 'Workbenches', type: :feature do
+RSpec.describe 'Workbenches', type: :feature do
   login_user
 
   let(:line_ref) { create :line_referential }
@@ -8,7 +6,7 @@ describe 'Workbenches', type: :feature do
   let(:ref_metadata) { create(:referential_metadata, lines: [line]) }
 
   let!(:workbench) { create(:workbench, line_referential: line_ref, organisation: @user.organisation) }
-  let!(:referential) { create :referential, workbench: workbench, metadatas: [ref_metadata], organisation: @user.organisation }
+  let!(:referential) { create :workbench_referential, workbench: workbench, metadatas: [ref_metadata], organisation: @user.organisation }
 
   describe 'show' do
     context 'ready' do
@@ -25,10 +23,10 @@ describe 'Workbenches', type: :feature do
     end
 
     context 'filtering' do
-      let(:another_organisation) { create :organisation }
+      let!(:another_organisation) { create :organisation }
       let(:another_line) { create :line, line_referential: line_ref }
       let(:another_ref_metadata) { create(:referential_metadata, lines: [another_line]) }
-      let!(:other_referential) { create :referential, workbench: workbench, metadatas: [another_ref_metadata], organisation: another_organisation}
+      let!(:other_referential) { create :workbench_referential, workbench: workbench, metadatas: [another_ref_metadata] }
 
       before(:each) do
         visit workbench_path(workbench)
@@ -53,7 +51,7 @@ describe 'Workbenches', type: :feature do
 
         it 'should be possible to filter by multiple organisation' do
           find("#q_organisation_name_eq_any_#{@user.organisation.name.parameterize.underscore}").set(true)
-          find("#q_organisation_name_eq_any_#{another_organisation.name.parameterize.underscore}").set(true)
+          find("#q_organisation_name_eq_any_#{other_referential.organisation.name.parameterize.underscore}").set(true)
           click_button I18n.t('actions.filter')
 
           expect(page).to have_content(referential.name)

@@ -18,8 +18,6 @@ class ReferentialNetworksController < ChouetteController
           referential: referential
         }
       )
-
-      build_breadcrumb :show
     end
   end
 
@@ -36,8 +34,6 @@ class ReferentialNetworksController < ChouetteController
       format.js {
         @networks = decorate_networks(@networks)
       }
-
-      build_breadcrumb :index
     end
   end
 

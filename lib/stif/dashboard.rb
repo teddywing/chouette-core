@@ -5,7 +5,7 @@ module Stif
     end
 
     def referentials
-      @referentials ||= @workbench.all_referentials
+      @referentials ||= self.workbench.all_referentials
     end
 
     def calendars

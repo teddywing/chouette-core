@@ -1,4 +1,4 @@
-class ComplianceControlSetsController < BreadcrumbController
+class ComplianceControlSetsController < InheritedResources::Base
   defaults resource_class: ComplianceControlSet
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("updated_at", DateTime) }
@@ -9,7 +9,7 @@ class ComplianceControlSetsController < BreadcrumbController
       scope = self.ransack_period_range(scope: @compliance_control_sets, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
       @q_for_form = scope.ransack(params[:q])
       format.html {
-        @compliance_control_sets = decorate_compliance_control_sets(@q_for_form.result)
+        @compliance_control_sets = decorate_compliance_control_sets(@q_for_form.result.paginate(page: params[:page], per_page: 30))
       }
     end
   end
@@ -17,8 +17,12 @@ class ComplianceControlSetsController < BreadcrumbController
   def show
     show! do |format|
       format.html {
+        @q_controls_form        = @compliance_control_set.compliance_controls.ransack(params[:q])
         @compliance_control_set = @compliance_control_set.decorate
-        @compliance_controls_without_block = decorate_compliance_controls(@compliance_control_set.compliance_controls.where(compliance_control_block_id: nil))
+        @compliance_controls    =
+          decorate_compliance_controls( @q_controls_form.result)
+            .group_by(&:compliance_control_block)
+        @indirect_compliance_controls = @compliance_controls.delete nil
       }
     end
   end

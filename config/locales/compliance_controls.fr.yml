@@ -2,12 +2,25 @@ fr:
   compliance_controls:
     clone:
       prefix: 'Copie de'
+    filters:
+      criticity: Criticité
+      name: "Chercher le nom ou code d'un contrôl"
+      subclass: Objet  
+      subclasses:
+        generic: 'Généric'
+        journey_pattern: 'JourneyPattern'
+        line: 'Ligne'
+        route: 'Itinéraire'
+        routing_constraint_zone: 'ITL'
+        vehicle_journey: 'Course'
     min_max_values: "la valeur de minimum (%{min}) ne doit pas être superieur à la valuer du maximum (%{max})"
     errors:
       incoherent_control_sets: "Le contrôle ne peut pas être associé à un jeu de contrôle (id: %{direct_set_name}) différent de celui de son groupe (id: %{indirect_set_name})"
       mandatory_control_type: "Un type de contrôle doit être sélectionné"
     show:
       title: "Consulter un contrôle"
+      metadatas:
+        compliance_control_block: "Informations sur le groupe de contrôle"
     new:
       title: "Ajouter un contrôle"
     edit:
@@ -20,6 +33,8 @@ fr:
       show: Consulter
       destroy: Supprimer
       destroy_confirm: Etes vous sûr de supprimer ce contrôle ?
+    metas:
+      no_prerequisite: "Aucun"
     route_control/zdl_stop_area:
       messages:
         3_route_1: "L'itinéraire %{source_objectid} dessert successivement les arrêts %{target_0_label} (%{target_0_objectid}) et %{target_1_label} (%{target_1_objectid}) de la même zone de lieu"
@@ -31,6 +46,7 @@ fr:
         "Si l'itinéraire référence un itinéraire inverse, celui-ci doit :
           - référencer l'itinéraire inverse
           - avoir un sens opposé à l'itinéraire testé"
+      prerequisite: "Présence d'itinéraire référençant un itinéraire inverse"
     route_control/journey_pattern:
       messages:
         3_route_3: "L'itinéraire %{source_objectid} n'a pas de mission"
@@ -43,6 +59,7 @@ fr:
       messages:
         3_route_5: "L'itinéraire %{source_objectid} dessert au départ un arrêt de la ZDL %{target_0_label} alors que l'itinéraire inverse dessert à l'arrivée un arrêt de la ZDL %{target_1_label}"
       description: "Deux itinéraires en aller/retour doivent desservir les mêmes terminus"
+      prerequisite: "Présence d'itinéraire référençant un itinéraire inverse"
     route_control/minimum_length:
       messages:
         3_route_6: "L'itinéraire %{source_objectid} ne dessert pas assez d'arrêts (minimum 2 requis)"
@@ -105,6 +122,7 @@ fr:
       messages:
         3_line_1: "Sur la ligne %{source_label} (%{source_objectid}), aucun itinéraire n'a d'itinéraire inverse"
       description: "Les itinéraires d'une ligne doivent être associés en aller/retour"
+      prerequisite: Ligne disposant de plusieurs itinéraires
     generic_attribute_control/pattern:
       messages:
         3_generic_1: "%{source_objectid} : l'attribut % à une valeur %{error_value} qui ne respecte pas le motif %{reference_value}"
@@ -125,7 +143,7 @@ fr:
   activerecord:
     models:
       compliance_control:
-        one: "controle"
+        one: "contrôle"
         other: "contrôles"
       route_control/zdl_stop_area:
         one: "Deux arrêts d’une même ZDL ne peuvent pas se succéder dans un itinéraire"
@@ -136,7 +154,7 @@ fr:
       route_control/duplicates:
         one: "Détection de double définition d'itinéraire"
       route_control/opposite_route_terminus:
-        one: "Vérification des terminus de l'itinéraire inverse"
+       one: "Vérification des terminus de l'itinéraire inverse"
       route_control/minimum_length:
         one: "Un itinéraire doit contenir au moins 2 arrêts"
       route_control/omnibus_journey_pattern:
@@ -144,7 +162,7 @@ fr:
       route_control/unactivated_stop_points:
         one: "Itinéraire & arrêt désactivé"
       route_control/stop_points_in_journey_pattern:
-        one: "Un itinéraire doit contenir au moins 2 arrêts"
+        one: "Utilisation des arrêts par les missions"
       journey_pattern_control/duplicates:
         one: "Doublon de missions dans une ligne"
       journey_pattern_control/vehicle_journey:
@@ -186,3 +204,5 @@ fr:
         minimum: "Minimum"
         maximum: "Maximum"
         target: "Cible"
+        prerequisite: "Prérequis"
+        predicate: "Prédicat"

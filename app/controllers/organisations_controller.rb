@@ -1,4 +1,4 @@
-class OrganisationsController < BreadcrumbController
+class OrganisationsController < InheritedResources::Base
 
   defaults :resource_class => Organisation
   respond_to :html, :only => [:edit, :show, :update]
@@ -18,6 +18,6 @@ class OrganisationsController < BreadcrumbController
   def organisation_params
     params.require(:organisation).permit(:name)
   end
-  
+
 end
 
