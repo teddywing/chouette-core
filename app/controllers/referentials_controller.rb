@@ -55,7 +55,7 @@ class ReferentialsController < InheritedResources::Base
   end
 
   def select_compliance_control_set
-    @compliance_control_sets = ComplianceControlSet.all
+    @compliance_control_sets = ComplianceControlSet.where(organisation: current_organisation)
   end
 
   def validate
