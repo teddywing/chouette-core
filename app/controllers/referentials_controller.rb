@@ -54,6 +54,16 @@ class ReferentialsController < InheritedResources::Base
     end
   end
 
+  def select_compliance_control_set
+    @compliance_control_sets = ComplianceControlSet.where(organisation: current_organisation)
+  end
+
+  def validate
+    ComplianceControlSetCopyWorker.perform_async(params[:compliance_control_set], params[:id])
+    flash[:notice] = I18n.t("referentials.operation_in_progress")
+    redirect_to(referential_path)
+  end
+
   def destroy
     workbench = referential.workbench_id
 

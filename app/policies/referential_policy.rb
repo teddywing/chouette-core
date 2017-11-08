@@ -17,9 +17,11 @@ class ReferentialPolicy < ApplicationPolicy
     !archived? && organisation_match? && user.has_permission?('referentials.update')
   end
 
-
-
   def clone?
+    !archived? && create?
+  end
+
+  def validate?
     !archived? && create?
   end
 

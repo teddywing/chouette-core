@@ -103,6 +103,8 @@ ChouetteIhm::Application.routes.draw do
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
+    get :select_compliance_control_set
+    post :validate, on: :member
     resources :autocomplete_time_tables, only: [:index]
     resources :autocomplete_route_sections
     resources :autocomplete_timebands

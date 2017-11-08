@@ -17,6 +17,7 @@ en:
     combine: 'Combine'
     actualize: 'Actualize'
     import: 'Import'
+    validate: 'Validate'
     filter: 'Filter'
     erase: 'Erase'
     create_api_key: "Create an API key"
