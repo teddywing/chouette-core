@@ -15,6 +15,14 @@
 
   .ffg-row
     .form-group.togglable#compliance_check_block-filter
+      = f.label t('activerecord.models.compliance_check_block.one'), required: false, class: 'control-label'
+      = f.input :compliance_check_block_id_eq_any,
+        collection: @compliance_check_set.compliance_check_blocks,
+        as: :check_boxes,
+        label: false,
+        label_method: lambda {|w| ("<span>#{transport_mode_text(w)}</span>").html_safe},
+        required: false,
+        wrapper_html: {class: 'checkbox_list'}
     .form-group.togglable#subclass-filter
       = f.label t('compliance_checks.filters.subclass'), required: false, class: 'control-label'
       = f.input :origin_code_cont_any,
