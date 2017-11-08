@@ -23,11 +23,11 @@ describe ReferentialsController, :type => :controller do
   end
 
   describe 'GET select_compliance_control_set' do
-      it 'gets compliance control set for current organisation' do
-        compliance_control_set = create(:compliance_control_set, organisation: @user.organisation)
-        create(:compliance_control_set)
-        get :select_compliance_control_set, referential_id: referential.id
-        expect(assigns[:compliance_control_sets]).to eq([compliance_control_set])
-      end
+    it 'gets compliance control set for current organisation' do
+      compliance_control_set = create(:compliance_control_set, organisation: @user.organisation)
+      create(:compliance_control_set)
+      get :select_compliance_control_set, referential_id: referential.id
+      expect(assigns[:compliance_control_sets]).to eq([compliance_control_set])
     end
   end
+end
