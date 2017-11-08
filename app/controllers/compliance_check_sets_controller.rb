@@ -29,10 +29,10 @@ class ComplianceCheckSetsController < InheritedResources::Base
   # Action Implementation
   # ---------------------
   def implement_show format
-    format.html(&method(:implement_html_show))
+    format.html(&method(:implement_show_for_html))
   end
 
-  def implement_html_show _mime_response
+  def implement_show_for_html _mime_response
     @q_checks_form        = @compliance_check_set.compliance_checks.ransack(params[:q])
     @compliance_check_set = @compliance_check_set.decorate
     @compliance_checks    =

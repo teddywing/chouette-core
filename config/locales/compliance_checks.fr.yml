@@ -1,6 +1,14 @@
 fr:
+  activerecord:
+    attributes:
+      compliance_check:
+        code: Code
+        name: Nom
+        criticity: Criticité
+        comment: Commentaire
   compliance_checks:
     filters:
       subclass: Objét
       criticity: Criticité
+      name: Nom
     

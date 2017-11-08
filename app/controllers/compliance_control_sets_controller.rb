@@ -15,17 +15,9 @@ class ComplianceControlSetsController < InheritedResources::Base
   end
 
   def show
-    show! do |format|
-      format.html {
-        @q_controls_form        = @compliance_control_set.compliance_controls.ransack(params[:q])
-        @compliance_control_set = @compliance_control_set.decorate
-        @compliance_controls    =
-          decorate_compliance_controls( @q_controls_form.result)
-            .group_by(&:compliance_control_block)
-        @indirect_compliance_controls = @compliance_controls.delete nil
-      }
-    end
+    show!(&method(:implement_show))
   end
+
 
   def clone
     ComplianceControlSetCloner.new.copy(params[:id], current_organisation.id)
@@ -57,5 +49,18 @@ class ComplianceControlSetsController < InheritedResources::Base
 
   def compliance_control_set_params
     params.require(:compliance_control_set).permit(:name, :id)
+  end
+
+  def implement_show format
+    format.html(&method(:implement_show_for_html))
+  end
+
+  def implement_show_for_html _mime_response
+    @q_controls_form        = @compliance_control_set.compliance_controls.ransack(params[:q])
+    @compliance_control_set = @compliance_control_set.decorate
+    @compliance_controls    =
+      decorate_compliance_controls( @q_controls_form.result)
+      .group_by(&:compliance_control_block)
+    @direct_compliance_controls = @compliance_controls.delete nil
   end
 end

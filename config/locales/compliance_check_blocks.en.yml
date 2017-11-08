@@ -1,0 +1,8 @@
+en:
+  activerecord:
+    models:
+      compliance_check_block:
+        zero: "Control report groups"
+        one: "Control report group"
+        many: "Control report groups"
+

@@ -20,7 +20,7 @@
         collection: @compliance_control_set.compliance_control_blocks,
         as: :check_boxes,
         label: false,
-        label_method: lambda {|w| ("<span>#{transport_mode(w.transport_mode, w.transport_submode)}</span>").html_safe},
+        label_method: lambda {|w| ("<span>#{transport_mode_text(w)}</span>").html_safe},
         required: false,
         wrapper_html: {class: 'checkbox_list'}
     .form-group.togglable#subclass-filter
