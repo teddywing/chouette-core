@@ -21,7 +21,6 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
       blox.second.update transport_mode: 'train', transport_submode: 'suburbanRailway'
       p transport_mode_text(blox.first)
       p transport_mode_text(blox.second)
-        require 'pry'; binding.pry
       visit(compliance_check_set_path(compliance_check_set))
     end
 
