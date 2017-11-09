@@ -1,6 +1,6 @@
 class ComplianceCheckBlock < ActiveRecord::Base
-  extend StifTransportModeEnumerations
-  extend StifTransportSubmodeEnumerations
+  include StifTransportModeEnumerations
+  include StifTransportSubmodeEnumerations
 
   belongs_to :compliance_check_set
 

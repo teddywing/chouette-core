@@ -17,15 +17,51 @@
         h2
           = render '/compliance_checks/filters'
 
-      - if @direct_compliance_checks.try(:any?)
+        - if @direct_compliance_checks.try(:any?)
+          .row
+            .col-lg-12
+              h2
+                = transport_mode_text()
+          .row
+            .col-lg-12
+              .select_table
+                = table_builder_2 @direct_compliance_checks,
+                        [ \
+                    TableBuilderHelper::Column.new( \
+                      key: :code, \
+                      attribute: 'code' \
+                    ), \
+                    TableBuilderHelper::Column.new( \
+                      key: :name, \
+                      attribute: 'name', \
+                      link_to: lambda do |compliance_check| \
+                          compliance_check_path(compliance_check) \
+                        end \
+                    ), \
+                    TableBuilderHelper::Column.new( \
+                      key: :criticity, \
+                      attribute: 'criticity' \
+                    ), \
+                    TableBuilderHelper::Column.new( \
+                      key: :comment, \
+                      attribute: 'comment' \
+                    ), \
+                  ],
+                  sortable: true,
+                  cls: 'table has-filter has-search',
+                  model: ComplianceCheck
+                
+    - @compliance_checks.each do |block, compliance_checks|
+
+      - if compliance_checks.try(:any?)
         .row
           .col-lg-12
             h2
-              = transport_mode_text()
+              = transport_mode_text(block)
         .row
           .col-lg-12
             .select_table
-              = table_builder_2 @direct_compliance_checks,
+              = table_builder_2 compliance_checks,
                       [ \
                   TableBuilderHelper::Column.new( \
                     key: :code, \
@@ -50,11 +86,4 @@
                 sortable: true,
                 cls: 'table has-filter has-search',
                 model: ComplianceCheck
-                
-    - @compliance_checks.each do |block, compliance_checks|
 
-      - if compliance_checks.try(:any?)
-        .row
-          .col-lg-12
-            h2
-              = transport_mode_text(block)
