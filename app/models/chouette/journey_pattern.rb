@@ -9,7 +9,6 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   has_many :vehicle_journey_at_stops, :through => :vehicle_journeys
   has_and_belongs_to_many :stop_points, -> { order("stop_points.position") }, :before_add => :vjas_add, :before_remove => :vjas_remove, :after_add => :shortcuts_update_for_add, :after_remove => :shortcuts_update_for_remove
   has_many :stop_areas, through: :stop_points
-  has_many :journey_pattern_sections
 
   validates_presence_of :route
   validates_presence_of :name
@@ -18,9 +17,6 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
   enum section_status: { todo: 0, completed: 1, control: 2 }
 
   attr_accessor  :control_checked
-  after_update :control_route_sections, :unless => "control_checked"
-
-
   def local_id
     "IBOO-#{self.referential.id}-#{self.try(:route).try(:line).try(:objectid).try(:local_id)}-#{self.id}"
   end
@@ -145,39 +141,4 @@ class Chouette::JourneyPattern < Chouette::TridentActiveRecord
       vjas.destroy
     end
   end
-
-  def control_route_sections
-    stop_area_ids = self.stop_points.map(&:stop_area_id)
-    control_route_sections_by_stop_areas(stop_area_ids)
-  end
-
-  def control_route_sections_by_stop_areas(stop_area_ids)
-    journey_pattern_section_all
-    i = 0
-    to_control = false
-    stop_area_ids.each_cons(2) do |a|
-      jps = @route_sections_orders[i]
-      i += 1
-      unless jps
-        to_control = true
-        next
-      end
-      unless [jps.route_section.departure.id, jps.route_section.arrival.id] == a
-        jps.destroy
-        to_control = true
-      end
-    end
-    self.control_checked = true
-    to_control ? self.control! : self.completed!
-  end
-
-  protected
-
-  def journey_pattern_section_all
-    @route_sections_orders = {}
-    self.journey_pattern_sections.all.map do |journey_pattern_section|
-      @route_sections_orders[journey_pattern_section.rank] = journey_pattern_section
-    end
-  end
-
 end

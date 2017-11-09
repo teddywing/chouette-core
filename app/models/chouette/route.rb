@@ -74,8 +74,6 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   validates :wayback, inclusion: { in: self.wayback.values }
 
-  after_commit :journey_patterns_control_route_sections
-
   def duplicate
     overrides = {
       'opposite_route_id' => nil
@@ -180,12 +178,6 @@ class Chouette::Route < Chouette::TridentActiveRecord
     end
 
     return true
-  end
-
-  def journey_patterns_control_route_sections
-    self.journey_patterns.each do |jp|
-      jp.control_route_sections
-    end
   end
 
   protected
