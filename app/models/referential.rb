@@ -1,5 +1,6 @@
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
+  extend Enumerize
 
   validates_presence_of :name
   validates_presence_of :slug
@@ -54,6 +55,8 @@ class Referential < ActiveRecord::Base
   belongs_to :workbench
 
   belongs_to :referential_suite
+
+  enumerize :object_id_format, in: %w(netx netx_stif)
 
   scope :ready, -> { where(ready: true) }
   scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }

@@ -1,8 +1,10 @@
 class Workbench < ActiveRecord::Base
+  extend Enumerize
   belongs_to :organisation
   belongs_to :line_referential
   belongs_to :stop_area_referential
   belongs_to :output, class_name: 'ReferentialSuite'
+  enumerize :object_id_format, in: %w(netx netx_stif)
 
   has_many :lines, -> (workbench) { Stif::MyWorkbenchScopes.new(workbench).line_scope(self) }, through: :line_referential
   has_many :networks, through: :line_referential

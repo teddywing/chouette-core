@@ -10,6 +10,7 @@ class Chouette::StopArea < Chouette::ActiveRecord
   include ProjectionFields
   include StopAreaRestrictions
   include StopAreaReferentialSupport
+  include ObjectIdFormat
 
   extend Enumerize
   enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
@@ -25,6 +26,8 @@ class Chouette::StopArea < Chouette::ActiveRecord
 
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential_id
+
+  alias_method :stop_area_referential, :referential
 
   acts_as_tree :foreign_key => 'parent_id', :order => "name"
 
