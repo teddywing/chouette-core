@@ -39,14 +39,14 @@
         h3.panel-title.with_actions
           div
             = t('.referentials')
-            span.badge.ml-xs = @referentials.count if @referentials.present?
+            span.badge.ml-xs = @dashboard.referentials.count if @dashboard.referentials.present?
 
           div
             = link_to '', workbench_path(@dashboard.workbench), class: ' fa fa-chevron-right pull-right', title: t('.see')
 
-      - if @referentials.present?
+      - if @dashboard.referentials.present?
         .list-group
-          - @referentials.each_with_index do |referential, i|
+          - @dashboard.referentials.first(5).each_with_index do |referential, i|
             = link_to referential.name, referential_path(referential, workbench_id: referential.workbench_id, current_workbench_id: @dashboard.workbench.id), class: 'list-group-item' if i < 6
 
       - else
@@ -65,7 +65,7 @@
 
       - if @dashboard.calendars.present?
         .list-group
-          - @dashboard.calendars.each_with_index do |calendar, i|
+          - @dashboard.calendars.first(5).each_with_index do |calendar, i|
             = link_to calendar.name, calendar_path(calendar), class: 'list-group-item' if i < 6
 
       - else

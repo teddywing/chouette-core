@@ -1,4 +1,4 @@
-class ApiKeysController < BreadcrumbController
+class ApiKeysController < InheritedResources::Base
   defaults resource_class: Api::V1::ApiKey
   include PolicyChecker
 

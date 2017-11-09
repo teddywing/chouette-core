@@ -34,7 +34,7 @@ export default class ShiftVehicleJourney extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={(actions.getSelected(this.props.vehicleJourneys).length == 1 && this.props.filters.policy['vehicle_journeys.update']) ? '' : 'disabled'}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length != 1 || this.props.disabled)}
             data-toggle='modal'
             data-target='#ShiftVehicleJourneyModal'
             onClick={this.props.onOpenShiftModal}
@@ -51,6 +51,7 @@ export default class ShiftVehicleJourney extends Component {
                     {(this.props.modal.type == 'shift') && (
                       <em>Mettre à jour les horaires de la course {actions.humanOID(actions.getSelected(this.props.vehicleJourneys)[0].objectid)}</em>
                     )}
+                    <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
                   {(this.props.modal.type == 'shift') && (
@@ -110,5 +111,5 @@ export default class ShiftVehicleJourney extends Component {
 ShiftVehicleJourney.propTypes = {
   onOpenShiftModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
+  disabled: PropTypes.bool.isRequired
 }

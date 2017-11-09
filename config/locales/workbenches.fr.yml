@@ -1,9 +1,9 @@
 fr:
   workbenches:
     referential_count:
-      zero: "Aucun jeu de données à l'heure actuelle"
-      one: "1 jeu de données à l'heure actuelle"
-      other: "#{count} jeux de données à l'heure actuelle"
+      zero: "Aucun jeu de données dans cet espace de travail"
+      one: "1 jeu de données dans cet espace de travail"
+      other: "#{count} jeux de données dans cet espace de travail"
   activerecord:
     models:
       workbench:

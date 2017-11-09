@@ -1,0 +1,20 @@
+/ PageHeader
+- header_params = ['jeux-de-controle',
+        t('referentials.select_compliance_control_set.title'),
+        '']
+= pageheader(*header_params) do
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        = form_tag validate_referential_path(params[:referential_id]), {class: 'form-horizontal', id: 'select_compliance_control_set', wrapper: :horizontal_form} do
+          .row
+            .col-lg-12
+              .form-group
+                = label_tag 'name', nil, class: 'string required col-sm-4 col-xs-5 control-label'
+                .col-sm-8.col-xs-7
+                  = select_tag :compliance_control_set, options_from_collection_for_select(@compliance_control_sets, "id", "name"), class: 'select optional form-control'
+              .separator
+        = button_tag t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'select_compliance_control_set'

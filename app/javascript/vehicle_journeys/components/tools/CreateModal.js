@@ -25,7 +25,7 @@ export default class CreateModal extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={((this.props.filters.policy['vehicle_journeys.update'] == true) ? '' : 'disabled')}
+            disabled={(this.props.disabled) }
             data-toggle='modal'
             data-target='#NewVehicleJourneyModal'
             onClick={this.props.onOpenCreateModal}
@@ -39,6 +39,7 @@ export default class CreateModal extends Component {
                 <div className='modal-content'>
                   <div className='modal-header'>
                     <h4 className='modal-title'>Ajouter une course</h4>
+                    <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
                   {(this.props.modal.type == 'create') && (
@@ -127,5 +128,6 @@ CreateModal.propTypes = {
   onOpenCreateModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   onAddVehicleJourney: PropTypes.func.isRequired,
-  onSelect2JourneyPattern: PropTypes.func.isRequired
+  onSelect2JourneyPattern: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 }

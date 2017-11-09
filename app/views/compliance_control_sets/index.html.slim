@@ -1,3 +1,4 @@
+- breadcrumb :compliance_control_sets
 / PageHeader
 - header_params = ['jeux-de-controle',
         t('compliance_control_sets.index.title'),
@@ -33,7 +34,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :owner_jdc, \
-                  attribute: 'owner_jdc' \
+                  attribute: Proc.new {|n| n.organisation.name } \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :control_numbers, \
@@ -47,6 +48,8 @@
               sortable: true,
               links: [:show],
               cls: 'table has-filter has-search'
+
+          = new_pagination @compliance_control_sets, 'pull-right'
     - unless @compliance_control_sets.any?
       .row.mt-xs
         .col-lg-12

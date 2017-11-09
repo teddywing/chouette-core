@@ -78,7 +78,8 @@ class Chouette::Route < Chouette::TridentActiveRecord
 
   def duplicate
     overrides = {
-      'opposite_route_id' => nil
+      'opposite_route_id' => nil,
+      'name' => I18n.t('activerecord.copy', name: self.name)
     }
     keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
     atts_for_create = attributes

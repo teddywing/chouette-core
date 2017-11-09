@@ -74,6 +74,7 @@ ChouetteIhm::Application.routes.draw do
   resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
 
   resources :compliance_control_sets do
+    get :simple, on: :member
     get :clone, on: :member
     resources :compliance_controls, except: :index do
       get :select_type, on: :collection
@@ -102,6 +103,8 @@ ChouetteIhm::Application.routes.draw do
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
+    get :select_compliance_control_set
+    post :validate, on: :member
     resources :autocomplete_time_tables, only: [:index]
     resources :autocomplete_route_sections
     resources :autocomplete_timebands

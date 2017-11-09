@@ -33,7 +33,7 @@ export default class BSelect4 extends Component {
             delay: '500',
             data: function(params) {
               return {
-                q: {published_name_or_objectid_or_registration_number_cont: params.term},
+                q: { published_name_or_objectid_or_registration_number_cont: actions.escapeWildcardCharacters(params.term)},
               };
             },
             processResults: function(data, params) {

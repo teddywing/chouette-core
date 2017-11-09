@@ -1,7 +1,7 @@
-class ComplianceControlsController < BreadcrumbController
+class ComplianceControlsController < InheritedResources::Base
   defaults resource_class: ComplianceControl
   belongs_to :compliance_control_set
-  actions :all, :except => [:show, :index]
+  actions :all, :except => [:index]
 
   def select_type
     @sti_subclasses = ComplianceControl.subclasses
@@ -19,6 +19,13 @@ class ComplianceControlsController < BreadcrumbController
     create! do |success, failure|
       success.html { redirect_to compliance_control_set_path(parent) }
       failure.html { render( :action => 'new' ) }
+    end
+  end
+
+  def update
+    update! do |success, failure|
+      success.html { redirect_to compliance_control_set_path(parent) }
+      failure.html { render( :action => 'edit' ) }
     end
   end
 

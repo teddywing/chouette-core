@@ -19,7 +19,6 @@ class RoutesController < ChouetteController
 
   def edit_boarding_alighting
     @route = route
-    build_breadcrumb :edit
   end
 
   def save_boarding_alighting
@@ -51,8 +50,6 @@ class RoutesController < ChouetteController
         @route_sp,
         with: StopPointDecorator
       )
-
-      build_breadcrumb :show
     end
   end
 
@@ -71,7 +68,8 @@ class RoutesController < ChouetteController
 
   def duplicate
     route = Chouette::Route.find(params[:id]).duplicate
-    redirect_to edit_referential_line_route_path(@referential, route.line, route)
+    flash[:notice] = t('routes.duplicate.success')
+    redirect_to referential_line_path(@referential, route.line)
   end
 
   protected

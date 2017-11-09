@@ -2,7 +2,7 @@ RSpec.describe "NetexImport", type: :request do
 
   describe 'POST netex_imports' do
 
-    let( :referential ){ create :referential }
+    let( :referential ){ create :workbench_referential }
     let( :workbench ){ referential.workbench }
     let( :workbench_import ){ create :workbench_import }
 

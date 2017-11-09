@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171016074044) do
+ActiveRecord::Schema.define(version: 20171106111448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -366,7 +366,7 @@ ActiveRecord::Schema.define(version: 20171016074044) do
   end
 
   create_table "import_messages", id: :bigserial, force: :cascade do |t|
-    t.integer  "criticity"
+    t.string   "criticity"
     t.string   "message_key"
     t.hstore   "message_attributes"
     t.integer  "import_id",           limit: 8
@@ -408,9 +408,9 @@ ActiveRecord::Schema.define(version: 20171016074044) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
-    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
+    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 

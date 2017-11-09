@@ -1,4 +1,4 @@
-class ReferentialsController < BreadcrumbController
+class ReferentialsController < InheritedResources::Base
   defaults :resource_class => Referential
   include PolicyChecker
 
@@ -18,8 +18,6 @@ class ReferentialsController < BreadcrumbController
 
       if !!@referential.created_from_id
         format.html { redirect_to workbench_path(@referential.workbench) }
-      else
-        build_breadcrumb :new
       end
     end
   end
@@ -45,7 +43,6 @@ class ReferentialsController < BreadcrumbController
                :time_tables_count => resource.time_tables.count,
                :referential_id => resource.id}
       }
-      format.html { build_breadcrumb :show}
     end
   end
 
@@ -55,6 +52,16 @@ class ReferentialsController < BreadcrumbController
         @referential.init_metadatas default_date_range: Range.new(Date.today, Date.today.advance(months: 1))
       end
     end
+  end
+
+  def select_compliance_control_set
+    @compliance_control_sets = ComplianceControlSet.where(organisation: current_organisation)
+  end
+
+  def validate
+    ComplianceControlSetCopyWorker.perform_async(params[:compliance_control_set], params[:id])
+    flash[:notice] = I18n.t("referentials.operation_in_progress")
+    redirect_to(referential_path)
   end
 
   def destroy

@@ -2,12 +2,13 @@ import actions from '../../actions'
 import { connect } from 'react-redux'
 import NotesEditComponent from '../../components/tools/NotesEditVehicleJourney'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
+    editMode: state.editMode,
+    disabled: ownProps.disabled,
     modal: state.modal,
     vehicleJourneys: state.vehicleJourneys,
-    status: state.status,
-    filters: state.filters
+    status: state.status
   }
 }
 

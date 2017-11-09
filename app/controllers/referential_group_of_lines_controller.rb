@@ -12,9 +12,7 @@ class ReferentialGroupOfLinesController < ChouetteController
   def show
     @map = GroupOfLineMap.new(resource).with_helpers(self)
     @lines = resource.lines.order(:name)
-    show! do
-      build_breadcrumb :show
-    end
+    show!
   end
 
   def index
@@ -23,7 +21,6 @@ class ReferentialGroupOfLinesController < ChouetteController
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
-        build_breadcrumb :index
       }
     end
   end

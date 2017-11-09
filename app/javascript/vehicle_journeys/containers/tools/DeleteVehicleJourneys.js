@@ -2,10 +2,10 @@ import actions from '../../actions'
 import { connect } from 'react-redux'
 import DeleteVJComponent from '../../components/tools/DeleteVehicleJourneys'
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    vehicleJourneys: state.vehicleJourneys,
-    filters: state.filters
+    disabled: ownProps.disabled,
+    vehicleJourneys: state.vehicleJourneys
   }
 }
 

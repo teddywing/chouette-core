@@ -55,6 +55,7 @@ en:
       for_alighting: "Alighting"
     duplicate:
       title: "Duplicate route"
+      success: "Route cloned with success"
     route:
       no_journey_pattern: "No Journey pattern"
       opposite: "Opposite route"
