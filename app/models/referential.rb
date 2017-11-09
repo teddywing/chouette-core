@@ -56,7 +56,7 @@ class Referential < ActiveRecord::Base
 
   belongs_to :referential_suite
 
-  enumerize :object_id_format, in: %w(netx netx_stif)
+  enumerize :objectid_format, in: %w(default_netex stif_netex)
 
   scope :ready, -> { where(ready: true) }
   scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }

@@ -10,7 +10,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
   include ProjectionFields
   include StopAreaRestrictions
   include StopAreaReferentialSupport
-  include ObjectIdFormat
 
   extend Enumerize
   enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
@@ -62,6 +61,10 @@ class Chouette::StopArea < Chouette::ActiveRecord
     else
       self.latitude.to_s+","+self.longitude.to_s
     end
+  end
+
+  def objectid_format
+    "#{self.stop_area_referential.objectid_format}_attributes_support".camelcase.constantize
   end
 
   def coordinates

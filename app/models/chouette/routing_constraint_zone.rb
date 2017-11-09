@@ -1,5 +1,6 @@
 class Chouette::RoutingConstraintZone < Chouette::TridentActiveRecord
   include ChecksumSupport
+  include ObjectIdFormatToReferential
 
   belongs_to :route
   has_array_of :stop_points, class_name: 'Chouette::StopPoint'

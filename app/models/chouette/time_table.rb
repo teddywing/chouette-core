@@ -1,7 +1,7 @@
 class Chouette::TimeTable < Chouette::TridentActiveRecord
   include ChecksumSupport
   include TimeTableRestrictions
-  include ObjectIdFormat
+  include ObjectIdFormatToReferential
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 
