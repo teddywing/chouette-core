@@ -34,7 +34,7 @@ export default class ShiftVehicleJourney extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={(actions.getSelected(this.props.vehicleJourneys).length > 1 || this.props.disabled)}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length != 1 || this.props.disabled)}
             data-toggle='modal'
             data-target='#ShiftVehicleJourneyModal'
             onClick={this.props.onOpenShiftModal}
