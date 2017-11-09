@@ -73,8 +73,6 @@ module ApplicationHelper
       "time_tables"
     when path.include?("/timebands")
       "timebands"
-    when path.include?("/route_sections")
-      "route_sections"
      when path.include?("/rule_parameter_set")
       "parametersets"
     when path.include?("/import_tasks")

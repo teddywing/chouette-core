@@ -10,7 +10,6 @@ fr:
       edit: "Editer cette mission"
       destroy: "Supprimer cette mission"
       destroy_confirm: "Etes vous sûr de vouloir détruire cette mission ?"
-      edit_route_sections: "Editer les sections de parcours"
       edit_journey_patterns_collection: "Editer les missions"
     new:
       title: "Ajouter une mission"

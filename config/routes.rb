@@ -106,7 +106,6 @@ ChouetteIhm::Application.routes.draw do
     get :select_compliance_control_set
     post :validate, on: :member
     resources :autocomplete_time_tables, only: [:index]
-    resources :autocomplete_route_sections
     resources :autocomplete_timebands
     resources :group_of_lines, controller: "referential_group_of_lines" do
       collection do
@@ -138,9 +137,6 @@ ChouetteIhm::Application.routes.draw do
         resource :journey_patterns_collection, :only => [:show, :update]
         resources :journey_patterns do
           get 'new_vehicle_journey', on: :member
-          resource :route_sections_selector, path: 'sections' do
-            post 'selection'
-          end
         end
         resource :vehicle_journeys_collection, :only => [:show, :update]
         resources :vehicle_journeys, :vehicle_journey_frequencies do
@@ -214,12 +210,6 @@ ChouetteIhm::Application.routes.draw do
       end
     end
     resources :clean_ups
-
-    resources :route_sections do
-      collection  do
-        get 'create_to_edit'
-      end
-    end
   end
 
   root :to => "dashboards#show"
