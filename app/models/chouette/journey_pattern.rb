@@ -21,8 +21,6 @@ module Chouette
     enum section_status: { todo: 0, completed: 1, control: 2 }
 
     attr_accessor  :control_checked
-    after_update :control_route_sections, :unless => "control_checked"
-
 
     def local_id
       "IBOO-#{self.referential.id}-#{self.route.line.get_objectid.local_id}-#{self.id}"
