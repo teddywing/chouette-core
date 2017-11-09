@@ -123,10 +123,6 @@ class Referential < ActiveRecord::Base
     Chouette::VehicleJourneyFrequency.all
   end
 
-  def route_sections
-    Chouette::RouteSection.all
-  end
-
   def routing_constraint_zones
     Chouette::RoutingConstraintZone.all
   end
