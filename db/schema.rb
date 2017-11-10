@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171110114408) do
+ActiveRecord::Schema.define(version: 20171110130416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,9 +177,9 @@ ActiveRecord::Schema.define(version: 20171110114408) do
     t.string   "type"
     t.string   "reference"
     t.hstore   "metrics"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "compliance_check_set_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "compliance_check_set_id", limit: 8
   end
 
   add_index "compliance_check_resources", ["compliance_check_set_id"], name: "index_compliance_check_resources_on_compliance_check_set_id", using: :btree
