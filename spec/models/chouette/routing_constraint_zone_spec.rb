@@ -8,6 +8,12 @@ describe Chouette::RoutingConstraintZone, type: :model do
   # shoulda matcher to validate length of array ?
   xit { is_expected.to validate_length_of(:stop_point_ids).is_at_least(2) }
 
+  describe "#objectid_format" do
+    it "sould not be nil" do
+      expect(subject.objectid_format).not_to be_nil
+    end
+  end
+
   describe 'checksum' do
     it_behaves_like 'checksum support', :routing_constraint_zone
   end

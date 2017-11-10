@@ -4,6 +4,12 @@ describe Chouette::Company, :type => :model do
   subject { create(:company) }
   it { should validate_presence_of :name }
 
+  describe "#objectid_format" do
+    it "sould not be nil" do
+      expect(subject.objectid_format).not_to be_nil
+    end
+  end
+
   describe "#nullables empty" do
     it "should set null empty nullable attributes" do
       subject.organizational_unit = ''

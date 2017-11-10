@@ -12,6 +12,12 @@ describe Chouette::StopArea, :type => :model do
     it { should be_kind_of(Chouette::StifReflexObjectid) }
   end
 
+  describe "#objectid_format" do
+    it "sould not be nil" do
+      expect(subject.objectid_format).not_to be_nil
+    end
+  end
+
   it { should belong_to(:stop_area_referential) }
   it { should validate_presence_of :name }
   it { should validate_numericality_of :latitude }

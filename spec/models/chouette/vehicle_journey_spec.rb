@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
+
+    describe "#objectid_format" do
+      it "sould not be nil" do
+        expect(subject.objectid_format).not_to be_nil
+      end
+    end
+
   it "must be valid with an at-stop day offset of 1" do
     vehicle_journey = create(
       :vehicle_journey,

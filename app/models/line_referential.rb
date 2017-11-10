@@ -10,7 +10,8 @@ class LineReferential < ActiveRecord::Base
   has_many :networks, class_name: 'Chouette::Network'
   has_many :line_referential_syncs, -> { order created_at: :desc }
   has_many :workbenches
-  enumerize :objectid_format, in: %w(default_netex stif_netex)
+  enumerize :objectid_format, in: %w(netex stif_netex)
+  validates_presence_of :objectid_format
 
   def add_member(organisation, options = {})
     attributes = options.merge organisation: organisation

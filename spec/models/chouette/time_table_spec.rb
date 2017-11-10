@@ -6,6 +6,12 @@ describe Chouette::TimeTable, :type => :model do
 
   it { is_expected.to validate_presence_of :comment }
   it { is_expected.to validate_uniqueness_of :objectid }
+  
+    describe "#objectid_format" do
+      it "sould not be nil" do
+        expect(subject.objectid_format).not_to be_nil
+      end
+    end
 
     def create_time_table_periode time_table, start_date, end_date
       create(:time_table_period, time_table: time_table, :period_start => start_date, :period_end => end_date)

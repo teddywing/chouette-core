@@ -10,6 +10,12 @@ RSpec.describe Chouette::Route, :type => :model do
     it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
   end
 
+  describe "#objectid_format" do
+    it "sould not be nil" do
+      expect(subject.objectid_format).not_to be_nil
+    end
+  end
+
   it { is_expected.to enumerize(:direction).in(:straight_forward, :backward, :clockwise, :counter_clockwise, :north, :north_west, :west, :south_west, :south, :south_east, :east, :north_east) }
   it { is_expected.to enumerize(:wayback).in(:outbound, :inbound) }
 

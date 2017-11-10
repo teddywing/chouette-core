@@ -19,6 +19,8 @@ module Chouette
 
     acts_as_list :scope => :route, top_of_list: 0
 
+    validates_presence_of :objectid_format
+
     validates_presence_of :stop_area
     validate :stop_area_id_validation
     def stop_area_id_validation

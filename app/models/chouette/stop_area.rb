@@ -64,7 +64,7 @@ class Chouette::StopArea < Chouette::ActiveRecord
   end
 
   def objectid_format
-    "#{self.stop_area_referential.objectid_format}_attributes_support".camelcase.constantize
+    "#{self.stop_area_referential.objectid_format}_attributes_support".camelcase.constantize if self.stop_area_referential.objectid_format
   end
 
   def coordinates

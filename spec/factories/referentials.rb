@@ -8,6 +8,7 @@ FactoryGirl.define do
     association :organisation
     time_zone "Europe/Paris"
     ready { true }
+    objectid_format "netex"
 
     factory :workbench_referential do
       association :workbench

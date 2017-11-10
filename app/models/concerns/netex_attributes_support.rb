@@ -1,4 +1,4 @@
-module DefaultNetexAttributesSupport
+module NetexAttributesSupport
   extend ActiveSupport::Concern
 
   included do

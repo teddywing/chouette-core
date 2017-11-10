@@ -30,6 +30,12 @@ describe Chouette::JourneyPattern, :type => :model do
   #   end
   # end
 
+  describe "#objectid_format" do
+    it "sould not be nil" do
+      expect(subject.objectid_format).not_to be_nil
+    end
+  end
+
   describe "state_update" do
     def journey_pattern_to_state jp
       jp.attributes.slice('name', 'published_name', 'registration_number').tap do |item|

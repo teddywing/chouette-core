@@ -13,6 +13,12 @@ describe StopPoint, :type => :model do
     it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
   end
 
+  describe "#objectid_format" do
+    it "sould not be nil" do
+      expect(subject.objectid_format).not_to be_nil
+    end
+  end
+
   describe "#destroy" do
     before(:each) do
       @vehicle = create(:vehicle_journey)
