@@ -10,7 +10,7 @@ module TransportModeHelper
   private
   def translated_mode_name mode_type, value
     return "" if value.blank?
-    "[#{t("enumerize.transport_#{mode_type}.#{value}")}]"
+    "[#{I18n.t("enumerize.transport_#{mode_type}.#{value}")}]"
   end
 
 end

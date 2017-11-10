@@ -10,21 +10,22 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
   # We setup a control_set with two blocks and one direct control (meaning that it is not attached to a block)
   # Then we add one control to the first block and two controls to the second block
   let( :compliance_check_set ){ create :compliance_check_set, name: random_string }
-  let(:blox){
-    2.times.map{ | _ | create :compliance_check_block, compliance_check_set: compliance_check_set }
-  }
+  let(:blox){[
+    create( :compliance_check_block,
+           compliance_check_set: compliance_check_set, transport_mode: 'bus', transport_submode: 'demandAndResponseBus'),
+    create( :compliance_check_block,
+           compliance_check_set: compliance_check_set, transport_mode: 'rail', transport_submode: 'suburbanRailway')
+  ]}
   let!(:direct_checks){ make_check(nil, times: 2) + make_check(nil, severity: :error) }
   let!(:indirect_checks){ blox.map{ |block| make_check(block) } }
 
   context 'show' do
 
     before do
-      blox.first.update transport_mode: 'bus', transport_submode: 'demandAndResponseBus'
-      blox.second.update transport_mode: 'train', transport_submode: 'suburbanRailway'
       visit(compliance_check_set_path(compliance_check_set))
     end
 
-    xit 'we can see the expected content' do
+    it 'we can see the expected content' do
       # Breadcrumbs
       expect_breadcrumb_links "Accueil", "Gestion de l'offre", " Rapports de contrôle"
 
@@ -41,7 +42,6 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
         expect( page ).to have_content("Objét")
         expect( page ).to have_content("Criticité")
       end
-      
 
       # Checks
       # Direct Children
@@ -57,7 +57,7 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
       # Indirect Children
       compliance_check_set.compliance_check_blocks.each do | block |
         within(:xpath, xpath_for_div_of_block(block)) do
-          block.checks.each do | check |
+          block.compliance_checks.each do | check |
             expect( page ).to have_content( check.code ) 
             expect( page ).to have_content( check.name ) 
             expect( page ).to have_content( check.criticity ) 
