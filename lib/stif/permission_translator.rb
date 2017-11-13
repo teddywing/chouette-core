@@ -29,8 +29,8 @@ module Stif
         vehicle_journeys
         api_keys
         compliance_controls
-        compliance_controls_sets
-        compliance_controls_blocks
+        compliance_control_sets
+        compliance_control_blocks
         compliance_check_sets
       ]
     end

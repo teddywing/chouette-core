@@ -6,18 +6,18 @@ RSpec.describe ComplianceControlSetPolicy do
   before { stub_policy_scope(record) }
 
   permissions :create? do
-    it_behaves_like 'permitted policy outside referential', 'compliance_controls_sets.create'
+    it_behaves_like 'permitted policy outside referential', 'compliance_control_sets.create'
   end
 
   permissions :update? do
-    it_behaves_like 'permitted policy outside referential', 'compliance_controls_sets.update'
+    it_behaves_like 'permitted policy outside referential', 'compliance_control_sets.update'
   end
 
   permissions :clone? do
-    it_behaves_like 'permitted policy outside referential', 'compliance_controls_sets.create'
+    it_behaves_like 'permitted policy outside referential', 'compliance_control_sets.create'
   end
 
   permissions :destroy? do
-    it_behaves_like 'permitted policy outside referential', 'compliance_controls_sets.destroy'
+    it_behaves_like 'permitted policy outside referential', 'compliance_control_sets.destroy'
   end
 end
