@@ -36,3 +36,7 @@ end
 # Include all Lines in organisation functional_scope
 stif.update sso_attributes: { functional_scope: line_referential.lines.pluck(:objectid) }
 operator.update sso_attributes: { functional_scope: line_referential.lines.limit(3).pluck(:objectid) }
+
+# Set type of objectid_format
+line_referential.update objectid_format: "netex"
+stop_area_referential.update objectid_format: "netex"

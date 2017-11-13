@@ -35,6 +35,9 @@ gem 'has_array_of', af83: 'has_array_of'
 
 gem 'rails-observers'
 
+# Use SeedBank for spliting seeds
+gem 'seedbank'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
