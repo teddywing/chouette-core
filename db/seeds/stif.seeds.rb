@@ -2,8 +2,8 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
-stop_area_referential = StopAreaReferential.find_or_create_by!(name: "Reflex")
-line_referential = LineReferential.find_or_create_by!(name: "CodifLigne")
+stop_area_referential = StopAreaReferential.find_or_create_by!(name: "Reflex", objectid_format: "stif_netex")
+line_referential = LineReferential.find_or_create_by!(name: "CodifLigne", objectid_format: "stif_netex")
 
 # Organisations
 stif = Organisation.find_or_create_by!(code: "STIF") do |org|
@@ -36,8 +36,3 @@ end
 # Include all Lines in organisation functional_scope
 stif.update sso_attributes: { functional_scope: line_referential.lines.pluck(:objectid) }
 operator.update sso_attributes: { functional_scope: line_referential.lines.limit(3).pluck(:objectid) }
-
-# Set type of objectid_format
-line_referential.update objectid_format: "stif_netex"
-stop_area_referential.update objectid_format: "stif_netex"
-
