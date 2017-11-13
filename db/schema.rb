@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171110130416) do
+ActiveRecord::Schema.define(version: 20171113101005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,7 +174,7 @@ ActiveRecord::Schema.define(version: 20171110130416) do
   create_table "compliance_check_resources", id: :bigserial, force: :cascade do |t|
     t.string   "status"
     t.string   "name"
-    t.string   "type"
+    t.string   "resource_type"
     t.string   "reference"
     t.hstore   "metrics"
     t.datetime "created_at",                        null: false
