@@ -6,15 +6,15 @@ class ComplianceControlSetPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.has_permission?('compliance_controls_sets.destroy')
+    user.has_permission?('compliance_control_sets.destroy')
   end
 
   def create?
-    user.has_permission?('compliance_controls_sets.create')
+    user.has_permission?('compliance_control_sets.create')
   end
 
   def update?
-    user.has_permission?('compliance_controls_sets.update')
+    user.has_permission?('compliance_control_sets.update')
   end
 
   def clone?

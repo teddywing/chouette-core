@@ -1,4 +1,5 @@
 class ComplianceControlSetsController < InheritedResources::Base
+  include PolicyChecker
   defaults resource_class: ComplianceControlSet
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("updated_at", DateTime) }

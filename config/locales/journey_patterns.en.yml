@@ -10,7 +10,6 @@ en:
       edit: "Edit this journey pattern"
       destroy: "Remove this journey pattern"
       destroy_confirm: A"re you sure you want destroy this journey pattern ?"
-      edit_route_sections: "Update route sections"
       edit_journey_patterns_collection: "Edit journey patterns"
     new:
       title: "Add a new journey pattern"

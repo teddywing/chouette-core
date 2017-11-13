@@ -18,4 +18,40 @@ class ComplianceCheckSet < ActiveRecord::Base
     where('created_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)
   end
 
+  def update_status
+    statuses = compliance_check_resources.map do |resource|
+      case resource.status
+      when 'ERROR'
+        return update(status: 'failed')
+      when 'WARNING'
+        return update(status: 'warning')
+      else
+        resource.status
+      end
+    end
+
+    if statuses_ok_or_ignored?(statuses)
+      return update(status: 'successful')
+    end
+
+    true
+  end
+
+  private
+
+  def statuses_ok_or_ignored?(statuses)
+    uniform_statuses = statuses.uniq
+
+    (
+      # All statuses OK
+      uniform_statuses.length == 1 &&
+        uniform_statuses.first == 'OK'
+    ) ||
+    (
+      # Statuses OK or IGNORED
+      uniform_statuses.length == 2 &&
+        uniform_statuses.include?('OK') &&
+        uniform_statuses.include?('IGNORED')
+    )
+  end
 end
