@@ -2,6 +2,6 @@ fr:
   activerecord:
     models:
       compliance_check_block:
-        zero: "Groupe de rapport de contrôle"
-        one: "Groupe de rapport de contrôle"
-        many: "Groupes de rapport de contrôle"
+        zero:  "Groupe de contrôle"
+        one:   "Groupe de contrôle"
+        other: "Groupes de contrôles"

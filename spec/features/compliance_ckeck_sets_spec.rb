@@ -39,7 +39,7 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
       # Filters
       within( 'form.form-filter' ) do
         expect( page ).to have_content("Groupe de rapport de contrôle")
-        expect( page ).to have_content("Objét")
+        expect( page ).to have_content("Objet")
         expect( page ).to have_content("Criticité")
       end
 

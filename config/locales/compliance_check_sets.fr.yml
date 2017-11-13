@@ -9,12 +9,10 @@ fr:
           name: Indiquez un nom d'un objet associé...
           error_period_filter: La date de fin doit être supérieure ou égale à la date de début0
     index:
-      title: Rapports de contrôle
-      new: Création d'un rapport de contrôle
-      edit: Édition d'un rapport de contrôle
+      title: "Liste des jeux de contrôles"
     search_no_results: Aucun rapport de contrôle ne correspond à votre recherche
     show:
-      title: Rapport de contrôle %{name}
+      title: Jeu de contrôle %{name}
   activerecord:
     attributes:
       compliance_check_set:
@@ -26,6 +24,5 @@ fr:
         name: Nom
     models:
       compliance_check_block:
-        zero: "Groupe de rapport de contrôle"
-        one: "Groupe de rapport de contrôle"
-        many: "Groupes de rapport de contrôle"
+        many: "Groupes de jeux de contrôle"
+        other: "Groupe de jeux de contrôle"
