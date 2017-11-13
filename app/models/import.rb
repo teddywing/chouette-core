@@ -22,6 +22,7 @@ class Import < ActiveRecord::Base
   validates_format_of :file, with: %r{\.zip\z}i, message: I18n.t('activerecord.errors.models.import.attributes.file.wrong_file_extension')
 
   before_create :initialize_fields
+  before_destroy :destroy_non_ready_referential
 
   def self.model_name
     ActiveModel::Name.new Import, Import, "Import"
@@ -95,6 +96,12 @@ class Import < ActiveRecord::Base
 
   def initialize_fields
     self.token_download = SecureRandom.urlsafe_base64
+  end
+
+  def destroy_non_ready_referential
+    if !referential.ready
+      referential.destroy
+    end
   end
 
   def self.symbols_with_indifferent_access(array)
