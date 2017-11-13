@@ -15,8 +15,8 @@ en:
       select_types: Control Type Selection
       edit: Edit compliance control set
     search_no_results: No control reports match your search
-    show:
-      title: Control report %{name}
+    executed:
+      title: Executed control report %{name}
   activerecord:
     attributes:
       compliance_check_set:

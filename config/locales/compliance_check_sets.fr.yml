@@ -11,8 +11,8 @@ fr:
     index:
       title: "Liste des jeux de contrôles"
     search_no_results: Aucun rapport de contrôle ne correspond à votre recherche
-    show:
-      title: Jeu de contrôle %{name}
+    executed:
+      title: Jeu de contrôles executés %{name}
   activerecord:
     attributes:
       compliance_check_set:
