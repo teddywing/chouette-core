@@ -57,24 +57,6 @@ RSpec.describe Import, type: :model do
 
       expect(ImportMessage.count).to eq(0)
     end
-
-    it "must destroy its associated Referential if ready: false" do
-      referential = create(:referential, ready: false)
-      import = create(:import, referential: referential)
-
-      import.destroy
-
-      expect(referential).to be_destroyed
-    end
-
-    it "must not destroy its associated Referential if ready: true" do
-      referential = create(:referential, ready: true)
-      import = create(:import, referential: referential)
-
-      import.destroy
-
-      expect(referential).not_to be_destroyed
-    end
   end
 
   describe "#notify_parent" do
