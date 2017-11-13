@@ -27,10 +27,10 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
 
     it 'we can see the expected content' do
       # Breadcrumbs
-      expect_breadcrumb_links "Accueil", "Gestion de l'offre", " Rapports de contrôle"
+      expect_breadcrumb_links "Accueil", "Gestion de l'offre", "Liste des jeux de contrôles"
 
       # Headline
-      expect( page ).to have_content("Rapport de contrôle #{compliance_check_set.name}")
+      expect( page ).to have_content("Jeu de contrôles exécutés #{compliance_check_set.name}")
 
       # Information Definition List
       expect( page.first('.dl-term') ).to have_content("Nom")
@@ -38,7 +38,7 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
 
       # Filters
       within( 'form.form-filter' ) do
-        expect( page ).to have_content("Groupe de rapport de contrôle")
+        expect( page ).to have_content("Groupe de contrôle")
         expect( page ).to have_content("Objet")
         expect( page ).to have_content("Criticité")
       end

@@ -12,7 +12,7 @@ fr:
       title: "Liste des jeux de contrôles"
     search_no_results: Aucun rapport de contrôle ne correspond à votre recherche
     executed:
-      title: Jeu de contrôles executés %{name}
+      title: Jeu de contrôles exécutés %{name}
   activerecord:
     attributes:
       compliance_check_set:
@@ -24,5 +24,6 @@ fr:
         name: Nom
     models:
       compliance_check_block:
-        many: "Groupes de jeux de contrôle"
-        other: "Groupe de jeux de contrôle"
+        zero:  "Groupe de contrôle"
+        one:   "Groupe de contrôle"
+        other: "Groupes de contrôles"
