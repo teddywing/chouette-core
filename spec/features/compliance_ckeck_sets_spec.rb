@@ -19,10 +19,10 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
   let!(:direct_checks){ make_check(nil, times: 2) + make_check(nil, severity: :error) }
   let!(:indirect_checks){ blox.map{ |block| make_check(block) } }
 
-  context 'show' do
+  context 'executed' do
 
     before do
-      visit(compliance_check_set_path(compliance_check_set))
+      visit(executed_compliance_check_set_path(compliance_check_set))
     end
 
     it 'we can see the expected content' do

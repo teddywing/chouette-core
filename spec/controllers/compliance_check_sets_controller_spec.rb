@@ -5,9 +5,9 @@ RSpec.describe ComplianceCheckSetsController, type: :controller do
 
   let(:compliance_check_set) { create :compliance_check_set }
 
-  describe "GET show" do
+  describe "GET executed" do
     it 'should be successful' do
-      get :show, workbench_id: compliance_check_set.workbench.id, id: compliance_check_set.id
+      get :executed, workbench_id: compliance_check_set.workbench.id, id: compliance_check_set.id
       expect(response).to be_success
     end
   end

@@ -1,6 +1,6 @@
 / Compliance Check Filter
 = search_form_for @q_checks_form,
-  url: compliance_check_set_path(@compliance_check_set),
+  url: executed_compliance_check_set_path(@compliance_check_set),
   builder: SimpleForm::FormBuilder,
   class: 'form form-filter' do |f|
 
