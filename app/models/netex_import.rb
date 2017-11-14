@@ -21,7 +21,7 @@ class NetexImport < Import
   private
 
   def destroy_non_ready_referential
-    if !referential.ready
+    unless referential.ready
       referential.destroy
     end
   end
