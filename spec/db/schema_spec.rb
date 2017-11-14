@@ -35,9 +35,9 @@ RSpec::Matchers.define :use_bigint_keys do
   end
 
   failure_message do |filename|
-    <<~EOS
-      expected #{filename.inspect} to use bigint keys
-      Diff: #{diff}
+    <<-EOS
+expected #{filename.inspect} to use bigint keys
+Diff: #{diff}
     EOS
   end
 
