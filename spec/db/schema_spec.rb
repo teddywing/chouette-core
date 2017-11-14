@@ -7,22 +7,31 @@ end
 
 RSpec::Matchers.define :use_bigint_keys do
   match do |filename|
-    @non_bigint_primary_keys = []
-    @non_bigint_foreign_keys = []
+    @original = ""
+    @expected = ""
 
     File.open(filename, 'r') do |f|
-      @non_bigint_primary_keys = f
-        .grep(/create_table /)
-        .grep_v(/id: (:bigserial|false)/)
+      f.each_line do |line|
+        expected_line = line
 
-      f.rewind
+        # Primary key
+        if line =~ /create_table / &&
+          !(line =~ /id: (:bigserial|false)/)
+          expected_line = line.sub(/(create_table "\w+", )/, '\1id: :bigserial, ')
+        end
 
-      @non_bigint_foreign_keys = f
-        .grep(/t\.integer +"\w+_id"/)
-        .grep_v(/limit: 8/)
+        # Foreign key
+        if line =~ /t\.integer +"\w+_id"/ &&
+          !(line =~ /limit: 8/)
+          expected_line = line.sub(/(t.integer +"\w+")/, '\1, limit: 8')
+        end
+
+        @original += line
+        @expected += expected_line
+      end
     end
 
-    @non_bigint_primary_keys.empty? && @non_bigint_foreign_keys.empty?
+    @original == @expected
   end
 
   failure_message do |filename|
@@ -35,6 +44,6 @@ RSpec::Matchers.define :use_bigint_keys do
   def diff
     RSpec::Support::Differ.new(
       color: RSpec::Matchers.configuration.color?
-    ).diff(@non_bigint_primary_keys + @non_bigint_foreign_keys, [])
+    ).diff_as_string(@original, @expected)
   end
 end
