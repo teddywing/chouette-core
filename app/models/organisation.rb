@@ -3,7 +3,6 @@ class Organisation < ActiveRecord::Base
 
   has_many :users, :dependent => :destroy
   has_many :referentials, :dependent => :destroy
-  # has_many :rule_parameter_sets, :dependent => :destroy
   has_many :compliance_control_sets, :dependent => :destroy
 
   has_many :stop_area_referential_memberships
