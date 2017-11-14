@@ -1,10 +1,5 @@
 RSpec.describe ActiveRecord::Schema do
   it "uses type `bigint` for primary and foreign keys" do
-# grep -e 'create_table.*id: :bigserial' db/schema.rb | grep -v 'id: :bigserial'
-# grep -e 'create_table.+id: :bigserial' db/schema.rb | grep -v 'id: :bigserial'
-# grep -e  't\.integer *"\w*_id"' db/schema.rb | grep -v -e 'limit: 8'
-# grep -e  't\.integer +"\w+_id"' db/schema.rb | grep -v -e 'limit: 8'
-
     non_bigint_primary_keys = []
     non_bigint_foreign_keys = []
 
