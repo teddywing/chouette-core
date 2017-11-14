@@ -43,5 +43,5 @@
         wrapper_html: {class: 'checkbox_list'}
 
   .actions
-    = link_to t('actions.erase'), @compliance_check_set, class: 'btn btn-link'
+    = link_to t('actions.erase'), executed_compliance_check_set_path(@compliance_check_set), class: 'btn btn-link'
     = f.submit t('actions.filter'), class: 'btn btn-default', id: 'compliance_check_set_compliance_checks_filter_btn'

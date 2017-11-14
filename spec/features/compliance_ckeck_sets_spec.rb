@@ -17,7 +17,9 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
            compliance_check_set: compliance_check_set, transport_mode: 'rail', transport_submode: 'suburbanRailway')
   ]}
   let!(:direct_checks){ make_check(nil, times: 2) + make_check(nil, severity: :error) }
-  let!(:indirect_checks){ blox.map{ |block| make_check(block) } }
+  let!(:indirect_checks){ blox.flat_map{ |block| make_check(block) } }
+  let( :all_checks ){ direct_checks + indirect_checks }
+
 
   context 'executed' do
 
@@ -66,9 +68,29 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
         end
       end
     end
+
+    it 'can filter the results and remove the filter' do
+      # Filter
+      check('error')
+      click_on('Filtrer')
+      all_checks.each do | check |
+        if check.criticity == 'error'
+          expect( page ).to have_content(check.code)
+        else
+          expect( page ).not_to have_content(check.code)
+        end
+      end
+
+      # Remove filter
+      click_on('Effacer')
+      all_checks.each do | check |
+        expect( page ).to have_content(check.code)
+      end
+      
+    end
   end
 
-  def make_check ccblock=nil, times: 1, severity: :error
+  def make_check ccblock=nil, times: 1, severity: :warning
     times.times.map do
       make_one_check ccblock, severity
     end
