@@ -68,7 +68,6 @@ ChouetteIhm::Application.routes.draw do
 
   resource :organisation, :only => [:show, :edit, :update] do
     resources :users
-    resources :rule_parameter_sets
   end
 
   resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]
