@@ -13,7 +13,7 @@ RSpec::Matchers.define :use_bigint_keys do
     File.open(filename, 'r') do |f|
       @non_bigint_primary_keys = f
         .grep(/create_table /)
-        .grep_v(/id: :bigserial/)
+        .grep_v(/id: (:bigserial|false)/)
 
       f.rewind
 
