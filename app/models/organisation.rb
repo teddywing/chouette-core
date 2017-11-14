@@ -19,12 +19,6 @@ class Organisation < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :code
 
-  # after_create :add_rule_parameter_set
-
-  # def add_rule_parameter_set
-  #   RuleParameterSet.default_for_all_modes( self).save
-  # end
-
   def self.portail_api_request
     conf = Rails.application.config.try(:stif_portail_api)
     raise 'Rails.application.config.stif_portail_api configuration is not defined' unless conf
