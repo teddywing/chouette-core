@@ -25,4 +25,5 @@ class NetexImport < Import
       referential.destroy
     end
   end
+
 end
