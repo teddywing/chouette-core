@@ -15,15 +15,15 @@ RSpec::Matchers.define :use_bigint_keys do
         expected_line = line
 
         # Primary key
-        if line =~ /create_table / &&
-          !(line =~ /id: (:bigserial|false)/)
-          expected_line = line.sub(/(create_table "\w+", )/, '\1id: :bigserial, ')
+        if line =~ /create_table\s/ &&
+          !(line =~ /id:\s+(:bigserial|false)/)
+          expected_line = line.sub(/(create_table\s"\w+",\s)/, '\1id: :bigserial, ')
         end
 
         # Foreign key
-        if line =~ /t\.integer +"\w+_id"/ &&
+        if line =~ /t\.integer\s+"\w+_id"/ &&
           !(line =~ /limit: 8/)
-          expected_line = line.sub(/(t.integer +"\w+")/, '\1, limit: 8')
+          expected_line = line.sub(/(t.integer\s+"\w+")/, '\1, limit: 8')
         end
 
         @original += line
