@@ -33,7 +33,7 @@ module Api
         if @new_referential.persisted?
           attributes = attributes.merge referential_id: @new_referential.id
         else
-          attributes = attributes.merge status: "failed"
+          attributes = attributes.merge status: "aborted"
         end
 
         @netex_import = NetexImport.new attributes

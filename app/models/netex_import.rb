@@ -1,6 +1,6 @@
 require 'net/http'
 class NetexImport < Import
-  after_commit :launch_java_import, on: :create
+  after_commit :launch_java_import, on: :create, unless: :aborted?
 
   validates_presence_of :parent
 
@@ -15,5 +15,12 @@ class NetexImport < Import
         logger.error e.backtrace.inspect
       end
     end
+  end
+
+
+  private
+
+  def aborted?
+    status == 'aborted'
   end
 end
