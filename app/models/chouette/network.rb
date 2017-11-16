@@ -2,7 +2,7 @@ class Chouette::Network < Chouette::ActiveRecord
   include StifCodifligneAttributesSupport
   include NetworkRestrictions
   include LineReferentialSupport
-  include ObjectIdFormatToLineReferential
+  include ObjectIdFormatToReferential
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 
