@@ -1,5 +1,9 @@
 class LineReferential < ActiveRecord::Base
+<<<<<<< HEAD
   include ObjectidFormatterSupport
+=======
+  include ObjectidFormaterSupport
+>>>>>>> Create objectid format and integrate it in models. Work in progress. Refs #4941
   extend StifTransportModeEnumerations
   extend Enumerize
   
@@ -11,7 +15,11 @@ class LineReferential < ActiveRecord::Base
   has_many :networks, class_name: 'Chouette::Network'
   has_many :line_referential_syncs, -> { order created_at: :desc }
   has_many :workbenches
+<<<<<<< HEAD
   enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne), default: 'netex'
+=======
+  enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne)
+>>>>>>> Create objectid format and integrate it in models. Work in progress. Refs #4941
 
   def add_member(organisation, options = {})
     attributes = options.merge organisation: organisation
