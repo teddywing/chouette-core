@@ -7,7 +7,7 @@ class StopAreaReferential < ActiveRecord::Base
   has_many :stop_areas, class_name: 'Chouette::StopArea'
   has_many :stop_area_referential_syncs, -> {order created_at: :desc}
   has_many :workbenches
-  enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne)
+  enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne), default: 'netex'
   validates_presence_of :objectid_format
 
   def add_member(organisation, options = {})
