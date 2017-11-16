@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 module Chouette
   class Line < Chouette::ActiveRecord
     include LineRestrictions
@@ -6,16 +5,6 @@ module Chouette
     include ObjectidSupport
     extend StifTransportModeEnumerations
     extend StifTransportSubmodeEnumerations
-=======
-class Chouette::Line < Chouette::ActiveRecord
-  include StifCodifligneAttributesSupport
-  include LineRestrictions
-  include LineReferentialSupport
-  include ObjectIdFormat
-  extend StifTransportModeEnumerations
-  extend StifTransportSubmodeEnumerations
->>>>>>> add object_id_format to migrations, create module for call Referential, Line Referential, StopAreaReferential in models, add Enumerize in models Refs #4941
-
     extend ActiveModel::Naming
 
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
