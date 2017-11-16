@@ -7,7 +7,7 @@ module Chouette
 
     include ForBoardingEnumerations
     include ForAlightingEnumerations
-    include ObjectIdFormatToReferential
+    include ObjectidSupport
 
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
@@ -19,7 +19,6 @@ module Chouette
 
     acts_as_list :scope => :route, top_of_list: 0
 
-    validates_presence_of :objectid_format
 
     validates_presence_of :stop_area
     validate :stop_area_id_validation

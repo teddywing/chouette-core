@@ -5,9 +5,9 @@ class Chouette::AccessPoint < Chouette::ActiveRecord
   # FIXME http://jira.codehaus.org/browse/JRUBY-6358
   self.primary_key = "id"
 
-  include StifReflexAttributesSupport
   include Geokit::Mappable
   include ProjectionFields
+  include ObjectidSupport
 
   has_many :access_links, :dependent => :destroy
   belongs_to :stop_area
@@ -27,11 +27,6 @@ class Chouette::AccessPoint < Chouette::ActiveRecord
   before_save :coordinates_to_lat_lng
   def self.nullable_attributes
     [:street_name, :country_code, :comment, :long_lat_type, :zip_code, :city_name]
-  end
-
-
-  def referential
-    @referential ||= Referential.where(:slug => Apartment::Tenant.current).first!
   end
 
   def referential

@@ -6,10 +6,11 @@ class Chouette::StopArea < Chouette::ActiveRecord
   self.primary_key = "id"
 
   include Geokit::Mappable
-  include StifReflexAttributesSupport
+  # include StifReflexAttributesSupport
   include ProjectionFields
   include StopAreaRestrictions
   include StopAreaReferentialSupport
+  include ObjectidSupport
 
   extend Enumerize
   enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
@@ -25,8 +26,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
 
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential_id
-
-  alias_method :stop_area_referential, :referential
 
   acts_as_tree :foreign_key => 'parent_id', :order => "name"
 
@@ -61,10 +60,6 @@ class Chouette::StopArea < Chouette::ActiveRecord
     else
       self.latitude.to_s+","+self.longitude.to_s
     end
-  end
-
-  def objectid_format
-    "#{self.stop_area_referential.objectid_format}_attributes_support".camelcase.constantize if self.stop_area_referential.objectid_format
   end
 
   def coordinates

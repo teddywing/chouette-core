@@ -1,5 +1,4 @@
 class Chouette::TridentActiveRecord < Chouette::ActiveRecord
-  include StifNetexAttributesSupport
 
   self.abstract_class = true
 

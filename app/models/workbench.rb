@@ -1,11 +1,11 @@
 class Workbench < ActiveRecord::Base
+  include ObjectidFormaterSupport
   extend Enumerize
   belongs_to :organisation
   belongs_to :line_referential
   belongs_to :stop_area_referential
   belongs_to :output, class_name: 'ReferentialSuite'
-  enumerize :objectid_format, in: %w(netex stif_netex)
-  validates_presence_of :objectid_format
+  enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne)
 
   has_many :lines, -> (workbench) { Stif::MyWorkbenchScopes.new(workbench).line_scope(self) }, through: :line_referential
   has_many :networks, through: :line_referential
@@ -20,6 +20,7 @@ class Workbench < ActiveRecord::Base
   validates :name, presence: true
   validates :organisation, presence: true
   validates :output, presence: true
+  validates_presence_of :objectid_format
 
   has_many :referentials
   has_many :referential_metadatas, through: :referentials, source: :metadatas

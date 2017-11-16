@@ -8,10 +8,7 @@ FactoryGirl.define do
 
     association :network, :factory => :network
     association :company, :factory => :company
-
-    before(:create) do |line|
-      line.line_referential ||= LineReferential.find_by! name: "first"
-    end
+    association :line_referential, :factory => :line_referential
 
     sequence(:registration_number) { |n| "test-#{n}" }
 

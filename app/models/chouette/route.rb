@@ -1,7 +1,7 @@
 class Chouette::Route < Chouette::TridentActiveRecord
   include RouteRestrictions
   include ChecksumSupport
-  include ObjectIdFormatToReferential
+  include ObjectidSupport
 
   extend Enumerize
   extend ActiveModel::Naming

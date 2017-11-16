@@ -1,8 +1,7 @@
 class Chouette::Company < Chouette::ActiveRecord
   include CompanyRestrictions
-  include StifCodifligneAttributesSupport
   include LineReferentialSupport
-  include ObjectIdFormatToReferential
+  include ObjectidSupport
 
   has_many :lines
 

@@ -6,8 +6,10 @@ describe Chouette::AccessLink, :type => :model do
   it { is_expected.to validate_uniqueness_of :objectid }
 
   describe '#objectid' do
-    subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
+    it "should have the same class as stop_area and access_point objectid" do
+      expect(subject.objectid.class).to eq(subject.stop_area.objectid.class)
+      expect(subject.objectid.class).to eq(subject.access_point.objectid.class)
+    end
   end
 
   it { is_expected.to validate_presence_of :name }
