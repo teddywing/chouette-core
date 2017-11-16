@@ -11,7 +11,7 @@
         = definition_list t('metadatas'),
             ComplianceCheckSet.human_attribute_name(:name) => @compliance_check_set.name
 
-  - if params[:q].present? || @compliance_checks.any? || @direct_compliance_checks
+  - if params[:q].present? || @blocks_to_compliance_checks_map.any? || @direct_compliance_checks
     .row
       .col-lg-12
         h2
@@ -50,7 +50,7 @@
                 cls: 'table has-filter has-search',
                 model: ComplianceCheck
                 
-    - @compliance_checks.each do |block, compliance_checks|
+    - @blocks_to_compliance_checks_map.each do |block, compliance_checks|
 
       - if compliance_checks.try(:any?)
         .row

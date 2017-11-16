@@ -26,7 +26,7 @@
             ComplianceControlSet.human_attribute_name(:name) => @compliance_control_set.name,
             I18n.t('activerecord.attributes.compliance_control_set.owner_jdc') => @compliance_control_set.organisation.name
 
-  - if params[:q].present? || @compliance_controls.any? || @direct_compliance_controls
+  - if params[:q].present? || @blocks_to_compliance_controls_map.any? || @direct_compliance_controls
     .row
       .col-lg-12
         = render '/compliance_controls/filters'
@@ -66,7 +66,7 @@
                 cls: 'table has-filter has-search',
                 model: ComplianceControl
 
-    - @compliance_controls.each do |block, compliance_controls|
+    - @blocks_to_compliance_controls_map.each do |block, compliance_controls|
 
       - if compliance_controls.try(:any?)
         .row

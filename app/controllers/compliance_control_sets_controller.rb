@@ -16,7 +16,10 @@ class ComplianceControlSetsController < InheritedResources::Base
   end
 
   def show
-    show!(&method(:implement_show))
+    show! do |format|
+      # But now nobody is aware anymore that `format.html` passes a parameter into the block
+      format.html { show_for_html }
+    end
   end
 
 
@@ -52,16 +55,13 @@ class ComplianceControlSetsController < InheritedResources::Base
     params.require(:compliance_control_set).permit(:name, :id)
   end
 
-  def implement_show format
-    format.html(&method(:implement_show_for_html))
-  end
-
-  def implement_show_for_html _mime_response
+  def show_for_html
     @q_controls_form        = @compliance_control_set.compliance_controls.ransack(params[:q])
     @compliance_control_set = @compliance_control_set.decorate
-    @compliance_controls    =
+    compliance_controls    =
       decorate_compliance_controls( @q_controls_form.result)
       .group_by(&:compliance_control_block)
-    @direct_compliance_controls = @compliance_controls.delete nil
+    @direct_compliance_controls        = compliance_controls.delete nil
+    @blocks_to_compliance_controls_map = compliance_controls
   end
 end

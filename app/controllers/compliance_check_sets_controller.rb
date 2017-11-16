@@ -20,7 +20,10 @@ class ComplianceCheckSetsController < InheritedResources::Base
   end
 
   def executed
-    show!(&method(:implement_executed))
+    show! do |format| 
+      # But now nobody is aware anymore that `format.html` passes a parameter into the block
+      format.html { executed_for_html }
+    end 
   end
 
 
@@ -28,17 +31,15 @@ class ComplianceCheckSetsController < InheritedResources::Base
 
   # Action Implementation
   # ---------------------
-  def implement_executed format
-    format.html(&method(:implement_executed_for_html))
-  end
 
-  def implement_executed_for_html _mime_response
+  def executed_for_html
     @q_checks_form        = @compliance_check_set.compliance_checks.ransack(params[:q])
     @compliance_check_set = @compliance_check_set.decorate
-    @compliance_checks    =
+    compliance_checks    =
       decorate_compliance_checks( @q_checks_form.result)
         .group_by(&:compliance_check_block)
-    @direct_compliance_checks = @compliance_checks.delete nil
+    @direct_compliance_checks        = compliance_checks.delete nil
+    @blocks_to_compliance_checks_map = compliance_checks
   end
 
   # Decoration
