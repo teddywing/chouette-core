@@ -1,5 +1,5 @@
 module Chouette
-  module ObjectidFormater
+  module ObjectidFormatter
     class StifReflex
       def before_validation(model) 
         # unused method in this context

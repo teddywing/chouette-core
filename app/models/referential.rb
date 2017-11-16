@@ -1,6 +1,6 @@
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
-  include ObjectidFormaterSupport
+  include ObjectidFormatterSupport
   extend Enumerize
 
   validates_presence_of :name

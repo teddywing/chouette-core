@@ -1,5 +1,5 @@
 class LineReferential < ActiveRecord::Base
-  include ObjectidFormaterSupport
+  include ObjectidFormatterSupport
   extend StifTransportModeEnumerations
   extend Enumerize
   

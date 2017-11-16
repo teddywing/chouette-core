@@ -1,5 +1,5 @@
 module Chouette
-  module ObjectidFormater
+  module ObjectidFormatter
     class Netex
       def before_validation(model)
         model.objectid ||= Chouette::Objectid::Netex.new(local_id: SecureRandom.uuid, object_type: model.class.name.gsub(/Chouette::/,'')).to_s

@@ -1,4 +1,4 @@
-module ObjectidFormaterSupport
+module ObjectidFormatterSupport
   extend ActiveSupport::Concern
 
   included do
@@ -9,7 +9,7 @@ module ObjectidFormaterSupport
     end
 
     def objectid_formater_class
-      "Chouette::ObjectidFormater::#{read_attribute(:objectid_format).camelcase}".constantize if read_attribute(:objectid_format)
+      "Chouette::ObjectidFormatter::#{read_attribute(:objectid_format).camelcase}".constantize if read_attribute(:objectid_format)
     end
   end
 end

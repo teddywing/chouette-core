@@ -1,5 +1,5 @@
 module Chouette
-  module ObjectidFormater
+  module ObjectidFormatter
     class StifNetex
       def before_validation(model) 
         model.objectid ||= "__pending_id__#{rand(50)+ rand(50)}"

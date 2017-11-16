@@ -1,5 +1,5 @@
 class Workbench < ActiveRecord::Base
-  include ObjectidFormaterSupport
+  include ObjectidFormatterSupport
   extend Enumerize
   belongs_to :organisation
   belongs_to :line_referential
