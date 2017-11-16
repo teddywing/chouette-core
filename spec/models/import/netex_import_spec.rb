@@ -1,18 +1,19 @@
 RSpec.describe NetexImport, type: :model do
 
-  let( :invoked_calls ){ [] }
+  let( :boiv_iev_uri ){  URI("#{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{subject.id}")}
 
-  let( :http_service ){ double 'Net::HTTP' }
   before do
-    stub_const 'Net::HTTP', http_service
-    allow(http_service).to receive( :get ){ invoked_calls << :called }
+    allow(Thread).to receive(:new).and_yield
   end
 
   context 'with referential' do
-    subject { build :netex_import }
+    subject{ build( :netex_import, id: random_int ) }
+
     it 'will trigger the Java API' do
-      subject.save
-      expect( invoked_calls ).to eq([:called])
+      with_stubbed_request(:get, boiv_iev_uri) do |request|
+        subject.save!
+        expect(request).to have_been_requested
+      end
     end
   end
 
@@ -20,11 +21,12 @@ RSpec.describe NetexImport, type: :model do
     subject { build :netex_import, referential_id: nil }
 
     it 'its status is forced to aborted and the Java API is not callled' do
-      subject.save!
-      expect( subject.reload.status ).to eq('aborted')
-      expect( invoked_calls ).to be_empty
+      with_stubbed_request(:get, boiv_iev_uri) do |request|
+        subject.save!
+        expect(subject.reload.status).to eq('aborted')
+        expect(request).not_to have_been_requested
+      end
     end
-
   end
 
 end
