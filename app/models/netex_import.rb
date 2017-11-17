@@ -1,6 +1,7 @@
 require 'net/http'
 class NetexImport < Import
   after_commit :launch_java_import, on: :create
+  before_destroy :destroy_non_ready_referential
 
   validates_presence_of :parent
 
@@ -14,6 +15,14 @@ class NetexImport < Import
         logger.error "IEV server error : #{e.message}"
         logger.error e.backtrace.inspect
       end
+    end
+  end
+
+  private
+
+  def destroy_non_ready_referential
+    unless referential.ready
+      referential.destroy
     end
   end
 end
