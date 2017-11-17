@@ -12,7 +12,7 @@ class ImportTask
   cattr_accessor :root
 
   enumerize :data_format, in: %w( neptune netex gtfs )
-  attr_accessor :rule_parameter_set_id, :referential_id, :user_id, :user_name, :data_format, :resources, :name, :no_save
+  attr_accessor :referential_id, :user_id, :user_name, :data_format, :resources, :name, :no_save
 
   validates_presence_of :referential_id
   validates_presence_of :resources
@@ -32,10 +32,6 @@ class ImportTask
 
   def organisation
     referential.organisation
-  end
-
-  def rule_parameter_set
-    organisation.rule_parameter_sets.find(rule_parameter_set_id) if rule_parameter_set_id.present?
   end
 
   def save
@@ -68,18 +64,8 @@ class ImportTask
 
   def params
     {}.tap do |h|
-      h["parameters"] = validation_params ? action_params.merge(validation_params) : action_params
+      h["parameters"] = {}
     end
-  end
-
-  def action_params
-    {}
-  end
-
-  def validation_params
-    {
-      "validation" => rule_parameter_set.parameters
-    } if rule_parameter_set.present?
   end
 
   def self.data_formats

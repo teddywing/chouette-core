@@ -8,7 +8,6 @@ en:
       key_not_registered: "No key registered"
     show:
       users: "Users"
-      rule_parameter_sets: "Rule parameter sets"
   activerecord:
     models:
       organisation:

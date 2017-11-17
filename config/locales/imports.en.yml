@@ -19,7 +19,6 @@ en:
     show:
       report: "Report"
       imported_file: "Original file"
-      rule_parameter_set: "Rule parameter set"
       compliance_check: "Validation report"
       compliance_check_of: "Validation of import: "
       import_of_validation: "Import of the validation"
@@ -69,7 +68,6 @@ en:
         creator: "Creator"
         references_type: "Data to be imported"
         no_save: "No save"
-        rule_parameter_set_id: "Rule parameter set for compliance check"
         object_id_prefix: "Neptune Id prefix"
         max_distance_for_commercial: "Max distance for commercial stop"
         max_distance_for_connection_link: "Max distance for connection link"

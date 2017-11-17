@@ -3,7 +3,6 @@ class Organisation < ActiveRecord::Base
 
   has_many :users, :dependent => :destroy
   has_many :referentials, :dependent => :destroy
-  # has_many :rule_parameter_sets, :dependent => :destroy
   has_many :compliance_control_sets, :dependent => :destroy
 
   has_many :stop_area_referential_memberships
@@ -18,12 +17,6 @@ class Organisation < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :code
-
-  # after_create :add_rule_parameter_set
-
-  # def add_rule_parameter_set
-  #   RuleParameterSet.default_for_all_modes( self).save
-  # end
 
   def self.portail_api_request
     conf = Rails.application.config.try(:stif_portail_api)

@@ -8,7 +8,6 @@ fr:
       key_not_registered: "Pas de clé"
     show:
       users: "Utilisateurs"
-      rule_parameter_sets: "Jeux de paramètres"
   activerecord:
     models:
       organisation:

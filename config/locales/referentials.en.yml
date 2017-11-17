@@ -86,7 +86,6 @@ en:
         imports: "Imports"
         exports: "Exports"
         compliance_checks: "Validations"
-        rule_parameter_sets: "Rule parameters sets"
         data_format_restrictions: "Data format constraint"
         data_format: "Favorite format for export"
         timebands: "Time bands"
