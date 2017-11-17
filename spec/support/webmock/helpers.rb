@@ -8,6 +8,11 @@ module Support
       def make_headers(headers={}, authorization_token:)
         headers.merge('Authorization' => "Token token=#{authorization_token.inspect}")
       end
+
+      def with_stubbed_request( method, uri, &blk )
+        stub_request(method, uri).tap(&blk)
+      end
+
     end
   end
 end
