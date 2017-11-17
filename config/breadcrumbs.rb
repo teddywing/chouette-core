@@ -3,7 +3,7 @@ crumb :root do
 end
 
 crumb :workbench do |workbench|
-  link breadcrumb_name(workbench), workbench_path(workbench)
+  link workbench.name, workbench_path(workbench)
 end
 
 crumb :referential do |referential|
