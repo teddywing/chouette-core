@@ -491,7 +491,8 @@ ActiveRecord::Schema.define(version: 20171114102438) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sync_interval", default: 1
+    t.integer  "sync_interval",   default: 1
+    t.string   "objectid_format"
   end
 
   create_table "lines", id: :bigserial, force: :cascade do |t|
@@ -635,6 +636,7 @@ ActiveRecord::Schema.define(version: 20171114102438) do
     t.integer  "created_from_id",          limit: 8
     t.boolean  "ready",                              default: false
     t.integer  "referential_suite_id",     limit: 8
+    t.string   "objectid_format"
   end
 
   add_index "referentials", ["created_from_id"], name: "index_referentials_on_created_from_id", using: :btree
@@ -712,6 +714,7 @@ ActiveRecord::Schema.define(version: 20171114102438) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "objectid_format"
   end
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
@@ -950,6 +953,7 @@ ActiveRecord::Schema.define(version: 20171114102438) do
     t.integer  "line_referential_id",      limit: 8
     t.integer  "stop_area_referential_id", limit: 8
     t.integer  "output_id",                limit: 8
+    t.string   "objectid_format"
   end
 
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
