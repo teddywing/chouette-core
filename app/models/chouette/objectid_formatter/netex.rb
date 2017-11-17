@@ -5,7 +5,7 @@ module Chouette
         model.update_attributes(objectid: Chouette::Objectid::Netex.new(local_id: SecureRandom.uuid, object_type: model.class.name.gsub(/Chouette::/,'')).to_s) unless model.read_attribute(:objectid)
       end
 
-      def after_commit(model)
+      def after_create(model)
         # unused method in this context
       end
 

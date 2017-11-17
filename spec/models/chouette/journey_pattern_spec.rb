@@ -70,7 +70,7 @@ describe Chouette::JourneyPattern, :type => :model do
     end
 
     it 'should create journey_pattern' do
-      new_state = journey_pattern_to_state(create(:journey_pattern, route: route))
+      new_state = journey_pattern_to_state(build(:journey_pattern, objectid: nil, route: route))
       Chouette::JourneyPattern.state_create_instance route, new_state
       expect(new_state['object_id']).to be_truthy
       expect(new_state['new_record']).to be_truthy

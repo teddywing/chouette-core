@@ -11,8 +11,12 @@ module ObjectidSupport
       self.referential.objectid_formater.before_validation self
     end
 
-    def after_commit_objectid
-      self.referential.objectid_formater.after_commit self
+    def after_create_objectid
+      self.referential.objectid_formater.after_create self
+    end
+
+    def get_objectid
+      self.referential.objectid_formater.get_objectid read_attribute(:objectid) if objectid_format && read_attribute(:objectid)
     end
 
     def get_objectid

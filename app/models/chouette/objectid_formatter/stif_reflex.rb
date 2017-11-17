@@ -5,7 +5,7 @@ module Chouette
         # unused method in this context
       end
 
-      def after_commit(model)
+      def after_create(model)
         # unused method in this context
       end
 
