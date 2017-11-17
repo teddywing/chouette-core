@@ -17,16 +17,11 @@ class ComplianceControlSetsController < InheritedResources::Base
 
   def show
     show! do |format|
-      format.html {
-        @q_controls_form        = @compliance_control_set.compliance_controls.ransack(params[:q])
-        @compliance_control_set = @compliance_control_set.decorate
-        @compliance_controls    =
-          decorate_compliance_controls( @q_controls_form.result)
-            .group_by(&:compliance_control_block)
-        @indirect_compliance_controls = @compliance_controls.delete nil
-      }
+      # But now nobody is aware anymore that `format.html` passes a parameter into the block
+      format.html { show_for_html }
     end
   end
+
 
   def clone
     ComplianceControlSetCloner.new.copy(params[:id], current_organisation.id)
@@ -58,5 +53,15 @@ class ComplianceControlSetsController < InheritedResources::Base
 
   def compliance_control_set_params
     params.require(:compliance_control_set).permit(:name, :id)
+  end
+
+  def show_for_html
+    @q_controls_form        = @compliance_control_set.compliance_controls.ransack(params[:q])
+    @compliance_control_set = @compliance_control_set.decorate
+    compliance_controls    =
+      decorate_compliance_controls( @q_controls_form.result)
+      .group_by(&:compliance_control_block)
+    @direct_compliance_controls        = compliance_controls.delete nil
+    @blocks_to_compliance_controls_map = compliance_controls
   end
 end

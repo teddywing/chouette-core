@@ -55,6 +55,7 @@ class Organisation < ActiveRecord::Base
     organisation_referential = referentials.find_by id: referential_id
     return organisation_referential if organisation_referential
 
+    # TODO: Replace each with find
     workbenches.each do |workbench|
       workbench_referential = workbench.all_referentials.find_by id: referential_id
       return workbench_referential if workbench_referential
