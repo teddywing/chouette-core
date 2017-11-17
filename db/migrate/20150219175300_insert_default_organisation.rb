@@ -1,8 +1,6 @@
 class InsertDefaultOrganisation < ActiveRecord::Migration
   class Organisation  < ActiveRecord::Base
     attr_accessor :name
-
-    has_many :rule_parameter_sets, :dependent => :destroy
   end
 
   def up
