@@ -13,8 +13,7 @@
   - if params[:q].present? || @blocks_to_compliance_checks_map.any? || @direct_compliance_checks
     .row
       .col-lg-12
-        h2
-          = render '/compliance_checks/filters'
+        = render '/compliance_checks/filters'
 
         - if @direct_compliance_checks.try(:any?)
           .row
