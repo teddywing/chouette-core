@@ -1,10 +1,6 @@
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
-<<<<<<< HEAD
   include ObjectidFormatterSupport
-=======
-  include ObjectidFormaterSupport
->>>>>>> Create objectid format and integrate it in models. Work in progress. Refs #4941
   extend Enumerize
 
   validates_presence_of :name
@@ -60,11 +56,7 @@ class Referential < ActiveRecord::Base
 
   belongs_to :referential_suite
 
-<<<<<<< HEAD
   enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne), default: 'netex'
-=======
-  enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne)
->>>>>>> Create objectid format and integrate it in models. Work in progress. Refs #4941
 
   scope :ready, -> { where(ready: true) }
   scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }

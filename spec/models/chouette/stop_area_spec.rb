@@ -8,8 +8,8 @@ describe Chouette::StopArea, :type => :model do
   let!(:stop_place) { create :stop_area, :area_type => "zdlp" }
 
   describe '#objectid' do
-    subject { super().objectid }
-    it { should be_kind_of(Chouette::StifReflexObjectid) }
+    subject { super().get_objectid }
+    it { should be_kind_of(Chouette::Objectid::StifReflex) }
   end
 
   describe "#objectid_format" do

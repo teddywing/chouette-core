@@ -6,8 +6,8 @@ RSpec.describe Chouette::Route, :type => :model do
   end
 
   describe '#objectid' do
-    subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
+    subject { super().get_objectid }
+    it { is_expected.to be_kind_of(Chouette::Objectid::StifNetex) }
   end
 
   describe "#objectid_format" do

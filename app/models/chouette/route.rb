@@ -100,7 +100,7 @@ class Chouette::Route < Chouette::TridentActiveRecord
   end
 
   def local_id
-    "IBOO-#{self.referential.id}-#{self.line.objectid.local_id}-#{self.id}"
+    "IBOO-#{self.referential.id}-#{self.line.get_objectid.local_id}-#{self.id}"
   end
 
   def geometry_presenter

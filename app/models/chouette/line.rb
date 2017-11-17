@@ -71,7 +71,7 @@ class Chouette::Line < Chouette::ActiveRecord
   end
 
   def display_name
-    [objectid.local_id, number, name, company.try(:name)].compact.join(' - ')
+    [self.get_objectid.local_id, number, name, company.try(:name)].compact.join(' - ')
   end
 
   def companies

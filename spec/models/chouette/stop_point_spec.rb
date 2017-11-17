@@ -9,8 +9,8 @@ describe StopPoint, :type => :model do
   it { is_expected.to validate_presence_of :stop_area }
 
   describe '#objectid' do
-    subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
+    subject { super().get_objectid }
+    it { is_expected.to be_kind_of(Chouette::Objectid::StifNetex) }
   end
 
   describe "#objectid_format" do

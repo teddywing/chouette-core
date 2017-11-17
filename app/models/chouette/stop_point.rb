@@ -49,6 +49,10 @@ module Chouette
       self.class.create!(atts_for_create)
     end
 
+    def local_id
+      "IBOO-#{self.referential.id}-#{self.route.line.get_objectid.local_id}-#{self.route.id}-#{self.id}"
+    end
+
     def self.area_candidates
       Chouette::StopArea.where(:area_type => ['Quay', 'BoardingPosition'])
     end

@@ -25,7 +25,7 @@ module Chouette
 
 
     def local_id
-      "IBOO-#{self.referential.id}-#{self.try(:route).try(:line).try(:objectid).try(:local_id)}-#{self.id}"
+      "IBOO-#{self.referential.id}-#{self.route.line.get_objectid.local_id}-#{self.id}"
     end
 
     def checksum_attributes
@@ -48,7 +48,7 @@ module Chouette
 
         if state.any? {|item| item['errors']}
           state.map {|item| item.delete('object_id') if item['new_record']}
-          raise ActiveRecord::Rollback
+          raise ::ActiveRecord::Rollback
         end
       end
 
