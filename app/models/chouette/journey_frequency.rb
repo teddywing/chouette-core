@@ -18,8 +18,8 @@ module Chouette
       if record.first_departure_time == record.last_departure_time
         record.errors[:last_departure_time] << I18n.t('activerecord.errors.models.journey_frequency.end_must_be_different_from_first')
       end
-      if record.scheduled_headway_interval.blank? || (record.scheduled_headway_interval.strftime( "%H%M%S%N" ) == Time.current.midnight.strftime( "%H%M%S%N" ))
-        record.errors[:scheduled_headway_interval] << I18n.t('activerecord.errors.models.journey_frequency.scheduled_headway_interval_greater_than_zero')
+      unless last_departure_time.between? timeband_start_time, timeband_end_time
+        record.errors[:last_departure_time] << I18n.t('activerecord.errors.models.journey_frequency.end_must_be_before_timeband')
       end
     end
   end

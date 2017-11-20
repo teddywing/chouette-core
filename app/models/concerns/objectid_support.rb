@@ -11,8 +11,8 @@ module ObjectidSupport
       self.referential.objectid_formater.before_validation self
     end
 
-    def after_create_objectid
-      self.referential.objectid_formater.after_create self
+    def after_commit_objectid
+      self.referential.objectid_formater.after_commit self
     end
 
     def get_objectid
