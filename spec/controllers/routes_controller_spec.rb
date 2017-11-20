@@ -1,5 +1,3 @@
-Route = Chouette::Route
-
 RSpec.describe RoutesController, type: :controller do
   login_user
 
@@ -87,10 +85,10 @@ RSpec.describe RoutesController, type: :controller do
           referential_id: route.line.line_referential_id,
           line_id: route.line_id,
           id: route.id
-      end.to change { Route.count }.by(1)
+      end.to change { Chouette::Route.count }.by(1)
 
-      expect(Route.last.name).to eq(route.name)
-      expect(Route.last.published_name).to eq(route.published_name)
+      expect(Chouette::Route.last.name).to eq(route.name)
+      expect(Chouette::Route.last.published_name).to eq(route.published_name)
     end
   end
 end

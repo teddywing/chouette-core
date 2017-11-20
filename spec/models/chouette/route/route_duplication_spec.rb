@@ -1,9 +1,9 @@
 # From Chouette import what we need ™
-Route     = Chouette::Route
-StopArea  = Chouette::StopArea
-StopPoint = Chouette::StopPoint
+# Route     = Chouette::Route
+# StopArea  = Chouette::StopArea
+# StopPoint = Chouette::StopPoint
 
-RSpec.describe Route do
+RSpec.describe Chouette::Route do
 
   let!( :route ){ create :route }
 
@@ -11,7 +11,7 @@ RSpec.describe Route do
     describe 'properties' do
       it 'same attribute values' do
         route.duplicate
-        expect( values_for_create(Route.last, except: %w{objectid}) ).to eq( values_for_create( route, except: %w{objectid} ) )
+        expect( values_for_create(Chouette::Route.last, except: %w{objectid}) ).to eq( values_for_create( route, except: %w{objectid} ) )
       end
       it 'and others cannot' do
         expect{ route.duplicate name: 'YAN', line_id: 42  }.to raise_error(ArgumentError)
@@ -23,13 +23,13 @@ RSpec.describe Route do
 
     describe 'side_effects' do
       it {
-        expect{ route.duplicate }.to change{Route.count}.by(1)
+        expect{ route.duplicate }.to change{Chouette::Route.count}.by(1)
       }
       it 'duplicates its stop points' do
-        expect{ route.duplicate }.to change{StopPoint.count}.by(route.stop_points.count)
+        expect{ route.duplicate }.to change{Chouette::StopPoint.count}.by(route.stop_points.count)
       end
       it 'does bot duplicate the stop areas' do
-        expect{ route.duplicate }.not_to change{StopArea.count}
+        expect{ route.duplicate }.not_to change{Chouette::StopArea.count}
       end
     end
 

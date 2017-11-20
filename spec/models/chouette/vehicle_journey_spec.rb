@@ -101,10 +101,12 @@ describe Chouette::VehicleJourney, :type => :model do
       expect {
         Chouette::VehicleJourney.state_update(route, collection)
       }.to change {Chouette::VehicleJourney.count}.by(1)
+
       expect(collection.last['objectid']).not_to be_nil
 
-      vj = Chouette::VehicleJourney.find_by(objectid: collection.last['objectid'])
-      expect(vj.published_journey_name).to eq 'dummy'
+      Chouette::VehicleJourney.last.run_callbacks(:commit)
+
+      expect(Chouette::VehicleJourney.last.published_journey_name).to eq 'dummy'
     end
 
     it 'should save vehicle_journey_at_stops of newly created vj' do
