@@ -1,4 +1,4 @@
-class ReferentialSuitesController < ApplicationController
+class ReferentialSuitesController < ChouetteController
 
   defaults resource_class: ReferentialSuite
 
@@ -11,4 +11,4 @@ class ReferentialSuitesController < ApplicationController
       build_breadcrumb :index
     end
   end
-end 
+end
