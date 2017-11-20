@@ -24,5 +24,16 @@ RSpec.describe NetexImport, type: :model do
         Referential.where(id: referential_ready_true.id).exists?
       ).to be true
     end
+
+    it "doesn't try to destroy nil referentials" do
+      workbench_import = create(:workbench_import)
+      create(
+        :netex_import,
+        parent: workbench_import,
+        referential: nil
+      )
+
+      expect { workbench_import.destroy }.not_to raise_error
+    end
   end
 end
