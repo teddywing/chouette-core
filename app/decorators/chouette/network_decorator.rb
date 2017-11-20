@@ -1,4 +1,4 @@
-class NetworkDecorator < Draper::Decorator
+class Chouette::NetworkDecorator < Draper::Decorator
   decorates Chouette::Network
 
   delegate_all

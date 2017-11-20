@@ -1,4 +1,4 @@
-class RoutingConstraintZoneDecorator < Draper::Decorator
+class Chouette::RoutingConstraintZoneDecorator < Draper::Decorator
   decorates Chouette::RoutingConstraintZone
 
   delegate_all

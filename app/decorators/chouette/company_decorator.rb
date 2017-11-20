@@ -1,4 +1,4 @@
-class CompanyDecorator < Draper::Decorator
+class Chouette::CompanyDecorator < Draper::Decorator
   decorates Chouette::Company
 
   delegate_all

@@ -1,4 +1,4 @@
-class RoutingConstraintZonePolicy < ApplicationPolicy
+class Chouette::RoutingConstraintZonePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

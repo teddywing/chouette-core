@@ -1,4 +1,4 @@
-class StopAreaDecorator < Draper::Decorator
+class Chouette::StopAreaDecorator < Draper::Decorator
   decorates Chouette::StopArea
 
   delegate_all

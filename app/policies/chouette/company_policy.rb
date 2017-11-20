@@ -1,4 +1,4 @@
-class CompanyPolicy < ApplicationPolicy
+class Chouette::CompanyPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

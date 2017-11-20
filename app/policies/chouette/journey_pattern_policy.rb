@@ -1,4 +1,4 @@
-class JourneyPatternPolicy < ApplicationPolicy
+class Chouette::JourneyPatternPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve

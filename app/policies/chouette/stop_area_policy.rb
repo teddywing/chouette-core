@@ -1,4 +1,4 @@
-class GroupOfLinePolicy < ApplicationPolicy
+class Chouette::StopAreaPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

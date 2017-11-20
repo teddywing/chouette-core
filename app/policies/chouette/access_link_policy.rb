@@ -1,4 +1,4 @@
-class AccessLinkPolicy < ApplicationPolicy
+class Chouette::AccessLinkPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

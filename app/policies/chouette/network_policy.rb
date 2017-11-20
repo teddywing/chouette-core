@@ -1,4 +1,4 @@
-class StopAreaPolicy < ApplicationPolicy
+class Chouette::NetworkPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

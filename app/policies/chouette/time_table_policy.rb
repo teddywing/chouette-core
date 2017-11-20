@@ -1,4 +1,4 @@
-class TimeTablePolicy < ApplicationPolicy
+class Chouette::TimeTablePolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve

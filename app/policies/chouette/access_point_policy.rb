@@ -1,4 +1,4 @@
-class AccessPointPolicy < ApplicationPolicy
+class Chouette::AccessPointPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

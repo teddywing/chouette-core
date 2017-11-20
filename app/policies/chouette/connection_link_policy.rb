@@ -1,4 +1,4 @@
-class ConnectionLinkPolicy < ApplicationPolicy
+class Chouette::ConnectionLinkPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

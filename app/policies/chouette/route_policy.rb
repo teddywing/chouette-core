@@ -1,4 +1,4 @@
-class RoutePolicy < ApplicationPolicy
+class Chouette::RoutePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

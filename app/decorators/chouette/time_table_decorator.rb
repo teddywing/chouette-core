@@ -1,4 +1,4 @@
-class TimeTableDecorator < Draper::Decorator
+class Chouette::TimeTableDecorator < Draper::Decorator
   decorates Chouette::TimeTable
 
   delegate_all

@@ -1,4 +1,4 @@
-class StopPointDecorator < StopAreaDecorator
+class Chouette::StopPointDecorator < StopAreaDecorator
   decorates Chouette::StopPoint
 
   delegate_all

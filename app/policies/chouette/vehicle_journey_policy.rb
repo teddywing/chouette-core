@@ -1,4 +1,4 @@
-class VehicleJourneyPolicy < ApplicationPolicy
+class Chouette::VehicleJourneyPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope
