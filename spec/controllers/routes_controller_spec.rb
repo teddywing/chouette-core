@@ -87,8 +87,8 @@ RSpec.describe RoutesController, type: :controller do
           id: route.id
       end.to change { Chouette::Route.count }.by(1)
 
-      expect(Chouette::Route.last.name).to eq(route.name)
-      expect(Chouette::Route.last.published_name).to eq(route.published_name)
+      expect(Route.last.name).to eq( I18n.t('activerecord.copy', name: route.name))
+      expect(Route.last.published_name).to eq(route.published_name)
     end
   end
 end

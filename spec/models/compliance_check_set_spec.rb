@@ -12,4 +12,81 @@ RSpec.describe ComplianceCheckSet, type: :model do
 
   it { should have_many :compliance_checks }
   it { should have_many :compliance_check_blocks }
+
+  describe "#update_status" do
+    it "updates :status to successful when all resources are OK" do
+      check_set = create(:compliance_check_set)
+      create_list(
+        :compliance_check_resource,
+        2,
+        compliance_check_set: check_set,
+        status: 'OK'
+      )
+
+      check_set.update_status
+
+      expect(check_set.status).to eq('successful')
+    end
+
+    it "updates :status to failed when one resource is ERROR" do
+      check_set = create(:compliance_check_set)
+      create(
+        :compliance_check_resource,
+        compliance_check_set: check_set,
+        status: 'ERROR'
+      )
+      create(
+        :compliance_check_resource,
+        compliance_check_set: check_set,
+        status: 'OK'
+      )
+
+      updated = check_set.update_status
+
+      expect(updated).to be true
+      expect(check_set.status).to eq('failed')
+    end
+
+    it "updates :status to warning when one resource is WARNING" do
+      check_set = create(:compliance_check_set)
+      create(
+        :compliance_check_resource,
+        compliance_check_set: check_set,
+        status: 'WARNING'
+      )
+      create(
+        :compliance_check_resource,
+        compliance_check_set: check_set,
+        status: 'OK'
+      )
+
+      check_set.update_status
+
+      expect(check_set.status).to eq('warning')
+    end
+
+    it "updates :status to successful when resources are IGNORED" do
+      check_set = create(:compliance_check_set)
+      create(
+        :compliance_check_resource,
+        compliance_check_set: check_set,
+        status: 'IGNORED'
+      )
+      create(
+        :compliance_check_resource,
+        compliance_check_set: check_set,
+        status: 'OK'
+      )
+
+      check_set.update_status
+
+      expect(check_set.status).to eq('successful')
+    end
+
+    it "returns true when the status did not get updated" do
+      check_set = create(:compliance_check_set)
+
+      expect(check_set.update_status).to be true
+    end
+  end
 end

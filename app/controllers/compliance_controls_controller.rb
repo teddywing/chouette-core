@@ -1,4 +1,5 @@
 class ComplianceControlsController < InheritedResources::Base
+  include PolicyChecker
   defaults resource_class: ComplianceControl
   belongs_to :compliance_control_set
   actions :all, :except => [:index]

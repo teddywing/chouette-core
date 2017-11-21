@@ -76,20 +76,19 @@ module Chouette
 
     validates :wayback, inclusion: { in: self.wayback.values }
 
-    after_commit :journey_patterns_control_route_sections
-
-    def duplicate
-      overrides = {
-        'opposite_route_id' => nil
-      }
-      keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
-      atts_for_create = attributes
-        .slice(*keys_for_create)
-        .merge(overrides)
-      new_route = self.class.create!(atts_for_create)
-      duplicate_stop_points(for_route: new_route)
-      new_route
-    end
+  def duplicate
+    overrides = {
+      'opposite_route_id' => nil,
+      'name' => I18n.t('activerecord.copy', name: self.name)
+    }
+    keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
+    atts_for_create = attributes
+      .slice(*keys_for_create)
+      .merge(overrides)
+    new_route = self.class.create!(atts_for_create)
+    duplicate_stop_points(for_route: new_route)
+    new_route
+  end
 
     def duplicate_stop_points(for_route:)
       stop_points.each(&duplicate_stop_point(for_route: for_route))
@@ -192,9 +191,13 @@ module Chouette
 
     protected
 
+<<<<<<< HEAD
     def self.vehicle_journeys_timeless(stop_point_id)
       all( :conditions => ['vehicle_journeys.id NOT IN (?)', Chouette::VehicleJourneyAtStop.where(stop_point_id: stop_point_id).pluck(:vehicle_journey_id)] )
     end
+=======
+  protected
+>>>>>>> master
 
   end
 end

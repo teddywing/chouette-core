@@ -1,8 +1,3 @@
-# From Chouette import what we need ™
-# Route     = Chouette::Route
-# StopArea  = Chouette::StopArea
-# StopPoint = Chouette::StopPoint
-
 RSpec.describe Chouette::Route do
 
   let!( :route ){ create :route }
@@ -11,7 +6,7 @@ RSpec.describe Chouette::Route do
     describe 'properties' do
       it 'same attribute values' do
         route.duplicate
-        expect( values_for_create(Chouette::Route.last, except: %w{objectid}) ).to eq( values_for_create( route, except: %w{objectid} ) )
+        expect( values_for_create(Chouette::Route.last, except: %w{objectid name checksum checksum_source}) ).to eq( values_for_create( route, except: %w{objectid name checksum checksum_source} ) )
       end
       it 'and others cannot' do
         expect{ route.duplicate name: 'YAN', line_id: 42  }.to raise_error(ArgumentError)
@@ -38,7 +33,7 @@ RSpec.describe Chouette::Route do
       let( :second_duplicate ){ first_duplicate.reload.duplicate }
 
       it 'the required attributes' do
-        expect( values_for_create(first_duplicate, except: %w{objectid}) ).to eq( values_for_create( second_duplicate, except: %w{objectid} ) )
+        expect( values_for_create(first_duplicate, except: %w{objectid name checksum checksum_source}) ).to eq( values_for_create( second_duplicate, except: %w{objectid name checksum checksum_source} ) )
       end 
 
       it 'the stop areas' do

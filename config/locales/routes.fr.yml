@@ -55,6 +55,7 @@ fr:
       for_alighting: "Descente"
     duplicate:
       title: "Dupliquer l'itinéraire"
+      success: "itinéraire dupliqué avec succès"
     route:
       no_journey_pattern: "Pas de mission"
       wayback:
