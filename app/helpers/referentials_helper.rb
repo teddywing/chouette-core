@@ -1,5 +1,6 @@
 module ReferentialsHelper
-  # Line statuses helper
+  # Outputs a green check icon and the text "Oui" or a red exclamation mark
+  # icon and the text "Non" based on `status`
   def line_status(status)
     if status
       content_tag(:span, nil, class: 'fa fa-exclamation-circle fa-lg text-danger') +
