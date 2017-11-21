@@ -6,7 +6,7 @@ RSpec.describe "/routes/show", type: :view do
   let!(:route_sp) do
     assign :route_sp, ModelDecorator.decorate(
       route.stop_points,
-      with: StopPointDecorator
+      with: Chouette::StopPointDecorator
     )
   end
 

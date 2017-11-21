@@ -1,4 +1,4 @@
-RSpec.describe ConnectionLinkPolicy, type: :policy do
+RSpec.describe Chouette::ConnectionLinkPolicy, type: :policy do
 
   let( :record ){ build_stubbed :connection_link }
 

@@ -1,10 +1,12 @@
-class Chouette::Objectid::StifReflex < Chouette::Objectid::Netex
+module Chouette
+  module Objectid
+    class StifReflex < Chouette::Objectid::Netex
 
-  attr_accessor :country_code, :zip_code
-  validates_presence_of :country_code, :zip_code
-  validates :creation_id, presence: false
+      attr_accessor :country_code, :zip_code
+      validates_presence_of :country_code, :zip_code
+      validates :creation_id, presence: false
 
-  @@format = /^([A-Za-z_]+):([0-9A-Za-z_-]+):([A-Za-z]+):([0-9A-Za-z_-]+):([A-Za-z]+)$/
+      @@format = /^([A-Za-z_]+):([0-9A-Za-z_-]+):([A-Za-z]+):([0-9A-Za-z_-]+):([A-Za-z]+)$/
 
       def initialize(**attributes)
         @provider_id = attributes[:provider_id]
@@ -18,5 +20,4 @@ class Chouette::Objectid::StifReflex < Chouette::Objectid::Netex
       end
     end
   end
-
 end

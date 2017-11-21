@@ -1,7 +1,8 @@
-class ReferentialNetworkDecorator < Draper::Decorator
-  decorates Chouette::Network
+module Chouette
+  class NetworkDecorator < Draper::Decorator
+    decorates Chouette::Network
 
-  delegate_all
+    delegate_all
 
   # Requires:
   #   context: {
@@ -33,6 +34,7 @@ class ReferentialNetworkDecorator < Draper::Decorator
       )
     end
 
-    links
+      links
+    end
   end
 end

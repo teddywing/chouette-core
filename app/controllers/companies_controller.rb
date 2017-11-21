@@ -77,7 +77,7 @@ class CompaniesController < InheritedResources::Base
   def decorate_companies(companies)
     ModelDecorator.decorate(
       companies,
-      with: CompanyDecorator,
+      with: Chouette::CompanyDecorator,
       context: {
         referential: line_referential
       }

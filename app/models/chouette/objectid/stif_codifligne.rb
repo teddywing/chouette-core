@@ -1,10 +1,12 @@
-class Chouette::Objectid::StifCodifligne < Chouette::Objectid::Netex
+module Chouette
+  module Objectid
+    class StifCodifligne < Chouette::Objectid::Netex
 
-  attr_accessor :sync_id
-  validates_presence_of :sync_id
-  validates :creation_id, presence: false
+      attr_accessor :sync_id
+      validates_presence_of :sync_id
+      validates :creation_id, presence: false
 
-  @@format = /^([A-Za-z_]+):([A-Za-z]+):([A-Za-z]+):([0-9A-Za-z_-]+)$/
+      @@format = /^([A-Za-z_]+):([A-Za-z]+):([A-Za-z]+):([0-9A-Za-z_-]+)$/
 
       def initialize(**attributes)
         @provider_id = attributes[:provider_id]

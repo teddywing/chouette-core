@@ -1,4 +1,4 @@
-RSpec.describe RoutingConstraintZonePolicy, type: :policy do
+RSpec.describe Chouette::RoutingConstraintZonePolicy, type: :policy do
 
   let( :record ){ build_stubbed :routing_constraint_zone }
 
