@@ -191,13 +191,9 @@ module Chouette
 
     protected
 
-<<<<<<< HEAD
     def self.vehicle_journeys_timeless(stop_point_id)
       all( :conditions => ['vehicle_journeys.id NOT IN (?)', Chouette::VehicleJourneyAtStop.where(stop_point_id: stop_point_id).pluck(:vehicle_journey_id)] )
     end
-=======
-  protected
->>>>>>> master
 
   end
 end
