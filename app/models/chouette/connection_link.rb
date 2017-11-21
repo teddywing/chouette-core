@@ -1,5 +1,6 @@
 module Chouette
   class ConnectionLink < Chouette::TridentActiveRecord
+    has_paper_trail
     include ObjectidSupport
     include ConnectionLinkRestrictions
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358

@@ -1,6 +1,6 @@
 module Chouette
   class StopPoint < Chouette::TridentActiveRecord
-
+    has_paper_trail
     def self.policy_class
       RoutePolicy
     end

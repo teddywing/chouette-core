@@ -1,5 +1,6 @@
 module Chouette
   class VehicleJourney < Chouette::TridentActiveRecord
+    has_paper_trail
     include ChecksumSupport
     include VehicleJourneyRestrictions
     include ObjectidSupport
