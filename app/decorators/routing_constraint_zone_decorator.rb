@@ -1,4 +1,3 @@
-module Chouette
   class RoutingConstraintZoneDecorator < Draper::Decorator
     decorates Chouette::RoutingConstraintZone
 
@@ -41,4 +40,3 @@ module Chouette
       links
     end
   end
-end

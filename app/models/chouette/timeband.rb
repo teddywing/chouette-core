@@ -8,6 +8,8 @@ module Chouette
   end
 
   class Timeband < Chouette::TridentActiveRecord
+    include ObjectidSupport
+
     self.primary_key = "id"
 
     validates :start_time, :end_time, presence: true

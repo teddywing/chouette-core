@@ -1,5 +1,4 @@
-module Chouette
-  class StopPointDecorator < Chouette::StopAreaDecorator
+  class StopPointDecorator < StopAreaDecorator
     decorates Chouette::StopPoint
 
     delegate_all
@@ -8,4 +7,3 @@ module Chouette
       super(object.stop_area)
     end
   end
-end

@@ -1,4 +1,3 @@
-module Chouette
   class JourneyPatternPolicy < ApplicationPolicy
 
     class Scope < Scope
@@ -19,4 +18,3 @@ module Chouette
       !archived? && organisation_match? && user.has_permission?('journey_patterns.update')
     end
   end
-end

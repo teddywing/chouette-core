@@ -1,4 +1,3 @@
-module Chouette
   class LineDecorator < Draper::Decorator
     decorates Chouette::Line
 
@@ -44,4 +43,3 @@ module Chouette
       links
     end
   end
-end

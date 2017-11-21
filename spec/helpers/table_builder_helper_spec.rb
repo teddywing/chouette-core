@@ -37,7 +37,7 @@ describe TableBuilderHelper, type: :helper do
 
       referentials = ModelDecorator.decorate(
         referentials,
-        with: ReferentialDecorator
+        with: Chouette::ReferentialDecorator
       )
 
       expected = <<-HTML
@@ -327,7 +327,7 @@ describe TableBuilderHelper, type: :helper do
     </thead>
     <tbody>
         <tr>
-            <td>#{company.objectid.local_id}</td>
+            <td>#{company.get_objectid.local_id}</td>
             <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
             <td></td>
             <td></td>

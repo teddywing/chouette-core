@@ -15,7 +15,7 @@ class LinesController < InheritedResources::Base
     index! do |format|
       @lines = ModelDecorator.decorate(
         @lines,
-        with: Chouette::LineDecorator,
+        with: LineDecorator,
         context: {
           line_referential: @line_referential,
           current_organisation: current_organisation

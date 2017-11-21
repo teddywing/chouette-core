@@ -1,4 +1,3 @@
-module Chouette
   class NetworkPolicy < ApplicationPolicy
     class Scope < Scope
       def resolve
@@ -6,4 +5,3 @@ module Chouette
       end
     end
   end
-end

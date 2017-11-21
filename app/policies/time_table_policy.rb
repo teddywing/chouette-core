@@ -1,4 +1,3 @@
-module Chouette
   class TimeTablePolicy < ApplicationPolicy
 
     class Scope < Scope
@@ -31,4 +30,3 @@ module Chouette
       update?
     end
   end
-end

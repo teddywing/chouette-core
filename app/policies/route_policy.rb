@@ -1,4 +1,3 @@
-module Chouette
   class RoutePolicy < ApplicationPolicy
     class Scope < Scope
       def resolve
@@ -22,4 +21,3 @@ module Chouette
       create?
     end
   end
-end

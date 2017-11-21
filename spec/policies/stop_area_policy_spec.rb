@@ -1,4 +1,4 @@
-RSpec.describe Chouette::StopAreaPolicy, type: :policy do
+RSpec.describe StopAreaPolicy, type: :policy do
 
   let( :record ){ build_stubbed :stop_area }
   before { stub_policy_scope(record) }

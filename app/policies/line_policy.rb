@@ -1,4 +1,3 @@
-module Chouette
   class LinePolicy < ApplicationPolicy
 
     class Scope < Scope
@@ -22,4 +21,3 @@ module Chouette
     def update_footnote?  ; edit_footnote? end
     def new_footnote?     ; create_footnote? end
   end
-end

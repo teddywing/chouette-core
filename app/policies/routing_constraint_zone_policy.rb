@@ -1,4 +1,3 @@
-module Chouette
   class RoutingConstraintZonePolicy < ApplicationPolicy
     class Scope < Scope
       def resolve
@@ -18,4 +17,3 @@ module Chouette
       !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.update')
     end
   end
-end

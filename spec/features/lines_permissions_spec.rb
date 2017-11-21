@@ -13,8 +13,8 @@ describe "Lines", :type => :feature do
       create :group_of_line
       line_referential.lines << line
       line_referential.organisations << Organisation.first
-      allow_any_instance_of(Chouette::LinePolicy).to receive(:create?).and_return permission
-      allow_any_instance_of(Chouette::LinePolicy).to receive(:destroy?).and_return permission
+      allow_any_instance_of(LinePolicy).to receive(:create?).and_return permission
+      allow_any_instance_of(LinePolicy).to receive(:destroy?).and_return permission
       visit path
     end
 

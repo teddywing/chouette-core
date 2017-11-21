@@ -1,4 +1,3 @@
-module Chouette
   class VehicleJourneyPolicy < ApplicationPolicy
     class Scope < Scope
       def resolve
@@ -18,4 +17,3 @@ module Chouette
       !archived? && organisation_match? && user.has_permission?('vehicle_journeys.update')
     end
   end
-end

@@ -1,4 +1,3 @@
-module Chouette
   class StopAreaDecorator < Draper::Decorator
     decorates Chouette::StopArea
 
@@ -42,4 +41,3 @@ module Chouette
       links
     end
   end
-end

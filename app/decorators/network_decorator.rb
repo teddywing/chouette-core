@@ -1,4 +1,3 @@
-module Chouette
   class NetworkDecorator < Draper::Decorator
     decorates Chouette::Network
 
@@ -43,4 +42,3 @@ module Chouette
       links
     end
   end
-end

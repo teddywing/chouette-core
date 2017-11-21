@@ -1,4 +1,4 @@
-RSpec.describe Chouette::LinePolicy, type: :policy do
+RSpec.describe LinePolicy, type: :policy do
 
   let( :record ){ build_stubbed :line }
   before { stub_policy_scope(record) }

@@ -1,4 +1,3 @@
-module Chouette
   class TimeTableDecorator < Draper::Decorator
     decorates Chouette::TimeTable
 
@@ -54,4 +53,3 @@ module Chouette
       links
     end
   end
-end

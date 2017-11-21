@@ -1,4 +1,3 @@
-module Chouette
   class AccessLinkPolicy < ApplicationPolicy
     class Scope < Scope
       def resolve
@@ -18,4 +17,3 @@ module Chouette
       !archived? && organisation_match? && user.has_permission?('access_links.destroy')
     end
   end
-end

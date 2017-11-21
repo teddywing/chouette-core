@@ -1,4 +1,3 @@
-module Chouette
   class CompanyDecorator < Draper::Decorator
     decorates Chouette::Company
 
@@ -51,4 +50,3 @@ module Chouette
       links
     end
   end
-end

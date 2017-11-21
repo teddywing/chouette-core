@@ -1,4 +1,3 @@
-module Chouette
   class RouteDecorator < Draper::Decorator
     decorates Chouette::Route
 
@@ -74,4 +73,3 @@ module Chouette
       links
     end
   end
-end
