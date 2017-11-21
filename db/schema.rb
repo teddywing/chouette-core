@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171123110204) do
+ActiveRecord::Schema.define(version: 20171121153506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "stop_area_id",                           limit: 8
     t.string   "objectid",                                                                  null: false
     t.integer  "object_version",                         limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "link_distance",                                    precision: 19, scale: 2
@@ -46,7 +45,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "access_points", id: :bigserial, force: :cascade do |t|
     t.string   "objectid"
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "longitude",                                 precision: 19, scale: 16
@@ -123,7 +121,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "companies", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                            null: false
     t.integer  "object_version",            limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "short_name"
     t.string   "organizational_unit"
@@ -265,7 +262,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "arrival_id",                             limit: 8
     t.string   "objectid",                                                                  null: false
     t.integer  "object_version",                         limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "link_distance",                                    precision: 19, scale: 2
@@ -305,7 +301,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.string   "objectid",                                               null: false
     t.integer  "object_version",     limit: 8
     t.datetime "creation_time"
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "description"
@@ -347,7 +342,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "group_of_lines", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                      null: false
     t.integer  "object_version",      limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "registration_number"
@@ -408,9 +402,9 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -435,7 +429,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "route_id",                limit: 8
     t.string   "objectid",                                      null: false
     t.integer  "object_version",          limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "registration_number"
@@ -491,8 +484,7 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sync_interval",   default: 1
-    t.string   "objectid_format"
+    t.integer  "sync_interval", default: 1
   end
 
   create_table "lines", id: :bigserial, force: :cascade do |t|
@@ -500,7 +492,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "company_id",                      limit: 8
     t.string   "objectid",                                                  null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "number"
     t.string   "published_name"
@@ -532,7 +523,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "networks", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                      null: false
     t.integer  "object_version",      limit: 8
-    t.string   "creator_id"
     t.date     "version_date"
     t.string   "description"
     t.string   "name"
@@ -570,7 +560,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "route_id",         limit: 8
     t.string   "objectid",                                            null: false
     t.integer  "object_version",   limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "link_distance",              precision: 19, scale: 2
@@ -637,7 +626,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "created_from_id",          limit: 8
     t.boolean  "ready",                              default: false
     t.integer  "referential_suite_id",     limit: 8
-    t.string   "objectid_format"
   end
 
   add_index "referentials", ["created_from_id"], name: "index_referentials_on_created_from_id", using: :btree
@@ -647,7 +635,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "line_id",           limit: 8
     t.string   "objectid",                    null: false
     t.integer  "object_version",    limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.integer  "opposite_route_id", limit: 8
@@ -670,7 +657,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.datetime "updated_at"
     t.string   "objectid",                  null: false
     t.integer  "object_version",  limit: 8
-    t.string   "creator_id"
     t.integer  "route_id",        limit: 8
     t.integer  "stop_point_ids",  limit: 8,              array: true
     t.string   "checksum"
@@ -715,14 +701,12 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "objectid_format"
   end
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
     t.integer  "parent_id",                       limit: 8
     t.string   "objectid",                                                            null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "area_type"
@@ -766,7 +750,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "stop_area_id",   limit: 8
     t.string   "objectid",                 null: false
     t.integer  "object_version", limit: 8
-    t.string   "creator_id"
     t.integer  "position"
     t.string   "for_boarding"
     t.string   "for_alighting"
@@ -821,7 +804,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "time_tables", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                              null: false
     t.integer  "object_version",  limit: 8, default: 1
-    t.string   "creator_id"
     t.string   "version"
     t.string   "comment"
     t.integer  "int_day_types",             default: 0
@@ -852,7 +834,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "timebands", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                 null: false
     t.integer  "object_version", limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.time     "start_time",               null: false
     t.time     "end_time",                 null: false
@@ -924,7 +905,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "company_id",                      limit: 8
     t.string   "objectid",                                              null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
     t.string   "comment"
     t.string   "status_value"
     t.string   "transport_mode"
@@ -946,6 +926,17 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
   add_index "vehicle_journeys", ["route_id"], name: "index_vehicle_journeys_on_route_id", using: :btree
 
+  create_table "versions", id: :bigserial, force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+
   create_table "workbenches", id: :bigserial, force: :cascade do |t|
     t.string   "name"
     t.integer  "organisation_id",          limit: 8
@@ -954,7 +945,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "line_referential_id",      limit: 8
     t.integer  "stop_area_referential_id", limit: 8
     t.integer  "output_id",                limit: 8
-    t.string   "objectid_format"
   end
 
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
