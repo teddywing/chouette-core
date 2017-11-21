@@ -1,2 +1,2 @@
-describe CompanyDecorator do
+describe Chouette::CompanyDecorator do
 end

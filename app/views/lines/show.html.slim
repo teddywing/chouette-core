@@ -21,7 +21,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          {  'ID Codif' => @line.objectid.local_id,
+          {  'ID Codif' => @line.get_objectid.local_id,
              'Activé' => (@line.deactivated? ? t('false') : t('true')),
              @line.human_attribute_name(:network) => (@line.network.nil? ? t('lines.index.unset') : @line.network.name),
              @line.human_attribute_name(:company) => (@line.company.nil? ? t('lines.index.unset') : @line.company.name),

@@ -1,4 +1,4 @@
-RSpec.describe CompanyPolicy, type: :policy do
+RSpec.describe Chouette::CompanyPolicy, type: :policy do
 
   let( :record ){ build_stubbed :company }
   before { stub_policy_scope(record) }

@@ -1,19 +1,21 @@
-class Chouette::ConnectionLinkPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
+module Chouette
+  class ConnectionLinkPolicy < ApplicationPolicy
+    class Scope < Scope
+      def resolve
+        scope
+      end
     end
-  end
 
-  def create?
-    !archived? && organisation_match? && user.has_permission?('connection_links.create')
-  end
+    def create?
+      !archived? && organisation_match? && user.has_permission?('connection_links.create')
+    end
 
-  def destroy?
-    !archived? && organisation_match? && user.has_permission?('connection_links.destroy')
-  end
+    def destroy?
+      !archived? && organisation_match? && user.has_permission?('connection_links.destroy')
+    end
 
-  def update?
-    !archived? && organisation_match? && user.has_permission?('connection_links.update')
+    def update?
+      !archived? && organisation_match? && user.has_permission?('connection_links.update')
+    end
   end
 end

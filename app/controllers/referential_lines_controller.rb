@@ -29,7 +29,7 @@ class ReferentialLinesController < ChouetteController
 
     @routes = ModelDecorator.decorate(
       @routes,
-      with: RouteDecorator,
+      with: Chouette::RouteDecorator,
       context: {
         referential: referential,
         line: @line

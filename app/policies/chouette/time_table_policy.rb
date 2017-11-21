@@ -1,32 +1,34 @@
-class Chouette::TimeTablePolicy < ApplicationPolicy
+module Chouette
+  class TimeTablePolicy < ApplicationPolicy
 
-  class Scope < Scope
-    def resolve
-      scope
+    class Scope < Scope
+      def resolve
+        scope
+      end
     end
-  end
 
-  def create?
-    !archived? && organisation_match? && user.has_permission?('time_tables.create')
-  end
+    def create?
+      !archived? && organisation_match? && user.has_permission?('time_tables.create')
+    end
 
-  def destroy?
-    !archived? && organisation_match? && user.has_permission?('time_tables.destroy')
-  end
+    def destroy?
+      !archived? && organisation_match? && user.has_permission?('time_tables.destroy')
+    end
 
-  def update?
-    !archived? && organisation_match? && user.has_permission?('time_tables.update')
-  end
+    def update?
+      !archived? && organisation_match? && user.has_permission?('time_tables.update')
+    end
 
-  def actualize?
-    !archived? && organisation_match? && edit?
-  end
+    def actualize?
+      !archived? && organisation_match? && edit?
+    end
 
-  def duplicate?
-    !archived? && organisation_match? && create?
-  end
+    def duplicate?
+      !archived? && organisation_match? && create?
+    end
 
-  def month?
-    update?
+    def month?
+      update?
+    end
   end
 end

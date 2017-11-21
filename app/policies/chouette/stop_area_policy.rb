@@ -1,7 +1,9 @@
-class Chouette::StopAreaPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
+module Chouette
+  class StopAreaPolicy < ApplicationPolicy
+    class Scope < Scope
+      def resolve
+        scope
+      end
     end
   end
 end

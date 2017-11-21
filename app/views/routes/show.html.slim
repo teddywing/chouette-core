@@ -22,7 +22,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { t('objectid') => @route.objectid.short_id,
+          { t('objectid') => @route.get_objectid.short_id,
             t('activerecord.attributes.route.published_name') => (@route.published_name ? @route.published_name : '-'),
             @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
             @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }

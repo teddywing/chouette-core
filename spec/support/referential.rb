@@ -46,9 +46,11 @@ RSpec.configure do |config|
     organisation = Organisation.create!(code: "first", name: "first")
 
     line_referential = LineReferential.find_or_create_by(name: "first") do |referential|
+      referential.objectid_format = "stif_codifligne"
       referential.add_member organisation, owner: true
     end
     stop_area_referential = StopAreaReferential.find_or_create_by(name: "first") do |referential|
+      referential.objectid_format = "stif_reflex"
       referential.add_member organisation, owner: true
     end
 
@@ -65,7 +67,8 @@ RSpec.configure do |config|
       name: "first",
       slug: "first",
       organisation: organisation,
-      workbench: workbench
+      workbench: workbench,
+      objectid_format: "stif_netex"
     )
   end
 

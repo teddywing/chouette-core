@@ -10,7 +10,7 @@ describe 'Line Footnotes', type: :feature do
 
   describe 'permissions' do
     before do
-      allow_any_instance_of(LinePolicy).to receive(:update_footnote?).and_return permission
+      allow_any_instance_of(Chouette::LinePolicy).to receive(:update_footnote?).and_return permission
       visit path
     end
 

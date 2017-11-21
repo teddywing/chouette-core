@@ -1,23 +1,25 @@
-class Chouette::RoutePolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
+module Chouette
+  class RoutePolicy < ApplicationPolicy
+    class Scope < Scope
+      def resolve
+        scope
+      end
     end
-  end
 
-  def create?
-    !archived? && organisation_match? && user.has_permission?('routes.create')
-  end
+    def create?
+      !archived? && organisation_match? && user.has_permission?('routes.create')
+    end
 
-  def destroy?
-    !archived? && organisation_match? && user.has_permission?('routes.destroy')
-  end
+    def destroy?
+      !archived? && organisation_match? && user.has_permission?('routes.destroy')
+    end
 
-  def update?
-    !archived? && organisation_match? && user.has_permission?('routes.update')
-  end
+    def update?
+      !archived? && organisation_match? && user.has_permission?('routes.update')
+    end
 
-  def duplicate?
-    create?
+    def duplicate?
+      create?
+    end
   end
 end

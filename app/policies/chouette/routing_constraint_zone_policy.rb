@@ -1,19 +1,21 @@
-class Chouette::RoutingConstraintZonePolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
+module Chouette
+  class RoutingConstraintZonePolicy < ApplicationPolicy
+    class Scope < Scope
+      def resolve
+        scope
+      end
     end
-  end
 
-  def create?
-    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.create')
-  end
+    def create?
+      !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.create')
+    end
 
-  def destroy?
-    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.destroy')
-  end
+    def destroy?
+      !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.destroy')
+    end
 
-  def update?
-    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.update')
+    def update?
+      !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.update')
+    end
   end
 end

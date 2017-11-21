@@ -1,7 +1,9 @@
-class Chouette::NetworkPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
+module Chouette
+  class NetworkPolicy < ApplicationPolicy
+    class Scope < Scope
+      def resolve
+        scope
+      end
     end
   end
 end
