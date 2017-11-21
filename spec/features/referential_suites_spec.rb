@@ -13,6 +13,7 @@ RSpec.describe 'ReferentialSuites', type: :feature do
   describe 'index' do
     context 'no referentials present' do
       before(:each) do
+        require 'pry'; binding.pry
         visit workbench_output_path(workbench)
       end
       it 'has a page with the correct information' do
