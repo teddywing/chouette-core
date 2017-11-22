@@ -1,4 +1,5 @@
 class TimeTableCombinationsController < ChouetteController
+  include ReferentialSupport
   belongs_to :referential do
     belongs_to :time_table, :parent_class => Chouette::TimeTable
   end

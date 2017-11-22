@@ -2,6 +2,7 @@ require 'will_paginate/array'
 require 'open-uri'
 
 class ExportsController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Export
 
   respond_to :html, :only => [:show, :index, :destroy, :exported_file]

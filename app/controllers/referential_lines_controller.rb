@@ -1,4 +1,5 @@
 class ReferentialLinesController < ChouetteController
+  include ReferentialSupport
   include PolicyChecker
 
   defaults :resource_class => Chouette::Line, :collection_name => 'lines', :instance_name => 'line'
@@ -127,7 +128,6 @@ class ReferentialLinesController < ChouetteController
       :company_id,
       :objectid,
       :object_version,
-      :creator_id,
       :name, :number,
       :published_name,
       :transport_mode,

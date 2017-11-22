@@ -1,4 +1,5 @@
 class VehicleJourneysController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Chouette::VehicleJourney
   before_action :user_permissions, only: :index
 

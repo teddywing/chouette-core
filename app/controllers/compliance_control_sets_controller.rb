@@ -1,4 +1,4 @@
-class ComplianceControlSetsController < InheritedResources::Base
+class ComplianceControlSetsController < ChouetteController
   include PolicyChecker
   defaults resource_class: ComplianceControlSet
   include RansackDateFilter

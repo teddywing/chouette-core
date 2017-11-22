@@ -1,4 +1,5 @@
 class JourneyPatternsController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Chouette::JourneyPattern
 
   respond_to :html
@@ -54,7 +55,7 @@ class JourneyPatternsController < ChouetteController
   private
 
   def journey_pattern_params
-    params.require(:journey_pattern).permit(:route_id, :objectid, :object_version, :creator_id, :name, :comment, :registration_number, :published_name, :departure_stop_point_id, :arrival_stop_point_id, {:stop_point_ids => []})
+    params.require(:journey_pattern).permit(:route_id, :objectid, :object_version, :name, :comment, :registration_number, :published_name, :departure_stop_point_id, :arrival_stop_point_id, {:stop_point_ids => []})
   end
 
 end
