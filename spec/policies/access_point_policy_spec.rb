@@ -1,4 +1,4 @@
-RSpec.describe Chouette::AccessPointPolicy, type: :policy do
+RSpec.describe AccessPointPolicy, type: :policy do
 
   let( :record ){ build_stubbed :access_point }
 

@@ -1,4 +1,4 @@
-RSpec.describe Chouette::JourneyPatternPolicy, type: :policy do
+RSpec.describe JourneyPatternPolicy, type: :policy do
 
   let( :record ){ build_stubbed :journey_pattern }
 

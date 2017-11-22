@@ -85,7 +85,7 @@ class NetworksController < InheritedResources::Base
   def decorate_networks(networks)
     ModelDecorator.decorate(
       networks,
-      with: Chouette::NetworkDecorator,
+      with: NetworkDecorator,
       context: {
         line_referential: line_referential
       }

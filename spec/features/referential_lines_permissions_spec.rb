@@ -7,7 +7,7 @@ describe 'ReferentialLines', type: :feature do
 
   context 'permissions' do 
     before do
-      allow_any_instance_of(Chouette::RoutePolicy).to receive(:create?).and_return permission
+      allow_any_instance_of(RoutePolicy).to receive(:create?).and_return permission
       visit path
     end
     

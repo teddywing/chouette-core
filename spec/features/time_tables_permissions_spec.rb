@@ -8,7 +8,7 @@ describe "TimeTables", :type => :feature do
 
   describe 'permissions' do
     before do
-      allow_any_instance_of(Chouette::TimeTablePolicy).to receive(:duplicate?).and_return permission
+      allow_any_instance_of(TimeTablePolicy).to receive(:duplicate?).and_return permission
       visit path
     end
 

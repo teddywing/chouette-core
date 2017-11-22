@@ -56,7 +56,7 @@ class StopAreasController < InheritedResources::Base
 
         @stop_areas = ModelDecorator.decorate(
           @stop_areas,
-          with: Chouette::StopAreaDecorator
+          with: StopAreaDecorator
         )
       }
     end

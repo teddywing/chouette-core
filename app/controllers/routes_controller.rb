@@ -48,7 +48,7 @@ class RoutesController < ChouetteController
 
       @route_sp = ModelDecorator.decorate(
         @route_sp,
-        with: Chouette::StopPointDecorator
+        with: StopPointDecorator
       )
     end
   end

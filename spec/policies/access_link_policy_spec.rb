@@ -1,4 +1,4 @@
-RSpec.describe Chouette::AccessLinkPolicy, type: :policy do
+RSpec.describe AccessLinkPolicy, type: :policy do
 
   let( :record ){ build_stubbed :access_link }
 

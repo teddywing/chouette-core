@@ -11,8 +11,8 @@ describe "Routes", :type => :feature do
   describe 'permissions' do
     before do
       @user.update(organisation: referential.organisation)
-      allow_any_instance_of(Chouette::RoutePolicy).to receive(:edit?).and_return permission
-      allow_any_instance_of(Chouette::RoutePolicy).to receive(:destroy?).and_return permission
+      allow_any_instance_of(RoutePolicy).to receive(:edit?).and_return permission
+      allow_any_instance_of(RoutePolicy).to receive(:destroy?).and_return permission
       visit path
     end
 

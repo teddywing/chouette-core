@@ -168,7 +168,7 @@ class TimeTablesController < ChouetteController
   def decorate_time_tables(time_tables)
     ModelDecorator.decorate(
       time_tables,
-      with: Chouette::TimeTableDecorator,
+      with: TimeTableDecorator,
       context: {
         referential: @referential
       }
