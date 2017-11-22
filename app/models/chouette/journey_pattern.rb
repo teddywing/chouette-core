@@ -148,7 +148,6 @@ module Chouette
         vjas.destroy
       end
     end
-<<<<<<< HEAD
 
     def control_route_sections
       stop_area_ids = self.stop_points.map(&:stop_area_id)
@@ -185,7 +184,3 @@ module Chouette
     end
   end
 end
-=======
-  end
-end
->>>>>>> master
