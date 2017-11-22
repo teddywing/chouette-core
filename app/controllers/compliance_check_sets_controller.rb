@@ -19,6 +19,14 @@ class ComplianceCheckSetsController < InheritedResources::Base
     end
   end
 
+  def show
+    show! do
+      @compliance_check_set = @compliance_check_set.decorate(context: {
+        compliance_check_set: @compliance_check_set
+      })
+    end
+  end
+
   def executed
     show! do |format| 
       # But now nobody is aware anymore that `format.html` passes a parameter into the block
