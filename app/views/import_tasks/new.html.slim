@@ -16,11 +16,10 @@ ul.nav.nav-pills
         = form.input :referential_id, as: :hidden, :input_html => { :value => @referential.id }
         = form.input :name
         = form.input :no_save, as: :boolean
-        = form.input :rule_parameter_set_id, as: :select, :collection =>  @referential.organisation.rule_parameter_sets.map { |rps| [ rps.name, rps.id ] }, :include_blank => true
         = form.input :resources, as: :file
 
       = render partial: "fields_#{import_task.data_format}_import", :locals => { :form => form }
-      
+
       = form.actions do
         = form.action :submit, as: :button , :label => t( 'formtastic.import' )
         = form.action :cancel, as: :link

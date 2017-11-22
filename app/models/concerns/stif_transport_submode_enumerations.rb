@@ -1,24 +1,28 @@
 module StifTransportSubmodeEnumerations
   extend ActiveSupport::Concern
-  extend Enumerize
-  extend self
 
-  enumerize :transport_submode, in: %w(demandAndResponseBus
-                                       nightBus
-                                       airportLinkBus
-                                       highFrequencyBus
-                                       expressBus
-                                       railShuttle
-                                       suburbanRailway
-                                       regionalRail
-                                       interregionalRail
-)
+  class << self
+    def transport_submodes
+      %w(
+      demandAndResponseBus
+      nightBus
+      airportLinkBus
+      highFrequencyBus
+      expressBus
+      railShuttle
+      suburbanRailway
+      regionalRail
+      interregionalRail)
+    end
 
-  def transport_submodes
-    StifTransportSubmodeEnumerations.transport_submode.values
+    def sorted_transport_submodes
+      transport_submodes.sort_by{|m| I18n.t("enumerize.transport_submode.#{m}").parameterize }
+    end
   end
 
-  def sorted_transport_submodes
-    self.transport_submodes.sort_by{|m| I18n.t("enumerize.transport_submode.#{m}").parameterize }
+  included do
+    extend Enumerize
+    enumerize :transport_submode, in: StifTransportSubmodeEnumerations.transport_submodes
   end
+  
 end

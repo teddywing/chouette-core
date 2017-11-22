@@ -12,6 +12,7 @@ ChouetteIhm::Application.routes.draw do
       end
     end
     resources :compliance_check_sets, only: [:index, :show] do
+      get :executed, on: :member
       resources :compliance_checks, only: [:show]
     end
   end
@@ -71,7 +72,6 @@ ChouetteIhm::Application.routes.draw do
 
   resource :organisation, :only => [:show, :edit, :update] do
     resources :users
-    resources :rule_parameter_sets
   end
 
   resources :api_keys, :only => [:edit, :update, :new, :create, :destroy]

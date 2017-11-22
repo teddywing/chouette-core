@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171113101005) do
+ActiveRecord::Schema.define(version: 20171114102438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -680,14 +680,6 @@ ActiveRecord::Schema.define(version: 20171113101005) do
   create_table "routing_constraints_lines", id: false, force: :cascade do |t|
     t.integer "stop_area_id", limit: 8
     t.integer "line_id",      limit: 8
-  end
-
-  create_table "rule_parameter_sets", id: :bigserial, force: :cascade do |t|
-    t.text     "parameters"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "organisation_id", limit: 8
   end
 
   create_table "stop_area_referential_memberships", id: :bigserial, force: :cascade do |t|

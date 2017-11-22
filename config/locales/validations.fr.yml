@@ -101,7 +101,6 @@ fr:
         status: "Status"
         no_save: "Pas de sauvegarde"
         references_type: "Sous ensemble"
-        rule_parameter_set_id: "Jeu de paramètres pour validation"
         object_id_prefix: "Préfixe d'identifiants"
         max_distance_for_commercial: "Distance max pour créer les zones"
         max_distance_for_connection_link: "Distance max pour créer les correspondances"
