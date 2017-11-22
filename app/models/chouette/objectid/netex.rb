@@ -26,7 +26,7 @@ module Chouette
       end
 
       def short_id
-        local_id
+        local_id.try(:split, "-").try(:first)
       end
     end
   end

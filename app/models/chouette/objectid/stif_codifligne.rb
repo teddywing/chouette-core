@@ -19,6 +19,10 @@ module Chouette
       def to_s
         "#{self.provider_id}:#{self.sync_id}:#{self.object_type}:#{self.local_id}"
       end
+
+      def short_id
+        local_id
+      end
     end
   end
 end
