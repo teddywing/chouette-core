@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Chouette::Timeband, :type => :model do
+  it { is_expected.to be_versioned }
 
   describe '#create' do
     context 'when valid' do
