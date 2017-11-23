@@ -44,6 +44,11 @@ FactoryGirl.define do
 
     end
 
+    factory :line_with_after_commit do |line|
+      line.run_callbacks(:commit)
+
+    end
+
   end
 
 end
