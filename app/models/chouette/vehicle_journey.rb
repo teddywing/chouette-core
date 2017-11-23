@@ -3,7 +3,8 @@ module Chouette
     include ChecksumSupport
     include VehicleJourneyRestrictions
     include ObjectidSupport
-    extend StifTransportModeEnumerations
+    include StifTransportModeEnumerations
+
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
 
