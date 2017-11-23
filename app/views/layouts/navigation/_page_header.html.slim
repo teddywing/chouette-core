@@ -3,17 +3,19 @@ div.page_header
     div.row
       div.col-lg-9.col-md-8.col-sm-7.col-xs-7
         div.page-icon
-          span.sb class="sb-#{resource_class.model_name.name.parameterize}"
+          span.sb class="sb-#{resource_class.model_name.name.underscore}"
         div.page-title
-          - if resource.persisted?
-            h1 = resource.name
+          - if content_for? :page_header_title
+            h1 = yield :page_header_title
+          - elsif defined?(object)
+            h1 = t("#{resource_class.model_name.name.underscore.pluralize}.#{params[:action]}.title", name: object.name)
           - else
             h1 = t("#{resource_class.model_name.name.underscore.pluralize}.#{params[:action]}.title")
 
       div.col-lg-3.col-md-4.col-sm-5.col-xs-5.text-right
         div.page-action
-          - if resource.persisted?
-            div.small = t('last_update', time: l(resource.updated_at, format: :short)).html_safe
+          - if defined?(object)
+            div.small = t('last_update', time: l(object.updated_at, format: :short)).html_safe
 
           - if content_for? :page_header_actions
             = yield :page_header_actions

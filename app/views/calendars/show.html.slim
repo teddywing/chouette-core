@@ -1,12 +1,9 @@
 - breadcrumb :calendar, @calendar
-/ PageHeader
-= pageheader 'modele-calendrier',
-             @calendar.name,
-             '',
-             t('last_update', time: l(@calendar.updated_at, format: :short)),
-             (policy(@calendar).edit? ? link_to(t('actions.edit'), edit_calendar_path(@calendar), class: 'btn btn-default') : '') do
+- content_for :page_header_actions do
+  - if policy(@calendar).edit?
+    = link_to(t('actions.edit'), edit_calendar_path(@calendar), class: 'btn btn-default')
 
-  / Below is secondary actions & optional contents (filters, ...)
+- content_for :page_header_content do
   .row.mb-sm
     .col-lg-12.text-right
       - @calendar.action_links.each do |link|
@@ -16,7 +13,8 @@
             class: 'btn btn-primary' do
               = link.content
 
-/ PageContent
+= render partial: 'layouts/navigation/page_header', locals: {object: @calendar}
+
 .page_content
   .container-fluid
     .row

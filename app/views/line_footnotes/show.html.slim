@@ -1,12 +1,11 @@
 - breadcrumb :line_footnotes, @referential, @line
-/ PageHeader
-= pageheader 'ligne',
-             "Notes sur la ligne #{@line.name}",
-             'Lorem ipsum dolor sit amet',
-             '',
-             (policy(@line).update_footnote? ? link_to(t('actions.edit'), edit_referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary') : '')
 
-/ PageContent
+- content_for :page_header_actions do
+  - if policy(@line).update_footnote?
+    = link_to(t('actions.edit'), edit_referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary')
+
+= render partial: 'layouts/navigation/page_header', locals: {object: @line}
+
 .page_content
   .container-fluid
     .row

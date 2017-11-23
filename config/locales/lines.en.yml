@@ -18,9 +18,9 @@ en:
     new:
       title: "Add a new line"
     edit:
-      title: "Update line %{line}"
+      title: "Update line %{name}"
     show:
-      title: "Line %{line}"
+      title: "Line %{name}"
       routes:
         title: "Routes list"
       group_of_lines: "Groups of lines"

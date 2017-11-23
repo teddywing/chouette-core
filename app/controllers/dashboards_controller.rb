@@ -5,6 +5,7 @@
 #
 class DashboardsController < ChouetteController
   respond_to :html, only: [:show]
+  defaults :resource_class => Dashboard
 
   def show
     @dashboard = Dashboard.create self

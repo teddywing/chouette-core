@@ -1,10 +1,5 @@
-/ PageHeader
-= pageheader 'ligne',
-             "Notes sur la ligne #{@line.name}",
-             'Lorem ipsum dolor sit amet',
-             (@line.footnotes.any? ? t('last_update', time: l(@line.footnotes.last.updated_at, format: :short)) : '')
+= render partial: 'layouts/navigation/page_header', locals: {object: @line}
 
-/ PageContent
 .page_content
   .container-fluid
     .row

@@ -42,9 +42,9 @@ fr:
     new:
       title: Ajouter un calendrier
     edit:
-      title: Editer le calendrier %{calendar}
+      title: Editer le calendrier %{name}
     show:
-      title: Calendrier %{calendar}
+      title: Calendrier %{name}
   simple_form:
     labels:
       calendar:

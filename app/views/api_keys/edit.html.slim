@@ -1,16 +1,11 @@
-/ PageHeader
-= pageheader 'Clé d\'API',
-             t('api_keys.edit.title'),
-             'Lorem ipsum dolor sit amet',
-             t('last_update', time: l(@api_key.updated_at, format: :short)),
-             ''
-
-  / Below are secondary actions & optional content (filters, ...)
+- content_for :page_header_content do
+  - if policy(@api_key).destroy?
   .row.mb-sm
     .col-lg-12.text-right
-      = ( policy(@api_key).destroy? ? link_to(t('actions.destroy'), api_key_path(@api_key), :method => :delete, class: 'btn btn-default') : '' )
+      = link_to(t('actions.destroy'), api_key_path(@api_key), :method => :delete, class: 'btn btn-default')
 
-/ PageContent
+= render partial: 'layouts/navigation/page_header', locals: {object: @api_key}
+
 .page_content
   .container-fluid
     .row

@@ -1,12 +1,10 @@
 - breadcrumb :networks, @line_referential
-/ PageHeader
-= pageheader 'reseau',
-             t('networks.index.title'),
-             'Lorem ipsum dolor sit amet',
-             '',
-             (policy(Chouette::Network).create? ? link_to(t('networks.actions.new'), new_line_referential_network_path(@line_referential), class: 'btn btn-primary') : '')
+- content_for :page_header_actions do
+  - if policy(Chouette::Network).create?
+    = link_to(t('networks.actions.new'), new_line_referential_network_path(@line_referential), class: 'btn btn-primary')
 
-/ PageContent
+= render partial: 'layouts/navigation/page_header'
+
 .page_content
   .container-fluid
     - if params[:q].present? or @networks.any?

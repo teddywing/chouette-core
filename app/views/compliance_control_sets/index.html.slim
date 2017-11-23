@@ -1,16 +1,10 @@
 - breadcrumb :compliance_control_sets
-/ PageHeader
-- header_params = ['jeux-de-controle',
-        t('compliance_control_sets.index.title'),
-        '']
-- header_params << link_to(t('compliance_control_sets.actions.new'), new_compliance_control_set_path, class: 'btn btn-default')  if policy(Calendar).create?
-= pageheader(*header_params) do
+- content_for :page_header_actions do
+  - if policy(ComplianceControlSet).create?
+    = link_to(t('compliance_control_sets.actions.new'), new_compliance_control_set_path, class: 'btn btn-default')
 
-  / Below is secundary actions & optional contents (filters, ...)
-  .row.mb-sm
-    .col-lg-12.text-right
+= render partial: 'layouts/navigation/page_header'
 
-/ PageContent
 .page_content
   .container-fluid
     .row

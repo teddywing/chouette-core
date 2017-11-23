@@ -18,9 +18,9 @@ fr:
     new:
       title: "Ajouter une ligne"
     edit:
-      title: "Editer la ligne %{line}"
+      title: "Editer la ligne %{name}"
     show:
-      title: "Ligne %{line}"
+      title: "Ligne %{name}"
       routes:
         title: "Liste des Itinéraires"
       itineraries: "Liste des séquences d'arrêts de la ligne"

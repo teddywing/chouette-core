@@ -9,9 +9,9 @@ fr:
     new:
       title: "Ajouter un réseau"
     edit:
-      title: "Editer le réseau %{network}"
+      title: "Editer le réseau %{name}"
     show:
-      title: "Réseau %{network}"
+      title: "Réseau %{name}"
     index:
       title: "Réseaux"
       name: "Recherche par nom..."

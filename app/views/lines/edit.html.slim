@@ -1,5 +1,4 @@
 - breadcrumb :line, @line
-
-= title_tag t('lines.edit.title', line: @line.name)
+= render partial: 'layouts/navigation/page_header', locals: {object: @line}
 
 = render 'form'

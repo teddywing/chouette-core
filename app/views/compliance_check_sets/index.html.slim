@@ -1,13 +1,6 @@
 - breadcrumb :compliance_check_sets, @workbench
-/ PageHeader
-- header_params = ['jeux-de-donnees',
-        t('compliance_check_sets.index.title'),
-        '']
-= pageheader(*header_params) do
 
-  / Below is secundary actions & optional contents (filters, ...)
-  .row.mb-sm
-    .col-lg-12.text-right
+= render partial: 'layouts/navigation/page_header'
 
 / PageContent
 .page_content

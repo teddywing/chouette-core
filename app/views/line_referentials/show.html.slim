@@ -1,12 +1,8 @@
 - breadcrumb :line_referential, @line_referential
-/ PageHeader
-= pageheader 'synchro-ilico',
-             t('.title'),
-             'Lorem ipsum dolor sit amet',
-             t('last_update', time: l(@line_referential.updated_at, format: :short)),
-             link_to(t('actions.sync'), sync_line_referential_path(@line_referential), method: :post, class: 'btn btn-default') do
+- content_for :page_header_actions do
+  = link_to(t('actions.sync'), sync_line_referential_path(@line_referential), method: :post, class: 'btn btn-default')
 
-  / Below is secundary actions & opt. contents
+- content_for :page_header_content do
   .row.mb-md
     .col-lg-12.text-right
       = link_to line_referential_companies_path(@line_referential), class: 'btn btn-primary' do
@@ -19,7 +15,8 @@
         = Referential.human_attribute_name(:lines)
         em.small = " (#{@line_referential.lines.size})"
 
-/ PageContent
+= render partial: 'layouts/navigation/page_header', locals: {object: @line_referential}
+
 .page_content
   .container-fluid
     .row

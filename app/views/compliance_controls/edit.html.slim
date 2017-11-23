@@ -1,8 +1,5 @@
 - breadcrumb :compliance_control, @compliance_control
-
-= pageheader 'jeux-de-controle',
-        t('compliance_controls.edit.title')
-
+= render partial: 'layouts/navigation/page_header', locals: {object: @compliance_control}
 
 .page_content
   .container-fluid

@@ -1,9 +1,6 @@
 - breadcrumb :journey_patterns, @referential, @route
-/ pageheader
-= pageheader 'mission',
-             "Missions de #{@route.try(:stop_points).first.try(:stop_area).name} vers #{@route.try(:stop_points).last.try(:stop_area).name}",
-             'Lorem ipsum dolor sit amet',
-             ''
+= render partial: 'layouts/navigation/page_header', locals: {object: @route}
+
 - @journey_patterns.each do |jp|
   - jp.errors.each do |error_message|
     = error_message

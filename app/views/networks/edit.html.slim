@@ -1,4 +1,4 @@
 - breadcrumb :network, @network
-= title_tag t('networks.edit.title', network: @network.name)
+= render partial: 'layouts/navigation/page_header', locals: {object: @network}
 
 = render 'form'

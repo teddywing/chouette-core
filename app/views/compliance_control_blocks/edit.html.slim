@@ -1,9 +1,5 @@
-/ PageHeader
-= pageheader 'jeux-de-controle',
-        t('compliance_control_blocks.edit.title', compliance_control_block: @compliance_control_block.id)
+= render partial: 'layouts/navigation/page_header', locals: {object: @compliance_control_block}
 
-
-/ PageContent
 .page_content
   .container-fluid
     .row
