@@ -1,0 +1,22 @@
+div.page_header
+  div.container-fluid
+    div.row
+      div.col-lg-9.col-md-8.col-sm-7.col-xs-7
+        div.page-icon
+          span.sb class="sb-#{resource_class.model_name.name.parameterize}"
+        div.page-title
+          - if resource.persisted?
+            h1 = resource.name
+          - else
+            h1 = t("#{resource_class.model_name.name.underscore.pluralize}.#{params[:action]}.title")
+
+      div.col-lg-3.col-md-4.col-sm-5.col-xs-5.text-right
+        div.page-action
+          - if resource.persisted?
+            div.small = t('last_update', time: l(resource.updated_at, format: :short)).html_safe
+
+          - if content_for? :page_header_actions
+            = yield :page_header_actions
+
+    - if content_for? :page_header_content
+      = yield :page_header_content
