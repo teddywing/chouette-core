@@ -1,6 +1,6 @@
 module Chouette
   module ObjectidFormatter
-    class Chouette::ObjectidFormatter::StifCodifligne
+    class StifCodifligne
       def before_validation(model) 
         # unused method in this context
       end

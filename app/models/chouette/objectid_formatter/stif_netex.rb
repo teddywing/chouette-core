@@ -1,6 +1,6 @@
 module Chouette
   module ObjectidFormatter
-    class Chouette::ObjectidFormatter::StifNetex
+    class StifNetex
       def before_validation(model)
         model.attributes = {objectid: "__pending_id__#{SecureRandom.uuid}"} unless model.read_attribute(:objectid)
       end
