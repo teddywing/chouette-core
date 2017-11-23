@@ -24,7 +24,6 @@ Apartment.configure do |config|
     'Organisation',
     'User',
     'Api::V1::ApiKey',
-    'RuleParameterSet',
     'StopAreaReferential',
     'StopAreaReferentialMembership',
     'StopAreaReferentialSync',

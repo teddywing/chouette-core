@@ -1,9 +1,5 @@
 en:
   compliance_check_sets:
-    index:
-      title: Control reports
-      new: Creating a Control Report
-      edit: Update a Control Report
     actions:
           new: Add a control report
           edit: Edit a control report
@@ -12,12 +8,25 @@ en:
     filters:
           name: Specify a control report name...
           error_period_filter: End date must be greater than or equal to begin date
+    index:
+      title: Compliance control set
+      new: New compliance control set
+      new_control: Creating a Control
+      select_types: Control Type Selection
+      edit: Edit compliance control set
     search_no_results: No control reports match your search
+    executed:
+      title: Executed control report %{name}
   activerecord:
-          attributes:
-            compliance_check_set:
-              ref: réf
-              creation_date: Created at
-              associated_object: Associated object
-              assigned_to: Assigned to
-              compliance_control_set: Compliance control set
+    attributes:
+      compliance_check_set:
+        ref: ref
+        creation_date: Created at
+        associated_object: Associated object
+        assigned_to: Assigned to
+        compliance_control_set: Compliance control set
+        name: Name
+    models:
+      compliance_check_block:
+        one: compliance_control_set
+        other: compliance_control_sets

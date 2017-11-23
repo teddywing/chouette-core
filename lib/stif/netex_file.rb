@@ -52,8 +52,6 @@ module STIF
       end
     end
 
-    LINE_FORMAT = /^offre_.*\.xml$/
-
     def add_offer_file(file_name)
       if file_name =~ /^offre_([^_]*)_/
         line_refs << $1

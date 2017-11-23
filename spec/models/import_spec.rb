@@ -13,9 +13,9 @@ RSpec.describe Import, type: :model do
   it { should allow_value('file.zip').for(:file).with_message(I18n.t('activerecord.errors.models.import.attributes.file.wrong_file_extension')) }
   it { should_not allow_values('file.json', 'file.png', 'file.pdf').for(:file) }
 
-  let(:workbench_import) { build_stubbed(:workbench_import) }
+  let(:workbench_import) {netex_import.parent}
   let(:workbench_import_with_completed_steps) do
-    workbench_import = build_stubbed(
+    build_stubbed(
       :workbench_import,
       total_steps: 2,
       current_step: 2
@@ -23,20 +23,18 @@ RSpec.describe Import, type: :model do
   end
 
   let(:netex_import) do
-    netex_import = build_stubbed(
-      :netex_import,
-      parent: workbench_import
+    build_stubbed(
+      :netex_import
     )
   end
 
   describe "#destroy" do
     it "must destroy all child imports" do
-      workbench_import = create(:workbench_import)
-      create(:netex_import, parent: workbench_import)
+      netex_import = create(:netex_import)
 
-      workbench_import.destroy
+      netex_import.parent.destroy
 
-      expect(workbench_import).to be_destroyed
+      expect(netex_import.parent).to be_destroyed
       expect(NetexImport.count).to eq(0)
     end
 

@@ -1,4 +1,4 @@
-class ComplianceChecksController < ChouetteController
+class ComplianceChecksController <  InheritedResources::Base
 
 
 end

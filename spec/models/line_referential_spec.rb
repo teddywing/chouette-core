@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-RSpec.describe LineReferential, :type => :model do
+RSpec.describe LineReferential, type: :model do
   it 'should have a valid factory' do
     expect(FactoryGirl.build(:line_referential)).to be_valid
   end
@@ -10,9 +8,4 @@ RSpec.describe LineReferential, :type => :model do
   it { is_expected.to have_many(:workbenches) }
   it { should validate_presence_of(:sync_interval) }
 
-  describe "#transport_modes" do
-    it 'returns a list of all transport modes' do
-      expect(FactoryGirl.create(:line_referential).class.transport_modes).to match_array(StifTransportModeEnumerations.transport_modes )
-    end
-  end
 end

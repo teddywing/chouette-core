@@ -1,8 +1,7 @@
 - breadcrumb :compliance_control_set, @compliance_control_set
 / PageHeader
 = pageheader 'jeux-de-controle',
-              t('compliance_control_sets.show.title', name: @compliance_control_set.name),
-             'Lorem ipsum dolor sit amet'
+              t('compliance_control_sets.show.title', name: @compliance_control_set.name)
 
   / Below is secondary actions & optional contents (filters, ...)
   .row.mb-sm
@@ -25,21 +24,65 @@
         = definition_list t('metadatas'),
             ComplianceControlSet.human_attribute_name(:name) => @compliance_control_set.name,
             I18n.t('activerecord.attributes.compliance_control_set.owner_jdc') => @compliance_control_set.organisation.name
-  - if params[:q].present? or @compliance_controls.any?
+
+  - if params[:q].present? || @blocks_to_compliance_controls_map.any? || @direct_compliance_controls
     .row
       .col-lg-12
         = render '/compliance_controls/filters'
 
-    .row
-      .col-lg-12
-        h2
-          = transport_mode("", "")
 
-      - if @indirect_compliance_controls.try(:any?)
+    - if @direct_compliance_controls.try(:any?)
+      .row
+        .col-lg-12
+          h2
+            = transport_mode_text()
+      .row
+        .col-lg-12
+          .select_table
+            = table_builder_2 @direct_compliance_controls,
+                    [ \
+                TableBuilderHelper::Column.new( \
+                  key: :code, \
+                  attribute: 'code' \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :name, \
+                  attribute: 'name', \
+                  link_to: lambda do |compliance_control| \
+                      compliance_control_set_compliance_control_path(@compliance_control_set, compliance_control) \
+                    end \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :criticity, \
+                  attribute: 'criticity' \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :comment, \
+                  attribute: 'comment' \
+                ), \
+              ],
+              sortable: true,
+              cls: 'table has-filter has-search',
+              model: ComplianceControl
+
+    - @blocks_to_compliance_controls_map.each do |block, compliance_controls|
+
+      - if compliance_controls.try(:any?)
+        .row
+          .col-lg-12
+            h2
+              = transport_mode_text(block)
+              .btn-group
+                .btn.dropdown-toggle{ data-toggle="dropdown" }
+                  .span.fa.fa-cog
+                ul.dropdown-menu
+                  li
+                    = link_to t('compliance_control_sets.actions.edit'), edit_compliance_control_set_compliance_control_block_path(@compliance_control_set.id, block.id)
+                    = link_to t('compliance_control_sets.actions.destroy'), compliance_control_set_compliance_control_block_path(@compliance_control_set.id, block.id), :method => :delete, :data => {:confirm =>  t('compliance_control_sets.actions.destroy_confirm')}
         .row
           .col-lg-12
             .select_table
-              = table_builder_2 @indirect_compliance_controls,
+              = table_builder_2 compliance_controls,
                       [ \
                   TableBuilderHelper::Column.new( \
                     key: :code, \
@@ -65,47 +108,4 @@
                 cls: 'table has-filter has-search',
                 model: ComplianceControl
 
-    - @compliance_controls.each do |block, compliance_controls|
-
-      - if compliance_controls.try(:any?)
-        .row
-          .col-lg-12
-            h2
-              = transport_mode(block.transport_mode, block.transport_submode)
-              .btn-group
-                .btn.dropdown-toggle{ data-toggle="dropdown" }
-                  .span.fa.fa-cog
-                ul.dropdown-menu
-                  li
-                    = link_to t('compliance_control_sets.actions.edit'), edit_compliance_control_set_compliance_control_block_path(@compliance_control_set.id, block.id) if policy(ComplianceControlBlock).update? if policy(ComplianceControlBlock).update?
-                    = link_to t('compliance_control_sets.actions.destroy'), compliance_control_set_compliance_control_block_path(@compliance_control_set.id, block.id), :method => :delete, :data => {:confirm =>  t('compliance_control_sets.actions.destroy_confirm')} if policy(ComplianceControlBlock).destroy?
-          .row
-            .col-lg-12
-              .select_table
-                = table_builder_2 compliance_controls,
-                        [ \
-                    TableBuilderHelper::Column.new( \
-                      key: :code, \
-                      attribute: 'code' \
-                    ), \
-                    TableBuilderHelper::Column.new( \
-                      key: :name, \
-                      attribute: 'name', \
-                      link_to: lambda do |compliance_control| \
-                          compliance_control_set_compliance_control_path(@compliance_control_set, compliance_control) \
-                        end \
-                    ), \
-                    TableBuilderHelper::Column.new( \
-                      key: :criticity, \
-                      attribute: 'criticity' \
-                    ), \
-                    TableBuilderHelper::Column.new( \
-                      key: :comment, \
-                      attribute: 'comment' \
-                    ), \
-                  ],
-                  sortable: true,
-                  cls: 'table has-filter has-search',
-                  model: ComplianceControl
-
-  = flotted_links(@compliance_control_set.id)
+    = flotted_links @compliance_control_set.id

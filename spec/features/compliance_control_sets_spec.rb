@@ -25,7 +25,18 @@ RSpec.describe "ComplianceControlSets", type: :feature do
       visit compliance_control_set_path( control_set )
     end
 
-    it 'we can see the controls inside their blocks' do
+    it 'we can see the expected content' do
+      # Breadcrumb
+      expect_breadcrumb_links "Accueil", "Liste des jeux de contrôles"
+
+      # Headline
+      expect( page ).to have_content("Consulter le jeu de contrôles #{control_set.name}")
+
+      # Information Definition List
+      expect( page.first('.dl-term') ).to have_content("Nom")
+      expect( page.first('.dl-def') ).to have_content(control_set.name)
+
+      # Children
       controls.each do | control |
         expect( page ).to have_content(control.code)
       end
@@ -76,7 +87,8 @@ RSpec.describe "ComplianceControlSets", type: :feature do
       create( :generic_attribute_control_min_max,
         code: random_string,
         compliance_control_block: ccblock,
-        compliance_control_set: control_set)
+        compliance_control_set: control_set,
+        criticity: severity)
   end
 
 end
