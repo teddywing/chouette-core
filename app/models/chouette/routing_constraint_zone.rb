@@ -11,7 +11,7 @@ module Chouette
     validate :stop_points_belong_to_route, :not_all_stop_points_selected
 
     def local_id
-      "IBOO-#{self.referential.id}-#{self.route.line.objectid.local_id}-#{self.route.objectid.local_id}-#{self.id}"
+      "IBOO-#{self.referential.id}-#{self.route.line.get_objectid.local_id}-#{self.route.id}-#{self.id}"
     end
 
     scope :order_by_stop_points_count, ->(direction) do

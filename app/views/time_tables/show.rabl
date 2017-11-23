@@ -10,7 +10,7 @@ node do |tt|
     periode_range: month_periode_enum(3),
     current_periode_range: Date.today.beginning_of_month,
     color: tt.color ? tt.color : '',
-    short_id: tt.objectid.parts.try(:third)
+    short_id: tt.get_objectid.short_id
   }
 end
 

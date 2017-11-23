@@ -65,7 +65,7 @@ module Chouette
       [].tap do |attrs|
         attrs << self.published_journey_name
         attrs << self.published_journey_identifier
-        attrs << self.try(:company).try(:objectid).try(:local_id)
+        attrs << self.try(:company).try(:get_objectid).try(:local_id)
         attrs << self.footnotes.map(&:checksum).sort
         attrs << self.vehicle_journey_at_stops.map(&:checksum).sort
       end
