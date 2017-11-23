@@ -48,6 +48,7 @@ fr:
     format: "%{message}"
 
   last_update: 'Dernière mise à jour<br>le %{time}'
+  whodunnit: 'Par %{author}'
   last_sync: 'Dernière mise à jour le %{time}'
   validity_range: '%{debut} > %{end}'
   bounding_dates: '%{debut} > %{end}'

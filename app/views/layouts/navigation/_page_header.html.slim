@@ -16,9 +16,11 @@ div.page_header
         div.page-action
           - if defined?(object)
             div.small = t('last_update', time: l(object.updated_at, format: :short)).html_safe
+            - if object.try(:versions)
+              div.small = t('whodunnit', author: object.versions.last.whodunnit)
 
           - if content_for? :page_header_actions
-            = yield :page_header_actions
+            div.small = yield :page_header_actions
 
     - if content_for? :page_header_content
       = yield :page_header_content
