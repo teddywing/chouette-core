@@ -19,10 +19,6 @@ module ObjectidSupport
       self.referential.objectid_formater.get_objectid read_attribute(:objectid) if objectid_format && read_attribute(:objectid)
     end
 
-    def get_objectid
-      self.referential.objectid_formater.get_objectid read_attribute(:objectid) if objectid_format && read_attribute(:objectid)
-    end
-
     def objectid
       get_objectid.try(:to_s)
     end
