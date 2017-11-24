@@ -14,5 +14,4 @@ describe "/companies/edit", :type => :view do
       end
     end
   end
-
 end
