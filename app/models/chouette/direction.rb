@@ -1,9 +1,24 @@
 module Chouette
   class Direction < ActiveSupport::StringInquirer
-
     def initialize(text_code, numerical_code)
       super text_code.to_s
       @numerical_code = numerical_code
+    end
+
+    def self.new(text_code, numerical_code = nil)
+      if text_code and numerical_code
+        super
+      elsif self === text_code 
+        text_code
+      else
+        if Fixnum === text_code
+          text_code, numerical_code = definitions.rassoc(text_code)
+        else
+          text_code, numerical_code = definitions.assoc(text_code.to_s)
+        end
+
+        super text_code, numerical_code
+      end
     end
 
     def to_i
@@ -18,47 +33,27 @@ module Chouette
       to_s
     end
 
-    class << self
-      
-      attr_reader :definitions
-      @definitions = [
-        ["straight_forward", 0],
-        ["backward", 1],
-        ["clock_wise", 2],
-        ["counter_clock_wise", 3],
-        ["north", 4],
-        ["north_west", 5],
-        ["west", 6],
-        ["south_west", 7],
-        ["south", 8],
-        ["south_east", 9],
-        ["east", 10],
-        ["north_east", 11]
-      ]
-      @all = nil
+    @@definitions = [
+      ["straight_forward", 0],
+      ["backward", 1],
+      ["clock_wise", 2],
+      ["counter_clock_wise", 3],
+      ["north", 4],
+      ["north_west", 5],
+      ["west", 6],
+      ["south_west", 7],
+      ["south", 8],
+      ["south_east", 9],
+      ["east", 10],
+      ["north_east", 11]
+    ]
+    cattr_reader :definitions
 
-      def new(text_code, numerical_code = nil)
-        if text_code and numerical_code
-          super
-        elsif self === text_code 
-          text_code
-        else
-          if Fixnum === text_code
-            text_code, numerical_code = definitions.rassoc(text_code)
-          else
-            text_code, numerical_code = definitions.assoc(text_code.to_s)
-          end
-
-          super text_code, numerical_code
-        end
+    @@all = nil
+    def self.all
+      @@all ||= definitions.collect do |text_code, numerical_code|
+        new(text_code, numerical_code)
       end
-
-      def all
-        @all ||= definitions.collect do |text_code, numerical_code|
-          new(text_code, numerical_code)
-        end
-      end
-
     end
   end
 end

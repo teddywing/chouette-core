@@ -2,8 +2,10 @@ module Chouette
   module Objectid
     class StifNetex < Chouette::Objectid::Netex
 
+      @@format = Chouette::Objectid::Netex.format
+
       def initialize(**attributes)
-        @provider_id = (attributes[:provider_id] ||= 'stif')
+        @provider_id = attributes[:provider_id] ||= 'stif'
         super
       end
 

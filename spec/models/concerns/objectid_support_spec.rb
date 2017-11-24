@@ -1,85 +1,138 @@
 RSpec.describe ObjectidSupport do 
 
   context 'when referential has an objectid format of stif_netex' do
-    let(:route) { create(:route_with_after_commit, objectid: nil) }
+    let(:object) { create(:time_table, objectid: nil) }
 
-    context "#objectid_format" do 
+    context "#objectid_format" do
       it "should be stif_netex" do
-        expect(route.referential.objectid_format).not_to be_nil
-        expect(route.referential.objectid_format).to eq('stif_netex')
+        expect(object.referential.objectid_format).to eq('stif_netex')
       end
     end
 
+    it 'should fill __pending_id__' do
+      expect(object.objectid.include?('__pending_id__')).to be_truthy
+    end
+
     context "#get_objectid" do
-      let(:objectid) { route.get_objectid }
+
+      before(:each) do
+        object.run_callbacks(:commit)
+      end
+
       it "should be valid" do
-        expect(objectid).to be_valid
+        expect(object.get_objectid).to be_valid
       end
 
       it "should have the same local id than the object" do
-        expect(objectid.local_id).to eq(route.local_id)
+        expect(object.get_objectid.local_id).to eq(object.local_id)
       end
 
       it "should be a Chouette::Objectid::StifNetex" do
-        expect(objectid).to be_kind_of(Chouette::Objectid::StifNetex)
+        expect(object.get_objectid).to be_kind_of(Chouette::Objectid::StifNetex)
       end
 
       context "#to_s" do
         it "should return a string" do
-          expect(objectid.to_s).to be_kind_of(String)
+          expect(object.get_objectid.to_s).to be_kind_of(String)
         end
 
         it "should be the same as the db attribute" do 
-          expect(objectid.to_s).to eq(route.read_attribute(:objectid))
-          expect(objectid.to_s).to eq(route.objectid)
+          expect(object.get_objectid.to_s).to eq(object.read_attribute(:objectid))
+          expect(object.get_objectid.to_s).to eq(object.objectid)
         end
+    
+    context "#objectid" do
+
+      it 'should build objectid on create' do
+        object.save
+        object.run_callbacks(:commit)
+        objectid = object.get_objectid
+        id = "#{objectid.provider_id}:#{objectid.object_type}:#{objectid.local_id}:#{objectid.creation_id}"
+        expect(object.read_attribute(:objectid)).to eq(id)
+      end
+
+      it 'should not build new objectid is already set' do
+        id = "first:TimeTable:1-1:LOC"
+        object.attributes = {objectid: id}
+        object.save
+        expect(object.objectid).to eq(id)
+      end
+
+      it 'should create a new objectid when cleared' do
+        object.save
+        object.attributes = { objectid: nil}
+        object.save
+        expect(object.objectid).to be_truthy
+      end
+    end
       end
     end
   end
 
-  # context 'when referential has an objectid format of netex' do
-  #   let(:line) { create(:route_with_after_commit, objectid: nil) }
+  context 'when referential has an objectid format of netex' do
+    before(:all) do
+      Referential.first.update(objectid_format: 'netex')
+    end
 
-  #   before(:all) do 
-  #     binding.pry
-  #     route.referential.objectid_format = 'netex'
-  #   end 
-
-  #   context "#objectid_format" do 
-  #     it "should be netex" do
-  #       expect(route.objectid_format).to eq('netex')
-  #     end
-  #     it "should be the same as the referential" do
-  #       expect(route.objectid_format).to eq(route.referential.objectid_format)
-  #     end
-  #   end
-
-  #   context "#get_objectid" do
-  #     let(:objectid) { route.get_objectid }
-  #     it "should be valid" do
-  #       expect(objectid).to be_valid
-  #     end
-
-  #     it "should have the same local id than the object" do
-  #       expect(objectid.local_id).to eq(route.local_id)
-  #     end
-
-  #     it "should be a Chouette::Objectid::Netex" do
-  #       expect(objectid).to be_kind_of(Chouette::Objectid::Netex)
-  #     end
-
-  #     context "#to_s" do
-  #       it "should return a string" do
-  #         expect(objectid.to_s).to be_kind_of(String)
-  #       end
-
-  #       it "should be the same as the db attribute" do 
-  #         expect(objectid.to_s).to eq(route.read_attribute(:objectid))
-  #         expect(objectid.to_s).to eq(route.objectid)
-  #       end
-  #     end
-  #   end
-  # end
+    let(:object) { create(:time_table, objectid: nil) }
 
 
+    context "#objectid_format" do 
+      it "should be netex" do
+        expect(object.referential.objectid_format).to eq('netex')
+      end
+    end
+
+    context "#get_objectid" do
+
+      it "should be valid" do
+        expect(object.get_objectid).to be_valid
+      end
+
+      it "should have the same local id than the object" do
+        expect(object.get_objectid.local_id).to match(/\w+-\w+-\w+-\w+-\w+/)
+      end
+
+      it "should be a Chouette::Objectid::StifNetex" do
+        expect(object.get_objectid).to be_kind_of(Chouette::Objectid::Netex)
+      end
+
+      context "#to_s" do
+        it "should return a string" do
+          expect(object.get_objectid.to_s).to be_kind_of(String)
+        end
+
+        it "should be the same as the db attribute" do 
+          expect(object.get_objectid.to_s).to eq(object.read_attribute(:objectid))
+          expect(object.get_objectid.to_s).to eq(object.objectid)
+        end
+    
+    context "#objectid" do
+
+      it 'should build objectid on create' do
+        object.save
+        object.run_callbacks(:commit)
+        objectid = object.get_objectid
+        id = "#{objectid.provider_id}:#{objectid.object_type}:#{objectid.local_id}:#{objectid.creation_id}"
+        expect(object.read_attribute(:objectid)).to eq(id)
+      end
+
+      it 'should not build new objectid is already set' do
+        id = "first:TimeTable:1-1:LOC"
+        object.attributes = {objectid: id}
+        object.save
+        expect(object.objectid).to eq(id)
+      end
+
+      it 'should create a new objectid when cleared' do
+        object.save
+        object.attributes = { objectid: nil}
+        object.save
+        expect(object.objectid).to be_truthy
+      end
+    end
+      end
+    end
+  end
+  
 end

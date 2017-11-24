@@ -98,9 +98,10 @@ describe Chouette::VehicleJourney, :type => :model do
 
       expect(collection.last['objectid']).not_to be_nil
 
-      Chouette::VehicleJourney.last.run_callbacks(:commit)
+      obj = Chouette::VehicleJourney.last
+      obj.run_callbacks(:commit)
 
-      expect(Chouette::VehicleJourney.last.published_journey_name).to eq 'dummy'
+      expect(obj.published_journey_name).to eq 'dummy'
     end
 
     it 'should save vehicle_journey_at_stops of newly created vj' do
