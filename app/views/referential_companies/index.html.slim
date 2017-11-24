@@ -1,12 +1,10 @@
 - breadcrumb :referential_companies, @referential
-/ PageHeader
-= pageheader 'transporteur',
-             t('companies.index.title'),
-             '',
-             '',
-             (policy(Chouette::Company).create? ? link_to(t('companies.actions.new'), new_referential_company_path(@referential), class: 'btn btn-default') : '')
+- content_for :page_header_actions do
+  - if policy(Chouette::Company).create?
+    = link_to(t('companies.actions.new'), new_referential_company_path(@referential), class: 'btn btn-default')
 
-/ PageContent
+= render partial: 'layouts/navigation/page_header'
+
 .page_content
   .container-fluid
     - if params[:q].present? or @companies.any?

@@ -1,4 +1,3 @@
 - breadcrumb :referential_company, @referential, @company
-
-= title_tag t('companies.edit.title', company: @company.name)
+= render partial: 'layouts/navigation/page_header', locals: {object: @company}
 = render 'form'

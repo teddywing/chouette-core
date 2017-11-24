@@ -1,11 +1,5 @@
 - breadcrumb :referential_company, @referential, @company
-/ PageHeader
-= pageheader 'transporteur',
-             @company.name,
-             'Lorem ipsum dolor sit amet',
-             t('last_update', time: l(@company.updated_at, format: :short)) do
-
-  / Below is secundary actions & optional contents (filters, ...)
+- content_for :page_header_content do
   .row
     .col-lg-12.text-right.mb-sm
       - if policy(Chouette::Company).create?
@@ -17,7 +11,8 @@
           span.fa.fa-trash
           span = t('companies.actions.destroy')
 
-/ PageContent
+= render partial: 'layouts/navigation/page_header', locals: {object: @company}
+
 .page_content
   .container-fluid
     .row
