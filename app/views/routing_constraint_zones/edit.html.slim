@@ -1,11 +1,6 @@
 - breadcrumb :routing_constraint_zone, @referential, @line, @routing_constraint_zone
-/ PageHeader
-= pageheader 'itl',
-             t('.title', routing_constraint_zone: @routing_constraint_zone.name),
-             '',
-             t('last_update', time: l(@routing_constraint_zone.updated_at, format: :short))
+- page_header_content_for @routing_constraint_zone
 
-/ PageContent
 .page_content
   .container-fluid
     .row

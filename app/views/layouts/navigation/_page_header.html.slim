@@ -2,25 +2,23 @@ div.page_header
   div.container-fluid
     div.row
       div.col-lg-9.col-md-8.col-sm-7.col-xs-7
-        div.page-icon
-          span.sb class="sb-#{resource_class.model_name.name.underscore}"
+        - if defined?(resource_class)
+          div.page-icon
+            span.sb class="sb-#{resource_class.model_name.name.underscore}"
         div.page-title
           - if content_for? :page_header_title
             h1 = yield :page_header_title
-          - elsif defined?(object)
-            h1 = t("#{resource_class.model_name.name.underscore.pluralize}.#{params[:action]}.title", name: object.name)
-          - else
+          - elsif defined?(resource_class)
             h1 = t("#{resource_class.model_name.name.underscore.pluralize}.#{params[:action]}.title")
 
       div.col-lg-3.col-md-4.col-sm-5.col-xs-5.text-right
-        div.page-action
-          - if defined?(object)
-            div.small = t('last_update', time: l(object.updated_at, format: :short)).html_safe
-            - if object.try(:versions)
-              div.small = t('whodunnit', author: object.versions.last.whodunnit)
+        div.page-meta
+        - if content_for? :page_header_meta
+          div.small = yield :page_header_meta
 
-          - if content_for? :page_header_actions
-            div.small = yield :page_header_actions
+        div.page-action
+        - if content_for? :page_header_actions
+          div.small = yield :page_header_actions
 
     - if content_for? :page_header_content
       = yield :page_header_content

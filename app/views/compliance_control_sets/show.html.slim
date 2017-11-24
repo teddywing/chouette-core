@@ -1,4 +1,5 @@
 - breadcrumb :compliance_control_set, @compliance_control_set
+- page_header_content_for @compliance_control_set
 - content_for :page_header_content do
   .row.mb-sm
     .col-lg-12.text-right
@@ -11,9 +12,6 @@
               data: link.data,
               class: 'btn btn-primary' do
             = link.content
-
-= render partial: 'layouts/navigation/page_header', locals: {object: @compliance_control_set}
-
 
 .page_content
   .container-fluid

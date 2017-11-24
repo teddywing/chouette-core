@@ -2,6 +2,31 @@ module ApplicationHelper
 
   include NewapplicationHelper
 
+  def page_header_title(object)
+    # Unwrap from decorator, we want to know the object model name
+    object = object.object if object.try(:object)
+    local  = "#{object.model_name.name.underscore.pluralize}.#{params[:action]}.title"
+    if object.try(:name)
+      t(local, name: object.name)
+    else
+      t(local)
+    end
+  end
+
+  def page_header_meta(object)
+    info = t('last_update', time: l(object.updated_at, format: :short)).html_safe
+    if object.try(:versions) && object.versions.last
+      author = object.versions.last.try(:whodunnit)
+      info   = "#{info} #{t('whodunnit', author: author)}" if author
+    end
+    content_tag :div, info, class: 'small'
+  end
+
+  def page_header_content_for(object)
+    content_for :page_header_title, page_header_title(object)
+    content_for :page_header_meta, page_header_meta(object)
+  end
+
   def font_awesome_classic_tag(name)
     name = "fa-file-text-o" if name == "fa-file-csv-o"
     name = "fa-file-code-o" if name == "fa-file-xml-o"

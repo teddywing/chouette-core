@@ -1,4 +1,5 @@
 - breadcrumb :network, @network
+- page_header_content_for @network
 - content_for :page_header_content do
   .row
     .col-lg-12.text-right.mb-sm
@@ -8,9 +9,6 @@
             data: link.data,
             class: 'btn btn-primary' do
               = link.content
-
-= render partial: 'layouts/navigation/page_header', locals: {object: @network}
-
 .page_content
   .container-fluid
     .row

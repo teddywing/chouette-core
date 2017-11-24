@@ -3,8 +3,6 @@
   - if policy(Calendar).create?
     = link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')
 
-= render partial: 'layouts/navigation/page_header'
-
 .page_content
   .container-fluid
     - if params[:q].present? or @calendars.any?

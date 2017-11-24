@@ -6,7 +6,6 @@
      - if policy(Api::V1::ApiKey).create?
        = link_to t('actions.create_api_key'), new_api_key_path, class: 'btn btn-primary'
 
-= render partial: 'layouts/navigation/page_header'
 .page_content
   .container-fluid
     = render partial: @dashboard
