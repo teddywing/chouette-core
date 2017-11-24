@@ -5,11 +5,8 @@ RSpec.describe ObjectidSupport do
 
     context "#objectid_format" do 
       it "should be stif_netex" do
-        expect(route.objectid_format).to eq('stif_netex')
-      end
-
-      it "should be the same as the referential" do
-        expect(route.objectid_format).to eq(route.referential.objectid_format)
+        expect(route.referential.objectid_format).not_to be_nil
+        expect(route.referential.objectid_format).to eq('stif_netex')
       end
     end
 

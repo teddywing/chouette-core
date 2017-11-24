@@ -8,7 +8,7 @@ module Chouette
       end
 
       def short_id
-        local_id.try(:split, "-").try(:[], -1)
+        local_id.try(:split, "-").try(:last)
       end
     end
   end

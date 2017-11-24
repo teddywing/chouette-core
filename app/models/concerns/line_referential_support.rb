@@ -3,6 +3,7 @@ module LineReferentialSupport
 
   included do
     belongs_to :line_referential
+    validates_presence_of :line_referential
     alias_method :referential, :line_referential
   end
 

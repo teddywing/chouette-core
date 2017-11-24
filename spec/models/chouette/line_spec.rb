@@ -15,17 +15,6 @@ describe Chouette::Line, :type => :model do
     end
   end
 
-  describe '#objectid' do
-    subject { super().get_objectid }
-    it { is_expected.to be_kind_of(Chouette::Objectid::StifCodifligne) }
-  end
-
-  describe "#objectid_format" do
-    it "sould not be nil" do
-      expect(subject.objectid_format).not_to be_nil
-    end
-  end
-
   # it { should validate_numericality_of :objectversion }
 
   # describe ".last_stop_areas_parents" do

@@ -183,12 +183,6 @@ module Chouette
       return true
     end
 
-    def journey_patterns_control_route_sections
-      self.journey_patterns.each do |jp|
-        jp.control_route_sections
-      end
-    end
-
     protected
 
     def self.vehicle_journeys_timeless(stop_point_id)

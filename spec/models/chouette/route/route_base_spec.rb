@@ -5,17 +5,6 @@ RSpec.describe Chouette::Route, :type => :model do
     it_behaves_like 'checksum support', :route
   end
 
-  describe '#objectid' do
-    subject { super().get_objectid }
-    it { is_expected.to be_kind_of(Chouette::Objectid::StifNetex) }
-  end
-
-  describe "#objectid_format" do
-    it "sould not be nil" do
-      expect(subject.objectid_format).not_to be_nil
-    end
-  end
-
   it { is_expected.to enumerize(:direction).in(:straight_forward, :backward, :clockwise, :counter_clockwise, :north, :north_west, :west, :south_west, :south, :south_east, :east, :north_east) }
   it { is_expected.to enumerize(:wayback).in(:outbound, :inbound) }
 
