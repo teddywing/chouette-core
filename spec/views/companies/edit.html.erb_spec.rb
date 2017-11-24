@@ -6,13 +6,6 @@ describe "/companies/edit", :type => :view do
   let!(:companies) { Array.new(2) { create(:company) } }
   let!(:line_referential) { assign :line_referential, company.line_referential }
 
-  describe "test" do
-    it "should render h2 with the company name" do
-      render
-      expect(rendered).to have_selector("h2", :text => Regexp.new(company.name))
-    end
-  end
-
   describe "form" do
     it "should render input for name" do
       render

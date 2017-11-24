@@ -11,7 +11,7 @@
           span.fa.fa-trash
           span = t('companies.actions.destroy')
 
-= render partial: 'layouts/navigation/page_header', locals: {object: @company}
+- page_header_content_for @company
 
 .page_content
   .container-fluid

@@ -1,5 +1,5 @@
 - breadcrumb :journey_patterns, @referential, @route
-= render partial: 'layouts/navigation/page_header', locals: {object: @route}
+- page_header_content_for @route
 
 - @journey_patterns.each do |jp|
   - jp.errors.each do |error_message|

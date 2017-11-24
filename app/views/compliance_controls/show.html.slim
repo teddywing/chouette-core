@@ -1,8 +1,8 @@
 - breadcrumb :compliance_control, @compliance_control
 - content_for :page_header_actions do
   = link_to(t('actions.edit'), edit_compliance_control_set_compliance_control_path(params[:compliance_control_set_id], params[:id]), class: 'btn btn-default')
+- page_header_content_for @compliance_control
 
-= render partial: 'layouts/navigation/page_header', locals: {object: @compliance_control}
 
 .page_content
   .container-fluid

@@ -3,8 +3,6 @@
   - if policy(Chouette::Company).create?
     = link_to(t('companies.actions.new'), new_line_referential_company_path(@line_referential), class: 'btn btn-primary')
 
-= render partial: 'layouts/navigation/page_header'
-
 .page_content
   .container-fluid
     - if params[:q].present? or @companies.any?

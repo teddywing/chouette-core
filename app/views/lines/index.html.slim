@@ -3,8 +3,6 @@
   - if (policy(Chouette::Line).create? && @line_referential.organisations.include?(current_organisation))
     = link_to(t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'btn btn-primary')
 
-= render partial: 'layouts/navigation/page_header'
-
 .page_content
   .container-fluid
     - if params[:q].present? or @lines.any?

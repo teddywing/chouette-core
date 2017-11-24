@@ -9,7 +9,7 @@
             class: 'btn btn-primary' do
               = link.content
 
-= render partial: 'layouts/navigation/page_header', locals: {object: @line}
+- page_header_content_for @line
 
 .page_content
   .container-fluid

@@ -4,7 +4,7 @@
   - if policy(@line).update_footnote?
     = link_to(t('actions.edit'), edit_referential_line_footnotes_path(@referential, @line), class: 'btn btn-primary')
 
-= render partial: 'layouts/navigation/page_header', locals: {object: @line}
+- page_header_content_for @line
 
 .page_content
   .container-fluid

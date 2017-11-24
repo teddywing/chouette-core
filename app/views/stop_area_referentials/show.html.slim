@@ -8,8 +8,7 @@
       = link_to stop_area_referential_stop_areas_path(@stop_area_referential), class: 'btn btn-primary' do
         = Referential.human_attribute_name(:stop_areas)
         em.small = " (#{@stop_area_referential.stop_areas.size})"
-
-= render partial: 'layouts/navigation/page_header', locals: {object: @stop_area_referential}
+- page_header_content_for @stop_area_referential
 
 .page_content
   .container-fluid

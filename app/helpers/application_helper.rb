@@ -14,12 +14,12 @@ module ApplicationHelper
   end
 
   def page_header_meta(object)
-    info = t('last_update', time: l(object.updated_at, format: :short)).html_safe
+    info = t('last_update', time: l(object.updated_at, format: :short))
     if object.try(:versions) && object.versions.last
       author = object.versions.last.try(:whodunnit)
       info   = "#{info} #{t('whodunnit', author: author)}" if author
     end
-    content_tag :div, info, class: 'small'
+    content_tag :div, info.html_safe, class: 'small'
   end
 
   def page_header_content_for(object)
