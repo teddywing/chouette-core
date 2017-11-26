@@ -38,13 +38,6 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_offer_workbench
 
-  def render_custom_view(view)
-    view_name = [view, current_organisation.custom_view].compact.join('_')
-    Rails.logger.info "Render custom view #{view_name}"
-    render partial: view_name
-  end
-  helper_method :render_custom_view
-
   def current_functional_scope
     functional_scope = current_organisation.sso_attributes.try(:[], "functional_scope") if current_organisation
     JSON.parse(functional_scope) if functional_scope
@@ -54,7 +47,6 @@ class ApplicationController < ActionController::Base
   def begin_of_association_chain
     current_organisation
   end
-
 
   # Overwriting the sign_out redirect path method
   def after_sign_out_path_for(resource_or_scope)
