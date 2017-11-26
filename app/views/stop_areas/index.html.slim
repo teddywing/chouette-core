@@ -20,7 +20,7 @@
           = table_builder_2 @stop_areas,
             [ \
               TableBuilderHelper::Column.new( \
-                name: 'ID Reflex', \
+                name: t('id_reflex'), \
                 attribute: Proc.new { |n| n.try(:user_objectid) }, \
                 sortable: false \
               ), \

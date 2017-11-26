@@ -38,7 +38,7 @@
           = table_builder_2 @route_sp,
             [ \
               TableBuilderHelper::Column.new( \
-                name: 'ID Reflex', \
+                name: t('id_reflex'), \
                 attribute: Proc.new { |s| s.try(:stop_area).try(:user_objectid) } \
               ), \
               TableBuilderHelper::Column.new( \
