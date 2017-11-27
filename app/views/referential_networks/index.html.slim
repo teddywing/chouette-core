@@ -26,7 +26,7 @@
           = table_builder_2 @networks,
             [ \
               TableBuilderHelper::Column.new( \
-                name: 'ID Codifligne', \
+                name: t('id_codif'), \
                 attribute: Proc.new { |n| n.get_objectid.try(:short_id) }, \
                 sortable: false \
               ),

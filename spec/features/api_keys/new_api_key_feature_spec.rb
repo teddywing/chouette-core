@@ -13,6 +13,8 @@ RSpec.describe 'New API Key', type: :feature do
 
 
     it 'complete workflow' do
+      skip "Specific to STIF Dashboard" if Dashboard.default_class != Stif::Dashboard
+
       # /workbenches
       visit dashboard_path
       expect(page).to have_link(create_label, href: new_api_key_path)

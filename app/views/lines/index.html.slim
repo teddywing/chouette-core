@@ -20,7 +20,7 @@
           = table_builder_2 @lines,
             [ \
               TableBuilderHelper::Column.new( \
-                name: 'ID Codifligne', \
+                name: t('id_codif'), \
                 attribute: Proc.new { |n| n.get_objectid.short_id }, \
                 sortable: false \
               ), \

@@ -14,5 +14,11 @@ Rails.application.config.to_prepare do
 end unless Rails.env.test?
 
 Rails.application.config.to_prepare do
+  Organisation.before_validation(on: :create) do |organisation|
+    organisation.custom_view = "stif"
+  end
+end
+
+Rails.application.config.to_prepare do
   Dashboard.default_class = Stif::Dashboard
 end

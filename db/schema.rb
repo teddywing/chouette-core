@@ -559,6 +559,7 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.string   "code"
     t.datetime "synced_at"
     t.hstore   "sso_attributes"
+    t.string   "custom_view"
   end
 
   add_index "organisations", ["code"], name: "index_organisations_on_code", unique: true, using: :btree
