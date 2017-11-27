@@ -61,7 +61,7 @@ Apartment.configure do |config|
     'RouteControl::OppositeRouteTerminus',
     'RouteControl::OppositeRoute',
     'RouteControl::StopPointsInJourneyPattern',
-    'RouteControl::UnactivatedStopPoints',
+    'RouteControl::UnactivatedStopPoint',
     'RouteControl::ZDLStopArea',
     'RoutingConstraintZoneControl::MaximumLength',
     'RoutingConstraintZoneControl::MinimumLength',
