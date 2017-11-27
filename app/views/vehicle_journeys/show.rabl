@@ -4,6 +4,8 @@ object @vehicle_journey
   attributes attr, :unless => lambda { |m| m.send( attr).nil?}
 end
 
+node { |vj| {short_id: vj.get_objectid.short_id} }
+
 child(:company) do |company|
   attributes :id, :objectid, :name
 end
@@ -16,6 +18,7 @@ end
 
 child(:journey_pattern) do |journey_pattern|
   attributes :id, :objectid, :name, :published_name
+  node(:short_id) {journey_pattern.get_objectid.short_id}
 end
 
 child(:time_tables, :object_root => false) do |time_tables|

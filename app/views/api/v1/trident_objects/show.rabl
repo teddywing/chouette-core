@@ -3,3 +3,4 @@ attributes :objectid => :object_id
   attributes attr, :unless => lambda { |m| m.send( attr).nil?}
 end
 
+node { |model| {short_id: model.get_objectid.short_id} }

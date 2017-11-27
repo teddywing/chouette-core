@@ -21,7 +21,7 @@
             [ \
               TableBuilderHelper::Column.new( \
                 name: 'ID Reflex', \
-                attribute: Proc.new { |n| n.try(:user_objectid) }, \
+                attribute: Proc.new { |n| n.get_objectid.try(:short_id) }, \
                 sortable: false \
               ), \
               TableBuilderHelper::Column.new( \
