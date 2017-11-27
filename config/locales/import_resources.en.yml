@@ -2,7 +2,7 @@ en:
   import_resources:
     index:
       title: "NeTEx conformity"
-      table_state: "%{lines_imported} lines imported on %{lines_in_zipfile} presents in zipfile"
+      table_state: "%{lines_imported} line(s) imported on %{lines_in_zipfile} presents in zipfile"
       table_title: "Satus of anlyzed files"
       table_explanation: "When calendriers.xml and/or commun.xml are not imported, then all lines file are not processed."
       metrics: "%{ok_count} ok, %{error_count} errors, %{warning_count} warnings, %{uncheck_count} n/a"
