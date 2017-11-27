@@ -2,12 +2,13 @@ module Stif
   class MyWorkbenchScopes
     attr_accessor :workbench
 
+    
     def initialize(workbench)
       @workbench = workbench
     end
 
     def line_scope(initial_scope)
-      ids = self.parse_functional_scope
+      ids = parse_functional_scope
       ids ? initial_scope.where(objectid: ids) : initial_scope
     end
 
