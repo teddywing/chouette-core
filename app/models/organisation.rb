@@ -18,36 +18,39 @@ class Organisation < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :code
 
-  def self.portail_api_request
-    conf = Rails.application.config.try(:stif_portail_api)
-    raise 'Rails.application.config.stif_portail_api configuration is not defined' unless conf
+  class << self
 
-    HTTPService.get_json_resource(
-      host: conf[:url],
-      path: '/api/v1/organizations',
-      token: conf[:key])
-  end
+    def portail_api_request
+      conf = Rails.application.config.try(:stif_portail_api)
+      raise 'Rails.application.config.stif_portail_api configuration is not defined' unless conf
 
-  def self.sync_update code, name, scope
-    org = Organisation.find_or_initialize_by(code: code)
-    if scope
-      org.sso_attributes ||= {}
-      if org.sso_attributes['functional_scope'] != scope
-        org.sso_attributes['functional_scope'] = scope
-        # FIXME see #1941
-        org.sso_attributes_will_change!
-      end
+      HTTPService.get_json_resource(
+        host: conf[:url],
+        path: '/api/v1/organizations',
+        token: conf[:key])
     end
-    org.name      = name
-    org.synced_at = Time.now
-    org.save
-    org
-  end
 
-  def self.portail_sync
-    self.portail_api_request.each do |el|
-      org = self.sync_update el['code'], el['name'], el['functional_scope']
-      puts "✓ Organisation #{org.name} has been updated" unless Rails.env.test?
+    def sync_update code, name, scope
+      org = Organisation.find_or_initialize_by(code: code)
+      if scope
+        org.sso_attributes ||= {}
+        if org.sso_attributes['functional_scope'] != scope
+          org.sso_attributes['functional_scope'] = scope
+          # FIXME see #1941
+          org.sso_attributes_will_change!
+        end
+      end
+      org.name      = name
+      org.synced_at = Time.now
+      org.save
+      org
+    end
+
+    def portail_sync
+      portail_api_request.each do |el|
+        org = self.sync_update el['code'], el['name'], el['functional_scope']
+        puts "✓ Organisation #{org.name} has been updated" unless Rails.env.test?
+      end
     end
   end
 
@@ -62,6 +65,14 @@ class Organisation < ActiveRecord::Base
     end
 
     raise ActiveRecord::RecordNotFound
+  end
+
+  def functional_scope
+    JSON.parse( (sso_attributes || {}).fetch('functional_scope', '[]') )
+  end
+
+  def lines_set
+    STIF::CodifLineId.lines_set_from_functional_scope( functional_scope )
   end
 
 end

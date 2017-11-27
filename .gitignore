@@ -47,6 +47,6 @@ coverage
 /bin/rails
 /bin/rspec
 /bin/spring
+/spec/fixtures/zip/*
 
-# FIXME Ignore ./spec/services/zip_service/regression_4273_spec.rb files
-/spec/fixtures/target_*.zip
+spec/fixtures/target_*
