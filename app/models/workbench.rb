@@ -1,4 +1,5 @@
 class Workbench < ActiveRecord::Base
+  include ObjectidFormatterSupport
   belongs_to :organisation
   belongs_to :line_referential
   belongs_to :stop_area_referential

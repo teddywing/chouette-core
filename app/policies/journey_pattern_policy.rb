@@ -18,4 +18,3 @@ class JourneyPatternPolicy < ApplicationPolicy
     !archived? && organisation_match? && user.has_permission?('journey_patterns.update')
   end
 end
-

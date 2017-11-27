@@ -51,7 +51,7 @@ RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
       )
       error_message = I18n.t(
         'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
-        short_id: at_stop.vehicle_journey.objectid.short_id,
+        short_id: at_stop.vehicle_journey.get_objectid.short_id,
         max: bad_offset
       )
 

@@ -8,7 +8,7 @@ FactoryGirl.define do
 
     association :network, :factory => :network
     association :company, :factory => :company
-
+   
     before(:create) do |line|
       line.line_referential ||= LineReferential.find_by! name: "first"
     end
@@ -41,6 +41,11 @@ FactoryGirl.define do
           end
         end
       end
+
+    end
+
+    factory :line_with_after_commit do |line|
+      line.run_callbacks(:commit)
 
     end
 

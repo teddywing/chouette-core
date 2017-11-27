@@ -1,7 +1,7 @@
 module Chouette
   class VehicleJourneyAtStop < ActiveRecord
-    include ForBoardingEnumerations
-    include ForAlightingEnumerations
+    include Chouette::ForBoardingEnumerations
+    include Chouette::ForAlightingEnumerations
     include ChecksumSupport
 
     DAY_OFFSET_MAX = 1
@@ -41,7 +41,7 @@ module Chouette
           :arrival_day_offset,
           I18n.t(
             'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
-            short_id: vehicle_journey.objectid.short_id,
+            short_id: vehicle_journey.get_objectid.short_id,
             max: DAY_OFFSET_MAX + 1
           )
         )
@@ -52,7 +52,7 @@ module Chouette
           :departure_day_offset,
           I18n.t(
             'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
-            short_id: vehicle_journey.objectid.short_id,
+            short_id: vehicle_journey.get_objectid.short_id,
             max: DAY_OFFSET_MAX + 1
           )
         )

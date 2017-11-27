@@ -7,4 +7,5 @@ RSpec.describe StopAreaReferential, :type => :model do
 
   it { is_expected.to have_many(:stop_area_referential_syncs) }
   it { is_expected.to have_many(:workbenches) }
+  it { should validate_presence_of(:objectid_format) }
 end

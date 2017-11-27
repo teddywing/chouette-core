@@ -11,7 +11,7 @@
               span.fa.fa-trash-o
 
       h5
-        = link_to([@referential, connection_link], class: 'preview', title: "#{Chouette::ConnectionLink.model_name.human.capitalize} #{connection_link.name}") do
+        = link_to referential_connection_link_path(@referential, connection_link), class: 'preview', title: "#{Chouette::ConnectionLink.model_name.human.capitalize} #{connection_link.name}" do
           span.name
             = truncate(connection_link.name, :length => 20)
 

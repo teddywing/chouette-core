@@ -10,14 +10,9 @@ describe Chouette::Line, :type => :model do
 
   describe '#display_name' do
     it 'should display local_id, number, name and company name' do
-      display_name = "#{subject.objectid.local_id} - #{subject.number} - #{subject.name} - #{subject.company.try(:name)}"
+      display_name = "#{subject.get_objectid.local_id} - #{subject.number} - #{subject.name} - #{subject.company.try(:name)}"
       expect(subject.display_name).to eq(display_name)
     end
-  end
-
-  describe '#objectid' do
-    subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::StifCodifligneObjectid) }
   end
 
   # it { should validate_numericality_of :objectversion }

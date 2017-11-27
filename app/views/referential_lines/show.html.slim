@@ -21,7 +21,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          {  t('id_codif') => @line.objectid.local_id,
+          {  t('id_codif') => @line.get_objectid.local_id,
              'Activé' => (@line.deactivated? ? t('false') : t('true')),
              @line.human_attribute_name(:network) => (@line.network.nil? ? t('lines.index.unset') : link_to(@line.network.name, [@referential, @line.network]) ),
              @line.human_attribute_name(:company) => (@line.company.nil? ? t('lines.index.unset') : link_to(@line.company.name, [@referential, @line.company]) ),
@@ -48,7 +48,7 @@
                 [ \
                   TableBuilderHelper::Column.new( \
                     name: 'ID', \
-                    attribute: Proc.new { |n| n.objectid.short_id }, \
+                    attribute: Proc.new { |n| n.get_objectid.short_id }, \
                     sortable: false \
                   ), \
                   TableBuilderHelper::Column.new( \

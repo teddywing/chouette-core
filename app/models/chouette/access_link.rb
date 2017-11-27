@@ -1,5 +1,6 @@
 module Chouette
-  class AccessLink < TridentActiveRecord
+  class AccessLink < Chouette::TridentActiveRecord
+    include ObjectidSupport
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
 

@@ -1,5 +1,5 @@
 module Chouette
-  class StopPoint < TridentActiveRecord
+  class StopPoint < Chouette::TridentActiveRecord
 
     def self.policy_class
       RoutePolicy
@@ -7,6 +7,7 @@ module Chouette
 
     include ForBoardingEnumerations
     include ForAlightingEnumerations
+    include ObjectidSupport
 
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
@@ -17,6 +18,7 @@ module Chouette
     has_many :vehicle_journeys, -> {uniq}, :through => :vehicle_journey_at_stops
 
     acts_as_list :scope => :route, top_of_list: 0
+
 
     validates_presence_of :stop_area
     validate :stop_area_id_validation
@@ -47,9 +49,12 @@ module Chouette
       self.class.create!(atts_for_create)
     end
 
+    def local_id
+      "IBOO-#{self.referential.id}-#{self.route.line.get_objectid.local_id}-#{self.route.id}-#{self.id}"
+    end
+
     def self.area_candidates
       Chouette::StopArea.where(:area_type => ['Quay', 'BoardingPosition'])
     end
-
   end
 end

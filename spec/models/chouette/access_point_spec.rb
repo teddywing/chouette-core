@@ -4,8 +4,9 @@ describe Chouette::AccessPoint, :type => :model do
   subject { create(:access_point) }
 
   describe '#objectid' do
-    subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::StifReflexObjectid) }
+    it "should have the same class as stop_area objectid" do
+      expect(subject.objectid.class).to eq(subject.stop_area.objectid.class)
+    end
   end
 
   it { is_expected.to validate_presence_of :name }

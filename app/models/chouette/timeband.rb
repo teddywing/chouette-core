@@ -1,5 +1,4 @@
 module Chouette
-
   class TimebandValidator < ActiveModel::Validator
     def validate(record)
       if record.end_time <= record.start_time
@@ -9,10 +8,12 @@ module Chouette
   end
 
   class Timeband < Chouette::TridentActiveRecord
+    include ObjectidSupport
+
     self.primary_key = "id"
 
     validates :start_time, :end_time, presence: true
-    validates_with TimebandValidator
+    validates_with Chouette::TimebandValidator
 
     default_scope { order(:start_time) }
 
@@ -24,7 +25,5 @@ module Chouette
       fullname = "#{I18n.l(self.start_time, format: :hour)}-#{I18n.l(self.end_time, format: :hour)}"
       "#{self.name} (#{fullname})" if self.name
     end
-
   end
-
 end

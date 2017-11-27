@@ -9,9 +9,9 @@ describe Chouette::ConnectionLink, :type => :model do
 
   it { is_expected.to validate_uniqueness_of :objectid }
 
-  describe '#objectid' do
-    subject { super().objectid }
-    it { is_expected.to be_kind_of(Chouette::StifNetexObjectid) }
+  describe '#get_objectid' do
+    subject { super().get_objectid }
+    it {is_expected.to be_kind_of(Chouette::Objectid::StifNetex)}
   end
 
   it { is_expected.to validate_presence_of :name }
