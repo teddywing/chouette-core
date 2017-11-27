@@ -33,6 +33,13 @@ FactoryGirl.define do
       end
     end
 
+    factory :route_with_after_commit do
+      sequence(:objectid) {nil}
+      after(:create) do |route|
+        route.run_callbacks(:commit)
+      end
+    end
+
   end
 
 end

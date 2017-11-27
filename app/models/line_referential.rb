@@ -1,7 +1,6 @@
 class LineReferential < ActiveRecord::Base
   include ObjectidFormatterSupport
   extend StifTransportModeEnumerations
-  extend Enumerize
   
   has_many :line_referential_memberships
   has_many :organisations, through: :line_referential_memberships
@@ -11,7 +10,6 @@ class LineReferential < ActiveRecord::Base
   has_many :networks, class_name: 'Chouette::Network'
   has_many :line_referential_syncs, -> { order created_at: :desc }
   has_many :workbenches
-  enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne), default: 'netex'
 
   def add_member(organisation, options = {})
     attributes = options.merge organisation: organisation
@@ -22,7 +20,6 @@ class LineReferential < ActiveRecord::Base
   validates :sync_interval, presence: true
   # need to define precise validation rules
   validates_inclusion_of :sync_interval, :in => 1..30
-  validates_presence_of :objectid_format
 
   def operating_lines
     lines.where(deactivated: false)

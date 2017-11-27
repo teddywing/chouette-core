@@ -19,7 +19,7 @@ module Chouette
         "#{self.country_code}:#{self.zip_code}:#{self.object_type}:#{self.local_id}:#{self.provider_id}"
       end
 
-       def short_id
+      def short_id
         local_id
       end
     end

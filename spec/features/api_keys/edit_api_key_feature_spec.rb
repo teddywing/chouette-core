@@ -12,6 +12,8 @@ RSpec.describe 'Edit API Key', type: :feature do
     let( :unique_name ){ SecureRandom.uuid }
 
     it 'complete workflow' do
+      skip "Specific to STIF Dashboard" if Dashboard.default_class != Stif::Dashboard
+
       visit dashboard_path
       # api_key's new name does not exist yet
       expect( page ).not_to have_content(unique_name)

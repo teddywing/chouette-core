@@ -53,7 +53,6 @@ module Chouette
     accepts_nested_attributes_for :periods, :allow_destroy => :true
 
     validates_presence_of :comment
-    validates_presence_of :objectid_format
     validates_associated :dates
     validates_associated :periods
 

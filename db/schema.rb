@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171114102438) do
+ActiveRecord::Schema.define(version: 20171123110204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -559,6 +559,7 @@ ActiveRecord::Schema.define(version: 20171114102438) do
     t.string   "code"
     t.datetime "synced_at"
     t.hstore   "sso_attributes"
+    t.string   "custom_view"
   end
 
   add_index "organisations", ["code"], name: "index_organisations_on_code", unique: true, using: :btree

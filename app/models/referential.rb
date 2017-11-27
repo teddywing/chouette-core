@@ -1,12 +1,10 @@
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
   include ObjectidFormatterSupport
-  extend Enumerize
 
   validates_presence_of :name
   validates_presence_of :slug
   validates_presence_of :prefix
-  validates_presence_of :objectid_format
   # Fixme #3657
   # validates_presence_of :time_zone
   # validates_presence_of :upper_corner
@@ -56,7 +54,6 @@ class Referential < ActiveRecord::Base
 
   belongs_to :referential_suite
 
-  enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne), default: 'netex'
 
   scope :ready, -> { where(ready: true) }
   scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }

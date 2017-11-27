@@ -49,8 +49,8 @@ export default class VehicleJourney extends Component {
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.errors ? ' has-error': '')}>
         <div className='th'>
-          <div className='strong mb-xs'>{this.props.value.objectid ? actions.humanOID(this.props.value.objectid) : '-'}</div>
-          <div>{actions.humanOID(this.props.value.journey_pattern.objectid)}</div>
+          <div className='strong mb-xs'>{this.props.value.objectid ? this.props.value.short_id : '-'}</div>
+          <div>{this.props.value.journey_pattern.short_id}</div>
           <div>
             {time_tables.slice(0,3).map((tt, i)=>
               <span key={i} className='vj_tt'>{this.timeTableURL(tt)}</span>

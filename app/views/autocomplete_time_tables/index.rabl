@@ -10,7 +10,7 @@ node do |time_table|
     :tags => time_table.tags.join(','),
     :color => time_table.color,
     :day_types => time_table.display_day_types,
-    :short_id => time_table.objectid.parts.try(:third),
-    :text => "<strong><span class='fa fa-circle' style='color:" + (time_table.color ? time_table.color : '#4b4b4b') + "'></span> " + time_table.comment + " - " + time_table.objectid.parts.try(:third) + "</strong><br/><small>" + time_table.display_day_types + "</small>"
+    :short_id => time_table.get_objectid.short_id,
+    :text => "<strong><span class='fa fa-circle' style='color:" + (time_table.color ? time_table.color : '#4b4b4b') + "'></span> " + time_table.comment + " - " + time_table.get_objectid.short_id + "</strong><br/><small>" + time_table.display_day_types + "</small>"
   }
 end

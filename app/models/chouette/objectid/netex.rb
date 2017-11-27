@@ -8,10 +8,10 @@ module Chouette
       validate :must_respect_format
 
       def initialize(**attributes)
-        @provider_id ||= (attributes[:provider_id] ||= 'chouette')
+        @provider_id = attributes[:provider_id] || 'chouette'
         @object_type = attributes[:object_type]
         @local_id = attributes[:local_id]
-        @creation_id = (attributes[:creation_id] ||= 'LOC')
+        @creation_id = attributes[:creation_id] || 'LOC'
       end
 
       @@format = /^([A-Za-z_-]+):([A-Za-z]+):([0-9A-Za-z_-]+):([A-Za-z]+)$/
@@ -22,7 +22,7 @@ module Chouette
       end
 
       def must_respect_format
-        self.to_s.match(format)
+        self.to_s.match(self.class.format)
       end
 
       def short_id

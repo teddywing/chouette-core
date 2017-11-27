@@ -1,6 +1,5 @@
 module Chouette
   class Direction < ActiveSupport::StringInquirer
-
     def initialize(text_code, numerical_code)
       super text_code.to_s
       @numerical_code = numerical_code
@@ -56,6 +55,5 @@ module Chouette
         new(text_code, numerical_code)
       end
     end
-
   end
 end

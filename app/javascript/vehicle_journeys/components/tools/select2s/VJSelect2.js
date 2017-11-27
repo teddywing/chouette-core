@@ -42,7 +42,7 @@ export default class BSelect4b extends Component {
                   item => _.assign(
                     {},
                     item,
-                    { id: item.objectid, text: actions.humanOID(item.objectid) }
+                    { id: item.objectid, text: item.short_id }
                   )
                 )
               };

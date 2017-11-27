@@ -15,9 +15,6 @@ module Chouette
     validates :start_time, :end_time, presence: true
     validates_with Chouette::TimebandValidator
 
-    validates :start_time, :end_time, presence: true
-    validates_with Chouette::TimebandValidator
-
     default_scope { order(:start_time) }
 
     def self.object_id_key

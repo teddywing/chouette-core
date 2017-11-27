@@ -269,10 +269,6 @@ const actions = {
     type: 'RECEIVE_TOTAL_COUNT',
     total
   }),
-  humanOID: (oid) => {
-   let shortOId = oid.split(':')[2].split("-").pop()
-   return shortOId.length > 10 ? `${shortOId.slice(0, 10)}...` : shortOId
-  },
   fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
     if(currentPage == undefined){
       currentPage = 1
@@ -334,6 +330,7 @@ const actions = {
               journey_pattern: val.journey_pattern,
               published_journey_name: val.published_journey_name,
               objectid: val.objectid,
+              short_id: val.short_id,
               footnotes: val.footnotes,
               time_tables: timeTables,
               vehicle_journey_at_stops: vjasWithDelta,

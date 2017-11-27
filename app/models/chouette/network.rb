@@ -12,7 +12,6 @@ module Chouette
 
     validates_format_of :registration_number, :with => %r{\A[0-9A-Za-z_-]+\Z}, :allow_nil => true, :allow_blank => true
     validates_presence_of :name
-    validates_presence_of :objectid_format
 
     def self.object_id_key
       "PTNetwork"

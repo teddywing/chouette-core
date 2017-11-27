@@ -2,13 +2,15 @@ module ObjectidFormatterSupport
   extend ActiveSupport::Concern
 
   included do
-    validates_presence_of :objectid_formater_class
+    extend Enumerize
+    enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne), default: 'netex'
+    validates_presence_of :objectid_format
     
-    def objectid_formater
-      objectid_formater_class.new
+    def objectid_formatter
+      objectid_formatter_class.new
     end
 
-    def objectid_formater_class
+    def objectid_formatter_class
       "Chouette::ObjectidFormatter::#{read_attribute(:objectid_format).camelcase}".constantize if read_attribute(:objectid_format)
     end
   end

@@ -1,7 +1,4 @@
-# From Chouette import what we need ™
-StopPoint = Chouette::StopPoint
-
-describe StopPoint, :type => :model do
+describe Chouette::StopPoint, :type => :model do
   let!(:vehicle_journey) { create(:vehicle_journey)}
   subject { Chouette::Route.find( vehicle_journey.route_id).stop_points.first }
 
@@ -11,12 +8,6 @@ describe StopPoint, :type => :model do
   describe '#objectid' do
     subject { super().get_objectid }
     it { is_expected.to be_kind_of(Chouette::Objectid::StifNetex) }
-  end
-
-  describe "#objectid_format" do
-    it "sould not be nil" do
-      expect(subject.objectid_format).not_to be_nil
-    end
   end
 
   describe "#destroy" do
@@ -50,7 +41,7 @@ describe StopPoint, :type => :model do
     let!( :new_route ){ create :route }
 
     it 'creates a new instance' do
-      expect{ subject.duplicate(for_route: new_route) }.to change{ StopPoint.count }.by(1)
+      expect{ subject.duplicate(for_route: new_route) }.to change{ Chouette::StopPoint.count }.by(1)
     end
     it 'new instance has a new route' do
       expect(subject.duplicate(for_route: new_route).route).to eq(new_route)

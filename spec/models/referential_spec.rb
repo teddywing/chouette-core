@@ -12,7 +12,11 @@ describe Referential, :type => :model do
   it { should belong_to(:workbench) }
   it { should belong_to(:referential_suite) }
 
-  # it { should validate_presence_of(:objectid_format) }
+  context "validation" do
+    subject { build_stubbed(:referential) }
+
+    it { should validate_presence_of(:objectid_format) }
+  end
 
   context ".referential_ids_in_periode" do
     it 'should retrieve referential id in periode range' do

@@ -1,9 +1,9 @@
-  class StopPointDecorator < StopAreaDecorator
-    decorates Chouette::StopPoint
+class StopPointDecorator < StopAreaDecorator
+  decorates Chouette::StopPoint
 
-    delegate_all
+  delegate_all
 
-    def action_links
-      super(object.stop_area)
-    end
+  def action_links
+    super(object.stop_area)
   end
+end

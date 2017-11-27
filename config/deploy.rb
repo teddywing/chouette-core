@@ -55,6 +55,12 @@ namespace :deploy do
   end
   after "bundle:install", "deploy:bundle_link"
 
+  desc "Run yarn install"
+  task :yarn do
+    run "cd #{release_path} && yarn --production --no-progress install"
+  end
+  after "bundle:install", "deploy:yarn"
+
   desc "Symlinks shared configs and folders on each release"
   task :symlink_shared, :except => { :no_release => true }  do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/"

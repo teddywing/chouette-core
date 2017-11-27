@@ -90,10 +90,6 @@ const actions = {
   resetValidation: (target) => {
     $(target).parent().removeClass('has-error').children('.help-block').remove()
   },
-  humanOID : (oid) => {
-    let shortOId = oid.split(':')[2].split("-").pop()
-    return shortOId.length > 10 ? `${shortOId.slice(0, 10)}...` : shortOId
-  },
   validateFields : (fields) => {
     const test = []
 
@@ -201,6 +197,7 @@ const actions = {
               journeyPatterns.push({
                 name: val.name,
                 object_id: val.object_id,
+                short_id: val.short_id,
                 published_name: val.published_name,
                 registration_number: val.registration_number,
                 stop_points: val.route_short_description.stop_points,

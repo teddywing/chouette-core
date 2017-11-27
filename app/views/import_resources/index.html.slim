@@ -38,7 +38,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   name: 'Résultat des tests' , \
-                  attribute: Proc.new { |n| I18n.t('import_resources.index.metrics', n.metrics.deep_symbolize_keys) }, \
+                  attribute: Proc.new { |n| I18n.t('import_resources.index.metrics', import_resoruce_metrics(n.metrics) }, \
                   sortable: false, \
                 ), \
                 TableBuilderHelper::Column.new( \
