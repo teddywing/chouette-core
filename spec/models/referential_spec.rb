@@ -126,4 +126,40 @@ describe Referential, :type => :model do
       end
     end
   end
+
+  # two referentials created at the same time should not be possible when both have the same data
+  context "when two identical Referentials are created at the same time" do
+    # TODO: Rename js: true to no transaction something
+    it "only creates one Referential", js: true do
+      begin
+        referential_1 = build(:referential)
+        referential_2 = referential_1.dup
+        referential_2.slug = "#{referential_1.slug}_different"
+
+        thread_1 = Thread.new do
+          ActiveRecord::Base.transaction do
+            referential_1.save
+            sleep 10
+          end
+        end
+
+        thread_2 = Thread.new do
+          sleep 5
+          ActiveRecord::Base.transaction do
+            referential_2.save
+          end
+        end
+
+        thread_1.join
+        thread_2.join
+
+        expect(referential_1).to be_persisted
+        expect(referential_2).not_to be_persisted
+
+      ensure
+        Apartment::Tenant.drop(referential_1.slug)
+        Apartment::Tenant.drop(referential_2.slug)
+      end
+    end
+  end
 end
