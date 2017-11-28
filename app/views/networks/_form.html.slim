@@ -7,7 +7,7 @@
       = f.input :version_date, :label_html => { :class => 'string optional col-sm-4 col-xs-5 control-label' }, :wrapper => :multi_select_inline
       = f.input :description
       = f.input :source_name
-      = f.input :source_type_name, as: :select, :collection => source_type_name_label_pairs, :include_blank => true
+      = f.input :source_type_name, as: :select, :collection => Chouette::Network.source_type_name.options, :include_blank => true
       = f.input :source_identifier
   .separator
 

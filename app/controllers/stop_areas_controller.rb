@@ -64,22 +64,22 @@ class StopAreasController < InheritedResources::Base
 
   def new
     authorize resource_class
-    @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
-    @map.editable = true
+    # @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
+    # @map.editable = true
     new!
   end
 
   def create
     authorize resource_class
-    @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
-    @map.editable = true
+    # @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
+    # @map.editable = true
 
     create!
   end
 
   def show
-    map.editable = false
-    @access_points = @stop_area.access_points
+    # map.editable = false
+    # @access_points = @stop_area.access_points
     show! do |format|
       unless stop_area.position or params[:default] or params[:routing]
         format.kml {
