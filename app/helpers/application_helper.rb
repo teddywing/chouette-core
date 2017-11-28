@@ -1,3 +1,4 @@
+
 module ApplicationHelper
 
   include NewapplicationHelper
@@ -15,9 +16,9 @@ module ApplicationHelper
 
   def page_header_meta(object)
     info = t('last_update', time: l(object.updated_at, format: :short))
-    if object.try(:versions) && object.versions.last
-      author = object.versions.last.try(:whodunnit)
-      info   = "#{info} #{t('whodunnit', author: author)}" if author
+    if object.try(:versions)
+      author = object.versions.try(:last).try(:whodunnit) || t('default_whodunnit')
+      info   = "#{info} #{t('whodunnit', author: author)}"
     end
     content_tag :div, info.html_safe, class: 'small'
   end
