@@ -21,7 +21,7 @@ class LineDecorator < Draper::Decorator
       href: [context[:line_referential], object.company]
     )
 
-    if h.policy(Chouette::Line).update? &&
+    if h.policy(Chouette::Line).create? &&
       context[:line_referential].organisations.include?(
         context[:current_organisation]
       )
@@ -48,6 +48,8 @@ class LineDecorator < Draper::Decorator
         method: :delete,
         data: {confirm: h.t('lines.actions.destroy_confirm')}
       )
+    end
+
     links
   end
 end
