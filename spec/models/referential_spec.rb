@@ -132,26 +132,43 @@ describe Referential, :type => :model do
     # TODO: Rename js: true to no transaction something
     it "only creates one Referential", js: true do
       begin
-        referential_1 = build(:referential)
+        workbench = build(:workbench)
+        referential_1 = build(
+          :referential,
+          workbench: workbench
+        )
         referential_2 = referential_1.dup
         referential_2.slug = "#{referential_1.slug}_different"
 
-        thread_1 = Thread.new do
-          ActiveRecord::Base.transaction do
+        metadata_1 = build(
+          :referential_metadata,
+          referential: referential_1
+        )
+        # referential_1.metadatas << metadata
+        # referential_2.metadatas << metadata
+        metadata_2 = metadata_1.dup
+        metadata_2.referential = referential_2
+        metadata_1.save
+        metadata_2.save
+        # puts Referential.all.inspect
+        # puts referential_1.inspect
+
+        # thread_1 = Thread.new do
+        #   ActiveRecord::Base.transaction do
             referential_1.save
-            sleep 10
-          end
-        end
+        #     sleep 10
+        #   end
+        # end
 
-        thread_2 = Thread.new do
-          sleep 5
-          ActiveRecord::Base.transaction do
+        # thread_2 = Thread.new do
+        #   sleep 5
+        #   ActiveRecord::Base.transaction do
             referential_2.save
-          end
-        end
+        #   end
+        # end
 
-        thread_1.join
-        thread_2.join
+        # thread_1.join
+        # thread_2.join
 
         expect(referential_1).to be_persisted
         expect(referential_2).not_to be_persisted
