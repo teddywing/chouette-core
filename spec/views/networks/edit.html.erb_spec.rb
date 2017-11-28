@@ -8,7 +8,7 @@ describe "/networks/edit", :type => :view do
   describe "test" do
     it "should render h2 with the group name" do
       render
-      expect(rendered).to have_selector("h2", :text => Regexp.new(network.name))
+      expect(rendered).to have_selector("h1", :text => Regexp.new(network.name))
     end
   end
 
