@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121163631) do
+ActiveRecord::Schema.define(version: 20171123110204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -483,7 +483,8 @@ ActiveRecord::Schema.define(version: 20171121163631) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sync_interval", default: 1
+    t.integer  "sync_interval",   default: 1
+    t.string   "objectid_format"
   end
 
   create_table "lines", id: :bigserial, force: :cascade do |t|
@@ -625,6 +626,7 @@ ActiveRecord::Schema.define(version: 20171121163631) do
     t.integer  "created_from_id",          limit: 8
     t.boolean  "ready",                              default: false
     t.integer  "referential_suite_id",     limit: 8
+    t.string   "objectid_format"
   end
 
   add_index "referentials", ["created_from_id"], name: "index_referentials_on_created_from_id", using: :btree
@@ -700,6 +702,7 @@ ActiveRecord::Schema.define(version: 20171121163631) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "objectid_format"
   end
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
@@ -927,7 +930,7 @@ ActiveRecord::Schema.define(version: 20171121163631) do
 
   create_table "versions", id: :bigserial, force: :cascade do |t|
     t.string   "item_type",  null: false
-    t.integer  "item_id",    null: false, limit: 8
+    t.integer  "item_id",    null: false
     t.string   "event",      null: false
     t.string   "whodunnit"
     t.text     "object"
@@ -944,6 +947,7 @@ ActiveRecord::Schema.define(version: 20171121163631) do
     t.integer  "line_referential_id",      limit: 8
     t.integer  "stop_area_referential_id", limit: 8
     t.integer  "output_id",                limit: 8
+    t.string   "objectid_format"
   end
 
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
