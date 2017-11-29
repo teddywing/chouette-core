@@ -1,3 +1,4 @@
+# coding: utf-8
 RSpec.describe CompanyPolicy, type: :policy do
 
   let( :record ){ build_stubbed :company }
@@ -24,19 +25,19 @@ RSpec.describe CompanyPolicy, type: :policy do
 
   context 'Destructive actions →' do
     permissions :create? do
-      it_behaves_like 'always forbidden', 'companies.create', archived: true
+      it_behaves_like 'permitted policy', 'companies.create'
     end
     permissions :destroy? do
-      it_behaves_like 'always forbidden', 'companies.destroy', archived: true
+      it_behaves_like 'permitted policy', 'companies.destroy'
     end
     permissions :edit? do
-      it_behaves_like 'always forbidden', 'companies.update', archived: true
+      it_behaves_like 'permitted policy', 'companies.update'
     end
     permissions :new? do
-      it_behaves_like 'always forbidden', 'companies.create', archived: true
+      it_behaves_like 'permitted policy', 'companies.create'
     end
     permissions :update? do
-      it_behaves_like 'always forbidden', 'companies.update', archived: true
+      it_behaves_like 'permitted policy', 'companies.update'
     end
   end
 end
