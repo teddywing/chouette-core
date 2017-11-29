@@ -12,17 +12,17 @@ class Referential < ActiveRecord::Base
 
   validates_uniqueness_of :slug
 
-  validates_format_of :slug, :with => %r{\A[a-z][0-9a-z_]+\Z}
-  validates_format_of :prefix, :with => %r{\A[0-9a-zA-Z_]+\Z}
-  validates_format_of :upper_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
-  validates_format_of :lower_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
+  validates_format_of :slug, with: %r{\A[a-z][0-9a-z_]+\Z}
+  validates_format_of :prefix, with: %r{\A[0-9a-zA-Z_]+\Z}
+  validates_format_of :upper_corner, with: %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
+  validates_format_of :lower_corner, with: %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
   validate :slug_excluded_values
 
   attr_accessor :upper_corner
   attr_accessor :lower_corner
 
   has_one :user
-  has_many :api_keys, :class_name => 'Api::V1::ApiKey', :dependent => :destroy
+  has_many :api_keys, class_name: 'Api::V1::ApiKey', dependent: :destroy
 
   belongs_to :organisation
   validates_presence_of :organisation
@@ -78,7 +78,7 @@ class Referential < ActiveRecord::Base
         errors.add(:slug,I18n.t("referentials.errors.public_excluded"))
       end
       if slug == self.class.connection_config[:username]
-        errors.add(:slug,I18n.t("referentials.errors.user_excluded", :user => slug))
+        errors.add(:slug,I18n.t("referentials.errors.user_excluded", user: slug))
       end
     end
   end
@@ -141,7 +141,7 @@ class Referential < ActiveRecord::Base
 
   def self.new_from(from, functional_scope)
     Referential.new(
-      name: I18n.t("activerecord.copy", :name => from.name),
+      name: I18n.t("activerecord.copy", name: from.name),
       slug: "#{from.slug}_clone",
       prefix: from.prefix,
       time_zone: from.time_zone,
@@ -189,14 +189,14 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
-  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
-  before_validation :assign_slug, :on => :create
-  before_validation :assign_prefix, :on => :create
+  before_validation :assign_line_and_stop_area_referential, on: :create, if: :workbench
+  before_validation :assign_slug, on: :create
+  before_validation :assign_prefix, on: :create
 
   # Lock the `referentials` table to prevent duplicate referentials from being
   # created simultaneously in separate transactions. This must be the last hook
   # to minimise the duration of the lock.
-  before_validation :lock_table, :on => :create
+  before_validation :lock_table, on: :create
 
   before_create :create_schema
   after_create :clone_schema, if: :created_from
@@ -281,7 +281,7 @@ class Referential < ActiveRecord::Base
 
   def detect_overlapped_referentials
     self.class.where(id: overlapped_referential_ids).each do |referential|
-      errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", :referential => referential.name)
+      errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", referential: referential.name)
     end
   end
 
