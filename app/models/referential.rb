@@ -193,7 +193,9 @@ class Referential < ActiveRecord::Base
   before_validation :assign_slug, :on => :create
   before_validation :assign_prefix, :on => :create
 
-  # Locking the table must be the last hook to minimise the duration of the lock
+  # Lock the `referentials` table to prevent duplicate referentials from being
+  # created simultaneously in separate transactions. This must be the last hook
+  # to minimise the duration of the lock.
   before_validation :lock_table, :on => :create
 
   before_create :create_schema
