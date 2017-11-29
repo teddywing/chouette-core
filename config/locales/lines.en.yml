@@ -62,10 +62,10 @@ en:
     attributes:
       line:
         id: "ID"
-        network: "Network"
+        network_id: "Network"
         networks:
           name: "Network"
-        company: "Company"
+        company_id: "Company"
         companies:
           name: "Company"
         registration_number: "Registration number"

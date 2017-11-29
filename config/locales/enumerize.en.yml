@@ -244,3 +244,15 @@ en:
       streetCableCar: 'Street cable car'
       allFunicularServices: 'All funicular services'
       undefinedFunicular: 'Undefined funicular'
+    source_type_name:
+      name: "Source types"
+      public_and_private_utilities: "Public and private utilities"
+      road_authorities: "Road authorities"
+      transit_operator: "Transit operator"
+      public_transport: "Public transport"
+      passenger_transport_coordinating_authority: "Passenger transport coordinating authority"
+      travel_information_service_provider: "Travel information service provider"
+      travel_agency: "Travel_agency"
+      individual_subject_of_travel_itinerary: "Individual subject of travel itinerary"
+      other_information: "Other information"
+
