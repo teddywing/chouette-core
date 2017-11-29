@@ -132,10 +132,11 @@ describe Referential, :type => :model do
     # TODO: Rename js: true to no transaction something
     it "only creates one Referential", js: true do
       begin
-        workbench = build(:workbench)
+        workbench = create(:workbench)
         referential_1 = build(
           :referential,
-          workbench: workbench
+          workbench: workbench,
+          organisation: workbench.organisation
         )
         referential_2 = referential_1.dup
         referential_2.slug = "#{referential_1.slug}_different"
@@ -148,10 +149,11 @@ describe Referential, :type => :model do
         # referential_2.metadatas << metadata
         metadata_2 = metadata_1.dup
         metadata_2.referential = referential_2
-        metadata_1.save
-        metadata_2.save
         # puts Referential.all.inspect
         # puts referential_1.inspect
+
+        referential_1.metadatas << metadata_1
+        referential_2.metadatas << metadata_2
 
         # thread_1 = Thread.new do
         #   ActiveRecord::Base.transaction do
@@ -174,8 +176,8 @@ describe Referential, :type => :model do
         expect(referential_2).not_to be_persisted
 
       ensure
-        Apartment::Tenant.drop(referential_1.slug)
-        Apartment::Tenant.drop(referential_2.slug)
+        Apartment::Tenant.drop(referential_1.slug) if referential_1.persisted?
+        Apartment::Tenant.drop(referential_2.slug) if referential_2.persisted?
       end
     end
   end
