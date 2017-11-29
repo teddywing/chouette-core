@@ -74,7 +74,7 @@ describe "Networks", :type => :feature do
   #   end
   # end
 
-  # describe "delete", :js => true do
+  # describe "delete", :truncation => true do
   #   it "delete network and return to the list" do
   #     subject.stub(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
   #     visit line_referential_network_path(line_referential, subject)

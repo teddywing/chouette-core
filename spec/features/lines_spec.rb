@@ -69,7 +69,7 @@ describe "Lines", type: :feature do
     # end
 
     # Fixme #1780
-    # describe "new with group of line", :js => true do
+    # describe "new with group of line", :truncation => true do
     #   it "creates line and return to show" do
     #     visit new_line_referential_line_path(line_referential)
     #     fill_in "line_name", :with => "Line 1"

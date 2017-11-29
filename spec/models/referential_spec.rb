@@ -160,8 +160,7 @@ describe Referential, :type => :model do
       end
     end
 
-    # TODO: Rename js: true to no transaction something
-    it "works asynchronously", js: true do
+    it "works asynchronously", truncation: true do
       begin
         workbench = create(:workbench)
         referential_1 = build(
