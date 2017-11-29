@@ -1,9 +1,21 @@
 class LinePolicy < ApplicationPolicy
-
   class Scope < Scope
     def resolve
       scope
     end
+  end
+
+  def create?
+    Rails.logger.debug "LinePolicy.create?"
+    user.has_permission?('lines.create')
+  end
+
+  def destroy?
+    user.has_permission?('lines.destroy')
+  end
+
+  def update?
+    user.has_permission?('lines.update')
   end
 
   def create_footnote?
