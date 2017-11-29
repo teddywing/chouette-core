@@ -192,7 +192,10 @@ class Referential < ActiveRecord::Base
   before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
   before_validation :assign_slug, :on => :create
   before_validation :assign_prefix, :on => :create
+
+  # Locking the table must be the last hook to minimise the duration of the lock
   before_validation :lock_table, :on => :create
+
   before_create :create_schema
   after_create :clone_schema, if: :created_from
 
