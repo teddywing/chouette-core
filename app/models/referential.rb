@@ -192,6 +192,7 @@ class Referential < ActiveRecord::Base
   before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
   before_validation :assign_slug, :on => :create
   before_validation :assign_prefix, :on => :create
+  before_validation :lock_table, :on => :create
   before_create :create_schema
   after_create :clone_schema, if: :created_from
 
@@ -369,4 +370,11 @@ class Referential < ActiveRecord::Base
     not metadatas_overlap?
   end
 
+  private
+
+  def lock_table
+    ActiveRecord::Base.connection.execute(
+      'LOCK referentials IN ACCESS EXCLUSIVE MODE'
+    )
+  end
 end
