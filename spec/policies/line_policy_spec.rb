@@ -1,3 +1,4 @@
+# coding: utf-8
 RSpec.describe LinePolicy, type: :policy do
 
   let( :record ){ build_stubbed :line }
@@ -24,19 +25,19 @@ RSpec.describe LinePolicy, type: :policy do
 
   context 'Destructive actions →' do
     permissions :create? do
-      it_behaves_like 'always forbidden', 'lines.create', archived: true
+      it_behaves_like 'permitted policy', 'lines.create'
     end
     permissions :destroy? do
-      it_behaves_like 'always forbidden', 'lines.destroy', archived: true
+      it_behaves_like 'permitted policy', 'lines.destroy'
     end
     permissions :edit? do
-      it_behaves_like 'always forbidden', 'lines.update', archived: true
+      it_behaves_like 'permitted policy', 'lines.update'
     end
     permissions :new? do
-      it_behaves_like 'always forbidden', 'lines.create', archived: true
+      it_behaves_like 'permitted policy', 'lines.create'
     end
     permissions :update? do
-      it_behaves_like 'always forbidden', 'lines.update', archived: true
+      it_behaves_like 'permitted policy', 'lines.update'
     end
   end
 
