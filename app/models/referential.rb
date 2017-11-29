@@ -378,6 +378,8 @@ class Referential < ActiveRecord::Base
   private
 
   def lock_table
+    # No explicit unlock is needed as it will be released at the end of the
+    # transaction.
     ActiveRecord::Base.connection.execute(
       'LOCK referentials IN ACCESS EXCLUSIVE MODE'
     )
