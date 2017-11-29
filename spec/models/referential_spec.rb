@@ -127,10 +127,9 @@ describe Referential, :type => :model do
     end
   end
 
-  # two referentials created at the same time should not be possible when both have the same data
-  context "when two identical Referentials are created at the same time" do
+  context "when two identical Referentials are created, only one is saved" do
     # TODO: Rename js: true to no transaction something
-    it "only creates one Referential", js: true do
+    it "works synchronously" do
       begin
         workbench = create(:workbench)
         referential_1 = build(
@@ -145,36 +144,17 @@ describe Referential, :type => :model do
           :referential_metadata,
           referential: referential_1
         )
-        # referential_1.metadatas << metadata
-        # referential_2.metadatas << metadata
         metadata_2 = metadata_1.dup
         metadata_2.referential = referential_2
-        # puts Referential.all.inspect
-        # puts referential_1.inspect
 
         referential_1.metadatas << metadata_1
         referential_2.metadatas << metadata_2
 
-        # thread_1 = Thread.new do
-        #   ActiveRecord::Base.transaction do
-            referential_1.save
-        #     sleep 10
-        #   end
-        # end
-
-        # thread_2 = Thread.new do
-        #   sleep 5
-        #   ActiveRecord::Base.transaction do
-            referential_2.save
-        #   end
-        # end
-
-        # thread_1.join
-        # thread_2.join
+        referential_1.save
+        referential_2.save
 
         expect(referential_1).to be_persisted
         expect(referential_2).not_to be_persisted
-
       ensure
         Apartment::Tenant.drop(referential_1.slug) if referential_1.persisted?
         Apartment::Tenant.drop(referential_2.slug) if referential_2.persisted?
