@@ -930,7 +930,7 @@ ActiveRecord::Schema.define(version: 20171123110204) do
 
   create_table "versions", id: :bigserial, force: :cascade do |t|
     t.string   "item_type",  null: false
-    t.integer  "item_id",    null: false
+    t.integer  "item_id",    null: false,          limit: 8
     t.string   "event",      null: false
     t.string   "whodunnit"
     t.text     "object"
