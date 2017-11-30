@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171123110204) do
+ActiveRecord::Schema.define(version: 20171128112629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -408,9 +408,9 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -969,7 +969,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   add_foreign_key "compliance_check_messages", "compliance_checks"
   add_foreign_key "compliance_check_resources", "compliance_check_sets"
   add_foreign_key "compliance_check_sets", "compliance_control_sets"
-  add_foreign_key "compliance_check_sets", "referentials"
   add_foreign_key "compliance_check_sets", "workbenches"
   add_foreign_key "compliance_checks", "compliance_check_blocks"
   add_foreign_key "compliance_checks", "compliance_check_sets"
