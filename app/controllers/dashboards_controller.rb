@@ -3,8 +3,9 @@
 # this controller will use a custom partial like
 # custom/dashboards/_dashboard.html.slim for Custom::Dashboard
 #
-class DashboardsController < InheritedResources::Base
+class DashboardsController < ChouetteController
   respond_to :html, only: [:show]
+  defaults :resource_class => Dashboard
 
   def show
     @dashboard = Dashboard.create self

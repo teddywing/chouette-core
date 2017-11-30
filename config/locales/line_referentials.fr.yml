@@ -5,7 +5,7 @@ fr:
       sync: "Lancer une synchronisation Codifligne"
       cancel_sync: "Annuler la synchronisation Codifligne"
     edit:
-      title: "Editer le référentiel %{line_referential}"
+      title: "Editer le référentiel %{name}"
     show:
       title: 'Synchronisation iLICO'
       synchronized: Synchronisé

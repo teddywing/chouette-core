@@ -1,4 +1,5 @@
 class ReferentialCompaniesController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Chouette::Company, :collection_name => 'companies', :instance_name => 'company'
   respond_to :html
   respond_to :xml
@@ -55,7 +56,7 @@ class ReferentialCompaniesController < ChouetteController
   end
 
   def company_params
-    params.require(:company).permit( :objectid, :object_version, :creator_id, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
+    params.require(:company).permit( :objectid, :object_version, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
   end
 
   private

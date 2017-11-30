@@ -4,6 +4,7 @@ describe Chouette::GroupOfLine, :type => :model do
 
   subject { create(:group_of_line) }
   it { should validate_presence_of :name }
+  it { is_expected.to be_versioned }
 
   describe "#stop_areas" do
     let!(:line){create(:line, :group_of_lines => [subject])}

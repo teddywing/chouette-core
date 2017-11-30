@@ -1,4 +1,5 @@
 class ReferentialGroupOfLinesController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Chouette::GroupOfLine, :collection_name => 'group_of_lines', :instance_name => 'group_of_line'
 
   respond_to :html
@@ -68,7 +69,7 @@ class ReferentialGroupOfLinesController < ChouetteController
   private
 
   def group_of_line_params
-    params.require(:group_of_line).permit( :objectid, :object_version, :creator_id, :name, :comment, :lines, :registration_number, :line_tokens)
+    params.require(:group_of_line).permit( :objectid, :object_version, :name, :comment, :lines, :registration_number, :line_tokens)
   end
 
 end

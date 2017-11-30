@@ -1,4 +1,5 @@
 class RoutesController < ChouetteController
+  include ReferentialSupport
   include PolicyChecker
   defaults :resource_class => Chouette::Route
 
@@ -110,7 +111,6 @@ class RoutesController < ChouetteController
       :line_id,
       :objectid,
       :object_version,
-      :creator_id,
       :name,
       :comment,
       :opposite_route_id,

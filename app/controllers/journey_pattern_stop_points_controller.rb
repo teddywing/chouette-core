@@ -1,4 +1,5 @@
 class JourneyPatternStopPointsController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Chouette::JourneyPattern
 
   respond_to :html

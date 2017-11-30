@@ -1,4 +1,4 @@
-class LinesController < InheritedResources::Base
+class LinesController < ChouetteController
   include ApplicationHelper
   include PolicyChecker
   defaults :resource_class => Chouette::Line
@@ -119,7 +119,6 @@ class LinesController < InheritedResources::Base
       :company_id,
       :objectid,
       :object_version,
-      :creator_id,
       :name,
       :number,
       :published_name,

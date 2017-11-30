@@ -1,4 +1,4 @@
-class AutocompleteStopAreasController < InheritedResources::Base
+class AutocompleteStopAreasController < ChouetteController
   respond_to :json, :only => [:index, :children, :parent, :physicals]
 
   include ReferentialSupport

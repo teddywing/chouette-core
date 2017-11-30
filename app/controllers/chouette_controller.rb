@@ -1,5 +1,4 @@
 class ChouetteController < InheritedResources::Base
-
+  include PaperTrailSupport
   include ApplicationHelper
-  include ReferentialSupport
 end

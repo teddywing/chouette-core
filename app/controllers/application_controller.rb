@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
+  include PaperTrailSupport
   include Pundit
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # TODO : Delete hack to authorize Cross Request for js and json get request from javascript

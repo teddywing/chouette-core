@@ -15,6 +15,7 @@ RSpec.describe Chouette::Route, :type => :model do
   #it { is_expected.to validate_presence_of :direction_code }
   it { is_expected.to validate_inclusion_of(:direction).in_array(%i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)) }
   it { is_expected.to validate_inclusion_of(:wayback).in_array(%i(outbound inbound)) }
+  it { is_expected.to be_versioned }
 
   context "reordering methods" do
     let(:bad_stop_point_ids){subject.stop_points.map { |sp| sp.id + 1}}

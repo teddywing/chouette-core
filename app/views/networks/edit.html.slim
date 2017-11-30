@@ -1,10 +1,5 @@
-- breadcrumb :networks, @network
-/ PageHeader
-= pageheader 'jeux-de-controle',
-        t('networks.edit.title', network: @network.name)
-
-
-/ PageContent
+- breadcrumb :network, @network
+- page_header_content_for @network
 .page_content
   .container-fluid
     .row

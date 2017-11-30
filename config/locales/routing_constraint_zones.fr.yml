@@ -31,8 +31,8 @@ fr:
     new:
       title: Créer une ITL
     edit:
-      title: "Editer l'ITL : %{routing_constraint_zone}"
+      title: "Editer l'ITL : %{name}"
     show:
-      title: "Zone de contrainte %{routing_constraint_zone}"
+      title: "Zone de contrainte %{name}"
     index:
       title: "Interdictions de trafic local"

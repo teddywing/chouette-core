@@ -31,8 +31,8 @@ en:
     new:
       title: Add a new routings constraint zone
     edit:
-      title: "Update routing constraint zone %{routing_constraint_zone}"
+      title: "Update routing constraint zone %{name}"
     show:
-      title: "Routing constraint zone %{routing_constraint_zone}"
+      title: "Routing constraint zone %{name}"
     index:
       title: "Interdictions of local trafficous"

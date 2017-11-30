@@ -3,7 +3,7 @@ require_relative 'calendar/date_value'
 require_relative 'calendar/period'
 
 class Calendar < ActiveRecord::Base
-
+  has_paper_trail
   belongs_to :organisation
   has_many :time_tables
 

@@ -1,4 +1,5 @@
 class RouteStopPointsController < ChouetteController
+  include ReferentialSupport
   defaults resource_class: Chouette::StopPoint
   actions :index
   respond_to :json, only: :index

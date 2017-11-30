@@ -17,6 +17,7 @@ html lang=I18n.locale
   body
     = render 'layouts/navigation/main_nav'
     = render 'layouts/flash_messages', flash: flash
+    = render 'layouts/navigation/page_header'
     = yield
     #sidebar
       = yield :sidebar

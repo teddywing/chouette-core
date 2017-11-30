@@ -9,9 +9,9 @@ en:
     new:
       title: "Add a new company"
     edit:
-      title: "Update company  %{company}"
+      title: "Update company  %{name}"
     show:
-      title: "Company  %{company}"
+      title: "Company  %{name}"
     index:
       title: "Companies"
       name: "Search by name..."

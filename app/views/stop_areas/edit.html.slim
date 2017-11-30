@@ -1,9 +1,6 @@
 - breadcrumb :stop_area, @stop_area_referential, @stop_area
-/ PageHeader
-= pageheader 'jeux-de-controle',
-        t('stop_areas.edit.title', stop_area: @stop_area.name )
+- page_header_content_for @stop_area
 
-/ PageContent
 .page_content
   .container-fluid
     .row

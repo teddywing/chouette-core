@@ -1,8 +1,10 @@
 require 'geokit'
 require 'geo_ruby'
 
+
 module Chouette
   class AccessPoint < Chouette::ActiveRecord
+    has_paper_trail
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
 

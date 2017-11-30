@@ -1,5 +1,7 @@
+
 module Chouette
   class Route < Chouette::TridentActiveRecord
+    has_paper_trail
     include RouteRestrictions
     include ChecksumSupport
     include ObjectidSupport

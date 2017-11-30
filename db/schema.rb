@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "stop_area_id",                           limit: 8
     t.string   "objectid",                                                                  null: false
     t.integer  "object_version",                         limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "link_distance",                                    precision: 19, scale: 2
@@ -46,7 +45,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "access_points", id: :bigserial, force: :cascade do |t|
     t.string   "objectid"
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "longitude",                                 precision: 19, scale: 16
@@ -123,7 +121,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "companies", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                            null: false
     t.integer  "object_version",            limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "short_name"
     t.string   "organizational_unit"
@@ -188,7 +185,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "referential_id",            limit: 8
     t.integer  "compliance_control_set_id", limit: 8
     t.integer  "workbench_id",              limit: 8
-    t.string   "creator"
     t.string   "status"
     t.integer  "parent_id",                 limit: 8
     t.string   "parent_type"
@@ -265,7 +261,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "arrival_id",                             limit: 8
     t.string   "objectid",                                                                  null: false
     t.integer  "object_version",                         limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "link_distance",                                    precision: 19, scale: 2
@@ -305,7 +300,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.string   "objectid",                                               null: false
     t.integer  "object_version",     limit: 8
     t.datetime "creation_time"
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "description"
@@ -347,7 +341,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "group_of_lines", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                      null: false
     t.integer  "object_version",      limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "registration_number"
@@ -408,9 +401,9 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -435,7 +428,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "route_id",                limit: 8
     t.string   "objectid",                                      null: false
     t.integer  "object_version",          limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "registration_number"
@@ -500,7 +492,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "company_id",                      limit: 8
     t.string   "objectid",                                                  null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "number"
     t.string   "published_name"
@@ -532,7 +523,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "networks", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                      null: false
     t.integer  "object_version",      limit: 8
-    t.string   "creator_id"
     t.date     "version_date"
     t.string   "description"
     t.string   "name"
@@ -570,7 +560,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "route_id",         limit: 8
     t.string   "objectid",                                            null: false
     t.integer  "object_version",   limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.decimal  "link_distance",              precision: 19, scale: 2
@@ -647,7 +636,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "line_id",           limit: 8
     t.string   "objectid",                    null: false
     t.integer  "object_version",    limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.integer  "opposite_route_id", limit: 8
@@ -670,7 +658,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.datetime "updated_at"
     t.string   "objectid",                  null: false
     t.integer  "object_version",  limit: 8
-    t.string   "creator_id"
     t.integer  "route_id",        limit: 8
     t.integer  "stop_point_ids",  limit: 8,              array: true
     t.string   "checksum"
@@ -722,7 +709,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "parent_id",                       limit: 8
     t.string   "objectid",                                                            null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.string   "comment"
     t.string   "area_type"
@@ -766,7 +752,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "stop_area_id",   limit: 8
     t.string   "objectid",                 null: false
     t.integer  "object_version", limit: 8
-    t.string   "creator_id"
     t.integer  "position"
     t.string   "for_boarding"
     t.string   "for_alighting"
@@ -821,7 +806,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "time_tables", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                              null: false
     t.integer  "object_version",  limit: 8, default: 1
-    t.string   "creator_id"
     t.string   "version"
     t.string   "comment"
     t.integer  "int_day_types",             default: 0
@@ -852,7 +836,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
   create_table "timebands", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                 null: false
     t.integer  "object_version", limit: 8
-    t.string   "creator_id"
     t.string   "name"
     t.time     "start_time",               null: false
     t.time     "end_time",                 null: false
@@ -924,7 +907,6 @@ ActiveRecord::Schema.define(version: 20171123110204) do
     t.integer  "company_id",                      limit: 8
     t.string   "objectid",                                              null: false
     t.integer  "object_version",                  limit: 8
-    t.string   "creator_id"
     t.string   "comment"
     t.string   "status_value"
     t.string   "transport_mode"
@@ -945,6 +927,17 @@ ActiveRecord::Schema.define(version: 20171123110204) do
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
   add_index "vehicle_journeys", ["route_id"], name: "index_vehicle_journeys_on_route_id", using: :btree
+
+  create_table "versions", id: :bigserial, force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false,          limit: 8
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
   create_table "workbenches", id: :bigserial, force: :cascade do |t|
     t.string   "name"
