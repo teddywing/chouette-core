@@ -1,5 +1,5 @@
-RSpec.describe LinesController, type: :controller do
-
+RSpec.describe CompaniesController, type: :controller do
+  
   login_user
 
   let( :line_referential ){ create :line_referential }
@@ -14,27 +14,27 @@ RSpec.describe LinesController, type: :controller do
     end
 
     it_should_redirect_to_forbidden 'POST :create', ok_status: 302 do
-      post :create, line_referential_id: line_referential.id, line: attributes_for( :line )
+      post :create, line_referential_id: line_referential.id, company: attributes_for( :company )
     end
   end
 
   context 'member' do 
-    let( :line ){ create :line, line_referential: line_referential }
+    let( :company ){ create :company, line_referential: line_referential }
 
     it_should_redirect_to_forbidden 'GET :show' do
-      get :show, line_referential_id: line_referential.id, id: line.id
+      get :show, line_referential_id: line_referential.id, id: company.id
     end
 
     it_should_redirect_to_forbidden 'GET :edit' do
-      get :edit, line_referential_id: line_referential.id, id: line.id
+      get :edit, line_referential_id: line_referential.id, id: company.id
     end
 
     it_should_redirect_to_forbidden 'PUT :update', ok_status: 302 do
-      put :update, line_referential_id: line_referential.id, id: line.id, line: attributes_for( :line )
+      put :update, line_referential_id: line_referential.id, id: company.id, company: attributes_for( :company )
     end
 
     it_should_redirect_to_forbidden 'DELETE :destroy', ok_status: 302 do
-      delete :destroy, line_referential_id: line_referential.id, id: line.id
+      delete :destroy, line_referential_id: line_referential.id, id: company.id
     end
   end
 end

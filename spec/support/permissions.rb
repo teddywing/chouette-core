@@ -14,21 +14,28 @@ module Support
     def _permitted_resources
       %w[
         access_points
-        connection_links
+        api_keys
+
         calendars
+        companies
+        connection_links
+        compliance_control_blocks
+        compliance_control_sets
+        compliance_controls
+        compliance_check_sets
+
         footnotes
         imports
         journey_patterns
+        lines
+        networks
+
         referentials
         routes
         routing_constraint_zones
+
         time_tables
         vehicle_journeys
-        api_keys
-        compliance_controls
-        compliance_control_sets
-        compliance_control_blocks
-        compliance_check_sets
       ]
     end
   end

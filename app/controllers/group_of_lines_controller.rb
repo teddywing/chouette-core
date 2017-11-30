@@ -36,12 +36,6 @@ class GroupOfLinesController < InheritedResources::Base
     super
   end
 
-  def name_filter
-    respond_to do |format|
-      format.json { render :json => filtered_group_of_lines_maps}
-    end
-  end
-
 
   protected
 
@@ -74,6 +68,12 @@ class GroupOfLinesController < InheritedResources::Base
 
   def group_of_line_params
     params.require(:group_of_line).permit( :objectid, :object_version, :creator_id, :name, :comment, :lines, :registration_number, :line_tokens)
+  end
+
+  def name_filter
+    respond_to do |format|
+      format.json { render :json => filtered_group_of_lines_maps}
+    end
   end
 
 end
