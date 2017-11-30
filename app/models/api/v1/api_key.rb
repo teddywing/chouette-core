@@ -1,6 +1,7 @@
 module Api
   module V1
     class ApiKey < ::ActiveRecord::Base
+      has_paper_trail
       before_create :generate_access_token
       belongs_to :referential, :class_name => '::Referential'
       belongs_to :organisation, :class_name => '::Organisation'

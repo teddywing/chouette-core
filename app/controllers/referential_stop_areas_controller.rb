@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class ReferentialStopAreasController  < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Chouette::StopArea, :collection_name => 'stop_areas', :instance_name => 'stop_area'
 
   belongs_to :referential do
@@ -144,7 +145,7 @@ class ReferentialStopAreasController  < ChouetteController
   end
 
   def stop_area_params
-    params.require(:stop_area).permit( :routing_stop_ids, :routing_line_ids, :children_ids, :stop_area_type, :parent_id, :objectid, :object_version, :creator_id, :name, :comment, :area_type, :registration_number, :nearest_topic_name, :fare_code, :longitude, :latitude, :long_lat_type, :country_code, :street_name, :zip_code, :city_name, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :coordinates, :url, :time_zone )
+    params.require(:stop_area).permit( :routing_stop_ids, :routing_line_ids, :children_ids, :stop_area_type, :parent_id, :objectid, :object_version, :name, :comment, :area_type, :registration_number, :nearest_topic_name, :fare_code, :longitude, :latitude, :long_lat_type, :country_code, :street_name, :zip_code, :city_name, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :coordinates, :url, :time_zone )
   end
 
 end

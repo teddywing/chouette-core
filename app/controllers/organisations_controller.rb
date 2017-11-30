@@ -1,4 +1,4 @@
-class OrganisationsController < InheritedResources::Base
+class OrganisationsController < ChouetteController
 
   defaults :resource_class => Organisation
   respond_to :html, :only => [:edit, :show, :update]

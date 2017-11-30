@@ -9,7 +9,7 @@ kml xmlns="http://www.opengis.net/kml/2.2"
       placemark id="#{access_point.objectid}"
         name = h(access_point.name)
         extendeddata
-          - [ :objectid, :object_version, :creator_id, :created_at, :updated_at, :name, :comment, :longitude, :latitude, :long_lat_type, :country_code, :street_name, :openning_time, :closing_time, :access_type, :access_point_type, :mobility_restricted_suitability, :stairs_availability, :lift_availability].each do |prop|
+          - [ :objectid, :object_version, :created_at, :updated_at, :name, :comment, :longitude, :latitude, :long_lat_type, :country_code, :street_name, :openning_time, :closing_time, :access_type, :access_point_type, :mobility_restricted_suitability, :stairs_availability, :lift_availability].each do |prop|
             data name="#{prop.to_s}"
               value = h(access_point.send( prop))
 

@@ -1,4 +1,5 @@
 class TimebandsController < ChouetteController
+  include ReferentialSupport
 
   defaults :resource_class => Chouette::Timeband
 

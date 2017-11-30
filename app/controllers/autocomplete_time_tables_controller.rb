@@ -1,4 +1,4 @@
-class AutocompleteTimeTablesController < InheritedResources::Base
+class AutocompleteTimeTablesController < ChouetteController
   respond_to :json, :only => [:index]
   before_action :switch_referential
 

@@ -16,7 +16,7 @@ en:
     new:
       title: "Add a new route"
     edit:
-      title: "Update route %{route}"
+      title: "Update route %{name}"
       select2:
         placeholder: "Select a stop point..."
       map:
@@ -37,7 +37,7 @@ en:
           normal: Normal alighting
           forbidden: Forbidden alighting
     show:
-      title: "Route %{route}"
+      title: "Route %{name}"
       stop_points: "Stop point on route list"
       stop_areas:
         title: "Stop area list"
@@ -45,7 +45,7 @@ en:
       no_opposite_route: "No reversed route associated"
       undefined: "Undefined"
     index:
-      title: "Routes %{route}"
+      title: "Routes"
       selection: "Selection"
       selection_all: "All"
     edit_boarding_alighting:

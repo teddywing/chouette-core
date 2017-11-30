@@ -1,12 +1,12 @@
 module Chouette
   class Network < Chouette::ActiveRecord
+    has_paper_trail
     include NetworkRestrictions
     include LineReferentialSupport
     include ObjectidSupport
     extend Enumerize
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
-
     has_many :lines
 
     attr_accessor :source_type_name

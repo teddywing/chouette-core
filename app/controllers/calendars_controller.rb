@@ -1,4 +1,4 @@
-class CalendarsController < InheritedResources::Base
+class CalendarsController < ChouetteController
   include PolicyChecker
   defaults resource_class: Calendar
   before_action :ransack_contains_date, only: [:index]

@@ -5,7 +5,7 @@ en:
       sync: "Launch a new codifligne synchronization"
       cancel_sync: "Cancel codifligne synchronization"
     edit:
-      title: "Edit %{line_referential} referential"
+      title: "Edit %{name} referential"
     show:
       title: "iLICO synchronization"
       synchronized: Synchronized

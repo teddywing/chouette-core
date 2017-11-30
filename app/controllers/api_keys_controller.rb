@@ -1,4 +1,4 @@
-class ApiKeysController < InheritedResources::Base
+class ApiKeysController < ChouetteController
   defaults resource_class: Api::V1::ApiKey
   include PolicyChecker
 

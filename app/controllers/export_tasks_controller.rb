@@ -1,6 +1,7 @@
 class ExportTasksController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => ExportTask
-  
+
   respond_to :html, :only => [:new, :create]
   respond_to :js, :only => [:new, :create]
   belongs_to :referential
@@ -15,10 +16,10 @@ class ExportTasksController < ChouetteController
       redirect_to referential_path(@referential)
     end
   end
-  
+
   def create
     @available_exports = available_exports
-    begin            
+    begin
       create! do |success, failure|
         success.html { redirect_to referential_exports_path(@referential) }
       end
@@ -62,7 +63,7 @@ class ExportTasksController < ChouetteController
     end
   end
 
-  def build_resource    
+  def build_resource
     @export_task ||= if params[:export_task].present?
                        export_task_parameters = params[:export_task]
                        case export_task_parameters[:data_format]
@@ -80,7 +81,7 @@ class ExportTasksController < ChouetteController
                      else
                        NeptuneExport.new
                      end
-    
+
   end
-  
+
 end

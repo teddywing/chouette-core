@@ -1,8 +1,8 @@
 require 'geokit'
 require 'geo_ruby'
-
 module Chouette
   class StopArea < Chouette::ActiveRecord
+    has_paper_trail
     include ProjectionFields
     include StopAreaRestrictions
     include StopAreaReferentialSupport

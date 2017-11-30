@@ -1,10 +1,6 @@
-/ PageHeader
-= pageheader 'jeux-de-donnees',
-             t('.title'),
-             '',
-             t('last_update', time: l(@referential.updated_at, format: :short))
+- breadcrumb @referential
+- page_header_content_for @referential
 
-/ PageContent
 .page_content
  .container-fluid
    .row

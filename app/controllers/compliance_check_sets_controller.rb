@@ -1,4 +1,4 @@
-class ComplianceCheckSetsController < InheritedResources::Base
+class ComplianceCheckSetsController < ChouetteController
   defaults resource_class: ComplianceCheckSet
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("created_at", DateTime) }
@@ -28,10 +28,10 @@ class ComplianceCheckSetsController < InheritedResources::Base
   end
 
   def executed
-    show! do |format| 
+    show! do |format|
       # But now nobody is aware anymore that `format.html` passes a parameter into the block
       format.html { executed_for_html }
-    end 
+    end
   end
 
 

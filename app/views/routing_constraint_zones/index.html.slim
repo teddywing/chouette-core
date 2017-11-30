@@ -1,12 +1,8 @@
 - breadcrumb :routing_constraint_zones, @referential, @line
-/ PageHeader
-= pageheader 'itl',
-             t('routing_constraint_zones.index.title'),
-             '',
-             '',
-             ((policy(Chouette::RoutingConstraintZone).create? && @referential.organisation == current_organisation) ? link_to(t('actions.new'), new_referential_line_routing_constraint_zone_path(@referential, @line), class: 'btn btn-primary') : '')
+- content_for :page_header_actions do
+  - if (policy(Chouette::RoutingConstraintZone).create? && @referential.organisation == current_organisation)
+    = link_to(t('actions.new'), new_referential_line_routing_constraint_zone_path(@referential, @line), class: 'btn btn-primary')
 
-/ PageContent
 .page_content
   .container-fluid
     - if params[:q].present? or @routing_constraint_zones.any?

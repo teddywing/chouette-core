@@ -4,6 +4,7 @@ RSpec.describe Api::V1::ApiKey, type: :model do
   subject { create(:api_key) }
 
   it { should validate_presence_of :organisation }
+  it { is_expected.to be_versioned }
 
   it 'should have a valid factory' do
     expect(build(:api_key)).to be_valid

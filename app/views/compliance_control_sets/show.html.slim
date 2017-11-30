@@ -1,9 +1,6 @@
 - breadcrumb :compliance_control_set, @compliance_control_set
-/ PageHeader
-= pageheader 'jeux-de-controle',
-              t('compliance_control_sets.show.title', name: @compliance_control_set.name)
-
-  / Below is secondary actions & optional contents (filters, ...)
+- page_header_content_for @compliance_control_set
+- content_for :page_header_content do
   .row.mb-sm
     .col-lg-12.text-right
       - @compliance_control_set.action_links.each do |link|
@@ -16,7 +13,6 @@
               class: 'btn btn-primary' do
             = link.content
 
-/ PageContent
 .page_content
   .container-fluid
     .row

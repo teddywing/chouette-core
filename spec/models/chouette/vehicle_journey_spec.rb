@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
+  it { is_expected.to be_versioned }
 
   it "must be valid with an at-stop day offset of 1" do
     vehicle_journey = create(

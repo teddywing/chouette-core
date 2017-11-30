@@ -1,5 +1,6 @@
 module Chouette
   class GroupOfLine < Chouette::ActiveRecord
+    has_paper_trail
     include ObjectidSupport
     include GroupOfLineRestrictions
     include LineReferentialSupport

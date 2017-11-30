@@ -1,11 +1,6 @@
 - breadcrumb :referential_network, @referential, @network
-/ PageHeader
-= pageheader 'reseau',
-             @network.name,
-             'Lorem ipsum dolor sit amet',
-             t('last_update', time: l(@network.updated_at, format: :short)) do
-
-  / Below is secundary actions & optional contents (filters, ...)
+- page_header_content_for @network
+- content_for :page_header_content do
   .row
     .col-lg-12.text-right.mb-sm
       - @network.action_links.each do |link|
