@@ -1,0 +1,47 @@
+- breadcrumb :compliance_check_sets, @workbench, @compliance_check_set
+/ PageHeader
+= pageheader 'jeux-de-donnees',
+             @compliance_check_set.name,
+             '',
+             t('last_update', time: l(@compliance_check_set.updated_at, format: :short)) do
+
+  / Below is secundary actions & optional contents (filters, ...)
+  .row
+    .col-lg-12.text-right.mb-sm
+      - @compliance_check_set.action_links.each do |link|
+        = link_to link.href,
+            method: link.method,
+            data: link.data,
+            class: 'btn btn-primary' do
+          = link.content
+
+/ PageContent
+.page_content.import_messages
+  .container-fluid
+    .row
+      .col-lg-12
+        h1
+          span.status_icon = compliance_check_set_status(@compliance_check_set.status)
+          span = t('compliance_check_sets.show.table_state', lines_status: @compliance_check_set.lines_status , lines_in_compliance_check_set: @compliance_check_set.lines_in_compliance_check_set )
+      .col-lg-12
+        = t('compliance_check_sets.show.table_explanation')
+    .row
+      .col-lg-12
+        = table_builder_2 @compliance_check_set.compliance_check_resources,
+          [ \
+            TableBuilderHelper::Column.new( \
+              key: :name, \
+              attribute: 'name' \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :status, \
+              attribute: Proc.new { |n| compliance_check_set_status(n.status) } \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :metrics, \
+              attribute: Proc.new { |n| I18n.t('compliance_check_sets.show.metrics', n.metrics.deep_symbolize_keys) } \
+            ) \
+          ],
+          sortable: false, \
+          links: [],
+          cls: 'table'

@@ -13,6 +13,10 @@ fr:
     search_no_results: Aucun rapport de contrôle ne correspond à votre recherche
     executed:
       title: Jeu de contrôles exécutés %{name}
+    show:
+      table_state: "%{lines_status} lignes importées sur %{lines_in_compliance_check_set} présentes dans l'archive"
+      table_explanation: Ces contrôles s’appliquent pour toutes les données importées et conditionnent la construction de l’offre de votre organisation
+      metrics: "%{ok_count} ok, %{error_count} errors, %{warning_count} warnings, %{uncheck_count} n/a"
   activerecord:
     attributes:
       compliance_check_set:
@@ -22,6 +26,11 @@ fr:
         assigned_to: Affectation
         compliance_control_set: jeu de contrôle
         name: Nom
+      compliance_check_resource:
+        name: Nom de la ligne
+        status: État
+        metrics: Résultat des tests
+        download: Télécharger
     models:
       compliance_check_block:
         zero:  "Groupe de contrôle"

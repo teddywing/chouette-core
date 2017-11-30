@@ -63,10 +63,10 @@ fr:
     attributes:
       line:
         id: "ID"
-        network: "Réseau"
+        network_id: "Réseau"
         networks:
           name: "Réseau"
-        company: "Transporteur principal"
+        company_id: "Transporteur principal"
         companies:
           name: "Transporteur principal"
         registration_number: "Nom court"

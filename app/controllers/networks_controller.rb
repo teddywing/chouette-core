@@ -22,10 +22,12 @@ class NetworksController < ChouetteController
 
   def new
     authorize resource_class
+    new!
   end
 
   def create
     authorize resource_class
+    create!
   end
 
   def index

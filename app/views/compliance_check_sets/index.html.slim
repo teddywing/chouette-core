@@ -12,7 +12,7 @@
               [ \
                 TableBuilderHelper::Column.new( \
                   key: :ref, \
-                  attribute: 'referential_id' \
+                  attribute: 'compliance_check_set_id' \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :creation_date, \
@@ -21,8 +21,8 @@
                 TableBuilderHelper::Column.new( \
                   key: :associated_object, \
                   attribute: Proc.new{|n| n.referential.name}, \
-                  link_to: lambda do |referential| \
-                    referential_path(referential, current_workbench_id: params[:id]) \
+                  link_to: lambda do |compliance_check_set| \
+                    referential_path(compliance_check_set.referential_id) \
                   end \
                 ), \
                 TableBuilderHelper::Column.new( \
