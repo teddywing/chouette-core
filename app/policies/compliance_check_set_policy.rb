@@ -3,5 +3,6 @@ class ComplianceCheckSetPolicy < ApplicationPolicy
     def resolve
       scope
     end
+
   end
 end

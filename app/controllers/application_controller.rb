@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
+  include PaperTrailSupport
   include Pundit
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   # TODO : Delete hack to authorize Cross Request for js and json get request from javascript
@@ -47,7 +49,6 @@ class ApplicationController < ActionController::Base
   def begin_of_association_chain
     current_organisation
   end
-
 
   # Overwriting the sign_out redirect path method
   def after_sign_out_path_for(resource_or_scope)

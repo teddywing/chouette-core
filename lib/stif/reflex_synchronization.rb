@@ -150,9 +150,8 @@ module Stif
       end
 
       def create_or_update_stop_area entry
-        stop = Chouette::StopArea.find_or_create_by(objectid: entry['id'])
+        stop = Chouette::StopArea.find_or_create_by(objectid: entry['id'], stop_area_referential: self.defaut_referential )
         stop.deleted_at            = nil
-        stop.stop_area_referential = self.defaut_referential
         {
           :comment        => 'Description',
           :name           => 'Name',

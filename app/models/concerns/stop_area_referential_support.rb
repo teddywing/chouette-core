@@ -3,6 +3,7 @@ module StopAreaReferentialSupport
 
   included do
     belongs_to :stop_area_referential
+    validates_presence_of :stop_area_referential
     alias_method :referential, :stop_area_referential
   end
 

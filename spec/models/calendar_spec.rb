@@ -6,6 +6,7 @@ RSpec.describe Calendar, :type => :model do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_presence_of(:short_name) }
   it { is_expected.to validate_uniqueness_of(:short_name) }
+  it { is_expected.to be_versioned }
 
   describe '#to_time_table' do
     let(:calendar) { create(:calendar, date_ranges: [Date.today...(Date.today + 1.month)]) }
@@ -28,7 +29,6 @@ RSpec.describe Calendar, :type => :model do
       expect(build(:calendar, dates: [Date.yesterday, Date.yesterday], date_ranges: [Date.today..Date.tomorrow])).to_not be_valid
     end
   end
-
 
   describe 'before_validation' do
     let(:calendar) { create(:calendar, date_ranges: []) }

@@ -44,7 +44,7 @@ export default class BSelect4 extends Component {
                   item => _.assign(
                     {},
                     item,
-                    {text: '<strong>' + "<span class='fa fa-circle' style='color:" + (item.color ? item.color : '#4B4B4B') + "'></span> " + item.comment + ' - ' + actions.humanOID(item.objectid) + '</strong><br/><small>' + (item.day_types ? item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') : "") + '</small>'}
+                    {text: '<strong>' + "<span class='fa fa-circle' style='color:" + (item.color ? item.color : '#4B4B4B') + "'></span> " + item.comment + ' - ' + item.short_id + '</strong><br/><small>' + (item.day_types ? item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') : "") + '</small>'}
                   )
                 )
               };

@@ -7,15 +7,11 @@ describe Chouette::StopArea, :type => :model do
   let!(:commercial_stop_point) { create :stop_area, :area_type => "lda" }
   let!(:stop_place) { create :stop_area, :area_type => "zdlp" }
 
-  describe '#objectid' do
-    subject { super().objectid }
-    it { should be_kind_of(Chouette::StifReflexObjectid) }
-  end
-
   it { should belong_to(:stop_area_referential) }
   it { should validate_presence_of :name }
   it { should validate_numericality_of :latitude }
   it { should validate_numericality_of :longitude }
+  it { is_expected.to be_versioned }
 
   # describe ".latitude" do
   #   it "should accept -90 value" do

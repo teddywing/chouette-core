@@ -1,5 +1,6 @@
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
+  include ObjectidFormatterSupport
 
   validates_presence_of :name
   validates_presence_of :slug
@@ -11,8 +12,6 @@ class Referential < ActiveRecord::Base
 
   validates_uniqueness_of :slug
 
-  validates_presence_of :line_referential
-  validates_presence_of :stop_area_referential
   validates_format_of :slug, :with => %r{\A[a-z][0-9a-z_]+\Z}
   validates_format_of :prefix, :with => %r{\A[0-9a-zA-Z_]+\Z}
   validates_format_of :upper_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
@@ -54,6 +53,7 @@ class Referential < ActiveRecord::Base
   belongs_to :workbench
 
   belongs_to :referential_suite
+
 
   scope :ready, -> { where(ready: true) }
   scope :in_periode, ->(periode) { where(id: referential_ids_in_periode(periode)) }

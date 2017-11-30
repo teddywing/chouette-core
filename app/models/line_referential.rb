@@ -1,5 +1,6 @@
 class LineReferential < ActiveRecord::Base
-  include StifTransportModeEnumerations
+  include ObjectidFormatterSupport
+  extend StifTransportModeEnumerations
   
   has_many :line_referential_memberships
   has_many :organisations, through: :line_referential_memberships

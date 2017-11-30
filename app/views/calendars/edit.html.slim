@@ -1,11 +1,5 @@
 - breadcrumb :calendar, @calendar
-/ PageHeader
-= pageheader 'modele-calendrier',
-             t('.title', calendar: @calendar.name),
-             '',
-             t('last_update', time: l(@calendar.updated_at, format: :short))
-
-/ PageContent
+- page_header_content_for @calendar
 .page_content
   .container-fluid
     .row

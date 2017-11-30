@@ -49,7 +49,7 @@ export default class ShiftVehicleJourney extends Component {
                   <div className='modal-header'>
                     <h4 className='modal-title'>Mettre à jour une course</h4>
                     {(this.props.modal.type == 'shift') && (
-                      <em>Mettre à jour les horaires de la course {actions.humanOID(actions.getSelected(this.props.vehicleJourneys)[0].objectid)}</em>
+                      <em>Mettre à jour les horaires de la course {actions.getSelected(this.props.vehicleJourneys)[0].short_id}</em>
                     )}
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>

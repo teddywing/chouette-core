@@ -22,7 +22,7 @@ RSpec.describe Devise::CasSessionsController, type: :controller do
 
     it 'cannot login and will be redirected to the login page, with a corresponding message' do
       get :service
-      expect(controller).to set_flash[:alert].to(%r{IBOO})
+      expect(controller).to set_flash[:alert].to(%r{Vous ne pouvez pas vous connecter car vous n'avez pas les permissions})
       expect(response).to redirect_to "http://stif-portail-dev.af83.priv/sessions/logout?service=http%3A%2F%2Ftest.host%2Fusers%2Fservice"
     end
   end

@@ -1,12 +1,8 @@
 - breadcrumb :calendars
-/ PageHeader
-- header_params = ['modele-calendrier',
-                   t('.title'),
-                   '']
-- header_params << link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')  if policy(Calendar).create?
-= pageheader(*header_params) do
+- content_for :page_header_actions do
+  - if policy(Calendar).create?
+    = link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')
 
-/ PageContent
 .page_content
   .container-fluid
     - if params[:q].present? or @calendars.any?

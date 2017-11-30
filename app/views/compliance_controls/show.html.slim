@@ -1,11 +1,9 @@
 - breadcrumb :compliance_control, @compliance_control
-/ PageHeader
-= pageheader 'jeux-de-controle',
-        t('compliance_controls.show.title'),
-        '',
-        link_to(t('actions.edit'), edit_compliance_control_set_compliance_control_path(params[:compliance_control_set_id], params[:id]), class: 'btn btn-default') do
+- content_for :page_header_actions do
+  = link_to(t('actions.edit'), edit_compliance_control_set_compliance_control_path(params[:compliance_control_set_id], params[:id]), class: 'btn btn-default')
+- page_header_content_for @compliance_control
 
-/ PageContent
+
 .page_content
   .container-fluid
     .row

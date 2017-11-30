@@ -1,11 +1,5 @@
 - breadcrumb :import, @workbench, @import
-/ PageHeader
-= pageheader 'importer',
-             @import.name,
-             '',
-             t('last_update', time: l(@import.updated_at, format: :short)) do
-
-  / Below is secundary actions & optional contents (filters, ...)
+- content_for :page_header_content do
   .row
     .col-lg-12.text-right.mb-sm
       - @import.action_links.each do |link|
@@ -15,7 +9,8 @@
             class: 'btn btn-primary' do
               = link.content
 
-/ PageContent
+- page_header_content_for @import
+
 .page_content
   .container-fluid
     .row
@@ -58,7 +53,7 @@
           overhead: [ \
             {}, \
             { \
-              title: "#{@import.children_succeedeed} jeu de données validé sur #{@import.children.count} présents dans l'archive", \
+              title: "#{@import.children_succeedeed} jeu de données validé sur #{@import.children.count} présent(s) dans l'archive", \
               width: 1, \
               cls: "#{@import.import_status_css_class} full-border" \
             }, { \

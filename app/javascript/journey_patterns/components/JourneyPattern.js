@@ -68,7 +68,7 @@ export default class JourneyPattern extends Component{
         {/* this.props.value.errors ? this.getErrors(this.props.value.errors) : '' */}
 
         <div className='th'>
-          <div className='strong mb-xs'>{this.props.value.object_id ? actions.humanOID(this.props.value.object_id) : '-'}</div>
+          <div className='strong mb-xs'>{this.props.value.object_id ? this.props.value.short_id : '-'}</div>
           <div>{this.props.value.registration_number}</div>
           <div>{actions.getChecked(this.props.value.stop_points).length} arrêt(s)</div>
 

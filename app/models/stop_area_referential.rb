@@ -1,4 +1,5 @@
 class StopAreaReferential < ActiveRecord::Base
+  include ObjectidFormatterSupport
   has_many :stop_area_referential_memberships
   has_many :organisations, through: :stop_area_referential_memberships
 

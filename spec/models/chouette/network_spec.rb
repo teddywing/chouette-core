@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Chouette::Network, :type => :model do
   subject { create(:network) }
   it { should validate_presence_of :name }
+  it { is_expected.to be_versioned }
 
   describe "#stop_areas" do
     let!(:line){create(:line, :network => subject)}

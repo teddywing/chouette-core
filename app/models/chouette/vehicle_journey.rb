@@ -1,7 +1,9 @@
 module Chouette
-  class VehicleJourney < TridentActiveRecord
+  class VehicleJourney < Chouette::TridentActiveRecord
+    has_paper_trail
     include ChecksumSupport
     include VehicleJourneyRestrictions
+    include ObjectidSupport
     include StifTransportModeEnumerations
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
@@ -57,14 +59,14 @@ module Chouette
     end
 
     def local_id
-      "IBOO-#{self.referential.id}-#{self.route.line.objectid.local_id}-#{self.id}"
+      "IBOO-#{self.referential.id}-#{self.route.line.get_objectid.local_id}-#{self.id}"
     end
 
     def checksum_attributes
       [].tap do |attrs|
         attrs << self.published_journey_name
         attrs << self.published_journey_identifier
-        attrs << self.try(:company).try(:objectid).try(:local_id)
+        attrs << self.try(:company).try(:get_objectid).try(:local_id)
         attrs << self.footnotes.map(&:checksum).sort
         attrs << self.vehicle_journey_at_stops.map(&:checksum).sort
       end
@@ -302,6 +304,5 @@ module Chouette
         ')
         .where('"time_tables_vehicle_journeys"."vehicle_journey_id" IS NULL')
     end
-
   end
 end

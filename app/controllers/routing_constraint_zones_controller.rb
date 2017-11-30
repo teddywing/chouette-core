@@ -1,4 +1,5 @@
 class RoutingConstraintZonesController < ChouetteController
+  include ReferentialSupport
   include PolicyChecker
 
   defaults resource_class: Chouette::RoutingConstraintZone
@@ -96,7 +97,6 @@ class RoutingConstraintZonesController < ChouetteController
       :route_id,
       :objectid,
       :object_version,
-      :creator_id
     )
   end
 

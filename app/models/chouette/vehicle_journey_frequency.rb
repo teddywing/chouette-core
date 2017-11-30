@@ -1,5 +1,5 @@
 module Chouette
-  class VehicleJourneyFrequency < VehicleJourney
+  class VehicleJourneyFrequency < Chouette::VehicleJourney
 
     after_initialize :fill_journey_category
 

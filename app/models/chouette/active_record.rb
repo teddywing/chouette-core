@@ -24,6 +24,10 @@ module Chouette
       end
     end
 
+    def self.model_name
+      ActiveModel::Name.new self, Chouette, self.name.demodulize
+    end
+
     # TODO: Can we remove this?
     # class << self
     #   alias_method :create_reflection_without_chouette_naming, :create_reflection

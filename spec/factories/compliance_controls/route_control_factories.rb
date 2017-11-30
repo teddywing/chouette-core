@@ -28,7 +28,7 @@ FactoryGirl.define do
     association :compliance_control_set
   end
 
-  factory :route_control_unactivated_stop_points, class: 'RouteControl::UnactivatedStopPoints' do
+  factory :route_control_unactivated_stop_point, class: 'RouteControl::UnactivatedStopPoint' do
     association :compliance_control_set
   end
 

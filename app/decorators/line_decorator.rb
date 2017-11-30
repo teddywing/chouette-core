@@ -22,9 +22,19 @@ class LineDecorator < Draper::Decorator
     )
 
     if h.policy(Chouette::Line).create? &&
-        context[:line_referential].organisations.include?(
-          context[:current_organisation]
-        )
+      context[:line_referential].organisations.include?(
+        context[:current_organisation]
+      )
+      links << Link.new(
+        content: h.t('lines.actions.edit'),
+        href: h.edit_line_referential_line_path(context[:line_referential], object.id)
+      )
+    end
+
+    if h.policy(Chouette::Line).create? &&
+      context[:line_referential].organisations.include?(
+        context[:current_organisation]
+      )
       links << Link.new(
         content: h.t('lines.actions.new'),
         href: h.new_line_referential_line_path(context[:line_referential])
@@ -33,10 +43,10 @@ class LineDecorator < Draper::Decorator
 
     if h.policy(object).destroy?
       links << Link.new(
-        content: h.destroy_link_content('lines.actions.destroy_confirm'),
+        content: h.destroy_link_content('lines.actions.destroy'),
         href: h.line_referential_line_path(context[:line_referential], object),
         method: :delete,
-        data: { confirm: h.t('lines.actions.destroy_confirm') }
+        data: {confirm: h.t('lines.actions.destroy_confirm')}
       )
     end
 

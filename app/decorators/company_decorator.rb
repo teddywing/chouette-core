@@ -49,5 +49,4 @@ class CompanyDecorator < Draper::Decorator
 
     links
   end
-
 end

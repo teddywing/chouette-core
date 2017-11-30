@@ -1,12 +1,8 @@
 - breadcrumb :lines, @line_referential
-/ PageHeader
-= pageheader 'ligne',
-             t('lines.index.title'),
-             'Lorem ipsum dolor sit amet',
-             '',
-             ((policy(Chouette::Line).create? && @line_referential.organisations.include?(current_organisation)) ? link_to(t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'btn btn-primary') : '')
+- content_for :page_header_actions do
+  - if (policy(Chouette::Line).create? && @line_referential.organisations.include?(current_organisation))
+    = link_to(t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'btn btn-primary')
 
-/ PageContent
 .page_content
   .container-fluid
     - if params[:q].present? or @lines.any?
@@ -20,8 +16,8 @@
           = table_builder_2 @lines,
             [ \
               TableBuilderHelper::Column.new( \
-                name: 'ID Codifligne', \
-                attribute: Proc.new { |n| n.objectid.local_id }, \
+                name: t('id_codif'), \
+                attribute: Proc.new { |n| n.get_objectid.short_id }, \
                 sortable: false \
               ), \
               TableBuilderHelper::Column.new( \

@@ -1,6 +1,6 @@
+
 module Chouette
-  class VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator <
-      ActiveModel::EachValidator
+  class VehicleJourneyAtStopsAreInIncreasingTimeOrderValidator < ActiveModel::EachValidator
     def validate_each(vehicle_journey, attribute, value)
       previous_at_stop = nil
 

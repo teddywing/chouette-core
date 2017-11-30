@@ -1,12 +1,8 @@
 - breadcrumb :referential_networks, @referential
-/ PageHeader
-= pageheader 'reseau',
-             t('networks.index.title'),
-             'Lorem ipsum dolor sit amet',
-             '',
-             (policy(Chouette::Network).create? ? link_to(t('networks.actions.new'), new_referential_network_path(@referential), class: 'btn btn-default') : '')
+- if policy(Chouette::Network).create?
+  - content_for :page_header_actions do
+      = link_to(t('networks.actions.new'), new_referential_network_path(@referential), class: 'btn btn-default')
 
-/PageContent
 .page_content
   .container-fluid
     - if params[:q].present? or @networks.any?
@@ -26,8 +22,8 @@
           = table_builder_2 @networks,
             [ \
               TableBuilderHelper::Column.new( \
-                name: 'ID Codifligne', \
-                attribute: Proc.new { |n| n.try(:objectid).try(:local_id) }, \
+                name: t('id_codif'), \
+                attribute: Proc.new { |n| n.get_objectid.try(:short_id) }, \
                 sortable: false \
               ),
               TableBuilderHelper::Column.new( \

@@ -18,9 +18,9 @@ fr:
     new:
       title: "Ajouter une ligne"
     edit:
-      title: "Editer la ligne %{line}"
+      title: "Editer la ligne %{name}"
     show:
-      title: "Ligne %{line}"
+      title: "Ligne %{name}"
       routes:
         title: "Liste des Itinéraires"
       itineraries: "Liste des séquences d'arrêts de la ligne"
@@ -63,10 +63,10 @@ fr:
     attributes:
       line:
         id: "ID"
-        network: "Réseau"
+        network_id: "Réseau"
         networks:
           name: "Réseau"
-        company: "Transporteur principal"
+        company_id: "Transporteur principal"
         companies:
           name: "Transporteur principal"
         registration_number: "Nom court"

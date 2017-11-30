@@ -1,4 +1,4 @@
-class StopAreasController < InheritedResources::Base
+class StopAreasController < ChouetteController
   include ApplicationHelper
 
   defaults :resource_class => Chouette::StopArea
@@ -64,22 +64,22 @@ class StopAreasController < InheritedResources::Base
 
   def new
     authorize resource_class
-    @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
-    @map.editable = true
+    # @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
+    # @map.editable = true
     new!
   end
 
   def create
     authorize resource_class
-    @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
-    @map.editable = true
+    # @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
+    # @map.editable = true
 
     create!
   end
 
   def show
-    map.editable = false
-    @access_points = @stop_area.access_points
+    # map.editable = false
+    # @access_points = @stop_area.access_points
     show! do |format|
       unless stop_area.position or params[:default] or params[:routing]
         format.kml {
@@ -171,7 +171,7 @@ class StopAreasController < InheritedResources::Base
   helper_method :current_referential
 
   def stop_area_params
-    params.require(:stop_area).permit( :routing_stop_ids, :routing_line_ids, :children_ids, :stop_area_type, :parent_id, :objectid, :object_version, :creator_id, :name, :comment, :area_type, :registration_number, :nearest_topic_name, :fare_code, :longitude, :latitude, :long_lat_type, :country_code, :street_name, :zip_code, :city_name, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :coordinates, :url, :time_zone )
+    params.require(:stop_area).permit( :routing_stop_ids, :routing_line_ids, :children_ids, :stop_area_type, :parent_id, :objectid, :object_version, :name, :comment, :area_type, :registration_number, :nearest_topic_name, :fare_code, :longitude, :latitude, :long_lat_type, :country_code, :street_name, :zip_code, :city_name, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :coordinates, :url, :time_zone )
   end
 
 end

@@ -1,4 +1,5 @@
 class CleanUpsController < ChouetteController
+  include ReferentialSupport
   respond_to :html, :only => [:create]
   belongs_to :referential
 

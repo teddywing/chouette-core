@@ -1,9 +1,6 @@
 - breadcrumb :stop_area, @stop_area_referential, @stop_area
-/ PageHeader
-= pageheader 'arret',
-             @stop_area.name,
-             'Lorem ipsum dolor sit amet'
-
+- page_header_content_for @stop_area
+- content_for :page_header_content do
   .row
     .col-lg-12.text-right.mb-sm
       - @stop_area.action_links.each do |link|
@@ -19,9 +16,9 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { @stop_area.human_attribute_name(:stop_area_type) => t("area_types.label.#{@stop_area.stop_area_type}"),
+          { t('id_reflex') => @stop_area.get_objectid.short_id,
+            @stop_area.human_attribute_name(:stop_area_type) => t("area_types.label.#{@stop_area.stop_area_type}"),
             @stop_area.human_attribute_name(:registration_number) => @stop_area.registration_number,
-            t('id_reflex') => @stop_area.user_objectid,
             'Coordonnées' => geo_data(@stop_area, @stop_area_referential),
             @stop_area.human_attribute_name(:zip_code) => @stop_area.zip_code,
             @stop_area.human_attribute_name(:city_name) => @stop_area.city_name,

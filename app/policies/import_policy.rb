@@ -6,14 +6,10 @@ class ImportPolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && user.has_permission?('imports.create')
-  end
-
-  def destroy?
-    !archived? && user.has_permission?('imports.destroy')
+    user.has_permission?('imports.create')
   end
 
   def update?
-    !archived? && user.has_permission?('imports.update')
+    user.has_permission?('imports.update')
   end
 end

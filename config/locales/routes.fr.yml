@@ -16,7 +16,7 @@ fr:
     new:
       title: "Ajouter un itinéraire"
     edit:
-      title: "Editer l'itinéraire %{route}"
+      title: "Editer l'itinéraire %{name}"
       select2:
         placeholder: "Sélectionnez un arrêt existant..."
       map:
@@ -37,7 +37,7 @@ fr:
           normal: Descente autorisée
           forbidden: Descente interdite
     show:
-      title: "Itinéraire %{route} de la ligne %{line}"
+      title: "Itinéraire %{name}"
       stop_points: "Liste des arrêts de l'itinéraire"
       stop_areas:
         title: "Liste des arrêts"
@@ -45,7 +45,7 @@ fr:
       no_opposite_route: "Aucun itinéraire associé"
       undefined: "Non défini"
     index:
-      title: "Itinéraire %{route}"
+      title: "Itinéraire"
       selection: "Sélection"
       selection_all: "Tous"
     edit_boarding_alighting:

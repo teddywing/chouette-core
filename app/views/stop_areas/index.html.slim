@@ -1,18 +1,14 @@
 - breadcrumb :stop_areas, @stop_area_referential
-/ PageHeader
-= pageheader 'arret',
-             t('stop_areas.index.title'),
-             '',
-             '',
-             (policy(Chouette::StopArea).create? ? link_to(t('stop_areas.actions.new'), new_stop_area_referential_stop_area_path(@stop_area_referential), class: 'btn btn-primary') : '')
+- content_for :page_header_actions do
+  - if policy(Chouette::StopArea).create?
+    = link_to(t('stop_areas.actions.new'), new_stop_area_referential_stop_area_path(@stop_area_referential), class: 'btn btn-primary')
 
-/ PageContent
 .page_content
   .container-fluid
     - if params[:q].present? or @stop_areas.any?
       .row
         .col-lg-12
-            = render 'filters'
+          = render 'filters'
 
     - if @stop_areas.any?
       .row
@@ -20,8 +16,8 @@
           = table_builder_2 @stop_areas,
             [ \
               TableBuilderHelper::Column.new( \
-                name: 'ID Reflex', \
-                attribute: Proc.new { |n| n.try(:user_objectid) }, \
+                name: t('id_reflex'), \
+                attribute: Proc.new { |n| n.get_objectid.try(:short_id) }, \
                 sortable: false \
               ), \
               TableBuilderHelper::Column.new( \

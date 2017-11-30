@@ -214,7 +214,7 @@ describe TableBuilderHelper, type: :helper do
     </thead>
     <tbody>
         <tr>
-            <td>#{company.objectid.local_id}</td>
+            <td>#{company.get_objectid.local_id}</td>
             <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
             <td></td>
             <td></td>
@@ -237,7 +237,7 @@ describe TableBuilderHelper, type: :helper do
         [
           TableBuilderHelper::Column.new(
             name: 'ID Codif',
-            attribute: Proc.new { |n| n.try(:objectid).try(:local_id) },
+            attribute: Proc.new { |n| n.try(:get_objectid).try(:local_id) },
             sortable: false
           ),
           TableBuilderHelper::Column.new(
@@ -327,7 +327,7 @@ describe TableBuilderHelper, type: :helper do
     </thead>
     <tbody>
         <tr>
-            <td>#{company.objectid.local_id}</td>
+            <td>#{company.get_objectid.local_id}</td>
             <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
             <td></td>
             <td></td>
@@ -350,7 +350,7 @@ describe TableBuilderHelper, type: :helper do
         [
           TableBuilderHelper::Column.new(
             name: 'ID Codif',
-            attribute: Proc.new { |n| n.try(:objectid).try(:local_id) }
+            attribute: Proc.new { |n| n.try(:get_objectid).try(:local_id) }
           ),
           TableBuilderHelper::Column.new(
             key: :name,

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Chouette::Company, :type => :model do
   subject { create(:company) }
   it { should validate_presence_of :name }
+  it { is_expected.to be_versioned }
 
   describe "#nullables empty" do
     it "should set null empty nullable attributes" do

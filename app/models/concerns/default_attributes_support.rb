@@ -47,7 +47,6 @@ module DefaultAttributesSupport
     else
       self.object_version += 1
     end
-    self.creator_id = 'chouette'
   end
 
   def reset_auto_columns

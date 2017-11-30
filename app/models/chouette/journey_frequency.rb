@@ -1,5 +1,4 @@
 module Chouette
-
   class JourneyFrequencyValidator < ActiveModel::Validator
     def validate(record)
       timeband = record.timeband
@@ -31,6 +30,6 @@ module Chouette
     validates :first_departure_time, presence: true
     validates :last_departure_time,  presence: true
     validates :scheduled_headway_interval, presence: true
-    validates_with JourneyFrequencyValidator
+    validates_with Chouette::JourneyFrequencyValidator
   end
 end

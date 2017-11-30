@@ -40,6 +40,8 @@ coverage
 /public/packs
 /public/packs-test
 
+/bin
+
 # Every machine shall create its binstubs
 /bin/rake
 /bin/rails
