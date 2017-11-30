@@ -64,9 +64,10 @@ ChouetteIhm::Application.routes.draw do
       resources :stop_areas, only: [:index, :show]
       resources :time_tables, only: [:index, :show]
       resources :vehicle_journeys, only: :show
-      patch 'compliance_check_sets/:id',
-        to: 'compliance_check_sets#validated',
-        as: 'compliance_check_set'
+      namespace :internals do
+        get 'compliance_check_sets/:id/notify_parent', to: 'compliance_check_sets#notify_parent', as: 'compliance_check_set'
+        get 'netex_imports/:id/notify_parent', to: 'netex_imports#notify_parent', as: 'netex_imports'
+      end
     end
   end
 
