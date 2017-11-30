@@ -5,7 +5,6 @@ RSpec.describe ComplianceCheckSet, type: :model do
     expect(FactoryGirl.build(:compliance_check_set)).to be_valid
   end
 
-
   it { should belong_to :referential }
   it { should belong_to :workbench }
   it { should belong_to :compliance_control_set }
@@ -89,6 +88,15 @@ RSpec.describe ComplianceCheckSet, type: :model do
       check_set = create(:compliance_check_set)
 
       expect(check_set.update_status).to be true
+    end
+  end
+
+  describe 'possibility to delete the associated compliance_control_set' do
+    let!(:compliance_check_set) { create :compliance_check_set }
+
+    it do
+      expect{ compliance_check_set.compliance_control_set.delete }
+        .to change{ ComplianceControlSet.count }.by(-1)
     end
   end
 end
