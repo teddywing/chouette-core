@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130172926) do
+ActiveRecord::Schema.define(version: 20171130180144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -950,9 +950,9 @@ ActiveRecord::Schema.define(version: 20171130172926) do
   add_index "vehicle_journeys", ["route_id"], name: "index_vehicle_journeys_on_route_id", using: :btree
 
   create_table "versions", id: :bigserial, force: :cascade do |t|
-    t.string   "item_type",  null: false
-    t.integer  "item_id",    null: false
-    t.string   "event",      null: false
+    t.string   "item_type",            null: false
+    t.integer  "item_id",    limit: 8, null: false
+    t.string   "event",                null: false
     t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
