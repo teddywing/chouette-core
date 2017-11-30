@@ -1,8 +1,6 @@
 - breadcrumb :compliance_check_set, @workbench, @compliance_check_set
-/ PageHeader
-= pageheader 'jeux-de-donnees',
-              t('compliance_check_sets.executed.title', name: @compliance_check_set.name)
-/ PageContent
+- page_header_content_for @compliance_check_set
+
 .page_content
   .container-fluid
     .row
@@ -47,7 +45,7 @@
                 sortable: true,
                 cls: 'table has-filter has-search',
                 model: ComplianceCheck
-                
+
     - @blocks_to_compliance_checks_map.each do |block, compliance_checks|
 
       - if compliance_checks.try(:any?)

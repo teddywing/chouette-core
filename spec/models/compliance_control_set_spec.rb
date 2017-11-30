@@ -10,4 +10,5 @@ RSpec.describe ComplianceControlSet, type: :model do
   it { should have_many(:compliance_control_blocks).dependent(:destroy) }
 
   it { should validate_presence_of :name }
+  it { is_expected.to be_versioned }
 end

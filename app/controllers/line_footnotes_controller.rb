@@ -1,4 +1,5 @@
 class LineFootnotesController < ChouetteController
+  include ReferentialSupport
   defaults resource_class: Chouette::Line, collection_name: 'lines', instance_name: 'line'
   belongs_to :referential
 

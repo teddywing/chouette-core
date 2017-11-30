@@ -1,4 +1,4 @@
-class StopAreaReferentialsController < InheritedResources::Base
+class StopAreaReferentialsController < ChouetteController
 
   defaults :resource_class => StopAreaReferential
   def sync

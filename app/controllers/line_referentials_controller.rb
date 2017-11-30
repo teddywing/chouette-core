@@ -1,4 +1,4 @@
-class LineReferentialsController < InheritedResources::Base
+class LineReferentialsController < ChouetteController
 
   defaults :resource_class => LineReferential
 

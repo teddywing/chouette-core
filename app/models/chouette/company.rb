@@ -3,6 +3,7 @@ module Chouette
     include CompanyRestrictions
     include LineReferentialSupport
     include ObjectidSupport
+    has_paper_trail
 
     has_many :lines
 

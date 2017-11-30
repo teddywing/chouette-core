@@ -1,21 +1,15 @@
 - breadcrumb :referential_line, @referential, @line
-/ PageHeader
-= pageheader 'ligne',
-            t('lines.index.line', line: @line.name),
-             '',
-             t('last_update', time: l(@line.updated_at, format: :short)) do
+- content_for :page_header_content do
+.row
+  .col-lg-12.text-right.mb-sm
+    - @line.action_links.each do |link|
+      = link_to link.href,
+          method: link.method,
+          data: link.data,
+          class: 'btn btn-primary' do
+            = link.content
+- page_header_content_for @line
 
-  / Below is secundary actions & optional contents
-  .row
-    .col-lg-12.text-right.mb-sm
-      - @line.action_links.each do |link|
-        = link_to link.href,
-            method: link.method,
-            data: link.data,
-            class: 'btn btn-primary' do
-              = link.content
-
-/ PageContent
 .page_content
   .container-fluid
     .row

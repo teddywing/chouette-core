@@ -1,11 +1,6 @@
 - breadcrumb :route, @referential, @route
-/ PageHeader
-= pageheader 'itineraire',
-             @route.name,
-             'Lorem ipsum dolor sit amet',
-             t('last_update', time: l(@route.updated_at, format: :short))
+- page_header_content_for @route
 
-/ PageContent
 .page_content
   .container-fluid
     .row

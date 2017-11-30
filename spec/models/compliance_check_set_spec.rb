@@ -12,6 +12,7 @@ RSpec.describe ComplianceCheckSet, type: :model do
 
   it { should have_many :compliance_checks }
   it { should have_many :compliance_check_blocks }
+  it { is_expected.to be_versioned }
 
   describe "#update_status" do
     it "updates :status to successful when all resources are OK" do
@@ -87,6 +88,15 @@ RSpec.describe ComplianceCheckSet, type: :model do
       check_set = create(:compliance_check_set)
 
       expect(check_set.update_status).to be true
+    end
+  end
+
+  describe 'possibility to delete the associated compliance_control_set' do
+    let!(:compliance_check_set) { create :compliance_check_set }
+
+    it do
+      expect{ compliance_check_set.compliance_control_set.delete }
+        .to change{ ComplianceControlSet.count }.by(-1)
     end
   end
 end

@@ -1,4 +1,5 @@
 class JourneyPatternsCollectionsController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Chouette::JourneyPattern
   before_action :user_permissions, only: :show
 

@@ -1,4 +1,4 @@
-class ImportsController < InheritedResources::Base
+class ImportsController < ChouetteController
   include PolicyChecker
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("started_at", DateTime) }

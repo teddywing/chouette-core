@@ -1,12 +1,3 @@
-/ PageHeader
-- if @referential.created_from.present?
-  = pageheader 'jeux-de-donnees',
-               t('.duplicated.title')
-- else
-  = pageheader 'jeux-de-donnees',
-               t('.title')
-
-/ PageContent
 .page_content
   .container-fluid
     .row

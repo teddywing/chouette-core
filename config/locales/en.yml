@@ -48,6 +48,8 @@ en:
     format: "%{message}"
 
   last_update: 'Last update on<br>%{time}'
+  whodunnit: 'By %{author}'
+  default_whodunnit: 'web service'
   last_sync: 'Last sync on %{time}'
   validity_range: '%{debut} > %{end}'
   bounding_dates: '%{debut} > %{end}'

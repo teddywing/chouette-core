@@ -1,4 +1,5 @@
 class VehicleJourneyImportsController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => VehicleJourneyImport
 
   belongs_to :referential do

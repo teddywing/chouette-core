@@ -1,11 +1,6 @@
 - breadcrumb :time_table, @referential, @time_table
-/ PageHeader
-= pageheader 'calendrier-application',
-             @time_table.comment,
-             '',
-             ''
+- page_header_content_for @time_table
 
-/ PageContent
 .page_content
   .container-fluid
     #periods
