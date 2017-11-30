@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(version: 20171128112629) do
     t.string   "name"
     t.datetime "started_at"
     t.datetime "ended_at"
+    t.datetime "notified_parent_at"
   end
 
   add_index "compliance_check_sets", ["compliance_control_set_id"], name: "index_compliance_check_sets_on_compliance_control_set_id", using: :btree
