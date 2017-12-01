@@ -1,4 +1,6 @@
 - breadcrumb :vehicle_journeys, @referential, @route
+- content_for :page_header_title, t('vehicle_journeys.index.title', route: @route.name)
+
 .page_content
   .container-fluid
     .row

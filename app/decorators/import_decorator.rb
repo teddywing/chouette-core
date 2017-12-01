@@ -12,6 +12,7 @@ class ImportDecorator < Draper::Decorator
   end
 
   def action_links
+    policy = h.policy(object)
     links = []
 
     links << Link.new(
@@ -27,16 +28,17 @@ class ImportDecorator < Draper::Decorator
       href: object.file.url
     )
 
-    # if h.policy(object).destroy?
-    links << Link.new(
-      content: h.destroy_link_content,
-      href: h.workbench_import_path(
-        context[:workbench],
-        object
-      ),
-      method: :delete,
-      data: { confirm: h.t('imports.actions.destroy_confirm') }
-    )
+    if policy.destroy?
+      links << Link.new(
+        content: h.destroy_link_content,
+        href: h.workbench_import_path(
+          context[:workbench],
+          object
+        ),
+        method: :delete,
+        data: { confirm: h.t('imports.actions.destroy_confirm') }
+      )
+    end
 
     links
   end

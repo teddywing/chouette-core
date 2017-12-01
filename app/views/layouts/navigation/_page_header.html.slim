@@ -12,13 +12,11 @@ div.page_header
             h1 = t("#{resource_class.model_name.name.underscore.pluralize}.#{params[:action]}.title")
 
       div.col-lg-3.col-md-4.col-sm-5.col-xs-5.text-right
-        div.page-meta
-        - if content_for? :page_header_meta
-          div.small = yield :page_header_meta
-
         div.page-action
-        - if content_for? :page_header_actions
-          div.small = yield :page_header_actions
+          - if content_for? :page_header_meta
+            div.small = yield :page_header_meta
+          - if content_for? :page_header_actions
+            = yield :page_header_actions
 
     - if content_for? :page_header_content
       = yield :page_header_content
