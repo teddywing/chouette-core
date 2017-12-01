@@ -1,6 +1,7 @@
 class GroupOfLinesController < InheritedResources::Base
   include ApplicationHelper
   include PolicyChecker
+  include LineReferentialInOrganisationChecker
   defaults :resource_class => Chouette::GroupOfLine
   respond_to :html
   respond_to :xml

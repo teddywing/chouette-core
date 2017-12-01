@@ -1,6 +1,8 @@
 class LinesController < InheritedResources::Base
   include ApplicationHelper
   include PolicyChecker
+  include LineReferentialInOrganisationChecker
+
   defaults :resource_class => Chouette::Line
   respond_to :html
   respond_to :xml
@@ -12,11 +14,6 @@ class LinesController < InheritedResources::Base
 
 
   def index
-    if LineReferentialMembership
-      .where(line_referential_id: line_referential.id, organisation_id: current_organisation.id)
-      .empty?
-      redirect_to forbidden_path
-    end
     @hide_group_of_line = line_referential.group_of_lines.empty?
     index! do |format|
       @lines = ModelDecorator.decorate(
