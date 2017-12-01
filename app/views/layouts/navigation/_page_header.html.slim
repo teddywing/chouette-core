@@ -14,7 +14,7 @@ div.page_header
       div.col-lg-3.col-md-4.col-sm-5.col-xs-5.text-right
         div.page-action
           - if content_for? :page_header_meta
-            div.small = yield :page_header_meta
+            = yield :page_header_meta
           - if content_for? :page_header_actions
             = yield :page_header_actions
 
