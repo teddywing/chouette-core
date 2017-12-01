@@ -19,7 +19,7 @@ fr:
       title: "Mission %{journey_pattern}"
       stop_points: "Liste des arrêts de la mission"
     index:
-      title: "Missions de %{route_name}"
+      title: "Missions de %{route}"
     form:
       warning: "Attention, la sélection s'applique aussi aux %{count} courses de la mission"
   activerecord:

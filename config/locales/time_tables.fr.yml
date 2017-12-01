@@ -63,7 +63,7 @@ fr:
         begin: Début de période
         end: Fin de période
     show:
-      title: Calendrier %{time_table}
+      title: Calendrier %{name}
       dates: "Dates d'application"
       periods: "Périodes d'application"
       from: "du"

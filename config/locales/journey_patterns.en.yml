@@ -19,7 +19,7 @@ en:
       title: "Journey Pattern %{journey_pattern}"
       stop_points: "Stop point on journey pattern list"
     index:
-      title: "Journey Patterns of %{route_name}"
+      title: "Journey Patterns of %{route}"
     form:
       warning: "Be careful, selection is also applied to the %{count} vehicle journeys associated to this journey pattern"
   activerecord:
