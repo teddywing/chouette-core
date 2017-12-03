@@ -17,6 +17,7 @@ en:
     new:
       title: "Imports"
     show:
+      title: "Import %{name}"
       report: "Report"
       imported_file: "Original file"
       compliance_check: "Validation report"
