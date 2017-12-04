@@ -17,6 +17,8 @@ en:
     search_no_results: No control reports match your search
     executed:
       title: Executed control report %{name}
+    errors:
+      no_parent: "The compliance check set doesn't any parent"
   activerecord:
     attributes:
       compliance_check_set:

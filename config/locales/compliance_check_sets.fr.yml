@@ -13,6 +13,8 @@ fr:
     search_no_results: Aucun rapport de contrôle ne correspond à votre recherche
     executed:
       title: Jeu de contrôles exécutés %{name}
+    errors:
+      no_parent: "Le jeux de contrôle n'a pas de parent"
   activerecord:
     attributes:
       compliance_check_set:
