@@ -47,7 +47,7 @@ fr:
   errors:
     format: "%{message}"
 
-  last_update: 'Dernière mise à jour<br>le %{time}'
+  last_update: 'Dernière mise à jour le %{time}'
   whodunnit: 'Par %{author}'
   default_whodunnit: 'web service'
   last_sync: 'Dernière mise à jour le %{time}'

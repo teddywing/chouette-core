@@ -1,5 +1,7 @@
 en:
   workbenches:
+    show:
+      title: "%{name}"
     index:
       title: "%{organisation} dashboard"
       offers:

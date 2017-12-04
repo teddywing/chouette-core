@@ -12,8 +12,4 @@ module ImportResourcesHelper
       content_tag :span, '', class: "fa fa-circle text-#{cls}"
   end
 
-  def import_resoruce_metrics(metrics)
-    metrics.delete_if {|k,v| !k.include?("count")}.deep_symbolize_keys
-  end
-
 end

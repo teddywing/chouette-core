@@ -2,6 +2,8 @@
 - breadcrumb :time_table, @referential, @time_table
 - page_header_content_for @time_table
 
+- content_for :page_header_title, t('time_tables.show.title', name: @time_table.comment), flush: true
+
 - content_for :page_header_actions do
   - if policy(@time_table).edit?
     = link_to(t('actions.edit'), edit_referential_time_table_path(@referential, @time_table), class: 'btn btn-default')

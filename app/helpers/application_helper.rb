@@ -18,7 +18,7 @@ module ApplicationHelper
     info = t('last_update', time: l(object.updated_at, format: :short))
     if object.try(:versions)
       author = object.versions.try(:last).try(:whodunnit) || t('default_whodunnit')
-      info   = "#{info} #{t('whodunnit', author: author)}"
+      info   = "#{info} <br/> #{t('whodunnit', author: author)}"
     end
     content_tag :div, info.html_safe, class: 'small'
   end
