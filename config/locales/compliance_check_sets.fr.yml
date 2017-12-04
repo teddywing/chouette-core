@@ -18,6 +18,8 @@ fr:
       table_state: "%{lines_status} lignes importées sur %{lines_in_compliance_check_set} présentes dans l'archive"
       table_explanation: Ces contrôles s’appliquent pour toutes les données importées et conditionnent la construction de l’offre de votre organisation
       metrics: "%{ok_count} ok, %{error_count} errors, %{warning_count} warnings, %{uncheck_count} n/a"
+    errors:
+      no_parent: "Le jeux de contrôle n'a pas de parent"
   activerecord:
     attributes:
       compliance_check_set:

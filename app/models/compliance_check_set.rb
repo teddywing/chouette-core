@@ -23,6 +23,8 @@ class ComplianceCheckSet < ActiveRecord::Base
     if parent
       parent.child_change
       update(notified_parent_at: DateTime.now)
+    else
+      errors.add(:base, I18n.t('compliance_check_sets.errors.no_parent'))
     end
   end
 
