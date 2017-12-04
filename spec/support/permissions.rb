@@ -26,6 +26,7 @@ module Support
         group_of_lines
         lines
         networks
+        stop_areas
       ] + _permitted_resources
     end
     def _permitted_resources
