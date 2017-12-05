@@ -131,7 +131,7 @@ class Referential < ActiveRecord::Base
 
   def define_default_attributes
     self.time_zone ||= Time.zone.name
-    self.objectid_format ||= workbench.try(:objectid_format) || ObjectidFormatterSupport.legal_formats.first
+    self.objectid_format ||= workbench.objectid_format if workbench
   end
 
   def switch

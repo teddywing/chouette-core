@@ -1,6 +1,6 @@
 RSpec.describe Referential do
 
-  let( :legal_formats ){ ObjectidFormatterSupport.legal_formats }
+  let( :legal_formats ){ described_class.objectid_format.values }
 
 
   describe 'default attributes' do
@@ -15,9 +15,9 @@ RSpec.describe Referential do
         expect( referential.objectid_format ).to eq(workbench.objectid_format)
       end
 
-      xit 'and w/o a workbench will take the default objectid_format' do
+      it 'and w/o a workbench will take the default objectid_format' do
         referential.define_default_attributes
-        expect( referential.objectid_format ).to eq(some_value_to_be_defined)
+        expect( referential.objectid_format ).to be_nil
       end
     end
 
