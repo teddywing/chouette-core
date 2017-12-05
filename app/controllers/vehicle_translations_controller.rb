@@ -1,4 +1,5 @@
 class VehicleTranslationsController < ChouetteController
+  include ReferentialSupport
   respond_to :js, :only => [:new, :create]
 
   belongs_to :referential do

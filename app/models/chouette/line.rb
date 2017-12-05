@@ -1,10 +1,11 @@
 module Chouette
   class Line < Chouette::ActiveRecord
+    has_paper_trail
     include LineRestrictions
     include LineReferentialSupport
     include ObjectidSupport
-    extend StifTransportModeEnumerations
-    extend StifTransportSubmodeEnumerations
+    include StifTransportModeEnumerations
+    include StifTransportSubmodeEnumerations
     extend ActiveModel::Naming
 
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358

@@ -8,7 +8,7 @@ kml xmlns="http://www.opengis.net/kml/2.2"
       placemark id="#{access_link.objectid}"
         name = h(access_link.name)
         extendeddata
-          - [ :access_link_type, :objectid, :object_version, :created_at, :updated_at, :creator_id, :name, :comment, :link_distance, :link_type, :default_duration, :frequent_traveller_duration, :occasional_traveller_duration, :mobility_restricted_traveller_duration, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :link_orientation].each do |prop|
+          - [ :access_link_type, :objectid, :object_version, :created_at, :updated_at, :name, :comment, :link_distance, :link_type, :default_duration, :frequent_traveller_duration, :occasional_traveller_duration, :mobility_restricted_traveller_duration, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :link_orientation].each do |prop|
             data name="#{prop.to_s}"
               value = h(access_link.send( prop))
 

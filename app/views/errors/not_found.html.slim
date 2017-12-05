@@ -1,7 +1,4 @@
-/ PageHeader
-= pageheader 'bug',
-             'Erreur 404',
-             ''
+- content_for :page_header_title, 'Erreur 404'
 
 .page_content
   .container-fluid
@@ -11,11 +8,11 @@
           - if I18n.locale == :fr
             p
               strong = "Désolé, la page demandée n'existe pas."
-            
+
             p = "Vous pouvez néanmoins continuer à utiliser l'application IBOO."
-              
+
           - else
             p
               strong = "The page you were looking for doesn't exist."
-            
+
             p = "You can still continue the use the IBOO application. Thank you for understanding."

@@ -1,4 +1,5 @@
 class ReferentialNetworksController < ChouetteController
+  include ReferentialSupport
   defaults :resource_class => Chouette::Network, :collection_name => 'networks', :instance_name => 'network'
   respond_to :html
   respond_to :xml
@@ -64,7 +65,7 @@ class ReferentialNetworksController < ChouetteController
   end
 
   def network_params
-    params.require(:network).permit(:objectid, :object_version, :creator_id, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )
+    params.require(:network).permit(:objectid, :object_version, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )
   end
 
   private

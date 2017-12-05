@@ -1,12 +1,10 @@
 - breadcrumb @referential
-/ PageHeader
-= pageheader 'jeux-de-donnees',
-             @referential.name,
-             'Lorem ipsum dolor sit amet',
-             t('last_update', time: l(@referential.updated_at, format: :short)),
-             ((@referential.archived? || !policy(@referential).edit?) ? '' : link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default')) do
+- page_header_content_for @referential
+- content_for :page_header_actions do
+  - unless (@referential.archived? || !policy(@referential).edit?)
+    = link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default')
 
-  / Below is secondary actions & optional contents (filters, ...)
+- content_for :page_header_content do
   .row.mb-sm
     .col-lg-12.text-right
       - @referential.action_links.each do |link|
@@ -19,7 +17,6 @@
               class: 'btn btn-primary' do
                 = link.content
 
-/ PageContent
 .page_content
   .container-fluid
     .row

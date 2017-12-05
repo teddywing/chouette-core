@@ -1,4 +1,4 @@
-class ImportsController < InheritedResources::Base
+class ImportsController < ChouetteController
   include PolicyChecker
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("started_at", DateTime) }
@@ -77,10 +77,10 @@ class ImportsController < InheritedResources::Base
   end
 
   def sort_column
-    parent.imports.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+    parent.imports.column_names.include?(params[:sort]) ? params[:sort] : 'created_at'
   end
   def sort_direction
-    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'desc'
   end
 
   def decorate_imports(imports)

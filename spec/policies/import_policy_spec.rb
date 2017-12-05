@@ -9,10 +9,10 @@ RSpec.describe ImportPolicy, type: :policy do
 
   context 'Non Destructive actions →' do
     permissions :index? do
-      it_behaves_like 'always allowed', 'anything', archived: true
+      it_behaves_like 'always allowed', 'anything'
     end
     permissions :show? do
-      it_behaves_like 'always allowed', 'anything', archived: true
+      it_behaves_like 'always allowed', 'anything'
     end
   end
 
@@ -23,19 +23,19 @@ RSpec.describe ImportPolicy, type: :policy do
 
   context 'Destructive actions →' do
     permissions :create? do
-      it_behaves_like 'permitted policy', 'imports.create', archived: true
+      it_behaves_like 'permitted policy', 'imports.create'
     end
     permissions :destroy? do
-      it_behaves_like 'permitted policy', 'imports.destroy', archived: true
+      it_behaves_like 'always forbidden', 'imports.destroy'
     end
     permissions :edit? do
-      it_behaves_like 'permitted policy', 'imports.update', archived: true
+      it_behaves_like 'permitted policy', 'imports.update'
     end
     permissions :new? do
-      it_behaves_like 'permitted policy', 'imports.create', archived: true
+      it_behaves_like 'permitted policy', 'imports.create'
     end
     permissions :update? do
-      it_behaves_like 'permitted policy', 'imports.update', archived: true
+      it_behaves_like 'permitted policy', 'imports.update'
     end
   end
 end

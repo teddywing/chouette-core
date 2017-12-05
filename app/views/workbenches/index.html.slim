@@ -1,8 +1,5 @@
-/ PageHeader
-= pageheader 'tableau-de-bord',
-             t('.title', organisation: current_organisation.name)
 
-  / Below is secundary actions & optional contents (filters, ...)
+- content_for :page_header_content do
   .row.mb-sm
    .col-lg-12.text-right
      - if policy(Api::V1::ApiKey).create?

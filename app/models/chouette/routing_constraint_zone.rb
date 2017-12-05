@@ -1,5 +1,6 @@
 module Chouette
   class RoutingConstraintZone < Chouette::TridentActiveRecord
+    has_paper_trail
     include ChecksumSupport
     include ObjectidSupport
 

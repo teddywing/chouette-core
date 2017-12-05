@@ -18,9 +18,9 @@ en:
     new:
       title: "Add a new line"
     edit:
-      title: "Update line %{line}"
+      title: "Update line %{name}"
     show:
-      title: "Line %{line}"
+      title: "Line %{name}"
       routes:
         title: "Routes list"
       group_of_lines: "Groups of lines"
@@ -62,10 +62,10 @@ en:
     attributes:
       line:
         id: "ID"
-        network: "Network"
+        network_id: "Network"
         networks:
           name: "Network"
-        company: "Company"
+        company_id: "Company"
         companies:
           name: "Company"
         registration_number: "Registration number"

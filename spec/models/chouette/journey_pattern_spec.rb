@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Chouette::JourneyPattern, :type => :model do
+  it { is_expected.to be_versioned }
+
   describe 'checksum' do
     it_behaves_like 'checksum support', :journey_pattern
   end

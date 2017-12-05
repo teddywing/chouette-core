@@ -1,7 +1,4 @@
-/ PageHeader
-= pageheader 'bug',
-             'Erreur serveur',
-             ''
+- content_for :page_header_title, 'Erreur serveur'
 
 .page_content
   .container-fluid
@@ -11,11 +8,11 @@
           - if I18n.locale == :fr
             p
               strong = "Désolé, une erreur est survenue."
-            
+
             p = "Vous pouvez néanmoins continuer à utiliser l'application IBOO."
-              
+
           - else
             p
               strong = "We're sorry, but something went wrong."
-            
+
             p = "You can still continue the use the IBOO application. Thank you for understanding."

@@ -1,18 +1,14 @@
 - breadcrumb :stop_areas, @stop_area_referential
-/ PageHeader
-= pageheader 'arret',
-             t('stop_areas.index.title'),
-             '',
-             '',
-             (policy(Chouette::StopArea).create? ? link_to(t('stop_areas.actions.new'), new_stop_area_referential_stop_area_path(@stop_area_referential), class: 'btn btn-primary') : '')
+- content_for :page_header_actions do
+  - if policy(Chouette::StopArea).create?
+    = link_to(t('stop_areas.actions.new'), new_stop_area_referential_stop_area_path(@stop_area_referential), class: 'btn btn-primary')
 
-/ PageContent
 .page_content
   .container-fluid
     - if params[:q].present? or @stop_areas.any?
       .row
         .col-lg-12
-            = render 'filters'
+          = render 'filters'
 
     - if @stop_areas.any?
       .row

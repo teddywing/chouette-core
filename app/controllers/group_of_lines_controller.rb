@@ -1,4 +1,4 @@
-class GroupOfLinesController < InheritedResources::Base
+class GroupOfLinesController < ChouetteController
   include ApplicationHelper
   include PolicyChecker
   defaults :resource_class => Chouette::GroupOfLine
@@ -73,7 +73,7 @@ class GroupOfLinesController < InheritedResources::Base
   private
 
   def group_of_line_params
-    params.require(:group_of_line).permit( :objectid, :object_version, :creator_id, :name, :comment, :lines, :registration_number, :line_tokens)
+    params.require(:group_of_line).permit( :objectid, :object_version, :name, :comment, :lines, :registration_number, :line_tokens)
   end
 
 end

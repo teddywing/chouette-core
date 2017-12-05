@@ -1,4 +1,4 @@
-class ReferentialsController < InheritedResources::Base
+class ReferentialsController < ChouetteController
   defaults :resource_class => Referential
   include PolicyChecker
 

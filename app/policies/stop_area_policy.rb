@@ -4,4 +4,16 @@ class StopAreaPolicy < ApplicationPolicy
       scope
     end
   end
+
+  def create?
+    user.has_permission?('stop_areas.create')
+  end
+
+  def destroy?
+    user.has_permission?('stop_areas.destroy')
+  end
+
+  def update?
+    user.has_permission?('stop_areas.update')
+  end
 end

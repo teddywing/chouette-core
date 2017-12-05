@@ -1,4 +1,5 @@
 class TimeTablesController < ChouetteController
+  include ReferentialSupport
   include TimeTablesHelper
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("bounding_dates", Date) }
@@ -179,7 +180,6 @@ class TimeTablesController < ChouetteController
     params.require(:time_table).permit(
       :objectid,
       :object_version,
-      :creator_id,
       :calendar_id,
       :version, :comment, :color,
       :int_day_types,

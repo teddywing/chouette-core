@@ -127,10 +127,11 @@ class Referential < ActiveRecord::Base
     Chouette::RoutingConstraintZone.all
   end
 
-  after_initialize :define_default_attributes
+  before_validation :define_default_attributes
 
   def define_default_attributes
     self.time_zone ||= Time.zone.name
+    self.objectid_format ||= workbench.objectid_format if workbench
   end
 
   def switch
@@ -149,6 +150,7 @@ class Referential < ActiveRecord::Base
       line_referential: from.line_referential,
       stop_area_referential: from.stop_area_referential,
       created_from: from,
+      objectid_format: from.objectid_format,
       metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, functional_scope) }
     )
   end

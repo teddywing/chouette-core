@@ -1,11 +1,5 @@
 - breadcrumb :line, @line
-/ PageHeader
-= pageheader 'ligne',
-             @line.name,
-             'Lorem ipsum dolor sit amet',
-             t('last_update', time: l(@line.updated_at, format: :short)) do
-
-  / Below is secundary actions & optional contents
+- content_for :page_header_content do
   .row
     .col-lg-12.text-right.mb-sm
       - @line.action_links.each do |link|
@@ -15,7 +9,8 @@
             class: 'btn btn-primary' do
               = link.content
 
-/ PageContent
+- page_header_content_for @line
+
 .page_content
   .container-fluid
     .row
@@ -23,8 +18,8 @@
         = definition_list t('metadatas'),
           {  'ID Codif' => @line.get_objectid.short_id,
              'Activé' => (@line.deactivated? ? t('false') : t('true')),
-             @line.human_attribute_name(:network) => (@line.network.nil? ? t('lines.index.unset') : @line.network.name),
-             @line.human_attribute_name(:company) => (@line.company.nil? ? t('lines.index.unset') : @line.company.name),
+             @line.human_attribute_name(:network_id) => (@line.network.nil? ? t('lines.index.unset') : @line.network.name),
+             @line.human_attribute_name(:company_id) => (@line.company.nil? ? t('lines.index.unset') : @line.company.name),
              'Transporteur(s) secondaire(s)' => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.collect(&:name).join(', ')),
              'Nom court' => @line.number,
              'Code public' => (@line.registration_number ? @line.registration_number : '-'),

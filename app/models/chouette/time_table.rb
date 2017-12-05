@@ -1,11 +1,11 @@
 module Chouette
   class TimeTable < Chouette::TridentActiveRecord
+    has_paper_trail
     include ChecksumSupport
     include TimeTableRestrictions
     include ObjectidSupport
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
-
     acts_as_taggable
 
     attr_accessor :monday,:tuesday,:wednesday,:thursday,:friday,:saturday,:sunday

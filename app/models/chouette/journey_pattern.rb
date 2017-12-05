@@ -1,5 +1,6 @@
 module Chouette
   class JourneyPattern < Chouette::TridentActiveRecord
+    has_paper_trail
     include ChecksumSupport
     include JourneyPatternRestrictions
     include ObjectidSupport

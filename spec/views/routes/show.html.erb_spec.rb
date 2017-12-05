@@ -22,20 +22,4 @@ RSpec.describe "/routes/show", type: :view do
       referential
     ))
   end
-
-  it "should render h1 with the route name" do
-    render
-    expect(rendered).to have_selector("h1", :text => Regexp.new(route.name))
-  end
-
-  it "should render a link to edit the route" do
-    render
-    expect(rendered).to have_selector("a[href='#{view.edit_referential_line_route_path(referential, line, route)}']")
-  end
-
-  it "should render a link to remove the route" do
-    render
-    expect(rendered).to have_selector("a[href='#{view.referential_line_route_path(referential, line, route)}']")
-  end
-
 end

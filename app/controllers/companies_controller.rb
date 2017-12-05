@@ -1,4 +1,4 @@
-class CompaniesController < InheritedResources::Base
+class CompaniesController < ChouetteController
   include ApplicationHelper
   include PolicyChecker
   defaults :resource_class => Chouette::Company
@@ -62,7 +62,7 @@ class CompaniesController < InheritedResources::Base
   helper_method :current_referential
 
   def company_params
-    params.require(:company).permit( :objectid, :object_version, :creator_id, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
+    params.require(:company).permit( :objectid, :object_version, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
   end
 
   private

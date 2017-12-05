@@ -9,9 +9,9 @@ fr:
     new:
       title: "Ajouter un transporteur"
     edit:
-      title: "Editer le transporteur %{company}"
+      title: "Editer le transporteur %{name}"
     show:
-      title: "Transporteur %{company}"
+      title: "Transporteur %{name}"
     index:
       title: "Transporteurs"
       name: "Recherche par nom..."

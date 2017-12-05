@@ -1,4 +1,4 @@
-class UsersController < InheritedResources::Base
+class UsersController < ChouetteController
 
   defaults :resource_class => User
 

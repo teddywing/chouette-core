@@ -1,4 +1,4 @@
-class ComplianceCheckSetsController < InheritedResources::Base
+class ComplianceCheckSetsController < ChouetteController
   defaults resource_class: ComplianceCheckSet
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("created_at", DateTime) }
@@ -12,18 +12,26 @@ class ComplianceCheckSetsController < InheritedResources::Base
       @q_for_form = scope.ransack(params[:q])
       format.html {
         @compliance_check_sets = ModelDecorator.decorate(
-          @q_for_form.result,
+          @q_for_form.result.order(created_at: :desc),
           with: ComplianceCheckSetDecorator
         )
       }
     end
   end
 
+  def show
+    show! do
+      @compliance_check_set = @compliance_check_set.decorate(context: {
+        compliance_check_set: @compliance_check_set
+      })
+    end
+  end
+
   def executed
-    show! do |format| 
+    show! do |format|
       # But now nobody is aware anymore that `format.html` passes a parameter into the block
       format.html { executed_for_html }
-    end 
+    end
   end
 
 

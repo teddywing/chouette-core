@@ -1,4 +1,3 @@
-# coding: utf-8
 source 'https://rubygems.org'
 
 # Use https for github
@@ -32,6 +31,9 @@ gem 'select2-rails', '~> 4.0', '>= 4.0.3'
 gem 'spring', group: :development
 # ActiveRecord associations on top of PostgreSQL arrays
 gem 'has_array_of', af83: 'has_array_of'
+
+# Track changes to your models' data. Good for auditing or versioning.
+gem 'paper_trail'
 
 gem 'rails-observers'
 

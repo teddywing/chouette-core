@@ -1,4 +1,4 @@
-class ComplianceControlBlocksController < InheritedResources::Base
+class ComplianceControlBlocksController < ChouetteController
   include PolicyChecker
   defaults resource_class: ComplianceControlBlock
   belongs_to :compliance_control_set

@@ -1,21 +1,31 @@
 class ComplianceCheckSet < ActiveRecord::Base
   extend Enumerize
+  has_paper_trail
 
   belongs_to :referential
   belongs_to :compliance_control_set
   belongs_to :workbench
   belongs_to :parent, polymorphic: true
 
-  has_many :compliance_check_blocks
-  has_many :compliance_checks
+  has_many :compliance_check_blocks, dependent: :destroy
+  has_many :compliance_checks, dependent: :destroy
 
-  has_many :compliance_check_resources
-  has_many :compliance_check_messages
+  has_many :compliance_check_resources, dependent: :destroy
+  has_many :compliance_check_messages, dependent: :destroy
 
   enumerize :status, in: %w[new pending successful warning failed running aborted canceled]
 
   scope :where_created_at_between, ->(period_range) do
     where('created_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)
+  end
+
+  def notify_parent
+    if parent
+      # parent.child_change
+      update(notified_parent_at: DateTime.now)
+    else
+      errors.add(:base, I18n.t('compliance_check_sets.errors.no_parent'))
+    end
   end
 
   def update_status

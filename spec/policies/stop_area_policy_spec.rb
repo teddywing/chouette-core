@@ -1,3 +1,4 @@
+# coding: utf-8
 RSpec.describe StopAreaPolicy, type: :policy do
 
   let( :record ){ build_stubbed :stop_area }
@@ -24,19 +25,19 @@ RSpec.describe StopAreaPolicy, type: :policy do
 
   context 'Destructive actions →' do
     permissions :create? do
-      it_behaves_like 'always forbidden', 'stop_areas.create', archived: true
+      it_behaves_like 'permitted policy', 'stop_areas.create'
     end
     permissions :destroy? do
-      it_behaves_like 'always forbidden', 'stop_areas.destroy', archived: true
+      it_behaves_like 'permitted policy', 'stop_areas.destroy'
     end
     permissions :edit? do
-      it_behaves_like 'always forbidden', 'stop_areas.update', archived: true
+      it_behaves_like 'permitted policy', 'stop_areas.update'
     end
     permissions :new? do
-      it_behaves_like 'always forbidden', 'stop_areas.create', archived: true
+      it_behaves_like 'permitted policy', 'stop_areas.create'
     end
     permissions :update? do
-      it_behaves_like 'always forbidden', 'stop_areas.update', archived: true
+      it_behaves_like 'permitted policy', 'stop_areas.update'
     end
   end
 end

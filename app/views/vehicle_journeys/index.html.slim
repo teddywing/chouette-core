@@ -1,11 +1,6 @@
 - breadcrumb :vehicle_journeys, @referential, @route
-/ PageHeader
-= pageheader 'horaires-des-courses',
-             t('vehicle_journeys.index.title', route: @route.name ),
-             'Lorem ipsum dolor sit amet',
-             '' do
+- content_for :page_header_title, t('vehicle_journeys.index.title', route: @route.name)
 
-/ PageContent
 .page_content
   .container-fluid
     .row

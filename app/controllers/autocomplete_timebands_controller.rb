@@ -1,4 +1,4 @@
-class AutocompleteTimebandsController < InheritedResources::Base
+class AutocompleteTimebandsController < ChouetteController
   respond_to :json, :only => [:index]
 
   include ReferentialSupport
