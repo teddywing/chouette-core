@@ -12,7 +12,7 @@ class ComplianceCheckSetsController < ChouetteController
       @q_for_form = scope.ransack(params[:q])
       format.html {
         @compliance_check_sets = ModelDecorator.decorate(
-          @q_for_form.result,
+          @q_for_form.result.order(created_at: :desc),
           with: ComplianceCheckSetDecorator
         )
       }
