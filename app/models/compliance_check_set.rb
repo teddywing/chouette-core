@@ -19,6 +19,15 @@ class ComplianceCheckSet < ActiveRecord::Base
     where('created_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)
   end
 
+  def notify_parent
+    if parent
+      # parent.child_change
+      update(notified_parent_at: DateTime.now)
+    else
+      errors.add(:base, I18n.t('compliance_check_sets.errors.no_parent'))
+    end
+  end
+
   def update_status
     statuses = compliance_check_resources.map do |resource|
       case resource.status
