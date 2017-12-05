@@ -63,11 +63,11 @@ RSpec.configure do |config|
   Capybara.javascript_driver = :poltergeist
   # :meta tests can be run seperately in case of doubt about the tests themselves
   # they serve mainly as an explanataion of complicated tests (as e.g. PG information_schema introspection)
-  config.filter_run_excluding :meta => true
-  config.filter_run_excluding :truncation => true
-  config.filter_run           :wip => true
+  config.filter_run_excluding meta: true
+  config.filter_run_excluding truncation: true
+  config.filter_run           wip: true
   config.run_all_when_everything_filtered = true
-  config.include TokenInputHelper, :type => :feature
+  config.include TokenInputHelper, type: :feature
 
   # ## Mock Framework
   #
@@ -92,7 +92,7 @@ RSpec.configure do |config|
   # You can disable this behaviour by removing the line below, and instead
   # explicitly tag your specs with their type, e.g.:
   #
-  #     RSpec.describe UsersController, :type => :controller do
+  #     RSpec.describe UsersController, type: :controller do
   #       # ...
   #     end
   #
