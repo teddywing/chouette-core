@@ -1,7 +1,7 @@
 module Api
   module V1
     module Internals
-      class ComplianceCheckSetsController < ApplicationController
+      class ComplianceCheckSetsController < Api::V1::Internals::ApplicationController
         include ControlFlow
 
         def validated
@@ -20,7 +20,7 @@ module Api
         def notify_parent
           find_compliance_check_set
           check_parent
-          
+
           if  @compliance_check_set.notify_parent
             render json: {
               status: "ok",
