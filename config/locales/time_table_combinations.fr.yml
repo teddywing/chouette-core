@@ -1,5 +1,7 @@
 fr:
   time_table_combinations:
+    new:
+      title: Combiner un calendrier
     success: "opération appliquée sur le calendrier"
     failure: "opération échouée"
     combined_type:

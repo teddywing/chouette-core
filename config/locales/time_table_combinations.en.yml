@@ -1,5 +1,7 @@
 en:
   time_table_combinations:
+    new:
+      title: Combine a calendar
     success: "operation applied on timetable"
     failure: "operation failed on timetable"
     combined_type:
