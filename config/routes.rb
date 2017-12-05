@@ -65,8 +65,8 @@ ChouetteIhm::Application.routes.draw do
       resources :time_tables, only: [:index, :show]
       resources :vehicle_journeys, only: :show
       namespace :internals do
-        get 'compliance_check_sets/:id/notify_parent', to: 'compliance_check_sets#notify_parent', as: 'compliance_check_sets'
-        get 'netex_imports/:id/notify_parent', to: 'netex_imports#notify_parent', as: 'netex_imports'
+        get 'compliance_check_sets/:id/notify_parent', to: 'compliance_check_sets#notify_parent'
+        get 'netex_imports/:id/notify_parent', to: 'netex_imports#notify_parent'
       end
     end
   end
