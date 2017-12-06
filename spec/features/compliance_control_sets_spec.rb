@@ -22,6 +22,9 @@ RSpec.describe "ComplianceControlSets", type: :feature do
   end
 
   describe 'show' do
+    let( :control_button_href ){ select_type_compliance_control_set_compliance_controls_path(control_set) }
+    let( :new_group_button_href ) { new_compliance_control_set_compliance_control_block_path(control_set) }
+
     before do
       visit compliance_control_set_path( control_set )
     end
@@ -41,6 +44,13 @@ RSpec.describe "ComplianceControlSets", type: :feature do
       controls.each do | control |
         expect( page ).to have_content(control.code)
       end
+
+      # Floating Buttons
+      within '.select_toolbox' do
+        expect( page ).to have_link("Contrôle", href: control_button_href)
+        expect( page ).to have_link("Groupe de contrôles", href: new_group_button_href)
+      end
+      
     end
 
     it 'we can apply a severity filter' do
