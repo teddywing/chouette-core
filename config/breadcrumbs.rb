@@ -81,6 +81,11 @@ crumb :import do |workbench, import|
   parent :imports, workbench
 end
 
+crumb :import_resources do |import, import_resources|
+  link I18n.t('import_resources.index.title'), workbench_import_import_resources_path(import.workbench, import)
+  parent :import, import.workbench, import
+end
+
 crumb :organisation do |organisation|
   link breadcrumb_name(organisation), organisation_path(organisation)
 end

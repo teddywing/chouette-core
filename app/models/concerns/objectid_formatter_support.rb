@@ -3,9 +3,9 @@ module ObjectidFormatterSupport
 
   included do
     extend Enumerize
-    enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne), default: 'netex'
+    enumerize :objectid_format, in: %w(netex stif_netex stif_reflex stif_codifligne)
     validates_presence_of :objectid_format
-    
+
     def objectid_formatter
       objectid_formatter_class.new
     end

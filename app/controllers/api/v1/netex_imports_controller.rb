@@ -1,9 +1,11 @@
 module Api
   module V1
-    class NetexImportsController < ChouetteController
+    class NetexImportsController < ActionController::Base
       include ControlFlow
 
-      skip_before_action :authenticate
+
+      respond_to :json, :xml
+      layout false
 
       def create
         respond_to do | format |

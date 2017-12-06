@@ -22,6 +22,8 @@ en:
       table_state: "%{lines_status} lines imported on %{lines_in_compliance_check_set} in the archive"
       table_explanation: "These controls apply to all imported data and condition the construction of your organization's offer."
       metrics: "%{ok_count} ok, %{error_count} errors, %{warning_count} warnings, %{uncheck_count} n/a"
+    errors:
+      no_parent: "The compliance check set doesn't have any parent"
   activerecord:
     attributes:
       compliance_check_set:

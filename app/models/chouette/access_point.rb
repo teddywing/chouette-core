@@ -10,7 +10,6 @@ module Chouette
 
     include Geokit::Mappable
     include ProjectionFields
-    include ObjectidSupport
 
     has_many :access_links, :dependent => :destroy
     belongs_to :stop_area

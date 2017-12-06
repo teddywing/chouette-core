@@ -127,10 +127,11 @@ class Referential < ActiveRecord::Base
     Chouette::RoutingConstraintZone.all
   end
 
-  after_initialize :define_default_attributes
+  before_validation :define_default_attributes
 
   def define_default_attributes
     self.time_zone ||= Time.zone.name
+    self.objectid_format ||= workbench.objectid_format if workbench
   end
 
   def switch
@@ -140,8 +141,8 @@ class Referential < ActiveRecord::Base
   end
 
   def self.new_from(from, functional_scope)
-    Referential.new(
-      name: I18n.t("activerecord.copy", :name => from.name),
+     Referential.new(
+      name: I18n.t("activerecord.copy", name: from.name),
       slug: "#{from.slug}_clone",
       prefix: from.prefix,
       time_zone: from.time_zone,
@@ -149,6 +150,7 @@ class Referential < ActiveRecord::Base
       line_referential: from.line_referential,
       stop_area_referential: from.stop_area_referential,
       created_from: from,
+      objectid_format: from.objectid_format,
       metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, functional_scope) }
     )
   end
@@ -286,6 +288,7 @@ class Referential < ActiveRecord::Base
   def create_schema
     unless created_from
       Apartment::Tenant.create slug
+      Rails.logger.error( "Schema migrations count for Referential #{slug} " + Referential.connection.select_value("select count(*) from #{slug}.schema_migrations;").to_s )
     end
   end
 

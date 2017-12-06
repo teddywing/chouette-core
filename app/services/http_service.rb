@@ -26,7 +26,6 @@ module HTTPService extend self
   # params: { netex_import: {referential_id: 13, workbench_id: 1}},
   # upload: {file: [StringIO.new('howdy'), 'application/zip', 'greeting']})
   def post_resource(host:, path:, token: nil, params: {}, upload: nil)
-    token = token || params
     Faraday.new(url: host) do |c|
       c.headers['Authorization'] = "Token token=#{token.inspect}" if token
       c.request :multipart
