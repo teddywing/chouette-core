@@ -288,8 +288,8 @@ class Referential < ActiveRecord::Base
   def create_schema
     unless created_from
       Apartment::Tenant.create slug
+      Rails.logger.error( "Schema migrations count for Referential #{slug} " + Referential.connection.select_value("select count(*) from #{slug}.schema_migrations;").to_s )
     end
-    Rails.logger.error( "Schema migrations count for Referential #{slug} " + Referential.connection.select_value("select count(*) from #{slug}.schema_migrations;").to_s )
   end
 
   def assign_slug
