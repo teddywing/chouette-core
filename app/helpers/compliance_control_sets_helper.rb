@@ -4,10 +4,10 @@ module ComplianceControlSetsHelper
     [current_organisation, Organisation.find_by_name("STIF")].uniq
   end
 
-  def floated_links ccs_id
+  def floating_links ccs_id
     links = [new_control(ccs_id), new_block(ccs_id)]
     if links.any?
-      content_tag :div, class: 'select_toolbox' do
+      content_tag :div, class: 'select_toolbox', id: 'floating-links' do
         content_tag :ul do
           links.collect {|link| concat content_tag(:li, link, class: 'st_action with_text') if link} 
         end

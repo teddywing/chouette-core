@@ -46,7 +46,7 @@ RSpec.describe "ComplianceControlSets", type: :feature do
       end
 
       # Floating Buttons
-      within '.select_toolbox' do
+      within '.select_toolbox#floating-links' do
         expect( page ).to have_link("Contrôle", href: control_button_href)
         expect( page ).to have_link("Groupe de contrôles", href: new_group_button_href)
       end
