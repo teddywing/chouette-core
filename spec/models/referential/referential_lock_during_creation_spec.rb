@@ -36,7 +36,7 @@ RSpec.describe Referential, type: :model do
         referential_2.slug = "#{referential_1.slug}_different"
         referential_3 = nil
 
-        metadata_1 = build(:referential_metadata)
+        metadata_1 = build(:referential_metadata, referential: nil)
         metadata_2 = metadata_1.dup
 
         referential_1.metadatas << metadata_1
