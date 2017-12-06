@@ -1,7 +1,7 @@
 module Api
   module V1
     module Internals
-      class NetexImportsController < ApplicationController
+      class NetexImportsController < Api::V1::Internals::ApplicationController
         include ControlFlow
 
         def create

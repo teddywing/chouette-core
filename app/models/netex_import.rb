@@ -27,7 +27,9 @@ class NetexImport < Import
   end
 
   def call_boiv_iev
+    Rails.logger.error("Begin IEV call for import")
     Net::HTTP.get(URI("#{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{id}"))
+    Rails.logger.error("End IEV call for import")
   rescue Exception => e
     logger.error "IEV server error : #{e.message}"
     logger.error e.backtrace.inspect
