@@ -44,8 +44,8 @@ module STIF
 
       class << self
         def get_line_object_id file_name
-          base_name = File.split(file_name).last
-          STIF::NetexFile::LINE_FILE_FORMAT.match(base_name).try(:[], 1)
+          base_name = File.basename(file_name)
+          STIF::NetexFile::LINE_FILE_FORMAT.match(base_name).try(:[], 'line_object_id')
         end
       end
 
