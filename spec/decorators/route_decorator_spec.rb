@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe RouteDecorator do
-  include Draper::ViewHelpers
-
   let(:object) { build_stubbed :route }
   let(:user) { build_stubbed :user }
 
