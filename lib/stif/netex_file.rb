@@ -15,7 +15,6 @@ module STIF
       Zip::File.open(@file_name) do |zipfile|
         zipfile.each do |entry|
           add_frame(to_frames: frames, from_entry: entry) if entry.ftype == :file
-
         end
       end
       frames.values
@@ -26,13 +25,17 @@ module STIF
 
     def add_frame(to_frames:, from_entry:)
       entry_dir_name, entry_file_name = File.split(from_entry.name)
-      case entry_file_name
-      when CALENDAR_FILE_NAME
+
+      if CALENDAR_FILE_NAME === entry_file_name
         from_entry.get_input_stream do |stream|
           to_frames[entry_dir_name].parse_calendars(stream.read)
         end
-      when LINE_FILE_FORMAT
-        to_frames[entry_dir_name].add_offer_file($1)
+        return
+      end
+
+      line_file_match =  LINE_FILE_FORMAT.match( entry_file_name )
+      if line_file_match
+        to_frames[entry_dir_name].add_offer_file( line_file_match['line_object_id'])
       end
     end
 
