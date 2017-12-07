@@ -72,7 +72,7 @@ class Organisation < ActiveRecord::Base
   end
 
   def lines_set
-    STIF::CodifLineId.lines_set_from_functional_scope( functional_scope )
+    STIF::CodifligneLineId.lines_set_from_functional_scope( functional_scope )
   end
 
 end

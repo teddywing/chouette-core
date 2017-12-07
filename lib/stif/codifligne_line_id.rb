@@ -1,5 +1,5 @@
 module STIF
-  module CodifLineId extend self
+  module CodifligneLineId extend self
 
     LINE_OBJECT_ID_SEPERATOR = ':'
 

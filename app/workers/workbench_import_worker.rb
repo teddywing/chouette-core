@@ -55,7 +55,7 @@ class WorkbenchImportWorker
   def upload_entry_group_stream eg_name, eg_stream
     FileUtils.mkdir_p(Rails.root.join('tmp', 'imports'))
 
-    File.new(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"), 'wb').tap do |file|
+    File.open(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"), 'wb') do |file|
       eg_stream.rewind
       file.write eg_stream.read
       file.close

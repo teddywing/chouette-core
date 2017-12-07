@@ -47,6 +47,5 @@ coverage
 /bin/rails
 /bin/rspec
 /bin/spring
-/spec/fixtures/zip/*
 
 spec/fixtures/target_*

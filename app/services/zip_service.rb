@@ -39,8 +39,8 @@ class ZipService
   end
 
   def add_to_current_output entry
-    return if is_spurious! entry.name
-    return if is_foreign_line! entry.name
+    return if is_spurious!(entry.name) || is_foreign_line!(entry.name)
+
     current_output.put_next_entry entry.name
     write_to_current_output entry.get_input_stream
   end
