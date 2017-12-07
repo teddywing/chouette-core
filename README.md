@@ -3,7 +3,7 @@
 Chouette2 is an open source web project in Ruby/Rails to edit and view transport offer data. It is designed as an [SaaS](http://en.wikipedia.org/wiki/Software_as_a_service) platform and can :
 * Exchange transport data : [Neptune](http://www.normes-donnees-tc.org/format-dechange/donnees-theoriques/neptune/), [GTFS](https://developers.google.com/transit/gtfs/reference?hl=fr), [NeTEx](http://www.normes-donnees-tc.org/format-dechange/donnees-theoriques/netex/), CSV
 * Edit transport data
-* Be requested via a read-only [Restful API](https://en.wikipedia.org/wiki/Representational_state_transfer) 
+* Be requested via a read-only [Restful API](https://en.wikipedia.org/wiki/Representational_state_transfer)
 * [Import, Export and Validate transport data asynchronously](http://github.com/afimb/chouette)
 * Use a [multi-tenancy database](http://en.wikipedia.org/wiki/Multitenancy)
 
@@ -44,6 +44,7 @@ sudo apt-get install unzip
 sudo apt-get install proj-bin
 sudo apt-get install libproj-dev
 sudo apt-get install make
+sudo apt-get install libmagic-dev
 ```
 
 If Linux distribution doesn't publish an RVM package,
@@ -192,4 +193,3 @@ Credits
 -------
 
 Thanks to Ingolf for his [photo](https://www.flickr.com/photos/ingolfbln/7663851694) under CC BY-SA 2.0 license
-
