@@ -14,7 +14,7 @@ module Support
     end
 
     def stub_policy(actions)
-      allow(helpers).to receive(:policy).with(object).and_return(double("policy", *actions))
+      allow(helpers).to receive(:policy).and_return(double("policy", *actions))
     end
 
     def expect_action_link_hrefs
