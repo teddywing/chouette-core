@@ -2,7 +2,7 @@ module STIF
   class NetexFile
 
     CALENDAR_FILE_NAME = 'calendriers.xml'
-    LINE_FILE_FORMAT   = %r{\A offre_ (.*?) _ .* \. xml \z}x
+    LINE_FILE_FORMAT   = %r{\A offre_ (?<line_object_id> .*?) _ .* \. xml \z}x
     XML_NAME_SPACE     = "http://www.netex.org.uk/netex"
 
 
@@ -14,21 +14,28 @@ module STIF
       frames = Hash.new { |h,k| h[k] = NetexFile::Frame.new(k) }
       Zip::File.open(@file_name) do |zipfile|
         zipfile.each do |entry|
-          next unless entry.ftype == :file
+          add_frame(to_frames: frames, from_entry: entry) if entry.ftype == :file
 
-          entry_dir_name, entry_file_name = File.split(entry.name)
-          case entry_file_name
-          when CALENDAR_FILE_NAME
-            entry.get_input_stream do |stream|
-              frames[entry_dir_name].parse_calendars(stream.read)
-            end
-          when LINE_FILE_FORMAT
-            frames[entry_dir_name].add_offer_file($1)
-          end
         end
       end
       frames.values
     end
+
+
+    private
+
+    def add_frame(to_frames:, from_entry:)
+      entry_dir_name, entry_file_name = File.split(from_entry.name)
+      case entry_file_name
+      when CALENDAR_FILE_NAME
+        from_entry.get_input_stream do |stream|
+          to_frames[entry_dir_name].parse_calendars(stream.read)
+        end
+      when LINE_FILE_FORMAT
+        to_frames[entry_dir_name].add_offer_file($1)
+      end
+    end
+
 
     class Frame
 
