@@ -51,6 +51,14 @@
             TableBuilderHelper::Column.new( \
               key: :metrics, \
               attribute: Proc.new { |n| I18n.t('compliance_check_sets.show.metrics', n.metrics.deep_symbolize_keys) } \
+            ), \
+            TableBuilderHelper::Column.new( \
+              name: 'Téléchargement' , \
+              attribute: Proc.new { |n| '<i class="fa fa-download" aria-hidden="true"></i>'.html_safe }, \
+              sortable: false, \
+              link_to: lambda do |compliance_check_resource| \
+                workbench_compliance_check_set_compliance_check_messages_path(@compliance_check_set.workbench, @compliance_check_set, format: 'csv', compliance_check_resource_id: compliance_check_resource.id  ) \
+              end \
             ) \
           ],
           sortable: false, \

@@ -2,12 +2,12 @@
 require "csv"
 require "zip"
 
-class ImportMessageExport
+class ComplianceCheckMessageExport
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend  ActiveModel::Naming
 
-  attr_accessor :import_messages
+  attr_accessor :compliance_check_messages
 
   def initialize(attributes = {})
     attributes.each { |name, value| send("#{name}=", value) }
@@ -22,14 +22,14 @@ class ImportMessageExport
   end
 
   def column_names
-    ["criticity", "message key", "message", "file name", "line", "column"]
+    ["criticity", "message key", "message", "resource objectid"]
   end
 
   def to_csv(options = {})
     CSV.generate(options) do |csv|
       csv << column_names
-      import_messages.each do |import_message|
-        csv << [import_message.criticity, import_message.message_key, I18n.t("import_messages.compliance_check_messages.#{import_message.message_key}", import_message.message_attributes.deep_symbolize_keys), *import_message.resource_attributes.values_at("filename", "line_number", "column_number")  ]
+      compliance_check_messages.each do |compliance_check_message|
+        csv << [compliance_check_message.compliance_check.criticity, compliance_check_message.message_attributes[:test_id], I18n.t("compliance_check_messages.#{compliance_check_message.message_key}", compliance_check_message.message_attributes.deep_symbolize_keys), compliance_check_message.resource_attributes[:objectid] ]
       end
     end
   end

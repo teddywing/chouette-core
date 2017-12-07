@@ -14,6 +14,7 @@ ChouetteIhm::Application.routes.draw do
     resources :compliance_check_sets, only: [:index, :show] do
       get :executed, on: :member
       resources :compliance_checks, only: [:show]
+      resources :compliance_check_messages, only: [:index]
     end
 
     resource :output, controller: :workbench_outputs
