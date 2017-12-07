@@ -1,4 +1,4 @@
-RSpec.describe 'Workbenches', type: :feature do
+RSpec.describe 'Workbenches', type: [:feature, :poltergeist] do
   login_user
 
   let(:line_ref) { create :line_referential }
