@@ -128,7 +128,7 @@ RSpec.describe Import, type: :model do
 
     it "updates :status to successful when all children are successful" do
       workbench_import = create(:workbench_import)
-      create_list(
+      imports = create_list(
         :netex_import,
         2,
         parent: workbench_import,
@@ -140,7 +140,7 @@ RSpec.describe Import, type: :model do
       expect(workbench_import.status).to eq('successful')
     end
 
-    it "Updates :status to failed when any child has failed" do
+    it "updates :status to failed when any child has failed" do
       workbench_import = create(:workbench_import)
       [
         'failed',
@@ -156,6 +156,24 @@ RSpec.describe Import, type: :model do
       workbench_import.update_status
 
       expect(workbench_import.status).to eq('failed')
+    end
+
+    it "updates :status to warning when any child has warning or successful" do
+      workbench_import = create(:workbench_import)
+      [
+        'warning',
+        'successful'
+      ].each do |status|
+        create(
+          :netex_import,
+          parent: workbench_import,
+          status: status
+        )
+      end
+
+      workbench_import.update_status
+
+      expect(workbench_import.status).to eq('warning')
     end
 
     it "updates :ended_at to now when status is finished" do

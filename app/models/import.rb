@@ -14,7 +14,7 @@ class Import < ActiveRecord::Base
    end
 
   extend Enumerize
-  enumerize :status, in: %i(new pending successful warning failed running aborted canceled), scope: true, default: :new
+  enumerize :status, in: %w(new pending successful warning failed running aborted canceled), scope: true, default: :new
 
   validates :name, presence: true
   validates :file, presence: true
@@ -28,15 +28,19 @@ class Import < ActiveRecord::Base
   end
 
   def children_succeedeed
-    children.with_status(:successful).count
+    children.with_status(:successful, :warning).count
   end
 
-  def self.failing_statuses
-    symbols_with_indifferent_access(%i(failed aborted canceled))
+  def self.launched_statuses
+    %w(new pending)
+  end
+
+  def self.failed_statuses
+    %w(failed aborted canceled)
   end
 
   def self.finished_statuses
-    symbols_with_indifferent_access(%i(successful failed warning aborted canceled))
+    %w(successful failed warning aborted canceled)
   end
 
   def notify_parent
@@ -52,35 +56,25 @@ class Import < ActiveRecord::Base
   end
 
   def update_status
-    status_count = children.group(:status).count
-    children_finished_count = children_failed_count = children_count = 0
-
-    status_count.each do |status, count|
-      if self.class.failing_statuses.include?(status)
-        children_failed_count += count
-      end
-      if self.class.finished_statuses.include?(status)
-        children_finished_count += count
-      end
-      children_count += count
-    end
-
-    attributes = {
-      current_step: children_finished_count
-    }
-
     status =
-      if children_failed_count > 0
+      if children.where(status: self.class.failed_statuses).count > 0
         'failed'
-      elsif status_count['successful'] == children_count
+      elsif children.where(status: "warning").count > 0
+        'warning'
+      elsif children.where(status: "successful").count == children.count
         'successful'
       end
+
+    attributes = {
+      current_step: children.count,
+      status: status
+    }
 
     if self.class.finished_statuses.include?(status)
       attributes[:ended_at] = Time.now
     end
 
-    update attributes.merge(status: status)
+    update attributes
   end
 
   def update_referentials
@@ -97,7 +91,4 @@ class Import < ActiveRecord::Base
     self.token_download = SecureRandom.urlsafe_base64
   end
 
-  def self.symbols_with_indifferent_access(array)
-    array.flat_map { |symbol| [symbol, symbol.to_s] }
-  end
 end
