@@ -1,4 +1,5 @@
 RSpec.describe "ComplianceControlSets", type: :feature do
+  include TransportModeHelper
 
   login_user
 
@@ -12,7 +13,7 @@ RSpec.describe "ComplianceControlSets", type: :feature do
   }
 
   before do
-    blox.first.update transport_mode: 'bus', transport_submode: 'bus'
+    blox.first.update transport_mode: 'bus', transport_submode: 'nightBus'
     blox.second.update transport_mode: 'train', transport_submode: 'train'
 
     make_control
@@ -72,6 +73,13 @@ RSpec.describe "ComplianceControlSets", type: :feature do
         else
           expect( page ).to have_content(control.code)
         end
+      end
+    end
+
+    context "wthout filter on compliance control block applied" do
+      it "we can see empty blocks" do
+        blox.first.compliance_controls.destroy_all
+        expect(page).to have_content (transport_mode_text(blox.first) )
       end
     end
 

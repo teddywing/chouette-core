@@ -18,3 +18,8 @@ fr:
       title: Créer un groupe de contrôle(s)
     edit:
       title: "Editer le groupe de contrôle : %{compliance_control_block}"
+    metas:
+      control:
+        zero: "Aucun contrôle"
+        one: "1 contrôle"
+        other: "%{count} contrôles"
