@@ -10,11 +10,10 @@ module LineReferentialInOrganisationChecker
   private
 
   def check_for_line_referential_in_organisation
-    if LineReferentialMembership
-      .where(line_referential_id: line_referential.id, organisation_id: current_organisation.id)
-      .empty?
-      redirect_to forbidden_path
-    end
+    redirect_to forbidden_path unless
+      LineReferentialMembership
+        .where(line_referential_id: line_referential.id, organisation_id: current_organisation.id)
+        .exists?
   end
-  
+
 end
