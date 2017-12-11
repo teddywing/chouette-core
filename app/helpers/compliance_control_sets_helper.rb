@@ -4,12 +4,12 @@ module ComplianceControlSetsHelper
     [current_organisation, Organisation.find_by_name("STIF")].uniq
   end
 
-  def flotted_links ccs_id = @compliance_control_set
+  def floating_links ccs_id
     links = [new_control(ccs_id), new_block(ccs_id)]
-    unless links.all? &:nil?
-      content_tag :div, class: 'select_toolbox' do
+    if links.any?
+      content_tag :div, class: 'select_toolbox', id: 'floating-links' do
         content_tag :ul do
-          links.collect {|link| concat content_tag(:li, link, class: 'st_action with_text') unless link.nil?} 
+          links.collect {|link| concat content_tag(:li, link, class: 'st_action with_text') if link} 
         end
       end
     end
@@ -21,8 +21,6 @@ module ComplianceControlSetsHelper
         concat content_tag :span, nil, class: 'fa fa-plus'
         concat content_tag :span, t('compliance_control_sets.actions.add_compliance_control')
       end
-    else
-      nil
     end
   end
 
@@ -32,8 +30,6 @@ module ComplianceControlSetsHelper
         concat content_tag :span, nil, class: 'fa fa-plus'
         concat content_tag :span,t('compliance_control_sets.actions.add_compliance_control_block')
       end   
-    else
-      nil
     end
   end
 
@@ -66,7 +62,7 @@ module ComplianceControlSetsHelper
     content_tag :div, class: 'btn-group' do
       dropdown_button + dropdown_menu
     end
-  
+
   end
 
   def render_compliance_controls(compliance_controls)
@@ -81,7 +77,7 @@ module ComplianceControlSetsHelper
   def render_table_builder(compliance_controls)
     table = content_tag :div, class: 'select_table' do
       table_builder_2 compliance_controls,
-              [
+        [
           TableBuilderHelper::Column.new(
             key: :code,
             attribute: 'code'
@@ -90,8 +86,8 @@ module ComplianceControlSetsHelper
             key: :name,
             attribute: 'name',
             link_to: lambda do |compliance_control|
-                compliance_control_set_compliance_control_path(@compliance_control_set, compliance_control)
-              end
+              compliance_control_set_compliance_control_path(@compliance_control_set, compliance_control)
+            end
           ),
           TableBuilderHelper::Column.new(
             key: :criticity,
@@ -101,13 +97,13 @@ module ComplianceControlSetsHelper
             key: :comment,
             attribute: 'comment'
           ),
-        ],
-        sortable: true,
-        cls: 'table has-filter has-search',
-        model: ComplianceControl
+      ],
+      sortable: true,
+      cls: 'table has-filter has-search',
+      model: ComplianceControl
     end
-   metas = content_tag :div, I18n.t('compliance_control_blocks.metas.control', count: compliance_controls.count), class: 'pull-right'
-   table + metas
+    metas = content_tag :div, I18n.t('compliance_control_blocks.metas.control', count: compliance_controls.count), class: 'pull-right'
+    table + metas
   end
 
   def render_no_controls
