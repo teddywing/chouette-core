@@ -4,7 +4,7 @@ fr:
       prefix: 'Copie de'
     filters:
       criticity: Criticité
-      name: "Chercher le nom ou code d'un contrôl"
+      name: "Chercher le nom ou code d'un contrôle"
       subclass: Objet
       subclasses:
         generic: 'Généric'
@@ -13,6 +13,7 @@ fr:
         route: 'Itinéraire'
         routing_constraint_zone: 'ITL'
         vehicle_journey: 'Course'
+    search_no_results: 'Aucun contrôle ne correspond à votre recherche'
     min_max_values: "la valeur de minimum (%{min}) ne doit pas être superieur à la valuer du maximum (%{max})"
     errors:
       incoherent_control_sets: "Le contrôle ne peut pas être associé à un jeu de contrôle (id: %{direct_set_name}) différent de celui de son groupe (id: %{indirect_set_name})"

@@ -18,3 +18,8 @@ fr:
       title: Create a control block
     edit:
       title: "Edit the control block : %{compliance_control_block}"
+    metas:
+      control:
+        zero: "No controls"
+        one: "1 control"
+        other: "%{count} controls"
