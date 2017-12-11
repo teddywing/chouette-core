@@ -200,8 +200,8 @@ class Referential < ActiveRecord::Base
   # to minimise the duration of the lock.
   before_validation :lock_table, on: :create
 
+  before_create :create_schema
   after_create :clone_schema, if: :created_from
-  after_commit :create_schema
 
   before_destroy :destroy_schema
   before_destroy :destroy_jobs
