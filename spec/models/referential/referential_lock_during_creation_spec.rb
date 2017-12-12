@@ -76,6 +76,57 @@ RSpec.describe Referential, type: :model do
       end
     end
 
+    it "works asynchronously when one is updated", truncation: true do
+      begin
+        referential_1 = nil
+        referential_2 = nil
+
+        ActiveRecord::Base.transaction do
+          referential_1 = create(
+            :referential,
+            workbench: workbench,
+            organisation: workbench.organisation
+          )
+          referential_2 = referential_1.dup
+          referential_2.name = 'Another'
+          referential_2.slug = "#{referential_1.slug}_different"
+          referential_2.save!
+        end
+
+        metadata_2 = build(:referential_metadata, referential: nil)
+        metadata_1 = metadata_2.dup
+
+        thread_1 = Thread.new do
+          ActiveRecord::Base.transaction do
+            # seize LOCK
+            referential_1.metadatas_attributes = [metadata_1.attributes]
+            puts referential_1.save
+            sleep 10
+            # release LOCK
+          end
+        end
+
+        thread_2 = Thread.new do
+          sleep 5
+          ActiveRecord::Base.transaction do
+            # waits for LOCK, (because of sleep 5)
+            referential_2.metadatas_attributes = [metadata_2.attributes]
+            puts referential_2.save
+          end
+        end
+
+        thread_1.join
+        thread_2.join
+
+        expect(referential_1).to be_valid
+        expect(referential_2).not_to be_valid
+      ensure
+        Apartment::Tenant.drop(referential_1.slug) if referential_1.persisted?
+        Apartment::Tenant.drop(referential_2.slug) if referential_2.persisted?
+      end
+    end
+  end
+
   context "when two Referentials are created at the same time" do
     it "raises an error when the DB lock timeout is reached", truncation: true do
       begin

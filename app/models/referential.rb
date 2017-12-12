@@ -210,7 +210,7 @@ class Referential < ActiveRecord::Base
   # Lock the `referentials` table to prevent duplicate referentials from being
   # created simultaneously in separate transactions. This must be the last hook
   # to minimise the duration of the lock.
-  before_validation :lock_table, on: :create
+  before_save :lock_table, on: [:create, :update]
 
   before_create :create_schema
   after_create :clone_schema, if: :created_from
