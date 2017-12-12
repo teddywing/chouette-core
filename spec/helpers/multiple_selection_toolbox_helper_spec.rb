@@ -5,13 +5,13 @@ RSpec.describe MultipleSelectionToolboxHelper, type: :helper do
   let( :expected_html ) do <<-EOHTML.chomp
 <div class="select_toolbox noselect" id="selected-referentials-action-box">
     <ul>
-        <li class="st_action"><a data-path="/workbenches/#{workbench_id}/referentials" data-confirm="Etes-vous sûr(e) de vouloir effectuer cette action ?" title="Supprimer" rel="nofollow" data-method="delete" href="#"><span class="fa fa-trash"></span></a></li>
+        <li class="st_action"><a data-path="/workbenches/#{workbench_id}/referentials" data-confirm="#{I18n.t('actions.confirm')}" title="Supprimer" rel="nofollow" data-method="delete" href="#"><span class="fa fa-trash"></span></a></li>
     </ul>
-    <span class="info-msg"><span>0</span> élément(s) sélectionné(s)</span></div>
+    <span class="info-msg"><span>0</span> #{I18n.t('info.selected_elements')}</span></div>
   EOHTML
   end
 
-  context 'rendering' do 
+  context 'rendering' do
 
     it 'the expected output' do
       output = beautify_html(helper.
@@ -19,7 +19,7 @@ RSpec.describe MultipleSelectionToolboxHelper, type: :helper do
 
       expect(output).to eq(expected_html), colorized_diff(expected_html, output)
     end
-    
+
   end
-  
+
 end

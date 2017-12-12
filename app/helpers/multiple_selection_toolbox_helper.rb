@@ -14,7 +14,7 @@ module MultipleSelectionToolboxHelper
             method: :delete,
             data: {
               path: delete_path,
-              # #5206 Missing Translations
+              # #5206 Missing Translations an
               confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?'
             },
             title: t("actions.#{action}")
@@ -29,7 +29,7 @@ module MultipleSelectionToolboxHelper
 
     label = content_tag(
       :span,
-      ("<span>0</span> élément(s) sélectionné(s)").html_safe,
+      ("<span>0</span> #{t 'info.selected_elements'}").html_safe,
       class: 'info-msg'
     )
 
