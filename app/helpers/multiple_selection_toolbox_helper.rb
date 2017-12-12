@@ -2,17 +2,12 @@ module MultipleSelectionToolboxHelper
   # Box of links that floats at the bottom right of the page
   # c.f. https://projects.af83.io/issues/5206
   # #5206 method too long
-  def multiple_selection_toolbox(actions, collection_name:)
+  def multiple_selection_toolbox(workbench_id, *actions, collection_name:)
     links = content_tag :ul do
       
-      # #5206 `if params[:controller]` mieux passer comme parametre si besoin
-      delete_path = nil
+      delete_path = referentials_workbench_path workbench_id
 
-      if params[:controller] = 'workbenches'
-        delete_path = referentials_workbench_path
-      end
-
-      actions.map do |action|
+      actions.flatten.map do |action|
         if action == :delete
           action_link = link_to(
             '#',
