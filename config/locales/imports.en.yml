@@ -63,8 +63,8 @@ en:
       import:
         resources: "File to import"
         created_at: "Created on"
-        started_at: Started at
-        name: Name
+        started_at: "Started at"
+        name: "Name"
         status: "Status"
         creator: "Creator"
         references_type: "Data to be imported"
