@@ -1,3 +1,4 @@
+# coding: utf-8
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
   include ObjectidFormatterSupport
@@ -34,7 +35,7 @@ class Referential < ActiveRecord::Base
                I18n.t('referentials.errors.inconsistent_organisation',
                       indirect_name: workbench.organisation.name,
                       direct_name: organisation.name))
-  end
+  end, if: :organisation
 
   belongs_to :line_referential
   validates_presence_of :line_referential
@@ -293,11 +294,11 @@ class Referential < ActiveRecord::Base
   end
 
   def assign_slug
-    self.slug ||= "#{self.name.parameterize.gsub('-', '_')}_#{Time.now.to_i}"
+    self.slug ||= "#{name.parameterize.gsub('-', '_')}_#{Time.now.to_i}" if name
   end
 
   def assign_prefix
-    self.prefix = organisation.name.parameterize.gsub('-', '_')
+    self.prefix = organisation.name.parameterize.gsub('-', '_') if organisation
   end
 
   def assign_line_and_stop_area_referential
