@@ -72,6 +72,8 @@ RSpec.describe Referential, type: :model do
 
     context truncation: true do
       it "works asynchronously" do
+        skip('The truncation strategy breaks all subsequent tests (See #5295)')
+
         begin
           referential_1 = build(
             :referential,
@@ -112,6 +114,8 @@ RSpec.describe Referential, type: :model do
       end
 
       it "works asynchronously when one is updated" do
+        skip('The truncation strategy breaks all subsequent tests (See #5295)')
+
         begin
           referential_1 = nil
           referential_2 = nil
@@ -153,6 +157,8 @@ RSpec.describe Referential, type: :model do
 
   context "when two Referentials are created at the same time", truncation: true do
     it "raises an error when the DB lock timeout is reached" do
+      skip('The truncation strategy breaks all subsequent tests (See #5295)')
+
       begin
         referential_1 = build(
           :referential,
