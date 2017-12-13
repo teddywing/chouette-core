@@ -72,14 +72,20 @@ RSpec.configure do |config|
     )
   end
 
-  config.before(:each) do
+  config.before(:each, truncation: false) do
     DatabaseCleaner.strategy = :transaction
     # Switch into the default tenant
     first_referential.switch
   end
 
   config.before(:each, truncation: true) do
-    DatabaseCleaner.strategy = :truncation, { except: %w[spatial_ref_sys] }
+    DatabaseCleaner.strategy = :truncation, {
+      except: %w[
+        spatial_ref_sys
+        referentials
+        line_referentials
+      ]
+    }
   end
 
   config.before(:each) do
