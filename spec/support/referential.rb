@@ -72,7 +72,7 @@ RSpec.configure do |config|
     )
   end
 
-  config.before(:each, truncation: false) do
+  config.before(:each) do
     DatabaseCleaner.strategy = :transaction
     # Switch into the default tenant
     first_referential.switch
