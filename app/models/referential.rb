@@ -61,8 +61,8 @@ class Referential < ActiveRecord::Base
   scope :order_by_validity_period, ->(dir) { joins(:metadatas).order("unnest(periodes) #{dir}") }
   scope :order_by_lines, ->(dir) { joins(:metadatas).group("referentials.id").order("sum(array_length(referential_metadata.line_ids,1)) #{dir}") }
 
-  def save_with_table_lock_timeout
-    save_without_table_lock_timeout
+  def save_with_table_lock_timeout(options = {})
+    save_without_table_lock_timeout(options)
   rescue ActiveRecord::StatementInvalid => e
     if e.message.include?('PG::LockNotAvailable')
       raise TableLockTimeoutError.new(e)
