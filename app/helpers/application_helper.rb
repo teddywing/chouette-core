@@ -16,7 +16,7 @@ module ApplicationHelper
     object = object.object if object.try(:object)
     local  = "#{object.model_name.name.underscore.pluralize}.#{params[:action]}.title"
     if object.try(:name)
-      t(local, name: object.name)
+      t(local, name: object.name || object.id)
     else
       t(local)
     end
