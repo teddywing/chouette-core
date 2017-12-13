@@ -1,6 +1,52 @@
 RSpec.describe Referential, type: :model do
   let (:workbench) { create(:workbench) }
 
+  def with_a_mutual_lock timeout: false
+    @with_a_mutual_lock = true
+    yield
+    thread_1 = Thread.new do
+      ActiveRecord::Base.transaction do
+        # seize LOCK
+        @locking_thread_content.try :call
+        sleep 10
+        # release LOCK
+      end
+    end
+
+    thread_2 = Thread.new do
+      sleep 5
+      ActiveRecord::Base.transaction do
+        if timeout
+          ActiveRecord::Base.connection.execute "SET lock_timeout = '1s'"
+        end
+        # waits for LOCK, (because of sleep 5)
+        @waiting_thread_content.try :call
+        # when lock was eventually obtained validation failed
+      end
+    end
+
+    thread_1.join
+    if timeout
+      expect do
+        thread_2.join
+      end.to raise_error(TableLockTimeoutError)
+    else
+      thread_2.join
+    end
+    @locking_thread_content = nil
+    @waiting_thread_content = nil
+    @with_a_mutual_lock = false
+  end
+
+  def locking_thread
+    raise "this method is intended to be called inside a `with_a_mutual_lock`" unless @with_a_mutual_lock
+    @locking_thread_content = yield
+  end
+
+  def waiting_thread
+    @waiting_thread_content = yield
+  end
+
   context "when two identical Referentials are created, only one is saved" do
     it "works synchronously" do
       referential_1 = build(
@@ -41,27 +87,15 @@ RSpec.describe Referential, type: :model do
         referential_1.metadatas << metadata_1
         referential_2.metadatas << metadata_2
 
-        thread_1 = Thread.new do
-          ActiveRecord::Base.transaction do
-            # seize LOCK
+        with_a_mutual_lock do
+          locking_thread do
             referential_1.save
-            sleep 10
-            # release LOCK
           end
-        end
-
-        thread_2 = Thread.new do
-          sleep 5
-          ActiveRecord::Base.transaction do
-            # waits for LOCK, (because of sleep 5)
+          waiting_thread do
             referential_2.save
-            # when lock was eventually obtained validation failed
             referential_3 = create(:referential)
           end
         end
-
-        thread_1.join
-        thread_2.join
 
         expect(referential_1).to be_persisted
         expect(referential_2).not_to be_persisted
@@ -95,28 +129,16 @@ RSpec.describe Referential, type: :model do
 
         metadata_2 = build(:referential_metadata, referential: nil)
         metadata_1 = metadata_2.dup
-
-        thread_1 = Thread.new do
-          ActiveRecord::Base.transaction do
-            # seize LOCK
+        with_a_mutual_lock do
+          locking_thread do
             referential_1.metadatas_attributes = [metadata_1.attributes]
-            puts referential_1.save
-            sleep 10
-            # release LOCK
+            referential_1.save
           end
-        end
-
-        thread_2 = Thread.new do
-          sleep 5
-          ActiveRecord::Base.transaction do
-            # waits for LOCK, (because of sleep 5)
+          waiting_thread do
             referential_2.metadatas_attributes = [metadata_2.attributes]
-            puts referential_2.save
+            referential_2.save
           end
         end
-
-        thread_1.join
-        thread_2.join
 
         expect(referential_1).to be_valid
         expect(referential_2).not_to be_valid
@@ -144,33 +166,15 @@ RSpec.describe Referential, type: :model do
 
         referential_1.metadatas << metadata_1
         referential_2.metadatas << metadata_2
-
-        thread_1 = Thread.new do
-          ActiveRecord::Base.transaction do
-            ActiveRecord::Base.connection.execute("SET LOCAL lock_timeout = '1s'")
-
-            # seize LOCK
+        with_a_mutual_lock timeout: true do
+          locking_thread do
             referential_1.save
-            sleep 10
-            # release LOCK
           end
-        end
-
-        thread_2 = Thread.new do
-          sleep 5
-          ActiveRecord::Base.transaction do
-            ActiveRecord::Base.connection.execute("SET LOCAL lock_timeout = '1s'")
-            # waits for LOCK, (because of sleep 5)
+          waiting_thread do
             referential_2.save
-            # when lock was eventually obtained validation failed
             referential_3 = create(:referential)
           end
         end
-
-        thread_1.join
-        expect do
-          thread_2.join
-        end.to raise_error(TableLockTimeoutError)
 
         expect(referential_1).to be_persisted
       ensure
