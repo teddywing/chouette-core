@@ -22,7 +22,7 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def validate?
-    !archived? && create?
+    !archived? && create? && organisation_match?
   end
 
   def archive?

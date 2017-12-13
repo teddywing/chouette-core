@@ -162,7 +162,7 @@ const actions = {
   resetValidation: (target) => {
     $(target).parent().removeClass('has-error').children('.help-block').remove()
   },
-  validateFields : (fields) => {
+  validateFields : (...fields) => {
     const test = []
 
     Object.keys(fields).map(function(key) {
@@ -457,10 +457,6 @@ const actions = {
         minute: actions.simplePad(newArrivalDT.getUTCMinutes())
       }
     }
-  },
-  escapeWildcardCharacters(search) {
-    let newSearch = search.replace(/^_/, "\\_")
-    return newSearch.replace(/^%/, "\\%")
   }
 }
 

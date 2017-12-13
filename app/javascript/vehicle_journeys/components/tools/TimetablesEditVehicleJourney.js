@@ -29,7 +29,7 @@ export default class TimetablesEditVehicleJourney extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={(actions.getSelected(this.props.vehicleJourneys).length != 1 || this.props.disabled)}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length < 1 || this.props.disabled)}
             data-toggle='modal'
             data-target='#CalendarsEditVehicleJourneyModal'
             onClick={() => this.props.onOpenCalendarsEditModal(actions.getSelected(this.props.vehicleJourneys))}
@@ -56,7 +56,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                                 <div className='wrapper'>
                                   <div>
                                     <div className='form-group'>
-                                      <label className='control-label'>Calendriers associés</label>
+                                      <label className='control-label'>{this.props.modal.modalProps.timetables.length == 0 ? "Aucun calendrier associé" : "Calendriers associés"}</label>
                                     </div>
                                   </div>
                                   <div></div>

@@ -34,7 +34,7 @@ export default class BSelect4 extends Component {
             data: function(params) {
               return {
                 q: {
-                  comment_or_objectid_cont_any: actions.escapeWildcardCharacters(params.term)
+                  comment_or_objectid_cont_any: params.term
                 }
               };
             },

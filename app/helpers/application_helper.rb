@@ -3,12 +3,20 @@ module ApplicationHelper
 
   include NewapplicationHelper
 
+  def array_to_html_list items
+    content_tag :ul do
+      items.each do |item|
+        concat content_tag :li, item
+      end
+    end
+  end
+
   def page_header_title(object)
     # Unwrap from decorator, we want to know the object model name
     object = object.object if object.try(:object)
     local  = "#{object.model_name.name.underscore.pluralize}.#{params[:action]}.title"
     if object.try(:name)
-      t(local, name: object.name)
+      t(local, name: object.name || object.id)
     else
       t(local)
     end

@@ -66,6 +66,7 @@ en:
         networks:
           name: "Network"
         company_id: "Company"
+        secondary_company: "Secondary company"
         companies:
           name: "Company"
         registration_number: "Registration number"

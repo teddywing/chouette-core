@@ -106,6 +106,7 @@ describe('vehicleJourneys reducer', () => {
       company: fakeSelectedCompany,
       published_journey_name: 'test',
       published_journey_identifier: '',
+      short_id: '',
       objectid: '',
       footnotes: [],
       time_tables: [],

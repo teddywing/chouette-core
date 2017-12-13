@@ -38,6 +38,7 @@ const vehicleJourney= (state = {}, action, keep) => {
         published_journey_name: action.data.published_journey_name.value,
         published_journey_identifier: action.data.published_journey_identifier.value,
         objectid: '',
+        short_id: '',
         footnotes: [],
         time_tables: [],
         vehicle_journey_at_stops: pristineVjasList,

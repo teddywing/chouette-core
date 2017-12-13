@@ -82,8 +82,8 @@ crumb :import do |workbench, import|
 end
 
 crumb :import_resources do |import, import_resources|
-  link I18n.t('import_resources.index.title'), workbench_import_import_resources_path(import.workbench, import)
-  parent :import, import.workbench, import
+  link I18n.t('import_resources.index.title'), workbench_import_import_resources_path(import.workbench, import.parent)
+  parent :import, import.workbench, import.parent
 end
 
 crumb :organisation do |organisation|
