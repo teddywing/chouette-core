@@ -79,13 +79,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each, truncation: true) do
-    DatabaseCleaner.strategy = :truncation, {
-      except: %w[
-        spatial_ref_sys
-        referentials
-        line_referentials
-      ]
-    }
+    DatabaseCleaner.strategy = :truncation, { except: %w[spatial_ref_sys] }
   end
 
   config.before(:each) do
