@@ -21,6 +21,8 @@ export default class BSelect4 extends Component {
         onSelect={(e) => this.props.onSelect2JourneyPattern(e)}
         multiple={false}
         ref='journey_pattern_id'
+        className={!this.props.isFilter ? "vjCreateSelectJP" : null}
+        required={!this.props.isFilter}
         options={{
           allowClear: false,
           theme: 'bootstrap',
@@ -33,7 +35,7 @@ export default class BSelect4 extends Component {
             delay: '500',
             data: function(params) {
               return {
-                q: { published_name_or_objectid_or_registration_number_cont: actions.escapeWildcardCharacters(params.term)},
+                q: { published_name_or_objectid_or_registration_number_cont: params.term},
               };
             },
             processResults: function(data, params) {
