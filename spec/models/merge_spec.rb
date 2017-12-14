@@ -3,11 +3,10 @@ require "rails_helper"
 RSpec.describe Merge do
 
   it "should work" do
-    workbench = FactoryGirl.create :workbench
-    referential = FactoryGirl.create :referential, workbench: workbench, organisation: workbench.organisation
+    referential_metadata = FactoryGirl.create(:referential_metadata)
+    referential = FactoryGirl.create :workbench_referential, metadatas: [referential_metadata]
 
-    merge = Merge.create!(workbench: workbench, referentials: [referential])
-
+    merge = Merge.create!(workbench: referential.workbench, referentials: [referential, referential])
     merge.merge!
   end
 
