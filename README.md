@@ -127,8 +127,7 @@ Configure OSRM Backend URL
 * Edit [secrets.yml](./config/secrets.yml) and change```osrm_endpoint```
 * see [Project-OSRM](https://github.com/Project-OSRM/osrm-backend/wiki/Api-usage-policy)
 
-Run
----
+# Run
 
 Launch the task if you want to send mail asynchronously (See previous chapter to desactivate it)
 ```sh
