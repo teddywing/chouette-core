@@ -1,6 +1,6 @@
 / PageHeader
 
-= pageheader '', t('.title')
+- content_for :page_header_title, t('.title')
 
 / PageContent
 .page_content
@@ -12,4 +12,4 @@
             .col-lg-12
               = form.input :email, :as => :email, placeholder: 'user@domain.com'
 
-          = form.button :submit, :value => t("devise.passwords.new.commit"), class: 'btn btn-default formSubmitr', form: 'invitation_form'
+          = form.button :submit, :value => t("devise.passwords.new.commit"), class: 'btn btn-default formSubmitr', form: 'password_form'
