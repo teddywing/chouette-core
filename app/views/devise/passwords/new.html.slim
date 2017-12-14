@@ -1,11 +1,15 @@
-.col-md-offset-2.col-md-8
-  .panel.panel-default
-    .panel-heading = t('.title')
-    
-    .panel-body
-      = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), html: {class: 'form-horizontal' } ) do |form|
-        = form.input :email, :as => :email, placeholder: 'user@domain.com'
+/ PageHeader
 
-        .form-actions
-          = link_to t("cancel"), unauthenticated_root_path, class: 'btn btn-default'
-          = form.button :submit, :value => t("devise.passwords.new.commit"), class: 'btn-info'
+= pageheader '', t('.title')
+
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), html: {class: 'form-horizontal', id: 'password_form' } ) do |form|
+          .row
+            .col-lg-12
+              = form.input :email, :as => :email, placeholder: 'user@domain.com'
+
+          = form.button :submit, :value => t("devise.passwords.new.commit"), class: 'btn btn-default formSubmitr', form: 'invitation_form'
