@@ -67,7 +67,7 @@ RSpec.describe ZipService, type: :zip do
     end
   end
 
-  context 'one messed up' do 
+  context 'one messed up' do
     let( :zip_name ){ 'one_messed_up.zip' }
     let( :zip_content ){ messed_up_referential_data }
 
@@ -76,11 +76,30 @@ RSpec.describe ZipService, type: :zip do
                                 expected_foreign_lines: %w{C00110 C00111},
                                 expected_spurious: %w{SPURIOUS1 SPURIOUS2}
     end
-    
+
   end
+
+  # Regression treated in #5281
+  context 'one_first_level_dir' do
+    let( :zip_data ){ File.read fixtures_path('regression-5281.zip') }
+    let( :zip_name ){ 'regression_5281' }
+
+    let( :allowed_lines ){
+      Set.new([*164..168, 171].map{|line| "C00#{line}"})
+    }
+
+    let( :subdirs ){ subject.to_a }
+
+    it 'returns one not ok object' do
+      expect( subdirs.size ).to eq(1)
+      expect( subdirs.first ).not_to be_ok
+      expect( subdirs.first.spurious ).to eq(%w{OFFRE_SNTYO_1_20170820120001 OFFRE_SNTYO_2_20170820120001})
+    end
+  end
+
   # Behaviour
   # ---------
-  def expect_correct_subdir subdir, expected_zip 
+  def expect_correct_subdir subdir, expected_zip
     expect( subdir ).to be_ok
     expect( subdir.foreign_lines ).to be_empty
     expect( subdir.spurious ).to be_empty
@@ -144,6 +163,5 @@ RSpec.describe ZipService, type: :zip do
        'Referential5/offre_C00109_10.xml'  => 'line 109 ref 1'
     }
   end
-
 
 end

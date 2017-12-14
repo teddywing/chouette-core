@@ -57,7 +57,7 @@ class ZipService
         current_key,
         # Second part of the solution, yield the closed stream
         current_output.close_buffer,
-        current_spurious,
+        current_spurious.to_a,
         foreign_lines)
     end
   end
@@ -66,7 +66,7 @@ class ZipService
     @current_key    = entry_key
     # First piece of the solution, use internal way to create a Zip::OutputStream
     @current_output   = Zip::OutputStream.new(StringIO.new(''), true, nil)
-    @current_spurious = []
+    @current_spurious = Set.new
     @foreign_lines    = []
   end
 
