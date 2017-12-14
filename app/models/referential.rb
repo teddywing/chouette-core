@@ -305,8 +305,15 @@ class Referential < ActiveRecord::Base
     end
   end
 
+  attr_accessor :inline_clone
   def clone_schema
-    ReferentialCloning.create(source_referential: created_from, target_referential: self)
+    cloning = ReferentialCloning.new source_referential: created_from, target_referential: self
+
+    if inline_clone
+      cloning.clone!
+    else
+      cloning.save!
+    end
   end
 
   def create_schema
