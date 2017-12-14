@@ -162,6 +162,15 @@ crumb :line do |line|
   parent :lines, line.line_referential
 end
 
+crumb :business_calendars do
+  link I18n.t('business_calendars.index.title'), business_calendars_path
+end
+
+crumb :business_calendar do |calendar|
+  link breadcrumb_name(business_calendar), business_calendar_path(business_calendar)
+  parent :business_calendars
+end
+
 crumb :calendars do
   link I18n.t('calendars.index.title'), calendars_path
 end

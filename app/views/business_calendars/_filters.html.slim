@@ -1,0 +1,18 @@
+= search_form_for @q, url: business_calendars_path, builder: SimpleForm::FormBuilder, html: { method: :get, class: 'form form-filter' } do |f|
+  .ffg-row
+    .input-group.search_bar
+      = f.search_field :name_cont, class: 'form-control', placeholder: 'Indiquez un nom de calendrier commercial...'
+      span.input-group-btn
+        button.btn.btn-default#search_btn type='submit'
+          span.fa.fa-search
+
+  .form-group.togglable
+    = f.label BusinessCalendar.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
+    .filter_menu
+      = f.simple_fields_for :bounding_dates do |p|
+        = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
+        = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
+
+  .actions
+    = link_to 'Effacer', business_calendars_path, class: 'btn btn-link'
+    = f.submit 'Filtrer', id: 'calendar_filter_btn', class: 'btn btn-default'
