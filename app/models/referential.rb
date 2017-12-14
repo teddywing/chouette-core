@@ -296,13 +296,17 @@ class Referential < ActiveRecord::Base
     overlapped_referential_ids.present?
   end
 
-  validate :detect_overlapped_referentials
+  validate :detect_overlapped_referentials, unless: :in_referential_suite?
 
   def detect_overlapped_referentials
     self.class.where(id: overlapped_referential_ids).each do |referential|
       Rails.logger.info "Referential #{referential.id} #{referential.metadatas.inspect} overlaps #{metadatas.inspect}"
       errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", :referential => referential.name)
     end
+  end
+
+  def in_referential_suite?
+    referential_suite_id.present?
   end
 
   attr_accessor :inline_clone
