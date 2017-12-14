@@ -58,7 +58,6 @@ class WorkbenchImportWorker
     File.open(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"), 'wb') do |file|
       eg_stream.rewind
       file.write eg_stream.read
-      file.close
     end
 
     upload_entry_group_tmpfile eg_name, File.new(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"))
