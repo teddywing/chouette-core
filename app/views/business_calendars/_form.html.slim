@@ -1,0 +1,47 @@
+= simple_form_for @business_calendar, html: { class: 'form-horizontal', id: 'business_calendar_form' }, wrapper: :horizontal_form do |f|
+  .row
+    .col-lg-12
+      = f.input :name
+
+  .separator
+  
+  .row
+    .col-lg-12
+      .subform
+        .nested-head
+          .wrapper
+            div
+              .form-group
+                label.control-label
+                  = BusinessCalendar.human_attribute_name(:date)
+            div
+
+        = f.simple_fields_for :date_values do |date_value|
+          = render 'calendars/date_fields', f: date_value
+
+        .links.nested-linker
+          = link_to_add_association t('simple_form.labels.calendar.add_a_date'), f, :dates, class: 'btn btn-outline-primary'
+  
+  .separator
+  
+  .row
+    .col-lg-12
+      .subform
+        .nested-head
+          .wrapper
+            div
+              .form-group
+                label.control-label
+                  = t('simple_form.labels.calendar.ranges.begin')
+            div
+              .form-group
+                label.control-label
+                  = t('simple_form.labels.calendar.ranges.end')
+            div
+
+        = f.simple_fields_for :periods do |period|
+          = render 'period_fields', f: period
+        .links.nested-linker
+          = link_to_add_association t('simple_form.labels.calendar.add_a_date_range'), f, :periods, class: 'btn btn-outline-primary'
+
+  = f.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'business_calendar_form'

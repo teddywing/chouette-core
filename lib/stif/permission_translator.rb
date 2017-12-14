@@ -18,6 +18,7 @@ module Stif
       %w[
         access_points
         connection_links
+        business_calendars
         calendars
         footnotes
         imports

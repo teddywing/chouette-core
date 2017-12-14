@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130180144) do
+ActiveRecord::Schema.define(version: 20171214131755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,16 @@ ActiveRecord::Schema.define(version: 20171130180144) do
   end
 
   add_index "api_keys", ["organisation_id"], name: "index_api_keys_on_organisation_id", using: :btree
+
+  create_table "business_calendars", id: :bigserial, force: :cascade do |t|
+    t.string    "name"
+    t.string    "short_name"
+    t.string    "color"
+    t.date      "dates"
+    t.daterange "date_ranges"
+    t.datetime  "created_at",  null: false
+    t.datetime  "updated_at",  null: false
+  end
 
   create_table "calendars", id: :bigserial, force: :cascade do |t|
     t.string    "name"
@@ -402,9 +412,9 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
-    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
+    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 

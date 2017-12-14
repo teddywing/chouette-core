@@ -37,6 +37,13 @@ class User < ActiveRecord::Base
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
     self.permissions  = Stif::PermissionTranslator.translate(extra[:permissions])
+
+    %w{stop_areas lines companies business_calendars}.each do |resources|
+      %w{edit update create destroy}.each do |action|
+        self.permissions << "#{resources}.#{action}"
+      end
+    end
+
   end
 
   def self.portail_api_request
