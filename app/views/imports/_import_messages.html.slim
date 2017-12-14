@@ -6,4 +6,6 @@
       dt
         = import_message.criticity
       dd
-        = t ['imports', import_message.message_key].join('.'), import_message.message_attributes
+        = t( ['import_messages',
+          'compliance_check_messages',
+          import_message.message_key].join('.'), string_keys_to_symbols(import_message.message_attributes))
