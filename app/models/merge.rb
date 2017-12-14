@@ -35,11 +35,12 @@ class Merge < ActiveRecord::Base
         Rails.logger.debug "Create a new output"
         # 'empty' one
         attributes = {
+          workbench: workbench,
           organisation: workbench.organisation, # TODO could be workbench.organisation by default
           name: I18n.t("merges.referential_name"),
           slug: "output_#{workbench.id}_#{Time.now.to_i}"
         }
-        workbench.referentials.new attributes
+        workbench.output.referentials.new attributes
       end
 
     new.save!
@@ -52,13 +53,21 @@ class Merge < ActiveRecord::Base
     Rails.logger.debug "Merge #{referential.slug}"
     puts referential.metadatas.inspect
 
-    metadata_merger = MetadatasMerger.new new.metadatas, referential.metadatas
+    metadata_merger = MetadatasMerger.new new, referential
     metadata_merger.merge
 
-    metadata_merger.conflits.each do |line_id, periods|
-      # clean new on given period
+    new.metadatas.delete metadata_merger.empty_metadatas
+
+    new.save!
+    puts new.metadatas.inspect
+
+    referential.metadatas.each do |metadata|
+      metadata.line_ids.each do |line_id|
+        metadata.periodes.each do |period|
+          puts "Clean data for #{line_id} #{period}"
+        end
+      end
     end
-    metadata_merger.destroyed_metadatas.each(&:destroy)
 
     # let's merge data :)
   end
@@ -80,75 +89,65 @@ class Merge < ActiveRecord::Base
 
   class MetadatasMerger
 
-    attr_reader :merge, :metadatas
-    def initialize(merge, metadatas)
-      @merge, @metadatas = merge, metadatas
+    attr_reader :merge_metadatas, :referential
+    def initialize(merge_referential, referential)
+      @merge_metadatas = merge_referential.metadatas
+      @referential = referential
     end
 
+    delegate :metadatas, to: :referential, prefix: :referential
+
     def merge
-      metadatas.each do |metadata|
+      referential_metadatas.each do |metadata|
         merge_one metadata
       end
     end
 
-    def line_metadatas(line_id)
-      merge.select do |m|
+    def merged_line_metadatas(line_id)
+      merge_metadatas.select do |m|
         m.line_ids.include? line_id
       end
     end
 
-    def conflits
-      @conflits ||= Hash.new { |h,k| h[k] = [] }
-    end
-
-    def destroyed_metadatas
-      @destroyed_metadatas ||= []
-    end
-
     def merge_one(metadata)
       metadata.line_ids.each do |line_id|
-        line_metadatas = line_metadatas(line_id)
+        line_metadatas = merged_line_metadatas(line_id)
 
-        metadata.periodes do |period|
-          before = line_metadatas.find do |m|
-            m.periodes.any? { |p| p.include? period.begin }
+        metadata.periodes.each do |period|
+          puts "#{line_id} #{period}"
+
+          line_metadatas.each do |m|
+            m.periodes = m.periodes.map do |existing_period|
+              if period.begin <= existing_period.begin and
+                existing_period.end <= period.end
+                # between
+                nil
+              elsif existing_period.include? period.begin
+                # before
+                Range.new existing_period.begin, period.begin - 1
+              elsif existing_period.include? period.end
+                # after
+                Range.new period.end + 1, existing_period.end
+              end
+            end.compact
           end
 
-          if before
-            before.end = period.begin - 1
-          end
-
-          between = line_metadatas.select do |m|
-            m.periodes.any? do |p|
-              period.begin < p.begin && p.end < period.end
-            end
-          end
-
-          destroyed_metadatas.concat between
-
-          after = line_metadatas.find do |m|
-            m.periodes.any? { |p| p.include? period.end }
-          end
-
-          if after
-            after.begin = period.end + 1
-          end
-
-          if [before, between, after].any?(&:present?)
-            conflits[line_id] << period
-
-            attributes = {
-              line_ids: line_id,
-              periodes: [period],
-              referential_source_id: metadata.referential_source_id,
-              created_at: metadata.created_at
-            }
-            # line_metadatas should not contain conflicted metadatas
-            metadatas << ReferentialMetadata.new(attributes)
-          end
+          attributes = {
+            line_ids: [line_id],
+            periodes: [period],
+            referential_source_id: referential.id,
+            created_at: metadata.created_at
+          }
+          # line_metadatas should not contain conflicted metadatas
+          merge_metadatas << ReferentialMetadata.new(attributes)
         end
       end
     end
+
+    def empty_metadatas
+      merge_metadatas.select { |m| m.periodes.empty? }
+    end
+
 
   end
 
