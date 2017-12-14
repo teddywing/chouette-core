@@ -125,4 +125,19 @@ describe Referential, :type => :model do
     end
   end
 
+  context "used in a ReferentialSuite" do
+    before do
+      ref.referential_suite_id = 42
+    end
+
+    it "return true to in_referential_suite?" do
+      expect(ref.in_referential_suite?).to be(true)
+    end
+
+    it "don't use detect_overlapped_referentials in validation" do
+      expect(ref).to_not receive(:detect_overlapped_referentials)
+      ref.valid?
+    end
+  end
+
 end
