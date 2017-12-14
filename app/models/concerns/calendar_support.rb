@@ -13,7 +13,6 @@ module CalendarSupport
     
     def init_dates_and_date_ranges
       self.dates ||= []
-      binding.pry
       self.date_ranges ||= []
     end
      ### Calendar::Period
@@ -23,7 +22,6 @@ module CalendarSupport
     end
 
     def periods
-      binding.pry
       @periods ||= init_periods
     end
 
