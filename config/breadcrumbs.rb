@@ -6,6 +6,11 @@ crumb :workbench do |workbench|
   link workbench.name, workbench_path(workbench)
 end
 
+crumb :workbench_output do |workbench|
+  link I18n.t('workbench_outputs.show.title'), workbench_output_path(workbench)
+  parent :workbench, current_offer_workbench
+end
+
 crumb :referential do |referential|
   link breadcrumb_name(referential), referential_path(referential)
   parent :workbench, current_offer_workbench
