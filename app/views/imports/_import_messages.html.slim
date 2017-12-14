@@ -1,0 +1,9 @@
+
+- if import_messages.any?
+  dl
+  - import_messages.each do | import_message |
+    .error_message
+      dt
+        = import_message.criticity
+      dd
+        = t ['imports', import_message.message_key].join('.'), import_message.message_attributes

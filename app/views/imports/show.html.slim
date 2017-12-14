@@ -11,6 +11,9 @@
 
 - page_header_content_for @import
 
+.error_messages
+  = render 'import_messages', import_messages: @import.messages
+
 .page_content
   .container-fluid
     .row

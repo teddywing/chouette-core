@@ -84,7 +84,7 @@ class ZipService
   end
 
   def is_foreign_line! entry_name
-    STIF::NetexFile::Frame.get_line_object_id(entry_name).tap do | line_object_id |
+    STIF::NetexFile::Frame.get_short_id(entry_name).tap do | line_object_id |
       return nil unless line_object_id
       return nil if line_object_id.in? allowed_lines
       foreign_lines << line_object_id
