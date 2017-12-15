@@ -1,7 +1,7 @@
 - breadcrumb :business_calendars
 - content_for :page_header_actions do
   - if policy(BusinessCalendar).create?
-  = link_to(t('actions.add'), new_business_calendar_path, class: 'btn btn-default')
+    = link_to(t('actions.add'), new_business_calendar_path, class: 'btn btn-default')
 
 .page_content
   .container-fluid
@@ -19,7 +19,7 @@
                 key: :name, \
                 attribute: 'name', \
                 link_to: lambda do |business_calendar| \
-                  calendar_path(business_calendar) \
+                  business_calendar_path(business_calendar) \
                 end \
               ), \
               TableBuilderHelper::Column.new( \
@@ -27,15 +27,15 @@
                 attribute: Proc.new { |tt| tt.color ? content_tag(:span, '', class: 'fa fa-circle', style: "color:#{tt.color}") : '-' }\
               ), \
               TableBuilderHelper::Column.new( \
-                key: :created_at, \
-                attribute: 'created_at' \
+                key: :short_name, \
+                attribute: 'short_name' \
               ), \
               TableBuilderHelper::Column.new( \
-                key: :updated_at, \
-                attribute: 'updated_at' \
-              ) \
+                key: :organisation, \
+                attribute: Proc.new { |c| c.organisation.name } \
+              ), \
             ],
-            links: [:show, :edit],
+            #links: [:show, :edit],
             cls: 'table has-filter'
 
           = new_pagination @business_calendars, 'pull-right'

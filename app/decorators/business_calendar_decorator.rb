@@ -3,20 +3,21 @@ class BusinessCalendarDecorator < Draper::Decorator
 
   def action_links
     links = []
+    policy = h.policy(object)
 
-    if h.policy(object).update?
+    if policy.edit?
       links << Link.new(
-        content: h.update_link_content,
+        content: h.t('business_calendars.actions.edit'),
         href: h.edit_business_calendar_path(object)
       )
     end
 
-    if h.policy(object).destroy?
+    if policy.destroy?
       links << Link.new(
         content: h.destroy_link_content,
-        href: h.calendar_path(object),
+        href: h.business_calendar_path(object),
         method: :delete,
-        data: { confirm: h.t('calendars.actions.destroy_confirm') }
+        data: { confirm: h.t('business_calendars.actions.destroy_confirm') }
       )
     end
 

@@ -22,12 +22,10 @@ fr:
       10: Octobre
       11: Novembre
       12: Décembre
-    standard_calendars: Calendriers standards
-    standard_calendar: Calendrier standard
     actions:
-      new: Ajouter un calendrier commercial
-      edit: Editer cet calendrier commercial
-      destroy: Supprimer ce calendrier commercial
+      new: Créer
+      edit: Editer
+      destroy: Supprimer
       destroy_confirm: Etes vous sûr de supprimer cet calendrier commercial ?
     errors:
       overlapped_periods: Une autre période chevauche cette période

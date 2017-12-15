@@ -1,0 +1,21 @@
+- breadcrumb :business_calendar, @business_calendar
+- page_header_content_for @business_calendar
+- content_for :page_header_content do
+  .row.mb-sm
+    .col-lg-12.text-right
+      - @business_calendar.action_links.each do |link|
+        = link_to link.href,
+            method: link.method,
+            data: link.data,
+            class: 'btn btn-primary' do
+              = link.content
+
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { 'Nom court' => @business_calendar.try(:short_name),
+            'Organisation' => @business_calendar.organisation.name,
+            BusinessCalendar.human_attribute_name(:dates) =>  @business_calendar.dates.collect{|d| l(d, format: :short)}.join(', ').html_safe,
+            BusinessCalendar.human_attribute_name(:date_ranges) => @business_calendar.periods.map{|d| t('validity_range', debut: l(d.begin, format: :short), end: l(d.end, format: :short))}.join('<br>').html_safe }

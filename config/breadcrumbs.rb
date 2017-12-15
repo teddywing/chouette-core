@@ -166,7 +166,7 @@ crumb :business_calendars do
   link I18n.t('business_calendars.index.title'), business_calendars_path
 end
 
-crumb :business_calendar do |calendar|
+crumb :business_calendar do |business_calendar|
   link breadcrumb_name(business_calendar), business_calendar_path(business_calendar)
   parent :business_calendars
 end

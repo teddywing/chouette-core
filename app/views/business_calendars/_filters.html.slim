@@ -6,12 +6,11 @@
         button.btn.btn-default#search_btn type='submit'
           span.fa.fa-search
 
-  .form-group.togglable
-    = f.label BusinessCalendar.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
-    .filter_menu
-      = f.simple_fields_for :bounding_dates do |p|
-        = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
-        = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
+  .ffg-row
+    .form-group
+      = f.label BusinessCalendar.human_attribute_name(:date), class: 'control-label'
+      = f.input :contains_date, as: :date, label: false, wrapper_html: { class: 'date smart_date' }, class: 'form-control', include_blank: true
+
 
   .actions
     = link_to 'Effacer', business_calendars_path, class: 'btn btn-link'
