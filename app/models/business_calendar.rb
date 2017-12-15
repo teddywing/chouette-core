@@ -4,6 +4,8 @@ require_relative 'calendar/period'
 
 class BusinessCalendar < ActiveRecord::Base
   include CalendarSupport
+  extend Enumerize
+  enumerize :color, in: %w(#9B9B9B #FFA070 #C67300 #7F551B #41CCE3 #09B09C #3655D7 #6321A0 #E796C6 #DD2DAA)
 
   scope :overlapping, -> (period_range) do
     where("(periods.begin <= :end AND periods.end >= :begin) OR (dates BETWEEN :begin AND :end)", {begin: period_range.begin, end: period_range.end})

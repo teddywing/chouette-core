@@ -41,6 +41,8 @@ fr:
       date: Date
     new:
       title: Ajouter un calendrier commercial
+    create:
+      title: Ajouter un calendrier commercial
     edit:
       title: Editer le calendrier comercial %{name}
     show:

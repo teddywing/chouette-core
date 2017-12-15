@@ -24,7 +24,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :color, \
-                attribute: 'color'\
+                attribute: Proc.new { |tt| tt.color ? content_tag(:span, '', class: 'fa fa-circle', style: "color:#{tt.color}") : '-' }\
               ), \
               TableBuilderHelper::Column.new( \
                 key: :created_at, \

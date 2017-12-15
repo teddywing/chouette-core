@@ -41,6 +41,8 @@ fr:
       date: Date
     new:
       title: Ajouter un calendrier
+    create:
+      title: Ajouter un calendrier
     edit:
       title: Editer le calendrier %{name}
     show:
