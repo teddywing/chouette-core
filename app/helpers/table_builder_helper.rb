@@ -199,88 +199,92 @@ module TableBuilderHelper
     end
   end
 
+  def tr item, columns, selectable, links, overhead, model_name
+    klass = "#{model_name}-#{item.id}"
+    content_tag :tr, class: klass do
+      bcont = []
+      if selectable
+        disabled = selectable.respond_to?(:call) && !selectable.call(item)
+        bcont << content_tag(
+          :td,
+          checkbox(id_name: item.try(:id), value: item.try(:id), disabled: disabled)
+        )
+      end
+
+      columns.each do |column|
+        value = column.value(item)
+
+        if column.linkable?
+          path = column.link_to(item)
+          link = link_to(value, path)
+
+          if overhead.empty?
+            bcont << content_tag(:td, link, title: 'Voir')
+
+          else
+            i = columns.index(column)
+
+            if overhead[i].blank?
+              if (i > 0) && (overhead[i - 1][:width] > 1)
+                clsArrayAlt = overhead[i - 1][:cls].split
+
+                bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt))
+
+              else
+                bcont << content_tag(:td, link, title: 'Voir')
+              end
+
+            else
+              clsArray = overhead[columns.index(column)][:cls].split
+
+              bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray))
+            end
+          end
+
+        else
+          if overhead.empty?
+            bcont << content_tag(:td, value)
+
+          else
+            i = columns.index(column)
+
+            if overhead[i].blank?
+              if (i > 0) && (overhead[i - 1][:width] > 1)
+                clsArrayAlt = overhead[i - 1][:cls].split
+
+                bcont << content_tag(:td, value, class: td_cls(clsArrayAlt))
+
+              else
+                bcont << content_tag(:td, value)
+              end
+
+            else
+              clsArray = overhead[i][:cls].split
+
+              bcont << content_tag(:td, value, class: td_cls(clsArray))
+            end
+          end
+        end
+      end
+
+      if links.any? || item.try(:action_links).try(:any?)
+        bcont << content_tag(
+          :td,
+          build_links(item, links),
+          class: 'actions'
+        )
+      end
+
+      bcont.join.html_safe
+    end
+  end
+
   def tbody(collection, columns, selectable, links, overhead)
     model_name = TableBuilderHelper.item_row_class_name collection
 
     content_tag :tbody do
       collection.map do |item|
-        klass = "#{model_name}-#{item.id}"
-        content_tag :tr, class: klass do
-          bcont = []
-
-          if selectable
-            bcont << content_tag(
-              :td,
-              checkbox(id_name: item.try(:id), value: item.try(:id))
-            )
-          end
-
-          columns.each do |column|
-            value = column.value(item)
-
-            if column.linkable?
-              path = column.link_to(item)
-              link = link_to(value, path)
-
-              if overhead.empty?
-                bcont << content_tag(:td, link, title: 'Voir')
-
-              else
-                i = columns.index(column)
-
-                if overhead[i].blank?
-                  if (i > 0) && (overhead[i - 1][:width] > 1)
-                    clsArrayAlt = overhead[i - 1][:cls].split
-
-                    bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt))
-
-                  else
-                    bcont << content_tag(:td, link, title: 'Voir')
-                  end
-
-                else
-                  clsArray = overhead[columns.index(column)][:cls].split
-
-                  bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray))
-                end
-              end
-
-            else
-              if overhead.empty?
-                bcont << content_tag(:td, value)
-
-              else
-                i = columns.index(column)
-
-                if overhead[i].blank?
-                  if (i > 0) && (overhead[i - 1][:width] > 1)
-                    clsArrayAlt = overhead[i - 1][:cls].split
-
-                    bcont << content_tag(:td, value, class: td_cls(clsArrayAlt))
-
-                  else
-                    bcont << content_tag(:td, value)
-                  end
-
-                else
-                  clsArray = overhead[i][:cls].split
-
-                  bcont << content_tag(:td, value, class: td_cls(clsArray))
-                end
-              end
-            end
-          end
-
-          if links.any? || item.try(:action_links).try(:any?)
-            bcont << content_tag(
-              :td,
-              build_links(item, links),
-              class: 'actions'
-            )
-          end
-
-          bcont.join.html_safe
-        end
+        tr item, columns, selectable, links, overhead, model_name
       end.join.html_safe
     end
   end
@@ -355,13 +359,14 @@ module TableBuilderHelper
     end
   end
 
-  def checkbox(id_name:, value:)
+  def checkbox(id_name:, value:, disabled: false)
     content_tag :div, '', class: 'checkbox' do
-      check_box_tag(id_name, value).concat(
+      check_box_tag(id_name, value, nil, disabled: disabled).concat(
         content_tag(:label, '', for: id_name)
       )
     end
   end
+
   def gear_menu_link(link)
     content_tag(
       :li,

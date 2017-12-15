@@ -381,5 +381,86 @@ describe TableBuilderHelper, type: :helper do
 
       expect(beautified_html).to eq(expected.chomp)
     end
+
+    context "on a single row" do
+      let(:referential){ build_stubbed :referential }
+      let(:other_referential){ build_stubbed :referential }
+      let(:user_context){
+        UserContext.new(
+          build_stubbed(
+            :user,
+            organisation: referential.organisation,
+            permissions: [
+              'referentials.create',
+              'referentials.update',
+              'referentials.destroy',
+            ]
+          ),
+          referential: referential
+        )
+      }
+      let(:columns){
+        [
+          TableBuilderHelper::Column.new(
+            key: :name,
+            attribute: 'name'
+          ),
+        ]
+      }
+      let(:item){ referential.decorate }
+      let(:other_item){ other_referential.decorate }
+      let(:selectable){ false }
+      let(:links){ [:show] }
+      let(:overhead){ [] }
+      let(:model_name){ "referential" }
+      let(:other_tr){ helper.send(:tr, other_item, columns, selectable, links, overhead, model_name) }
+      let(:items){ [item, other_item] }
+
+      before(:each){
+        allow(helper).to receive(:current_user).and_return(user_context)
+      }
+
+      context "with all rows non-selectable" do
+        let(:selectable){ false }
+        it "sets all rows as non selectable" do
+          items.each do |i|
+            tr = helper.send(:tr, i, columns, selectable, links, overhead, model_name)
+            klass = "#{TableBuilderHelper.item_row_class_name([referential])}-#{i.id}"
+            selector = "tr.#{klass} [type=checkbox]"
+            expect(tr).to_not have_selector selector
+          end
+        end
+      end
+
+      context "with all rows selectable" do
+        let(:selectable){ true }
+        it "adds a checkbox in all rows" do
+          items.each do |i|
+            tr = helper.send(:tr, i, columns, selectable, links, overhead, model_name)
+            klass = "#{TableBuilderHelper.item_row_class_name([referential])}-#{i.id}"
+            selector = "tr.#{klass} [type=checkbox]"
+            expect(tr).to have_selector selector
+          end
+        end
+      end
+
+      context "with THIS row non selectable" do
+        let(:selectable){ ->(i){ i.id != item.id } }
+        it "adds a checkbox in all rows" do
+          items.each do |i|
+            tr = helper.send(:tr, i, columns, selectable, links, overhead, model_name)
+            klass = "#{TableBuilderHelper.item_row_class_name([referential])}-#{i.id}"
+            selector = "tr.#{klass} [type=checkbox]"
+            expect(tr).to have_selector selector
+          end
+        end
+        it "disables this rows checkbox" do
+          tr = helper.send(:tr, item, columns, selectable, links, overhead, model_name)
+          klass = "#{TableBuilderHelper.item_row_class_name([referential])}-#{item.id}"
+          selector = "tr.#{klass} [type=checkbox][disabled]"
+          expect(tr).to have_selector selector
+        end
+      end
+    end
   end
 end
