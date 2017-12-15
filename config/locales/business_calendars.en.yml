@@ -22,8 +22,6 @@ en:
       10: October
       11: November
       12: December
-    standard_calendars: Standard calendars
-    standard_calendar: Standard calendar
     actions:
       new: Add a new business calendar
       edit: Edit this business calendar

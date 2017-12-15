@@ -1,14 +1,13 @@
 class BusinessCalendarsController < ChouetteController
   include PolicyChecker
-  include RansackDateFilter
   defaults resource_class: BusinessCalendar
-  before_action only: [:index] { set_date_time_params("bounding_dates", Date) }
+  before_action :ransack_contains_date, only: [:index]
+  respond_to :html
+  respond_to :js, only: :index
 
   def index
     index! do
-      scope = self.ransack_period_range(scope: @business_calendars, error_message: t('compliance_check_sets.filters.error_period_filter'), query: :overlapping)
-      @q = scope.ransack(params[:q])
-      @business_calendars = decorate_business_calendars(@q.result.paginate(page: params[:page], per_page: 30))
+      @business_calendars = ModelDecorator.decorate(@business_calendars, with: BusinessCalendarDecorator)
     end
   end
 
@@ -18,16 +17,62 @@ class BusinessCalendarsController < ChouetteController
     end
   end
 
+  def create
+    puts "CREATE"
+    puts build_resource.inspect
+    create!
+  end
+
   private
-
   def business_calendar_params
-    permitted_params = [:id, :name, :short_name, :color, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]
-    params.require(:business_calendar).permit(*permitted_params)
+    params.require(:business_calendar).permit(
+      :id,
+      :name,
+      :short_name,
+      :color,
+      periods_attributes: [:id, :begin, :end, :_destroy],
+      date_values_attributes: [:id, :value, :_destroy])
   end
 
-  def decorate_business_calendars(business_calendars)
-    ModelDecorator.decorate(
-      business_calendars,
-      with: BusinessCalendarDecorator)
+  def sort_column
+    BusinessCalendar.column_names.include?(params[:sort]) ? params[:sort] : 'short_name'
   end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  protected
+
+  def begin_of_association_chain
+    current_organisation
+  end
+  #
+  # def build_resource
+  #   @business_calendar ||= current_organisation.business_calendars.new
+  # end
+  #
+  # def resource
+  #   @business_calendar ||= current_organisation.business_calendars.find(params[:id])
+  # end
+
+  def collection
+    @q = current_organisation.business_calendars.ransack(params[:q])
+
+    business_calendars = @q.result
+    business_calendars = business_calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
+    @business_calendars = business_calendars.paginate(page: params[:page])
+  end
+
+  def ransack_contains_date
+    date =[]
+    if params[:q] && !params[:q]['contains_date(1i)'].empty?
+      ['contains_date(1i)', 'contains_date(2i)', 'contains_date(3i)'].each do |key|
+        date << params[:q][key].to_i
+        params[:q].delete(key)
+      end
+      params[:q]['contains_date'] = Date.new(*date) rescue nil
+    end
+  end
+
 end
