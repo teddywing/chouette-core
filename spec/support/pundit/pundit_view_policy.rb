@@ -5,8 +5,9 @@ module Pundit
     included do
 
       let(:permissions){ nil }
-      let(:current_referential){ build_stubbed :referential }
-      let(:current_user){ build_stubbed :user, permissions: permissions }
+      let(:organisation){ referential.try(:organisation) }
+      let(:current_referential){ referential || build_stubbed(:referential) }
+      let(:current_user){ build_stubbed :user, permissions: permissions, organisation: organisation }
       let(:pundit_user){ UserContext.new(current_user, referential: current_referential) }
       before do
         allow(view).to receive(:pundit_user) { pundit_user }
