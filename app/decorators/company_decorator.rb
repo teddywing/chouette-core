@@ -18,13 +18,6 @@ class CompanyDecorator < Draper::Decorator
   def action_links
     links = []
 
-    if h.policy(Chouette::Company).create?
-      links << Link.new(
-        content: h.t('companies.actions.new'),
-        href: h.new_line_referential_company_path(context[:referential])
-      )
-    end
-
     if h.policy(object).update?
       links << Link.new(
         content: h.t('companies.actions.edit'),
@@ -37,7 +30,7 @@ class CompanyDecorator < Draper::Decorator
 
     if h.policy(object).destroy?
       links << Link.new(
-        content: h.t('companies.actions.destroy'),
+        content: h.destroy_link_content('companies.actions.destroy'),
         href: h.line_referential_company_path(
           context[:referential],
           object
