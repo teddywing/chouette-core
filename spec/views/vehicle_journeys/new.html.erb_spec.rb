@@ -9,6 +9,7 @@ describe "/vehicle_journeys/new", :type => :view do
 
   it "renders _form" do
     render
+      require 'pry'; binding.pry
     expect(view).to render_template(:partial => "_form")
   end
 

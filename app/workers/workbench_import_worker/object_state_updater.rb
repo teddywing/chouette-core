@@ -14,7 +14,7 @@ class WorkbenchImportWorker
     def update_foreign_lines entry
       return if entry.foreign_lines.empty?
       workbench_import.messages.create(
-        criticity: :warning,
+        criticity: :error,
         message_key: 'foreign_lines_in_referential',
         message_attributes: {
           'source_filename' => workbench_import.file.file.file,
@@ -25,7 +25,7 @@ class WorkbenchImportWorker
     def update_spurious entry
       return if entry.spurious.empty?
       workbench_import.messages.create(
-        criticity: :warning,
+        criticity: :error,
         message_key: 'inconsistent_zip_file',
         message_attributes: {
           'source_filename' => workbench_import.file.file.file,
