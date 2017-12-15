@@ -7,7 +7,6 @@ describe "workbenches/show", :type => :view do
       create :line, objectid: id, line_referential: workbench.line_referential
     end
   }
-
   let!(:workbench){ assign :workbench, create(:workbench) }
   let!(:same_organisation_referential){ create :workbench_referential, workbench: workbench, metadatas: [create(:referential_metadata, lines: lines)] }
   let!(:different_organisation_referential){ create :workbench_referential, metadatas: [create(:referential_metadata, lines: lines)] }
@@ -17,7 +16,6 @@ describe "workbenches/show", :type => :view do
   }
   let!(:q) { assign :q_for_form, Ransack::Search.new(Referential) }
   before :each do
-
     lines
     controller.request.path_parameters[:id] = workbench.id
     expect(workbench.referentials).to include same_organisation_referential
