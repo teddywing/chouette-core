@@ -95,6 +95,18 @@ module TableBuilderHelper
       class: cls
   end
 
+  def self.item_row_class_name collection
+    if collection.respond_to?(:model)
+      model_name = collection.model.name
+    elsif collection.respond_to?(:first)
+      model_name = collection.first.class.name
+    else
+      model_name = "item"
+    end
+
+    model_name.split("::").last.parameterize
+  end
+
   private
 
   def thead(collection, columns, sortable, selectable, has_links, overhead, model )
@@ -188,15 +200,11 @@ module TableBuilderHelper
   end
 
   def tbody(collection, columns, selectable, links, overhead)
-    if collection.respond_to?(:model)
-      model_name = collection.model.name.split("::").last
-    else
-      model_name = "item"
-    end
+    model_name = TableBuilderHelper.item_row_class_name collection
 
     content_tag :tbody do
       collection.map do |item|
-        klass = "#{model_name.parameterize}-#{item.id}"
+        klass = "#{model_name}-#{item.id}"
         content_tag :tr, class: klass do
           bcont = []
 
