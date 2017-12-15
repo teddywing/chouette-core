@@ -21,7 +21,7 @@ class BusinessCalendarsController < ChouetteController
   private
 
   def business_calendar_params
-    permitted_params = [:id, :name, :short_name, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]
+    permitted_params = [:id, :name, :short_name, :color, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]
     params.require(:business_calendar).permit(*permitted_params)
   end
 

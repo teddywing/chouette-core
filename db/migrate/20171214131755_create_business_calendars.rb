@@ -4,8 +4,9 @@ class CreateBusinessCalendars < ActiveRecord::Migration
       t.string :name
       t.string :short_name
       t.string :color
-      t.date :dates
-      t.daterange :date_ranges
+      t.daterange :date_ranges, array: true
+      t.date :dates, array: true
+      t.belongs_to :organisation, index: true
 
       t.timestamps null: false
     end
