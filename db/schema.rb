@@ -85,11 +85,14 @@ ActiveRecord::Schema.define(version: 20171214130636) do
     t.string    "name"
     t.string    "short_name"
     t.string    "color"
-    t.date      "dates"
-    t.daterange "date_ranges"
-    t.datetime  "created_at",  null: false
-    t.datetime  "updated_at",  null: false
+    t.daterange "date_ranges",                  array: true
+    t.date      "dates",                        array: true
+    t.integer   "organisation_id"
+    t.datetime  "created_at",      null: false
+    t.datetime  "updated_at",      null: false
   end
+
+  add_index "business_calendars", ["organisation_id"], name: "index_business_calendars_on_organisation_id", using: :btree
 
   create_table "calendars", id: :bigserial, force: :cascade do |t|
     t.string    "name"
@@ -413,9 +416,9 @@ ActiveRecord::Schema.define(version: 20171214130636) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 

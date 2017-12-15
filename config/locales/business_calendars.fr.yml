@@ -1,0 +1,76 @@
+fr:
+  business_calendars:
+    search_no_results: 'Aucun calendrier commercial ne correspond à votre recherche'
+    days:
+      monday: L
+      tuesday: Ma
+      wednesday: Me
+      thursday: J
+      friday: V
+      saturday: S
+      sunday: D
+    months:
+      1: Janvier
+      2: Février
+      3: Mars
+      4: Avril
+      5: Mai
+      6: Juin
+      7: Juillet
+      8: Août
+      9: Septembre
+      10: Octobre
+      11: Novembre
+      12: Décembre
+    standard_calendars: Calendriers standards
+    standard_calendar: Calendrier standard
+    actions:
+      new: Ajouter un calendrier commercial
+      edit: Editer cet calendrier commercial
+      destroy: Supprimer ce calendrier commercial
+      destroy_confirm: Etes vous sûr de supprimer cet calendrier commercial ?
+    errors:
+      overlapped_periods: Une autre période chevauche cette période
+      short_period: Une période doit être d'un duréé de deux jours minimum
+    index:
+      title: Calendriers commerciaux
+      all: Tous
+      shared: Partagées
+      not_shared: Non partagées
+      search_no_results: Aucun calendrier commercial ne correspond à votre recherche
+      date: Date
+    new:
+      title: Ajouter un calendrier commercial
+    edit:
+      title: Editer le calendrier comercial %{name}
+    show:
+      title: Calendrier commercial %{name}
+  simple_form:
+    labels:
+      calendar:
+        date_value: Date
+        add_a_date: Ajouter une date
+        add_a_date_range: Ajouter un intervalle de dates
+        ranges:
+          begin: Début
+          end: Fin
+  activerecord:
+    models:
+      one: "calendrier commercial"
+      other: "calendriers commerciaux"
+    attributes:
+      business_calendar:
+        name: Nom
+        short_name: Nom court
+        date_ranges: Intervalles de dates
+        dates: Dates
+        organisation: Organisation
+        color: Couleur
+    errors:
+      models:
+        business_calendar:
+          attributes:
+            dates:
+              date_in_date_ranges: Une même date ne peut pas être incluse à la fois dans la liste et dans les intervalles de dates.
+              date_in_dates: Une même date ne peut pas être incluse plusieurs fois dans la liste.
+              illegal_date: La date %{date} n'existe pas.

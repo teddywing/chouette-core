@@ -4,7 +4,9 @@ require_relative 'calendar/period'
 
 class Calendar < ActiveRecord::Base
   include CalendarSupport
-  
+
+  has_many :time_tables
+
   scope :contains_date, ->(date) { where('date ? = any (dates) OR date ? <@ any (date_ranges)', date, date) }
 
   def self.ransackable_scopes(auth_object = nil)

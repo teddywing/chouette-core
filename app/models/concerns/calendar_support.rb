@@ -1,16 +1,15 @@
 module CalendarSupport
   extend ActiveSupport::Concern
-  
+
   included do
     has_paper_trail
     belongs_to :organisation
-    has_many :time_tables
 
     validates_presence_of :name, :short_name, :organisation
     validates_uniqueness_of :short_name
     after_initialize :init_dates_and_date_ranges
-    
-    
+
+
     def init_dates_and_date_ranges
       self.dates ||= []
       self.date_ranges ||= []
