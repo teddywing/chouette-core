@@ -39,6 +39,8 @@ en:
       not_shared: Not shared
       search_no_results: No business calendar matching your query
       date: Date
+    create:
+      title: Add a new business calendar
     new:
       title: Add a new business calendar
     edit:

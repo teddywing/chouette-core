@@ -41,6 +41,8 @@ en:
       date: Date
     new:
       title: Add a new calendar
+    create:
+      title: Add a new calendar
     edit:
       title: Update calendar %{name}
     show:

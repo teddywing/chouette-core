@@ -3,7 +3,7 @@
     .col-lg-12
       = f.input :name
       = f.input :short_name
-      = f.input :color
+      = f.input :color, as: :select, collection: BusinessCalendar.color.values, label_method: lambda { |c| color_diplsay(c) }
 
   .separator
 
