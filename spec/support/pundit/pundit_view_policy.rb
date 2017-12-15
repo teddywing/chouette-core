@@ -3,14 +3,16 @@ module Pundit
     extend ActiveSupport::Concern
 
     included do
+
+      let(:permissions){ nil }
+      let(:current_referential){ build_stubbed :referential }
+      let(:current_user){ build_stubbed :user, permissions: permissions }
+      let(:pundit_user){ UserContext.new(current_user, referential: current_referential) }
       before do
-        controller.singleton_class.class_eval do
-          def policy(instance)
-            Class.new do
-              def method_missing(*args, &block); true; end
-            end.new
-          end
-          helper_method :policy
+        allow(view).to receive(:pundit_user) { pundit_user }
+
+        allow(view).to receive(:policy) do |instance|
+          ::Pundit.policy pundit_user, instance
         end
       end
     end

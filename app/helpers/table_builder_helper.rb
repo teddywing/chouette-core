@@ -188,10 +188,16 @@ module TableBuilderHelper
   end
 
   def tbody(collection, columns, selectable, links, overhead)
+    if collection.respond_to?(:model)
+      model_name = collection.model.name.split("::").last
+    else
+      model_name = "item"
+    end
+
     content_tag :tbody do
       collection.map do |item|
-
-        content_tag :tr do
+        klass = "#{model_name.parameterize}-#{item.id}"
+        content_tag :tr, class: klass do
           bcont = []
 
           if selectable
