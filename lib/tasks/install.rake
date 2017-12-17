@@ -21,3 +21,23 @@ task :package do
   sh "tar -czf stif-boiv-#{release_name}.tar.gz -C tmp/package ."
   sh "rm -rf tmp/package vendor/cache"
 end
+
+desc "generate all-in-1 tar.gz package for docker"
+task :pkg4docker do
+  release_name = Time.now.strftime('%Y%m%d%H%M%S')
+
+  rm_rf "tmp/package"
+  mkdir_p "tmp/package"
+
+  sh "git archive --format=tar --output=tmp/package/stif-boiv-release-#{release_name}.tar HEAD"
+
+  sh "bundle package --all"
+  sh "RAILS_DB_ADAPTER=nulldb bundle exec rake assets:clobber RAILS_ENV=production"
+  sh "RAILS_DB_ADAPTER=nulldb bundle exec rake assets:precompile RAILS_ENV=production"
+  sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar vendor/cache"
+  sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar public/assets"
+
+  sh "gzip -c tmp/package/stif-boiv-release-#{release_name}.tar > tmp/stif-boiv-release.tar.gz"
+
+  sh "rm -rf tmp/package vendor/cache"
+end
