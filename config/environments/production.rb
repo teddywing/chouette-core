@@ -106,12 +106,12 @@ Rails.application.configure do
     "type": "cas",
     "cas_server": "https://portail.stif.info/sessions",
     "cas_validate_url": "http://portail.stif.info/sessions/proxyValidate"
-  }',{symbolize_names: true}))
+  }'),{symbolize_names: true})
 
   config.stif_portail_api = JSON.parse(ENV.fetch('SESAME_API_SETTINGS','{
     "key": "xxxxxxxxxxx",
     "url": "http://portail.stif.info"
-  }',{symbolize_names: true}))
+  }'),{symbolize_names: true})
 
   # file to data for demo
   # config.demo_data = "/path/to/demo.zip"
