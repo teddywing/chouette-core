@@ -118,26 +118,17 @@ class Merge < ActiveRecord::Base
 
           line_metadatas.each do |m|
             m.periodes = m.periodes.map do |existing_period|
-              if period.begin <= existing_period.begin and
-                existing_period.end <= period.end
-                # between
-                nil
-              elsif existing_period.include? period.begin
-                # before
-                Range.new existing_period.begin, period.begin - 1
-              elsif existing_period.include? period.end
-                # after
-                Range.new period.end + 1, existing_period.end
-              end
-            end.compact
+              existing_period.remove period
+            end.flatten
           end
 
           attributes = {
             line_ids: [line_id],
             periodes: [period],
             referential_source_id: referential.id,
-            created_at: metadata.created_at
+            created_at: metadata.created_at # TODO check required dates
           }
+
           # line_metadatas should not contain conflicted metadatas
           merge_metadatas << ReferentialMetadata.new(attributes)
         end
