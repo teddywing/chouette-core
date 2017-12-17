@@ -144,6 +144,18 @@ class Referential < ActiveRecord::Base
     Chouette::PurchaseWindow.all
   end
 
+  def routes
+    Chouette::Route.all
+  end
+
+  def journey_patterns
+    Chouette::JourneyPattern.all
+  end
+
+  def stop_points
+    Chouette::StopPoint.all
+  end
+
   before_validation :define_default_attributes
 
   def define_default_attributes
@@ -151,10 +163,22 @@ class Referential < ActiveRecord::Base
     self.objectid_format ||= workbench.objectid_format if workbench
   end
 
-  def switch
+  def switch(&block)
     raise "Referential not created" if new_record?
-    Apartment::Tenant.switch!(slug)
-    self
+
+    unless block_given?
+      Rails.logger.debug "Referential switch to #{slug}"
+      Apartment::Tenant.switch! slug
+      self
+    else
+      result = nil
+      Apartment::Tenant.switch slug do
+        Rails.logger.debug "Referential switch to #{slug}"
+        result = yield
+      end
+      Rails.logger.debug "Referential back"
+      result
+    end
   end
 
   def self.new_from(from, functional_scope)

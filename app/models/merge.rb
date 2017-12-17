@@ -70,6 +70,109 @@ class Merge < ActiveRecord::Base
     end
 
     # let's merge data :)
+
+    # Routes
+
+    referential_routes = referential.switch do
+      referential.routes.all.to_a
+    end
+
+    new.switch do
+      referential_routes.each do |route|
+        existing_route = new.routes.find_by line_id: route.line_id, checksum: route.checksum
+        unless existing_route
+          attributes = route.attributes.merge(
+            id: nil,
+            objectid: "merge:route:#{route.checksum}", #FIXME
+            # line_id is the same
+            # all other primary must be changed
+            opposite_route_id: nil #FIXME
+          )
+          new_route = new.routes.create! attributes
+
+          # FIXME Route checksum changes if stop points are not defined
+          if new_route.checksum != route.checksum
+            raise "Checksum has changed: #{route.inspect} #{new_route.inspect}"
+          end
+        end
+      end
+    end
+
+    referential_routes_checksums = Hash[referential_routes.map { |r| [ r.id, r.checksum ] }]
+
+    # Stop Points
+
+    referential_stop_points = referential.switch do
+      referential.stop_points.all.to_a
+    end
+
+    new.switch do
+      referential_stop_points.each do |stop_point|
+        # find parent route by checksum
+        associated_route_checksum = referential_routes_checksums[stop_point.route_id]
+        existing_associated_route = new.routes.find_by checksum: associated_route_checksum
+
+        existing_stop_point = new.stop_points.find_by route_id: existing_associated_route.id, checksum: stop_point.checksum
+        unless existing_stop_point
+          attributes = stop_point.attributes.merge(
+            id: nil,
+
+            objectid: "merge:stop_point:#{existing_associated_route.checksum}-#{stop_point.checksum}", #FIXME
+
+            # all other primary must be changed
+            route_id: existing_associated_route.id,
+          )
+
+          new_stop_point = new.stop_points.create! attributes
+          if new_stop_point.checksum != stop_point.checksum
+            raise "Checksum has changed: #{stop_point.inspect} #{new_stop_point.inspect}"
+          end
+        end
+      end
+    end
+
+    referential_stop_points_checksums = Hash[referential_stop_points.map { |r| [ r.id, r.checksum ] }]
+
+    # JourneyPatterns
+
+    referential_journey_patterns = referential.switch do
+      referential.journey_patterns.all.to_a
+    end
+
+    new.switch do
+      referential_journey_patterns.each do |journey_pattern|
+        # find parent route by checksum
+        associated_route_checksum = referential_routes_checksums[journey_pattern.route_id]
+        existing_associated_route = new.routes.find_by checksum: associated_route_checksum
+
+        existing_journey_pattern = new.journey_patterns.find_by route_id: existing_associated_route.id, checksum: journey_pattern.checksum
+
+        unless existing_journey_pattern
+          attributes = journey_pattern.attributes.merge(
+            id: nil,
+
+            objectid: "merge:journey_pattern:#{existing_associated_route.checksum}-#{journey_pattern.checksum}", #FIXME
+
+            # all other primary must be changed
+            route_id: existing_associated_route.id,
+
+            departure_stop_point_id: nil, # FIXME
+            arrival_stop_point_id: nil
+          )
+
+          stop_points = journey_pattern.stop_point_ids.map do |stop_point_id|
+            associated_stop_point_checksum = referential_stop_points_checksums[stop_point_id]
+            new.stop_points.find_by checksum: associated_stop_point_checksum
+          end
+          attributes.merge!(stop_points: stop_points)
+
+          new_journey_pattern = new.journey_patterns.create! attributes
+          if new_journey_pattern.checksum != journey_pattern.checksum
+            raise "Checksum has changed: #{journey_pattern.inspect} #{new_journey_pattern.inspect}"
+          end
+        end
+      end
+    end
   end
 
   def save_current
