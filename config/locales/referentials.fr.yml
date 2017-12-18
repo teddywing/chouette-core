@@ -123,6 +123,7 @@ fr:
   notice:
     referentials:
       deleted: "Les jeux de données on été supprimés"
+      duplicate: "La duplication est en cours, veuillez patienter. Actualiser votre page si vous voulez voir l'avancement de votre traitement."
       validate: "La validation est en cours, veuillez patienter. Actualiser votre page si vous voulez voir l'avancement de votre traitement."
     referential:
       archived: "Le jeu de données a été correctement conservé"

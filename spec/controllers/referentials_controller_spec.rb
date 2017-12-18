@@ -42,4 +42,21 @@ describe ReferentialsController, :type => :controller do
       )
     end
   end
+
+  describe "POST #create" do
+    context "when duplicating" do
+      it "displays a flash message" do
+        post :create,
+          from: referential.id,
+          current_workbench_id: referential.workbench_id,
+          referential: {
+            name: 'Duplicated'
+          }
+
+        expect(controller).to set_flash[:notice].to(
+          I18n.t('notice.referentials.duplicate')
+        )
+      end
+    end
+  end
 end
