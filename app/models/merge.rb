@@ -51,7 +51,6 @@ class Merge < ActiveRecord::Base
 
   def merge_referential(referential)
     Rails.logger.debug "Merge #{referential.slug}"
-    puts referential.metadatas.inspect
 
     metadata_merger = MetadatasMerger.new new, referential
     metadata_merger.merge
@@ -59,11 +58,11 @@ class Merge < ActiveRecord::Base
     new.metadatas.delete metadata_merger.empty_metadatas
 
     new.save!
-    puts new.metadatas.inspect
 
     referential.metadatas.each do |metadata|
       metadata.line_ids.each do |line_id|
         metadata.periodes.each do |period|
+          # TODO
           puts "Clean data for #{line_id} #{period}"
         end
       end
@@ -77,6 +76,14 @@ class Merge < ActiveRecord::Base
       referential.routes.all.to_a
     end
 
+    referential_routes_checksums = Hash[referential_routes.map { |r| [ r.id, r.checksum ] }]
+
+    referential_stop_points = referential.switch do
+      referential.stop_points.all.to_a
+    end
+
+    referential_stop_points_by_route = referential_stop_points.group_by(&:route_id)
+
     new.switch do
       referential_routes.each do |route|
         existing_route = new.routes.find_by line_id: route.line_id, checksum: route.checksum
@@ -88,7 +95,22 @@ class Merge < ActiveRecord::Base
             # all other primary must be changed
             opposite_route_id: nil #FIXME
           )
-          new_route = new.routes.create! attributes
+          new_route = new.routes.build attributes
+
+          route_stop_points = referential_stop_points_by_route[route.id]
+
+          # Stop Points
+          route_stop_points.each do |stop_point|
+            attributes = stop_point.attributes.merge(
+              id: nil,
+              route_id: nil,
+              objectid: "merge:stop_point:#{route.checksum}-#{stop_point.position}", #FIXME
+            )
+
+            new_route.stop_points.build attributes
+          end
+
+          new_route.save!
 
           # FIXME Route checksum changes if stop points are not defined
           if new_route.checksum != route.checksum
@@ -98,45 +120,18 @@ class Merge < ActiveRecord::Base
       end
     end
 
-    referential_routes_checksums = Hash[referential_routes.map { |r| [ r.id, r.checksum ] }]
-
-    # Stop Points
-
-    referential_stop_points = referential.switch do
-      referential.stop_points.all.to_a
-    end
-
-    new.switch do
-      referential_stop_points.each do |stop_point|
-        # find parent route by checksum
-        associated_route_checksum = referential_routes_checksums[stop_point.route_id]
-        existing_associated_route = new.routes.find_by checksum: associated_route_checksum
-
-        existing_stop_point = new.stop_points.find_by route_id: existing_associated_route.id, checksum: stop_point.checksum
-        unless existing_stop_point
-          attributes = stop_point.attributes.merge(
-            id: nil,
-
-            objectid: "merge:stop_point:#{existing_associated_route.checksum}-#{stop_point.checksum}", #FIXME
-
-            # all other primary must be changed
-            route_id: existing_associated_route.id,
-          )
-
-          new_stop_point = new.stop_points.create! attributes
-          if new_stop_point.checksum != stop_point.checksum
-            raise "Checksum has changed: #{stop_point.inspect} #{new_stop_point.inspect}"
-          end
-        end
-      end
-    end
-
-    referential_stop_points_checksums = Hash[referential_stop_points.map { |r| [ r.id, r.checksum ] }]
-
     # JourneyPatterns
 
-    referential_journey_patterns = referential.switch do
-      referential.journey_patterns.all.to_a
+    referential_journey_patterns, referential_journey_patterns_stop_areas_objectids = referential.switch do
+      journey_patterns = referential.journey_patterns.includes(:stop_points)
+
+      journey_patterns_stop_areas_objectids = Hash[
+        journey_patterns.map do |journey_pattern|
+          [ journey_pattern.id, journey_pattern.stop_points.map(&:stop_area).map(&:objectid)]
+        end
+      ]
+
+      [journey_patterns, journey_patterns_stop_areas_objectids]
     end
 
     new.switch do
@@ -160,15 +155,14 @@ class Merge < ActiveRecord::Base
             arrival_stop_point_id: nil
           )
 
-          stop_points = journey_pattern.stop_point_ids.map do |stop_point_id|
-            associated_stop_point_checksum = referential_stop_points_checksums[stop_point_id]
-            new.stop_points.find_by checksum: associated_stop_point_checksum
-          end
+          stop_areas_objectids = referential_journey_patterns_stop_areas_objectids[journey_pattern.id]
+
+          stop_points = existing_associated_route.stop_points.joins(:stop_area).where("stop_areas.objectid": stop_areas_objectids).order(:position)
           attributes.merge!(stop_points: stop_points)
 
           new_journey_pattern = new.journey_patterns.create! attributes
           if new_journey_pattern.checksum != journey_pattern.checksum
-            raise "Checksum has changed: #{journey_pattern.inspect} #{new_journey_pattern.inspect}"
+            raise "Checksum has changed: #{journey_pattern.checksum_source} #{new_journey_pattern.checksum_source}"
           end
         end
       end
@@ -217,8 +211,6 @@ class Merge < ActiveRecord::Base
         line_metadatas = merged_line_metadatas(line_id)
 
         metadata.periodes.each do |period|
-          puts "#{line_id} #{period}"
-
           line_metadatas.each do |m|
             m.periodes = m.periodes.map do |existing_period|
               existing_period.remove period

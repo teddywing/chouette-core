@@ -23,7 +23,7 @@ RSpec.describe Merge do
       line_referential.lines.each do |line|
         3.times do
           stop_areas = stop_area_referential.stop_areas.order("random()").limit(5)
-          FactoryGirl.create :route, line: line, stop_areas: stop_areas
+          FactoryGirl.create :route, line: line, stop_areas: stop_areas, stop_points_count: 0
         end
       end
 
