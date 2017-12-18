@@ -7,15 +7,18 @@ class Chouette::AreaType
 
   def self.all=(values)
     @@all = ALL & values
-
-    @@instances = {}
-    @@options = nil
+    reset_caches!
   end
 
   @@instances = {}
   def self.find(code)
     code = code.to_sym
     @@instances[code] ||= new(code) if ALL.include? code
+  end
+
+  def self.reset_caches!
+    @@instances = {}
+    @@options = nil
   end
 
   def self.options
