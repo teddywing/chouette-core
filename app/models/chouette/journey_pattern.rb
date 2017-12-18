@@ -27,7 +27,7 @@ module Chouette
 
     def checksum_attributes
       values = self.slice(*['name', 'published_name', 'registration_number']).values
-      values << self.stop_points.map(&:stop_area).map(&:user_objectid)
+      values << self.stop_points.sort_by(&:position).map(&:stop_area).map(&:user_objectid)
       values.flatten
     end
 
