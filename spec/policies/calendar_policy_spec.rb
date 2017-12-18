@@ -7,6 +7,9 @@ RSpec.describe CalendarPolicy, type: :policy do
   permissions :create? do
     it_behaves_like 'permitted policy', 'calendars.create', archived: true
   end
+  permissions :share? do
+    it_behaves_like 'permitted policy and same organisation', 'calendars.share', archived: true
+  end
   permissions :destroy? do
     it_behaves_like 'permitted policy and same organisation', 'calendars.destroy', archived: true
   end
