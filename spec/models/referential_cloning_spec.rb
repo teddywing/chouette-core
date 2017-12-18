@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe ReferentialCloning, :type => :model do
-  alias_method :referential_cloning, :subject
 
   it 'should have a valid factory' do
     expect(FactoryGirl.build(:referential_cloning)).to be_valid
@@ -66,12 +65,12 @@ RSpec.describe ReferentialCloning, :type => :model do
 
     it "defines started_at" do
       referential_cloning.clone!
-      expect(referential_cloning.started_at).not_to be(nil)
+      expect(referential_cloning.started_at).not_to be_nil
     end
 
     it "defines ended_at" do
       referential_cloning.clone!
-      expect(referential_cloning.ended_at).not_to be(nil)
+      expect(referential_cloning.ended_at).not_to be_nil
     end
 
   end
