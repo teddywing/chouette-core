@@ -74,7 +74,7 @@ fr:
         deactivated: "Activé"
         name: "Nom de la ligne"
         published_name: "Nom public"
-        number: "Nom court"
+        number: "Numéro"
         transport_mode: "Mode de transport"
         transport_submode: "Sous mode de transport"
         seasonal: "Saisonnière"
