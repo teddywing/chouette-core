@@ -125,6 +125,7 @@ en:
   notice:
     referentials:
       deleted: "Datasets has been successfully destroyed"
+      duplicate: "The duplication is in progress. Please wait and refresh the page in a few moments."
       validate: "The validation is in progress. Please wait and refresh the page in a few moments."
     referential:
       archived: "The data space has been successfully archived"

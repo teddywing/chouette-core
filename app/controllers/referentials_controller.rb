@@ -17,6 +17,8 @@ class ReferentialsController < ChouetteController
       build_referenial
 
       if !!@referential.created_from_id
+        flash[:notice] = t('notice.referentials.duplicate')
+
         format.html { redirect_to workbench_path(@referential.workbench) }
       end
     end
