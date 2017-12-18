@@ -9,7 +9,7 @@ module Chouette
     include ObjectidSupport
 
     extend Enumerize
-    enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
+    enumerize :area_type, in: Chouette::AreaType::ALL
 
     with_options dependent: :destroy do |assoc|
       assoc.has_many :stop_points
