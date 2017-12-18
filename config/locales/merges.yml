@@ -1,0 +1,17 @@
+fr:
+  merges:
+    index:
+      title: "Finalisations de l'offre"
+    new:
+      title: "Nouvelle finalisation de l'offre"
+  activerecord:
+    models:
+      merge: "Finalisation de l'offre"
+    attributes:
+      merge:
+        created_at: "Créé le"
+        started_at: Démarrage
+        ended_at: Achevé à
+        status: "Etat"
+        creator: "Opérateur"
+        referentials: "Jeux de données"

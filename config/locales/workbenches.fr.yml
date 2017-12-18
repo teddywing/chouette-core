@@ -6,6 +6,11 @@ fr:
       zero: "Aucun jeu de données dans cet espace de travail"
       one: "1 jeu de données dans cet espace de travail"
       other: "#{count} jeux de données dans cet espace de travail"
+    actions:
+      show_output: "Offre finalisée"
+  workbench_outputs:
+    show:
+      title: "Finalisations de l'offre"
   activerecord:
     models:
       workbench:

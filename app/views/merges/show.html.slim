@@ -1,0 +1,13 @@
+- breadcrumb :merge, @merge
+- page_header_content_for @merge
+
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'),
+          { @merge.class.human_attribute_name(:referentials) => @merge.referentials.map(&:name).join(', '),
+            @merge.class.human_attribute_name(:status) => @merge.status,
+            @merge.class.human_attribute_name(:created_at) => @merge.created_at,
+            @merge.class.human_attribute_name(:started_at) => @merge.started_at,
+            @merge.class.human_attribute_name(:ended_at) => @merge.ended_at }
