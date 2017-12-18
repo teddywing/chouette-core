@@ -1,6 +1,7 @@
 - breadcrumb :stop_area_referential, @stop_area_referential
-- content_for :page_header_actions do
-  = link_to(t('actions.sync'), sync_stop_area_referential_path(@stop_area_referential), method: :post, class: 'btn btn-default')
+- if policy(@stop_area_referential).synchronize?
+  - content_for :page_header_actions do
+    = link_to(t('actions.sync'), sync_stop_area_referential_path(@stop_area_referential), method: :post, class: 'btn btn-default')
 
 - content_for :page_header_content do
   .row.mb-md

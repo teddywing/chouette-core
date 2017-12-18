@@ -42,4 +42,19 @@ RSpec.describe Stif::PermissionTranslator do
       ).to match_array(Support::Permissions.all_permissions)
     end
   end
+
+  context "For the STIF organisation" do
+    let(:organisation){ build_stubbed :organisation, name: "STIF" }
+    let(:permissions){ %w{calendars.share stop_area_referentials.synchronize line_referentials.synchronize}.sort }
+    it "adds the calendars.share permission" do
+      expect(described_class.translate([], organisation).sort).to eq permissions
+    end
+
+    context "with the case changed" do
+      let(:organisation){ build_stubbed :organisation, name: "StiF" }
+      it "adds the calendars.share permission" do
+        expect(described_class.translate([], organisation).sort).to eq permissions
+      end
+    end
+  end
 end

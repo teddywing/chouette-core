@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
     self.name         = extra[:full_name]
     self.email        = extra[:email]
     self.organisation = Organisation.sync_update extra[:organisation_code], extra[:organisation_name], extra[:functional_scope]
-    self.permissions  = Stif::PermissionTranslator.translate(extra[:permissions])
+    self.permissions  = Stif::PermissionTranslator.translate(extra[:permissions], self.organisation)
   end
 
   def self.portail_api_request

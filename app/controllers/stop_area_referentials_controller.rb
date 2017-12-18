@@ -2,6 +2,7 @@ class StopAreaReferentialsController < ChouetteController
 
   defaults :resource_class => StopAreaReferential
   def sync
+    authorize resource, :synchronize?
     @sync = resource.stop_area_referential_syncs.build
     if @sync.save
       flash[:notice] = t('notice.stop_area_referential_sync.created')

@@ -1,7 +1,8 @@
 - breadcrumb :line_referential, @line_referential
 - page_header_content_for @line_referential
-- content_for :page_header_actions do
-  = link_to(t('actions.sync'), sync_line_referential_path(@line_referential), method: :post, class: 'btn btn-default')
+- if policy(@line_referential).synchronize?
+  - content_for :page_header_actions do
+    = link_to(t('actions.sync'), sync_line_referential_path(@line_referential), method: :post, class: 'btn btn-default')
 
 - content_for :page_header_content do
   .row.mb-md
