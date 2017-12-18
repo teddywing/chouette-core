@@ -196,10 +196,12 @@ module Chouette
       GeoRuby::SimpleFeatures::Envelope.from_coordinates coordinates
     end
 
+    # DEPRECATED use StopArea#area_type
     def stop_area_type
       area_type ? area_type : " "
     end
 
+    # DEPRECATED use StopArea#area_type
     def stop_area_type=(stop_area_type)
       self.area_type = (stop_area_type ? stop_area_type.camelcase : nil)
     end
