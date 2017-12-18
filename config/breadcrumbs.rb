@@ -11,6 +11,16 @@ crumb :workbench_output do |workbench|
   parent :workbench, current_offer_workbench
 end
 
+crumb :merges do |workbench|
+  link I18n.t('merges.index.title'), workbench_output_path(workbench)
+  parent :workbench, workbench
+end
+
+crumb :merge do |merge|
+  link breadcrumb_name(merge), workbench_merge_path(merge.workbench, merge)
+  parent :merges, merge.workbench
+end
+
 crumb :referential do |referential|
   link breadcrumb_name(referential), referential_path(referential)
   parent :workbench, current_offer_workbench

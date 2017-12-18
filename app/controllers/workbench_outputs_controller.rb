@@ -4,5 +4,6 @@ class WorkbenchOutputsController < ChouetteController
 
   def show
     @workbench = current_organisation.workbenches.find params[:workbench_id]
+    @workbench_merges = @workbench.merges.paginate(page: params[:page], per_page: 10)
   end
 end

@@ -14,6 +14,7 @@ class Workbench < ActiveRecord::Base
   has_many :workbench_imports
   has_many :compliance_check_sets
   has_many :compliance_control_sets
+  has_many :merges
 
   validates :name, presence: true
   validates :organisation, presence: true

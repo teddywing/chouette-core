@@ -17,6 +17,7 @@ ChouetteIhm::Application.routes.draw do
     end
 
     resource :output, controller: :workbench_outputs
+    resources :merges
   end
 
   devise_for :users, :controllers => {

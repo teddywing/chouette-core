@@ -2,11 +2,23 @@ class Merge < ActiveRecord::Base
   extend Enumerize
 
   belongs_to :workbench
-  enumerize :status, in: %w[new pending successful failed running]
+  validates :workbench, presence: true
+
+  enumerize :status, in: %w[new pending successful failed running], default: :new
 
   has_array_of :referentials, class_name: 'Referential'
 
   delegate :output, to: :workbench
+
+  after_commit :merge, :on => :create
+
+  def merge
+    MergeWorker.perform_async(id)
+  end
+
+  def name
+    "Dummy" # FIXME
+  end
 
   attr_reader :new
 
@@ -20,8 +32,13 @@ class Merge < ActiveRecord::Base
     end
 
     save_current
+  rescue => e
+    Rails.logger.error "Merge failed: #{e}"
+    update status: :failed
   ensure
-    update ended_at: Time.now, status: :successful
+    attributes = { ended_at: Time.now }
+    attributes[:status] = :successful if status == :running
+    update attributes
   end
 
   def prepare_new
@@ -42,6 +59,13 @@ class Merge < ActiveRecord::Base
         }
         workbench.output.referentials.new attributes
       end
+
+    new.referential_suite = output
+    new.organisation = workbench.organisation
+
+    unless new.valid?
+      Rails.logger.error "New referential isn't valid : #{new.errors.inspect}"
+    end
 
     new.save!
 
