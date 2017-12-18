@@ -1,4 +1,5 @@
 module IntegrationSpecHelper
+
   def paginate_collection klass, decorator, page=1
     ModelDecorator.decorate( klass.page(page), with: decorator )
   end
