@@ -61,6 +61,7 @@ class Referential < ActiveRecord::Base
   scope :include_metadatas_lines, ->(line_ids) { where('referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids) }
   scope :order_by_validity_period, ->(dir) { joins(:metadatas).order("unnest(periodes) #{dir}") }
   scope :order_by_lines, ->(dir) { joins(:metadatas).group("referentials.id").order("sum(array_length(referential_metadata.line_ids,1)) #{dir}") }
+  scope :not_in_referential_suite, -> { where referential_suite_id: nil }
 
   def save_with_table_lock_timeout(options = {})
     save_without_table_lock_timeout(options)
