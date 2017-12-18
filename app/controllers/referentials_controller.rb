@@ -60,7 +60,7 @@ class ReferentialsController < ChouetteController
 
   def validate
     ComplianceControlSetCopyWorker.perform_async(params[:compliance_control_set], params[:id])
-    flash[:notice] = I18n.t('notice.referentials.validate')
+    flash[:notice] = t('notice.referentials.validate')
     redirect_to(referential_path)
   end
 
