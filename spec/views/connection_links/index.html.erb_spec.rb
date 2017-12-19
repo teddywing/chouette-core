@@ -17,9 +17,11 @@ describe "/connection_links/index", :type => :view do
     end
   end
 
-  it "should render a link to create a new group" do
-    render
-    expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{new_referential_connection_link_path(referential)}']")
+  with_permission "connection_links.create" do
+    it "should render a link to create a new group" do
+      render
+      expect(view.content_for(:sidebar)).to have_selector(".actions a[href='#{new_referential_connection_link_path(referential)}']")
+    end
   end
 
 end

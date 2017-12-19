@@ -1,16 +1,16 @@
 module Pundit
   module PunditViewPolicy
-    extend ActiveSupport::Concern
+    def self.included into
+      into.let(:permissions){ nil }
+      into.let(:organisation){ referential.try(:organisation) }
+      into.let(:current_referential){ referential || build_stubbed(:referential) }
+      into.let(:current_user){ build_stubbed :user, permissions: permissions, organisation: organisation }
+      into.let(:pundit_user){ UserContext.new(current_user, referential: current_referential) }
+      into.before do
+        allow(view).to receive(:pundit_user) { pundit_user }
 
-    included do
-      before do
-        controller.singleton_class.class_eval do
-          def policy(instance)
-            Class.new do
-              def method_missing(*args, &block); true; end
-            end.new
-          end
-          helper_method :policy
+        allow(view).to receive(:policy) do |instance|
+          ::Pundit.policy pundit_user, instance
         end
       end
     end
