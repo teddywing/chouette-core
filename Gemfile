@@ -60,7 +60,7 @@ gem 'faraday', '~> 0.9.1'
 platforms :ruby do
   gem 'therubyracer', '~> 0.12'
   gem 'pg'
-  gem 'sqlite3'
+  #gem 'sqlite3'
 end
 
 gem 'activerecord-postgis-adapter', "~> 3.0.0"
