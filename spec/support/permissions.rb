@@ -29,6 +29,7 @@ module Support
         compliance_control_sets
         compliance_control_blocks
         compliance_check_sets
+        purchase_windows
       ]
     end
   end

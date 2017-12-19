@@ -1,5 +1,5 @@
 fr:
-  business_calendars:
+  purchase_windows:
     search_no_results: 'Aucun calendrier commercial ne correspond à votre recherche'
     days:
       monday: L
@@ -59,16 +59,16 @@ fr:
       one: "calendrier commercial"
       other: "calendriers commerciaux"
     attributes:
-      business_calendar:
+      purchase_window:
         name: Nom
         short_name: Nom court
         date_ranges: Intervalles de dates
-        dates: Dates
-        organisation: Organisation
+        referential: Jeu de données
         color: Couleur
+        bounding_dates: Période englobante
     errors:
       models:
-        business_calendar:
+        purchase_window:
           attributes:
             dates:
               date_in_date_ranges: Une même date ne peut pas être incluse à la fois dans la liste et dans les intervalles de dates.

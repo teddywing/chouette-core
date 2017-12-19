@@ -3,7 +3,14 @@ require_relative 'calendar/date_value'
 require_relative 'calendar/period'
 
 class Calendar < ActiveRecord::Base
-  include CalendarSupport
+  include DateSupport
+  include PeriodSupport
+
+  has_paper_trail
+  belongs_to :organisation
+
+  validates_presence_of :name, :short_name, :organisation
+  validates_uniqueness_of :short_name
 
   has_many :time_tables
 

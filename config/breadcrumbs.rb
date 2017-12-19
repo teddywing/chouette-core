@@ -162,13 +162,14 @@ crumb :line do |line|
   parent :lines, line.line_referential
 end
 
-crumb :business_calendars do
-  link I18n.t('business_calendars.index.title'), business_calendars_path
+crumb :purchase_windows do |referential|
+  link I18n.t('purchase_windows.index.title'), referential_purchase_windows_path(referential)
+  parent :referential, referential
 end
 
-crumb :business_calendar do |business_calendar|
-  link breadcrumb_name(business_calendar), business_calendar_path(business_calendar)
-  parent :business_calendars
+crumb :purchase_window do |purchase_window, referential|
+  link breadcrumb_name(purchase_window), referential_purchase_window_path(referential, purchase_window)
+  parent :purchase_windows, referential
 end
 
 crumb :calendars do

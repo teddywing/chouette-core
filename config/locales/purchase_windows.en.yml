@@ -1,6 +1,6 @@
 en:
-  business_calendars:
-    search_no_results: 'No business calendar matching your query'
+  purchase_windows:
+    search_no_results: 'No purchase window matching your query'
     days:
       monday: M
       tuesday: Tu
@@ -23,31 +23,31 @@ en:
       11: November
       12: December
     actions:
-      new: Add a new business calendar
-      edit: Edit this business calendar
-      destroy: Remove this business calendar
-      destroy_confirm: Are you sure you want destroy this business calendar?
+      new: Add a new purchase window
+      edit: Edit this purchase window
+      destroy: Remove this purchase window
+      destroy_confirm: Are you sure you want destroy this purchase window?
     errors:
       overlapped_periods: Another period is overlapped with this period
       short_period: A period needs to last at least two days
     index:
-      title: Business calendars
+      title: purchase windows
       all: All
       shared: Shared
       not_shared: Not shared
-      search_no_results: No business calendar matching your query
+      search_no_results: No purchase window matching your query
       date: Date
     create:
-      title: Add a new business calendar
+      title: Add a new purchase window
     new:
-      title: Add a new business calendar
+      title: Add a new purchase window
     edit:
-      title: Update business calendar %{name}
+      title: Update purchase window %{name}
     show:
-      title: Business calendar %{name}
+      title: purchase window %{name}
   simple_form:
     labels:
-      business_calendar:
+      purchase_windows:
         date_value: Date
         add_a_date: Add a date
         add_a_date_range: Add a date range
@@ -56,19 +56,18 @@ en:
           end: End
   activerecord:
     models:
-      one: business calendar
-      other: business calendars
+      one: purchase window
+      other: purchase windows
     attributes:
-      business_calendar:
+      purchase_windows:
         name: Name
-        short_name: Short name
         date_ranges: Date ranges
-        dates: Dates
-        organisation: Organisation
+        referential: Referential
         color: Color
+        bounding_dates: Bounding Dates
     errors:
       models:
-        business_calendar:
+        purchase_windows:
           attributes:
             dates:
               date_in_date_ranges: A date can not be in Dates and in Date ranges.
