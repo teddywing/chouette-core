@@ -81,19 +81,6 @@ ActiveRecord::Schema.define(version: 20171214130636) do
 
   add_index "api_keys", ["organisation_id"], name: "index_api_keys_on_organisation_id", using: :btree
 
-  create_table "business_calendars", id: :bigserial, force: :cascade do |t|
-    t.string    "name"
-    t.string    "short_name"
-    t.string    "color"
-    t.daterange "date_ranges",                  array: true
-    t.date      "dates",                        array: true
-    t.integer   "organisation_id"
-    t.datetime  "created_at",      null: false
-    t.datetime  "updated_at",      null: false
-  end
-
-  add_index "business_calendars", ["organisation_id"], name: "index_business_calendars_on_organisation_id", using: :btree
-
   create_table "calendars", id: :bigserial, force: :cascade do |t|
     t.string    "name"
     t.string    "short_name"
@@ -583,6 +570,20 @@ ActiveRecord::Schema.define(version: 20171214130636) do
   end
 
   add_index "pt_links", ["objectid"], name: "pt_links_objectid_key", unique: true, using: :btree
+
+  create_table "purchase_windows", id: :bigserial, force: :cascade do |t|
+    t.string    "name"
+    t.string    "color"
+    t.daterange "date_ranges",                            array: true
+    t.datetime  "created_at",                null: false
+    t.datetime  "updated_at",                null: false
+    t.string    "objectid"
+    t.string    "checksum"
+    t.text      "checksum_source"
+    t.integer   "referential_id",  limit: 8
+  end
+
+  add_index "purchase_windows", ["referential_id"], name: "index_purchase_windows_on_referential_id", using: :btree
 
   create_table "referential_clonings", id: :bigserial, force: :cascade do |t|
     t.string   "status"

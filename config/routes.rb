@@ -99,8 +99,6 @@ ChouetteIhm::Application.routes.draw do
     resources :networks
   end
 
-  resources :business_calendars
-
   resources :calendars do
     get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
   end
@@ -172,6 +170,8 @@ ChouetteIhm::Application.routes.draw do
     end
 
     resources :companies, controller: "referential_companies"
+
+    resources :purchase_windows
 
     resources :time_tables do
       collection do

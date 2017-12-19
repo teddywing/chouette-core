@@ -18,7 +18,6 @@ module Stif
       %w[
         access_points
         connection_links
-        business_calendars
         calendars
         footnotes
         imports
@@ -33,6 +32,7 @@ module Stif
         compliance_control_sets
         compliance_control_blocks
         compliance_check_sets
+        purchase_windows
       ]
     end
 
