@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171214130636) do
+ActiveRecord::Schema.define(version: 20171218174509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -208,7 +208,7 @@ ActiveRecord::Schema.define(version: 20171214130636) do
     t.integer  "compliance_check_set_id",   limit: 8
     t.integer  "compliance_check_block_id", limit: 8
     t.string   "type"
-    t.hstore   "control_attributes"
+    t.json     "control_attributes"
     t.string   "name"
     t.string   "code"
     t.string   "criticity"
@@ -243,7 +243,7 @@ ActiveRecord::Schema.define(version: 20171214130636) do
   create_table "compliance_controls", id: :bigserial, force: :cascade do |t|
     t.integer  "compliance_control_set_id",   limit: 8
     t.string   "type"
-    t.hstore   "control_attributes"
+    t.json     "control_attributes"
     t.string   "name"
     t.string   "code"
     t.string   "criticity"
