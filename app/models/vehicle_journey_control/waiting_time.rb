@@ -1,6 +1,6 @@
 module VehicleJourneyControl
   class WaitingTime < ComplianceControl
-    hstore_accessor :control_attributes, maximum: :integer
+    store_accessor :control_attributes, :maximum
 
     validates :maximum, numericality: true, allow_nil: true
 

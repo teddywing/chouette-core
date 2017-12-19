@@ -1,6 +1,9 @@
 RSpec.shared_examples_for 'has min_max_values' do
 
   context "is valid" do
+    it { should validate_numericality_of(:minimum) }
+    it { should validate_numericality_of(:maximum) }
+
     it 'if no value is provided' do
       expect_it.to be_valid
     end
@@ -39,5 +42,12 @@ RSpec.shared_examples_for 'has min_max_values' do
       expect_it.not_to be_valid
         expect( subject.errors.messages[:min_max_values].first ).to match("la valeur de minimum (2) ne doit pas être superieur à la valuer du maximum (1)")
     end
+  end
+end
+
+
+RSpec.shared_examples_for "has target attribute" do
+  context "is valid" do
+    it { should validate_presence_of(:target) }
   end
 end

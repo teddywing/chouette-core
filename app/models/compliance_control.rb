@@ -39,7 +39,6 @@ class ComplianceControl < ActiveRecord::Base
   belongs_to :compliance_control_block
 
   enumerize :criticity, in: criticities, scope: true, default: :warning
-  hstore_accessor :control_attributes, {}
 
   validates :criticity, presence: true
   validates :name, presence: true
