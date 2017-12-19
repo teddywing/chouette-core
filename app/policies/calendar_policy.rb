@@ -6,7 +6,7 @@ class CalendarPolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && user.has_permission?('calendars.create')
+    user.has_permission?('calendars.create')
   end
   def destroy?; instance_permission("destroy") end
   def update?; instance_permission("update") end
@@ -14,6 +14,6 @@ class CalendarPolicy < ApplicationPolicy
 
   private
   def instance_permission permission
-    !archived? & organisation_match? && user.has_permission?("calendars.#{permission}")
+    organisation_match? && user.has_permission?("calendars.#{permission}")
   end
 end
