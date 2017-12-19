@@ -62,4 +62,26 @@ describe Organisation, :type => :model do
       expect{Organisation.portail_sync}.to change{ Organisation.count }.by(4)
     end
   end
+
+  describe "#has_feature?" do
+
+    let(:organisation) { Organisation.new }
+
+    it 'return false if Organisation features is nil' do
+      organisation.features = nil
+      expect(organisation.has_feature?(:dummy)).to be_falsy
+    end
+
+    it 'return true if Organisation features contains given feature' do
+      organisation.features = %w{present}
+      expect(organisation.has_feature?(:present)).to be_truthy
+    end
+
+    it "return true if Organisation features doesn't contains given feature" do
+      organisation.features = %w{other}
+      expect(organisation.has_feature?(:absent)).to be_falsy
+    end
+
+  end
+
 end
