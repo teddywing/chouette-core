@@ -229,6 +229,13 @@ $cbx-size-xs: 15px
     &[type='checkbox']:checked + label:before
       background-color: $blue
 
+    &[type='checkbox']:disabled + label
+      &:before
+        border-color: $grey
+        background-color: $lightgrey
+        cursor: not-allowed
+      &:after
+        display: none
 // Table adjustments
 table, .table
   .td, td, .th, th
