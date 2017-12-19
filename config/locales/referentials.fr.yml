@@ -5,7 +5,6 @@ fr:
       name: 'Indiquez un nom de jeu de données...'
       line: 'Indiquez une ligne...'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
-    operation_in_progress: L'opération de validation est en cours
     error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
     index:
       title: 'Jeux de données'
@@ -124,6 +123,8 @@ fr:
   notice:
     referentials:
       deleted: "Les jeux de données on été supprimés"
+      duplicate: "La duplication est en cours, veuillez patienter. Actualiser votre page si vous voulez voir l'avancement de votre traitement."
+      validate: "La validation est en cours, veuillez patienter. Actualiser votre page si vous voulez voir l'avancement de votre traitement."
     referential:
       archived: "Le jeu de données a été correctement conservé"
       unarchived: "Le jeu de données a été correctement déconservé"
