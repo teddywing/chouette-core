@@ -56,8 +56,9 @@ fr:
           end: Fin
   activerecord:
     models:
-      one: "calendrier"
-      other: "calendriers"
+      calendar:
+        one: "calendrier"
+        other: "calendriers"
     attributes:
       calendar:
         name: Nom
