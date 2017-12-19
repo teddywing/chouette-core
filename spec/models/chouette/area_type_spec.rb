@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe Chouette::AreaType do
 
   describe "::ALL" do
-    it "include all supported types" do
-      expect(Chouette::AreaType::ALL).to eq %i(zdep zder zdlp zdlr lda)
+    it "includes all supported types" do
+      expect(Chouette::AreaType::ALL).to match_array( %i(zdep zder zdlp zdlr lda) )
     end
   end
 
@@ -13,7 +13,7 @@ RSpec.describe Chouette::AreaType do
       expect(Chouette::AreaType.find('dummy')).to be_nil
     end
 
-    it "returns a AreaType associated to the code" do
+    it "returns an AreaType associated to the code" do
       expect(Chouette::AreaType.find('zdep').code).to eq :zdep
     end
   end
