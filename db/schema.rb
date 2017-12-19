@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130180144) do
+ActiveRecord::Schema.define(version: 20171214130636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "hstore"
+  enable_extension "unaccent"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
