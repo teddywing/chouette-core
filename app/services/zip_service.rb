@@ -57,7 +57,7 @@ class ZipService
         current_key,
         # Second part of the solution, yield the closed stream
         current_output.close_buffer,
-        current_spurious,
+        current_spurious.to_a,
         foreign_lines)
     end
   end
@@ -66,7 +66,7 @@ class ZipService
     @current_key    = entry_key
     # First piece of the solution, use internal way to create a Zip::OutputStream
     @current_output   = Zip::OutputStream.new(StringIO.new(''), true, nil)
-    @current_spurious = []
+    @current_spurious = Set.new
     @foreign_lines    = []
   end
 
@@ -84,7 +84,7 @@ class ZipService
   end
 
   def is_foreign_line! entry_name
-    STIF::NetexFile::Frame.get_line_object_id(entry_name).tap do | line_object_id |
+    STIF::NetexFile::Frame.get_short_id(entry_name).tap do | line_object_id |
       return nil unless line_object_id
       return nil if line_object_id.in? allowed_lines
       foreign_lines << line_object_id
