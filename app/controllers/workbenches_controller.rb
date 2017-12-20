@@ -5,6 +5,9 @@ class WorkbenchesController < ChouetteController
   defaults resource_class: Workbench
   respond_to :html, only: [:show, :index]
 
+  include FeatureChecker
+  requires_feature :test, only: :index
+
   def index
     redirect_to dashboard_path
   end

@@ -1,3 +1,4 @@
+# coding: utf-8
 class Organisation < ActiveRecord::Base
   include DataFormatEnumerations
 
@@ -73,6 +74,10 @@ class Organisation < ActiveRecord::Base
 
   def lines_set
     STIF::CodifligneLineId.lines_set_from_functional_scope( functional_scope )
+  end
+
+  def has_feature?(feature)
+    features && features.include?(feature.to_s)
   end
 
 end
