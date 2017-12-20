@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "FeatureChecker", type: :controller do
+  login_user
 
   controller do
     include FeatureChecker
