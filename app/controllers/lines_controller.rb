@@ -60,6 +60,21 @@ class LinesController < InheritedResources::Base
   end
 
 
+  # TODO: Put under test or remove if Dead Code
+  def delete_all
+    objects =
+      get_collection_ivar || set_collection_ivar(end_of_association_chain.where(:id => params[:ids]))
+    objects.each { |object| object.delete }
+    respond_with(objects, :location => smart_collection_url)
+  end
+
+  # TODO: Put under test or remove if Dead Code
+  def name_filter
+    respond_to do |format|
+      format.json { render :json => filtered_lines_maps}
+    end
+  end
+
   protected
 
   def filtered_lines_maps
@@ -92,19 +107,6 @@ class LinesController < InheritedResources::Base
 
 
   private
-
-  def delete_all
-    objects =
-      get_collection_ivar || set_collection_ivar(end_of_association_chain.where(:id => params[:ids]))
-    objects.each { |object| object.delete }
-    respond_with(objects, :location => smart_collection_url)
-  end
-
-  def name_filter
-    respond_to do |format|
-      format.json { render :json => filtered_lines_maps}
-    end
-  end
 
   def sort_column
     (Chouette::Line.column_names + ['companies.name', 'networks.name']).include?(params[:sort]) ? params[:sort] : 'number'
