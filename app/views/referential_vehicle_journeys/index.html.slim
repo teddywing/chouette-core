@@ -24,23 +24,28 @@
                   attribute: 'published_journey_name', \
                   link_to: lambda do |vehicle_journey| \
                     referential_line_route_vehicle_journeys_path(@referential, vehicle_journey.route.line, vehicle_journey.route) \
-                  end \
+                  end, \
+                  sortable: false \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :line, \
-                  attribute: Proc.new {|v| v.route.line.name} \
+                  attribute: Proc.new {|v| v.route.line.name}, \
+                  sortable: false \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :route, \
-                  attribute: Proc.new {|v| v.route.name} \
+                  attribute: Proc.new {|v| v.route.name}, \
+                  sortable: false \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :departure_time, \
-                  attribute: Proc.new {|v| v.vehicle_journey_at_stops.first&.departure } \
+                  attribute: Proc.new {|v| v.vehicle_journey_at_stops.first&.departure }, \
+                  sortable: false \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :arrival_time, \
-                  attribute: Proc.new {|v| v.vehicle_journey_at_stops.last&.arrival } \
+                  attribute: Proc.new {|v| v.vehicle_journey_at_stops.last&.arrival }, \
+                  sortable: false \
                 ), \
               ],
               cls: 'table has-filter has-search'
