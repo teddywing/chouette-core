@@ -1,0 +1,53 @@
+- breadcrumb :referential_vehicle_journeys, @referential
+- content_for :page_header_title, t('.title')
+
+.page_content
+  .container-fluid
+    - if params[:q].present? or @vehicle_journeys.present?
+      .row
+        .col-lg-12
+          = render 'filters'
+
+    - if @vehicle_journeys.present?
+      .row
+        .col-lg-12
+          .select_table
+            = table_builder_2 @vehicle_journeys,
+              [ \
+                TableBuilderHelper::Column.new( \
+                  name: t('objectid'), \
+                  attribute: Proc.new { |n| n.get_objectid.short_id }, \
+                  sortable: false \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :published_journey_name, \
+                  attribute: 'published_journey_name', \
+                  link_to: lambda do |vehicle_journey| \
+                    referential_line_route_vehicle_journeys_path(@referential, vehicle_journey.route.line, vehicle_journey.route) \
+                  end \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :line, \
+                  attribute: Proc.new {|v| v.route.line.name} \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :route, \
+                  attribute: Proc.new {|v| v.route.name} \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :departure_time, \
+                  attribute: Proc.new {|v| v.vehicle_journey_at_stops.first&.departure } \
+                ), \
+                TableBuilderHelper::Column.new( \
+                  key: :arrival_time, \
+                  attribute: Proc.new {|v| v.vehicle_journey_at_stops.last&.arrival } \
+                ), \
+              ],
+              cls: 'table has-filter has-search'
+
+          = new_pagination @vehicle_journeys, 'pull-right'
+
+    - unless @vehicle_journeys.any?
+      .row.mt-xs
+        .col-lg-12
+          = replacement_msg t('.search_no_results')
