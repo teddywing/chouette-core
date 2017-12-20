@@ -50,6 +50,14 @@ class LinesController < ChouetteController
     super
   end
 
+  %w(activate deactivate).each do |action|
+    define_method action do
+      authorize resource, "#{action}?"
+      resource.send "#{action}!"
+      redirect_to request.referer || [resource.line_referential, resource]
+    end
+  end
+
   # overwrite inherited resources to use delete instead of destroy
   # foreign keys will propagate deletion)
   def destroy_resource(object)

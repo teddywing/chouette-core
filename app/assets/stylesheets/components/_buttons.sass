@@ -165,6 +165,13 @@ table, .table
             .fa:first-child
               margin-right: 0.5em
 
+          & + li.delete-action
+            > a, > button
+              margin-top: 0
+              &:before
+                display: none
+
+
   &.table-2entries .t2e-item
     > .th
       position: relative

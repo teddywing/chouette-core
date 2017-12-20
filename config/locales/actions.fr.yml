@@ -1,6 +1,8 @@
 fr:
   actions:
     edit: 'Editer'
+    activate: 'Activer'
+    deactivate: 'Désactiver'
     destroy: 'Supprimer'
     delete: 'Supprimer'
     search: "Chercher"
