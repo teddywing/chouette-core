@@ -5,6 +5,8 @@ class ReferentialVehicleJourneysController < ChouetteController
   include ReferentialSupport
   defaults :resource_class => Chouette::VehicleJourney, collection_name: :vehicle_journeys
 
+  requires_feature :referential_vehicle_journeys
+
   private
 
   def collection
