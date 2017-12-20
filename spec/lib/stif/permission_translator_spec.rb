@@ -1,3 +1,4 @@
+# coding: utf-8
 RSpec.describe Stif::PermissionTranslator do
 
   context "No SSO Permissions" do
@@ -45,14 +46,15 @@ RSpec.describe Stif::PermissionTranslator do
 
   context "For the STIF organisation" do
     let(:organisation){ build_stubbed :organisation, name: "STIF" }
-    it "adds the calendars.share permission" do
-      expect( described_class.translate([], organisation) ).to eq(%w{calendars.share})
+    let(:permissions){ %w{calendars.share stop_area_referentials.synchronize line_referentials.synchronize}.sort }
+    it "adds the STIF permission" do
+      expect(described_class.translate([], organisation).sort).to eq permissions
     end
 
     context "with the case changed" do
       let(:organisation){ build_stubbed :organisation, name: "StiF" }
-      it "adds the calendars.share permission" do
-        expect( described_class.translate([], organisation) ).to eq(%w{calendars.share})
+      it "adds the STIF permission" do
+        expect(described_class.translate([], organisation).sort).to eq permissions
       end
     end
   end
