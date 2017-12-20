@@ -8,5 +8,9 @@ FactoryGirl.define do
     longitude {10.0 * rand}
 
     association :stop_area_referential
+
+    trait :deactivated do
+      deleted_at { 1.hour.ago }
+    end
   end
 end
