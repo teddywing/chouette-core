@@ -24,15 +24,6 @@ class ReferentialLineDecorator < Draper::Decorator
       )
     )
 
-    if h.policy(object).destroy?
-      links << Link.new(
-        content: h.destroy_link_content('actions.destroy'),
-        href: h.referential_line_path(context[:referential], object),
-        method: :delete,
-        data: { confirm: t('lines.actions.destroy_confirm') }
-      )
-    end
-
     if !object.hub_restricted? ||
         (object.hub_restricted? && object.routes.size < 2)
       if h.policy(Chouette::Route).create? &&
