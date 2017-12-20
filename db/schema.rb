@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171219170128) do
+ActiveRecord::Schema.define(version: 20171220164059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -538,6 +538,19 @@ ActiveRecord::Schema.define(version: 20171219170128) do
   add_index "lines", ["registration_number"], name: "lines_registration_number_key", using: :btree
   add_index "lines", ["secondary_company_ids"], name: "index_lines_on_secondary_company_ids", using: :gin
 
+  create_table "merges", id: :bigserial, force: :cascade do |t|
+    t.integer  "workbench_id",    limit: 8
+    t.integer  "referential_ids", limit: 8,              array: true
+    t.string   "creator"
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "merges", ["workbench_id"], name: "index_merges_on_workbench_id", using: :btree
+
   create_table "networks", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                      null: false
     t.integer  "object_version",      limit: 8
@@ -759,6 +772,7 @@ ActiveRecord::Schema.define(version: 20171219170128) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "stif_type",                       limit: 255
+    t.integer  "waiting_time"
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree

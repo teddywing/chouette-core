@@ -1,5 +1,6 @@
 fr:
   stop_areas: &fr_stop_areas
+    waiting_time_format: "%{value} minutes"
     search_no_results: "Aucun arrêt ne correspond à votre recherche"
     errors:
       empty: Aucun stop_area_id
@@ -37,7 +38,7 @@ fr:
       name_or_objectid: "Recherche par nom ou par objectid..."
       zip_code: Indiquez un code postal...
       city_name: Indiquez un nom de commune...
-      area_type: Indiquez un type d'arrêt...
+      area_type: "Indiquez un type d'arrêt..."
     new:
       title: "Ajouter un arrêt"
     form:
@@ -126,6 +127,7 @@ fr:
         city_name: "Commune"
         created_at: "Créé le"
         updated_at: "Edité le"
+        waiting_time: Temps de desserte
   formtastic:
     titles:
       stop_area:

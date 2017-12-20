@@ -1,5 +1,4 @@
 module Support
-
   module DecoratorHelpers
     def self.included(into)
       into.instance_eval do
@@ -20,8 +19,4 @@ module Support
       expect( subject.action_links.select(&HTMLElement.method(:===)).map(&:content) )
     end
   end
-end
-
-RSpec.configure do | c |
-  c.include Support::DecoratorHelpers, type: :decorator
 end

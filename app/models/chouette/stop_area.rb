@@ -39,6 +39,8 @@ module Chouette
     validates_format_of :coordinates, :with => %r{\A *-?(0?[0-9](\.[0-9]*)?|[0-8][0-9](\.[0-9]*)?|90(\.[0]*)?) *\, *-?(0?[0-9]?[0-9](\.[0-9]*)?|1[0-7][0-9](\.[0-9]*)?|180(\.[0]*)?) *\Z}, :allow_nil => true, :allow_blank => true
     validates_format_of :url, :with => %r{\Ahttps?:\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\Z}, :allow_nil => true, :allow_blank => true
 
+    validates_numericality_of :waiting_time, greater_than_or_equal_to: 0, only_integer: true, if: :waiting_time
+
     def self.nullable_attributes
       [:registration_number, :street_name, :country_code, :fare_code,
       :nearest_topic_name, :comment, :long_lat_type, :zip_code, :city_name, :url, :time_zone]
