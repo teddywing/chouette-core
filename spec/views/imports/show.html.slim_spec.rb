@@ -22,7 +22,6 @@ RSpec.describe '/imports/show', type: :view do
     messages.each do | message |
       # require 'htmlbeautifier'
       # b = HtmlBeautifier.beautify(rendered, indent: '  ')
-      # require 'pry'; binding.pry
       expect(rendered).to have_selector('dl#import_messages dt.import_message') do
         with_text message.criticity
       end
@@ -35,7 +34,7 @@ RSpec.describe '/imports/show', type: :view do
 
   def rendered_message message
     Object.new.extend(CommonHelper).tap do |helper|
-      return I18n.t(message.message_key, helper.string_keys_to_symbols( message.message_attributes )) 
+      return I18n.t(message.message_key, helper.string_keys_to_symbols( message.message_attributes ))
     end
   end
 

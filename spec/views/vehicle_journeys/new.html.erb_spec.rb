@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "/vehicle_journeys/new", :type => :view do
-  
+
   assign_referential
   let!(:line) { assign :line, create(:line) }
   let!(:route) { assign :route, create(:route, :line => line) }
@@ -9,9 +9,7 @@ describe "/vehicle_journeys/new", :type => :view do
 
   it "renders _form" do
     render
-      require 'pry'; binding.pry
     expect(view).to render_template(:partial => "_form")
   end
 
 end
-
