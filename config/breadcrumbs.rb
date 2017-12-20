@@ -41,6 +41,11 @@ crumb :referential_group_of_line do |referential, group_of_line|
   parent :referential_group_of_lines, referential
 end
 
+crumb :referential_vehicle_journeys do |referential|
+  link I18n.t('referential_vehicle_journeys.index.title'), referential_vehicle_journeys_path(referential)
+  parent :referential, referential
+end
+
 crumb :time_tables do |referential|
   link I18n.t('time_tables.index.title'), referential_time_tables_path(referential)
   parent :referential, referential

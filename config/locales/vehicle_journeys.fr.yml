@@ -106,6 +106,8 @@ fr:
         updated_at: "Edité le"
         creator_id: "Créé par"
         footnote_ids: "Notes de bas de page"
+        departure_time: "Départ"
+        arrival_time: "Arrivée"
     errors:
       models:
         vehicle_journey:
@@ -126,3 +128,9 @@ fr:
       hub:
         vehicle_journey:
           objectid: "[prefixe]:VehicleJourney:[clé_unique]  caractères autorisés : alphanumériques et 'souligné' pour le préfixe, la clé unique accepte en plus le 'moins'. Longueur maximale de la clé unique = 8."
+  referential_vehicle_journeys:
+    index:
+      title: "Courses"
+      search_no_results: "Aucune course ne correspond à votre recherche"
+    filters:
+      published_journey_name_or_objectid: "Indiquez le nom ou l'ID..."

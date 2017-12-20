@@ -156,6 +156,8 @@ ChouetteIhm::Application.routes.draw do
       resources :routing_constraint_zones
     end
 
+    resources :vehicle_journeys, controller: 'referential_vehicle_journeys', only: [:index]
+
     resources :import_tasks, :only => [:new, :create]
     resources :export_tasks, :only => [:new, :create] do
       collection do
