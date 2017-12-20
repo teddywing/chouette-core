@@ -5,7 +5,7 @@ class ReferentialDecorator < Draper::Decorator
     policy = h.policy(object)
     links = []
 
-    if h.has_feature?(:referential_vehicle_journeys)
+    if has_feature?(:referential_vehicle_journeys)
       links << Link.new(
         content: h.t('referential_vehicle_journeys.index.title'),
         href: h.referential_vehicle_journeys_path(object)
@@ -70,4 +70,12 @@ class ReferentialDecorator < Draper::Decorator
 
     links
   end
+
+  private
+
+  # TODO move to a base Decorator (ApplicationDecorator)
+  def has_feature?(*feature)
+    h.has_feature?(*features) rescue false
+  end
+
 end
