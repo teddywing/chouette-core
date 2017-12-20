@@ -2,7 +2,7 @@ class PurchaseWindowsController < ChouetteController
   include ReferentialSupport
   include RansackDateFilter
   include PolicyChecker
-  before_action only: [:index] { set_date_time_params("bounding_dates", Date) }
+  before_action :ransack_contains_date, only: [:index]
   defaults :resource_class => Chouette::PurchaseWindow, collection_name: 'purchase_windows', instance_name: 'purchase_window'
   belongs_to :referential
 
@@ -43,5 +43,16 @@ class PurchaseWindowsController < ChouetteController
         referential: @referential
         }
       )
+  end
+
+  def ransack_contains_date
+    date =[]
+    if params[:q] && !params[:q]['date_ranges(1i)'].empty?
+      ['date_ranges(1i)', 'date_ranges(2i)', 'date_ranges(3i)'].each do |key|
+        date << params[:q][key].to_i
+        params[:q].delete(key)
+      end
+      params[:q]['date_ranges'] = Date.new(*date) rescue nil
+    end
   end
 end
