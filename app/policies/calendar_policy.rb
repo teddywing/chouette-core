@@ -5,18 +5,15 @@ class CalendarPolicy < ApplicationPolicy
     end
   end
 
-  def create? 
-    !archived? && user.has_permission?('calendars.create')
+  def create?
+    user.has_permission?('calendars.create')
   end
-  def destroy?
-    !archived? & organisation_match? && user.has_permission?('calendars.destroy')
-  end
-  def update?
-    !archived? && organisation_match? && user.has_permission?('calendars.update')
-  end
+  def destroy?; instance_permission("destroy") end
+  def update?; instance_permission("update") end
+  def share?; instance_permission("share") end
 
-  def share?
-    user.organisation.name == 'STIF' # FIXME
+  private
+  def instance_permission permission
+    organisation_match? && user.has_permission?("calendars.#{permission}")
   end
-
 end

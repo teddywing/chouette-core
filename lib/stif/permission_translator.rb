@@ -1,11 +1,11 @@
 module Stif
   module PermissionTranslator extend self
 
-    def translate(sso_extra_permissions)
-      sso_extra_permissions
-        .sort
+    def translate(sso_extra_permissions, organisation=nil)
+      permissions = sso_extra_permissions.sort
         .flat_map(&method(:extra_permission_translation))
-        .uniq
+      permissions += extra_organisation_permissions(organisation)
+      permissions.uniq
     end
 
     private
@@ -48,6 +48,11 @@ module Stif
         "boiv:read-offer" => %w{sessions.create},
         "boiv:edit-offer" => all_destructive_permissions + %w{sessions.create},
       }
+    end
+
+    def extra_organisation_permissions organisation
+      return %w(calendars.share) if organisation&.name&.downcase == "stif"
+      []
     end
   end
 end
