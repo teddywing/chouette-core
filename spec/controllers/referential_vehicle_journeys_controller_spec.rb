@@ -3,10 +3,22 @@ require "rails_helper"
 RSpec.describe ReferentialVehicleJourneysController, type: :controller do
   login_user
 
+  before do
+    @user.organisation.update features: %w{referential_vehicle_journeys}
+  end
+
   describe 'GET #index' do
     it 'should be successful' do
       get :index, referential_id: referential
       expect(response).to be_success
+    end
+
+    it "refuse access when organisation does not have the feature 'referential_vehicle_journeys'" do
+      @user.organisation.update features: []
+
+      expect do
+        get :index, referential_id: referential
+      end.to raise_error(FeatureChecker::NotAuthorizedError)
     end
 
     it 'define Ransack search (alias @q)' do
