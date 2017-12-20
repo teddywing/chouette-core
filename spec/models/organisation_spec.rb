@@ -2,8 +2,19 @@ describe Organisation, :type => :model do
   it { should validate_presence_of(:name) }
   it { should validate_uniqueness_of(:code) }
 
-  it 'should have a valid factory' do
-    expect(FactoryGirl.build(:organisation)).to be_valid
+  subject { build_stubbed :organisation }
+
+  it 'has a valid factory' do
+    expect_it.to be_valid
+  end
+
+  context 'lines_set' do
+    it 'has no lines' do
+      expect( subject.lines_set ).to eq(Set.new())
+    end
+    it 'has two lines' do
+      expect( build_stubbed(:org_with_lines).lines_set ).to eq(Set.new(%w{C00109 C00108}))
+    end
   end
 
   # it "create a rule_parameter_set" do
