@@ -37,6 +37,7 @@ fr:
       not_shared: Non partagées
       search_no_results: Aucun calendrier commercial ne correspond à votre recherche
       date: Date
+      filter_placeholder: Indiquez un nom de calendrier commercial...
     new:
       title: Ajouter un calendrier commercial
     create:

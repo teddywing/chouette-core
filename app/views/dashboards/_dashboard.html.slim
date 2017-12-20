@@ -22,7 +22,7 @@
     .panel.panel-default
       .panel-heading
         h3.panel-title.with_actions
-          = "Modèles de calendrier"
+          = t('dasboard.calendars.title')
           div
             = link_to '', calendars_path, class: ' fa fa-chevron-right pull-right'
       - if @dashboard.current_organisation.calendars.present?
@@ -31,27 +31,29 @@
             = link_to calendar.name, calendar_path(calendar), class: 'list-group-item'
       - else
         .panel-body
-          em.small.text-muted Aucun modèle de calendrier défini
+          em.small.text-muted 
+            = t('dasboard.calendars.none')
 
     .panel.panel-default
       .panel-heading
         h3.panel-title.with_actions
-          = "Calendriers commerciaux"
+          = t('dasboard.purchase_windows.title')
           div
-            = link_to '', business_calendars_path, class: ' fa fa-chevron-right pull-right'
-      - if @dashboard.current_organisation.business_calendars.present?
+            = link_to '', purchase_windows_path, class: ' fa fa-chevron-right pull-right'
+      - if @dashboard.current_organisation.purchase_windows.present?
         .list-group
-          - @dashboard.current_organisation.business_calendars.order("updated_at desc").limit(5).each do |business_calendar|
-            = link_to business_calendar.name, business_calendar_path(business_calendar), class: 'list-group-item'
+          - @dashboard.current_organisation.purchase_windows.order("updated_at desc").limit(5).each do |purchase_window|
+            = link_to purchase_window.name, referential_purchase_window_path(purchase_window.referential, purchase_window), class: 'list-group-item'
       - else
         .panel-body
-          em.small.text-muted Aucun calendrier commercial défini
+          em.small.text-muted 
+            = t('dasboard.purchase_windows.none')
 
   .col-lg-6.col-md-6.col-sm-6.col-xs-12
     .panel.panel-default
       .panel-heading
         h3.panel-title
-          = "Référentiels d'arrêts"
+          = t('dashboard.stop_area_referentials.title')
       .list-group
         - @dashboard.current_organisation.stop_area_referentials.each do |referential|
           = link_to referential.name, stop_area_referential_stop_areas_path(referential), class: 'list-group-item'
@@ -59,7 +61,7 @@
     .panel.panel-default
       .panel-heading
         h3.panel-title
-          = "Référentiels de lignes"
+          = t('dashboard.line_referentials.title')
       .list-group
         - @dashboard.current_organisation.line_referentials.all.each do |referential|
           = link_to referential.name, line_referential_lines_path(referential), class: 'list-group-item'

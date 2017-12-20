@@ -15,25 +15,11 @@ module Chouette
     validates_presence_of :name, :referential
 
     scope :overlapping, -> (period_range) do
-      where("(periods.begin <= :end AND periods.end >= :begin) OR (dates BETWEEN :begin AND :end)", {begin: period_range.begin, end: period_range.end})
+      where("(date_ranges.begin <= :end AND date_ranges.end >= :begin)", {begin: period_range.begin, end: period_range.end})
     end
 
     def local_id
       "IBOO-#{self.referential.id}-#{self.id}"
-    end
-    
-    def bounding_dates
-      periods_min_date..periods_max_date if periods_min_date && periods_max_date
-    end
-
-    def periods_max_date
-      return nil if self.periods.empty?
-      self.periods.max.end
-    end
-
-    def periods_min_date
-      return nil if self.periods.empty?
-      self.periods.min.begin
     end
 
     # def checksum_attributes

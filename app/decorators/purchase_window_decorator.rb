@@ -24,4 +24,11 @@ class PurchaseWindowDecorator < Draper::Decorator
 
     links
   end
+
+  def bounding_dates
+    unless object.date_ranges.empty?
+      object.date_ranges.min.begin..object.date_ranges.max.end
+    end
+  end
+
 end

@@ -37,6 +37,7 @@ en:
       not_shared: Not shared
       search_no_results: No purchase window matching your query
       date: Date
+      filter_placeholder: Put the name of a purchase window...
     create:
       title: Add a new purchase window
     new:
