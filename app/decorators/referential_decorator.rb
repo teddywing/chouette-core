@@ -74,7 +74,7 @@ class ReferentialDecorator < Draper::Decorator
   private
 
   # TODO move to a base Decorator (ApplicationDecorator)
-  def has_feature?(*feature)
+  def has_feature?(*features)
     h.has_feature?(*features) rescue false
   end
 
