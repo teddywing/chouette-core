@@ -52,7 +52,7 @@ module Stif
 
     def extra_organisation_permissions organisation
       if organisation&.name&.downcase == "stif"
-        return %w{calendars.share stop_area_referentials.synchronize line_referentials.synchronize} 
+        return %w{calendars.share stop_area_referentials.synchronize line_referentials.synchronize}
       end
       []
     end

@@ -22,7 +22,7 @@
     .panel.panel-default
       .panel-heading
         h3.panel-title.with_actions
-          = link_to "Modèles de calendrier", calendars_path
+          = link_to I18n.t("activerecord.models.calendar", count: @dashboard.current_organisation.calendars.size), calendars_path
           div
             = link_to '', calendars_path, class: ' fa fa-chevron-right pull-right'
       - if @dashboard.current_organisation.calendars.present?

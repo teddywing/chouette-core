@@ -8,7 +8,7 @@
     .col-lg-12.text-right
       = link_to stop_area_referential_stop_areas_path(@stop_area_referential), class: 'btn btn-primary' do
         = Referential.human_attribute_name(:stop_areas)
-        em.small = " (#{@stop_area_referential.stop_areas.size})"
+        em.small = " (#{@stop_area_referential.stop_areas.count})"
 - page_header_content_for @stop_area_referential
 
 .page_content

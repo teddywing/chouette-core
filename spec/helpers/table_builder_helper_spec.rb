@@ -59,7 +59,7 @@ describe TableBuilderHelper, type: :helper do
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr class="referential-#{referential.id}">
             <td>
                 <div class="checkbox"><input type="checkbox" name="#{referential.id}" id="#{referential.id}" value="#{referential.id}" /><label for="#{referential.id}"></label></div>
             </td>
@@ -213,7 +213,7 @@ describe TableBuilderHelper, type: :helper do
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr class="company-#{company.id}">
             <td>#{company.get_objectid.local_id}</td>
             <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
             <td></td>
@@ -326,7 +326,7 @@ describe TableBuilderHelper, type: :helper do
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr class="company-#{company.id}">
             <td>#{company.get_objectid.local_id}</td>
             <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
             <td></td>

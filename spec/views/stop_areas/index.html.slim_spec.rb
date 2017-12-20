@@ -21,8 +21,8 @@ describe "/stop_areas/index", :type => :view do
 
   with_permission "stop_areas.create" do
     it { should have_link_for_each_item(stop_areas, "show", -> (stop_area){ view.stop_area_referential_stop_area_path(stop_area_referential, stop_area) }) }
-    it { should have_link_for_each_item(stop_areas, "create", -> (stop_area){ view.new_stop_area_referential_stop_area_path(stop_area_referential) }) }
-    it { should have_the_right_number_of_links(stop_areas, 2) }
+    it { should_not have_link_for_each_item(stop_areas, "create", -> (stop_area){ view.new_stop_area_referential_stop_area_path(stop_area_referential) }) }
+    it { should have_the_right_number_of_links(stop_areas, 1) }
   end
 
   with_permission "stop_areas.update" do

@@ -24,21 +24,6 @@ class ReferentialLineDecorator < Draper::Decorator
       )
     )
 
-    if h.policy(Chouette::Line).create? &&
-        context[:referential].organisation == context[:current_organisation]
-      links << Link.new(
-        content: h.t('actions.new'),
-        href: h.new_referential_line_path(context[:referential])
-      )
-    end
-
-    if h.policy(object).update?
-      links << Link.new(
-        content: h.t('actions.edit'),
-        href: h.edit_referential_line_path(context[:referential], object)
-      )
-    end
-
     if h.policy(object).destroy?
       links << Link.new(
         content: h.destroy_link_content('actions.destroy'),

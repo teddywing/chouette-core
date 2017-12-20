@@ -53,5 +53,4 @@ describe "workbenches/show", :type => :view do
       expect(rendered).to have_box_for_item different_organisation_referential, true
     end
   end
-
 end
