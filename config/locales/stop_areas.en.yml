@@ -1,5 +1,6 @@
 en:
   stop_areas: &en_stop_areas
+    waiting_time_format: "%{value} minutes"
     search_no_results: "No stop area matching your query"
     errors:
       empty: Aucun stop_area_id
@@ -126,6 +127,7 @@ en:
         city_name: "City"
         created_at: Created at
         updated_at: Updated at
+        waiting_time: Waiting time
   formtastic:
     titles:
       stop_area:

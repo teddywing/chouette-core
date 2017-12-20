@@ -426,5 +426,30 @@ describe Chouette::StopArea, :type => :model do
   #     end
   # end
 
+  describe '#waiting_time' do
+
+    let(:stop_area) { FactoryGirl.build :stop_area }
+
+    it 'can be nil' do
+      stop_area.waiting_time = nil
+      expect(stop_area).to be_valid
+    end
+
+    it 'can be zero' do
+      stop_area.waiting_time = 0
+      expect(stop_area).to be_valid
+    end
+
+    it 'can be positive' do
+      stop_area.waiting_time = 120
+      expect(stop_area).to be_valid
+    end
+
+    it "can't be negative" do
+      stop_area.waiting_time = -1
+      expect(stop_area).to_not be_valid
+    end
+
+  end
 
 end

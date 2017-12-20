@@ -171,7 +171,35 @@ class StopAreasController < ChouetteController
   helper_method :current_referential
 
   def stop_area_params
-    params.require(:stop_area).permit( :routing_stop_ids, :routing_line_ids, :children_ids, :parent_id, :objectid, :object_version, :name, :comment, :area_type, :registration_number, :nearest_topic_name, :fare_code, :longitude, :latitude, :long_lat_type, :country_code, :street_name, :zip_code, :city_name, :mobility_restricted_suitability, :stairs_availability, :lift_availability, :int_user_needs, :coordinates, :url, :time_zone )
+    params.require(:stop_area).permit(
+      :area_type,
+      :children_ids,
+      :city_name,
+      :comment,
+      :coordinates,
+      :country_code,
+      :fare_code,
+      :int_user_needs,
+      :latitude,
+      :lift_availability,
+      :long_lat_type,
+      :longitude,
+      :mobility_restricted_suitability,
+      :name,
+      :nearest_topic_name,
+      :object_version,
+      :objectid,
+      :parent_id,
+      :registration_number,
+      :routing_line_ids,
+      :routing_stop_ids,
+      :stairs_availability,
+      :street_name,
+      :time_zone,
+      :url,
+      :waiting_time,
+      :zip_code,
+    )
   end
 
 end
