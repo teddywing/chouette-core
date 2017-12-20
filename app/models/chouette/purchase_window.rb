@@ -14,9 +14,7 @@ module Chouette
 
     validates_presence_of :name, :referential
 
-    scope :overlapping, -> (period_range) do
-      where("(date_ranges.begin <= :end AND date_ranges.end >= :begin)", {begin: period_range.begin, end: period_range.end})
-    end
+    scope :contains_date, ->(date) { where('date ? <@ any (date_ranges)', date) }
 
     def local_id
       "IBOO-#{self.referential.id}-#{self.id}"
