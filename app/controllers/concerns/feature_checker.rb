@@ -33,8 +33,9 @@ module FeatureChecker
   end
 
   def check_feature!(*features)
-    authorized = has_feature? *features
-    raise NotAuthorizedError, "Feature not autorized" unless authorized
+    unless has_feature?(*features)
+      raise NotAuthorizedError, "Feature not autorized"
+    end
   end
 
   class NotAuthorizedError < StandardError; end

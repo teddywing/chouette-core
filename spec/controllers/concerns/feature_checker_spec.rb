@@ -6,8 +6,8 @@ RSpec.describe "FeatureChecker", type: :controller do
     include FeatureChecker
     requires_feature :test, only: :protected
 
-    def protected; render :text => "protected"; end
-    def not_protected; render :text => "not protected"; end
+    def protected; render text: "protected"; end
+    def not_protected; render text: "not protected"; end
 
     def current_organisation
       @organisation ||= Organisation.new
@@ -21,7 +21,7 @@ RSpec.describe "FeatureChecker", type: :controller do
     end
   end
 
-  it "refuse access when organisation has not the feature" do
+  it "refuse access when organisation does not have the feature" do
     expect{ get(:protected) }.to raise_error(FeatureChecker::NotAuthorizedError)
   end
 
