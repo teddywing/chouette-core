@@ -65,7 +65,7 @@ end
 
 gem 'activerecord-postgis-adapter', "~> 3.0.0"
 gem 'polylines'
-gem 'activerecord-nulldb-adapter'
+gem 'activerecord-nulldb-adapter', require: false
 
 # Codifligne API
 gem 'codifligne', af83: 'stif-codifline-api'
