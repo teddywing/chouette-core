@@ -77,7 +77,7 @@ describe Organisation, :type => :model do
       expect(organisation.has_feature?(:present)).to be_truthy
     end
 
-    it "return true if Organisation features doesn't contains given feature" do
+    it "return false if Organisation features doesn't contains given feature" do
       organisation.features = %w{other}
       expect(organisation.has_feature?(:absent)).to be_falsy
     end
