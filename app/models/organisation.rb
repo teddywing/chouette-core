@@ -13,7 +13,6 @@ class Organisation < ActiveRecord::Base
 
   has_many :workbenches
   has_many :calendars
-  has_many :business_calendars
   has_many :api_keys, class_name: 'Api::V1::ApiKey'
 
   validates_presence_of :name
