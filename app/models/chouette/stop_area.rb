@@ -9,7 +9,7 @@ module Chouette
     include ObjectidSupport
 
     extend Enumerize
-    enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
+    enumerize :area_type, in: Chouette::AreaType::ALL
 
     with_options dependent: :destroy do |assoc|
       assoc.has_many :stop_points
@@ -196,10 +196,12 @@ module Chouette
       GeoRuby::SimpleFeatures::Envelope.from_coordinates coordinates
     end
 
+    # DEPRECATED use StopArea#area_type
     def stop_area_type
       area_type ? area_type : " "
     end
 
+    # DEPRECATED use StopArea#area_type
     def stop_area_type=(stop_area_type)
       self.area_type = (stop_area_type ? stop_area_type.camelcase : nil)
     end
