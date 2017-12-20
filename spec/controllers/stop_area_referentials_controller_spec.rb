@@ -6,7 +6,7 @@ RSpec.describe StopAreaReferentialsController, :type => :controller do
   describe 'PUT sync' do
     let(:request){ put :sync, id: stop_area_referential.id }
 
-    it { request.should redirect_to "/403" }
+    it { expect(request).to redirect_to "/403" }
 
     with_permission "stop_area_referentials.synchronize" do
       it 'returns HTTP success' do
