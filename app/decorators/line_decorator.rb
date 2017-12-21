@@ -18,7 +18,8 @@ class LineDecorator < Draper::Decorator
 
     links << Link.new(
       content: h.t('lines.actions.show_company'),
-      href: [context[:line_referential], object.company]
+      href: [context[:line_referential], object.company],
+      disabled: object.company.nil?
     )
 
     if h.policy(Chouette::Line).create? &&
