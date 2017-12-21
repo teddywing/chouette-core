@@ -3,6 +3,14 @@
     .col-lg-12
       = f.input :name
       // = f.input :color, as: :select, boolean_style: :inline, collection: Chouette::PurchaseWindow.color.values, input_html: {class: 'color_selector '}
+      div
+        .form-group
+          label.select.optional.col-sm-4.col-xs-5.control-label
+            = @purchase_window.class.human_attribute_name :color
+          div.col-sm-8.col-xs-7
+            span.fa.fa-circle style="color:#7F551B"
+
+      = f.input :color, as: :hidden, input_html: { value: '#7F551B' }
 
   .separator
 
