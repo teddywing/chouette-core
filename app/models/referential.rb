@@ -128,6 +128,10 @@ class Referential < ActiveRecord::Base
     Chouette::RoutingConstraintZone.all
   end
 
+  def purchase_windows
+    Chouette::PurchaseWindow.all
+  end
+
   before_validation :define_default_attributes
 
   def define_default_attributes

@@ -173,6 +173,8 @@ ChouetteIhm::Application.routes.draw do
 
     resources :companies, controller: "referential_companies"
 
+    resources :purchase_windows
+
     resources :time_tables do
       collection do
         get :tags

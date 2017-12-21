@@ -1,6 +1,6 @@
 en:
-  calendars:
-    search_no_results: 'No calendar matching your query'
+  purchase_windows:
+    search_no_results: 'No purchase window matching your query'
     days:
       monday: M
       tuesday: Tu
@@ -22,34 +22,33 @@ en:
       10: October
       11: November
       12: December
-    standard_calendars: Standard calendars
-    standard_calendar: Standard calendar
     actions:
-      new: Add a new calendar
-      edit: Edit this calendar
-      destroy: Remove this calendar
-      destroy_confirm: Are you sure you want destroy this calendar?
+      new: Add a new purchase window
+      edit: Edit this purchase window
+      destroy: Remove this purchase window
+      destroy_confirm: Are you sure you want destroy this purchase window?
     errors:
       overlapped_periods: Another period is overlapped with this period
       short_period: A period needs to last at least two days
     index:
-      title: Calendars
+      title: purchase windows
       all: All
       shared: Shared
       not_shared: Not shared
-      search_no_results: No calendar matching your query
+      search_no_results: No purchase window matching your query
       date: Date
-    new:
-      title: Add a new calendar
+      filter_placeholder: Put the name of a purchase window...
     create:
-      title: Add a new calendar
+      title: Add a new purchase window
+    new:
+      title: Add a new purchase window
     edit:
-      title: Update calendar %{name}
+      title: Update purchase window %{name}
     show:
-      title: Calendar %{name}
+      title: purchase window %{name}
   simple_form:
     labels:
-      calendar:
+      purchase_windows:
         date_value: Date
         add_a_date: Add a date
         add_a_date_range: Add a date range
@@ -58,20 +57,20 @@ en:
           end: End
   activerecord:
     models:
-      calendar:
-        one: calendar
-        other: calendars
+      purchase_window:
+        zero: purchase window
+        one: purchase window
+        other: purchase windows
     attributes:
-      calendar:
+      purchase_windows:
         name: Name
-        short_name: Short name
         date_ranges: Date ranges
-        dates: Dates
-        shared: Shared
-        organisation: Organisation
+        referential: Referential
+        color: Color
+        bounding_dates: Bounding Dates
     errors:
       models:
-        calendar:
+        purchase_windows:
           attributes:
             dates:
               date_in_date_ranges: A date can not be in Dates and in Date ranges.

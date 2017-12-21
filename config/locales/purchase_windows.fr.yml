@@ -1,6 +1,6 @@
 fr:
-  calendars:
-    search_no_results: 'Aucun calendrier ne correspond à votre recherche'
+  purchase_windows:
+    search_no_results: 'Aucun calendrier commercial ne correspond à votre recherche'
     days:
       monday: L
       tuesday: Ma
@@ -22,31 +22,30 @@ fr:
       10: Octobre
       11: Novembre
       12: Décembre
-    standard_calendars: Calendriers standards
-    standard_calendar: Calendrier standard
     actions:
-      new: Ajouter un calendrier
-      edit: Editer cet calendrier
-      destroy: Supprimer cet calendrier
-      destroy_confirm: Etes vous sûr de supprimer cet calendrier ?
+      new: Créer
+      edit: Editer
+      destroy: Supprimer
+      destroy_confirm: Etes vous sûr de supprimer cet calendrier commercial ?
     errors:
       overlapped_periods: Une autre période chevauche cette période
       short_period: Une période doit être d'un duréé de deux jours minimum
     index:
-      title: Calendriers
+      title: Calendriers commerciaux
       all: Tous
       shared: Partagées
       not_shared: Non partagées
-      search_no_results: Aucun calendrier ne correspond à votre recherche
+      search_no_results: Aucun calendrier commercial ne correspond à votre recherche
       date: Date
+      filter_placeholder: Indiquez un nom de calendrier commercial...
     new:
-      title: Ajouter un calendrier
+      title: Ajouter un calendrier commercial
     create:
-      title: Ajouter un calendrier
+      title: Ajouter un calendrier commercial
     edit:
-      title: Editer le calendrier %{name}
+      title: Editer le calendrier commercial %{name}
     show:
-      title: Calendrier %{name}
+      title: Calendrier commercial %{name}
   simple_form:
     labels:
       calendar:
@@ -58,20 +57,21 @@ fr:
           end: Fin
   activerecord:
     models:
-      calendar:
-        one: "calendrier"
-        other: "calendriers"
+      purchase_window:
+        zero: "calendrier commercial"
+        one: "calendrier commercial"
+        other: "calendriers commerciaux"
     attributes:
-      calendar:
+      purchase_window:
         name: Nom
         short_name: Nom court
         date_ranges: Intervalles de dates
-        dates: Dates
-        shared: Partagé
-        organisation: Organisation
+        referential: Jeu de données
+        color: Couleur
+        bounding_dates: Période englobante
     errors:
       models:
-        calendar:
+        purchase_window:
           attributes:
             dates:
               date_in_date_ranges: Une même date ne peut pas être incluse à la fois dans la liste et dans les intervalles de dates.
