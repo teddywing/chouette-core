@@ -1,7 +1,11 @@
 module IntegrationSpecHelper
 
   def paginate_collection klass, decorator, page=1
-    ModelDecorator.decorate( klass.page(page), with: decorator )
+    coll = klass.page(page)
+    if decorator
+      coll = ModelDecorator.decorate( coll, with: decorator )
+    end
+    coll
   end
 
   def build_paginated_collection factory, decorator, opts={}
