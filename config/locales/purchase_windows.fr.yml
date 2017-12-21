@@ -29,7 +29,7 @@ fr:
       destroy_confirm: Etes vous sûr de supprimer cet calendrier commercial ?
     errors:
       overlapped_periods: Une autre période chevauche cette période
-      short_period: "Une période doit être d'un duréé de deux jours minimum"
+      short_period: "Une période doit être d'une durée de deux jours minimum"
     index:
       title: Calendriers commerciaux
       all: Tous
@@ -67,7 +67,7 @@ fr:
         short_name: Nom court
         date_ranges: Intervalles de dates
         referential: Jeu de données
-        color: Couleur
+        color: Couleur associée
         bounding_dates: Période englobante
     errors:
       models:
