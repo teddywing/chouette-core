@@ -368,6 +368,10 @@ module TableBuilderHelper
   end
 
   def gear_menu_link(link)
+    klass = [link.extra_class]
+    klass << 'delete-action' if link.method == :delete
+    klass = klass.compact.join(' ')
+    klass = nil unless klass.present?
     content_tag(
       :li,
       link_to(
@@ -377,7 +381,7 @@ module TableBuilderHelper
       ) do
         link.content
       end,
-      class: ('delete-action' if link.method == :delete)
+      class: klass
     )
   end
 

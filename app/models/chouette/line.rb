@@ -79,5 +79,16 @@ module Chouette
       line_referential.companies.where(id: ([company_id] + Array(secondary_company_ids)).compact)
     end
 
+    def deactivate!
+      update_attribute :deactivated, true
+    end
+
+    def activate!
+      update_attribute :deactivated, false
+    end
+
+    def activated?
+      !deactivated
+    end
   end
 end

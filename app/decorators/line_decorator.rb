@@ -41,6 +41,26 @@ class LineDecorator < Draper::Decorator
       )
     end
 
+    if h.policy(object).deactivate?
+      links << Link.new(
+        content: h.deactivate_link_content('lines.actions.deactivate'),
+        href: h.deactivate_line_referential_line_path(context[:line_referential], object),
+        method: :put,
+        data: {confirm: h.t('lines.actions.deactivate_confirm')},
+        extra_class: "delete-action"
+      )
+    end
+
+    if h.policy(object).activate?
+      links << Link.new(
+        content: h.activate_link_content('lines.actions.activate'),
+        href: h.activate_line_referential_line_path(context[:line_referential], object),
+        method: :put,
+        data: {confirm: h.t('lines.actions.activate_confirm')},
+        extra_class: "delete-action"
+      )
+    end
+
     if h.policy(object).destroy?
       links << Link.new(
         content: h.destroy_link_content('lines.actions.destroy'),

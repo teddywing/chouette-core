@@ -93,7 +93,10 @@ ChouetteIhm::Application.routes.draw do
 
   resources :line_referentials, :only => [:show, :edit, :update] do
     post :sync, on: :member
-    resources :lines
+    resources :lines do
+      put :deactivate, on: :member
+      put :activate, on: :member
+    end
     resources :group_of_lines
     resources :companies
     resources :networks
