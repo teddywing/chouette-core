@@ -19,5 +19,28 @@ describe "PurchaseWindows", type: :feature do
         expect(page).to have_content(name)
       end
     end
+
+    with_permissions('purchase_windows.update') do
+      it "allows users to update purchase windows" do
+        actual_name = 'Existing purchase window'
+        expected_name = 'Updated purchase window'
+        create(
+          :purchase_window,
+          referential: first_referential,
+          name: actual_name
+        )
+
+        visit(referential_purchase_windows_path(first_referential.id))
+
+        click_link(actual_name)
+
+        click_link(I18n.t('purchase_windows.actions.edit'))
+        fill_in('purchase_window[name]', with: expected_name)
+
+        click_button(I18n.t('actions.submit'))
+
+        expect(page).to have_content(expected_name)
+      end
+    end
   end
 end
