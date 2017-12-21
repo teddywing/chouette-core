@@ -24,6 +24,7 @@ $ ->
     limit = 51
 
     if $(window).scrollTop() >= limit
+      data = ""
       if ($('.page-action .small').length > 0)
         data = $('.page-action .small')[0].innerHTML
 
