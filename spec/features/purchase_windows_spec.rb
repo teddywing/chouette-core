@@ -42,5 +42,24 @@ describe "PurchaseWindows", type: :feature do
         expect(page).to have_content(expected_name)
       end
     end
+
+    with_permissions('purchase_windows.destroy') do
+      it "allows users to destroy purchase windows" do
+        name = 'Existing purchase window'
+        create(
+          :purchase_window,
+          referential: first_referential,
+          name: name
+        )
+
+        visit(referential_purchase_windows_path(first_referential.id))
+
+        click_link(name)
+
+        click_link(I18n.t('purchase_windows.actions.destroy'))
+
+        expect(page).to_not have_content(name)
+      end
+    end
   end
 end
