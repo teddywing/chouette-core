@@ -16,6 +16,10 @@ module Chouette
 
     scope :contains_date, ->(date) { where('date ? <@ any (date_ranges)', date) }
 
+  def self.ransackable_scopes(auth_object = nil)
+    [:contains_date]
+  end
+
     def local_id
       "IBOO-#{self.referential.id}-#{self.id}"
     end

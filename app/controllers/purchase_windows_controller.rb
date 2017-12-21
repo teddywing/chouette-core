@@ -10,9 +10,7 @@ class PurchaseWindowsController < ChouetteController
 
   def index
     index! do
-      scope = self.ransack_period_range(scope: @purchase_windows, error_message: t('compliance_check_sets.filters.error_period_filter'), query: :overlapping)
-      @q = scope.ransack(params[:q])
-      @purchase_windows = decorate_purchase_windows(@q.result.paginate(page: params[:page], per_page: 30))
+      @purchase_windows = decorate_purchase_windows(@purchase_windows)
     end
   end
 
@@ -47,14 +45,31 @@ class PurchaseWindowsController < ChouetteController
       )
   end
 
+   def sort_column
+    Chouette::PurchaseWindow.column_names.include?(params[:sort]) ? params[:sort] : 'name'
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
+  end
+
+  def collection
+    return @purchase_windows if @purchase_windows
+    @q = Chouette::PurchaseWindow.ransack(params[:q])
+
+    purchase_windows = @q.result
+    purchase_windows = purchase_windows.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
+    @purchase_windows = purchase_windows.paginate(page: params[:page])
+  end
+
   def ransack_contains_date
     date =[]
-    if params[:q] && params[:q]['date_ranges(1i)'].present?
-      ['date_ranges(1i)', 'date_ranges(2i)', 'date_ranges(3i)'].each do |key|
+    if params[:q] && params[:q]['contains_date(1i)'].present?
+      ['contains_date(1i)', 'contains_date(2i)', 'contains_date(3i)'].each do |key|
         date << params[:q][key].to_i
         params[:q].delete(key)
       end
-      params[:q]['date_ranges'] = Date.new(*date) rescue nil
+      params[:q]['contains_date'] = @date = Date.new(*date) rescue nil
     end
   end
 end

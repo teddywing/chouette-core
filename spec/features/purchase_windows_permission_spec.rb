@@ -4,6 +4,10 @@ require 'spec_helper'
 describe "PurchaseWindows", :type => :feature do
   login_user
 
+  before do
+    @user.organisation.update features: %w{purchase_windows}
+  end
+
   let(:purchase_window) { create :purchase_window, referential: first_referential}
 
   describe 'permissions' do
