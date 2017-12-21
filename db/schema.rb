@@ -419,8 +419,13 @@ ActiveRecord::Schema.define(version: 20171220164059) do
     t.string   "type",                  limit: 255
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+<<<<<<< HEAD
     t.integer  "current_step",                      default: 0
     t.integer  "total_steps",                       default: 0
+=======
+    t.integer  "current_step",                    default: 0
+    t.integer  "total_steps",                     default: 0
+>>>>>>> Commit schema
     t.datetime "notified_parent_at"
     t.string   "creator"
   end
@@ -605,6 +610,20 @@ ActiveRecord::Schema.define(version: 20171220164059) do
   end
 
   add_index "pt_links", ["objectid"], name: "pt_links_objectid_key", unique: true, using: :btree
+
+  create_table "purchase_windows", id: :bigserial, force: :cascade do |t|
+    t.string    "name"
+    t.string    "color"
+    t.daterange "date_ranges",                            array: true
+    t.datetime  "created_at",                null: false
+    t.datetime  "updated_at",                null: false
+    t.string    "objectid"
+    t.string    "checksum"
+    t.text      "checksum_source"
+    t.integer   "referential_id",  limit: 8
+  end
+
+  add_index "purchase_windows", ["referential_id"], name: "index_purchase_windows_on_referential_id", using: :btree
 
   create_table "referential_clonings", id: :bigserial, force: :cascade do |t|
     t.string   "status"
