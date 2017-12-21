@@ -1,8 +1,10 @@
 - breadcrumb :vehicle_journeys, @referential, @route
 - content_for :page_header_title, t('vehicle_journeys.index.title', route: @route.name)
 - if @route.opposite_route.present?
-  - content_for :page_header_actions do
-    = link_to(t('routes.actions.opposite_route_timetable'), [@referential, @route.line, @route.opposite_route, :vehicle_journeys], class: 'btn btn-default')
+  - content_for :page_header_content do
+    .row.mb-sm
+     .col-lg-12.text-right
+       = link_to(t('routes.actions.opposite_route_timetable'), [@referential, @route.line, @route.opposite_route, :vehicle_journeys], class: 'btn btn-primary')
 
 
 .page_content

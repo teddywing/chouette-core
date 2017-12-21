@@ -24,7 +24,7 @@ describe "/vehicle_journeys/index", :type => :view do
       href = view.referential_line_route_vehicle_journeys_path(referential, line, route.opposite_route)
       oppposite_button_selector = "a[href=\"#{href}\"]"
 
-      expect(view.content_for(:page_header_actions)).to have_selector oppposite_button_selector
+      expect(view.content_for(:page_header_content)).to have_selector oppposite_button_selector
     end
   end
 end
