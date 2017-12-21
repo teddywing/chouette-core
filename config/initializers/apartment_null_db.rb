@@ -4,9 +4,7 @@ if ENV['RAILS_DB_ADAPTER'] == 'nulldb'
   module Apartment
     module Tenant
       def adapter
-        Thread.current[:apartment_adapter] ||= begin
-          nulldb_adapter(config)
-        end
+        Thread.current[:apartment_adapter] ||= nulldb_adapter(config)
       end
 
       def self.nulldb_adapter(config)
