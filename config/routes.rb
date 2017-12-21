@@ -86,17 +86,19 @@ ChouetteIhm::Application.routes.draw do
     resources :compliance_control_blocks, :except => [:show, :index]
   end
 
+  deactivable = Proc.new do
+    put :deactivate, on: :member
+    put :activate, on: :member
+  end
+
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
-    resources :stop_areas
+    resources :stop_areas, &deactivable
   end
 
   resources :line_referentials, :only => [:show, :edit, :update] do
     post :sync, on: :member
-    resources :lines do
-      put :deactivate, on: :member
-      put :activate, on: :member
-    end
+    resources :lines, &deactivable
     resources :group_of_lines
     resources :companies
     resources :networks

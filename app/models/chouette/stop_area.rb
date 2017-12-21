@@ -328,5 +328,20 @@ module Chouette
       end
     end
 
+    def activated?
+      deleted_at.nil?
+    end
+
+    def deactivated?
+      !activated?
+    end
+
+    def activate!
+      update_attribute :deleted_at, nil
+    end
+
+    def deactivate!
+      update_attribute :deleted_at, Time.now
+    end
   end
 end

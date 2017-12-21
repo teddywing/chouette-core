@@ -1,6 +1,7 @@
 class StopAreasController < ChouetteController
   include ApplicationHelper
-
+  include Activatable
+  
   defaults :resource_class => Chouette::StopArea
 
   belongs_to :stop_area_referential
