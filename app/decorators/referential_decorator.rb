@@ -12,6 +12,13 @@ class ReferentialDecorator < Draper::Decorator
       )
     end
 
+    if has_feature?(:purchase_windows)
+      links << Link.new(
+        content: h.t('purchase_windows.index.title'),
+        href: h.referential_purchase_windows_path(object)
+      )
+    end
+
     links << Link.new(
       content: h.t('time_tables.index.title'),
       href: h.referential_time_tables_path(object)
