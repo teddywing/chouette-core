@@ -48,7 +48,7 @@ fr:
       title: Calendrier commercial %{name}
   simple_form:
     labels:
-      calendar:
+      purchase_window:
         date_value: Date
         add_a_date: Ajouter une date
         add_a_date_range: Ajouter un intervalle de dates

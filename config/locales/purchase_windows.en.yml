@@ -48,7 +48,7 @@ en:
       title: purchase window %{name}
   simple_form:
     labels:
-      purchase_windows:
+      purchase_window:
         date_value: Date
         add_a_date: Add a date
         add_a_date_range: Add a date range
