@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20171215145023) do
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "hstore"
+  enable_extension "unaccent"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -402,9 +403,9 @@ ActiveRecord::Schema.define(version: 20171215145023) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
