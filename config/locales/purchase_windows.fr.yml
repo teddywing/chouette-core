@@ -43,7 +43,7 @@ fr:
     create:
       title: Ajouter un calendrier commercial
     edit:
-      title: Editer le calendrier comercial %{name}
+      title: Editer le calendrier commercial %{name}
     show:
       title: Calendrier commercial %{name}
   simple_form:
@@ -57,8 +57,10 @@ fr:
           end: Fin
   activerecord:
     models:
-      one: "calendrier commercial"
-      other: "calendriers commerciaux"
+      purchase_window:
+        zero: "calendrier commercial"
+        one: "calendrier commercial"
+        other: "calendriers commerciaux"
     attributes:
       purchase_window:
         name: Nom
