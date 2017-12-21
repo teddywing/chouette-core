@@ -10,7 +10,7 @@ set :use_sudo, false
 default_run_options[:pty] = true
 set :group_writable, true
 set :bundle_cmd, "/var/lib/gems/2.3.0/bin/bundle"
-set :rake, "#{bundle_cmd} exec /var/lib/gems/2.3.0/bin/rake"
+set :rake, "#{bundle_cmd} exec rake"
 
 set :keep_releases, -> { fetch(:kept_releases, 5) }
 after "deploy:restart", "deploy:cleanup"
