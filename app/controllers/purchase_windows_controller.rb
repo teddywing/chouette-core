@@ -6,6 +6,8 @@ class PurchaseWindowsController < ChouetteController
   defaults :resource_class => Chouette::PurchaseWindow, collection_name: 'purchase_windows', instance_name: 'purchase_window'
   belongs_to :referential
 
+  requires_feature :purchase_windows
+
   def index
     index! do
       scope = self.ransack_period_range(scope: @purchase_windows, error_message: t('compliance_check_sets.filters.error_period_filter'), query: :overlapping)
@@ -47,7 +49,7 @@ class PurchaseWindowsController < ChouetteController
 
   def ransack_contains_date
     date =[]
-    if params[:q] && !params[:q]['date_ranges(1i)'].empty?
+    if params[:q] && params[:q]['date_ranges(1i)'].present?
       ['date_ranges(1i)', 'date_ranges(2i)', 'date_ranges(3i)'].each do |key|
         date << params[:q][key].to_i
         params[:q].delete(key)

@@ -6,9 +6,9 @@
         button.btn.btn-default#search_btn type='submit'
           span.fa.fa-search
 
-    .form-group
-      = f.label Chouette::PurchaseWindow.human_attribute_name(:date), class: 'control-label'
-      = f.input :date_ranges, as: :date, label: false, wrapper_html: { class: 'date smart_date' }, class: 'form-control', include_blank: true
+    / .form-group
+    /   = f.label Chouette::PurchaseWindow.human_attribute_name(:date), class: 'control-label'
+    /   = f.input :date_ranges, as: :date, label: false, wrapper_html: { class: 'date smart_date' }, class: 'form-control', include_blank: true
 
   .actions
     = link_to t('actions.erase'), referential_purchase_windows_path, class: 'btn btn-link'
