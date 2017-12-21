@@ -9,8 +9,8 @@ set :deploy_to, "/var/www/stif-boiv"
 set :use_sudo, false
 default_run_options[:pty] = true
 set :group_writable, true
-set :bundle_cmd, "/var/lib/gems/2.2.0/bin/bundle"
-set :rake, "#{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake"
+set :bundle_cmd, "/var/lib/gems/2.3.0/bin/bundle"
+set :rake, "#{bundle_cmd} exec /var/lib/gems/2.3.0/bin/rake"
 
 set :keep_releases, -> { fetch(:kept_releases, 5) }
 after "deploy:restart", "deploy:cleanup"
@@ -29,7 +29,7 @@ require 'whenever/capistrano'
 #after 'deploy:finalize_update', 'npm:install'
 
 # Whenever
-set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/2.2.0/bin'" } # invoke bin/bundle to use 'correct' ruby environment
+set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/2.3.0/bin'" } # invoke bin/bundle to use 'correct' ruby environment
 
 set :whenever_command, "sudo /usr/local/sbin/whenever-sudo" # use sudo to change www-data crontab
 set :whenever_user, "www-data" # use www-data crontab
