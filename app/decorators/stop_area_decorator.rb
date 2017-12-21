@@ -31,4 +31,10 @@ class StopAreaDecorator < Draper::Decorator
 
     links
   end
+
+  def waiting_time_text
+    return '-' if [nil, 0].include? waiting_time
+    h.t('stop_areas.waiting_time_format', value: waiting_time)
+  end
+
 end

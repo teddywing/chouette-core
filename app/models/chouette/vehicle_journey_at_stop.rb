@@ -75,5 +75,14 @@ module Chouette
         attrs << self.arrival_day_offset.to_s
       end
     end
+
+    def departure
+      departure_time.utc.strftime "%H:%M" if departure_time
+    end
+
+    def arrival
+      arrival_time.utc.strftime "%H:%M" if arrival_time
+    end
+
   end
 end

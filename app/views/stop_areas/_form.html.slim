@@ -26,6 +26,9 @@
         .stop_areas.stop_area.general_info
           h3 = t("stop_areas.stop_area.general")
 
+          - if has_feature?(:stop_area_waiting_time)
+            = f.input :waiting_time
+
           = f.input :registration_number, required: format_restriction_for_locales(@referential) == '.hub', :input_html => {:title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.registration_number")}
           = f.input :fare_code
           = f.input :nearest_topic_name, :input_html => {:title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.nearest_topic_name")}

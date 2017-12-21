@@ -3,12 +3,19 @@ class ReferentialDecorator < Draper::Decorator
 
   def action_links
     policy = h.policy(object)
-    links = [
-      Link.new(
-        content: h.t('time_tables.index.title'),
-        href: h.referential_time_tables_path(object)
+    links = []
+
+    if has_feature?(:referential_vehicle_journeys)
+      links << Link.new(
+        content: h.t('referential_vehicle_journeys.index.title'),
+        href: h.referential_vehicle_journeys_path(object)
       )
-    ]
+    end
+
+    links << Link.new(
+      content: h.t('time_tables.index.title'),
+      href: h.referential_time_tables_path(object)
+    )
 
     if policy.clone?
       links << Link.new(
@@ -63,4 +70,12 @@ class ReferentialDecorator < Draper::Decorator
 
     links
   end
+
+  private
+
+  # TODO move to a base Decorator (ApplicationDecorator)
+  def has_feature?(*features)
+    h.has_feature?(*features) rescue false
+  end
+
 end

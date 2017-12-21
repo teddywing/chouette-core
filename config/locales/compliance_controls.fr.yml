@@ -88,7 +88,7 @@ fr:
     vehicle_journey_control/waiting_time:
       messages:
         3_vehiclejourney_1: "Sur la course %{source_objectid}, le temps d'attente %{error_value} à l'arrêt %{target_0_label} (%{target_0_objectid}) est supérieur au seuil toléré (%{reference_value})"
-      description: "La durée d’attente à un arrêt ne doit pas être trop grande"
+      description: "La durée d’attente, en minutes, à un arrêt ne doit pas être trop grande"
     vehicle_journey_control/speed:
       messages:
         3_vehiclejourney_2_1: "Sur la course %{source_objectid}, la vitesse calculée %{error_value} entre les arrêts %{target_0_label} (%{target_0_objectid}) et %{target_1_label} (%{target_1_objectid}) est supérieur au seuil toléré (%{reference_value})"

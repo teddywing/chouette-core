@@ -19,7 +19,7 @@ class CalendarsController < ChouetteController
 
   private
   def calendar_params
-    permitted_params = [:id, :name, :short_name, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]
+    permitted_params = [:id, :name, :short_name, :shared, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]
     permitted_params << :shared if policy(Calendar).share?
     params.require(:calendar).permit(*permitted_params)
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171218174509) do
+ActiveRecord::Schema.define(version: 20171220164059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -403,9 +403,9 @@ ActiveRecord::Schema.define(version: 20171218174509) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
-    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
+    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -552,6 +552,7 @@ ActiveRecord::Schema.define(version: 20171218174509) do
     t.datetime "synced_at"
     t.hstore   "sso_attributes"
     t.string   "custom_view"
+    t.string   "features",       default: [],        array: true
   end
 
   add_index "organisations", ["code"], name: "index_organisations_on_code", unique: true, using: :btree
@@ -570,6 +571,20 @@ ActiveRecord::Schema.define(version: 20171218174509) do
   end
 
   add_index "pt_links", ["objectid"], name: "pt_links_objectid_key", unique: true, using: :btree
+
+  create_table "purchase_windows", id: :bigserial, force: :cascade do |t|
+    t.string    "name"
+    t.string    "color"
+    t.daterange "date_ranges",                            array: true
+    t.datetime  "created_at",                null: false
+    t.datetime  "updated_at",                null: false
+    t.string    "objectid"
+    t.string    "checksum"
+    t.text      "checksum_source"
+    t.integer   "referential_id",  limit: 8
+  end
+
+  add_index "purchase_windows", ["referential_id"], name: "index_purchase_windows_on_referential_id", using: :btree
 
   create_table "referential_clonings", id: :bigserial, force: :cascade do |t|
     t.string   "status"
@@ -737,6 +752,7 @@ ActiveRecord::Schema.define(version: 20171218174509) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "stif_type"
+    t.integer  "waiting_time"
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree

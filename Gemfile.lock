@@ -75,6 +75,8 @@ GEM
       activemodel (= 4.2.8)
       activesupport (= 4.2.8)
       arel (~> 6.0)
+    activerecord-nulldb-adapter (0.3.7)
+      activerecord (>= 2.0.0)
     activerecord-postgis-adapter (3.0.0)
       activerecord (~> 4.2)
       rgeo-activerecord (~> 4.0)
@@ -564,6 +566,7 @@ DEPENDENCIES
   SyslogLogger
   aasm
   active_attr
+  activerecord-nulldb-adapter
   activerecord-postgis-adapter (~> 3.0.0)
   acts-as-taggable-on (~> 4.0.0)
   acts_as_list (~> 0.6.0)
@@ -680,4 +683,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
