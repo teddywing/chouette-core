@@ -70,6 +70,7 @@ en:
         networks:
           name: "Network"
         company_id: "Company"
+        company: "Company"
         secondary_company: "Secondary company"
         companies:
           name: "Company"

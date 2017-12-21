@@ -71,6 +71,7 @@ fr:
         networks:
           name: "Réseau"
         company_id: "Transporteur principal"
+        company: "Transporteur principal"
         secondary_company: "Transporteurs secondaires"
         companies:
           name: "Transporteur principal"
