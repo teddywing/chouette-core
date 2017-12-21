@@ -382,7 +382,7 @@ module TableBuilderHelper
       ) do
         link.content
       end,
-      class: klass.join(' ')
+      class: (klass.join(' ') if klass.present?)
     )
   end
 
