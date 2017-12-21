@@ -167,7 +167,7 @@ crumb :purchase_windows do |referential|
   parent :referential, referential
 end
 
-crumb :purchase_window do |purchase_window, referential|
+crumb :purchase_window do |referential, purchase_window|
   link breadcrumb_name(purchase_window), referential_purchase_window_path(referential, purchase_window)
   parent :purchase_windows, referential
 end

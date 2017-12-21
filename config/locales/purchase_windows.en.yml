@@ -57,8 +57,10 @@ en:
           end: End
   activerecord:
     models:
-      one: purchase window
-      other: purchase windows
+      purchase_window:
+        zero: purchase window
+        one: purchase window
+        other: purchase windows
     attributes:
       purchase_windows:
         name: Name
