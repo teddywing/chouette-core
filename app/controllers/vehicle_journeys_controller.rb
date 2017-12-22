@@ -41,8 +41,8 @@ class VehicleJourneysController < ChouetteController
 
   def index
     @stop_points_list = []
-    route.stop_points.each do |sp|
-      @stop_points_list << {
+    @stop_points_list = route.stop_points.joins(:stop_area).map do |sp|
+      {
         :id => sp.stop_area.id,
         :route_id => sp.try(:route_id),
         :object_id => sp.try(:objectid),
@@ -64,7 +64,6 @@ class VehicleJourneysController < ChouetteController
         :street_name => sp.stop_area.try(:street_name)
       }
     end
-
     @transport_mode = route.line['transport_mode']
     @transport_submode = route.line['transport_submode']
 
@@ -92,13 +91,15 @@ class VehicleJourneysController < ChouetteController
     scope = maybe_filter_by_departure_time(scope)
     scope = maybe_filter_out_journeys_with_time_tables(scope)
 
-    @q = scope.search filtered_ransack_params
+    @vehicle_journeys ||= begin
+      @q = scope.search filtered_ransack_params
 
-    @ppage = 20
-    @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
-    @footnotes = route.line.footnotes.to_json
-    @matrix    = resource_class.matrix(@vehicle_journeys)
-    @vehicle_journeys
+      @ppage = 20
+      @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
+      @footnotes = route.line.footnotes.to_json
+      @matrix    = resource_class.matrix(@vehicle_journeys)
+      @vehicle_journeys
+    end
   end
 
   def maybe_filter_by_departure_time(scope)
