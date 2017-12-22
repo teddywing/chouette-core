@@ -2,6 +2,12 @@ import stopPointsReducer from '../../../../app/javascript/routes/reducers/stopPo
 import formHelper from '../../../../app/javascript/routes/form_helper'
 import _ from 'lodash'
 
+ //  _  _ ___ _    ___ ___ ___  ___
+ // | || | __| |  | _ \ __| _ \/ __|
+ // | __ | _|| |__|  _/ _||   /\__ \
+ // |_||_|___|____|_| |___|_|_\|___/
+ //
+
 let state = []
 
 formHelper.addInput = (...args)=>{}
@@ -44,6 +50,14 @@ let it_should_handle = (action, final_state, custom_state=null) => {
   })
 }
 
+
+ //  ___ ___ ___ ___ ___
+ // / __| _ \ __/ __/ __|
+ // \__ \  _/ _| (__\__ \
+ // |___/_| |___\___|___/
+ //
+
+
 describe('stops reducer', () => {
   beforeEach(()=>{
     state = [ stop_point_1, stop_point_2, stop_point_3 ]
@@ -62,12 +76,12 @@ describe('stops reducer', () => {
 
   it_should_handle(
     {type: 'MOVE_STOP_UP', index: 1},
-    [ update_stop_point(stop_point_2, {stoppoint_id: 72}), update_stop_point(stop_point_1, {stoppoint_id: 73}), stop_point_3 ]
+    [ update_stop_point(stop_point_2, {index: 0}), update_stop_point(stop_point_1, {index: 1}), stop_point_3 ]
   )
 
   it_should_handle(
     {type: 'MOVE_STOP_DOWN', index: 0},
-    [ update_stop_point(stop_point_2, {stoppoint_id: 72}), update_stop_point(stop_point_1, {stoppoint_id: 73}), stop_point_3 ]
+    [ update_stop_point(stop_point_2, {index: 0}), update_stop_point(stop_point_1, {index: 1}), stop_point_3 ]
   )
 
   it_should_handle(
