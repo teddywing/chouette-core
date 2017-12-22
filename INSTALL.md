@@ -10,15 +10,30 @@ rvm install 2.3.1
 
 ## Node and Yarn
 
-Yarn needs a node version 6.12.0, if you use Node Version Manager [NVM](https://github.com/creationix/nvm)  you can rely on the content of `.nvmrc`.
+Yarn needs node. If you use Node Version Manager [NVM](https://github.com/creationix/nvm)  you can rely on the content of `.nvmrc`. Otherwise please make sure to use a compatible version, still best to use the same as indicated by `.nvrmc`.
 
-Otherwise please make sure to use a compatible version, still best to use the same as indicated by `.nvrmc`.
-
-Then install yarn :
-
+* Install node
 
 ```sh
-brew install yarn // macOS
+nvm install 6.12.0
+```
+
+* Install [yarn](https://yarnpkg.com/lang/en/docs/install/)
+
+```sh
+// On macOS
+brew install yarn
+
+// On Debian/ubuntu
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update && sudo apt-get install yarn
+```
+
+* Install nodes packages
+
+```sh
+yarn install
 ```
 
 ### Installation Caveats
@@ -100,8 +115,6 @@ Go into your local repository and install the gems
 bundle install
 ```
 
-### Installation Caveats
-
 #### Nokogiri on macOS
 
 http://www.nokogiri.org/tutorials/installing_nokogiri.html tells us that `xz` can cause troubles, here is what to do
@@ -110,24 +123,6 @@ http://www.nokogiri.org/tutorials/installing_nokogiri.html tells us that `xz` ca
 brew unlink xz
 gem install nokogiri # or bundle install
 brew link xz
-```
-
-### Install yarn and packages
-
-Need to install [yarn](https://yarnpkg.com/lang/en/docs/install/)
-
-```sh
-// On macOS
-brew install yarn
-
-// On Debian/ubuntu
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update && sudo apt-get install yarn
-```
-
-```sh
-yarn install
 ```
 
 ### Database
