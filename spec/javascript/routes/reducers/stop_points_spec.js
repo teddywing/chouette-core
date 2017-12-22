@@ -1,6 +1,10 @@
 import stopPointsReducer from '../../../../app/javascript/routes/reducers/stopPoints'
+import formHelper from '../../../../app/javascript/routes/form_helper'
+import _ from 'lodash'
 
 let state = []
+
+formHelper.addInput = (...args)=>{}
 
 let fakeData = {
   geometry: undefined,
@@ -10,34 +14,39 @@ let fakeData = {
   user_objectid: 'uoid_test'
 }
 
+let update_stop_point = (stop_point, opts) => {
+  return _.assign({}, stop_point, opts)
+}
+
+let stop_point = (opts) => {
+  return _.assign({},
+    {
+      text: "",
+      index: 0,
+      edit: false,
+      for_boarding: 'normal',
+      for_alighting: 'normal',
+      olMap: { isOpened: false, json: {} }
+    },
+    opts
+  )
+}
+
+let stop_point_1 = stop_point({text: 'first',  index: 0, stoppoint_id: 72 })
+let stop_point_2 = stop_point({text: 'second', index: 1, stoppoint_id: 73 })
+let stop_point_3 = stop_point({text: 'third',  index: 2, stoppoint_id: 74 })
+
+let it_should_handle = (action, final_state, custom_state=null) => {
+  it("should handle "+ action.type, () => {
+    expect(
+      stopPointsReducer(custom_state || state, action)
+    ).toEqual( final_state )
+  })
+}
+
 describe('stops reducer', () => {
   beforeEach(()=>{
-    state = [
-      {
-        text: 'first',
-        index: 0,
-        stoppoint_id: 72,
-        edit: false,
-        for_boarding: 'normal',
-        for_alighting: 'normal',
-        olMap: {
-          isOpened: false,
-          json: {}
-        }
-      },
-      {
-        text: 'second',
-        index: 1,
-        stoppoint_id: 73,
-        edit: false,
-        for_boarding: 'normal',
-        for_alighting: 'normal',
-        olMap: {
-          isOpened: false,
-          json: {}
-        }
-      }
-    ]
+    state = [ stop_point_1, stop_point_2, stop_point_3 ]
   })
 
   it('should return the initial state', () => {
@@ -46,441 +55,124 @@ describe('stops reducer', () => {
     ).toEqual([])
   })
 
-  it('should handle ADD_STOP', () => {
-    expect(
-      stopPointsReducer(state, {
-        type: 'ADD_STOP'
-      })
-    ).toEqual(
-      [
-        {
+  it_should_handle(
+    {type: "ADD_STOP"},
+    [stop_point_1, stop_point_2, stop_point_3, stop_point({index: 3, edit: true})]
+  )
+
+  it_should_handle(
+    {type: 'MOVE_STOP_UP', index: 1},
+    [ update_stop_point(stop_point_2, {stoppoint_id: 72}), update_stop_point(stop_point_1, {stoppoint_id: 73}), stop_point_3 ]
+  )
+
+  it_should_handle(
+    {type: 'MOVE_STOP_DOWN', index: 0},
+    [ update_stop_point(stop_point_2, {stoppoint_id: 72}), update_stop_point(stop_point_1, {stoppoint_id: 73}), stop_point_3 ]
+  )
+
+  it_should_handle(
+    {type: 'DELETE_STOP', index: 1},
+    [stop_point_1, stop_point_3]
+  )
+
+  let text = {
+    text: "new value",
+    name: 'new',
+    stoparea_id: 1,
+    user_objectid: "1234",
+    longitude: 123,
+    latitude: 123,
+    registration_number: '0',
+    city_name: 'city',
+    area_type: 'area',
+    short_name: 'new',
+    comment: 'newcomment'
+  }
+  it_should_handle(
+    {type: 'UPDATE_INPUT_VALUE', index: 0, text: text},
+    [
+      update_stop_point(stop_point_1, text),
+      stop_point_2,
+      stop_point_3
+    ]
+  )
+
+  it_should_handle(
+    {type: 'UPDATE_SELECT_VALUE', index: 0, select_id: 'for_boarding', select_value: 'prohibited'},
+    [
+      update_stop_point(stop_point_1, {for_boarding: 'prohibited'}),
+      stop_point_2,
+      stop_point_3
+    ]
+  )
+
+  it_should_handle(
+    {type: 'TOGGLE_MAP', index: 0},
+    [
+      update_stop_point(stop_point_1, {olMap: {
+        isOpened: true,
+        json: {
           text: 'first',
           index: 0,
           stoppoint_id: 72,
           edit: false,
           for_boarding: 'normal',
           for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        },
-        {
-          text: 'second',
-          index: 1,
-          stoppoint_id: 73,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        },
-        {
-          text: '',
-          index: 2,
-          edit: true,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
+          olMap: undefined
         }
-      ]
-    )
-  })
+      }}),
+      stop_point_2,
+      stop_point_3
+    ]
+  )
 
-  it('should handle MOVE_UP_STOP', () => {
-    expect(
-      stopPointsReducer(state, {
-        type: 'MOVE_STOP_UP',
-        index: 1
-      })
-    ).toEqual(
-      [
-        {
-          text: 'second',
-          index: 1,
-          stoppoint_id: 72,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        },
-        {
-          text: 'first',
-          index: 0,
-          stoppoint_id: 73,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
+  it_should_handle(
+    {type: 'TOGGLE_EDIT', index: 0},
+    [
+      update_stop_point(stop_point_1, {edit: true}),
+      stop_point_2,
+      stop_point_3
+    ]
+  )
+
+  let openedMapState = [
+    update_stop_point(stop_point_1, {
+      olMap: {
+        isOpened: true,
+        json: {}
+      }
+    }),
+    stop_point_2,
+    stop_point_3
+  ]
+
+  it_should_handle(
+    {type: 'SELECT_MARKER', index: 0, data: fakeData},
+    [
+      update_stop_point(stop_point_1, {
+        olMap: {
+          isOpened: true,
+          json: fakeData
         }
-      ]
-    )
-  })
+      }),
+      stop_point_2,
+      stop_point_3
+    ],
+    openedMapState
+  )
 
-  it('should handle MOVE_DOWN_STOP', () => {
-    expect(
-      stopPointsReducer(state, {
-        type: 'MOVE_STOP_DOWN',
-        index: 0
-      })
-    ).toEqual(
-      [
-        {
-          text: 'second',
-          index: 1,
-          stoppoint_id: 72,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        },
-        {
-          text: 'first',
-          index: 0,
-          stoppoint_id: 73,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        }
-      ]
-    )
-  })
-
-  // it('should handle DELETE_STOP', () => {
-  //   expect(
-  //     stopPointsReducer(state, {
-  //       type: 'DELETE_STOP',
-  //       index: 1
-  //     })
-  //   ).toEqual(
-  //     [
-  //       {
-  //         text: 'first',
-  //         index: 0,
-  //         stoppoint_id: 72,
-  //         edit: false,
-  //         for_boarding: 'normal',
-  //         for_alighting: 'normal',
-  //         olMap: {
-  //           isOpened: false,
-  //           json: {}
-  //         }
-  //       }
-  //     ]
-  //   )
-  // })
-
-  it('should handle UPDATE_INPUT_VALUE', () => {
-    expect(
-      stopPointsReducer(state, {
-        type: 'UPDATE_INPUT_VALUE',
-        index: 0,
-        edit: false,
-        text: {
-          text: "new value",
-          name: 'new',
-          stoparea_id: 1,
-          user_objectid: "1234",
-          longitude: 123,
-          latitude: 123,
-          registration_number: '0',
-          city_name: 'city',
-          area_type: 'area',
-          short_name: 'new',
-          comment: 'newcomment'
-        }
-      })
-    ).toEqual(
-      [
-        {
-          text: 'new value',
-          name: 'new',
-          index: 0,
-          stoppoint_id: 72,
-          edit: false,
-          stoparea_id: 1,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          user_objectid: "1234",
-          longitude: 123,
-          latitude: 123,
-          registration_number: '0',
-          city_name: 'city',
-          area_type: 'area',
-          short_name: 'new',
-          comment: 'newcomment',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        },
-        {
-          text: 'second',
-          index: 1,
-          stoppoint_id: 73,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        }
-      ]
-    )
-  })
-
-  it('should handle UPDATE_SELECT_VALUE', () => {
-    expect(
-      stopPointsReducer(state, {
-        type :'UPDATE_SELECT_VALUE',
-        select_id: 'for_boarding',
-        select_value: 'prohibited',
-        index: 0
-      })
-    ).toEqual(
-      [
-        {
-          text: 'first',
-          index: 0,
-          stoppoint_id: 72,
-          edit: false,
-          for_boarding: 'prohibited',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        },
-        {
-          text: 'second',
-          index: 1,
-          stoppoint_id: 73,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        }
-      ]
-    )
-  })
-
-  it('should handle TOGGLE_MAP', () => {
-    expect(
-      stopPointsReducer(state, {
-        type: 'TOGGLE_MAP',
-        index: 0
-      })
-    ).toEqual(
-      [
-        {
-          text: 'first',
-          index: 0,
-          stoppoint_id: 72,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: true,
-            json: {
-              text: 'first',
-              index: 0,
-              stoppoint_id: 72,
-              edit: false,
-              for_boarding: 'normal',
-              for_alighting: 'normal',
-              olMap: undefined
-            }
-          }
-        },
-        {
-          text: 'second',
-          index: 1,
-          stoppoint_id: 73,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        }
-      ]
-    )
-  })
-
-  it('should handle TOGGLE_EDIT', () => {
-    expect(
-      stopPointsReducer(state, {
-        type: 'TOGGLE_EDIT',
-        index: 0
-      })
-    ).toEqual(
-      [
-        {
-          text: 'first',
-          index: 0,
-          stoppoint_id: 72,
-          edit: true,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        },
-        {
-          text: 'second',
-          index: 1,
-          stoppoint_id: 73,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        }
-      ]
-    )
-  })
-
-  it('should handle SELECT_MARKER', () => {
-    let openedMapState = [
-      {
-        text: 'first',
-        index: 0,
-        edit: false,
-        for_boarding: 'normal',
-        for_alighting: 'normal',
+  it_should_handle(
+    {type: 'UNSELECT_MARKER', index: 0},
+    [
+      update_stop_point(stop_point_1, {
         olMap: {
           isOpened: true,
           json: {}
         }
-      },
-      {
-        text: 'second',
-        index: 1,
-        edit: false,
-        for_boarding: 'normal',
-        for_alighting: 'normal',
-        olMap: {
-          isOpened: false,
-          json: {}
-        }
-      }
-    ]
-    expect(
-      stopPointsReducer(openedMapState, {
-        type: 'SELECT_MARKER',
-        index: 0,
-        data: fakeData
-      })
-    ).toEqual(
-      [
-        {
-          text: 'first',
-          index: 0,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: true,
-            json: fakeData
-          }
-        },
-        {
-          text: 'second',
-          index: 1,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        }
-      ]
-    )
-  })
-
-  it('should handle UNSELECT_MARKER', () => {
-    let openedMapState = [
-      {
-        text: 'first',
-        index: 0,
-        edit: false,
-        for_boarding: 'normal',
-        for_alighting: 'normal',
-        olMap: {
-          isOpened: true,
-          json: {}
-        }
-      },
-      {
-        text: 'second',
-        index: 1,
-        edit: false,
-        for_boarding: 'normal',
-        for_alighting: 'normal',
-        olMap: {
-          isOpened: false,
-          json: {}
-        }
-      }
-    ]
-
-    expect(
-      stopPointsReducer(openedMapState, {
-        type: 'UNSELECT_MARKER',
-        index: 0
-      })
-    ).toEqual(
-      [
-        {
-          text: 'first',
-          index: 0,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: true,
-            json: {}
-          }
-        },
-        {
-          text: 'second',
-          index: 1,
-          edit: false,
-          for_boarding: 'normal',
-          for_alighting: 'normal',
-          olMap: {
-            isOpened: false,
-            json: {}
-          }
-        }
-      ]
-    )
-  })
+      }),
+      stop_point_2,
+      stop_point_3
+    ],
+    openedMapState
+  )
 })
