@@ -18,7 +18,7 @@ class PurchaseWindowDecorator < Draper::Decorator
         content: I18n.t('actions.destroy'),
         href: h.referential_purchase_window_path(context[:referential].id, object),
         method: :delete,
-        data: { confirm: h.t('purchase_window.actions.destroy_confirm') }
+        data: { confirm: h.t('purchase_windows.actions.destroy_confirm') }
       )
     end
 
