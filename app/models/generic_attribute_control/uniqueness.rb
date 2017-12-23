@@ -1,6 +1,6 @@
 module GenericAttributeControl
   class Uniqueness < ComplianceControl
-    hstore_accessor :control_attributes, target: :string
+    store_accessor :control_attributes, :target
 
     validates :target, presence: true
 

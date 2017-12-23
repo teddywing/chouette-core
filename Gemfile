@@ -127,7 +127,6 @@ gem 'acts-as-taggable-on', '~> 4.0.0'
 
 gem 'acts_as_list', '~> 0.6.0'
 gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
-gem "hstore_accessor", "~> 1.1"
 
 gem 'rabl'
 gem 'carrierwave', '~> 1.0'
