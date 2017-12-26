@@ -16,9 +16,13 @@ module Chouette
 
     scope :contains_date, ->(date) { where('date ? <@ any (date_ranges)', date) }
 
-  def self.ransackable_scopes(auth_object = nil)
-    [:contains_date]
-  end
+    def self.ransackable_scopes(auth_object = nil)
+      [:contains_date]
+    end
+
+    def self.colors_i18n
+      Hash[*color.values.map{|c| [I18n.t("enumerize.purchase_window.color.#{c[1..-1]}"), c]}.flatten]
+    end
 
     def local_id
       "IBOO-#{self.referential.id}-#{self.id}"
