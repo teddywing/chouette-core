@@ -11,6 +11,11 @@ crumb :referential do |referential|
   parent :workbench, current_offer_workbench
 end
 
+crumb :referentials do |referential|
+  link I18n.t('referentials.index.title'), referentials_path()
+  parent :workbench, current_offer_workbench
+end
+
 crumb :referential_companies do |referential|
   link I18n.t('companies.index.title'), referential_companies_path(referential)
   parent :referential, referential
