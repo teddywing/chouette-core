@@ -4,7 +4,7 @@ RSpec.describe Chouette::AreaType do
 
   describe "::ALL" do
     it "includes all supported types" do
-      expect(Chouette::AreaType::ALL).to match_array( %i(zdep zder zdlp zdlr lda) )
+      expect(Chouette::AreaType::ALL).to match_array( %i(zdep zder zdlp zdlr lda gdl) )
     end
   end
 

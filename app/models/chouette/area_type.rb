@@ -1,6 +1,6 @@
 class Chouette::AreaType
 
-  ALL = %i(zdep zder zdlp zdlr lda).freeze
+  ALL = %i(zdep zder zdlp zdlr lda gdl).freeze
 
   @@all = ALL
   mattr_accessor :all
