@@ -1,5 +1,13 @@
 class StopAreaPolicy < ApplicationPolicy
   class Scope < Scope
+    def search_scope scope_name
+      scope = resolve
+      if scope_name&.to_s == "route_editor"
+        scope = scope.where(area_type: 'zdep') unless user.organisation.has_feature?("route_stop_areas_all_types")
+      end
+      scope
+    end
+
     def resolve
       scope
     end

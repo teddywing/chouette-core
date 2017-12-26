@@ -5,6 +5,8 @@ RSpec.describe AutocompleteStopAreasController, type: :controller do
 
   let(:referential) { Referential.first }
   let!(:stop_area) { create :stop_area, name: 'écolà militaire' }
+  let!(:zdep_stop_area) { create :stop_area, area_type: "zdep" }
+  let!(:not_zdep_stop_area) { create :stop_area, area_type: "lda" }
 
   describe 'GET #index' do
     it 'should be successful' do
@@ -26,4 +28,26 @@ RSpec.describe AutocompleteStopAreasController, type: :controller do
       end
     end
   end
+
+  context "when searching from the route editor" do
+    let(:scope) { :route_editor }
+    let(:request){
+      get :index, referential_id: referential.id, scope: scope
+    }
+    it "should filter stop areas based on type" do
+      request
+      expect(assigns(:stop_areas)).to include(zdep_stop_area)
+      expect(assigns(:stop_areas)).to_not include(not_zdep_stop_area)
+    end
+
+    with_feature :route_stop_areas_all_types do
+      it "should not filter stop areas based on type" do
+        request
+        expect(assigns(:stop_areas)).to include(zdep_stop_area)
+        expect(assigns(:stop_areas)).to include(not_zdep_stop_area)
+      end
+    end
+  end
+
+
 end

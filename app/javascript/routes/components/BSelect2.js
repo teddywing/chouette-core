@@ -96,7 +96,7 @@ class BSelect2 extends Component{
             data: function(params) {
               return {
                 q: params.term,
-                target_type: 'zdep'
+                scope: 'route_editor'
               };
             },
             processResults: function(data, params) {
