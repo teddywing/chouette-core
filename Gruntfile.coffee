@@ -1,12 +1,12 @@
 module.exports = (grunt) =>
   javascriptSpecPath = (path) ->
-    grunt.log.writeln "IN: " + path
+    grunt.log.debug "IN: " + path
     path = path.replace 'app/javascript', 'spec/javascript'
     if path.match /actions/
       path = path.replace /actions.*/, 'actions_spec.js'
     if path.match /reducers/
       path = path.replace '.js', '_spec.js'
-    grunt.log.writeln "OUT: " + path
+    grunt.log.debug "OUT: " + path
     path
 
   grunt.initConfig
@@ -37,7 +37,7 @@ module.exports = (grunt) =>
     files = []
     this.files.forEach (file) ->
       files.push file.src
-    grunt.log.writeln files
+    grunt.log.debug files
     grunt.util.spawn
       cmd: 'node_modules/.bin/jest'
       args: files
