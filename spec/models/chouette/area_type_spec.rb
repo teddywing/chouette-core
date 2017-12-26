@@ -25,7 +25,12 @@ RSpec.describe Chouette::AreaType do
 
     it "returns an array with label and code for each type" do
       allow(Chouette::AreaType).to receive(:all).and_return(%i{zdep lda})
-      expect(Chouette::AreaType.options).to eq([["ZDEp", :zdep], ["LDA", :lda]])
+
+      expected_options = [
+        [Chouette::AreaType.find('zdep').label, :zdep],
+        [Chouette::AreaType.find('lda').label, :lda]
+      ]
+      expect(Chouette::AreaType.options).to eq(expected_options)
     end
   end
 
