@@ -2,8 +2,6 @@ class ColorSelectInput < SimpleForm::Inputs::CollectionInput
   enable :placeholder
 
   def input(wrapper_options = {})
-    # @collection ||= @builder.object.send(attribute_name)
-    label_method, value_method = detect_collection_methods
     selected_color = object.send(attribute_name)
     label = if selected_color
       collection.find{|i| i.is_a?(Enumerable) && i.last == selected_color}.try(:first)
@@ -39,7 +37,7 @@ class ColorSelectInput < SimpleForm::Inputs::CollectionInput
         </span>
       eos
     end
-    select += "</div>"
+    select += "</div></div>"
 
     out + select.html_safe
   end
