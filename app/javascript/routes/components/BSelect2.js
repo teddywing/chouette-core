@@ -101,12 +101,21 @@ class BSelect2 extends Component{
             },
             processResults: function(data, params) {
               return {
-                results: data.map(
-                  item => _.assign(
-                    {},
-                    item,
-                    { text: item.name + ", " + item.zip_code + " " + item.short_city_name + " <small><em>(" + item.user_objectid + ")</em></small>" }
-                  )
+                 results: data.map(
+                  function(item) {
+                      var text = item.name;
+                      if (item.zip_code || item.short_city_name) {
+                          text += ","
+                      }
+                      if (item.zip_code) {
+                          text += ` ${item.zip_code}`
+                      }
+                      if (item.short_city_name) {
+                          text += ` ${item.short_city_name}`
+                      }
+                      text += ` <small><em>(${item.area_type.toUpperCase()}, ${item.user_objectid})</em></small>`;
+                      return _.assign({}, item, { text: text });
+                  }
                 )
               };
             },
