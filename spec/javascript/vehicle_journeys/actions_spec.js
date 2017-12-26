@@ -447,3 +447,84 @@ describe('when using select2 to unselect a company', () => {
     expect(actions.unselect2Company()).toEqual(expectedAction)
   })
 })
+
+describe('actions.adjustSchedule', () => {
+  set('time', () => {
+    return {
+      hour: 9,
+      minute: 30
+    }
+  })
+  context('when editing the departure time', () => {
+    set('action', () => { return { isDeparture: true } })
+    context('with a positive delta', () => {
+      set('schedule', () => {
+        return {
+          departure_time: time,
+          arrival_time: time
+        }
+      })
+      it('should do nothing', () => {
+        expect(actions.adjustSchedule(action, schedule)).toEqual(schedule)
+      })
+    }),
+    context('with a delta < 0', () => {
+      set('departure_time', () => {
+        return {
+          hour: time.hour,
+          minute: time.minute - 1
+        }
+      })
+      set('schedule', () => {
+        return {
+          departure_time: departure_time,
+          arrival_time: time
+        }
+      })
+      it('should adjust arrival time', () => {
+        let expected = {
+          departure_time: departure_time,
+          arrival_time: departure_time,
+          delta: 0
+        }
+        expect(actions.adjustSchedule(action, schedule)).toEqual(expected)
+      })
+    })
+  }),
+  context('when editing the arrival time', () => {
+    set('action', () => { return { isDeparture: false } })
+    context('with a positive delta', () => {
+      set('schedule', () => {
+        return {
+          departure_time: time,
+          arrival_time: time
+        }
+      })
+      it('should do nothing', () => {
+        expect(actions.adjustSchedule(action, schedule)).toEqual(schedule)
+      })
+    }),
+    context('with a delta < 0', () => {
+      set('arrival_time', () => {
+        return {
+          hour: time.hour,
+          minute: time.minute + 1
+        }
+      })
+      set('schedule', () => {
+        return {
+          departure_time: time,
+          arrival_time: arrival_time
+        }
+      })
+      it('should adjust departure time', () => {
+        let expected = {
+          departure_time: arrival_time,
+          arrival_time: arrival_time,
+          delta: 0
+        }
+        expect(actions.adjustSchedule(action, schedule)).toEqual(expected)
+      })
+    })
+  })
+})
