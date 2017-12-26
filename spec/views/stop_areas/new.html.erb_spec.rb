@@ -5,6 +5,10 @@ describe "/stop_areas/new", :type => :view do
   let!(:stop_area_referential) { assign :stop_area_referential, stop_area.stop_area_referential }
   let!(:stop_area) { assign(:stop_area, build(:stop_area)) }
 
+  before do
+    allow(view).to receive(:has_feature?)
+  end
+
   describe "form" do
 
     it "should render input for name" do

@@ -23,12 +23,18 @@ module ApplicationHelper
   end
 
   def page_header_meta(object)
-    info = t('last_update', time: l(object.updated_at, format: :short))
-    if object.try(:versions)
-      author = object.versions.try(:last).try(:whodunnit) || t('default_whodunnit')
-      info   = "#{info} <br/> #{t('whodunnit', author: author)}"
+    out = ""
+    display = true
+    display = policy(object).synchronize? if policy(object).respond_to?(:synchronize?) rescue false
+    if display
+      info = t('last_update', time: l(object.updated_at, format: :short))
+      if object.try(:versions)
+        author = object.versions.try(:last).try(:whodunnit) || t('default_whodunnit')
+        info   = "#{info} <br/> #{t('whodunnit', author: author)}"
+      end
+      out += content_tag :div, info.html_safe, class: 'small last-update'
     end
-    content_tag :div, info.html_safe, class: 'small'
+    out.html_safe
   end
 
   def page_header_content_for(object)

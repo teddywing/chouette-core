@@ -17,6 +17,8 @@ class ReferentialsController < ChouetteController
       build_referenial
 
       if !!@referential.created_from_id
+        flash[:notice] = t('notice.referentials.duplicate')
+
         format.html { redirect_to workbench_path(@referential.workbench) }
       end
     end
@@ -60,7 +62,7 @@ class ReferentialsController < ChouetteController
 
   def validate
     ComplianceControlSetCopyWorker.perform_async(params[:compliance_control_set], params[:id])
-    flash[:notice] = I18n.t("referentials.operation_in_progress")
+    flash[:notice] = t('notice.referentials.validate')
     redirect_to(referential_path)
   end
 

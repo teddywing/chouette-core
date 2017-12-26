@@ -16,4 +16,12 @@ class StopAreaPolicy < ApplicationPolicy
   def update?
     user.has_permission?('stop_areas.update')
   end
+
+  def deactivate?
+    !record.deactivated? && user.has_permission?('stop_areas.change_status')
+  end
+
+  def activate?
+    record.deactivated? && user.has_permission?('stop_areas.change_status')
+  end
 end

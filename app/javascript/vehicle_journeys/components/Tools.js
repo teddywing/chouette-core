@@ -17,7 +17,7 @@ export default class Tools extends Component {
 
   hasPolicy(key) {
     // Check if the user has the policy to disable or not the action
-    return this.props.filters.policy[`vehicle_journeys.${key}`] 
+    return this.props.filters.policy[`vehicle_journeys.${key}`]
   }
 
   render() {

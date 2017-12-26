@@ -36,7 +36,7 @@ RSpec.describe Workbench, :type => :model do
     let(:workbench) { create :workbench, organisation: organisation }
 
     it 'should filter lines based on my organisation functional_scope' do
-      ids.insert('STIF:CODIFLIGNE:Line:0000').each do |id|
+      (ids + ['STIF:CODIFLIGNE:Line:0000']).each do |id|
         create :line, objectid: id, line_referential: workbench.line_referential
       end
       lines = workbench.lines

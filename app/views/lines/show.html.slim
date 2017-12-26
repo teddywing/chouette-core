@@ -6,7 +6,7 @@
         = link_to link.href,
             method: link.method,
             data: link.data,
-            class: 'btn btn-primary' do
+            class: "btn btn-primary #{link.disabled ? "disabled" : ""}" do
               = link.content
 
 - page_header_content_for @line

@@ -90,6 +90,6 @@ namespace :deploy do
 
   desc "Run db:seed"
   task :seed do
-    run "cd #{current_path} && #{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake db:seed RAILS_ENV=#{rails_env}"
+    run "cd #{current_path} && #{rake} db:seed RAILS_ENV=#{rails_env}"
   end
 end

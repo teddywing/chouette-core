@@ -6,7 +6,7 @@ class ComplianceControl < ActiveRecord::Base
     def prerequisite; I18n.t('compliance_controls.metas.no_prerequisite'); end
     def predicate; I18n.t("compliance_controls.#{self.name.underscore}.description") end
     def dynamic_attributes
-      hstore_metadata_for_control_attributes.keys
+      stored_attributes[:control_attributes]
     end
 
     def policy_class
@@ -39,7 +39,6 @@ class ComplianceControl < ActiveRecord::Base
   belongs_to :compliance_control_block
 
   enumerize :criticity, in: criticities, scope: true, default: :warning
-  hstore_accessor :control_attributes, {}
 
   validates :criticity, presence: true
   validates :name, presence: true

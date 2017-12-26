@@ -1,4 +1,5 @@
 RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
+  include Support::DecoratorHelpers
 
   let( :object ){ build_stubbed :referential }
   let( :referential ){ object }

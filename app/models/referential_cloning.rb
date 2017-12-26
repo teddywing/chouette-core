@@ -2,13 +2,26 @@ class ReferentialCloning < ActiveRecord::Base
   include AASM
   belongs_to :source_referential, class_name: 'Referential'
   belongs_to :target_referential, class_name: 'Referential'
-  after_commit :perform_clone, :on => :create
+  after_commit :clone, on: :create
+
+  def clone
+    ReferentialCloningWorker.perform_async(id)
+  end
+
+  def clone!
+    run!
+
+    AF83::SchemaCloner
+      .new(source_referential.slug, target_referential.slug)
+      .clone_schema
+
+    successful!
+  rescue Exception => e
+    Rails.logger.error "Clone failed : #{e}"
+    failed!
+  end
 
   private
-  def perform_clone
-    ReferentialCloningWorker.perform_async(id)
-    # ReferentialCloningWorker.new.perform(id)
-  end
 
   aasm column: :status do
     state :new, :initial => true

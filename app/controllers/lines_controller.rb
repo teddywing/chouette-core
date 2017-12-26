@@ -1,6 +1,8 @@
 class LinesController < ChouetteController
   include ApplicationHelper
+  include Activatable
   include PolicyChecker
+
   defaults :resource_class => Chouette::Line
   respond_to :html
   respond_to :xml

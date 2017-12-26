@@ -41,7 +41,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: 'companies.name', \
-                attribute: Proc.new { |n| n.try(:company).try(:name) } \
+                attribute: Proc.new { |n| n&.company&.name || "-" } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :transport_mode, \

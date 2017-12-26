@@ -95,6 +95,18 @@ module TableBuilderHelper
       class: cls
   end
 
+  def self.item_row_class_name collection
+    if collection.respond_to?(:model)
+      model_name = collection.model.name
+    elsif collection.respond_to?(:first)
+      model_name = collection.first.class.name
+    else
+      model_name = "item"
+    end
+
+    model_name.split("::").last.parameterize
+  end
+
   private
 
   def thead(collection, columns, sortable, selectable, has_links, overhead, model )
@@ -187,86 +199,92 @@ module TableBuilderHelper
     end
   end
 
-  def tbody(collection, columns, selectable, links, overhead)
-    content_tag :tbody do
-      collection.map do |item|
+  def tr item, columns, selectable, links, overhead, model_name
+    klass = "#{model_name}-#{item.id}"
+    content_tag :tr, class: klass do
+      bcont = []
+      if selectable
+        disabled = selectable.respond_to?(:call) && !selectable.call(item)
+        bcont << content_tag(
+          :td,
+          checkbox(id_name: item.try(:id), value: item.try(:id), disabled: disabled)
+        )
+      end
 
-        content_tag :tr do
-          bcont = []
+      columns.each do |column|
+        value = column.value(item)
 
-          if selectable
-            bcont << content_tag(
-              :td,
-              checkbox(id_name: item.try(:id), value: item.try(:id))
-            )
-          end
+        if column.linkable?
+          path = column.link_to(item)
+          link = link_to(value, path)
 
-          columns.each do |column|
-            value = column.value(item)
+          if overhead.empty?
+            bcont << content_tag(:td, link, title: 'Voir')
 
-            if column.linkable?
-              path = column.link_to(item)
-              link = link_to(value, path)
+          else
+            i = columns.index(column)
 
-              if overhead.empty?
-                bcont << content_tag(:td, link, title: 'Voir')
+            if overhead[i].blank?
+              if (i > 0) && (overhead[i - 1][:width] > 1)
+                clsArrayAlt = overhead[i - 1][:cls].split
+
+                bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt))
 
               else
-                i = columns.index(column)
-
-                if overhead[i].blank?
-                  if (i > 0) && (overhead[i - 1][:width] > 1)
-                    clsArrayAlt = overhead[i - 1][:cls].split
-
-                    bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt))
-
-                  else
-                    bcont << content_tag(:td, link, title: 'Voir')
-                  end
-
-                else
-                  clsArray = overhead[columns.index(column)][:cls].split
-
-                  bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray))
-                end
+                bcont << content_tag(:td, link, title: 'Voir')
               end
 
             else
-              if overhead.empty?
-                bcont << content_tag(:td, value)
+              clsArray = overhead[columns.index(column)][:cls].split
 
-              else
-                i = columns.index(column)
-
-                if overhead[i].blank?
-                  if (i > 0) && (overhead[i - 1][:width] > 1)
-                    clsArrayAlt = overhead[i - 1][:cls].split
-
-                    bcont << content_tag(:td, value, class: td_cls(clsArrayAlt))
-
-                  else
-                    bcont << content_tag(:td, value)
-                  end
-
-                else
-                  clsArray = overhead[i][:cls].split
-
-                  bcont << content_tag(:td, value, class: td_cls(clsArray))
-                end
-              end
+              bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray))
             end
           end
 
-          if links.any? || item.try(:action_links).try(:any?)
-            bcont << content_tag(
-              :td,
-              build_links(item, links),
-              class: 'actions'
-            )
-          end
+        else
+          if overhead.empty?
+            bcont << content_tag(:td, value)
 
-          bcont.join.html_safe
+          else
+            i = columns.index(column)
+
+            if overhead[i].blank?
+              if (i > 0) && (overhead[i - 1][:width] > 1)
+                clsArrayAlt = overhead[i - 1][:cls].split
+
+                bcont << content_tag(:td, value, class: td_cls(clsArrayAlt))
+
+              else
+                bcont << content_tag(:td, value)
+              end
+
+            else
+              clsArray = overhead[i][:cls].split
+
+              bcont << content_tag(:td, value, class: td_cls(clsArray))
+            end
+          end
         end
+      end
+
+      if links.any? || item.try(:action_links).try(:any?)
+        bcont << content_tag(
+          :td,
+          build_links(item, links),
+          class: 'actions'
+        )
+      end
+
+      bcont.join.html_safe
+    end
+  end
+
+  def tbody(collection, columns, selectable, links, overhead)
+    model_name = TableBuilderHelper.item_row_class_name collection
+
+    content_tag :tbody do
+      collection.map do |item|
+        tr item, columns, selectable, links, overhead, model_name
       end.join.html_safe
     end
   end
@@ -341,14 +359,20 @@ module TableBuilderHelper
     end
   end
 
-  def checkbox(id_name:, value:)
+  def checkbox(id_name:, value:, disabled: false)
     content_tag :div, '', class: 'checkbox' do
-      check_box_tag(id_name, value).concat(
+      check_box_tag(id_name, value, nil, disabled: disabled).concat(
         content_tag(:label, '', for: id_name)
       )
     end
   end
+
   def gear_menu_link(link)
+    klass = []
+    klass << link.extra_class if link.extra_class
+    klass << 'delete-action' if link.method == :delete
+    klass << 'disabled' if link.disabled
+
     content_tag(
       :li,
       link_to(
@@ -358,7 +382,7 @@ module TableBuilderHelper
       ) do
         link.content
       end,
-      class: ('delete-action' if link.method == :delete)
+      class: (klass.join(' ') if klass.present?)
     )
   end
 

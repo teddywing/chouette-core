@@ -1,0 +1,11 @@
+= search_form_for @q, url: referential_vehicle_journeys_path(@referential), html: {method: :get}, class: 'form form-filter' do |f|
+  .ffg-row
+    .input-group.search_bar
+      = f.search_field :published_journey_name_or_objectid_cont, placeholder: t('.published_journey_name_or_objectid'), class: 'form-control'
+      span.input-group-btn
+        button.btn.btn-default#search-btn type='submit'
+          span.fa.fa-search
+
+  .actions
+    = link_to 'Effacer', referential_vehicle_journeys_path(@referential), class: 'btn btn-link'
+    = f.submit 'Filtrer', class: 'btn btn-default'

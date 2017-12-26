@@ -32,18 +32,18 @@ RSpec.describe "NetexImport", type: :request do
       let( :authorization ){ authorization_token_header( get_api_key.token ) }
       #TODO Check why referential_id is nil
       it 'succeeds' do
-        skip "Problem with referential_id" do
-          create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108', line_referential: workbench.line_referential)
-          create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109', line_referential: workbench.line_referential)
+        # skip "Problem with referential_id" do
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108', line_referential: workbench.line_referential)
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109', line_referential: workbench.line_referential)
 
-          post_request.(netex_import: legal_attributes)
-          expect( response ).to be_success
-          expect( json_response_body ).to eq(
-            'id'             => NetexImport.last.id,
-            'referential_id' => Referential.last.id,
-            'workbench_id'   => workbench.id
-          )
-        end
+        post_request.(netex_import: legal_attributes)
+        expect( response ).to be_success
+        expect( json_response_body ).to eq(
+          'id'             => NetexImport.last.id,
+          'referential_id' => Referential.last.id,
+          'workbench_id'   => workbench.id
+        )
+        # end
       end
 
 
@@ -54,24 +54,21 @@ RSpec.describe "NetexImport", type: :request do
         expect{ post_request.(netex_import: legal_attributes) }.to change{NetexImport.count}.by(1)
       end
 
-      #TODO Check why Referential count does not change
-      it 'creates a correct Referential' do
-        skip "Referential count does not change" do
-          create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108', line_referential: workbench.line_referential)
-          create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109', line_referential: workbench.line_referential)
+      it 'creates a correct Referential', pending: 'see #5073' do
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108', line_referential: workbench.line_referential)
+        create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109', line_referential: workbench.line_referential)
 
-          legal_attributes # force object creation for correct to change behavior
-          expect{post_request.(netex_import: legal_attributes)}.to change{Referential.count}.by(1)
-          Referential.last.tap do | ref |
-            expect( ref.workbench_id ).to eq(workbench.id)
-            expect( ref.organisation_id ).to eq(workbench.organisation_id)
-          end
+        legal_attributes # force object creation for correct to change behavior
+        expect{post_request.(netex_import: legal_attributes)}.to change{Referential.count}.by(1)
+        Referential.last.tap do | ref |
+          expect( ref.workbench_id ).to eq(workbench.id)
+          expect( ref.organisation_id ).to eq(workbench.organisation_id)
         end
       end
     end
 
 
-    context 'with incorrect credentials and correct request', pending: "see #4311" do
+    context 'with incorrect credentials and correct request', pending: "see #4311 & #5072" do
       let( :authorization ){ authorization_token_header( "#{referential.id}-incorrect_token") }
 
       it 'does not create any DB object and does not succeed' do

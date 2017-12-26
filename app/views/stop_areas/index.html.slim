@@ -24,7 +24,7 @@
                 key: :name, \
                 attribute: 'name', \
                 link_to: lambda do |stop_area| \
-                  referential_stop_area_path( \
+                  stop_area_referential_stop_area_path( \
                     @stop_area_referential, \
                     stop_area \
                   ) \
@@ -48,10 +48,10 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :area_type, \
-                attribute: Proc.new { |s| (s.area_type.nil? ? '-' : t("enumerize.stop_area.area_type.#{s.try(:area_type)}")) } \
+                attribute: Proc.new { |s| Chouette::AreaType.find(s.area_type).try :label } \
               ), \
             ],
-            links: [:show, :edit, :delete],
+            links: [:show],
             cls: 'table has-filter has-search'
 
           = new_pagination @stop_areas, 'pull-right'

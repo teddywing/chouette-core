@@ -6,8 +6,8 @@ class ComplianceCheckBlock < ActiveRecord::Base
 
   has_many :compliance_checks
 
-  hstore_accessor :condition_attributes,
-    transport_mode: :string,
-    transport_submode: :string
+  store_accessor :condition_attributes,
+    :transport_mode,
+    :transport_submode
 
 end

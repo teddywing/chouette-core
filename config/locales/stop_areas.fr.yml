@@ -1,5 +1,6 @@
 fr:
   stop_areas: &fr_stop_areas
+    waiting_time_format: "%{value} minutes"
     search_no_results: "Aucun arrêt ne correspond à votre recherche"
     errors:
       empty: Aucun stop_area_id
@@ -15,7 +16,11 @@ fr:
     actions:
       new: "Ajouter un arrêt"
       edit: "Editer cet arrêt"
-      destroy: "Supprimer cet arrêt"
+      destroy: "Supprimer"
+      activate: "Activer cet arrêt"
+      deactivate: "Désactiver cet arrêt"
+      activate_confirm: "Etes vous sûr d'activer cet arrêt ?"
+      deactivate_confirm: "Etes vous sûr de désactiver cet arrêt ?"
       deleted_at: "Activé"
       destroy_confirm: "Etes vous sûr de supprimer cet arrêt ainsi que tous ses fils?"
       select_parent: "Créer ou éditer la relation enfant -> parent"
@@ -37,7 +42,7 @@ fr:
       name_or_objectid: "Recherche par nom ou par objectid..."
       zip_code: Indiquez un code postal...
       city_name: Indiquez un nom de commune...
-      area_type: Indiquez un type d'arrêt...
+      area_type: "Indiquez un type d'arrêt..."
     new:
       title: "Ajouter un arrêt"
     form:
@@ -126,6 +131,7 @@ fr:
         city_name: "Commune"
         created_at: "Créé le"
         updated_at: "Edité le"
+        waiting_time: Temps de desserte
   formtastic:
     titles:
       stop_area:

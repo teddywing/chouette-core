@@ -1,0 +1,10 @@
+
+- if import_messages.any?
+  dl#import_messages
+    - import_messages.each do | import_message |
+      dt.import_message
+        = import_message.criticity
+      dd.import_message
+        = t( ['import_messages',
+          'compliance_check_messages',
+          import_message.message_key].join('.'), string_keys_to_symbols(import_message.message_attributes))

@@ -29,7 +29,6 @@ module ReferentialHelper
       end
     end
 
-
   end
 
 end
