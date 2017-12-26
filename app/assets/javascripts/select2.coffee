@@ -9,24 +9,27 @@ bind_select2 = (el, cfg = {}) ->
   target.select2 $.extend({}, default_cfg, cfg)
 
 bind_select2_ajax = (el, cfg = {}) ->
-  target = $(el)
+  _this = $(el)
   cfg =
     ajax:
       data: (params) ->
-        q:
-          "#{target.data('term')}": params.term
-      url: target.data('url'),
+        if _this.data('term')
+          { q: "#{_this.data('term')}": params.term }
+        else
+          { q: params.term }
+      url: _this.data('url'),
       dataType: 'json',
       delay: 125,
       processResults: (data, params) -> results: data
-    minimumInputLength: 1
-    placeholder: target.data('select2ed-placeholder')
     templateResult: (item) ->
       item.text
     templateSelection: (item) ->
       item.text
     escapeMarkup: (markup) ->
       markup
+    initSelection : (item, callback) ->
+      if _this.data('saved')
+        callback(_this.data('saved'))
 
   bind_select2(el, cfg)
 
@@ -39,8 +42,6 @@ bind_select2_ajax = (el, cfg = {}) ->
 
   $('select.form-control.tags').each ->
     bind_select2(this, {tags: true})
-
-
 
 $ ->
   select_2()

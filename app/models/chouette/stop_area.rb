@@ -74,6 +74,10 @@ module Chouette
       end
     end
 
+    def full_name
+      "#{name} #{zip_code} #{city_name} - #{user_objectid}"
+    end
+
     def user_objectid
       if objectid =~ /^.*:([0-9A-Za-z_-]+):STIF$/
         $1
