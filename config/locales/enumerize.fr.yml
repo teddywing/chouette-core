@@ -253,3 +253,15 @@ fr:
       travel_agency: "Agence de voyage"
       individual_subject_of_travel_itinerary: "Voyageur individuel"
       other_information: "Autre source d'information"
+    purchase_window:
+      color:
+        9B9B9B: "Gris"
+        FFA070: "Orange clair"
+        C67300: "Orange"
+        7F551B: "Orange foncé"
+        41CCE3: "Bleu clair"
+        09B09C: "Vert"
+        3655D7: "Bleu"
+        6321A0: "Violet"
+        E796C6: "Rose pale"
+        DD2DAA: "Rose"
