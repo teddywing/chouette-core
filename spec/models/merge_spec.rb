@@ -32,6 +32,13 @@ RSpec.describe Merge do
           FactoryGirl.create :journey_pattern, route: route, stop_points: route.stop_points.sample(3)
         end
       end
+
+      referential.journey_patterns.each do |journey_pattern|
+        3.times do
+          v = FactoryGirl.create :vehicle_journey, journey_pattern: journey_pattern, company: company
+          puts v.checksum_source
+        end
+      end
     end
 
     merge = Merge.create!(workbench: referential.workbench, referentials: [referential, referential])

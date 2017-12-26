@@ -33,8 +33,9 @@ class Merge < ActiveRecord::Base
 
     save_current
   rescue => e
-    Rails.logger.error "Merge failed: #{e}"
+    Rails.logger.error "Merge failed: #{e} #{e.backtrace.join("\n")}"
     update status: :failed
+    raise e if Rails.env.test?
   ensure
     attributes = { ended_at: Time.now }
     attributes[:status] = :successful if status == :running
@@ -158,6 +159,8 @@ class Merge < ActiveRecord::Base
       [journey_patterns, journey_patterns_stop_areas_objectids]
     end
 
+    referential_journey_patterns_checksums = Hash[referential_journey_patterns.map { |j| [ j.id, j.checksum ] }]
+
     new.switch do
       referential_journey_patterns.each do |journey_pattern|
         # find parent route by checksum
@@ -191,6 +194,51 @@ class Merge < ActiveRecord::Base
         end
       end
     end
+
+    referential_vehicle_journeys = referential.switch do
+      referential.vehicle_journeys.includes(:vehicle_journey_at_stops).all.to_a
+    end
+
+    new.switch do
+      referential_vehicle_journeys.each do |vehicle_journey|
+        # find parent journey pattern by checksum
+        associated_journey_pattern_checksum = referential_journey_patterns_checksums[vehicle_journey.journey_pattern_id]
+        existing_associated_journey_pattern = new.journey_patterns.find_by checksum: associated_journey_pattern_checksum
+
+        existing_vehicle_journey = new.vehicle_journeys.find_by journey_pattern_id: existing_associated_journey_pattern.id, checksum: vehicle_journey.checksum
+
+        unless existing_vehicle_journey
+          attributes = vehicle_journey.attributes.merge(
+            id: nil,
+
+            objectid: "merge:vehicle_journey:#{existing_associated_journey_pattern.checksum}-#{vehicle_journey.checksum}", #FIXME
+
+            # all other primary must be changed
+            route_id: existing_associated_journey_pattern.route_id,
+            journey_pattern_id: existing_associated_journey_pattern.id,
+          )
+          new_vehicle_journey = new.vehicle_journeys.build attributes
+
+          # Create VehicleJourneyAtStops
+
+          vehicle_journey.vehicle_journey_at_stops.each_with_index do |vehicle_journey_at_stop, index|
+            at_stop_attributes = vehicle_journey_at_stop.attributes.merge(
+              id: nil,
+              stop_point_id: existing_associated_journey_pattern.stop_points[index].id
+            )
+            new_vehicle_journey.vehicle_journey_at_stops.build at_stop_attributes
+          end
+
+          new_vehicle_journey.save!
+
+          if new_vehicle_journey.checksum != vehicle_journey.checksum
+            raise "Checksum has changed: #{vehicle_journey.checksum_source} #{new_vehicle_journey.checksum_source}"
+          end
+        end
+
+      end
+    end
+
   end
 
   def save_current
