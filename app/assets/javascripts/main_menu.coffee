@@ -1,9 +1,9 @@
 $ ->
 
-  link = []
+  stickyActions = []
   ptitleCont = ""
   $(document).on 'page:before-change', ->
-    link = []
+    stickyActions = []
     ptitleCont = ""
 
 
@@ -24,33 +24,44 @@ $ ->
     limit = 51
 
     if $(window).scrollTop() >= limit
-      data = ""
-      if ($('.page-action .small').length > 0)
-        data = $('.page-action .small')[0].innerHTML
+      if stickyActions.length == 0
+        if ($('.page-action .small').length > 0)
+          stickyActions.push
+            content: [
+              $('.page-action .small'),
+              $('.page-action .small').first().next()
+              ]
+            originalParent: $('.page-action .small').parent()
+
+        for action in $(".sticky-action")
+          stickyActions.push
+            class: "small",
+            content: [$(action)]
+            originalParent: $(action).parent()
 
       if ($(".page-title").length > 0)
         ptitleCont = $(".page-title").html()
 
-      stickyContent = '<div class="sticky-content">'
-      stickyContent += '<div class="sticky-ptitle">' + ptitleCont + '</div>'
-      stickyContent += '<div class="sticky-paction"><div class="small">' + data + '</div></div>'
-      stickyContent += '</div>'
+      stickyContent = $('<div class="sticky-content"></div>')
+      stickyContent.append $('<div class="sticky-ptitle">' + ptitleCont + '</div>')
+      sticyActionsNode = $('<div class="sticky-paction"></div></div>')
+      stickyContent.append sticyActionsNode
       $('#main_nav').addClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length == 0
         if ptitleCont.length > 0
           $('#menu_top').children('.menu-content').after(stickyContent)
-        if link.length == 0
-          link = $('.page-action .small').next()
-
-        $('.sticky-paction .small').after(link)
+        for item in stickyActions
+          for child in item.content
+            child.appendTo $('.sticky-paction')
 
     else
       $('#main_nav').removeClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length > 0
-        if !$('.page-action').find('.formSubmitr').length
-          $('.page-action .small').after(link)
+        for item in stickyActions
+          for child in item.content
+            child.appendTo item.originalParent
         $('.sticky-content').remove()
 
   sticker();

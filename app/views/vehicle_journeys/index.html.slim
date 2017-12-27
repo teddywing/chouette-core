@@ -4,7 +4,7 @@
   - content_for :page_header_content do
     .row.mb-sm
      .col-lg-12.text-right
-       = link_to(t('routes.actions.opposite_route_timetable'), [@referential, @route.line, @route.opposite_route, :vehicle_journeys], class: 'btn btn-primary')
+       = link_to(t('routes.actions.opposite_route_timetable'), [@referential, @route.line, @route.opposite_route, :vehicle_journeys], class: 'btn btn-primary sticky-action')
 
 
 .page_content
