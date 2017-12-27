@@ -28,6 +28,12 @@ child(:time_tables, :object_root => false) do |time_tables|
   end
 end
 
+if has_feature? :purchase_windows
+  child(:purchase_windows, :object_root => false) do |purchase_windows|
+    attributes :id, :objectid, :name, :color
+  end
+end
+
 child :footnotes, :object_root => false do |footnotes|
   attributes :id, :code, :label
 end

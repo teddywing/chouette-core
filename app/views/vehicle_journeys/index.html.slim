@@ -25,6 +25,7 @@
   | window.vehicleJourneysPerPage = #{@ppage};
   | window.line_footnotes = #{raw @footnotes};
   | window.perms = #{raw @perms};
+  | window.features = #{raw @features};
   | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
 
 = javascript_pack_tag 'vehicle_journeys/index.js'

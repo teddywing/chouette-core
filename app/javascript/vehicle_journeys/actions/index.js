@@ -100,6 +100,31 @@ const actions = {
     vehicleJourneys,
     timetables
   }),
+  openPurchaseWindowsEditModal : (vehicleJourneys) => ({
+    type : 'EDIT_PURCHASE_WINDOWS_VEHICLEJOURNEY_MODAL',
+    vehicleJourneys
+  }),
+  selectPurchaseWindowsModal: (selectedWindow) =>({
+    type: 'SELECT_PURCHASE_WINDOW_MODAL',
+    selectedItem:{
+      id: selectedWindow.id,
+      name: selectedWindow.name,
+      color: selectedWindow.color,
+      objectid: selectedWindow.objectid
+    }
+  }),
+  addSelectedPurchaseWindow: () => ({
+    type: 'ADD_SELECTED_PURCHASE_WINDOW'
+  }),
+  deletePurchaseWindowsModal : (purchaseWindow) => ({
+    type : 'DELETE_PURCHASE_WINDOW_MODAL',
+    purchaseWindow
+  }),
+  editVehicleJourneyPurchaseWindows : (vehicleJourneys, purchase_windows) => ({
+    type: 'EDIT_VEHICLEJOURNEYS_PURCHASE_WINDOWS',
+    vehicleJourneys,
+    purchase_windows
+  }),
   openShiftModal : () => ({
     type : 'SHIFT_VEHICLEJOURNEY_MODAL'
   }),
@@ -314,11 +339,20 @@ const actions = {
           let val
           for (val of json.vehicle_journeys){
             var timeTables = []
+            var purchaseWindows = []
             let tt
             for (tt of val.time_tables){
               timeTables.push({
                 objectid: tt.objectid,
                 comment: tt.comment,
+                id: tt.id,
+                color: tt.color
+              })
+            }
+            for (tt of val.purchase_windows){
+              purchaseWindows.push({
+                objectid: tt.objectid,
+                name: tt.name,
                 id: tt.id,
                 color: tt.color
               })
@@ -334,6 +368,7 @@ const actions = {
               short_id: val.short_id,
               footnotes: val.footnotes,
               time_tables: timeTables,
+              purchase_windows: purchaseWindows,
               vehicle_journey_at_stops: vjasWithDelta,
               deletable: false,
               selected: false,
