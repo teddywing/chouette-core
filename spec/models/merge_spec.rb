@@ -19,25 +19,35 @@ RSpec.describe Merge do
                                       organisation: workbench.organisation,
                                       metadatas: [referential_metadata]
 
+    factor = 1
+
     referential.switch do
       line_referential.lines.each do |line|
-        3.times do
+        factor.times do
           stop_areas = stop_area_referential.stop_areas.order("random()").limit(5)
           FactoryGirl.create :route, line: line, stop_areas: stop_areas, stop_points_count: 0
         end
       end
 
       referential.routes.each do |route|
-        3.times do
+        factor.times do
           FactoryGirl.create :journey_pattern, route: route, stop_points: route.stop_points.sample(3)
         end
       end
 
       referential.journey_patterns.each do |journey_pattern|
-        3.times do
-          v = FactoryGirl.create :vehicle_journey, journey_pattern: journey_pattern, company: company
-          puts v.checksum_source
+        factor.times do
+          FactoryGirl.create :vehicle_journey, journey_pattern: journey_pattern, company: company
         end
+      end
+
+      shared_time_table = FactoryGirl.create :time_table
+
+      referential.vehicle_journeys.each do |vehicle_journey|
+        vehicle_journey.time_tables << shared_time_table
+
+        specific_time_table = FactoryGirl.create :time_table
+        vehicle_journey.time_tables << specific_time_table
       end
     end
 
