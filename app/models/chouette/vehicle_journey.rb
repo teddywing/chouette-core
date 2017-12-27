@@ -1,3 +1,4 @@
+# coding: utf-8
 module Chouette
   class VehicleJourney < Chouette::TridentActiveRecord
     has_paper_trail
@@ -140,7 +141,7 @@ module Chouette
     end
 
     def update_has_and_belongs_to_many_from_state item
-      ['time_tables', 'footnotes'].each do |assos|
+      ['time_tables', 'footnotes', 'purchase_windows'].each do |assos|
         saved = self.send(assos).map(&:id)
 
         (saved - item[assos].map{|t| t['id']}).each do |id|
