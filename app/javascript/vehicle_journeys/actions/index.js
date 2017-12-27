@@ -440,6 +440,20 @@ const actions = {
     vjas.delta = delta
     return vjas
   },
+  adjustSchedule: (action, schedule) => {
+    // we enforce that the departure time remains after the arrival time
+    actions.getDelta(schedule)
+    if(schedule.delta < 0){
+      if(action.isDeparture){
+        schedule.arrival_time = schedule.departure_time
+      }
+      else{
+        schedule.departure_time = schedule.arrival_time
+      }
+      actions.getDelta(schedule)
+    }
+    return schedule
+  },
   getShiftedSchedule: ({departure_time, arrival_time}, additional_time) => {
     // We create dummy dates objects to manipulate time more easily
     let departureDT = new Date (Date.UTC(2017, 2, 1, parseInt(departure_time.hour), parseInt(departure_time.minute)))
