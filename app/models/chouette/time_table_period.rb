@@ -42,5 +42,10 @@ module Chouette
     def contains?(p)
       (p.period_start >= self.period_start && p.period_end <= self.period_end)
     end
+
+    def range
+      period_start..period_end
+    end
+
   end
 end
