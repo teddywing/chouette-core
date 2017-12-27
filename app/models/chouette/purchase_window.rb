@@ -11,10 +11,12 @@ module Chouette
 
     has_paper_trail
     belongs_to :referential
+    has_and_belongs_to_many :vehicle_journeys, :class_name => 'Chouette::VehicleJourney'
 
     validates_presence_of :name, :referential
 
     scope :contains_date, ->(date) { where('date ? <@ any (date_ranges)', date) }
+    scope :text_search, ->(q) { where("unaccent(name) ILIKE unaccent(:q) OR objectid ILIKE :q", q: "%#{q}%")}
 
     def self.ransackable_scopes(auth_object = nil)
       [:contains_date]

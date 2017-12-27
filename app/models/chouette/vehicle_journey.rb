@@ -23,6 +23,7 @@ module Chouette
     belongs_to :journey_pattern
 
     has_and_belongs_to_many :footnotes, :class_name => 'Chouette::Footnote'
+    has_and_belongs_to_many :purchase_windows, :class_name => 'Chouette::PurchaseWindow'
 
     validates_presence_of :route
     validates_presence_of :journey_pattern
@@ -39,11 +40,6 @@ module Chouette
 
     before_validation :set_default_values,
       :calculate_vehicle_journey_at_stop_day_offset
-
-    # XXX
-    def purchase_windows
-      Chouette::PurchaseWindow.limit(2)
-    end
 
     # TODO: Remove this validator
     # We've eliminated this validation because it prevented vehicle journeys

@@ -95,6 +95,7 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
                                       <TimetableSelect2
                                         onSelect2Timetable={this.props.onSelect2Timetable}
                                         chunkURL={'/autocomplete_purchase_windows.json'}
+                                        searchKey={"name_or_objectid_cont_any"}
                                         isFilter={false}
                                       />
                                     </div>

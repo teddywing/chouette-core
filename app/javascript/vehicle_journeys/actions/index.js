@@ -107,7 +107,8 @@ const actions = {
     type: 'SELECT_PURCHASE_WINDOW_MODAL',
     selectedItem:{
       id: selectedTT.id,
-      comment: selectedTT.comment,
+      name: selectedTT.name,
+      color: selectedTT.color,
       objectid: selectedTT.objectid
     }
   }),

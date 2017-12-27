@@ -1,5 +1,5 @@
 class Calendar < ActiveRecord::Base
-  
+
   class Period
     include ActiveAttr::Model
 
