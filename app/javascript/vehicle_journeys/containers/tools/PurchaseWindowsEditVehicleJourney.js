@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteCalendarModal: (timetable) => {
       dispatch(actions.deletePurchaseWindowsModal(timetable))
     },
-    onTimetablesEditVehicleJourney: (vehicleJourneys, timetables) =>{
+    onShoppingWindowsEditVehicleJourney: (vehicleJourneys, timetables) =>{
       dispatch(actions.editVehicleJourneyPurchaseWindows(vehicleJourneys, timetables))
     },
     onSelect2Timetable: (e) =>{

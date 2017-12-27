@@ -103,13 +103,13 @@ const actions = {
     type : 'EDIT_PURCHASE_WINDOWS_VEHICLEJOURNEY_MODAL',
     vehicleJourneys
   }),
-  selectPurchaseWindowsModal: (selectedTT) =>({
+  selectPurchaseWindowsModal: (selectedWindow) =>({
     type: 'SELECT_PURCHASE_WINDOW_MODAL',
     selectedItem:{
-      id: selectedTT.id,
-      name: selectedTT.name,
-      color: selectedTT.color,
-      objectid: selectedTT.objectid
+      id: selectedWindow.id,
+      name: selectedWindow.name,
+      color: selectedWindow.color,
+      objectid: selectedWindow.objectid
     }
   }),
   addSelectedPurchaseWindow: () => ({

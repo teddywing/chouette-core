@@ -16,8 +16,7 @@ module Chouette
     validates_presence_of :name, :referential
 
     scope :contains_date, ->(date) { where('date ? <@ any (date_ranges)', date) }
-    scope :text_search, ->(q) { where("unaccent(name) ILIKE unaccent(:q) OR objectid ILIKE :q", q: "%#{q}%")}
-
+    
     def self.ransackable_scopes(auth_object = nil)
       [:contains_date]
     end

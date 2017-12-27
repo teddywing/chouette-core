@@ -10,7 +10,7 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
   }
 
   handleSubmit() {
-    this.props.onTimetablesEditVehicleJourney(this.props.modal.modalProps.vehicleJourneys, this.props.modal.modalProps.purchase_windows)
+    this.props.onShoppingWindowsEditVehicleJourney(this.props.modal.modalProps.vehicleJourneys, this.props.modal.modalProps.purchase_windows)
     this.props.onModalClose()
     $('#PurchaseWindowsEditVehicleJourneyModal').modal('hide')
   }
@@ -144,7 +144,7 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
 PurchaseWindowsEditVehicleJourney.propTypes = {
   onOpenCalendarsEditModal: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  onTimetablesEditVehicleJourney: PropTypes.func.isRequired,
+  onShoppingWindowsEditVehicleJourney: PropTypes.func.isRequired,
   onDeleteCalendarModal: PropTypes.func.isRequired,
   onSelect2Timetable: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired

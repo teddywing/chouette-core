@@ -53,5 +53,5 @@ export default class Tools extends Component {
 Tools.propTypes = {
   vehicleJourneys : PropTypes.array.isRequired,
   onCancelSelection: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired,
+  filters: PropTypes.object.isRequired
 }
