@@ -61,7 +61,12 @@ export default class VehicleJourney extends Component {
 
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.errors ? ' has-error': '')}>
-        <div className='th'>
+        <div
+          className='th'
+          onClick={(e) =>
+            ($(e.target).parents("a").length == 0) && this.props.editMode && this.props.onSelectVehicleJourney(this.props.index)
+          }
+          >
           <div className='strong mb-xs'>{this.props.value.short_id || '-'}</div>
           <div>{this.props.value.journey_pattern.short_id || '-'}</div>
           <div>
