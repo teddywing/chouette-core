@@ -44,6 +44,6 @@ Diff: #{diff}
   def diff
     RSpec::Support::Differ.new(
       color: RSpec::Matchers.configuration.color?
-    ).diff_as_string(@expected, @original)
+    ).diff_as_string(@original, @expected)
   end
 end

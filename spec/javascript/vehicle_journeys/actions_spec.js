@@ -341,7 +341,7 @@ describe('when clicking on validate button inside purchase windows modal', () =>
       vehicleJourneys,
       purchase_windows
     }
-    expect(actions.editVehicleJourneyPurchaseWindows(vehicleJourneys, timetables)).toEqual(expectedAction)
+    expect(actions.editVehicleJourneyPurchaseWindows(vehicleJourneys, purchase_windows)).toEqual(expectedAction)
   })
 })
 describe('when clicking on add button inside purchase windows modal', () => {
@@ -357,14 +357,16 @@ describe('when using select2 to pick a purchase window', () => {
     let selectedTT = {
       id: 1,
       objectid: 2,
-      comment: 'test',
+      name: 'test',
+      color: 'color',
     }
     const expectedAction = {
       type: 'SELECT_PURCHASE_WINDOW_MODAL',
       selectedItem:{
         id: selectedTT.id,
         objectid: selectedTT.objectid,
-        comment: selectedTT.comment,
+        name: selectedTT.name,
+        color: "color"
       }
     }
     expect(actions.selectPurchaseWindowsModal(selectedTT)).toEqual(expectedAction)

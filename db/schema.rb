@@ -587,8 +587,8 @@ ActiveRecord::Schema.define(version: 20171227113809) do
   add_index "purchase_windows", ["referential_id"], name: "index_purchase_windows_on_referential_id", using: :btree
 
   create_table "purchase_windows_vehicle_journeys", id: false, force: :cascade do |t|
-    t.integer "purchase_window_id"
-    t.integer "vehicle_journey_id"
+    t.integer "purchase_window_id", limit: 8
+    t.integer "vehicle_journey_id", limit: 8
   end
 
   create_table "referential_clonings", id: :bigserial, force: :cascade do |t|
