@@ -569,5 +569,26 @@ module Chouette
       tt.comment      = I18n.t("activerecord.copy", :name => self.comment)
       tt
     end
+
+    def intersect_periods!(mask_periods)
+      dates.each do |date|
+        unless mask_periods.any? { |p| p.include? date }
+          dates.delete date
+        end
+      end
+
+      periods.each do |period|
+        mask_periods_with_common_part = mask_periods.select { |p| p.intersect? period.range }
+
+        if mask_periods_with_common_part.empty?
+          self.periods.delete period
+        else
+          mask_periods_with_common_part.each do |mask_period|
+            intersection = (mask_period & period.range)
+            period.period_start, period.period_end = intersection.begin, intersection.end
+          end
+        end
+      end
+    end
   end
 end
