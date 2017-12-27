@@ -17,12 +17,25 @@ export default class VehicleJourney extends Component {
     return bool
   }
 
+  hasFeature(key) {
+    return this.props.filters.features[key]
+  }
+
   timeTableURL(tt) {
     let refURL = window.location.pathname.split('/', 3).join('/')
     let ttURL = refURL + '/time_tables/' + tt.id
 
     return (
       <a href={ttURL} title='Voir le calendrier'><span className='fa fa-calendar' style={{color: (tt.color ? tt.color : '')}}></span></a>
+    )
+  }
+
+  purchaseWindowURL(tt) {
+    let refURL = window.location.pathname.split('/', 3).join('/')
+    let ttURL = refURL + '/purchase_windows/' + tt.id
+
+    return (
+      <a href={ttURL} title='Voir le calendrier commercial'><span className='fa fa-calendar' style={{color: (tt.color ? tt.color : '')}}></span></a>
     )
   }
 
@@ -44,7 +57,7 @@ export default class VehicleJourney extends Component {
 
   render() {
     this.previousCity = undefined
-    let {time_tables} = this.props.value
+    let {time_tables, purchase_windows} = this.props.value
 
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.errors ? ' has-error': '')}>
@@ -57,6 +70,14 @@ export default class VehicleJourney extends Component {
             )}
             {time_tables.length > 3 && <span className='vj_tt'> + {time_tables.length - 3}</span>}
           </div>
+          { this.hasFeature('purchase_windows') &&
+            <div>
+              {purchase_windows.slice(0,3).map((tt, i)=>
+                <span key={i} className='vj_tt'>{this.purchaseWindowURL(tt)}</span>
+              )}
+              {purchase_windows.length > 3 && <span className='vj_tt'> + {purchase_windows.length - 3}</span>}
+            </div>
+          }
           <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
             <input
               id={this.props.index}

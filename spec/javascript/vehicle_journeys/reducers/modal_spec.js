@@ -91,6 +91,12 @@ describe('modal reducer', () => {
     ).toEqual(newState)
   })
 
+   //  _____ ___ __  __ ___ _____ _   ___ _    ___ ___
+   // |_   _|_ _|  \/  | __|_   _/_\ | _ ) |  | __/ __|
+   //   | |  | || |\/| | _|  | |/ _ \| _ \ |__| _|\__ \
+   //   |_| |___|_|  |_|___| |_/_/ \_\___/____|___|___/
+   //
+
   it('should handle EDIT_CALENDARS_VEHICLEJOURNEY_MODAL', () => {
     let vehicleJourneys = []
     let modalPropsResult = {
@@ -154,6 +160,82 @@ describe('modal reducer', () => {
       modalReducer(state, {
         type: 'DELETE_CALENDAR_MODAL',
         timetable: deletableTimetable
+      })
+    ).toEqual(newState)
+  })
+
+  //  ___ _   _ ___  ___ _  _   _   ___ ___
+  // | _ \ | | | _ \/ __| || | /_\ / __| __|
+  // |  _/ |_| |   / (__| __ |/ _ \\__ \ _|
+  // |_|  \___/|_|_\\___|_||_/_/_\_\___/___|__
+  // \ \    / /_ _| \| |   \ / _ \ \    / / __|
+  //  \ \/\/ / | || .` | |) | (_) \ \/\/ /\__ \
+  //   \_/\_/ |___|_|\_|___/ \___/ \_/\_/ |___/
+  //
+
+  it('should handle EDIT_PURCHASE_WINDOWS_VEHICLEJOURNEY_MODAL', () => {
+    let vehicleJourneys = []
+    let modalPropsResult = {
+      vehicleJourneys: [],
+      purchase_windows: []
+    }
+    expect(
+      modalReducer(state, {
+        type: 'EDIT_PURCHASE_WINDOWS_VEHICLEJOURNEY_MODAL',
+        vehicleJourneys
+      })
+    ).toEqual(Object.assign({}, state, {type: 'purchase_windows_edit', modalProps: modalPropsResult}))
+  })
+
+  it('should handle SELECT_PURCHASE_WINDOW_MODAL', () => {
+    let newModalProps = {selectedPurchaseWindow : {id: 1}}
+    expect(
+      modalReducer(state, {
+        type: 'SELECT_PURCHASE_WINDOW_MODAL',
+        selectedItem: {id: 1}
+      })
+    ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
+  })
+
+  it('should handle ADD_SELECTED_PURCHASE_WINDOW', () => {
+    let fakeWindows = [{'test': 'test'}, {'test 2': 'test 2'}]
+    let newWindows = [{'test': 'test'}, {'test 2': 'test 2'}, {'add': 'add'}]
+    let fakeVehicleJourneys= [{purchase_windows: fakeWindows}, {purchase_windows: newWindows}]
+    state.modalProps.vehicleJourneys = fakeVehicleJourneys
+    state.modalProps.purchase_windows = fakeWindows
+    state.modalProps.selectedPurchaseWindow = {'add': 'add'}
+    let newState = {
+      type: '',
+      modalProps:{
+        vehicleJourneys: fakeVehicleJourneys,
+        purchase_windows: [{'test': 'test'},{'test 2': 'test 2'},{'add': 'add'}],
+        selectedPurchaseWindow: {'add': 'add'}
+      },
+      confirmModal: {}
+    }
+    expect(
+      modalReducer(state, {
+        type: 'ADD_SELECTED_PURCHASE_WINDOW',
+      })
+    ).toEqual(newState)
+  })
+
+  it('should handle DELETE_PURCHASE_WINDOW_MODAL', () => {
+    let deletableWindow = {'delete': 'delete'}
+    let fakeWindows = [{'test': 'test'}, {'test 2': 'test 2'}, deletableWindow]
+    let newWindows = [{'test': 'test'}, {'test 2': 'test 2'}]
+    let fakeVehicleJourneys= [{purchase_windows: fakeWindows}, {purchase_windows: newWindows}]
+    state.modalProps = Object.assign({}, state.modalProps,{vehicleJourneys : fakeVehicleJourneys, purchase_windows: fakeWindows })
+    let newState = {
+      // for the sake of the test, no need to specify the type
+      type: '',
+      modalProps:{vehicleJourneys: [{purchase_windows: newWindows},{purchase_windows: newWindows}], purchase_windows: newWindows},
+      confirmModal: {}
+    }
+    expect(
+      modalReducer(state, {
+        type: 'DELETE_PURCHASE_WINDOW_MODAL',
+        purchaseWindow: deletableWindow
       })
     ).toEqual(newState)
   })

@@ -209,6 +209,13 @@ describe('when clicking on edit notes modal', () => {
     expect(actions.openNotesEditModal(vehicleJourney)).toEqual(expectedAction)
   })
 })
+
+ //  ___ ___   ___ _____ _  _  ___ _____ ___ ___
+ // | __/ _ \ / _ \_   _| \| |/ _ \_   _| __/ __|
+ // | _| (_) | (_) || | | .` | (_) || | | _|\__ \
+ // |_| \___/ \___/ |_| |_|\_|\___/ |_| |___|___/
+ //
+
 describe('when clicking on a footnote button inside footnote modal', () => {
   it('should create an action to toggle this footnote', () => {
     const footnote = {}, isShown = true
@@ -230,6 +237,13 @@ describe('when clicking on validate button inside footnote modal', () => {
     expect(actions.editVehicleJourneyNotes(footnotes)).toEqual(expectedAction)
   })
 })
+
+ //  _____ ___ __  __ ___ _____ _   ___ _    ___ ___
+ // |_   _|_ _|  \/  | __|_   _/_\ | _ ) |  | __/ __|
+ //   | |  | || |\/| | _|  | |/ _ \| _ \ |__| _|\__ \
+ //   |_| |___|_|  |_|___| |_/_/ \_\___/____|___|___/
+ //
+
 describe('when clicking on calendar button in toolbox', () => {
   it('should create an action to open calendar modal', () => {
     const vehicleJourneys = []
@@ -288,6 +302,81 @@ describe('when using select2 to pick a timetable', () => {
     expect(actions.selectTTCalendarsModal(selectedTT)).toEqual(expectedAction)
   })
 })
+
+ //  ___ _   _ ___  ___ _  _   _   ___ ___
+ // | _ \ | | | _ \/ __| || | /_\ / __| __|
+ // |  _/ |_| |   / (__| __ |/ _ \\__ \ _|
+ // |_|  \___/|_|_\\___|_||_/_/_\_\___/___|__
+ // \ \    / /_ _| \| |   \ / _ \ \    / / __|
+ //  \ \/\/ / | || .` | |) | (_) \ \/\/ /\__ \
+ //   \_/\_/ |___|_|\_|___/ \___/ \_/\_/ |___/
+ //
+
+describe('when clicking on purchase window button in toolbox', () => {
+  it('should create an action to open purchase window modal', () => {
+    const vehicleJourneys = []
+    const expectedAction = {
+      type: 'EDIT_PURCHASE_WINDOWS_VEHICLEJOURNEY_MODAL',
+      vehicleJourneys
+    }
+    expect(actions.openPurchaseWindowsEditModal(vehicleJourneys)).toEqual(expectedAction)
+  })
+})
+describe('when clicking on delete button next to a purchase window inside modal', () => {
+  it('should create an action to delete purchase window from selected vehicle journeys', () => {
+    const purchaseWindow = {}
+    const expectedAction = {
+      type: 'DELETE_PURCHASE_WINDOW_MODAL',
+      purchaseWindow
+    }
+    expect(actions.deletePurchaseWindowsModal(purchaseWindow)).toEqual(expectedAction)
+  })
+})
+describe('when clicking on validate button inside purchase windows modal', () => {
+  it('should create an action to update vj purchase windows', () => {
+    const vehicleJourneys = []
+    const purchase_windows = []
+    const expectedAction = {
+      type: 'EDIT_VEHICLEJOURNEYS_PURCHASE_WINDOWS',
+      vehicleJourneys,
+      purchase_windows
+    }
+    expect(actions.editVehicleJourneyPurchaseWindows(vehicleJourneys, timetables)).toEqual(expectedAction)
+  })
+})
+describe('when clicking on add button inside purchase windows modal', () => {
+  it('should create an action to add the selected purchase window to preselected vjs', () => {
+    const expectedAction = {
+      type: 'ADD_SELECTED_PURCHASE_WINDOW',
+    }
+    expect(actions.addSelectedPurchaseWindow()).toEqual(expectedAction)
+  })
+})
+describe('when using select2 to pick a purchase window', () => {
+  it('should create an action to select a purchase window inside modal', () => {
+    let selectedTT = {
+      id: 1,
+      objectid: 2,
+      comment: 'test',
+    }
+    const expectedAction = {
+      type: 'SELECT_PURCHASE_WINDOW_MODAL',
+      selectedItem:{
+        id: selectedTT.id,
+        objectid: selectedTT.objectid,
+        comment: selectedTT.comment,
+      }
+    }
+    expect(actions.selectPurchaseWindowsModal(selectedTT)).toEqual(expectedAction)
+  })
+})
+
+ //  ___ ___ _  _____ ___ ___  ___
+ // | __|_ _| ||_   _| __| _ \/ __|
+ // | _| | || |__| | | _||   /\__ \
+ // |_| |___|____|_| |___|_|_\|___/
+ //
+
 describe('when clicking on reset button inside query filters', () => {
   it('should create an action to reset the query filters', () => {
     const expectedAction = {

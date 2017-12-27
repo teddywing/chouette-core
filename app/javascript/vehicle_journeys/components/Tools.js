@@ -7,6 +7,7 @@ import DuplicateVehicleJourney from '../containers/tools/DuplicateVehicleJourney
 import EditVehicleJourney from '../containers/tools/EditVehicleJourney'
 import NotesEditVehicleJourney from '../containers/tools/NotesEditVehicleJourney'
 import TimetablesEditVehicleJourney from '../containers/tools/TimetablesEditVehicleJourney'
+import PurchaseWindowsEditVehicleJourney from '../containers/tools/PurchaseWindowsEditVehicleJourney'
 
 
 export default class Tools extends Component {
@@ -20,6 +21,11 @@ export default class Tools extends Component {
     return this.props.filters.policy[`vehicle_journeys.${key}`]
   }
 
+  hasFeature(key) {
+    // Check if the organisation has the given feature
+    return this.props.filters.features[key]
+  }
+
   render() {
     let { vehicleJourneys, onCancelSelection, editMode } = this.props
     return (
@@ -30,6 +36,9 @@ export default class Tools extends Component {
           <ShiftVehicleJourney disabled={!this.hasPolicy("update") || !editMode}/>
           <EditVehicleJourney disabled={!this.hasPolicy("update")}/>
           <TimetablesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
+          { this.hasFeature('purchase_windows') &&
+            <PurchaseWindowsEditVehicleJourney disabled={!this.hasPolicy("update")}/>
+          }
           <NotesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
           <DeleteVehicleJourneys disabled={!this.hasPolicy("destroy") || !editMode}/>
         </ul>
@@ -44,5 +53,5 @@ export default class Tools extends Component {
 Tools.propTypes = {
   vehicleJourneys : PropTypes.array.isRequired,
   onCancelSelection: PropTypes.func.isRequired,
-  filters: PropTypes.object.isRequired
+  filters: PropTypes.object.isRequired,
 }

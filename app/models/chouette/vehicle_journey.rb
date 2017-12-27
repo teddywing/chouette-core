@@ -40,6 +40,11 @@ module Chouette
     before_validation :set_default_values,
       :calculate_vehicle_journey_at_stop_day_offset
 
+    # XXX
+    def purchase_windows
+      Chouette::PurchaseWindow.limit(2)
+    end
+
     # TODO: Remove this validator
     # We've eliminated this validation because it prevented vehicle journeys
     # from being saved with at-stops having a day offset greater than 0,

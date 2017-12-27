@@ -23,6 +23,7 @@ var initialState = {
   filters: {
     selectedJourneyPatterns : selectedJP,
     policy: window.perms,
+    features: window.features,
     toggleArrivals: false,
     queryString: '',
     query: {

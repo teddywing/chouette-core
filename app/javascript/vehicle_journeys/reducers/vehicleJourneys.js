@@ -155,6 +155,21 @@ export default function vehicleJourneys(state = [], action) {
           return vj
         }
       })
+      case 'EDIT_VEHICLEJOURNEYS_PURCHASE_WINDOWS':
+        let newWindows = JSON.parse(JSON.stringify(action.purchase_windows))
+        return state.map((vj,i) =>{
+          if(vj.selected){
+            let updatedVJ = _.assign({}, vj)
+            action.vehicleJourneys.map((vjm, j) =>{
+              if(vj.objectid == vjm.objectid){
+                updatedVJ.purchase_windows = newWindows
+              }
+            })
+            return updatedVJ
+          }else{
+            return vj
+          }
+        })
     case 'SHIFT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
         if (vj.selected){
