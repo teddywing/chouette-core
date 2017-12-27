@@ -33,6 +33,7 @@ export default class TimetablesEditVehicleJourney extends Component {
             data-toggle='modal'
             data-target='#CalendarsEditVehicleJourneyModal'
             onClick={() => this.props.onOpenCalendarsEditModal(actions.getSelected(this.props.vehicleJourneys))}
+            title='Calendriers'
           >
             <span className='fa fa-calendar'></span>
           </button>

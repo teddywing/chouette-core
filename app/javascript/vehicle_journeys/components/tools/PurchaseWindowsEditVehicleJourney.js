@@ -33,8 +33,9 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
             data-toggle='modal'
             data-target='#PurchaseWindowsEditVehicleJourneyModal'
             onClick={() => this.props.onOpenCalendarsEditModal(actions.getSelected(this.props.vehicleJourneys))}
+            title='Calendriers commerciaux'
           >
-            <span className='fa fa-calendar'></span>
+            <span className='sb sb-purchase_window sb-strong'></span>
           </button>
 
           <div className={ 'modal fade ' + ((this.props.modal.type == 'duplicate') ? 'in' : '') } id='PurchaseWindowsEditVehicleJourneyModal'>
