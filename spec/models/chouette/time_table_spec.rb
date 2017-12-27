@@ -1187,4 +1187,48 @@ end
         expect(subject.tag_list.size).to eq(2)
       end
   end
+
+  describe "#intersect_periods!" do
+    let(:time_table) { Chouette::TimeTable.new }
+    let(:periods) do
+      [
+        Date.new(2018, 1, 1)..Date.new(2018, 2, 1),
+      ]
+    end
+
+    it "remove a date not included in given periods" do
+      time_table.dates.build date: Date.new(2017,12,31)
+      time_table.intersect_periods! periods
+      expect(time_table.dates).to be_empty
+    end
+
+    it "keep a date included in given periods" do
+      time_table.dates.build date: Date.new(2018,1,15)
+      expect{time_table.intersect_periods! periods}.to_not change(time_table, :dates)
+    end
+
+    it "remove a period not included in given periods" do
+      time_table.periods.build period_start: Date.new(2017,12,1), period_end: Date.new(2017,12,31)
+      time_table.intersect_periods! periods
+      expect(time_table.periods).to be_empty
+    end
+
+    it "modify a start period if not included in given periods" do
+      period = time_table.periods.build period_start: Date.new(2017,12,1), period_end: Date.new(2018,1,15)
+      time_table.intersect_periods! periods
+      expect(period.period_start).to eq(Date.new(2018, 1, 1))
+    end
+
+    it "modify a end period if not included in given periods" do
+      period = time_table.periods.build period_start: Date.new(2018,1,15), period_end: Date.new(2018,3,1)
+      time_table.intersect_periods! periods
+      expect(period.period_end).to eq(Date.new(2018, 2, 1))
+    end
+
+    it "keep a period included in given periods" do
+      time_table.periods.build period_start: Date.new(2018,1,10), period_end: Date.new(2018,1,20)
+      expect{time_table.intersect_periods! periods}.to_not change(time_table, :periods)
+    end
+
+  end
 end
