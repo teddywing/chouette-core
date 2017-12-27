@@ -241,11 +241,9 @@ module Chouette
     end
 
     def self.matrix(vehicle_journeys)
-      {}.tap do |hash|
-        vehicle_journeys.map{ |vj|
-          vj.vehicle_journey_at_stops.map{ |vjas |hash[ "#{vj.id}-#{vjas.stop_point_id}"] = vjas }
-        }
-      end
+      Hash[*VehicleJourneyAtStop.where(vehicle_journey_id: vehicle_journeys.pluck(:id)).map do |vjas|
+        [ "#{vjas.vehicle_journey_id}-#{vjas.stop_point_id}", vjas]
+      end.flatten]
     end
 
     def self.with_stops

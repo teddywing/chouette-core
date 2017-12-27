@@ -49,11 +49,9 @@ child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops
       vehicle_stop.stop_point.stop_area.city_name
     end
 
-    [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
-      node(att) { vehicle_stop.send(att) ? vehicle_stop.send(att) : nil  }
-    end
+    attributes :id, :connecting_service_id, :boarding_alighting_possibility
 
-    [:arrival_time, :departure_time].map do |att|
+    [:arrival_time, :departure_time].each do |att|
       node(att) do |vs|
         {
           hour: vs.send(att).try(:strftime, '%H'),
