@@ -1,5 +1,15 @@
 RSpec.describe ComplianceControl, type: :model do
 
+  context 'dynamic attributes' do
+    let(:compliance_control1) { build_stubbed :compliance_control }
+    let(:compliance_control2) { build_stubbed :compliance_control, type: 'VehicleJouneyControl::TimeTable' }
+
+    it 'should always return a array' do
+       expect(compliance_control1.class.dynamic_attributes).to be_kind_of Array
+       expect(compliance_control2.class.dynamic_attributes).to be_kind_of Array
+    end
+  end
+
   context 'standard validation' do
 
     let(:compliance_control) { build_stubbed :compliance_control }
