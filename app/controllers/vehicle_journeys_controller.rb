@@ -159,12 +159,12 @@ class VehicleJourneysController < ChouetteController
   end
 
   def user_permissions
+    @features = Hash[*current_organisation.features.map{|f| [f, true]}.flatten].to_json
     policy = policy(:vehicle_journey)
     @perms =
       %w{create destroy update}.inject({}) do | permissions, action |
         permissions.merge( "vehicle_journeys.#{action}" => policy.authorizes_action?(action) )
       end.to_json
-    @features = Hash[*current_organisation.features.map{|f| [f, true]}.flatten].to_json
   end
 
   private
