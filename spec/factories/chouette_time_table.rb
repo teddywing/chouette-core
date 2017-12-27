@@ -25,6 +25,7 @@ FactoryGirl.define do
         end_date = start_date + 10
       end
       time_table.save_shortcuts
+      time_table.update_checksum!
     end
   end
 
