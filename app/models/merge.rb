@@ -84,13 +84,11 @@ class Merge < ActiveRecord::Base
 
     new.save!
 
-    referential.metadatas.each do |metadata|
-      metadata.line_ids.each do |line_id|
-        metadata.periodes.each do |period|
-          # TODO
-          puts "Clean data for #{line_id} #{period}"
-        end
-      end
+    line_periods = LinePeriods.from_metadatas(referential.metadatas)
+
+    line_periods.each do |line_id, periods|
+      # TODO
+      puts "Clean data for #{line_id} #{periods.inspect}"
     end
 
     # let's merge data :)
@@ -164,6 +162,7 @@ class Merge < ActiveRecord::Base
     new.switch do
       referential_journey_patterns.each do |journey_pattern|
         # find parent route by checksum
+        # TODO add line_id for security
         associated_route_checksum = referential_routes_checksums[journey_pattern.route_id]
         existing_associated_route = new.routes.find_by checksum: associated_route_checksum
 
@@ -202,6 +201,7 @@ class Merge < ActiveRecord::Base
     new.switch do
       referential_vehicle_journeys.each do |vehicle_journey|
         # find parent journey pattern by checksum
+        # TODO add line_id for security
         associated_journey_pattern_checksum = referential_journey_patterns_checksums[vehicle_journey.journey_pattern_id]
         existing_associated_journey_pattern = new.journey_patterns.find_by checksum: associated_journey_pattern_checksum
 
@@ -239,6 +239,72 @@ class Merge < ActiveRecord::Base
       end
     end
 
+    referential_time_tables_by_id, referential_time_tables_with_lines = referential.switch do
+      time_tables_by_id = Hash[referential.time_tables.includes(:dates, :periods).all.to_a.map { |t| [t.id, t] }]
+
+      time_tables_with_associated_lines =
+        referential.time_tables.joins(vehicle_journeys: {route: :line}).pluck("lines.id", :id, "vehicle_journeys.checksum")
+
+      time_tables_by_lines = time_tables_with_associated_lines.inject(Hash.new { |h,k| h[k] = [] }) do |hash, row|
+        hash[row.shift] << {id: row.first, vehicle_journey_checksum: row.second}
+        hash
+      end
+
+      [ time_tables_by_id, time_tables_by_lines ]
+    end
+
+    new.switch do
+      referential_time_tables_with_lines.each do |line_id, time_tables_properties|
+        line = workbench.line_referential.lines.find(line_id)
+
+        time_tables_properties.each do |properties|
+          time_table = referential_time_tables_by_id[properties[:id]]
+
+          attributes = time_table.attributes.merge(
+            id: nil,
+            comment: "Ligne #{line.name} - #{time_table.comment}",
+            calendar_id: nil,
+            objectid: "merge:time_table:#{line_id}-#{time_table.checksum}"
+          )
+          candidate_time_table = new.time_tables.build attributes
+
+          time_table.dates.each do |date|
+            date_attributes = date.attributes.merge(
+              id: nil,
+              time_table_id: nil
+            )
+            candidate_time_table.dates.build date_attributes
+          end
+          time_table.periods.each do |period|
+            period_attributes = period.attributes.merge(
+              id: nil,
+              time_table_id: nil
+            )
+            candidate_time_table.periods.build period_attributes
+          end
+
+          candidate_time_table.intersect_periods! line_periods.periods(line_id)
+
+          # FIXME
+          candidate_time_table.set_current_checksum_source
+          candidate_time_table.update_checksum
+
+          existing_time_table = new.time_tables.find_by checksum: candidate_time_table.checksum
+
+          unless existing_time_table
+            candidate_time_table.save!
+
+            # if new_time_table.checksum != time_table.checksum
+            #   raise "Checksum has changed: #{time_table.checksum_source} #{new_time_table.checksum_source}"
+            # end
+
+            existing_time_table = candidate_time_table
+          end
+
+          # TODO associate VehicleJourney
+        end
+      end
+    end
   end
 
   def save_current
