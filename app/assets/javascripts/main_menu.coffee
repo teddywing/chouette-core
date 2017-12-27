@@ -6,7 +6,6 @@ $ ->
     stickyActions = []
     ptitleCont = ""
 
-
   $el = $('#main_nav')
     # Opening/closing left-side menu
   $el.find('.openMenu').on 'click', (e) ->
@@ -39,13 +38,12 @@ $ ->
             content: [$(action)]
             originalParent: $(action).parent()
 
-      if ($(".page-title").length > 0)
+      if $(".page-title").length > 0
         ptitleCont = $(".page-title").html()
 
       stickyContent = $('<div class="sticky-content"></div>')
-      stickyContent.append $('<div class="sticky-ptitle">' + ptitleCont + '</div>')
-      sticyActionsNode = $('<div class="sticky-paction"></div></div>')
-      stickyContent.append sticyActionsNode
+      stickyContent.append $("<div class='sticky-ptitle'>#{ptitleCont}</div>")
+      stickyContent.append $('<div class="sticky-paction"></div>')
       $('#main_nav').addClass 'sticky'
 
       if $('#menu_top').find('.sticky-content').length == 0
@@ -64,6 +62,6 @@ $ ->
             child.appendTo item.originalParent
         $('.sticky-content').remove()
 
-  sticker();
+  sticker()
   # Sticky behavior
   $(document).on 'scroll', sticker
