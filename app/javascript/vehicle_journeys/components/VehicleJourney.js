@@ -22,7 +22,7 @@ export default class VehicleJourney extends Component {
     let ttURL = refURL + '/time_tables/' + tt.id
 
     return (
-      <a href={ttURL} title='Voir le calendrier'><span className='fa fa-calendar' style={{color: (tt.color ? tt.color : '')}}></span></a>
+      <a href={ttURL} title='Voir le calendrier'><span className='fa fa-calendar' style={{ color: (tt.color ? tt.color : '#4B4B4B')}}></span></a>
     )
   }
 

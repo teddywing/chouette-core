@@ -84,7 +84,8 @@ const actions = {
     selectedItem:{
       id: selectedTT.id,
       comment: selectedTT.comment,
-      objectid: selectedTT.objectid
+      objectid: selectedTT.objectid,
+      color: selectedTT.color
     }
   }),
   addSelectedTimetable: () => ({
