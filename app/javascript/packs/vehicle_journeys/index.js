@@ -55,7 +55,7 @@ var initialState = {
 
   },
   status: {
-    fetchSuccess: true,
+    fetchSuccess: false,
     isFetching: false
   },
   vehicleJourneys: [],
