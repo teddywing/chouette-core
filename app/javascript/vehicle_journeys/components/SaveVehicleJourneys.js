@@ -14,16 +14,27 @@ export default class SaveVehicleJourneys extends Component{
         <div className='row mt-md'>
           <div className='col-lg-12 text-right'>
             <form className='vehicle_journeys formSubmitr ml-xs' onSubmit={e => {e.preventDefault()}}>
-              <button
-                className='btn btn-default'
-                type='button'
-                onClick={e => {
-                  e.preventDefault()
-                  this.props.editMode ? this.props.onSubmitVehicleJourneys(this.props.dispatch, this.props.vehicleJourneys) : this.props.onEnterEditMode()
-                }}
-              >
-                {this.props.editMode ? "Valider" : "Editer"}
-              </button>
+              <div className="btn-group sticky-actions">
+                <button
+                  className={'btn ' + (this.props.editMode ? 'btn-success' : 'btn-default')}
+                  type='button'
+                  onClick={e => {
+                    e.preventDefault()
+                    this.props.editMode ? this.props.onSubmitVehicleJourneys(this.props.dispatch, this.props.vehicleJourneys) : this.props.onEnterEditMode()
+                  }}
+                >
+                  {this.props.editMode ? "Valider" : "Editer"}
+                </button>
+                {this.props.editMode && <button
+                    className='btn btn-default'
+                    type='button'
+                    onClick={e => {
+                      e.preventDefault()
+                      this.props.onExitEditMode()
+                    }}
+                  > Annuler </button>
+                }
+              </div>
             </form>
           </div>
         </div>
@@ -38,5 +49,6 @@ SaveVehicleJourneys.propTypes = {
   status: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
   onEnterEditMode: PropTypes.func.isRequired,
+  onExitEditMode: PropTypes.func.isRequired,
   onSubmitVehicleJourneys: PropTypes.func.isRequired
 }
