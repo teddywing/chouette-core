@@ -25,13 +25,13 @@ export default class Tools extends Component {
     return (
       <div className='select_toolbox'>
         <ul>
-          <AddVehicleJourney disabled={this.hasPolicy("create") && !editMode} />
-          <DuplicateVehicleJourney disabled={this.hasPolicy("create") && this.hasPolicy("update") && !editMode}/>
-          <ShiftVehicleJourney disabled={this.hasPolicy("update") && !editMode}/>
+          <AddVehicleJourney disabled={!this.hasPolicy("create") || !editMode} />
+          <DuplicateVehicleJourney disabled={!this.hasPolicy("create") || !this.hasPolicy("update") || !editMode}/>
+          <ShiftVehicleJourney disabled={!this.hasPolicy("update") || !editMode}/>
           <EditVehicleJourney disabled={!this.hasPolicy("update")}/>
           <TimetablesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
           <NotesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
-          <DeleteVehicleJourneys disabled={this.hasPolicy("destroy") && !editMode}/>
+          <DeleteVehicleJourneys disabled={!this.hasPolicy("destroy") || !editMode}/>
         </ul>
 
         <span className='info-msg'>{actions.getSelected(vehicleJourneys).length} course(s) sélectionnée(s)</span>
