@@ -78,6 +78,7 @@ describe Chouette::VehicleJourney, :type => :model do
         item['vehicle_journey_at_stops'] = []
         item['time_tables']              = []
         item['footnotes']                = []
+        item['purchase_windows']         = []
 
         vj.vehicle_journey_at_stops.each do |vjas|
           item['vehicle_journey_at_stops'] << vehicle_journey_at_stop_to_state(vjas)
