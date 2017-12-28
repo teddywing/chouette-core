@@ -349,13 +349,15 @@ const actions = {
                 color: tt.color
               })
             }
-            for (tt of val.purchase_windows){
-              purchaseWindows.push({
-                objectid: tt.objectid,
-                name: tt.name,
-                id: tt.id,
-                color: tt.color
-              })
+            if(val.purchase_windows){
+              for (tt of val.purchase_windows){
+                purchaseWindows.push({
+                  objectid: tt.objectid,
+                  name: tt.name,
+                  id: tt.id,
+                  color: tt.color
+                })
+              }
             }
             let vjasWithDelta = val.vehicle_journey_at_stops.map((vjas, i) => {
               actions.fillEmptyFields(vjas)
