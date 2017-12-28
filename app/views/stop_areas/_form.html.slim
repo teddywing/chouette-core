@@ -6,6 +6,9 @@
         /= @map.to_html
         = f.input :id, as: :hidden
         = f.input :name, :input_html => {:title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.name")}
+
+        = f.input :parent_id, as: :select, :collection => [f.object.parent_id], input_html: { data: { select2_ajax: 'true', url: autocomplete_stop_area_referential_stop_areas_path(@stop_area_referential), initvalue: {id: f.object.parent_id, text: f.object.parent.try(:full_name)}}}
+
         = f.input :area_type, as: :select, :input_html => {:disabled => !@stop_area.new_record?}, :collection => Chouette::AreaType.options, :include_blank => false
 
         .location_info

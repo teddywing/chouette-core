@@ -14,7 +14,8 @@ node do |stop_area|
   :longitude => stop_area.longitude,
   :latitude => stop_area.latitude,
   :area_type => stop_area.area_type,
-  :comment => stop_area.comment
+  :comment => stop_area.comment,
+  :text => stop_area.full_name
   }
 end
 
