@@ -355,5 +355,10 @@ module Chouette
     def deactivate!
       update_attribute :deleted_at, Time.now
     end
+
+    def country_name
+      # XXX
+      country_code
+    end
   end
 end

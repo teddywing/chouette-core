@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import VehicleJourney from './VehicleJourney'
 
@@ -6,7 +7,7 @@ import VehicleJourney from './VehicleJourney'
 export default class VehicleJourneys extends Component {
   constructor(props){
     super(props)
-    this.previousCity = undefined
+    this.previousBreakpoint = undefined
   }
   componentDidMount() {
     this.props.onLoadFirstPage(this.props.filters)
@@ -59,16 +60,19 @@ export default class VehicleJourneys extends Component {
     }
   }
 
-  cityNameChecker(sp) {
-    let bool = false
-    if(sp.city_name != this.previousCity){
-      bool = true
-      this.previousCity = sp.city_name
+  stopPointHeader(sp) {
+    let showHeadline = false
+    let headline = ""
+    let attribute_to_check = this.hasFeature('long_distance_routes') ? "country_code" : "city_name"
+    if(sp[attribute_to_check] != this.previousBreakpoint){
+      showHeadline = true
+      headline = this.hasFeature('long_distance_routes') ? sp.country_name : sp.city_name
+      this.previousBreakpoint = sp[attribute_to_check]
     }
     return (
       <div
-        className={(bool) ? 'headlined' : ''}
-        data-headline={(bool) ? sp.city_name : ''}
+        className={(showHeadline) ? 'headlined' : ''}
+        data-headline={headline}
         title={sp.city_name + ' (' + sp.zip_code +')'}
       >
         <span><span>{sp.name}</span></span>
@@ -77,7 +81,7 @@ export default class VehicleJourneys extends Component {
   }
 
   render() {
-    this.previousCity = undefined
+    this.previousBreakpoint = undefined
 
     if(this.props.status.isFetching == true) {
       return (
@@ -124,7 +128,7 @@ export default class VehicleJourneys extends Component {
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (
                     <div key={i} className='td'>
-                      {this.cityNameChecker(sp)}
+                      {this.stopPointHeader(sp)}
                     </div>
                   )
                 })}
