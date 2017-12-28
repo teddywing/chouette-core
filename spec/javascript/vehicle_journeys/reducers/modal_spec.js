@@ -241,13 +241,12 @@ describe('modal reducer', () => {
   })
 
   it('should handle SELECT_CP_EDIT_MODAL', () => {
-    let newModalProps = {selectedCompany : {name: 'ALBATRANS'}}
     expect(
       modalReducer(state, {
         type: 'SELECT_CP_EDIT_MODAL',
         selectedItem: {name: 'ALBATRANS'}
-      })
-    ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
+      }).modalProps.vehicleJourney.company
+    ).toEqual({name: 'ALBATRANS'})
   })
 
   it('should handle UNSELECT_CP_EDIT_MODAL', () => {
@@ -255,7 +254,7 @@ describe('modal reducer', () => {
     expect(
       modalReducer(state, {
         type: 'UNSELECT_CP_EDIT_MODAL'
-      })
-    ).toEqual(Object.assign({}, state, {modalProps: newModalProps}))
+      }).modalProps.vehicleJourney.company
+    ).toBe(undefined)
   })
 })
