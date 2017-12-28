@@ -6,7 +6,6 @@ class LinePolicy < ApplicationPolicy
   end
 
   def create?
-    Rails.logger.debug "LinePolicy.create?"
     user.has_permission?('lines.create')
   end
 
