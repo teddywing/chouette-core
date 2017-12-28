@@ -93,7 +93,11 @@ ChouetteIhm::Application.routes.draw do
 
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
-    resources :stop_areas, &deactivable
+    resources :stop_areas do
+      put :deactivate, on: :member
+      put :activate, on: :member
+      get :autocomplete, on: :collection
+    end
   end
 
   resources :line_referentials, :only => [:show, :edit, :update] do

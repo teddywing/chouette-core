@@ -1,7 +1,7 @@
 class StopAreasController < ChouetteController
   include ApplicationHelper
   include Activatable
-  
+
   defaults :resource_class => Chouette::StopArea
 
   belongs_to :stop_area_referential
@@ -14,10 +14,12 @@ class StopAreasController < ChouetteController
   respond_to :html, :kml, :xml, :json
   respond_to :js, :only => :index
 
-  # def complete
-  #   @stop_areas = line.stop_areas
-  #   render :layout => false
-  # end
+  def autocomplete
+    scope = stop_area_referential.stop_areas.where(deleted_at: nil)
+    args  = [].tap{|arg| 4.times{arg << "%#{params[:q]}%"}}
+    @stop_areas = scope.where("unaccent(name) ILIKE unaccent(?) OR unaccent(city_name) ILIKE unaccent(?) OR registration_number ILIKE ? OR objectid ILIKE ?", *args).limit(50)
+    @stop_areas
+  end
 
   def select_parent
     @stop_area = stop_area
