@@ -41,6 +41,7 @@ const vehicleJourney= (state = {}, action, keep) => {
         short_id: '',
         footnotes: [],
         time_tables: [],
+        purchase_windows: [],
         vehicle_journey_at_stops: pristineVjasList,
         selected: false,
         deletable: false,
