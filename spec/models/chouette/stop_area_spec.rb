@@ -426,6 +426,42 @@ describe Chouette::StopArea, :type => :model do
   #     end
   # end
 
+  describe "#parent" do
+
+    let(:stop_area) { FactoryGirl.build :stop_area, parent: FactoryGirl.build(:stop_area) }
+
+    it "is valid when parent has an 'higher' type" do
+      stop_area.area_type = 'zdep'
+      stop_area.parent.area_type = 'zdlp'
+
+      stop_area.valid?
+      expect(stop_area.errors).to_not have_key(:parent_id)
+    end
+
+    it "is valid when parent is undefined" do
+      stop_area.parent = nil
+
+      stop_area.valid?
+      expect(stop_area.errors).to_not have_key(:parent_id)
+    end
+
+    it "isn't valid when parent has the same type" do
+      stop_area.parent.area_type = stop_area.area_type = 'zdep'
+
+      stop_area.valid?
+      expect(stop_area.errors).to have_key(:parent_id)
+    end
+
+    it "isn't valid when parent has a lower type" do
+      stop_area.area_type = 'lda'
+      stop_area.parent.area_type = 'zdep'
+
+      stop_area.valid?
+      expect(stop_area.errors).to have_key(:parent_id)
+    end
+
+  end
+
   describe '#waiting_time' do
 
     let(:stop_area) { FactoryGirl.build :stop_area }

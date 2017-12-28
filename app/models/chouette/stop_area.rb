@@ -49,7 +49,7 @@ module Chouette
 
     def parent_area_type_must_be_greater
       return unless self.parent
-      if Chouette::AreaType.find(self.area_type) > Chouette::AreaType.find(self.parent.area_type)
+      if Chouette::AreaType.find(self.area_type) >= Chouette::AreaType.find(self.parent.area_type)
         errors.add(:parent_id, I18n.t('stop_areas.errors.parent_area_type', area_type: self.parent.area_type))
       end
     end
