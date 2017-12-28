@@ -66,7 +66,12 @@ export default class TimetablesEditVehicleJourney extends Component {
                               {this.props.modal.modalProps.timetables.map((tt, i) =>
                                 <div className='nested-fields' key={i}>
                                   <div className='wrapper'>
-                                    <div> <a href={this.timeTableURL(tt)} target="_blank">{tt.comment}</a> </div>
+                                    <div>
+                                      <a href={this.timeTableURL(tt)} target="_blank">
+                                        <span className="fa fa-circle mr-xs" style={{color: tt.color || 'black'}}></span>
+                                        {tt.comment}
+                                      </a>
+                                    </div>
                                     {
                                       this.props.editMode &&
                                       <div>
