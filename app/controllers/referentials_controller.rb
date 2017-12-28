@@ -14,15 +14,16 @@ class ReferentialsController < ChouetteController
 
   def create
     create! do |success, failure|
-      build_referenial
-
       success.html do
         if @referential.created_from_id.present?
           flash[:notice] = t('notice.referentials.duplicate')
           redirect_to workbench_path(@referential.workbench)
         end
       end
-      failure.html { render :new }
+      failure.html do
+        Rails.logger.info "Can't create Referential : #{@referential.errors.inspect}"
+        render :new
+      end
     end
   end
 
