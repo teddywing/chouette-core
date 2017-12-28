@@ -40,6 +40,10 @@ end
 
 child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops|
   node do |vehicle_stop|
+    [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
+      node(att) { vehicle_stop.send(att) ? vehicle_stop.send(att) : nil  }
+    end
+
     node(:dummy) { vehicle_stop.dummy }
 
     node(:stop_area_object_id) do
@@ -54,8 +58,6 @@ child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops
     node(:stop_area_cityname) do
       vehicle_stop.stop_point.stop_area.city_name
     end
-
-    attributes :id, :connecting_service_id, :boarding_alighting_possibility
 
     [:arrival_time, :departure_time].each do |att|
       node(att) do |vs|
