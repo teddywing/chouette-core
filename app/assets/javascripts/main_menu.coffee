@@ -32,7 +32,7 @@ $ ->
               ]
             originalParent: $('.page-action .small').parent()
 
-        for action in $(".sticky-action")
+        for action in $(".sticky-action, .sticky-actions")
           stickyActions.push
             class: "small",
             content: [$(action)]
