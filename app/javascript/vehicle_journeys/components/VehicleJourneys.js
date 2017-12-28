@@ -12,6 +12,10 @@ export default class VehicleJourneys extends Component {
     this.props.onLoadFirstPage(this.props.filters)
   }
 
+  hasFeature(key) {
+    return this.props.filters.features[key]
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if(this.props.status.isFetching == false){
       $('.table-2entries').each(function() {
@@ -113,6 +117,7 @@ export default class VehicleJourneys extends Component {
                   <div className='strong mb-xs'>ID course</div>
                   <div>ID mission</div>
                   <div>Calendriers</div>
+                  { this.hasFeature('purchase_windows') && <div>Calendriers Commerciaux</div> }
                 </div>
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (
@@ -132,6 +137,7 @@ export default class VehicleJourneys extends Component {
                       index={index}
                       editMode={this.props.editMode}
                       filters={this.props.filters}
+                      features={this.props.features}
                       onUpdateTime={this.props.onUpdateTime}
                       onSelectVehicleJourney={this.props.onSelectVehicleJourney}
                       />

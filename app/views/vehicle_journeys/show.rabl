@@ -28,12 +28,22 @@ child(:time_tables, :object_root => false) do |time_tables|
   end
 end
 
+if has_feature? :purchase_windows
+  child(:purchase_windows, :object_root => false) do |purchase_windows|
+    attributes :id, :objectid, :name, :color
+  end
+end
+
 child :footnotes, :object_root => false do |footnotes|
   attributes :id, :code, :label
 end
 
 child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops|
   node do |vehicle_stop|
+    [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
+      node(att) { vehicle_stop.send(att) ? vehicle_stop.send(att) : nil  }
+    end
+
     node(:dummy) { vehicle_stop.dummy }
 
     node(:stop_area_object_id) do
@@ -49,11 +59,7 @@ child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops
       vehicle_stop.stop_point.stop_area.city_name
     end
 
-    [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
-      node(att) { vehicle_stop.send(att) ? vehicle_stop.send(att) : nil  }
-    end
-
-    [:arrival_time, :departure_time].map do |att|
+    [:arrival_time, :departure_time].each do |att|
       node(att) do |vs|
         {
           hour: vs.send(att).try(:strftime, '%H'),

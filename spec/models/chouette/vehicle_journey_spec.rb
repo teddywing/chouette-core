@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
   it { is_expected.to be_versioned }
+  it { should have_and_belong_to_many(:purchase_windows) }
 
   it "must be valid with an at-stop day offset of 1" do
     vehicle_journey = create(
@@ -76,7 +77,9 @@ describe Chouette::VehicleJourney, :type => :model do
       vj.slice('objectid', 'published_journey_name', 'journey_pattern_id', 'company_id').tap do |item|
         item['vehicle_journey_at_stops'] = []
         item['time_tables']              = []
+        item['purchase_windows']         = []
         item['footnotes']                = []
+        item['purchase_windows']         = []
 
         vj.vehicle_journey_at_stops.each do |vjas|
           item['vehicle_journey_at_stops'] << vehicle_journey_at_stop_to_state(vjas)
@@ -157,6 +160,23 @@ describe Chouette::VehicleJourney, :type => :model do
       vehicle_journey.update_has_and_belongs_to_many_from_state(state)
 
       expect(vehicle_journey.reload.time_tables).to be_empty
+    end
+
+    it 'should update vj purchase_windows association from state' do
+      2.times{state['purchase_windows'] << create(:purchase_window, referential: referential).slice('id', 'name', 'objectid', 'color')}
+      vehicle_journey.update_has_and_belongs_to_many_from_state(state)
+
+      expected = state['purchase_windows'].map{|tt| tt['id']}
+      actual   = vehicle_journey.reload.purchase_windows.map(&:id)
+      expect(actual).to match_array(expected)
+    end
+
+    it 'should clear vj purchase_windows association when remove from state' do
+      vehicle_journey.purchase_windows << create(:purchase_window, referential: referential)
+      state['purchase_windows'] = []
+      vehicle_journey.update_has_and_belongs_to_many_from_state(state)
+
+      expect(vehicle_journey.reload.purchase_windows).to be_empty
     end
 
     it 'should update vj footnote association from state' do

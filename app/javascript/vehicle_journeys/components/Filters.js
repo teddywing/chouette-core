@@ -33,6 +33,7 @@ export default function Filters({filters, pagination, onFilter, onResetFilters, 
                 onSelect2Timetable={onSelect2Timetable}
                 hasRoute={true}
                 chunkURL={("/autocomplete_time_tables.json?route_id=" + String(window.route_id))}
+                searchKey={"comment_or_objectid_cont_any"}
                 filters={filters}
                 isFilter={true}
                 />

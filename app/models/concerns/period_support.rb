@@ -7,7 +7,7 @@ module PeriodSupport
     def init_date_ranges
       self.date_ranges ||= []
     end
-    
+
     ### Calendar::Period
     # Required by coocon
     def build_period
