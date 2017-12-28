@@ -136,7 +136,7 @@ describe Chouette::AccessPoint, :type => :model do
 
   describe "#generic_access_link_matrix" do
     it "should have 2 generic_access_links in matrix" do
-      stop_place = create :stop_area, :area_type => "zdlp"
+      stop_place = create :stop_area, :area_type => "gdl"
       commercial_stop_point = create :stop_area, :area_type => "lda" ,:parent => stop_place
       subject = create :access_point, :stop_area => stop_place
       expect(subject.generic_access_link_matrix.size).to eq(2)
