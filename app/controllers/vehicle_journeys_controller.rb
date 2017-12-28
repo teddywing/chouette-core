@@ -99,10 +99,10 @@ class VehicleJourneysController < ChouetteController
       @q = scope.search filtered_ransack_params
 
       @ppage = 20
-      @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
+      vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
       @footnotes = route.line.footnotes.to_json
-      @matrix    = resource_class.matrix(@vehicle_journeys)
-      @vehicle_journeys
+      @matrix    = resource_class.matrix(vehicle_journeys)
+      vehicle_journeys
     end
   end
 
