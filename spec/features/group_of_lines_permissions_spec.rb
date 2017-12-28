@@ -22,7 +22,7 @@ describe "Group of lines", :type => :feature do
       context 'on show view' do
         let( :path ){ line_referential_group_of_line_path(line_referential, group_of_line, delete: true) }
 
-        context 'if permissions present → ' do 
+        context 'if permissions present → ' do
           let( :permission ){ true }
 
           it 'shows the appropriate buttons' do
@@ -30,7 +30,7 @@ describe "Group of lines", :type => :feature do
             expect( page ).to have_link('Supprimer', href: expected_url)
           end
         end
-        context 'if permissions absent → ' do 
+        context 'if permissions absent → ' do
           let( :permission ){ false }
 
           it 'shows the appropriate buttons' do
