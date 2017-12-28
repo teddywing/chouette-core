@@ -1,7 +1,7 @@
 class StopAreasController < ChouetteController
   include ApplicationHelper
   include Activatable
-  
+
   defaults :resource_class => Chouette::StopArea
 
   belongs_to :stop_area_referential
@@ -153,6 +153,10 @@ class StopAreasController < ChouetteController
           stop_areas
         end
     end
+  end
+
+  def begin_of_association_chain
+    current_organisation
   end
 
   private
