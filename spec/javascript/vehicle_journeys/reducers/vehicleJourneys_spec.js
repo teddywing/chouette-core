@@ -110,6 +110,7 @@ describe('vehicleJourneys reducer', () => {
       objectid: '',
       footnotes: [],
       time_tables: [],
+      purchase_windows: [],
       vehicle_journey_at_stops: pristineVjasList,
       selected: false,
       deletable: false,
