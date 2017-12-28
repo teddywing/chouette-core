@@ -373,7 +373,7 @@ const actions = {
                 selected: false,
                 published_journey_name: val.published_journey_name || 'non renseigné',
                 published_journey_identifier: val.published_journey_identifier || 'non renseigné',
-                company: val.company || 'non renseigné',
+                company: val.company || {name: 'non renseigné'},
                 transport_mode: val.route.line.transport_mode || 'undefined',
                 transport_submode: val.route.line.transport_submode || 'undefined'
               })
