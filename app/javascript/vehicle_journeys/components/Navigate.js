@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from'../actions'
 
 export default function Navigate({ dispatch, vehicleJourneys, pagination, status, filters}) {

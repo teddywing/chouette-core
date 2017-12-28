@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import BSelect2 from './BSelect2'
 import OlMap from './OlMap'
 

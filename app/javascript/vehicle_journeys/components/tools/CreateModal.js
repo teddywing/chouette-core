@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../../actions'
 import MissionSelect2 from './select2s/MissionSelect2'
 import CompanySelect2 from './select2s/CompanySelect2'
