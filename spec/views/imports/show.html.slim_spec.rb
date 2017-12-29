@@ -22,10 +22,10 @@ RSpec.describe '/imports/show', type: :view do
     messages.each do | message |
       # require 'htmlbeautifier'
       # b = HtmlBeautifier.beautify(rendered, indent: '  ')
-      expect(rendered).to have_selector('dl#import_messages dt.import_message') do
+      expect(rendered).to have_selector('.import_message-list dl dt.criticity') do
         with_text message.criticity
       end
-      expect(rendered).to have_selector('dl#import_messages dd.import_message') do
+      expect(rendered).to have_selector('.import_message-list dl dd') do
         with_text rendered_message( message )
       end
     end
