@@ -31,11 +31,8 @@ RSpec.describe '/imports/show', type: :view do
     end
   end
 
-
   def rendered_message message
-    Object.new.extend(CommonHelper).tap do |helper|
-      return I18n.t(message.message_key, helper.string_keys_to_symbols( message.message_attributes ))
-    end
+    return I18n.t message.message_key, message.message_attributes.symbolize_keys
   end
 
 end
