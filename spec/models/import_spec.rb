@@ -10,8 +10,9 @@ RSpec.describe Import, type: :model do
   it { should validate_presence_of(:workbench) }
   it { should validate_presence_of(:creator) }
 
-  it { should allow_value('file.zip').for(:file).with_message(I18n.t('activerecord.errors.models.import.attributes.file.wrong_file_extension')) }
-  it { should_not allow_values('file.json', 'file.png', 'file.pdf').for(:file) }
+  include ActionDispatch::TestProcess
+  it { should allow_value(fixture_file_upload('OFFRE_TRANSDEV_2017030112251.zip')).for(:file) }
+  it { should_not allow_value(fixture_file_upload('users.json')).for(:file).with_message(I18n.t('errors.messages.extension_whitelist_error', extension: '"json"', allowed_types: "zip")) }
 
   let(:workbench_import) {netex_import.parent}
   let(:workbench_import_with_completed_steps) do
