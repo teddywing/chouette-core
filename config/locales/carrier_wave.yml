@@ -1,0 +1,4 @@
+fr:
+  errors:
+    messages:
+      extension_whitelist_error: "Le format %{extension} n'est pas supporté, le(s) format(s) supporté(s) sont : %{allowed_types}"
