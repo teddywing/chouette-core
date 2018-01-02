@@ -1,14 +1,14 @@
 RSpec.describe LinesController, :type => :controller do
   login_user
 
-  let(:line_referential) { create :line_referential }
+  let(:line_referential) { create :line_referential, member: @user.organisation }
   let(:line) { create :line, line_referential: line_referential }
 
   describe 'PUT deactivate' do
     let(:request){ put :deactivate, id: line.id, line_referential_id: line_referential.id }
 
     it 'should redirect to 403' do
-       expect(request).to redirect_to "/403"
+      expect(request).to redirect_to "/403"
     end
 
     with_permission "lines.change_status" do

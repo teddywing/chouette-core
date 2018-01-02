@@ -4,7 +4,7 @@ require 'spec_helper'
 describe "Companies", :type => :feature do
   login_user
 
-  let(:line_referential) { create :line_referential }
+  let(:line_referential) { create :line_referential, member: @user.organisation }
   let!(:companies) { Array.new(2) { create :company, line_referential: line_referential } }
   subject { companies.first }
 
