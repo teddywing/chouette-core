@@ -41,8 +41,8 @@ var initialState = {
         published_name: ''
       },
       vehicleJourneyName: {
-        min: '',
-        max: ''
+        min: NaN,
+        max: NaN
       },
       vehicleJourney: {
         objectid: ''

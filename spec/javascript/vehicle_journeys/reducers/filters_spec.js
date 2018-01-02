@@ -30,8 +30,8 @@ describe('filters reducer', () => {
       journeyPattern: {},
       vehicleJourney: {},
       vehicleJourneyName: {
-        min: '',
-        max: ''
+        min: null,
+        max: null
       },
       timetable: {},
       company: {},

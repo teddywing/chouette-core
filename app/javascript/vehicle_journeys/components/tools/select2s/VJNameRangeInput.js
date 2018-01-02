@@ -12,9 +12,10 @@ export default class BSelect4b extends Component {
 
   updateValue(e) {
     let val = {}
-    val[e.target.name] = e.target.value
-    this.setState(_.assign({}, this.state, val))
-    this.props.onSelect2VehicleJourneyName(this.state)
+    val[e.target.name] = parseInt(e.target.value)
+    let newState = _.assign({}, this.state, val)
+    this.setState(newState)
+    this.props.onSelect2VehicleJourneyName(newState)
   }
 
   render() {

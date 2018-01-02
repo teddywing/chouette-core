@@ -15,7 +15,7 @@ export default function  filters(state = {}, action) {
           minute: '59'
         }
       }
-      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, vehicleJourneyName: {min: '', max: ''}, timetable: {}, company: {}, withoutSchedule: true, withoutTimeTable: true })
+      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, vehicleJourneyName: {min: null, max: null}, timetable: {}, company: {}, withoutSchedule: true, withoutTimeTable: true })
       return _.assign({}, state, {query: newQuery, queryString: ''})
     case 'TOGGLE_WITHOUT_SCHEDULE':
       newQuery = _.assign({}, state.query, {withoutSchedule: !state.query.withoutSchedule})
