@@ -15,7 +15,7 @@ export default function  filters(state = {}, action) {
           minute: '59'
         }
       }
-      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, timetable: {}, withoutSchedule: true, withoutTimeTable: true })
+      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, timetable: {}, company: {}, withoutSchedule: true, withoutTimeTable: true })
       return _.assign({}, state, {query: newQuery, queryString: ''})
     case 'TOGGLE_WITHOUT_SCHEDULE':
       newQuery = _.assign({}, state.query, {withoutSchedule: !state.query.withoutSchedule})
@@ -50,6 +50,9 @@ export default function  filters(state = {}, action) {
     case 'SELECT_VJ_FILTER':
       newQuery = _.assign({}, state.query, {vehicleJourney : action.selectedItem})
       return _.assign({}, state, {query: newQuery})
+    case 'SELECT_COMPANY_FILTER':
+      newQuery = _.assign({}, state.query, {company : action.selectedItem})
+      return _.assign({}, state, {query: newQuery})
     case 'TOGGLE_ARRIVALS':
       return _.assign({}, state, {toggleArrivals: !state.toggleArrivals})
     case 'QUERY_FILTER_VEHICLEJOURNEYS':
@@ -63,7 +66,8 @@ export default function  filters(state = {}, action) {
         'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
         'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute),
         'q[vehicle_journey_without_departure_time]': state.query.withoutSchedule,
-        'q[vehicle_journey_without_time_table]': state.query.withoutTimeTable
+        'q[vehicle_journey_without_time_table]': state.query.withoutTimeTable,
+        'q[company_id_eq]': state.query.company.id
       }
       let queryString = actions.encodeParams(params)
       return _.assign({}, state, {queryString: queryString})

@@ -17,8 +17,8 @@ export default class BSelect4 extends Component {
   render() {
     return (
       <Select2
-        data={(this.props.company) ? [this.props.company.name] : undefined}
-        value={(this.props.company) ? this.props.company.name : undefined}
+        data={(this.props.isFilter) ? [this.props.filters.query.company.name] : ((this.props.company) ? [this.props.company.name] : undefined)}
+        value={(this.props.isFilter) ? this.props.filters.query.company.name : ((this.props.company) ? this.props.company.name : undefined) }
         onSelect={(e) => this.props.onSelect2Company(e) }
         onUnselect={() => this.props.onUnselect2Company()}
         disabled={!this.props.editMode && this.props.editModal}

@@ -263,6 +263,14 @@ const actions = {
       objectid: selectedVJ.objectid
     }
   }),
+  filterSelect2Company: (selectedCompany) => ({
+    type : 'SELECT_COMPANY_FILTER',
+    selectedItem: {
+      id: selectedCompany.id,
+      name: selectedCompany.name,
+      objectid: selectedCompany.objectid
+    }
+  }),
   createQueryString: () => ({
     type: 'CREATE_QUERY_STRING'
   }),
