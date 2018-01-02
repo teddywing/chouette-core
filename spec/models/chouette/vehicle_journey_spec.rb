@@ -661,4 +661,30 @@ describe Chouette::VehicleJourney, :type => :model do
       end
     end
   end
+
+  describe "search on short_id" do
+    context "on exact match" do
+      let!(:matching){ create :vehicle_journey, objectid: "AAA:BBB:FOO-BAR1-1:CCC" }
+      let!(:not_matching){ create :vehicle_journey, objectid: "AAA:BBB:FOO-BAR1-2:CCC" }
+      let(:search_result){ Chouette::VehicleJourney.search(short_id_eq: "1").result }
+
+      it "should fetch only the matching objects" do
+        expect(search_result).to include matching
+        expect(search_result).to_not include not_matching
+      end
+    end
+
+    context "on range match" do
+      let!(:matching){ create :vehicle_journey, objectid: "AAA:BBB:FOO-BAR1-1:CCC" }
+      let!(:matching_2){ create :vehicle_journey, objectid: "AAA:BBB:FOO-BAR1-2:CCC" }
+      let!(:not_matching){ create :vehicle_journey, objectid: "AAA:BBB:FOO-BAR1-3:CCC" }
+      let(:search_result){ Chouette::VehicleJourney.search(short_id_gteq: "1", short_id_lteq: "2").result }
+
+      it "should fetch only the matching objects" do
+        expect(search_result).to include matching
+        expect(search_result).to include matching_2
+        expect(search_result).to_not include not_matching
+      end
+    end
+  end
 end

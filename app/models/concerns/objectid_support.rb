@@ -7,6 +7,12 @@ module ObjectidSupport
     validates_presence_of :objectid
     validates_uniqueness_of :objectid, skip_validation: Proc.new {|model| model.read_attribute(:objectid).nil?}
 
+    if respond_to?(:ransacker)
+      ransacker :short_id do
+        Arel.sql("objectid_short_id(objectid)")
+      end
+    end
+
     def before_validation_objectid
       self.referential.objectid_formatter.before_validation self
     end
