@@ -103,7 +103,7 @@ en:
         area_type: "Area type"
         nearest_topic_name: "Nearest point of interest"
         street_name: "Street name"
-        country_code: "INSEE code"
+        country_code: "Country"
         fare_code: "Fare code"
         mobility_restricted_suitability: "Mobility reduced passenger suitable"
         stairs_availability: "Escalator"
