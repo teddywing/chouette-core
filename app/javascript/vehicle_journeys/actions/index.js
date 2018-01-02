@@ -363,23 +363,21 @@ const actions = {
               actions.fillEmptyFields(vjas)
               return actions.getDelta(vjas)
             })
-            vehicleJourneys.push({
-              journey_pattern: val.journey_pattern,
-              published_journey_name: val.published_journey_name,
-              objectid: val.objectid,
-              short_id: val.short_id,
-              footnotes: val.footnotes,
-              time_tables: timeTables,
-              purchase_windows: purchaseWindows,
-              vehicle_journey_at_stops: vjasWithDelta,
-              deletable: false,
-              selected: false,
-              published_journey_name: val.published_journey_name || 'non renseigné',
-              published_journey_identifier: val.published_journey_identifier || 'non renseigné',
-              company: val.company || 'non renseigné',
-              transport_mode: val.route.line.transport_mode || 'undefined',
-              transport_submode: val.route.line.transport_submode || 'undefined'
-            })
+
+            vehicleJourneys.push(
+              _.assign({}, val, {
+                time_tables: timeTables,
+                purchase_windows: purchaseWindows,
+                vehicle_journey_at_stops: vjasWithDelta,
+                deletable: false,
+                selected: false,
+                published_journey_name: val.published_journey_name || 'non renseigné',
+                published_journey_identifier: val.published_journey_identifier || 'non renseigné',
+                company: val.company || 'non renseigné',
+                transport_mode: val.route.line.transport_mode || 'undefined',
+                transport_submode: val.route.line.transport_submode || 'undefined'
+              })
+            )
           }
           window.currentItemsLength = vehicleJourneys.length
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
