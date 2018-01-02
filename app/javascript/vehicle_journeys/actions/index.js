@@ -188,26 +188,18 @@ const actions = {
   resetValidation: (target) => {
     $(target).parent().removeClass('has-error').children('.help-block').remove()
   },
-  validateFields : (...fields) => {
-    const test = []
-
-    Object.keys(fields).map(function(key) {
-      test.push(fields[key].validity.valid)
+  validateFields : (fields) => {
+    let valid = true
+    Object.keys(fields).forEach((key) => {
+      let field = fields[key]
+      if(field.validity && !field.validity.valid){
+        valid = false
+        $(field).parent().addClass('has-error').children('.help-block').remove()
+        $(field).parent().append("<span class='small help-block'>" + field.validationMessage + "</span>")
+      }
     })
-    if(test.indexOf(false) >= 0) {
-      // Form is invalid
-      test.map(function(item, i) {
-        if(item == false) {
-          const k = Object.keys(fields)[i]
-          $(fields[k]).parent().addClass('has-error').children('.help-block').remove()
-          $(fields[k]).parent().append("<span class='small help-block'>" + fields[k].validationMessage + "</span>")
-        }
-      })
-      return false
-    } else {
-      // Form is valid
-      return true
-    }
+
+    return valid
   },
   toggleArrivals : () => ({
     type: 'TOGGLE_ARRIVALS',
@@ -373,7 +365,7 @@ const actions = {
                 selected: false,
                 published_journey_name: val.published_journey_name || 'non renseigné',
                 published_journey_identifier: val.published_journey_identifier || 'non renseigné',
-                company: val.company || 'non renseigné',
+                company: val.company || {name: 'non renseigné'},
                 transport_mode: val.route.line.transport_mode || 'undefined',
                 transport_submode: val.route.line.transport_submode || 'undefined'
               })

@@ -64,7 +64,7 @@ export default class VehicleJourney extends Component {
         <div
           className='th'
           onClick={(e) =>
-            ($(e.target).parents("a").length == 0) && this.props.editMode && this.props.onSelectVehicleJourney(this.props.index)
+            ($(e.target).parents("a").length == 0) && this.props.onSelectVehicleJourney(this.props.index)
           }
           >
           <div className='strong mb-xs'>{this.props.value.short_id || '-'}</div>

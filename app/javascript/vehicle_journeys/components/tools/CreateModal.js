@@ -61,7 +61,7 @@ export default class CreateModal extends Component {
                             <div className='form-group'>
                               <label className='control-label'>Nom du transporteur</label>
                               <CompanySelect2
-                                company = {undefined}
+                                company = {this.props.modal.modalProps.vehicleJourney && this.props.modal.modalProps.vehicleJourney.company || undefined}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
                               />
                             </div>
