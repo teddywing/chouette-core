@@ -4,7 +4,7 @@ require 'spec_helper'
 describe "StopAreas", :type => :feature do
   login_user
 
-  let(:stop_area_referential) { create :stop_area_referential }
+  let(:stop_area_referential) { create :stop_area_referential, member: @user.organisation }
   let!(:stop_areas) { Array.new(2) { create :stop_area, stop_area_referential: stop_area_referential } }
   subject { stop_areas.first }
 
