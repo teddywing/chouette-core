@@ -15,7 +15,7 @@ export default function  filters(state = {}, action) {
           minute: '59'
         }
       }
-      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, timetable: {}, company: {}, withoutSchedule: true, withoutTimeTable: true })
+      newQuery = _.assign({}, state.query, {interval: interval, journeyPattern: {}, vehicleJourney: {}, vehicleJourneyName: {min: '', max: ''}, timetable: {}, company: {}, withoutSchedule: true, withoutTimeTable: true })
       return _.assign({}, state, {query: newQuery, queryString: ''})
     case 'TOGGLE_WITHOUT_SCHEDULE':
       newQuery = _.assign({}, state.query, {withoutSchedule: !state.query.withoutSchedule})
@@ -50,6 +50,9 @@ export default function  filters(state = {}, action) {
     case 'SELECT_VJ_FILTER':
       newQuery = _.assign({}, state.query, {vehicleJourney : action.selectedItem})
       return _.assign({}, state, {query: newQuery})
+    case 'SELECT_VJ_NAME_FILTER':
+      newQuery = _.assign({}, state.query, {vehicleJourneyName : action.selectedItem})
+      return _.assign({}, state, {query: newQuery})
     case 'SELECT_COMPANY_FILTER':
       newQuery = _.assign({}, state.query, {company : action.selectedItem})
       return _.assign({}, state, {query: newQuery})
@@ -62,6 +65,9 @@ export default function  filters(state = {}, action) {
       let params = {
         'q[journey_pattern_id_eq]': state.query.journeyPattern.id || undefined,
         'q[objectid_cont]': state.query.vehicleJourney.objectid || undefined,
+        'q[published_journey_name_int_gteq]': state.query.vehicleJourneyName.min || undefined,
+        'q[published_journey_name_int_lteq]': state.query.vehicleJourneyName.max || undefined,
+        'q[published_journey_name_present]': (state.query.vehicleJourneyName.min || state.query.vehicleJourneyName.max) ? 1 : 0,
         'q[time_tables_id_eq]': state.query.timetable.id || undefined,
         'q[vehicle_journey_at_stops_departure_time_gteq]': (state.query.interval.start.hour + ':' + state.query.interval.start.minute),
         'q[vehicle_journey_at_stops_departure_time_lteq]': (state.query.interval.end.hour + ':' + state.query.interval.end.minute),

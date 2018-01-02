@@ -40,6 +40,10 @@ var initialState = {
       journeyPattern: {
         published_name: ''
       },
+      vehicleJourneyName: {
+        min: '',
+        max: ''
+      },
       vehicleJourney: {
         objectid: ''
       },

@@ -1,17 +1,18 @@
 import React, { PropTypes } from 'react'
 import MissionSelect2 from'./tools/select2s/MissionSelect2'
 import VJSelect2 from'./tools/select2s/VJSelect2'
+import VJNameRangeInput from'./tools/select2s/VJNameRangeInput'
 import TimetableSelect2 from'./tools/select2s/TimetableSelect2'
 import CompanySelect2 from'./tools/select2s/CompanySelect2'
 
-export default function Filters({filters, pagination, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onToggleWithoutTimeTable, onSelect2Timetable, onSelect2JourneyPattern, onSelect2VehicleJourney, onSelect2Company}) {
+export default function Filters({filters, pagination, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onToggleWithoutTimeTable, onSelect2Timetable, onSelect2JourneyPattern, onSelect2VehicleJourney, onSelect2Company, onSelect2VehicleJourneyName}) {
   return (
     <div className='row'>
       <div className='col-lg-12'>
         <div className='form form-filter'>
           <div className='ffg-row'>
             {/* Companies */}
-            <div className="form-group w25">
+            <div className="form-group w20">
               <CompanySelect2
                 onSelect2Company={onSelect2Company}
                 filters={filters}
@@ -20,7 +21,7 @@ export default function Filters({filters, pagination, onFilter, onResetFilters, 
             </div>
 
             {/* ID course */}
-            <div className="form-group w25">
+            <div className="form-group w20">
               <VJSelect2
                 onSelect2VehicleJourney={onSelect2VehicleJourney}
                 filters={filters}
@@ -28,8 +29,17 @@ export default function Filters({filters, pagination, onFilter, onResetFilters, 
                 />
             </div>
 
+            {/* ID course */}
+            <div className="form-group w20">
+              <VJNameRangeInput
+                onSelect2VehicleJourneyName={onSelect2VehicleJourneyName}
+                filters={filters}
+                isFilter={true}
+                />
+            </div>
+
             {/* Missions */}
-            <div className='form-group w25'>
+            <div className='form-group w20'>
               <MissionSelect2
                 onSelect2JourneyPattern={onSelect2JourneyPattern}
                 filters={filters}
@@ -38,7 +48,7 @@ export default function Filters({filters, pagination, onFilter, onResetFilters, 
             </div>
 
             {/* Calendriers */}
-            <div className='form-group w25'>
+            <div className='form-group w20'>
               <TimetableSelect2
                 onSelect2Timetable={onSelect2Timetable}
                 hasRoute={true}

@@ -29,6 +29,10 @@ describe('filters reducer', () => {
       },
       journeyPattern: {},
       vehicleJourney: {},
+      vehicleJourneyName: {
+        min: '',
+        max: ''
+      },
       timetable: {},
       company: {},
       withoutSchedule: true,
@@ -150,6 +154,9 @@ describe('filters reducer', () => {
     let strResult = [
       "q%5Bjourney_pattern_id_eq%5D=undefined",
       "&q%5Bobjectid_cont%5D=undefined",
+      "&q%5Bpublished_journey_name_int_gteq%5D=undefined",
+      "&q%5Bpublished_journey_name_int_lteq%5D=undefined",
+      "&q%5Bpublished_journey_name_present%5D=0",
       "&q%5Btime_tables_id_eq%5D=undefined",
       "&q%5Bvehicle_journey_at_stops_departure_time_gteq%5D=11%3A11",
       "&q%5Bvehicle_journey_at_stops_departure_time_lteq%5D=22%3A22",

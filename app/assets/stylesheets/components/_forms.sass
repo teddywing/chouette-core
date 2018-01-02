@@ -66,6 +66,29 @@ input
   &[disabled], &.disabled > .form-control + span
     background-color: #eee
 
+.input-group-split-3
+  & > label, & > .input-group
+    float: left
+
+  & > label
+    padding-top: 9px
+    font-size: 0.8em
+
+  & > .input-group
+    & > .form-control, & > .input-group-text
+      float: left
+
+    & > .input-group-text
+      width: 14%
+      text-align: center
+      padding: 6px 0px
+      height: 34px
+      border-top: 1px solid #cccccc
+      border-bottom: 1px solid #cccccc
+
+    & > .form-control
+      width: 43%
+
 // Validations
 .control-label
   &.is-required

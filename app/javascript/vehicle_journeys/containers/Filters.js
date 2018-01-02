@@ -42,6 +42,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelect2Company: (e) => {
       dispatch(actions.filterSelect2Company(e.params.data))
+    },
+    onSelect2VehicleJourneyName: (data) => {
+      dispatch(actions.onSelect2VehicleJourneyName(data))
     }
   }
 }

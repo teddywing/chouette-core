@@ -263,6 +263,10 @@ const actions = {
       objectid: selectedCompany.objectid
     }
   }),
+  onSelect2VehicleJourneyName: (selectedNames) => ({
+    type : 'SELECT_VJ_NAME_FILTER',
+    selectedItem: selectedNames
+  }),
   createQueryString: () => ({
     type: 'CREATE_QUERY_STRING'
   }),
