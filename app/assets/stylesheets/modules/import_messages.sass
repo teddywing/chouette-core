@@ -2,4 +2,42 @@
   .status_icon
     padding-right: 20px
   h1
-    padding-bottom: 20px 
+    padding-bottom: 20px
+
+
+.import_message-list
+  padding-bottom: 20px
+
+  .import_messages-head
+    display: block
+    font-size: 1.8rem
+    font-weight: 700
+    border-bottom: 2px solid #4b4b4b
+    padding: 5px 15px 6px 15px
+
+  dl
+    dd, dt
+      display: inline-block
+      letter-spacing: normal
+      word-spacing: normal
+      text-rendering: auto
+      vertical-align: top
+      padding: 5px 15px 6px 15px
+
+    dt
+      position: relative
+      width: 7%
+      font-weight: 700
+
+      &:before
+        content: ""
+        display: block
+        position: absolute
+        z-index: 1
+        top: 0
+        left: 0
+        width: 250%
+        border-bottom: 1px solid rgba(164, 164, 164, 0.5)
+
+    dd
+      width: 93%

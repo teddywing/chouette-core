@@ -11,6 +11,21 @@ module ControllerSpecHelper
     end
   end
 
+  def with_feature feature, &block
+    context "with feature #{feature}" do
+      login_user
+      before(:each) do
+        organisation = @user.organisation
+        unless organisation.has_feature?(feature)
+          organisation.features << feature
+          organisation.save!
+        end
+        sign_in @user
+      end
+      context('', &block) if block_given?
+    end
+  end
+
 end
 
 RSpec.configure do |config|

@@ -40,10 +40,18 @@ module Chouette
     validates_format_of :url, :with => %r{\Ahttps?:\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\Z}, :allow_nil => true, :allow_blank => true
 
     validates_numericality_of :waiting_time, greater_than_or_equal_to: 0, only_integer: true, if: :waiting_time
+    validate :parent_area_type_must_be_greater
 
     def self.nullable_attributes
       [:registration_number, :street_name, :country_code, :fare_code,
       :nearest_topic_name, :comment, :long_lat_type, :zip_code, :city_name, :url, :time_zone]
+    end
+
+    def parent_area_type_must_be_greater
+      return unless self.parent
+      if Chouette::AreaType.find(self.area_type) >= Chouette::AreaType.find(self.parent.area_type)
+        errors.add(:parent_id, I18n.t('stop_areas.errors.parent_area_type', area_type: self.parent.area_type))
+      end
     end
 
     after_update :clean_invalid_access_links
@@ -72,6 +80,10 @@ module Chouette
         end
         @coordinates = nil
       end
+    end
+
+    def full_name
+      "#{name} #{zip_code} #{city_name} - #{user_objectid}"
     end
 
     def user_objectid

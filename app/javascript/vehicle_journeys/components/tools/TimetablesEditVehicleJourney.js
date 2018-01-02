@@ -33,6 +33,7 @@ export default class TimetablesEditVehicleJourney extends Component {
             data-toggle='modal'
             data-target='#CalendarsEditVehicleJourneyModal'
             onClick={() => this.props.onOpenCalendarsEditModal(actions.getSelected(this.props.vehicleJourneys))}
+            title='Calendriers'
           >
             <span className='fa fa-calendar'></span>
           </button>
@@ -67,7 +68,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                                   <div className='wrapper'>
                                     <div> <a href={this.timeTableURL(tt)} target="_blank">{tt.comment}</a> </div>
                                     {
-                                      this.props.editMode && 
+                                      this.props.editMode &&
                                       <div>
                                         <a
                                           href='#'
@@ -85,13 +86,14 @@ export default class TimetablesEditVehicleJourney extends Component {
                                 </div>
                               )}
                               {
-                                this.props.editMode && 
+                                this.props.editMode &&
                                 <div className='nested-fields'>
                                   <div className='wrapper'>
                                     <div>
                                       <TimetableSelect2
                                         onSelect2Timetable={this.props.onSelect2Timetable}
                                         chunkURL={'/autocomplete_time_tables.json'}
+                                        searchKey={"comment_or_objectid_cont_any"}
                                         isFilter={false}
                                       />
                                     </div>
@@ -103,7 +105,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                         </div>
                       </div>
                       {
-                        this.props.editMode && 
+                        this.props.editMode &&
                         <div className='modal-footer'>
                           <button
                             className='btn btn-link'

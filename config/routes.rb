@@ -93,7 +93,11 @@ ChouetteIhm::Application.routes.draw do
 
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
-    resources :stop_areas, &deactivable
+    resources :stop_areas do
+      put :deactivate, on: :member
+      put :activate, on: :member
+      get :autocomplete, on: :collection
+    end
   end
 
   resources :line_referentials, :only => [:show, :edit, :update] do
@@ -112,6 +116,7 @@ ChouetteIhm::Application.routes.draw do
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
+    resources :autocomplete_purchase_windows, only: [:index] 
     get :select_compliance_control_set
     post :validate, on: :member
     resources :autocomplete_time_tables, only: [:index]

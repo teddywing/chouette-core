@@ -1,6 +1,7 @@
 class Chouette::AreaType
+  include Comparable
 
-  ALL = %i(zdep zder zdlp zdlr lda).freeze
+  ALL = %i(zdep zder zdlp zdlr lda gdl).freeze
 
   @@all = ALL
   mattr_accessor :all
@@ -28,6 +29,10 @@ class Chouette::AreaType
   attr_reader :code
   def initialize(code)
     @code = code
+  end
+
+  def <=>(other)
+    all.index(code) <=> all.index(other.code)
   end
 
   def label

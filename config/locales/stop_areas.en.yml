@@ -4,6 +4,7 @@ en:
     search_no_results: "No stop area matching your query"
     errors:
       empty: Aucun stop_area_id
+      parent_area_type: can not be of type %{area_type}
     default_geometry_success: "%{count} modified stop areas"
     stop_area:
       no_position: "No Position"

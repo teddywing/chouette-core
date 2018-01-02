@@ -4,6 +4,7 @@ fr:
     search_no_results: "Aucun arrêt ne correspond à votre recherche"
     errors:
       empty: Aucun stop_area_id
+      parent_area_type: ne peut être de type %{area_type}
     default_geometry_success: "%{count} arrêts édités"
     stop_area:
       no_position: "Pas de position"

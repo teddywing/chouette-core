@@ -282,6 +282,7 @@ class Referential < ActiveRecord::Base
 
   def detect_overlapped_referentials
     self.class.where(id: overlapped_referential_ids).each do |referential|
+      Rails.logger.info "Referential #{referential.id} #{referential.metadatas.inspect} overlaps #{metadatas.inspect}"
       errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", :referential => referential.name)
     end
   end
