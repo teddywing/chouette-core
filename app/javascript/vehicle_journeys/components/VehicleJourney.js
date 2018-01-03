@@ -64,10 +64,11 @@ export default class VehicleJourney extends Component {
         <div
           className='th'
           onClick={(e) =>
-            ($(e.target).parents("a").length == 0) && this.props.editMode && this.props.onSelectVehicleJourney(this.props.index)
+            ($(e.target).parents("a").length == 0) && this.props.onSelectVehicleJourney(this.props.index)
           }
           >
           <div className='strong mb-xs'>{this.props.value.short_id || '-'}</div>
+          <div>{this.props.value.published_journey_name && this.props.value.published_journey_name != "non renseigné" ? this.props.value.published_journey_name : '-'}</div>
           <div>{this.props.value.journey_pattern.short_id || '-'}</div>
           <div>
             {time_tables.slice(0,3).map((tt, i)=>

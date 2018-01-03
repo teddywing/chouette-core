@@ -100,6 +100,7 @@ gem 'simple_form', '~> 3.1.0'
 gem 'font-awesome-sass', '~> 4.7'
 gem 'will_paginate-bootstrap'
 gem 'gretel'
+gem 'country_select'
 
 # Format Output
 gem 'json'

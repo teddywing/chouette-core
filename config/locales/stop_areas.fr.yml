@@ -104,7 +104,7 @@ fr:
         area_type: "Type d'arrêt"
         nearest_topic_name: "Point d'intérêt le plus proche"
         street_name: "Nom de la rue"
-        country_code: "Code INSEE"
+        country_code: "Pays"
         fare_code: "Zone tarifaire"
         mobility_restricted_suitability: "Accès pour voyageur à mobilité réduite"
         stairs_availability: "Escalator"

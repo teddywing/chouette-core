@@ -1,7 +1,7 @@
 RSpec.describe StopAreasController, :type => :controller do
   login_user
 
-  let(:stop_area_referential) { create :stop_area_referential }
+  let(:stop_area_referential) { create :stop_area_referential, member: @user.organisation }
   let(:stop_area) { create :stop_area, stop_area_referential: stop_area_referential }
 
   describe 'PUT deactivate' do

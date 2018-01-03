@@ -49,7 +49,7 @@ class VehicleJourneysController < ChouetteController
       end
       format.html do
         @stop_points_list = []
-        @stop_points_list = route.stop_points.joins(:stop_area).map do |sp|
+        @stop_points_list = route.stop_points.includes(:stop_area).map do |sp|
           {
             :id => sp.stop_area.id,
             :route_id => sp.try(:route_id),

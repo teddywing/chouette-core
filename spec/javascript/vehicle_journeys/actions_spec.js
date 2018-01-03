@@ -174,15 +174,55 @@ describe('when clicking on validate button inside shifting modal', () => {
   })
 })
 describe('when clicking on validate button inside editing modal', () => {
-  it('should create an action to update a vehiclejourney', () => {
-    const data = {}
-    const selectedCompany = {}
-    const expectedAction = {
-      type: 'EDIT_VEHICLEJOURNEY',
-      data,
-      selectedCompany
-    }
-    expect(actions.editVehicleJourney(data, selectedCompany)).toEqual(expectedAction)
+  context("with invalid data", () => {
+    it('should not validate the data', () => {
+      const data = {
+        foo: {
+          validity: { valid: false }
+        },
+        bar: {
+          validity: { valid: true }
+        }
+      }
+
+      expect(actions.validateFields(data)).toBeFalsy
+    })
+  })
+
+  context("with data not needing validation", () => {
+    it('should validate the data', () => {
+      const data = {
+        foo: {}
+      }
+
+      expect(actions.validateFields(data)).toBeTruthy
+    })
+  })
+  context("with valid data", () => {
+    it('should validate the data', () => {
+      const data = {
+        foo: {
+          validity: { valid: true }
+        },
+        bar: {
+          validity: { valid: true }
+        }
+      }
+
+      expect(actions.validateFields(data)).toBeTruthy
+    })
+  })
+  context("once the data has been validated", () => {
+    it('should create an action to update a vehiclejourney', () => {
+      const data = {}
+      const selectedCompany = {}
+      const expectedAction = {
+        type: 'EDIT_VEHICLEJOURNEY',
+        data,
+        selectedCompany
+      }
+      expect(actions.editVehicleJourney(data, selectedCompany)).toEqual(expectedAction)
+    })
   })
 })
 describe('when clicking on validate button inside duplicating modal', () => {

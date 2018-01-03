@@ -61,6 +61,10 @@ class CompaniesController < ChouetteController
   alias_method :current_referential, :line_referential
   helper_method :current_referential
 
+  def begin_of_association_chain
+    current_organisation
+  end
+
   def company_params
     params.require(:company).permit( :objectid, :object_version, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
   end

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-let vehicleJourneysModal, newModalProps
+let vehicleJourneysModal, newModalProps, vehicleJourney
 
 export default function modal(state = {}, action) {
   switch (action.type) {
@@ -74,10 +74,12 @@ export default function modal(state = {}, action) {
         confirmModal: {}
       }
     case 'SELECT_CP_EDIT_MODAL':
-      newModalProps = _.assign({}, state.modalProps, {selectedCompany : action.selectedItem})
+      vehicleJourney =  _.assign({}, state.modalProps.vehicleJourney, {company: action.selectedItem})
+      newModalProps = _.assign({}, state.modalProps, {vehicleJourney})
       return _.assign({}, state, {modalProps: newModalProps})
     case 'UNSELECT_CP_EDIT_MODAL':
-      newModalProps = _.assign({}, state.modalProps, {selectedCompany : undefined})
+      vehicleJourney =  _.assign({}, state.modalProps.vehicleJourney, {company: undefined})
+      newModalProps = _.assign({}, state.modalProps, {vehicleJourney})
       return _.assign({}, state, {modalProps: newModalProps})
     case 'SELECT_TT_CALENDAR_MODAL':
       newModalProps = _.assign({}, state.modalProps, {selectedTimetable : action.selectedItem})
