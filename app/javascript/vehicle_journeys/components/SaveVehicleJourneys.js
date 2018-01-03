@@ -16,7 +16,7 @@ export default class SaveVehicleJourneys extends Component{
             <form className='vehicle_journeys formSubmitr ml-xs' onSubmit={e => {e.preventDefault()}}>
               <div className="btn-group sticky-actions">
                 <button
-                  className={'btn ' + (this.props.editMode ? 'btn-success' : 'btn-default') + (this.props.status.fetchSuccess ? '' : ' disabled')}
+                  className={'btn btn-default' + (this.props.status.fetchSuccess ? '' : ' disabled')}
                   type='button'
                   onClick={e => {
                     e.preventDefault()
@@ -25,15 +25,6 @@ export default class SaveVehicleJourneys extends Component{
                 >
                   {this.props.editMode ? "Valider" : "Editer"}
                 </button>
-                {this.props.editMode && <button
-                    className='btn btn-default'
-                    type='button'
-                    onClick={e => {
-                      e.preventDefault()
-                      this.props.onExitEditMode()
-                    }}
-                  > Annuler </button>
-                }
               </div>
             </form>
           </div>
