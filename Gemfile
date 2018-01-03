@@ -160,6 +160,7 @@ group :development do
   gem 'bundler-audit'
   gem 'spring-commands-rspec'
   gem 'dbshell-rails'
+  gem 'rack-livereload'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
