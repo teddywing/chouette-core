@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171227113809) do
+ActiveRecord::Schema.define(version: 20180103084612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -442,6 +442,7 @@ ActiveRecord::Schema.define(version: 20171227113809) do
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
+    t.json     "costs"
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree

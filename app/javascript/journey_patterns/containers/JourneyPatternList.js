@@ -25,7 +25,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     onDeleteJourneyPattern: (index) =>{
       dispatch(actions.deleteJourneyPattern(index))
-    }
+    },
+    onUpdateJourneyPatternCosts: (index, costs) =>{
+      dispatch(actions.updateJourneyPatternCosts(index, costs))
+    },
   }
 }
 

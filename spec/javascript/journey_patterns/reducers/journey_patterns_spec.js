@@ -47,7 +47,10 @@ describe('journeyPatterns reducer', () => {
         object_id : 'o1',
         published_name: 'M1',
         registration_number: '',
-        stop_points: fakeStopPoints
+        stop_points: fakeStopPoints,
+        costs: {
+
+        }
       },
       {
         deletable: false,
@@ -55,7 +58,13 @@ describe('journeyPatterns reducer', () => {
         object_id : 'o2',
         published_name: 'M2',
         registration_number: '',
-        stop_points: fakeStopPoints
+        stop_points: fakeStopPoints,
+        costs: {
+          "1-2": {
+            distance: 0,
+            time: 10,
+          }
+        }
       }
     ]
   })
@@ -83,7 +92,8 @@ describe('journeyPatterns reducer', () => {
       published_name: 'M3',
       registration_number: '',
       deletable: false,
-      stop_points: stopPoints
+      stop_points: stopPoints,
+      costs: {}
     }, ...state])
   })
 
@@ -98,6 +108,28 @@ describe('journeyPatterns reducer', () => {
         index: 0
       })
     ).toEqual([newState, state[1]])
+  })
+
+  it('should handle UPDATE_JOURNEYPATTERN_COSTS', () => {
+    const costs = {
+      "1-2": {
+        distance: 1
+      }
+    }
+    const new_costs = {
+      "1-2": {
+        distance: 1,
+        time: 10,
+      }
+    }
+    const new_state = Object.assign({}, state[1], {costs: new_costs})
+    expect(
+      jpReducer(state, {
+        type: 'UPDATE_JOURNEYPATTERN_COSTS',
+        index: 1,
+        costs
+      })
+    ).toEqual([state[0], new_state])
   })
 
   it('should handle DELETE_JOURNEYPATTERN', () => {

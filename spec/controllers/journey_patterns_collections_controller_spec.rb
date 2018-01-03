@@ -25,4 +25,20 @@ RSpec.describe JourneyPatternsCollectionsController, :type => :controller do
                                                    'journey_patterns.update'  => true }.to_json)
     end
   end
+
+  context "get show" do
+    login_user
+
+    let( :referential ){ Referential.first }
+    let( :line ){ create(:line) }
+    let( :route ){ create(:route, line: line) }
+
+    let(:request){
+      get :show, referential_id: referential.id, line_id: line.id, route_id: route.id, format: :json
+    }
+    it 'should be successful' do
+      request
+      expect(response).to be_success
+    end
+  end
 end
