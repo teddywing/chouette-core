@@ -4,7 +4,7 @@ require 'spec_helper'
 describe "Networks", type: :feature do
   login_user
 
-  let(:line_referential) { create :line_referential }
+  let(:line_referential) { create :line_referential, member: @user.organisation }
   let!(:networks) { Array.new(2) { create(:network, line_referential: line_referential) } }
   subject { networks.first }
 

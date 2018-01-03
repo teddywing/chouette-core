@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130180144) do
+ActiveRecord::Schema.define(version: 20171227113809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "postgis"
   enable_extension "hstore"
+  enable_extension "postgis"
+  enable_extension "unaccent"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -207,7 +208,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.integer  "compliance_check_set_id",   limit: 8
     t.integer  "compliance_check_block_id", limit: 8
     t.string   "type"
-    t.hstore   "control_attributes"
+    t.json     "control_attributes"
     t.string   "name"
     t.string   "code"
     t.string   "criticity"
@@ -242,7 +243,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
   create_table "compliance_controls", id: :bigserial, force: :cascade do |t|
     t.integer  "compliance_control_set_id",   limit: 8
     t.string   "type"
-    t.hstore   "control_attributes"
+    t.json     "control_attributes"
     t.string   "name"
     t.string   "code"
     t.string   "criticity"
@@ -551,6 +552,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.datetime "synced_at"
     t.hstore   "sso_attributes"
     t.string   "custom_view"
+    t.string   "features",       default: [],        array: true
   end
 
   add_index "organisations", ["code"], name: "index_organisations_on_code", unique: true, using: :btree
@@ -569,6 +571,25 @@ ActiveRecord::Schema.define(version: 20171130180144) do
   end
 
   add_index "pt_links", ["objectid"], name: "pt_links_objectid_key", unique: true, using: :btree
+
+  create_table "purchase_windows", id: :bigserial, force: :cascade do |t|
+    t.string    "name"
+    t.string    "color"
+    t.daterange "date_ranges",                            array: true
+    t.datetime  "created_at",                null: false
+    t.datetime  "updated_at",                null: false
+    t.string    "objectid"
+    t.string    "checksum"
+    t.text      "checksum_source"
+    t.integer   "referential_id",  limit: 8
+  end
+
+  add_index "purchase_windows", ["referential_id"], name: "index_purchase_windows_on_referential_id", using: :btree
+
+  create_table "purchase_windows_vehicle_journeys", id: false, force: :cascade do |t|
+    t.integer "purchase_window_id", limit: 8
+    t.integer "vehicle_journey_id", limit: 8
+  end
 
   create_table "referential_clonings", id: :bigserial, force: :cascade do |t|
     t.string   "status"
@@ -736,6 +757,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "stif_type"
+    t.integer  "waiting_time"
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree

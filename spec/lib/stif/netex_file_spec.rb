@@ -1,8 +1,9 @@
+require 'stif/netex_file'
 RSpec.describe STIF::NetexFile do
 
   let( :zip_file ){ fixtures_path 'OFFRE_TRANSDEV_2017030112251.zip' }
 
-  let(:frames) { STIF::NetexFile.new(zip_file).frames }
+  let(:frames) { described_class.new(zip_file).frames }
 
   it "should return a frame for each sub directory" do
     expect(frames.size).to eq(2)
@@ -21,5 +22,6 @@ RSpec.describe STIF::NetexFile do
       expect(frames.map(&:periods)).to eq([[period("2017-04-01", "2017-12-31")], [period("2017-03-01","2017-03-31")]])
     end
   end
+
 
 end

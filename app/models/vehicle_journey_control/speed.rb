@@ -1,6 +1,6 @@
 module VehicleJourneyControl
   class Speed < ComplianceControl
-    hstore_accessor :control_attributes, minimum: :integer, maximum: :integer
+    store_accessor :control_attributes, :minimum, :maximum
 
     validates :minimum, numericality: true, allow_nil: true
     validates :maximum, numericality: true, allow_nil: true

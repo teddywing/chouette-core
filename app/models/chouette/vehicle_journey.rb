@@ -1,3 +1,4 @@
+# coding: utf-8
 module Chouette
   class VehicleJourney < Chouette::TridentActiveRecord
     has_paper_trail
@@ -23,6 +24,7 @@ module Chouette
     belongs_to :journey_pattern
 
     has_and_belongs_to_many :footnotes, :class_name => 'Chouette::Footnote'
+    has_and_belongs_to_many :purchase_windows, :class_name => 'Chouette::PurchaseWindow'
 
     validates_presence_of :route
     validates_presence_of :journey_pattern
@@ -139,7 +141,7 @@ module Chouette
     end
 
     def update_has_and_belongs_to_many_from_state item
-      ['time_tables', 'footnotes'].each do |assos|
+      ['time_tables', 'footnotes', 'purchase_windows'].each do |assos|
         saved = self.send(assos).map(&:id)
 
         (saved - item[assos].map{|t| t['id']}).each do |id|
@@ -241,11 +243,9 @@ module Chouette
     end
 
     def self.matrix(vehicle_journeys)
-      {}.tap do |hash|
-        vehicle_journeys.map{ |vj|
-          vj.vehicle_journey_at_stops.map{ |vjas |hash[ "#{vj.id}-#{vjas.stop_point_id}"] = vjas }
-        }
-      end
+      Hash[*VehicleJourneyAtStop.where(vehicle_journey_id: vehicle_journeys.pluck(:id)).map do |vjas|
+        [ "#{vjas.vehicle_journey_id}-#{vjas.stop_point_id}", vjas]
+      end.flatten]
     end
 
     def self.with_stops

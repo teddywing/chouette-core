@@ -63,8 +63,8 @@ en:
       import:
         resources: "File to import"
         created_at: "Created on"
-        started_at: Started at
-        name: Name
+        started_at: "Started at"
+        name: "Name"
         status: "Status"
         creator: "Creator"
         references_type: "Data to be imported"
@@ -74,3 +74,7 @@ en:
         max_distance_for_connection_link: "Max distance for connection link"
         ignore_last_word: "ignore last word"
         ignore_end_chars: "ignore last chars"
+  flash:
+    imports:
+      create:
+        notice: "The import is in progress. Please wait and refresh the page in a few moments."

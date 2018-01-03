@@ -29,7 +29,7 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
 
     it 'we can see the expected content' do
       # Breadcrumbs
-      expect_breadcrumb_links "Accueil", "Gestion de l'offre", "Liste des jeux de contrôles"
+      expect_breadcrumb_links "Accueil", "Gestion de l'offre", "Liste des rapports de contrôles"
 
       # Headline
       expect( page ).to have_content("Jeu de contrôles exécutés #{compliance_check_set.name}")
@@ -49,10 +49,10 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
       # Direct Children
       within(:xpath, xpath_for_div_of_block) do
         direct_checks.each do | direct_check |
-          expect( page ).to have_content( direct_check.code ) 
-          expect( page ).to have_content( direct_check.name ) 
-          expect( page ).to have_content( direct_check.criticity ) 
-          expect( page ).to have_content( direct_check.comment ) 
+          expect( page ).to have_content( direct_check.code )
+          expect( page ).to have_content( direct_check.name )
+          expect( page ).to have_content( direct_check.criticity )
+          expect( page ).to have_content( direct_check.comment )
         end
 
       end
@@ -60,10 +60,10 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
       compliance_check_set.compliance_check_blocks.each do | block |
         within(:xpath, xpath_for_div_of_block(block)) do
           block.compliance_checks.each do | check |
-            expect( page ).to have_content( check.code ) 
-            expect( page ).to have_content( check.name ) 
-            expect( page ).to have_content( check.criticity ) 
-            expect( page ).to have_content( check.comment ) 
+            expect( page ).to have_content( check.code )
+            expect( page ).to have_content( check.name )
+            expect( page ).to have_content( check.criticity )
+            expect( page ).to have_content( check.comment )
           end
         end
       end
@@ -86,7 +86,7 @@ RSpec.describe "ComplianceCheckSets", type: :feature do
       all_checks.each do | check |
         expect( page ).to have_content(check.code)
       end
-      
+
     end
   end
 

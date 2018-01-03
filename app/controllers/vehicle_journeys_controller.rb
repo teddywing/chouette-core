@@ -40,42 +40,45 @@ class VehicleJourneysController < ChouetteController
   end
 
   def index
-    @stop_points_list = []
-    route.stop_points.each do |sp|
-      @stop_points_list << {
-        :id => sp.stop_area.id,
-        :route_id => sp.try(:route_id),
-        :object_id => sp.try(:objectid),
-        :position => sp.try(:position),
-        :for_boarding => sp.try(:for_boarding),
-        :for_alighting => sp.try(:for_alighting),
-        :name => sp.stop_area.try(:name),
-        :zip_code => sp.stop_area.try(:zip_code),
-        :city_name => sp.stop_area.try(:city_name),
-        :comment => sp.stop_area.try(:comment),
-        :area_type => sp.stop_area.try(:area_type),
-        :registration_number => sp.stop_area.try(:registration_number),
-        :nearest_topic_name => sp.stop_area.try(:nearest_topic_name),
-        :fare_code => sp.stop_area.try(:fare_code),
-        :longitude => sp.stop_area.try(:longitude),
-        :latitude => sp.stop_area.try(:latitude),
-        :long_lat_type => sp.stop_area.try(:long_lat_type),
-        :country_code => sp.stop_area.try(:country_code),
-        :street_name => sp.stop_area.try(:street_name)
-      }
-    end
-
-    @transport_mode = route.line['transport_mode']
-    @transport_submode = route.line['transport_submode']
-
-    if params[:jp]
-      @jp_origin  = Chouette::JourneyPattern.find_by(objectid: params[:jp])
-      @jp_origin_stop_points = @jp_origin.stop_points
-    end
-
-    index! do
+    index! do |format|
       if collection.out_of_bounds?
         redirect_to params.merge(:page => 1)
+      end
+      format.json do
+        @vehicle_journeys = @vehicle_journeys.includes({stop_points: :stop_area})
+      end
+      format.html do
+        @stop_points_list = []
+        @stop_points_list = route.stop_points.includes(:stop_area).map do |sp|
+          {
+            :id => sp.stop_area.id,
+            :route_id => sp.try(:route_id),
+            :object_id => sp.try(:objectid),
+            :position => sp.try(:position),
+            :for_boarding => sp.try(:for_boarding),
+            :for_alighting => sp.try(:for_alighting),
+            :name => sp.stop_area.try(:name),
+            :zip_code => sp.stop_area.try(:zip_code),
+            :city_name => sp.stop_area.try(:city_name),
+            :comment => sp.stop_area.try(:comment),
+            :area_type => sp.stop_area.try(:area_type),
+            :registration_number => sp.stop_area.try(:registration_number),
+            :nearest_topic_name => sp.stop_area.try(:nearest_topic_name),
+            :fare_code => sp.stop_area.try(:fare_code),
+            :longitude => sp.stop_area.try(:longitude),
+            :latitude => sp.stop_area.try(:latitude),
+            :long_lat_type => sp.stop_area.try(:long_lat_type),
+            :country_code => sp.stop_area.try(:country_code),
+            :street_name => sp.stop_area.try(:street_name)
+          }
+        end
+        @transport_mode = route.line['transport_mode']
+        @transport_submode = route.line['transport_submode']
+
+        if params[:jp]
+          @jp_origin  = Chouette::JourneyPattern.find_by(objectid: params[:jp])
+          @jp_origin_stop_points = @jp_origin.stop_points
+        end
       end
     end
   end
@@ -92,13 +95,15 @@ class VehicleJourneysController < ChouetteController
     scope = maybe_filter_by_departure_time(scope)
     scope = maybe_filter_out_journeys_with_time_tables(scope)
 
-    @q = scope.search filtered_ransack_params
+    @vehicle_journeys ||= begin
+      @q = scope.search filtered_ransack_params
 
-    @ppage = 20
-    @vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
-    @footnotes = route.line.footnotes.to_json
-    @matrix    = resource_class.matrix(@vehicle_journeys)
-    @vehicle_journeys
+      @ppage = 20
+      vehicle_journeys = @q.result.paginate(:page => params[:page], :per_page => @ppage)
+      @footnotes = route.line.footnotes.to_json
+      @matrix    = resource_class.matrix(vehicle_journeys)
+      vehicle_journeys
+    end
   end
 
   def maybe_filter_by_departure_time(scope)
@@ -159,6 +164,7 @@ class VehicleJourneysController < ChouetteController
   end
 
   def user_permissions
+    @features = Hash[*current_organisation.features.map{|f| [f, true]}.flatten].to_json
     policy = policy(:vehicle_journey)
     @perms =
       %w{create destroy update}.inject({}) do | permissions, action |

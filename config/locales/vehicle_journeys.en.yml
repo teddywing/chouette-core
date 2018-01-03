@@ -106,6 +106,8 @@ en:
         updated_at: Updated at
         creator_id: "Created by"
         footnote_ids: "Footnotes"
+        departure_time: "Departure"
+        arrival_time: "Arrival"
     errors:
       models:
         vehicle_journey:
@@ -126,3 +128,9 @@ en:
       hub:
         vehicle_journey:
           objectid: "[prefix]:VehicleJourney:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character. Maximum length of the unique key = 8."
+  referential_vehicle_journeys:
+    index:
+      title: "Vehicle Journeys"
+      search_no_results: "No vehicle journey match your search"
+    filters:
+      published_journey_name_or_objectid: "Search by name or by ID..."

@@ -2,8 +2,19 @@ describe Organisation, :type => :model do
   it { should validate_presence_of(:name) }
   it { should validate_uniqueness_of(:code) }
 
-  it 'should have a valid factory' do
-    expect(FactoryGirl.build(:organisation)).to be_valid
+  subject { build_stubbed :organisation }
+
+  it 'has a valid factory' do
+    expect_it.to be_valid
+  end
+
+  context 'lines_set' do
+    it 'has no lines' do
+      expect( subject.lines_set ).to eq(Set.new())
+    end
+    it 'has two lines' do
+      expect( build_stubbed(:org_with_lines).lines_set ).to eq(Set.new(%w{C00109 C00108}))
+    end
   end
 
   # it "create a rule_parameter_set" do
@@ -51,4 +62,26 @@ describe Organisation, :type => :model do
       expect{Organisation.portail_sync}.to change{ Organisation.count }.by(4)
     end
   end
+
+  describe "#has_feature?" do
+
+    let(:organisation) { Organisation.new }
+
+    it 'return false if Organisation features is nil' do
+      organisation.features = nil
+      expect(organisation.has_feature?(:dummy)).to be_falsy
+    end
+
+    it 'return true if Organisation features contains given feature' do
+      organisation.features = %w{present}
+      expect(organisation.has_feature?(:present)).to be_truthy
+    end
+
+    it "return false if Organisation features doesn't contains given feature" do
+      organisation.features = %w{other}
+      expect(organisation.has_feature?(:absent)).to be_falsy
+    end
+
+  end
+
 end

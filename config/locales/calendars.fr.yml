@@ -31,7 +31,7 @@ fr:
       destroy_confirm: Etes vous sûr de supprimer cet calendrier ?
     errors:
       overlapped_periods: Une autre période chevauche cette période
-      short_period: Une période doit être d'un duréé de deux jours minimum
+      short_period: "Une période doit être d'une durée de deux jours minimum"
     index:
       title: Calendriers
       all: Tous
@@ -40,6 +40,8 @@ fr:
       search_no_results: Aucun calendrier ne correspond à votre recherche
       date: Date
     new:
+      title: Ajouter un calendrier
+    create:
       title: Ajouter un calendrier
     edit:
       title: Editer le calendrier %{name}
@@ -56,8 +58,9 @@ fr:
           end: Fin
   activerecord:
     models:
-      one: "calendrier"
-      other: "calendriers"
+      calendar:
+        one: "calendrier"
+        other: "calendriers"
     attributes:
       calendar:
         name: Nom

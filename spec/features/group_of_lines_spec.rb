@@ -10,7 +10,7 @@ describe "Group of lines", :type => :feature do
   let!(:group_of_lines) { Array.new(2) { create(:group_of_line, line_referential: line_referential) } }
   subject { group_of_lines.first }
 
-  let(:line_referential) { create :line_referential }
+  let(:line_referential) { create :line_referential, member: @user.organisation }
 
   before :each do
     subject.lines << line

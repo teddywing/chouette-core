@@ -21,7 +21,7 @@ export default class BSelect4 extends Component {
         value={(this.props.company) ? this.props.company.name : undefined}
         onSelect={(e) => this.props.onSelect2Company(e) }
         onUnselect={() => this.props.onUnselect2Company()}
-        disabled={!this.props.editMode}
+        disabled={!this.props.editMode && this.props.editModal}
         multiple={false}
         ref='company_id'
         options={{
@@ -36,7 +36,7 @@ export default class BSelect4 extends Component {
             delay: '500',
             data: function(params) {
               return {
-                q: { name_cont: actions.escapeWildcardCharacters(params.term)},
+                q: { name_cont: params.term},
               };
             },
             processResults: function(data, params) {

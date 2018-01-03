@@ -1,4 +1,5 @@
 RSpec.describe "ComplianceControlSets", type: :feature do
+  include TransportModeHelper
 
   login_user
 
@@ -12,7 +13,7 @@ RSpec.describe "ComplianceControlSets", type: :feature do
   }
 
   before do
-    blox.first.update transport_mode: 'bus', transport_submode: 'bus'
+    blox.first.update transport_mode: 'bus', transport_submode: 'nightBus'
     blox.second.update transport_mode: 'train', transport_submode: 'train'
 
     make_control
@@ -21,6 +22,9 @@ RSpec.describe "ComplianceControlSets", type: :feature do
   end
 
   describe 'show' do
+    let( :control_button_href ){ select_type_compliance_control_set_compliance_controls_path(control_set) }
+    let( :new_group_button_href ) { new_compliance_control_set_compliance_control_block_path(control_set) }
+
     before do
       visit compliance_control_set_path( control_set )
     end
@@ -40,6 +44,13 @@ RSpec.describe "ComplianceControlSets", type: :feature do
       controls.each do | control |
         expect( page ).to have_content(control.code)
       end
+
+      # Floating Buttons
+      within '.select_toolbox#floating-links' do
+        expect( page ).to have_link("Contrôle", href: control_button_href)
+        expect( page ).to have_link("Groupe de contrôles", href: new_group_button_href)
+      end
+      
     end
 
     it 'we can apply a severity filter' do
@@ -72,6 +83,13 @@ RSpec.describe "ComplianceControlSets", type: :feature do
         else
           expect( page ).to have_content(control.code)
         end
+      end
+    end
+
+    context "wthout filter on compliance control block applied" do
+      it "we can see empty blocks" do
+        blox.first.compliance_controls.destroy_all
+        expect(page).to have_content (transport_mode_text(blox.first) )
       end
     end
 

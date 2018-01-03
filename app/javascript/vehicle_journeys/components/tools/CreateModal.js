@@ -9,7 +9,7 @@ export default class CreateModal extends Component {
   }
 
   handleSubmit() {
-    if(actions.validateFields(this.refs) == true && this.props.modal.modalProps.selectedJPModal) {
+    if (actions.validateFields(...this.refs, $('.vjCreateSelectJP')[0]) && this.props.modal.modalProps.selectedJPModal) {
       this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList, this.props.modal.modalProps.selectedCompany)
       this.props.onModalClose()
       $('#NewVehicleJourneyModal').modal('hide')
@@ -61,7 +61,7 @@ export default class CreateModal extends Component {
                             <div className='form-group'>
                               <label className='control-label'>Nom du transporteur</label>
                               <CompanySelect2
-                                company = {undefined}
+                                company = {this.props.modal.modalProps.vehicleJourney && this.props.modal.modalProps.vehicleJourney.company || undefined}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
                               />
                             </div>

@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include PaperTrailSupport
   include Pundit
+  include FeatureChecker
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

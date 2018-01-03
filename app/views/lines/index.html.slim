@@ -1,6 +1,6 @@
 - breadcrumb :lines, @line_referential
 - content_for :page_header_actions do
-  - if (policy(Chouette::Line).create? && @line_referential.organisations.include?(current_organisation))
+  - if policy(Chouette::Line).create?
     = link_to(t('lines.actions.new'), new_line_referential_line_path(@line_referential), class: 'btn btn-primary')
 
 .page_content
@@ -41,7 +41,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: 'companies.name', \
-                attribute: Proc.new { |n| n.try(:company).try(:name) } \
+                attribute: Proc.new { |n| n&.company&.name || "-" } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :transport_mode, \

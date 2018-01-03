@@ -1,6 +1,8 @@
 class LinesController < ChouetteController
   include ApplicationHelper
+  include Activatable
   include PolicyChecker
+
   defaults :resource_class => Chouette::Line
   respond_to :html
   respond_to :xml
@@ -112,6 +114,10 @@ class LinesController < ChouetteController
   alias_method :current_referential, :line_referential
   helper_method :current_referential
 
+  def begin_of_association_chain
+    current_organisation
+  end
+
   def line_params
     params.require(:line).permit(
       :transport_mode,
@@ -135,6 +141,8 @@ class LinesController < ChouetteController
       :color,
       :text_color,
       :stable_id,
+      :transport_submode,
+      :secondary_company_ids => [],
       footnotes_attributes: [:code, :label, :_destroy, :id]
     )
   end

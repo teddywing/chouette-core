@@ -65,6 +65,7 @@ end
 
 gem 'activerecord-postgis-adapter', "~> 3.0.0"
 gem 'polylines'
+gem 'activerecord-nulldb-adapter', require: false
 
 # Codifligne API
 gem 'codifligne', af83: 'stif-codifline-api'
@@ -99,6 +100,7 @@ gem 'simple_form', '~> 3.1.0'
 gem 'font-awesome-sass', '~> 4.7'
 gem 'will_paginate-bootstrap'
 gem 'gretel'
+gem 'country_select'
 
 # Format Output
 gem 'json'
@@ -126,7 +128,6 @@ gem 'acts-as-taggable-on', '~> 4.0.0'
 
 gem 'acts_as_list', '~> 0.6.0'
 gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
-gem "hstore_accessor", "~> 1.1"
 
 gem 'rabl'
 gem 'carrierwave', '~> 1.0'

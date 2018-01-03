@@ -31,6 +31,13 @@ FactoryGirl.define do
         end
 
       end
+
+      trait :with_opposite do
+        after(:create) do |route|
+          opposite = create :route
+          route.opposite_route = opposite
+        end
+      end
     end
 
     factory :route_with_after_commit do

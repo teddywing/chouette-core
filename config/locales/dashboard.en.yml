@@ -1,0 +1,16 @@
+en:
+  dashboards:
+    show:
+      title: "Dashboard %{organisation}"
+    calendars:
+      title: Calendars
+      none: No calendar created
+    purchase_windows:
+      title: Purchase windows
+      none: No purchase window created
+    line_referentials:
+      title: Line referential
+      none: No line referential created
+    stop_area_referentials:
+      title: Stop area referential
+      none: No stop area referential created

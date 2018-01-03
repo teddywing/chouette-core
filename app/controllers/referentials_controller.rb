@@ -13,11 +13,16 @@ class ReferentialsController < ChouetteController
   end
 
   def create
-    create! do |format|
-      build_referential
-
-      if !!@referential.created_from_id
-        format.html { redirect_to workbench_path(@referential.workbench) }
+    create! do |success, failure|
+      success.html do
+        if @referential.created_from_id.present?
+          flash[:notice] = t('notice.referentials.duplicate')
+        end
+        redirect_to workbench_path(@referential.workbench)
+      end
+      failure.html do
+        Rails.logger.info "Can't create Referential : #{@referential.errors.inspect}"
+        render :new
       end
     end
   end
@@ -60,7 +65,7 @@ class ReferentialsController < ChouetteController
 
   def validate
     ComplianceControlSetCopyWorker.perform_async(params[:compliance_control_set], params[:id])
-    flash[:notice] = I18n.t("referentials.operation_in_progress")
+    flash[:notice] = t('notice.referentials.validate')
     redirect_to(referential_path)
   end
 

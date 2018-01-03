@@ -1,3 +1,4 @@
+# coding: utf-8
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
   include ObjectidFormatterSupport
@@ -34,7 +35,7 @@ class Referential < ActiveRecord::Base
                I18n.t('referentials.errors.inconsistent_organisation',
                       indirect_name: workbench.organisation.name,
                       direct_name: organisation.name))
-  end
+  end, if: :organisation
 
   belongs_to :line_referential
   validates_presence_of :line_referential
@@ -137,6 +138,10 @@ class Referential < ActiveRecord::Base
 
   def routing_constraint_zones
     Chouette::RoutingConstraintZone.all
+  end
+
+  def purchase_windows
+    Chouette::PurchaseWindow.all
   end
 
   before_validation :define_default_attributes
@@ -295,7 +300,8 @@ class Referential < ActiveRecord::Base
 
   def detect_overlapped_referentials
     self.class.where(id: overlapped_referential_ids).each do |referential|
-      errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", referential: referential.name)
+      Rails.logger.info "Referential #{referential.id} #{referential.metadatas.inspect} overlaps #{metadatas.inspect}"
+      errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", :referential => referential.name)
     end
   end
 
@@ -315,11 +321,11 @@ class Referential < ActiveRecord::Base
   end
 
   def assign_slug
-    self.slug ||= "#{self.name.parameterize.gsub('-', '_')}_#{Time.now.to_i}"
+    self.slug ||= "#{name.parameterize.gsub('-', '_')}_#{Time.now.to_i}" if name
   end
 
   def assign_prefix
-    self.prefix = organisation.name.parameterize.gsub('-', '_')
+    self.prefix = organisation.name.parameterize.gsub('-', '_') if organisation
   end
 
   def assign_line_and_stop_area_referential

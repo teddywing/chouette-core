@@ -57,11 +57,11 @@
                   attribute: '' \
                 ) \
               ],
-              selectable: true,
+              selectable: ->(ref){ @workbench.referentials.include?(ref) },
               links: [:show, :edit],
               cls: 'table has-filter has-search'
 
-            = multiple_selection_toolbox([:delete])
+            = multiple_selection_toolbox([:delete], collection_name: 'referentials')
 
           = new_pagination @wbench_refs, 'pull-right'
 

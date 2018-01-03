@@ -31,12 +31,10 @@ export default class BSelect4 extends Component {
             url: origin + path + this.props.chunkURL,
             dataType: 'json',
             delay: '500',
-            data: function(params) {
-              return {
-                q: {
-                  comment_or_objectid_cont_any: actions.escapeWildcardCharacters(params.term)
-                }
-              };
+            data: (params) => {
+              let q = {}
+              q[this.props.searchKey] = params.term
+              return {q}
             },
             processResults: function(data, params) {
               return {
@@ -44,7 +42,7 @@ export default class BSelect4 extends Component {
                   item => _.assign(
                     {},
                     item,
-                    {text: '<strong>' + "<span class='fa fa-circle' style='color:" + (item.color ? item.color : '#4B4B4B') + "'></span> " + item.comment + ' - ' + item.short_id + '</strong><br/><small>' + (item.day_types ? item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') : "") + '</small>'}
+                    {text: '<strong>' + "<span class='fa fa-circle' style='color:" + (item.color ? item.color : '#4B4B4B') + "'></span> " + (item.comment || item.name) + ' - ' + item.short_id + '</strong><br/><small>' + (item.day_types ? item.day_types.match(/[A-Z]?[a-z]+/g).join(', ') : "") + '</small>'}
                   )
                 )
               };

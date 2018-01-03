@@ -49,6 +49,7 @@ class JourneyPatternsCollectionsController < ChouetteController
   end
 
   def user_permissions
+    @features = Hash[*current_organisation.features.map{|f| [f, true]}.flatten].to_json
     policy = policy(:journey_pattern)
     @perms =
       %w{create destroy update}.inject({}) do | permissions, action |

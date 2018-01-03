@@ -4,5 +4,6 @@ RSpec.describe GenericAttributeControl::MinMax do
   subject{ build factory }
 
   it_behaves_like 'has min_max_values'
+  it_behaves_like 'has target attribute'
 
 end

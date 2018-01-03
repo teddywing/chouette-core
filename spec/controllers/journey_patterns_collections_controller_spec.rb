@@ -10,6 +10,7 @@ RSpec.describe JourneyPatternsCollectionsController, :type => :controller do
 
     before do
       allow(controller).to receive(:pundit_user).and_return(user_context)
+      allow(controller).to receive(:current_organisation).and_return(@user.organisation)
     end
 
     it 'computes them correctly if not authorized' do

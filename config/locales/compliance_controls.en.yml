@@ -13,6 +13,7 @@ en:
         route: 'Route'
         routing_constraint_zone: 'RoutingConstraint'
         vehicle_journey: 'VehicleJourney'
+    search_no_results: 'No compliance controls matching your query'
     min_max_values: "the minimum (%{min}) is not supposed to be greater than the maximum (%{max})"
     errors:
       incoherent_control_sets: "Impossible to assign a control to a set (id: %{direct_set_name}) differing from the one of its group (id: %{indirect_set_name})"
@@ -88,7 +89,7 @@ en:
     vehicle_journey_control/waiting_time:
       messages:
         3_vehiclejourney_1: "On the following vehicle journey %{source_objectid}, the waiting time %{error_value} a this stop point %{target_0_label} (%{target_0_objectid}) is greater than the threshold (%{reference_value})"
-      description: "The waiting time at a specific stop point cannot be too big"
+      description: "The waiting time, in minutes, at a specific stop point cannot be too big"
     vehicle_journey_control/speed:
       messages:
         3_vehiclejourney_2_1: "On the following vehicle journey %{source_objectid}, the computed speed %{error_value} between the stop points %{target_0_label} (%{target_0_objectid}) and %{target_1_label} (%{target_1_objectid}) is greater than the threshold (%{reference_value})"

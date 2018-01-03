@@ -102,7 +102,7 @@ RSpec.describe ComplianceControlSetCloner do
           # Check correctly copied blocks
           target_blox.zip(source_blox).each do | target_block, source_block |
             expect( target_block.compliance_control_set ).to eq(target_set)
-            expect( target_block.name ).to eq( [block_prefix, source_block.name].join(' ') )
+            expect( target_block.name ).to eq(source_block.name)
             expect( target_block.condition_attributes ).to eq( source_block.condition_attributes )
           end
 

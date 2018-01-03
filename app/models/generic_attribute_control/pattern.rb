@@ -1,6 +1,6 @@
 module GenericAttributeControl
   class Pattern < ComplianceControl
-    hstore_accessor :control_attributes, pattern: :string, target: :string
+    store_accessor :control_attributes, :pattern, :target
 
     validates :target, presence: true
     validates :pattern, presence: true

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "/vehicle_journeys/new", :type => :view do
-  
+
   assign_referential
   let!(:line) { assign :line, create(:line) }
   let!(:route) { assign :route, create(:route, :line => line) }
@@ -13,4 +13,3 @@ describe "/vehicle_journeys/new", :type => :view do
   end
 
 end
-

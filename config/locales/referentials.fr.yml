@@ -5,7 +5,6 @@ fr:
       name: 'Indiquez un nom de jeu de données...'
       line: 'Indiquez une ligne...'
     search_no_results: 'Aucun jeu de données ne correspond à votre recherche'
-    operation_in_progress: L'opération de validation est en cours
     error_period_filter: "Le filtre par période doit contenir une date de début et de fin valides"
     index:
       title: 'Jeux de données'
@@ -20,7 +19,7 @@ fr:
       clean_up: "Purge des données obsolètes"
       api_keys: "Clés d'authentification pour un accès à l'API REST"
       show_all_referentials: Voir tous les jeux de données
-      from_this_workbench: Voir les jeux de données de cet gestion de l'offre
+      from_this_workbench: "Voir les jeux de données de cet gestion de l'offre"
     counts:
       objects: "Eléments"
       count: "Qté"
@@ -48,7 +47,7 @@ fr:
       user_excluded: "%{user} est une valeur réservée"
       overlapped_referential: "%{referential} couvre le même périmètre d'offre"
       overlapped_period: "Une autre période chevauche cette période"
-      short_period: La durée minimum d'une période est de deux jours
+      short_period: "La durée minimum d'une période est de deux jours"
   activerecord:
     models:
       referential:
@@ -123,7 +122,9 @@ fr:
           select_lines: 'Sélection de lignes'
   notice:
     referentials:
-      deleted: "Les jeux de données on été supprimés"
+      deleted: "Les jeux de données ont été supprimés"
+      duplicate: "La duplication est en cours, veuillez patienter. Actualiser votre page si vous voulez voir l'avancement de votre traitement."
+      validate: "La validation est en cours, veuillez patienter. Actualiser votre page si vous voulez voir l'avancement de votre traitement."
     referential:
       archived: "Le jeu de données a été correctement conservé"
       unarchived: "Le jeu de données a été correctement déconservé"

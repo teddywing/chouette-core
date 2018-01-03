@@ -97,6 +97,7 @@ export default class EditVehicleJourney extends Component {
                             <div className='form-group'>
                               <label className='control-label'>Transporteur</label>
                               <CompanySelect2
+                                editModal={this.props.modal.type == "edit"}
                                 editMode={this.props.editMode}
                                 company = {this.props.modal.modalProps.vehicleJourney.company}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}

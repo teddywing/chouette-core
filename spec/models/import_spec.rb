@@ -10,8 +10,9 @@ RSpec.describe Import, type: :model do
   it { should validate_presence_of(:workbench) }
   it { should validate_presence_of(:creator) }
 
-  it { should allow_value('file.zip').for(:file).with_message(I18n.t('activerecord.errors.models.import.attributes.file.wrong_file_extension')) }
-  it { should_not allow_values('file.json', 'file.png', 'file.pdf').for(:file) }
+  include ActionDispatch::TestProcess
+  it { should allow_value(fixture_file_upload('OFFRE_TRANSDEV_2017030112251.zip')).for(:file) }
+  it { should_not allow_value(fixture_file_upload('users.json')).for(:file).with_message(I18n.t('errors.messages.extension_whitelist_error', extension: '"json"', allowed_types: "zip")) }
 
   let(:workbench_import) {netex_import.parent}
   let(:workbench_import_with_completed_steps) do
@@ -128,7 +129,7 @@ RSpec.describe Import, type: :model do
 
     it "updates :status to successful when all children are successful" do
       workbench_import = create(:workbench_import)
-      create_list(
+      imports = create_list(
         :netex_import,
         2,
         parent: workbench_import,
@@ -140,7 +141,7 @@ RSpec.describe Import, type: :model do
       expect(workbench_import.status).to eq('successful')
     end
 
-    it "Updates :status to failed when any child has failed" do
+    it "updates :status to failed when any child has failed" do
       workbench_import = create(:workbench_import)
       [
         'failed',
@@ -156,6 +157,24 @@ RSpec.describe Import, type: :model do
       workbench_import.update_status
 
       expect(workbench_import.status).to eq('failed')
+    end
+
+    it "updates :status to warning when any child has warning or successful" do
+      workbench_import = create(:workbench_import)
+      [
+        'warning',
+        'successful'
+      ].each do |status|
+        create(
+          :netex_import,
+          parent: workbench_import,
+          status: status
+        )
+      end
+
+      workbench_import.update_status
+
+      expect(workbench_import.status).to eq('warning')
     end
 
     it "updates :ended_at to now when status is finished" do
