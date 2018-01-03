@@ -94,5 +94,5 @@ Rails.application.configure do
 
   config.i18n.available_locales = [:fr, :en]
 
-  config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload)
+  config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload) if ENV['LIVERELOAD']
 end

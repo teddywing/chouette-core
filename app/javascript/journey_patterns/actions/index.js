@@ -214,6 +214,7 @@ const actions = {
               journeyPatterns.push(
                 _.assign({}, val, {
                   stop_points: val.route_short_description.stop_points,
+                  costs: val.costs || {},
                   deletable: false
                 })
               )
