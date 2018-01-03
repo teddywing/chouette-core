@@ -39,6 +39,7 @@ describe Chouette::JourneyPattern, :type => :model do
         item['stop_points'] = jp.stop_points.map do |sp|
           { 'id' => sp.stop_area_id }
         end
+        item['costs'] = jp.costs
       end
     end
 
@@ -70,6 +71,14 @@ describe Chouette::JourneyPattern, :type => :model do
       Chouette::JourneyPattern.state_create_instance route, new_state
       expect(new_state['object_id']).to be_truthy
       expect(new_state['new_record']).to be_truthy
+    end
+
+    it 'should create journey_pattern with state_update' do
+      new_state = journey_pattern_to_state(build(:journey_pattern, objectid: nil, route: route))
+      collection = [new_state]
+      expect {
+        Chouette::JourneyPattern.state_update route, collection
+      }.to change{Chouette::JourneyPattern.count}.by(1)
     end
 
     it 'should delete journey_pattern' do

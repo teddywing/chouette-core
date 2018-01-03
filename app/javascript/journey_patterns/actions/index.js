@@ -64,6 +64,11 @@ const actions = {
     type : 'DELETE_JOURNEYPATTERN',
     index,
   }),
+  updateJourneyPatternCosts : (index, costs) => ({
+    type : 'UPDATE_JOURNEYPATTERN_COSTS',
+    index,
+    costs
+  }),
   closeModal : () => ({
     type : 'CLOSE_MODAL'
   }),
@@ -194,6 +199,7 @@ const actions = {
                   }
                 })
               }
+<<<<<<< HEAD
               journeyPatterns.push({
                 name: val.name,
                 object_id: val.object_id,
@@ -204,6 +210,14 @@ const actions = {
                 stop_points: val.route_short_description.stop_points,
                 deletable: false
               })
+=======
+              journeyPatterns.push(
+                _.assign({}, val, {
+                  stop_points: val.route_short_description.stop_points,
+                  deletable: false
+                })
+              )
+>>>>>>> Refs #5455 @6h; Add time and distance between stops in Journey Patterns
             }
           }
           window.currentItemsLength = journeyPatterns.length

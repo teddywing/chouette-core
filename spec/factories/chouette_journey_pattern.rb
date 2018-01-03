@@ -13,6 +13,12 @@ FactoryGirl.define do
         j.stop_point_ids = j.route.stop_points.map(&:id)
         j.departure_stop_point_id = j.route.stop_points.first.id
         j.arrival_stop_point_id = j.route.stop_points.last.id
+        j.costs = {
+          "1-2": {
+            distance: 10,
+            time: 10
+          }
+        }
       end
     end
 
@@ -35,5 +41,3 @@ FactoryGirl.define do
   end
 
 end
-
-

@@ -16,6 +16,7 @@ var initialState = {
   editMode: false,
   status: {
     policy: window.perms,
+    features: window.features,
     fetchSuccess: true,
     isFetching: false
   },
