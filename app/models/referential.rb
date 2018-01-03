@@ -13,17 +13,17 @@ class Referential < ActiveRecord::Base
 
   validates_uniqueness_of :slug
 
-  validates_format_of :slug, :with => %r{\A[a-z][0-9a-z_]+\Z}
-  validates_format_of :prefix, :with => %r{\A[0-9a-zA-Z_]+\Z}
-  validates_format_of :upper_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
-  validates_format_of :lower_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
+  validates_format_of :slug, with: %r{\A[a-z][0-9a-z_]+\Z}
+  validates_format_of :prefix, with: %r{\A[0-9a-zA-Z_]+\Z}
+  validates_format_of :upper_corner, with: %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
+  validates_format_of :lower_corner, with: %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
   validate :slug_excluded_values
 
   attr_accessor :upper_corner
   attr_accessor :lower_corner
 
   has_one :user
-  has_many :api_keys, :class_name => 'Api::V1::ApiKey', :dependent => :destroy
+  has_many :api_keys, class_name: 'Api::V1::ApiKey', dependent: :destroy
 
   belongs_to :organisation
   validates_presence_of :organisation
@@ -62,6 +62,18 @@ class Referential < ActiveRecord::Base
   scope :order_by_validity_period, ->(dir) { joins(:metadatas).order("unnest(periodes) #{dir}") }
   scope :order_by_lines, ->(dir) { joins(:metadatas).group("referentials.id").order("sum(array_length(referential_metadata.line_ids,1)) #{dir}") }
 
+  def save_with_table_lock_timeout(options = {})
+    save_without_table_lock_timeout(options)
+  rescue ActiveRecord::StatementInvalid => e
+    if e.message.include?('PG::LockNotAvailable')
+      raise TableLockTimeoutError.new(e)
+    else
+      raise
+    end
+  end
+
+  alias_method_chain :save, :table_lock_timeout
+
   def lines
     if metadatas.blank?
       workbench ? workbench.lines : associated_lines
@@ -79,7 +91,7 @@ class Referential < ActiveRecord::Base
         errors.add(:slug,I18n.t("referentials.errors.public_excluded"))
       end
       if slug == self.class.connection_config[:username]
-        errors.add(:slug,I18n.t("referentials.errors.user_excluded", :user => slug))
+        errors.add(:slug,I18n.t("referentials.errors.user_excluded", user: slug))
       end
     end
   end
@@ -146,7 +158,7 @@ class Referential < ActiveRecord::Base
   end
 
   def self.new_from(from, functional_scope)
-     Referential.new(
+    Referential.new(
       name: I18n.t("activerecord.copy", name: from.name),
       slug: "#{from.slug}_clone",
       prefix: from.prefix,
@@ -196,9 +208,15 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
-  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
-  before_validation :assign_slug, :on => :create
-  before_validation :assign_prefix, :on => :create
+  before_validation :assign_line_and_stop_area_referential, on: :create, if: :workbench
+  before_validation :assign_slug, on: :create
+  before_validation :assign_prefix, on: :create
+
+  # Lock the `referentials` table to prevent duplicate referentials from being
+  # created simultaneously in separate transactions. This must be the last hook
+  # to minimise the duration of the lock.
+  before_save :lock_table, on: [:create, :update]
+
   before_create :create_schema
   after_create :clone_schema, if: :created_from
 
@@ -293,7 +311,11 @@ class Referential < ActiveRecord::Base
 
   def create_schema
     unless created_from
-      Apartment::Tenant.create slug
+      report = Benchmark.measure do
+        Apartment::Tenant.create slug
+      end
+
+      Rails.logger.info("Schema create benchmark: '#{slug}'\t#{report}")
       Rails.logger.error( "Schema migrations count for Referential #{slug} " + Referential.connection.select_value("select count(*) from #{slug}.schema_migrations;").to_s )
     end
   end
@@ -378,4 +400,13 @@ class Referential < ActiveRecord::Base
     not metadatas_overlap?
   end
 
+  private
+
+  def lock_table
+    # No explicit unlock is needed as it will be released at the end of the
+    # transaction.
+    ActiveRecord::Base.connection.execute(
+      'LOCK referentials IN ACCESS EXCLUSIVE MODE'
+    )
+  end
 end

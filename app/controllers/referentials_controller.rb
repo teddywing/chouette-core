@@ -8,7 +8,7 @@ class ReferentialsController < ChouetteController
 
   def new
     new! do
-      build_referenial
+      build_referential
     end
   end
 
@@ -137,7 +137,7 @@ class ReferentialsController < ChouetteController
     super
   end
 
-  def build_referenial
+  def build_referential
     if params[:from]
       source_referential = Referential.find(params[:from])
       @referential = Referential.new_from(source_referential, current_functional_scope)
