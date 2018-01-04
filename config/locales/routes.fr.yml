@@ -71,8 +71,8 @@ fr:
         one:   "itinéraire"
         other: "itinéraires"
     attributes:
-      checksum: Signature métier
       route:
+        checksum: Signature métier
         wayback:
           positive: "Aller"
           negative: "Retour"

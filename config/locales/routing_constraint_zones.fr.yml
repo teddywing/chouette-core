@@ -7,6 +7,7 @@ fr:
         other: zone de contraintes
     attributes:
       routing_constraint_zone:
+        checksum: Signature métier
         name: Nom
         stop_areas: Arrêts
         line: Ligne associée
