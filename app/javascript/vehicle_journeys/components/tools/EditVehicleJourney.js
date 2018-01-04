@@ -52,32 +52,44 @@ export default class EditVehicleJourney extends Component {
                   {(this.props.modal.type == 'edit') && (
                     <form>
                       <div className='modal-body'>
-                        <div className='row'>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                          <div className='row'>
                             <div className='form-group'>
-                              <label className='control-label'>Nom de la course</label>
-                              <input
+                              <label className='control-label'>Signature métier</label>
+                                <input
                                 type='text'
-                                ref='published_journey_name'
+                                ref='checksum'
                                 className='form-control'
-                                disabled={!this.props.editMode}
-                                defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_name}
-                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                disabled='disabled'
+                                defaultValue={this.props.modal.modalProps.vehicleJourney.checksum}
                                 />
                             </div>
                           </div>
-                          <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
-                            <div className='form-group'>
-                              <label className='control-label'>Mission</label>
-                              <input
-                                type='text'
-                                className='form-control'
-                                value={this.props.modal.modalProps.vehicleJourney.journey_pattern.short_id + ' - ' + (this.props.modal.modalProps.vehicleJourney.journey_pattern.name)}
-                                disabled={true}
-                              />
+                          <div className='row'>
+                            <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                              <div className='form-group'>
+                                <label className='control-label'>Nom de la course</label>
+                                <input
+                                  type='text'
+                                  ref='published_journey_name'
+                                  className='form-control'
+                                  disabled={!this.props.editMode}
+                                  defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_name}
+                                  onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                  />
+                              </div>
+                            </div>
+                            <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                              <div className='form-group'>
+                                <label className='control-label'>Mission</label>
+                                <input
+                                  type='text'
+                                  className='form-control'
+                                  value={this.props.modal.modalProps.vehicleJourney.journey_pattern.short_id + ' - ' + (this.props.modal.modalProps.vehicleJourney.journey_pattern.name)}
+                                  disabled={true}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
 
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
@@ -133,7 +145,7 @@ export default class EditVehicleJourney extends Component {
                         </div>
                       </div>
                       {
-                        this.props.editMode && 
+                        this.props.editMode &&
                         <div className='modal-footer'>
                           <button
                             className='btn btn-link'
@@ -151,7 +163,7 @@ export default class EditVehicleJourney extends Component {
                             Valider
                         </button>
                         </div>
-                      }     
+                      }
                     </form>
                   )}
 
