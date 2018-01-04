@@ -14,6 +14,8 @@ services:
       MAIL_FROM: "docker <infra+docker@af83.com>"
       SMTP_HOST: "mail.af83.priv"
       REDIS_CACHE_STORE: "redis://redis:6379/0/cache"
+      SESAME_API_URL: '{"key":"1234567890azertyuiop","url":"http://172.28.100.18:3001/"}'
+      AUTH_SETTINGS: '{"type":"cas","cas_server":"http://172.28.100.18:3001/sessions","cas_validate_url":"http://172.28.100.18:3001/sessions/proxyValidate"}'
     volumes:
       - /data/iboo/uploads:/app/public/uploads
     ports:
@@ -34,6 +36,8 @@ services:
       MAIL_ASSETS_URL_BASE: "http://iboo-rec.af83.priv"
       MAIL_FROM: "docker <infra+docker@af83.com>"
       SMTP_HOST: "mail.af83.priv"
+      SESAME_API_URL: '{"key":"1234567890azertyuiop","url":"http://172.28.100.18:3001/"}'
+      AUTH_SETTINGS: '{"type":"cas","cas_server":"http://172.28.100.18:3001/sessions","cas_validate_url":"http://172.28.100.18:3001/sessions/proxyValidate"}'
     command: bundle exec sidekiq -e production
     restart: always
     depends_on:
@@ -51,6 +55,8 @@ services:
       MAIL_ASSETS_URL_BASE: "http://iboo-rec.af83.priv"
       MAIL_FROM: "docker <infra+docker@af83.com>"
       SMTP_HOST: "mail.af83.priv"
+      SESAME_API_URL: '{"key":"1234567890azertyuiop","url":"http://172.28.100.18:3001/"}'
+      AUTH_SETTINGS: '{"type":"cas","cas_server":"http://172.28.100.18:3001/sessions","cas_validate_url":"http://172.28.100.18:3001/sessions/proxyValidate"}'
     command: bash launch-cron
     restart: always
     depends_on:
