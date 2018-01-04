@@ -39,16 +39,6 @@ export default class EditModal extends Component {
               {(this.props.modal.type == 'edit') && (
                 <form>
                   <div className='modal-body'>
-                    <div>
-                      <label className='control-label'>Signature métier</label>
-                        <input
-                        type='text'
-                        ref='checksum'
-                        className='form-control'
-                        disabled='disabled'
-                        defaultValue={this.props.modal.modalProps.journeyPattern.checksum}
-                        />
-                    </div>
                     <div className='form-group'>
                       <label className='control-label is-required'>Nom</label>
                       <input
@@ -93,6 +83,16 @@ export default class EditModal extends Component {
                             />
                         </div>
                       </div>
+                    </div>
+                    <div>
+                      <label className='control-label'>Signature métier</label>
+                        <input
+                        type='text'
+                        ref='checksum'
+                        className='form-control'
+                        disabled='disabled'
+                        defaultValue={this.props.modal.modalProps.journeyPattern.checksum}
+                        />
                     </div>
                   </div>
                   {
