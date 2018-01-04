@@ -68,6 +68,7 @@ en:
         one:   "route"
         other: "routes"
     attributes:
+      checksum: Checksum
       route:
         wayback:
           positive: "forward"
