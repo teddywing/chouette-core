@@ -245,7 +245,7 @@ $menuW: 300px
 
         & > .menu-item
           max-width: 75%
-          
+
         .menu-item
           padding: 0 10px
 
@@ -337,47 +337,35 @@ $menuW: 300px
       height: $menuH
       padding: 0 50px 0 75px
       margin-top: -4px
+      display: flex
 
       > *
         display: inline-block
 
         &.sticky-ptitle
-          width: 60%
+          flex: 1 1
           height: $menuH
+          position: relative
 
           h1
-            position: relative
+            position: absolute
+            left: 0
+            right: 10px
+            top: 0
             line-height: 1.1
             white-space: nowrap
             max-height: 1.1em
             margin: 0 -1.4em 0 0
             padding: 0 1.4em 5px 0
             overflow: hidden
-
-            &:before
-              content: '[...]'
-              font-size: 0.65em
-              position: absolute
-              z-index: 6
-              right: 0
-              bottom: 9px
-
-            &:after
-              content: ''
-              position: absolute
-              z-index: 5
-              right: 0
-              width: 1.4em
-              height: 1em
-              margin-top: 0.2em
-              background-color: $blue
+            text-overflow: ellipsis
 
             .small.fa
               color: #fff
               margin-left: 0.5em
 
         &.sticky-paction
-          width: 40%
+          flex: 0 0 auto
           text-align: right
           vertical-align: top
 
