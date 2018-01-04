@@ -40,7 +40,8 @@ module Chouette
           # Update attributes and stop_points associations
           jp.update_attributes(state_permited_attributes(item)) unless item['new_record']
           jp.state_stop_points_update(item) if !jp.errors.any? && jp.persisted?
-          item['errors'] = jp.errors if jp.errors.any?
+          item['errors']   = jp.errors if jp.errors.any?
+          item['checksum'] = jp.checksum
         end
 
         if state.any? {|item| item['errors']}
