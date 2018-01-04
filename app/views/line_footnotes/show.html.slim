@@ -16,7 +16,11 @@
               .panel-heading = footnote.code
               .panel-body
                 p = footnote.label
+
               .panel-footer.text-right
+                div
+                  p.text-muted.small = Chouette::Footnote.human_attribute_name(:checksum)
+                  p.text-muted.small = footnote.checksum
                 p.text-muted
                   em.small = "Dernière mise à jour le #{l(footnote.updated_at, format: :short)}"
 
