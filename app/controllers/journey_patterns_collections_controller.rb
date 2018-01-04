@@ -23,14 +23,15 @@ class JourneyPatternsCollectionsController < ChouetteController
       @q = @q.where(id: ids)
     end
     @q = @q.includes(:stop_points)
-    # @q = route.journey_patterns.search(params[:q]).result().includes(:stop_points)
     @ppage = 10
     @journey_patterns ||= @q.paginate(page: params[:page], per_page: @ppage).order(:name)
     respond_to do |format|
-      format.json
+      format.json do
+        @journey_patterns = @journey_patterns.includes(stop_points: {stop_area: :stop_area_referential})
+      end
       format.html do
         @stop_points_list = []
-        route.stop_points.each do |sp|
+        route.stop_points.includes(:stop_area).each do |sp|
           @stop_points_list << {
             :id => sp.stop_area.id,
             :route_id => sp.try(:route_id),
