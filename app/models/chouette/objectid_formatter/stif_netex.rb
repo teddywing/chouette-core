@@ -14,6 +14,10 @@ module Chouette
         parts = definition.try(:split, ":")
         Chouette::Objectid::StifNetex.new(provider_id: parts[0], object_type: parts[1], local_id: parts[2], creation_id: parts[3])
       end
+
+      def self.short_id_type
+        :int
+      end
     end
   end
 end

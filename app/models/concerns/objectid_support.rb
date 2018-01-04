@@ -8,8 +8,33 @@ module ObjectidSupport
     validates_uniqueness_of :objectid, skip_validation: Proc.new {|model| model.read_attribute(:objectid).nil?}
 
     if respond_to?(:ransacker)
-      ransacker :short_id do
-        Arel.sql("objectid_short_id(objectid)")
+      class <<self
+        def search_with_referential referential: nil, **args
+          out = search_without_referential(args)
+          if referential
+            out.base.conditions.each_with_index do |cond, i|
+              if cond.attributes.first.name == "short_id"
+                new_cond = Ransack::Nodes::Condition.new(cond.context)
+                new_cond.attributes = { 0 => {
+                  name: "short_id",
+                  ransacker_args: [referential]
+                }}
+                new_cond.predicate = cond.predicate
+                new_cond.values = cond.values.map(&:value)
+                out.base.conditions[i] = new_cond
+              end
+            end
+          end
+          out
+        end
+        alias_method_chain :search, :referential
+      end
+
+      ransacker :short_id, args: [:parent, :ransacker_args] do |parent, args|
+        referential = args[0]
+        type = referential&.objectid_formatter&.class.try(:short_id_type)
+        type ||= "text"
+        Arel.sql("objectid_short_id_as_#{type}(objectid)")
       end
     end
 
