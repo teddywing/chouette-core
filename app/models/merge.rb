@@ -107,6 +107,19 @@ class Merge < ActiveRecord::Base
 
     # Routes
 
+    # Always the same pattern :
+    # - load models from original Referential
+    # - load associated datas (children, checksum for associated models)
+    # - switch to new Referential
+    # - enumerate loaded models
+    # - skip model if its checksum exists "in the same line"
+    # - prepare attributes for a fresh model
+    # - remove all primary keys
+    # - compute an ObjectId (TODO)
+    # - process children models as nested attributes
+    # - associated other models (by line/checksum)
+    # - save! and next one
+
     referential_routes = referential.switch do
       referential.routes.all.to_a
     end
@@ -205,6 +218,8 @@ class Merge < ActiveRecord::Base
       end
     end
 
+    # Vehicle Journeys
+
     referential_vehicle_journeys = referential.switch do
       referential.vehicle_journeys.includes(:vehicle_journey_at_stops).all.to_a
     end
@@ -250,12 +265,17 @@ class Merge < ActiveRecord::Base
       end
     end
 
+    # Time Tables
+
     referential_time_tables_by_id, referential_time_tables_with_lines = referential.switch do
       time_tables_by_id = Hash[referential.time_tables.includes(:dates, :periods).all.to_a.map { |t| [t.id, t] }]
 
       time_tables_with_associated_lines =
         referential.time_tables.joins(vehicle_journeys: {route: :line}).pluck("lines.id", :id, "vehicle_journeys.checksum")
 
+      # Because TimeTables will be modified according metadata periods
+      # we're loading timetables per line (line is associated to a period list)
+      #
       # line_id: [ { time_table.id, vehicle_journey.checksum } ]
       time_tables_by_lines = time_tables_with_associated_lines.inject(Hash.new { |h,k| h[k] = [] }) do |hash, row|
         hash[row.shift] << {id: row.first, vehicle_journey_checksum: row.second}
@@ -267,10 +287,15 @@ class Merge < ActiveRecord::Base
 
     new.switch do
       referential_time_tables_with_lines.each do |line_id, time_tables_properties|
+        # Because TimeTables will be modified according metadata periods
+        # we're loading timetables per line (line is associated to a period list)
         line = workbench.line_referential.lines.find(line_id)
 
         time_tables_properties.each do |properties|
           time_table = referential_time_tables_by_id[properties[:id]]
+
+          # we can't test if TimeTable already exist by checksum
+          # because checksum is modified by intersect_periods!
 
           attributes = time_table.attributes.merge(
             id: nil,
@@ -300,10 +325,15 @@ class Merge < ActiveRecord::Base
           candidate_time_table.set_current_checksum_source
           candidate_time_table.update_checksum
 
+          # after intersect_periods!, the checksum is the expected one
+          # we can search an existing TimeTable
+
           existing_time_table = line.time_tables.find_by checksum: candidate_time_table.checksum
 
           unless existing_time_table
-            # TimeTable checksum can change on cleanup
+            # FIXME use real ObjectId
+            # Referential id is (temporary) used because the "same" TimeTable can be defined in several merged Referentials
+            # and checksum are modified by clean/remove_periods! but this temporary object id is constant
             candidate_time_table.objectid = "merge:time_table:#{line.id}-#{candidate_time_table.checksum}-#{referential.id}:LOC"
 
             candidate_time_table.save!
