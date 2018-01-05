@@ -4,6 +4,7 @@ route = JSON.parse(decodeURIComponent(route))
 
 const geoColPts = []
 const geoColLns = []
+const area = []
 const geoColEdges = [
   new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(route[0].longitude), parseFloat(route[0].latitude)]))
@@ -23,8 +24,8 @@ route.forEach(function (stop, i) {
   }
   geoColPts.push(new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(stop.longitude), parseFloat(stop.latitude)]))
-  })
-  )
+  }))
+  area.push([parseFloat(stop.longitude), parseFloat(stop.latitude)])
 })
 var edgeStyles = new ol.style.Style({
   image: new ol.style.Circle(({
@@ -100,3 +101,7 @@ var map = new ol.Map({
     zoom: 13
   })
 });
+const boundaries = ol.extent.applyTransform(
+  ol.extent.boundingExtent(area), ol.proj.getTransform('EPSG:4326', 'EPSG:3857')
+)
+map.getView().fit(boundaries, map.getSize());
