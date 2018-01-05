@@ -12,7 +12,7 @@ export default class JourneyPattern extends Component{
   updateCosts(e) {
     let costs = {
       [e.target.dataset.costsKey]: {
-        [e.target.name]: parseInt(e.target.value)
+        [e.target.name]: parseFloat(e.target.value)
       }
     }
     this.props.onUpdateJourneyPatternCosts(costs)
@@ -163,7 +163,7 @@ export default class JourneyPattern extends Component{
                 {this.hasFeature('costs_in_journey_patterns') && costs && <div className='costs' id={'costs-' + this.props.value.id + '-' + costsKey }>
                   {this.props.editMode && <div>
                     <p>
-                      <input type="number" value={costs['distance'] || 0} min='0' name="distance" onChange={this.updateCosts} data-costs-key={costsKey}/>
+                      <input type="number" value={costs['distance'] || 0} min='0' name="distance" step="0.01" onChange={this.updateCosts} data-costs-key={costsKey}/>
                       <span>km</span>
                     </p>
                     <p>
