@@ -86,9 +86,21 @@ class Merge < ActiveRecord::Base
 
     line_periods = LinePeriods.from_metadatas(referential.metadatas)
 
-    line_periods.each do |line_id, periods|
-      # TODO
-      puts "Clean data for #{line_id} #{periods.inspect}"
+    new.switch do
+      line_periods.each do |line_id, periods|
+        Rails.logger.debug "Clean data for #{line_id} #{periods.inspect}"
+
+        new.lines.find(line_id).time_tables.find_each do |time_table|
+          time_table.remove_periods! periods
+          unless time_table.empty?
+            puts "Remove period on #{time_table.inspect}"
+            time_table.save!
+          else
+            puts "Remove TimeTable #{time_table.inspect}"
+            time_table.destroy
+          end
+        end
+      end
     end
 
     # let's merge data :)
@@ -135,7 +147,6 @@ class Merge < ActiveRecord::Base
 
           new_route.save!
 
-          # FIXME Route checksum changes if stop points are not defined
           if new_route.checksum != route.checksum
             raise "Checksum has changed: #{route.inspect} #{new_route.inspect}"
           end
@@ -245,6 +256,7 @@ class Merge < ActiveRecord::Base
       time_tables_with_associated_lines =
         referential.time_tables.joins(vehicle_journeys: {route: :line}).pluck("lines.id", :id, "vehicle_journeys.checksum")
 
+      # line_id: [ { time_table.id, vehicle_journey.checksum } ]
       time_tables_by_lines = time_tables_with_associated_lines.inject(Hash.new { |h,k| h[k] = [] }) do |hash, row|
         hash[row.shift] << {id: row.first, vehicle_journey_checksum: row.second}
         hash
@@ -263,8 +275,7 @@ class Merge < ActiveRecord::Base
           attributes = time_table.attributes.merge(
             id: nil,
             comment: "Ligne #{line.name} - #{time_table.comment}",
-            calendar_id: nil,
-            objectid: "merge:time_table:#{line_id}-#{time_table.checksum}"
+            calendar_id: nil
           )
           candidate_time_table = new.time_tables.build attributes
 
@@ -289,11 +300,15 @@ class Merge < ActiveRecord::Base
           candidate_time_table.set_current_checksum_source
           candidate_time_table.update_checksum
 
-          existing_time_table = new.time_tables.find_by checksum: candidate_time_table.checksum
+          existing_time_table = line.time_tables.find_by checksum: candidate_time_table.checksum
 
           unless existing_time_table
+            # TimeTable checksum can change on cleanup
+            candidate_time_table.objectid = "merge:time_table:#{line.id}-#{candidate_time_table.checksum}-#{referential.id}:LOC"
+
             candidate_time_table.save!
 
+            # Checksum is changed by #intersect_periods
             # if new_time_table.checksum != time_table.checksum
             #   raise "Checksum has changed: #{time_table.checksum_source} #{new_time_table.checksum_source}"
             # end
@@ -301,7 +316,10 @@ class Merge < ActiveRecord::Base
             existing_time_table = candidate_time_table
           end
 
-          # TODO associate VehicleJourney
+          # associate VehicleJourney
+
+          associated_vehicle_journey = line.vehicle_journeys.find_by!(checksum: properties[:vehicle_journey_checksum])
+          associated_vehicle_journey.time_tables << existing_time_table
         end
       end
     end
