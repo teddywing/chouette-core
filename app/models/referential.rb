@@ -415,9 +415,7 @@ class Referential < ActiveRecord::Base
   end
 
   def perform_cleanup
-    remaining_line_ids = self.metadatas.reload.pluck(:line_ids).flatten.uniq
-    switch
-    Chouette::Route.where.not(line_id: remaining_line_ids).destroy_all
+    CleanUp.new(referential: self, mode: :auto, date_type: :before).save!
   end
 
   private

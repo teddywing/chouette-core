@@ -15,6 +15,6 @@ class CleanUpsController < ChouetteController
   end
 
   def clean_up_params
-    params.require(:clean_up).permit(:date_type, :begin_date, :end_date)
+    params.require(:clean_up).permit(:date_type, :begin_date, :end_date).update({mode: :manual})
   end
 end

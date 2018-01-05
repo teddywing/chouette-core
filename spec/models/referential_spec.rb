@@ -158,8 +158,12 @@ describe Referential, :type => :model do
     end
   end
 
-  context 'with data' do
+  context 'with data', skip_first_referential: true do
     before(:each) do
+      allow_any_instance_of(CleanUp).to receive(:save!) do |cleanup|
+        cleanup.referential.switch
+        cleanup.clean
+      end
       ref.switch
       Chouette::Line.all.each do |line|
         route = create(:route, line: line)

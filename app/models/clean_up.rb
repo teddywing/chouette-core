@@ -5,12 +5,19 @@ class CleanUp < ActiveRecord::Base
   has_one :clean_up_result
 
   enumerize :date_type, in: %i(between before after)
+  enumerize :mode, in: %i(manual auto)
 
-  validates_presence_of :begin_date, message: :presence
-  validates_presence_of :end_date, message: :presence, if: Proc.new {|cu| cu.date_type == 'between'}
-  validates_presence_of :date_type, message: :presence
+  validates_presence_of :referential, message: :presence
+  validates_presence_of :mode, message: :presence
+  validates_presence_of :begin_date, message: :presence, if: :manual?
+  validates_presence_of :end_date, message: :presence, if: Proc.new {|cu| cu.mode == 'manual' && cu.date_type == 'between'}
+  validates_presence_of :date_type, message: :presence, if: :manual?
   validate :end_date_must_be_greater_that_begin_date
   after_commit :perform_cleanup, :on => :create
+
+  def manual?
+    mode == 'manual'
+  end
 
   def end_date_must_be_greater_that_begin_date
     if self.end_date && self.date_type == 'between' && self.begin_date >= self.end_date
@@ -21,6 +28,12 @@ class CleanUp < ActiveRecord::Base
   def perform_cleanup
     CleanUpWorker.perform_async(self.id)
   end
+
+  def date_type_with_mode
+    manual? ? date_type_without_mode : "based_on_referential"
+  end
+
+  alias_method_chain :date_type, :mode
 
   def clean
     {}.tap do |result|
@@ -34,7 +47,18 @@ class CleanUp < ActiveRecord::Base
       self.overlapping_periods.each do |period|
         exclude_dates_in_overlapping_period(period)
       end
+      self.destroy_lines_related_objects_based_on_referential unless manual?
     end
+  end
+
+  def destroy_lines_related_objects_based_on_referential
+    remaining_line_ids = referential.metadatas.pluck(:line_ids).flatten.uniq
+    Chouette::Route.where.not(line_id: remaining_line_ids).destroy_all
+  end
+
+  def destroy_time_tables_based_on_referential
+    time_tables = Chouette::TimeTable.none
+    self.destroy_time_tables(time_tables)
   end
 
   def destroy_time_tables_between
@@ -52,6 +76,11 @@ class CleanUp < ActiveRecord::Base
     self.destroy_time_tables(time_tables)
   end
 
+  def destroy_time_tables_dates_based_on_referential
+    query = referential_metadata_periodes_query "(date < ? OR date > ?)", "AND"
+    Chouette::TimeTableDate.in_dates.where(*query).destroy_all
+  end
+
   def destroy_time_tables_dates_before
     Chouette::TimeTableDate.in_dates.where('date < ?', self.begin_date).destroy_all
   end
@@ -62,6 +91,11 @@ class CleanUp < ActiveRecord::Base
 
   def destroy_time_tables_dates_between
     Chouette::TimeTableDate.in_dates.where('date > ? AND date < ?', self.begin_date, self.end_date).destroy_all
+  end
+
+  def destroy_time_tables_periods_based_on_referential
+    query = referential_metadata_periodes_query "(period_end < ? OR period_start > ?)", "AND"
+    Chouette::TimeTablePeriod.where(*query).destroy_all
   end
 
   def destroy_time_tables_periods_before
@@ -77,28 +111,48 @@ class CleanUp < ActiveRecord::Base
   end
 
   def overlapping_periods
-    self.end_date = self.begin_date if self.date_type != 'between'
-    Chouette::TimeTablePeriod.where('(period_start, period_end) OVERLAPS (?, ?)', self.begin_date, self.end_date)
+    if manual?
+      self.end_date = self.begin_date if self.date_type != 'between'
+      Chouette::TimeTablePeriod.where('(period_start, period_end) OVERLAPS (?, ?)', self.begin_date, self.end_date)
+    else
+      periods_query = [
+        (['(period_start, period_end) OVERLAPS (?, ?)'] * referential_metadata_periodes_boundaries.size).join(' OR '),
+        *referential_metadata_periodes_boundaries.flatten
+      ]
+
+      Chouette::TimeTablePeriod.where(*periods_query)
+    end
   end
 
   def exclude_dates_in_overlapping_period(period)
     days_in_period  = period.period_start..period.period_end
-    day_out         = period.time_table.dates.where(in_out: false).map(&:date)
-    # check if day is greater or less then cleanup date
-    if date_type != 'between'
-      operator = date_type == 'after' ? '>' : '<'
-      to_exclude_days = days_in_period.map do |day|
-        day if day.public_send(operator, self.begin_date)
+    day_out         = period.time_table.dates.where(in_out: false).pluck(:date)
+
+    if manual?
+      # check if day is greater or less then cleanup date
+      if date_type != 'between'
+        operator = date_type == 'after' ? '>' : '<'
+        to_exclude_days = days_in_period.map do |day|
+          day if day.public_send(operator, self.begin_date)
+        end
+      else
+        days_in_cleanup_periode = (self.begin_date..self.end_date)
+        to_exclude_days = days_in_period & days_in_cleanup_periode
       end
     else
-      days_in_cleanup_periode = (self.begin_date..self.end_date)
-      to_exclude_days = days_in_period & days_in_cleanup_periode
+      # Here the behaviour is the opposite:
+      # We want to KEEP dates overlapping the referential metadatas
+      to_keep_days = referential_metadata_periodes.map do |metadata_period|
+        (days_in_period & (metadata_period.begin..metadata_period.end)).to_a
+      end.flatten
+      to_exclude_days = days_in_period.to_a - to_keep_days
     end
 
-    to_exclude_days.to_a.compact.each do |day|
+
+    to_exclude_days.to_a.compact.uniq.each do |day|
       # we ensure day is not already an exclude date
       # and that day is not equal to the boundariy date of the clean up
-      if !day_out.include?(day) && day != self.begin_date && day != self.end_date
+      unless day_out.include?(day) || (manual? && (day == self.begin_date || day == self.end_date))
         self.add_exclude_date(period.time_table, day)
       end
     end
@@ -161,5 +215,24 @@ class CleanUp < ActiveRecord::Base
   def log_failed message_attributes
     update_attribute(:ended_at, Time.now)
     CleanUpResult.create(clean_up: self, message_key: :failed, message_attributes: message_attributes)
+  end
+
+  private
+  def referential_metadata_periodes
+    referential.metadatas.map(&:periodes).flatten
+  end
+
+  def referential_metadata_periodes_boundaries
+    referential_metadata_periodes.map do |periode|
+      [periode.begin, periode.end]
+    end
+  end
+
+  def referential_metadata_periodes_query subquery, operator
+    boundaries = referential_metadata_periodes_boundaries
+    [
+      ([subquery] * boundaries.size).join(" #{operator} "),
+      *boundaries.flatten
+    ]
   end
 end
