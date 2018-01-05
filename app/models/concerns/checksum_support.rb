@@ -24,10 +24,18 @@ module ChecksumSupport
     self.attributes.values
   end
 
+  def checksum_replace_nil_or_empty_values values
+    # Replace empty array by nil & nil by VALUE_FOR_NIL_ATTRIBUTE
+    values.map{ |x| x unless x.try(:empty?) }.map{ |x| x || VALUE_FOR_NIL_ATTRIBUTE }.map do |item|
+      item = item.kind_of?(Array) ? checksum_replace_nil_or_empty_values(item) : item
+    end
+  end
+
   def current_checksum_source
-    source = self.checksum_attributes.map{ |x| x unless x.try(:empty?) }
-    source = source.map{ |x| x || VALUE_FOR_NIL_ATTRIBUTE }
-    source.map(&:to_s).join(SEPARATOR)
+    source = checksum_replace_nil_or_empty_values(self.checksum_attributes)
+    source.map{ |item|
+      item = item.kind_of?(Array) ? item.map{ |x| "(#{x.join(',')})"}.join(',') : item
+    }.join(SEPARATOR)
   end
 
   def set_current_checksum_source
