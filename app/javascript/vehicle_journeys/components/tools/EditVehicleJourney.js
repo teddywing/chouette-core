@@ -53,18 +53,6 @@ export default class EditVehicleJourney extends Component {
                     <form>
                       <div className='modal-body'>
                           <div className='row'>
-                            <div className='form-group'>
-                              <label className='control-label'>Signature métier</label>
-                                <input
-                                type='text'
-                                ref='checksum'
-                                className='form-control'
-                                disabled='disabled'
-                                defaultValue={this.props.modal.modalProps.vehicleJourney.checksum}
-                                />
-                            </div>
-                          </div>
-                          <div className='row'>
                             <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                               <div className='form-group'>
                                 <label className='control-label'>Nom de la course</label>
@@ -143,6 +131,17 @@ export default class EditVehicleJourney extends Component {
                             </div>
                           </div>
                         </div>
+                        <div className='form-group'>
+                          <label className='control-label'>Signature métier</label>
+                            <input
+                            type='text'
+                            ref='checksum'
+                            className='form-control'
+                            disabled='disabled'
+                            defaultValue={this.props.modal.modalProps.vehicleJourney.checksum}
+                            />
+                        </div>
+
                       </div>
                       {
                         this.props.editMode &&
