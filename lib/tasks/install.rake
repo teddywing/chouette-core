@@ -11,6 +11,7 @@ task :package do
   sh "bundle exec rake assets:precompile RAILS_ENV=production"
   sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar vendor/cache"
   sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar public/assets"
+  sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar public/packs"
 
   %w{deploy-helper.sh README sidekiq-stif-boiv.service stif-boiv.conf stif-boiv-setup.sh template-stif-boiv.sql}.each do |f|
     cp "install/#{f}", "tmp/package/#{f}"
@@ -38,6 +39,7 @@ task :pkg4docker do
   sh "bundle exec rake assets:precompile RAILS_ENV=production"
   sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar vendor/cache"
   sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar public/assets"
+  sh "tar -rf tmp/package/stif-boiv-release-#{release_name}.tar public/packs"
 
   sh "gzip -c tmp/package/stif-boiv-release-#{release_name}.tar > tmp/stif-boiv-release.tar.gz"
 
