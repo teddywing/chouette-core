@@ -56,13 +56,13 @@ class Merge < ActiveRecord::Base
           workbench: workbench,
           organisation: workbench.organisation, # TODO could be workbench.organisation by default
           name: I18n.t("merges.referential_name"),
-          slug: "output_#{workbench.id}_#{Time.now.to_i}"
         }
         workbench.output.referentials.new attributes
       end
 
     new.referential_suite = output
     new.organisation = workbench.organisation
+    new.slug = "output_#{workbench.id}_#{Time.now.to_i}"
 
     unless new.valid?
       Rails.logger.error "New referential isn't valid : #{new.errors.inspect}"
