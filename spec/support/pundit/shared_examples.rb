@@ -1,6 +1,6 @@
 
 RSpec.shared_examples 'always allowed' do
-  | permission, archived: false|
+  | permission, archived_and_finalised: false |
   context 'same organisation →' do
     before do
       user.organisation_id = referential.organisation_id
@@ -8,9 +8,14 @@ RSpec.shared_examples 'always allowed' do
     it "allows a user with the same organisation" do
       expect_it.to permit(user_context, record)
     end
-    if archived
+    if archived_and_finalised
       it 'does not remove permission for archived referentials' do
         referential.archived_at = 42.seconds.ago
+        expect_it.to permit(user_context, record)
+      end
+
+      it 'does not remove permission for finalised referentials' do
+        finalise_referential
         expect_it.to permit(user_context, record)
       end
     end
@@ -23,9 +28,13 @@ RSpec.shared_examples 'always allowed' do
     it "allows a user with a different organisation" do
       expect_it.to permit(user_context, record)
     end
-    if archived
+    if archived_and_finalised
       it 'does not remove permission for archived referentials' do
         referential.archived_at = 42.seconds.ago
+        expect_it.to permit(user_context, record)
+      end
+      it 'does not remove permission for finalised referentials' do
+        finalise_referential
         expect_it.to permit(user_context, record)
       end
     end
@@ -33,17 +42,19 @@ RSpec.shared_examples 'always allowed' do
 end
 
 RSpec.shared_examples 'always forbidden' do
-  | permission, archived: false|
+  | permission, archived_and_finalised: false|
   context 'same organisation →' do
     before do
       user.organisation_id = referential.organisation_id
     end
+
     it "allows a user with the same organisation" do
       expect_it.not_to permit(user_context, record)
     end
-    if archived
+
+    if archived_and_finalised
       it 'still no permission for archived referentials' do
-        referential.archived_at = 42.seconds.ago
+        finalise_referential
         expect_it.not_to permit(user_context, record)
       end
     end
@@ -56,9 +67,14 @@ RSpec.shared_examples 'always forbidden' do
     it "denies a user with a different organisation" do
       expect_it.not_to permit(user_context, record)
     end
-    if archived
+    if archived_and_finalised
       it 'still no permission for archived referentials' do
         referential.archived_at = 42.seconds.ago
+        expect_it.not_to permit(user_context, record)
+      end
+
+      it 'still no permission for finalised referentials' do
+        finalise_referential
         expect_it.not_to permit(user_context, record)
       end
     end
@@ -66,7 +82,7 @@ RSpec.shared_examples 'always forbidden' do
 end
 
 RSpec.shared_examples 'permitted policy and same organisation' do
-  | permission, archived: false|
+  | permission, archived_and_finalised: false |
 
   context 'permission absent → ' do
     it "denies a user with a different organisation" do
@@ -92,10 +108,16 @@ RSpec.shared_examples 'permitted policy and same organisation' do
       expect_it.to permit(user_context, record)
     end
 
-    if archived
+    if archived_and_finalised
       it 'removes the permission for archived referentials' do
         user.organisation_id = referential.organisation_id
         referential.archived_at = 42.seconds.ago
+        expect_it.not_to permit(user_context, record)
+      end
+
+      it 'removes the permission for finalised referentials' do
+        user.organisation_id = referential.organisation_id
+        finalise_referential
         expect_it.not_to permit(user_context, record)
       end
     end
@@ -103,7 +125,7 @@ RSpec.shared_examples 'permitted policy and same organisation' do
 end
 
 RSpec.shared_examples 'permitted policy' do
-  | permission, archived: false|
+  | permission, archived_and_finalised: false|
 
   context 'permission absent → ' do
     it "denies user" do
@@ -120,10 +142,15 @@ RSpec.shared_examples 'permitted policy' do
       expect_it.to permit(user_context, record)
     end
 
-    if archived
+    if archived_and_finalised
       it 'removes the permission for archived referentials' do
         user.organisation_id = referential.organisation_id
         referential.archived_at = 42.seconds.ago
+        expect_it.not_to permit(user_context, record)
+      end
+      it 'removes the permission for finalised referentials' do
+        user.organisation_id = referential.organisation_id
+        finalise_referential
         expect_it.not_to permit(user_context, record)
       end
     end

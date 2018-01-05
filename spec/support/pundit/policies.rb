@@ -12,11 +12,14 @@ module Support
         UserContext.new(user, referential: referential)
       end
 
+      def finalise_referential
+        referential.referential_suite_id = random_int 
+      end
+
       def remove_permissions(*permissions, from_user:, save: false)
         from_user.permissions -= permissions.flatten
         from_user.save! if save
       end
-
     end
 
     module PoliciesMacros
