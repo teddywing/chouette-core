@@ -26,4 +26,11 @@ module ChecksumSupport
       self.checksum = Digest::SHA256.new.hexdigest(self.checksum_source)
     end
   end
+
+  def update_checksum!
+    set_current_checksum_source
+    if checksum_source_changed?
+      update checksum: Digest::SHA256.new.hexdigest(checksum_source)
+    end
+  end
 end

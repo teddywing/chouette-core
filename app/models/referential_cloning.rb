@@ -8,17 +8,20 @@ class ReferentialCloning < ActiveRecord::Base
     ReferentialCloningWorker.perform_async(id)
   end
 
-  def clone!
+  def clone_with_status!
     run!
-
-    AF83::SchemaCloner
-      .new(source_referential.slug, target_referential.slug)
-      .clone_schema
-
+    clone!
     successful!
   rescue Exception => e
     Rails.logger.error "Clone failed : #{e}"
+    Rails.logger.error e.backtrace.join('\n')
     failed!
+  end
+
+  def clone!
+    AF83::SchemaCloner
+      .new(source_referential.slug, target_referential.slug)
+      .clone_schema
   end
 
   private

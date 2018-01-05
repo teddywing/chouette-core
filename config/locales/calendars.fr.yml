@@ -25,28 +25,28 @@ fr:
     standard_calendars: Calendriers standards
     standard_calendar: Calendrier standard
     actions:
-      new: Ajouter un calendrier
-      edit: Editer cet calendrier
-      destroy: Supprimer cet calendrier
-      destroy_confirm: Etes vous sûr de supprimer cet calendrier ?
+      new: Ajouter un modèle de calendrier
+      edit: Editer ce modèle de calendrier
+      destroy: Supprimer ce modèle de calendrier
+      destroy_confirm: Etes vous sûr de supprimer ce modèle de calendrier ?
     errors:
       overlapped_periods: Une autre période chevauche cette période
       short_period: "Une période doit être d'une durée de deux jours minimum"
     index:
-      title: Calendriers
+      title: Modèles de calendrier
       all: Tous
       shared: Partagées
       not_shared: Non partagées
-      search_no_results: Aucun calendrier ne correspond à votre recherche
+      search_no_results: Aucun modèle de calendrier ne correspond à votre recherche
       date: Date
     new:
-      title: Ajouter un calendrier
+      title: Ajouter un modèle de calendrier
     create:
-      title: Ajouter un calendrier
+      title: Ajouter un modèle de calendrier
     edit:
-      title: Editer le calendrier %{name}
+      title: Editer le modèle de calendrier %{name}
     show:
-      title: Calendrier %{name}
+      title: Modèle de calendrier %{name}
   simple_form:
     labels:
       calendar:
@@ -59,8 +59,8 @@ fr:
   activerecord:
     models:
       calendar:
-        one: "calendrier"
-        other: "calendriers"
+        one: "modèle de calendrier"
+        other: "modèles de calendrier"
     attributes:
       calendar:
         name: Nom

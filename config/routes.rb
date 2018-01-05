@@ -15,6 +15,9 @@ ChouetteIhm::Application.routes.draw do
       get :executed, on: :member
       resources :compliance_checks, only: [:show]
     end
+
+    resource :output, controller: :workbench_outputs
+    resources :merges
   end
 
   devise_for :users, :controllers => {

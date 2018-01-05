@@ -69,6 +69,7 @@ export default class VehicleJourney extends Component {
           >
           <div className='strong mb-xs'>{this.props.value.short_id || '-'}</div>
           <div>{this.props.value.published_journey_name && this.props.value.published_journey_name != "non renseigné" ? this.props.value.published_journey_name : '-'}</div>
+          <div>{this.props.value.company ? this.props.value.company.name : '-'}</div>
           <div>{this.props.value.journey_pattern.short_id || '-'}</div>
           <div>
             {time_tables.slice(0,3).map((tt, i)=>

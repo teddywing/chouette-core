@@ -14,6 +14,7 @@ class Workbench < ActiveRecord::Base
   has_many :workbench_imports
   has_many :compliance_check_sets
   has_many :compliance_control_sets
+  has_many :merges
 
   validates :name, presence: true
   validates :organisation, presence: true
@@ -29,7 +30,7 @@ class Workbench < ActiveRecord::Base
     if line_ids.empty?
       Referential.none
     else
-      Referential.joins(:metadatas).where(['referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids]).ready
+      Referential.joins(:metadatas).where(['referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids]).ready.not_in_referential_suite
     end
   end
 
