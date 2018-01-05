@@ -1231,4 +1231,55 @@ end
     end
 
   end
+
+  describe "#remove_periods!" do
+    let(:time_table) { Chouette::TimeTable.new }
+    let(:periods) do
+      [
+        Date.new(2018, 1, 1)..Date.new(2018, 2, 1),
+      ]
+    end
+
+    it "remove a date included in given periods" do
+      time_table.dates.build date: Date.new(2018,1,15)
+      time_table.remove_periods! periods
+      expect(time_table.dates).to be_empty
+    end
+
+    it "keep a date not included in given periods" do
+      time_table.dates.build date: Date.new(2017,12,31)
+      expect{time_table.remove_periods! periods}.to_not change(time_table, :dates)
+    end
+
+    it "modify a end period if included in given periods" do
+      period = time_table.periods.build period_start: Date.new(2017,12,1), period_end: Date.new(2018,1,15)
+      time_table.remove_periods! periods
+      expect(period.period_end).to eq(Date.new(2017, 12, 31))
+    end
+
+    it "modify a start period if included in given periods" do
+      period = time_table.periods.build period_start: Date.new(2018,1,15), period_end: Date.new(2018,3,1)
+      time_table.remove_periods! periods
+      expect(period.period_start).to eq(Date.new(2018, 2, 2))
+    end
+
+    it "remove a period included in given periods" do
+      time_table.periods.build period_start: Date.new(2018,1,10), period_end: Date.new(2018,1,20)
+      time_table.remove_periods! periods
+      expect(time_table.periods).to be_empty
+    end
+
+    it "split a period including a given period" do
+      time_table.periods.build period_start: Date.new(2017,12,1), period_end: Date.new(2018,3,1)
+      time_table.remove_periods! periods
+
+      expected_ranges = [
+        Date.new(2017,12,1)..Date.new(2017,12,31),
+        Date.new(2018,2,2)..Date.new(2017,3,1)
+      ]
+      expect(time_table.periods.map(&:range)).to eq(expected_ranges)
+    end
+
+  end
+
 end
