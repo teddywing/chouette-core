@@ -10,7 +10,7 @@ RSpec.describe ReferentialCloningWorker do
 
     it "invokes the clone! method of the associated ReferentialCloning" do
       expect(ReferentialCloning).to receive(:find).with(id).and_return(referential_cloning)
-      expect(referential_cloning).to receive(:clone!)
+      expect(referential_cloning).to receive(:clone_with_status!)
 
       worker.perform(id)
     end
