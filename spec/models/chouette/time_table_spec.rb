@@ -1275,7 +1275,7 @@ end
 
       expected_ranges = [
         Date.new(2017,12,1)..Date.new(2017,12,31),
-        Date.new(2018,2,2)..Date.new(2017,3,1)
+        Date.new(2018,2,2)..Date.new(2018,3,1)
       ]
       expect(time_table.periods.map(&:range)).to eq(expected_ranges)
     end

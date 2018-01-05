@@ -36,40 +36,50 @@ RSpec.describe ReferentialCloning, :type => :model do
 
     let(:cloner) { double }
 
-    before do
-      allow(AF83::SchemaCloner).to receive(:new).and_return cloner
-      allow(cloner).to receive(:clone_schema)
-    end
-
     it 'creates a schema cloner with source and target schemas and clone schema' do
       expect(AF83::SchemaCloner).to receive(:new).with(source_referential.slug, target_referential.slug).and_return(cloner)
       expect(cloner).to receive(:clone_schema)
 
       referential_cloning.clone!
     end
+  end
+
+  describe '#clone_with_status!' do
+    let(:referential_cloning) do
+      ReferentialCloning.new(target_referential: Referential.new(slug: "target"))
+    end
+
+    before do
+      allow(referential_cloning).to receive(:clone!)
+    end
+
+    it 'invokes clone! method' do
+      expect(referential_cloning).to receive(:clone!)
+      referential_cloning.clone_with_status!
+    end
 
     context 'when clone_schema is performed without error' do
       it "should have successful status" do
-        referential_cloning.clone!
+        referential_cloning.clone_with_status!
         expect(referential_cloning.status).to eq("successful")
       end
     end
 
     context 'when clone_schema raises an error' do
       it "should have failed status" do
-        expect(cloner).to receive(:clone_schema).and_raise("#fail")
-        referential_cloning.clone!
+        expect(referential_cloning).to receive(:clone!).and_raise("#fail")
+        referential_cloning.clone_with_status!
         expect(referential_cloning.status).to eq("failed")
       end
     end
 
     it "defines started_at" do
-      referential_cloning.clone!
+      referential_cloning.clone_with_status!
       expect(referential_cloning.started_at).not_to be_nil
     end
 
     it "defines ended_at" do
-      referential_cloning.clone!
+      referential_cloning.clone_with_status!
       expect(referential_cloning.ended_at).not_to be_nil
     end
 
