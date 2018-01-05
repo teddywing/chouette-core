@@ -155,6 +155,8 @@ class Referential < ActiveRecord::Base
 
   def stop_points
     Chouette::StopPoint.all
+  end
+  
   def compliance_check_sets
     ComplianceCheckSet.all
   end
