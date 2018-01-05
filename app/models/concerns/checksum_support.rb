@@ -21,7 +21,11 @@ module ChecksumSupport
   def current_checksum_source
     source = checksum_replace_nil_or_empty_values(self.checksum_attributes)
     source.map{ |item|
-      item = item.kind_of?(Array) ? item.map{ |x| "(#{x.join(',')})"}.join(',') : item
+      if item.kind_of?(Array)
+        item.map{ |x| x.kind_of?(Array) ? "(#{x.join(',')})" : x }.join(',')
+      else
+        item
+      end
     }.join(SEPARATOR)
   end
 
