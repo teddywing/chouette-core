@@ -137,7 +137,7 @@ RAILS_ENV=test bundle exec rake db:create db:migrate
 #### Load seed datas
 
 ```sh
-bundle exec rake db:seed
+bundle exec rake db:seed:stif
 ```
 
 #### Synchronise datas with lines and stop areas referentials
