@@ -49,11 +49,16 @@
       color: #fff
       border: none
       border-radius: 3px
+      overflow-x: hidden
+      text-overflow: ellipsis
+      max-width: calc(100% - 12px)
 
     .select2-selection__choice__remove
       float: right
       color: rgba(#fff, 0.5)
       margin: 0 0 0 5px
+      z-index: 2
+      position: relative
 
       &:hover
         color: #fff

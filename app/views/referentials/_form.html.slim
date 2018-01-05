@@ -3,13 +3,10 @@
   .row
     .col-lg-12
       = form.input :name
+      - if @referential.created_from
+        = form.input :created_from, disabled: true, input_html: { value: Referential.find(@referential.created_from_id).name }
       - if @referential.new_record?
-        - if @referential.created_from
-          = form.input :created_from, disabled: true, input_html: { value: Referential.find(@referential.created_from_id).name }
-          .hidden = form.input :created_from_id, as: :hidden
-      - else
-        - if @referential.created_from
-          = form.input :created_from, disabled: true, input_html: { value: Referential.find(@referential.created_from_id).name }
+        .hidden = form.input :created_from_id, as: :hidden
 
   .separator
 
