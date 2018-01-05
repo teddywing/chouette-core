@@ -572,7 +572,7 @@ module Chouette
 
     def intersect_periods!(mask_periods)
       dates.each do |date|
-        unless mask_periods.any? { |p| p.include? date }
+        unless mask_periods.any? { |p| p.include? date.date }
           dates.delete date
         end
       end
@@ -590,5 +590,35 @@ module Chouette
         end
       end
     end
+
+    def remove_periods!(removed_periods)
+      dates.each do |date|
+        if removed_periods.any? { |p| p.include? date.date }
+          dates.delete date
+        end
+      end
+
+      periods.each do |period|
+        modified_ranges = removed_periods.inject([period.range]) do |period_ranges, removed_period|
+          period_ranges.map { |p| p.remove removed_period }.flatten
+        end
+
+        unless modified_ranges.empty?
+          modified_ranges.each_with_index do |modified_range, index|
+            new_period = index == 0 ? period : periods.build
+
+            new_period.period_start, new_period.period_end =
+                                     modified_range.min, modified_range.max
+          end
+        else
+          periods.delete period
+        end
+      end
+    end
+
+    def empty?
+      dates.empty? && periods.empty?
+    end
+
   end
 end
