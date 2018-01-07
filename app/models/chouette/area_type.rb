@@ -13,6 +13,8 @@ class Chouette::AreaType
 
   @@instances = {}
   def self.find(code)
+    return unless code
+
     code = code.to_sym
     @@instances[code] ||= new(code) if ALL.include? code
   end

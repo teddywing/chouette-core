@@ -9,6 +9,10 @@ RSpec.describe Chouette::AreaType do
   end
 
   describe ".find" do
+    it "returns nil if the given code is nil" do
+      expect(Chouette::AreaType.find(nil)).to be_nil
+    end
+
     it "returns nil if the given code is unknown" do
       expect(Chouette::AreaType.find('dummy')).to be_nil
     end
