@@ -281,22 +281,6 @@ ActiveRecord::Schema.define(version: 20180108132310) do
 
   add_index "connection_links", ["objectid"], name: "connection_links_objectid_key", unique: true, using: :btree
 
-  create_table "delayed_jobs", id: :bigserial, force: :cascade do |t|
-    t.integer  "priority",               default: 0
-    t.integer  "attempts",               default: 0
-    t.text     "handler"
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by",  limit: 255
-    t.string   "queue",      limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
-
   create_table "exports", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id",  limit: 8
     t.string   "status"
@@ -416,12 +400,12 @@ ActiveRecord::Schema.define(version: 20180108132310) do
     t.datetime "started_at"
     t.datetime "ended_at"
     t.string   "token_download"
-    t.string   "type",                  limit: 255
+    t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
-    t.integer  "current_step",                      default: 0
-    t.integer  "total_steps",                       default: 0
     t.datetime "notified_parent_at"
+    t.integer  "current_step",                    default: 0
+    t.integer  "total_steps",                     default: 0
     t.string   "creator"
   end
 
@@ -572,11 +556,6 @@ ActiveRecord::Schema.define(version: 20180108132310) do
   add_index "networks", ["line_referential_id"], name: "index_networks_on_line_referential_id", using: :btree
   add_index "networks", ["objectid"], name: "networks_objectid_key", unique: true, using: :btree
   add_index "networks", ["registration_number"], name: "networks_registration_number_key", using: :btree
-
-  create_table "object_id_factories", id: :bigserial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "organisations", id: :bigserial, force: :cascade do |t|
     t.string   "name"
@@ -764,7 +743,7 @@ ActiveRecord::Schema.define(version: 20180108132310) do
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
     t.integer  "parent_id",                       limit: 8
-    t.string   "objectid",                                                              null: false
+    t.string   "objectid",                                                            null: false
     t.integer  "object_version",                  limit: 8
     t.string   "name"
     t.string   "comment"
@@ -772,8 +751,8 @@ ActiveRecord::Schema.define(version: 20180108132310) do
     t.string   "registration_number"
     t.string   "nearest_topic_name"
     t.integer  "fare_code"
-    t.decimal  "longitude",                                   precision: 19, scale: 16
-    t.decimal  "latitude",                                    precision: 19, scale: 16
+    t.decimal  "longitude",                                 precision: 19, scale: 16
+    t.decimal  "latitude",                                  precision: 19, scale: 16
     t.string   "long_lat_type"
     t.string   "country_code"
     t.string   "street_name"
@@ -791,7 +770,7 @@ ActiveRecord::Schema.define(version: 20180108132310) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "stif_type",                       limit: 255
+    t.string   "stif_type"
     t.integer  "waiting_time"
   end
 
@@ -862,17 +841,17 @@ ActiveRecord::Schema.define(version: 20180108132310) do
   add_index "time_table_periods", ["time_table_id"], name: "index_time_table_periods_on_time_table_id", using: :btree
 
   create_table "time_tables", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                                null: false
-    t.integer  "object_version",  limit: 8,   default: 1
+    t.string   "objectid",                              null: false
+    t.integer  "object_version",  limit: 8, default: 1
     t.string   "version"
     t.string   "comment"
-    t.integer  "int_day_types",               default: 0
+    t.integer  "int_day_types",             default: 0
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "calendar_id",     limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "color",           limit: 255
+    t.string   "color"
     t.integer  "created_from_id", limit: 8
     t.string   "checksum"
     t.text     "checksum_source"
@@ -1014,14 +993,14 @@ ActiveRecord::Schema.define(version: 20180108132310) do
 
   create_table "workgroups", id: :bigserial, force: :cascade do |t|
     t.string   "name"
-    t.integer  "line_referential_id"
-    t.integer  "stop_area_referential_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "line_referential",      limit: 8
+    t.integer  "stop_area_referential", limit: 8
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
-  add_index "workgroups", ["line_referential_id"], name: "index_workgroups_on_line_referential_id", using: :btree
-  add_index "workgroups", ["stop_area_referential_id"], name: "index_workgroups_on_stop_area_referential_id", using: :btree
+  add_index "workgroups", ["line_referential"], name: "index_workgroups_on_line_referential", using: :btree
+  add_index "workgroups", ["stop_area_referential"], name: "index_workgroups_on_stop_area_referential", using: :btree
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
@@ -1038,9 +1017,7 @@ ActiveRecord::Schema.define(version: 20180108132310) do
   add_foreign_key "compliance_controls", "compliance_control_blocks"
   add_foreign_key "compliance_controls", "compliance_control_sets"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
-  add_foreign_key "journey_frequencies", "timebands", name: "journey_frequencies_timeband_id_fk", on_delete: :nullify
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
-  add_foreign_key "journey_frequencies", "vehicle_journeys", name: "journey_frequencies_vehicle_journey_id_fk", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify
   add_foreign_key "journey_patterns", "routes", name: "jp_route_fkey", on_delete: :cascade
   add_foreign_key "journey_patterns", "stop_points", column: "arrival_stop_point_id", name: "arrival_point_fkey", on_delete: :nullify
@@ -1060,6 +1037,4 @@ ActiveRecord::Schema.define(version: 20180108132310) do
   add_foreign_key "vehicle_journey_at_stops", "vehicle_journeys", name: "vjas_vj_fkey", on_delete: :cascade
   add_foreign_key "vehicle_journeys", "journey_patterns", name: "vj_jp_fkey", on_delete: :cascade
   add_foreign_key "vehicle_journeys", "routes", name: "vj_route_fkey", on_delete: :cascade
-  add_foreign_key "workgroups", "line_referentials"
-  add_foreign_key "workgroups", "stop_area_referentials"
 end

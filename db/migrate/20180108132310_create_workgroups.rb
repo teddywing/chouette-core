@@ -2,8 +2,8 @@ class CreateWorkgroups < ActiveRecord::Migration
   def change
     create_table :workgroups do |t|
       t.string :name
-      t.references :line_referential, index: true, foreign_key: true
-      t.references :stop_area_referential, index: true, foreign_key: true
+      t.integer :line_referential, index: true, limit: 8
+      t.integer :stop_area_referential, index: true, limit: 8
 
       t.timestamps null: false
     end
