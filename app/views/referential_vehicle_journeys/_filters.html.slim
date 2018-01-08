@@ -5,6 +5,10 @@
       span.input-group-btn
         button.btn.btn-default#search-btn type='submit'
           span.fa.fa-search
+  .ffg-row
+    .form-group.togglable
+      = f.label Chouette::VehicleJourney.human_attribute_name(:company_id), required: false, class: 'control-label'
+      = f.input :company_id_eq_any, collection: @all_companies.select(:id, :name).order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
 
   .actions
     = link_to 'Effacer', referential_vehicle_journeys_path(@referential), class: 'btn btn-link'
