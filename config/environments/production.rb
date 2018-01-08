@@ -133,7 +133,7 @@ Rails.application.configure do
 
   # IEV
   config.iev_url = ENV.fetch('IEV_URL',"http://iev:8080")
-  config.rails_host = ENV.fetch('RAILS_HOST','http://front')
+  config.rails_host = ENV.fetch('RAILS_HOST','http://front:3000')
 
   # Set node env for browserify-rails
   # config.browserify_rails.node_env = "production"
