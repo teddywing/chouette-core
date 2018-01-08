@@ -132,10 +132,14 @@ module Chouette
     def update_vjas_from_state state
       state.each do |vjas|
         next if vjas["dummy"]
+        stop_point = Chouette::StopPoint.find_by(objectid: vjas['stop_point_objectid'])
+        stop_area = stop_point&.stop_area
+        tz = stop_area&.time_zone
+        tz = tz && ActiveSupport::TimeZone[tz]
         params = {}.tap do |el|
           ['arrival_time', 'departure_time'].each do |field|
             time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
-            el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
+            el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 #{tz&.formatted_offset || "UTC"}")
           end
         end
         stop = create_or_find_vjas_from_state(vjas)

@@ -64,10 +64,12 @@ describe Chouette::VehicleJourney, :type => :model do
         at_stop[att.to_s] = vjas.send(att) unless vjas.send(att).nil?
       end
 
-      [:arrival_time, :departure_time].map do |att|
-        at_stop[att.to_s] = {
-          'hour'   => vjas.send(att).strftime('%H'),
-          'minute' => vjas.send(att).strftime('%M'),
+      at_stop["stop_point_objectid"] = vjas&.stop_point&.objectid
+
+      [:arrival, :departure].map do |att|
+        at_stop["#{att}_time"] = {
+          'hour'   => vjas.send("#{att}_local_time").strftime('%H'),
+          'minute' => vjas.send("#{att}_local_time").strftime('%M'),
         }
       end
       at_stop
@@ -110,6 +112,26 @@ describe Chouette::VehicleJourney, :type => :model do
 
       expect(collection.last['objectid']).to eq obj.objectid
       expect(obj.published_journey_name).to eq 'dummy'
+    end
+
+    it 'should expect local times' do
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      stop_area = create(:stop_area, time_zone: "Mexico City")
+      stop_point = create(:stop_point, stop_area: stop_area)
+      new_vj.vehicle_journey_at_stops << build(:vehicle_journey_at_stop, vehicle_journey: vehicle_journey, stop_point: stop_point)
+      data = vehicle_journey_to_state(new_vj)
+      data['vehicle_journey_at_stops'][0]["departure_time"]["hour"] = "15"
+      data['vehicle_journey_at_stops'][0]["arrival_time"]["hour"] = "12"
+      collection << data
+      expect {
+        Chouette::VehicleJourney.state_update(route, collection)
+      }.to change {Chouette::VehicleJourney.count}.by(1)
+      created = Chouette::VehicleJourney.last.vehicle_journey_at_stops.last
+      expect(created.stop_point).to eq stop_point
+      expect(created.departure_local_time.hour).to_not eq created.departure_time.hour
+      expect(created.arrival_local_time.hour).to_not eq created.arrival_time.hour
+      expect(created.departure_local_time.hour).to eq 15
+      expect(created.arrival_local_time.hour).to eq 12
     end
 
     it 'should save vehicle_journey_at_stops of newly created vj' do

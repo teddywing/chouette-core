@@ -21,7 +21,14 @@ export default class StopAreaHeaderManager {
         data-headline={showHeadline}
         title={sp.city_name + ' (' + sp.zip_code +')'}
       >
-        <span><span>{sp.name}</span></span>
+        <span>
+          <span>
+            {sp.name}
+            {sp.time_zone_formatted_offset && <span className="small">
+              &nbsp;({sp.time_zone_formatted_offset})
+            </span>}
+          </span>
+        </span>
       </div>
     )
   }

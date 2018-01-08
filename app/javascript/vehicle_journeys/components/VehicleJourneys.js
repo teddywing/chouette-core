@@ -109,8 +109,8 @@ export default class VehicleJourneys extends Component {
                 <div className='th'>
                   <div className='strong mb-xs'>ID course</div>
                   <div>Nom course</div>
-                  <div>ID mission</div>
                   <div>Transporteur</div>
+                  <div>ID mission</div>
                   <div>Calendriers</div>
                   { this.hasFeature('purchase_windows') && <div>Calendriers Commerciaux</div> }
                 </div>

@@ -77,11 +77,37 @@ module Chouette
     end
 
     def departure
-      departure_time.utc.strftime "%H:%M" if departure_time
+      format_time departure_time.utc
     end
 
     def arrival
-      arrival_time.utc.strftime "%H:%M" if arrival_time
+      format_time arrival_time.utc
+    end
+
+    def departure_local_time
+      local_time departure_time
+    end
+
+    def arrival_local_time
+      local_time arrival_time
+    end
+
+    def departure_local
+      format_time departure_local_time
+    end
+
+    def arrival_local
+      format_time arrival_local_time
+    end
+
+    private
+    def local_time time
+      return time unless stop_point&.stop_area&.time_zone.present?
+      time + ActiveSupport::TimeZone[stop_point.stop_area.time_zone].utc_offset
+    end
+
+    def format_time time
+      time.strftime "%H:%M" if time
     end
 
   end
