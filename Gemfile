@@ -60,7 +60,7 @@ gem 'faraday', '~> 0.9.1'
 platforms :ruby do
   gem 'therubyracer', '~> 0.12'
   gem 'pg'
-  gem 'sqlite3'
+  #gem 'sqlite3'
 end
 
 gem 'activerecord-postgis-adapter', "~> 3.0.0"
@@ -139,6 +139,8 @@ gem 'rake'
 gem 'devise-async'
 gem 'apartment', '~> 1.0.0'
 gem 'aasm'
+gem 'activerecord-nulldb-adapter'
+gem 'puma', '~> 3.10.0'
 
 gem 'newrelic_rpm'
 gem 'letter_opener'
@@ -158,6 +160,7 @@ group :development do
   gem 'bundler-audit'
   gem 'spring-commands-rspec'
   gem 'dbshell-rails'
+  gem 'rack-livereload'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'

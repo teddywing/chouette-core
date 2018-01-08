@@ -54,6 +54,10 @@ export default class JourneyPatterns extends Component {
     }
   }
 
+  hasFeature(key) {
+    return this.props.status.features[key]
+  }
+
   cityNameChecker(sp) {
     let bool = false
     if(sp.city_name != this.previousCity){
@@ -115,7 +119,7 @@ export default class JourneyPatterns extends Component {
                 </div>
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (
-                    <div key={i} className='td'>
+                    <div key={i} className={'td' + (this.hasFeature('costs_in_journey_patterns') ? ' with-costs' : '')}>
                       {this.cityNameChecker(sp)}
                     </div>
                   )
@@ -131,6 +135,7 @@ export default class JourneyPatterns extends Component {
                       onCheckboxChange= {(e) => this.props.onCheckboxChange(e, index)}
                       onOpenEditModal= {() => this.props.onOpenEditModal(index, journeyPattern)}
                       onDeleteJourneyPattern={() => this.props.onDeleteJourneyPattern(index)}
+                      onUpdateJourneyPatternCosts={(costs) => this.props.onUpdateJourneyPatternCosts(index, costs)}
                       status= {this.props.status}
                       editMode= {this.props.editMode}
                       />

@@ -112,6 +112,22 @@ describe('when clicking on a journey pattern delete button', () => {
     expect(actions.deleteJourneyPattern(index)).toEqual(expectedAction)
   })
 })
+describe('when changing on a journey pattern costs', () => {
+  it('should create an action to update journey pattern', () => {
+    const index = 1
+    const costs = {
+      "1-2": {
+        distance: 1
+      }
+    }
+    const expectedAction = {
+      type: 'UPDATE_JOURNEYPATTERN_COSTS',
+      index,
+      costs
+    }
+    expect(actions.updateJourneyPatternCosts(index, costs)).toEqual(expectedAction)
+  })
+})
 describe('when clicking on validate button inside edit modal', () => {
   it('should create an action to save journey pattern modifications', () => {
     const index = 1
