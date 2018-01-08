@@ -7,8 +7,14 @@
           span.fa.fa-search
   .ffg-row
     .form-group.togglable
-      = f.label Chouette::VehicleJourney.human_attribute_name(:company_id), required: false, class: 'control-label'
+      = f.label Chouette::VehicleJourney.human_attribute_name(:company), required: false, class: 'control-label'
       = f.input :company_id_eq_any, collection: @all_companies.select(:id, :name).order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+    .form-group.togglable.name-filter
+      = f.label Chouette::VehicleJourney.human_attribute_name(:published_journey_name), required: false, class: 'control-label'
+      .inputs.form-inline.checkbox_list
+        = f.input :published_journey_name_gteq, label: false, wrapper_html: { class: 'w45'}
+        .form-group.w10.to= I18n.t('vehicle_journeys.form.to')
+        = f.input :published_journey_name_lteq, label: false, wrapper_html: { class: 'w45'}
 
   .actions
     = link_to 'Effacer', referential_vehicle_journeys_path(@referential), class: 'btn btn-link'

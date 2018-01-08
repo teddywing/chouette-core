@@ -11,7 +11,7 @@ class ReferentialVehicleJourneysController < ChouetteController
 
   def collection
     @q ||= end_of_association_chain.ransack(params[:q])
-    @vehicle_journeys ||= @q.result.includes(:vehicle_journey_at_stops).paginate page: params[:page], per_page: 10
+    @vehicle_journeys ||= @q.result.order(:published_journey_name).includes(:vehicle_journey_at_stops).paginate page: params[:page], per_page: 10
     @all_companies = Chouette::Company.where("id IN (#{@referential.vehicle_journeys.select(:company_id).to_sql})").distinct
   end
 
