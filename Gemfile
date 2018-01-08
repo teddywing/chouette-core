@@ -139,7 +139,6 @@ gem 'rake'
 gem 'devise-async'
 gem 'apartment', '~> 1.0.0'
 gem 'aasm'
-gem 'activerecord-nulldb-adapter'
 gem 'puma', '~> 3.10.0'
 
 gem 'newrelic_rpm'
