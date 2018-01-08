@@ -64,6 +64,11 @@ const actions = {
     type : 'DELETE_JOURNEYPATTERN',
     index,
   }),
+  updateJourneyPatternCosts : (index, costs) => ({
+    type : 'UPDATE_JOURNEYPATTERN_COSTS',
+    index,
+    costs
+  }),
   closeModal : () => ({
     type : 'CLOSE_MODAL'
   }),
@@ -194,16 +199,13 @@ const actions = {
                   }
                 })
               }
-              journeyPatterns.push({
-                name: val.name,
-                object_id: val.object_id,
-                short_id: val.short_id,
-                checksum: val.checksum,
-                published_name: val.published_name,
-                registration_number: val.registration_number,
-                stop_points: val.route_short_description.stop_points,
-                deletable: false
-              })
+              journeyPatterns.push(
+                _.assign({}, val, {
+                  stop_points: val.route_short_description.stop_points,
+                  costs: val.costs || {},
+                  deletable: false
+                })
+              )
             }
           }
           window.currentItemsLength = journeyPatterns.length

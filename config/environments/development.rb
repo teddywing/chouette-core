@@ -93,4 +93,6 @@ Rails.application.configure do
   config.validation_spec = "http://www.chouette.mobi/neptune-validation/v21/"
 
   config.i18n.available_locales = [:fr, :en]
+
+  config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload) if ENV['LIVERELOAD']
 end

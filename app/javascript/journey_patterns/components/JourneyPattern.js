@@ -5,6 +5,17 @@ export default class JourneyPattern extends Component{
   constructor(props){
     super(props)
     this.previousCity = undefined
+    this.previousSpId = undefined
+    this.updateCosts = this.updateCosts.bind(this)
+  }
+
+  updateCosts(e) {
+    let costs = {
+      [e.target.dataset.costsKey]: {
+        [e.target.name]: parseFloat(e.target.value)
+      }
+    }
+    this.props.onUpdateJourneyPatternCosts(costs)
   }
 
   vehicleJourneyURL(jpOid) {
@@ -16,16 +27,26 @@ export default class JourneyPattern extends Component{
     )
   }
 
+  hasFeature(key) {
+    return this.props.status.features[key]
+  }
+
   cityNameChecker(sp) {
     let bool = false
+
     if(sp.city_name != this.previousCity){
       bool = true
       this.previousCity = sp.city_name
     }
+    return bool
+  }
+
+  spNode(sp, headlined){
     return (
       <div
-        className={(bool) ? 'headlined' : ''}
+        className={(headlined) ? 'headlined' : ''}
       >
+        <div className={'link '}></div>
         <span className='has_radio'>
           <input
             onChange = {(e) => this.props.onCheckboxChange(e)}
@@ -61,9 +82,9 @@ export default class JourneyPattern extends Component{
 
   render() {
     this.previousCity = undefined
-
+    this.previousSpId = undefined
     return (
-      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.object_id ? '' : ' to_record') + (this.props.value.errors ? ' has-error': '')}>
+      <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.object_id ? '' : ' to_record') + (this.props.value.errors ? ' has-error': '') + (this.hasFeature('costs_in_journey_patterns') ? ' with-costs' : '')}>
         {/* Errors */}
         {/* this.props.value.errors ? this.getErrors(this.props.value.errors) : '' */}
 
@@ -112,9 +133,49 @@ export default class JourneyPattern extends Component{
           </div>
 
           {this.props.value.stop_points.map((stopPoint, i) =>{
+            let costs = null
+            let costsKey = null
+            let time = null
+            let distance = null
+            let time_in_words = null
+            if(this.previousSpId && stopPoint.checked){
+              costsKey = this.previousSpId + "-" + stopPoint.id
+              costs = this.props.value.costs[costsKey] || {distance: 0, time: 0}
+              time = costs['time'] || 0
+              distance = costs['distance'] || 0
+              if(time < 60){
+                time_in_words = time + " min"
+              }
+              else{
+                let hours = parseInt(time/60)
+                time_in_words = hours + " h " + (time - 60*hours) + " min"
+              }
+            }
+            if(stopPoint.checked){
+              this.previousSpId = stopPoint.id
+            }
+            let headlined = this.cityNameChecker(stopPoint)
             return (
-              <div key={i} className='td'>
-                {this.cityNameChecker(stopPoint)}
+              <div key={i} className={(stopPoint.checked ? 'activated' : 'deactivated') + (this.props.editMode ? ' edit-mode' : '')}>
+                <div className={'td' + (headlined ? ' with-headline' : '')}>
+                  {this.spNode(stopPoint, headlined)}
+                </div>
+                {this.hasFeature('costs_in_journey_patterns') && costs && <div className='costs' id={'costs-' + this.props.value.id + '-' + costsKey }>
+                  {this.props.editMode && <div>
+                    <p>
+                      <input type="number" value={costs['distance'] || 0} min='0' name="distance" step="0.01" onChange={this.updateCosts} data-costs-key={costsKey}/>
+                      <span>km</span>
+                    </p>
+                    <p>
+                      <input type="number" value={costs['time'] || 0} min='0' name="time" onChange={this.updateCosts} data-costs-key={costsKey}/>
+                      <span>min</span>
+                    </p>
+                  </div>}
+                  {!this.props.editMode && <div>
+                    <p><i className="fa fa-arrows-h"></i>{(costs['distance'] || 0) + " km"}</p>
+                    <p><i className="fa fa-clock-o"></i>{time_in_words}</p>
+                  </div>}
+                </div>}
               </div>
             )
           })}

@@ -58,14 +58,14 @@ module Chouette
       {
         name: item['name'],
         published_name: item['published_name'],
-        registration_number: item['registration_number']
+        registration_number: item['registration_number'],
+        costs: item['costs']
       }
     end
 
     def self.state_create_instance route, item
       # Flag new record, so we can unset object_id if transaction rollback
       jp = route.journey_patterns.create(state_permited_attributes(item))
-
       # FIXME
       # DefaultAttributesSupport will trigger some weird validation on after save
       # wich will call to valid?, wich will populate errors
@@ -145,6 +145,10 @@ module Chouette
       vehicle_journey_at_stops.where( :stop_point_id => stop_point.id).each do |vjas|
         vjas.destroy
       end
+    end
+
+    def costs
+      read_attribute(:costs) || {}
     end
   end
 end
