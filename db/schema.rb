@@ -993,14 +993,14 @@ ActiveRecord::Schema.define(version: 20180108132310) do
 
   create_table "workgroups", id: :bigserial, force: :cascade do |t|
     t.string   "name"
-    t.integer  "line_referential",      limit: 8
-    t.integer  "stop_area_referential", limit: 8
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
-  add_index "workgroups", ["line_referential"], name: "index_workgroups_on_line_referential", using: :btree
-  add_index "workgroups", ["stop_area_referential"], name: "index_workgroups_on_stop_area_referential", using: :btree
+  add_index "workgroups", ["line_referential_id"], name: "index_workgroups_on_line_referential_id", using: :btree
+  add_index "workgroups", ["stop_area_referential_id"], name: "index_workgroups_on_stop_area_referential_id", using: :btree
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
