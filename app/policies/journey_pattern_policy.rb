@@ -7,14 +7,14 @@ class JourneyPatternPolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && organisation_match? && user.has_permission?('journey_patterns.create')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('journey_patterns.create')
   end
 
   def destroy?
-    !archived? && organisation_match? && user.has_permission?('journey_patterns.destroy')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('journey_patterns.destroy')
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('journey_patterns.update')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('journey_patterns.update')
   end
 end

@@ -105,7 +105,7 @@ describe TableBuilderHelper, type: :helper do
           TableBuilderHelper::Column.new(
             key: :status,
             attribute: Proc.new do |w|
-              if w.archived?
+              if w.archived_or_finalised?
                 ("<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>").html_safe
               else
                 ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>").html_safe

@@ -6,14 +6,14 @@ class AccessLinkPolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && organisation_match? && user.has_permission?('access_links.create')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('access_links.create')
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('access_links.update')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('access_links.update')
   end
 
   def destroy?
-    !archived? && organisation_match? && user.has_permission?('access_links.destroy')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('access_links.destroy')
   end
 end

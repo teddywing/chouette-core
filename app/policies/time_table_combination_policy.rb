@@ -7,6 +7,6 @@ class TimeTableCombinationPolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && organisation_match? && user.has_permission?('time_tables.update')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('time_tables.update')
   end
 end

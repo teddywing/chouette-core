@@ -6,15 +6,15 @@ class RoutePolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && organisation_match? && user.has_permission?('routes.create')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('routes.create')
   end
 
   def destroy?
-    !archived? && organisation_match? && user.has_permission?('routes.destroy')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('routes.destroy')
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('routes.update')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('routes.update')
   end
 
   def duplicate?

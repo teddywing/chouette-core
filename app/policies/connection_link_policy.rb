@@ -6,14 +6,14 @@ class ConnectionLinkPolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && organisation_match? && user.has_permission?('connection_links.create')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('connection_links.create')
   end
 
   def destroy?
-    !archived? && organisation_match? && user.has_permission?('connection_links.destroy')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('connection_links.destroy')
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('connection_links.update')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('connection_links.update')
   end
 end

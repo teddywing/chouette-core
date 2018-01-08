@@ -6,14 +6,14 @@ class RoutingConstraintZonePolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.create')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('routing_constraint_zones.create')
   end
 
   def destroy?
-    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.destroy')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('routing_constraint_zones.destroy')
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('routing_constraint_zones.update')
+    !archived_or_finalised? && organisation_match? && user.has_permission?('routing_constraint_zones.update')
   end
 end

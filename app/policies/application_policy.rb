@@ -76,10 +76,11 @@ class ApplicationPolicy
   #  Custom Permissions
   #  ------------------
 
-  def archived?
-    return @is_archived if instance_variable_defined?(:@is_archived)
-    @is_archived = is_archived
+  def archived_or_finalised?
+    return @is_archived_or_finalised if instance_variable_defined?(:@is_archived_or_finalised)
+    @is_archived_or_finalised = is_archived_or_finalised
   end
+
 
   def organisation_match?
     user.organisation_id == organisation_id
@@ -116,12 +117,12 @@ class ApplicationPolicy
   end
 
   private
-  def is_archived
+  def is_archived_or_finalised
     !!case referential
     when Referential
-      referential.archived_at
+      referential.archived_at || referential.in_referential_suite?
     else
-      current_referential.try(:archived_at)
+      current_referential.try(:archived_at) || current_referential.try(:in_referential_suite?)
     end
   end
 end
