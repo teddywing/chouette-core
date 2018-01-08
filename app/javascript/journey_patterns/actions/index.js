@@ -199,18 +199,6 @@ const actions = {
                   }
                 })
               }
-<<<<<<< HEAD
-              journeyPatterns.push({
-                name: val.name,
-                object_id: val.object_id,
-                short_id: val.short_id,
-                checksum: val.checksum,
-                published_name: val.published_name,
-                registration_number: val.registration_number,
-                stop_points: val.route_short_description.stop_points,
-                deletable: false
-              })
-=======
               journeyPatterns.push(
                 _.assign({}, val, {
                   stop_points: val.route_short_description.stop_points,
@@ -218,7 +206,6 @@ const actions = {
                   deletable: false
                 })
               )
->>>>>>> Refs #5455 @6h; Add time and distance between stops in Journey Patterns
             }
           }
           window.currentItemsLength = journeyPatterns.length
