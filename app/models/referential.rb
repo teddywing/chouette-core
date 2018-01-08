@@ -422,10 +422,12 @@ class Referential < ActiveRecord::Base
     GeoRuby::SimpleFeatures::Geometry.from_ewkt(bounds.present? ? bounds : default_bounds ).envelope
   end
 
-  # Archive
-  def archived?
-    archived_at != nil
+  # For Delegator
+  def archived_or_finalised?
+    archived_at || in_referential_suite?
   end
+
+  # Archive
 
   def archive!
     # self.archived = true
