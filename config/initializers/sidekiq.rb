@@ -18,3 +18,5 @@ unless Rails.env.test? || Rails.env.development?
     config.redis = { url: ENV.fetch('SIDEKIQ_REDIS_URL', 'redis://redis:6379/12') }
   end
 end
+
+Sidekiq.default_worker_options = { retry: false }
