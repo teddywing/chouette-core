@@ -60,7 +60,7 @@ gem 'faraday', '~> 0.9.1'
 platforms :ruby do
   gem 'therubyracer', '~> 0.12'
   gem 'pg'
-  gem 'sqlite3'
+  #gem 'sqlite3'
 end
 
 gem 'activerecord-postgis-adapter', "~> 3.0.0"
@@ -139,6 +139,8 @@ gem 'rake'
 gem 'devise-async'
 gem 'apartment', '~> 1.0.0'
 gem 'aasm'
+gem 'activerecord-nulldb-adapter'
+gem 'puma', '~> 3.10.0'
 
 gem 'newrelic_rpm'
 gem 'letter_opener'

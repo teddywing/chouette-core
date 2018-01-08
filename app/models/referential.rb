@@ -156,7 +156,7 @@ class Referential < ActiveRecord::Base
   def stop_points
     Chouette::StopPoint.all
   end
-  
+
   def compliance_check_sets
     ComplianceCheckSet.all
   end
@@ -356,7 +356,13 @@ class Referential < ActiveRecord::Base
       end
 
       Rails.logger.info("Schema create benchmark: '#{slug}'\t#{report}")
-      Rails.logger.error( "Schema migrations count for Referential #{slug} " + Referential.connection.select_value("select count(*) from #{slug}.schema_migrations;").to_s )
+      Rails.logger.info("Schema migrations count for Referential #{slug}: #{migration_count || '-'}")
+    end
+  end
+
+  def migration_count
+    if self.class.connection.table_exists?("#{slug}.schema_migrations")
+      self.class.connection.select_value("select count(*) from #{slug}.schema_migrations;")
     end
   end
 
