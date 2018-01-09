@@ -15,7 +15,7 @@ fr:
       title: "Imports"
       warning: ""
     new:
-      title: "Imports"
+      title: "Générer un import"
     show:
       title: "Import %{name}"
       report: "Rapport"
