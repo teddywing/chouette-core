@@ -9,14 +9,12 @@ export default class EditVehicleJourney extends Component {
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
-      var company;
+      var company = undefined
       if(this.props.modal.modalProps.selectedCompany) {
         company = this.props.modal.modalProps.selectedCompany
-      } else if (typeof this.props.modal.modalProps.vehicleJourney.company === Object) {
+      } else if (typeof this.props.modal.modalProps.vehicleJourney.company === "object") {
         company = this.props.modal.modalProps.vehicleJourney.company
-      } else {
-        company = undefined
-      }
+      } 
       this.props.onEditVehicleJourney(this.refs, company)
       this.props.onModalClose()
       $('#EditVehicleJourneyModal').modal('hide')
