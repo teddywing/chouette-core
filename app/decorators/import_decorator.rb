@@ -16,14 +16,6 @@ class ImportDecorator < Draper::Decorator
     links = []
 
     links << Link.new(
-      content: h.t('imports.actions.show'),
-      href: h.workbench_import_path(
-        context[:workbench],
-        object
-      )
-    )
-
-    links << Link.new(
       content: h.t('imports.actions.download'),
       href: object.file.url
     )
