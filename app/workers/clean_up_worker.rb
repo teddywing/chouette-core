@@ -1,6 +1,5 @@
 class CleanUpWorker
   include Sidekiq::Worker
-  sidekiq_options :retry => false
 
   def perform(id)
     cleaner = CleanUp.find id
