@@ -6,15 +6,15 @@ class PurchaseWindowPolicy < ApplicationPolicy
   end
 
   def create?
-     !archived_or_finalised? && organisation_match? && user.has_permission?('purchase_windows.create')
+     !referential_read_only? && organisation_match? && user.has_permission?('purchase_windows.create')
   end
 
   def update?
-    !archived_or_finalised? && organisation_match? && user.has_permission?('purchase_windows.update')
+    !referential_read_only? && organisation_match? && user.has_permission?('purchase_windows.update')
   end
 
   def destroy?
-    !archived_or_finalised? && organisation_match? && user.has_permission?('purchase_windows.destroy')
+    !referential_read_only? && organisation_match? && user.has_permission?('purchase_windows.destroy')
   end
 
 end

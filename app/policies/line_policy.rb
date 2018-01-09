@@ -26,15 +26,15 @@ class LinePolicy < ApplicationPolicy
   end
 
   def create_footnote?
-    !archived_or_finalised? && organisation_match? && user.has_permission?('footnotes.create')
+    !referential_read_only? && organisation_match? && user.has_permission?('footnotes.create')
   end
 
   def edit_footnote?
-    !archived_or_finalised? && organisation_match? && user.has_permission?('footnotes.update')
+    !referential_read_only? && organisation_match? && user.has_permission?('footnotes.update')
   end
 
   def destroy_footnote?
-    !archived_or_finalised? && organisation_match? && user.has_permission?('footnotes.destroy')
+    !referential_read_only? && organisation_match? && user.has_permission?('footnotes.destroy')
   end
 
   def update_footnote?  ; edit_footnote? end

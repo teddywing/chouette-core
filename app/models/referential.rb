@@ -252,6 +252,10 @@ class Referential < ActiveRecord::Base
   before_destroy :destroy_schema
   before_destroy :destroy_jobs
 
+  def referential_read_only?
+    in_referential_suite? || archived_at
+  end
+
   def in_referential_suite?
     referential_suite_id.present?
   end
@@ -420,11 +424,6 @@ class Referential < ActiveRecord::Base
   def envelope
     bounds = read_attribute(:bounds)
     GeoRuby::SimpleFeatures::Geometry.from_ewkt(bounds.present? ? bounds : default_bounds ).envelope
-  end
-
-  # For Delegator
-  def archived_or_finalised?
-    archived_at || in_referential_suite?
   end
 
   # Archive

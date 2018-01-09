@@ -37,7 +37,7 @@ They are overriden as follows
 
 ```ruby
       def <destructive>?
-        !archived_or_finalised? && organisation_match? && user.has_permission('<resource in plural form>.<action>')
+        !referential_read_only? && organisation_match? && user.has_permission('<resource in plural form>.<action>')
       end
 ```
 

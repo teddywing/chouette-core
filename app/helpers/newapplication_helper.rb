@@ -147,7 +147,7 @@ module NewapplicationHelper
             content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
           end
         elsif action == :archive
-          unless item.archived_or_finalised?
+          unless item.referntial_read_only?
             content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
           end
         elsif action == :unarchive

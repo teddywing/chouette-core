@@ -10,19 +10,19 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def destroy?
-    !archived_or_finalised? && organisation_match? && user.has_permission?('referentials.destroy')
+    !referential_read_only? && organisation_match? && user.has_permission?('referentials.destroy')
   end
 
   def update?
-    !archived_or_finalised? && organisation_match? && user.has_permission?('referentials.update')
+    !referential_read_only? && organisation_match? && user.has_permission?('referentials.update')
   end
 
   def clone?
-    !archived_or_finalised? && create?
+    !referential_read_only? && create?
   end
 
   def validate?
-    !archived_or_finalised? && create? && organisation_match?
+    !referential_read_only? && create? && organisation_match?
   end
 
   def archive?

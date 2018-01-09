@@ -81,15 +81,10 @@ class ApplicationPolicy
     @is_archived = is_archived
   end
 
-  def finalised?
-    return @is_finalised if instance_variable_defined?(:@is_finalised)
-    @is_finalised = is_finalised
+  def referential_read_only?
+    return @is_referential_read_only if instance_variable_defined?(:@is_referential_read_only)
+    @is_referential_read_only = is_referential_read_only
   end
-
-  def archived_or_finalised?
-    archived? || finalised?
-  end
-
 
   def organisation_match?
     user.organisation_id == organisation_id
@@ -135,12 +130,12 @@ class ApplicationPolicy
     end
   end
 
-  def is_finalised
+  def is_referential_read_only
     !!case referential
     when Referential
-      referential.in_referential_suite?
+      referential.referential_read_only?
     else
-      current_referential.try(:in_referential_suite?)
+      current_referential.try(:referential_read_only?)
     end
   end
 end
