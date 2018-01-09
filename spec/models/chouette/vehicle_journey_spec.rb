@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
+  subject { create(:vehicle_journey) }
+
   it { is_expected.to be_versioned }
   it { should have_and_belong_to_many(:purchase_windows) }
 
@@ -21,7 +23,7 @@ describe Chouette::VehicleJourney, :type => :model do
   end
 
   describe 'checksum' do
-    it_behaves_like 'checksum support', :vehicle_journey
+    it_behaves_like 'checksum support'
   end
 
   describe "vjas_departure_time_must_be_before_next_stop_arrival_time",

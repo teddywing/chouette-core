@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
+  subject { create(:vehicle_journey_at_stop) }
+
   describe 'checksum' do
     let(:at_stop) { build_stubbed(:vehicle_journey_at_stop) }
 
-    it_behaves_like 'checksum support', :vehicle_journey_at_stop
+    it_behaves_like 'checksum support'
 
     context '#checksum_attributes' do
       it 'should return attributes' do
