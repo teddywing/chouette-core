@@ -37,6 +37,7 @@ Apartment.configure do |config|
     'Chouette::GroupOfLine',
     'Chouette::Company',
     'Chouette::Network',
+    'CustomField',
     'ReferentialCloning',
     'Workbench',
     'CleanUp',
