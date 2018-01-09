@@ -48,6 +48,7 @@ class VehicleJourneysController < ChouetteController
         @vehicle_journeys = @vehicle_journeys.includes({stop_points: :stop_area})
       end
       format.html do
+        load_missions
         @stop_points_list = []
         @stop_points_list = route.stop_points.includes(:stop_area).map do |sp|
           {
@@ -173,6 +174,30 @@ class VehicleJourneysController < ChouetteController
   end
 
   private
+  def load_missions
+    @all_missions = route.journey_patterns.count > 10 ? [] : route.journey_patterns.map do |item|
+      {
+        id: item.id,
+        "data-item": {
+          id: item.id,
+          name: item.name,
+          published_name: item.published_name,
+          object_id: item.objectid,
+          short_id: item.get_objectid.short_id,
+          stop_area_short_descriptions: item.stop_areas.map do |stop|
+            {
+              stop_area_short_description: {
+                id: stop.id,
+                name: stop.name,
+                object_id: item.objectid
+              }
+            }
+          end
+        }.to_json,
+        text: "<strong>" + item.published_name + " - " + item.get_objectid.short_id + "</strong><br/><small>" + item.registration_number + "</small>"
+      }
+    end
+  end
   def vehicle_journey_params
     params.require(:vehicle_journey).permit(
       { footnote_ids: [] },

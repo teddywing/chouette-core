@@ -70,7 +70,8 @@ var initialState = {
     type: '',
     modalProps: {},
     confirmModal: {}
-  }
+  },
+  missions: window.all_missions
 }
 
 if (window.jpOrigin){

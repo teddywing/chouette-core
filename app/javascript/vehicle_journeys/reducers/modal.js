@@ -152,7 +152,8 @@ export default function modal(state = {}, action) {
           name: window.jpOrigin.name,
           published_name: window.jpOrigin.published_name,
           objectid: window.jpOrigin.objectid,
-          stop_areas: stopAreas
+          stop_areas: stopAreas,
+          missions: state.missions
         }
       }
       return {
