@@ -1,6 +1,6 @@
 class StopAreaReferentialSyncWorker
   include Sidekiq::Worker
-  sidekiq_options :retry => false
+  sidekiq_options retry: true
 
   def process_time
     Process.clock_gettime(Process::CLOCK_MONOTONIC, :second)
