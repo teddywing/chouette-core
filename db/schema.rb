@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180105102012) do
+ActiveRecord::Schema.define(version: 20180109144120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
   enable_extension "postgis"
+  enable_extension "hstore"
   enable_extension "unaccent"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
@@ -280,6 +280,17 @@ ActiveRecord::Schema.define(version: 20180105102012) do
   end
 
   add_index "connection_links", ["objectid"], name: "connection_links_objectid_key", unique: true, using: :btree
+
+  create_table "custom_fields", id: :bigserial, force: :cascade do |t|
+    t.string   "code"
+    t.string   "resource_type"
+    t.string   "name"
+    t.string   "field_type"
+    t.json     "options"
+    t.integer  "workgroup_id",  limit: 8
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "exports", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id",  limit: 8
@@ -985,11 +996,21 @@ ActiveRecord::Schema.define(version: 20180105102012) do
     t.integer  "stop_area_referential_id", limit: 8
     t.integer  "output_id",                limit: 8
     t.string   "objectid_format"
+    t.integer  "workgroup_id",             limit: 8
   end
 
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
   add_index "workbenches", ["organisation_id"], name: "index_workbenches_on_organisation_id", using: :btree
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
+  add_index "workbenches", ["workgroup_id"], name: "index_workbenches_on_workgroup_id", using: :btree
+
+  create_table "workgroups", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
