@@ -22,6 +22,7 @@ class ReferentialCloning < ActiveRecord::Base
     AF83::SchemaCloner
       .new(source_referential.slug, target_referential.slug)
       .clone_schema
+    target.check_migration_count  
   end
 
   private
