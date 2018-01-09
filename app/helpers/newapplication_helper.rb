@@ -151,7 +151,7 @@ module NewapplicationHelper
             content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
           end
         elsif action == :unarchive
-          if item.archived_or_finalised?
+          if item.archived? && !item.finalised?
             content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
           end
         else
