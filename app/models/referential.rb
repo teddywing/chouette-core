@@ -355,11 +355,11 @@ class Referential < ActiveRecord::Base
         Apartment::Tenant.create slug
       end
 
-      check_migration_count
+      check_migration_count(report)
     end
   end
 
-  def check_migration_count
+  def check_migration_count(report)
     Rails.logger.info("Schema create benchmark: '#{slug}'\t#{report}")
     Rails.logger.info("Schema migrations count for Referential #{slug}: #{migration_count || '-'}")
   end
