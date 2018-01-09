@@ -29,6 +29,33 @@ shared_examples 'checksum support' do
         expect(subject.current_checksum_source).to eq(source)
       end
     end
+
+    context 'array value' do
+      let(:attributes) { [['v1', 'v2', 'v3'], 'code_value'] }
+
+      it 'should convert to list' do
+        source = "v1,v2,v3#{seperator}code_value"
+        expect(subject.current_checksum_source).to eq(source)
+      end
+    end
+
+    context 'array of array value' do
+      let(:attributes) { [[['a1', 'a2', 'a3'], ['b1', 'b2', 'b3']], 'code_value'] }
+
+      it 'should convert to list' do
+        source = "(a1,a2,a3),(b1,b2,b3)#{seperator}code_value"
+        expect(subject.current_checksum_source).to eq(source)
+      end
+    end
+
+    context 'array of array value, with empty array' do
+      let(:attributes) { [[['a1', 'a2', 'a3'], []], 'code_value'] }
+
+      it 'should convert to list' do
+        source = "(a1,a2,a3),-#{seperator}code_value"
+        expect(subject.current_checksum_source).to eq(source)
+      end
+    end
   end
 
   it 'should save checksum on create' do
