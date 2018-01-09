@@ -18,11 +18,13 @@ class ReferentialCloning < ActiveRecord::Base
     failed!
   end
 
-  def clone!
-    AF83::SchemaCloner
-      .new(source_referential.slug, target_referential.slug)
-      .clone_schema
-    target.check_migration_count  
+  def clone
+    report = Benchmark.measure do
+      AF83::SchemaCloner
+        .new(source_referential.slug, target_referential.slug)
+        .clone_schema
+    end
+    target.check_migration_count(report)
   end
 
   private
