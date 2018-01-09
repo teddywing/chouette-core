@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :workgroup do
-    name "MyString"
-    stop_area_referential nil
-    line_referential nil
+    sequence(:name) { |n| "Workgroup ##{n}" }
+    association :line_referential
+    association :stop_area_referential
   end
 end

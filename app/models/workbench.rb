@@ -4,6 +4,7 @@ class Workbench < ActiveRecord::Base
   belongs_to :line_referential
   belongs_to :stop_area_referential
   belongs_to :output, class_name: 'ReferentialSuite'
+  belongs_to :workgroup
 
   has_many :lines, -> (workbench) { Stif::MyWorkbenchScopes.new(workbench).line_scope(self) }, through: :line_referential
   has_many :networks, through: :line_referential

@@ -6,13 +6,20 @@ Rails.application.config.to_prepare do
     line_referential.organisations << organisation
     stop_area_referential.organisations << organisation
 
-    organisation.workbenches.find_or_create_by(name: "Gestion de l'offre") do |workbench|
-      workbench.line_referential      = line_referential
-      workbench.stop_area_referential = stop_area_referential
-      workbench.objectid_format = Workbench.objectid_format.stif_netex
+   workgroup = Workgroup.find_or_create_by(name: "Gestion de l'offre théorique IDFm") do |wkgrp|
+    wkgrp.line_referential      = line_referential
+    wkgrp.stop_area_referential = stop_area_referential
+   end
+
+    workbench = organisation.workbenches.find_or_create_by(name: "Gestion de l'offre") do |wkbnch|
+      wkbnch.line_referential      = line_referential
+      wkbnch.stop_area_referential = stop_area_referential
+      wkbnch.objectid_format       = Workbench.objectid_format.stif_netex
 
       Rails.logger.debug "Create Workbench for #{organisation.name}"
     end
+
+    workbench.update( workgroup: workgroup )
   end
 end unless Rails.env.test?
 
