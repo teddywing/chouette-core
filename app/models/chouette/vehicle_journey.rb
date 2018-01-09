@@ -243,6 +243,14 @@ module Chouette
       end
     end
 
+    def custom_fields
+      CustomField.where(resource_type: self.class.name.split("::").last)
+    end
+
+    def custom_field_value key
+      custom_field_values[key.to_s]
+    end
+
     def self.matrix(vehicle_journeys)
       Hash[*VehicleJourneyAtStop.where(vehicle_journey_id: vehicle_journeys.pluck(:id)).map do |vjas|
         [ "#{vjas.vehicle_journey_id}-#{vjas.stop_point_id}", vjas]
