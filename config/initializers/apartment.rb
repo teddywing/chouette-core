@@ -37,7 +37,6 @@ Apartment.configure do |config|
     'Chouette::GroupOfLine',
     'Chouette::Company',
     'Chouette::Network',
-    'CustomField',
     'ReferentialCloning',
     'Workbench',
     'CleanUp',
@@ -79,7 +78,8 @@ Apartment.configure do |config|
     'ComplianceCheckBlock',
     'ComplianceCheckResource',
     'ComplianceCheckMessage',
-    'Merge'
+    'Merge',
+    'CustomField',
   ]
 
   # use postgres schemas?
