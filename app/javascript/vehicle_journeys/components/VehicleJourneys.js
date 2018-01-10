@@ -67,11 +67,11 @@ export default class VehicleJourneys extends Component {
     let index = this.stopPointsIds.indexOf(object_id)
     let sp = this.props.stopPointsList[index]
     let previousBreakpoint = this.props.stopPointsList[index - 1]
-    if(previousBreakpoint && (sp[attribute_to_check] != previousBreakpoint[attribute_to_check])){
+    if(index == 0 || (sp[attribute_to_check] != previousBreakpoint[attribute_to_check])){
       showHeadline = true
       headline = this.hasFeature('long_distance_routes') ? sp.country_name : sp.city_name
     }
-    return showHeadline ? headline : null
+    return showHeadline ? headline : ""
   }
 
   stopPointHeader(sp) {

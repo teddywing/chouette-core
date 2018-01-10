@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import VehicleJourneys from '../../../../app/javascript/vehicle_journeys/components/VehicleJourneys'
+import JourneyPatterns from '../../../../app/javascript/journey_patterns/components/JourneyPatterns'
 import renderer from 'react-test-renderer'
 
 describe('stopPointHeader', () => {
@@ -8,26 +8,23 @@ describe('stopPointHeader', () => {
   })
   set('component', () => {
     let props = {
-      status: {},
-      filters: {
-        permissions: {},
+      status: {
         features: features
       },
+      onCheckboxChange: ()=>{},
       onLoadFirstPage: ()=>{},
-      onUpdateTime: ()=>{},
-      onSelectVehicleJourney: ()=>{},
+      onOpenEditModal: ()=>{},
       stopPointsList: [stop_point, same_city_stop_point, other_country_stop_point],
-      vehicleJourneys: []
+      journeyPatterns: []
     }
     let list = renderer.create(
-      <VehicleJourneys
+      <JourneyPatterns
         status={props.status}
-        filters={props.filters}
-        onLoadFirstPage={props.onLoadFirstPage}
-        onUpdateTime={props.onUpdateTime}
-        onSelectVehicleJourney={props.onSelectVehicleJourney}
+        journeyPatterns={props.journeyPatterns}
         stopPointsList={props.stopPointsList}
-        vehicleJourneys={props.vehicleJourneys}
+        onCheckboxChange={props.onCheckboxChange}
+        onLoadFirstPage={props.onLoadFirstPage}
+        onOpenEditModal={props.onOpenEditModal}
       />
     ).toJSON()
 

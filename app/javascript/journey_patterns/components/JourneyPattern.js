@@ -33,13 +33,7 @@ export default class JourneyPattern extends Component{
   }
 
   cityNameChecker(sp) {
-    let bool = false
-
-    if(sp.city_name != this.previousCity){
-      bool = true
-      this.previousCity = sp.city_name
-    }
-    return bool
+    return this.props.journeyPatterns.showHeader(sp.object_id)
   }
 
   spNode(sp, headlined){
@@ -190,5 +184,6 @@ JourneyPattern.propTypes = {
   index: PropTypes.number,
   onCheckboxChange: PropTypes.func.isRequired,
   onOpenEditModal: PropTypes.func.isRequired,
-  onDeleteJourneyPattern: PropTypes.func.isRequired
+  onDeleteJourneyPattern: PropTypes.func.isRequired,
+  journeyPatterns: PropTypes.object.isRequired
 }

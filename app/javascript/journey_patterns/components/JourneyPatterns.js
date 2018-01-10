@@ -7,11 +7,13 @@ import JourneyPattern from './JourneyPattern'
 export default class JourneyPatterns extends Component {
   constructor(props){
     super(props)
-    this.previousCity = undefined
+    this.stopPointsIds = _.map(this.props.stopPointsList, (sp)=>{return sp.stop_area_object_id})
   }
+
   componentDidMount() {
     this.props.onLoadFirstPage()
   }
+
   componentDidUpdate(prevProps, prevState) {
     if(this.props.status.isFetching == false){
       $('.table-2entries').each(function() {
@@ -55,25 +57,35 @@ export default class JourneyPatterns extends Component {
     }
   }
 
-  hasFeature(key) {
-    return this.props.status.features[key]
+  showHeader(object_id) {
+    let showHeadline = false
+    let headline = ""
+    let attribute_to_check = this.hasFeature('long_distance_routes') ? "country_code" : "city_name"
+    let index = this.stopPointsIds.indexOf(object_id)
+    let sp = this.props.stopPointsList[index]
+    let previousBreakpoint = this.props.stopPointsList[index - 1]
+    if(index == 0 || (sp[attribute_to_check] != previousBreakpoint[attribute_to_check])){
+      showHeadline = true
+      headline = this.hasFeature('long_distance_routes') ? sp.country_name : sp.city_name
+    }
+    return showHeadline ? headline : ""
   }
 
-  cityNameChecker(sp) {
-    let bool = false
-    if(sp.city_name != this.previousCity){
-      bool = true
-      this.previousCity = sp.city_name
-    }
+  stopPointHeader(sp) {
+    let showHeadline = this.showHeader(sp.stop_area_object_id)
     return (
       <div
-        className={(bool) ? 'headlined' : ''}
-        data-headline={(bool) ? sp.city_name : ''}
+        className={(showHeadline) ? 'headlined' : ''}
+        data-headline={showHeadline}
         title={sp.city_name + ' (' + sp.zip_code +')'}
       >
         <span><span>{sp.name}</span></span>
       </div>
     )
+  }
+
+  hasFeature(key) {
+    return this.props.status.features[key]
   }
 
   render() {
@@ -121,7 +133,7 @@ export default class JourneyPatterns extends Component {
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (
                     <div key={i} className={'td' + (this.hasFeature('costs_in_journey_patterns') ? ' with-costs' : '')}>
-                      {this.cityNameChecker(sp)}
+                      {this.stopPointHeader(sp)}
                     </div>
                   )
                 })}
@@ -139,6 +151,7 @@ export default class JourneyPatterns extends Component {
                       onUpdateJourneyPatternCosts={(costs) => this.props.onUpdateJourneyPatternCosts(index, costs)}
                       status= {this.props.status}
                       editMode= {this.props.editMode}
+                      journeyPatterns= {this}
                       />
                   )}
                 </div>
