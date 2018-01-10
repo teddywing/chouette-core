@@ -26,7 +26,7 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def archive?
-    record.archived_at.nil? && organisation_match? && user.has_permission?('referentials.update')
+    !referential_read_only? && record.archived_at.nil? && organisation_match? && user.has_permission?('referentials.update')
   end
 
   def unarchive?
