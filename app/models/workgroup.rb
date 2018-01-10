@@ -9,4 +9,6 @@ class Workgroup < ActiveRecord::Base
 
   validates_presence_of :line_referential_id
   validates_presence_of :stop_area_referential_id
+
+  has_many :custom_fields
 end
