@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'spec_helper'
 
 describe Chouette::StopArea, :type => :model do
@@ -458,6 +459,14 @@ describe Chouette::StopArea, :type => :model do
 
       stop_area.valid?
       expect(stop_area.errors).to have_key(:parent_id)
+    end
+
+    it "use parent area type label in validation error message" do
+      stop_area.area_type = 'zdep'
+      stop_area.parent.area_type = 'zdep'
+
+      stop_area.valid?
+      expect(stop_area.errors[:parent_id].first).to include(Chouette::AreaType.find(stop_area.parent.area_type).label)
     end
 
   end
