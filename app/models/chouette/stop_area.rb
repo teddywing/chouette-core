@@ -357,5 +357,12 @@ module Chouette
     def deactivate!
       update_attribute :deleted_at, Time.now
     end
+
+    def country_name
+      return unless country_code
+
+      country = ISO3166::Country[country_code]
+      country.translations[I18n.locale.to_s] || country.name
+    end
   end
 end

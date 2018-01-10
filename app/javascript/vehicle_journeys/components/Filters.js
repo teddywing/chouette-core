@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import MissionSelect2 from'./tools/select2s/MissionSelect2'
 import VJSelect2 from'./tools/select2s/VJSelect2'
 import TimetableSelect2 from'./tools/select2s/TimetableSelect2'

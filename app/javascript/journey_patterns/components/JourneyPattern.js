@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../actions'
 
 export default class JourneyPattern extends Component{
@@ -31,14 +32,8 @@ export default class JourneyPattern extends Component{
     return this.props.status.features[key]
   }
 
-  cityNameChecker(sp) {
-    let bool = false
-
-    if(sp.city_name != this.previousCity){
-      bool = true
-      this.previousCity = sp.city_name
-    }
-    return bool
+  cityNameChecker(sp, i) {
+    return this.props.journeyPatterns.showHeader(sp.object_id + "-" + i)
   }
 
   spNode(sp, headlined){
@@ -154,7 +149,7 @@ export default class JourneyPattern extends Component{
             if(stopPoint.checked){
               this.previousSpId = stopPoint.id
             }
-            let headlined = this.cityNameChecker(stopPoint)
+            let headlined = this.cityNameChecker(stopPoint, i)
             return (
               <div key={i} className={(stopPoint.checked ? 'activated' : 'deactivated') + (this.props.editMode ? ' edit-mode' : '')}>
                 <div className={'td' + (headlined ? ' with-headline' : '')}>
@@ -189,5 +184,6 @@ JourneyPattern.propTypes = {
   index: PropTypes.number,
   onCheckboxChange: PropTypes.func.isRequired,
   onOpenEditModal: PropTypes.func.isRequired,
-  onDeleteJourneyPattern: PropTypes.func.isRequired
+  onDeleteJourneyPattern: PropTypes.func.isRequired,
+  journeyPatterns: PropTypes.object.isRequired
 }

@@ -1,6 +1,7 @@
 import _ from 'lodash'
-import React, { PropTypes, Component } from 'react'
-import Select2 from 'react-select2'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Select2 from 'react-select2-wrapper'
 import actions from '../../../actions'
 
 // get JSON full path

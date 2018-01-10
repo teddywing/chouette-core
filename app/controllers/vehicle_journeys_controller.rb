@@ -69,6 +69,7 @@ class VehicleJourneysController < ChouetteController
             :latitude => sp.stop_area.try(:latitude),
             :long_lat_type => sp.stop_area.try(:long_lat_type),
             :country_code => sp.stop_area.try(:country_code),
+            :country_name => sp.stop_area.try(:country_name),
             :street_name => sp.stop_area.try(:street_name)
           }
         end
