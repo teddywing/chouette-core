@@ -6,7 +6,7 @@ class Calendar < ActiveRecord::Base
   include DateSupport
   include PeriodSupport
 
-  has_paper_trail
+  has_paper_trail class_name: 'PublicVersion'
   belongs_to :organisation
 
   validates_presence_of :name, :short_name, :organisation
