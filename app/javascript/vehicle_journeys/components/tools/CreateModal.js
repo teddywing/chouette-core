@@ -88,6 +88,31 @@ export default class CreateModal extends Component {
                                 />
                             </div>
                           </div>
+                          { this.props.modal.modalProps.selectedJPModal && this.props.modal.modalProps.selectedJPModal.full_schedule && <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                              <div className='form-group'>
+                                <label className='control-label'>Heure de départ</label>
+                                <div className='input-group time'>
+                                  <input
+                                    type='number'
+                                    min='00'
+                                    max='23'
+                                    ref='start_time.hour'
+                                    className='form-control'
+                                    onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                    />
+                                  <input
+                                    type='number'
+                                    min='00'
+                                    max='59'
+                                    ref='start_time.minute'
+                                    className='form-control'
+                                    onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                    />
+                                </div>
+                              </div>
+                            </div>
+                          }
+
                         </div>
                       </div>
                       <div className='modal-footer'>

@@ -152,7 +152,7 @@ module Chouette
     end
 
     def costs_between start, finish
-      key = "#{start.id}-#{finish.id}"
+      key = "#{start.stop_area_id}-#{finish.stop_area_id}"
       costs[key]&.symbolize_keys || {}
     end
 

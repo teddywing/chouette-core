@@ -4,7 +4,7 @@ module Support
       costs = {}
       (journey_pattern.stop_points.size - 1).times do |i|
         start, finish = journey_pattern.stop_points[i..i+1]
-        costs["#{start.id}-#{finish.id}"] = {
+        costs["#{start.stop_area_id}-#{finish.stop_area_id}"] = {
           distance: (distance.respond_to?(:call) ? distance.call(i) : distance),
           time: (time.respond_to?(:call) ? time.call(i) : time)
         }

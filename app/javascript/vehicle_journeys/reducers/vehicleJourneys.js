@@ -9,16 +9,37 @@ const vehicleJourney= (state = {}, action, keep) => {
       return _.assign({}, state, {selected: false})
     case 'ADD_VEHICLEJOURNEY':
       let pristineVjasList = []
+      let prevSp = action.stopPointsList[0]
+      let current_time = {
+        hour: 0,
+        minute: 0
+      }
+      if(action.data["start_time.hour"] && action.data["start_time.minute"] && action.selectedJourneyPattern.full_schedule){
+        current_time.hour = parseInt(action.data["start_time.hour"].value)
+        current_time.minute = parseInt(action.data["start_time.minute"].value)
+      }
       _.each(action.stopPointsList, (sp) =>{
+        if(action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs && action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
+          let delta = parseInt(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id].time)
+          let delta_hour = parseInt(delta/60)
+          let delta_minute = delta - 60*delta_hour
+          current_time.hour += delta_hour
+          current_time.minute += delta_minute
+          let extra_hours = parseInt(current_time.minute/60)
+          current_time.hour += extra_hours
+          current_time.minute -= extra_hours*60
+          current_time.hour = current_time.hour % 24
+          prevSp = sp
+        }
         let newVjas = {
           delta: 0,
           departure_time:{
-            hour: '00',
-            minute: '00'
+            hour: current_time.hour,
+            minute: current_time.minute
           },
           arrival_time:{
-            hour: '00',
-            minute: '00'
+            hour: current_time.hour,
+            minute: current_time.minute
           },
           stop_point_objectid: sp.object_id,
           stop_area_cityname: sp.city_name,
@@ -31,6 +52,7 @@ const vehicleJourney= (state = {}, action, keep) => {
           }
         })
         pristineVjasList.push(newVjas)
+
       })
       return {
         company: action.selectedCompany,
