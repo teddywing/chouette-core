@@ -9,13 +9,7 @@ export default class VehicleJourney extends Component {
   }
 
   cityNameChecker(sp) {
-    let bool = false
-    if(sp.stop_area_cityname != this.previousCity){
-      bool = true
-      this.previousCity = sp.stop_area_cityname
-    }
-
-    return bool
+    return this.props.vehicleJourneys.showHeader(sp.stop_point_objectid)
   }
 
   hasFeature(key) {
@@ -172,5 +166,6 @@ VehicleJourney.propTypes = {
   filters: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   onUpdateTime: PropTypes.func.isRequired,
-  onSelectVehicleJourney: PropTypes.func.isRequired
+  onSelectVehicleJourney: PropTypes.func.isRequired,
+  vehicleJourneys: PropTypes.object.isRequired,
 }

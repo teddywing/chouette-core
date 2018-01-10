@@ -7,7 +7,7 @@ import VehicleJourney from './VehicleJourney'
 export default class VehicleJourneys extends Component {
   constructor(props){
     super(props)
-    this.previousBreakpoint = undefined
+    this.stopPointsIds = _.map(this.props.stopPointsList, (sp)=>{return sp.object_id})
   }
   componentDidMount() {
     this.props.onLoadFirstPage(this.props.filters)
@@ -60,19 +60,26 @@ export default class VehicleJourneys extends Component {
     }
   }
 
-  stopPointHeader(sp) {
+  showHeader(object_id) {
     let showHeadline = false
     let headline = ""
     let attribute_to_check = this.hasFeature('long_distance_routes') ? "country_code" : "city_name"
-    if(sp[attribute_to_check] != this.previousBreakpoint){
+    let index = this.stopPointsIds.indexOf(object_id)
+    let sp = this.props.stopPointsList[index]
+    let previousBreakpoint = this.props.stopPointsList[index - 1]
+    if(previousBreakpoint && (sp[attribute_to_check] != previousBreakpoint[attribute_to_check])){
       showHeadline = true
       headline = this.hasFeature('long_distance_routes') ? sp.country_name : sp.city_name
-      this.previousBreakpoint = sp[attribute_to_check]
     }
+    return showHeadline ? headline : null
+  }
+
+  stopPointHeader(sp) {
+    let showHeadline = this.showHeader(sp.object_id)
     return (
       <div
         className={(showHeadline) ? 'headlined' : ''}
-        data-headline={headline}
+        data-headline={showHeadline}
         title={sp.city_name + ' (' + sp.zip_code +')'}
       >
         <span><span>{sp.name}</span></span>
@@ -146,6 +153,7 @@ export default class VehicleJourneys extends Component {
                       features={this.props.features}
                       onUpdateTime={this.props.onUpdateTime}
                       onSelectVehicleJourney={this.props.onSelectVehicleJourney}
+                      vehicleJourneys={this}
                       />
                   )}
                 </div>
