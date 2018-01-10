@@ -156,7 +156,7 @@ class Referential < ActiveRecord::Base
   def stop_points
     Chouette::StopPoint.all
   end
-  
+
   def compliance_check_sets
     ComplianceCheckSet.all
   end
@@ -253,7 +253,7 @@ class Referential < ActiveRecord::Base
   before_destroy :destroy_jobs
 
   def referential_read_only?
-    in_referential_suite? || archived_at
+    in_referential_suite? || archived?
   end
 
   def in_referential_suite?
@@ -427,6 +427,9 @@ class Referential < ActiveRecord::Base
   end
 
   # Archive
+  def archived?
+    archived_at != nil
+  end
 
   def archive!
     # self.archived = true
