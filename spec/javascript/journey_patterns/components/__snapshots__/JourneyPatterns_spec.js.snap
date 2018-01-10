@@ -47,8 +47,8 @@ exports[`stopPointHeader should display the city name 1`] = `
           className="td"
         >
           <div
-            className="headlined"
-            data-headline="City Name"
+            className=""
+            data-headline=""
             title="City Name (12345)"
           >
             <span>
@@ -63,7 +63,7 @@ exports[`stopPointHeader should display the city name 1`] = `
         >
           <div
             className="headlined"
-            data-headline="City Name"
+            data-headline="New York"
             title="New York (232323)"
           >
             <span>
@@ -131,8 +131,8 @@ exports[`stopPointHeader with the "long_distance_routes" feature should display 
           className="td"
         >
           <div
-            className="headlined"
-            data-headline="france"
+            className=""
+            data-headline=""
             title="City Name (12345)"
           >
             <span>
@@ -147,7 +147,7 @@ exports[`stopPointHeader with the "long_distance_routes" feature should display 
         >
           <div
             className="headlined"
-            data-headline="france"
+            data-headline="USA"
             title="New York (232323)"
           >
             <span>

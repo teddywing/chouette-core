@@ -32,8 +32,8 @@ export default class JourneyPattern extends Component{
     return this.props.status.features[key]
   }
 
-  cityNameChecker(sp) {
-    return this.props.journeyPatterns.showHeader(sp.object_id)
+  cityNameChecker(sp, i) {
+    return this.props.journeyPatterns.showHeader(sp.object_id + "-" + i)
   }
 
   spNode(sp, headlined){
@@ -149,7 +149,7 @@ export default class JourneyPattern extends Component{
             if(stopPoint.checked){
               this.previousSpId = stopPoint.id
             }
-            let headlined = this.cityNameChecker(stopPoint)
+            let headlined = this.cityNameChecker(stopPoint, i)
             return (
               <div key={i} className={(stopPoint.checked ? 'activated' : 'deactivated') + (this.props.editMode ? ' edit-mode' : '')}>
                 <div className={'td' + (headlined ? ' with-headline' : '')}>

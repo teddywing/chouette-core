@@ -2,19 +2,28 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import VehicleJourney from './VehicleJourney'
-
+import StopAreaHeaderManager from '../../helpers/stop_area_header_manager'
 
 export default class VehicleJourneys extends Component {
   constructor(props){
     super(props)
-    this.stopPointsIds = _.map(this.props.stopPointsList, (sp)=>{return sp.object_id})
+    this.headerManager = new StopAreaHeaderManager(
+      _.map(this.props.stopPointsList, (sp)=>{return sp.object_id}),
+      this.props.stopPointsList,
+      this.props.filters.features
+    )
   }
+
   componentDidMount() {
     this.props.onLoadFirstPage(this.props.filters)
   }
 
   hasFeature(key) {
     return this.props.filters.features[key]
+  }
+
+  showHeader(object_id) {
+    return this.headerManager.showHeader(object_id)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -58,33 +67,6 @@ export default class VehicleJourneys extends Component {
         }
       });
     }
-  }
-
-  showHeader(object_id) {
-    let showHeadline = false
-    let headline = ""
-    let attribute_to_check = this.hasFeature('long_distance_routes') ? "country_code" : "city_name"
-    let index = this.stopPointsIds.indexOf(object_id)
-    let sp = this.props.stopPointsList[index]
-    let previousBreakpoint = this.props.stopPointsList[index - 1]
-    if(index == 0 || (sp[attribute_to_check] != previousBreakpoint[attribute_to_check])){
-      showHeadline = true
-      headline = this.hasFeature('long_distance_routes') ? sp.country_name : sp.city_name
-    }
-    return showHeadline ? headline : ""
-  }
-
-  stopPointHeader(sp) {
-    let showHeadline = this.showHeader(sp.object_id)
-    return (
-      <div
-        className={(showHeadline) ? 'headlined' : ''}
-        data-headline={showHeadline}
-        title={sp.city_name + ' (' + sp.zip_code +')'}
-      >
-        <span><span>{sp.name}</span></span>
-      </div>
-    )
   }
 
   render() {
@@ -135,7 +117,7 @@ export default class VehicleJourneys extends Component {
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (
                     <div key={i} className='td'>
-                      {this.stopPointHeader(sp)}
+                      {this.headerManager.stopPointHeader(sp.object_id)}
                     </div>
                   )
                 })}

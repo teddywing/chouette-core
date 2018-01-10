@@ -2,12 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import JourneyPattern from './JourneyPattern'
-
+import StopAreaHeaderManager from '../../helpers/stop_area_header_manager'
 
 export default class JourneyPatterns extends Component {
   constructor(props){
     super(props)
-    this.stopPointsIds = _.map(this.props.stopPointsList, (sp)=>{return sp.stop_area_object_id})
+    this.headerManager = new StopAreaHeaderManager(
+      _.map(this.props.stopPointsList, (sp, i)=>{return sp.stop_area_object_id + "-" + i}),
+      this.props.stopPointsList,
+      this.props.status.features
+    )
   }
 
   componentDidMount() {
@@ -58,30 +62,7 @@ export default class JourneyPatterns extends Component {
   }
 
   showHeader(object_id) {
-    let showHeadline = false
-    let headline = ""
-    let attribute_to_check = this.hasFeature('long_distance_routes') ? "country_code" : "city_name"
-    let index = this.stopPointsIds.indexOf(object_id)
-    let sp = this.props.stopPointsList[index]
-    let previousBreakpoint = this.props.stopPointsList[index - 1]
-    if(index == 0 || (sp[attribute_to_check] != previousBreakpoint[attribute_to_check])){
-      showHeadline = true
-      headline = this.hasFeature('long_distance_routes') ? sp.country_name : sp.city_name
-    }
-    return showHeadline ? headline : ""
-  }
-
-  stopPointHeader(sp) {
-    let showHeadline = this.showHeader(sp.stop_area_object_id)
-    return (
-      <div
-        className={(showHeadline) ? 'headlined' : ''}
-        data-headline={showHeadline}
-        title={sp.city_name + ' (' + sp.zip_code +')'}
-      >
-        <span><span>{sp.name}</span></span>
-      </div>
-    )
+    return this.headerManager.showHeader(object_id)
   }
 
   hasFeature(key) {
@@ -133,7 +114,7 @@ export default class JourneyPatterns extends Component {
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (
                     <div key={i} className={'td' + (this.hasFeature('costs_in_journey_patterns') ? ' with-costs' : '')}>
-                      {this.stopPointHeader(sp)}
+                      {this.headerManager.stopPointHeader(sp.stop_area_object_id + "-" + i)}
                     </div>
                   )
                 })}
