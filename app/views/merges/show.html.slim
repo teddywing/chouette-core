@@ -9,6 +9,6 @@
           { @merge.class.human_attribute_name(:referentials) => @merge.referentials.map(&:name).join(', '),
             @merge.class.human_attribute_name(:operator) => @merge.creator,
             @merge.class.human_attribute_name(:status) => @merge.status,
-            @merge.class.human_attribute_name(:created_at) => l(@merge.created_at),
-            @merge.class.human_attribute_name(:started_at) => l(@merge.started_at),
-            @merge.class.human_attribute_name(:ended_at) => l(@merge.ended_at) }
+            @merge.class.human_attribute_name(:created_at) => @merge.created_at ? l(@merge.created_at) : '-',
+            @merge.class.human_attribute_name(:started_at) => @merge.started_at ? l(@merge.started_at) : '-',
+            @merge.class.human_attribute_name(:ended_at) => @merge.ended_at ? l(@merge.ended_at) : '-' }
