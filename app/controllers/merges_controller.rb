@@ -15,6 +15,12 @@ class MergesController < ChouetteController
     Rails.logger.debug "Mergeables: #{@mergeable_referentials.inspect}"
   end
 
+  def build_resource
+    super.tap do |merge|
+      merge.creator = current_user.name
+    end
+  end
+
   # def build_resource
   #   @import ||= WorkbenchImport.new(*resource_params) do |import|
   #     import.workbench = parent
