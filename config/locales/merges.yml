@@ -4,6 +4,10 @@ fr:
       title: "Finalisations de l'offre"
     new:
       title: "Nouvelle finalisation de l'offre"
+    show:
+      title: "Finalisation de l'offre %{name}"
+    actions:
+      create: "Finaliser des Jeux de Données"
   activerecord:
     models:
       merge: "Finalisation de l'offre"
@@ -11,7 +15,8 @@ fr:
       merge:
         created_at: "Créé le"
         started_at: Démarrage
+        name: Nom
         ended_at: Achevé à
         status: "Etat"
-        creator: "Opérateur"
+        creator: "Demandeur"
         referentials: "Jeux de données"
