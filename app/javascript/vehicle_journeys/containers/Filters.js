@@ -5,7 +5,8 @@ import Filters from '../components/Filters'
 const mapStateToProps = (state) => {
   return {
     filters: state.filters,
-    pagination: state.pagination
+    pagination: state.pagination,
+    missions: state.missions,
   }
 }
 

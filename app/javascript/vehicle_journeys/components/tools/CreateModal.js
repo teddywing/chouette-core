@@ -11,7 +11,7 @@ export default class CreateModal extends Component {
 
   handleSubmit() {
     if (actions.validateFields(...this.refs, $('.vjCreateSelectJP')[0]) && this.props.modal.modalProps.selectedJPModal) {
-      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList, this.props.modal.modalProps.selectedCompany)
+      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList, this.props.modal.modalProps.vehicleJourney.company)
       this.props.onModalClose()
       $('#NewVehicleJourneyModal').modal('hide')
     }
@@ -73,6 +73,7 @@ export default class CreateModal extends Component {
                               <MissionSelect2
                                 selection={this.props.modal.modalProps}
                                 onSelect2JourneyPattern={this.props.onSelect2JourneyPattern}
+                                values={this.props.missions}
                                 isFilter={false}
                               />
                             </div>
@@ -130,5 +131,6 @@ CreateModal.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   onAddVehicleJourney: PropTypes.func.isRequired,
   onSelect2JourneyPattern: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
+  missions: PropTypes.array.isRequired
 }

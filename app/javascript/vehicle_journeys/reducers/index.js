@@ -6,6 +6,7 @@ import status from './status'
 import filters from './filters'
 import editMode from './editMode'
 import stopPointsList from './stopPointsList'
+import missions from './missions'
 
 const vehicleJourneysApp = combineReducers({
   vehicleJourneys,
@@ -14,7 +15,8 @@ const vehicleJourneysApp = combineReducers({
   status,
   filters,
   editMode,
-  stopPointsList
+  stopPointsList,
+  missions
 })
 
 export default vehicleJourneysApp

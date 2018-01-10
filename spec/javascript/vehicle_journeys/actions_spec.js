@@ -42,6 +42,7 @@ describe('when using select2 to pick a journey pattern', () => {
     let selectedJP = {
       id: 1,
       object_id: 2,
+      short_id: 2,
       name: 'test',
       published_name: 'test',
       stop_area_short_descriptions: ['test']
@@ -51,6 +52,7 @@ describe('when using select2 to pick a journey pattern', () => {
       selectedItem:{
         id: selectedJP.id,
         objectid: selectedJP.object_id,
+        short_id: selectedJP.object_id,
         name: selectedJP.name,
         published_name: selectedJP.published_name,
         stop_areas: selectedJP.stop_area_short_descriptions

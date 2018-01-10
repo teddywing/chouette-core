@@ -57,6 +57,7 @@ const actions = {
     selectedItem: {
       id: selectedJP.id,
       objectid: selectedJP.object_id,
+      short_id: selectedJP.short_id,
       name: selectedJP.name,
       published_name: selectedJP.published_name,
       stop_areas: selectedJP.stop_area_short_descriptions
