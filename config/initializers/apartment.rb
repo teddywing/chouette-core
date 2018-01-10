@@ -39,6 +39,7 @@ Apartment.configure do |config|
     'Chouette::Network',
     'ReferentialCloning',
     'Workbench',
+    'Workgroup',
     'CleanUp',
     'CleanUpResult',
     'Calendar',
