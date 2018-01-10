@@ -1,6 +1,6 @@
 class ComplianceCheckSet < ActiveRecord::Base
   extend Enumerize
-  has_paper_trail
+  has_paper_trail class_name: 'PublicVersion'
 
   belongs_to :referential
   belongs_to :compliance_control_set
