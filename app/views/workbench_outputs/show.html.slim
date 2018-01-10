@@ -19,8 +19,19 @@
                 attribute: Proc.new { |n| import_status(n.status) }, \
               ), \
               TableBuilderHelper::Column.new( \
+                key: :name, \
+                attribute: 'name', \
+                link_to: lambda do |merge| \
+                  workbench_merge_path merge.workbench, merge \
+                end \
+              ), \
+              TableBuilderHelper::Column.new( \
                 key: :started_at, \
                 attribute: Proc.new { |n| l(n.started_at, format: :long) if n.started_at }, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :ended_at, \
+                attribute: Proc.new { |n| l(n.ended_at, format: :long) if n.ended_at }, \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :creator, \
