@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180109180350) do
+ActiveRecord::Schema.define(version: 20180110071946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -973,7 +973,7 @@ ActiveRecord::Schema.define(version: 20180109180350) do
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
-    t.json     "custom_field_values"
+    t.jsonb    "custom_field_values"
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
