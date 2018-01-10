@@ -17,7 +17,7 @@ class Merge < ActiveRecord::Base
   end
 
   def name
-    "Dummy" # FIXME
+    referentials.first(3).map { |r| r.name.truncate(10) }.join(',')
   end
 
   attr_reader :new
