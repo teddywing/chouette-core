@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110071946) do
+ActiveRecord::Schema.define(version: 20180109180350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -955,7 +955,7 @@ ActiveRecord::Schema.define(version: 20180110071946) do
     t.integer  "route_id",                        limit: 8
     t.integer  "journey_pattern_id",              limit: 8
     t.integer  "company_id",                      limit: 8
-    t.string   "objectid",                                              null: false
+    t.string   "objectid",                                               null: false
     t.integer  "object_version",                  limit: 8
     t.string   "comment"
     t.string   "status_value"
@@ -967,13 +967,13 @@ ActiveRecord::Schema.define(version: 20180110071946) do
     t.integer  "number",                          limit: 8
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "flexible_service"
-    t.integer  "journey_category",                          default: 0, null: false
+    t.integer  "journey_category",                          default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
-    t.jsonb    "custom_field_values"
+    t.jsonb    "custom_field_values",                       default: {}
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
@@ -999,11 +999,21 @@ ActiveRecord::Schema.define(version: 20180110071946) do
     t.integer  "stop_area_referential_id", limit: 8
     t.integer  "output_id",                limit: 8
     t.string   "objectid_format"
+    t.integer  "workgroup_id",             limit: 8
   end
 
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
   add_index "workbenches", ["organisation_id"], name: "index_workbenches_on_organisation_id", using: :btree
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
+  add_index "workbenches", ["workgroup_id"], name: "index_workbenches_on_workgroup_id", using: :btree
+
+  create_table "workgroups", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"
