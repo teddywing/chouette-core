@@ -7,6 +7,18 @@ export default class SaveJourneyPattern extends Component {
     super(props)
   }
 
+  btnDisabled(){
+    return !this.props.status.fetchSuccess || this.props.status.isFetching
+  }
+
+  btnClass(){
+    let className = ['btn btn-default']
+    if(this.btnDisabled()){
+      className.push('disabled')
+    }
+    return className.join(' ')
+  }
+
   render() {
     if(this.props.status.policy['journey_patterns.update'] == false) {
       return false
@@ -16,8 +28,9 @@ export default class SaveJourneyPattern extends Component {
           <div className='col-lg-12 text-right'>
             <form className='jp_collection formSubmitr ml-xs' onSubmit={e => {e.preventDefault()}}>
               <button
-                className='btn btn-default'
+                className={this.btnClass()}
                 type='button'
+                disabled={this.btnDisabled()}
                 onClick={e => {
                   e.preventDefault()
                   this.props.editMode ? this.props.onSubmitJourneyPattern(this.props.dispatch, this.props.journeyPatterns) : this.props.onEnterEditMode()
