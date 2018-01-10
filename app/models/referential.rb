@@ -252,6 +252,14 @@ class Referential < ActiveRecord::Base
   before_destroy :destroy_schema
   before_destroy :destroy_jobs
 
+  def referential_read_only?
+    in_referential_suite? || archived?
+  end
+
+  def in_referential_suite?
+    referential_suite_id.present?
+  end
+
   def in_workbench?
     workbench_id.present?
   end
@@ -334,9 +342,6 @@ class Referential < ActiveRecord::Base
     end
   end
 
-  def in_referential_suite?
-    referential_suite_id.present?
-  end
 
   attr_accessor :inline_clone
   def clone_schema

@@ -1,4 +1,3 @@
-# coding: utf-8
 RSpec.describe LinePolicy, type: :policy do
 
   let( :record ){ build_stubbed :line }
@@ -11,10 +10,10 @@ RSpec.describe LinePolicy, type: :policy do
 
   context 'Non Destructive actions →' do
     permissions :index? do
-      it_behaves_like 'always allowed', 'anything', archived: true
+      it_behaves_like 'always allowed', 'anything', archived_and_finalised: true
     end
     permissions :show? do
-      it_behaves_like 'always allowed', 'anything', archived: true
+      it_behaves_like 'always allowed', 'anything', archived_and_finalised: true
     end
   end
 
@@ -47,14 +46,14 @@ RSpec.describe LinePolicy, type: :policy do
   #  ---------------------------
 
   permissions :create_footnote? do
-    it_behaves_like 'permitted policy and same organisation', 'footnotes.create', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.create', archived_and_finalised: true
   end
 
   permissions :destroy_footnote? do
-    it_behaves_like 'permitted policy and same organisation', 'footnotes.destroy', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.destroy', archived_and_finalised: true
   end
 
   permissions :update_footnote? do
-    it_behaves_like 'permitted policy and same organisation', 'footnotes.update', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'footnotes.update', archived_and_finalised: true
   end
 end

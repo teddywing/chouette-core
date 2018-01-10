@@ -125,19 +125,39 @@ describe Referential, :type => :model do
     end
   end
 
-  context "used in a ReferentialSuite" do
-    before do
-      ref.referential_suite_id = 42
+  context "to be referential_read_only or not to be referential_read_only" do
+    let( :referential ){ build_stubbed( :referential ) }
+
+    context "in the beginning" do
+      it{ expect( referential ).not_to be_referential_read_only }
     end
 
-    it "return true to in_referential_suite?" do
-      expect(ref.in_referential_suite?).to be(true)
+    context "after archivation" do
+      before{ referential.archived_at = 1.day.ago }
+      it{ expect( referential ).to be_referential_read_only }
     end
 
-    it "don't use detect_overlapped_referentials in validation" do
-      expect(ref).to_not receive(:detect_overlapped_referentials)
-      ref.valid?
+    context "used in a ReferentialSuite" do
+      before { referential.referential_suite_id = 42 }
+
+      it{ expect( referential ).to be_referential_read_only }
+
+      it "return true to in_referential_suite?" do
+        expect(referential).to be_in_referential_suite
+      end
+
+      it "don't use detect_overlapped_referentials in validation" do
+        expect(referential).to_not receive(:detect_overlapped_referentials)
+        expect(referential).to be_valid
+      end
+    end
+
+    context "archived and finalised" do
+      before do
+        referential.archived_at = 1.month.ago
+        referential.referential_suite_id = 53
+      end
+      it{ expect( referential ).to be_referential_read_only }
     end
   end
-
 end

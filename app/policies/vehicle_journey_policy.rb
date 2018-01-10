@@ -6,14 +6,14 @@ class VehicleJourneyPolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && organisation_match? && user.has_permission?('vehicle_journeys.create')
+    !referential_read_only? && organisation_match? && user.has_permission?('vehicle_journeys.create')
   end
 
   def destroy?
-    !archived? && organisation_match? && user.has_permission?('vehicle_journeys.destroy')
+    !referential_read_only? && organisation_match? && user.has_permission?('vehicle_journeys.destroy')
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('vehicle_journeys.update')
+    !referential_read_only? && organisation_match? && user.has_permission?('vehicle_journeys.update')
   end
 end

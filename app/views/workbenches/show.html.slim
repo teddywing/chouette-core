@@ -30,7 +30,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :status, \
-                  attribute: Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
+                  attribute: Proc.new {|w| w.referential_read_only? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :organisation, \
