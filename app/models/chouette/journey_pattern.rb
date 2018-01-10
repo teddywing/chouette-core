@@ -150,5 +150,23 @@ module Chouette
     def costs
       read_attribute(:costs) || {}
     end
+
+    def costs_between start, finish
+      key = "#{start.id}-#{finish.id}"
+      costs[key]&.symbolize_keys || {}
+    end
+
+    def full_schedule?
+      full = true
+      stop_points.inject(nil) do |start, finish|
+        next finish unless start.present?
+        costs = costs_between(start, finish)
+        full = false unless costs.present?
+        full = false unless costs[:distance] && costs[:distance] > 0
+        full = false unless costs[:time] && costs[:time] > 0
+        finish
+      end
+      full
+    end
   end
 end
