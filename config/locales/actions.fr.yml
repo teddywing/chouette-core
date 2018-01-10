@@ -25,6 +25,7 @@ fr:
     erase: 'Effacer'
     create_api_key: "Créer une clé d'API"
     select: Sélectionner
+    wait_for_submission: "Validation..."
   or: "ou"
   cancel: "Annuler"
   back: "Retour"
