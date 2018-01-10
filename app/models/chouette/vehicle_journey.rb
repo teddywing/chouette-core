@@ -248,7 +248,7 @@ module Chouette
     end
 
     def custom_field_value key
-      custom_field_values[key.to_s]
+      (custom_field_values || {})[key.to_s]
     end
 
     def self.matrix(vehicle_journeys)
