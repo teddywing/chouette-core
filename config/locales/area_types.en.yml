@@ -1,9 +1,8 @@
 en:
   area_types:
     label:
-      zdep: ZDE
+      zdep: ZDEp
       zder: ZDEr
       zdlp: ZDLp
       zdlr: ZDLr
       lda: LDA
-
