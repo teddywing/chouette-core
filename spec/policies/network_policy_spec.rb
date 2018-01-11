@@ -24,19 +24,19 @@ RSpec.describe Chouette::NetworkPolicy, type: :policy do
 
   context 'Destructive actions →' do
     permissions :create? do
-      it_behaves_like 'always forbidden', 'networks.create', archived_and_finalised: true
+      it_behaves_like 'permitted policy', 'networks.create'
     end
     permissions :destroy? do
-      it_behaves_like 'always forbidden', 'networks.destroy', archived_and_finalised: true
+      it_behaves_like 'permitted policy', 'networks.destroy'
     end
     permissions :edit? do
-      it_behaves_like 'always forbidden', 'networks.update', archived_and_finalised: true
+      it_behaves_like 'permitted policy', 'networks.update'
     end
     permissions :new? do
-      it_behaves_like 'always forbidden', 'networks.create', archived_and_finalised: true
+      it_behaves_like 'permitted policy', 'networks.create'
     end
     permissions :update? do
-      it_behaves_like 'always forbidden', 'networks.update', archived_and_finalised: true
+      it_behaves_like 'permitted policy', 'networks.update'
     end
   end
 end
