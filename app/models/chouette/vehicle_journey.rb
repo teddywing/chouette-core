@@ -256,8 +256,15 @@ module Chouette
       end
     end
 
+    def self.custom_fields
+      CustomField.where(resource_type: self.name.split("::").last)
+    end
+
+
     def custom_fields
-      CustomField.where(resource_type: self.class.name.split("::").last)
+      Hash[*self.class.custom_fields.map do |v|
+        [v.code, v.slice(:code, :name, :field_type, :options).update(value: custom_field_value(v.code))]
+      end.flatten]
     end
 
     def custom_field_value key
