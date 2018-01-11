@@ -50,7 +50,7 @@ RSpec.describe ReferentialVehicleJourneysController, type: :controller do
         j = create(:journey_pattern)
         stop_areas.each do |area|
           sp = create(:stop_point, stop_area: area)
-          j.stop_points << [sp]
+          j.stop_points << sp
         end
         j.save
         j
