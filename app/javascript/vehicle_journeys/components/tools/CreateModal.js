@@ -11,7 +11,7 @@ export default class CreateModal extends Component {
 
   handleSubmit() {
     if (actions.validateFields(...this.refs, $('.vjCreateSelectJP')[0]) && this.props.modal.modalProps.selectedJPModal) {
-      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList, this.props.modal.modalProps.vehicleJourney.company)
+      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList, this.props.modal.modalProps.vehicleJourney && this.props.modal.modalProps.vehicleJourney.company)
       this.props.onModalClose()
       $('#NewVehicleJourneyModal').modal('hide')
     }
