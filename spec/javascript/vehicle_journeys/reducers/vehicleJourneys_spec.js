@@ -76,12 +76,12 @@ describe('vehicleJourneys reducer', () => {
     let pristineVjasList = [{
       delta : 0,
       arrival_time : {
-        hour: '00',
-        minute: '00'
+        hour: 0,
+        minute: 0
       },
       departure_time : {
-        hour: '00',
-        minute: '00'
+        hour: 0,
+        minute: 0
       },
       stop_point_objectid: 'test',
       stop_area_cityname: 'city',
@@ -99,6 +99,110 @@ describe('vehicleJourneys reducer', () => {
         data: fakeData,
         selectedJourneyPattern: fakeSelectedJourneyPattern,
         stopPointsList: [{object_id: 'test', city_name: 'city'}],
+        selectedCompany: fakeSelectedCompany
+      })
+    ).toEqual([{
+      journey_pattern: fakeSelectedJourneyPattern,
+      company: fakeSelectedCompany,
+      published_journey_name: 'test',
+      published_journey_identifier: '',
+      short_id: '',
+      objectid: '',
+      footnotes: [],
+      time_tables: [],
+      purchase_windows: [],
+      vehicle_journey_at_stops: pristineVjasList,
+      selected: false,
+      deletable: false,
+      transport_mode: 'undefined',
+      transport_submode: 'undefined'
+    }, ...state])
+  })
+
+  it('should handle ADD_VEHICLEJOURNEY with a start time and a fully timed JP', () => {
+    let pristineVjasList = [{
+      delta : 0,
+      arrival_time : {
+        hour: 22,
+        minute: 59
+      },
+      departure_time : {
+        hour: 22,
+        minute: 59
+      },
+      stop_point_objectid: 'test-1',
+      stop_area_cityname: 'city',
+      dummy: true
+    },
+    {
+      delta : 0,
+      arrival_time : {
+        hour: 0,
+        minute: 2
+      },
+      departure_time : {
+        hour: 0,
+        minute: 2
+      },
+      stop_point_objectid: 'test-2',
+      stop_area_cityname: 'city',
+      dummy: true
+    },
+    {
+      delta : 0,
+      arrival_time : {
+        hour: 0,
+        minute: 2
+      },
+      departure_time : {
+        hour: 0,
+        minute: 2
+      },
+      stop_point_objectid: 'test-3',
+      stop_area_cityname: 'city',
+      dummy: true
+    },
+    {
+      delta : 0,
+      arrival_time : {
+        hour: 0,
+        minute: 32
+      },
+      departure_time : {
+        hour: 0,
+        minute: 32
+      },
+      stop_point_objectid: 'test-4',
+      stop_area_cityname: 'city',
+      dummy: true
+    }]
+    let fakeData = {
+      published_journey_name: {value: 'test'},
+      published_journey_identifier: {value : ''},
+      "start_time.hour": {value : '22'},
+      "start_time.minute": {value : '59'}
+    }
+    let fakeSelectedJourneyPattern = {
+      id: "1",
+      full_schedule: true,
+      costs: {
+        "1-2": {
+          distance: 10,
+          time: 63
+        },
+        "2-4": {
+          distance: 10,
+          time: 30
+        }
+      }
+    }
+    let fakeSelectedCompany = {name: "ALBATRANS"}
+    expect(
+      vjReducer(state, {
+        type: 'ADD_VEHICLEJOURNEY',
+        data: fakeData,
+        selectedJourneyPattern: fakeSelectedJourneyPattern,
+        stopPointsList: [{object_id: 'test-1', city_name: 'city', stop_area_id: 1}, {object_id: 'test-2', city_name: 'city', stop_area_id: 2}, {object_id: 'test-3', city_name: 'city', stop_area_id: 3}, {object_id: 'test-4', city_name: 'city', stop_area_id: 4}],
         selectedCompany: fakeSelectedCompany
       })
     ).toEqual([{

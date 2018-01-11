@@ -32,6 +32,44 @@ describe Chouette::JourneyPattern, :type => :model do
   #   end
   # end
 
+  describe "full_schedule?" do
+    let(:journey_pattern) { create :journey_pattern }
+    subject{ journey_pattern.full_schedule? }
+    context "when no time is set" do
+      it { should be_falsy }
+    end
+
+    context "when the costs are incomplete" do
+      context "with a missing distance" do
+        before(:each){
+          journey_pattern.costs = generate_journey_pattern_costs(->(i){i == 1 ? nil : 10}, 10)
+        }
+        it { should be_falsy }
+      end
+
+      context "with a missing time" do
+        before(:each){
+          journey_pattern.costs = generate_journey_pattern_costs(10, ->(i){i == 1 ? nil : 10})
+        }
+        it { should be_falsy }
+      end
+    end
+
+    context "with a zeroed cost" do
+      before(:each){
+        journey_pattern.costs = generate_journey_pattern_costs(->(i){i == 1 ? 0 : 10}, 10)
+      }
+      it { should be_falsy }
+    end
+
+    context "when all the times are set" do
+      before(:each){
+        journey_pattern.costs = generate_journey_pattern_costs(10, 10)
+      }
+      it { should be_truthy }
+    end
+  end
+
   describe "state_update" do
     def journey_pattern_to_state jp
       jp.attributes.slice('name', 'published_name', 'registration_number').tap do |item|

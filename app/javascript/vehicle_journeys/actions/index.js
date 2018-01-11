@@ -60,7 +60,9 @@ const actions = {
       short_id: selectedJP.short_id,
       name: selectedJP.name,
       published_name: selectedJP.published_name,
-      stop_areas: selectedJP.stop_area_short_descriptions
+      stop_areas: selectedJP.stop_area_short_descriptions,
+      costs: selectedJP.costs,
+      full_schedule: selectedJP.full_schedule
     }
   }),
   openEditModal : (vehicleJourney) => ({
