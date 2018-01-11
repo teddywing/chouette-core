@@ -25,18 +25,18 @@ describe('CustomFieldsInputs', () => {
     expect(component).toMatchSnapshot()
   })
 
-  context('with fields', () => {
-    set('values', () => {
-      return {
-        foo: {
-          options: { list_values: ["", "1", "2"] },
-          field_type: "list",
-          name: "test"
-        }
-      }
-    })
-    it('should match the snapshot', () => {
-      expect(component).toMatchSnapshot()
-    })
-  })
+  // context('with fields', () => {
+  //   set('values', () => {
+  //     return {
+  //       foo: {
+  //         options: { list_values: ["", "1", "2"] },
+  //         field_type: "list",
+  //         name: "test"
+  //       }
+  //     }
+  //   })
+  //   it('should match the snapshot', () => {
+  //     expect(component).toMatchSnapshot()
+  //   })
+  // })
 })

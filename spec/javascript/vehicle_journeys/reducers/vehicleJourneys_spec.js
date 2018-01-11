@@ -363,7 +363,7 @@ describe('vehicleJourneys reducer', () => {
     let fakeData = {
       published_journey_name: {value : 'test'},
       published_journey_identifier: {value: 'test'},
-      custom_fields: {foo: 12}
+      custom_fields: {foo: {value: 12}}
     }
     let fakeSelectedCompany : {name : 'ALBATRANS'}
     let newVJ = Object.assign({}, state[0], {company: fakeSelectedCompany, published_journey_name: fakeData.published_journey_name.value, published_journey_identifier: fakeData.published_journey_identifier.value, custom_fields})
