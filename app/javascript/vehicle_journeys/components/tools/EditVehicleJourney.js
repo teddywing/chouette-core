@@ -7,7 +7,6 @@ import CustomFieldsInputs from './CustomFieldsInputs'
 export default class EditVehicleJourney extends Component {
   constructor(props) {
     super(props)
-    this.custom_fields = {}
   }
 
   handleSubmit() {
@@ -29,6 +28,9 @@ export default class EditVehicleJourney extends Component {
       return false
     }
     if(this.props.status.fetchSuccess == true) {
+      if(this.props.modal.modalProps.vehicleJourney){
+        this.custom_fields = _.assign({}, this.props.modal.modalProps.vehicleJourney.custom_fields)
+      }
       return (
         <li className='st_action'>
           <button
@@ -145,7 +147,7 @@ export default class EditVehicleJourney extends Component {
                         <div className='row'>
                           <CustomFieldsInputs
                             values={this.props.modal.modalProps.vehicleJourney.custom_fields}
-                            onUpdate={(code, value) => this.custom_fields[code] = value}
+                            onUpdate={(code, value) => this.custom_fields[code]["value"] = value}
                             disabled={!this.props.editMode}
                           />
                         </div>
