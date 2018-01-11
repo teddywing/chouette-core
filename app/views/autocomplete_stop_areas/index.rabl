@@ -13,7 +13,7 @@ node do |stop_area|
   :user_objectid => stop_area.user_objectid,
   :longitude => stop_area.longitude,
   :latitude => stop_area.latitude,
-  :area_type => stop_area.area_type,
+  :area_type => Chouette::AreaType.find(stop_area.area_type).label,
   :comment => stop_area.comment,
   :text => stop_area.full_name
   }
