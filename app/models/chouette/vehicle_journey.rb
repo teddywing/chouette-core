@@ -208,7 +208,9 @@ module Chouette
     def self.state_create_instance route, item
       # Flag new record, so we can unset object_id if transaction rollback
       vj = route.vehicle_journeys.create(state_permited_attributes(item))
-      item['objectid']   = vj.objectid
+      vj.after_commit_objectid
+      item['objectid'] = vj.objectid
+      item['short_id'] = vj.get_objectid.short_id
       item['new_record'] = true
       vj
     end

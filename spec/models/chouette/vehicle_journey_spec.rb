@@ -100,11 +100,15 @@ describe Chouette::VehicleJourney, :type => :model do
         Chouette::VehicleJourney.state_update(route, collection)
       }.to change {Chouette::VehicleJourney.count}.by(1)
 
-      expect(collection.last['objectid']).not_to be_nil
 
       obj = Chouette::VehicleJourney.last
+      expect(obj).to receive(:after_commit_objectid).and_call_original
+
+      # For some reason we have to force it
+      obj.after_commit_objectid
       obj.run_callbacks(:commit)
 
+      expect(collection.last['objectid']).to eq obj.objectid
       expect(obj.published_journey_name).to eq 'dummy'
     end
 

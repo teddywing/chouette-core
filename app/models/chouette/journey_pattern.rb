@@ -72,7 +72,9 @@ module Chouette
       # In this case, we mark jp to be valid if persisted? return true
       jp.errors.clear if jp.persisted?
 
+      jp.after_commit_objectid
       item['object_id']  = jp.objectid
+      item['short_id']  = jp.get_objectid.short_id
       item['new_record'] = true
       jp
     end
