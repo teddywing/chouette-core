@@ -124,8 +124,8 @@ export default class JourneyPattern extends Component{
           <div>{actions.getChecked(this.props.value.stop_points).length} arrêt(s)</div>
           {this.hasFeature('costs_in_journey_patterns') &&
             <div className="small row totals">
-              <span className="col-md-6"><i className="fa fa-arrows-h"></i>{totalTime}</span>
-              <span className="col-md-6"><i className="fa fa-clock-o"></i>{totalDistance}</span>
+              <span className="col-md-6"><i className="fa fa-arrows-h"></i>{totalDistance}</span>
+              <span className="col-md-6"><i className="fa fa-clock-o"></i>{totalTime}</span>
             </div>
           }
           <div className={this.props.value.deletable ? 'btn-group disabled' : 'btn-group'}>
