@@ -18,6 +18,7 @@ const vehicleJourney= (state = {}, action, keep) => {
         current_time.hour = parseInt(action.data["start_time.hour"].value)
         current_time.minute = parseInt(action.data["start_time.minute"].value)
       }
+      console.log(state)
       _.each(action.stopPointsList, (sp) =>{
         if(action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs && action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
           let delta = parseInt(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id].time)
@@ -45,12 +46,18 @@ const vehicleJourney= (state = {}, action, keep) => {
           stop_area_cityname: sp.city_name,
           dummy: true
         }
+
         _.each(action.selectedJourneyPattern.stop_areas, (jp) =>{
           if (jp.stop_area_short_description.id == sp.id){
             newVjas.dummy = false
             return
           }
         })
+
+        if(newVjas.dummy){
+          newVjas.departure_time = {hour: "00", minute: "00"}
+          newVjas.arrival_time = {hour: "00", minute: "00"}
+        }
         pristineVjasList.push(newVjas)
 
       })
