@@ -1,5 +1,6 @@
 fr:
   merges:
+    referential_name: "Offre finalisée %{date}"
     index:
       title: "Finalisations de l'offre"
     new:
