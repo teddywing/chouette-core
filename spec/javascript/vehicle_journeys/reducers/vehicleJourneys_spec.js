@@ -76,12 +76,12 @@ describe('vehicleJourneys reducer', () => {
     let pristineVjasList = [{
       delta : 0,
       arrival_time : {
-        hour: 0,
-        minute: 0
+        hour: "00",
+        minute: "00"
       },
       departure_time : {
-        hour: 0,
-        minute: 0
+        hour: "00",
+        minute: "00"
       },
       stop_point_objectid: 'test',
       stop_area_cityname: 'city',
@@ -142,31 +142,33 @@ describe('vehicleJourneys reducer', () => {
       },
       stop_point_objectid: 'test-1',
       stop_area_cityname: 'city',
-      dummy: true
+      dummy: false
     },
     {
       delta : 0,
       arrival_time : {
-        hour: 0,
+        hour: 23,
         minute: 2
       },
       departure_time : {
-        hour: 0,
+        hour: 23,
         minute: 2
       },
+      departure_day_offset: -1,
+      arrival_day_offset: -1,
       stop_point_objectid: 'test-2',
       stop_area_cityname: 'city',
-      dummy: true
+      dummy: false
     },
     {
       delta : 0,
       arrival_time : {
-        hour: 0,
-        minute: 2
+        hour: "00",
+        minute: "00"
       },
       departure_time : {
-        hour: 0,
-        minute: 2
+        hour: "00",
+        minute: "00"
       },
       stop_point_objectid: 'test-3',
       stop_area_cityname: 'city',
@@ -184,7 +186,7 @@ describe('vehicleJourneys reducer', () => {
       },
       stop_point_objectid: 'test-4',
       stop_area_cityname: 'city',
-      dummy: true
+      dummy: false
     }]
     let fakeData = {
       published_journey_name: {value: 'test'},
@@ -195,6 +197,11 @@ describe('vehicleJourneys reducer', () => {
     let fakeSelectedJourneyPattern = {
       id: "1",
       full_schedule: true,
+      stop_areas: [
+        {stop_area_short_description: {id: 1}},
+        {stop_area_short_description: {id: 2}},
+        {stop_area_short_description: {id: 4}},
+      ],
       costs: {
         "1-2": {
           distance: 10,
@@ -212,7 +219,7 @@ describe('vehicleJourneys reducer', () => {
         type: 'ADD_VEHICLEJOURNEY',
         data: fakeData,
         selectedJourneyPattern: fakeSelectedJourneyPattern,
-        stopPointsList: [{object_id: 'test-1', city_name: 'city', stop_area_id: 1}, {object_id: 'test-2', city_name: 'city', stop_area_id: 2}, {object_id: 'test-3', city_name: 'city', stop_area_id: 3}, {object_id: 'test-4', city_name: 'city', stop_area_id: 4}],
+        stopPointsList: [{object_id: 'test-1', city_name: 'city', stop_area_id: 1, id: 1, time_zone_offset: 0}, {object_id: 'test-2', city_name: 'city', stop_area_id: 2, id: 2, time_zone_offset: -3600}, {object_id: 'test-3', city_name: 'city', stop_area_id: 3, id: 3, time_zone_offset: 0}, {object_id: 'test-4', city_name: 'city', stop_area_id: 4, id: 4, time_zone_offset: 0}],
         selectedCompany: fakeSelectedCompany
       })
     ).toEqual([{
@@ -227,6 +234,7 @@ describe('vehicleJourneys reducer', () => {
       purchase_windows: [],
       vehicle_journey_at_stops: pristineVjasList,
       selected: false,
+      custom_fields: undefined,
       deletable: false,
       transport_mode: 'undefined',
       transport_submode: 'undefined'
