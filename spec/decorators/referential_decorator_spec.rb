@@ -69,6 +69,7 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
           expect_action_link_elements.to be_empty
           expect_action_link_hrefs.to eq([
             referential_time_tables_path(object),
+            new_referential_path(from: object)
           ])
         end
       end

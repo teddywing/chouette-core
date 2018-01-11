@@ -1,3 +1,4 @@
+# coding: utf-8
 RSpec.describe ReferentialPolicy, type: :policy do
 
   let( :record ){ build_stubbed :referential }
@@ -45,9 +46,9 @@ RSpec.describe ReferentialPolicy, type: :policy do
   # Custom Permissions
   # ------------------
 
-  permissions :clone? do
-    it_behaves_like 'permitted policy', 'referentials.create', archived_and_finalised: true
-  end
+  # permissions :clone? do
+  #   it_behaves_like 'permitted policy', 'referentials.create', archived_and_finalised: true
+  # end
 
   permissions :archive? do
 
