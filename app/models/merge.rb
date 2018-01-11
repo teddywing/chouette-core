@@ -93,10 +93,8 @@ class Merge < ActiveRecord::Base
         new.lines.find(line_id).time_tables.find_each do |time_table|
           time_table.remove_periods! periods
           unless time_table.empty?
-            puts "Remove period on #{time_table.inspect}"
             time_table.save!
           else
-            puts "Remove TimeTable #{time_table.inspect}"
             time_table.destroy
           end
         end
