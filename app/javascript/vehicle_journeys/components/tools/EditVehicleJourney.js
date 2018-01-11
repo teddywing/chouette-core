@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../actions'
 import CompanySelect2 from './select2s/CompanySelect2'
+import CustomFieldsInputs from './CustomFieldsInputs'
 
 export default class EditVehicleJourney extends Component {
   constructor(props) {
@@ -15,8 +16,8 @@ export default class EditVehicleJourney extends Component {
         company = this.props.modal.modalProps.selectedCompany
       } else if (typeof this.props.modal.modalProps.vehicleJourney.company === "object") {
         company = this.props.modal.modalProps.vehicleJourney.company
-      } 
-      this.props.onEditVehicleJourney(this.refs, company)
+      }
+      this.props.onEditVehicleJourney(_.assign({}, this.refs, {custom_fields: this.custom_fields}), company)
       this.props.onModalClose()
       $('#EditVehicleJourneyModal').modal('hide')
     }
@@ -27,6 +28,9 @@ export default class EditVehicleJourney extends Component {
       return false
     }
     if(this.props.status.fetchSuccess == true) {
+      if(this.props.modal.modalProps.vehicleJourney){
+        this.custom_fields = _.assign({}, this.props.modal.modalProps.vehicleJourney.custom_fields)
+      }
       return (
         <li className='st_action'>
           <button
@@ -140,8 +144,15 @@ export default class EditVehicleJourney extends Component {
                             defaultValue={this.props.modal.modalProps.vehicleJourney.checksum}
                             />
                         </div>
-
+                        <div className='row'>
+                          <CustomFieldsInputs
+                            values={this.props.modal.modalProps.vehicleJourney.custom_fields}
+                            onUpdate={(code, value) => this.custom_fields[code]["value"] = value}
+                            disabled={!this.props.editMode}
+                          />
+                        </div>
                       </div>
+
                       {
                         this.props.editMode &&
                         <div className='modal-footer'>

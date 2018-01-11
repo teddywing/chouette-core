@@ -54,6 +54,7 @@ const vehicleJourney= (state = {}, action, keep) => {
         pristineVjasList.push(newVjas)
 
       })
+
       return {
         company: action.selectedCompany,
         journey_pattern: action.selectedJourneyPattern,
@@ -68,7 +69,8 @@ const vehicleJourney= (state = {}, action, keep) => {
         selected: false,
         deletable: false,
         transport_mode: window.transportMode ? window.transportMode : 'undefined',
-        transport_submode: window.transportSubmode ? window.transportSubmode : 'undefined'
+        transport_submode: window.transportSubmode ? window.transportSubmode : 'undefined',
+        custom_fields: action.data.custom_fields
       }
     case 'DUPLICATE_VEHICLEJOURNEY':
     case 'SHIFT_VEHICLEJOURNEY':
@@ -148,6 +150,7 @@ export default function vehicleJourneys(state = [], action) {
             company: action.selectedCompany,
             published_journey_name: action.data.published_journey_name.value,
             published_journey_identifier: action.data.published_journey_identifier.value,
+            custom_fields: action.data.custom_fields,
           })
         }else{
           return vj

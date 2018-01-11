@@ -49,6 +49,7 @@ class VehicleJourneysController < ChouetteController
       end
       format.html do
         load_missions
+        load_custom_fields
         @stop_points_list = []
         @stop_points_list = route.stop_points.includes(:stop_area).map do |sp|
           {
@@ -177,6 +178,10 @@ class VehicleJourneysController < ChouetteController
   end
 
   private
+  def load_custom_fields
+    @custom_fields = current_workgroup.custom_fields_definitions
+  end
+
   def load_missions
     @all_missions = route.journey_patterns.count > 10 ? [] : route.journey_patterns.map do |item|
       {

@@ -17,8 +17,15 @@ RSpec.describe CustomField, type: :model do
 
 
   context "custom fields for a resource" do
-    let!( :fields ){ (1..2).map{ create :custom_field } }
-    it { expect(vj.custom_fields).to eq(fields) }
+    let!( :fields ){ [create(:custom_field), create(:custom_field, code: :energy)] }
+    let!( :instance_fields ){
+      {
+        fields[0].code => fields[0].slice(:code, :name, :field_type, :options).update(value: nil),
+        "energy" => fields[1].slice(:code, :name, :field_type, :options).update(value: 99)
+      }
+    }
+    it { expect(Chouette::VehicleJourney.custom_fields).to eq(fields) }
+    it { expect(vj.custom_fields).to eq(instance_fields) }
   end
 
   context "custom field_values for a resource" do

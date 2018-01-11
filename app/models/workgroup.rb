@@ -11,4 +11,8 @@ class Workgroup < ActiveRecord::Base
   validates_presence_of :stop_area_referential_id
 
   has_many :custom_fields
+
+  def custom_fields_definitions
+    Hash[*custom_fields.map{|cf| [cf.code, cf]}.flatten]
+  end
 end
