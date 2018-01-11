@@ -22,6 +22,7 @@ module Chouette
     belongs_to :company
     belongs_to :route
     belongs_to :journey_pattern
+    has_many :stop_areas, through: :journey_pattern
 
     has_and_belongs_to_many :footnotes, :class_name => 'Chouette::Footnote'
     has_and_belongs_to_many :purchase_windows, :class_name => 'Chouette::PurchaseWindow'
@@ -41,6 +42,18 @@ module Chouette
 
     before_validation :set_default_values,
       :calculate_vehicle_journey_at_stop_day_offset
+
+    scope :with_stop_area_ids, ->(ids){
+      _ids = ids.select(&:present?).map(&:to_i)
+      if _ids.present?
+        where("array(SELECT stop_points.stop_area_id::integer FROM stop_points INNER JOIN journey_patterns_stop_points ON journey_patterns_stop_points.stop_point_id = stop_points.id WHERE journey_patterns_stop_points.journey_pattern_id = vehicle_journeys.journey_pattern_id) @> array[?]", _ids)
+      else
+        all
+      end
+    }
+
+    # We need this for the ransack object in the filters
+    ransacker :stop_area_ids
 
     # TODO: Remove this validator
     # We've eliminated this validation because it prevented vehicle journeys
