@@ -26,5 +26,10 @@ module ObjectidSupport
     def objectid_class
       get_objectid.try(:class)
     end
+
+    def raw_objectid
+      read_attribute(:objectid)
+    end
+
   end
 end

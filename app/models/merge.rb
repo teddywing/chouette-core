@@ -168,11 +168,11 @@ class Merge < ActiveRecord::Base
     # JourneyPatterns
 
     referential_journey_patterns, referential_journey_patterns_stop_areas_objectids = referential.switch do
-      journey_patterns = referential.journey_patterns.includes(:stop_points)
+      journey_patterns = referential.journey_patterns.includes(stop_points: :stop_area)
 
       journey_patterns_stop_areas_objectids = Hash[
         journey_patterns.map do |journey_pattern|
-          [ journey_pattern.id, journey_pattern.stop_points.map(&:stop_area).map(&:objectid)]
+          [ journey_pattern.id, journey_pattern.stop_points.map(&:stop_area).map(&:raw_objectid)]
         end
       ]
 
@@ -206,11 +206,15 @@ class Merge < ActiveRecord::Base
           stop_areas_objectids = referential_journey_patterns_stop_areas_objectids[journey_pattern.id]
 
           stop_points = existing_associated_route.stop_points.joins(:stop_area).where("stop_areas.objectid": stop_areas_objectids).order(:position)
+          if stop_points.count != stop_areas_objectids.count
+            raise "Can't find StopPoints for #{stop_areas_objectids} : #{stop_points.inspect} #{existing_associated_route.stop_points.inspect}"
+          end
+
           attributes.merge!(stop_points: stop_points)
 
           new_journey_pattern = new.journey_patterns.create! attributes
           if new_journey_pattern.checksum != journey_pattern.checksum
-            raise "Checksum has changed: #{journey_pattern.checksum_source} #{new_journey_pattern.checksum_source}"
+            raise "Checksum has changed for #{journey_pattern.inspect}: #{journey_pattern.checksum_source} #{new_journey_pattern.checksum_source} "
           end
         end
       end
