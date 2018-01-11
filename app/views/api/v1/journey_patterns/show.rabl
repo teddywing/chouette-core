@@ -12,6 +12,7 @@ end
 if has_feature? :costs_in_journey_patterns
   attribute :costs
 end
+
 node(:route_short_description) do |journey_pattern|
   partial("api/v1/routes/short_description", :object => journey_pattern.route)
 end
