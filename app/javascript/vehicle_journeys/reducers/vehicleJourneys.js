@@ -47,6 +47,14 @@ const vehicleJourney= (state = {}, action, keep) => {
           stop_area_cityname: sp.city_name,
           dummy: true
         }
+        if(current_time.hour + offsetHours > 24){
+          vjas.departure_day_offset = 1
+          vjas.arrival_day_offset = 1
+        }
+        if(current_time.hour + offsetHours < 0){
+          vjas.departure_day_offset = -1
+          vjas.arrival_day_offset = -1
+        }
 
         _.each(action.selectedJourneyPattern.stop_areas, (jp) =>{
           if (jp.stop_area_short_description.id == sp.id){
