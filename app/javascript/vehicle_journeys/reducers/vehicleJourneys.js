@@ -54,6 +54,7 @@ const vehicleJourney= (state = {}, action, keep) => {
         pristineVjasList.push(newVjas)
 
       })
+
       return {
         company: action.selectedCompany,
         journey_pattern: action.selectedJourneyPattern,
@@ -68,7 +69,8 @@ const vehicleJourney= (state = {}, action, keep) => {
         selected: false,
         deletable: false,
         transport_mode: window.transportMode ? window.transportMode : 'undefined',
-        transport_submode: window.transportSubmode ? window.transportSubmode : 'undefined'
+        transport_submode: window.transportSubmode ? window.transportSubmode : 'undefined',
+        custom_fields: action.data.custom_fields
       }
     case 'DUPLICATE_VEHICLEJOURNEY':
     case 'SHIFT_VEHICLEJOURNEY':
@@ -144,9 +146,8 @@ export default function vehicleJourneys(state = [], action) {
     case 'EDIT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
         if (vj.selected){
-          let custom_fields = _.assign({}, vj.custom_fields)
+          let custom_fields = _.assign({}, action.data.custom_fields)
           _.each(custom_fields, (cf, code) => {
-            console.log(action.data.custom_fields)
             let value = action.data.custom_fields[code]
             custom_fields[code] = _.assign({}, custom_fields[code], {value})
           })

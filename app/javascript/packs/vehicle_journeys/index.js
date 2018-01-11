@@ -71,7 +71,8 @@ var initialState = {
     modalProps: {},
     confirmModal: {}
   },
-  missions: window.all_missions
+  missions: window.all_missions,
+  custom_fields: window.custom_fields
 }
 
 if (window.jpOrigin){

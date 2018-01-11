@@ -7,6 +7,7 @@ import filters from './filters'
 import editMode from './editMode'
 import stopPointsList from './stopPointsList'
 import missions from './missions'
+import custom_fields from './custom_fields'
 
 const vehicleJourneysApp = combineReducers({
   vehicleJourneys,
@@ -16,7 +17,8 @@ const vehicleJourneysApp = combineReducers({
   filters,
   editMode,
   stopPointsList,
-  missions
+  missions,
+  custom_fields
 })
 
 export default vehicleJourneysApp
