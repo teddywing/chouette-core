@@ -63,6 +63,7 @@ class VehicleJourneysController < ChouetteController
             :time_zone_formatted_offset => sp.stop_area.try(:time_zone_formatted_offset),
             :zip_code => sp.stop_area.try(:zip_code),
             :city_name => sp.stop_area.try(:city_name),
+            :time_zone_offset => sp.stop_area.try(:time_zone_offset),
             :comment => sp.stop_area.try(:comment),
             :area_type => sp.stop_area.try(:area_type),
             :stop_area_id => sp.stop_area_id,

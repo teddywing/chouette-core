@@ -358,6 +358,10 @@ module Chouette
       update_attribute :deleted_at, Time.now
     end
 
+    def time_zone_offset
+      return 0 unless time_zone.present?
+      ActiveSupport::TimeZone[time_zone]&.utc_offset
+    end
 
     def country_name
       return unless country_code
