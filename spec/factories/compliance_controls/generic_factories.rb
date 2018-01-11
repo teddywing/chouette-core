@@ -2,6 +2,8 @@ FactoryGirl.define do
   factory :generic_attribute_control_min_max, class: 'GenericAttributeControl::MinMax' do
     sequence(:name) { |n| "MinMax control #{n}" }
     association :compliance_control_set
+    minimum 90
+    maximum 120
     target "route#name"
   end
 
