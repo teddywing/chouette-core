@@ -36,11 +36,11 @@ const vehicleJourney= (state = {}, action, keep) => {
         let newVjas = {
           delta: 0,
           departure_time:{
-            hour: (current_time.hour + offsetHours) % 24,
+            hour: (24 + current_time.hour + offsetHours) % 24,
             minute: current_time.minute + offsetminutes
           },
           arrival_time:{
-            hour: (current_time.hour + offsetHours) % 24,
+            hour: (24 + current_time.hour + offsetHours) % 24,
             minute: current_time.minute + offsetminutes
           },
           stop_point_objectid: sp.object_id,
@@ -48,12 +48,12 @@ const vehicleJourney= (state = {}, action, keep) => {
           dummy: true
         }
         if(current_time.hour + offsetHours > 24){
-          vjas.departure_day_offset = 1
-          vjas.arrival_day_offset = 1
+          newVjas.departure_day_offset = 1
+          newVjas.arrival_day_offset = 1
         }
         if(current_time.hour + offsetHours < 0){
-          vjas.departure_day_offset = -1
-          vjas.arrival_day_offset = -1
+          newVjas.departure_day_offset = -1
+          newVjas.arrival_day_offset = -1
         }
 
         _.each(action.selectedJourneyPattern.stop_areas, (jp) =>{
