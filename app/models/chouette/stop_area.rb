@@ -358,11 +358,17 @@ module Chouette
       update_attribute :deleted_at, Time.now
     end
 
+
     def country_name
       return unless country_code
 
       country = ISO3166::Country[country_code]
       country.translations[I18n.locale.to_s] || country.name
+    end
+
+    def time_zone_formatted_offset
+      return nil unless time_zone.present?
+      ActiveSupport::TimeZone[time_zone]&.formatted_offset
     end
   end
 end

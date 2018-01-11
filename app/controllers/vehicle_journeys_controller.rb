@@ -59,6 +59,7 @@ class VehicleJourneysController < ChouetteController
             :for_boarding => sp.try(:for_boarding),
             :for_alighting => sp.try(:for_alighting),
             :name => sp.stop_area.try(:name),
+            :time_zone_formatted_offset => sp.stop_area.try(:time_zone_formatted_offset),
             :zip_code => sp.stop_area.try(:zip_code),
             :city_name => sp.stop_area.try(:city_name),
             :comment => sp.stop_area.try(:comment),
