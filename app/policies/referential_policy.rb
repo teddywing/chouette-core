@@ -18,7 +18,7 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def clone?
-    !referential_read_only? && create?
+    !record.in_referential_suite? && create?
   end
 
   def validate?
@@ -30,7 +30,7 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def unarchive?
-    !record.archived_at.nil? && organisation_match? && user.has_permission?('referentials.update')
+    record.archived? && !record.merged? && organisation_match? && user.has_permission?('referentials.update')
   end
 
   def common_lines?

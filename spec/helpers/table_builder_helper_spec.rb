@@ -55,7 +55,7 @@ describe TableBuilderHelper, type: :helper do
             <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=lines">Lignes<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
             <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=created_at">Créé le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
             <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=updated_at">Edité le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=published_at">Intégré le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=merged_at">Finalisé le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
             <th></th>
         </tr>
     </thead>
@@ -144,7 +144,7 @@ describe TableBuilderHelper, type: :helper do
             attribute: Proc.new {|w| l(w.updated_at, format: :short)}
           ),
           TableBuilderHelper::Column.new(
-            key: :published_at,
+            key: :merged_at,
             attribute: ''
           )
         ],

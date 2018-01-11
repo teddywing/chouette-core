@@ -54,8 +54,8 @@
                   attribute: Proc.new {|w| l(w.updated_at, format: :short)} \
                 ), \
                 TableBuilderHelper::Column.new( \
-                  key: :published_at, \
-                  attribute: '' \
+                  key: :merged_at, \
+                  attribute: Proc.new {|w| w.merged_at ? l(w.merged_at, format: :short) : '-'} \
                 ) \
               ],
               selectable: ->(ref){ @workbench.referentials.include?(ref) },

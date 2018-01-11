@@ -463,6 +463,18 @@ class Referential < ActiveRecord::Base
     not metadatas_overlap?
   end
 
+  def merged?
+    merged_at.present?
+  end
+
+  def self.not_merged
+    where merged_at: nil
+  end
+
+  def self.mergeable
+    ready.not_merged.not_in_referential_suite
+  end
+
   private
 
   def lock_table

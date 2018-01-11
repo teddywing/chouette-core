@@ -92,7 +92,7 @@ fr:
         validity_period: "Période de validité englobante"
         updated_at: "Edité le"
         created_at: "Créé le"
-        published_at: "Intégré le"
+        merged_at: "Finalisé le"
         archived_at: "Conservé"
         archived_at_null: "En préparation"
         created_from: 'Créé à partir de'

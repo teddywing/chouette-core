@@ -360,6 +360,8 @@ class Merge < ActiveRecord::Base
   def save_current
     output.update current: new, new: nil
     output.current.update referential_suite: output
+
+    referentials.update_all merged_at: created_at, archived_at: created_at
   end
 
   def fixme_functional_scope

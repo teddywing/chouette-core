@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180109180350) do
+ActiveRecord::Schema.define(version: 20180111200406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -676,6 +676,7 @@ ActiveRecord::Schema.define(version: 20180109180350) do
     t.boolean  "ready",                              default: false
     t.integer  "referential_suite_id",     limit: 8
     t.string   "objectid_format"
+    t.datetime "merged_at"
   end
 
   add_index "referentials", ["created_from_id"], name: "index_referentials_on_created_from_id", using: :btree
@@ -955,7 +956,7 @@ ActiveRecord::Schema.define(version: 20180109180350) do
     t.integer  "route_id",                        limit: 8
     t.integer  "journey_pattern_id",              limit: 8
     t.integer  "company_id",                      limit: 8
-    t.string   "objectid",                                               null: false
+    t.string   "objectid",                                              null: false
     t.integer  "object_version",                  limit: 8
     t.string   "comment"
     t.string   "status_value"
@@ -967,13 +968,13 @@ ActiveRecord::Schema.define(version: 20180109180350) do
     t.integer  "number",                          limit: 8
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "flexible_service"
-    t.integer  "journey_category",                          default: 0,  null: false
+    t.integer  "journey_category",                          default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
-    t.jsonb    "custom_field_values",                       default: {}
+    t.jsonb    "custom_field_values"
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
