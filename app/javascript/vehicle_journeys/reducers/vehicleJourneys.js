@@ -18,7 +18,6 @@ const vehicleJourney= (state = {}, action, keep) => {
         current_time.hour = parseInt(action.data["start_time.hour"].value)
         current_time.minute = parseInt(action.data["start_time.minute"].value)
       }
-      console.log(state)
       _.each(action.stopPointsList, (sp) =>{
         if(action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs && action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
           let delta = parseInt(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id].time)
