@@ -10,6 +10,8 @@ FactoryGirl.define do
 
   factory :vehicle_journey_control_speed, class: 'VehicleJourneyControl::Speed' do
     association :compliance_control_set
+    minimum 200
+    maximum 300
   end
 
   factory :vehicle_journey_control_time_table, class: 'VehicleJourneyControl::TimeTable' do
