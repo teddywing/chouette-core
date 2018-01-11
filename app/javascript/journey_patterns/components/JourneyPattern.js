@@ -5,7 +5,6 @@ import actions from '../actions'
 export default class JourneyPattern extends Component{
   constructor(props){
     super(props)
-    this.previousCity = undefined
     this.previousSpId = undefined
     this.updateCosts = this.updateCosts.bind(this)
   }
@@ -33,7 +32,7 @@ export default class JourneyPattern extends Component{
   }
 
   cityNameChecker(sp, i) {
-    return this.props.journeyPatterns.showHeader(sp.object_id + "-" + i)
+    return this.props.journeyPatterns.showHeader((sp.stop_area_object_id || sp.object_id) + "-" + i)
   }
 
   spNode(sp, headlined){
@@ -76,7 +75,6 @@ export default class JourneyPattern extends Component{
   }
 
   render() {
-    this.previousCity = undefined
     this.previousSpId = undefined
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.object_id ? '' : ' to_record') + (this.props.value.errors ? ' has-error': '') + (this.hasFeature('costs_in_journey_patterns') ? ' with-costs' : '')}>
