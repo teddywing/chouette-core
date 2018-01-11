@@ -186,6 +186,8 @@ class VehicleJourneysController < ChouetteController
           published_name: item.published_name,
           object_id: item.objectid,
           short_id: item.get_objectid.short_id,
+          full_schedule: item.full_schedule?,
+          costs: item.costs,
           stop_area_short_descriptions: item.stop_areas.map do |stop|
             {
               stop_area_short_description: {
