@@ -218,6 +218,7 @@ module Chouette
       ['company', 'journey_pattern'].map do |association|
         attrs["#{association}_id"] = item[association]['id'] if item[association]
       end
+      attrs["custom_field_values"] = Hash[*(item["custom_fields"] || {}).map{|k, v| [k, v["value"]]}.flatten]
       attrs
     end
 

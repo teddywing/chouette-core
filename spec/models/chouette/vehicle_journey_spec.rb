@@ -80,6 +80,7 @@ describe Chouette::VehicleJourney, :type => :model do
         item['purchase_windows']         = []
         item['footnotes']                = []
         item['purchase_windows']         = []
+        item['custom_fields']            = vj.custom_fields
 
         vj.vehicle_journey_at_stops.each do |vjas|
           item['vehicle_journey_at_stops'] << vehicle_journey_at_stop_to_state(vjas)
@@ -94,7 +95,8 @@ describe Chouette::VehicleJourney, :type => :model do
     let(:collection)      { [state] }
 
     it 'should create new vj from state' do
-      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      create(:custom_field, code: :energy)
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern, custom_field_values: {energy: 99})
       collection << vehicle_journey_to_state(new_vj)
       expect {
         Chouette::VehicleJourney.state_update(route, collection)
@@ -106,6 +108,7 @@ describe Chouette::VehicleJourney, :type => :model do
       obj.run_callbacks(:commit)
 
       expect(obj.published_journey_name).to eq 'dummy'
+      expect(obj.custom_fields["energy"]["value"]).to eq 99
     end
 
     it 'should save vehicle_journey_at_stops of newly created vj' do
@@ -205,11 +208,13 @@ describe Chouette::VehicleJourney, :type => :model do
     it 'should update vj attributes from state' do
       state['published_journey_name']       = 'edited_name'
       state['published_journey_identifier'] = 'edited_identifier'
+      state['custom_fields'] = {energy: {value: 99}}
 
       Chouette::VehicleJourney.state_update(route, collection)
       expect(state['errors']).to be_nil
       expect(vehicle_journey.reload.published_journey_name).to eq state['published_journey_name']
       expect(vehicle_journey.reload.published_journey_identifier).to eq state['published_journey_identifier']
+      expect(vehicle_journey.reload.custom_field_value("energy")).to eq 99
     end
 
     it 'should return errors when validation failed' do

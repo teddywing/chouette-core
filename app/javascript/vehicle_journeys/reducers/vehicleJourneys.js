@@ -144,10 +144,17 @@ export default function vehicleJourneys(state = [], action) {
     case 'EDIT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
         if (vj.selected){
+          let custom_fields = _.assign({}, vj.custom_fields)
+          _.each(custom_fields, (cf, code) => {
+            console.log(action.data.custom_fields)
+            let value = action.data.custom_fields[code]
+            custom_fields[code] = _.assign({}, custom_fields[code], {value})
+          })
           return _.assign({}, vj, {
             company: action.selectedCompany,
             published_journey_name: action.data.published_journey_name.value,
             published_journey_identifier: action.data.published_journey_identifier.value,
+            custom_fields: custom_fields,
           })
         }else{
           return vj
