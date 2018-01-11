@@ -31,15 +31,17 @@ const vehicleJourney= (state = {}, action, keep) => {
           current_time.hour = current_time.hour % 24
           prevSp = sp
         }
+        let offsetHours = sp.time_zone_offset / 3600
+        let offsetminutes = sp.time_zone_offset/60 - 60*offsetHours
         let newVjas = {
           delta: 0,
           departure_time:{
-            hour: current_time.hour,
-            minute: current_time.minute
+            hour: (current_time.hour + offsetHours) % 24,
+            minute: current_time.minute + offsetminutes
           },
           arrival_time:{
-            hour: current_time.hour,
-            minute: current_time.minute
+            hour: (current_time.hour + offsetHours) % 24,
+            minute: current_time.minute + offsetminutes
           },
           stop_point_objectid: sp.object_id,
           stop_area_cityname: sp.city_name,
