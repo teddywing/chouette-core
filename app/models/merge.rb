@@ -134,9 +134,10 @@ class Merge < ActiveRecord::Base
       referential_routes.each do |route|
         existing_route = new.routes.find_by line_id: route.line_id, checksum: route.checksum
         unless existing_route
+          objectid = Chouette::Route.where(objectid: route.objectid).exists? ? nil : route.objectid
           attributes = route.attributes.merge(
             id: nil,
-            objectid: "merge:route:#{route.checksum}", #FIXME
+            objectid: objectid,
             # line_id is the same
             # all other primary must be changed
             opposite_route_id: nil #FIXME
@@ -147,10 +148,11 @@ class Merge < ActiveRecord::Base
 
           # Stop Points
           route_stop_points.each do |stop_point|
+            objectid = Chouette::StopPoint.where(objectid: stop_point.objectid).exists? ? nil : stop_point.objectid
             attributes = stop_point.attributes.merge(
               id: nil,
               route_id: nil,
-              objectid: "merge:stop_point:#{route.checksum}-#{stop_point.position}", #FIXME
+              objectid: objectid,
             )
 
             new_route.stop_points.build attributes
@@ -191,10 +193,10 @@ class Merge < ActiveRecord::Base
         existing_journey_pattern = new.journey_patterns.find_by route_id: existing_associated_route.id, checksum: journey_pattern.checksum
 
         unless existing_journey_pattern
+          objectid = Chouette::JourneyPattern.where(objectid: journey_pattern.objectid).exists? ? nil : journey_pattern.objectid
           attributes = journey_pattern.attributes.merge(
             id: nil,
-
-            objectid: "merge:journey_pattern:#{existing_associated_route.checksum}-#{journey_pattern.checksum}", #FIXME
+            objectid: objectid,
 
             # all other primary must be changed
             route_id: existing_associated_route.id,
@@ -236,10 +238,10 @@ class Merge < ActiveRecord::Base
         existing_vehicle_journey = new.vehicle_journeys.find_by journey_pattern_id: existing_associated_journey_pattern.id, checksum: vehicle_journey.checksum
 
         unless existing_vehicle_journey
+          objectid = Chouette::VehicleJourney.where(objectid: vehicle_journey.objectid).exists? ? nil : vehicle_journey.objectid
           attributes = vehicle_journey.attributes.merge(
             id: nil,
-
-            objectid: "merge:vehicle_journey:#{existing_associated_journey_pattern.checksum}-#{vehicle_journey.checksum}", #FIXME
+            objectid: objectid,
 
             # all other primary must be changed
             route_id: existing_associated_journey_pattern.route_id,
@@ -333,10 +335,8 @@ class Merge < ActiveRecord::Base
           existing_time_table = line.time_tables.find_by checksum: candidate_time_table.checksum
 
           unless existing_time_table
-            # FIXME use real ObjectId
-            # Referential id is (temporary) used because the "same" TimeTable can be defined in several merged Referentials
-            # and checksum are modified by clean/remove_periods! but this temporary object id is constant
-            candidate_time_table.objectid = "merge:time_table:#{line.id}-#{candidate_time_table.checksum}-#{referential.id}:LOC"
+            objectid = Chouette::TimeTable.where(objectid: time_table.objectid).exists? ? nil : time_table.objectid
+            candidate_time_table.objectid = objectid
 
             candidate_time_table.save!
 
