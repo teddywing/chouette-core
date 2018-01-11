@@ -44,6 +44,7 @@ class JourneyPatternsCollectionsController < ChouetteController
             :zip_code => sp.stop_area.try(:zip_code),
             :city_name => sp.stop_area.try(:city_name),
             :country_name => sp.stop_area.try(:country_name),
+            :time_zone_formatted_offset => sp.stop_area.try(:time_zone_formatted_offset),
             :comment => sp.stop_area.try(:comment),
             :area_type => sp.stop_area.try(:area_type),
             :registration_number => sp.stop_area.try(:registration_number),

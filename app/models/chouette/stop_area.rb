@@ -368,7 +368,7 @@ module Chouette
 
     def time_zone_formatted_offset
       return nil unless time_zone.present?
-      ActiveSupport::TimeZone[time_zone].formatted_offset
+      ActiveSupport::TimeZone[time_zone]&.formatted_offset
     end
   end
 end
