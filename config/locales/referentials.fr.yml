@@ -11,11 +11,11 @@ fr:
     edit:
       title: "Editer le jeu de données"
     show:
+      title: "Jeu de données %{name}"
       lines: "lignes"
       networks: "réseaux"
       vehicle_journeys: "courses"
       time_tables: "calendriers"
-      title: "Jeu de données"
       clean_up: "Purge des données obsolètes"
       api_keys: "Clés d'authentification pour un accès à l'API REST"
       show_all_referentials: Voir tous les jeux de données

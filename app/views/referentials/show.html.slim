@@ -21,11 +21,12 @@
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
-        = definition_list t('metadatas'),
-          { t('activerecord.attributes.referential.status') => @referential.referential_read_only? ? "<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>".html_safe : "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>".html_safe,
-            @referential.human_attribute_name(:validity_period) => (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-'),
-            @referential.human_attribute_name(:organisation) => @referential.organisation.name,
-            @referential.human_attribute_name(:published_at) => '-' }
+        - attributes = {}
+        - attributes[@referential.human_attribute_name(:status)] = @referential.referential_read_only? ? "<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>".html_safe : "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>".html_safe unless @referential.in_referential_suite?
+        - attributes[@referential.human_attribute_name(:validity_period)] = (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-')
+        - attributes[@referential.human_attribute_name(:organisation)] = @referential.organisation.name
+        - attributes[@referential.human_attribute_name(:published_at)] = '-' unless @referential.in_referential_suite?
+        = definition_list t('metadatas'), attributes
 
     - if params[:q].present? or @reflines.any?
       .row

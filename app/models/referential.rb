@@ -105,6 +105,14 @@ class Referential < ActiveRecord::Base
     self.class.human_attribute_name(*args)
   end
 
+  def full_name
+    if in_referential_suite?
+      name
+    else
+      "#{self.class.model_name.human.capitalize} #{name}"
+    end
+  end
+
   def stop_areas
     Chouette::StopArea.all
   end
