@@ -3462,6 +3462,10 @@ jest-docblock@^22.0.3:
   dependencies:
     detect-newline "^2.1.0"
 
+jest-environment-jsdom-global@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/jest-environment-jsdom-global/-/jest-environment-jsdom-global-1.0.2.tgz#b3449e016e0b13cb0779704e29a1377f927b38a3"
+
 jest-environment-jsdom@^22.0.5:
   version "22.0.5"
   resolved "https://registry.yarnpkg.com/jest-environment-jsdom/-/jest-environment-jsdom-22.0.5.tgz#7b479452e387aef5b4bf8b9fe03e8be77493f5ea"

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import CustomFieldsInputs from '../../../../app/javascript/vehicle_journeys/components/tools/CustomFieldsInputs'
 import renderer from 'react-test-renderer'
 require('select2')
-console.log($().jquery)
 
 describe('CustomFieldsInputs', () => {
   set('values', () => {
