@@ -16,7 +16,9 @@ fr:
       accessibility: "Accessibilité"
     actions:
       new: "Ajouter un arrêt"
+      create: "Ajouter un arrêt"
       edit: "Editer cet arrêt"
+      update: "Editer cet arrêt"
       destroy: "Supprimer"
       activate: "Activer cet arrêt"
       deactivate: "Désactiver cet arrêt"

@@ -21,7 +21,11 @@ fr:
       show_company: 'Voir le transporteur principal'
     new:
       title: "Ajouter une ligne"
+    create:
+      title: "Ajouter une ligne"
     edit:
+      title: "Editer la ligne %{name}"
+    update:
       title: "Editer la ligne %{name}"
     show:
       title: "Ligne %{name}"

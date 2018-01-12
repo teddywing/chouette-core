@@ -16,7 +16,9 @@ en:
       accessibility: "Accessibility"
     actions:
       new: "Add a new stop"
+      create: "Add a new stop"
       edit: "Edit this stop"
+      update: "Edit this stop"
       destroy: "Remove"
       activate: "Activate this stop"
       deactivate: "Deactivate this stop"

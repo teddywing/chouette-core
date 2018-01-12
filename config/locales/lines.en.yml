@@ -21,7 +21,11 @@ en:
       show_company: 'Show company'
     new:
       title: "Add a new line"
+    create:
+      title: "Add a new line"
     edit:
+      title: "Update line %{name}"
+    update:
       title: "Update line %{name}"
     show:
       title: "Line %{name}"
