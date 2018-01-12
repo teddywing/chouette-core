@@ -132,7 +132,7 @@ en:
         city_name: "City"
         created_at: Created at
         updated_at: Updated at
-        waiting_time: Waiting time
+        waiting_time: Waiting time (minutes)
   formtastic:
     titles:
       stop_area:
