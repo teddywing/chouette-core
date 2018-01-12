@@ -1,35 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import SaveButton from '../../helpers/save_button'
 import actions from '../actions'
 
-export default class SaveJourneyPattern extends Component {
-  constructor(props){
-    super(props)
+export default class SaveJourneyPattern extends SaveButton {
+  hasPolicy(){
+    return this.props.status.policy['journey_patterns.update'] == true
   }
 
-  render() {
-    if(this.props.status.policy['journey_patterns.update'] == false) {
-      return false
-    }else{
-      return (
-        <div className='row mt-md'>
-          <div className='col-lg-12 text-right'>
-            <form className='jp_collection formSubmitr ml-xs' onSubmit={e => {e.preventDefault()}}>
-              <button
-                className='btn btn-default'
-                type='button'
-                onClick={e => {
-                  e.preventDefault()
-                  this.props.editMode ? this.props.onSubmitJourneyPattern(this.props.dispatch, this.props.journeyPatterns) : this.props.onEnterEditMode()
-                }}
-                >
-                {this.props.editMode ? "Valider" : "Editer"}
-              </button>
-            </form>
-          </div>
-        </div>
-      )
-    }
+  formClassName(){
+    return 'jp_collection'
+  }
+
+  submitForm(){
+    this.props.onSubmitJourneyPattern(this.props.dispatch, this.props.journeyPatterns)
   }
 }
 

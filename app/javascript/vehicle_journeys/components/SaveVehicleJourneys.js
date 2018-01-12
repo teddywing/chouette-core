@@ -1,37 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import SaveButton from '../../helpers/save_button'
 import actions from '../actions'
 
-export default class SaveVehicleJourneys extends Component{
-  constructor(props){
-    super(props)
+export default class SaveVehicleJourneys extends SaveButton{
+  hasPolicy(){
+    return this.props.filters.policy['vehicle_journeys.update'] == true
   }
 
-  render() {
-    if (this.props.filters.policy['vehicle_journeys.update'] == false) {
-      return false
-    }else{
-      return (
-        <div className='row mt-md'>
-          <div className='col-lg-12 text-right'>
-            <form className='vehicle_journeys formSubmitr ml-xs' onSubmit={e => {e.preventDefault()}}>
-              <div className="btn-group sticky-actions">
-                <button
-                  className={'btn btn-default' + (this.props.status.fetchSuccess ? '' : ' disabled')}
-                  type='button'
-                  onClick={e => {
-                    e.preventDefault()
-                    this.props.editMode ? this.props.onSubmitVehicleJourneys(this.props.dispatch, this.props.vehicleJourneys) : this.props.onEnterEditMode()
-                  }}
-                >
-                  {this.props.editMode ? "Valider" : "Editer"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )
-    }
+  formClassName(){
+    return 'vehicle_journeys'
+  }
+
+  submitForm(){
+    this.props.onSubmitVehicleJourneys(this.props.dispatch, this.props.vehicleJourneys)
   }
 }
 
