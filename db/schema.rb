@@ -416,9 +416,9 @@ ActiveRecord::Schema.define(version: 20180111200406) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
-    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
+    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -956,7 +956,7 @@ ActiveRecord::Schema.define(version: 20180111200406) do
     t.integer  "route_id",                        limit: 8
     t.integer  "journey_pattern_id",              limit: 8
     t.integer  "company_id",                      limit: 8
-    t.string   "objectid",                                              null: false
+    t.string   "objectid",                                               null: false
     t.integer  "object_version",                  limit: 8
     t.string   "comment"
     t.string   "status_value"
@@ -968,13 +968,13 @@ ActiveRecord::Schema.define(version: 20180111200406) do
     t.integer  "number",                          limit: 8
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "flexible_service"
-    t.integer  "journey_category",                          default: 0, null: false
+    t.integer  "journey_category",                          default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
-    t.jsonb    "custom_field_values"
+    t.jsonb    "custom_field_values",                       default: {}
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
