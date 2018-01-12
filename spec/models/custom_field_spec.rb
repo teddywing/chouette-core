@@ -5,6 +5,7 @@ RSpec.describe CustomField, type: :model do
 
   context "validates" do
     it { should validate_uniqueness_of(:name).scoped_to(:resource_type) }
+    it { should validate_uniqueness_of(:code).scoped_to(:resource_type).case_insensitive }
   end
 
   context "field access" do
