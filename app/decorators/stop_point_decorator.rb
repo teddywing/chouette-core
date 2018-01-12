@@ -4,6 +4,6 @@ class StopPointDecorator < StopAreaDecorator
   delegate_all
 
   def action_links
-    super(object.stop_area)
+    common_action_links(object.stop_area).flatten
   end
 end

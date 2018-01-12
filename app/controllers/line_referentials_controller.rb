@@ -3,6 +3,7 @@ class LineReferentialsController < ChouetteController
   defaults :resource_class => LineReferential
 
   def sync
+    authorize resource, :synchronize?
     @sync = resource.line_referential_syncs.build
     if @sync.save
       flash[:notice] = t('notice.line_referential_sync.created')

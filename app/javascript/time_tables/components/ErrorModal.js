@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import actions from '../actions'
 
 export default function ErrorModal({dispatch, modal, onModalClose}, {I18n}) {

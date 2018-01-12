@@ -23,6 +23,7 @@ var initialState = {
   filters: {
     selectedJourneyPatterns : selectedJP,
     policy: window.perms,
+    features: window.features,
     toggleArrivals: false,
     queryString: '',
     query: {
@@ -54,7 +55,7 @@ var initialState = {
 
   },
   status: {
-    fetchSuccess: true,
+    fetchSuccess: false,
     isFetching: false
   },
   vehicleJourneys: [],
@@ -69,7 +70,9 @@ var initialState = {
     type: '',
     modalProps: {},
     confirmModal: {}
-  }
+  },
+  missions: window.all_missions,
+  custom_fields: window.custom_fields
 }
 
 if (window.jpOrigin){

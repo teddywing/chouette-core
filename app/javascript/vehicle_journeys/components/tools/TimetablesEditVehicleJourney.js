@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../../actions'
 import TimetableSelect2 from './select2s/TimetableSelect2'
 
@@ -29,10 +30,11 @@ export default class TimetablesEditVehicleJourney extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={(actions.getSelected(this.props.vehicleJourneys).length != 1 || this.props.disabled)}
+            disabled={(actions.getSelected(this.props.vehicleJourneys).length < 1 || this.props.disabled)}
             data-toggle='modal'
             data-target='#CalendarsEditVehicleJourneyModal'
             onClick={() => this.props.onOpenCalendarsEditModal(actions.getSelected(this.props.vehicleJourneys))}
+            title='Calendriers'
           >
             <span className='fa fa-calendar'></span>
           </button>
@@ -56,7 +58,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                                 <div className='wrapper'>
                                   <div>
                                     <div className='form-group'>
-                                      <label className='control-label'>Calendriers associés</label>
+                                      <label className='control-label'>{this.props.modal.modalProps.timetables.length == 0 ? "Aucun calendrier associé" : "Calendriers associés"}</label>
                                     </div>
                                   </div>
                                   <div></div>
@@ -65,9 +67,14 @@ export default class TimetablesEditVehicleJourney extends Component {
                               {this.props.modal.modalProps.timetables.map((tt, i) =>
                                 <div className='nested-fields' key={i}>
                                   <div className='wrapper'>
-                                    <div> <a href={this.timeTableURL(tt)} target="_blank">{tt.comment}</a> </div>
+                                    <div>
+                                      <a href={this.timeTableURL(tt)} target="_blank">
+                                        <span className="fa fa-circle mr-xs" style={{color: tt.color || 'black'}}></span>
+                                        {tt.comment}
+                                      </a>
+                                    </div>
                                     {
-                                      this.props.editMode && 
+                                      this.props.editMode &&
                                       <div>
                                         <a
                                           href='#'
@@ -85,13 +92,14 @@ export default class TimetablesEditVehicleJourney extends Component {
                                 </div>
                               )}
                               {
-                                this.props.editMode && 
+                                this.props.editMode &&
                                 <div className='nested-fields'>
                                   <div className='wrapper'>
                                     <div>
                                       <TimetableSelect2
                                         onSelect2Timetable={this.props.onSelect2Timetable}
                                         chunkURL={'/autocomplete_time_tables.json'}
+                                        searchKey={"comment_or_objectid_cont_any"}
                                         isFilter={false}
                                       />
                                     </div>
@@ -103,7 +111,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                         </div>
                       </div>
                       {
-                        this.props.editMode && 
+                        this.props.editMode &&
                         <div className='modal-footer'>
                           <button
                             className='btn btn-link'

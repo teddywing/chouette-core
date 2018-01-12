@@ -29,7 +29,6 @@ module ReferentialHelper
       end
     end
 
-
   end
 
 end
@@ -78,7 +77,7 @@ RSpec.configure do |config|
     first_referential.switch
   end
 
-  config.before(:each, :js => true) do
+  config.before(:each, truncation: true) do
     DatabaseCleaner.strategy = :truncation, { except: %w[spatial_ref_sys] }
   end
 

@@ -1,12 +1,5 @@
-require 'spec_helper'
-
 describe Referential, :type => :model do
   let(:ref) { create :workbench_referential, metadatas: [create(:referential_metadata)] }
-
-  # it "create a rule_parameter_set" do
-  #   referential = create(:referential)
-  #   expect(referential.rule_parameter_sets.size).to eq(1)
-  # end
 
   it { should have_many(:metadatas) }
   it { should belong_to(:workbench) }
@@ -129,6 +122,42 @@ describe Referential, :type => :model do
       it "should support Ransack search method" do
         expect(ref.lines.search.result.to_a).to eq(ref.lines.to_a)
       end
+    end
+  end
+
+  context "to be referential_read_only or not to be referential_read_only" do
+    let( :referential ){ build_stubbed( :referential ) }
+
+    context "in the beginning" do
+      it{ expect( referential ).not_to be_referential_read_only }
+    end
+
+    context "after archivation" do
+      before{ referential.archived_at = 1.day.ago }
+      it{ expect( referential ).to be_referential_read_only }
+    end
+
+    context "used in a ReferentialSuite" do
+      before { referential.referential_suite_id = 42 }
+
+      it{ expect( referential ).to be_referential_read_only }
+
+      it "return true to in_referential_suite?" do
+        expect(referential).to be_in_referential_suite
+      end
+
+      it "don't use detect_overlapped_referentials in validation" do
+        expect(referential).to_not receive(:detect_overlapped_referentials)
+        expect(referential).to be_valid
+      end
+    end
+
+    context "archived and finalised" do
+      before do
+        referential.archived_at = 1.month.ago
+        referential.referential_suite_id = 53
+      end
+      it{ expect( referential ).to be_referential_read_only }
     end
   end
 end

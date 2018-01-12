@@ -4,6 +4,7 @@ route = JSON.parse(decodeURIComponent(route))
 
 const geoColPts = []
 const geoColLns = []
+const area = []
 const geoColEdges = [
   new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(route[0].longitude), parseFloat(route[0].latitude)]))
@@ -23,8 +24,8 @@ route.forEach(function (stop, i) {
   }
   geoColPts.push(new ol.Feature({
     geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(stop.longitude), parseFloat(stop.latitude)]))
-  })
-  )
+  }))
+  area.push([parseFloat(stop.longitude), parseFloat(stop.latitude)])
 })
 var edgeStyles = new ol.style.Style({
   image: new ol.style.Circle(({
@@ -100,3 +101,21 @@ var map = new ol.Map({
     zoom: 13
   })
 });
+const boundaries = ol.extent.applyTransform(
+  ol.extent.boundingExtent(area), ol.proj.getTransform('EPSG:4326', 'EPSG:3857')
+)
+map.getView().fit(boundaries, map.getSize());
+let tooCloseToBounds = false
+const mapBoundaries = map.getView().calculateExtent(map.getSize())
+const mapWidth = mapBoundaries[2] - mapBoundaries[0]
+const mapHeight = mapBoundaries[3] - mapBoundaries[1]
+const marginSize = 0.1
+const heightMargin = marginSize * mapHeight
+const widthMargin = marginSize * mapWidth
+tooCloseToBounds = tooCloseToBounds || (boundaries[0] - mapBoundaries[0]) < widthMargin
+tooCloseToBounds = tooCloseToBounds || (mapBoundaries[2] - boundaries[2]) < widthMargin
+tooCloseToBounds = tooCloseToBounds || (boundaries[1] - mapBoundaries[1]) < heightMargin
+tooCloseToBounds = tooCloseToBounds || (mapBoundaries[3] - boundaries[3]) < heightMargin
+if(tooCloseToBounds){
+  map.getView().setZoom(map.getView().getZoom() - 1)
+}

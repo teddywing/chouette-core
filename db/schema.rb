@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130180144) do
+ActiveRecord::Schema.define(version: 20180111200406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "hstore"
+  enable_extension "unaccent"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -207,7 +208,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.integer  "compliance_check_set_id",   limit: 8
     t.integer  "compliance_check_block_id", limit: 8
     t.string   "type"
-    t.hstore   "control_attributes"
+    t.json     "control_attributes"
     t.string   "name"
     t.string   "code"
     t.string   "criticity"
@@ -242,7 +243,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
   create_table "compliance_controls", id: :bigserial, force: :cascade do |t|
     t.integer  "compliance_control_set_id",   limit: 8
     t.string   "type"
-    t.hstore   "control_attributes"
+    t.json     "control_attributes"
     t.string   "name"
     t.string   "code"
     t.string   "criticity"
@@ -279,6 +280,19 @@ ActiveRecord::Schema.define(version: 20171130180144) do
   end
 
   add_index "connection_links", ["objectid"], name: "connection_links_objectid_key", unique: true, using: :btree
+
+  create_table "custom_fields", id: :bigserial, force: :cascade do |t|
+    t.string   "code"
+    t.string   "resource_type"
+    t.string   "name"
+    t.string   "field_type"
+    t.json     "options"
+    t.integer  "workgroup_id",  limit: 8
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "custom_fields", ["resource_type"], name: "index_custom_fields_on_resource_type", using: :btree
 
   create_table "exports", id: :bigserial, force: :cascade do |t|
     t.integer  "referential_id",  limit: 8
@@ -441,6 +455,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
+    t.json     "costs"
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree
@@ -521,6 +536,19 @@ ActiveRecord::Schema.define(version: 20171130180144) do
   add_index "lines", ["registration_number"], name: "lines_registration_number_key", using: :btree
   add_index "lines", ["secondary_company_ids"], name: "index_lines_on_secondary_company_ids", using: :gin
 
+  create_table "merges", id: :bigserial, force: :cascade do |t|
+    t.integer  "workbench_id",    limit: 8
+    t.integer  "referential_ids", limit: 8,              array: true
+    t.string   "creator"
+    t.string   "status"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "merges", ["workbench_id"], name: "index_merges_on_workbench_id", using: :btree
+
   create_table "networks", id: :bigserial, force: :cascade do |t|
     t.string   "objectid",                      null: false
     t.integer  "object_version",      limit: 8
@@ -551,6 +579,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.datetime "synced_at"
     t.hstore   "sso_attributes"
     t.string   "custom_view"
+    t.string   "features",       default: [],        array: true
   end
 
   add_index "organisations", ["code"], name: "index_organisations_on_code", unique: true, using: :btree
@@ -569,6 +598,25 @@ ActiveRecord::Schema.define(version: 20171130180144) do
   end
 
   add_index "pt_links", ["objectid"], name: "pt_links_objectid_key", unique: true, using: :btree
+
+  create_table "purchase_windows", id: :bigserial, force: :cascade do |t|
+    t.string    "name"
+    t.string    "color"
+    t.daterange "date_ranges",                            array: true
+    t.datetime  "created_at",                null: false
+    t.datetime  "updated_at",                null: false
+    t.string    "objectid"
+    t.string    "checksum"
+    t.text      "checksum_source"
+    t.integer   "referential_id",  limit: 8
+  end
+
+  add_index "purchase_windows", ["referential_id"], name: "index_purchase_windows_on_referential_id", using: :btree
+
+  create_table "purchase_windows_vehicle_journeys", id: false, force: :cascade do |t|
+    t.integer "purchase_window_id", limit: 8
+    t.integer "vehicle_journey_id", limit: 8
+  end
 
   create_table "referential_clonings", id: :bigserial, force: :cascade do |t|
     t.string   "status"
@@ -628,6 +676,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.boolean  "ready",                              default: false
     t.integer  "referential_suite_id",     limit: 8
     t.string   "objectid_format"
+    t.datetime "merged_at"
   end
 
   add_index "referentials", ["created_from_id"], name: "index_referentials_on_created_from_id", using: :btree
@@ -736,6 +785,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "stif_type"
+    t.integer  "waiting_time"
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree
@@ -924,6 +974,7 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
+    t.jsonb    "custom_field_values"
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree
@@ -949,11 +1000,21 @@ ActiveRecord::Schema.define(version: 20171130180144) do
     t.integer  "stop_area_referential_id", limit: 8
     t.integer  "output_id",                limit: 8
     t.string   "objectid_format"
+    t.integer  "workgroup_id",             limit: 8
   end
 
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
   add_index "workbenches", ["organisation_id"], name: "index_workbenches_on_organisation_id", using: :btree
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
+  add_index "workbenches", ["workgroup_id"], name: "index_workbenches_on_workgroup_id", using: :btree
+
+  create_table "workgroups", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
   add_foreign_key "api_keys", "organisations"

@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import PeriodManager from './PeriodManager'
 
 export default class PeriodsInDay extends Component {

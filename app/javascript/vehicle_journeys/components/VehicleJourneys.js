@@ -1,15 +1,29 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import VehicleJourney from './VehicleJourney'
-
+import StopAreaHeaderManager from '../../helpers/stop_area_header_manager'
 
 export default class VehicleJourneys extends Component {
   constructor(props){
     super(props)
-    this.previousCity = undefined
+    this.headerManager = new StopAreaHeaderManager(
+      _.map(this.props.stopPointsList, (sp)=>{return sp.object_id}),
+      this.props.stopPointsList,
+      this.props.filters.features
+    )
   }
+
   componentDidMount() {
     this.props.onLoadFirstPage(this.props.filters)
+  }
+
+  hasFeature(key) {
+    return this.props.filters.features[key]
+  }
+
+  showHeader(object_id) {
+    return this.headerManager.showHeader(object_id)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -55,25 +69,8 @@ export default class VehicleJourneys extends Component {
     }
   }
 
-  cityNameChecker(sp) {
-    let bool = false
-    if(sp.city_name != this.previousCity){
-      bool = true
-      this.previousCity = sp.city_name
-    }
-    return (
-      <div
-        className={(bool) ? 'headlined' : ''}
-        data-headline={(bool) ? sp.city_name : ''}
-        title={sp.city_name + ' (' + sp.zip_code +')'}
-      >
-        <span><span>{sp.name}</span></span>
-      </div>
-    )
-  }
-
   render() {
-    this.previousCity = undefined
+    this.previousBreakpoint = undefined
 
     if(this.props.status.isFetching == true) {
       return (
@@ -111,13 +108,16 @@ export default class VehicleJourneys extends Component {
               <div className='t2e-head w20'>
                 <div className='th'>
                   <div className='strong mb-xs'>ID course</div>
+                  <div>Nom course</div>
                   <div>ID mission</div>
+                  <div>Transporteur</div>
                   <div>Calendriers</div>
+                  { this.hasFeature('purchase_windows') && <div>Calendriers Commerciaux</div> }
                 </div>
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (
                     <div key={i} className='td'>
-                      {this.cityNameChecker(sp)}
+                      {this.headerManager.stopPointHeader(sp.object_id)}
                     </div>
                   )
                 })}
@@ -132,8 +132,10 @@ export default class VehicleJourneys extends Component {
                       index={index}
                       editMode={this.props.editMode}
                       filters={this.props.filters}
+                      features={this.props.features}
                       onUpdateTime={this.props.onUpdateTime}
                       onSelectVehicleJourney={this.props.onSelectVehicleJourney}
+                      vehicleJourneys={this}
                       />
                   )}
                 </div>

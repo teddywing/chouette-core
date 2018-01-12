@@ -1,3 +1,4 @@
+# coding: utf-8
 class Referential < ActiveRecord::Base
   include DataFormatEnumerations
   include ObjectidFormatterSupport
@@ -12,17 +13,17 @@ class Referential < ActiveRecord::Base
 
   validates_uniqueness_of :slug
 
-  validates_format_of :slug, :with => %r{\A[a-z][0-9a-z_]+\Z}
-  validates_format_of :prefix, :with => %r{\A[0-9a-zA-Z_]+\Z}
-  validates_format_of :upper_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
-  validates_format_of :lower_corner, :with => %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
+  validates_format_of :slug, with: %r{\A[a-z][0-9a-z_]+\Z}
+  validates_format_of :prefix, with: %r{\A[0-9a-zA-Z_]+\Z}
+  validates_format_of :upper_corner, with: %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
+  validates_format_of :lower_corner, with: %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
   validate :slug_excluded_values
 
   attr_accessor :upper_corner
   attr_accessor :lower_corner
 
   has_one :user
-  has_many :api_keys, :class_name => 'Api::V1::ApiKey', :dependent => :destroy
+  has_many :api_keys, class_name: 'Api::V1::ApiKey', dependent: :destroy
 
   belongs_to :organisation
   validates_presence_of :organisation
@@ -34,7 +35,7 @@ class Referential < ActiveRecord::Base
                I18n.t('referentials.errors.inconsistent_organisation',
                       indirect_name: workbench.organisation.name,
                       direct_name: organisation.name))
-  end
+  end, if: :organisation
 
   belongs_to :line_referential
   validates_presence_of :line_referential
@@ -60,6 +61,19 @@ class Referential < ActiveRecord::Base
   scope :include_metadatas_lines, ->(line_ids) { where('referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids) }
   scope :order_by_validity_period, ->(dir) { joins(:metadatas).order("unnest(periodes) #{dir}") }
   scope :order_by_lines, ->(dir) { joins(:metadatas).group("referentials.id").order("sum(array_length(referential_metadata.line_ids,1)) #{dir}") }
+  scope :not_in_referential_suite, -> { where referential_suite_id: nil }
+
+  def save_with_table_lock_timeout(options = {})
+    save_without_table_lock_timeout(options)
+  rescue ActiveRecord::StatementInvalid => e
+    if e.message.include?('PG::LockNotAvailable')
+      raise TableLockTimeoutError.new(e)
+    else
+      raise
+    end
+  end
+
+  alias_method_chain :save, :table_lock_timeout
 
   def lines
     if metadatas.blank?
@@ -78,7 +92,7 @@ class Referential < ActiveRecord::Base
         errors.add(:slug,I18n.t("referentials.errors.public_excluded"))
       end
       if slug == self.class.connection_config[:username]
-        errors.add(:slug,I18n.t("referentials.errors.user_excluded", :user => slug))
+        errors.add(:slug,I18n.t("referentials.errors.user_excluded", user: slug))
       end
     end
   end
@@ -89,6 +103,14 @@ class Referential < ActiveRecord::Base
 
   def human_attribute_name(*args)
     self.class.human_attribute_name(*args)
+  end
+
+  def full_name
+    if in_referential_suite?
+      name
+    else
+      "#{self.class.model_name.human.capitalize} #{name}"
+    end
   end
 
   def stop_areas
@@ -127,6 +149,26 @@ class Referential < ActiveRecord::Base
     Chouette::RoutingConstraintZone.all
   end
 
+  def purchase_windows
+    Chouette::PurchaseWindow.all
+  end
+
+  def routes
+    Chouette::Route.all
+  end
+
+  def journey_patterns
+    Chouette::JourneyPattern.all
+  end
+
+  def stop_points
+    Chouette::StopPoint.all
+  end
+
+  def compliance_check_sets
+    ComplianceCheckSet.all
+  end
+
   before_validation :define_default_attributes
 
   def define_default_attributes
@@ -134,14 +176,26 @@ class Referential < ActiveRecord::Base
     self.objectid_format ||= workbench.objectid_format if workbench
   end
 
-  def switch
+  def switch(&block)
     raise "Referential not created" if new_record?
-    Apartment::Tenant.switch!(slug)
-    self
+
+    unless block_given?
+      Rails.logger.debug "Referential switch to #{slug}"
+      Apartment::Tenant.switch! slug
+      self
+    else
+      result = nil
+      Apartment::Tenant.switch slug do
+        Rails.logger.debug "Referential switch to #{slug}"
+        result = yield
+      end
+      Rails.logger.debug "Referential back"
+      result
+    end
   end
 
   def self.new_from(from, functional_scope)
-     Referential.new(
+    Referential.new(
       name: I18n.t("activerecord.copy", name: from.name),
       slug: "#{from.slug}_clone",
       prefix: from.prefix,
@@ -191,14 +245,28 @@ class Referential < ActiveRecord::Base
     projection_type || ""
   end
 
-  before_validation :assign_line_and_stop_area_referential, :on => :create, if: :workbench
-  before_validation :assign_slug, :on => :create
-  before_validation :assign_prefix, :on => :create
+  before_validation :assign_line_and_stop_area_referential, on: :create, if: :workbench
+  before_validation :assign_slug, on: :create
+  before_validation :assign_prefix, on: :create
+
+  # Lock the `referentials` table to prevent duplicate referentials from being
+  # created simultaneously in separate transactions. This must be the last hook
+  # to minimise the duration of the lock.
+  before_save :lock_table, on: [:create, :update]
+
   before_create :create_schema
   after_create :clone_schema, if: :created_from
 
   before_destroy :destroy_schema
   before_destroy :destroy_jobs
+
+  def referential_read_only?
+    in_referential_suite? || archived?
+  end
+
+  def in_referential_suite?
+    referential_suite_id.present?
+  end
 
   def in_workbench?
     workbench_id.present?
@@ -263,7 +331,7 @@ class Referential < ActiveRecord::Base
 
     query = "select distinct(public.referential_metadata.referential_id) FROM public.referential_metadata, unnest(line_ids) line, LATERAL unnest(periodes) period
     WHERE public.referential_metadata.referential_id
-    IN (SELECT public.referentials.id FROM public.referentials WHERE referentials.workbench_id = #{workbench_id} and referentials.archived_at is null #{not_myself})
+    IN (SELECT public.referentials.id FROM public.referentials WHERE referentials.workbench_id = #{workbench_id} and referentials.archived_at is null and referentials.referential_suite_id is null #{not_myself})
     AND line in (#{line_ids.join(',')}) and (#{periods_query});"
 
     self.class.connection.select_values(query).map(&:to_i)
@@ -273,31 +341,54 @@ class Referential < ActiveRecord::Base
     overlapped_referential_ids.present?
   end
 
-  validate :detect_overlapped_referentials
+  validate :detect_overlapped_referentials, unless: :in_referential_suite?
 
   def detect_overlapped_referentials
     self.class.where(id: overlapped_referential_ids).each do |referential|
+      Rails.logger.info "Referential #{referential.id} #{referential.metadatas.inspect} overlaps #{metadatas.inspect}"
       errors.add :metadatas, I18n.t("referentials.errors.overlapped_referential", :referential => referential.name)
     end
   end
 
+
+  attr_accessor :inline_clone
   def clone_schema
-    ReferentialCloning.create(source_referential: created_from, target_referential: self)
+    cloning = ReferentialCloning.new source_referential: created_from, target_referential: self
+
+    if inline_clone
+      cloning.clone!
+    else
+      cloning.save!
+    end
   end
 
   def create_schema
     unless created_from
-      Apartment::Tenant.create slug
-      Rails.logger.error( "Schema migrations count for Referential #{slug} " + Referential.connection.select_value("select count(*) from #{slug}.schema_migrations;").to_s )
+      report = Benchmark.measure do
+        Apartment::Tenant.create slug
+      end
+
+      check_migration_count(report)
+    end
+  end
+
+  def check_migration_count(report)
+    Rails.logger.info("Schema create benchmark: '#{slug}'\t#{report}")
+    Rails.logger.info("Schema migrations count for Referential #{slug}: #{migration_count || '-'}")
+  end
+
+  def migration_count
+    if self.class.connection.table_exists?("#{slug}.schema_migrations")
+      self.class.connection.select_value("select count(*) from #{slug}.schema_migrations;")
     end
   end
 
   def assign_slug
-    self.slug ||= "#{self.name.parameterize.gsub('-', '_')}_#{Time.now.to_i}"
+    self.slug ||= "#{name.parameterize.gsub('-', '_')}_#{Time.now.to_i}" if name
   end
 
   def assign_prefix
-    self.prefix = organisation.name.parameterize.gsub('-', '_')
+    self.prefix = organisation.name.parameterize.gsub('-', '_') if organisation
   end
 
   def assign_line_and_stop_area_referential
@@ -372,4 +463,25 @@ class Referential < ActiveRecord::Base
     not metadatas_overlap?
   end
 
+  def merged?
+    merged_at.present?
+  end
+
+  def self.not_merged
+    where merged_at: nil
+  end
+
+  def self.mergeable
+    ready.not_merged.not_in_referential_suite
+  end
+
+  private
+
+  def lock_table
+    # No explicit unlock is needed as it will be released at the end of the
+    # transaction.
+    ActiveRecord::Base.connection.execute(
+      'LOCK public.referentials IN ACCESS EXCLUSIVE MODE'
+    )
+  end
 end

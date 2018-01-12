@@ -3,24 +3,43 @@ module ApplicationHelper
 
   include NewapplicationHelper
 
+  def array_to_html_list items
+    content_tag :ul do
+      items.each do |item|
+        concat content_tag :li, item
+      end
+    end
+  end
+
   def page_header_title(object)
     # Unwrap from decorator, we want to know the object model name
     object = object.object if object.try(:object)
+
+    if Referential === object
+      return object.full_name
+    end
+
     local  = "#{object.model_name.name.underscore.pluralize}.#{params[:action]}.title"
     if object.try(:name)
-      t(local, name: object.name)
+      t(local, name: object.name || object.id)
     else
       t(local)
     end
   end
 
   def page_header_meta(object)
-    info = t('last_update', time: l(object.updated_at, format: :short))
-    if object.try(:versions)
-      author = object.versions.try(:last).try(:whodunnit) || t('default_whodunnit')
-      info   = "#{info} <br/> #{t('whodunnit', author: author)}"
+    out = ""
+    display = true
+    display = policy(object).synchronize? if policy(object).respond_to?(:synchronize?) rescue false
+    if display
+      info = t('last_update', time: l(object.updated_at, format: :short))
+      if object.try(:versions)
+        author = object.versions.try(:last).try(:whodunnit) || t('default_whodunnit')
+        info   = "#{info} <br/> #{t('whodunnit', author: author)}"
+      end
+      out += content_tag :div, info.html_safe, class: 'small last-update'
     end
-    content_tag :div, info.html_safe, class: 'small'
+    out.html_safe
   end
 
   def page_header_content_for(object)

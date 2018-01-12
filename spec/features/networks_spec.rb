@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 require 'spec_helper'
 
-describe "Networks", :type => :feature do
+describe "Networks", type: :feature do
   login_user
 
-  let(:line_referential) { create :line_referential }
+  let(:line_referential) { create :line_referential, member: @user.organisation }
   let!(:networks) { Array.new(2) { create(:network, line_referential: line_referential) } }
   subject { networks.first }
 
@@ -54,9 +54,9 @@ describe "Networks", :type => :feature do
   #     # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
   #     visit line_referential_networks_path(line_referential)
   #     click_link "Ajouter un réseau"
-  #     fill_in "network_name", :with => "Network 1"
-  #     fill_in "Numéro d'enregistrement", :with => "test-1"
-  #     fill_in "Identifiant Neptune", :with => "chouette:test:GroupOfLine:1"
+  #     fill_in "network_name", with: "Network 1"
+  #     fill_in "Numéro d'enregistrement", with: "test-1"
+  #     fill_in "Identifiant Neptune", with: "chouette:test:GroupOfLine:1"
   #     click_button("Créer réseau")
   #     expect(page).to have_content("Network 1")
   #   end
@@ -67,14 +67,14 @@ describe "Networks", :type => :feature do
   #     # allow(subject).to receive(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
   #     visit line_referential_network_path(line_referential, subject)
   #     click_link "Editer ce réseau"
-  #     fill_in "network_name", :with => "Network Modified"
-  #     fill_in "Numéro d'enregistrement", :with => "test-1"
+  #     fill_in "network_name", with: "Network Modified"
+  #     fill_in "Numéro d'enregistrement", with: "test-1"
   #     click_button("Editer réseau")
   #     expect(page).to have_content("Network Modified")
   #   end
   # end
 
-  # describe "delete", :js => true do
+  # describe "delete", truncation: true do
   #   it "delete network and return to the list" do
   #     subject.stub(:stop_areas).and_return(Array.new(2) { create(:stop_area) })
   #     visit line_referential_network_path(line_referential, subject)

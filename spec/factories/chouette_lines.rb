@@ -8,7 +8,7 @@ FactoryGirl.define do
 
     association :network, :factory => :network
     association :company, :factory => :company
-   
+
     before(:create) do |line|
       line.line_referential ||= LineReferential.find_by! name: "first"
     end
@@ -35,7 +35,7 @@ FactoryGirl.define do
         after(:create) do |line|
           line.routes.each do |route|
             route.stop_points.each do |stop_point|
-              comm = create(:stop_area, :area_type => "lda")
+              comm = create(:stop_area, :area_type => "gdl")
               stop_point.stop_area.update_attributes(:parent_id => comm.id)
             end
           end

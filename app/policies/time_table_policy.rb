@@ -7,23 +7,23 @@ class TimeTablePolicy < ApplicationPolicy
   end
 
   def create?
-    !archived? && organisation_match? && user.has_permission?('time_tables.create')
+    !referential_read_only? && organisation_match? && user.has_permission?('time_tables.create')
   end
 
   def destroy?
-    !archived? && organisation_match? && user.has_permission?('time_tables.destroy')
+    !referential_read_only? && organisation_match? && user.has_permission?('time_tables.destroy')
   end
 
   def update?
-    !archived? && organisation_match? && user.has_permission?('time_tables.update')
+    !referential_read_only? && organisation_match? && user.has_permission?('time_tables.update')
   end
 
   def actualize?
-    !archived? && organisation_match? && edit?
+    !referential_read_only? && organisation_match? && edit?
   end
 
   def duplicate?
-    !archived? && organisation_match? && create?
+    !referential_read_only? && organisation_match? && create?
   end
 
   def month?

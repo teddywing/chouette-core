@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../actions'
 import TimeTableDay from './TimeTableDay'
 import PeriodsInDay from './PeriodsInDay'

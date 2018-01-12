@@ -1,0 +1,8 @@
+- if import_messages.any?
+  ul.list-unstyled.import_message-list
+    - import_messages.each do | import_message |
+      li
+        span(class="#{bootstrap_class_for_message_criticity import_message.criticity}")
+          = t( ['import_messages',
+            'compliance_check_messages',
+            import_message.message_key].join('.'), import_message.message_attributes.symbolize_keys)

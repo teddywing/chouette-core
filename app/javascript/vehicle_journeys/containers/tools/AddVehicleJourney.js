@@ -9,6 +9,8 @@ const mapStateToProps = (state, ownProps) => {
     vehicleJourneys: state.vehicleJourneys,
     status: state.status,
     stopPointsList: state.stopPointsList,
+    missions: state.missions,
+    custom_fields: state.custom_fields,
   }
 }
 

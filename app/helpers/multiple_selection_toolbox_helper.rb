@@ -1,7 +1,11 @@
 module MultipleSelectionToolboxHelper
   # Box of links that floats at the bottom right of the page
-  def multiple_selection_toolbox(actions)
+  # c.f. https://projects.af83.io/issues/5206
+  # #5206 method too long
+  def multiple_selection_toolbox(actions, collection_name:)
     links = content_tag :ul do
+      
+      # #5206 `if params[:controller]` mieux passer comme parametre si besoin
       delete_path = nil
 
       if params[:controller] = 'workbenches'
@@ -15,6 +19,7 @@ module MultipleSelectionToolboxHelper
             method: :delete,
             data: {
               path: delete_path,
+              # #5206 Missing Translations
               confirm: 'Etes-vous sûr(e) de vouloir effectuer cette action ?'
             },
             title: t("actions.#{action}")
@@ -33,7 +38,9 @@ module MultipleSelectionToolboxHelper
       class: 'info-msg'
     )
 
-    content_tag :div, '', class: 'select_toolbox noselect' do
+    content_tag :div, '', 
+      class: 'select_toolbox noselect',
+      id: "selected-#{collection_name}-action-box" do
       links + label
     end
   end

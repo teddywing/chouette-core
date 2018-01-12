@@ -21,6 +21,7 @@ module Chouette
     has_many :journey_patterns, :through => :routes
     has_many :vehicle_journeys, :through => :journey_patterns
     has_many :routing_constraint_zones, through: :routes
+    has_many :time_tables, -> { distinct }, :through => :vehicle_journeys
 
     has_and_belongs_to_many :group_of_lines, :class_name => 'Chouette::GroupOfLine', :order => 'group_of_lines.name'
 
@@ -72,12 +73,23 @@ module Chouette
     end
 
     def display_name
-      [self.get_objectid.local_id, number, name, company.try(:name)].compact.join(' - ')
+      [self.get_objectid.short_id, number, name, company.try(:name)].compact.join(' - ')
     end
 
     def companies
       line_referential.companies.where(id: ([company_id] + Array(secondary_company_ids)).compact)
     end
 
+    def deactivate!
+      update_attribute :deactivated, true
+    end
+
+    def activate!
+      update_attribute :deactivated, false
+    end
+
+    def activated?
+      !deactivated
+    end
   end
 end

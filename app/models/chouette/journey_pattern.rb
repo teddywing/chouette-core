@@ -27,7 +27,7 @@ module Chouette
 
     def checksum_attributes
       values = self.slice(*['name', 'published_name', 'registration_number']).values
-      values << self.stop_points.map(&:stop_area).map(&:user_objectid)
+      values << self.stop_points.sort_by(&:position).map(&:stop_area).map(&:user_objectid)
       values.flatten
     end
 
@@ -40,7 +40,8 @@ module Chouette
           # Update attributes and stop_points associations
           jp.update_attributes(state_permited_attributes(item)) unless item['new_record']
           jp.state_stop_points_update(item) if !jp.errors.any? && jp.persisted?
-          item['errors'] = jp.errors if jp.errors.any?
+          item['errors']   = jp.errors if jp.errors.any?
+          item['checksum'] = jp.checksum
         end
 
         if state.any? {|item| item['errors']}
@@ -57,21 +58,23 @@ module Chouette
       {
         name: item['name'],
         published_name: item['published_name'],
-        registration_number: item['registration_number']
+        registration_number: item['registration_number'],
+        costs: item['costs']
       }
     end
 
     def self.state_create_instance route, item
       # Flag new record, so we can unset object_id if transaction rollback
       jp = route.journey_patterns.create(state_permited_attributes(item))
-
       # FIXME
       # DefaultAttributesSupport will trigger some weird validation on after save
       # wich will call to valid?, wich will populate errors
       # In this case, we mark jp to be valid if persisted? return true
       jp.errors.clear if jp.persisted?
 
+      jp.after_commit_objectid
       item['object_id']  = jp.objectid
+      item['short_id']  = jp.get_objectid.short_id
       item['new_record'] = true
       jp
     end
@@ -144,6 +147,28 @@ module Chouette
       vehicle_journey_at_stops.where( :stop_point_id => stop_point.id).each do |vjas|
         vjas.destroy
       end
+    end
+
+    def costs
+      read_attribute(:costs) || {}
+    end
+
+    def costs_between start, finish
+      key = "#{start.stop_area_id}-#{finish.stop_area_id}"
+      costs[key]&.symbolize_keys || {}
+    end
+
+    def full_schedule?
+      full = true
+      stop_points.inject(nil) do |start, finish|
+        next finish unless start.present?
+        costs = costs_between(start, finish)
+        full = false unless costs.present?
+        full = false unless costs[:distance] && costs[:distance] > 0
+        full = false unless costs[:time] && costs[:time] > 0
+        finish
+      end
+      full
     end
   end
 end

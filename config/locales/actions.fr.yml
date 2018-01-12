@@ -1,10 +1,13 @@
 fr:
   actions:
     edit: 'Editer'
+    activate: 'Activer'
+    deactivate: 'Désactiver'
     destroy: 'Supprimer'
     delete: 'Supprimer'
     search: "Chercher"
     submit: "Valider"
+    processing: "En cours…"
     add: 'Créer'
     new: 'Créer'
     show: 'Consulter'
@@ -22,6 +25,7 @@ fr:
     erase: 'Effacer'
     create_api_key: "Créer une clé d'API"
     select: Sélectionner
+    wait_for_submission: "Validation..."
   or: "ou"
   cancel: "Annuler"
   back: "Retour"

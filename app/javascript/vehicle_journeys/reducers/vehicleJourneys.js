@@ -9,42 +9,84 @@ const vehicleJourney= (state = {}, action, keep) => {
       return _.assign({}, state, {selected: false})
     case 'ADD_VEHICLEJOURNEY':
       let pristineVjasList = []
+      let prevSp = action.stopPointsList[0]
+      let current_time = {
+        hour: 0,
+        minute: 0
+      }
+      if(action.data["start_time.hour"] && action.data["start_time.minute"] && action.selectedJourneyPattern.full_schedule){
+        current_time.hour = parseInt(action.data["start_time.hour"].value)
+        current_time.minute = parseInt(action.data["start_time.minute"].value)
+      }
       _.each(action.stopPointsList, (sp) =>{
+        if(action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs && action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
+          let delta = parseInt(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id].time)
+          let delta_hour = parseInt(delta/60)
+          let delta_minute = delta - 60*delta_hour
+          current_time.hour += delta_hour
+          current_time.minute += delta_minute
+          let extra_hours = parseInt(current_time.minute/60)
+          current_time.hour += extra_hours
+          current_time.minute -= extra_hours*60
+          current_time.hour = current_time.hour % 24
+          prevSp = sp
+        }
+        let offsetHours = sp.time_zone_offset / 3600
+        let offsetminutes = sp.time_zone_offset/60 - 60*offsetHours
         let newVjas = {
           delta: 0,
           departure_time:{
-            hour: '00',
-            minute: '00'
+            hour: (24 + current_time.hour + offsetHours) % 24,
+            minute: current_time.minute + offsetminutes
           },
           arrival_time:{
-            hour: '00',
-            minute: '00'
+            hour: (24 + current_time.hour + offsetHours) % 24,
+            minute: current_time.minute + offsetminutes
           },
           stop_point_objectid: sp.object_id,
           stop_area_cityname: sp.city_name,
           dummy: true
         }
+        if(current_time.hour + offsetHours > 24){
+          newVjas.departure_day_offset = 1
+          newVjas.arrival_day_offset = 1
+        }
+        if(current_time.hour + offsetHours < 0){
+          newVjas.departure_day_offset = -1
+          newVjas.arrival_day_offset = -1
+        }
+
         _.each(action.selectedJourneyPattern.stop_areas, (jp) =>{
           if (jp.stop_area_short_description.id == sp.id){
             newVjas.dummy = false
             return
           }
         })
+
+        if(newVjas.dummy){
+          newVjas.departure_time = {hour: "00", minute: "00"}
+          newVjas.arrival_time = {hour: "00", minute: "00"}
+        }
         pristineVjasList.push(newVjas)
+
       })
+
       return {
         company: action.selectedCompany,
         journey_pattern: action.selectedJourneyPattern,
         published_journey_name: action.data.published_journey_name.value,
         published_journey_identifier: action.data.published_journey_identifier.value,
         objectid: '',
+        short_id: '',
         footnotes: [],
         time_tables: [],
+        purchase_windows: [],
         vehicle_journey_at_stops: pristineVjasList,
         selected: false,
         deletable: false,
         transport_mode: window.transportMode ? window.transportMode : 'undefined',
-        transport_submode: window.transportSubmode ? window.transportSubmode : 'undefined'
+        transport_submode: window.transportSubmode ? window.transportSubmode : 'undefined',
+        custom_fields: action.data.custom_fields
       }
     case 'DUPLICATE_VEHICLEJOURNEY':
     case 'SHIFT_VEHICLEJOURNEY':
@@ -78,18 +120,12 @@ const vehicleJourney= (state = {}, action, keep) => {
           if (action.isDeparture){
             newSchedule.departure_time[action.timeUnit] = actions.pad(action.val, action.timeUnit)
             if(!action.isArrivalsToggled)
-              newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val, action.timeUnit)
-            newSchedule = actions.getDelta(newSchedule)
-            if(newSchedule.delta < 0){
-              return vjas
-            }
+              newSchedule.arrival_time[action.timeUnit] = newSchedule.departure_time[action.timeUnit]
+            newSchedule = actions.adjustSchedule(action, newSchedule)
             return _.assign({}, state.vehicle_journey_at_stops[action.subIndex], {arrival_time: newSchedule.arrival_time, departure_time: newSchedule.departure_time, delta: newSchedule.delta})
           }else{
             newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val, action.timeUnit)
-            newSchedule = actions.getDelta(newSchedule)
-            if(newSchedule.delta < 0){
-              return vjas
-            }
+            newSchedule = actions.adjustSchedule(action, newSchedule)
             return _.assign({}, state.vehicle_journey_at_stops[action.subIndex],  {arrival_time: newSchedule.arrival_time, departure_time: newSchedule.departure_time, delta: newSchedule.delta})
           }
         }else{
@@ -130,6 +166,7 @@ export default function vehicleJourneys(state = [], action) {
             company: action.selectedCompany,
             published_journey_name: action.data.published_journey_name.value,
             published_journey_identifier: action.data.published_journey_identifier.value,
+            custom_fields: action.data.custom_fields,
           })
         }else{
           return vj
@@ -160,6 +197,21 @@ export default function vehicleJourneys(state = [], action) {
           return vj
         }
       })
+      case 'EDIT_VEHICLEJOURNEYS_PURCHASE_WINDOWS':
+        let newWindows = JSON.parse(JSON.stringify(action.purchase_windows))
+        return state.map((vj,i) =>{
+          if(vj.selected){
+            let updatedVJ = _.assign({}, vj)
+            action.vehicleJourneys.map((vjm, j) =>{
+              if(vj.objectid == vjm.objectid){
+                updatedVJ.purchase_windows = newWindows
+              }
+            })
+            return updatedVJ
+          }else{
+            return vj
+          }
+        })
     case 'SHIFT_VEHICLEJOURNEY':
       return state.map((vj, i) => {
         if (vj.selected){

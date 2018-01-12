@@ -2,3 +2,15 @@ fr:
   dashboards:
     show:
       title: "Tableau de bord %{organisation}"
+    calendars:
+      title: Modèles de calendrier
+      none: Aucun calendrier défini
+    purchase_windows:
+      title: Calendriers commerciaux
+      none: Aucun calendrier commercial défini
+    line_referentials:
+      title: Référentiels de lignes
+      none: Aucun référentiels de lignes défini
+    stop_area_referentials:
+      title: Référentiels d'arrêts
+      none: Aucun référentiels d'arrêts défini

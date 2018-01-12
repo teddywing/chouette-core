@@ -17,6 +17,20 @@ RSpec.describe ImportsController, :type => :controller do
     end
   end
 
+  describe "POST #create" do
+    it "displays a flash message" do
+      post :create, workbench_id: workbench.id,
+        import: {
+          name: 'Offre',
+          file: fixture_file_upload('nozip.zip')
+        }
+
+      expect(controller).to set_flash[:notice].to(
+        I18n.t('flash.imports.create.notice')
+      )
+    end
+  end
+
   describe 'GET #download' do
     it 'should be successful' do
       get :download, workbench_id: workbench.id, id: import.id, token: import.token_download

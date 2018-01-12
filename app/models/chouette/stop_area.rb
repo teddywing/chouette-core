@@ -9,7 +9,7 @@ module Chouette
     include ObjectidSupport
 
     extend Enumerize
-    enumerize :area_type, in: %i(zdep zder zdlp zdlr lda)
+    enumerize :area_type, in: Chouette::AreaType::ALL
 
     with_options dependent: :destroy do |assoc|
       assoc.has_many :stop_points
@@ -39,9 +39,21 @@ module Chouette
     validates_format_of :coordinates, :with => %r{\A *-?(0?[0-9](\.[0-9]*)?|[0-8][0-9](\.[0-9]*)?|90(\.[0]*)?) *\, *-?(0?[0-9]?[0-9](\.[0-9]*)?|1[0-7][0-9](\.[0-9]*)?|180(\.[0]*)?) *\Z}, :allow_nil => true, :allow_blank => true
     validates_format_of :url, :with => %r{\Ahttps?:\/\/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\Z}, :allow_nil => true, :allow_blank => true
 
+    validates_numericality_of :waiting_time, greater_than_or_equal_to: 0, only_integer: true, if: :waiting_time
+    validate :parent_area_type_must_be_greater
+
     def self.nullable_attributes
       [:registration_number, :street_name, :country_code, :fare_code,
       :nearest_topic_name, :comment, :long_lat_type, :zip_code, :city_name, :url, :time_zone]
+    end
+
+    def parent_area_type_must_be_greater
+      return unless self.parent
+
+      parent_area_type = Chouette::AreaType.find(self.parent.area_type)
+      if Chouette::AreaType.find(self.area_type) >= parent_area_type
+        errors.add(:parent_id, I18n.t('stop_areas.errors.parent_area_type', area_type: parent_area_type.label))
+      end
     end
 
     after_update :clean_invalid_access_links
@@ -70,6 +82,10 @@ module Chouette
         end
         @coordinates = nil
       end
+    end
+
+    def full_name
+      "#{name} #{zip_code} #{city_name} - #{user_objectid}"
     end
 
     def user_objectid
@@ -196,10 +212,12 @@ module Chouette
       GeoRuby::SimpleFeatures::Envelope.from_coordinates coordinates
     end
 
+    # DEPRECATED use StopArea#area_type
     def stop_area_type
       area_type ? area_type : " "
     end
 
+    # DEPRECATED use StopArea#area_type
     def stop_area_type=(stop_area_type)
       self.area_type = (stop_area_type ? stop_area_type.camelcase : nil)
     end
@@ -324,5 +342,37 @@ module Chouette
       end
     end
 
+    def activated?
+      deleted_at.nil?
+    end
+
+    def deactivated?
+      !activated?
+    end
+
+    def activate!
+      update_attribute :deleted_at, nil
+    end
+
+    def deactivate!
+      update_attribute :deleted_at, Time.now
+    end
+
+    def time_zone_offset
+      return 0 unless time_zone.present?
+      ActiveSupport::TimeZone[time_zone]&.utc_offset
+    end
+
+    def country_name
+      return unless country_code
+
+      country = ISO3166::Country[country_code]
+      country.translations[I18n.locale.to_s] || country.name
+    end
+
+    def time_zone_formatted_offset
+      return nil unless time_zone.present?
+      ActiveSupport::TimeZone[time_zone]&.formatted_offset
+    end
   end
 end

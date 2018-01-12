@@ -56,9 +56,8 @@
     .panel.panel-default
       .panel-heading
         h3.panel-title.with_actions
-          div
-            = t('.calendars')
-            span.badge.ml-xs = @dashboard.calendars.count if @dashboard.calendars.present?
+          = I18n.t("calendars.index.title")
+          span.badge.ml-xs = @dashboard.calendars.count if @dashboard.calendars.present?
 
           div
             = link_to '', calendars_path, class: ' fa fa-chevron-right pull-right', title: t('.see')

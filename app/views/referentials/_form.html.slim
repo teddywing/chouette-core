@@ -17,7 +17,7 @@
     .row
       .col-lg-12
         - if @referential.errors.has_key? :metadatas
-          .row
+          .row.metadatas-errors
             .col-lg-12
               .alert.alert-danger
                 - @referential.errors[:metadatas].each do |msg|
@@ -51,4 +51,8 @@
   .hidden = form.input :workbench_id, as: :hidden
 
 
-  = form.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'referential_form'
+  = form.button :submit,
+      t('actions.submit'),
+      class: 'btn btn-default formSubmitr',
+      data: { disable_with: t('actions.processing') },
+      form: 'referential_form'

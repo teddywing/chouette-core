@@ -40,6 +40,30 @@ RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
     end
   end
 
+  context "the different times" do
+    let (:at_stop) { build_stubbed(:vehicle_journey_at_stop) }
+
+    describe "without a TimeZone" do
+      it "should not offset times" do
+        expect(at_stop.departure).to eq at_stop.departure_local
+        expect(at_stop.arrival).to eq at_stop.arrival_local
+      end
+    end
+
+
+    describe "with a TimeZone" do
+      before(:each) do
+        stop = at_stop.stop_point.stop_area
+        stop.time_zone = "Mexico City"
+      end
+
+      it "should offset times" do
+        expect(at_stop.departure_local).to eq at_stop.send(:format_time, at_stop.departure_time - 6.hours)
+        expect(at_stop.arrival_local).to eq at_stop.send(:format_time, at_stop.arrival_time - 6.hours)
+      end
+    end
+  end
+
   describe "#validate" do
     it "displays the proper error message when day offset exceeds the max" do
       bad_offset = Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX + 1

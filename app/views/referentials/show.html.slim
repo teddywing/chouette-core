@@ -1,7 +1,7 @@
 - breadcrumb @referential
 - page_header_content_for @referential
 - content_for :page_header_actions do
-  - unless (@referential.archived? || !policy(@referential).edit?)
+  - unless (@referential.referential_read_only? || !policy(@referential).edit?)
     = link_to(t('actions.edit'), edit_referential_path(@referential), class: 'btn btn-default')
 
 - content_for :page_header_content do
@@ -21,11 +21,12 @@
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
-        = definition_list t('metadatas'),
-          { t('activerecord.attributes.referential.status') => @referential.archived? ? "<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>".html_safe : "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>".html_safe,
-            @referential.human_attribute_name(:validity_period) => (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-'),
-            @referential.human_attribute_name(:organisation) => @referential.organisation.name,
-            @referential.human_attribute_name(:published_at) => '-' }
+        - attributes = {}
+        - attributes[@referential.human_attribute_name(:status)] = @referential.referential_read_only? ? "<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>".html_safe : "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>".html_safe unless @referential.in_referential_suite?
+        - attributes[@referential.human_attribute_name(:validity_period)] = (@referential.validity_period.present? ? t('validity_range', debut: l(@referential.try(:validity_period).try(:begin), format: :short), end: l(@referential.try(:validity_period).try(:end), format: :short)) : '-')
+        - attributes[@referential.human_attribute_name(:organisation)] = @referential.organisation.name
+        - attributes[@referential.human_attribute_name(:merged_at)] = @referential.merged_at ? l(@referential.merged_at, format: :short) : '-' unless @referential.in_referential_suite?
+        = definition_list t('metadatas'), attributes
 
     - if params[:q].present? or @reflines.any?
       .row
@@ -68,7 +69,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: 'companies.name', \
-                attribute: Proc.new { |n| n.try(:company).try(:name) } \
+                attribute: Proc.new { |n| n&.company&.name || "-" } \
               ) \
             ],
             links: [:show],
@@ -102,5 +103,5 @@
 
     .modal-footer
       button.btn.btn-link type='button' data-dismiss='modal' #{t('cancel')}
-      - unless policy(@referential).archived?
+      - unless policy(@referential).referential_read_only?
         = f.button :submit, t('actions.clean_up') , class: 'btn btn-primary'

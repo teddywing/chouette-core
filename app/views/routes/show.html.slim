@@ -22,7 +22,8 @@
           { t('objectid') => @route.get_objectid.short_id,
             t('activerecord.attributes.route.published_name') => (@route.published_name ? @route.published_name : '-'),
             @route.human_attribute_name(:wayback) => (@route.wayback ? @route.wayback_text : '-' ),
-            @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-') }
+            @route.human_attribute_name(:opposite_route) => (@route.opposite_route ? @route.opposite_route.name : '-'),
+            @route.human_attribute_name(:checksum) => @route.checksum }
 
       - if @route_sp.any?
         .col-lg-6.col-md-6.col-sm-12.col-xs-12
@@ -40,7 +41,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :name, \
-                attribute: Proc.new {|s| s.try(:stop_area).try(:name)}, \
+                attribute: Proc.new { |s| content_tag :span, s.stop_area&.name, class: s.stop_area&.area_type }, \
                 link_to: lambda do |stop_point| \
                   referential_stop_area_path(@referential, stop_point.stop_area) \
                 end \

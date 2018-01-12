@@ -5,7 +5,7 @@ describe Chouette::JourneyFrequency, type: :model do
 
   describe '#create' do
     context 'when valid' do
-      it 'should be created' do
+      xit 'should be created', '#5209 probably to be removed with Dead Code Elimination' do
         journey_frequency = build(:journey_frequency)
         journey_frequency.vehicle_journey_id = vehicle_journey.id
         expect(journey_frequency.save!).to be

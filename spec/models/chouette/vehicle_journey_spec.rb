@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
   it { is_expected.to be_versioned }
+  it { should have_and_belong_to_many(:purchase_windows) }
 
   it "must be valid with an at-stop day offset of 1" do
     vehicle_journey = create(
@@ -63,10 +64,12 @@ describe Chouette::VehicleJourney, :type => :model do
         at_stop[att.to_s] = vjas.send(att) unless vjas.send(att).nil?
       end
 
-      [:arrival_time, :departure_time].map do |att|
-        at_stop[att.to_s] = {
-          'hour'   => vjas.send(att).strftime('%H'),
-          'minute' => vjas.send(att).strftime('%M'),
+      at_stop["stop_point_objectid"] = vjas&.stop_point&.objectid
+
+      [:arrival, :departure].map do |att|
+        at_stop["#{att}_time"] = {
+          'hour'   => vjas.send("#{att}_local_time").strftime('%H'),
+          'minute' => vjas.send("#{att}_local_time").strftime('%M'),
         }
       end
       at_stop
@@ -76,7 +79,10 @@ describe Chouette::VehicleJourney, :type => :model do
       vj.slice('objectid', 'published_journey_name', 'journey_pattern_id', 'company_id').tap do |item|
         item['vehicle_journey_at_stops'] = []
         item['time_tables']              = []
+        item['purchase_windows']         = []
         item['footnotes']                = []
+        item['purchase_windows']         = []
+        item['custom_fields']            = vj.custom_fields
 
         vj.vehicle_journey_at_stops.each do |vjas|
           item['vehicle_journey_at_stops'] << vehicle_journey_at_stop_to_state(vjas)
@@ -91,18 +97,44 @@ describe Chouette::VehicleJourney, :type => :model do
     let(:collection)      { [state] }
 
     it 'should create new vj from state' do
-      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      create(:custom_field, code: :energy)
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern, custom_field_values: {energy: 99})
       collection << vehicle_journey_to_state(new_vj)
       expect {
         Chouette::VehicleJourney.state_update(route, collection)
       }.to change {Chouette::VehicleJourney.count}.by(1)
 
-      expect(collection.last['objectid']).not_to be_nil
 
       obj = Chouette::VehicleJourney.last
+      expect(obj).to receive(:after_commit_objectid).and_call_original
+
+      # For some reason we have to force it
+      obj.after_commit_objectid
       obj.run_callbacks(:commit)
 
+      expect(collection.last['objectid']).to eq obj.objectid
       expect(obj.published_journey_name).to eq 'dummy'
+      expect(obj.custom_fields["energy"]["value"]).to eq 99
+    end
+
+    it 'should expect local times' do
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      stop_area = create(:stop_area, time_zone: "Mexico City")
+      stop_point = create(:stop_point, stop_area: stop_area)
+      new_vj.vehicle_journey_at_stops << build(:vehicle_journey_at_stop, vehicle_journey: vehicle_journey, stop_point: stop_point)
+      data = vehicle_journey_to_state(new_vj)
+      data['vehicle_journey_at_stops'][0]["departure_time"]["hour"] = "15"
+      data['vehicle_journey_at_stops'][0]["arrival_time"]["hour"] = "12"
+      collection << data
+      expect {
+        Chouette::VehicleJourney.state_update(route, collection)
+      }.to change {Chouette::VehicleJourney.count}.by(1)
+      created = Chouette::VehicleJourney.last.vehicle_journey_at_stops.last
+      expect(created.stop_point).to eq stop_point
+      expect(created.departure_local_time.hour).to_not eq created.departure_time.hour
+      expect(created.arrival_local_time.hour).to_not eq created.arrival_time.hour
+      expect(created.departure_local_time.hour).to eq 15
+      expect(created.arrival_local_time.hour).to eq 12
     end
 
     it 'should save vehicle_journey_at_stops of newly created vj' do
@@ -159,6 +191,23 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(vehicle_journey.reload.time_tables).to be_empty
     end
 
+    it 'should update vj purchase_windows association from state' do
+      2.times{state['purchase_windows'] << create(:purchase_window, referential: referential).slice('id', 'name', 'objectid', 'color')}
+      vehicle_journey.update_has_and_belongs_to_many_from_state(state)
+
+      expected = state['purchase_windows'].map{|tt| tt['id']}
+      actual   = vehicle_journey.reload.purchase_windows.map(&:id)
+      expect(actual).to match_array(expected)
+    end
+
+    it 'should clear vj purchase_windows association when remove from state' do
+      vehicle_journey.purchase_windows << create(:purchase_window, referential: referential)
+      state['purchase_windows'] = []
+      vehicle_journey.update_has_and_belongs_to_many_from_state(state)
+
+      expect(vehicle_journey.reload.purchase_windows).to be_empty
+    end
+
     it 'should update vj footnote association from state' do
       2.times{state['footnotes'] << create(:footnote, line: route.line).slice('id', 'code', 'label', 'line_id')}
       vehicle_journey.update_has_and_belongs_to_many_from_state(state)
@@ -185,11 +234,13 @@ describe Chouette::VehicleJourney, :type => :model do
     it 'should update vj attributes from state' do
       state['published_journey_name']       = 'edited_name'
       state['published_journey_identifier'] = 'edited_identifier'
+      state['custom_fields'] = {energy: {value: 99}}
 
       Chouette::VehicleJourney.state_update(route, collection)
       expect(state['errors']).to be_nil
       expect(vehicle_journey.reload.published_journey_name).to eq state['published_journey_name']
       expect(vehicle_journey.reload.published_journey_identifier).to eq state['published_journey_identifier']
+      expect(vehicle_journey.reload.custom_field_value("energy")).to eq 99
     end
 
     it 'should return errors when validation failed' do
@@ -379,8 +430,7 @@ describe Chouette::VehicleJourney, :type => :model do
   end
 
   describe ".where_departure_time_between" do
-    it "selects vehicle journeys whose departure times are between the
-        specified range" do
+    it "selects vehicle journeys whose departure times are between the specified range" do
       journey_early = create(
         :vehicle_journey,
         stop_departure_time: '02:00:00'
@@ -395,7 +445,7 @@ describe Chouette::VehicleJourney, :type => :model do
         journey_pattern: journey_pattern,
         stop_departure_time: '03:00:00'
       )
-      journey_late = create(
+      create(
         :vehicle_journey,
         route: route,
         journey_pattern: journey_pattern,

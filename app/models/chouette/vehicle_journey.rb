@@ -1,3 +1,4 @@
+# coding: utf-8
 module Chouette
   class VehicleJourney < Chouette::TridentActiveRecord
     has_paper_trail
@@ -21,8 +22,10 @@ module Chouette
     belongs_to :company
     belongs_to :route
     belongs_to :journey_pattern
+    has_many :stop_areas, through: :journey_pattern
 
     has_and_belongs_to_many :footnotes, :class_name => 'Chouette::Footnote'
+    has_and_belongs_to_many :purchase_windows, :class_name => 'Chouette::PurchaseWindow'
 
     validates_presence_of :route
     validates_presence_of :journey_pattern
@@ -39,6 +42,18 @@ module Chouette
 
     before_validation :set_default_values,
       :calculate_vehicle_journey_at_stop_day_offset
+
+    scope :with_stop_area_ids, ->(ids){
+      _ids = ids.select(&:present?).map(&:to_i)
+      if _ids.present?
+        where("array(SELECT stop_points.stop_area_id::integer FROM stop_points INNER JOIN journey_patterns_stop_points ON journey_patterns_stop_points.stop_point_id = stop_points.id WHERE journey_patterns_stop_points.journey_pattern_id = vehicle_journeys.journey_pattern_id) @> array[?]", _ids)
+      else
+        all
+      end
+    }
+
+    # We need this for the ransack object in the filters
+    ransacker :stop_area_ids
 
     # TODO: Remove this validator
     # We've eliminated this validation because it prevented vehicle journeys
@@ -68,7 +83,7 @@ module Chouette
         attrs << self.published_journey_identifier
         attrs << self.try(:company).try(:get_objectid).try(:local_id)
         attrs << self.footnotes.map(&:checksum).sort
-        attrs << self.vehicle_journey_at_stops.map(&:checksum).sort
+        attrs << self.vehicle_journey_at_stops.sort_by { |s| s.stop_point&.position }.map(&:checksum).sort
       end
     end
 
@@ -117,10 +132,14 @@ module Chouette
     def update_vjas_from_state state
       state.each do |vjas|
         next if vjas["dummy"]
+        stop_point = Chouette::StopPoint.find_by(objectid: vjas['stop_point_objectid'])
+        stop_area = stop_point&.stop_area
+        tz = stop_area&.time_zone
+        tz = tz && ActiveSupport::TimeZone[tz]
         params = {}.tap do |el|
           ['arrival_time', 'departure_time'].each do |field|
             time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
-            el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
+            el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 #{tz&.formatted_offset || "UTC"}")
           end
         end
         stop = create_or_find_vjas_from_state(vjas)
@@ -139,7 +158,7 @@ module Chouette
     end
 
     def update_has_and_belongs_to_many_from_state item
-      ['time_tables', 'footnotes'].each do |assos|
+      ['time_tables', 'footnotes', 'purchase_windows'].each do |assos|
         saved = self.send(assos).map(&:id)
 
         (saved - item[assos].map{|t| t['id']}).each do |id|
@@ -168,7 +187,8 @@ module Chouette
 
           vj.update_attributes(state_permited_attributes(item))
           vj.update_has_and_belongs_to_many_from_state(item)
-          item['errors'] = vj.errors.full_messages.uniq if vj.errors.any?
+          item['errors']   = vj.errors.full_messages.uniq if vj.errors.any?
+          item['checksum'] = vj.checksum
         end
 
         # Delete ids of new object from state if we had to rollback
@@ -192,7 +212,9 @@ module Chouette
     def self.state_create_instance route, item
       # Flag new record, so we can unset object_id if transaction rollback
       vj = route.vehicle_journeys.create(state_permited_attributes(item))
-      item['objectid']   = vj.objectid
+      vj.after_commit_objectid
+      item['objectid'] = vj.objectid
+      item['short_id'] = vj.get_objectid.short_id
       item['new_record'] = true
       vj
     end
@@ -202,6 +224,7 @@ module Chouette
       ['company', 'journey_pattern'].map do |association|
         attrs["#{association}_id"] = item[association]['id'] if item[association]
       end
+      attrs["custom_field_values"] = Hash[*(item["custom_fields"] || {}).map{|k, v| [k, v["value"]]}.flatten]
       attrs
     end
 
@@ -240,12 +263,25 @@ module Chouette
       end
     end
 
+    def self.custom_fields
+      CustomField.where(resource_type: self.name.split("::").last)
+    end
+
+
+    def custom_fields
+      Hash[*self.class.custom_fields.map do |v|
+        [v.code, v.slice(:code, :name, :field_type, :options).update(value: custom_field_value(v.code))]
+      end.flatten]
+    end
+
+    def custom_field_value key
+      (custom_field_values || {})[key.to_s]
+    end
+
     def self.matrix(vehicle_journeys)
-      {}.tap do |hash|
-        vehicle_journeys.map{ |vj|
-          vj.vehicle_journey_at_stops.map{ |vjas |hash[ "#{vj.id}-#{vjas.stop_point_id}"] = vjas }
-        }
-      end
+      Hash[*VehicleJourneyAtStop.where(vehicle_journey_id: vehicle_journeys.pluck(:id)).map do |vjas|
+        [ "#{vjas.vehicle_journey_id}-#{vjas.stop_point_id}", vjas]
+      end.flatten]
     end
 
     def self.with_stops

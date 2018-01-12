@@ -1,6 +1,7 @@
 import _ from 'lodash'
-import React, { PropTypes, Component } from 'react'
-import Select2 from 'react-select2'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Select2 from 'react-select2-wrapper'
 import actions from '../../../actions'
 
 // get JSON full path
@@ -33,7 +34,7 @@ export default class BSelect4b extends Component {
             delay: '500',
             data: function(params) {
               return {
-                q: { objectid_cont: actions.escapeWildcardCharacters(params.term)},
+                q: { objectid_cont: params.term},
               };
             },
             processResults: function(data, params) {

@@ -229,6 +229,13 @@ $cbx-size-xs: 15px
     &[type='checkbox']:checked + label:before
       background-color: $blue
 
+    &[type='checkbox']:disabled + label
+      &:before
+        border-color: $grey
+        background-color: $lightgrey
+        cursor: not-allowed
+      &:after
+        display: none
 // Table adjustments
 table, .table
   .td, td, .th, th
@@ -277,6 +284,7 @@ table, .table
   height: $cbx-size
   width: $cbx-size
   margin: 0 auto
+  transition: transform 0.2s, background-color 0.2s
 
   > input[type='checkbox']
     &:not(:checked), &:checked
@@ -453,6 +461,20 @@ table, .table
 
     > .form-group.select2ed
       width: 300px
+
+    &.name-filter
+      .checkbox_list
+        .form-group
+          padding: 10px
+          width: 100px
+          &.to
+            width: 20px
+            color: $grey
+            text-align: center
+          input
+            width: 100%
+          & + .form-group
+            padding-left: 0px
 
   > .actions
     position: absolute

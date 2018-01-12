@@ -12,7 +12,7 @@
               [ \
                 TableBuilderHelper::Column.new( \
                   key: :ref, \
-                  attribute: 'compliance_check_set_id' \
+                  attribute: 'id' \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :creation_date, \
@@ -41,5 +41,3 @@
       .row.mt-xs
         .col-lg-12
           = replacement_msg t('compliance_check_sets.search_no_results')
-
-

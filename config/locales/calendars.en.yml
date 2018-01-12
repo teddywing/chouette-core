@@ -41,6 +41,8 @@ en:
       date: Date
     new:
       title: Add a new calendar
+    create:
+      title: Add a new calendar
     edit:
       title: Update calendar %{name}
     show:
@@ -56,8 +58,9 @@ en:
           end: End
   activerecord:
     models:
-      one: calendar
-      other: calendars
+      calendar:
+        one: calendar
+        other: calendars
     attributes:
       calendar:
         name: Name

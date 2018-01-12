@@ -36,9 +36,10 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   #config.active_record.auto_explain_threshold_in_seconds = (RUBY_PLATFORM == "java" ? nil : 0.5)
 
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => ENV.fetch('RAILS_HOST', 'http://localhost:3000') }
   config.action_mailer.default_options     = { from: 'Stif BOIV <stif-boiv@af83.com>' }
   config.action_mailer.delivery_method     = :letter_opener
+  config.action_mailer.asset_host          = ENV.fetch('RAILS_HOST', 'http://localhost:3000')
 
   # change to true to allow email to be sent during development
   config.action_mailer.perform_deliveries = true
@@ -92,4 +93,6 @@ Rails.application.configure do
   config.validation_spec = "http://www.chouette.mobi/neptune-validation/v21/"
 
   config.i18n.available_locales = [:fr, :en]
+
+  config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload) if ENV['LIVERELOAD']
 end

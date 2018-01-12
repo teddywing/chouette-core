@@ -1,13 +1,14 @@
 - breadcrumb :stop_area_referential, @stop_area_referential
-- content_for :page_header_actions do
-  = link_to(t('actions.sync'), sync_stop_area_referential_path(@stop_area_referential), method: :post, class: 'btn btn-default')
+- if policy(@stop_area_referential).synchronize?
+  - content_for :page_header_actions do
+    = link_to(t('actions.sync'), sync_stop_area_referential_path(@stop_area_referential), method: :post, class: 'btn btn-default')
 
 - content_for :page_header_content do
   .row.mb-md
     .col-lg-12.text-right
       = link_to stop_area_referential_stop_areas_path(@stop_area_referential), class: 'btn btn-primary' do
         = Referential.human_attribute_name(:stop_areas)
-        em.small = " (#{@stop_area_referential.stop_areas.size})"
+        em.small = " (#{@stop_area_referential.stop_areas.count})"
 - page_header_content_for @stop_area_referential
 
 .page_content

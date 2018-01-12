@@ -13,6 +13,7 @@ en:
       export_hub_all: "Export HUB routes"
       add_stop_point: "Add stop point"
       new_stop_point: "Create new stop"
+      opposite_route_timetable: "Timetable back"
     new:
       title: "Add a new route"
     edit:
@@ -68,6 +69,7 @@ en:
         other: "routes"
     attributes:
       route:
+        checksum: Checksum
         wayback:
           positive: "forward"
           negative: "backward"

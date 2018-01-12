@@ -6,6 +6,7 @@ fr:
       vehicle_journeys_count: "Courses: %{count}"
       vehicle_journey_at_stops: "Horaires des courses"
     actions:
+      index: "Missions"
       new: "Ajouter une mission"
       edit: "Editer cette mission"
       destroy: "Supprimer cette mission"

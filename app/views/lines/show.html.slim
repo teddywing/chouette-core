@@ -6,7 +6,7 @@
         = link_to link.href,
             method: link.method,
             data: link.data,
-            class: 'btn btn-primary' do
+            class: "btn btn-primary #{link.disabled ? "disabled" : ""}" do
               = link.content
 
 - page_header_content_for @line
@@ -20,7 +20,7 @@
              'Activé' => (@line.deactivated? ? t('false') : t('true')),
              @line.human_attribute_name(:network_id) => (@line.network.nil? ? t('lines.index.unset') : @line.network.name),
              @line.human_attribute_name(:company_id) => (@line.company.nil? ? t('lines.index.unset') : @line.company.name),
-             'Transporteur(s) secondaire(s)' => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.collect(&:name).join(', ')),
+             'Transporteur(s) secondaire(s)' => (@line.secondary_companies.nil? ? t('lines.index.unset') : array_to_html_list(@line.secondary_companies.collect(&:name))),
              'Nom court' => @line.number,
              'Code public' => (@line.registration_number ? @line.registration_number : '-'),
              @line.human_attribute_name(:transport_mode) => (@line.transport_mode.present? ? t("enumerize.transport_mode.#{@line.transport_mode}") : '-'),

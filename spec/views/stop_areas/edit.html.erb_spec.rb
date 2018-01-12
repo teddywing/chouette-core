@@ -6,6 +6,10 @@ describe "/stop_areas/edit", :type => :view do
   let!(:stop_area) { assign(:stop_area, create(:stop_area)) }
   let!(:map) { assign(:map, double(:to_html => '<div id="map"/>'.html_safe)) }
 
+  before do
+    allow(view).to receive(:has_feature?)
+  end
+
   describe "form" do
     it "should render input for name" do
       render
@@ -13,6 +17,5 @@ describe "/stop_areas/edit", :type => :view do
         with_tag "input[type=text][name='stop_area[name]'][value=?]", stop_area.name
       end
     end
-
   end
 end

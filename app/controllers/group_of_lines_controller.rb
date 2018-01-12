@@ -42,7 +42,6 @@ class GroupOfLinesController < ChouetteController
     end
   end
 
-
   protected
 
   def filtered_group_of_lines_maps
@@ -69,6 +68,10 @@ class GroupOfLinesController < ChouetteController
   end
 
   alias_method :line_referential, :parent
+
+  def begin_of_association_chain
+    current_organisation
+  end
 
   private
 

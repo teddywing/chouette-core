@@ -6,6 +6,7 @@
       - if policy(Referential).create?
         = link_to t('actions.import'), workbench_imports_path(@workbench), class: 'btn btn-primary'
         = link_to t('actions.add'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
+      = link_to t('workbenches.actions.show_output'), workbench_output_path(@workbench), class: 'btn btn-primary'
 
 .page_content
   .container-fluid
@@ -29,7 +30,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :status, \
-                  attribute: Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
+                  attribute: Proc.new {|w| w.referential_read_only? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :organisation, \
@@ -53,15 +54,15 @@
                   attribute: Proc.new {|w| l(w.updated_at, format: :short)} \
                 ), \
                 TableBuilderHelper::Column.new( \
-                  key: :published_at, \
-                  attribute: '' \
+                  key: :merged_at, \
+                  attribute: Proc.new {|w| w.merged_at ? l(w.merged_at, format: :short) : '-'} \
                 ) \
               ],
-              selectable: true,
+              selectable: ->(ref){ @workbench.referentials.include?(ref) },
               links: [:show, :edit],
               cls: 'table has-filter has-search'
 
-            = multiple_selection_toolbox([:delete])
+            = multiple_selection_toolbox([:delete], collection_name: 'referentials')
 
           = new_pagination @wbench_refs, 'pull-right'
 

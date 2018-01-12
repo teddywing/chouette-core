@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`stopPointHeader should display the city name 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-lg-12"
+  >
+    <div
+      className="table table-2entries mt-sm mb-sm no_result"
+    >
+      <div
+        className="t2e-head w20"
+      >
+        <div
+          className="th"
+        >
+          <div
+            className="strong mb-xs"
+          >
+            ID Mission
+          </div>
+          <div>
+            Code mission
+          </div>
+          <div>
+            Nb arrêts
+          </div>
+        </div>
+        <div
+          className="td"
+        >
+          <div
+            className="headlined"
+            data-headline="City Name"
+            title="City Name (12345)"
+          >
+            <span>
+              <span>
+                Stop point
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          className="td"
+        >
+          <div
+            className=""
+            data-headline=""
+            title="City Name (12345)"
+          >
+            <span>
+              <span>
+                Antother stop point
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          className="td"
+        >
+          <div
+            className="headlined"
+            data-headline="New York"
+            title="New York (232323)"
+          >
+            <span>
+              <span>
+                Antother stop point
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="t2e-item-list w80"
+      >
+        <div />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`stopPointHeader with the "long_distance_routes" feature should display the country name 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-lg-12"
+  >
+    <div
+      className="table table-2entries mt-sm mb-sm no_result"
+    >
+      <div
+        className="t2e-head w20"
+      >
+        <div
+          className="th"
+        >
+          <div
+            className="strong mb-xs"
+          >
+            ID Mission
+          </div>
+          <div>
+            Code mission
+          </div>
+          <div>
+            Nb arrêts
+          </div>
+        </div>
+        <div
+          className="td"
+        >
+          <div
+            className="headlined"
+            data-headline="france"
+            title="City Name (12345)"
+          >
+            <span>
+              <span>
+                Stop point
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          className="td"
+        >
+          <div
+            className=""
+            data-headline=""
+            title="City Name (12345)"
+          >
+            <span>
+              <span>
+                Antother stop point
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          className="td"
+        >
+          <div
+            className="headlined"
+            data-headline="USA"
+            title="New York (232323)"
+          >
+            <span>
+              <span>
+                Antother stop point
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="t2e-item-list w80"
+      >
+        <div />
+      </div>
+    </div>
+  </div>
+</div>
+`;
