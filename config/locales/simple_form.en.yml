@@ -1,5 +1,6 @@
 en:
   simple_form:
+    "per_page": "Per page: "
     "yes": 'Yes'
     "no": 'No'
     from: 'From'
