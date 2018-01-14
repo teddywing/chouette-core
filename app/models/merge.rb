@@ -60,6 +60,7 @@ class Merge < ActiveRecord::Base
       end
 
     new.referential_suite = output
+    new.workbench = workbench
     new.organisation = workbench.organisation
     new.slug = "output_#{workbench.id}_#{created_at.to_i}"
     new.name = I18n.t("merges.referential_name", date: I18n.l(created_at))
