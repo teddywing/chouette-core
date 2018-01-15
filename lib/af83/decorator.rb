@@ -24,16 +24,19 @@ class AF83::Decorator < Draper::Decorator
     (@_action_links || []).flatten.compact.select{|l| l.for_action?(action)}
   end
 
-  def action_links action=:index, scope=nil
-    return send("#{scope}_links", action) if scope.present?
-
-    self.class.action_links(action)\
-    .map{|l| l.bind_to_context(self)}\
-    .select{|l| l.enabled?}
+  def action_links action=:index, opts={}
+    links = ActionLinks.new links: self.class.action_links(action), context: self, action: action
+    group = opts[:group]
+    links = links.for_group opts[:group]
+    links
   end
 
   def primary_links action=:index
-    action_links(action).select{|l| l.primary_for_action?(action)}
+    action_links(action, group: :primary)
+  end
+
+  def secondary_links action=:index
+    action_links(action, group: :secondary)
   end
 
   def check_policy policy
@@ -45,7 +48,7 @@ class AF83::Decorator < Draper::Decorator
   private
   def self.parse_options args
     options = {}
-    %i(weight primary secondary on action actions policy if).each do |k|
+    %i(weight primary secondary footer on action actions policy if groups group).each do |k|
       options[k] = args.delete(k) if args.has_key?(k)
     end
     link_options = args.dup
@@ -56,12 +59,101 @@ class AF83::Decorator < Draper::Decorator
     actions = [actions] unless actions.is_a?(Array)
     link_options[:_actions] = actions.compact
 
-    link_options[:_primary] = options.delete :primary
-    link_options[:_secondary] = options.delete :secondary
+    link_options[:_groups] = options.delete(:groups)
+    link_options[:_groups] ||= {}
+    if single_group = options.delete(:group)
+      if(single_group.is_a?(Symbol) || single_group.is_a?(String))
+        link_options[:_groups][single_group] = true
+      else
+        link_options[:_groups].update single_group
+      end
+    end
+    link_options[:_groups][:primary] ||= options.delete :primary
+    link_options[:_groups][:secondary] ||= options.delete :secondary
+    link_options[:_groups][:footer] ||= options.delete :footer
 
     link_options[:_if] = options.delete(:if)
     link_options[:_policy] = options.delete(:policy)
     [options, link_options]
+  end
+
+  class ActionLinks
+    attr_reader :options
+
+    def initialize opts
+      @options = opts.deep_dup
+    end
+
+    def for_group group
+      returning_a_copy do
+        @options[:groups] = [group] if group.present?
+      end
+    end
+
+    def for_groups groups
+      returning_a_copy do
+        @options[:groups] = groups if groups.present?
+      end
+    end
+
+    def primary
+      for_group :primary
+    end
+
+    def secondary
+      for_group :secondary
+    end
+
+    def resolve
+      out = @options[:links].map{|l| l.bind_to_context(@options[:context])}.select{|l| l.enabled?}
+      if @options[:groups].present?
+        out = out.select do |l|
+          @options[:groups].any? do |g|
+            l.in_group_for_action?(@options[:action], g)
+          end
+        end
+      end
+      out
+    end
+
+    def grouped_by *groups
+      add_footer = groups.include?(:footer)
+      groups -= [:footer]
+      out = HashWithIndifferentAccess[*groups.map{|g| [g, []]}.flatten(1)]
+      out[:other] = []
+      if add_footer
+        out[:footer] = []
+        groups << :footer
+      end
+
+      each do |l|
+        found = false
+        groups.each do |g|
+          if l.in_group_for_action?(@options[:action], g)
+            out[g] << l
+            found = true
+            next
+          end
+        end
+        out[:other] << l unless found
+      end
+      out
+    end
+
+    alias_method :to_ary, :resolve
+
+    %w(each map size first last any?).each do |meth|
+      define_method meth do |*args, &block|
+        resolve.send meth, *args, &block
+      end
+    end
+
+    private
+    def returning_a_copy &block
+      out = ActionLinks.new options
+      out.instance_eval &block
+      out
+    end
   end
 
   class Link
@@ -115,21 +207,19 @@ class AF83::Decorator < Draper::Decorator
       enabled_actions.empty? || enabled_actions.include?(action.to_s)
     end
 
-    %i(primary secondary).each do |k|
-      define_method "#{k}_for_action?" do |action|
-        vals = send("#{k}_actions")
-        if vals.is_a?(Array)
-          return vals.include?(action.to_s)
-        elsif vals.is_a?(String) || vals.is_a?(Symbol)
-          vals.to_s == action.to_s
-        else
-          !!vals
-        end
-      end
+    def actions_for_group group
+      val = @options[:_groups][group]
+      val.is_a?(Array) ? val.map(&:to_s) : val
+    end
 
-      define_method "#{k}_actions" do
-        val = @options[:"_#{k}"]
-        val.is_a?(Array) ? val.map(&:to_s) : val
+    def in_group_for_action? action, group
+      vals = actions_for_group(group)
+      if vals.is_a?(Array)
+        return vals.include?(action.to_s)
+      elsif vals.is_a?(String) || vals.is_a?(Symbol)
+        vals.to_s == action.to_s
+      else
+        !!vals
       end
     end
 

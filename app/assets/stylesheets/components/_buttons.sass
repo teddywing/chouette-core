@@ -142,16 +142,25 @@ table, .table
         margin: 0
         border-radius: 0
         box-shadow: 0 0 3px rgba($darkgrey, 0.25)
-
-        > li > a, > li > button
-          padding: 5px 15px
-
-        > li.delete-action
-          > a, > button
+        > ul
+          padding: 0
+          margin: 0
+          > li > a, > li > button
+            padding: 5px 15px
+            white-space: nowrap
+            color: black
+            padding: 5px 15px
+            font-weight: normal
+            line-height: 1.42857
             display: block
+            font-size: 14px
+            &:hover
+              text-decoration: none
+              color: #262626
+              background-color: whitesmoke
+          &:not(:first-child)
             position: relative
             margin-top: 11px
-
             &:before
               content: ''
               display: block
@@ -162,14 +171,18 @@ table, .table
               height: 1px
               background-color: $grey
 
-            .fa:first-child
-              margin-right: 0.5em
-
-          & + li.delete-action
+          > li.delete-action
             > a, > button
-              margin-top: 0
-              &:before
-                display: none
+              display: block
+              position: relative
+              .fa:first-child
+                margin-right: 0.5em
+
+            & + li.delete-action
+              > a, > button
+                margin-top: 0
+                &:before
+                  display: none
 
 
   &.table-2entries .t2e-item

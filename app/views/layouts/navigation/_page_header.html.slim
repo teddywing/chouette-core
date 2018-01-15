@@ -19,5 +19,15 @@ div.page_header
           - if content_for? :page_header_actions
             = yield :page_header_actions
 
+  - action_links = resource.action_links(params[:action]) rescue nil
+  - if action_links&.primary&.any? || action_links&.secondary&.any?
+    .row
+      .col-lg-12.text-right.mb-sm
+        - action_links.primary.each do |link|
+          = link.to_html do |l|
+            - l.class "btn btn-primary #{l.disabled ? "disabled" : ""} sticky-action"
+        - action_links.secondary.each do |link|
+          = link.to_html do |l|
+            - l.class "btn btn-primary #{l.disabled ? "disabled" : ""}"
     - if content_for? :page_header_content
       = yield :page_header_content

@@ -1,11 +1,4 @@
 - breadcrumb :line, @line
-- content_for :page_header_content do
-  .row
-    .col-lg-12.text-right.mb-sm
-      - @line.action_links(:show, :primary).each do |link|
-        = link.to_html do |l|
-          - l.class "btn btn-primary #{l.disabled ? "disabled" : ""}"
-
 - page_header_content_for @line
 
 .page_content
