@@ -185,6 +185,7 @@ Thanks to `lib/tasks/extensions.rake`.
 #### Jest (React integration specs)
 
 `grunt jest` to run the whole specs.
+
 `grunt` to watch for changes and automatically run corresponding tests.
 
 #### Start local server
