@@ -169,6 +169,8 @@ bundle exec rake referential:create
 
 #### Run tests
 
+#### Rspec 
+
 ```sh
 bundle exec rake spec
 bundle exec rake teaspoon
@@ -180,7 +182,10 @@ If Postgres complains about illegal type `hstore` or `unaccent` in your tests th
 
 Thanks to `lib/tasks/extensions.rake`.
 
+#### Jest (React integration specs)
 
+`grunt jest` to run the whole specs.
+`grunt` to watch for changes and automatically run corresponding tests.
 
 #### Start local server
 
