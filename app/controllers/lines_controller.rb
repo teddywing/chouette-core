@@ -15,9 +15,8 @@ class LinesController < ChouetteController
   def index
     @hide_group_of_line = line_referential.group_of_lines.empty?
     index! do |format|
-      @lines = ModelDecorator.decorate(
+      @lines = LineDecorator.decorate(
         @lines,
-        with: LineDecorator,
         context: {
           line_referential: @line_referential,
           current_organisation: current_organisation
@@ -69,8 +68,13 @@ class LinesController < ChouetteController
     respond_to do |format|
       format.json { render :json => filtered_lines_maps}
     end
-
   end
+
+  def decorated_collection
+    @lines
+  end
+
+  helper_method :decorated_collection
 
   protected
 
