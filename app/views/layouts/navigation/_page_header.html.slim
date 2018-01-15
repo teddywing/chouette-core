@@ -20,6 +20,7 @@ div.page_header
             = yield :page_header_actions
 
   - action_links = resource.action_links(params[:action]) rescue nil
+  - action_links ||= decorated_collection.action_links(params[:action]) rescue nil
   - if action_links&.primary&.any? || action_links&.secondary&.any?
     .row
       .col-lg-12.text-right.mb-sm
