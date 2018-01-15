@@ -8,7 +8,7 @@ class LineDecorator < AF83::Decorator
   ### - an array of actions
   ### - a boolean
 
-  action_link primary: :index do |l|
+  action_link primary: :index, on: :index do |l|
     l.content h.t('lines.actions.show')
     l.href   { [context[:line_referential], object] }
   end
