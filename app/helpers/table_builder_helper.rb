@@ -306,12 +306,13 @@ module TableBuilderHelper
       content_tag :span, '', class: 'fa fa-cog'
     end
 
-    menu = content_tag :ul, class: 'dropdown-menu' do
-      (
-        CustomLinks.new(item, pundit_user, links, referential).links +
-        item.action_links
-      ).map do |link|
-        gear_menu_link(link)
+    menu = content_tag :div, class: 'dropdown-menu' do
+      item.action_links(params[:action]).grouped_by(:primary, :secondary, :footer).map do |group, _links|
+        if _links.any?
+          content_tag :ul, class: group do
+            _links.map{|link| gear_menu_link(link)}.join.html_safe
+          end
+        end
       end.join.html_safe
     end
 

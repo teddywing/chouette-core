@@ -13,8 +13,8 @@ RSpec.describe AF83::Decorator, type: :decorator do
       link_options.each do |k, v|
         expect(_link_options[k]).to eq v
       end
-      expect(_link_options[:_primary]).to eq true
-      expect(_link_options[:_secondary]).to eq %i(index show)
+      expect(_link_options[:_groups][:primary]).to eq true
+      expect(_link_options[:_groups][:secondary]).to eq %i(index show)
       expect(_link_options[:_policy]).to eq :blublu
     end
   end
@@ -424,6 +424,24 @@ RSpec.describe AF83::Decorator, type: :decorator do
     end
   end
 
+  describe '#primary' do
+    let(:decorator) do
+      Class.new(AF83::Decorator)
+    end
+
+    let(:decorated) do
+      obj = create :line
+      decorator.decorate(obj)
+    end
+
+    it "should return a new object everytime" do
+      actions = decorated.action_links
+      primary = actions.primary
+      expect(actions.options[:groups]).to be_nil
+      expect(primary.options[:groups]).to_not be_nil
+    end
+  end
+
   describe(:primary_links) do
     let(:decorated) do
       obj = create :line
@@ -478,7 +496,7 @@ RSpec.describe AF83::Decorator, type: :decorator do
         let(:primary){ %i(show edit) }
 
         it "should return the link" do
-          links = decorated.action_links(:show, :primary)
+          links = decorated.action_links(:show, group: :primary)
           expect(links.size).to eq 1
         end
       end
@@ -487,7 +505,7 @@ RSpec.describe AF83::Decorator, type: :decorator do
         let(:primary){  %i(index edit) }
 
         it "should not return the link" do
-          links = decorated.action_links(:show, :primary)
+          links = decorated.action_links(:show, group: :primary)
           expect(links.size).to eq 0
         end
       end
@@ -508,6 +526,174 @@ RSpec.describe AF83::Decorator, type: :decorator do
           links = decorated.primary_links(:show)
           expect(links.size).to eq 0
         end
+      end
+    end
+  end
+
+  describe("in a group") do
+    let(:decorated) do
+      obj = create :line
+      decorator.decorate(obj)
+    end
+
+    context "without links" do
+      let(:decorator) do
+        Class.new(AF83::Decorator)
+      end
+
+      it "should return no link" do
+        links = decorated.action_links
+        expect(links.size).to eq 0
+      end
+    end
+
+
+    context "with a single link" do
+      let(:link_options) do
+        {
+          href: "/foo/bar/baz",
+          content: "Blublu",
+          groups: {foo: group}
+        }
+      end
+
+      let(:decorator) do
+        klass = Class.new(AF83::Decorator)
+        klass.action_link link_options
+        klass
+      end
+
+      context "always in" do
+        let(:group){ true }
+
+        it "should return the link" do
+          links = decorated.action_links(:show, group: :foo)
+          expect(links.size).to eq 1
+        end
+
+        context "define with group" do
+          let(:link_options) do
+            {
+              href: "/foo/bar/baz",
+              content: "Blublu",
+              group: :foo
+            }
+          end
+
+          let(:decorator) do
+            klass = Class.new(AF83::Decorator)
+            klass.action_link link_options
+            klass
+          end
+
+          it "should return the link" do
+            links = decorated.action_links(:show, group: :foo)
+            expect(links.size).to eq 1
+          end
+
+          it "should not return the link" do
+            links = decorated.action_links(:show, group: :bar)
+            expect(links.size).to eq 0
+          end
+        end
+      end
+
+      context "primary on this action" do
+        let(:group){ :show }
+
+        it "should return the link" do
+          links = decorated.action_links(:show, group: :foo)
+          expect(links.size).to eq 1
+        end
+      end
+
+      context "in this action among others" do
+        let(:group){ %i(show edit) }
+
+        it "should return the link" do
+          links = decorated.action_links(:show, group: :foo)
+          expect(links.size).to eq 1
+        end
+      end
+
+      context "in other actions" do
+        let(:group){  %i(index edit) }
+
+        it "should not return the link" do
+          links = decorated.action_links(:show, group: :foo)
+          expect(links.size).to eq 0
+        end
+      end
+
+      context "in another action" do
+        let(:group){  :index }
+
+        it "should not return the link" do
+          links = decorated.action_links(:show, group: :foo)
+          expect(links.size).to eq 0
+        end
+      end
+
+      context "never" do
+        let(:group){ nil }
+
+        it "should not return the link" do
+          links = decorated.action_links(:show, group: :foo)
+          expect(links.size).to eq 0
+        end
+      end
+    end
+
+    describe(:grouped_by) do
+      let(:link_options_1) do
+        {
+          href: "/foo/bar",
+          content: "Blublu",
+          primary: true
+        }
+      end
+
+      let(:link_options_2) do
+        {
+          href: "/foo/bar/baz",
+          content: "Foo",
+          groups: {secondary: :show}
+        }
+      end
+
+      let(:link_options_3) do
+        {
+          href: "/foo/bar/baz/bat",
+          content: "Foo",
+          groups: {foo: :show}
+        }
+      end
+
+      let(:link_options_4) do
+        {
+          href: "/footer",
+          content: "Foo",
+          footer: true
+        }
+      end
+
+      let(:decorator) do
+        klass = Class.new(AF83::Decorator)
+        klass.action_link link_options_1
+        klass.action_link link_options_2
+        klass.action_link link_options_3
+        klass.action_link link_options_4
+        klass
+      end
+
+      it "should return links in their groups" do
+        links = decorated.action_links(:show).grouped_by(:primary, :secondary, :blu, :footer)
+        expect(links.size).to eq 5
+        instance_exec links[:primary].first, link_options_1, &link_should_match_options
+        instance_exec links[:secondary].first, link_options_2, &link_should_match_options
+        expect(links[:blu].size).to eq 0
+        instance_exec links[:other].first, link_options_3, &link_should_match_options
+        instance_exec links[:footer].first, link_options_4, &link_should_match_options
       end
     end
   end

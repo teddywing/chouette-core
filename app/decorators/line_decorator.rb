@@ -27,21 +27,21 @@ class LineDecorator < AF83::Decorator
   can_edit_line = ->(){ h.policy(Chouette::Line).create? && context[:line_referential].organisations.include?(context[:current_organisation]) }
 
   with_condition can_edit_line do
-    action_link on: :index do |l|
-      l.content { h.t('lines.actions.new') }
-      l.href    { h.new_line_referential_line_path(context[:line_referential]) }
-    end
-
-    action_link on: %i(index show), primary: :show do |l|
+    action_link on: %i(index show), primary: :show, secondary: :index do |l|
       l.content { h.t('lines.actions.edit') }
       l.href    { h.edit_line_referential_line_path(context[:line_referential], object.id) }
+    end
+
+    action_link on: :index, secondary: :index do |l|
+      l.content { h.t('lines.actions.new') }
+      l.href    { h.new_line_referential_line_path(context[:line_referential]) }
     end
   end
 
   ### the option :policy will automatically check for the corresponding method
   ### on the object's policy
 
-  action_link policy: :deactivate, secondary: true do |l|
+  action_link policy: :deactivate, secondary: :show, footer: :index do |l|
     l.content  { h.deactivate_link_content('lines.actions.deactivate') }
     l.href     { h.deactivate_line_referential_line_path(context[:line_referential], object) }
     l.method   :put
@@ -49,7 +49,7 @@ class LineDecorator < AF83::Decorator
     l.extra_class "delete-action"
   end
 
-  action_link policy: :activate, secondary: true do |l|
+  action_link policy: :activate, secondary: :show, footer: :index do |l|
     l.content  { h.activate_link_content('lines.actions.activate') }
     l.href     { h.activate_line_referential_line_path(context[:line_referential], object) }
     l.method   :put
@@ -57,7 +57,7 @@ class LineDecorator < AF83::Decorator
     l.extra_class "delete-action"
   end
 
-  action_link policy: :destroy do |l|
+  action_link policy: :destroy, footer: true do |l|
     l.content  { h.destroy_link_content('lines.actions.destroy') }
     l.href     { h.line_referential_line_path(context[:line_referential], object) }
     l.method   :delete
