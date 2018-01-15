@@ -1,7 +1,7 @@
 RSpec.describe AF83::Decorator, type: :decorator do
   describe(:parse_options) do
     let(:options){
-      {primary: true, secondary: %i(index show), permission: :blublu, weight: 12}
+      {primary: true, secondary: %i(index show), policy: :blublu, weight: 12}
     }
     let(:link_options){
       {foo: :foo, bar: :bar}
@@ -9,10 +9,13 @@ RSpec.describe AF83::Decorator, type: :decorator do
     let(:args){ options.dup.update(link_options.dup) }
     it "should separate options from link_options" do
       _options, _link_options = AF83::Decorator.send :parse_options, args
-      expect(_options).to eq options
+      expect(_options).to eq({weight: 12})
       link_options.each do |k, v|
         expect(_link_options[k]).to eq v
       end
+      expect(_link_options[:_primary]).to eq true
+      expect(_link_options[:_secondary]).to eq %i(index show)
+      expect(_link_options[:_policy]).to eq :blublu
     end
   end
 
@@ -416,6 +419,94 @@ RSpec.describe AF83::Decorator, type: :decorator do
             expect(links.size).to eq 1
             instance_exec links.first, link_options_2, &link_should_match_options
           end
+        end
+      end
+    end
+  end
+
+  describe(:primary_links) do
+    let(:decorated) do
+      obj = create :line
+      decorator.decorate(obj)
+    end
+
+    context "without links" do
+      let(:decorator) do
+        Class.new(AF83::Decorator)
+      end
+
+      it "should return no link" do
+        links = decorated.action_links
+        expect(links.size).to eq 0
+      end
+    end
+
+    context "with a single link" do
+      let(:link_options) do
+        {
+          href: "/foo/bar/baz",
+          content: "Blublu",
+          primary: primary
+        }
+      end
+
+      let(:decorator) do
+        klass = Class.new(AF83::Decorator)
+        klass.action_link link_options
+        klass
+      end
+
+      context "always primary" do
+        let(:primary){ true }
+
+        it "should return the link" do
+          links = decorated.primary_links(:show)
+          expect(links.size).to eq 1
+        end
+      end
+
+      context "primary on this action" do
+        let(:primary){ :show }
+
+        it "should return the link" do
+          links = decorated.primary_links(:show)
+          expect(links.size).to eq 1
+        end
+      end
+
+      context "primary on this action among others" do
+        let(:primary){ %i(show edit) }
+
+        it "should return the link" do
+          links = decorated.action_links(:show, :primary)
+          expect(links.size).to eq 1
+        end
+      end
+
+      context "primary on other actions" do
+        let(:primary){  %i(index edit) }
+
+        it "should not return the link" do
+          links = decorated.action_links(:show, :primary)
+          expect(links.size).to eq 0
+        end
+      end
+
+      context "primary on another action" do
+        let(:primary){  :index }
+
+        it "should not return the link" do
+          links = decorated.primary_links(:show)
+          expect(links.size).to eq 0
+        end
+      end
+
+      context "never primary" do
+        let(:primary){ nil }
+
+        it "should not return the link" do
+          links = decorated.primary_links(:show)
+          expect(links.size).to eq 0
         end
       end
     end

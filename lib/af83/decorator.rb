@@ -1,6 +1,7 @@
 class AF83::Decorator < Draper::Decorator
   def self.action_link args={}
     args[:if] = @_condition if args[:if].nil?
+
     options, link_options = parse_options args
 
     link = Link.new(link_options)
@@ -23,10 +24,16 @@ class AF83::Decorator < Draper::Decorator
     (@_action_links || []).flatten.compact.select{|l| l.for_action?(action)}
   end
 
-  def action_links action=:index
+  def action_links action=:index, scope=nil
+    return send("#{scope}_links", action) if scope.present?
+
     self.class.action_links(action)\
     .map{|l| l.bind_to_context(self)}\
     .select{|l| l.enabled?}
+  end
+
+  def primary_links action=:index
+    action_links(action).select{|l| l.primary_for_action?(action)}
   end
 
   def check_policy policy
@@ -38,17 +45,22 @@ class AF83::Decorator < Draper::Decorator
   private
   def self.parse_options args
     options = {}
-    %i(primary secondary permission weight).each do |k|
+    %i(weight primary secondary on action actions policy if).each do |k|
       options[k] = args.delete(k) if args.has_key?(k)
     end
     link_options = args.dup
-    actions = args.delete :actions
-    actions ||= args.delete :on
-    actions ||= [args.delete(:action)]
+
+    actions = options.delete :actions
+    actions ||= options.delete :on
+    actions ||= [options.delete(:action)]
     actions = [actions] unless actions.is_a?(Array)
     link_options[:_actions] = actions.compact
-    link_options[:_if] = args.delete(:if)
-    link_options[:_policy] = args.delete(:policy)
+
+    link_options[:_primary] = options.delete :primary
+    link_options[:_secondary] = options.delete :secondary
+
+    link_options[:_if] = options.delete(:if)
+    link_options[:_policy] = options.delete(:policy)
     [options, link_options]
   end
 
@@ -70,6 +82,10 @@ class AF83::Decorator < Draper::Decorator
       link_method *args
     end
 
+    def class *args
+      link_class *args
+    end
+
     def method_missing name, *args, &block
       if block_given?
         @options[name] = block
@@ -80,6 +96,10 @@ class AF83::Decorator < Draper::Decorator
       else
         @options[name] = args.first
       end
+    end
+
+    def options
+      @options.symbolize_keys
     end
 
     def complete?
@@ -93,6 +113,24 @@ class AF83::Decorator < Draper::Decorator
 
     def for_action? action
       enabled_actions.empty? || enabled_actions.include?(action.to_s)
+    end
+
+    %i(primary secondary).each do |k|
+      define_method "#{k}_for_action?" do |action|
+        vals = send("#{k}_actions")
+        if vals.is_a?(Array)
+          return vals.include?(action.to_s)
+        elsif vals.is_a?(String) || vals.is_a?(Symbol)
+          vals.to_s == action.to_s
+        else
+          !!vals
+        end
+      end
+
+      define_method "#{k}_actions" do
+        val = @options[:"_#{k}"]
+        val.is_a?(Array) ? val.map(&:to_s) : val
+      end
     end
 
     def enabled?
@@ -116,6 +154,24 @@ class AF83::Decorator < Draper::Decorator
 
     def errors
       "Missing attributes: #{@missing_attributes.to_sentence}"
+    end
+
+    def html_options
+      out = {}
+      options.each do |k, v|
+        out[k] = v unless k == :content || k == :href || k.to_s =~ /^_/
+      end
+      out[:class] = out.delete(:link_class)
+      out
+    end
+
+    def to_html
+      if block_given?
+        link = Link.new(@options)
+        yield link
+        return link.bind_to_context(context).to_html
+      end
+      context.h.link_to content, href, html_options
     end
   end
 
