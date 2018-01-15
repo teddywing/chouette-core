@@ -32,6 +32,10 @@ describe "/lines/index", :type => :view do
   common_items.call()
   it { should have_the_right_number_of_links(lines, 3) }
 
+  it "should match the snapshot" do
+    expect(rendered).to match_snapshot("lines/index")
+  end
+
   with_permission "lines.change_status" do
     common_items.call()
     it { should have_link_for_each_item(lines, "deactivate", -> (line){ view.deactivate_line_referential_line_path(line_referential, line) }) }
