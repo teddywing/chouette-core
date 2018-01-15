@@ -309,7 +309,7 @@ module TableBuilderHelper
     menu = content_tag :ul, class: 'dropdown-menu' do
       (
         CustomLinks.new(item, pundit_user, links, referential).links +
-        item.action_links.select { |link| link.is_a?(Link) }
+        item.action_links
       ).map do |link|
         gear_menu_link(link)
       end.join.html_safe

@@ -17,6 +17,7 @@ en:
       export_kml_all: "Export KML lines"
       export_hub: "Export HUB line"
       export_hub_all: "Export HUB lines"
+      show: 'Show'
       show_network: 'Show network'
       show_company: 'Show company'
     new:
