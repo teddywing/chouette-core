@@ -7,11 +7,17 @@ class AF83::Decorator < ModelDecorator
   end
 
   def self.instance_decorator
-    @instance_decorator ||= Class.new(AF83::Decorator::InstanceDecorator)
+    @instance_decorator ||= begin
+      klass = Class.new(AF83::Decorator::InstanceDecorator)
+      klass.delegate_all
+      klass
+    end
   end
 
   def self.with_instance_decorator
+    @_with_instance_decorator = true
     yield instance_decorator
+    @_with_instance_decorator = false
   end
 
   def self.decorate object, options = {}

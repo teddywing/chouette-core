@@ -1,6 +1,7 @@
 module AF83::EnhancedDecorator
   module ClassMethods
     def action_link args={}
+      raise "You are using `action_link` inside a with_instance_decorator block, but not on the instance decorator itself.\n Use `instance_decorator.action_link` or move outside of the block, as this may lead to an unforeseen behaviour." if @_with_instance_decorator
       args[:if] = @_condition if args[:if].nil?
 
       options, link_options = parse_options args
