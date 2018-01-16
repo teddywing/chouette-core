@@ -33,7 +33,7 @@ class LineDecorator < AF83::Decorator
 
     instance_decorator.with_condition can_edit_line do
       action_link on: %i(index show), primary: :show, secondary: :index do |l|
-        l.content { h.t('lines.actions.edit') }
+        l.content {|l| l.primary? ? h.t('actions.edit') : h.t('lines.actions.edit') }
         l.href    { h.edit_line_referential_line_path(context[:line_referential], object.id) }
       end
 
