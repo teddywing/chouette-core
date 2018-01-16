@@ -31,7 +31,12 @@ class Workbench < ActiveRecord::Base
     if line_ids.empty?
       Referential.none
     else
-      Referential.joins(:metadatas).where(['referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids]).ready.not_in_referential_suite
+      workgroup
+        .referentials
+        .joins(:metadatas)
+        .where(['referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids])
+        .ready
+        .not_in_referential_suite
     end
   end
 

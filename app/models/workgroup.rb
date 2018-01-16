@@ -4,6 +4,7 @@ class Workgroup < ActiveRecord::Base
 
   has_many :workbenches
   has_many :organisations, through: :workbenches
+  has_many :referentials, through: :workbenches
 
   validates_uniqueness_of :name
 
