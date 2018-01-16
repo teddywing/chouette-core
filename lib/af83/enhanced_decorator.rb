@@ -58,6 +58,7 @@ module AF83::EnhancedDecorator
   end
 
   def action_links action=:index, opts={}
+    @action = action&.to_sym
     links = AF83::Decorator::ActionLinks.new links: self.class.action_links(action), context: self, action: action
     group = opts[:group]
     links = links.for_group opts[:group]

@@ -19,7 +19,9 @@ describe "/lines/index", :type => :view do
     deactivated_line
     allow(view).to receive(:collection).and_return(lines)
     allow(view).to receive(:current_referential).and_return(line_referential)
+    allow(view).to receive(:params).and_return({action: :index})
     controller.request.path_parameters[:line_referential_id] = line_referential.id
+    controller.request.path_parameters[:action] = "index"
     render
   end
 
@@ -31,10 +33,6 @@ describe "/lines/index", :type => :view do
 
   common_items.call()
   it { should have_the_right_number_of_links(lines, 3) }
-
-  it "should match the snapshot" do
-    expect(rendered).to match_snapshot("lines/index")
-  end
 
   with_permission "lines.change_status" do
     common_items.call()
