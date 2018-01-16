@@ -50,11 +50,11 @@ class AF83::Decorator < ModelDecorator
     end
 
     def resolve
-      out = @options[:links].map{|l| l.bind_to_context(@options[:context])}.select{|l| l.enabled?}
+      out = @options[:links].map{|l| l.bind_to_context(@options[:context], @options[:action])}.select{|l| l.enabled?}
       if @options[:groups].present?
         out = out.select do |l|
           @options[:groups].any? do |g|
-            l.in_group_for_action?(@options[:action], g)
+            l.in_group_for_action?(g)
           end
         end
       end
@@ -74,7 +74,7 @@ class AF83::Decorator < ModelDecorator
       each do |l|
         found = false
         groups.each do |g|
-          if l.in_group_for_action?(@options[:action], g)
+          if l.in_group_for_action?(g)
             out[g] << l
             found = true
             next
@@ -110,8 +110,9 @@ class AF83::Decorator < ModelDecorator
       @options = options
     end
 
-    def bind_to_context context
+    def bind_to_context context, action
       @context = context
+      @action = action
       self
     end
 
@@ -120,7 +121,7 @@ class AF83::Decorator < ModelDecorator
     end
 
     def class *args
-      link_class *args
+      link_class args
     end
 
     def method_missing name, *args, &block
@@ -128,7 +129,7 @@ class AF83::Decorator < ModelDecorator
         @options[name] = block
       elsif args.size == 0
         out = @options[name]
-        out = context.instance_exec(&out) if out.is_a?(Proc)
+        out = context.instance_exec(self, &out)  if out.is_a?(Proc)
         out
       else
         @options[name] = args.first
@@ -148,7 +149,8 @@ class AF83::Decorator < ModelDecorator
       @options[:_actions].map(&:to_s) || []
     end
 
-    def for_action? action
+    def for_action? action=nil
+      action ||= @action
       enabled_actions.empty? || enabled_actions.include?(action.to_s)
     end
 
@@ -157,15 +159,23 @@ class AF83::Decorator < ModelDecorator
       val.is_a?(Array) ? val.map(&:to_s) : val
     end
 
-    def in_group_for_action? action, group
+    def in_group_for_action? group
       vals = actions_for_group(group)
       if vals.is_a?(Array)
-        return vals.include?(action.to_s)
+        return vals.include?(@action.to_s)
       elsif vals.is_a?(String) || vals.is_a?(Symbol)
-        vals.to_s == action.to_s
+        vals.to_s == @action.to_s
       else
         !!vals
       end
+    end
+
+    def primary?
+      in_group_for_action? :primary
+    end
+
+    def secondary?
+      in_group_for_action? :secondary
     end
 
     def enabled?
@@ -191,12 +201,25 @@ class AF83::Decorator < ModelDecorator
       "Missing attributes: #{@missing_attributes.to_sentence}"
     end
 
+    def extra_class val=nil
+      if val.present?
+        @options[:link_class] ||= []
+        @options[:link_class] << val
+        @options[:link_class].flatten!
+      else
+        (options[:link_class] || []).join(' ')
+      end
+    end
+
     def html_options
       out = {}
       options.each do |k, v|
         out[k] = v unless k == :content || k == :href || k.to_s =~ /^_/
       end
-      out[:class] = out.delete(:link_class)
+      out[:class] = extra_class
+      out.delete(:link_class)
+      out[:class] += " disabled" if disabled
+      out[:disabled] = !!disabled
       out
     end
 
@@ -204,7 +227,7 @@ class AF83::Decorator < ModelDecorator
       if block_given?
         link = Link.new(@options)
         yield link
-        return link.bind_to_context(context).to_html
+        return link.bind_to_context(context, @options[:action]).to_html
       end
       context.h.link_to content, href, html_options
     end
