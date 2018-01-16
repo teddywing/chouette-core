@@ -188,7 +188,9 @@ module TableBuilderHelper
         end
 
         # Inserts a blank column for the gear menu
-        if has_links || collection.last.try(:action_links).try(:any?)
+        last_item = collection.last
+        action_links = last_item && last_item.respond_to?(:action_links) && (last_item&.action_links&.is_a?(AF83::Decorator::ActionLinks) ? last_item.action_links(params[:action]) : last_item.action_links)
+        if has_links || action_links.try(:any?)
           hcont << content_tag(:th, '')
         end
 
@@ -267,7 +269,9 @@ module TableBuilderHelper
         end
       end
 
-      if links.any? || item.try(:action_links).try(:any?)
+      action_links = item && item.respond_to?(:action_links) && (item.action_links.is_a?(AF83::Decorator::ActionLinks) ? item.action_links(params[:action]) : item.action_links)
+
+      if links.any? || action_links.try(:any?)
         bcont << content_tag(
           :td,
           build_links(item, links),
@@ -306,14 +310,26 @@ module TableBuilderHelper
       content_tag :span, '', class: 'fa fa-cog'
     end
 
-    menu = content_tag :div, class: 'dropdown-menu' do
-      item.action_links(params[:action]).grouped_by(:primary, :secondary, :footer).map do |group, _links|
-        if _links.any?
-          content_tag :ul, class: group do
-            _links.map{|link| gear_menu_link(link)}.join.html_safe
+    action_links = item.action_links
+    if action_links.is_a?(AF83::Decorator::ActionLinks)
+      menu = content_tag :div, class: 'dropdown-menu' do
+        item.action_links(params[:action]).grouped_by(:primary, :secondary, :footer).map do |group, _links|
+          if _links.any?
+            content_tag :ul, class: group do
+              _links.map{|link| gear_menu_link(link)}.join.html_safe
+            end
           end
-        end
-      end.join.html_safe
+        end.join.html_safe
+      end
+    else
+      menu = content_tag :ul, class: 'dropdown-menu' do
+        (
+          CustomLinks.new(item, pundit_user, links, referential).links +
+          action_links.select { |link| link.is_a?(Link) }
+        ).map do |link|
+          gear_menu_link(link)
+        end.join.html_safe
+      end
     end
 
     content_tag :div, trigger + menu, class: 'btn-group'
