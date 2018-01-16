@@ -54,7 +54,6 @@
                 attribute: Proc.new { |tt| l(tt.updated_at, format: :short) } \
               ) \
             ],
-            links: [:show, :edit],
             cls: 'table has-search'
 
           = new_pagination @time_tables, 'pull-right'

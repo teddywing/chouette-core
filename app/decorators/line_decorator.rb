@@ -7,7 +7,6 @@ class LineDecorator < AF83::Decorator
   end
 
   with_instance_decorator do |instance_decorator|
-    instance_decorator.delegate_all
     ### primary (and secondary) can be
     ### - a single action
     ### - an array of actions
