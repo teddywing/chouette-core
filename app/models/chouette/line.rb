@@ -1,6 +1,6 @@
 module Chouette
   class Line < Chouette::ActiveRecord
-    has_paper_trail
+    has_paper_trail class_name: 'PublicVersion'
     include LineRestrictions
     include LineReferentialSupport
     include ObjectidSupport
