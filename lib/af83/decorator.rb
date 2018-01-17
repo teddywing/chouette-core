@@ -226,7 +226,7 @@ class AF83::Decorator < ModelDecorator
     def html_options
       out = {}
       options.each do |k, v|
-        out[k] = v unless k == :content || k == :href || k.to_s =~ /^_/
+        out[k] = self.send(k) unless k == :content || k == :href || k.to_s =~ /^_/
       end
       out[:class] = extra_class
       out.delete(:link_class)
@@ -241,7 +241,15 @@ class AF83::Decorator < ModelDecorator
         yield link
         return link.bind_to_context(context, @action).to_html
       end
-      context.h.link_to content, href, html_options
+      if type&.to_sym == :button
+        HTMLElement.new(
+          :button,
+          content,
+          html_options
+        ).to_html
+      else
+        context.h.link_to content, href, html_options
+      end
     end
   end
 

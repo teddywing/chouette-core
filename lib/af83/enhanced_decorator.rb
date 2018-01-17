@@ -16,6 +16,10 @@ module AF83::EnhancedDecorator
       @_action_links[weight] << link
     end
 
+    def t key
+      eval  "-> (l){ h.t('#{key}') }"
+    end
+
     def with_condition condition, &block
       @_condition = condition
       instance_eval &block

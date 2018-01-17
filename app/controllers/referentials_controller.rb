@@ -80,6 +80,7 @@ class ReferentialsController < ChouetteController
     referential.archive!
     redirect_to workbench_path(referential.workbench_id), notice: t('notice.referential.archived')
   end
+
   def unarchive
     if referential.unarchive!
       flash[:notice] = t('notice.referential.unarchived')
@@ -97,7 +98,7 @@ class ReferentialsController < ChouetteController
   helper_method :current_referential
 
   def resource
-    @referential ||= current_organisation.find_referential(params[:id])
+    @referential ||= current_organisation.find_referential(params[:id]).decorate
   end
 
   def collection
