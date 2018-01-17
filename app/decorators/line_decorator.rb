@@ -1,8 +1,8 @@
 class LineDecorator < AF83::Decorator
   decorates Chouette::Line
 
-  action_link on: :index, primary: :index, policy: :create do |l|
-    l.content { h.t('lines.actions.new') }
+  create_action_link do |l|
+    l.content t('lines.actions.new')
     l.href    { h.new_line_referential_line_path(context[:line_referential]) }
   end
 
@@ -12,18 +12,18 @@ class LineDecorator < AF83::Decorator
     ### - an array of actions
     ### - a boolean
 
-    instance_decorator.action_link primary: :index, on: :index do |l|
-      l.content h.t('lines.actions.show')
+    instance_decorator.show_action_link do |l|
+      l.content t('lines.actions.show')
       l.href   { [context[:line_referential], object] }
     end
 
     instance_decorator.action_link do |l|
-      l.content h.t('lines.actions.show_network')
+      l.content t('lines.actions.show_network')
       l.href   { [context[:line_referential], object.network] }
     end
 
     instance_decorator.action_link do |l|
-      l.content  { h.t('lines.actions.show_company') }
+      l.content  t('lines.actions.show_company')
       l.href     { [context[:line_referential], object.company] }
       l.disabled { object.company.nil? }
     end
@@ -31,13 +31,13 @@ class LineDecorator < AF83::Decorator
     can_edit_line = ->(){ h.policy(Chouette::Line).create? && context[:line_referential].organisations.include?(context[:current_organisation]) }
 
     instance_decorator.with_condition can_edit_line do
-      action_link on: %i(index show), primary: :show, secondary: :index do |l|
+      edit_action_link do |l|
         l.content {|l| l.primary? ? h.t('actions.edit') : h.t('lines.actions.edit') }
         l.href    { h.edit_line_referential_line_path(context[:line_referential], object.id) }
       end
 
       action_link on: :index, secondary: :index do |l|
-        l.content { h.t('lines.actions.new') }
+        l.content t('lines.actions.new')
         l.href    { h.new_line_referential_line_path(context[:line_referential]) }
       end
     end
@@ -61,10 +61,9 @@ class LineDecorator < AF83::Decorator
       l.extra_class "delete-action"
     end
 
-    instance_decorator.action_link policy: :destroy, footer: true do |l|
+    instance_decorator.destroy_action_link do |l|
       l.content  { h.destroy_link_content('lines.actions.destroy') }
       l.href     { h.line_referential_line_path(context[:line_referential], object) }
-      l.method   :delete
       l.data     confirm: h.t('lines.actions.destroy_confirm')
       l.extra_class "delete-action"
     end
