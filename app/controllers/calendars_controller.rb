@@ -7,14 +7,11 @@ class CalendarsController < ChouetteController
 
   def index
     index! do
-      @calendars = ModelDecorator.decorate(@calendars, with: CalendarDecorator)
+      @calendars = CalendarDecorator.decorate(@calendars)
     end
   end
 
   def show
-    show! do
-      @calendar = @calendar.decorate
-    end
   end
 
   private
@@ -34,7 +31,7 @@ class CalendarsController < ChouetteController
 
   protected
   def resource
-    @calendar = Calendar.where('organisation_id = ? OR shared = true', current_organisation.id).find_by_id(params[:id])
+    @calendar = Calendar.where('organisation_id = ? OR shared = true', current_organisation.id).find_by_id(params[:id]).decorate
   end
 
   def build_resource

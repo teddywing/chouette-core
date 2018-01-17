@@ -52,6 +52,19 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_functional_scope
 
+  def collection_name
+    self.class.name.split("::").last.gsub('Controller', '').underscore
+  end
+
+  def decorated_collection
+    if instance_variable_defined?("@#{collection_name}")
+      instance_variable_get("@#{collection_name}")
+    else
+      nil
+    end
+  end
+  helper_method :decorated_collection
+
   def begin_of_association_chain
     current_organisation
   end

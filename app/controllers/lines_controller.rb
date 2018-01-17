@@ -70,10 +70,6 @@ class LinesController < ChouetteController
     end
   end
 
-  def decorated_collection
-    @lines
-  end
-
   helper_method :decorated_collection
 
   protected

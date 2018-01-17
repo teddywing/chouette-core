@@ -1,7 +1,4 @@
 - breadcrumb :time_tables, @referential
-- content_for :page_header_actions do
-  - if (policy(Chouette::TimeTable).create? && @referential.organisation == current_organisation)
-    = link_to(t('actions.add'), new_referential_time_table_path(@referential), class: 'btn btn-default')
 
 .page_content
   .container-fluid

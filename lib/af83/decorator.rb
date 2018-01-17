@@ -111,6 +111,7 @@ class AF83::Decorator < ModelDecorator
     REQUIRED_ATTRIBUTES = %i(href content)
 
     attr_reader :context
+    attr_reader :action
 
     def initialize options={}
       @options = options
@@ -233,7 +234,7 @@ class AF83::Decorator < ModelDecorator
       if block_given?
         link = Link.new(@options)
         yield link
-        return link.bind_to_context(context, @options[:action]).to_html
+        return link.bind_to_context(context, @action).to_html
       end
       context.h.link_to content, href, html_options
     end
