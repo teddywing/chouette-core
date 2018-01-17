@@ -67,4 +67,31 @@ namespace :referential do
       referential.update(ready: true)
     end
   end
+
+  desc 'Update all the checksums in the given referential'
+  task :update_checksums_in_referential, [:slug] => :environment do |t, args|
+    thing = %w(\\ | / —)
+    Referential.force_register_models_with_checksum if Rails.env.development?
+    referential = Referential.find_by_slug(args[:slug])
+    referential.switch do
+      Referential.models_with_checksum.each do |klass|
+        i = 0
+        j = 0
+        prev_size = 1
+        print "Updating checksums for #{klass.name}:  "
+        count = klass.count
+        klass.find_each do |o|
+          o.update_checksum!
+          if j%10 == 0
+            out = "#{"\b"*prev_size}\e[33m#{thing[i]}\e[0m (#{j}/#{count})"
+            prev_size = out.size - prev_size - 9
+            print out
+            i = (i+1) % thing.size
+          end
+          j += 1
+        end
+        print "#{"\b"*prev_size}\e[32m✓\e[0m (#{count}/#{count})\n"
+      end
+    end
+  end
 end
