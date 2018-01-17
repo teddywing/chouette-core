@@ -308,6 +308,38 @@ RSpec.describe AF83::Decorator, type: :decorator do
           end
         end
 
+        context "with a feature" do
+          let(:decorator) do
+            klass = Class.new(AF83::Decorator)
+            klass.with_instance_decorator do |instance_decorator|
+              instance_decorator.action_link href: "foo", content: "foo", feature: :foo
+            end
+            klass
+          end
+
+          context "when the feature is not present" do
+            before(:each) do
+              Draper::HelperProxy.any_instance.stub(:has_feature?){false}
+            end
+
+            it "should not return the link" do
+              links = decorated.action_links(:show)
+              expect(links.size).to eq 0
+            end
+          end
+
+          context "when the feature is present" do
+            before(:each) do
+              Draper::HelperProxy.any_instance.stub(:has_feature?){true}
+            end
+
+            it "should not return the link" do
+              links = decorated.action_links(:show)
+              expect(links.size).to eq 1
+            end
+          end
+        end
+
         context "with a condition" do
           context "set with 'with_condition'" do
             context "as a value" do
