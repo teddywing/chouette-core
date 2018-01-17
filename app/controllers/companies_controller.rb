@@ -47,6 +47,9 @@ class CompaniesController < ChouetteController
     end
   end
 
+  def resource
+    super.decorate(context: { referential: line_referential })
+  end
 
   def resource_url(company = nil)
     line_referential_company_path(line_referential, company || resource)
@@ -79,9 +82,8 @@ class CompaniesController < ChouetteController
   end
 
   def decorate_companies(companies)
-    ModelDecorator.decorate(
+    CompanyDecorator.decorate(
       companies,
-      with: CompanyDecorator,
       context: {
         referential: line_referential
       }

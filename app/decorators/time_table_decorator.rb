@@ -1,6 +1,12 @@
 class TimeTableDecorator < AF83::Decorator
   decorates Chouette::TimeTable
 
+  action_link on: :index, primary: :index, \
+    if: ->{ h.policy(Chouette::TimeTable).create? && context[:referential].organisation == h.current_organisation } do |l|
+    l.content { h.t('actions.add') }
+    l.href    { h.new_referential_time_table_path(context[:referential]) }
+  end
+
   with_instance_decorator do |instance_decorator|
     instance_decorator.action_link primary: :index do |l|
       l.content { h.t('actions.show') }
