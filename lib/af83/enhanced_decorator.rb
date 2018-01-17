@@ -28,7 +28,7 @@ module AF83::EnhancedDecorator
 
     def parse_options args
       options = {}
-      %i(weight primary secondary footer on action actions policy if groups group).each do |k|
+      %i(weight primary secondary footer on action actions policy feature if groups group).each do |k|
         options[k] = args.delete(k) if args.has_key?(k)
       end
       link_options = args.dup
@@ -54,6 +54,7 @@ module AF83::EnhancedDecorator
 
       link_options[:_if] = options.delete(:if)
       link_options[:_policy] = options.delete(:policy)
+      link_options[:_feature] = options.delete(:feature)
       [options, link_options]
     end
   end
@@ -78,5 +79,9 @@ module AF83::EnhancedDecorator
     _object = policy.to_s == "create" ? object.klass : object
     method = "#{policy}?"
     h.policy(_object).send(method)
+  end
+
+  def check_feature feature
+    h.has_feature? feature
   end
 end

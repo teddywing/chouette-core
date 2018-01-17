@@ -196,12 +196,17 @@ class AF83::Decorator < ModelDecorator
       end
 
       enabled = enabled && check_policy(@options[:_policy]) if @options[:_policy].present?
+      enabled = enabled && check_feature(@options[:_feature]) if @options[:_feature].present?
 
       enabled
     end
 
     def check_policy(policy)
       @context.check_policy policy
+    end
+
+    def check_feature(feature)
+      @context.check_feature feature
     end
 
     def errors
