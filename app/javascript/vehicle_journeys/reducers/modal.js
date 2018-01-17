@@ -147,14 +147,7 @@ export default function modal(state = {}, action) {
         let stopAreas = _.map(window.jpOriginStopPoints, (sa, i) =>{
           return _.assign({}, {stop_area_short_description : {id : sa.stop_area_id}})
         })
-        selectedJP = {
-          id: window.jpOrigin.id,
-          name: window.jpOrigin.name,
-          published_name: window.jpOrigin.published_name,
-          objectid: window.jpOrigin.objectid,
-          stop_areas: stopAreas,
-          missions: state.missions
-        }
+        selectedJP = _.assign({}, window.jpOrigin, {stop_areas: stopAreas})
       }
       return {
         type: 'create',
