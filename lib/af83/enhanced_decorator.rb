@@ -7,6 +7,7 @@ module AF83::EnhancedDecorator
       options, link_options = parse_options args
 
       link = AF83::Decorator::Link.new(link_options)
+      instance_exec(link, &options[:before_block]) if options[:before_block]
       yield link if block_given?
       raise AF83::Decorator::IncompleteLinkDefinition.new(link.errors) unless link.complete?
 
@@ -14,6 +15,57 @@ module AF83::EnhancedDecorator
       @_action_links ||= []
       @_action_links[weight] ||= []
       @_action_links[weight] << link
+    end
+
+    ### Here we define some shortcuts that match dthe default behaviours
+    def create_action_link args={}, &block
+      opts = {
+        on: :index,
+        primary: :index,
+        policy: :create,
+        before_block: -> (l){
+          l.content { h.t('actions.add') }
+          l.href    { [:new, object.klass.name.underscore.singularize] }
+        }
+      }
+      action_link opts.update(args), &block
+    end
+
+    def show_action_link args={}, &block
+      opts = {
+        primary: :index,
+        before_block: -> (l){
+          l.content { h.t('actions.show') }
+          l.href { [object] }
+        }
+      }
+      action_link opts.update(args), &block
+    end
+
+    def edit_action_link args={}, &block
+      opts = {
+        primary: %i(show index),
+        before_block: -> (l){
+          l.content { h.t('actions.edit') }
+          l.href { [object] }
+        }
+      }
+      action_link opts.update(args), &block
+    end
+
+    def destroy_action_link args={}, &block
+      opts = {
+        policy: :destroy,
+        footer: true,
+        secondary: :show,
+        before_block: -> (l){
+          l.content { h.destroy_link_content }
+          l.href { [object] }
+          l.method { :delete }
+          l.data {{ confirm: h.t('actions.destroy_confirm') }}
+        }
+      }
+      action_link opts.update(args), &block
     end
 
     def t key
@@ -32,7 +84,7 @@ module AF83::EnhancedDecorator
 
     def parse_options args
       options = {}
-      %i(weight primary secondary footer on action actions policy feature if groups group).each do |k|
+      %i(weight primary secondary footer on action actions policy feature if groups group before_block).each do |k|
         options[k] = args.delete(k) if args.has_key?(k)
       end
       link_options = args.dup
