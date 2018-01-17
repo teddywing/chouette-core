@@ -104,6 +104,7 @@ module Chouette
     def local_time time
       return unless time
       return time unless stop_point&.stop_area&.time_zone.present?
+      return time unless ActiveSupport::TimeZone[stop_point.stop_area.time_zone].present?
       time + ActiveSupport::TimeZone[stop_point.stop_area.time_zone].utc_offset
     end
 
