@@ -26,6 +26,8 @@ RSpec.describe AF83::Decorator::Link, type: :decorator do
       expect(link.html_options[:class]).to eq "new_class"
       link.class = "another_class"
       expect(link.html_options[:class]).to eq "another_class"
+      link.class = %w(foo bar)
+      expect(link.html_options[:class]).to eq "foo bar"
     end
   end
 
@@ -40,6 +42,8 @@ RSpec.describe AF83::Decorator::Link, type: :decorator do
       expect(link.html_options[:class]).to eq "initial_class new_class"
       link.extra_class = "another_class"
       expect(link.html_options[:class]).to eq "initial_class new_class another_class"
+      link.extra_class = %w(foo bar)
+      expect(link.html_options[:class]).to eq "initial_class new_class another_class foo bar"
     end
   end
 
