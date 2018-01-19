@@ -17,7 +17,7 @@
 = javascript_tag do
   | window.route_id = #{params[:route_id]};
   | window.stopPoints = #{(@stop_points_list.to_json).html_safe};
-  | window.jpOrigin = #{(@jp_origin.attributes.update({full_schedule: @jp_origin.full_schedule?}).to_json).html_safe};
+  | window.jpOrigin = #{(@jp_origin.present? ? @jp_origin.attributes.update({full_schedule: @jp_origin.full_schedule?}).to_json  : "").html_safe};
   | window.jpOriginStopPoints = #{(@jp_origin_stop_points.to_json).html_safe};
   | window.transportMode = #{(@transport_mode.to_json).html_safe};
   | window.transportSubmode = #{(@transport_submode.to_json).html_safe};
