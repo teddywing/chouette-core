@@ -180,6 +180,7 @@
           display: inline-block
           position: relative
           height: 100%
+<<<<<<< HEAD
           transition: margin 0.5s
           background: white
           &:last-child
@@ -187,6 +188,11 @@
           .week-span
             left: 15px
             top: 15px
+=======
+          .week-span
+            left: 5px
+            top: 10px
+>>>>>>> Refs #3542; Adds pagination
             right: 30px
             white-space: nowrap
             overflow: hidden
@@ -194,8 +200,13 @@
             position: absolute
 
           .week-number
+<<<<<<< HEAD
             background-color: $lightgrey
             color: $grey
+=======
+            background-color: lightgrey
+            color: white
+>>>>>>> Refs #3542; Adds pagination
             position: absolute
             top: 0
             right: 0
@@ -210,9 +221,12 @@
             width: 1px
             content: ""
 
+<<<<<<< HEAD
           &:last-child:after
             display: none
 
+=======
+>>>>>>> Refs #3542; Adds pagination
           .days
             position: relative
             top: 50%
@@ -242,6 +256,7 @@
             &:first-child
               border: none
             &.weekend
+<<<<<<< HEAD
               background: $lightergrey
             &.selected, &:hover
               color: $blue
@@ -344,3 +359,31 @@
           height: 100%
           top: 0
           border-top: 1px solid white
+=======
+              background: $lightgrey
+
+      .line
+        border-bottom: 1px solid $grey
+        position: relative
+        overflow: hidden
+
+      .period
+        height: 100%
+        top: 0
+        background: rgb(219, 249, 196)
+        position: absolute
+        &:before
+          content: ""
+          border-right: 1px dashed $grey
+          top: -100%
+          bottom: -100%
+          position: absolute
+          right: -1px
+          z-index: 10
+        &.empty
+          background: rgb(244, 67, 67)
+          background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 10px,#e49393 10px,#e49393 20px)
+          &.accepted
+            background: #f19039
+            background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 10px,#f19039 10px,#f19039 20px)
+>>>>>>> Refs #3542; Adds pagination
