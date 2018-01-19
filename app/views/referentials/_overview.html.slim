@@ -19,10 +19,15 @@
         = link_to 'Effacer', @workbench, class: 'btn btn-link'
         = f.submit 'Filtrer', class: 'btn btn-default'
 
-  .time-travel.btn-group
-    = link_to I18n.t("referentials.overview.head.prev_page"), '#', class: "prev-page btn btn-default disabled"
-    = link_to I18n.t("referentials.overview.head.today"), '#', class: "today btn btn-default #{overview.includes_today? ? '' : 'disabled'}"
-    = link_to I18n.t("referentials.overview.head.next_page"), '#', class: "next-page btn btn-default"
+  .time-travel
+    .btn-group
+      = link_to I18n.t("referentials.overview.head.prev_page"), '#', class: "prev-page btn btn-default disabled"
+      = link_to I18n.t("referentials.overview.head.today"), '#', class: "today btn btn-default #{overview.includes_today? ? '' : 'disabled'}"
+      = link_to I18n.t("referentials.overview.head.next_page"), '#', class: "next-page btn btn-default"
+    .form-group
+      input.date-search type="date" min=overview.period.first max=overview.period.last
+      a.search-date href='#'
+        span.fa.fa-search
   .overview-table
     .left
       .head
