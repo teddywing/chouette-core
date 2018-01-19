@@ -16,7 +16,7 @@ const vehicleJourney= (state = {}, action, keep) => {
       }
       if(action.data["start_time.hour"] && action.data["start_time.minute"] && action.selectedJourneyPattern.full_schedule){
         current_time.hour = parseInt(action.data["start_time.hour"].value)
-        current_time.minute = parseInt(action.data["start_time.minute"].value)
+        current_time.minute = parseInt(action.data["start_time.minute"].value) || 0
       }
       _.each(action.stopPointsList, (sp) =>{
         if(action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs && action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
