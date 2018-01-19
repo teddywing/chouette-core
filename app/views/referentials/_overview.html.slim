@@ -33,9 +33,6 @@
           .line
             a.number style="background-color: #{line.color.present? ? "##{line.color}" : 'whitesmoke'}" title=line.name
               = line.number
-            - unless line.number == line.name
-              a.name title=line.name
-                = line.name
             .company= line.company&.name
             .mode= line.transport_mode
     .right

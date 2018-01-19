@@ -38,6 +38,8 @@ class window.ReferentialOverview
     @container = $(selector)
     @timeTravel = new TimeTravel(this)
     @currentOffset = 0
+    $(document).scroll (e)=>
+      @documentScroll(e)
 
   showDay: (date)->
     day = @container.find(".day.#{date}")
@@ -47,6 +49,11 @@ class window.ReferentialOverview
 
   currentOffset: ->
     @container.find(".right .inner").offset().left
+
+  top: ->
+    @_top ||= @container.find('.days').offset().top - 80
+  bottom: ->
+    @_bottom ||= @top() + @container.height() - 50
 
   prevPage: ->
     @scrollTo @currentOffset + @container.find(".right").width()
@@ -62,7 +69,21 @@ class window.ReferentialOverview
     @currentOffset = offset
     @currentOffset = Math.max(@currentOffset, @minOffset())
     @currentOffset = Math.min(@currentOffset, 0)
-    @container.find(".right .inner").css "margin-left": "#{@currentOffset}px"
+    @container.find(".right .inner .lines").css "margin-left": "#{@currentOffset}px"
+    @container.find(".head .week:first-child").css "margin-left", "#{@currentOffset}px"
     @timeTravel.scrolledTo 1 - (@minOffset() - @currentOffset) / @minOffset()
+
+
+  documentScroll: (e)->
+    if @sticky
+      if e.pageY < @top() || e.pageY > @bottom()
+        @container.removeClass "sticky"
+        @sticky = false
+    else
+      if e.pageY > @top() && e.pageY < @bottom()
+        @sticky = true
+        @container.addClass "sticky"
+
+
 
 export default ReferentialOverview
