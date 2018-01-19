@@ -22,6 +22,48 @@ RSpec.describe 'Workbenches', type: :feature do
       end
     end
 
+    it 'lists referentials in the current workgroup' do
+      other_workbench = create(
+        :workbench,
+        line_referential: line_ref,
+        workgroup: workbench.workgroup
+      )
+      other_referential = create(
+        :workbench_referential,
+        workbench: other_workbench,
+        organisation: other_workbench.organisation,
+        metadatas: [
+          create(
+            :referential_metadata,
+            lines: [create(:line, line_referential: line_ref)]
+          )
+        ]
+      )
+
+      hidden_referential = create(
+        :workbench_referential,
+        workbench: create(
+          :workbench,
+          line_referential: line_ref
+        ),
+        metadatas: [
+          create(
+            :referential_metadata,
+            lines: [create(:line, line_referential: line_ref)]
+          )
+        ]
+      )
+
+      visit workbench_path(workbench)
+
+      expect(page).to have_content(referential.name),
+        "Couldn't find `referential`: `#{referential.inspect}`"
+      expect(page).to have_content(other_referential.name),
+        "Couldn't find `other_referential`: `#{other_referential.inspect}`"
+      expect(page).to_not have_content(hidden_referential.name),
+        "Couldn't find `hidden_referential`: `#{hidden_referential.inspect}`"
+    end
+
     context 'filtering' do
       let!(:another_organisation) { create :organisation }
       let(:another_line) { create :line, line_referential: line_ref }
