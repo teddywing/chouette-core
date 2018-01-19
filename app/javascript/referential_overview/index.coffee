@@ -47,10 +47,7 @@ class window.ReferentialOverview
     @currentOffset = 0
     $(document).scroll (e)=>
       @documentScroll(e)
-<<<<<<< HEAD
     @documentScroll pageY: $(document).scrollTop()
-=======
->>>>>>> Refs #3542 @1h; Add sticky header
 
   showDay: (date)->
     day = @container.find(".day.#{date}")
