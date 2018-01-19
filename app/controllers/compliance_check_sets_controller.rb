@@ -21,9 +21,7 @@ class ComplianceCheckSetsController < ChouetteController
 
   def show
     show! do
-      @compliance_check_set = @compliance_check_set.decorate(context: {
-        compliance_check_set: @compliance_check_set
-      })
+      @compliance_check_set = @compliance_check_set.decorate
     end
   end
 

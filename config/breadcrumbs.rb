@@ -96,6 +96,11 @@ crumb :compliance_check_set do |workbench, compliance_check_set|
   parent :compliance_check_sets, workbench
 end
 
+crumb :compliance_check_set_executed do |workbench, compliance_check_set|
+  link I18n.t('compliance_check_sets.executed.title', name: compliance_check_set.name), executed_workbench_compliance_check_set_path(workbench, compliance_check_set)
+  parent :compliance_check_sets, workbench
+end
+
 crumb :imports do |workbench|
   link I18n.t('imports.index.title'), workbench_imports_path(workbench)
   parent :workbench, workbench

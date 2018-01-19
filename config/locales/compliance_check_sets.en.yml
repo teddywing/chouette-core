@@ -22,7 +22,14 @@ en:
       title: Compliance check set report
       table_state: "%{lines_status} lines imported on %{lines_in_compliance_check_set} in the archive"
       table_explanation: "These controls apply to all imported data and condition the construction of your organization's offer."
+      table_title: Analysed lines state
       metrics: "%{ok_count} ok, %{error_count} errors, %{warning_count} warnings, %{uncheck_count} n/a"
+      metadatas:
+        referential: "Object analysed"
+        referential_type: "Apply to"
+        compliance_check_set_executed: "Compliance check set executed"
+        compliance_control_owner: "Compliance control owner"
+        import: "Import"
     errors:
       no_parent: "The compliance check set doesn't have any parent"
   activerecord:
@@ -40,6 +47,14 @@ en:
         metrics: Test results
         download: Download
     models:
+      compliance_check_set:
+        zero:  "Compliance check set"
+        one:   "Compliance check set"
+        other: "Compliance check sets"
+      compliance_check:
+        zero:  "Compliance check"
+        one:   "Compliance check"
+        other: "Compliance checks"
       compliance_check_block:
         one: compliance_control_set
         other: compliance_control_sets

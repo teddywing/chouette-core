@@ -26,6 +26,14 @@ class ComplianceCheckSet < ActiveRecord::Base
     end
   end
 
+  def organisation
+    workbench.organisation
+  end
+
+  def human_attribute_name(*args)
+    self.class.human_attribute_name(*args)
+  end
+
   def update_status
     statuses = compliance_check_resources.map do |resource|
       case resource.status
