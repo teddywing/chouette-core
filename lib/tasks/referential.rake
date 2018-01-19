@@ -68,7 +68,7 @@ namespace :referential do
     end
   end
 
-  def update_checksums_fo_referential referential
+  def update_checksums_for_referential referential
     thing = %w(\\ | / —)
     Referential.force_register_models_with_checksum if Rails.env.development? && Referential.models_with_checksum.empty?
     puts "\n \e[33m***\e[0m Referential #{referential.name}"
@@ -100,14 +100,14 @@ namespace :referential do
   desc 'Update all the checksums in the given referential'
   task :update_checksums_in_referential, [:slug] => :environment do |t, args|
     referential = Referential.find_by_slug(args[:slug])
-    update_checksums_fo_referential referential
+    update_checksums_for_referential referential
   end
 
   desc 'Update all the checksums in the given organisation'
   task :update_checksums_in_organisation, [:organisation_id] => :environment do |t, args|
     thing = %w(\\ | / —)
     Organisation.find(args[:organisation_id]).referentials.find_each do |referential|
-      update_checksums_fo_referential referential
+      update_checksums_for_referential referential
     end
   end
 end
