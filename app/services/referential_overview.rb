@@ -1,16 +1,17 @@
 class ReferentialOverview
   attr_reader :h
+  attr_reader :referential
 
   PER_PAGE = 10
 
-  def initialize referential, h
+  def initialize referential, h=nil
     @referential = referential
-    @page = h.params[pagination_param_name]&.to_i || 1
+    @page = h && h.params[pagination_param_name]&.to_i || 1
     @h = h
   end
 
   def lines
-    referential_lines.includes(:company).map{|l| Line.new(l, @referential, period.first, h)}
+    filtered_lines.includes(:company).map{|l| Line.new(l, @referential, period.first, h)}
   end
 
   def period
@@ -30,18 +31,33 @@ class ReferentialOverview
   end
 
   def referential_lines
-    @referential.metadatas_lines.page(@page).per_page(PER_PAGE)
+    @referential.metadatas_lines
+  end
+
+  def filtered_lines
+    search.result.page(@page).per_page(PER_PAGE)
   end
 
   ### Pagination
 
-  delegate :empty?, :first, :total_pages, :size, :total_entries, :offset, :length, to: :referential_lines
+  delegate :empty?, :first, :total_pages, :size, :total_entries, :offset, :length, to: :filtered_lines
   def current_page
     @page
   end
 
+  ### search
+  def search
+    lines = referential_lines
+    lines = lines.search h.params[search_param_name]
+    lines
+  end
+
   def pagination_param_name
     "referential_#{@referential.slug}_overview"
+  end
+
+  def search_param_name
+    "q_#{pagination_param_name}"
   end
 
   class Line
