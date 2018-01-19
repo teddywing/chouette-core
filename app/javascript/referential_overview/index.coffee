@@ -4,6 +4,8 @@ class TimeTravel
     @todayBt = @container.find(".today")
     @prevBt = @container.find(".prev-page")
     @nextBt = @container.find(".next-page")
+    @searchDateBt = @container.find("a.search-date")
+    @searchDateInput = @container.find("input.date-search")
     @initButtons()
 
   initButtons: ->
@@ -27,6 +29,11 @@ class TimeTravel
       e.preventDefault()
       false
 
+    @searchDateBt.click (e)=>
+      @overview.showDay @searchDateInput.val() if @searchDateInput.val().length > 0
+      e.preventDefault()
+      false
+
   scrolledTo: (progress)->
     @prevBt.removeClass 'disabled'
     @nextBt.removeClass 'disabled'
@@ -44,8 +51,10 @@ class window.ReferentialOverview
 
   showDay: (date)->
     day = @container.find(".day.#{date}")
+    @container.find(".day.selected").removeClass('selected')
+    day.addClass "selected"
     offset = day.offset().left
-    parentOffset = @currentOffset
+    parentOffset = @currentOffset + @container.find(".right").offset().left
     @scrollTo parentOffset - offset
 
   currentOffset: ->
