@@ -53,8 +53,8 @@ fr:
         dates: Dates
         lines: Lignes
         today: Aujourd'hui
-        prev_page: Page précédente
-        next_page: Page suivante
+        prev_page: ←
+        next_page: →
 
   activerecord:
     models:
