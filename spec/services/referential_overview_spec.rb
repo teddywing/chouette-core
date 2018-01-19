@@ -136,7 +136,7 @@ end
 RSpec.describe ReferentialOverview::Line::Period do
 
   let(:period){(1.day.ago.to_date..Time.now.to_date)}
-  let(:start){2.days.ago}
+  let(:start){2.days.ago.to_date}
 
   subject(:line_period){ReferentialOverview::Line::Period.new period, start, nil}
 
@@ -148,7 +148,7 @@ RSpec.describe ReferentialOverview::Line::Period do
 
   describe "#left" do
     it "should have the right value" do
-      expect(line_period.width).to eq ReferentialOverview::Day::WIDTH * 1
+      expect(line_period.left).to eq ReferentialOverview::Day::WIDTH * 1
     end
   end
 end
