@@ -1,12 +1,26 @@
 .referential-overview
   $left-size: 100px
+  $line-height: 57px
   margin-top: 50px
+  overflow: hidden
   .time-travel, .filters
-    background-color: $lightgrey
+    background-color: $lightergrey
     padding: 10px
     float: right
     border-top-left-radius: 10px
     border-top-right-radius: 10px
+    border: 1px solid $lightgrey
+    border-bottom: none
+    position: relative
+    &:after
+      position: absolute
+      content: ""
+      left: 0
+      top: 100%
+      right: 0
+      height: 10px
+      box-shadow: 0 0 10px rgba(0,0,0,0.5)
+      z-index: 1
   .time-travel
     a.btn:first-child
       border-right: 1px solid $grey
@@ -18,9 +32,6 @@
     float: left
     max-width: 66%
     padding: 0
-    background: transparentize(#cbac3e, 0.8)
-    border: 1px solid $grey
-    border-bottom: none
     form
       background: transparent
       display: flex
@@ -30,7 +41,7 @@
         border-color: $grey
         width: auto
         flex: 1 1
-        padding: 11px
+        padding: 12px 11px 11px
         .input-group-btn
           right: 10px
         &.togglable
@@ -40,16 +51,19 @@
             top: 7px
 
   .overview-table
+    position: relative
+    z-index: 2
     border: 1px solid $grey
     clear: both
     display: flex
+    background: white
     .head
       height: $left-size
     .line
-      height: 80px
+      height: $line-height
     .left
       flex: 0 0
-      background: $lightgrey
+      background: $lightergrey
       min-width: $left-size
       overflow: hidden
       border-right: 1px solid white
@@ -79,7 +93,7 @@
           width: 0
           content: ""
       .line
-        padding: 15px 10px 10px
+        padding: 5px 10px
         border-bottom: 1px solid $grey
         font-size: 0.8em
         &:last-child
@@ -112,13 +126,11 @@
 
         .company, .mode
           font-size: 0.9em
-          margin-top: 5px
           white-space: nowrap
           text-overflow: ellipsis
           overflow: hidden
-
+          margin-top: -2px
         .mode
-          margin-top: 0
           text-transform: uppercase
           color: $grey
           font-weight: bold
@@ -132,7 +144,7 @@
         position: relative
         &:after, &:before
           opacity: 0
-          transition: opacity 0.5s
+          // transition: opacity 0.5s
           content: ""
           position: absolute
           left: -1000px
@@ -148,8 +160,8 @@
           height: 100%
           transition: margin 0.5s
           .week-span
-            left: 5px
-            top: 10px
+            left: 15px
+            top: 15px
             right: 30px
             white-space: nowrap
             overflow: hidden
@@ -157,8 +169,8 @@
             position: absolute
 
           .week-number
-            background-color: lightgrey
-            color: white
+            background-color: $lightgrey
+            color: $grey
             position: absolute
             top: 0
             right: 0
@@ -205,7 +217,7 @@
             &:first-child
               border: none
             &.weekend
-              background: $lightgrey
+              background: $lightergrey
             &.today, &:hover
               color: $blue
               background-color: transparentize($blue, 0.7)
@@ -227,14 +239,40 @@
         border-bottom: 1px solid $grey
         position: relative
         overflow: hidden
+
         &:last-child
           border-bottom: none
 
       .period
         height: 100%
         top: 0
-        background: rgb(219, 249, 196)
+        background: #aedd8a
         position: absolute
+        box-shadow: 0 0 10px rgba(0,0,0,0.5)
+        z-index: 2
+        .title
+          position: absolute
+          left: 12px
+          top: 50%
+          margin-top: -6px
+          transform: translateY(-50%)
+          background-color: transparentize(white, 0.5)
+          padding: 5px
+          font-size: 0.7em
+          border-radius: 5px
+          transition: margin-left 0.5s
+          max-width: calc(100% - 24px)
+          margin-right: 12px
+        &:after
+          content: ""
+          position: absolute
+          bottom: 1px
+          left: 0
+          right: 0
+          height: 10px
+          background: white
+          opacity: 0.25
+          z-index: 3
         &:before
           content: ""
           border-right: 1px dashed $grey
@@ -242,13 +280,19 @@
           bottom: -100%
           position: absolute
           right: -1px
-          z-index: 3
+          z-index: 4
+        &:hover
+          &:after
+            opacity: 0.5
+          .title
+            background-color: transparentize(white, 0.2)
         &.empty
+          z-index: 1
           background: rgb(244, 67, 67)
-          background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 10px,#e49393 10px,#e49393 20px)
+          background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 12px,#e49393 12px,#e49393 25px)
           &.accepted
             background: #f19039
-            background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 10px,#f19039 10px,#f19039 20px)
+            background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 12px,#f19039 12px,#f19039 25px)
 
   &.sticky
     .time-travel

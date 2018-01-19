@@ -40,11 +40,12 @@ class window.ReferentialOverview
     @currentOffset = 0
     $(document).scroll (e)=>
       @documentScroll(e)
+    @documentScroll pageY: $(document).scrollTop()
 
   showDay: (date)->
     day = @container.find(".day.#{date}")
     offset = day.offset().left
-    parentOffset = @container.find(".right .inner").offset().left
+    parentOffset = @currentOffset
     @scrollTo parentOffset - offset
 
   currentOffset: ->
@@ -72,7 +73,21 @@ class window.ReferentialOverview
     @container.find(".right .inner .lines").css "margin-left": "#{@currentOffset}px"
     @container.find(".head .week:first-child").css "margin-left", "#{@currentOffset}px"
     @timeTravel.scrolledTo 1 - (@minOffset() - @currentOffset) / @minOffset()
+    setTimeout =>
+      @movePeriodTitles()
+    , 600
 
+  movePeriodTitles: ->
+    @_right_offset ||= @container.find('.right').offset().left
+    @container.find(".shifted").removeClass("shifted").css "margin-left", 0
+    @container.find(".right .line").each (i, l) =>
+      $(l).find(".period").each (i, _p) =>
+        p = $(_p)
+        offset = parseInt(p.css("left")) + @currentOffset
+        if offset < 0 && - offset < p.width()
+          offset = Math.min(-offset, p.width() - 100)
+          p.find(".title").addClass("shifted").css "margin-left", offset + "px"
+          return
 
   documentScroll: (e)->
     if @sticky
