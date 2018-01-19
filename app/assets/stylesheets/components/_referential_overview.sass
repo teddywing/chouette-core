@@ -1,171 +1,172 @@
 .referential-overview
-  display: flex
-  margin-top: 50px
-  $left-size: 100px
-  .head
-    height: $left-size
-    border-top: 1px solid $lightgrey
-  .line
-    height: 80px
-  .left
-    flex: 0 0
-    background: $lightgrey
-    min-width: $left-size
-    overflow: hidden
-    border-right: 1px solid white
+  .overview-table
+    display: flex
+    margin-top: 50px
+    $left-size: 100px
     .head
-      position: relative
-      border-bottom: 1px solid white
-      border-right: 1px solid $lightgrey
-      .dates, .lines
-        position: absolute
-        font-size: 0.8em
-        z-index: 2
-      .dates
-        right: 20px
-        top: 20px
-      .lines
-        left: 20px
-        bottom: 20px
-      &:after
-        position: absolute
-        border-left: ($left-size - 2px)/2 solid transparent
-        border-bottom: ($left-size - 2px)/2 solid transparent
-        border-right: ($left-size - 2px)/2 solid white
-        border-top: ($left-size - 2px)/2 solid white
-        z-index: 1
-        top: 0
-        right: 0
-        width: 0
-        content: ""
+      height: $left-size
+      border-top: 1px solid $lightgrey
     .line
-      padding: 15px 10px 10px
-      border-bottom: 1px solid white
-      font-size: 0.8em
-      &:last-child
-        border-bottom: 1px solid $grey
-      .number
-        border-radius: 100px
-        display: inline-block
-        width: 20px
-        height: 20px
-        text-align: center
-        padding-top: 1px
-        text-decoration: none
-        color: black
-        border: 1px solid $grey
-      .name
-        display: inline-block
-        width: $left-size - 50px()
-        white-space: nowrap
-        line-height: 20px
-        margin-left: 5px
-        text-overflow: ellipsis
-        overflow: hidden
-        vertical-align: bottom
-        color: black
-        text-decoration: none
-
-      .company, .mode
-        font-size: 0.9em
-        margin-top: 5px
-        white-space: nowrap
-        text-overflow: ellipsis
-        overflow: hidden
-
-      .mode
-        margin-top: 0
-        text-transform: uppercase
-        color: $grey
-        font-weight: bold
-  .right
-    flex: 1 1
-    overflow-x: scroll
-    overflow-y: hidden
-    .head
-      white-space: nowrap
-      .week
-        display: inline-block
+      height: 80px
+    .left
+      flex: 0 0
+      background: $lightgrey
+      min-width: $left-size
+      overflow: hidden
+      border-right: 1px solid white
+      .head
         position: relative
-        height: 100%
-        .week-span
-          left: 5px
-          top: 10px
-          right: 30px
-          white-space: nowrap
-          overflow: hidden
-          text-overflow: ellipsis
+        border-bottom: 1px solid white
+        border-right: 1px solid $lightgrey
+        .dates, .lines
           position: absolute
-
-        .week-number
-          background-color: lightgrey
-          color: white
-          position: absolute
-          top: 0
-          right: 0
-          padding: 2px 4px
-
+          font-size: 0.8em
+          z-index: 2
+        .dates
+          right: 20px
+          top: 20px
+        .lines
+          left: 20px
+          bottom: 20px
         &:after
           position: absolute
-          right: 0
+          border-left: ($left-size - 2px)/2 solid transparent
+          border-bottom: ($left-size - 2px)/2 solid transparent
+          border-right: ($left-size - 2px)/2 solid white
+          border-top: ($left-size - 2px)/2 solid white
+          z-index: 1
           top: 0
-          bottom: 0
-          background: $grey
-          width: 1px
+          right: 0
+          width: 0
           content: ""
-
-        .days
-          position: relative
-          top: 50%
-          height: 50%
-          border-top: 1px solid $grey
+      .line
+        padding: 15px 10px 10px
+        border-bottom: 1px solid white
+        font-size: 0.8em
+        &:last-child
           border-bottom: 1px solid $grey
+        .number
+          border-radius: 100px
+          display: inline-block
+          width: 20px
+          height: 20px
+          text-align: center
+          padding-top: 1px
+          text-decoration: none
+          color: black
+          border: 1px solid $grey
+        .name
+          display: inline-block
+          width: $left-size - 50px()
+          white-space: nowrap
+          line-height: 20px
+          margin-left: 5px
+          text-overflow: ellipsis
+          overflow: hidden
+          vertical-align: bottom
+          color: black
+          text-decoration: none
 
-        .day
-          float: left
-          border-left: 1px solid $grey
-          box-sizing: border-box
-          padding-left: 5px
-          padding-top: 3px
+        .company, .mode
+          font-size: 0.9em
+          margin-top: 5px
+          white-space: nowrap
+          text-overflow: ellipsis
+          overflow: hidden
+
+        .mode
+          margin-top: 0
+          text-transform: uppercase
+          color: $grey
+          font-weight: bold
+    .right
+      flex: 1 1
+      overflow-x: scroll
+      overflow-y: hidden
+      .head
+        white-space: nowrap
+        .week
+          display: inline-block
           position: relative
           height: 100%
-          .name, .number
+          .week-span
+            left: 5px
+            top: 10px
+            right: 30px
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
             position: absolute
-            left: 10px
-            right: 10px
+
+          .week-number
+            background-color: lightgrey
+            color: white
+            position: absolute
+            top: 0
+            right: 0
+            padding: 2px 4px
+
+          &:after
+            position: absolute
+            right: 0
+            top: 0
+            bottom: 0
+            background: $grey
+            width: 1px
+            content: ""
+
+          .days
+            position: relative
             top: 50%
-            transform: translateY(-50%)
-            margin-top: 10px
-          .name
-            font-weight: bold
-            font-size: 0.8em
-            margin-top: -10px
-          &:first-child
-            border: none
-          &.weekend
-            background: $lightgrey
+            height: 50%
+            border-top: 1px solid $grey
+            border-bottom: 1px solid $grey
 
-    .line
-      border-bottom: 1px solid $grey
-      position: relative
-      overflow: hidden
+          .day
+            float: left
+            border-left: 1px solid $grey
+            box-sizing: border-box
+            padding-left: 5px
+            padding-top: 3px
+            position: relative
+            height: 100%
+            .name, .number
+              position: absolute
+              left: 10px
+              right: 10px
+              top: 50%
+              transform: translateY(-50%)
+              margin-top: 10px
+            .name
+              font-weight: bold
+              font-size: 0.8em
+              margin-top: -10px
+            &:first-child
+              border: none
+            &.weekend
+              background: $lightgrey
 
-    .period
-      height: 100%
-      top: 0
-      background: rgb(219, 249, 196)
-      position: absolute
-      &:before
-        content: ""
-        border-right: 1px dashed $grey
-        top: -100%
-        bottom: -100%
+      .line
+        border-bottom: 1px solid $grey
+        position: relative
+        overflow: hidden
+
+      .period
+        height: 100%
+        top: 0
+        background: rgb(219, 249, 196)
         position: absolute
-        right: -1px
-        z-index: 10
-      &.empty
-        background: rgb(244, 67, 67)
-        background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 10px,#e49393 10px,#e49393 20px)
-        &.accepted
-          background: #f19039
-          background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 10px,#f19039 10px,#f19039 20px)
+        &:before
+          content: ""
+          border-right: 1px dashed $grey
+          top: -100%
+          bottom: -100%
+          position: absolute
+          right: -1px
+          z-index: 10
+        &.empty
+          background: rgb(244, 67, 67)
+          background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 10px,#e49393 10px,#e49393 20px)
+          &.accepted
+            background: #f19039
+            background: repeating-linear-gradient(-45deg, #f5e1cf,#f5e1cf 10px,#f19039 10px,#f19039 20px)
