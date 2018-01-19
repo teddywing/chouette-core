@@ -1,14 +1,16 @@
 class ReferentialOverview
   attr_reader :h
 
+  PER_PAGE = 10
+
   def initialize referential, h
     @referential = referential
-    @page = 1
+    @page = h.params[pagination_param_name]&.to_i || 1
     @h = h
   end
 
   def lines
-    @referential.metadatas_lines.includes(:company).page(@page).map{|l| Line.new(l, @referential, period.first, h)}
+    referential_lines.includes(:company).map{|l| Line.new(l, @referential, period.first, h)}
   end
 
   def period
@@ -21,6 +23,21 @@ class ReferentialOverview
       @weeks[Week.key(d)] ||= Week.new(d, period.last, h)
     end
     @weeks.values
+  end
+
+  def referential_lines
+    @referential.metadatas_lines.page(@page).per_page(PER_PAGE)
+  end
+
+  ### Pagination
+
+  delegate :empty?, :first, :total_pages, :size, :total_entries, :offset, :length, to: :referential_lines
+  def current_page
+    @page
+  end
+
+  def pagination_param_name
+    "referential_#{@referential.slug}_overview"
   end
 
   class Line
