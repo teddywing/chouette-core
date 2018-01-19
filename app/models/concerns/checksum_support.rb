@@ -5,6 +5,7 @@ module ChecksumSupport
 
   included do
     before_save :set_current_checksum_source, :update_checksum
+    Referential.register_model_with_checksum self
   end
 
   def checksum_attributes
