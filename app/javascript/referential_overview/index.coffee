@@ -47,7 +47,10 @@ class window.ReferentialOverview
     @currentOffset = 0
     $(document).scroll (e)=>
       @documentScroll(e)
+<<<<<<< HEAD
     @documentScroll pageY: $(document).scrollTop()
+=======
+>>>>>>> Refs #3542 @1h; Add sticky header
 
   showDay: (date)->
     day = @container.find(".day.#{date}")
@@ -97,6 +100,19 @@ class window.ReferentialOverview
           offset = Math.min(-offset, p.width() - 100)
           p.find(".title").addClass("shifted").css "margin-left", offset + "px"
           return
+
+  documentScroll: (e)->
+    if @sticky
+      if e.pageY < @top() || e.pageY > @bottom()
+        @container.removeClass "sticky"
+        @sticky = false
+    else
+      if e.pageY > @top() && e.pageY < @bottom()
+        @sticky = true
+        @container.addClass "sticky"
+
+
+
 
   documentScroll: (e)->
     if @sticky
