@@ -1,15 +1,43 @@
 .referential-overview
   margin-top: 50px
-  .time-travel
-    background-color: $grey
+  .time-travel, .filters
+    background-color: $lightgrey
     padding: 10px
     float: right
     border-top-left-radius: 10px
     border-top-right-radius: 10px
+  .time-travel
     a.btn:first-child
       border-right: 1px solid $grey
+      margin-right: 1px
     a.btn:last-child
       border-left: 1px solid $grey
+    max-width: 33%
+  .filters
+    float: left
+    max-width: 66%
+    padding: 0
+    background: transparentize(#cbac3e, 0.8)
+    border: 1px solid $grey
+    border-bottom: none
+    form
+      background: transparent
+      display: flex
+      .ffg-row
+        border-color: $grey
+      .form-group
+        border-color: $grey
+        width: auto
+        flex: 1 1
+        padding: 11px
+        .input-group-btn
+          right: 10px
+        &.togglable
+          padding-top: 12px
+          padding-bottom: 11px
+          &:before
+            top: 7px
+
   .overview-table
     border: 1px solid $grey
     clear: both

@@ -28,7 +28,6 @@ class TimeTravel
       false
 
   scrolledTo: (progress)->
-    console.log "scrolledTo: #{progress*100}%"
     @prevBt.removeClass 'disabled'
     @nextBt.removeClass 'disabled'
     @prevBt.addClass 'disabled' if progress == 0
