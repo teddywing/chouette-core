@@ -52,6 +52,9 @@ fr:
       head:
         dates: Dates
         lines: Lignes
+        today: Aujourd'hui
+        prev_page: Page précédente
+        next_page: Page suivante
 
   activerecord:
     models:

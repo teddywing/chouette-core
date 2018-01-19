@@ -17,6 +17,10 @@ class ReferentialOverview
     @period ||= @referential.metadatas_period || []
   end
 
+  def includes_today?
+    period.include? Time.now.to_date
+  end
+
   def weeks
     @weeks = {}
     period.map do |d|
@@ -219,8 +223,9 @@ class ReferentialOverview
     end
 
     def html_class
-      out = []
+      out = [h.l(@date, format: "%Y-%m-%d")]
       out << "weekend" if [0, 6].include?(@date.wday)
+      out << "today" if @date == Time.now.to_date
       out
     end
 
