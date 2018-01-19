@@ -10,4 +10,9 @@ module ReferentialsHelper
         t('true')
     end
   end
+
+  def referential_overview referential
+    service = ReferentialOverview.new referential, self
+    render partial: "referentials/overview", locals: {referential: referential, overview: service}
+  end
 end

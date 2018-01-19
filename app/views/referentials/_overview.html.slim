@@ -1,0 +1,31 @@
+.referential-overview
+  .left
+    .head
+      .dates= I18n.t("referentials.overview.head.dates")
+      .lines= I18n.t("referentials.overview.head.lines")
+    .lines
+      - overview.lines.each do |line|
+        .line
+          a.number style="background-color: #{line.color.present? ? "##{line.color}" : 'whitesmoke'}" title=line.name
+            = line.number
+          - unless line.number == line.name
+            a.name title=line.name
+              = line.name
+          .company= line.company&.name
+          .mode= line.transport_mode
+  .right
+    .head
+      - overview.weeks.each do |week|
+        .week
+          .week-span= week.span
+          .week-number= week.number
+          .days
+            - week.days.each do |day|
+              .day style=day.html_style class=day.html_class
+                .name= day.short_name
+                .number= day.number
+    .lines
+      - overview.lines.each do |line|
+        .line style=line.html_style class=line.html_class
+          - line.periods.each do |period|
+            .period style=period.html_style class=period.html_class title=period.title
