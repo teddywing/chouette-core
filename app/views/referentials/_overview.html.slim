@@ -1,6 +1,10 @@
 .referential-overview id=overview.pagination_param_name
   .filters
+<<<<<<< HEAD
     = search_form_for overview.search, as: overview.search_param_name, url: "##{overview.pagination_param_name}", html: {method: :get}, class: 'form form-filter' do |f|
+=======
+    = search_form_for overview.search, as: overview.search_param_name, url: "", html: {method: :get}, class: 'form form-filter' do |f|
+>>>>>>> Refs #3542 @1h; Adds filters
       .ffg-row
         .form-group.input-group.search_bar
           = f.search_field :name_or_number_or_objectid_cont, placeholder: t('lines.index.name_or_number_or_objectid'), class: 'form-control'
@@ -9,6 +13,7 @@
               span.fa.fa-search
         .form-group.togglable
           = f.label Chouette::Line.human_attribute_name(:company_id), required: false, class: 'control-label'
+<<<<<<< HEAD
           = f.input :company_id_eq_any, collection: overview.referential_lines.map(&:company).uniq.sort_by(&:name), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
 
         .form-group.togglable
@@ -28,6 +33,22 @@
       input.date-search type="date" min=overview.period.first max=overview.period.last
       a.search-date href='#'
         span.fa.fa-search
+=======
+          = f.input :company_id_eq_any, collection: overview.referential.companies.order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+
+        .form-group.togglable
+          = f.label Chouette::Line.human_attribute_name(:transport_mode), required: false, class: 'control-label'
+          = f.input :transport_mode_eq_any, collection: StifTransportModeEnumerations.sorted_transport_modes, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("enumerize.transport_mode.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+
+      .actions
+        = link_to 'Effacer', @workbench, class: 'btn btn-link'
+        = f.submit 'Filtrer', class: 'btn btn-default'
+
+  .time-travel.btn-group
+    = link_to I18n.t("referentials.overview.head.prev_page"), '#', class: "prev-page btn btn-default"
+    = link_to I18n.t("referentials.overview.head.today"), '#', class: "today btn btn-default #{overview.includes_today? ? '' : 'disabled'}"
+    = link_to I18n.t("referentials.overview.head.next_page"), '#', class: "next-page btn btn-default"
+>>>>>>> Refs #3542 @1h; Adds filters
   .overview-table
     .left
       .head
@@ -57,8 +78,12 @@
             - overview.lines.each do |line|
               .line style=line.html_style class=line.html_class
                 - line.periods.each do |period|
+<<<<<<< HEAD
                   .period style=period.html_style class=period.html_class
                     .title=period.title
+=======
+                  .period style=period.html_style class=period.html_class title=period.title
+>>>>>>> Refs #3542 @1h; Adds filters
           - else
             = replacement_msg t('referential_lines.search_no_results')
 
