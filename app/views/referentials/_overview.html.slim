@@ -1,4 +1,8 @@
-.referential-overview
+.referential-overview id=overview.pagination_param_name
+  .time-travel.btn-group
+    = link_to I18n.t("referentials.overview.head.prev_page"), '#', class: "prev-page btn btn-default"
+    = link_to I18n.t("referentials.overview.head.today"), '#', class: "today btn btn-default #{overview.includes_today? ? '' : 'disabled'}"
+    = link_to I18n.t("referentials.overview.head.next_page"), '#', class: "next-page btn btn-default"
   .overview-table
     .left
       .head
@@ -15,20 +19,31 @@
             .company= line.company&.name
             .mode= line.transport_mode
     .right
-      .head
-        - overview.weeks.each do |week|
-          .week
-            .week-span= week.span
-            .week-number= week.number
-            .days
-              - week.days.each do |day|
-                .day style=day.html_style class=day.html_class
-                  .name= day.short_name
-                  .number= day.number
-      .lines
-        - overview.lines.each do |line|
-          .line style=line.html_style class=line.html_class
-            - line.periods.each do |period|
-              .period style=period.html_style class=period.html_class title=period.title
+      .inner
+        .head
+          - overview.weeks.each do |week|
+            .week
+              .week-span= week.span
+              .week-number= week.number
+              .days
+                - week.days.each do |day|
+                  .day style=day.html_style class=day.html_class
+                    .name= day.short_name
+                    .number= day.number
+        .lines
+          - overview.lines.each do |line|
+            .line style=line.html_style class=line.html_class
+              - line.periods.each do |period|
+                .period style=period.html_style class=period.html_class title=period.title
 
   = new_pagination overview, 'pull-right'
+
+- content_for :javascript do
+  = javascript_pack_tag 'referential_overview/overview.js'
+
+  javascript:
+    overview_id = "#{overview.pagination_param_name}";
+
+  coffee:
+    $ =>
+      new ReferentialOverview("##{overview_id}")

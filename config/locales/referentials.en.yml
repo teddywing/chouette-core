@@ -52,7 +52,10 @@ en:
       head:
         dates: Dates
         lines: Lignes
-        
+        today: Today
+        prev_page: Prev. page
+        next_page: Next page
+
   activerecord:
     models:
       referential:
