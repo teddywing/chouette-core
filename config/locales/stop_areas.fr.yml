@@ -134,7 +134,7 @@ fr:
         city_name: "Commune"
         created_at: "Créé le"
         updated_at: "Edité le"
-        waiting_time: Temps de desserte
+        waiting_time: Temps de desserte (minutes)
   formtastic:
     titles:
       stop_area:
