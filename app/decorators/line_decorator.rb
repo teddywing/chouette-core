@@ -17,12 +17,12 @@ class LineDecorator < AF83::Decorator
       l.href   { [context[:line_referential], object] }
     end
 
-    instance_decorator.action_link do |l|
+    instance_decorator.action_link secondary: :show do |l|
       l.content t('lines.actions.show_network')
       l.href   { [context[:line_referential], object.network] }
     end
 
-    instance_decorator.action_link do |l|
+    instance_decorator.action_link secondary: :show do |l|
       l.content  t('lines.actions.show_company')
       l.href     { [context[:line_referential], object.company] }
       l.disabled { object.company.nil? }

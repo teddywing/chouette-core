@@ -45,9 +45,10 @@ module AF83::EnhancedDecorator
     def edit_action_link args={}, &block
       opts = {
         primary: %i(show index),
+        policy: :edit,
         before_block: -> (l){
           l.content { h.t('actions.edit') }
-          l.href { [object] }
+          l.href { [:edit, object] }
         }
       }
       action_link opts.update(args), &block
