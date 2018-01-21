@@ -239,7 +239,7 @@ RSpec.describe AF83::Decorator, type: :decorator do
             klass
           end
 
-          it "should return links in the sequence they were defined" do
+          it "should return links in the correct sequence" do
             links = decorated.action_links
             expect(links.size).to eq 2
             instance_exec links.first, link_options_2, &link_should_match_options

@@ -70,8 +70,6 @@ class LinesController < ChouetteController
     end
   end
 
-  helper_method :decorated_collection
-
   protected
 
   def filtered_lines_maps

@@ -46,12 +46,7 @@ class TimeTableDecorator < AF83::Decorator
     end
 
     instance_decorator.destroy_action_link  do |l|
-      l.href do
-        h.duplicate_referential_time_table_path(
-          context[:referential],
-          object
-        )
-      end
+      l.href { h.referential_time_table_path(context[:referential], object) }
       l.data {{ confirm: h.t('time_tables.actions.destroy_confirm') }}
     end
   end

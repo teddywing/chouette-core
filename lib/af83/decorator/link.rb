@@ -136,9 +136,9 @@ class AF83::Decorator::Link
 
   def to_html
     if block_given?
-      link = Link.new(@options)
+      link = AF83::Decorator::Link.new(@options).bind_to_context(context, @action)
       yield link
-      return link.bind_to_context(context, @action).to_html
+      return link.to_html
     end
     if type&.to_sym == :button
       HTMLElement.new(
