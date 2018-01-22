@@ -50,7 +50,7 @@ class LineDecorator < AF83::Decorator
       l.href     { h.deactivate_line_referential_line_path(context[:line_referential], object) }
       l.method   :put
       l.data     confirm: h.t('lines.actions.deactivate_confirm')
-      l.extra_class "delete-action"
+      l.add_class "delete-action"
     end
 
     instance_decorator.action_link policy: :activate, secondary: :show, footer: :index do |l|
@@ -58,14 +58,14 @@ class LineDecorator < AF83::Decorator
       l.href     { h.activate_line_referential_line_path(context[:line_referential], object) }
       l.method   :put
       l.data     confirm: h.t('lines.actions.activate_confirm')
-      l.extra_class "delete-action"
+      l.add_class "delete-action"
     end
 
     instance_decorator.destroy_action_link do |l|
       l.content  { h.destroy_link_content('lines.actions.destroy') }
       l.href     { h.line_referential_line_path(context[:line_referential], object) }
       l.data     confirm: h.t('lines.actions.destroy_confirm')
-      l.extra_class "delete-action"
+      l.add_class "delete-action"
     end
   end
 end

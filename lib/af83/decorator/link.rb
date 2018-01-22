@@ -111,14 +111,14 @@ class AF83::Decorator::Link
     "Missing attributes: #{@missing_attributes.to_sentence}"
   end
 
-  def extra_class val=nil
-    if val.present?
-      @options[:link_class] ||= []
-      @options[:link_class] << val
-      @options[:link_class].flatten!
-    else
-      (options[:link_class] || []).join(' ')
-    end
+  def add_class val
+    @options[:link_class] ||= []
+    @options[:link_class] << val
+    @options[:link_class].flatten!
+  end
+
+  def extra_class
+    (options[:link_class] || []).join(' ')
   end
 
   def html_options

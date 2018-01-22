@@ -31,18 +31,18 @@ RSpec.describe AF83::Decorator::Link, type: :decorator do
     end
   end
 
-  describe "#extra_class" do
+  describe "#add_class" do
     let(:link){
       AF83::Decorator::Link.new(href: "foo", content: "foo", class: "initial_class")
     }
 
     it "should add to exisiting class" do
       expect(link.html_options[:class]).to eq "initial_class"
-      link.extra_class "new_class"
+      link.add_class "new_class"
       expect(link.html_options[:class]).to eq "initial_class new_class"
-      link.extra_class = "another_class"
+      link.add_class "another_class"
       expect(link.html_options[:class]).to eq "initial_class new_class another_class"
-      link.extra_class = %w(foo bar)
+      link.add_class %w(foo bar)
       expect(link.html_options[:class]).to eq "initial_class new_class another_class foo bar"
     end
   end
