@@ -6,12 +6,25 @@ RSpec::Matchers.define :match_actions_links_snapshot do |name|
 
   failure_message do |actual|
     out = ["Snapshots did not match."]
-    expected = File.read(File.dirname(method_missing(:class).metadata[:file_path]) + "/__snapshots__/#{name}.snap")
+    snap_path = File.dirname(method_missing(:class).metadata[:file_path]) + "/__snapshots__/#{name}.snap"
+    temp_path = Pathname.new "#{Rails.root}/tmp/__snapshots__/#{name}.failed.snap"
+    FileUtils.mkdir_p temp_path.dirname
+    tmp = File.new temp_path, "w"
+    tmp.write @content
+    tmp.close()
+    expected = File.read snap_path
     out << "Expected: #{expected}"
     out << "Actual: #{@content}"
     out << "\n\n --- DIFF ---"
     out << differ.diff_as_string(@content, expected)
+    out << "\n\n --- Previews : ---"
+    out << "Expected: \n" + snapshot_url(snap: snap_path, layout: :actions_links)
+    out << " \nActual:  \n" + snapshot_url(snap: tmp.path, layout: :actions_links)
     out.join("\n")
+  end
+
+  def snapshot_url snap:, layout:
+    "http://localhost:3000/snap/?snap=#{URI.encode(snap.to_s)}&layout=#{URI.encode(layout.to_s)}"
   end
 
   def differ
