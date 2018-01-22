@@ -1,6 +1,6 @@
 class AF83::Decorator < ModelDecorator
-  include AF83::EnhancedDecorator
-  extend AF83::EnhancedDecorator::ClassMethods
+  include AF83::Decorator::EnhancedDecorator
+  extend AF83::Decorator::EnhancedDecorator::ClassMethods
 
   def self.decorates klass
     instance_decorator.decorates klass
@@ -30,6 +30,8 @@ class AF83::Decorator < ModelDecorator
 
   class ActionLinks
     attr_reader :options
+
+    delegate :each, :map, :size, :first, :last, :any?, :select, to: :resolve
 
     def initialize opts
       @options = opts.deep_dup
@@ -66,6 +68,7 @@ class AF83::Decorator < ModelDecorator
       end
       out
     end
+    alias_method :to_ary, :resolve
 
     def grouped_by *groups
       add_footer = groups.include?(:footer)
@@ -91,14 +94,6 @@ class AF83::Decorator < ModelDecorator
       out
     end
 
-    alias_method :to_ary, :resolve
-
-    %w(each map size first last any?).each do |meth|
-      define_method meth do |*args, &block|
-        resolve.send meth, *args, &block
-      end
-    end
-
     private
     def returning_a_copy &block
       out = ActionLinks.new options
@@ -111,7 +106,7 @@ class AF83::Decorator < ModelDecorator
   end
 
   class InstanceDecorator < Draper::Decorator
-    include AF83::EnhancedDecorator
-    extend AF83::EnhancedDecorator::ClassMethods
+    include AF83::Decorator::EnhancedDecorator
+    extend AF83::Decorator::EnhancedDecorator::ClassMethods
   end
 end

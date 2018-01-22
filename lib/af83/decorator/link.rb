@@ -96,7 +96,6 @@ class AF83::Decorator::Link
 
     enabled = enabled && check_policy(@options[:_policy]) if @options[:_policy].present?
     enabled = enabled && check_feature(@options[:_feature]) if @options[:_feature].present?
-
     enabled
   end
 
