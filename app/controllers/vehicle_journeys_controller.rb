@@ -205,7 +205,7 @@ class VehicleJourneysController < ChouetteController
             }
           end
         }.to_json,
-        text: "<strong>" + item.published_name + " - " + item.get_objectid.short_id + "</strong><br/><small>" + item.registration_number + "</small>"
+        text: "<strong>#{item.published_name} - #{item.get_objectid.short_id}</strong><br/><small>#{item.registration_number}</small>"
       }
     end
   end
