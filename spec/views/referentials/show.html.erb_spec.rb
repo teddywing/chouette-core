@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "referentials/show", type: :view do
-
   let!(:referential) do
     referential = create(:referential, organisation: organisation)
     assign :referential, referential.decorate(context: {
@@ -30,7 +29,6 @@ describe "referentials/show", type: :view do
     allow(referential).to receive(:referential_read_only?){ readonly }
     render template: "referentials/show", layout: "layouts/application"
   end
-
   it "should not present edit button" do
     expect(rendered).to_not have_selector("a[href=\"#{view.edit_referential_path(referential)}\"]")
   end
@@ -48,4 +46,38 @@ describe "referentials/show", type: :view do
     end
   end
 
+  describe "action links" do
+    context "with a readonly referential" do
+      let(:readonly){ true }
+      it { should match_actions_links_snapshot "referentials/show_readonly" }
+
+      %w(create destroy update).each do |p|
+        with_permission "referentials.#{p}" do
+          it { should match_actions_links_snapshot "referentials/show_readonly_#{p}" }
+        end
+      end
+    end
+
+    context "with a non-readonly referential" do
+      it { should match_actions_links_snapshot "referentials/show" }
+
+      %w(create destroy update).each do |p|
+        with_permission "referentials.#{p}" do
+          it { should match_actions_links_snapshot "referentials/show_#{p}" }
+        end
+      end
+    end
+
+    %w(purchase_windows referential_vehicle_journeys).each do |f|
+      with_feature f do
+        it { should match_actions_links_snapshot "referentials/show_#{f}" }
+
+        %w(create update destroy).each do |p|
+          with_permission "referentials.#{p}" do
+            it { should match_actions_links_snapshot "referentials/show_#{f}_#{p}" }
+          end
+        end
+      end
+    end
+  end
 end
