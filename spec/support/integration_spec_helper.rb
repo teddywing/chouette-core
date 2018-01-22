@@ -24,6 +24,13 @@ module IntegrationSpecHelper
         context('', &block) if block_given?
       end
     end
+
+    def with_feature feature, &block
+      context "with feature #{feature}" do
+        let(:features){ [feature] }
+        context('', &block) if block_given?
+      end
+    end
   end
 
   def self.included into
