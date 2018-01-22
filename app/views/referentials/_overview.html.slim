@@ -1,6 +1,6 @@
 .referential-overview id=overview.pagination_param_name
   .filters
-    = search_form_for overview.search, as: overview.search_param_name, url: "", html: {method: :get}, class: 'form form-filter' do |f|
+    = search_form_for overview.search, as: overview.search_param_name, url: "##{overview.pagination_param_name}", html: {method: :get}, class: 'form form-filter' do |f|
       .ffg-row
         .form-group.input-group.search_bar
           = f.search_field :name_or_number_or_objectid_cont, placeholder: t('lines.index.name_or_number_or_objectid'), class: 'form-control'
@@ -16,7 +16,7 @@
           = f.input :transport_mode_eq_any, collection: overview.referential_lines.map(&:transport_mode).uniq.sort, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("enumerize.transport_mode.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
 
       .actions
-        = link_to 'Effacer', @workbench, class: 'btn btn-link'
+        = link_to 'Effacer', url_for() + "##{overview.pagination_param_name}", class: 'btn btn-link'
         = f.submit 'Filtrer', class: 'btn btn-default'
 
   .time-travel
