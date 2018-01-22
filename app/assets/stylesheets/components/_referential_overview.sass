@@ -76,8 +76,9 @@
     border: 1px solid $grey
     clear: both
     display: flex
-    background: white
+    +emptyzone($lightgrey, $lightergrey)
     .head
+
       height: $left-size
     .line
       height: $line-height
@@ -162,6 +163,7 @@
       .head
         white-space: nowrap
         position: relative
+        z-index: 3
         &:after, &:before
           opacity: 0
           // transition: opacity 0.5s
@@ -179,6 +181,8 @@
           position: relative
           height: 100%
           transition: margin 0.5s
+          background: white
+          box-shadow: 0 -10px 10px rgba(0,0,0,0.5)
           .week-span
             left: 15px
             top: 15px
@@ -259,6 +263,7 @@
         border-bottom: 1px solid $grey
         position: relative
         overflow: hidden
+        box-shadow: 0 -10px 10px rgba(0,0,0,0.5)
 
         &:last-child
           border-bottom: none
