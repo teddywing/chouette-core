@@ -59,8 +59,8 @@
                 ) \
               ],
               selectable: ->(ref){ @workbench.referentials.include?(ref) },
-              links: [:show, :edit],
-              cls: 'table has-filter has-search'
+              cls: 'table has-filter has-search',
+              action: :index
 
             = multiple_selection_toolbox([:delete], collection_name: 'referentials')
 

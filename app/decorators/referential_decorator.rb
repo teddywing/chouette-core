@@ -2,14 +2,15 @@ class ReferentialDecorator < AF83::Decorator
   decorates Referential
 
   with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link
     instance_decorator.edit_action_link
 
-    instance_decorator.action_link feature: :referential_vehicle_journeys, secondary: :show do |l|
+    instance_decorator.action_link feature: :referential_vehicle_journeys, secondary: :show, on: :show do |l|
       l.content t('referential_vehicle_journeys.index.title')
       l.href { h.referential_vehicle_journeys_path(object) }
     end
 
-    instance_decorator.action_link feature: :purchase_windows, secondary: :show do |l|
+    instance_decorator.action_link feature: :purchase_windows, secondary: :show, on: :show do |l|
       l.content t('purchase_windows.index.title')
       l.href { h.referential_purchase_windows_path(object) }
     end
@@ -35,13 +36,13 @@ class ReferentialDecorator < AF83::Decorator
       l.method :put
     end
 
-    instance_decorator.action_link policy: :unarchive, secondary: :show do |l|
+    instance_decorator.action_link policy: :unarchive, secondary: :show, on: :show do |l|
       l.content t('actions.unarchive')
       l.href { h.unarchive_referential_path(object.id) }
       l.method :put
     end
 
-    instance_decorator.action_link policy: :edit, secondary: :show do |l|
+    instance_decorator.action_link policy: :edit, secondary: :show, on: :show do |l|
       l.content 'Purger'
       l.href '#'
       l.type 'button'

@@ -7,7 +7,9 @@ class CompanyDecorator < AF83::Decorator
   end
 
   with_instance_decorator do |instance_decorator|
-    instance_decorator.show_action_link
+    instance_decorator.show_action_link do |l|
+      l.href { [context[:referential], object] }
+    end
 
     instance_decorator.edit_action_link do |l|
       l.content {|l| l.action == "show" ? h.t('actions.edit') : h.t('companies.actions.edit') }

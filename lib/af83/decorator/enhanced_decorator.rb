@@ -1,4 +1,4 @@
-module AF83::EnhancedDecorator
+module AF83::Decorator::EnhancedDecorator
   module ClassMethods
     def action_link args={}
       raise "You are using `action_link` inside a with_instance_decorator block, but not on the instance decorator itself.\n Use `instance_decorator.action_link` or move outside of the block, as this may lead to an unforeseen behaviour." if @_with_instance_decorator
@@ -33,6 +33,7 @@ module AF83::EnhancedDecorator
 
     def show_action_link args={}, &block
       opts = {
+        on: :index,
         primary: :index,
         before_block: -> (l){
           l.content { h.t('actions.show') }
@@ -62,7 +63,7 @@ module AF83::EnhancedDecorator
         before_block: -> (l){
           l.content { h.destroy_link_content }
           l.href { [object] }
-          l.method { :delete }
+          l.method :delete
           l.data {{ confirm: h.t('actions.destroy_confirm') }}
         }
       }
