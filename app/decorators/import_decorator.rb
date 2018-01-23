@@ -15,28 +15,14 @@ class ImportDecorator < AF83::Decorator
     l.class 'btn btn-primary'
   end
 
-  # def action_links
-  #   policy = h.policy(object)
-  #   links = []
-  #
-  #   links << Link.new(
-  #     content: h.t('imports.actions.download'),
-  #     href: object.file.url
-  #   )
-  #
-  #   if policy.destroy?
-  #     links << Link.new(
-  #       content: h.destroy_link_content,
-  #       href: h.workbench_import_path(
-  #         context[:workbench],
-  #         object
-  #       ),
-  #       method: :delete,
-  #       data: { confirm: h.t('imports.actions.destroy_confirm') }
-  #     )
-  #   end
-  #
-  #   links
-  # end
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link do |l|
+      l.href { h.workbench_import_path(context[:workbench], object) }
+    end
 
+    instance_decorator.action_link secondary: :show do |l|
+      l.content t('imports.actions.download')
+      l.href { object.file.url }
+    end
+  end
 end

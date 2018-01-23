@@ -1,13 +1,4 @@
 - breadcrumb :import, @workbench, @import
-- content_for :page_header_content do
-  .row
-    .col-lg-12.text-right.mb-sm
-      - @import.action_links.each do |link|
-        = link_to link.href,
-            method: link.method,
-            data: link.data,
-            class: 'btn btn-primary' do
-              = link.content
 
 - page_header_content_for @import
 
