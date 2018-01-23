@@ -27,7 +27,6 @@ describe "referentials/show", type: :view do
     allow(view).to receive(:params).and_return({action: :show})
 
     allow(referential).to receive(:referential_read_only?){ readonly }
-    render template: "referentials/show", layout: "layouts/application"
   end
   it "should not present edit button" do
     expect(rendered).to_not have_selector("a[href=\"#{view.edit_referential_path(referential)}\"]")
@@ -47,6 +46,13 @@ describe "referentials/show", type: :view do
   end
 
   describe "action links" do
+    set_invariant "referential.object.full_name", "referential_full_name"
+    set_invariant "referential.object.updated_at", "01/01/2000 00:00".to_time
+    set_invariant "referential.object.id", "99"
+
+    before(:each){
+      render template: "referentials/show", layout: "layouts/application"
+    }
     context "with a readonly referential" do
       let(:readonly){ true }
       it { should match_actions_links_snapshot "referentials/show_readonly" }

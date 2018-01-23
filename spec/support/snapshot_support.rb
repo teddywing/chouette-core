@@ -1,3 +1,27 @@
+module SnaphostSpecHelper
+
+  module Methods
+    def set_invariant expr, val=nil
+      val ||= expr
+      chain = expr.split(".")
+      method = chain.pop
+
+      before(:each) do
+        allow(eval(chain.join('.'))).to receive(method){ val }
+      end
+    end
+  end
+
+  def self.included into
+    into.extend Methods
+  end
+end
+
+RSpec.configure do |config|
+  config.include SnaphostSpecHelper, type: :view
+end
+
+
 RSpec::Matchers.define :match_actions_links_snapshot do |name|
   match do |actual|
     @content = Capybara::Node::Simple.new(rendered).find('.page_header').native.inner_html
