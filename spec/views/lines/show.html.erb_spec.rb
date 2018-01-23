@@ -16,5 +16,26 @@ describe "/lines/show", :type => :view do
 
   before do
     allow(view).to receive_messages(current_organisation: referential.organisation)
+    controller.request.path_parameters[:line_referential_id] = line_referential.id
+    controller.request.path_parameters[:id] = line.id
+  end
+
+  describe "action links" do
+    set_invariant "line_referential.id", "99"
+    set_invariant "line.id", "99"
+    set_invariant "line.company.id", "99"
+    set_invariant "line.network.id", "99"
+
+    before(:each){
+      render template: "lines/show", layout: "layouts/application"
+    }
+
+    it { should match_actions_links_snapshot "lines/show" }
+
+    %w(create update destroy).each do |p|
+      with_permission "lines.#{p}" do
+        it { should match_actions_links_snapshot "lines/show_#{p}" }
+      end
+    end
   end
 end
