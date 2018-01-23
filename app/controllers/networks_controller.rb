@@ -89,9 +89,8 @@ class NetworksController < ChouetteController
   end
 
   def decorate_networks(networks)
-    ModelDecorator.decorate(
+    NetworkDecorator.decorate(
       networks,
-      with: NetworkDecorator,
       context: {
         line_referential: line_referential
       }
