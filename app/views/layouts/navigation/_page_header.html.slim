@@ -24,13 +24,15 @@
           - if action_links&.primary&.any?
             - action_links.primary.each do |link|
               = link.to_html do |l|
-                - l.class "btn btn-default #{l.disabled ? "disabled" : ""}"
+                - if !l.class?
+                  - l.class "btn btn-default #{l.disabled ? "disabled" : ""}"
 
     - if action_links&.secondary&.any?
       .row.mb-sm
         .col-lg-12.text-right
           - action_links.secondary.each do |link|
             = link.to_html do |l|
-              - l.class "btn btn-primary #{l.disabled ? "disabled" : ""}"
+              - if !l.class?
+                - l.class "btn btn-primary #{l.disabled ? "disabled" : ""}"
     - if content_for? :page_header_content
       = yield :page_header_content

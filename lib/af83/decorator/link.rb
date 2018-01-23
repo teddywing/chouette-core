@@ -25,6 +25,10 @@ class AF83::Decorator::Link
     link_class args
   end
 
+  def class?
+    @options[:link_class] && !@options[:link_class].empty?
+  end
+
   def method_missing name, *args, &block
     if block_given?
       @options[name] = block
