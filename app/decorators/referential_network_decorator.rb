@@ -1,38 +1,40 @@
-class ReferentialNetworkDecorator < Draper::Decorator
+class ReferentialNetworkDecorator < AF83::Decorator
   decorates Chouette::Network
 
-  delegate_all
+  # Action links require:
+  #   context: {
+  #     referential: ,
+  #   }
 
-# Requires:
-#   context: {
-#     referential: ,
-#   }
-def action_links
-  links = []
-
-  if h.policy(Chouette::Network).create?
-    links << Link.new(
-      content: h.t('networks.actions.new'),
-      href: h.new_referential_network_path(context[:referential])
-    )
+  create_action_link do |l|
+    l.content t('networks.actions.new')
+    l.href { h.new_referential_network_path(context[:referential]) }
   end
 
-  if h.policy(object).update?
-    links << Link.new(
-      content: h.t('networks.actions.edit'),
-      href: h.edit_referential_network_path(context[:referential], object)
-    )
-  end
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link do |l|
+      l.href { h.referential_network_path(context[:referential], object) }
+    end
 
-  if h.policy(object).destroy?
-    links << Link.new(
-      content: h.destroy_link_content('networks.actions.destroy'),
-      href: h.referential_network_path(context[:referential], object),
-      method: :delete,
-      data: { confirm: t('networks.actions.destroy_confirm') }
-    )
-  end
+    instance_decorator.action_link secondary: true, policy: :edit do |l|
+      l.content t('networks.actions.edit')
+      l.href do
+        h.edit_referential_network_path(
+          context[:referential],
+          object
+        )
+      end
+    end
 
-    links
+    instance_decorator.destroy_action_link do |l|
+      l.content h.destroy_link_content('networks.actions.destroy')
+      l.href do
+        h.referential_network_path(
+          context[:referential],
+          object
+        )
+      end
+      l.data confirm: h.t('networks.actions.destroy_confirm')
+    end
   end
 end
