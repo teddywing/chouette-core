@@ -24,6 +24,7 @@ en:
       12: December
     actions:
       new: Add a new purchase window
+      show: "Show"
       edit: Edit this purchase window
       destroy: Remove this purchase window
       destroy_confirm: Are you sure you want destroy this purchase window?

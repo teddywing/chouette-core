@@ -28,6 +28,10 @@ class AF83::Decorator < ModelDecorator
     end
   end
 
+  def self.define_instance_method method_name, &block
+    instance_decorator.send(:define_method, method_name, &block)
+  end
+
   class ActionLinks
     attr_reader :options
 

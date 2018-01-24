@@ -36,13 +36,12 @@ class PurchaseWindowsController < ChouetteController
   end
 
   def decorate_purchase_windows(purchase_windows)
-    ModelDecorator.decorate(
+    PurchaseWindowDecorator.decorate(
       purchase_windows,
-      with: PurchaseWindowDecorator,
       context: {
         referential: @referential
-        }
-      )
+      }
+    )
   end
 
    def sort_column
