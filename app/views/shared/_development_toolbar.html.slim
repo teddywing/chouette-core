@@ -17,6 +17,9 @@
                   = hidden_field_tag "features[#{feature}]", false, id: ""
                   = check_box_tag "features[#{feature}]", true, has_feature?(feature)
                   = label :features, feature
+                  - if Rails.application.config.development_toolbar.features_doc_url
+                    = link_to "#{Rails.application.config.development_toolbar.features_doc_url}##{feature}", target: :blank do
+                      .fa.fa-question-circle
           .col.permissions
             h4
               = "Permissions"
