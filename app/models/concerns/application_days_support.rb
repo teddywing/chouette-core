@@ -1,20 +1,14 @@
 module ApplicationDaysSupport
   extend ActiveSupport::Concern
 
-  included do |into|
-    into.class_eval do
-      MONDAY    = 4
-      TUESDAY   = 8
-      WEDNESDAY = 16
-      THURSDAY  = 32
-      FRIDAY    = 64
-      SATURDAY  = 128
-      SUNDAY    = 256
-    end
-
-    # attr_accessor :monday,:tuesday,:wednesday,:thursday,:friday,:saturday,:sunday
-  end
-
+  MONDAY    = 4
+  TUESDAY   = 8
+  WEDNESDAY = 16
+  THURSDAY  = 32
+  FRIDAY    = 64
+  SATURDAY  = 128
+  SUNDAY    = 256
+  
   def display_day_types
     %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join(', ')
   end
