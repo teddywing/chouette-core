@@ -21,6 +21,15 @@ RSpec.describe Calendar, :type => :model do
     end
   end
 
+  describe 'application days' do
+    let(:calendar) { create(:calendar) }
+    it "should default to all days" do
+      %w(monday tuesday wednesday thursday friday saturday sunday).each do |day|
+        expect(calendar.send(day)).to be_truthy
+      end
+    end
+  end
+
   describe 'validations' do
     it 'validates that dates and date_ranges do not overlap' do
       expect(build(:calendar, dates: [Date.today], date_ranges: [Date.today..Date.tomorrow])).to_not be_valid

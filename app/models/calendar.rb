@@ -17,9 +17,14 @@ class Calendar < ActiveRecord::Base
   has_many :time_tables
 
   scope :contains_date, ->(date) { where('date ? = any (dates) OR date ? <@ any (date_ranges)', date, date) }
+  before_create :set_default_days
 
   def self.ransackable_scopes(auth_object = nil)
     [:contains_date]
+  end
+
+  def set_default_days
+    self.int_day_types ||= EVERYDAY
   end
 
   def convert_to_time_table

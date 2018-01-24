@@ -8,7 +8,8 @@ module ApplicationDaysSupport
   FRIDAY    = 64
   SATURDAY  = 128
   SUNDAY    = 256
-  
+  EVERYDAY  = MONDAY | TUESDAY | WEDNESDAY | THURSDAY | FRIDAY | SATURDAY | SUNDAY
+
   def display_day_types
     %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join(', ')
   end
