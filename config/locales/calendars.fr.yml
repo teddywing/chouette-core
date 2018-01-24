@@ -69,6 +69,13 @@ fr:
         dates: Dates
         shared: Partagé
         organisation: Organisation
+        monday: "Lundi"
+        tuesday: "Mardi"
+        wednesday: "Mercredi"
+        thursday: "Jeudi"
+        friday: "Vendredi"
+        saturday: "Samedi"
+        sunday: "Dimanche"
     errors:
       models:
         calendar:

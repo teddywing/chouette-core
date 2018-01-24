@@ -11,3 +11,14 @@
             'Organisation' => resource.organisation.name,
             Calendar.human_attribute_name(:dates) =>  resource.dates.collect{|d| l(d, format: :short)}.join(', ').html_safe,
             Calendar.human_attribute_name(:date_ranges) => resource.periods.map{|d| t('validity_range', debut: l(d.begin, format: :short), end: l(d.end, format: :short))}.join('<br>').html_safe }
+
+    - if has_feature?('application_days_on_calendars')
+      .row
+        .col-lg-12.mb-sm
+          .pagination.pull-right
+            = @year
+            .page_links
+              = link_to '', calendar_path(@calendar, year: (@year - 1)), class: 'previous_page'
+              = link_to '', calendar_path(@calendar, year: (@year + 1)), class: 'next_page'
+
+      = render 'time_tables/show_time_table', time_table: @calendar

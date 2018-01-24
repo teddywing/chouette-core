@@ -35,6 +35,10 @@ module ApplicationDaysSupport
     end
   end
 
+  def valid_day? wday
+    valid_days.include?(wday)
+  end
+
   def self.valid_days(int_day_types)
     # Build an array with day of calendar week (1-7, Monday is 1).
     [].tap do |valid_days|

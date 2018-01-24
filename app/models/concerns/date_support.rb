@@ -38,9 +38,12 @@ module DateSupport
           date_values_are_valid = false
         end
         date_ranges.each do |date_range|
-          if date_range.cover? date_value.value
-            date_value.errors.add(:base, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_date_ranges'))
-            date_values_are_valid = false
+          if date_range.cover?(date_value.value)
+            excluded_day = self.respond_to?(:valid_day?) && !self.valid_day?(date_value.value.wday)
+            unless excluded_day
+              date_value.errors.add(:base, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_date_ranges'))
+              date_values_are_valid = false
+            end
           end
         end
       end

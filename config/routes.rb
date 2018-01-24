@@ -111,9 +111,13 @@ ChouetteIhm::Application.routes.draw do
     resources :companies
     resources :networks
   end
+  
   resources :workgroups do
     resources :calendars do
       get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+      member do
+        get 'month', defaults: { format: :json }
+      end
     end
   end
 
@@ -121,7 +125,7 @@ ChouetteIhm::Application.routes.draw do
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
-    resources :autocomplete_purchase_windows, only: [:index] 
+    resources :autocomplete_purchase_windows, only: [:index]
     get :select_compliance_control_set
     post :validate, on: :member
     resources :autocomplete_time_tables, only: [:index]
