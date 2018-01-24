@@ -796,10 +796,7 @@ ActiveRecord::Schema.define(version: 20180126134944) do
     t.string   "stif_type"
     t.integer  "waiting_time"
     t.string   "kind"
-<<<<<<< HEAD
     t.jsonb    "localized_names"
-=======
->>>>>>> Refs #5750 @1h; Add a "kind" attribute to StopAreas
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree
