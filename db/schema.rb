@@ -91,8 +91,11 @@ ActiveRecord::Schema.define(version: 20180208174834) do
     t.datetime  "created_at"
     t.datetime  "updated_at"
     t.integer   "workgroup_id",    limit: 8
+<<<<<<< HEAD
     t.integer   "int_day_types"
     t.date      "excluded_dates",                            array: true
+=======
+>>>>>>> First draft for including calendars into workgroup for having appropriate scoping
   end
 
   add_index "calendars", ["organisation_id"], name: "index_calendars_on_organisation_id", using: :btree

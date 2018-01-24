@@ -414,4 +414,10 @@ module TableBuilderHelper
     # cases, avoid a `NoMethodError`.
     @__referential__ ||= try(:current_referential)
   end
+
+  def workgroup
+    # Certain controllers don't define a `#current_referential`. In these
+    # cases, avoid a `NoMethodError`.
+    @__workgroup__ ||= try(:current_workgroup)
+  end
 end

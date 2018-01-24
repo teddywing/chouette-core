@@ -111,11 +111,12 @@ ChouetteIhm::Application.routes.draw do
     resources :companies
     resources :networks
   end
-
-  resources :calendars do
-    get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
-    member do
-      get 'month', defaults: { format: :json }
+  resources :workgroups do
+    resources :calendars do
+      get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+      member do
+        get 'month', defaults: { format: :json }
+      end
     end
   end
 
