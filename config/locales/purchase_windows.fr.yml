@@ -23,7 +23,7 @@ fr:
       11: Novembre
       12: Décembre
     actions:
-      new: Créer
+      new: "Créer un calendrier commercial"
       show: "Consulter"
       edit: Editer
       destroy: Supprimer
