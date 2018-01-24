@@ -100,7 +100,8 @@ module TimetableSupport
 
       period.period_start = Date.parse(item['period_start'])
       period.period_end   = Date.parse(item['period_end'])
-      period.save if period.is_a?(ActiveRecord::Base) && period.changed?
+
+      period.save if period === ActiveRecord::Base && period.changed?
 
       item['id'] = period.id
     end

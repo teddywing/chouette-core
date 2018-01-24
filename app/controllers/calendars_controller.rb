@@ -55,6 +55,32 @@ class CalendarsController < ChouetteController
     end
   end
 
+  def month
+    @date = params['date'] ? Date.parse(params['date']) : Date.today
+    @calendar = resource
+  end
+
+  def create
+    create! do
+      if @calendar.valid? && has_feature?('application_days_on_calendars')
+        redirect_to([:edit, @calendar])
+        return
+      end
+    end
+  end
+
+  def update
+    if params[:calendar]
+      super
+    else
+      state  = JSON.parse request.raw_post
+      resource.state_update state
+      respond_to do |format|
+        format.json { render json: state, status: state['errors'] ? :unprocessable_entity : :ok }
+      end
+    end
+  end
+
   private
 
   def decorate_calendars(calendars)
