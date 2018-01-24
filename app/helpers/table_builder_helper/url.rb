@@ -3,7 +3,7 @@ module TableBuilderHelper
     def self.polymorphic_url_parts(item, referential, workgroup)
       polymorph_url = []
 
-      unless item.is_a?(Calendar) || item.is_a?(Referential) || item.is_a?(ComplianceControlSet)
+      unless item.is_a?(Referential) || item.is_a?(ComplianceControlSet)
         if referential
           polymorph_url << referential
           polymorph_url << item.line if item.respond_to? :line
@@ -20,7 +20,11 @@ module TableBuilderHelper
           end
         end
       else
+<<<<<<< HEAD
         polymorph_url << item.workgroup if item.respond_to? :workgroup
+=======
+        polymorph_url << item.workgroup if item.is_a?(Calendar)
+>>>>>>> First draft for including calendars into workgroup for having appropriate scoping
         polymorph_url << item
       end
 

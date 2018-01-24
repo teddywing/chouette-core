@@ -1,4 +1,8 @@
 - breadcrumb :calendars, workgroup
+- content_for :page_header_actions do
+  - if policy(Calendar).create?
+    = link_to(t('actions.add'), new_workgroup_calendar_path(current_workgroup), class: 'btn btn-default')
+
 
 .page_content
   .container-fluid
