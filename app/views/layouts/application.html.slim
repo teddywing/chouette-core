@@ -21,3 +21,6 @@ html lang=I18n.locale
     = yield
     #sidebar
       = yield :sidebar
+
+    = render 'shared/development_toolbar'
+    = yield :javascript
