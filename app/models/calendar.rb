@@ -5,6 +5,7 @@ require_relative 'calendar/period'
 class Calendar < ActiveRecord::Base
   include DateSupport
   include PeriodSupport
+  include ApplicationDaysSupport
 
   has_paper_trail class_name: 'PublicVersion'
   belongs_to :organisation
@@ -28,7 +29,7 @@ class Calendar < ActiveRecord::Base
       self.periods.each do |p|
         tt.periods << Chouette::TimeTablePeriod.new(period_start: p.begin, period_end: p.end)
       end
-      tt.int_day_types = 508
+      tt.int_day_types = self.int_day_types
     end
   end
 
