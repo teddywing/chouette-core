@@ -50,7 +50,6 @@ class Calendar < ActiveRecord::Base
         tt.periods << Chouette::TimeTablePeriod.new(period_start: p.begin, period_end: p.end)
       end
       tt.int_day_types = self.int_day_types
-<<<<<<< HEAD
     end
   end
 
@@ -88,8 +87,6 @@ class Calendar < ActiveRecord::Base
   def all_dates
     (dates + excluded_dates).sort.each_with_index.map do |d, i|
       OpenStruct.new(id: i, date: d, in_out: include_in_dates?(d))
-=======
->>>>>>> Refs #5682; Add application_days field to calendars
     end
   end
 
