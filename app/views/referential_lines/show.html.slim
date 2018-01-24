@@ -79,8 +79,8 @@
                     attribute: Proc.new{ |r| r.try(:journey_patterns).count } \
                   ) \
                 ],
-                links: [:show, :edit],
-                cls: 'table has-search'
+                cls: 'table has-search',
+                action: :index
 
               = new_pagination @routes, 'pull-right'
 
