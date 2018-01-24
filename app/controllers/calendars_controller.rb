@@ -7,7 +7,9 @@ class CalendarsController < ChouetteController
 
   def index
     index! do
-      @calendars = ModelDecorator.decorate(@calendars, with: CalendarDecorator)
+      @calendars = ModelDecorator.decorate(@calendars, with: CalendarDecorator, context: {
+        workgroup: current_workgroup
+      })
     end
   end
 

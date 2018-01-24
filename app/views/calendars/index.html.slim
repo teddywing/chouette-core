@@ -1,7 +1,7 @@
 - breadcrumb :calendars
 - content_for :page_header_actions do
   - if policy(Calendar).create?
-    = link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')
+    = link_to(t('actions.add'), new_workgroup_calendar_path(current_workgroup), class: 'btn btn-default')
 
 .page_content
   .container-fluid
@@ -19,7 +19,7 @@
                 key: :name, \
                 attribute: 'name', \
                 link_to: lambda do |calendar| \
-                  calendar_path(calendar) \
+                  workgroup_calendar_path(current_workgroup, calendar) \
                 end \
               ), \
               TableBuilderHelper::Column.new( \

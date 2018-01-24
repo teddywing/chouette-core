@@ -7,7 +7,7 @@ class CalendarDecorator < Draper::Decorator
     if h.policy(object).destroy?
       links << Link.new(
         content: h.destroy_link_content,
-        href: h.calendar_path(object),
+        href: h.workgroup_calendar_path(context[:workgroup], object),
         method: :delete,
         data: { confirm: h.t('calendars.actions.destroy_confirm') }
       )

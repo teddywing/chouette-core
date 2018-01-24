@@ -8,6 +8,7 @@ class Calendar < ActiveRecord::Base
 
   has_paper_trail class_name: 'PublicVersion'
   belongs_to :organisation
+  belongs_to :workgroup
 
   validates_presence_of :name, :short_name, :organisation
   validates_uniqueness_of :short_name

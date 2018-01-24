@@ -308,7 +308,7 @@ module TableBuilderHelper
 
     menu = content_tag :ul, class: 'dropdown-menu' do
       (
-        CustomLinks.new(item, pundit_user, links, referential).links +
+        CustomLinks.new(item, pundit_user, links, referential, workgroup).links +
         item.action_links.select { |link| link.is_a?(Link) }
       ).map do |link|
         gear_menu_link(link)
@@ -390,5 +390,11 @@ module TableBuilderHelper
     # Certain controllers don't define a `#current_referential`. In these
     # cases, avoid a `NoMethodError`.
     @__referential__ ||= try(:current_referential)
+  end
+
+  def workgroup
+    # Certain controllers don't define a `#current_referential`. In these
+    # cases, avoid a `NoMethodError`.
+    @__workgroup__ ||= try(:current_workgroup)
   end
 end

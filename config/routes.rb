@@ -111,9 +111,10 @@ ChouetteIhm::Application.routes.draw do
     resources :companies
     resources :networks
   end
-
-  resources :calendars do
-    get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+  resources :workgroups do
+    resources :calendars do
+      get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+    end
   end
 
   resources :referentials, except: :index do
