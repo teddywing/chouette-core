@@ -1,18 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 - breadcrumb :calendars
-<<<<<<< HEAD
-=======
-=======
-- breadcrumb :calendars, current_workgroup
->>>>>>> update calendar build_links for table builder
-- content_for :page_header_actions do
-  - if policy(Calendar).create?
-    = link_to(t('actions.add'), new_workgroup_calendar_path(current_workgroup), class: 'btn btn-default')
->>>>>>> First draft for including calendars into workgroup for having appropriate scoping
-=======
-- breadcrumb :calendars, workgroup
->>>>>>> Make some changes to avoid unnacessaty lines of code
 
 .page_content
   .container-fluid
@@ -30,7 +16,7 @@
                 key: :name, \
                 attribute: 'name', \
                 link_to: lambda do |calendar| \
-                  workgroup_calendar_path(workgroup, calendar) \
+                  workgroup_calendar_path(current_workgroup, calendar) \
                 end \
               ), \
               TableBuilderHelper::Column.new( \
