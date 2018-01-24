@@ -11,11 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20180123174450) do
-=======
+
 ActiveRecord::Schema.define(version: 20180126134944) do
->>>>>>> Refs #5750 @1h; Add a "kind" attribute to StopAreas
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"

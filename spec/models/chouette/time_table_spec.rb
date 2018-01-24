@@ -926,6 +926,7 @@ end
       end
     end
   end
+  
   describe "#validity_out_between?" do
     let(:empty_tm) {build(:time_table)}
     it "should be false if empty calendar" do
@@ -1068,8 +1069,6 @@ end
       end
   end
 
-
-
   describe "#effective_days" do
       before do
         subject.periods.clear
@@ -1093,8 +1092,6 @@ end
         expect(days[4]).to eq(Date.new(2014, 7, 20))
       end
   end
-
-
 
   describe "#optimize_overlapping_periods" do
       before do

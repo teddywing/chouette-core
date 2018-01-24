@@ -9,11 +9,12 @@ RSpec.describe Calendar, :type => :model do
   it { is_expected.to be_versioned }
 
   describe '#to_time_table' do
-    let(:calendar) { create(:calendar, date_ranges: [Date.today...(Date.today + 1.month)]) }
+    let(:calendar) { create(:calendar, int_day_types: Calendar::MONDAY | Calendar::SUNDAY, date_ranges: [Date.today...(Date.today + 1.month)]) }
 
     it 'should convert calendar to an instance of Chouette::TimeTable' do
       time_table = calendar.convert_to_time_table
       expect(time_table).to be_an_instance_of(Chouette::TimeTable)
+      expect(time_table.int_day_types).to eq calendar.int_day_types
       expect(time_table.periods[0].period_start).to eq(calendar.periods[0].begin)
       expect(time_table.periods[0].period_end).to eq(calendar.periods[0].end)
       expect(time_table.dates.map(&:date)).to match_array(calendar.dates)
