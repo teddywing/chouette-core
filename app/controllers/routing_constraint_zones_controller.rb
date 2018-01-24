@@ -13,9 +13,8 @@ class RoutingConstraintZonesController < ChouetteController
 
   def index
     index! do |format|
-      @routing_constraint_zones = ModelDecorator.decorate(
+      @routing_constraint_zones = RoutingConstraintZoneDecorator.decorate(
         @routing_constraint_zones,
-        with: RoutingConstraintZoneDecorator,
         context: {
           referential: referential,
           line: parent
