@@ -56,8 +56,8 @@
                 attribute: Proc.new { |n| n&.company&.name || "-" } \
               ) \
             ],
-            links: [:show],
-            cls: 'table has-filter has-search'
+            cls: 'table has-filter has-search',
+            action: :index
 
           = new_pagination @reflines, 'pull-right'
 
