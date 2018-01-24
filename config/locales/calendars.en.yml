@@ -69,6 +69,13 @@ en:
         dates: Dates
         shared: Shared
         organisation: Organisation
+        monday: "Monday"
+        tuesday: "Tuesday"
+        wednesday: "Wednesday"
+        thursday: "Thursday"
+        friday: "Friday"
+        saturday: "Saturday"
+        sunday: "Sunday"
     errors:
       models:
         calendar:

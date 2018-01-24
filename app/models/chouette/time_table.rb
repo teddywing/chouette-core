@@ -5,6 +5,7 @@ module Chouette
     include TimeTableRestrictions
     include ObjectidSupport
     include ApplicationDaysSupport
+    include TimetableSupport
 
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
@@ -82,70 +83,34 @@ module Chouette
       end
     end
 
-    def state_update state
-      update_attributes(self.class.state_permited_attributes(state))
-      self.tag_list    = state['tags'].collect{|t| t['name']}.join(', ')
-      self.calendar_id = nil unless state['calendar']
-
-      days = state['day_types'].split(',')
-      Date::DAYNAMES.map(&:underscore).each do |name|
-        prefix = human_attribute_name(name).first(2)
-        send("#{name}=", days.include?(prefix))
-      end
-
-      saved_dates = Hash[self.dates.collect{ |d| [d.id, d.date]}]
-      cmonth = Date.parse(state['current_periode_range'])
-
-      state['current_month'].each do |d|
-        date    = Date.parse(d['date'])
-        checked = d['include_date'] || d['excluded_date']
-        in_out  = d['include_date'] ? true : false
-
-        date_id = saved_dates.key(date)
-        time_table_date = self.dates.find(date_id) if date_id
-
-        next if !checked && !time_table_date
-        # Destroy date if no longer checked
-        next if !checked && time_table_date.destroy
-
-        # Create new date
-        unless time_table_date
-          time_table_date = self.dates.create({in_out: in_out, date: date})
-        end
-        # Update in_out
-        if in_out != time_table_date.in_out
-          time_table_date.update_attributes({in_out: in_out})
-        end
-      end
-
-      self.state_update_periods state['time_table_periods']
-      self.save
+    def find_date_by_id id
+      self.dates.find id
     end
 
-    def state_update_periods state_periods
-      state_periods.each do |item|
-        period = self.periods.find(item['id']) if item['id']
-        next if period && item['deleted'] && period.destroy
-        period ||= self.periods.build
+    def destroy_date date
+      date.destroy
+    end
 
-        period.period_start = Date.parse(item['period_start'])
-        period.period_end   = Date.parse(item['period_end'])
-
-        if period.changed?
-          period.save
-          item['id'] = period.id
-        end
+    def update_in_out date, in_out
+      if in_out != date.in_out
+        date.update_attributes({in_out: in_out})
       end
+    end
 
-      state_periods.delete_if {|item| item['deleted']}
+    def find_period_by_id id
+      self.periods.find id
+    end
+
+    def build_period
+      periods.build
+    end
+
+    def destroy_period period
+      period.destroy
     end
 
     def self.state_permited_attributes item
       item.slice('comment', 'color').to_hash
-    end
-
-    def presenter
-      @presenter ||= ::TimeTablePresenter.new( self)
     end
 
     def self.start_validity_period
@@ -166,20 +131,6 @@ module Chouette
       self.dates   = from.dates
       self.periods = from.periods
       self.save
-    end
-
-    def month_inspect(date)
-      (date.beginning_of_month..date.end_of_month).map do |d|
-        {
-          day: I18n.l(d, format: '%A'),
-          date: d.to_s,
-          wday: d.wday,
-          wnumber: d.strftime("%W").to_s,
-          mday: d.mday,
-          include_date: include_in_dates?(d),
-          excluded_date: excluded_date?(d)
-        }
-      end
     end
 
     def save_shortcuts
@@ -361,6 +312,17 @@ module Chouette
       days.sort
     end
 
+    def create_date in_out:, date:
+      self.dates.create in_out: in_out, date: date
+    end
+
+    def saved_dates
+      Hash[self.dates.collect{ |d| [d.id, d.date]}]
+    end
+
+    def all_dates
+      dates
+    end
 
     # produce a copy of periods without anyone overlapping or including another
     def optimize_overlapping_periods
