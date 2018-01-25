@@ -57,10 +57,7 @@ class StopAreasController < ChouetteController
           redirect_to params.merge(:page => 1)
         end
 
-        @stop_areas = ModelDecorator.decorate(
-          @stop_areas,
-          with: StopAreaDecorator
-        )
+        @stop_areas = StopAreaDecorator.decorate(@stop_areas)
       }
     end
   end
