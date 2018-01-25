@@ -202,13 +202,13 @@ crumb :purchase_window do |referential, purchase_window|
   parent :purchase_windows, referential
 end
 
-crumb :calendars do
-  link I18n.t('calendars.index.title'), calendars_path
+crumb :calendars do |workgroup|
+  link I18n.t('calendars.index.title'), workgroup_calendars_path(workgroup)
 end
 
-crumb :calendar do |calendar|
-  link breadcrumb_name(calendar), calendar_path(calendar)
-  parent :calendars
+crumb :calendar do |workgroup, calendar|
+  link breadcrumb_name(calendar), workgroup_calendar_path(workgroup, calendar)
+  parent :calendars, workgroup
 end
 
 crumb :referential_line do |referential, line|

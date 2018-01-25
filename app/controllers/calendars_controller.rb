@@ -1,4 +1,5 @@
 class CalendarsController < ChouetteController
+  include WorkgroupSupport
   include PolicyChecker
   defaults resource_class: Calendar
   before_action :ransack_contains_date, only: [:index]
@@ -7,19 +8,30 @@ class CalendarsController < ChouetteController
 
   def index
     index! do
-      @calendars = ModelDecorator.decorate(@calendars, with: CalendarDecorator, context: {
-        workgroup: current_workgroup
-      })
+      @calendars = decorate_calendars(@calendars)
     end
   end
 
   def show
     show! do
-      @calendar = @calendar.decorate
+      @calendar = @calendar.decorate(context: {
+        workgroup: current_workgroup
+      })
     end
   end
 
   private
+
+  def decorate_calendars(calendars)
+    ModelDecorator.decorate(
+      calendars,
+      with: CalendarDecorator,
+      context: {
+        workgroup: current_workgroup
+      }
+    )
+  end
+
   def calendar_params
     permitted_params = [:id, :name, :short_name, :shared, periods_attributes: [:id, :begin, :end, :_destroy], date_values_attributes: [:id, :value, :_destroy]]
     permitted_params << :shared if policy(Calendar).share?
@@ -36,18 +48,19 @@ class CalendarsController < ChouetteController
 
   protected
   def resource
-    @calendar = Calendar.where('organisation_id = ? OR shared = true', current_organisation.id).find_by_id(params[:id])
+    @calendar = Calendar.where('(organisation_id = ? OR shared = ?) AND workgroup_id = ?', current_organisation.id).find_by_id(params[:id], true, @workgroup.id)
   end
 
   def build_resource
     super.tap do |calendar|
+      calendar.workgroup = current_workgroup
       calendar.organisation = current_organisation
     end
   end
 
   def collection
     return @calendars if @calendars
-    scope = Calendar.where('organisation_id = ? OR shared = ?', current_organisation.id, true)
+    scope = Calendar.where('(organisation_id = ? OR shared = ?) AND workgroup_id = ?', current_organisation.id, true, @workgroup.id)
     scope = shared_scope(scope)
     @q = scope.ransack(params[:q])
 

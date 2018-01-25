@@ -1,4 +1,4 @@
-- breadcrumb :calendar, @calendar
+- breadcrumb :calendar, @workgroup, @calendar
 - page_header_content_for @calendar
 - content_for :page_header_content do
   .row.mb-sm
@@ -11,7 +11,7 @@
               = link.content
 - if policy(@calendar).edit?
   - content_for :page_header_actions do
-      = link_to(t('actions.edit'), edit_calendar_path(@calendar), class: 'btn btn-default')
+      = link_to(t('actions.edit'), edit_workgroup_calendar_path(@workgroup, @calendar), class: 'btn btn-default')
 
 .page_content
   .container-fluid

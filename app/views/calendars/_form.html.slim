@@ -1,4 +1,4 @@
-= simple_form_for @calendar, html: { class: 'form-horizontal', id: 'calendar_form' }, wrapper: :horizontal_form do |f|
+= simple_form_for [@workgroup, @calendar], html: { class: 'form-horizontal', id: 'calendar_form' }, wrapper: :horizontal_form do |f|
   .row
     .col-lg-12
       = f.input :name
