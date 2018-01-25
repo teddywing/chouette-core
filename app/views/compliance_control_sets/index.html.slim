@@ -1,7 +1,4 @@
 - breadcrumb :compliance_control_sets
-- content_for :page_header_actions do
-  - if policy(ComplianceControlSet).create?
-    = link_to(t('compliance_control_sets.actions.new'), new_compliance_control_set_path, class: 'btn btn-default')
 
 .page_content
   .container-fluid
@@ -38,7 +35,6 @@
                 ) \
               ],
               sortable: true,
-              links: [:show],
               cls: 'table has-filter has-search'
 
           = new_pagination @compliance_control_sets, 'pull-right'
