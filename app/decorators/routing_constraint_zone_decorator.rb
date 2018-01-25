@@ -19,7 +19,6 @@ class RoutingConstraintZoneDecorator < AF83::Decorator
        context[:line]
      )
     end
-    l.class 'btn btn-primary'
   end
 
   with_instance_decorator do |instance_decorator|

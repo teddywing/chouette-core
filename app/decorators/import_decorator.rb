@@ -12,7 +12,6 @@ class ImportDecorator < AF83::Decorator
   create_action_link do |l|
     l.content t('imports.actions.new')
     l.href { h.new_workbench_import_path(workbench_id: context[:workbench]) }
-    l.class 'btn btn-primary'
   end
 
   with_instance_decorator do |instance_decorator|
