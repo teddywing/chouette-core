@@ -94,18 +94,21 @@ module TableBuilderHelper
   )
     content_tag :table,
       thead(collection, columns, sortable, selectable, links.any?, overhead, model || collection.model, action || params[:action]) +
-        tbody(collection, columns, selectable, links, overhead, action || params[:action]),
+        tbody(collection, columns, selectable, links, overhead, model, action || params[:action]),
       class: cls
   end
 
-  def self.item_row_class_name collection
-    if collection.respond_to?(:model)
-      model_name = collection.model.name
-    elsif collection.respond_to?(:first)
-      model_name = collection.first.class.name
-    else
-      model_name = "item"
-    end
+  def self.item_row_class_name collection, model
+    model_name = model&.name
+
+    model_name ||=
+      if collection.respond_to?(:model)
+        collection.model.name
+      elsif collection.respond_to?(:first)
+        collection.first.class.name
+      else
+        "item"
+      end
 
     model_name.split("::").last.parameterize
   end
@@ -286,8 +289,8 @@ module TableBuilderHelper
     end
   end
 
-  def tbody(collection, columns, selectable, links, overhead, action)
-    model_name = TableBuilderHelper.item_row_class_name collection
+  def tbody(collection, columns, selectable, links, overhead, model = nil, action)
+    model_name = TableBuilderHelper.item_row_class_name collection, model
 
     content_tag :tbody do
       collection.map do |item|
