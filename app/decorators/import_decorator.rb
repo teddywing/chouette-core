@@ -1,7 +1,7 @@
 class ImportDecorator < AF83::Decorator
   decorates Import
 
-  def import_status_css_class
+  define_instance_method :import_status_css_class do
     cls =''
     cls = 'overheaded-success' if object.status == 'successful'
     cls = 'overheaded-warning' if object.status == 'warning'
