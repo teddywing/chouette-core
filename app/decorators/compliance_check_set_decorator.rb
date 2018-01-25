@@ -1,4 +1,6 @@
 class ComplianceCheckSetDecorator < AF83::Decorator
+  decorates ComplianceCheckSet
+
   with_instance_decorator do |instance_decorator|
     instance_decorator.show_action_link
   end
