@@ -54,9 +54,9 @@
                 attribute: Proc.new { |s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}") } \
               ) \
             ],
-            links: [:show],
             sortable: false,
-            cls: 'table has-stoppoints'
+            cls: 'table has-stoppoints',
+            action: :index
 
         - else
           = replacement_msg t('stop_areas.search_no_results')
