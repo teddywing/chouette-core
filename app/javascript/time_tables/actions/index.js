@@ -156,6 +156,7 @@ const actions = {
   }),
   monthName(strDate) {
     let monthList = range(1,13).map(n => I18n.calendars.months[n])
+    console.log("strDate: "+strDate)
     let date = new Date(strDate)
     return monthList[date.getUTCMonth()]
   },
