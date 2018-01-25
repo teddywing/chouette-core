@@ -27,12 +27,6 @@ class ImportResourcesController < ChouetteController
   private
 
   def decorate_import_resources(import_resources)
-    ImportResourcesDecorator.decorate(
-      import_resources,
-      with: ImportResourceDecorator,
-      context: {
-        import: @import
-      }
-    )
+    ImportResourcesDecorator.decorate(import_resources)
   end
 end
