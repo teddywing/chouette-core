@@ -126,6 +126,7 @@ class AF83::Decorator::Link
     options.each do |k, v|
       out[k] = self.send(k) unless k == :content || k == :href || k.to_s =~ /^_/
     end
+    out[:method] = link_method
     out[:class] = extra_class
     out.delete(:link_class)
     out[:class] += " disabled" if disabled
