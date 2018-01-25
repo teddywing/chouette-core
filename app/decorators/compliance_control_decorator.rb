@@ -1,30 +1,33 @@
-class ComplianceControlDecorator < Draper::Decorator
-  delegate_all
-
-  def action_links
-    policy = h.policy(object)
-    links = []
-
-    links << Link.new(
-      content: h.t('compliance_control_sets.actions.show'),
-      href:  h.compliance_control_set_compliance_control_path(object.compliance_control_set.id, object.id)
-    )
-
-    if policy.edit?
-      links << Link.new(
-        content: h.t('compliance_controls.actions.edit'),
-        href:  h.edit_compliance_control_set_compliance_control_path(object.compliance_control_set.id, object.id)
-      )
+class ComplianceControlDecorator < AF83::Decorator
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link do |l|
+      l.content h.t('compliance_control_sets.actions.show')
+      l.href do
+        h.compliance_control_set_compliance_control_path(
+          object.compliance_control_set.id,
+          object.id
+        )
+      end
     end
 
-    if policy.destroy?
-      links << Link.new(
-        content: h.destroy_link_content,
-        href: h.compliance_control_set_compliance_control_path(object.compliance_control_set.id, object.id),
-        method: :delete,
-        data: { confirm: h.t('compliance_controls.actions.destroy_confirm') }
-      )
+    instance_decorator.edit_action_link do |l|
+      l.href do
+        h.edit_compliance_control_set_compliance_control_path(
+          object.compliance_control_set_id,
+          object.id
+        )
+      end
     end
-    links
+
+    instance_decorator.destroy_action_link do |l|
+      l.content h.destroy_link_content
+      l.href do
+        h.compliance_control_set_compliance_control_path(
+          object.compliance_control_set.id,
+          object.id
+        )
+      end
+      l.data confirm: h.t('compliance_controls.actions.destroy_confirm')
+    end
   end
 end
