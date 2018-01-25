@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 - breadcrumb :calendars
 <<<<<<< HEAD
 =======
+=======
+- breadcrumb :calendars, current_workgroup
+>>>>>>> update calendar build_links for table builder
 - content_for :page_header_actions do
   - if policy(Calendar).create?
     = link_to(t('actions.add'), new_workgroup_calendar_path(current_workgroup), class: 'btn btn-default')

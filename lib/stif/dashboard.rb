@@ -4,12 +4,16 @@ module Stif
       @workbench ||= current_organisation.workbenches.find_by(name: "Gestion de l'offre")
     end
 
+    def workgroup
+      workbench.workgroup
+    end
+
     def referentials
       @referentials ||= self.workbench.all_referentials
     end
 
     def calendars
-      @calendars ||= Calendar.where('workgroup_id = ? OR shared = ?', @workbench.workgroup_id, true)
+      @calendars ||= Calendar.where('(organisation_id = ? OR shared = ?) AND workgroup_id = ?', current_organisation.id, true, workgroup.id)
     end
   end
 end
