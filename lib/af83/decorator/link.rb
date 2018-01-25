@@ -25,13 +25,6 @@ class AF83::Decorator::Link
     link_class args
   end
 
-  def default_class *args
-    has_class = @options[:link_class] && !@options[:link_class].empty?
-    return if has_class
-
-    self.class args
-  end
-
   def method_missing name, *args, &block
     if block_given?
       @options[name] = block
