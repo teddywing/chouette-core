@@ -32,6 +32,12 @@ class AF83::Decorator < ModelDecorator
     instance_decorator.send(:define_method, method_name, &block)
   end
 
+  # Defines a class method on the decorated object's class. These
+  # can be called like `object.class.my_method`.
+  def self.define_instance_class_method method_name, &block
+    instance_decorator.send(:define_singleton_method, method_name, &block)
+  end
+
   class ActionLinks
     attr_reader :options
 

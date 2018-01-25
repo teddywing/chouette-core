@@ -1,4 +1,6 @@
 class ComplianceControlDecorator < AF83::Decorator
+  decorates ComplianceControl
+
   with_instance_decorator do |instance_decorator|
     instance_decorator.show_action_link do |l|
       l.content h.t('compliance_control_sets.actions.show')
@@ -29,5 +31,17 @@ class ComplianceControlDecorator < AF83::Decorator
       end
       l.data confirm: h.t('compliance_controls.actions.destroy_confirm')
     end
+  end
+
+  define_instance_class_method :predicate do
+    object_class.predicate
+  end
+
+  define_instance_class_method :prerequisite do
+    object_class.prerequisite
+  end
+
+  define_instance_class_method :dynamic_attributes do
+    object_class.dynamic_attributes
   end
 end
