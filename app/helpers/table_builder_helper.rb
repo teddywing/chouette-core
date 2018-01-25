@@ -98,7 +98,7 @@ module TableBuilderHelper
       class: cls
   end
 
-  def self.item_row_class_name collection, model
+  def self.item_row_class_name collection, model=nil
     model_name = model&.name
 
     model_name ||=
