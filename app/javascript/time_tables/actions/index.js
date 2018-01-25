@@ -156,8 +156,9 @@ const actions = {
   }),
   monthName(strDate) {
     let monthList = range(1,13).map(n => I18n.calendars.months[n])
+    console.log("strDate: "+strDate)
     let date = new Date(strDate)
-    return monthList[date.getMonth()]
+    return monthList[date.getUTCMonth()]
   },
   getHumanDate(strDate, mLimit) {
     let origin = strDate.split('-')
@@ -173,7 +174,7 @@ const actions = {
   },
   getLocaleDate(strDate) {
     let date = new Date(strDate)
-    return date.toLocaleDateString()
+    return date.toLocaleDateString(undefined, { timeZone: 'UTC' })
   },
   updateSynthesis: ({current_month, time_table_dates: dates, time_table_periods: periods}) => {
     let newPeriods = reject(periods, 'deleted')
@@ -194,7 +195,7 @@ const actions = {
 
     for (let period of periods) {
       let begin = new Date(period.period_start)
-      let end = new Date(period.period_end) 
+      let end = new Date(period.period_end)
       if (date >= begin && date <= end) return true
     }
 
