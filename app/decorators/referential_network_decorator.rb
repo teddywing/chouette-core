@@ -16,7 +16,7 @@ class ReferentialNetworkDecorator < AF83::Decorator
       l.href { h.referential_network_path(context[:referential], object) }
     end
 
-    instance_decorator.action_link secondary: true, policy: :edit do |l|
+    instance_decorator.edit_action_link do |l|
       l.content t('networks.actions.edit')
       l.href do
         h.edit_referential_network_path(
