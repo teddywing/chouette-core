@@ -95,6 +95,8 @@ ActiveRecord::Schema.define(version: 20180208174834) do
     t.integer   "int_day_types"
     t.date      "excluded_dates",                            array: true
     t.integer   "workgroup_id",    limit: 8
+    t.integer   "int_day_types"
+    t.date      "excluded_dates",                            array: true
   end
 
   add_index "calendars", ["organisation_id"], name: "index_calendars_on_organisation_id", using: :btree
@@ -794,7 +796,10 @@ ActiveRecord::Schema.define(version: 20180208174834) do
     t.string   "stif_type"
     t.integer  "waiting_time"
     t.string   "kind"
+<<<<<<< HEAD
     t.jsonb    "localized_names"
+=======
+>>>>>>> Refs #5750 @1h; Add a "kind" attribute to StopAreas
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree

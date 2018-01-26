@@ -11,8 +11,11 @@ module Chouette
     extend Enumerize
     enumerize :area_type, in: Chouette::AreaType::ALL
     enumerize :kind, in: %i(commercial non_commercial)
+<<<<<<< HEAD
 
     AVAILABLE_LOCALIZATIONS = %i(gb nl de fr it es)
+=======
+>>>>>>> Refs #5750 @1h; Add a "kind" attribute to StopAreas
 
     with_options dependent: :destroy do |assoc|
       assoc.has_many :stop_points
