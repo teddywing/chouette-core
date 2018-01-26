@@ -8,7 +8,10 @@
   .ffg-row
     .form-group.togglable
       = f.label Chouette::VehicleJourney.human_attribute_name(:company), required: false, class: 'control-label'
-      = f.input :company_id_eq_any, collection: @all_companies.select(:id, :name).order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+      - if @all_companies.present?
+        = f.input :company_id_eq_any, collection: @all_companies.select(:id, :name).order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
+      - else
+        = f.input :company_id_eq_any, collection: [[I18n.t('companies.search_no_results_for_filter'), nil]], as: :check_boxes, label: false, disabled: true, required: false, wrapper_html: { class: 'checkbox_list disabled'}
     .form-group.togglable.name-filter
       = f.label Chouette::VehicleJourney.human_attribute_name(:published_journey_name), required: false, class: 'control-label'
       .inputs.form-inline.checkbox_list
