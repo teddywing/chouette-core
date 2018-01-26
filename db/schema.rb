@@ -11,13 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20180123174450) do
+=======
+ActiveRecord::Schema.define(version: 20180126134944) do
+>>>>>>> Refs #5750 @1h; Add a "kind" attribute to StopAreas
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "postgis"
   enable_extension "hstore"
+  enable_extension "postgis"
   enable_extension "unaccent"
+  enable_extension "objectid"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -91,6 +96,8 @@ ActiveRecord::Schema.define(version: 20180123174450) do
     t.datetime  "created_at"
     t.datetime  "updated_at"
     t.integer   "workgroup_id",    limit: 8
+    t.integer   "int_day_types"
+    t.date      "excluded_dates",                            array: true
   end
 
   add_index "calendars", ["organisation_id"], name: "index_calendars_on_organisation_id", using: :btree
@@ -117,6 +124,7 @@ ActiveRecord::Schema.define(version: 20180123174450) do
     t.datetime "updated_at"
     t.date     "end_date"
     t.string   "date_type"
+    t.string   "mode"
   end
 
   add_index "clean_ups", ["referential_id"], name: "index_clean_ups_on_referential_id", using: :btree
@@ -788,6 +796,7 @@ ActiveRecord::Schema.define(version: 20180123174450) do
     t.datetime "updated_at"
     t.string   "stif_type"
     t.integer  "waiting_time"
+    t.string   "kind"
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree

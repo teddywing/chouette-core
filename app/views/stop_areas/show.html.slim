@@ -6,11 +6,11 @@
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
-        - attributes = { t('id_reflex') => @stop_area.get_objectid.short_id,
-            @stop_area.human_attribute_name(:parent) => @stop_area.parent ? link_to(@stop_area.parent.name, stop_area_referential_stop_area_path(@stop_area_referential, @stop_area.parent)) : "-",
-            @stop_area.human_attribute_name(:stop_area_type) => Chouette::AreaType.find(@stop_area.area_type).try(:label),
+        - attributes = { t('id_reflex') => @stop_area.get_objectid.short_id }
+        - attributes.merge!({ @stop_area.human_attribute_name(:parent) => @stop_area.parent ? link_to(@stop_area.parent.name, stop_area_referential_stop_area_path(@stop_area_referential, @stop_area.parent)) : "-" }) if @stop_area.commercial?
+        - attributes.merge!({ @stop_area.human_attribute_name(:stop_area_type) => Chouette::AreaType.find(@stop_area.area_type).try(:label),
             @stop_area.human_attribute_name(:registration_number) => @stop_area.registration_number,
-            }
+            })
         - attributes.merge!(@stop_area.human_attribute_name(:waiting_time) => @stop_area.waiting_time_text) if has_feature?(:stop_area_waiting_time)
         - attributes.merge!({ "Coordonnées" => geo_data(@stop_area, @stop_area_referential),
             @stop_area.human_attribute_name(:zip_code) => @stop_area.zip_code,
