@@ -85,9 +85,15 @@ input
 
 // BS horizontal form label positionning fix
 .form-horizontal
+  input[type="radio"].form-control
+    height: auto
+    width: auto
   .form-group
     position: relative
-
+    .radio-inline
+      padding-top: 4px
+      &:first-child
+        padding-left: 0
     > .control-label
       &[class*='col-sm-']
         float: none

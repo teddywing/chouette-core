@@ -10,6 +10,7 @@ module Chouette
 
     extend Enumerize
     enumerize :area_type, in: Chouette::AreaType::ALL
+    enumerize :kind, in: %i(commercial non_commercial)
 
     with_options dependent: :destroy do |assoc|
       assoc.has_many :stop_points
@@ -94,6 +95,10 @@ module Chouette
       else
         id.to_s
       end
+    end
+
+    def local_id
+      id.to_s
     end
 
     def children_in_depth
@@ -373,6 +378,10 @@ module Chouette
     def time_zone_formatted_offset
       return nil unless time_zone.present?
       ActiveSupport::TimeZone[time_zone]&.formatted_offset
+    end
+
+    def commercial?
+      kind == "commercial"
     end
   end
 end
