@@ -117,7 +117,13 @@ module Chouette
       end
     end
 
+<<<<<<< HEAD
     alias_method :local_id, :user_objectid
+=======
+    def local_id
+      id.to_s
+    end
+>>>>>>> Refs #5750 @1h; Add a "kind" attribute to StopAreas
 
     def children_in_depth
       return [] if self.children.empty?
