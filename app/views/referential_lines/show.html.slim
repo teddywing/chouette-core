@@ -17,7 +17,8 @@
              @line.human_attribute_name(:transport_submode) => (@line.transport_submode.present? ? t("enumerize.transport_submode.#{@line.transport_submode}") : '-'),
              @line.human_attribute_name(:url) => (@line.url ? @line.url : '-'),
              @line.human_attribute_name(:seasonal) => (@line.seasonal? ? t('true') : t('false')),}
-
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        #routes_map.map.mb-lg
     .row
       .col-lg-12
         .h3 = t('lines.show.routes.title')
@@ -79,3 +80,8 @@
           .row.mt-xs
             .col-lg-12
               = replacement_msg t('routes.search_no_results')
+
+= javascript_tag do
+  | window.routes = "#{URI.escape(@routes.map{|r| {name: r.name, id: r.id, stops: route_json_for_edit(r, serialize: false)}}.to_json)}"
+
+= javascript_pack_tag 'referential_lines/show.js'

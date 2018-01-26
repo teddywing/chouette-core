@@ -56,7 +56,7 @@ export default function StopPointList({ stopPoints, onDeleteClick, onMoveUpClick
   )
 }
 
-StopPointList.PropTypes = {
+StopPointList.propTypes = {
   stopPoints: PropTypes.array.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
   onMoveUpClick: PropTypes.func.isRequired,
