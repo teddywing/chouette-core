@@ -69,6 +69,7 @@ en:
       timeless: "Timeless vehicle journeys"
     errors:
       purchase_window: Invalid purchase window
+      time_table: Invalid dates
   activerecord:
     models:
       vehicle_journey:

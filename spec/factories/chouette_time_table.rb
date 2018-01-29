@@ -11,18 +11,21 @@ FactoryGirl.define do
     end
 
     after(:create) do |time_table, evaluator|
-
-      0.upto(4) do |i|
-        time_table.dates  << create(:time_table_date, :time_table => time_table, :date => i.days.since.to_date, :in_out => true)
+      unless time_table.dates.any?
+        evaluator.dates_count.times do |i|
+          time_table.dates  << create(:time_table_date, :time_table => time_table, :date => i.days.since.to_date, :in_out => true)
+        end
       end
 
       start_date = Date.today
       end_date = start_date + 10
 
-      0.upto(4) do |i|
-        time_table.periods << create(:time_table_period, :time_table => time_table, :period_start => start_date, :period_end => end_date)
-        start_date = start_date + 20
-        end_date = start_date + 10
+      unless time_table.periods.any?
+        evaluator.periods_count.times do |i|
+          time_table.periods << create(:time_table_period, :time_table => time_table, :period_start => start_date, :period_end => end_date)
+          start_date = start_date + 20
+          end_date = start_date + 10
+        end
       end
       time_table.save_shortcuts
       time_table.update_checksum!
