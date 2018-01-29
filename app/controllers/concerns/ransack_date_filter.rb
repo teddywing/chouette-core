@@ -29,10 +29,11 @@ module RansackDateFilter
     def ransack_period_range **options
       return options[:scope] unless !!@begin_range && !!@end_range
 
+      scope = options[:scope]
       if @begin_range > @end_range
         flash.now[:error] = options[:error_message]
       else
-        scope = options[:scope].send options[:query], @begin_range..@end_range
+        scope = scope.send options[:query], @begin_range..@end_range
       end
       scope
     end

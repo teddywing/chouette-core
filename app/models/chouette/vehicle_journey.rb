@@ -52,8 +52,15 @@ module Chouette
       end
     }
 
+    scope :in_purchase_window, ->(range){
+      purchase_windows = Chouette::PurchaseWindow.overlap_dates(range)
+      sql = purchase_windows.joins(:vehicle_journeys).select('vehicle_journeys.id').uniq.to_sql
+      where("id IN (#{sql})")
+    }
+
     # We need this for the ransack object in the filters
     ransacker :stop_area_ids
+    ransacker :purchase_window_date_gt
 
     # TODO: Remove this validator
     # We've eliminated this validation because it prevented vehicle journeys

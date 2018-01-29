@@ -67,6 +67,8 @@ fr:
       time_range_filter: "Filtrer"
     sidebar:
       timeless: "Courses sans horaire"
+    errors:
+      purchase_window: Calendrier commercial invalide
   activerecord:
     models:
       vehicle_journey:
@@ -108,6 +110,7 @@ fr:
         footnote_ids: "Notes de bas de page"
         departure_time: "Départ"
         arrival_time: "Arrivée"
+        purchase_window: "Disponibilité commerciale"
     errors:
       models:
         vehicle_journey:
