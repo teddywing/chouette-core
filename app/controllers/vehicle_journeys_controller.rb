@@ -66,6 +66,8 @@ class VehicleJourneysController < ChouetteController
             :city_name => sp.stop_area.try(:city_name),
             :comment => sp.stop_area.try(:comment),
             :area_type => sp.stop_area.try(:area_type),
+            :area_type_i18n => I18n.t(sp.stop_area.try(:area_type), scope: 'area_types.label'),
+            :area_kind => sp.stop_area.try(:kind),
             :stop_area_id => sp.stop_area_id,
             :registration_number => sp.stop_area.try(:registration_number),
             :nearest_topic_name => sp.stop_area.try(:nearest_topic_name),

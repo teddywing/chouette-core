@@ -5,6 +5,7 @@ fr:
     errors:
       empty: Aucun stop_area_id
       parent_area_type: ne peut être de type %{area_type}
+      incorrect_kind_area_type: Ce type d'arrêt est invalide pour cette catégorie
     default_geometry_success: "%{count} arrêts édités"
     stop_area:
       no_position: "Pas de position"
@@ -97,6 +98,7 @@ fr:
     attributes:
       stop_area:
         name: "Nom"
+        kind: "Catégorie"
         registration_number: "Numéro d'enregistrement"
         published_name: "Nom public"
         deleted: "Supprimé"

@@ -203,6 +203,7 @@ class StopAreasController < ChouetteController
       :url,
       :waiting_time,
       :zip_code,
+      :kind,
     )
   end
 
