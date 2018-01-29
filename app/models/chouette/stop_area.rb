@@ -106,9 +106,7 @@ module Chouette
       end
     end
 
-    def local_id
-      id.to_s
-    end
+    alias_method :local_id, :user_objectid
 
     def children_in_depth
       return [] if self.children.empty?
