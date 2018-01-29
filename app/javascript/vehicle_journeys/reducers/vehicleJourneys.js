@@ -273,6 +273,8 @@ export default function vehicleJourneys(state = [], action) {
           return vj
         }
       })
+    case 'DID_VALIDATE_VEHICLE_JOURNEYS':
+      return [...action.vehicleJourneys]
     default:
       return state
   }

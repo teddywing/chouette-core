@@ -37,6 +37,47 @@ describe('when clicking on add button', () => {
     expect(actions.openCreateModal()).toEqual(expectedAction)
   })
 })
+describe('when validating the form', () => {
+  it('should check that non-commercial stops have passing time', () => {
+    let state = [{
+      vehicle_journey_at_stops: [{
+        area_kind: "non_commercial",
+        departure_time: {
+          hour: "00",
+          minute: "00"
+        }
+      }]
+    }]
+
+    expect(actions.validate(dispatch, state)).toEqual(false)
+
+    state = [{
+      vehicle_journey_at_stops: [{
+        area_kind: "non_commercial",
+        departure_time: {
+          hour: "00",
+          minute: "01"
+        }
+      }]
+    }]
+
+    expect(actions.validate(dispatch, state)).toEqual(true)
+  })
+
+  it('should not check that commercial stops', () => {
+    let state = [{
+      vehicle_journey_at_stops: [{
+        area_kind: "commercial",
+        departure_time: {
+          hour: "00",
+          minute: "00"
+        }
+      }]
+    }]
+
+    expect(actions.validate(dispatch, state)).toEqual(true)
+  })
+})
 describe('when using select2 to pick a journey pattern', () => {
   it('should create an action to select a journey pattern inside modal', () => {
     let selectedJP = {

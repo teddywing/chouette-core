@@ -380,6 +380,32 @@ const actions = {
         }
       })
   },
+
+  validate : (dispatch, vehicleJourneys, next) => {
+    let valid = true
+    let vj, vjas
+    for (vj of vehicleJourneys){
+      vj.errors = false
+      for(vjas of vj.vehicle_journey_at_stops){
+        vjas.errors = null
+        if (vjas.area_kind == "non_commercial" && parseInt(vjas.departure_time.hour) == 0 && parseInt(vjas.departure_time.minute) == 0){
+          vjas.errors = "Champ requis"
+          vj.errors = true
+          valid = false
+        }
+      }
+    }
+    dispatch(actions.didValidateVehicleJourneys(vehicleJourneys))
+    if(valid){
+      actions.submitVehicleJourneys(dispatch, vehicleJourneys, next)
+    }
+  },
+
+  didValidateVehicleJourneys : (vehicleJourneys) => ({
+    type: 'DID_VALIDATE_VEHICLE_JOURNEYS',
+    vehicleJourneys
+  }),
+
   submitVehicleJourneys : (dispatch, state, next) => {
     dispatch(actions.fetchingApi())
     let urlJSON = window.location.pathname + "_collection.json"
