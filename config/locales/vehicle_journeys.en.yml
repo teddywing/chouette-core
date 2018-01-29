@@ -67,6 +67,8 @@ en:
       time_range_filter: "Filter"
     sidebar:
       timeless: "Timeless vehicle journeys"
+    errors:
+      purchase_window: Invalid purchase window
   activerecord:
     models:
       vehicle_journey:
@@ -108,6 +110,7 @@ en:
         footnote_ids: "Footnotes"
         departure_time: "Departure"
         arrival_time: "Arrival"
+        purchase_window: "Purchase availability"
     errors:
       models:
         vehicle_journey:

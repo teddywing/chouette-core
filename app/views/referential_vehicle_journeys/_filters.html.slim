@@ -21,10 +21,16 @@
         = f.input :published_journey_name_gteq, label: false, wrapper_html: { class: 'w45'}
         .form-group.w10.to= I18n.t('vehicle_journeys.form.to')
         = f.input :published_journey_name_lteq, label: false, wrapper_html: { class: 'w45'}
-
     .form-group.togglable
       = f.label Chouette::StopArea.model_name.human.pluralize, required: false, class: 'control-label'
       = f.input :stop_area_ids, collection: @all_stop_areas.select(:id, :name).order(name: :asc), checked: params[:q] && params[:q][:stop_area_ids], as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}, multiple: true
+    .form-group.togglable
+      = f.label Chouette::VehicleJourney.human_attribute_name(:purchase_window), class: 'control-label'
+      .filter_menu
+        = f.simple_fields_for :purchase_window do |p|
+          = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
+          = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
+
 
   .actions
     = link_to 'Effacer', referential_vehicle_journeys_path(@referential), class: 'btn btn-link'

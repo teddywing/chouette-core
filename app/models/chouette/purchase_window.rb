@@ -18,6 +18,7 @@ module Chouette
     validates_presence_of :name, :referential
 
     scope :contains_date, ->(date) { where('date ? <@ any (date_ranges)', date) }
+    scope :overlap_dates, ->(date_range) { where('daterange(?, ?) && any (date_ranges)', date_range.first, date_range.last + 1.day) }
 
     def self.ransackable_scopes(auth_object = nil)
       [:contains_date]
