@@ -28,8 +28,14 @@
       = f.label Chouette::VehicleJourney.human_attribute_name(:purchase_window), class: 'control-label'
       .filter_menu
         = f.simple_fields_for :purchase_window do |p|
-          = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @begin_range, include_blank: @begin_range ? false : true
-          = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @end_range, include_blank: @end_range ? false : true
+          = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @purchase_window_begin_range, include_blank: @purchase_window_begin_range ? false : true
+          = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @purchase_window_end_range, include_blank: @purchase_window_end_range ? false : true
+    .form-group.togglable
+      = f.label Chouette::TimeTable.model_name.human, class: 'control-label'
+      .filter_menu
+        = f.simple_fields_for :time_table do |p|
+          = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @time_table_begin_range, include_blank: @time_table_begin_range ? false : true
+          = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @time_table_end_range, include_blank: @time_table_end_range ? false : true
 
 
   .actions

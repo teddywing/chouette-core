@@ -69,6 +69,7 @@ fr:
       timeless: "Courses sans horaire"
     errors:
       purchase_window: Calendrier commercial invalide
+      time_table: Dates d'application invalides
   activerecord:
     models:
       vehicle_journey:

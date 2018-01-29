@@ -60,9 +60,90 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(subject).to include included_purchase_window
     end
 
-    it "should include VJ with overlapping_purchase_window purchase window" do
+    it "should include VJ with overlapping purchase_window purchase window" do
       expect(subject).to include overlapping_purchase_window
     end
+  end
+
+  describe '#in_time_table' do
+    let(:start_date){2.month.ago.to_date}
+    let(:end_date){1.month.ago.to_date}
+
+    subject{Chouette::VehicleJourney.with_matching_timetable start_date..end_date}
+
+    context "without time table" do
+      let!(:vehicle_journey){ create :vehicle_journey }
+      it "should not include VJ " do
+        expect(subject).to_not include vehicle_journey
+      end
+    end
+
+    context "without a time table matching on a regular day" do
+      let(:timetable){
+        period = create :time_table_period, period_start: start_date-2.day, period_end: start_date
+        create :time_table, periods: [period], dates_count: 0
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should include VJ " do
+        expect(subject).to include vehicle_journey
+      end
+    end
+
+    context "without a time table matching on a regular day" do
+      let(:timetable){
+        period = create :time_table_period, period_start: end_date, period_end: end_date+1.day
+        create :time_table, periods: [period], dates_count: 0
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should include VJ " do
+        expect(subject).to include vehicle_journey
+      end
+    end
+
+    context "with a time table with a matching period but not the right day" do
+      let(:start_date){end_date - 1.day}
+      let(:end_date){Time.now.end_of_week.to_date}
+
+      let(:timetable){
+        period = create :time_table_period, period_start: start_date-1.month, period_end: end_date+1.month
+        create :time_table, periods: [period], int_day_types: 4 + 8, dates_count: 0
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should not include VJ " do
+        expect(subject).to_not include vehicle_journey
+      end
+    end
+
+    context "with a time table with a matching period but day opted-out" do
+      let(:start_date){end_date - 1.day}
+      let(:end_date){Time.now.end_of_week.to_date}
+
+      let(:timetable){
+        period = create :time_table_period, period_start: start_date-1.month, period_end: start_date-1.day
+        date = create(:time_table_date, :date => start_date, in_out: false)
+        create :time_table, periods: [period], dates: [date]
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should not include VJ " do
+        expect(subject).to_not include vehicle_journey
+      end
+    end
+
+    context "with a time table with no matching period but not the right extra day" do
+      let(:start_date){end_date - 1.day}
+      let(:end_date){Time.now.end_of_week.to_date}
+
+      let(:timetable){
+        period = create :time_table_period, period_start: start_date-1.month, period_end: start_date-1.day
+        date = create(:time_table_date, :date => start_date, in_out: true)
+        create :time_table, periods: [period], dates: [date]
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should include VJ " do
+        expect(subject).to include vehicle_journey
+      end
+    end
+
   end
 
   describe "vjas_departure_time_must_be_before_next_stop_arrival_time",

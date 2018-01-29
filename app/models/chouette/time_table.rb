@@ -311,7 +311,6 @@ module Chouette
         bounding_max = periods_max_date if periods_max_date &&
             (bounding_max.nil? || (bounding_max < periods_max_date))
       end
-
       [bounding_min, bounding_max].compact
     end
 
