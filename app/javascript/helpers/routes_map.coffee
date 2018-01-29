@@ -30,20 +30,24 @@ class RoutesMap
         geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(stops[stops.length - 1].longitude), parseFloat(stops[stops.length - 1].latitude)]))
       })
     ]
-    stops.forEach (stop, i) =>
-      if i < stops.length - 1
-        geoColLns.push new ol.Feature
-          geometry: new ol.geom.LineString([
-            ol.proj.fromLonLat([parseFloat(stops[i].longitude), parseFloat(stops[i].latitude)]),
-            ol.proj.fromLonLat([parseFloat(stops[i + 1].longitude), parseFloat(stops[i + 1].latitude)])
-          ])
 
-      geoColPts.push(new ol.Feature({
-        geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(stop.longitude), parseFloat(stop.latitude)]))
-      }))
-      unless @seenStopIds.indexOf(stop.stoparea_id) > 0
-        @area.push [parseFloat(stop.longitude), parseFloat(stop.latitude)]
-        @seenStopIds.push stop.stoparea_id
+    prevStop = null
+    stops.forEach (stop, i) =>
+      if stop.longitude && stop.latitude
+        if prevStop
+          geoColLns.push new ol.Feature
+            geometry: new ol.geom.LineString([
+              ol.proj.fromLonLat([parseFloat(prevStop.longitude), parseFloat(prevStop.latitude)]),
+              ol.proj.fromLonLat([parseFloat(stop.longitude), parseFloat(stop.latitude)])
+            ])
+        prevStop = stop
+
+        geoColPts.push(new ol.Feature({
+          geometry: new ol.geom.Point(ol.proj.fromLonLat([parseFloat(stop.longitude), parseFloat(stop.latitude)]))
+        }))
+        unless @seenStopIds.indexOf(stop.stoparea_id) > 0
+          @area.push [parseFloat(stop.longitude), parseFloat(stop.latitude)]
+          @seenStopIds.push stop.stoparea_id
 
     vectorPtsLayer = new ol.layer.Vector({
       source: new ol.source.Vector({
