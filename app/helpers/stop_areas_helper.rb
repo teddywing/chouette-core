@@ -11,6 +11,10 @@ module StopAreasHelper
     ( "<img src='#{stop_area_picture_url(stop_area)}'/>" + " <span style='height:25px; line-height:25px; margin-left: 5px; '>" + name + " <small style='height:25px; line-height:25px; margin-left: 10px; color: #555;'>" + localization + "</small></span>").html_safe
   end
 
+  def label_for_country country, txt=nil
+    "#{txt} <span title='#{ISO3166::Country[country]&.translation(I18n.locale)}' class='flag-icon flag-icon-#{country}'></span>".html_safe
+  end
+
   def genealogical_title
     return t("stop_areas.genealogical.genealogical_routing") if @stop_area.stop_area_type == 'itl'
     t("stop_areas.genealogical.genealogical")
@@ -33,11 +37,9 @@ module StopAreasHelper
     @stop_area.stop_area_type == 'stop_place' || @stop_area.stop_area_type == 'commercial_stop_point'
   end
 
-
   def pair_key(access_link)
     "#{access_link.access_point.id}-#{access_link.stop_area.id}"
   end
-
 
   def geo_data(sa, sar)
     if sa.long_lat_type.nil?

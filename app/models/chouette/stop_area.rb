@@ -12,6 +12,8 @@ module Chouette
     enumerize :area_type, in: Chouette::AreaType::ALL
     enumerize :kind, in: %i(commercial non_commercial)
 
+    AVAILABLE_LOCALIZATIONS = %i(gb nl de fr it es)
+
     with_options dependent: :destroy do |assoc|
       assoc.has_many :stop_points
       assoc.has_many :access_points
@@ -48,6 +50,11 @@ module Chouette
     def self.nullable_attributes
       [:registration_number, :street_name, :country_code, :fare_code,
       :nearest_topic_name, :comment, :long_lat_type, :zip_code, :city_name, :url, :time_zone]
+    end
+
+    def localized_names
+      val = read_attribute(:localized_names) || {}
+      Hash[*AVAILABLE_LOCALIZATIONS.map{|k| [k, val[k.to_s]]}.flatten]
     end
 
     def parent_area_type_must_be_greater
