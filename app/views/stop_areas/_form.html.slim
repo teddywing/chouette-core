@@ -6,6 +6,13 @@
         /= @map.to_html
         = f.input :id, as: :hidden
         = f.input :name, :input_html => {:title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.name")}
+        - if has_feature?(:stop_area_localized_names)
+          .form-group
+            .col-sm-3.col-xs-5
+            .col-sm-9.col-xs-7
+              - f.object.localized_names.each do |k, v|
+                .col-md-6= f.input "localized_names[#{k}]", input_html: {value: v}, label: label_for_country(k)
+                
         .form-group
           .col-sm-3.col-xs-5
           .col-sm-9.col-xs-7
