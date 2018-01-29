@@ -13,7 +13,7 @@ export default class SaveVehicleJourneys extends SaveButton{
   }
 
   submitForm(){
-    this.props.onSubmitVehicleJourneys(this.props.dispatch, this.props.vehicleJourneys)
+    this.props.validate(this.props.vehicleJourneys, this.props.dispatch)
   }
 }
 

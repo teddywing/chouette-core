@@ -45,6 +45,7 @@ child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops
     end
 
     node(:dummy) { vehicle_stop.dummy }
+    node(:area_kind) { vehicle_stop.stop_point.stop_area.kind }
 
     node(:stop_area_object_id) do
       vehicle_stop.stop_point.stop_area.objectid
