@@ -19,13 +19,15 @@ export default class StopAreaHeaderManager {
       <div
         className={(showHeadline) ? 'headlined' : ''}
         data-headline={showHeadline}
-        title={sp.city_name + ' (' + sp.zip_code +')'}
+        title={sp.city_name ? sp.city_name + ' (' + sp.zip_code +')' : ""}
       >
         <span>
           <span>
             {sp.name}
             {sp.time_zone_formatted_offset && <span className="small">
               &nbsp;({sp.time_zone_formatted_offset})
+            </span>}
+            {sp.area_kind == 'non_commercial' && <span className="fa fa-question-circle" title={sp.area_type_i18n}>
             </span>}
           </span>
         </span>

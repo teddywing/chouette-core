@@ -10,9 +10,19 @@ describe Chouette::StopArea, :type => :model do
 
   it { should belong_to(:stop_area_referential) }
   it { should validate_presence_of :name }
+  it { should validate_presence_of :kind }
   it { should validate_numericality_of :latitude }
   it { should validate_numericality_of :longitude }
   it { is_expected.to be_versioned }
+
+  describe "#area_type" do
+    it "should validate the value is correct regarding to the kind" do
+      expect(build(:stop_area, kind: :commercial, area_type: :gdl)).to be_valid
+      expect(build(:stop_area, kind: :non_commercial, area_type: :relief)).to be_valid
+      expect(build(:stop_area, kind: :commercial, area_type: :relief)).to_not be_valid
+      expect(build(:stop_area, kind: :non_commercial, area_type: :gdl)).to_not be_valid
+    end
+  end
 
   # describe ".latitude" do
   #   it "should accept -90 value" do
