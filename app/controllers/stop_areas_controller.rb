@@ -95,7 +95,6 @@ class StopAreasController < ChouetteController
   def edit
     authorize stop_area
     edit! do
-      stop_area.position ||= stop_area.default_position
       map.editable = true
     end
   end
@@ -107,7 +106,6 @@ class StopAreasController < ChouetteController
 
   def update
     authorize stop_area
-    stop_area.position ||= stop_area.default_position
     map.editable = true
 
     update!
