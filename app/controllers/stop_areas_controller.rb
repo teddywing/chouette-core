@@ -202,6 +202,7 @@ class StopAreasController < ChouetteController
       :waiting_time,
       :zip_code,
       :kind,
+      localized_names: Chouette::StopArea::AVAILABLE_LOCALIZATIONS
     )
   end
 
