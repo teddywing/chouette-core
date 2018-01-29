@@ -61,6 +61,7 @@ module Chouette
     # We need this for the ransack object in the filters
     ransacker :purchase_window_date_gt
     ransacker :stop_area_ids
+    ransacker :purchase_window_date_gt
 
     # returns VehicleJourneys with at least 1 day in their time_tables
     # included in the given range

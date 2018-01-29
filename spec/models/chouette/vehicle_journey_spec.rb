@@ -200,6 +200,47 @@ describe Chouette::VehicleJourney, :type => :model do
 
   end
 
+  describe '#in_purchase_window' do
+    let(:start_date){2.month.ago.to_date}
+    let(:end_date){1.month.ago.to_date}
+
+    subject{Chouette::VehicleJourney.in_purchase_window start_date..end_date}
+
+    let!(:without_purchase_window){ create :vehicle_journey }
+    let!(:without_matching_purchase_window){
+      pw = create :purchase_window, referential: Referential.first, date_ranges: [(end_date+1.day..end_date+2.days)]
+      pw2 = create :purchase_window, referential: Referential.first, date_ranges: [(end_date+10.day..end_date+20.days)]
+      create :vehicle_journey, purchase_windows: [pw, pw2]
+    }
+    let!(:included_purchase_window){
+      pw = create :purchase_window, referential: Referential.first, date_ranges: [(start_date..end_date)]
+      pw2 = create :purchase_window, referential: Referential.first
+      create :vehicle_journey, purchase_windows: [pw, pw2]
+    }
+    let!(:overlapping_purchase_window){
+      pw = create :purchase_window, referential: Referential.first, date_ranges: [(end_date..end_date+1.day)]
+      pw2 = create :purchase_window, referential: Referential.first
+      create :vehicle_journey, purchase_windows: [pw, pw2]
+    }
+
+
+    it "should not include VJ with no purchase window" do
+      expect(subject).to_not include without_purchase_window
+    end
+
+    it "should not include VJ with no matching purchase window" do
+      expect(subject).to_not include without_matching_purchase_window
+    end
+
+    it "should include VJ with included purchase window" do
+      expect(subject).to include included_purchase_window
+    end
+
+    it "should include VJ with overlapping_purchase_window purchase window" do
+      expect(subject).to include overlapping_purchase_window
+    end
+  end
+
   describe "vjas_departure_time_must_be_before_next_stop_arrival_time",
       skip: "Validation currently commented out because it interferes with day offsets" do
 
