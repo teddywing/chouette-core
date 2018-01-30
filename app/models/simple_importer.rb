@@ -131,7 +131,6 @@ class SimpleImporter < ActiveRecord::Base
     out += msg
     print out
     @prev_msg_size = msg.size
-    # @prev_msg_size += 9 if opts[:color]
   end
 
   class FailedImport < RuntimeError
