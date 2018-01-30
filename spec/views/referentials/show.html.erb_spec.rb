@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "referentials/show", type: :view do
 
   let!(:referential) do
-    referential = create(:referential, organisation: current_organisation)
+    referential = create(:referential)
     assign :referential, referential.decorate(context: {
       current_organisation: referential.organisation
     })
