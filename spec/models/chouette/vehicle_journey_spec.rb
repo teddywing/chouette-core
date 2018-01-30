@@ -231,6 +231,14 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(vehicle_journey.reload.company_id).to eq state['company']['id']
     end
 
+    it "handles vehicle journey company deletion" do
+      vehicle_journey.update(company: create(:company))
+      state.delete('company')
+      Chouette::VehicleJourney.state_update(route, collection)
+
+      expect(vehicle_journey.reload.company_id).to be_nil
+    end
+
     it 'should update vj attributes from state' do
       state['published_journey_name']       = 'edited_name'
       state['published_journey_identifier'] = 'edited_identifier'
