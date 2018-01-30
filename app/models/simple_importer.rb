@@ -22,6 +22,13 @@ class SimpleImporter < ActiveRecord::Base
     self.journal ||= []
   end
 
+  def configure
+    new_config = configuration.duplicate
+    yield new_config
+    new_config.validate!
+    self.configuration = new_config
+  end
+
   def resolve col_name, value, &block
     val = block.call(value)
     return val if val.present?
@@ -67,7 +74,7 @@ class SimpleImporter < ActiveRecord::Base
         new_record = @current_record.new_record?
         @current_record.save!
         self.journal.push({event: (new_record ? :creation : :update), kind: :log})
-        statuses += new_record ? "✓" : "-"
+        statuses += new_record ? colorize("✓", :green) : colorize("-", :orange)
       end
       self.configuration.columns.each do |col|
         if col.name && @resolution_queue.any?
@@ -105,25 +112,26 @@ class SimpleImporter < ActiveRecord::Base
     end
   end
 
+  def colorize txt, color
+    color = {
+      red: "31",
+      green: "32",
+      orange: "33",
+    }[color] || "33"
+    "\e[#{color}m#{txt}\e[0m"
+  end
+
   def log msg, opts={}
     return unless @verbose
     out = ""
-    if opts[:color]
-      color = {
-        red: "31",
-        green: "32",
-        orange: "33",
-      }[opts[:color]] || "33"
-    end
-    out += "\e[#{color}m" if color
+    msg = colorize(msg, opts[:color]) if opts[:color]
     if opts[:clear] && @prev_msg_size
       out += "\b"*@prev_msg_size
     end
     out += msg
-    out += "\e[0m" if color
     print out
     @prev_msg_size = msg.size
-    @prev_msg_size += 9 if color
+    # @prev_msg_size += 9 if opts[:color]
   end
 
   class FailedImport < RuntimeError
@@ -133,12 +141,27 @@ class SimpleImporter < ActiveRecord::Base
     attr_accessor :model, :headers, :separator, :key
     attr_reader :columns
 
-    def initialize import_name
+    def initialize import_name, opts={}
       @import_name = import_name
-      @key = "id"
-      @headers = true
-      @separator = ","
-      @columns = []
+      @key = opts[:key] || "id"
+      @headers = opts.has_key?(:headers) ? opts[:headers] : true
+      @separator = opts[:separator] || ","
+      @columns = opts[:columns] || []
+      @model = opts[:model]
+    end
+
+    def duplicate
+      Configuration.new @import_name, self.options
+    end
+
+    def options
+      {
+        key: @key,
+        headers: @headers,
+        separator: @separator,
+        columns: @columns.map(&:duplicate),
+        model: model
+      }
     end
 
     def validate!
@@ -175,6 +198,10 @@ class SimpleImporter < ActiveRecord::Base
         @name = opts[:name]
         @options = opts
         @options[:attribute] ||= @name
+      end
+
+      def duplicate
+        Column.new @options.dup
       end
 
       def [](key)
