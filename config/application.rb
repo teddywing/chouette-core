@@ -39,6 +39,8 @@ module ChouetteIhm
       'FeatureChecker::NotAuthorizedError' => :unauthorized
     )
 
+    config.development_toolbar = false
+
     unless Rails.env.production?
         # Work around sprockets+teaspoon mismatch:
         Rails.application.config.assets.precompile += %w(spec_helper.js)

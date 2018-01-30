@@ -95,4 +95,14 @@ Rails.application.configure do
   config.i18n.available_locales = [:fr, :en]
 
   config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload) if ENV['LIVERELOAD']
+  config.development_toolbar = false
+  if ENV['TOOLBAR'] && File.exists?("config/development_toolbar.rb")
+    config.development_toolbar = OpenStruct.new
+    config.development_toolbar.features_doc_url = nil
+    config.development_toolbar.available_features = %w()
+    config.development_toolbar.available_permissions = %w()
+    config.development_toolbar.tap do |toolbar|
+      eval File.read("config/development_toolbar.rb")
+    end
+  end
 end

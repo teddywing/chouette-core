@@ -238,6 +238,10 @@ ChouetteIhm::Application.routes.draw do
 
   get '/help/(*slug)' => 'help#show'
 
+  if Rails.application.config.development_toolbar
+    post "/development_toolbar" => "development_toolbar#update_settings", as: :development_toolbar_update_settings
+  end
+
   match '/404', to: 'errors#not_found', via: :all, as: 'not_found'
   match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden'
   match '/422', to: 'errors#server_error', via: :all, as: 'unprocessable_entity'
