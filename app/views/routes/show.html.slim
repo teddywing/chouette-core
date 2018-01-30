@@ -1,18 +1,5 @@
 - breadcrumb :route, @referential, @route
 - page_header_content_for @route
-- content_for :page_header_actions do
-  - if policy(@route).edit?
-    = link_to(t('actions.edit'), edit_referential_line_route_path(@referential, @line, @route), class: 'btn btn-default')
-
-- content_for :page_header_content do
-  .row.mb-sm
-    .col-lg-12.text-right
-      - @route.action_links.each do |link|
-        = link_to link.href,
-            method: link.method,
-            data: link.data,
-            class: 'btn btn-primary' do
-              = link.content
 
 .page_content
   .container-fluid
@@ -67,9 +54,9 @@
                 attribute: Proc.new { |s| t("stop_points.stop_point.for_alighting.#{s.for_alighting}") } \
               ) \
             ],
-            links: [:show],
             sortable: false,
-            cls: 'table has-stoppoints'
+            cls: 'table has-stoppoints',
+            action: :index
 
         - else
           = replacement_msg t('stop_areas.search_no_results')

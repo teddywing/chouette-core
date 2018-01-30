@@ -1,14 +1,6 @@
 - breadcrumb :network, @network
 - page_header_content_for @network
-- content_for :page_header_content do
-  .row
-    .col-lg-12.text-right.mb-sm
-      - @network.action_links.each do |link|
-        = link_to link.href,
-            method: link.method,
-            data: link.data,
-            class: 'btn btn-primary' do
-              = link.content
+
 .page_content
   .container-fluid
     .row

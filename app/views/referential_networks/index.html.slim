@@ -1,7 +1,4 @@
 - breadcrumb :referential_networks, @referential
-- if policy(Chouette::Network).create?
-  - content_for :page_header_actions do
-      = link_to(t('networks.actions.new'), new_referential_network_path(@referential), class: 'btn btn-default')
 
 .page_content
   .container-fluid

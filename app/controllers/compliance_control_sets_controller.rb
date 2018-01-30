@@ -38,17 +38,11 @@ class ComplianceControlSetsController < ChouetteController
   private
 
   def decorate_compliance_control_sets(compliance_control_sets)
-    ModelDecorator.decorate(
-      compliance_control_sets,
-      with: ComplianceControlSetDecorator
-    )
+    ComplianceControlSetDecorator.decorate(compliance_control_sets)
   end
 
   def decorate_compliance_controls(compliance_controls)
-    ModelDecorator.decorate(
-      compliance_controls,
-      with: ComplianceControlDecorator,
-    )
+    ComplianceControlDecorator.decorate(compliance_controls)
   end
 
   def compliance_control_set_params

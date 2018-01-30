@@ -56,6 +56,10 @@ class ReferentialNetworksController < ChouetteController
     end
   end
 
+  def collection_name
+    'networks'
+  end
+
   def resource_url(network = nil)
     referential_network_path(referential, network || resource)
   end
@@ -78,9 +82,8 @@ class ReferentialNetworksController < ChouetteController
   end
 
   def decorate_networks(networks)
-    ModelDecorator.decorate(
+    ReferentialNetworkDecorator.decorate(
       networks,
-      with: ReferentialNetworkDecorator,
       context: {
         referential: referential
       }

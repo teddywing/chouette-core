@@ -1,66 +1,70 @@
-class StopAreaDecorator < Draper::Decorator
+class StopAreaDecorator < AF83::Decorator
   decorates Chouette::StopArea
 
-  delegate_all
+  create_action_link do |l|
+    l.content t('stop_areas.actions.new')
+    l.href { h.new_stop_area_referential_stop_area_path }
+  end
 
-  def common_action_links(stop_area = nil)
-    top_links, bottom_links = [], []
-    stop_area ||= object
-
-    if h.policy(stop_area).update?
-      top_links << Link.new(
-        content: h.t('stop_areas.actions.edit'),
-        href: h.edit_stop_area_referential_stop_area_path(
-          stop_area.stop_area_referential,
-          stop_area
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link do |l|
+      l.href do
+        h.stop_area_referential_stop_area_path(
+          object.stop_area_referential,
+          object
         )
-      )
+      end
     end
 
-    if h.policy(stop_area).destroy?
-      bottom_links << Link.new(
-        content: h.destroy_link_content('stop_areas.actions.destroy'),
-        href: h.stop_area_referential_stop_area_path(
-          stop_area.stop_area_referential,
-          stop_area
-        ),
-        method: :delete,
-        data: { confirm: t('stop_areas.actions.destroy_confirm') }
-      )
+    instance_decorator.edit_action_link do |l|
+      l.content h.t('stop_areas.actions.edit')
+      l.href do
+        h.edit_stop_area_referential_stop_area_path(
+          object.stop_area_referential,
+          object
+        )
+      end
     end
 
-    [top_links, bottom_links]
+    instance_decorator.action_link policy: :deactivate, secondary: true do |l|
+      l.content h.deactivate_link_content('stop_areas.actions.deactivate')
+      l.href do
+        h.deactivate_stop_area_referential_stop_area_path(
+          object.stop_area_referential,
+          object
+        )
+      end
+      l.method :put
+      l.data confirm: h.t('stop_areas.actions.deactivate_confirm')
+      l.add_class 'delete-action'
+    end
+
+    instance_decorator.action_link policy: :activate, secondary: true do |l|
+      l.content h.activate_link_content('stop_areas.actions.activate')
+      l.href do
+        h.activate_stop_area_referential_stop_area_path(
+          object.stop_area_referential,
+          object
+        )
+      end
+      l.method :put
+      l.data confirm: h.t('stop_areas.actions.activate_confirm')
+      l.add_class 'delete-action'
+    end
+
+    instance_decorator.destroy_action_link do |l|
+      l.content h.destroy_link_content('stop_areas.actions.destroy')
+      l.href do
+        h.stop_area_referential_stop_area_path(
+          object.stop_area_referential,
+          object
+        )
+      end
+      l.data confirm: h.t('stop_areas.actions.destroy_confirm')
+    end
   end
 
-  def action_links(stop_area = nil)
-    stop_area ||= object
-    top_links, bottom_links = common_action_links(stop_area)
-    links = []
-
-    if h.policy(object).deactivate?
-      links << Link.new(
-        content: h.deactivate_link_content('stop_areas.actions.deactivate'),
-        href: h.deactivate_stop_area_referential_stop_area_path(stop_area.stop_area_referential, object),
-        method: :put,
-        data: {confirm: h.t('stop_areas.actions.deactivate_confirm')},
-        extra_class: "delete-action"
-      )
-    end
-
-    if h.policy(object).activate?
-      links << Link.new(
-        content: h.activate_link_content('stop_areas.actions.activate'),
-        href: h.activate_stop_area_referential_stop_area_path(stop_area.stop_area_referential, object),
-        method: :put,
-        data: {confirm: h.t('stop_areas.actions.activate_confirm')},
-        extra_class: "delete-action"
-      )
-    end
-
-    top_links + links + bottom_links
-  end
-
-  def waiting_time_text
+  define_instance_method :waiting_time_text do
     return '-' if [nil, 0].include? waiting_time
     h.t('stop_areas.waiting_time_format', value: waiting_time)
   end

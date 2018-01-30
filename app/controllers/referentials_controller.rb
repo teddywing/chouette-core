@@ -32,9 +32,8 @@ class ReferentialsController < ChouetteController
     show! do |format|
       @referential = @referential.decorate(context: { current_workbench_id: params[:current_workbench_id] } )
       @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
-      @reflines = ModelDecorator.decorate(
+      @reflines = ReferentialLineDecorator.decorate(
         @reflines,
-        with: ReferentialLineDecorator,
         context: {
           referential: referential,
           current_organisation: current_organisation
@@ -80,6 +79,7 @@ class ReferentialsController < ChouetteController
     referential.archive!
     redirect_to workbench_path(referential.workbench_id), notice: t('notice.referential.archived')
   end
+
   def unarchive
     if referential.unarchive!
       flash[:notice] = t('notice.referential.unarchived')
@@ -97,7 +97,7 @@ class ReferentialsController < ChouetteController
   helper_method :current_referential
 
   def resource
-    @referential ||= current_organisation.find_referential(params[:id])
+    @referential ||= current_organisation.find_referential(params[:id]).decorate
   end
 
   def collection

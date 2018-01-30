@@ -1,18 +1,13 @@
-class CalendarDecorator < Draper::Decorator
-  delegate_all
+class CalendarDecorator < AF83::Decorator
+  decorates Calendar
 
-  def action_links
-    links = []
+  create_action_link
 
-    if h.policy(object).destroy?
-      links << Link.new(
-        content: h.destroy_link_content,
-        href: h.workgroup_calendar_path(context[:workgroup], object),
-        method: :delete,
-        data: { confirm: h.t('calendars.actions.destroy_confirm') }
-      )
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link
+    instance_decorator.edit_action_link
+    instance_decorator.destroy_action_link do |l|
+      l.data {{ confirm: h.t('calendars.actions.destroy_confirm') }}
     end
-
-    links
   end
 end

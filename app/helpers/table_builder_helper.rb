@@ -86,30 +86,36 @@ module TableBuilderHelper
     overhead: [],
 
     # Possibility to override the result of collection.model
-    model: nil
+    model: nil,
+
+    #overrides the params[:action] value
+    action: nil
 
   )
     content_tag :table,
-      thead(collection, columns, sortable, selectable, links.any?, overhead, model || collection.model) +
-        tbody(collection, columns, selectable, links, overhead),
+      thead(collection, columns, sortable, selectable, links.any?, overhead, model || collection.model, action || params[:action]) +
+        tbody(collection, columns, selectable, links, overhead, model, action || params[:action]),
       class: cls
   end
 
-  def self.item_row_class_name collection
-    if collection.respond_to?(:model)
-      model_name = collection.model.name
-    elsif collection.respond_to?(:first)
-      model_name = collection.first.class.name
-    else
-      model_name = "item"
-    end
+  def self.item_row_class_name collection, model=nil
+    model_name = model&.name
+
+    model_name ||=
+      if collection.respond_to?(:model)
+        collection.model.name
+      elsif collection.respond_to?(:first)
+        collection.first.class.name
+      else
+        "item"
+      end
 
     model_name.split("::").last.parameterize
   end
 
   private
 
-  def thead(collection, columns, sortable, selectable, has_links, overhead, model )
+  def thead(collection, columns, sortable, selectable, has_links, overhead, model, action)
     content_tag :thead do
       # Inserts overhead content if any specified
       over_head = ''
@@ -188,7 +194,9 @@ module TableBuilderHelper
         end
 
         # Inserts a blank column for the gear menu
-        if has_links || collection.last.try(:action_links).try(:any?)
+        last_item = collection.last
+        action_links = last_item && last_item.respond_to?(:action_links) && (last_item&.action_links&.is_a?(AF83::Decorator::ActionLinks) ? last_item.action_links(action) : last_item.action_links)
+        if has_links || action_links.try(:any?)
           hcont << content_tag(:th, '')
         end
 
@@ -199,7 +207,7 @@ module TableBuilderHelper
     end
   end
 
-  def tr item, columns, selectable, links, overhead, model_name
+  def tr item, columns, selectable, links, overhead, model_name, action
     klass = "#{model_name}-#{item.id}"
     content_tag :tr, class: klass do
       bcont = []
@@ -267,10 +275,12 @@ module TableBuilderHelper
         end
       end
 
-      if links.any? || item.try(:action_links).try(:any?)
+      action_links = item && item.respond_to?(:action_links) && (item.action_links.is_a?(AF83::Decorator::ActionLinks) ? item.action_links(action) : item.action_links)
+
+      if links.any? || action_links.try(:any?)
         bcont << content_tag(
           :td,
-          build_links(item, links),
+          build_links(item, links, action),
           class: 'actions'
         )
       end
@@ -279,12 +289,12 @@ module TableBuilderHelper
     end
   end
 
-  def tbody(collection, columns, selectable, links, overhead)
-    model_name = TableBuilderHelper.item_row_class_name collection
+  def tbody(collection, columns, selectable, links, overhead, model = nil, action)
+    model_name = TableBuilderHelper.item_row_class_name collection, model
 
     content_tag :tbody do
       collection.map do |item|
-        tr item, columns, selectable, links, overhead, model_name
+        tr item, columns, selectable, links, overhead, model_name, action
       end.join.html_safe
     end
   end
@@ -297,7 +307,7 @@ module TableBuilderHelper
     end
   end
 
-  def build_links(item, links)
+  def build_links(item, links, action)
     trigger = content_tag(
       :div,
       class: 'btn dropdown-toggle',
@@ -306,13 +316,26 @@ module TableBuilderHelper
       content_tag :span, '', class: 'fa fa-cog'
     end
 
-    menu = content_tag :ul, class: 'dropdown-menu' do
-      (
-        CustomLinks.new(item, pundit_user, links, referential, workgroup).links +
-        item.action_links.select { |link| link.is_a?(Link) }
-      ).map do |link|
-        gear_menu_link(link)
-      end.join.html_safe
+    action_links = item.action_links
+    if action_links.is_a?(AF83::Decorator::ActionLinks)
+      menu = content_tag :div, class: 'dropdown-menu' do
+        item.action_links(action).grouped_by(:primary, :secondary, :footer).map do |group, _links|
+          if _links.any?
+            content_tag :ul, class: group do
+              _links.map{|link| gear_menu_link(link)}.join.html_safe
+            end
+          end
+        end.join.html_safe
+      end
+    else
+      menu = content_tag :ul, class: 'dropdown-menu' do
+        (
+          CustomLinks.new(item, pundit_user, links, referential, workgroup).links +
+          action_links.select { |link| link.is_a?(Link) }
+        ).map do |link|
+          gear_menu_link(link)
+        end.join.html_safe
+      end
     end
 
     content_tag :div, trigger + menu, class: 'btn-group'

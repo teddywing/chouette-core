@@ -1,25 +1,13 @@
 - breadcrumb :calendar, @workgroup, @calendar
 - page_header_content_for @calendar
-- content_for :page_header_content do
-  .row.mb-sm
-    .col-lg-12.text-right
-      - @calendar.action_links.each do |link|
-        = link_to link.href,
-            method: link.method,
-            data: link.data,
-            class: 'btn btn-primary' do
-              = link.content
-- if policy(@calendar).edit?
-  - content_for :page_header_actions do
-      = link_to(t('actions.edit'), edit_workgroup_calendar_path(@workgroup, @calendar), class: 'btn btn-default')
 
 .page_content
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { 'Nom court' => @calendar.try(:short_name),
-            Calendar.human_attribute_name(:shared) => t("#{@calendar.shared}"),
-            'Organisation' => @calendar.organisation.name,
-            Calendar.human_attribute_name(:dates) =>  @calendar.dates.collect{|d| l(d, format: :short)}.join(', ').html_safe,
-            Calendar.human_attribute_name(:date_ranges) => @calendar.periods.map{|d| t('validity_range', debut: l(d.begin, format: :short), end: l(d.end, format: :short))}.join('<br>').html_safe }
+          { 'Nom court' => resource.try(:short_name),
+            Calendar.human_attribute_name(:shared) => t("#{resource.shared}"),
+            'Organisation' => resource.organisation.name,
+            Calendar.human_attribute_name(:dates) =>  resource.dates.collect{|d| l(d, format: :short)}.join(', ').html_safe,
+            Calendar.human_attribute_name(:date_ranges) => resource.periods.map{|d| t('validity_range', debut: l(d.begin, format: :short), end: l(d.end, format: :short))}.join('<br>').html_safe }

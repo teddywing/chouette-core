@@ -20,6 +20,10 @@ class Merge < ActiveRecord::Base
     referentials.first(3).map { |r| r.name.truncate(10) }.join(',')
   end
 
+  def full_names
+    referentials.map(&:name).to_sentence
+  end
+
   attr_reader :new
 
   def merge!
