@@ -136,10 +136,9 @@ export default class JourneyPattern extends Component{
               <span className='fa fa-cog'></span>
             </div>
             <ul className='dropdown-menu'>
-              <li className={this.isDisabled('update') ? 'disabled' : ''}>
+              <li>
                 <button
                   type='button'
-                  disabled={this.isDisabled('update')}
                   onClick={this.props.onOpenEditModal}
                   data-toggle='modal'
                   data-target='#JourneyPatternModal'

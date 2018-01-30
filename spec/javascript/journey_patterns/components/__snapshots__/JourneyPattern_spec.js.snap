@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the edit button in edit mode should display the edit link 1`] = `
+<div
+  className="t2e-item to_record"
+>
+  <div
+    className="th"
+  >
+    <div
+      className="strong mb-xs"
+    >
+      -
+    </div>
+    <div />
+    <div>
+      0
+       arrêt(s)
+    </div>
+    <div
+      className="btn-group"
+    >
+      <div
+        className="btn dropdown-toggle"
+        data-toggle="dropdown"
+      >
+        <span
+          className="fa fa-cog"
+        />
+      </div>
+      <ul
+        className="dropdown-menu"
+      >
+        <li>
+          <button
+            data-target="#JourneyPatternModal"
+            data-toggle="modal"
+            onClick={[Function]}
+            type="button"
+          >
+            Editer
+          </button>
+        </li>
+        <li
+          className="disabled"
+        >
+          <a
+            href="blank/vehicle_journeys?jp=undefined"
+          >
+            Horaires des courses
+          </a>
+        </li>
+        <li
+          className="delete-action disabled"
+        >
+          <button
+            className="disabled"
+            disabled={true}
+            onClick={[Function]}
+            type="button"
+          >
+            <span
+              className="fa fa-trash"
+            />
+            Supprimer
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`the edit button should display the show link 1`] = `
+<div
+  className="t2e-item to_record"
+>
+  <div
+    className="th"
+  >
+    <div
+      className="strong mb-xs"
+    >
+      -
+    </div>
+    <div />
+    <div>
+      0
+       arrêt(s)
+    </div>
+    <div
+      className="btn-group"
+    >
+      <div
+        className="btn dropdown-toggle"
+        data-toggle="dropdown"
+      >
+        <span
+          className="fa fa-cog"
+        />
+      </div>
+      <ul
+        className="dropdown-menu"
+      >
+        <li>
+          <button
+            data-target="#JourneyPatternModal"
+            data-toggle="modal"
+            onClick={[Function]}
+            type="button"
+          >
+            Consulter
+          </button>
+        </li>
+        <li
+          className="disabled"
+        >
+          <a
+            href="blank/vehicle_journeys?jp=undefined"
+          >
+            Horaires des courses
+          </a>
+        </li>
+        <li
+          className="delete-action disabled"
+        >
+          <button
+            className="disabled"
+            disabled={true}
+            onClick={[Function]}
+            type="button"
+          >
+            <span
+              className="fa fa-trash"
+            />
+            Supprimer
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
