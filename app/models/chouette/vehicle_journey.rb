@@ -220,7 +220,12 @@ module Chouette
     end
 
     def self.state_permited_attributes item
-      attrs = item.slice('published_journey_identifier', 'published_journey_name', 'journey_pattern_id', 'company_id').to_hash
+      attrs = item.slice(
+        'published_journey_identifier',
+        'published_journey_name',
+        'journey_pattern_id',
+        'company_id'
+      ).to_hash
 
       if item['journey_pattern']
         attrs['journey_pattern_id'] = item['journey_pattern']['id']
@@ -228,7 +233,12 @@ module Chouette
 
       attrs['company_id'] = item['company'] ? item['company']['id'] : nil
 
-      attrs["custom_field_values"] = Hash[*(item["custom_fields"] || {}).map{|k, v| [k, v["value"]]}.flatten]
+      attrs["custom_field_values"] = Hash[
+        *(item["custom_fields"] || {})
+          .map { |k, v| [k, v["value"]] }
+          .flatten
+      ]
+
       attrs
     end
 
