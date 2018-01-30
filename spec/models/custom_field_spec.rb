@@ -4,8 +4,8 @@ RSpec.describe CustomField, type: :model do
   let( :vj ){ create :vehicle_journey, custom_field_values: {energy: 99} }
 
   context "validates" do
-    it { should validate_uniqueness_of(:name).scoped_to(:resource_type) }
-    it { should validate_uniqueness_of(:code).scoped_to(:resource_type).case_insensitive }
+    it { should validate_uniqueness_of(:name).scoped_to(:resource_type, :workgroup_id) }
+    it { should validate_uniqueness_of(:code).scoped_to(:resource_type, :workgroup_id).case_insensitive }
   end
 
   context "field access" do
