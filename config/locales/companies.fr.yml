@@ -1,6 +1,7 @@
 fr:
   companies: &fr_companies
     search_no_results: "Aucun transporteur ne correspond à votre recherche"
+    search_no_results_for_filter: "Aucun transporteur renseigné sur ces courses"
     actions:
       new: "Ajouter un transporteur"
       edit: "Editer ce transporteur"
