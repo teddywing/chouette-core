@@ -30,6 +30,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelect2Company: (e) => {
       dispatch(actions.select2Company(e.params.data))
+    },
+    onUnselect2Company: () => {
+      dispatch(actions.unselect2Company())
     }
   }
 }
