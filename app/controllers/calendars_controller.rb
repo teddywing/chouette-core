@@ -1,5 +1,4 @@
 class CalendarsController < ChouetteController
-  include WorkgroupSupport
   include PolicyChecker
   include TimeTablesHelper
 
