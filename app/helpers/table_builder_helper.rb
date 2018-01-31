@@ -316,7 +316,6 @@ module TableBuilderHelper
       content_tag :span, '', class: 'fa fa-cog'
     end
 
-<<<<<<< HEAD
     action_links = item.action_links
     if action_links.is_a?(AF83::Decorator::ActionLinks)
       menu = content_tag :div, class: 'dropdown-menu' do
@@ -337,15 +336,6 @@ module TableBuilderHelper
           gear_menu_link(link)
         end.join.html_safe
       end
-=======
-    menu = content_tag :ul, class: 'dropdown-menu' do
-      (
-        CustomLinks.new(item, pundit_user, links, referential, workgroup).links +
-        item.action_links.select { |link| link.is_a?(Link) }
-      ).map do |link|
-        gear_menu_link(link)
-      end.join.html_safe
->>>>>>> First draft for including calendars into workgroup for having appropriate scoping
     end
 
     content_tag :div, trigger + menu, class: 'btn-group'
@@ -405,6 +395,7 @@ module TableBuilderHelper
     klass << link.extra_class if link.extra_class
     klass << 'delete-action' if link.method == :delete
     klass << 'disabled' if link.disabled
+
     content_tag(
       :li,
       link_to(

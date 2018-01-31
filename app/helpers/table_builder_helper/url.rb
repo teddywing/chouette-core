@@ -20,15 +20,7 @@ module TableBuilderHelper
           end
         end
       else
-<<<<<<< HEAD
-<<<<<<< HEAD
         polymorph_url << item.workgroup if item.respond_to? :workgroup
-=======
-        polymorph_url << item.workgroup if item.is_a?(Calendar)
->>>>>>> First draft for including calendars into workgroup for having appropriate scoping
-=======
-        polymorph_url << item.workgroup if item.respond_to? :workgroup
->>>>>>> update calendar build_links for table builder
         polymorph_url << item
       end
 
