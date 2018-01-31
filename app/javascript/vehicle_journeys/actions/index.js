@@ -384,6 +384,7 @@ const actions = {
   validate : (dispatch, vehicleJourneys, next) => {
     dispatch(actions.didValidateVehicleJourneys(vehicleJourneys))
     actions.submitVehicleJourneys(dispatch, vehicleJourneys, next)
+    return true
   },
 
   didValidateVehicleJourneys : (vehicleJourneys) => ({

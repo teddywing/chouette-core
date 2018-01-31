@@ -1,6 +1,7 @@
 import actions from '../../../app/javascript/vehicle_journeys/actions/index'
 
 const dispatch = function(){}
+window.fetch = function(){return Promise.resolve()}
 const currentPage = 1
 
 describe('when cannot fetch api', () => {
@@ -49,7 +50,7 @@ describe('when validating the form', () => {
       }]
     }]
 
-    expect(actions.validate(dispatch, state)).toEqual(false)
+    expect(actions.validate(dispatch, state)).toEqual(true)
 
     state = [{
       vehicle_journey_at_stops: [{
