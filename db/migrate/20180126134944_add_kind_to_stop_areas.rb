@@ -1,6 +1,6 @@
 class AddKindToStopAreas < ActiveRecord::Migration
   def change
     add_column :stop_areas, :kind, :string
-    Chouette::StopArea.update_all kind: :commmercial
+    Chouette::StopArea.where.not(kind: :non_commercial).update_all kind: :commercial
   end
 end

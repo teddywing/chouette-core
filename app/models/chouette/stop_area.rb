@@ -60,7 +60,8 @@ module Chouette
     end
 
     def area_type_of_right_kind
-      unless Chouette::AreaType.send(self.kind).include?(self.area_type)
+
+      unless Chouette::AreaType.send(self.kind).map(&:to_s).include?(self.area_type)
         errors.add(:area_type, I18n.t('stop_areas.errors.incorrect_kind_area_type'))
       end
     end
