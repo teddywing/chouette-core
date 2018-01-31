@@ -1,5 +1,4 @@
 class CalendarsController < ChouetteController
-  include WorkgroupSupport
   include PolicyChecker
   include TimeTablesHelper
 
@@ -8,7 +7,7 @@ class CalendarsController < ChouetteController
   respond_to :html
   respond_to :json, only: :show
   respond_to :js, only: :index
-
+  
   belongs_to :workgroup
 
   def index
@@ -55,18 +54,10 @@ class CalendarsController < ChouetteController
   private
 
   def decorate_calendars(calendars)
-<<<<<<< HEAD
     CalendarDecorator.decorate(
       calendars,
       context: {
         workgroup: workgroup
-=======
-    ModelDecorator.decorate(
-      calendars,
-      with: CalendarDecorator,
-      context: {
-        workgroup: current_workgroup
->>>>>>> update calendar build_links for table builder
       }
     )
   end
@@ -91,30 +82,17 @@ class CalendarsController < ChouetteController
   helper_method :workgroup
 
   def resource
-<<<<<<< HEAD
     @calendar ||= workgroup.calendars.where('(organisation_id = ? OR shared = ?)', current_organisation.id, true).find_by_id(params[:id])
-=======
-<<<<<<< HEAD
-    @calendar = Calendar.where('organisation_id = ? OR shared = true', current_organisation.id).find_by_id(params[:id]).decorate
-=======
-    @calendar = Calendar.where('(organisation_id = ? OR shared = ?) AND workgroup_id = ?', current_organisation.id).find_by_id(params[:id], true, @workgroup.id)
->>>>>>> update calendar build_links for table builder
->>>>>>> update calendar build_links for table builder
   end
 
   def build_resource
     super.tap do |calendar|
-<<<<<<< HEAD
       calendar.workgroup = workgroup
-=======
-      calendar.workgroup = current_workgroup
->>>>>>> update calendar build_links for table builder
       calendar.organisation = current_organisation
     end
   end
 
   def collection
-<<<<<<< HEAD
     @calendars ||= begin
       scope = workgroup.calendars.where('(organisation_id = ? OR shared = ?)', current_organisation.id, true)
       scope = shared_scope(scope)
@@ -123,16 +101,6 @@ class CalendarsController < ChouetteController
       calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
       calendars = calendars.paginate(page: params[:page])
     end
-=======
-    return @calendars if @calendars
-    scope = Calendar.where('(organisation_id = ? OR shared = ?) AND workgroup_id = ?', current_organisation.id, true, @workgroup.id)
-    scope = shared_scope(scope)
-    @q = scope.ransack(params[:q])
-
-    calendars = @q.result
-    calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
-    @calendars = calendars.paginate(page: params[:page])
->>>>>>> update calendar build_links for table builder
   end
 
   def ransack_contains_date
