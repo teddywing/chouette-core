@@ -20,6 +20,7 @@ class LineDecorator < AF83::Decorator
     instance_decorator.action_link secondary: :show do |l|
       l.content t('lines.actions.show_network')
       l.href   { [scope, object.network] }
+      l.disabled { object.network.nil? }
     end
 
     instance_decorator.action_link secondary: :show do |l|
