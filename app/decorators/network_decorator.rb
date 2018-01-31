@@ -1,6 +1,7 @@
 class NetworkDecorator < AF83::Decorator
   decorates Chouette::Network
 
+  set_scope { context[:line_referential] }
   # Action links require:
   #   context: {
   #     line_referential: ,
@@ -8,15 +9,10 @@ class NetworkDecorator < AF83::Decorator
 
   create_action_link do |l|
     l.content t('networks.actions.new')
-    l.href { h.new_line_referential_network_path(context[:line_referential]) }
   end
 
   with_instance_decorator do |instance_decorator|
-    instance_decorator.show_action_link do |l|
-      l.href do
-        h.line_referential_network_path(context[:line_referential], object)
-      end
-    end
+    instance_decorator.show_action_link
 
     instance_decorator.action_link secondary: true, policy: :edit do |l|
       l.content t('networks.actions.edit')
@@ -30,12 +26,6 @@ class NetworkDecorator < AF83::Decorator
 
     instance_decorator.destroy_action_link do |l|
       l.content h.destroy_link_content('networks.actions.destroy')
-      l.href do
-        h.line_referential_network_path(
-          context[:line_referential],
-          object
-        )
-      end
       l.data confirm: h.t('networks.actions.destroy_confirm')
     end
   end

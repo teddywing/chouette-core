@@ -7,7 +7,7 @@ class CalendarsController < ChouetteController
   respond_to :html
   respond_to :json, only: :show
   respond_to :js, only: :index
-  
+
   belongs_to :workgroup
 
   def index
@@ -54,9 +54,8 @@ class CalendarsController < ChouetteController
   private
 
   def decorate_calendars(calendars)
-    ModelDecorator.decorate(
+    CalendarDecorator.decorate(
       calendars,
-      with: CalendarDecorator,
       context: {
         workgroup: workgroup
       }
@@ -95,13 +94,13 @@ class CalendarsController < ChouetteController
 
   def collection
     @calendars ||= begin
-		    scope = workgroup.calendars.where('(organisation_id = ? OR shared = ?)', current_organisation.id, true)
-		    scope = shared_scope(scope)
-		    @q = scope.ransack(params[:q])
-		    calendars = @q.result
-		    calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
-		    calendars = calendars.paginate(page: params[:page])
-                  end 
+      scope = workgroup.calendars.where('(organisation_id = ? OR shared = ?)', current_organisation.id, true)
+      scope = shared_scope(scope)
+      @q = scope.ransack(params[:q])
+      calendars = @q.result
+      calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
+      calendars = calendars.paginate(page: params[:page])
+    end
   end
 
   def ransack_contains_date
