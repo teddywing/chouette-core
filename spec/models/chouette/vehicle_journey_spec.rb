@@ -119,9 +119,10 @@ describe Chouette::VehicleJourney, :type => :model do
       let(:end_date){Time.now.end_of_week.to_date}
 
       let(:timetable){
-        period = create :time_table_period, period_start: start_date-1.month, period_end: start_date-1.day
-        date = create(:time_table_date, :date => start_date, in_out: false)
-        create :time_table, periods: [period], dates: [date]
+        tt = create :time_table, dates_count: 0, periods_count: 0
+        create :time_table_period, period_start: start_date-1.month, period_end: start_date-1.day, time_table: tt
+        create(:time_table_date, :date => start_date, in_out: false, time_table: tt)
+        tt
       }
       let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
       it "should not include VJ " do
@@ -134,9 +135,10 @@ describe Chouette::VehicleJourney, :type => :model do
       let(:end_date){Time.now.end_of_week.to_date}
 
       let(:timetable){
-        period = create :time_table_period, period_start: start_date-1.month, period_end: start_date-1.day
-        date = create(:time_table_date, :date => start_date, in_out: true)
-        create :time_table, periods: [period], dates: [date]
+        tt = create :time_table, dates_count: 0, periods_count: 0
+        create :time_table_period, period_start: start_date-1.month, period_end: start_date-1.day, time_table: tt
+        create(:time_table_date, :date => start_date, in_out: true, time_table: tt)
+        tt
       }
       let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
       it "should include VJ " do
