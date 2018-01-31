@@ -6,6 +6,7 @@ FactoryGirl.define do
     sequence(:dates) { |n| [ Date.yesterday - n, Date.yesterday - 2*n ] }
     shared false
     organisation
+    workgroup
   end
 
   sequence :date_range do |n|

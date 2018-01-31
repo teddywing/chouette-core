@@ -1,10 +1,11 @@
 class CalendarsController < ChouetteController
-  include WorkgroupSupport
   include PolicyChecker
   defaults resource_class: Calendar
   before_action :ransack_contains_date, only: [:index]
   respond_to :html
   respond_to :js, only: :index
+  
+  belongs_to :workgroup
 
   def index
     index! do
@@ -15,7 +16,7 @@ class CalendarsController < ChouetteController
   def show
     show! do
       @calendar = @calendar.decorate(context: {
-        workgroup: current_workgroup
+        workgroup: workgroup
       })
     end
   end
@@ -27,7 +28,7 @@ class CalendarsController < ChouetteController
       calendars,
       with: CalendarDecorator,
       context: {
-        workgroup: current_workgroup
+        workgroup: workgroup
       }
     )
   end
@@ -47,26 +48,30 @@ class CalendarsController < ChouetteController
   end
 
   protected
+
+  alias_method :workgroup, :parent
+  helper_method :workgroup
+
   def resource
-    @calendar = Calendar.where('(organisation_id = ? OR shared = ?) AND workgroup_id = ?', current_organisation.id).find_by_id(params[:id], true, @workgroup.id)
+    @calendar ||= workgroup.calendars.where('(organisation_id = ? OR shared = ?)', current_organisation.id, true).find_by_id(params[:id])
   end
 
   def build_resource
     super.tap do |calendar|
-      calendar.workgroup = current_workgroup
+      calendar.workgroup = workgroup
       calendar.organisation = current_organisation
     end
   end
 
   def collection
-    return @calendars if @calendars
-    scope = Calendar.where('(organisation_id = ? OR shared = ?) AND workgroup_id = ?', current_organisation.id, true, @workgroup.id)
-    scope = shared_scope(scope)
-    @q = scope.ransack(params[:q])
-
-    calendars = @q.result
-    calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
-    @calendars = calendars.paginate(page: params[:page])
+    @calendars ||= begin
+		    scope = workgroup.calendars.where('(organisation_id = ? OR shared = ?)', current_organisation.id, true)
+		    scope = shared_scope(scope)
+		    @q = scope.ransack(params[:q])
+		    calendars = @q.result
+		    calendars = calendars.order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
+		    calendars = calendars.paginate(page: params[:page])
+                  end 
   end
 
   def ransack_contains_date
