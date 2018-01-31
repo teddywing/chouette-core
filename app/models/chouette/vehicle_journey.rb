@@ -52,6 +52,10 @@ module Chouette
       end
     }
 
+    scope :with_line_id, ->(id) {
+      joins(:route).where(routes: { line_id: id })
+    }
+
     scope :in_purchase_window, ->(range){
       purchase_windows = Chouette::PurchaseWindow.overlap_dates(range)
       sql = purchase_windows.joins(:vehicle_journeys).select('vehicle_journeys.id').uniq.to_sql
@@ -61,7 +65,6 @@ module Chouette
     # We need this for the ransack object in the filters
     ransacker :purchase_window_date_gt
     ransacker :stop_area_ids
-    ransacker :purchase_window_date_gt
 
     # returns VehicleJourneys with at least 1 day in their time_tables
     # included in the given range
@@ -382,8 +385,12 @@ module Chouette
     end
 
     def self.lines
+<<<<<<< HEAD
       lines_query = joins(:route).select("routes.line_id").to_sql
       Chouette::Line.where("id IN (#{lines_query})")
+=======
+      Chouette::Line.joins(routes: :vehicle_journeys).distinct
+>>>>>>> ReferentialVehicleJourneys#index: Add 'line' filter
     end
   end
 end
