@@ -52,8 +52,29 @@ module Chouette
       end
     }
 
+    scope :in_purchase_window, ->(range){
+      purchase_windows = Chouette::PurchaseWindow.overlap_dates(range)
+      sql = purchase_windows.joins(:vehicle_journeys).select('vehicle_journeys.id').uniq.to_sql
+      where("id IN (#{sql})")
+    }
+
     # We need this for the ransack object in the filters
     ransacker :stop_area_ids
+    ransacker :purchase_window_date_gt
+
+    # returns VehicleJourneys with at least 1 day in their time_tables
+    # included in the given range
+    def self.with_matching_timetable date_range
+      out = []
+      time_tables = Chouette::TimeTable.where(id: self.joins("INNER JOIN time_tables_vehicle_journeys ON vehicle_journeys.id = time_tables_vehicle_journeys.vehicle_journey_id").pluck('time_tables_vehicle_journeys.time_table_id')).overlapping(date_range)
+      time_tables = time_tables.select do |time_table|
+        range = date_range
+        range = date_range & (time_table.start_date-1.day..time_table.end_date+1.day) || [] if time_table.start_date.present? && time_table.end_date.present?
+        range.any?{|d| time_table.include_day?(d) }
+      end
+      out += time_tables.map{|t| t.vehicle_journey_ids}.flatten
+      where(id: out)
+    end
 
     # TODO: Remove this validator
     # We've eliminated this validation because it prevented vehicle journeys
