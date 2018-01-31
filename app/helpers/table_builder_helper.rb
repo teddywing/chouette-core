@@ -395,7 +395,6 @@ module TableBuilderHelper
     klass << link.extra_class if link.extra_class
     klass << 'delete-action' if link.method == :delete
     klass << 'disabled' if link.disabled
-
     content_tag(
       :li,
       link_to(
