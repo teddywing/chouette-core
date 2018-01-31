@@ -97,7 +97,7 @@ class StopAreasController < ChouetteController
     edit! do
       stop_area.position ||= stop_area.default_position
       map.editable = true
-   end
+    end
   end
 
   def destroy
