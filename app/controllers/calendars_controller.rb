@@ -7,7 +7,7 @@ class CalendarsController < ChouetteController
   respond_to :html
   respond_to :json, only: :show
   respond_to :js, only: :index
-  
+
   belongs_to :workgroup
 
   belongs_to :workgroup
