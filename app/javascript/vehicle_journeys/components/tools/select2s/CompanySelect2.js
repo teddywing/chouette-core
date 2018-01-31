@@ -26,7 +26,7 @@ export default class BSelect4 extends Component {
         multiple={false}
         ref='company_id'
         options={{
-          allowClear: this.props.editMode,
+          allowClear: true,
           theme: 'bootstrap',
           width: '100%',
           placeholder: 'Filtrer par transporteur...',

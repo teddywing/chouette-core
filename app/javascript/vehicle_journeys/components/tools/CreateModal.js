@@ -66,6 +66,7 @@ export default class CreateModal extends Component {
                               <CompanySelect2
                                 company = {this.props.modal.modalProps.vehicleJourney && this.props.modal.modalProps.vehicleJourney.company || undefined}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
+                                onUnselect2Company = {() => this.props.onUnselect2Company()}
                               />
                             </div>
                           </div>
