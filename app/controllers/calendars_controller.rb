@@ -1,5 +1,4 @@
 class CalendarsController < ChouetteController
-  include WorkgroupSupport
   include PolicyChecker
   defaults resource_class: Calendar
   before_action :ransack_contains_date, only: [:index]
