@@ -7,26 +7,12 @@ class RouteDecorator < AF83::Decorator
   #     line:
   #   }
 
-  with_instance_decorator do |instance_decorator|
-    instance_decorator.show_action_link do |l|
-      l.href do
-        h.referential_line_route_path(
-          context[:referential],
-          context[:line],
-          object
-        )
-      end
-    end
+  set_scope { [context[:referential], context[:line]] }
 
-    instance_decorator.edit_action_link do |l|
-      l.href do
-        h.edit_referential_line_route_path(
-          context[:referential],
-          context[:line],
-          object
-        )
-      end
-    end
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link
+
+    instance_decorator.edit_action_link
 
     instance_decorator.action_link(
       if: ->() { object.stop_points.any? },
@@ -85,13 +71,6 @@ class RouteDecorator < AF83::Decorator
     end
 
     instance_decorator.destroy_action_link do |l|
-      l.href do
-        h.referential_line_route_path(
-          context[:referential],
-          context[:line],
-          object
-        )
-      end
       l.data confirm: h.t('routes.actions.destroy_confirm')
     end
   end

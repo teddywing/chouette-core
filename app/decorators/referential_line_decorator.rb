@@ -1,6 +1,8 @@
 class ReferentialLineDecorator < AF83::Decorator
   decorates Chouette::Line
 
+  set_scope { context[:referential] }
+
   # Action links require:
   #   context: {
   #     referential: ,
@@ -8,9 +10,7 @@ class ReferentialLineDecorator < AF83::Decorator
   #   }
 
   with_instance_decorator do |instance_decorator|
-    instance_decorator.show_action_link do |l|
-      l.href { h.referential_line_path(context[:referential], object) }
-    end
+    instance_decorator.show_action_link
 
     instance_decorator.action_link secondary: true do |l|
       l.content Chouette::Line.human_attribute_name(:footnotes)
@@ -21,7 +21,7 @@ class ReferentialLineDecorator < AF83::Decorator
       l.content h.t('routing_constraint_zones.index.title')
       l.href do
         h.referential_line_routing_constraint_zones_path(
-          context[:referential],
+          scope,
           object
         )
       end
@@ -37,7 +37,7 @@ class ReferentialLineDecorator < AF83::Decorator
       secondary: true
     ) do |l|
       l.content h.t('routes.actions.new')
-      l.href { h.new_referential_line_route_path(context[:referential], object) }
+      l.href { h.new_referential_line_route_path(scope, object) }
     end
   end
 end
