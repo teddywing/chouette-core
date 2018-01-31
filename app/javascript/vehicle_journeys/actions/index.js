@@ -380,6 +380,17 @@ const actions = {
         }
       })
   },
+
+  validate : (dispatch, vehicleJourneys, next) => {
+    dispatch(actions.didValidateVehicleJourneys(vehicleJourneys))
+    actions.submitVehicleJourneys(dispatch, vehicleJourneys, next)
+  },
+
+  didValidateVehicleJourneys : (vehicleJourneys) => ({
+    type: 'DID_VALIDATE_VEHICLE_JOURNEYS',
+    vehicleJourneys
+  }),
+
   submitVehicleJourneys : (dispatch, state, next) => {
     dispatch(actions.fetchingApi())
     let urlJSON = window.location.pathname + "_collection.json"

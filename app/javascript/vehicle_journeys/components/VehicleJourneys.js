@@ -89,7 +89,7 @@ export default class VehicleJourneys extends Component {
               </div>
             )}
 
-            { _.some(this.props.vehicleJourneys, 'errors') && (
+            { this.props.vehicleJourneys.errors && this.props.vehicleJourneys.errors.length && _.some(this.props.vehicleJourneys, 'errors') && (
               <div className="alert alert-danger mt-sm">
                 <strong>Erreur : </strong>
                 {this.props.vehicleJourneys.map((vj, index) =>

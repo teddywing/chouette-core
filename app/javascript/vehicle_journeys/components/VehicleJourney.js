@@ -153,6 +153,9 @@ export default class VehicleJourney extends Component {
                       />
                   </span>
                 </div>
+                {vj.errors && <div className="errors">
+                  {vj.errors}
+                </div>}
             </div>
           </div>
         )}

@@ -10,6 +10,7 @@ module Chouette
 
     extend Enumerize
     enumerize :area_type, in: Chouette::AreaType::ALL
+    enumerize :kind, in: %i(commercial non_commercial)
 
     with_options dependent: :destroy do |assoc|
       assoc.has_many :stop_points
@@ -31,6 +32,7 @@ module Chouette
 
     validates_format_of :registration_number, :with => %r{\A[\d\w_\-]+\Z}, :allow_blank => true
     validates_presence_of :name
+    validates_presence_of :kind
     validates_presence_of :latitude, :if => :longitude
     validates_presence_of :longitude, :if => :latitude
     validates_numericality_of :latitude, :less_than_or_equal_to => 90, :greater_than_or_equal_to => -90, :allow_nil => true
@@ -41,6 +43,7 @@ module Chouette
 
     validates_numericality_of :waiting_time, greater_than_or_equal_to: 0, only_integer: true, if: :waiting_time
     validate :parent_area_type_must_be_greater
+    validate :area_type_of_right_kind
 
     def self.nullable_attributes
       [:registration_number, :street_name, :country_code, :fare_code,
@@ -53,6 +56,13 @@ module Chouette
       parent_area_type = Chouette::AreaType.find(self.parent.area_type)
       if Chouette::AreaType.find(self.area_type) >= parent_area_type
         errors.add(:parent_id, I18n.t('stop_areas.errors.parent_area_type', area_type: parent_area_type.label))
+      end
+    end
+
+    def area_type_of_right_kind
+
+      unless Chouette::AreaType.send(self.kind).map(&:to_s).include?(self.area_type)
+        errors.add(:area_type, I18n.t('stop_areas.errors.incorrect_kind_area_type'))
       end
     end
 
@@ -94,6 +104,10 @@ module Chouette
       else
         id.to_s
       end
+    end
+
+    def local_id
+      id.to_s
     end
 
     def children_in_depth
@@ -373,6 +387,10 @@ module Chouette
     def time_zone_formatted_offset
       return nil unless time_zone.present?
       ActiveSupport::TimeZone[time_zone]&.formatted_offset
+    end
+
+    def commercial?
+      kind == "commercial"
     end
   end
 end

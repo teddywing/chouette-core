@@ -6,10 +6,13 @@
         /= @map.to_html
         = f.input :id, as: :hidden
         = f.input :name, :input_html => {:title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.name")}
+        = f.input :kind, as: :radio_buttons, checked: @stop_area.kind, :input_html => {:disabled => !@stop_area.new_record?}, :include_blank => false, item_wrapper_class: 'radio-inline', wrapper: :horizontal_form, disabled: !@stop_area.new_record?
 
-        = f.input :parent_id, as: :select, :collection => [f.object.parent_id], input_html: { data: { select2_ajax: 'true', url: autocomplete_stop_area_referential_stop_areas_path(@stop_area_referential), initvalue: {id: f.object.parent_id, text: f.object.parent.try(:full_name)}}}
-
-        = f.input :area_type, as: :select, :input_html => {:disabled => !@stop_area.new_record?}, :collection => Chouette::AreaType.options, :include_blank => false
+        .slave data-master="[name='stop_area[kind]']" data-value="commercial"
+          = f.input :parent_id, as: :select, :collection => [f.object.parent_id], input_html: { data: { select2_ajax: 'true', url: autocomplete_stop_area_referential_stop_areas_path(@stop_area_referential), initvalue: {id: f.object.parent_id, text: f.object.parent.try(:full_name)}}}
+        - %i(non_commercial commercial).each do |kind|
+          .slave data-master="[name='stop_area[kind]']" data-value=kind
+            = f.input :area_type, as: :select, :input_html => {id: kind, :disabled => !@stop_area.new_record?}, :collection => Chouette::AreaType.options(kind), :include_blank => false, disabled: !@stop_area.new_record?
 
         .location_info
           h3 = t("stop_areas.stop_area.localisation")
@@ -49,3 +52,5 @@
   .separator
 
   = f.button :submit, t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'stop_area_form'
+
+= javascript_pack_tag "stop_areas/new"
