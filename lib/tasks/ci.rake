@@ -3,7 +3,7 @@ namespace :ci do
   task :setup do
     cp "config/database/jenkins.yml", "config/database.yml"
     sh "RAILS_ENV=test rake db:drop db:create db:migrate"
-    sh "yarn --production --no-progress install"
+    sh "yarn --no-progress install"
   end
 
   def git_branch
@@ -38,6 +38,7 @@ namespace :ci do
   end
 
   task :jest => "ci:assets" do
+    sh "yarn --no-progress install" # Hack to force install jest after webpack 
     sh "node_modules/.bin/jest" unless ["CHOUETTE_JEST_DISABLED"]
   end
 
