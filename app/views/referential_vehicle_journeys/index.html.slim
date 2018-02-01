@@ -42,12 +42,13 @@
                   attribute: Proc.new {|v| v.vehicle_journey_at_stops.first&.departure }, \
                   sortable: false \
                 ), \
+                @filters_stop_areas&.map{|s| table_builder_column_for_stop_area(s)},
                 TableBuilderHelper::Column.new( \
                   key: :arrival_time, \
                   attribute: Proc.new {|v| v.vehicle_journey_at_stops.last&.arrival }, \
                   sortable: false \
                 ), \
-              ],
+              ].flatten.compact,
               cls: 'table has-filter has-search'
 
           = new_pagination @vehicle_journeys, 'pull-right'
