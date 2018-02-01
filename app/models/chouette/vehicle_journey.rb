@@ -52,10 +52,6 @@ module Chouette
       end
     }
 
-    scope :with_line_id, ->(id) {
-      joins(:route).where(routes: { line_id: id })
-    }
-
     scope :in_purchase_window, ->(range){
       purchase_windows = Chouette::PurchaseWindow.overlap_dates(range)
       sql = purchase_windows.joins(:vehicle_journeys).select('vehicle_journeys.id').uniq.to_sql
@@ -63,7 +59,6 @@ module Chouette
     }
 
     # We need this for the ransack object in the filters
-    ransacker :line_id
     ransacker :purchase_window_date_gt
     ransacker :stop_area_ids
 
