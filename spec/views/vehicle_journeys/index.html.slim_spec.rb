@@ -13,6 +13,7 @@ describe "/vehicle_journeys/index", :type => :view do
     allow(view).to receive(:link_with_search).and_return("#")
     allow(view).to receive(:collection).and_return(vehicle_journeys)
     allow(view).to receive(:current_referential).and_return(referential)
+    allow(view).to receive(:has_feature?).and_return(true)
     controller.request.path_parameters[:referential_id] = referential.id
     render
   end
