@@ -21,7 +21,7 @@
           required: false,
           class: 'control-label'
       .form-inline.filter_menu
-        = f.input :line_id,
+        = f.input :route_line_id_eq,
             as: :select,
             collection: @vehicle_journeys.lines,
             selected: params[:q] && params[:q][:line_id],
