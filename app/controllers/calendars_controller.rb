@@ -15,6 +15,7 @@ class CalendarsController < ChouetteController
   end
 
   def show
+    @year = params[:year] ? params[:year].to_i : Date.today.cwyear
   end
 
   def month
