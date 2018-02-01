@@ -381,12 +381,8 @@ module Chouette
     end
 
     def self.lines
-<<<<<<< HEAD
       lines_query = joins(:route).select("routes.line_id").to_sql
       Chouette::Line.where("id IN (#{lines_query})")
-=======
-      Chouette::Line.joins(routes: :vehicle_journeys).distinct
->>>>>>> ReferentialVehicleJourneys#index: Add 'line' filter
     end
   end
 end
