@@ -14,6 +14,10 @@ set :bundle_cmd, "/var/lib/gems/#{ruby_version}/bin/bundle"
 set :rake, "#{bundle_cmd} exec rake"
 set :default_environment, { path: "/var/lib/gems/#{ruby_version}/bin:$PATH" }
 
+set :default_environment, {
+  'PATH' => "/var/lib/gems/#{ruby_version}/bin:$PATH"
+}
+
 set :keep_releases, -> { fetch(:kept_releases, 5) }
 after "deploy:restart", "deploy:cleanup"
 
