@@ -153,10 +153,6 @@ class Referential < ActiveRecord::Base
     end
   end
 
-  def stop_areas
-    Chouette::StopArea.all
-  end
-
   def access_points
     Chouette::AccessPoint.all
   end
