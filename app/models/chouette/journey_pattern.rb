@@ -166,7 +166,6 @@ module Chouette
         full = false unless costs.present?
         full = false unless costs[:distance] && costs[:distance] > 0
         full = false unless costs[:time] && costs[:time] > 0
-        p "#{start.stop_area_id}-#{finish.stop_area_id}" unless full
         finish
       end
       full
