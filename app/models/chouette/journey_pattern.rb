@@ -160,7 +160,7 @@ module Chouette
 
     def full_schedule?
       full = true
-      stop_points.inject(nil) do |start, finish|
+      stop_points.order(:position).inject(nil) do |start, finish|
         next finish unless start.present?
         costs = costs_between(start, finish)
         full = false unless costs.present?

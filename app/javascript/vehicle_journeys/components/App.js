@@ -22,6 +22,7 @@ export default function App() {
 
       <Filters />
       <VehicleJourneysList />
+      {window.returnRouteUrl && <VehicleJourneysList routeUrl={window.returnRouteUrl}/>}
 
       <div className='row'>
         <div className='col-lg-12 text-right'>

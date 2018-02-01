@@ -60,6 +60,7 @@ var initialState = {
   },
   vehicleJourneys: [],
   stopPointsList: window.stopPoints,
+  returnStopPointsList: window.returnStopPoints,
   pagination: {
     page : 1,
     totalCount: 0,
@@ -99,7 +100,7 @@ let store = createStore(
 
 render(
   <Provider store={store}>
-    <App />
+    <App returnRouteUrl={window.returnRouteUrl} />
   </Provider>,
   document.getElementById('vehicle_journeys_wip')
 )

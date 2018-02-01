@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import actions from '../actions'
+import EditVehicleJourney from '../containers/tools/EditVehicleJourney'
 
 export default class VehicleJourney extends Component {
   constructor(props) {
@@ -80,7 +81,7 @@ export default class VehicleJourney extends Component {
               {purchase_windows.length > 3 && <span className='vj_tt'> + {purchase_windows.length - 3}</span>}
             </div>
           }
-          <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
+          {!this.props.disabled && <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
             <input
               id={this.props.index}
               name={this.props.index}
@@ -91,7 +92,8 @@ export default class VehicleJourney extends Component {
               checked={this.props.value.selected}
             ></input>
             <label htmlFor={this.props.index}></label>
-          </div>
+          </div>}
+          {this.props.disabled && <EditVehicleJourney disabled={false} vehicleJourney={this.props.value} />}
         </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>

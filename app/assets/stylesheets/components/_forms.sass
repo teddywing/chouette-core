@@ -256,8 +256,15 @@ table, .table
   &.table-2entries .t2e-item
     > .th
       position: relative
+      > .st_action
+        list-style-type: none
+        button
+          border-radius: 50%
+          background: $blue
+          color: white
+          border: none
 
-      > .checkbox
+      > .checkbox, > .st_action
         position: absolute
         right: 0
         top: 0

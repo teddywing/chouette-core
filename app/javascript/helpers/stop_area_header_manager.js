@@ -42,6 +42,11 @@ export default class StopAreaHeaderManager {
     let index = this.ids_list.indexOf(object_id)
     let sp = this.stopPointsList[index]
     let previousBreakpoint = this.stopPointsList[index - 1]
+    if(sp == undefined){
+      console.log("STOP_POINT NOT FOUND: " + object_id)
+      console.log("AVAILABLE IDS:" + this.ids_list)
+      return
+    }
     if(index == 0 || (sp[attribute_to_check] != previousBreakpoint[attribute_to_check])){
       showHeadline = true
       headline = this.hasFeature('long_distance_routes') ? sp.country_name : sp.city_name
