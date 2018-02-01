@@ -8,10 +8,6 @@ fr:
       other: "#{count} jeux de données dans cet espace de travail"
     actions:
       show_output: "Finaliser l'Offre"
-  workbench_outputs:
-    show:
-      title: "Finalisations de l'offre"
-      see_current_output: "Voir l'Offre actuelle"
   activerecord:
     models:
       workbench:

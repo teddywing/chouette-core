@@ -26,11 +26,7 @@
                 end \
               ), \
               TableBuilderHelper::Column.new( \
-                key: :started_at, \
-                attribute: Proc.new { |n| l(n.started_at, format: :long) if n.started_at }, \
-              ), \
-              TableBuilderHelper::Column.new( \
-                key: :ended_at, \
+                name: t(".table_headers.ended_at"), \
                 attribute: Proc.new { |n| l(n.ended_at, format: :long) if n.ended_at }, \
               ), \
               TableBuilderHelper::Column.new( \
