@@ -11,7 +11,7 @@ class TimeTableDecorator < AF83::Decorator
     end
 
     instance_decorator.edit_action_link do |l|
-      l.href { [context[:referential], object] }
+      l.href { [:edit, context[:referential], object] }
     end
 
     instance_decorator.action_link if: ->{ object.calendar }, secondary: true do |l|
