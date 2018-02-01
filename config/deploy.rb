@@ -11,7 +11,7 @@ set :ruby_version, "2.3.0"
 default_run_options[:pty] = true
 set :group_writable, true
 set :bundle_cmd, "/var/lib/gems/#{ruby_version}/bin/bundle"
-oset :rake, "#{bundle_cmd} exec rake"
+set :rake, "#{bundle_cmd} exec rake"
 set :default_env, { path: "/var/lib/gems/#{ruby_version}/bin:$PATH" }
 
 set :keep_releases, -> { fetch(:kept_releases, 5) }
