@@ -38,6 +38,7 @@ namespace :ci do
   end
 
   task :jest => "ci:assets" do
+    sh "yarn --no-progress install" # Hack to force install jest after webpack 
     sh "node_modules/.bin/jest" unless ["CHOUETTE_JEST_DISABLED"]
   end
 
