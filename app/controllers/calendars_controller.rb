@@ -18,6 +18,7 @@ class CalendarsController < ChouetteController
 
   def show
     show! do
+      @year = params[:year] ? params[:year].to_i : Date.today.cwyear
       @calendar = @calendar.decorate(context: {
         workgroup: workgroup
       })
