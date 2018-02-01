@@ -7,10 +7,12 @@ set :scm, :git
 set :repository,  "git@github.com:AF83/stif-boiv.git"
 set :deploy_to, "/var/www/stif-boiv"
 set :use_sudo, false
+set :ruby_version, "2.3.0"
 default_run_options[:pty] = true
 set :group_writable, true
-set :bundle_cmd, "/var/lib/gems/2.3.0/bin/bundle"
-set :rake, "#{bundle_cmd} exec rake"
+set :bundle_cmd, "/var/lib/gems/#{ruby_version}/bin/bundle"
+oset :rake, "#{bundle_cmd} exec rake"
+set :default_env, { path: "/var/lib/gems/#{ruby_version}/bin:$PATH" }
 
 set :keep_releases, -> { fetch(:kept_releases, 5) }
 after "deploy:restart", "deploy:cleanup"
@@ -29,7 +31,7 @@ require 'whenever/capistrano'
 #after 'deploy:finalize_update', 'npm:install'
 
 # Whenever
-set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/2.3.0/bin'" } # invoke bin/bundle to use 'correct' ruby environment
+set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/#{ruby_version}/bin'" } # invoke bin/bundle to use 'correct' ruby environment
 
 set :whenever_command, "sudo /usr/local/sbin/whenever-sudo" # use sudo to change www-data crontab
 set :whenever_user, "www-data" # use www-data crontab
