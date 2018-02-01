@@ -24,6 +24,7 @@
         = f.input :line_id,
             as: :select,
             collection: @vehicle_journeys.lines,
+            selected: params[:q] && params[:q][:line_id],
             input_html: { \
               'data-select2ed': 'true',
               'data-select2ed-placeholder': t('referentials.filters.line') \
