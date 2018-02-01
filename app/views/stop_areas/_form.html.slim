@@ -6,8 +6,14 @@
         /= @map.to_html
         = f.input :id, as: :hidden
         = f.input :name, :input_html => {:title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.name")}
+        - if has_feature?(:stop_area_localized_names)
+          .form-group
+            .col-sm-3.col-xs-5
+            .col-sm-9.col-xs-7
+              - f.object.localized_names.each do |k, v|
+                .col-md-6= f.input "localized_names[#{k}]", input_html: {value: v}, label: label_for_country(k)
+                
         = f.input :kind, as: :radio_buttons, checked: @stop_area.kind, :input_html => {:disabled => !@stop_area.new_record?}, :include_blank => false, item_wrapper_class: 'radio-inline', wrapper: :horizontal_form, disabled: !@stop_area.new_record?
-
         .slave data-master="[name='stop_area[kind]']" data-value="commercial"
           = f.input :parent_id, as: :select, :collection => [f.object.parent_id], input_html: { data: { select2_ajax: 'true', url: autocomplete_stop_area_referential_stop_areas_path(@stop_area_referential), initvalue: {id: f.object.parent_id, text: f.object.parent.try(:full_name)}}}
         - %i(non_commercial commercial).each do |kind|

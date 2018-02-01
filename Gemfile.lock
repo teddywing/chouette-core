@@ -236,6 +236,8 @@ GEM
     ffi (1.9.18)
     ffi-geos (1.2.0)
       ffi (>= 1.0.0)
+    flag-icons-rails (2.5.0)
+      sass (~> 3.2)
     font-awesome-sass (4.7.0)
       sass (>= 3.2)
     formtastic (3.1.5)
@@ -625,6 +627,7 @@ DEPENDENCIES
   faraday (~> 0.9.1)
   faraday_middleware (~> 0.9.1)
   ffaker (~> 2.1.0)
+  flag-icons-rails
   font-awesome-sass (~> 4.7)
   formtastic (= 3.1.5)
   georuby (= 2.3.0)

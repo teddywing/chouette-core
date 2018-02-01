@@ -102,6 +102,7 @@ gem 'font-awesome-sass', '~> 4.7'
 gem 'will_paginate-bootstrap'
 gem 'gretel'
 gem 'country_select'
+gem 'flag-icons-rails'
 
 # Format Output
 gem 'json'

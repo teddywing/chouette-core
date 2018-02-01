@@ -7,6 +7,10 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         - attributes = { t('id_reflex') => @stop_area.get_objectid.short_id }
+
+        - if has_feature?(:stop_area_localized_names)
+          - @stop_area.localized_names.each do |k, v|
+            - attributes.merge!({label_for_country(k, @stop_area.human_attribute_name(:name)) => v }) if v.present?
         - attributes.merge!({ @stop_area.human_attribute_name(:parent) => @stop_area.parent ? link_to(@stop_area.parent.name, stop_area_referential_stop_area_path(@stop_area_referential, @stop_area.parent)) : "-" }) if @stop_area.commercial?
         - attributes.merge!({ @stop_area.human_attribute_name(:stop_area_type) => Chouette::AreaType.find(@stop_area.area_type).try(:label),
             @stop_area.human_attribute_name(:registration_number) => @stop_area.registration_number,
