@@ -41,7 +41,7 @@
         = f.input :published_journey_name_lteq, label: false, wrapper_html: { class: 'w45'}
     .form-group.togglable
       = f.label Chouette::StopArea.model_name.human.pluralize, required: false, class: 'control-label'
-      = f.input :stop_area_ids, collection: @all_stop_areas.select(:id, :name).order(name: :asc), checked: params[:q] && params[:q][:stop_area_ids], as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}, multiple: true
+      = f.input :stop_area_ids, collection: @all_stop_areas.select(:id, :name, :kind).order(name: :asc), checked: params[:q] && params[:q][:stop_area_ids], as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}, multiple: true
     .form-group.togglable
       = f.label Chouette::VehicleJourney.human_attribute_name(:purchase_window), class: 'control-label'
       .filter_menu
