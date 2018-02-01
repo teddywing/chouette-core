@@ -20,7 +20,7 @@
       = f.label Chouette::Line.model_name.human,
           required: false,
           class: 'control-label'
-      .inputs.form-inline.checkbox_list
+      .form-inline.filter_menu
         = f.input :line_id,
             as: :select,
             collection: @vehicle_journeys.lines,
@@ -30,7 +30,7 @@
             },
             label: false,
             label_method: :display_name,
-            wrapper_html: { class: 'select2ed' }
+            wrapper_html: { class: 'filter_menu-item select2ed' }
 
     .form-group.togglable.name-filter
       = f.label Chouette::VehicleJourney.human_attribute_name(:published_journey_name), required: false, class: 'control-label'
