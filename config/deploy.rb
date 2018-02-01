@@ -12,8 +12,6 @@ default_run_options[:pty] = true
 set :group_writable, true
 set :bundle_cmd, "/var/lib/gems/#{ruby_version}/bin/bundle"
 set :rake, "#{bundle_cmd} exec rake"
-set :default_environment, { path: "/var/lib/gems/#{ruby_version}/bin:$PATH" }
-
 set :default_environment, {
   'PATH' => "/var/lib/gems/#{ruby_version}/bin:$PATH"
 }
