@@ -377,7 +377,8 @@ module Chouette
     end
 
     def self.lines
-      Chouette::Line.joins(routes: :vehicle_journeys).distinct
+      lines_query = joins(:route).select("routes.line_id").to_sql
+      Chouette::Line.where("id IN (#{lines_query})")
     end
   end
 end
