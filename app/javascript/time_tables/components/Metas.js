@@ -27,7 +27,7 @@ export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdat
           </div>
 
           {/* color */}
-          <div className="form-group">
+          {metas.color !== undefined && <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.color}</label>
             <div className="col-sm-8">
               <div className="dropdown color_selector">
@@ -69,10 +69,10 @@ export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdat
                 </div>
               </div>
             </div>
-          </div>
+          </div>}
 
           {/* tags */}
-          <div className="form-group">
+          {metas.tags !== undefined && <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.tag_list}</label>
             <div className="col-sm-8">
               <TagsSelect2
@@ -82,15 +82,15 @@ export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdat
                 onUnselect2Tags={(e) => onUnselect2Tags(e)}
               />
             </div>
-          </div>
+          </div>}
 
           {/* calendar */}
-          <div className="form-group">
+          {metas.calendar !== null && <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.calendar}</label>
             <div className="col-sm-8">
               <span>{metas.calendar ? metas.calendar.name : I18n.time_tables.edit.metas.no_calendar}</span>
             </div>
-          </div>
+          </div>}
 
           {/* day_types */}
           <div className="form-group">

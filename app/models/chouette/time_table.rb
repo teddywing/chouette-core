@@ -4,11 +4,13 @@ module Chouette
     include ChecksumSupport
     include TimeTableRestrictions
     include ObjectidSupport
+    include ApplicationDaysSupport
+    include TimetableSupport
+
     # FIXME http://jira.codehaus.org/browse/JRUBY-6358
     self.primary_key = "id"
     acts_as_taggable
 
-    attr_accessor :monday,:tuesday,:wednesday,:thursday,:friday,:saturday,:sunday
     attr_accessor :tag_search
 
     def self.ransackable_attributes auth_object = nil
@@ -81,70 +83,34 @@ module Chouette
       end
     end
 
-    def state_update state
-      update_attributes(self.class.state_permited_attributes(state))
-      self.tag_list    = state['tags'].collect{|t| t['name']}.join(', ')
-      self.calendar_id = nil unless state['calendar']
-
-      days = state['day_types'].split(',')
-      Date::DAYNAMES.map(&:underscore).each do |name|
-        prefix = human_attribute_name(name).first(2)
-        send("#{name}=", days.include?(prefix))
-      end
-
-      saved_dates = Hash[self.dates.collect{ |d| [d.id, d.date]}]
-      cmonth = Date.parse(state['current_periode_range'])
-
-      state['current_month'].each do |d|
-        date    = Date.parse(d['date'])
-        checked = d['include_date'] || d['excluded_date']
-        in_out  = d['include_date'] ? true : false
-
-        date_id = saved_dates.key(date)
-        time_table_date = self.dates.find(date_id) if date_id
-
-        next if !checked && !time_table_date
-        # Destroy date if no longer checked
-        next if !checked && time_table_date.destroy
-
-        # Create new date
-        unless time_table_date
-          time_table_date = self.dates.create({in_out: in_out, date: date})
-        end
-        # Update in_out
-        if in_out != time_table_date.in_out
-          time_table_date.update_attributes({in_out: in_out})
-        end
-      end
-
-      self.state_update_periods state['time_table_periods']
-      self.save
+    def find_date_by_id id
+      self.dates.find id
     end
 
-    def state_update_periods state_periods
-      state_periods.each do |item|
-        period = self.periods.find(item['id']) if item['id']
-        next if period && item['deleted'] && period.destroy
-        period ||= self.periods.build
+    def destroy_date date
+      date.destroy
+    end
 
-        period.period_start = Date.parse(item['period_start'])
-        period.period_end   = Date.parse(item['period_end'])
-
-        if period.changed?
-          period.save
-          item['id'] = period.id
-        end
+    def update_in_out date, in_out
+      if in_out != date.in_out
+        date.update_attributes({in_out: in_out})
       end
+    end
 
-      state_periods.delete_if {|item| item['deleted']}
+    def find_period_by_id id
+      self.periods.find id
+    end
+
+    def build_period
+      periods.build
+    end
+
+    def destroy_period period
+      period.destroy
     end
 
     def self.state_permited_attributes item
       item.slice('comment', 'color').to_hash
-    end
-
-    def presenter
-      @presenter ||= ::TimeTablePresenter.new( self)
     end
 
     def self.start_validity_period
@@ -165,20 +131,6 @@ module Chouette
       self.dates   = from.dates
       self.periods = from.periods
       self.save
-    end
-
-    def month_inspect(date)
-      (date.beginning_of_month..date.end_of_month).map do |d|
-        {
-          day: I18n.l(d, format: '%A'),
-          date: d.to_s,
-          wday: d.wday,
-          wnumber: d.strftime("%W").to_s,
-          mday: d.mday,
-          include_date: include_in_dates?(d),
-          excluded_date: excluded_date?(d)
-        }
-      end
     end
 
     def save_shortcuts
@@ -314,98 +266,6 @@ module Chouette
       [bounding_min, bounding_max].compact
     end
 
-    def display_day_types
-      %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join(', ')
-    end
-
-    def day_by_mask(flag)
-      int_day_types & flag == flag
-    end
-
-    def self.day_by_mask(int_day_types,flag)
-      int_day_types & flag == flag
-    end
-
-
-    def valid_days
-      # Build an array with day of calendar week (1-7, Monday is 1).
-      [].tap do |valid_days|
-        valid_days << 1  if monday
-        valid_days << 2  if tuesday
-        valid_days << 3  if wednesday
-        valid_days << 4  if thursday
-        valid_days << 5  if friday
-        valid_days << 6  if saturday
-        valid_days << 7  if sunday
-      end
-    end
-
-    def self.valid_days(int_day_types)
-      # Build an array with day of calendar week (1-7, Monday is 1).
-      [].tap do |valid_days|
-        valid_days << 1  if day_by_mask(int_day_types,4)
-        valid_days << 2  if day_by_mask(int_day_types,8)
-        valid_days << 3  if day_by_mask(int_day_types,16)
-        valid_days << 4  if day_by_mask(int_day_types,32)
-        valid_days << 5  if day_by_mask(int_day_types,64)
-        valid_days << 6  if day_by_mask(int_day_types,128)
-        valid_days << 7  if day_by_mask(int_day_types,256)
-      end
-    end
-
-    def monday
-      day_by_mask(4)
-    end
-    def tuesday
-      day_by_mask(8)
-    end
-    def wednesday
-      day_by_mask(16)
-    end
-    def thursday
-      day_by_mask(32)
-    end
-    def friday
-      day_by_mask(64)
-    end
-    def saturday
-      day_by_mask(128)
-    end
-    def sunday
-      day_by_mask(256)
-    end
-
-    def set_day(day,flag)
-      if day == '1' || day == true
-        self.int_day_types |= flag
-      else
-        self.int_day_types &= ~flag
-      end
-      shortcuts_update
-    end
-
-    def monday=(day)
-      set_day(day,4)
-    end
-    def tuesday=(day)
-      set_day(day,8)
-    end
-    def wednesday=(day)
-      set_day(day,16)
-    end
-    def thursday=(day)
-      set_day(day,32)
-    end
-    def friday=(day)
-      set_day(day,64)
-    end
-    def saturday=(day)
-      set_day(day,128)
-    end
-    def sunday=(day)
-      set_day(day,256)
-    end
-
     def effective_days_of_period(period,valid_days=self.valid_days)
       days = []
         period.period_start.upto(period.period_end) do |date|
@@ -452,6 +312,17 @@ module Chouette
       days.sort
     end
 
+    def create_date in_out:, date:
+      self.dates.create in_out: in_out, date: date
+    end
+
+    def saved_dates
+      Hash[self.dates.collect{ |d| [d.id, d.date]}]
+    end
+
+    def all_dates
+      dates
+    end
 
     # produce a copy of periods without anyone overlapping or including another
     def optimize_overlapping_periods
