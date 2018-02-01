@@ -59,8 +59,8 @@ module Chouette
     }
 
     # We need this for the ransack object in the filters
-    ransacker :stop_area_ids
     ransacker :purchase_window_date_gt
+    ransacker :stop_area_ids
 
     # returns VehicleJourneys with at least 1 day in their time_tables
     # included in the given range
@@ -374,6 +374,11 @@ module Chouette
               "vehicle_journeys"."id"
         ')
         .where('"time_tables_vehicle_journeys"."vehicle_journey_id" IS NULL')
+    end
+
+    def self.lines
+      lines_query = joins(:route).select("routes.line_id").to_sql
+      Chouette::Line.where("id IN (#{lines_query})")
     end
   end
 end
