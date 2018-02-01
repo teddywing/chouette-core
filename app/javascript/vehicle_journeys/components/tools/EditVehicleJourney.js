@@ -23,6 +23,10 @@ export default class EditVehicleJourney extends Component {
     }
   }
 
+  getSelected() {
+    return this.props.vehicleJourney ? [this.props.vehicleJourney] : actions.getSelected(this.props.vehicleJourneys)
+  }
+
   render() {
     if(this.props.status.isFetching == true) {
       return false
@@ -35,10 +39,10 @@ export default class EditVehicleJourney extends Component {
         <li className='st_action'>
           <button
             type='button'
-            disabled={(actions.getSelected(this.props.vehicleJourneys).length != 1 || this.props.disabled)}
+            disabled={(this.getSelected().length != 1 || this.props.disabled)}
             data-toggle='modal'
             data-target='#EditVehicleJourneyModal'
-            onClick={() => this.props.onOpenEditModal(actions.getSelected(this.props.vehicleJourneys)[0])}
+            onClick={() => this.props.onOpenEditModal(this.getSelected()[0])}
           >
             <span className='fa fa-info'></span>
           </button>

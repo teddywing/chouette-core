@@ -13,8 +13,8 @@ const actions = {
   exitEditMode: () => ({
     type: "EXIT_EDIT_MODE"
   }),
-  receiveVehicleJourneys : (json) => ({
-    type: "RECEIVE_VEHICLE_JOURNEYS",
+  receiveVehicleJourneys : (json, returnJourneys) => ({
+    type: (returnJourneys ? "RECEIVE_RETURN_VEHICLE_JOURNEYS" : "RECEIVE_VEHICLE_JOURNEYS"),
     json
   }),
   receiveErrors : (json) => ({
@@ -290,9 +290,16 @@ const actions = {
     type: 'RECEIVE_TOTAL_COUNT',
     total
   }),
-  fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
+  fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString, url) => {
+    let returnJourneys = false
     if(currentPage == undefined){
       currentPage = 1
+    }
+    if(url == undefined){
+      url = window.location.pathname
+    }
+    else{
+      returnJourneys = true
     }
     let vehicleJourneys = []
     let page
@@ -315,7 +322,7 @@ const actions = {
       str = '.json?page=' + page.toString()
       sep = '&'
     }
-    let urlJSON = window.location.pathname + str
+    let urlJSON = url + str
     if (queryString){
       urlJSON = urlJSON + sep + queryString
     }
@@ -375,7 +382,7 @@ const actions = {
             )
           }
           window.currentItemsLength = vehicleJourneys.length
-          dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
+          dispatch(actions.receiveVehicleJourneys(vehicleJourneys, returnJourneys))
           dispatch(actions.receiveTotalCount(json.total))
         }
       })

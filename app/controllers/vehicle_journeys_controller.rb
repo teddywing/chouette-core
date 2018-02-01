@@ -50,36 +50,8 @@ class VehicleJourneysController < ChouetteController
       format.html do
         load_missions
         load_custom_fields
-        @stop_points_list = []
-        @stop_points_list = route.stop_points.includes(:stop_area).map do |sp|
-          {
-            :id => sp.stop_area.id,
-            :route_id => sp.try(:route_id),
-            :object_id => sp.try(:objectid),
-            :position => sp.try(:position),
-            :for_boarding => sp.try(:for_boarding),
-            :for_alighting => sp.try(:for_alighting),
-            :name => sp.stop_area.try(:name),
-            :time_zone_offset => sp.stop_area.try(:time_zone_offset),
-            :time_zone_formatted_offset => sp.stop_area.try(:time_zone_formatted_offset),
-            :zip_code => sp.stop_area.try(:zip_code),
-            :city_name => sp.stop_area.try(:city_name),
-            :comment => sp.stop_area.try(:comment),
-            :area_type => sp.stop_area.try(:area_type),
-            :area_type_i18n => I18n.t(sp.stop_area.try(:area_type), scope: 'area_types.label'),
-            :area_kind => sp.stop_area.try(:kind),
-            :stop_area_id => sp.stop_area_id,
-            :registration_number => sp.stop_area.try(:registration_number),
-            :nearest_topic_name => sp.stop_area.try(:nearest_topic_name),
-            :fare_code => sp.stop_area.try(:fare_code),
-            :longitude => sp.stop_area.try(:longitude),
-            :latitude => sp.stop_area.try(:latitude),
-            :long_lat_type => sp.stop_area.try(:long_lat_type),
-            :country_code => sp.stop_area.try(:country_code),
-            :country_name => sp.stop_area.try(:country_name),
-            :street_name => sp.stop_area.try(:street_name)
-          }
-        end
+        @stop_points_list = map_stop_points(route.stop_points)
+        @return_stop_points_list = map_stop_points(route.opposite_route&.stop_points) if has_feature?(:vehicle_journeys_return_route)
         @transport_mode = route.line['transport_mode']
         @transport_submode = route.line['transport_submode']
 
@@ -183,6 +155,39 @@ class VehicleJourneysController < ChouetteController
   private
   def load_custom_fields
     @custom_fields = current_workgroup.custom_fields_definitions
+  end
+
+  def map_stop_points points
+    (points&.includes(:stop_area) || []).map do |sp|
+      {
+        :id => sp.stop_area.id,
+        :route_id => sp.try(:route_id),
+        :object_id => sp.try(:objectid),
+        :area_object_id => sp.stop_area.try(:objectid),
+        :position => sp.try(:position),
+        :for_boarding => sp.try(:for_boarding),
+        :for_alighting => sp.try(:for_alighting),
+        :name => sp.stop_area.try(:name),
+        :time_zone_offset => sp.stop_area.try(:time_zone_offset),
+        :time_zone_formatted_offset => sp.stop_area.try(:time_zone_formatted_offset),
+        :zip_code => sp.stop_area.try(:zip_code),
+        :city_name => sp.stop_area.try(:city_name),
+        :comment => sp.stop_area.try(:comment),
+        :area_type => sp.stop_area.try(:area_type),
+        :area_type_i18n => I18n.t(sp.stop_area.try(:area_type), scope: 'area_types.label'),
+        :area_kind => sp.stop_area.try(:kind),
+        :stop_area_id => sp.stop_area_id,
+        :registration_number => sp.stop_area.try(:registration_number),
+        :nearest_topic_name => sp.stop_area.try(:nearest_topic_name),
+        :fare_code => sp.stop_area.try(:fare_code),
+        :longitude => sp.stop_area.try(:longitude),
+        :latitude => sp.stop_area.try(:latitude),
+        :long_lat_type => sp.stop_area.try(:long_lat_type),
+        :country_code => sp.stop_area.try(:country_code),
+        :country_name => sp.stop_area.try(:country_name),
+        :street_name => sp.stop_area.try(:street_name)
+      }
+    end
   end
 
   def load_missions

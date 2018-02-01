@@ -17,6 +17,7 @@
 = javascript_tag do
   | window.route_id = #{params[:route_id]};
   | window.stopPoints = #{(@stop_points_list.to_json).html_safe};
+  | window.returnStopPoints = #{(@return_stop_points_list.to_json).html_safe};
   | window.jpOrigin = #{(@jp_origin.present? ? @jp_origin.attributes.update({full_schedule: @jp_origin.full_schedule?}).to_json  : "null").html_safe};
   | window.jpOriginStopPoints = #{(@jp_origin_stop_points.to_json).html_safe};
   | window.transportMode = #{(@transport_mode.to_json).html_safe};
@@ -29,5 +30,10 @@
   | window.all_missions = #{(@all_missions.to_json).html_safe};
   | window.custom_fields = #{(@custom_fields.to_json).html_safe};
   | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
+
+- if has_feature?(:vehicle_journeys_return_route)
+  = javascript_tag do
+    | window.returnRouteUrl = "#{(@route.opposite_route && url_for([@referential, @route.line, @route.opposite_route, :vehicle_journeys]) || "").html_safe}";
+
 
 = javascript_pack_tag 'vehicle_journeys/index.js'
