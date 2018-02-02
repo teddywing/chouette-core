@@ -94,11 +94,7 @@ export default class VehicleJourney extends Component {
             ></input>
             <label htmlFor={this.props.index}></label>
           </div>}
-<<<<<<< HEAD
           {this.props.disabled && <VehicleJourneyInfoButton vehicleJourney={this.props.value} />}
-=======
-          {this.props.disabled && <EditVehicleJourney disabled={false} vehicleJourney={this.props.value} />}
->>>>>>> Refs #5798 @3h; Show return journeys on the journeys' editor.
         </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
