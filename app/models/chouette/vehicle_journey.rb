@@ -108,6 +108,8 @@ module Chouette
       end
     end
 
+    has_checksum_children VehicleJourneyAtStop
+
     def set_default_values
       if number.nil?
         self.number = 0
