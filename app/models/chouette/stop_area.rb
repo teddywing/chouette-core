@@ -47,10 +47,6 @@ module Chouette
     validate :parent_area_type_must_be_greater
     validate :area_type_of_right_kind
 
-    after_initialize do
-      self.kind ||= :commercial
-    end
-
     def self.nullable_attributes
       [:registration_number, :street_name, :country_code, :fare_code,
       :nearest_topic_name, :comment, :long_lat_type, :zip_code, :city_name, :url, :time_zone]
