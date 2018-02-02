@@ -387,7 +387,9 @@ const actions = {
           }
           window.currentItemsLength = vehicleJourneys.length
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys, returnJourneys))
-          dispatch(actions.receiveTotalCount(json.total))
+          if(!returnJourneys){
+            dispatch(actions.receiveTotalCount(json.total))
+          }
         }
       })
   },
