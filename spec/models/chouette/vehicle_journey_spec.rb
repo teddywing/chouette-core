@@ -24,6 +24,48 @@ describe Chouette::VehicleJourney, :type => :model do
     it_behaves_like 'checksum support', :vehicle_journey
   end
 
+  describe "#with_stop_area_ids" do
+    subject(:result){Chouette::VehicleJourney.with_stop_area_ids(ids)}
+    let(:ids){[]}
+    let(:common_stop_area){ create :stop_area}
+    let!(:journey_1){ create :vehicle_journey }
+    let!(:journey_2){ create :vehicle_journey }
+
+    before(:each) do
+      journey_1.journey_pattern.stop_points.last.update_attribute :stop_area_id, common_stop_area.id
+      journey_2.journey_pattern.stop_points.last.update_attribute :stop_area_id, common_stop_area.id
+      expect(journey_1.stop_areas).to include(common_stop_area)
+      expect(journey_2.stop_areas).to include(common_stop_area)
+    end
+    context "with no value" do
+      it "should return all journeys" do
+        expect(result).to eq Chouette::VehicleJourney.all
+      end
+    end
+
+    context "with a single value" do
+      let(:ids){[journey_1.stop_areas.first.id]}
+      it "should return all journeys" do
+        expect(result).to eq [journey_1]
+      end
+
+      context "with a common area" do
+        let(:ids){[common_stop_area.id]}
+        it "should return all journeys" do
+          expect(result).to eq [journey_1, journey_2]
+        end
+      end
+    end
+
+    context "with a couple of values" do
+      let(:ids){[journey_1.stop_areas.first.id, common_stop_area.id]}
+      it "should return only the matching journeys" do
+        expect(result).to eq [journey_1]
+      end
+    end
+
+  end
+
   describe '#in_purchase_window' do
     let(:start_date){2.month.ago.to_date}
     let(:end_date){1.month.ago.to_date}
