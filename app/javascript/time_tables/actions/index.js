@@ -1,5 +1,5 @@
-import range from 'lodash/range'
 import assign from 'lodash/assign'
+import range from 'lodash/range'
 import reject from 'lodash/reject'
 import some from 'lodash/some'
 import every from 'lodash/every'
