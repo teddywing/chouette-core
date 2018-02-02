@@ -5,7 +5,7 @@ describe 'ReferentialStopAreas', type: :feature do
   login_user
 
   let(:referential) { Referential.first }
-  let(:stop_area_referential) { create :stop_area_referential }
+  let(:stop_area_referential) { referential.stop_area_referential }
   let!(:stop_areas) { Array.new(2) { create :stop_area, stop_area_referential: stop_area_referential } }
 
   describe 'index' do
