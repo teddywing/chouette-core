@@ -1,23 +1,23 @@
 = search_form_for @q_for_form, url: workbench_path(@workbench.id), builder: SimpleForm::FormBuilder, class: 'form form-filter' do |f|
   .ffg-row
-    .input-group.search_bar
+    .input-group.search_bar class=filter_item_class(params[:q], :name_cont)
       = f.search_field :name_cont, class: 'form-control', placeholder: t('referentials.filters.name')
       span.input-group-btn
         button.btn.btn-default type='submit'
           span.fa.fa-search
 
   .ffg-row
-    .form-group
+    .form-group class=filter_item_class(params[:q], :associated_lines_id_eq)
       = f.label t('activerecord.models.line.one').upcase, required: false, class: 'control-label'
       = f.input :associated_lines_id_eq, as: :select, collection: @workbench.lines.includes(:company).order(:name), input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': t('referentials.filters.line') }, label: false, label_method: :display_name, wrapper_html: { class: 'select2ed'}
 
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :archived_at_not_null)
       = f.label Referential.human_attribute_name(:status), required: false, class: 'control-label'
       .form-group.checkbox_list
         = f.input :archived_at_not_null, label: ("<span>#{t('activerecord.attributes.referential.archived_at')}<span class='fa fa-archive'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox-wrapper' }
         = f.input :archived_at_null, label: ("<span>#{t('activerecord.attributes.referential.archived_at_null')}<span class='sb sb-lg sb-preparing'></span></span>").html_safe, as: :boolean, wrapper_html: { class: 'checkbox-wrapper' }
 
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :organisation_name_eq_any)
       = f.label t('activerecord.models.organisation.one'), required: false, class: 'control-label'
       = f.input :organisation_name_eq_any,
           collection: @workbench.workgroup.organisations.order('name').pluck(:name),
@@ -27,7 +27,7 @@
           required: false,
           wrapper_html: { class: 'checkbox_list' }
 
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :validity_period)
       = f.label Referential.human_attribute_name(:validity_period), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :validity_period do |p|
