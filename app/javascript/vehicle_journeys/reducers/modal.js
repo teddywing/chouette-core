@@ -37,6 +37,15 @@ export default function modal(state = {}, action) {
         },
         confirmModal: {}
       }
+    case 'INFO_VEHICLEJOURNEY_MODAL':
+      return {
+        type: 'edit',
+        modalProps: {
+          vehicleJourney: action.vehicleJourney,
+          info: true
+        },
+        confirmModal: {}
+      }
     case 'EDIT_CALENDARS_VEHICLEJOURNEY_MODAL':
       vehicleJourneysModal = JSON.parse(JSON.stringify(action.vehicleJourneys))
       let uniqTimetables = []
