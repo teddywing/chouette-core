@@ -22,6 +22,16 @@ describe Chouette::VehicleJourney, :type => :model do
 
   describe 'checksum' do
     it_behaves_like 'checksum support', :vehicle_journey
+    it "changes when a vjas is updated" do
+      vehicle_journey = create(:vehicle_journey)
+      expect{vehicle_journey.vehicle_journey_at_stops.last.update_attribute(:departure_time, Time.now)}.to change{vehicle_journey.reload.checksum}
+    end
+
+    it "changes when a vjas is added" do
+      vehicle_journey = create(:vehicle_journey)
+      expect(vehicle_journey).to receive(:update_checksum_without_callbacks!).at_least(:once).and_call_original
+      expect{create(:vehicle_journey_at_stop, vehicle_journey: vehicle_journey)}.to change{vehicle_journey.checksum}
+    end
   end
 
   describe '#in_purchase_window' do

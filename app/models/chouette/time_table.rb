@@ -47,6 +47,9 @@ module Chouette
       end
     end
 
+    has_checksum_children TimeTableDate
+    has_checksum_children TimeTablePeriod
+
     def self.object_id_key
       "Timetable"
     end
