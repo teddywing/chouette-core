@@ -1,17 +1,17 @@
 = search_form_for @q, url: referential_time_tables_path(@referential), html: { method: :get, class: 'form form-filter' } do |f|
   .ffg-row
-    .input-group.search_bar
+    .input-group.search_bar class=filter_item_class(params[:q], :comment_cont)
       = f.text_field :comment_cont, :placeholder => "#{t('time_tables.index.comment')}", class: 'form-control'
       span.input-group-btn
         button.btn.btn-default type='submit'
           span.fa.fa-search
 
   .ffg-row
-    .form-group
+    .form-group class=filter_item_class(params[:q], :tag_search)
       = f.label Chouette::TimeTable.human_attribute_name(:tag_search), required: false, class: 'control-label'
       = f.input :tag_search, as: :tags, collection: Chouette::TimeTable.tags_on(:tags).pluck(:name), label: false, input_html: { 'data-select2ed': 'true', 'data-select2ed-placeholder': 'Indiquez une étiquette...' }, wrapper_html: { class: 'select2ed'}, include_blank: false, selected: params[:q] ? params[:q]['tag_search'] : nil
 
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :bounding_dates)
       = f.label Chouette::TimeTable.human_attribute_name(:bounding_dates), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :bounding_dates do |p|

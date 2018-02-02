@@ -9,14 +9,14 @@
     .form-group.per-page-select
       = I18n.t("simple_form.per_page")
       = %w(10 50 100).each_with_index.map{ |v, i| (params[:per_page] == v || params[:per_page].nil? && i == 0) ? "<span class='selected'>#{v}</span>" : link_to(v, referential_vehicle_journeys_path(@referential, q: params[:q], per_page: v)) }.join(' - ').html_safe
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :company_id_eq_any)
       = f.label Chouette::VehicleJourney.human_attribute_name(:company), required: false, class: 'control-label'
       - if @all_companies.present?
         = f.input :company_id_eq_any, collection: @all_companies.select(:id, :name).order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
       - else
         = f.input :company_id_eq_any, collection: [[I18n.t('companies.search_no_results_for_filter'), nil]], as: :check_boxes, label: false, disabled: true, required: false, wrapper_html: { class: 'checkbox_list disabled'}
 
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :route_line_id_eq)
       = f.label Chouette::Line.model_name.human,
           required: false,
           class: 'control-label'
@@ -25,7 +25,7 @@
             as: :select,
             include_blank: t(".all"),
             collection: @vehicle_journeys.lines,
-            selected: params[:q] && params[:q][:line_id],
+            selected: params[:q] && params[:q][:route_line_id_eq],
             input_html: { \
               'data-select2ed': 'true',
               'data-select2ed-placeholder': t('referentials.filters.line') \
@@ -34,22 +34,22 @@
             label_method: :display_name,
             wrapper_html: { class: 'filter_menu-item select2ed' }
 
-    .form-group.togglable.name-filter
+    .form-group.togglable.name-filter class=filter_item_class(params[:q], :published_journey_name_gteq)
       = f.label Chouette::VehicleJourney.human_attribute_name(:published_journey_name), required: false, class: 'control-label'
       .inputs.form-inline.checkbox_list
         = f.input :published_journey_name_gteq, label: false, wrapper_html: { class: 'w45'}
         .form-group.w10.to= I18n.t('vehicle_journeys.form.to')
         = f.input :published_journey_name_lteq, label: false, wrapper_html: { class: 'w45'}
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :stop_area_ids)
       = f.label Chouette::StopArea.model_name.human.pluralize, required: false, class: 'control-label'
       = f.input :stop_area_ids, collection: @all_stop_areas.select(:id, :name, :kind).order(name: :asc), checked: params[:q] && params[:q][:stop_area_ids], as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}, multiple: true
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :purchase_window)
       = f.label Chouette::VehicleJourney.human_attribute_name(:purchase_window), class: 'control-label'
       .filter_menu
         = f.simple_fields_for :purchase_window do |p|
           = p.input :start_date, as: :date, label: t('simple_form.from'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @purchase_window_begin_range, include_blank: @purchase_window_begin_range ? false : true
           = p.input :end_date, as: :date, label: t('simple_form.to'), wrapper_html: { class: 'date smart_date filter_menu-item' }, default: @purchase_window_end_range, include_blank: @purchase_window_end_range ? false : true
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :time_table)
       = f.label Chouette::TimeTable.model_name.human, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :time_table do |p|
