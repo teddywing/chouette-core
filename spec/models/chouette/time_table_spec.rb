@@ -1050,6 +1050,17 @@ end
 
   describe 'checksum' do
     it_behaves_like 'checksum support', :time_table
+
+    it "handles newly built dates and periods" do
+      time_table = build(:time_table)
+      time_table.periods.build period_start: Time.now, period_end: 1.month.from_now
+      time_table.dates.build date: Time.now
+      time_table.save!
+      expect{time_table.update_checksum!}.to_not change{time_table.checksum}
+      expect(time_table.dates.count).to eq 1
+      expect(time_table.periods.count).to eq 1
+    end
+
     it "changes when a date is updated" do
       time_table = create(:time_table)
       expect{time_table.dates.last.update_attribute(:date, Time.now)}.to change{time_table.reload.checksum}
@@ -1058,7 +1069,7 @@ end
     it "changes when a date is added" do
       time_table = create(:time_table)
       expect(time_table).to receive(:update_checksum_without_callbacks!).at_least(:once).and_call_original
-      expect{create(:time_table_date, time_table: time_table)}.to change{time_table.checksum}
+      expect{create(:time_table_date, time_table: time_table, date: 1.year.ago)}.to change{time_table.checksum}
     end
 
     it "changes when a period is updated" do
