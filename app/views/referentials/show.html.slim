@@ -67,6 +67,8 @@
           = replacement_msg t('referential_lines.search_no_results')
 
 
+    = referential_overview resource
+
 / Modal(s)
 = modalbox 'purgeModal' do
   = simple_form_for [@referential, CleanUp.new] do |f|
