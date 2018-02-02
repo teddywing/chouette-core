@@ -4,9 +4,9 @@ RSpec.describe AutocompleteStopAreasController, type: :controller do
   login_user
 
   let(:referential) { Referential.first }
-  let!(:stop_area) { create :stop_area, name: 'écolà militaire' }
-  let!(:zdep_stop_area) { create :stop_area, area_type: "zdep" }
-  let!(:not_zdep_stop_area) { create :stop_area, area_type: "lda" }
+  let!(:stop_area) { create :stop_area, name: 'écolà militaire', stop_area_referential: referential.stop_area_referential }
+  let!(:zdep_stop_area) { create :stop_area, area_type: "zdep", stop_area_referential: referential.stop_area_referential }
+  let!(:not_zdep_stop_area) { create :stop_area, area_type: "lda", stop_area_referential: referential.stop_area_referential }
 
   describe 'GET #index' do
     it 'should be successful' do
