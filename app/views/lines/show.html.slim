@@ -6,7 +6,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          {  t('id_codif') => @line.get_objectid.short_id,
+          {  t('objectid') => @line.get_objectid.short_id,
              @line.human_attribute_name(:deactivated) => (@line.deactivated? ? t('false') : t('true')),
              @line.human_attribute_name(:network_id) => (@line.network.nil? ? t('lines.index.unset') : @line.network.name),
              @line.human_attribute_name(:company_id) => (@line.company.nil? ? t('lines.index.unset') : @line.company.name),
