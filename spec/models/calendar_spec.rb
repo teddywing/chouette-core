@@ -36,7 +36,7 @@ RSpec.describe Calendar, :type => :model do
     end
 
     it 'validates that dates and date_ranges do not overlap but allow for days not in the list' do
-      expect(build(:calendar, dates: [Date.today.beginning_of_week], date_ranges: [Date.today.beginning_of_week..Date.today], int_day_types: Calendar::THURSDAY)).to be_valid
+      expect(build(:calendar, dates: [Date.today.beginning_of_week - 1.week], date_ranges: [(Date.today.beginning_of_week - 1.week)..Date.today], int_day_types: Calendar::THURSDAY)).to be_valid
     end
 
     it 'validates that there are no duplicates in dates' do
