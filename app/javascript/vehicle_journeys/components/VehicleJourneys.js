@@ -174,7 +174,7 @@ export default class VehicleJourneys extends Component {
                   <div>
                     { detailed_calendars &&
                       <a href='#' onClick={this.toggleTimetables} className='detailed-timetables-bt'>
-                        <span className='fa fa-caret-right'></span>
+                        <span className='fa fa-angle-up'></span>
                         {I18n.model_name("time_table", "plural": true)}
                       </a>
                     }
