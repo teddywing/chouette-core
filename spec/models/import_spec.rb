@@ -29,6 +29,27 @@ RSpec.describe Import, type: :model do
     )
   end
 
+  describe ".abort_old" do
+    it "changes imports older than 4 hours to aborted" do
+      Timecop.freeze(Time.now) do
+        old_import = create(
+          :workbench_import,
+          status: 'pending',
+          created_at: 4.hours.ago - 1.minute
+        )
+        current_import = create(:workbench_import, status: 'pending')
+
+        Import.abort_old
+
+        expect(current_import.reload.status).to eq('pending')
+        expect(old_import.reload.status).to eq('aborted')
+      end
+    end
+
+    it "doesn't work on imports with a `finished_status`" do
+    end
+  end
+
   describe "#destroy" do
     it "must destroy all child imports" do
       netex_import = create(:netex_import)

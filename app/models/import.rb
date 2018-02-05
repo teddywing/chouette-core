@@ -42,6 +42,11 @@ class Import < ActiveRecord::Base
     %w(successful failed warning aborted canceled)
   end
 
+  def self.abort_old
+    where('created_at < ?', 4.hours.ago)
+      .update_all(status: 'aborted')
+  end
+
   def notify_parent
     parent.child_change
     update(notified_parent_at: DateTime.now)
