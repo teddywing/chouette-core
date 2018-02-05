@@ -47,6 +47,17 @@ RSpec.describe Import, type: :model do
     end
 
     it "doesn't work on imports with a `finished_status`" do
+      Timecop.freeze(Time.now) do
+        import = create(
+          :workbench_import,
+          status: 'successful',
+          created_at: 4.hours.ago - 1.minute
+        )
+
+        Import.abort_old
+
+        expect(import.reload.status).to eq('successful')
+      end
     end
   end
 

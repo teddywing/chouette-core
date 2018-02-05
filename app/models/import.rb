@@ -43,8 +43,11 @@ class Import < ActiveRecord::Base
   end
 
   def self.abort_old
-    where('created_at < ?', 4.hours.ago)
-      .update_all(status: 'aborted')
+    where(
+      'created_at < ? AND status NOT IN (?)',
+      4.hours.ago,
+      finished_statuses
+    ).update_all(status: 'aborted')
   end
 
   def notify_parent
