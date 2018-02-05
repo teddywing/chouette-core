@@ -40,7 +40,7 @@ every :day, :at => '4:00 am' do
 end
 
 every 5.minutes do
-  rake "import:abort_old"
+  rake "import:netex_abort_old"
   rake "import:notify_parent"
 end
 

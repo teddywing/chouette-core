@@ -59,6 +59,26 @@ RSpec.describe Import, type: :model do
         expect(import.reload.status).to eq('successful')
       end
     end
+
+    it "only works on the caller type" do
+      Timecop.freeze(Time.now) do
+        workbench_import = create(
+          :workbench_import,
+          status: 'pending',
+          created_at: 4.hours.ago - 1.minute
+        )
+        netex_import = create(
+          :netex_import,
+          status: 'pending',
+          created_at: 4.hours.ago - 1.minute
+        )
+
+        NetexImport.abort_old
+
+        expect(workbench_import.reload.status).to eq('pending')
+        expect(netex_import.reload.status).to eq('aborted')
+      end
+    end
   end
 
   describe "#destroy" do

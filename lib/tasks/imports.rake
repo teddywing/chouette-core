@@ -4,8 +4,8 @@ namespace :import do
     ParentImportNotifier.notify_when_finished
   end
 
-  desc "Mark old unfinished imports as 'aborted'"
-  task abort_old: :environment do
-    Import.abort_old
+  desc "Mark old unfinished Netex imports as 'aborted'"
+  task netex_abort_old: :environment do
+    NetexImport.abort_old
   end
 end
