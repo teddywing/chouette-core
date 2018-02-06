@@ -69,6 +69,10 @@ const actions = {
     type : 'EDIT_VEHICLEJOURNEY_MODAL',
     vehicleJourney
   }),
+  openInfoModal : (vehicleJourney) => ({
+    type : 'INFO_VEHICLEJOURNEY_MODAL',
+    vehicleJourney
+  }),
   openNotesEditModal : (vehicleJourney) => ({
     type : 'EDIT_NOTES_VEHICLEJOURNEY_MODAL',
     vehicleJourney
@@ -383,7 +387,9 @@ const actions = {
           }
           window.currentItemsLength = vehicleJourneys.length
           dispatch(actions.receiveVehicleJourneys(vehicleJourneys, returnJourneys))
-          dispatch(actions.receiveTotalCount(json.total))
+          if(!returnJourneys){
+            dispatch(actions.receiveTotalCount(json.total))
+          }
         }
       })
   },

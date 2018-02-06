@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import actions from '../actions'
 import EditVehicleJourney from '../containers/tools/EditVehicleJourney'
+import VehicleJourneyInfoButton from '../containers/tools/VehicleJourneyInfoButton'
 
 export default class VehicleJourney extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ export default class VehicleJourney extends Component {
         <div
           className='th'
           onClick={(e) =>
-            ($(e.target).parents("a").length == 0) && this.props.onSelectVehicleJourney(this.props.index)
+            !this.props.disabled && ($(e.target).parents("a").length == 0) && this.props.onSelectVehicleJourney(this.props.index)
           }
           >
           <div className='strong mb-xs'>{this.props.value.short_id || '-'}</div>
@@ -93,7 +94,7 @@ export default class VehicleJourney extends Component {
             ></input>
             <label htmlFor={this.props.index}></label>
           </div>}
-          {this.props.disabled && <EditVehicleJourney disabled={false} vehicleJourney={this.props.value} />}
+          {this.props.disabled && <VehicleJourneyInfoButton vehicleJourney={this.props.value} />}
         </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
