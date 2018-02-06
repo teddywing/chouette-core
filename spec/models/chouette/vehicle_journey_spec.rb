@@ -62,7 +62,7 @@ describe Chouette::VehicleJourney, :type => :model do
       context "with a common area" do
         let(:ids){[common_stop_area.id]}
         it "should return all journeys" do
-          expect(result).to eq [journey_1, journey_2]
+          expect(result.to_a.sort).to eq [journey_1, journey_2].sort
         end
       end
     end
