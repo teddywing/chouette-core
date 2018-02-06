@@ -42,10 +42,17 @@ module Chouette
     def checksum_attributes
       [].tap do |attrs|
         attrs << self.int_day_types
-        attrs << self.dates.map(&:checksum).map(&:to_s).sort
-        attrs << self.periods.map(&:checksum).map(&:to_s).sort
+        dates = self.dates
+        dates += TimeTableDate.where(time_table_id: self.id)
+        attrs << dates.map(&:checksum).map(&:to_s).sort
+        periods = self.periods
+        periods += TimeTablePeriod.where(time_table_id: self.id)
+        attrs << periods.map(&:checksum).map(&:to_s).sort
       end
     end
+
+    has_checksum_children TimeTableDate
+    has_checksum_children TimeTablePeriod
 
     def self.object_id_key
       "Timetable"

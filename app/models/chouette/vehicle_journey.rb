@@ -104,9 +104,13 @@ module Chouette
         attrs << self.published_journey_identifier
         attrs << self.try(:company).try(:get_objectid).try(:local_id)
         attrs << self.footnotes.map(&:checksum).sort
-        attrs << self.vehicle_journey_at_stops.sort_by { |s| s.stop_point&.position }.map(&:checksum).sort
+        vjas =  self.vehicle_journey_at_stops
+        vjas += VehicleJourneyAtStop.where(vehicle_journey_id: self.id)
+        attrs << vjas.uniq.sort_by { |s| s.stop_point&.position }.map(&:checksum).sort
       end
     end
+
+    has_checksum_children VehicleJourneyAtStop
 
     def set_default_values
       if number.nil?
