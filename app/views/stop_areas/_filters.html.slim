@@ -12,7 +12,7 @@
 
     .form-group.togglable class=filter_item_class(params[:q], :area_type_eq_any)
       = f.label Chouette::StopArea.human_attribute_name(:area_type), required: false, class: 'control-label'
-      = f.input :area_type_eq_any, checked: params[:q][:area_type_eq_any], collection: Chouette::AreaType.options, as: :check_boxes, label: false, label_method: lambda{|w| ("<span>" + w[0] + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
+      = f.input :area_type_eq_any, checked: params[:q] && params[:q][:area_type_eq_any], collection: Chouette::AreaType.options, as: :check_boxes, label: false, label_method: lambda{|w| ("<span>" + w[0] + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .actions
     = link_to 'Effacer', @workbench, class: 'btn btn-link'
