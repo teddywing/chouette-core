@@ -64,5 +64,5 @@ en:
   brandname: IBOO
   error: "Error"
   undefined: 'undefined'
-  yes: yes
-  no: no
+  "yes": yes
+  "no": no
