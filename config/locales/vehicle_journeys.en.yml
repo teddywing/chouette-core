@@ -2,6 +2,10 @@ en:
   vehicle_journeys:
     vehicle_journeys_matrix:
       line_routes: "Line's routes"
+      fetching_error: "There has been a problem fetching the data. Please reload the page to try again."
+      show_timetable: 'Show calendar'
+      show_purchase_window: 'Show the purchase window'
+      modal_confirm: 'Do you want to save mofications before moving on to the next page ?'
     vehicle_journey:
       title_stopless: "Vehicle journey %{name}"
       title: "Vehicle journey leaving from %{stop} at %{time}"
@@ -28,6 +32,8 @@ en:
       stop_title: "Stop"
       departure: "Departure"
       arrival: "Arrival"
+      departure_at: "Departure at"
+      arrival_at: "Arrival at"
       to_arrivals: "Copy departures to arrivals"
       to_departures: "Copy arrivals to departures"
       time_tables: "Associated calendars to vehicle journey"
@@ -35,6 +41,12 @@ en:
       slide_title: "Shift all vehicle passing times"
       set: "Set"
       to: "at"
+      departure_range:
+        label: Journey departure range
+        start: Start
+        end: End
+      show_journeys_without_schedule: "Show journeys without schedule"
+      show_journeys_with_calendar: "Show journeys with calendar"
       slide_departure: "departure time at first stop"
       slide_arrival: "arrival time at first stop"
       submit_timed: "Create vehicle journey"
@@ -81,6 +93,7 @@ en:
         line: "Line"
         route: "Route"
         journey_pattern: "Journey Pattern"
+        journey_pattern_id: "Pattern ID"
         time_tables: "Calendars"
         time_slot: "Time Slot"
         company: "Company"
@@ -112,6 +125,8 @@ en:
         departure_time: "Departure"
         arrival_time: "Arrival"
         purchase_window: "Purchase availability"
+        name: "Journey Name"
+        id: "Journey ID"
     errors:
       models:
         vehicle_journey:

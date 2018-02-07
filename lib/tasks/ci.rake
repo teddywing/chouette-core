@@ -38,7 +38,7 @@ namespace :ci do
   end
 
   task :jest => "ci:assets" do
-    sh "yarn --no-progress install" # Hack to force install jest after webpack 
+    sh "yarn --no-progress install" # Hack to force install jest after webpack
     sh "node_modules/.bin/jest" unless ["CHOUETTE_JEST_DISABLED"]
   end
 
@@ -59,4 +59,4 @@ namespace :ci do
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "ci:spec", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "ci:spec", "i18n:js:export", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]

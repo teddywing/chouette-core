@@ -49,6 +49,10 @@
     "roots": [
       "<rootDir>/spec/javascript"
     ],
+    "transform": {
+      "^.+\\.coffee$": "<rootDir>/spec/javascript/preprocessor.js",
+      "^.+\\.jsx?$": "babel-jest"
+    },
     "testEnvironment": "jest-environment-jsdom-global",
     "setupFiles": [
       "<rootDir>/spec/javascript/spec_helper.js",

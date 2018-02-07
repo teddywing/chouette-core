@@ -7,7 +7,7 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
       <div className='modal-dialog'>
         <div className='modal-content'>
           <div className='modal-body'>
-            <p> Voulez-vous valider vos modifications avant de changer de page? </p>
+            <p> {I18n.t('vehicle_journeys.vehicle_journeys_matrix.modal_confirm')} </p>
           </div>
           <div className='modal-footer'>
             <button
@@ -31,7 +31,7 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
       </div>
     </div>
   )
-} 
+}
 
 ConfirmModal.propTypes = {
   vehicleJourneys: PropTypes.array.isRequired,
