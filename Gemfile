@@ -103,6 +103,7 @@ gem 'will_paginate-bootstrap'
 gem 'gretel'
 gem 'country_select'
 gem 'flag-icons-rails'
+gem 'i18n-js'
 
 # Format Output
 gem 'json'

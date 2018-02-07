@@ -128,7 +128,7 @@ export default class EditVehicleJourney extends Component {
                               <input
                                 type='text'
                                 className='form-control'
-                                value={window.I18n.fr.enumerize.transport_mode[this.props.modal.modalProps.vehicleJourney.transport_mode]}
+                                value={I18n.enumerize('transport_mode', this.props.modal.modalProps.vehicleJourney.transport_mode)}
                                 disabled={true}
                               />
                             </div>

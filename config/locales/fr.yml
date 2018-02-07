@@ -61,3 +61,7 @@ fr:
   reflex_data: 'Données Reflex'
   objectid: 'ID'
   brandname: IBOO
+  error: "Erreur"
+  undefined: 'non renseigné'
+  yes: oui
+  no: non

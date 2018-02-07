@@ -3,6 +3,7 @@ en:
   "false": "No"
   "unknown": "Unknown"
 
+
   time:
     formats:
       hour: "%Hh%M"
@@ -61,3 +62,7 @@ en:
   reflex_data: 'Reflex datas'
   objectid: 'ID'
   brandname: IBOO
+  error: "Error"
+  undefined: 'undefined'
+  yes: yes
+  no: no

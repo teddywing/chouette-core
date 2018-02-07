@@ -2,6 +2,10 @@ fr:
   vehicle_journeys:
     vehicle_journeys_matrix:
       line_routes: "Séquences d'arrêts de la ligne"
+      fetching_error: "La récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème."
+      show_timetable: 'Voir le calendrier'
+      show_purchase_window: 'Voir le calendrier commercial'
+      modal_confirm: 'Voulez-vous valider vos modifications avant de changer de page?'
     vehicle_journey:
       title_stopless: "Course %{name}"
       title: "Course partant de %{stop} à %{time}"
@@ -27,7 +31,10 @@ fr:
     form:
       stop_title: "Arrêt"
       departure: "Départ"
+      departure_at: "Départ à"
       arrival: "Arrivée"
+      arrival_at: "Arrivée à"
+      to_arrivals: "Copie départs vers arrivées"
       to_arrivals: "Copie départs vers arrivées"
       to_departures: "Copie arrivées vers départs"
       time_tables: "Calendriers associés à la course"
@@ -35,6 +42,12 @@ fr:
       slide_title: "Décaler l'ensemble des horaires de course"
       set: "Fixer"
       to: "à"
+      departure_range:
+        label: Plage horaire au départ de la course
+        start: Début
+        end: Fin
+      show_journeys_without_schedule: "Afficher les courses sans horaires"
+      show_journeys_with_calendar: "Afficher les courses avec calendrier"
       slide_departure: "horaire de départ au 1° arrêt à"
       slide_arrival: "horaire d'arrivée au 1° arrêt à"
       submit_timed: "Créer course"
@@ -81,6 +94,7 @@ fr:
         line: "Ligne"
         route: "Séquence d'arrêt"
         journey_pattern: "Mission"
+        journey_pattern_id: "ID Mission"
         time_tables: "Calendriers"
         time_slot: "Fréquence"
         company: "Transporteur"
@@ -112,6 +126,8 @@ fr:
         departure_time: "Départ"
         arrival_time: "Arrivée"
         purchase_window: "Disponibilité commerciale"
+        name: "Nom Course"
+        id: "ID Course"
     errors:
       models:
         vehicle_journey:

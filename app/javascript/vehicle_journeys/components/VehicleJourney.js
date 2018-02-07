@@ -23,7 +23,7 @@ export default class VehicleJourney extends Component {
     let ttURL = refURL + '/time_tables/' + tt.id
 
     return (
-      <a href={ttURL} title='Voir le calendrier'><span className='fa fa-calendar' style={{ color: (tt.color ? tt.color : '#4B4B4B')}}></span></a>
+      <a href={ttURL} title={I18n.t('vehicle_journeys.vehicle_journeys_matrix.show_timetable')}><span className='fa fa-calendar' style={{ color: (tt.color ? tt.color : '#4B4B4B')}}></span></a>
     )
   }
 
@@ -32,7 +32,7 @@ export default class VehicleJourney extends Component {
     let ttURL = refURL + '/purchase_windows/' + tt.id
 
     return (
-      <a href={ttURL} title='Voir le calendrier commercial'><span className='fa fa-calendar' style={{color: (tt.color ? tt.color : '')}}></span></a>
+      <a href={ttURL} title={I18n.t('vehicle_journeys.vehicle_journeys_matrix.show_purchase_window')}><span className='fa fa-calendar' style={{color: (tt.color ? tt.color : '')}}></span></a>
     )
   }
 
@@ -65,7 +65,7 @@ export default class VehicleJourney extends Component {
           }
           >
           <div className='strong mb-xs'>{this.props.value.short_id || '-'}</div>
-          <div>{this.props.value.published_journey_name && this.props.value.published_journey_name != "non renseigné" ? this.props.value.published_journey_name : '-'}</div>
+          <div>{this.props.value.published_journey_name && this.props.value.published_journey_name != I18n.t('undefined') ? this.props.value.published_journey_name : '-'}</div>
           <div>{this.props.value.journey_pattern.short_id || '-'}</div>
           <div>{this.props.value.company ? this.props.value.company.name : '-'}</div>
           <div>
@@ -100,7 +100,7 @@ export default class VehicleJourney extends Component {
           <div key={i} className='td text-center'>
             <div className={'cellwrap' + (this.cityNameChecker(vj) ? ' headlined' : '')}>
               {this.props.filters.toggleArrivals &&
-                <div data-headline='Arrivée à'>
+                <div data-headline={I18n.t("vehicle_journeys.form.arrival_at")}>
                   <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
@@ -131,7 +131,7 @@ export default class VehicleJourney extends Component {
                     <span className='sb sb-chrono sb-lg text-warning' data-textinside={vj.delta}></span>
                   }
                 </div>
-                <div data-headline='Départ à'>
+                <div data-headline={I18n.t("vehicle_journeys.form.departure_at")}>
                   <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
