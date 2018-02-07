@@ -63,5 +63,5 @@ fr:
   brandname: IBOO
   error: "Erreur"
   undefined: 'non renseigné'
-  yes: oui
-  no: non
+  "yes": oui
+  "no": non
