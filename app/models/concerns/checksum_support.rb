@@ -3,8 +3,21 @@ module ChecksumSupport
   SEPARATOR = '|'
   VALUE_FOR_NIL_ATTRIBUTE = '-'
 
-  included do
+  included do |into|
     before_save :set_current_checksum_source, :update_checksum
+    Referential.register_model_with_checksum self
+    into.extend ClassMethods
+  end
+
+  module ClassMethods
+    def has_checksum_children klass, opts={}
+      parent_class = self
+      relation = opts[:relation] || self.model_name.singular
+      klass.after_save do
+        parent = self.send(relation)
+        parent&.update_checksum_without_callbacks!
+      end
+    end
   end
 
   def checksum_attributes
@@ -31,6 +44,15 @@ module ChecksumSupport
     set_current_checksum_source
     if checksum_source_changed?
       update checksum: Digest::SHA256.new.hexdigest(checksum_source)
+    end
+  end
+
+  def update_checksum_without_callbacks!
+    set_current_checksum_source
+    _checksum = Digest::SHA256.new.hexdigest(checksum_source)
+    if _checksum != self.checksum
+      self.checksum = _checksum
+      self.class.where(id: self.id).update_all(checksum: _checksum) unless self.new_record?
     end
   end
 end

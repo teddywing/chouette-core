@@ -42,12 +42,12 @@ shared_examples 'checksum support' do |factory_name|
   end
 
   it 'should trigger set_current_checksum_source on save' do
-    expect(instance).to receive(:set_current_checksum_source)
+    expect(instance).to receive(:set_current_checksum_source).at_least(:once)
     instance.save
   end
 
   it 'should trigger update_checksum on save' do
-    expect(instance).to receive(:update_checksum)
+    expect(instance).to receive(:update_checksum).at_least(:once)
     instance.save
   end
 end

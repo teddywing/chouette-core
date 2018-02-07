@@ -84,9 +84,8 @@ class ImportsController < ChouetteController
   end
 
   def decorate_imports(imports)
-    ModelDecorator.decorate(
+    ImportDecorator.decorate(
       imports,
-      with: ImportDecorator,
       context: {
         workbench: @workbench
       }

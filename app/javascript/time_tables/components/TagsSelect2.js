@@ -1,9 +1,10 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import mapKeys from 'lodash/mapKeys'
 import map from 'lodash/map'
 import filter from 'lodash/filter'
 import assign from 'lodash/assign'
-import Select2 from 'react-select2'
+import Select2 from 'react-select2-wrapper'
 
 // get JSON full path
 let origin = window.location.origin

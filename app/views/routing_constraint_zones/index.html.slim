@@ -1,7 +1,4 @@
 - breadcrumb :routing_constraint_zones, @referential, @line
-- content_for :page_header_actions do
-  - if (policy(Chouette::RoutingConstraintZone).create? && @referential.organisation == current_organisation)
-    = link_to(t('actions.new'), new_referential_line_routing_constraint_zone_path(@referential, @line), class: 'btn btn-primary')
 
 .page_content
   .container-fluid

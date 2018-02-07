@@ -1,17 +1,5 @@
 - breadcrumb :compliance_control_set, @compliance_control_set
 - page_header_content_for @compliance_control_set
-- content_for :page_header_content do
-  .row.mb-sm
-    .col-lg-12.text-right
-      - @compliance_control_set.action_links.each do |link|
-        - if link.is_a?(HTMLElement)
-          = link.to_html(class: 'btn btn-primary')
-        - else
-          = link_to link.href,
-              method: link.method,
-              data: link.data,
-              class: 'btn btn-primary' do
-            = link.content
 
 .page_content
   .container-fluid

@@ -1,3 +1,4 @@
+# coding: utf-8
 source 'https://rubygems.org'
 
 # Use https for github
@@ -15,7 +16,7 @@ gem 'uglifier', '~> 2.7.2'
 gem 'coffee-rails', '~> 4.0.0'
 
 # Webpacker
-gem 'webpacker', '~> 3.0'
+gem 'webpacker', '3.0.2'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
@@ -101,6 +102,7 @@ gem 'font-awesome-sass', '~> 4.7'
 gem 'will_paginate-bootstrap'
 gem 'gretel'
 gem 'country_select'
+gem 'flag-icons-rails'
 
 # Format Output
 gem 'json'

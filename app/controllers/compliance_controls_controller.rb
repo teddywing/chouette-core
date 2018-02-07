@@ -8,6 +8,12 @@ class ComplianceControlsController < ChouetteController
     @sti_subclasses = ComplianceControl.subclasses
   end
 
+  def show
+    show! do
+      @compliance_control = @compliance_control.decorate
+    end
+  end
+
   def new
     if params[:sti_class].blank?
       flash[:notice] = I18n.t("compliance_controls.errors.mandatory_control_type")

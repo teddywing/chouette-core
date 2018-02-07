@@ -1,6 +1,7 @@
 import actions from '../../../app/javascript/vehicle_journeys/actions/index'
 
 const dispatch = function(){}
+window.fetch = function(){return Promise.resolve()}
 const currentPage = 1
 
 describe('when cannot fetch api', () => {
@@ -37,11 +38,53 @@ describe('when clicking on add button', () => {
     expect(actions.openCreateModal()).toEqual(expectedAction)
   })
 })
+describe('when validating the form', () => {
+  it('should check that non-commercial stops have passing time', () => {
+    let state = [{
+      vehicle_journey_at_stops: [{
+        area_kind: "non_commercial",
+        departure_time: {
+          hour: "00",
+          minute: "00"
+        }
+      }]
+    }]
+
+    expect(actions.validate(dispatch, state)).toEqual(true)
+
+    state = [{
+      vehicle_journey_at_stops: [{
+        area_kind: "non_commercial",
+        departure_time: {
+          hour: "00",
+          minute: "01"
+        }
+      }]
+    }]
+
+    expect(actions.validate(dispatch, state)).toEqual(true)
+  })
+
+  it('should not check that commercial stops', () => {
+    let state = [{
+      vehicle_journey_at_stops: [{
+        area_kind: "commercial",
+        departure_time: {
+          hour: "00",
+          minute: "00"
+        }
+      }]
+    }]
+
+    expect(actions.validate(dispatch, state)).toEqual(true)
+  })
+})
 describe('when using select2 to pick a journey pattern', () => {
   it('should create an action to select a journey pattern inside modal', () => {
     let selectedJP = {
       id: 1,
       object_id: 2,
+      short_id: 2,
       name: 'test',
       published_name: 'test',
       stop_area_short_descriptions: ['test']
@@ -51,6 +94,7 @@ describe('when using select2 to pick a journey pattern', () => {
       selectedItem:{
         id: selectedJP.id,
         objectid: selectedJP.object_id,
+        short_id: selectedJP.object_id,
         name: selectedJP.name,
         published_name: selectedJP.published_name,
         stop_areas: selectedJP.stop_area_short_descriptions

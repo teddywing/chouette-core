@@ -1,5 +1,5 @@
-import range from 'lodash/range'
 import assign from 'lodash/assign'
+import range from 'lodash/range'
 import reject from 'lodash/reject'
 import some from 'lodash/some'
 import every from 'lodash/every'
@@ -157,7 +157,7 @@ const actions = {
   monthName(strDate) {
     let monthList = range(1,13).map(n => I18n.calendars.months[n])
     let date = new Date(strDate)
-    return monthList[date.getMonth()]
+    return monthList[date.getUTCMonth()]
   },
   getHumanDate(strDate, mLimit) {
     let origin = strDate.split('-')
@@ -173,7 +173,7 @@ const actions = {
   },
   getLocaleDate(strDate) {
     let date = new Date(strDate)
-    return date.toLocaleDateString()
+    return date.toLocaleDateString(undefined, { timeZone: 'UTC' })
   },
   updateSynthesis: ({current_month, time_table_dates: dates, time_table_periods: periods}) => {
     let newPeriods = reject(periods, 'deleted')
@@ -194,7 +194,7 @@ const actions = {
 
     for (let period of periods) {
       let begin = new Date(period.period_start)
-      let end = new Date(period.period_end) 
+      let end = new Date(period.period_end)
       if (date >= begin && date <= end) return true
     }
 
@@ -246,7 +246,8 @@ const actions = {
     return error
   },
   fetchTimeTables: (dispatch, nextPage) => {
-    let urlJSON = window.location.pathname.split('/', 5).join('/')
+    let urlJSON = window.timetablesUrl || window.location.pathname.split('/', 5).join('/')
+
     if(nextPage) {
       urlJSON += "/month.json?date=" + nextPage
     }else{
@@ -277,7 +278,7 @@ const actions = {
     let strDayTypes = actions.arrayToStrDayTypes(metas.day_types)
     metas.day_types = strDayTypes
     let sentState = assign({}, timetable, metas)
-    let urlJSON = window.location.pathname.split('/', 5).join('/')
+    let urlJSON = window.timetablesUrl || window.location.pathname.split('/', 5).join('/')
     let hasError = false
     fetch(urlJSON + '.json', {
       credentials: 'same-origin',

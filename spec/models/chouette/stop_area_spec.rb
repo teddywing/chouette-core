@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'spec_helper'
 
 describe Chouette::StopArea, :type => :model do
@@ -9,9 +10,19 @@ describe Chouette::StopArea, :type => :model do
 
   it { should belong_to(:stop_area_referential) }
   it { should validate_presence_of :name }
+  it { should validate_presence_of :kind }
   it { should validate_numericality_of :latitude }
   it { should validate_numericality_of :longitude }
   it { is_expected.to be_versioned }
+
+  describe "#area_type" do
+    it "should validate the value is correct regarding to the kind" do
+      expect(build(:stop_area, kind: :commercial, area_type: :gdl)).to be_valid
+      expect(build(:stop_area, kind: :non_commercial, area_type: :relief)).to be_valid
+      expect(build(:stop_area, kind: :commercial, area_type: :relief)).to_not be_valid
+      expect(build(:stop_area, kind: :non_commercial, area_type: :gdl)).to_not be_valid
+    end
+  end
 
   # describe ".latitude" do
   #   it "should accept -90 value" do
@@ -458,6 +469,14 @@ describe Chouette::StopArea, :type => :model do
 
       stop_area.valid?
       expect(stop_area.errors).to have_key(:parent_id)
+    end
+
+    it "use parent area type label in validation error message" do
+      stop_area.area_type = 'zdep'
+      stop_area.parent.area_type = 'zdep'
+
+      stop_area.valid?
+      expect(stop_area.errors[:parent_id].first).to include(Chouette::AreaType.find(stop_area.parent.area_type).label)
     end
 
   end

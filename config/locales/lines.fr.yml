@@ -17,11 +17,16 @@ fr:
       export_kml_all: "Export KML des lignes"
       export_hub: "Export HUB de la ligne"
       export_hub_all: "Export HUB des lignes"
+      show: 'Consulter'
       show_network: 'Voir le réseau'
       show_company: 'Voir le transporteur principal'
     new:
       title: "Ajouter une ligne"
+    create:
+      title: "Ajouter une ligne"
     edit:
+      title: "Editer la ligne %{name}"
+    update:
       title: "Editer la ligne %{name}"
     show:
       title: "Ligne %{name}"

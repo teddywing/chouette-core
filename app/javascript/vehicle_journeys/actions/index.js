@@ -13,8 +13,8 @@ const actions = {
   exitEditMode: () => ({
     type: "EXIT_EDIT_MODE"
   }),
-  receiveVehicleJourneys : (json) => ({
-    type: "RECEIVE_VEHICLE_JOURNEYS",
+  receiveVehicleJourneys : (json, returnJourneys) => ({
+    type: (returnJourneys ? "RECEIVE_RETURN_VEHICLE_JOURNEYS" : "RECEIVE_VEHICLE_JOURNEYS"),
     json
   }),
   receiveErrors : (json) => ({
@@ -57,13 +57,20 @@ const actions = {
     selectedItem: {
       id: selectedJP.id,
       objectid: selectedJP.object_id,
+      short_id: selectedJP.short_id,
       name: selectedJP.name,
       published_name: selectedJP.published_name,
-      stop_areas: selectedJP.stop_area_short_descriptions
+      stop_areas: selectedJP.stop_area_short_descriptions,
+      costs: selectedJP.costs,
+      full_schedule: selectedJP.full_schedule
     }
   }),
   openEditModal : (vehicleJourney) => ({
     type : 'EDIT_VEHICLEJOURNEY_MODAL',
+    vehicleJourney
+  }),
+  openInfoModal : (vehicleJourney) => ({
+    type : 'INFO_VEHICLEJOURNEY_MODAL',
     vehicleJourney
   }),
   openNotesEditModal : (vehicleJourney) => ({
@@ -287,9 +294,16 @@ const actions = {
     type: 'RECEIVE_TOTAL_COUNT',
     total
   }),
-  fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString) => {
+  fetchVehicleJourneys : (dispatch, currentPage, nextPage, queryString, url) => {
+    let returnJourneys = false
     if(currentPage == undefined){
       currentPage = 1
+    }
+    if(url == undefined){
+      url = window.location.pathname
+    }
+    else{
+      returnJourneys = true
     }
     let vehicleJourneys = []
     let page
@@ -312,7 +326,7 @@ const actions = {
       str = '.json?page=' + page.toString()
       sep = '&'
     }
-    let urlJSON = window.location.pathname + str
+    let urlJSON = url + str
     if (queryString){
       urlJSON = urlJSON + sep + queryString
     }
@@ -372,11 +386,25 @@ const actions = {
             )
           }
           window.currentItemsLength = vehicleJourneys.length
-          dispatch(actions.receiveVehicleJourneys(vehicleJourneys))
-          dispatch(actions.receiveTotalCount(json.total))
+          dispatch(actions.receiveVehicleJourneys(vehicleJourneys, returnJourneys))
+          if(!returnJourneys){
+            dispatch(actions.receiveTotalCount(json.total))
+          }
         }
       })
   },
+
+  validate : (dispatch, vehicleJourneys, next) => {
+    dispatch(actions.didValidateVehicleJourneys(vehicleJourneys))
+    actions.submitVehicleJourneys(dispatch, vehicleJourneys, next)
+    return true
+  },
+
+  didValidateVehicleJourneys : (vehicleJourneys) => ({
+    type: 'DID_VALIDATE_VEHICLE_JOURNEYS',
+    vehicleJourneys
+  }),
+
   submitVehicleJourneys : (dispatch, state, next) => {
     dispatch(actions.fetchingApi())
     let urlJSON = window.location.pathname + "_collection.json"

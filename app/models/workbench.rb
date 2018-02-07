@@ -4,6 +4,7 @@ class Workbench < ActiveRecord::Base
   belongs_to :line_referential
   belongs_to :stop_area_referential
   belongs_to :output, class_name: 'ReferentialSuite'
+  belongs_to :workgroup
 
   has_many :lines, -> (workbench) { Stif::MyWorkbenchScopes.new(workbench).line_scope(self) }, through: :line_referential
   has_many :networks, through: :line_referential
@@ -30,7 +31,12 @@ class Workbench < ActiveRecord::Base
     if line_ids.empty?
       Referential.none
     else
-      Referential.joins(:metadatas).where(['referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids]).ready.not_in_referential_suite
+      workgroup
+        .referentials
+        .joins(:metadatas)
+        .where(['referential_metadata.line_ids && ARRAY[?]::bigint[]', line_ids])
+        .ready
+        .not_in_referential_suite
     end
   end
 

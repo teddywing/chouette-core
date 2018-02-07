@@ -22,6 +22,7 @@ module Chouette
     belongs_to :company
     belongs_to :route
     belongs_to :journey_pattern
+    has_many :stop_areas, through: :journey_pattern
 
     has_and_belongs_to_many :footnotes, :class_name => 'Chouette::Footnote'
     has_and_belongs_to_many :purchase_windows, :class_name => 'Chouette::PurchaseWindow'
@@ -41,6 +42,39 @@ module Chouette
 
     before_validation :set_default_values,
       :calculate_vehicle_journey_at_stop_day_offset
+
+    scope :with_stop_area_ids, ->(ids){
+      _ids = ids.select(&:present?).map(&:to_i)
+      if _ids.present?
+        where("array(SELECT stop_points.stop_area_id::integer FROM stop_points INNER JOIN journey_patterns_stop_points ON journey_patterns_stop_points.stop_point_id = stop_points.id WHERE journey_patterns_stop_points.journey_pattern_id = vehicle_journeys.journey_pattern_id) @> array[?]", _ids)
+      else
+        all
+      end
+    }
+
+    scope :in_purchase_window, ->(range){
+      purchase_windows = Chouette::PurchaseWindow.overlap_dates(range)
+      sql = purchase_windows.joins(:vehicle_journeys).select('vehicle_journeys.id').uniq.to_sql
+      where("id IN (#{sql})")
+    }
+
+    # We need this for the ransack object in the filters
+    ransacker :purchase_window_date_gt
+    ransacker :stop_area_ids
+
+    # returns VehicleJourneys with at least 1 day in their time_tables
+    # included in the given range
+    def self.with_matching_timetable date_range
+      out = []
+      time_tables = Chouette::TimeTable.where(id: self.joins("INNER JOIN time_tables_vehicle_journeys ON vehicle_journeys.id = time_tables_vehicle_journeys.vehicle_journey_id").pluck('time_tables_vehicle_journeys.time_table_id')).overlapping(date_range)
+      time_tables = time_tables.select do |time_table|
+        range = date_range
+        range = date_range & (time_table.start_date-1.day..time_table.end_date+1.day) || [] if time_table.start_date.present? && time_table.end_date.present?
+        range.any?{|d| time_table.include_day?(d) }
+      end
+      out += time_tables.map{|t| t.vehicle_journey_ids}.flatten
+      where(id: out)
+    end
 
     # TODO: Remove this validator
     # We've eliminated this validation because it prevented vehicle journeys
@@ -70,9 +104,13 @@ module Chouette
         attrs << self.published_journey_identifier
         attrs << self.try(:company).try(:get_objectid).try(:local_id)
         attrs << self.footnotes.map(&:checksum).sort
-        attrs << self.vehicle_journey_at_stops.sort_by { |s| s.stop_point&.position }.map(&:checksum).sort
+        vjas =  self.vehicle_journey_at_stops
+        vjas += VehicleJourneyAtStop.where(vehicle_journey_id: self.id)
+        attrs << vjas.uniq.sort_by { |s| s.stop_point&.position }.map(&:checksum).sort
       end
     end
+
+    has_checksum_children VehicleJourneyAtStop
 
     def set_default_values
       if number.nil?
@@ -119,10 +157,14 @@ module Chouette
     def update_vjas_from_state state
       state.each do |vjas|
         next if vjas["dummy"]
+        stop_point = Chouette::StopPoint.find_by(objectid: vjas['stop_point_objectid'])
+        stop_area = stop_point&.stop_area
+        tz = stop_area&.time_zone
+        tz = tz && ActiveSupport::TimeZone[tz]
         params = {}.tap do |el|
           ['arrival_time', 'departure_time'].each do |field|
             time = "#{vjas[field]['hour']}:#{vjas[field]['minute']}"
-            el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 UTC")
+            el[field.to_sym] = Time.parse("2000-01-01 #{time}:00 #{tz&.formatted_offset || "UTC"}")
           end
         end
         stop = create_or_find_vjas_from_state(vjas)
@@ -195,16 +237,33 @@ module Chouette
     def self.state_create_instance route, item
       # Flag new record, so we can unset object_id if transaction rollback
       vj = route.vehicle_journeys.create(state_permited_attributes(item))
-      item['objectid']   = vj.objectid
+      vj.after_commit_objectid
+      item['objectid'] = vj.objectid
+      item['short_id'] = vj.get_objectid.short_id
       item['new_record'] = true
       vj
     end
 
     def self.state_permited_attributes item
-      attrs = item.slice('published_journey_identifier', 'published_journey_name', 'journey_pattern_id', 'company_id').to_hash
-      ['company', 'journey_pattern'].map do |association|
-        attrs["#{association}_id"] = item[association]['id'] if item[association]
+      attrs = item.slice(
+        'published_journey_identifier',
+        'published_journey_name',
+        'journey_pattern_id',
+        'company_id'
+      ).to_hash
+
+      if item['journey_pattern']
+        attrs['journey_pattern_id'] = item['journey_pattern']['id']
       end
+
+      attrs['company_id'] = item['company'] ? item['company']['id'] : nil
+
+      attrs["custom_field_values"] = Hash[
+        *(item["custom_fields"] || {})
+          .map { |k, v| [k, v["value"]] }
+          .flatten
+      ]
+
       attrs
     end
 
@@ -241,6 +300,21 @@ module Chouette
       extra_vjas_in_relation_to_a_journey_pattern(selected_journey_pattern).each do |vjas|
         vjas._destroy = true
       end
+    end
+
+    def self.custom_fields
+      CustomField.where(resource_type: self.name.split("::").last)
+    end
+
+
+    def custom_fields
+      Hash[*self.class.custom_fields.map do |v|
+        [v.code, v.slice(:code, :name, :field_type, :options).update(value: custom_field_value(v.code))]
+      end.flatten]
+    end
+
+    def custom_field_value key
+      (custom_field_values || {})[key.to_s]
     end
 
     def self.matrix(vehicle_journeys)
@@ -304,6 +378,11 @@ module Chouette
               "vehicle_journeys"."id"
         ')
         .where('"time_tables_vehicle_journeys"."vehicle_journey_id" IS NULL')
+    end
+
+    def self.lines
+      lines_query = joins(:route).select("routes.line_id").to_sql
+      Chouette::Line.where("id IN (#{lines_query})")
     end
   end
 end

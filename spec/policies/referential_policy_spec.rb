@@ -1,3 +1,4 @@
+# coding: utf-8
 RSpec.describe ReferentialPolicy, type: :policy do
 
   let( :record ){ build_stubbed :referential }
@@ -32,22 +33,22 @@ RSpec.describe ReferentialPolicy, type: :policy do
   # ---------------------------------------
 
   permissions :destroy? do
-    it_behaves_like 'permitted policy and same organisation', 'referentials.destroy', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'referentials.destroy', archived_and_finalised: true
   end
   permissions :edit? do
-    it_behaves_like 'permitted policy and same organisation', 'referentials.update', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'referentials.update', archived_and_finalised: true
   end
   permissions :update? do
-    it_behaves_like 'permitted policy and same organisation', 'referentials.update', archived: true
+    it_behaves_like 'permitted policy and same organisation', 'referentials.update', archived_and_finalised: true
   end
 
   #
   # Custom Permissions
   # ------------------
 
-  permissions :clone? do
-    it_behaves_like 'permitted policy', 'referentials.create', archived: true
-  end
+  # permissions :clone? do
+  #   it_behaves_like 'permitted policy', 'referentials.create', archived_and_finalised: true
+  # end
 
   permissions :archive? do
 

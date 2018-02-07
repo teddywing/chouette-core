@@ -5,6 +5,7 @@ fr:
     errors:
       empty: Aucun stop_area_id
       parent_area_type: ne peut être de type %{area_type}
+      incorrect_kind_area_type: Ce type d'arrêt est invalide pour cette catégorie
     default_geometry_success: "%{count} arrêts édités"
     stop_area:
       no_position: "Pas de position"
@@ -16,7 +17,9 @@ fr:
       accessibility: "Accessibilité"
     actions:
       new: "Ajouter un arrêt"
+      create: "Ajouter un arrêt"
       edit: "Editer cet arrêt"
+      update: "Editer cet arrêt"
       destroy: "Supprimer"
       activate: "Activer cet arrêt"
       deactivate: "Désactiver cet arrêt"
@@ -95,6 +98,7 @@ fr:
     attributes:
       stop_area:
         name: "Nom"
+        kind: "Catégorie"
         registration_number: "Numéro d'enregistrement"
         published_name: "Nom public"
         deleted: "Supprimé"
@@ -132,7 +136,7 @@ fr:
         city_name: "Commune"
         created_at: "Créé le"
         updated_at: "Edité le"
-        waiting_time: Temps de desserte
+        waiting_time: Temps de desserte (minutes)
   formtastic:
     titles:
       stop_area:

@@ -5,6 +5,13 @@
 stop_area_referential = StopAreaReferential.find_or_create_by!(name: "Reflex", objectid_format: "stif_netex")
 line_referential = LineReferential.find_or_create_by!(name: "CodifLigne", objectid_format: "stif_netex")
 
+workgroup = Workgroup.find_or_create_by!(name: "Gestion de l'offre théorique IDFm") do |w|
+  w.line_referential      = line_referential
+  w.stop_area_referential = stop_area_referential
+end
+
+Workbench.update_all workgroup_id: workgroup
+
 # Organisations
 stif = Organisation.find_or_create_by!(code: "STIF") do |org|
   org.name = 'STIF'

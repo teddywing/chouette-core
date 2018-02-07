@@ -1,26 +1,37 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../../actions'
 import CompanySelect2 from './select2s/CompanySelect2'
+import CustomFieldsInputs from './CustomFieldsInputs'
 
 export default class EditVehicleJourney extends Component {
   constructor(props) {
     super(props)
+    this.updateValue = this.updateValue.bind(this)
   }
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
-      var company;
+      var company = undefined
       if(this.props.modal.modalProps.selectedCompany) {
         company = this.props.modal.modalProps.selectedCompany
-      } else if (typeof this.props.modal.modalProps.vehicleJourney.company === Object) {
+      } else if (typeof this.props.modal.modalProps.vehicleJourney.company === "object") {
         company = this.props.modal.modalProps.vehicleJourney.company
-      } else {
-        company = undefined
       }
-      this.props.onEditVehicleJourney(this.refs, company)
+      this.props.onEditVehicleJourney(_.assign({}, this.refs, {custom_fields: this.custom_fields}), company)
       this.props.onModalClose()
       $('#EditVehicleJourneyModal').modal('hide')
     }
+  }
+
+  updateValue(attribute, e) {
+    this.props.modal.modalProps.vehicleJourney[attribute] = e.target.value
+    actions.resetValidation(e.currentTarget)
+    this.forceUpdate()
+  }
+
+  editMode() {
+    return !this.props.modal.modalProps.info && this.props.editMode
   }
 
   render() {
@@ -28,6 +39,9 @@ export default class EditVehicleJourney extends Component {
       return false
     }
     if(this.props.status.fetchSuccess == true) {
+      if(this.props.modal.modalProps.vehicleJourney){
+        this.custom_fields = _.assign({}, this.props.modal.modalProps.vehicleJourney.custom_fields)
+      }
       return (
         <li className='st_action'>
           <button
@@ -60,9 +74,9 @@ export default class EditVehicleJourney extends Component {
                                   type='text'
                                   ref='published_journey_name'
                                   className='form-control'
-                                  disabled={!this.props.editMode}
-                                  defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_name}
-                                  onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                  disabled={!this.editMode()}
+                                  value={this.props.modal.modalProps.vehicleJourney.published_journey_name}
+                                  onChange={(e) => this.updateValue('published_journey_name', e)}
                                   />
                               </div>
                             </div>
@@ -87,9 +101,9 @@ export default class EditVehicleJourney extends Component {
                                 type='text'
                                 ref='published_journey_identifier'
                                 className='form-control'
-                                disabled={!this.props.editMode}
-                                defaultValue={this.props.modal.modalProps.vehicleJourney.published_journey_identifier}
-                                onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                disabled={!this.editMode()}
+                                value={this.props.modal.modalProps.vehicleJourney.published_journey_identifier}
+                                onChange={(e) => this.updateValue('published_journey_identifier', e)}
                               />
                             </div>
                           </div>
@@ -98,7 +112,7 @@ export default class EditVehicleJourney extends Component {
                               <label className='control-label'>Transporteur</label>
                               <CompanySelect2
                                 editModal={this.props.modal.type == "edit"}
-                                editMode={this.props.editMode}
+                                editMode={this.editMode()}
                                 company = {this.props.modal.modalProps.vehicleJourney.company}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
                                 onUnselect2Company = {() => this.props.onUnselect2Company()}
@@ -141,10 +155,17 @@ export default class EditVehicleJourney extends Component {
                             defaultValue={this.props.modal.modalProps.vehicleJourney.checksum}
                             />
                         </div>
-
+                        <div className='row'>
+                          <CustomFieldsInputs
+                            values={this.props.modal.modalProps.vehicleJourney.custom_fields}
+                            onUpdate={(code, value) => this.custom_fields[code]["value"] = value}
+                            disabled={!this.editMode()}
+                          />
+                        </div>
                       </div>
+
                       {
-                        this.props.editMode &&
+                        this.editMode() &&
                         <div className='modal-footer'>
                           <button
                             className='btn btn-link'

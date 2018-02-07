@@ -1,6 +1,7 @@
 import _ from 'lodash'
-import React, { PropTypes, Component } from 'react'
-import Select2 from 'react-select2'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Select2 from 'react-select2-wrapper'
 import actions from '../../../actions'
 
 // get JSON full path
@@ -25,7 +26,7 @@ export default class BSelect4 extends Component {
         multiple={false}
         ref='company_id'
         options={{
-          allowClear: this.props.editMode,
+          allowClear: true,
           theme: 'bootstrap',
           width: '100%',
           placeholder: 'Filtrer par transporteur...',

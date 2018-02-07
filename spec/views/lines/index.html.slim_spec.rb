@@ -19,7 +19,9 @@ describe "/lines/index", :type => :view do
     deactivated_line
     allow(view).to receive(:collection).and_return(lines)
     allow(view).to receive(:current_referential).and_return(line_referential)
+    allow(view).to receive(:params).and_return({action: :index})
     controller.request.path_parameters[:line_referential_id] = line_referential.id
+    controller.request.path_parameters[:action] = "index"
     render
   end
 

@@ -22,7 +22,13 @@ describe "workbenches/show", :type => :view do
   }
   let!(:workbench){ assign :workbench, create(:workbench) }
   let!(:same_organisation_referential){ create :workbench_referential, workbench: workbench, metadatas: [create(:referential_metadata, lines: lines)] }
-  let!(:different_organisation_referential){ create :workbench_referential, metadatas: [create(:referential_metadata, lines: lines)] }
+  let!(:different_organisation_referential) do
+    create(
+      :workbench_referential,
+      workbench: create(:workbench, workgroup: workbench.workgroup),
+      metadatas: [create(:referential_metadata, lines: lines)]
+    )
+  end
   let!(:referentials){
     same_organisation_referential && different_organisation_referential
     assign :wbench_refs, paginate_collection(Referential, ReferentialDecorator)

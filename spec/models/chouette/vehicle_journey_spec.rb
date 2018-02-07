@@ -22,6 +22,182 @@ describe Chouette::VehicleJourney, :type => :model do
 
   describe 'checksum' do
     it_behaves_like 'checksum support', :vehicle_journey
+    it "changes when a vjas is updated" do
+      vehicle_journey = create(:vehicle_journey)
+      expect{vehicle_journey.vehicle_journey_at_stops.last.update_attribute(:departure_time, Time.now)}.to change{vehicle_journey.reload.checksum}
+    end
+
+    it "changes when a vjas is added" do
+      vehicle_journey = create(:vehicle_journey)
+      expect(vehicle_journey).to receive(:update_checksum_without_callbacks!).at_least(:once).and_call_original
+      expect{create(:vehicle_journey_at_stop, vehicle_journey: vehicle_journey)}.to change{vehicle_journey.checksum}
+    end
+  end
+
+  describe "#with_stop_area_ids" do
+    subject(:result){Chouette::VehicleJourney.with_stop_area_ids(ids)}
+    let(:ids){[]}
+    let(:common_stop_area){ create :stop_area}
+    let!(:journey_1){ create :vehicle_journey }
+    let!(:journey_2){ create :vehicle_journey }
+
+    before(:each) do
+      journey_1.journey_pattern.stop_points.last.update_attribute :stop_area_id, common_stop_area.id
+      journey_2.journey_pattern.stop_points.last.update_attribute :stop_area_id, common_stop_area.id
+      expect(journey_1.stop_areas).to include(common_stop_area)
+      expect(journey_2.stop_areas).to include(common_stop_area)
+    end
+    context "with no value" do
+      it "should return all journeys" do
+        expect(result).to eq Chouette::VehicleJourney.all
+      end
+    end
+
+    context "with a single value" do
+      let(:ids){[journey_1.stop_areas.first.id]}
+      it "should return all journeys" do
+        expect(result).to eq [journey_1]
+      end
+
+      context "with a common area" do
+        let(:ids){[common_stop_area.id]}
+        it "should return all journeys" do
+          expect(result.to_a.sort).to eq [journey_1, journey_2].sort
+        end
+      end
+    end
+
+    context "with a couple of values" do
+      let(:ids){[journey_1.stop_areas.first.id, common_stop_area.id]}
+      it "should return only the matching journeys" do
+        expect(result).to eq [journey_1]
+      end
+    end
+
+  end
+
+  describe '#in_purchase_window' do
+    let(:start_date){2.month.ago.to_date}
+    let(:end_date){1.month.ago.to_date}
+
+    subject{Chouette::VehicleJourney.in_purchase_window start_date..end_date}
+
+    let!(:without_purchase_window){ create :vehicle_journey }
+    let!(:without_matching_purchase_window){
+      pw = create :purchase_window, referential: Referential.first, date_ranges: [(end_date+1.day..end_date+2.days)]
+      pw2 = create :purchase_window, referential: Referential.first, date_ranges: [(end_date+10.day..end_date+20.days)]
+      create :vehicle_journey, purchase_windows: [pw, pw2]
+    }
+    let!(:included_purchase_window){
+      pw = create :purchase_window, referential: Referential.first, date_ranges: [(start_date..end_date)]
+      pw2 = create :purchase_window, referential: Referential.first
+      create :vehicle_journey, purchase_windows: [pw, pw2]
+    }
+    let!(:overlapping_purchase_window){
+      pw = create :purchase_window, referential: Referential.first, date_ranges: [(end_date..end_date+1.day)]
+      pw2 = create :purchase_window, referential: Referential.first
+      create :vehicle_journey, purchase_windows: [pw, pw2]
+    }
+
+
+    it "should not include VJ with no purchase window" do
+      expect(subject).to_not include without_purchase_window
+    end
+
+    it "should not include VJ with no matching purchase window" do
+      expect(subject).to_not include without_matching_purchase_window
+    end
+
+    it "should include VJ with included purchase window" do
+      expect(subject).to include included_purchase_window
+    end
+
+    it "should include VJ with overlapping purchase_window purchase window" do
+      expect(subject).to include overlapping_purchase_window
+    end
+  end
+
+  describe '#in_time_table' do
+    let(:start_date){2.month.ago.to_date}
+    let(:end_date){1.month.ago.to_date}
+
+    subject{Chouette::VehicleJourney.with_matching_timetable start_date..end_date}
+
+    context "without time table" do
+      let!(:vehicle_journey){ create :vehicle_journey }
+      it "should not include VJ " do
+        expect(subject).to_not include vehicle_journey
+      end
+    end
+
+    context "without a time table matching on a regular day" do
+      let(:timetable){
+        period = create :time_table_period, period_start: start_date-2.day, period_end: start_date
+        create :time_table, periods: [period], dates_count: 0
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should include VJ " do
+        expect(subject).to include vehicle_journey
+      end
+    end
+
+    context "without a time table matching on a regular day" do
+      let(:timetable){
+        period = create :time_table_period, period_start: end_date, period_end: end_date+1.day
+        create :time_table, periods: [period], dates_count: 0
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should include VJ " do
+        expect(subject).to include vehicle_journey
+      end
+    end
+
+    context "with a time table with a matching period but not the right day" do
+      let(:start_date){end_date - 1.day}
+      let(:end_date){Time.now.end_of_week.to_date}
+
+      let(:timetable){
+        period = create :time_table_period, period_start: start_date-1.month, period_end: end_date+1.month
+        create :time_table, periods: [period], int_day_types: 4 + 8, dates_count: 0
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should not include VJ " do
+        expect(subject).to_not include vehicle_journey
+      end
+    end
+
+    context "with a time table with a matching period but day opted-out" do
+      let(:start_date){end_date - 1.day}
+      let(:end_date){Time.now.end_of_week.to_date}
+
+      let(:timetable){
+        tt = create :time_table, dates_count: 0, periods_count: 0
+        create :time_table_period, period_start: start_date-1.month, period_end: start_date-1.day, time_table: tt
+        create(:time_table_date, :date => start_date, in_out: false, time_table: tt)
+        tt
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should not include VJ " do
+        expect(subject).to_not include vehicle_journey
+      end
+    end
+
+    context "with a time table with no matching period but not the right extra day" do
+      let(:start_date){end_date - 1.day}
+      let(:end_date){Time.now.end_of_week.to_date}
+
+      let(:timetable){
+        tt = create :time_table, dates_count: 0, periods_count: 0
+        create :time_table_period, period_start: start_date-1.month, period_end: start_date-1.day, time_table: tt
+        create(:time_table_date, :date => start_date, in_out: true, time_table: tt)
+        tt
+      }
+      let!(:vehicle_journey){ create :vehicle_journey, time_tables: [timetable] }
+      it "should include VJ " do
+        expect(subject).to include vehicle_journey
+      end
+    end
+
   end
 
   describe "vjas_departure_time_must_be_before_next_stop_arrival_time",
@@ -64,10 +240,12 @@ describe Chouette::VehicleJourney, :type => :model do
         at_stop[att.to_s] = vjas.send(att) unless vjas.send(att).nil?
       end
 
-      [:arrival_time, :departure_time].map do |att|
-        at_stop[att.to_s] = {
-          'hour'   => vjas.send(att).strftime('%H'),
-          'minute' => vjas.send(att).strftime('%M'),
+      at_stop["stop_point_objectid"] = vjas&.stop_point&.objectid
+
+      [:arrival, :departure].map do |att|
+        at_stop["#{att}_time"] = {
+          'hour'   => vjas.send("#{att}_local_time").strftime('%H'),
+          'minute' => vjas.send("#{att}_local_time").strftime('%M'),
         }
       end
       at_stop
@@ -80,6 +258,7 @@ describe Chouette::VehicleJourney, :type => :model do
         item['purchase_windows']         = []
         item['footnotes']                = []
         item['purchase_windows']         = []
+        item['custom_fields']            = vj.custom_fields
 
         vj.vehicle_journey_at_stops.each do |vjas|
           item['vehicle_journey_at_stops'] << vehicle_journey_at_stop_to_state(vjas)
@@ -94,18 +273,44 @@ describe Chouette::VehicleJourney, :type => :model do
     let(:collection)      { [state] }
 
     it 'should create new vj from state' do
-      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      create(:custom_field, code: :energy)
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern, custom_field_values: {energy: 99})
       collection << vehicle_journey_to_state(new_vj)
       expect {
         Chouette::VehicleJourney.state_update(route, collection)
       }.to change {Chouette::VehicleJourney.count}.by(1)
 
-      expect(collection.last['objectid']).not_to be_nil
 
       obj = Chouette::VehicleJourney.last
+      expect(obj).to receive(:after_commit_objectid).and_call_original
+
+      # For some reason we have to force it
+      obj.after_commit_objectid
       obj.run_callbacks(:commit)
 
+      expect(collection.last['objectid']).to eq obj.objectid
       expect(obj.published_journey_name).to eq 'dummy'
+      expect(obj.custom_fields["energy"]["value"]).to eq 99
+    end
+
+    it 'should expect local times' do
+      new_vj = build(:vehicle_journey, objectid: nil, published_journey_name: 'dummy', route: route, journey_pattern: journey_pattern)
+      stop_area = create(:stop_area, time_zone: "Mexico City")
+      stop_point = create(:stop_point, stop_area: stop_area)
+      new_vj.vehicle_journey_at_stops << build(:vehicle_journey_at_stop, vehicle_journey: vehicle_journey, stop_point: stop_point)
+      data = vehicle_journey_to_state(new_vj)
+      data['vehicle_journey_at_stops'][0]["departure_time"]["hour"] = "15"
+      data['vehicle_journey_at_stops'][0]["arrival_time"]["hour"] = "12"
+      collection << data
+      expect {
+        Chouette::VehicleJourney.state_update(route, collection)
+      }.to change {Chouette::VehicleJourney.count}.by(1)
+      created = Chouette::VehicleJourney.last.vehicle_journey_at_stops.last
+      expect(created.stop_point).to eq stop_point
+      expect(created.departure_local_time.hour).to_not eq created.departure_time.hour
+      expect(created.arrival_local_time.hour).to_not eq created.arrival_time.hour
+      expect(created.departure_local_time.hour).to eq 15
+      expect(created.arrival_local_time.hour).to eq 12
     end
 
     it 'should save vehicle_journey_at_stops of newly created vj' do
@@ -202,14 +407,24 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(vehicle_journey.reload.company_id).to eq state['company']['id']
     end
 
+    it "handles vehicle journey company deletion" do
+      vehicle_journey.update(company: create(:company))
+      state.delete('company')
+      Chouette::VehicleJourney.state_update(route, collection)
+
+      expect(vehicle_journey.reload.company_id).to be_nil
+    end
+
     it 'should update vj attributes from state' do
       state['published_journey_name']       = 'edited_name'
       state['published_journey_identifier'] = 'edited_identifier'
+      state['custom_fields'] = {energy: {value: 99}}
 
       Chouette::VehicleJourney.state_update(route, collection)
       expect(state['errors']).to be_nil
       expect(vehicle_journey.reload.published_journey_name).to eq state['published_journey_name']
       expect(vehicle_journey.reload.published_journey_identifier).to eq state['published_journey_identifier']
+      expect(vehicle_journey.reload.custom_field_value("energy")).to eq 99
     end
 
     it 'should return errors when validation failed' do
@@ -399,8 +614,7 @@ describe Chouette::VehicleJourney, :type => :model do
   end
 
   describe ".where_departure_time_between" do
-    it "selects vehicle journeys whose departure times are between the
-        specified range" do
+    it "selects vehicle journeys whose departure times are between the specified range" do
       journey_early = create(
         :vehicle_journey,
         stop_departure_time: '02:00:00'
@@ -415,7 +629,7 @@ describe Chouette::VehicleJourney, :type => :model do
         journey_pattern: journey_pattern,
         stop_departure_time: '03:00:00'
       )
-      journey_late = create(
+      create(
         :vehicle_journey,
         route: route,
         journey_pattern: journey_pattern,

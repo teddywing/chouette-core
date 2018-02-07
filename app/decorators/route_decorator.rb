@@ -1,75 +1,99 @@
-class RouteDecorator < Draper::Decorator
+class RouteDecorator < AF83::Decorator
   decorates Chouette::Route
 
-  delegate_all
-
-  # Requires:
+  # Action links require:
   #   context: {
   #     referential: ,
   #     line:
   #   }
-  def action_links
-    links = []
 
-    if object.stop_points.any?
-      links << Link.new(
-        content: h.t('journey_patterns.actions.index'),
-        href: [
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link do |l|
+      l.href do
+        h.referential_line_route_path(
+          context[:referential],
+          context[:line],
+          object
+        )
+      end
+    end
+
+    instance_decorator.edit_action_link do |l|
+      l.href do
+        h.edit_referential_line_route_path(
+          context[:referential],
+          context[:line],
+          object
+        )
+      end
+    end
+
+    instance_decorator.action_link(
+      if: ->() { object.stop_points.any? },
+      secondary: :show
+    ) do |l|
+      l.content h.t('journey_patterns.actions.index')
+      l.href do
+        [
           context[:referential],
           context[:line],
           object,
           :journey_patterns_collection
         ]
-      )
+      end
     end
 
-    if object.journey_patterns.present?
-      links << Link.new(
-        content: h.t('vehicle_journeys.actions.index'),
-        href: [
+    instance_decorator.action_link(
+      if: ->() { object.journey_patterns.present? },
+      secondary: :show
+    ) do |l|
+      l.content h.t('vehicle_journeys.actions.index')
+      l.href do
+        [
           context[:referential],
           context[:line],
           object,
           :vehicle_journeys
         ]
-      )
+      end
     end
 
-    links << Link.new(
-      content: h.t('vehicle_journey_exports.new.title'),
-      href: h.referential_line_route_vehicle_journey_exports_path(
-        context[:referential],
-        context[:line],
-        object,
-        format: :zip
-      )
-    )
+    instance_decorator.action_link secondary: :show do |l|
+      l.content h.t('vehicle_journey_exports.new.title')
+      l.href do
+        h.referential_line_route_vehicle_journey_exports_path(
+          context[:referential],
+          context[:line],
+          object,
+          format: :zip
+        )
+      end
+    end
 
-    if h.policy(object).duplicate?
-      links << Link.new(
-        content: h.t('routes.duplicate.title'),
-        href: h.duplicate_referential_line_route_path(
+    instance_decorator.action_link(
+      secondary: :show,
+      policy: :duplicate
+    ) do |l|
+      l.content h.t('routes.duplicate.title')
+      l.method :post
+      l.href do
+        h.duplicate_referential_line_route_path(
           context[:referential],
           context[:line],
           object
-        ),
-        method: :post
-      )
+        )
+      end
     end
 
-    if h.policy(object).destroy?
-      links << Link.new(
-        content: h.destroy_link_content,
-        href: h.referential_line_route_path(
+    instance_decorator.destroy_action_link do |l|
+      l.href do
+        h.referential_line_route_path(
           context[:referential],
           context[:line],
           object
-        ),
-        method: :delete,
-        data: { confirm: h.t('routes.actions.destroy_confirm') }
-      )
+        )
+      end
+      l.data confirm: h.t('routes.actions.destroy_confirm')
     end
-
-    links
   end
 end

@@ -30,7 +30,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :status, \
-                  attribute: Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
+                  attribute: Proc.new {|w| w.referential_read_only? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :organisation, \
@@ -54,13 +54,13 @@
                   attribute: Proc.new {|w| l(w.updated_at, format: :short)} \
                 ), \
                 TableBuilderHelper::Column.new( \
-                  key: :published_at, \
-                  attribute: '' \
+                  key: :merged_at, \
+                  attribute: Proc.new {|w| w.merged_at ? l(w.merged_at, format: :short) : '-'} \
                 ) \
               ],
               selectable: ->(ref){ @workbench.referentials.include?(ref) },
-              links: [:show, :edit],
-              cls: 'table has-filter has-search'
+              cls: 'table has-filter has-search',
+              action: :index
 
             = multiple_selection_toolbox([:delete], collection_name: 'referentials')
 

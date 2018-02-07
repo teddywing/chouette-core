@@ -69,10 +69,13 @@ class ReferentialCompaniesController < ChouetteController
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end
 
+  def collection_name
+    "companies"
+  end
+
   def decorate_companies(companies)
-    ModelDecorator.decorate(
+    CompanyDecorator.decorate(
       companies,
-      with: CompanyDecorator,
       context: {
         referential: referential
       }

@@ -23,7 +23,7 @@
                   key: :published_journey_name, \
                   attribute: 'published_journey_name', \
                   link_to: lambda do |vehicle_journey| \
-                    referential_line_route_vehicle_journeys_path(@referential, vehicle_journey.route.line, vehicle_journey.route) \
+                    vehicle_journey.published_journey_name ? referential_line_route_vehicle_journeys_path(@referential, vehicle_journey.route.line, vehicle_journey.route) : '' \
                   end, \
                   sortable: false \
                 ), \
@@ -42,12 +42,13 @@
                   attribute: Proc.new {|v| v.vehicle_journey_at_stops.first&.departure }, \
                   sortable: false \
                 ), \
+                @filters_stop_areas&.map{|s| table_builder_column_for_stop_area(s)},
                 TableBuilderHelper::Column.new( \
                   key: :arrival_time, \
                   attribute: Proc.new {|v| v.vehicle_journey_at_stops.last&.arrival }, \
                   sortable: false \
                 ), \
-              ],
+              ].flatten.compact,
               cls: 'table has-filter has-search'
 
           = new_pagination @vehicle_journeys, 'pull-right'

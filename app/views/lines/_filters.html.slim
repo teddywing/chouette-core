@@ -1,25 +1,25 @@
 = search_form_for @q, url: line_referential_lines_path(@line_referential), html: {method: :get}, class: 'form form-filter' do |f|
   .ffg-row
-    .input-group.search_bar
+    .input-group.search_bar class=filter_item_class(params[:q], :name_or_number_or_objectid_cont)
       = f.search_field :name_or_number_or_objectid_cont, placeholder: t('lines.index.name_or_number_or_objectid'), class: 'form-control'
       span.input-group-btn
         button.btn.btn-default#search-btn type='submit'
           span.fa.fa-search
 
   .ffg-row
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :network_id_eq_any)
       = f.label Chouette::Line.human_attribute_name(:network_id), required: false, class: 'control-label'
       = f.input :network_id_eq_any, collection: @line_referential.networks.order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
 
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :company_id_eq_any)
       = f.label Chouette::Line.human_attribute_name(:company_id), required: false, class: 'control-label'
       = f.input :company_id_eq_any, collection: @line_referential.companies.order(name: :asc), as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + l.name + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
 
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :transport_mode_eq_any)
       = f.label Chouette::Line.human_attribute_name(:transport_mode), required: false, class: 'control-label'
       = f.input :transport_mode_eq_any, collection: StifTransportModeEnumerations.sorted_transport_modes, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("enumerize.transport_mode.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
 
-    .form-group.togglable
+    .form-group.togglable class=filter_item_class(params[:q], :transport_submode_eq_any)
       = f.label Chouette::Line.human_attribute_name(:transport_submode), required: false, class: 'control-label'
       = f.input :transport_submode_eq_any, collection: StifTransportSubmodeEnumerations.sorted_transport_submodes, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("enumerize.transport_submode.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
 

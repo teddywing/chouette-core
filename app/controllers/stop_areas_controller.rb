@@ -57,10 +57,7 @@ class StopAreasController < ChouetteController
           redirect_to params.merge(:page => 1)
         end
 
-        @stop_areas = ModelDecorator.decorate(
-          @stop_areas,
-          with: StopAreaDecorator
-        )
+        @stop_areas = StopAreaDecorator.decorate(@stop_areas)
       }
     end
   end
@@ -98,9 +95,8 @@ class StopAreasController < ChouetteController
   def edit
     authorize stop_area
     edit! do
-      stop_area.position ||= stop_area.default_position
       map.editable = true
-   end
+    end
   end
 
   def destroy
@@ -110,7 +106,6 @@ class StopAreasController < ChouetteController
 
   def update
     authorize stop_area
-    stop_area.position ||= stop_area.default_position
     map.editable = true
 
     update!
@@ -206,6 +201,8 @@ class StopAreasController < ChouetteController
       :url,
       :waiting_time,
       :zip_code,
+      :kind,
+      localized_names: Chouette::StopArea::AVAILABLE_LOCALIZATIONS
     )
   end
 

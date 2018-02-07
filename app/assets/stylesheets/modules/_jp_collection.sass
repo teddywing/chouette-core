@@ -5,7 +5,6 @@
 #journey_patterns
   .table-2entries
     .t2e-head
-
       > .td
         position: relative
         padding-left: 25px
@@ -102,11 +101,9 @@
 
   .table-2entries
     .t2e-item-list
-      & > div
-        overflow: visible
       .td
         overflow: hidden
-        
+
       .t2e-item
         position: relative
 
@@ -120,6 +117,17 @@
         &.with-costs
           .td
             padding: 15px 8px
+
+          .totals
+            color: $blue
+            padding-top: 4px
+            margin-left: -5px
+            margin-right: -5px
+            span
+              white-space: nowrap
+              padding: 0 5px
+            i
+              padding-right: 3px
 
           $link-size: 10px
           .link
@@ -216,7 +224,7 @@
 
               input
                 display: inline-block
-                width: 40px
+                width: 50px
                 border: none
                 margin-right: 5px
                 color: black

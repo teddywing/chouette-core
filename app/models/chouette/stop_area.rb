@@ -2,7 +2,7 @@ require 'geokit'
 require 'geo_ruby'
 module Chouette
   class StopArea < Chouette::ActiveRecord
-    has_paper_trail
+    has_paper_trail class_name: 'PublicVersion'
     include ProjectionFields
     include StopAreaRestrictions
     include StopAreaReferentialSupport
@@ -10,6 +10,9 @@ module Chouette
 
     extend Enumerize
     enumerize :area_type, in: Chouette::AreaType::ALL
+    enumerize :kind, in: %i(commercial non_commercial)
+
+    AVAILABLE_LOCALIZATIONS = %i(gb nl de fr it es)
 
     with_options dependent: :destroy do |assoc|
       assoc.has_many :stop_points
@@ -31,6 +34,7 @@ module Chouette
 
     validates_format_of :registration_number, :with => %r{\A[\d\w_\-]+\Z}, :allow_blank => true
     validates_presence_of :name
+    validates_presence_of :kind
     validates_presence_of :latitude, :if => :longitude
     validates_presence_of :longitude, :if => :latitude
     validates_numericality_of :latitude, :less_than_or_equal_to => 90, :greater_than_or_equal_to => -90, :allow_nil => true
@@ -41,16 +45,31 @@ module Chouette
 
     validates_numericality_of :waiting_time, greater_than_or_equal_to: 0, only_integer: true, if: :waiting_time
     validate :parent_area_type_must_be_greater
+    validate :area_type_of_right_kind
 
     def self.nullable_attributes
       [:registration_number, :street_name, :country_code, :fare_code,
       :nearest_topic_name, :comment, :long_lat_type, :zip_code, :city_name, :url, :time_zone]
     end
 
+    def localized_names
+      val = read_attribute(:localized_names) || {}
+      Hash[*AVAILABLE_LOCALIZATIONS.map{|k| [k, val[k.to_s]]}.flatten]
+    end
+
     def parent_area_type_must_be_greater
       return unless self.parent
-      if Chouette::AreaType.find(self.area_type) >= Chouette::AreaType.find(self.parent.area_type)
-        errors.add(:parent_id, I18n.t('stop_areas.errors.parent_area_type', area_type: self.parent.area_type))
+
+      parent_area_type = Chouette::AreaType.find(self.parent.area_type)
+      if Chouette::AreaType.find(self.area_type) >= parent_area_type
+        errors.add(:parent_id, I18n.t('stop_areas.errors.parent_area_type', area_type: parent_area_type.label))
+      end
+    end
+
+    def area_type_of_right_kind
+      return unless self.kind
+      unless Chouette::AreaType.send(self.kind).map(&:to_s).include?(self.area_type)
+        errors.add(:area_type, I18n.t('stop_areas.errors.incorrect_kind_area_type'))
       end
     end
 
@@ -93,6 +112,8 @@ module Chouette
         id.to_s
       end
     end
+
+    alias_method :local_id, :user_objectid
 
     def children_in_depth
       return [] if self.children.empty?
@@ -354,6 +375,27 @@ module Chouette
 
     def deactivate!
       update_attribute :deleted_at, Time.now
+    end
+
+    def time_zone_offset
+      return 0 unless time_zone.present?
+      ActiveSupport::TimeZone[time_zone]&.utc_offset
+    end
+
+    def country_name
+      return unless country_code
+
+      country = ISO3166::Country[country_code]
+      country.translations[I18n.locale.to_s] || country.name
+    end
+
+    def time_zone_formatted_offset
+      return nil unless time_zone.present?
+      ActiveSupport::TimeZone[time_zone]&.formatted_offset
+    end
+
+    def commercial?
+      kind == "commercial"
     end
   end
 end

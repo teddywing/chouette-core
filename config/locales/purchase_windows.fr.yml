@@ -23,7 +23,8 @@ fr:
       11: Novembre
       12: Décembre
     actions:
-      new: Créer
+      new: "Créer un calendrier commercial"
+      show: "Consulter"
       edit: Editer
       destroy: Supprimer
       destroy_confirm: Etes vous sûr de supprimer cet calendrier commercial ?

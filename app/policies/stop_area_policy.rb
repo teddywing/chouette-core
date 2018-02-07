@@ -3,7 +3,7 @@ class StopAreaPolicy < ApplicationPolicy
     def search_scope scope_name
       scope = resolve
       if scope_name&.to_s == "route_editor"
-        scope = scope.where(area_type: 'zdep') unless user.organisation.has_feature?("route_stop_areas_all_types")
+        scope = scope.where("kind = ? OR area_type = ?", :non_commercial, 'zdep') unless user.organisation.has_feature?("route_stop_areas_all_types")
       end
       scope
     end

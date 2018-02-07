@@ -1,13 +1,22 @@
 class Chouette::AreaType
   include Comparable
 
-  ALL = %i(zdep zder zdlp zdlr lda gdl).freeze
+  COMMERCIAL = %i(zdep zder zdlp zdlr lda gdl).freeze
+  NON_COMMERCIAL = %i(deposit border service_area relief other).freeze
+  ALL = COMMERCIAL + NON_COMMERCIAL
 
+  @@commercial = COMMERCIAL
+  @@non_commercial = NON_COMMERCIAL
   @@all = ALL
-  mattr_accessor :all
+  mattr_accessor :all, :commercial, :non_commercial
 
-  def self.all=(values)
-    @@all = ALL & values
+  def self.commercial=(values)
+    @@commercial = COMMERCIAL & values
+    reset_caches!
+  end
+
+  def self.non_commercial=(values)
+    @@non_commercial = NON_COMMERCIAL & values
     reset_caches!
   end
 
@@ -20,12 +29,14 @@ class Chouette::AreaType
   end
 
   def self.reset_caches!
+    @@all = @@commercial + @@non_commercial
     @@instances = {}
-    @@options = nil
+    @@options = {}
   end
 
-  def self.options
-    @@options ||= all.map { |c| find(c) }.map { |t| [ t.label, t.code ] }
+  def self.options(kind=:all)
+    @@options ||= {}
+    @@options[kind] ||= self.send(kind).map { |c| find(c) }.map { |t| [ t.label, t.code ] }
   end
 
   attr_reader :code

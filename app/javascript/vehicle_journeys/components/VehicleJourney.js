@@ -1,5 +1,8 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../actions'
+import EditVehicleJourney from '../containers/tools/EditVehicleJourney'
+import VehicleJourneyInfoButton from '../containers/tools/VehicleJourneyInfoButton'
 
 export default class VehicleJourney extends Component {
   constructor(props) {
@@ -8,13 +11,7 @@ export default class VehicleJourney extends Component {
   }
 
   cityNameChecker(sp) {
-    let bool = false
-    if(sp.stop_area_cityname != this.previousCity){
-      bool = true
-      this.previousCity = sp.stop_area_cityname
-    }
-
-    return bool
+    return this.props.vehicleJourneys.showHeader(sp.stop_point_objectid)
   }
 
   hasFeature(key) {
@@ -64,7 +61,7 @@ export default class VehicleJourney extends Component {
         <div
           className='th'
           onClick={(e) =>
-            ($(e.target).parents("a").length == 0) && this.props.onSelectVehicleJourney(this.props.index)
+            !this.props.disabled && ($(e.target).parents("a").length == 0) && this.props.onSelectVehicleJourney(this.props.index)
           }
           >
           <div className='strong mb-xs'>{this.props.value.short_id || '-'}</div>
@@ -85,7 +82,7 @@ export default class VehicleJourney extends Component {
               {purchase_windows.length > 3 && <span className='vj_tt'> + {purchase_windows.length - 3}</span>}
             </div>
           }
-          <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
+          {!this.props.disabled && <div className={(this.props.value.deletable ? 'disabled ' : '') + 'checkbox'}>
             <input
               id={this.props.index}
               name={this.props.index}
@@ -96,7 +93,8 @@ export default class VehicleJourney extends Component {
               checked={this.props.value.selected}
             ></input>
             <label htmlFor={this.props.index}></label>
-          </div>
+          </div>}
+          {this.props.disabled && <VehicleJourneyInfoButton vehicleJourney={this.props.value} />}
         </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
@@ -158,6 +156,9 @@ export default class VehicleJourney extends Component {
                       />
                   </span>
                 </div>
+                {vj.errors && <div className="errors">
+                  {vj.errors}
+                </div>}
             </div>
           </div>
         )}
@@ -171,5 +172,6 @@ VehicleJourney.propTypes = {
   filters: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   onUpdateTime: PropTypes.func.isRequired,
-  onSelectVehicleJourney: PropTypes.func.isRequired
+  onSelectVehicleJourney: PropTypes.func.isRequired,
+  vehicleJourneys: PropTypes.object.isRequired,
 }

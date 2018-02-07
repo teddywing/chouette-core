@@ -1,16 +1,19 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../../actions'
 import MissionSelect2 from './select2s/MissionSelect2'
 import CompanySelect2 from './select2s/CompanySelect2'
+import CustomFieldsInputs from './CustomFieldsInputs'
 
 export default class CreateModal extends Component {
   constructor(props) {
     super(props)
+    this.custom_fields = _.assign({}, this.props.custom_fields)
   }
 
   handleSubmit() {
     if (actions.validateFields(...this.refs, $('.vjCreateSelectJP')[0]) && this.props.modal.modalProps.selectedJPModal) {
-      this.props.onAddVehicleJourney(this.refs, this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList, this.props.modal.modalProps.selectedCompany)
+      this.props.onAddVehicleJourney(_.assign({}, this.refs, {custom_fields: this.custom_fields}), this.props.modal.modalProps.selectedJPModal, this.props.stopPointsList, this.props.modal.modalProps.vehicleJourney && this.props.modal.modalProps.vehicleJourney.company)
       this.props.onModalClose()
       $('#NewVehicleJourneyModal').modal('hide')
     }
@@ -63,6 +66,7 @@ export default class CreateModal extends Component {
                               <CompanySelect2
                                 company = {this.props.modal.modalProps.vehicleJourney && this.props.modal.modalProps.vehicleJourney.company || undefined}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
+                                onUnselect2Company = {() => this.props.onUnselect2Company()}
                               />
                             </div>
                           </div>
@@ -72,6 +76,7 @@ export default class CreateModal extends Component {
                               <MissionSelect2
                                 selection={this.props.modal.modalProps}
                                 onSelect2JourneyPattern={this.props.onSelect2JourneyPattern}
+                                values={this.props.missions}
                                 isFilter={false}
                               />
                             </div>
@@ -87,6 +92,36 @@ export default class CreateModal extends Component {
                                 />
                             </div>
                           </div>
+                          <CustomFieldsInputs
+                            values={this.props.custom_fields}
+                            onUpdate={(code, value) => this.custom_fields[code]["value"] = value}
+                            disabled={false}
+                          />
+                          { this.props.modal.modalProps.selectedJPModal && this.props.modal.modalProps.selectedJPModal.full_schedule && <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
+                              <div className='form-group'>
+                                <label className='control-label'>Heure de départ</label>
+                                <div className='input-group time'>
+                                  <input
+                                    type='number'
+                                    min='00'
+                                    max='23'
+                                    ref='start_time.hour'
+                                    className='form-control'
+                                    onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                    />
+                                  <input
+                                    type='number'
+                                    min='00'
+                                    max='59'
+                                    ref='start_time.minute'
+                                    className='form-control'
+                                    onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                                    />
+                                </div>
+                              </div>
+                            </div>
+                          }
+
                         </div>
                       </div>
                       <div className='modal-footer'>
@@ -129,5 +164,6 @@ CreateModal.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   onAddVehicleJourney: PropTypes.func.isRequired,
   onSelect2JourneyPattern: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
+  missions: PropTypes.array.isRequired
 }

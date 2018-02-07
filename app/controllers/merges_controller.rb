@@ -11,8 +11,14 @@ class MergesController < ChouetteController
   private
 
   def set_mergeable_controllers
-    @mergeable_referentials ||= parent.referentials.ready.not_in_referential_suite
+    @mergeable_referentials ||= parent.referentials.mergeable
     Rails.logger.debug "Mergeables: #{@mergeable_referentials.inspect}"
+  end
+
+  def build_resource
+    super.tap do |merge|
+      merge.creator = current_user.name
+    end
   end
 
   # def build_resource

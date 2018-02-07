@@ -72,7 +72,9 @@ module Chouette
       # In this case, we mark jp to be valid if persisted? return true
       jp.errors.clear if jp.persisted?
 
+      jp.after_commit_objectid
       item['object_id']  = jp.objectid
+      item['short_id']  = jp.get_objectid.short_id
       item['new_record'] = true
       jp
     end
@@ -149,6 +151,24 @@ module Chouette
 
     def costs
       read_attribute(:costs) || {}
+    end
+
+    def costs_between start, finish
+      key = "#{start.stop_area_id}-#{finish.stop_area_id}"
+      costs[key]&.symbolize_keys || {}
+    end
+
+    def full_schedule?
+      full = true
+      stop_points.order(:position).inject(nil) do |start, finish|
+        next finish unless start.present?
+        costs = costs_between(start, finish)
+        full = false unless costs.present?
+        full = false unless costs[:distance] && costs[:distance] > 0
+        full = false unless costs[:time] && costs[:time] > 0
+        finish
+      end
+      full
     end
   end
 end

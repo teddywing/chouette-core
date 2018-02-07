@@ -6,7 +6,9 @@ module Chouette
     # include ChecksumSupport
     include ObjectidSupport
     include PeriodSupport
+    include ChecksumSupport
     extend Enumerize
+
     enumerize :color, in: %w(#9B9B9B #FFA070 #C67300 #7F551B #41CCE3 #09B09C #3655D7 #6321A0 #E796C6 #DD2DAA)
 
     has_paper_trail
@@ -16,7 +18,8 @@ module Chouette
     validates_presence_of :name, :referential
 
     scope :contains_date, ->(date) { where('date ? <@ any (date_ranges)', date) }
-    
+    scope :overlap_dates, ->(date_range) { where('daterange(?, ?) && any (date_ranges)', date_range.first, date_range.last + 1.day) }
+
     def self.ransackable_scopes(auth_object = nil)
       [:contains_date]
     end
@@ -27,6 +30,12 @@ module Chouette
 
     def local_id
       "IBOO-#{self.referential.id}-#{self.id}"
+    end
+
+    def checksum_attributes
+      attrs = ['name', 'color', 'referential_id']
+      ranges_attrs = date_ranges.map{|r| [r.first, r.last]}.flatten.sort
+      self.slice(*attrs).values + ranges_attrs
     end
 
     # def checksum_attributes

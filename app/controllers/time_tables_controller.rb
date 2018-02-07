@@ -36,7 +36,6 @@ class TimeTablesController < ChouetteController
   def create
     tt_params = time_table_params
     if tt_params[:calendar_id] && tt_params[:calendar_id] != ""
-      %i(monday tuesday wednesday thursday friday saturday sunday).map { |d| tt_params[d] = true }
       calendar = Calendar.find(tt_params[:calendar_id])
       tt_params[:calendar_id] = nil if tt_params.has_key?(:dates_attributes) || tt_params.has_key?(:periods_attributes)
     end
@@ -45,6 +44,7 @@ class TimeTablesController < ChouetteController
     @time_table  = created_from ? created_from.duplicate : Chouette::TimeTable.new(tt_params)
 
     if calendar
+      @time_table.int_day_types = calendar.int_day_types
       calendar.dates.each_with_index do |date, i|
         @time_table.dates << Chouette::TimeTableDate.new(date: date, position: i, in_out: true)
       end
@@ -167,9 +167,8 @@ class TimeTablesController < ChouetteController
   end
 
   def decorate_time_tables(time_tables)
-    ModelDecorator.decorate(
+    TimeTableDecorator.decorate(
       time_tables,
-      with: TimeTableDecorator,
       context: {
         referential: @referential
       }

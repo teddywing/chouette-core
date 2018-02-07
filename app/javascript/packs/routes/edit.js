@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
@@ -12,7 +14,7 @@ datas = JSON.parse(decodeURIComponent(datas))
 
 // logger, DO NOT REMOVE
 var applyMiddleware = require('redux').applyMiddleware
-var createLogger = require('redux-logger')
+import {createLogger} from 'redux-logger';
 var thunkMiddleware = require('redux-thunk').default
 var promise = require('redux-promise')
 

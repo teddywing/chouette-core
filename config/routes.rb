@@ -14,6 +14,7 @@ ChouetteIhm::Application.routes.draw do
     resources :compliance_check_sets, only: [:index, :show] do
       get :executed, on: :member
       resources :compliance_checks, only: [:show]
+      resources :compliance_check_messages, only: [:index]
     end
 
     resource :output, controller: :workbench_outputs
@@ -113,13 +114,16 @@ ChouetteIhm::Application.routes.draw do
 
   resources :calendars do
     get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+    member do
+      get 'month', defaults: { format: :json }
+    end
   end
 
   resources :referentials, except: :index do
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
-    resources :autocomplete_purchase_windows, only: [:index] 
+    resources :autocomplete_purchase_windows, only: [:index]
     get :select_compliance_control_set
     post :validate, on: :member
     resources :autocomplete_time_tables, only: [:index]
@@ -236,6 +240,10 @@ ChouetteIhm::Application.routes.draw do
   root :to => "dashboards#show"
 
   get '/help/(*slug)' => 'help#show'
+
+  if Rails.application.config.development_toolbar
+    post "/development_toolbar" => "development_toolbar#update_settings", as: :development_toolbar_update_settings
+  end
 
   match '/404', to: 'errors#not_found', via: :all, as: 'not_found'
   match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden'

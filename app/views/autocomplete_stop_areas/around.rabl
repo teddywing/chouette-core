@@ -12,7 +12,7 @@ child @stop_areas, root: :features, object_root: false do
       name: s.name,
       short_name: truncate(s.name, :length => 30) || "",
       city_name: s.city_name,
-      area_type: s.area_type,
+      area_type: Chouette::AreaType.find(s.area_type).label,
       registration_number: s.registration_number,
       stoparea_id: s.id,
       text: "#{s.name}, #{s.zip_code} #{s.city_name}",

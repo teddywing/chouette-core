@@ -8,4 +8,19 @@ module SearchHelper
     link_to name, params.deep_merge("q" => search,:page => 1), html_options
   end
 
+  def filter_item_class q, key
+    active = false
+    if q.present? && q[key].present?
+      val = q[key]
+      if val.is_a?(Array)
+        active = val.any? &:present?
+      elsif val.is_a?(Hash)
+        active = val.values.any? &:present?
+      else
+        active = true
+      end
+    end
+    active ? 'active' : 'inactive'
+  end
+
 end

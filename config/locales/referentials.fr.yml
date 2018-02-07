@@ -11,11 +11,11 @@ fr:
     edit:
       title: "Editer le jeu de données"
     show:
+      title: "Jeu de données %{name}"
       lines: "lignes"
       networks: "réseaux"
       vehicle_journeys: "courses"
       time_tables: "calendriers"
-      title: "Jeu de données"
       clean_up: "Purge des données obsolètes"
       api_keys: "Clés d'authentification pour un accès à l'API REST"
       show_all_referentials: Voir tous les jeux de données
@@ -48,6 +48,14 @@ fr:
       overlapped_referential: "%{referential} couvre le même périmètre d'offre"
       overlapped_period: "Une autre période chevauche cette période"
       short_period: "La durée minimum d'une période est de deux jours"
+    overview:
+      head:
+        dates: Dates
+        lines: Lignes
+        today: Aujourd'hui
+        prev_page: ←
+        next_page: →
+
   activerecord:
     models:
       referential:
@@ -92,7 +100,7 @@ fr:
         validity_period: "Période de validité englobante"
         updated_at: "Edité le"
         created_at: "Créé le"
-        published_at: "Intégré le"
+        merged_at: "Finalisé le"
         archived_at: "Conservé"
         archived_at_null: "En préparation"
         created_from: 'Créé à partir de'

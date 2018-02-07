@@ -28,9 +28,8 @@ class ReferentialLinesController < ChouetteController
 
     @routes = @routes.paginate(page: params[:page], per_page: 10)
 
-    @routes = ModelDecorator.decorate(
+    @routes = RouteDecorator.decorate(
       @routes,
-      with: RouteDecorator,
       context: {
         referential: referential,
         line: @line

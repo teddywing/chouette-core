@@ -1,15 +1,15 @@
-class ComplianceCheckSetDecorator < Draper::Decorator
-  delegate_all
+class ComplianceCheckSetDecorator < AF83::Decorator
+  decorates ComplianceCheckSet
 
-  def action_links
-    links = []
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link
   end
 
-  def lines_status
+  define_instance_method :lines_status do
     object.compliance_check_resources.where(status: :OK, resource_type: :line).count
   end
 
-  def lines_in_compliance_check_set
+  define_instance_method :lines_in_compliance_check_set do
     object.compliance_check_resources.where(resource_type: :line).count
   end
 

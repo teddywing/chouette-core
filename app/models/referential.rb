@@ -75,6 +75,46 @@ class Referential < ActiveRecord::Base
 
   alias_method_chain :save, :table_lock_timeout
 
+  if Rails.env.development?
+    def self.force_register_models_with_checksum
+      paths = Rails.application.paths['app/models'].to_a
+      Rails.application.railties.each do |tie|
+        next unless tie.respond_to? :paths
+        paths += tie.paths['app/models'].to_a
+      end
+
+      paths.each do |path|
+        next unless File.directory?(path)
+        Dir.chdir path do
+          Dir['**/*.rb'].each do |src|
+            next if src =~ /^concerns/
+            # thanks for inconsistent naming ...
+            if src == "route_control/zdl_stop_area.rb"
+              RouteControl::ZDLStopArea
+              next
+            end
+            Rails.logger.info "Loading #{src}"
+            begin
+              src[0..-4].classify.safe_constantize
+            rescue => e
+              Rails.logger.info "Failed: #{e.message}"
+              nil
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def self.register_model_with_checksum klass
+    @_models_with_checksum ||= []
+    @_models_with_checksum << klass
+  end
+
+  def self.models_with_checksum
+    @_models_with_checksum || []
+  end
+
   def lines
     if metadatas.blank?
       workbench ? workbench.lines : associated_lines
@@ -103,6 +143,14 @@ class Referential < ActiveRecord::Base
 
   def human_attribute_name(*args)
     self.class.human_attribute_name(*args)
+  end
+
+  def full_name
+    if in_referential_suite?
+      name
+    else
+      "#{self.class.model_name.human.capitalize} #{name}"
+    end
   end
 
   def stop_areas
@@ -252,6 +300,14 @@ class Referential < ActiveRecord::Base
   before_destroy :destroy_schema
   before_destroy :destroy_jobs
 
+  def referential_read_only?
+    in_referential_suite? || archived?
+  end
+
+  def in_referential_suite?
+    referential_suite_id.present?
+  end
+
   def in_workbench?
     workbench_id.present?
   end
@@ -315,7 +371,7 @@ class Referential < ActiveRecord::Base
 
     query = "select distinct(public.referential_metadata.referential_id) FROM public.referential_metadata, unnest(line_ids) line, LATERAL unnest(periodes) period
     WHERE public.referential_metadata.referential_id
-    IN (SELECT public.referentials.id FROM public.referentials WHERE referentials.workbench_id = #{workbench_id} and referentials.archived_at is null #{not_myself})
+    IN (SELECT public.referentials.id FROM public.referentials WHERE referentials.workbench_id = #{workbench_id} and referentials.archived_at is null and referentials.referential_suite_id is null #{not_myself})
     AND line in (#{line_ids.join(',')}) and (#{periods_query});"
 
     self.class.connection.select_values(query).map(&:to_i)
@@ -334,9 +390,6 @@ class Referential < ActiveRecord::Base
     end
   end
 
-  def in_referential_suite?
-    referential_suite_id.present?
-  end
 
   attr_accessor :inline_clone
   def clone_schema
@@ -448,6 +501,18 @@ class Referential < ActiveRecord::Base
 
   def can_unarchive?
     not metadatas_overlap?
+  end
+
+  def merged?
+    merged_at.present?
+  end
+
+  def self.not_merged
+    where merged_at: nil
+  end
+
+  def self.mergeable
+    ready.not_merged.not_in_referential_suite
   end
 
   private

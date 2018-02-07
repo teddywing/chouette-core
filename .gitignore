@@ -49,3 +49,4 @@ coverage
 /bin/spring
 
 spec/fixtures/target_*
+config/development_toolbar.rb

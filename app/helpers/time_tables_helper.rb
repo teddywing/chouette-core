@@ -84,7 +84,7 @@ module TimeTablesHelper
     end unless first.wday == first_weekday
 
     first.upto(last) do |cur|
-      cell_text, cell_attrs = block.call(cur)
+      cell_text, cell_attrs = yield cur
       cell_text  ||= cur.mday
       cell_attrs ||= {}
       cell_attrs[:headers] = th_id(cur, options[:table_id])

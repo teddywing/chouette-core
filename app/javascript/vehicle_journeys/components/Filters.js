@@ -1,9 +1,11 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import MissionSelect2 from'./tools/select2s/MissionSelect2'
 import VJSelect2 from'./tools/select2s/VJSelect2'
 import TimetableSelect2 from'./tools/select2s/TimetableSelect2'
 
-export default function Filters({filters, pagination, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onToggleWithoutTimeTable, onSelect2Timetable, onSelect2JourneyPattern, onSelect2VehicleJourney}) {
+export default function Filters({filters, pagination, missions, onFilter, onResetFilters, onUpdateStartTimeFilter, onUpdateEndTimeFilter, onToggleWithoutSchedule, onToggleWithoutTimeTable, onSelect2Timetable, onSelect2JourneyPattern, onSelect2VehicleJourney}) {
   return (
     <div className='row'>
       <div className='col-lg-12'>
@@ -24,6 +26,7 @@ export default function Filters({filters, pagination, onFilter, onResetFilters, 
                 onSelect2JourneyPattern={onSelect2JourneyPattern}
                 filters={filters}
                 isFilter={true}
+                values={missions}
                 />
             </div>
 
