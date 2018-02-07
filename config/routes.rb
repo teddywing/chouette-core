@@ -256,4 +256,6 @@ ChouetteIhm::Application.routes.draw do
   match '/422', to: 'errors#server_error', via: :all, as: 'unprocessable_entity'
   match '/500', to: 'errors#server_error', via: :all, as: 'server_error'
 
+  match '/status', to: 'statuses#index', via: :get
+
 end
