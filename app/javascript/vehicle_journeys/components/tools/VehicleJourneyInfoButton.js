@@ -10,7 +10,7 @@ export default class VehicleJourneyInfoButton extends Component {
 
   render() {
     return (
-      <li className='st_action'>
+      <div className='info-button'>
         <button
           type='button'
           data-toggle='modal'
@@ -19,7 +19,7 @@ export default class VehicleJourneyInfoButton extends Component {
         >
           <span className='fa fa-info'></span>
         </button>
-      </li>
+      </div>
     )
   }
 }
