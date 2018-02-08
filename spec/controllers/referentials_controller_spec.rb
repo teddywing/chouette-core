@@ -15,8 +15,7 @@ describe ReferentialsController, :type => :controller do
     end
 
     context "user's organisation doesn't match referential's organisation" do
-      pending "hotfix opens all unknow actions need to close the uneeded later" do
-      #it 'raises a ActiveRecord::RecordNotFound' do
+      it 'raises a ActiveRecord::RecordNotFound' do
         expect { put :archive, id: other_referential.id }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
