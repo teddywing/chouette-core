@@ -28,22 +28,6 @@ describe "referentials/show", type: :view do
 
     allow(referential).to receive(:referential_read_only?){ readonly }
   end
-  it "should not present edit button" do
-    expect(rendered).to_not have_selector("a[href=\"#{view.edit_referential_path(referential)}\"]")
-  end
-
-  with_permission "referentials.update" do
-    it "should present edit button" do
-      expect(rendered).to have_selector("a[href=\"#{view.edit_referential_path(referential)}\"]")
-    end
-
-    context "with a readonly referential" do
-      let(:readonly){ true }
-      it "should not present edit button" do
-        expect(rendered).to_not have_selector("a[href=\"#{view.edit_referential_path(referential)}\"]")
-      end
-    end
-  end
 
   describe "action links" do
     set_invariant "referential.object.full_name", "referential_full_name"

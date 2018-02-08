@@ -27,8 +27,10 @@ RSpec.describe "/companies/index", :type => :view do
 
   before(:each) do
     allow(view).to receive(:collection).and_return(companies)
+    allow(view).to receive(:decorated_collection).and_return(companies)
     allow(view).to receive(:current_referential).and_return(line_referential)
     controller.request.path_parameters[:line_referential_id] = line_referential.id
+    allow(view).to receive(:params).and_return({action: :index})
   end
 
   describe "action links" do

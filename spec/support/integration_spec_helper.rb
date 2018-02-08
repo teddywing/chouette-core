@@ -3,7 +3,11 @@ module IntegrationSpecHelper
   def paginate_collection klass, decorator, page=1, context={}
     collection = klass.page(page)
     if decorator
-      collection = ModelDecorator.decorate(collection, with: decorator, context: context)
+      if decorator < AF83::Decorator
+        collection = decorator.decorate(collection, context: context)
+      else
+        collection = ModelDecorator.decorate(collection, with: decorator, context: context)
+      end
     end
     collection
   end
@@ -55,7 +59,7 @@ RSpec::Matchers.define :have_link_for_each_item do |collection, name, opts|
   end
   description { "have #{name} link for each item" }
   failure_message do
-    "expected view to have #{name} link for each item, failed with selector: \"#{@selector}\""
+    "expected view to have one #{name} link for each item, failed with selector: \"#{@selector}\""
   end
 end
 

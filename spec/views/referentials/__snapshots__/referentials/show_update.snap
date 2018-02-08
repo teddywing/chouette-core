@@ -7,6 +7,6 @@
 </div></div>
 </div>
 <div class="row mb-sm"><div class="col-lg-12 text-right">
-<a class="btn btn-primary" href="/referentials/99/time_tables">Calendriers</a><a class="btn btn-primary" rel="nofollow" data-method="put" href="/referentials/99/archive">Conserver</a><button type="button" data-toggle="modal" data-target="#purgeModal" class="btn btn-primary">Purger</button>
+<a class="btn btn-primary" href="/referentials/99/vehicle_journeys">Courses</a><a class="btn btn-primary" href="/referentials/99/purchase_windows">Calendriers commerciaux</a><a class="btn btn-primary" href="/referentials/99/time_tables">Calendriers</a><a class="btn btn-primary" rel="nofollow" data-method="put" href="/referentials/99/archive">Conserver</a><button type="button" data-toggle="modal" data-target="#purgeModal" class="btn btn-primary">Purger</button>
 </div></div>
 </div>
