@@ -2,9 +2,8 @@ module Pundit
   module PunditViewPolicy
     def self.included into
       into.let(:permissions){ nil }
-      into.let(:organisation){ referential.try(:organisation) }
-      into.let(:current_referential){ referential || build_stubbed(:referential) }
-      into.let(:current_user){ build_stubbed :user, permissions: permissions, organisation: organisation }
+      into.let(:current_referential){ referential || build_stubbed(:referential, organisation: organisation) }
+      into.let(:current_user){ create :user, permissions: permissions, organisation: organisation }
       into.let(:pundit_user){ UserContext.new(current_user, referential: current_referential) }
       into.before do
         allow(view).to receive(:pundit_user) { pundit_user }

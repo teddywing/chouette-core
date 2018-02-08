@@ -2,6 +2,7 @@ RSpec.describe 'Calendars', type: :feature do
   login_user
 
   let(:calendar) { create :calendar, organisation_id: 1 }
+  let(:workgroup) { calendar.workgroup }
 
   describe 'permissions' do
     before do
@@ -13,7 +14,7 @@ RSpec.describe 'Calendars', type: :feature do
     end
 
     context 'on show view' do
-      let( :path ){ calendar_path(calendar) }
+      let( :path ){ workgroup_calendar_path(workgroup, calendar) }
 
       context 'if present → ' do
         let( :permission ){ true }
@@ -33,7 +34,7 @@ RSpec.describe 'Calendars', type: :feature do
     end
 
     context 'on edit view' do
-      let( :path ){ edit_calendar_path(calendar) }
+      let( :path ){ edit_workgroup_calendar_path(workgroup, calendar) }
 
       context 'if present → ' do
         let( :permission ){ true }
@@ -51,7 +52,7 @@ RSpec.describe 'Calendars', type: :feature do
     end
 
     context 'on index view' do
-      let( :path ){ calendars_path }
+      let( :path ){ workgroup_calendars_path(workgroup) }
 
       context 'if present → ' do
         let( :permission ){ true }

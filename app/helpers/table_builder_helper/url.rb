@@ -1,6 +1,6 @@
 module TableBuilderHelper
   class URL
-    def self.polymorphic_url_parts(item, referential)
+    def self.polymorphic_url_parts(item, referential, workgroup)
       polymorph_url = []
 
       unless item.is_a?(Calendar) || item.is_a?(Referential) || item.is_a?(ComplianceControlSet)
@@ -20,6 +20,7 @@ module TableBuilderHelper
           end
         end
       else
+        polymorph_url << item.workgroup if item.respond_to? :workgroup
         polymorph_url << item
       end
 

@@ -25,7 +25,7 @@ module AF83::Decorator::EnhancedDecorator
         policy: :create,
         before_block: -> (l){
           l.content { h.t('actions.add') }
-          l.href    { [:new, object.klass.name.underscore.singularize] }
+          l.href    { [:new, scope, object.klass.model_name.singular] }
         }
       }
       action_link opts.update(args), &block
@@ -37,7 +37,7 @@ module AF83::Decorator::EnhancedDecorator
         primary: :index,
         before_block: -> (l){
           l.content { h.t('actions.show') }
-          l.href { [object] }
+          l.href { [scope, object] }
         }
       }
       action_link opts.update(args), &block
@@ -49,7 +49,7 @@ module AF83::Decorator::EnhancedDecorator
         policy: :edit,
         before_block: -> (l){
           l.content { h.t('actions.edit') }
-          l.href { [:edit, object] }
+          l.href { [:edit, scope, object] }
         }
       }
       action_link opts.update(args), &block
@@ -62,12 +62,20 @@ module AF83::Decorator::EnhancedDecorator
         secondary: :show,
         before_block: -> (l){
           l.content { h.destroy_link_content }
-          l.href { [object] }
+          l.href { [scope, object] }
           l.method :delete
           l.data {{ confirm: h.t('actions.destroy_confirm') }}
         }
       }
       action_link opts.update(args), &block
+    end
+
+    def set_scope value=nil, &block
+      @scope = value || block
+    end
+
+    def scope
+      @scope
     end
 
     def t key
@@ -141,5 +149,11 @@ module AF83::Decorator::EnhancedDecorator
 
   def check_feature feature
     h.has_feature? feature
+  end
+
+  def scope
+    scope = self.class.scope
+    scope = instance_exec &scope if scope.is_a? Proc
+    scope
   end
 end
