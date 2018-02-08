@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "/companies/show", :type => :view do
 
-  let!(:company) { assign(:company, create(:company)) }
+  let!(:company) { c = create(:company); assign(:company, c.decorate(context: {referential: c.line_referential})) }
   let!(:line_referential) { assign :line_referential, company.line_referential }
 
   # it "should display a map with class 'company'" do
@@ -15,11 +15,14 @@ describe "/companies/show", :type => :view do
     allow(view).to receive(:resource).and_return(company)
     controller.request.path_parameters[:line_referential_id] = line_referential.id
     controller.request.path_parameters[:id] = company.id
+    allow(view).to receive(:params).and_return({action: :show})
   end
 
   describe "action links" do
     set_invariant "line_referential.id", "99"
-    set_invariant "company.id", "909"
+    set_invariant "company.object.id", "909"
+    set_invariant "company.object.name", "Company Name"
+    set_invariant "company.object.updated_at", "2018/01/23".to_time
 
     before(:each){
       render template: "companies/show", layout: "layouts/application"

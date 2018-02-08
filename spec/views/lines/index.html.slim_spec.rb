@@ -18,6 +18,7 @@ describe "/lines/index", :type => :view do
   before :each do
     deactivated_line
     allow(view).to receive(:collection).and_return(lines)
+    allow(view).to receive(:decorated_collection).and_return(lines)
     allow(view).to receive(:current_referential).and_return(line_referential)
     allow(view).to receive(:params).and_return({action: :index})
     controller.request.path_parameters[:line_referential_id] = line_referential.id
@@ -27,6 +28,7 @@ describe "/lines/index", :type => :view do
 
   describe "action links" do
     set_invariant "line_referential.id", "99"
+    set_invariant "line_referential.name", "Name"
 
     before(:each){
       render template: "lines/index", layout: "layouts/application"
@@ -42,8 +44,6 @@ describe "/lines/index", :type => :view do
   end
 
   context "links" do
-    before(:each){ render }
-
     common_items = ->{
       it { should have_link_for_each_item(lines, "show", -> (line){ view.line_referential_line_path(line_referential, line) }) }
       it { should have_link_for_each_item(lines, "network", -> (line){ view.line_referential_network_path(line_referential, line.network) }) }
