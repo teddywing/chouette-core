@@ -14,7 +14,7 @@
         - if workbench.referentials.present?
           .list-group
             - workbench.referentials.limit(5).each do |referential|
-              = link_to referential.name, referential_path(referential, workbench_id: referential.workbench_id, current_workbench_id: workbench.id), class: 'list-group-item'
+              = link_to referential.name, referential_path(referential), class: 'list-group-item'
         - else
           .panel-body
             em.small.text-muted = t('.offers.no_content')

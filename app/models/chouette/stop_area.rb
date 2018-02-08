@@ -388,8 +388,8 @@ module Chouette
 
     def country_name
       return unless country_code
-
       country = ISO3166::Country[country_code]
+      return unless country
       country.translations[I18n.locale.to_s] || country.name
     end
 
