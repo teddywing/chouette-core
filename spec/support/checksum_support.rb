@@ -1,22 +1,22 @@
 shared_examples 'checksum support' do
   describe '#current_checksum_source' do
     let(:attributes) { ['code_value', 'label_value'] }
-    let(:seperator)  { ChecksumSupport::SEPARATOR }
+    let(:separator)  { ChecksumSupport::SEPARATOR }
     let(:nil_value)  { ChecksumSupport::VALUE_FOR_NIL_ATTRIBUTE }
 
     before do
       allow_any_instance_of(subject.class).to receive(:checksum_attributes).and_return(attributes)
     end
 
-    it 'should separate attribute by seperator' do
-      expect(subject.current_checksum_source).to eq("code_value#{seperator}label_value")
+    it 'should separate attribute by separator' do
+      expect(subject.current_checksum_source).to eq("code_value#{separator}label_value")
     end
 
     context 'nil value' do
       let(:attributes) { ['code_value', nil] }
 
       it 'should replace nil attributes by default value' do
-        source = "code_value#{seperator}#{nil_value}"
+        source = "code_value#{separator}#{nil_value}"
         expect(subject.current_checksum_source).to eq(source)
       end
     end
@@ -25,7 +25,7 @@ shared_examples 'checksum support' do
       let(:attributes) { ['code_value', []] }
 
       it 'should convert to nil' do
-        source = "code_value#{seperator}#{nil_value}"
+        source = "code_value#{separator}#{nil_value}"
         expect(subject.current_checksum_source).to eq(source)
       end
     end
@@ -34,7 +34,7 @@ shared_examples 'checksum support' do
       let(:attributes) { [['v1', 'v2', 'v3'], 'code_value'] }
 
       it 'should convert to list' do
-        source = "v1,v2,v3#{seperator}code_value"
+        source = "v1,v2,v3#{separator}code_value"
         expect(subject.current_checksum_source).to eq(source)
       end
     end
@@ -43,7 +43,7 @@ shared_examples 'checksum support' do
       let(:attributes) { [[['a1', 'a2', 'a3'], ['b1', 'b2', 'b3']], 'code_value'] }
 
       it 'should convert to list' do
-        source = "(a1,a2,a3),(b1,b2,b3)#{seperator}code_value"
+        source = "(a1,a2,a3),(b1,b2,b3)#{separator}code_value"
         expect(subject.current_checksum_source).to eq(source)
       end
     end
@@ -52,7 +52,7 @@ shared_examples 'checksum support' do
       let(:attributes) { [[['a1', 'a2', 'a3'], []], 'code_value'] }
 
       it 'should convert to list' do
-        source = "(a1,a2,a3),-#{seperator}code_value"
+        source = "(a1,a2,a3),-#{separator}code_value"
         expect(subject.current_checksum_source).to eq(source)
       end
     end
