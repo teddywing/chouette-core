@@ -26,9 +26,16 @@ module ChecksumSupport
 
   def checksum_replace_nil_or_empty_values values
     # Replace empty array by nil & nil by VALUE_FOR_NIL_ATTRIBUTE
-    values.map { |x| x.present? && x || VALUE_FOR_NIL_ATTRIBUTE }.map do |item|
-      item = item.kind_of?(Array) ? checksum_replace_nil_or_empty_values(item) : item
-    end
+    values
+      .map { |x| x.present? && x || VALUE_FOR_NIL_ATTRIBUTE }
+      .map do |item|
+        item =
+          if item.kind_of?(Array)
+            checksum_replace_nil_or_empty_values(item)
+          else
+            item
+          end
+      end
   end
 
   def current_checksum_source
