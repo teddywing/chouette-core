@@ -11,6 +11,7 @@ module Pundit
         allow(view).to receive(:current_user) { current_user }
         allow(view).to receive(:current_organisation).and_return(organisation)
         allow(view).to receive(:current_offer_workbench).and_return(current_offer_workbench)
+        allow(view).to receive(:current_workgroup).and_return(current_offer_workbench.workgroup)
         allow(view).to receive(:has_feature?){ |f| features.include?(f)}
         allow(view).to receive(:user_signed_in?).and_return true
         allow(view).to receive(:policy) do |instance|
