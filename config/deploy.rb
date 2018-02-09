@@ -78,7 +78,8 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/tmp/imports #{release_path}/tmp/imports"
   end
   after 'deploy:update_code', 'deploy:symlink_shared'
-  before 'deploy:assets:precompile', 'deploy:symlink_shared', "i18n:js:export"
+  before 'deploy:assets:precompile', 'deploy:symlink_shared'
+  after 'deploy:assets:precompile', "deploy:i18n_js_export"
 
   desc "Make group writable all deployed files"
   task :group_writable do
@@ -91,6 +92,11 @@ namespace :deploy do
     run "sudo sidekiq-touch #{fetch(:application)}"
   end
   after "deploy:restart", "deploy:sidekiq_restart"
+
+  desc "Run i18n:js:export"
+  task :i18n_js_export do
+    run "cd #{current_path} && #{rake} i18n:js:export RAILS_ENV=#{rails_env}"
+  end
 
   desc "Run db:seed"
   task :seed do
