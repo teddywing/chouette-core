@@ -176,6 +176,7 @@ group :test do
   gem 'simplecov-rcov', :require => false
   gem 'htmlbeautifier'
   gem 'timecop'
+  gem 'rspec-snapshot'
 end
 
 group :test, :development, :dev do
