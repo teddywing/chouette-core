@@ -1,5 +1,5 @@
 RSpec.describe Chouette::Route, :type => :model do
-  subject { create(:route, stop_points: create_list(:stop_point, 3)) }
+  subject { create(:route) }
 
   describe 'checksum' do
     it_behaves_like 'checksum support'
