@@ -16,7 +16,7 @@ gem 'uglifier', '~> 2.7.2'
 gem 'coffee-rails', '~> 4.0.0'
 
 # Webpacker
-gem 'webpacker', '3.0.2'
+gem 'webpacker', '3.2.1'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
