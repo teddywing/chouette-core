@@ -10,6 +10,14 @@ FactoryGirl.define do
 
     association :stop_area_referential
 
+    transient do
+      referential nil
+    end
+
+    before(:create) do |stop_area, evaluator|
+      stop_area.stop_area_referential = evaluator.referential.stop_area_referential if evaluator.referential
+    end
+
     trait :deactivated do
       deleted_at { 1.hour.ago }
     end

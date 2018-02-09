@@ -4,7 +4,7 @@ require 'spec_helper'
 describe "Access points", :type => :feature do
   login_user
 
-  let!(:stop_area) { create(:stop_area) }
+  let!(:stop_area) { create(:stop_area, stop_area_referential: referential.stop_area_referential) }
   let!(:access_points) { Array.new(2) { create(:access_point, :stop_area => stop_area) } }
   subject { access_points.first }
 
