@@ -95,11 +95,11 @@ namespace :deploy do
 
   desc "Run i18n:js:export"
   task :i18n_js_export do
-    run "cd #{current_path} && RAILS_ENV=#{rails_env} #{rake} i18n:js:export"
+    run "cd #{release_path} && RAILS_ENV=#{rails_env} #{rake} i18n:js:export"
   end
 
   desc "Run db:seed"
   task :seed do
-    run "cd #{current_path} && RAILS_ENV=#{rails_env} #{rake} db:seed"
+    run "cd #{release_path} && RAILS_ENV=#{rails_env} #{rake} db:seed"
   end
 end
