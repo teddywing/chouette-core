@@ -75,4 +75,12 @@ shared_examples 'checksum support' do
     expect(subject).to receive(:update_checksum).at_least(:once)
     subject.save
   end
+
+  it "doesn't change the checksum on save if the source hasn't been changed" do
+    checksum = subject.checksum
+
+    subject.save
+
+    expect(subject.checksum).to eq(checksum)
+  end
 end
