@@ -46,10 +46,10 @@ export default function Filters({filters, pagination, missions, onFilter, onRese
           <div className='ffg-row'>
             {/* Plage horaire */}
             <div className='form-group togglable'>
-              <label className='control-label'>Plage horaire au départ de la course</label>
+              <label className='control-label'>{I18n.t("vehicle_journeys.form.departure_range.label")}</label>
               <div className='filter_menu'>
                 <div className='form-group time filter_menu-item'>
-                  <label className='control-label time'>Début</label>
+                  <label className='control-label time'>{I18n.t("vehicle_journeys.form.departure_range.start")}</label>
                   <div className='form-inline'>
                     <div className='input-group time'>
                       <input
@@ -73,7 +73,7 @@ export default function Filters({filters, pagination, missions, onFilter, onRese
                   </div>
                 </div>
                 <div className='form-group time filter_menu-item'>
-                  <label className='control-label time'>Fin</label>
+                  <label className='control-label time'>{I18n.t("vehicle_journeys.form.departure_range.end")}</label>
                   <div className='form-inline'>
                     <div className='input-group time'>
                       <input
@@ -101,7 +101,7 @@ export default function Filters({filters, pagination, missions, onFilter, onRese
 
             {/* Switch avec/sans horaires */}
             <div className='form-group has_switch'>
-              <label className='control-label pull-left'>Afficher les courses sans horaires</label>
+              <label className='control-label pull-left'>{I18n.t("vehicle_journeys.form.show_journeys_without_schedule")}</label>
               <div className='form-group pull-left' style={{padding: 0}}>
                 <div className='checkbox'>
                   <label>
@@ -110,8 +110,8 @@ export default function Filters({filters, pagination, missions, onFilter, onRese
                       onChange={onToggleWithoutSchedule}
                       checked={filters.query.withoutSchedule}
                       ></input>
-                    <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'>
-                      {filters.query.withoutSchedule ? 'Oui' : 'Non'}
+                    <span className='switch-label' data-checkedvalue={I18n.t("no")} data-uncheckedvalue={I18n.t("yes")}>
+                      {filters.query.withoutSchedule ? I18n.t("yes") : I18n.t("no")}
                     </span>
                   </label>
                 </div>
@@ -122,7 +122,7 @@ export default function Filters({filters, pagination, missions, onFilter, onRese
           <div className="ffg-row">
             {/* Switch avec/sans calendrier */}
             <div className='form-group has_switch'>
-              <label className='control-label pull-left'>Afficher les courses avec calendrier</label>
+              <label className='control-label pull-left'>{I18n.t("vehicle_journeys.form.show_journeys_with_calendar")}</label>
               <div className='form-group pull-left' style={{padding: 0}}>
                 <div className='checkbox'>
                   <label>
@@ -131,8 +131,8 @@ export default function Filters({filters, pagination, missions, onFilter, onRese
                       onChange={onToggleWithoutTimeTable}
                       checked={filters.query.withoutTimeTable}
                       ></input>
-                    <span className='switch-label' data-checkedvalue='Non' data-uncheckedvalue='Oui'>
-                      {filters.query.withoutTimeTable ? 'Oui' : 'Non'}
+                    <span className='switch-label' data-checkedvalue={I18n.t("no")} data-uncheckedvalue={I18n.t("yes")}>
+                      {filters.query.withoutTimeTable ? I18n.t("yes") : I18n.t("no")}
                     </span>
                   </label>
                 </div>

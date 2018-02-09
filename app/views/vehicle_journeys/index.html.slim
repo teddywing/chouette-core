@@ -29,7 +29,7 @@
   | window.features = #{raw @features};
   | window.all_missions = #{(@all_missions.to_json).html_safe};
   | window.custom_fields = #{(@custom_fields.to_json).html_safe};
-  | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
+  // | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
 
 - if has_feature?(:vehicle_journeys_return_route)
   = javascript_tag do

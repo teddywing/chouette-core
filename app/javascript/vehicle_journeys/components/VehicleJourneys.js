@@ -106,14 +106,14 @@ export default class VehicleJourneys extends Component {
           <div className='col-lg-12'>
             {(this.props.status.fetchSuccess == false) && (
               <div className='alert alert-danger mt-sm'>
-                <strong>Erreur : </strong>
-                la récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème.
+                <strong>{I18n.tc("error")}</strong>
+                {I18n.t("vehicle_journeys.vehicle_journeys_matrix.fetching_error")}
               </div>
             )}
 
             { this.vehicleJourneysList().errors && this.vehicleJourneysList().errors.length && _.some(this.vehicleJourneysList(), 'errors') && (
               <div className="alert alert-danger mt-sm">
-                <strong>Erreur : </strong>
+                <strong>{I18n.tc("error")}</strong>
                 {this.vehicleJourneysList().map((vj, index) =>
                   vj.errors && vj.errors.map((err, i) => {
                     return (
@@ -129,12 +129,12 @@ export default class VehicleJourneys extends Component {
             <div className={'table table-2entries mt-sm mb-sm' + ((this.vehicleJourneysList().length > 0) ? '' : ' no_result')}>
               <div className='t2e-head w20'>
                 <div className='th'>
-                  <div className='strong mb-xs'>ID course</div>
-                  <div>Nom course</div>
-                  <div>ID mission</div>
-                  <div>Transporteur</div>
-                  <div>Calendriers</div>
-                  { this.hasFeature('purchase_windows') && <div>Calendriers Commerciaux</div> }
+                  <div className='strong mb-xs'>{I18n.attribute_name("vehicle_journey", "id")}</div>
+                  <div>{I18n.attribute_name("vehicle_journey", "name")}</div>
+                  <div>{I18n.attribute_name("vehicle_journey", "journey_pattern_id")}</div>
+                  <div>{I18n.model_name("company")}</div>
+                  <div>{I18n.model_name("time_table", "plural": true)}</div>
+                  { this.hasFeature('purchase_windows') && <div>{I18n.model_name("purchase_window", "plural": true)}</div> }
                 </div>
                 {this.stopPoints().map((sp, i) =>{
                   return (
