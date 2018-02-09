@@ -241,6 +241,10 @@ ChouetteIhm::Application.routes.draw do
 
   root :to => "dashboards#show"
 
+  if Rails.env.development? || Rails.env.test?
+    get "/snap" => "snapshots#show"
+  end
+
   get '/help/(*slug)' => 'help#show'
 
   if Rails.application.config.development_toolbar

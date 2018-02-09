@@ -130,7 +130,9 @@ class AF83::Decorator::Link
     out[:method] = link_method
     out[:class] = extra_class
     out.delete(:link_class)
+    out.delete(:link_method)
     out[:class] += " disabled" if disabled
+    out[:class].strip!
     out[:disabled] = !!disabled
     out
   end
