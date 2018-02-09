@@ -35,6 +35,10 @@ namespace :ci do
     sh "RAILS_ENV=test bundle exec rake assets:precompile"
   end
 
+  task :i18n_js_export do
+    sh "RAILS_ENV=test bundle exec rake i18n:js:export"
+  end
+
   task :jest do
     sh "node_modules/.bin/jest" unless ["CHOUETTE_JEST_DISABLED"]
   end
@@ -56,4 +60,4 @@ namespace :ci do
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "ci:assets", "i18n:js:export", "spec", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "ci:assets", "ci:i18n_js_export", "spec", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
