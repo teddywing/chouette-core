@@ -40,6 +40,7 @@ RSpec.describe SimpleImporter do
         config.add_column :type, attribute: :area_type, value: ->(raw){ raw&.downcase }
         config.add_column :street_name
         config.add_column :stop_area_referential, value: create(:stop_area_referential, objectid_format: :stif_netex)
+        config.add_value  :kind, :commercial
       end
     end
 
@@ -138,6 +139,7 @@ RSpec.describe SimpleImporter do
           config.add_column :city, attribute: :city_name
           config.add_value  :stop_area_referential_id, create(:stop_area_referential, objectid_format: :stif_netex).id
           config.add_value  :long_lat_type, "WGS84"
+          config.add_value  :kind, :commercial
         end
       end
 
