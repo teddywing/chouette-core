@@ -23,7 +23,7 @@ describe "/lines/show", :type => :view do
 
   describe "action links" do
     set_invariant "line_referential.id", "99"
-    set_invariant "line.id", "99"
+    set_invariant "line.object.id", "99"
     set_invariant "line.object.name", "Name"
     set_invariant "line.company.id", "99"
     set_invariant "line.network.id", "99"
