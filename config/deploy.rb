@@ -78,7 +78,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/tmp/imports #{release_path}/tmp/imports"
   end
   after 'deploy:update_code', 'deploy:symlink_shared'
-  before 'deploy:assets:precompile', 'deploy:symlink_shared', "deploy:i18n_js_export"
+  before 'deploy:assets:precompile', 'deploy:symlink_shared', "i18n:js:export"
 
   desc "Make group writable all deployed files"
   task :group_writable do
