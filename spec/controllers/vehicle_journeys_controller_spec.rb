@@ -26,4 +26,28 @@ RSpec.describe VehicleJourneysController, :type => :controller do
     end
   end
 
+  describe "GET index" do
+    login_user
+    render_views
+
+    context "in JSON" do
+      let(:vehicle_journey){ create :vehicle_journey }
+      let(:route){ vehicle_journey.route }
+      let(:line){ route.line }
+      let!(:request){ get :index, referential_id: referential.id, line_id: line.id, route_id: route.id, format: :json}
+      let(:parsed_response){ JSON.parse response.body }
+      it "should have all the attributes" do
+        expect(response).to have_http_status 200
+        vehicle_journey = parsed_response["vehicle_journeys"].first
+        vehicle_journey_at_stops_matrix = vehicle_journey["vehicle_journey_at_stops"]
+        vehicle_journey_at_stops_matrix.each do |received_vjas|
+          expect(received_vjas).to have_key("id")
+          vjas = Chouette::VehicleJourneyAtStop.find received_vjas["id"]
+          [:connecting_service_id, :boarding_alighting_possibility].each do |att|
+            expect(received_vjas[att]).to eq vjas.send(att)
+          end
+        end
+      end
+    end
+  end
 end

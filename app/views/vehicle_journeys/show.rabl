@@ -39,10 +39,8 @@ child :footnotes, :object_root => false do |footnotes|
 end
 
 child(:vehicle_journey_at_stops_matrix, :object_root => false) do |vehicle_stops|
+  attributes :id, :connecting_service_id, :boarding_alighting_possibility
   node do |vehicle_stop|
-    [:id, :connecting_service_id, :boarding_alighting_possibility].map do |att|
-      node(att) { vehicle_stop.send(att) ? vehicle_stop.send(att) : nil  }
-    end
 
     node(:dummy) { vehicle_stop.dummy }
     node(:area_kind) { vehicle_stop.stop_point.stop_area.kind }
