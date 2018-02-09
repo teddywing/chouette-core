@@ -2,7 +2,7 @@ const environment = require('./environment')
 const webpack = require('webpack')
 const UglifyJsPlugin = require('uglify-js')
 
-environment.plugins.set(
+environment.plugins.append(
   'UglifyJs',
   new webpack.optimize.UglifyJsPlugin({
     compress: {
