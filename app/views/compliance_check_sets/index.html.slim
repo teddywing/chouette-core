@@ -23,9 +23,9 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :associated_object, \
-                  attribute: Proc.new{|n| n.referential.name}, \
+                  attribute: Proc.new{|n| n.referential.present? ? n.referential.name : ''}, \
                   link_to: lambda do |compliance_check_set| \
-                    referential_path(compliance_check_set.referential_id) \
+                    compliance_check_set.referential.present? ? referential_path(compliance_check_set.referential_id) : '#' \
                   end \
                 ), \
                 TableBuilderHelper::Column.new( \
