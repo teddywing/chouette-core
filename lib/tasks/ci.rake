@@ -40,11 +40,13 @@ namespace :ci do
   end
 
   task :jest do
-    sh "node_modules/.bin/jest" unless ["CHOUETTE_JEST_DISABLED"]
+    sh "node_modules/.bin/jest" unless ENV["CHOUETTE_JEST_DISABLED"]
   end
 
   desc "Deploy after CI"
   task :deploy do
+    return if ENV["CHOUETTE_DEPLOY_DISABLED"]
+
     if deploy_env
       sh "cap #{deploy_env} deploy:migrations"
     else
