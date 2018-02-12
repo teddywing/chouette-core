@@ -6,6 +6,8 @@ class ComplianceControlSetDecorator < AF83::Decorator
   end
 
   with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link
+
     instance_decorator.edit_action_link do |l|
       l.content t('compliance_control_sets.actions.edit')
     end
