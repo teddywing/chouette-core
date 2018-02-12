@@ -124,7 +124,7 @@ fr:
         published_journey_name: "Nom public"
         purchase_window: "Disponibilité commerciale"
         regular_fs: "Service régulier"
-        route: "Séquence d'arrêt"
+        route: "Itinéraire"
         status_value: "Etat de trafic"
         time_slot: "Fréquence"
         time_table_ids: "Liste des calendriers"
