@@ -2,6 +2,10 @@ fr:
   workbenches:
     show:
       title: "%{name}"
+    edit:
+      title: "Configurer l'espace de travail"
+    edit:
+      title: "Configurer l'espace de travail"
     referential_count:
       zero: "Aucun jeu de données dans cet espace de travail"
       one: "1 jeu de données dans cet espace de travail"

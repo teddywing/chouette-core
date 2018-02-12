@@ -2,6 +2,10 @@ en:
   workbenches:
     show:
       title: "%{name}"
+    edit:
+      title: "Configure the workbench"
+    edit:
+      title: "Configure the workbench"
     index:
       title: "%{organisation} dashboard"
       offers:
