@@ -11,6 +11,10 @@ module Chouette
 
     scope :in_dates, -> { where(in_out: true) }
 
+    ransacker :unaccented_comment do
+      Arel.sql('unaccent(comment)')
+    end
+
     def self.model_name
       ActiveModel::Name.new Chouette::TimeTableDate, Chouette, "TimeTableDate"
     end
