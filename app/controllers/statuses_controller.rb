@@ -4,17 +4,17 @@ class StatusesController < ChouetteController
   def index
 
     status = {
-      status: global_status,
       referentials_blocked: Referential.blocked.count,
       imports_blocked: Import.blocked.count,
       compliance_check_sets_blocked: ComplianceCheckSet.blocked.count
     }
+    status[:status] = global_status status
     render json: status.to_json
   end
 
   private
 
-  def global_status
-    blocked_items = Referential.blocked.exists? || Import.blocked.exists? || ComplianceCheckSet.blocked.exists? ? 'ko' : 'ok'
+  def global_status status
+    status.values.all?(&:zero?) ? 'ok' : 'ko'
   end
 end
