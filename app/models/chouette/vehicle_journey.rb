@@ -52,6 +52,25 @@ module Chouette
       end
     }
 
+    scope :starting_with, ->(id){
+      if id.present?
+        joins(journey_pattern: :stop_points).where('stop_points.position = 0 AND stop_points.stop_area_id = ?', id)
+      else
+        all
+      end
+    }
+
+    scope :ending_with, ->(id){
+      if id.present?
+        pattern_ids = all.select(:journey_pattern_id).uniq.map(&:journey_pattern_id)
+        pattern_ids = Chouette::JourneyPattern.where(id: pattern_ids).to_a.select{|jp| p "ici: #{jp.stop_points.order(:position).last.stop_area_id}" ; jp.stop_points.order(:position).last.stop_area_id == id.to_i}.map &:id
+        where(journey_pattern_id: pattern_ids)
+      else
+        all
+      end
+    }
+
+
     scope :in_purchase_window, ->(range){
       purchase_windows = Chouette::PurchaseWindow.overlap_dates(range)
       sql = purchase_windows.joins(:vehicle_journeys).select('vehicle_journeys.id').uniq.to_sql
