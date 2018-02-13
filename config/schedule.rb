@@ -43,6 +43,11 @@ every 5.minutes do
   rake "import:notify_parent"
 end
 
+every 5.minutes do
+  rake "compliance_check_sets:abort_old"
+  rake "compliance_check_sets:notify_parent"
+end
+
 every 1.minute do
   command "/bin/echo HeartBeat"
 end

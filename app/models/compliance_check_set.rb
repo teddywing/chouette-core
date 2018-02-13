@@ -19,6 +19,18 @@ class ComplianceCheckSet < ActiveRecord::Base
     where('created_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)
   end
 
+  def self.finished_statuses
+    %w(successful failed warning aborted canceled)
+  end
+
+  def self.abort_old
+    where(
+      'created_at < ? AND status NOT IN (?)',
+      4.hours.ago,
+      finished_statuses
+    ).update_all(status: 'aborted')
+  end
+
   def notify_parent
     if parent
       # parent.child_change
