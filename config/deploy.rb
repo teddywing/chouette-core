@@ -100,6 +100,6 @@ namespace :deploy do
 
   desc "Run db:seed"
   task :seed do
-    run "cd #{release_path} && RAILS_ENV=#{rails_env} #{rake} db:seed"
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} #{rake} db:seed"
   end
 end
