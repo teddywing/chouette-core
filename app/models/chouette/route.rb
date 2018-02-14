@@ -185,6 +185,18 @@ module Chouette
       return true
     end
 
+    def full_journey_pattern
+      out = journey_patterns.find{|jp| jp.stop_points.count == self.stop_points.count }
+      unless out
+        out = journey_patterns.build name: self.name
+        self.stop_points.each do |sp|
+          out.stop_points.build stop_area: sp.stop_area, position: sp.position
+        end
+        out.save!
+      end
+      out
+    end
+
     protected
 
     def self.vehicle_journeys_timeless(stop_point_id)

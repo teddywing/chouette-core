@@ -95,7 +95,7 @@ RSpec.describe SimpleImporter do
     context "with a missing column" do
       let(:filename){ "stop_area_missing_street_name.csv" }
       it "should set an error message" do
-        expect{importer.import}.to_not raise_error
+        expect{importer.import(verbose: false)}.to_not raise_error
         expect(importer.status).to eq "success_with_warnings"
         expect(importer.reload.journal.first["event"]).to eq("column_not_found")
       end
@@ -214,6 +214,120 @@ RSpec.describe SimpleImporter do
           last = Chouette::StopArea.find_by registration_number: "PAR"
           expect(first.parent).to eq last
         end
+      end
+    end
+
+    context "with a specific importer" do
+      let(:filename){ "stop_points_full.csv" }
+
+      before(:each) do
+        create :route, number: 1136, stop_points_count: 0
+        create :route, number: 1137, stop_points_count: 0
+
+        SimpleImporter.define :test do |config|
+          config.model = Chouette::Route
+          config.separator = ";"
+          config.context = {stop_area_referential: stop_area_referential}
+          config.custom_handler do |row|
+            fail_with_error "MISSING ROUTE: #{row["timetable_route_id"]}" do
+              @current_record = Chouette::Route.find_by! number: row["timetable_route_id"]
+            end
+            @current_record.name = row["route_name"]
+            if @prev_route != @current_record
+              @current_record.stop_points.destroy_all
+              if @prev_route
+                journey_pattern = @prev_route.full_journey_pattern
+                journey_pattern.set_distances @distances
+                fail_with_error ->(){ journey_pattern.errors.messages } do
+                  journey_pattern.save!
+                end
+              end
+              @distances = []
+            end
+            @distances.push row["stop_distance"]
+            position = row["stop_sequence"].to_i - 1
+            stop_area = context[:stop_area_referential].stop_areas.where(registration_number: row["station_code"]).last
+            unless stop_area
+              stop_area = Chouette::StopArea.new registration_number: row["station_code"]
+              stop_area.name = row["station_name"]
+              stop_area.kind = row["border"] == "f" ? :commercial : :non_commercial
+              stop_area.area_type = row["border"] == "f" ? :zdep : :border
+              stop_area.stop_area_referential = context[:stop_area_referential]
+              fail_with_error ->{ stop_area.errors.messages } do
+                stop_area.save!
+              end
+            end
+            stop_point = @current_record.stop_points.build(stop_area_id: stop_area.id, position: position)
+            @prev_route = @current_record
+          end
+
+          config.after do |importer|
+            prev_route = importer.instance_variable_get "@prev_route"
+            if prev_route
+              journey_pattern = prev_route.full_journey_pattern
+              journey_pattern.set_distances importer.instance_variable_get("@distances")
+              importer.fail_with_error ->(){ journey_pattern.errors.messages } do
+                journey_pattern.save!
+              end
+            end
+          end
+        end
+      end
+
+      it "should import the given file" do
+        routes_count = Chouette::Route.count
+        journey_pattern_count = Chouette::JourneyPattern.count
+        stop_areas_count = Chouette::StopArea.count
+        expect{importer.import(verbose: false)}.to change{Chouette::StopPoint.count}.by 20
+        expect(importer.status).to eq "success"
+        expect(Chouette::Route.count).to eq routes_count
+        expect(Chouette::JourneyPattern.count).to eq journey_pattern_count + 2
+        expect(Chouette::StopArea.count).to eq stop_areas_count + 5
+        route = Chouette::Route.find_by number: 1136
+        expect(route.stop_areas.count).to eq 5
+        journey_pattern = route.full_journey_pattern
+        expect(journey_pattern.stop_areas.count).to eq 5
+        start, stop = journey_pattern.stop_points[0..1]
+        expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 232
+        start, stop = journey_pattern.stop_points[1..2]
+        expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 118
+        start, stop = journey_pattern.stop_points[2..3]
+        expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 0
+        start, stop = journey_pattern.stop_points[3..4]
+        expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 177
+
+        route = Chouette::Route.find_by number: 1137
+        expect(route.stop_areas.count).to eq 5
+        journey_pattern = route.full_journey_pattern
+        expect(journey_pattern.stop_areas.count).to eq 5
+        start, stop = journey_pattern.stop_points[0..1]
+        expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 177
+        start, stop = journey_pattern.stop_points[1..2]
+        expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 0
+        start, stop = journey_pattern.stop_points[2..3]
+        expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 118
+        start, stop = journey_pattern.stop_points[3..4]
+        expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 232
+
+        stop_area = Chouette::StopArea.where(registration_number: "XPB").last
+        expect(stop_area.kind).to eq :commercial
+        expect(stop_area.area_type).to eq :zdep
+
+        stop_area = Chouette::StopArea.where(registration_number: "XDB").last
+        expect(stop_area.kind).to eq :commercial
+        expect(stop_area.area_type).to eq :zdep
+
+        stop_area = Chouette::StopArea.where(registration_number: "COF").last
+        expect(stop_area.kind).to eq :non_commercial
+        expect(stop_area.area_type).to eq :border
+
+        stop_area = Chouette::StopArea.where(registration_number: "COU").last
+        expect(stop_area.kind).to eq :non_commercial
+        expect(stop_area.area_type).to eq :border
+
+        stop_area = Chouette::StopArea.where(registration_number: "ZEP").last
+        expect(stop_area.kind).to eq :commercial
+        expect(stop_area.area_type).to eq :zdep
       end
     end
   end
