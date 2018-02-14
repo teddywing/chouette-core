@@ -41,12 +41,15 @@ module Chouette
 
     validates_presence_of :name
 
+
     scope :by_text, ->(text) { where('lower(name) LIKE :t or lower(published_name) LIKE :t or lower(objectid) LIKE :t or lower(comment) LIKE :t or lower(number) LIKE :t',
       t: "%#{text.downcase}%") }
 
     def self.nullable_attributes
       [:published_name, :number, :comment, :url, :color, :text_color, :stable_id]
     end
+
+    def local_id; registration_number end
 
     def geometry_presenter
       Chouette::Geometry::LinePresenter.new self

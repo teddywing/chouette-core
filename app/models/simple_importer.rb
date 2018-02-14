@@ -55,7 +55,7 @@ class SimpleImporter < ActiveRecord::Base
     statuses = ""
     log "#{"%#{padding}d" % 0}/#{number_of_lines}", clear: true
     ActiveRecord::Base.transaction do
-      self.configuration.before_actions(:all).each &:call
+      self.configuration.before_actions(:all).each do |action| action.call self end
 
       CSV.foreach(filepath, self.configuration.csv_options) do |row|
         status = handle_row row, status
@@ -63,7 +63,7 @@ class SimpleImporter < ActiveRecord::Base
         fail_with_error ->(){ @current_record.errors.messages } do
           new_record = @current_record.new_record?
           self.configuration.before_actions(:each_save).each do |action|
-            action.call @current_record
+            action.call self, @current_record
           end
           ### This could fail if the record has a mandatory relation which is not yet resolved
           ### TODO: do not attempt to save if the current record if waiting for resolution
@@ -162,7 +162,7 @@ class SimpleImporter < ActiveRecord::Base
   end
 
   class Configuration
-    attr_accessor :model, :headers, :separator, :key, :context
+    attr_accessor :model, :headers, :separator, :key, :context, :encoding
     attr_reader :columns
 
     def initialize import_name, opts={}
@@ -170,8 +170,10 @@ class SimpleImporter < ActiveRecord::Base
       @key = opts[:key] || "id"
       @headers = opts.has_key?(:headers) ? opts[:headers] : true
       @separator = opts[:separator] || ","
+      @encoding = opts[:encoding]
       @columns = opts[:columns] || []
       @model = opts[:model]
+      @custom_handler = opts[:custom_handler]
     end
 
     def duplicate
@@ -183,8 +185,10 @@ class SimpleImporter < ActiveRecord::Base
         key: @key,
         headers: @headers,
         separator: @separator,
+        encoding: @encoding,
         columns: @columns.map(&:duplicate),
-        model: model
+        model: model,
+        custom_handler: @custom_handler
       }
     end
 
@@ -204,7 +208,8 @@ class SimpleImporter < ActiveRecord::Base
     def csv_options
       {
         headers: self.headers,
-        col_sep: self.separator
+        col_sep: self.separator,
+        encoding: self.encoding
       }
     end
 
