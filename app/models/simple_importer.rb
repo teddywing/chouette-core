@@ -29,6 +29,10 @@ class SimpleImporter < ActiveRecord::Base
     self.configuration = new_config
   end
 
+  def context
+    self.configuration.context || {}
+  end
+
   def resolve col_name, value, &block
     val = block.call(value)
     return val if val.present?
@@ -54,24 +58,7 @@ class SimpleImporter < ActiveRecord::Base
       self.configuration.before_actions(:all).each &:call
 
       CSV.foreach(filepath, self.configuration.csv_options) do |row|
-        @current_record = self.configuration.find_record row
-        self.configuration.columns.each do |col|
-          @current_attribute = col[:attribute]
-          val = col[:value]
-          if val.nil? || val.is_a?(Proc)
-            if row.has_key? col.name
-              if val.is_a?(Proc)
-                val = instance_exec(row[col.name], &val)
-              else
-                val = row[col.name]
-              end
-            else
-              self.journal.push({event: :column_not_found, message: "Column not found: #{col.name}", kind: :warning})
-              status = :success_with_warnings
-            end
-          end
-          @current_record.send "#{@current_attribute}=", val if val
-        end
+        status = handle_row row, status
 
         fail_with_error ->(){ @current_record.errors.messages } do
           new_record = @current_record.new_record?
@@ -100,6 +87,9 @@ class SimpleImporter < ActiveRecord::Base
         current_line += 1
         log "#{"%#{padding}d" % current_line}/#{number_of_lines}: #{statuses}", clear: true
       end
+      self.configuration.after_actions(:all).each do |action|
+        action.call self
+      end
     end
     self.update_attribute :status, status
   rescue FailedImport
@@ -107,8 +97,6 @@ class SimpleImporter < ActiveRecord::Base
   ensure
     self.save!
   end
-
-  protected
 
   def fail_with_error msg
     begin
@@ -119,6 +107,34 @@ class SimpleImporter < ActiveRecord::Base
       self.journal.push({message: msg, error: e.message, event: :error, kind: :error})
       raise FailedImport
     end
+  end
+
+  protected
+
+  def handle_row row, status
+    if self.configuration.get_custom_handler
+      instance_exec(row, &self.configuration.get_custom_handler)
+    else
+      @current_record = self.configuration.find_record row
+      self.configuration.columns.each do |col|
+        @current_attribute = col[:attribute]
+        val = col[:value]
+        if val.nil? || val.is_a?(Proc)
+          if row.has_key? col.name
+            if val.is_a?(Proc)
+              val = instance_exec(row[col.name], &val)
+            else
+              val = row[col.name]
+            end
+          else
+            self.journal.push({event: :column_not_found, message: "Column not found: #{col.name}", kind: :warning})
+            status = :success_with_warnings
+          end
+        end
+        @current_record.send "#{@current_attribute}=", val if val
+      end
+    end
+    status
   end
 
   def colorize txt, color
@@ -146,7 +162,7 @@ class SimpleImporter < ActiveRecord::Base
   end
 
   class Configuration
-    attr_accessor :model, :headers, :separator, :key
+    attr_accessor :model, :headers, :separator, :key, :context
     attr_reader :columns
 
     def initialize import_name, opts={}
@@ -205,9 +221,27 @@ class SimpleImporter < ActiveRecord::Base
       @before[group].push block
     end
 
+    def after group=:all, &block
+      @after ||= Hash.new{|h, k| h[k] = []}
+      @after[group].push block
+    end
+
     def before_actions group=:all
       @before ||= Hash.new{|h, k| h[k] = []}
       @before[group]
+    end
+
+    def after_actions group=:all
+      @after ||= Hash.new{|h, k| h[k] = []}
+      @after[group]
+    end
+
+    def custom_handler &block
+      @custom_handler = block
+    end
+
+    def get_custom_handler
+      @custom_handler
     end
 
     class Column
