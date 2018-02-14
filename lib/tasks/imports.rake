@@ -23,6 +23,7 @@ namespace :import do
     importer = SimpleImporter.create configuration_name: args[:configuration_name], filepath: args[:filepath]
     importer.configure do |config|
       config.add_value :stop_area_referential, referential
+      config.context = {stop_area_referential: referential}
     end
     puts "\e[33m***\e[0m Start importing"
     importer.import(verbose: true)
