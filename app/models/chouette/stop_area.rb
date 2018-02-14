@@ -370,6 +370,14 @@ module Chouette
       !activated?
     end
 
+    def activate
+      self.deleted_at = nil
+    end
+
+    def deactivate
+      self.deleted_at = Time.now
+    end
+
     def activate!
       update_attribute :deleted_at, nil
     end

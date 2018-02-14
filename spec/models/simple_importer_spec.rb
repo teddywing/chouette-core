@@ -29,6 +29,8 @@ RSpec.describe SimpleImporter do
     let(:importer){ importer = SimpleImporter.new(configuration_name: :test, filepath: filepath) }
     let(:filepath){ Rails.root + "spec/fixtures/simple_importer/#{filename}" }
     let(:filename){ "stop_area.csv" }
+    let(:stop_area_referential){ create(:stop_area_referential, objectid_format: :stif_netex) }
+
     before(:each) do
       SimpleImporter.define :test do |config|
         config.model = Chouette::StopArea
@@ -39,7 +41,7 @@ RSpec.describe SimpleImporter do
         config.add_column :lat, attribute: :longitude, value: ->(raw){ raw.to_f + 1 }
         config.add_column :type, attribute: :area_type, value: ->(raw){ raw&.downcase }
         config.add_column :street_name
-        config.add_column :stop_area_referential, value: create(:stop_area_referential, objectid_format: :stif_netex)
+        config.add_column :stop_area_referential, value: stop_area_referential
         config.add_value  :kind, :commercial
       end
     end
@@ -101,10 +103,14 @@ RSpec.describe SimpleImporter do
 
     context "with a incomplete dataset" do
       let(:filename){ "stop_area_incomplete.csv" }
-      it "should create a StopArea" do
+      it "should fail" do
         expect{importer.import}.to_not raise_error
         expect(importer.status).to eq "failed"
-        expect(importer.reload.journal.first["message"]).to eq({"name" => ["doit être rempli(e)"]})
+        expect(importer.reload.journal.last["message"]).to eq({"name" => ["doit être rempli(e)"]})
+      end
+
+      it "should be transactional" do
+        expect{importer.import}.to_not change {Chouette::StopArea.count}
       end
     end
 
@@ -117,8 +123,41 @@ RSpec.describe SimpleImporter do
       end
     end
 
+    context "with a custom behaviour" do
+      let!(:present){ create :stop_area, name: "Nom du Stop", stop_area_referential: stop_area_referential }
+      let!(:missing){ create :stop_area, name: "Another", stop_area_referential: stop_area_referential }
+      before(:each){
+        importer.configure do |config|
+          config.before do
+            stop_area_referential.stop_areas.each &:deactivate!
+          end
+
+          config.before(:each_save) do |stop_area|
+            stop_area.activate!
+          end
+        end
+      }
+
+      it "should disable all missing areas" do
+        expect{importer.import}.to change{Chouette::StopArea.count}.by 0
+        expect(present.reload.activated?).to be_truthy
+        expect(missing.reload.activated?).to be_falsy
+      end
+
+      context "with an error" do
+        let(:filename){ "stop_area_incomplete.csv" }
+        it "should do nothing" do
+          expect{importer.import}.to_not change {Chouette::StopArea.count}
+          expect(present.reload.activated?).to be_truthy
+          expect(missing.reload.activated?).to be_truthy
+        end
+      end
+    end
+
     context "with a full file" do
       let(:filename){ "stop_area_full.csv" }
+      let!(:missing){ create :stop_area, name: "Another", stop_area_referential: stop_area_referential }
+
       before(:each) do
         SimpleImporter.define :test do |config|
           config.model = Chouette::StopArea
@@ -137,14 +176,21 @@ RSpec.describe SimpleImporter do
           config.add_column :address, attribute: :street_name
           config.add_column :postal_code, attribute: :zip_code
           config.add_column :city, attribute: :city_name
-          config.add_value  :stop_area_referential_id, create(:stop_area_referential, objectid_format: :stif_netex).id
+          config.add_value  :stop_area_referential_id, stop_area_referential.id
           config.add_value  :long_lat_type, "WGS84"
           config.add_value  :kind, :commercial
+          config.before do
+            stop_area_referential.stop_areas.each &:deactivate!
+          end
+
+          config.before(:each_save) do |stop_area|
+            stop_area.activate
+          end
         end
       end
 
       it "should import the given file" do
-        expect{importer.import}.to change{Chouette::StopArea.count}.by 2
+        expect{importer.import(verbose: false)}.to change{Chouette::StopArea.count}.by 2
         expect(importer.status).to eq "success"
         first = Chouette::StopArea.find_by registration_number: "PAR"
         last = Chouette::StopArea.find_by registration_number: "XED"
@@ -153,6 +199,9 @@ RSpec.describe SimpleImporter do
         expect(first.area_type).to eq "gdl"
         expect(last.area_type).to eq "zdep"
         expect(first.long_lat_type).to eq "WGS84"
+        expect(first.activated?).to be_truthy
+        expect(last.activated?).to be_truthy
+        expect(missing.reload.activated?).to be_falsy
       end
 
       context "with a relation in reverse order" do
