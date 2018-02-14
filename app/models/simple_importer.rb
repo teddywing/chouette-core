@@ -50,52 +50,62 @@ class SimpleImporter < ActiveRecord::Base
     status = :success
     statuses = ""
     log "#{"%#{padding}d" % 0}/#{number_of_lines}", clear: true
-    CSV.foreach(filepath, self.configuration.csv_options) do |row|
-      @current_record = self.configuration.find_record row
-      self.configuration.columns.each do |col|
-        @current_attribute = col[:attribute]
-        val = col[:value]
-        if val.nil? || val.is_a?(Proc)
-          if row.has_key? col.name
-            if val.is_a?(Proc)
-              val = instance_exec(row[col.name], &val)
-            else
-              val = row[col.name]
-            end
-          else
-            self.journal.push({event: :column_not_found, message: "Column not found: #{col.name}", kind: :warning})
-            status = :success_with_warnings
-          end
-        end
-        @current_record.send "#{@current_attribute}=", val if val
-      end
+    ActiveRecord::Base.transaction do
+      self.configuration.before_actions(:all).each &:call
 
-      fail_with_error ->(){ @current_record.errors.messages } do
-        new_record = @current_record.new_record?
-        @current_record.save!
-        self.journal.push({event: (new_record ? :creation : :update), kind: :log})
-        statuses += new_record ? colorize("✓", :green) : colorize("-", :orange)
-      end
-      self.configuration.columns.each do |col|
-        if col.name && @resolution_queue.any?
-          val = @current_record.send col[:attribute]
-          (@resolution_queue.delete([col.name, val]) || []).each do |res|
-            record = res[:record]
-            attribute = res[:attribute]
-            value = res[:block].call(val, record)
-            record.send "#{attribute}=", value
-            record.save!
+      CSV.foreach(filepath, self.configuration.csv_options) do |row|
+        @current_record = self.configuration.find_record row
+        self.configuration.columns.each do |col|
+          @current_attribute = col[:attribute]
+          val = col[:value]
+          if val.nil? || val.is_a?(Proc)
+            if row.has_key? col.name
+              if val.is_a?(Proc)
+                val = instance_exec(row[col.name], &val)
+              else
+                val = row[col.name]
+              end
+            else
+              self.journal.push({event: :column_not_found, message: "Column not found: #{col.name}", kind: :warning})
+              status = :success_with_warnings
+            end
+          end
+          @current_record.send "#{@current_attribute}=", val if val
+        end
+
+        fail_with_error ->(){ @current_record.errors.messages } do
+          new_record = @current_record.new_record?
+          self.configuration.before_actions(:each_save).each do |action|
+            action.call @current_record
+          end
+          ### This could fail if the record has a mandatory relation which is not yet resolved
+          ### TODO: do not attempt to save if the current record if waiting for resolution
+          ###       and fail at the end if there remains unresolved relations
+          @current_record.save!
+          self.journal.push({event: (new_record ? :creation : :update), kind: :log})
+          statuses += new_record ? colorize("✓", :green) : colorize("-", :orange)
+        end
+        self.configuration.columns.each do |col|
+          if col.name && @resolution_queue.any?
+            val = @current_record.send col[:attribute]
+            (@resolution_queue.delete([col.name, val]) || []).each do |res|
+              record = res[:record]
+              attribute = res[:attribute]
+              value = res[:block].call(val, record)
+              record.send "#{attribute}=", value
+              record.save!
+            end
           end
         end
+        current_line += 1
+        log "#{"%#{padding}d" % current_line}/#{number_of_lines}: #{statuses}", clear: true
       end
-      current_line += 1
-      log "#{"%#{padding}d" % current_line}/#{number_of_lines}: #{statuses}", clear: true
     end
     self.update_attribute :status, status
   rescue FailedImport
     self.update_attribute :status, :failed
   ensure
-    self.save
+    self.save!
   end
 
   protected
@@ -107,7 +117,6 @@ class SimpleImporter < ActiveRecord::Base
       msg = msg.call if msg.is_a?(Proc)
       log "\nFAILED: \n errors: #{msg}\n exception: #{e.message}\n#{e.backtrace.join("\n")}", color: :red
       self.journal.push({message: msg, error: e.message, event: :error, kind: :error})
-      self.save
       raise FailedImport
     end
   end
@@ -189,6 +198,16 @@ class SimpleImporter < ActiveRecord::Base
 
     def add_value attribute, value
       @columns.push Column.new({attribute: attribute, value: value})
+    end
+
+    def before group=:all, &block
+      @before ||= Hash.new{|h, k| h[k] = []}
+      @before[group].push block
+    end
+
+    def before_actions group=:all
+      @before ||= Hash.new{|h, k| h[k] = []}
+      @before[group]
     end
 
     class Column
