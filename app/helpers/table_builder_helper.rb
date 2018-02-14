@@ -330,7 +330,7 @@ module TableBuilderHelper
     else
       menu = content_tag :ul, class: 'dropdown-menu' do
         (
-          CustomLinks.new(item, pundit_user, links, referential).links +
+          CustomLinks.new(item, pundit_user, links, referential, workgroup).links +
           action_links.select { |link| link.is_a?(Link) }
         ).map do |link|
           gear_menu_link(link)
