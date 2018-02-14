@@ -128,11 +128,11 @@ RSpec.describe SimpleImporter do
       let!(:missing){ create :stop_area, name: "Another", stop_area_referential: stop_area_referential }
       before(:each){
         importer.configure do |config|
-          config.before do
+          config.before do |importer|
             stop_area_referential.stop_areas.each &:deactivate!
           end
 
-          config.before(:each_save) do |stop_area|
+          config.before(:each_save) do |importer, stop_area|
             stop_area.activate!
           end
         end
@@ -179,11 +179,11 @@ RSpec.describe SimpleImporter do
           config.add_value  :stop_area_referential_id, stop_area_referential.id
           config.add_value  :long_lat_type, "WGS84"
           config.add_value  :kind, :commercial
-          config.before do
+          config.before do |importer|
             stop_area_referential.stop_areas.each &:deactivate!
           end
 
-          config.before(:each_save) do |stop_area|
+          config.before(:each_save) do |importer, stop_area|
             stop_area.activate
           end
         end
@@ -221,20 +221,24 @@ RSpec.describe SimpleImporter do
       let(:filename){ "stop_points_full.csv" }
 
       before(:each) do
-        create :route, number: 1136, stop_points_count: 0
-        create :route, number: 1137, stop_points_count: 0
+        create :line, name: "Paris centre - Bercy > Lille > Londres"
+        create :line, name: "Londres > Lille > Paris centre - Bercy"
 
         SimpleImporter.define :test do |config|
           config.model = Chouette::Route
           config.separator = ";"
           config.context = {stop_area_referential: stop_area_referential}
           config.custom_handler do |row|
-            fail_with_error "MISSING ROUTE: #{row["timetable_route_id"]}" do
-              @current_record = Chouette::Route.find_by! number: row["timetable_route_id"]
+            line = nil
+            fail_with_error "MISSING LINE: #{row["route_name"]}" do
+              line = Chouette::Line.find_by! name: row["route_name"]
             end
+            @current_record = Chouette::Route.find_or_initialize_by number: row["timetable_route_id"]
             @current_record.name = row["route_name"]
+            @current_record.published_name = row["route_name"]
+
+            @current_record.line = line
             if @prev_route != @current_record
-              @current_record.stop_points.destroy_all
               if @prev_route
                 journey_pattern = @prev_route.full_journey_pattern
                 journey_pattern.set_distances @distances
@@ -257,7 +261,12 @@ RSpec.describe SimpleImporter do
                 stop_area.save!
               end
             end
-            stop_point = @current_record.stop_points.build(stop_area_id: stop_area.id, position: position)
+            stop_point = @current_record.stop_points.find_by(stop_area_id: stop_area.id)
+            if stop_point
+              stop_point.set_list_position position
+            else
+              stop_point = @current_record.stop_points.build(stop_area_id: stop_area.id, position: position)
+            end
             @prev_route = @current_record
           end
 
@@ -280,7 +289,7 @@ RSpec.describe SimpleImporter do
         stop_areas_count = Chouette::StopArea.count
         expect{importer.import(verbose: false)}.to change{Chouette::StopPoint.count}.by 20
         expect(importer.status).to eq "success"
-        expect(Chouette::Route.count).to eq routes_count
+        expect(Chouette::Route.count).to eq routes_count + 2
         expect(Chouette::JourneyPattern.count).to eq journey_pattern_count + 2
         expect(Chouette::StopArea.count).to eq stop_areas_count + 5
         route = Chouette::Route.find_by number: 1136

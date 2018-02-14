@@ -29,4 +29,32 @@ namespace :import do
     importer.import(verbose: true)
     puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + importer.status + "\e[0m"
   end
+
+  desc "import the given file with the corresponding importer in the given Referential and StopAreaReferential"
+  task :import_in_referential_and_stop_area_referential, [:referential_id, :stop_area_referential_id, :configuration_name, :filepath] => :environment do |t, args|
+    referential = Referential.find args[:referential_id]
+    referential.switch
+    stop_area_referential = StopAreaReferential.find args[:stop_area_referential_id]
+    importer = SimpleImporter.create configuration_name: args[:configuration_name], filepath: args[:filepath]
+    importer.configure do |config|
+      config.add_value :stop_area_referential, referential
+      config.context = {stop_area_referential: stop_area_referential}
+    end
+    puts "\e[33m***\e[0m Start importing"
+    importer.import(verbose: true)
+    puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + importer.status + "\e[0m"
+  end
+
+  desc "import the given file with the corresponding importer in the given LineReferential"
+  task :import_lines_in_referential, [:referential_id, :configuration_name, :filepath] => :environment do |t, args|
+    referential = LineReferential.find args[:referential_id]
+    importer = SimpleImporter.create configuration_name: args[:configuration_name], filepath: args[:filepath]
+    importer.configure do |config|
+      config.add_value :line_referential, referential
+      config.context = {line_referential: referential}
+    end
+    puts "\e[33m***\e[0m Start importing"
+    importer.import(verbose: true)
+    puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + importer.status + "\e[0m"
+  end
 end
