@@ -1,6 +1,6 @@
 FROM debian:stable-slim
 
-ENV RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true RAILS_LOG_TO_STDOUT=true
+ENV RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true RAILS_LOG_TO_STDOUT=true SIDEKIQ_REDIS_URL=redis://redis:6379/12
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ruby2.3 && \
