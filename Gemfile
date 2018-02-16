@@ -16,7 +16,7 @@ gem 'uglifier', '~> 2.7.2'
 gem 'coffee-rails', '~> 4.0.0'
 
 # Webpacker
-gem 'webpacker', '3.0.2'
+gem 'webpacker', '3.2.1'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
@@ -103,6 +103,7 @@ gem 'will_paginate-bootstrap'
 gem 'gretel'
 gem 'country_select'
 gem 'flag-icons-rails'
+gem 'i18n-js'
 
 # Format Output
 gem 'json'
@@ -176,6 +177,7 @@ group :test do
   gem 'simplecov-rcov', :require => false
   gem 'htmlbeautifier'
   gem 'timecop'
+  gem 'rspec-snapshot'
 end
 
 group :test, :development, :dev do

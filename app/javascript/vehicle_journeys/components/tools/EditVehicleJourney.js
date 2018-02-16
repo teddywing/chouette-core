@@ -59,7 +59,7 @@ export default class EditVehicleJourney extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Informations</h4>
+                    <h4 className='modal-title'>{I18n.t('vehicle_journeys.form.infos')}</h4>
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
@@ -69,7 +69,7 @@ export default class EditVehicleJourney extends Component {
                           <div className='row'>
                             <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                               <div className='form-group'>
-                                <label className='control-label'>Nom de la course</label>
+                                <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'journey_name')}</label>
                                 <input
                                   type='text'
                                   ref='published_journey_name'
@@ -82,7 +82,7 @@ export default class EditVehicleJourney extends Component {
                             </div>
                             <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                               <div className='form-group'>
-                                <label className='control-label'>Mission</label>
+                                <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'journey_pattern')}</label>
                                 <input
                                   type='text'
                                   className='form-control'
@@ -96,7 +96,7 @@ export default class EditVehicleJourney extends Component {
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label'>Numéro de train</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'company')}</label>
                               <input
                                 type='text'
                                 ref='published_journey_identifier'
@@ -109,7 +109,7 @@ export default class EditVehicleJourney extends Component {
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label'>Transporteur</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'company')}</label>
                               <CompanySelect2
                                 editModal={this.props.modal.type == "edit"}
                                 editMode={this.editMode()}
@@ -124,29 +124,29 @@ export default class EditVehicleJourney extends Component {
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label'>Mode de transport</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'transport_mode')}</label>
                               <input
                                 type='text'
                                 className='form-control'
-                                value={window.I18n.fr.enumerize.transport_mode[this.props.modal.modalProps.vehicleJourney.transport_mode]}
+                                value={I18n.enumerize('transport_mode', this.props.modal.modalProps.vehicleJourney.transport_mode)}
                                 disabled={true}
                               />
                             </div>
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label'>Sous mode de transport</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'transport_submode')}</label>
                               <input
                                 type='text'
                                 className='form-control'
-                                value={window.I18n.fr.enumerize.transport_submode[this.props.modal.modalProps.vehicleJourney.transport_submode]}
+                                value={I18n.enumerize('transport_submode', this.props.modal.modalProps.vehicleJourney.transport_submode)}
                                 disabled={true}
                               />
                             </div>
                           </div>
                         </div>
                         <div className='form-group'>
-                          <label className='control-label'>Signature métier</label>
+                          <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'checksum')}</label>
                             <input
                             type='text'
                             ref='checksum'

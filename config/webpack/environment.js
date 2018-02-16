@@ -14,7 +14,7 @@ let cleanOptions = {
 };
 
 
-environment.plugins.set(
+environment.plugins.append(
   'CleanWebpack',
   new CleanWebpackPlugin(pathsToClean, cleanOptions)
 )

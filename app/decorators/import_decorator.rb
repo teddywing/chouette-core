@@ -1,6 +1,8 @@
 class ImportDecorator < AF83::Decorator
   decorates Import
 
+  set_scope { context[:workbench] }
+
   define_instance_method :import_status_css_class do
     cls =''
     cls = 'overheaded-success' if object.status == 'successful'
@@ -11,13 +13,10 @@ class ImportDecorator < AF83::Decorator
 
   create_action_link do |l|
     l.content t('imports.actions.new')
-    l.href { h.new_workbench_import_path(workbench_id: context[:workbench]) }
   end
 
   with_instance_decorator do |instance_decorator|
-    instance_decorator.show_action_link do |l|
-      l.href { h.workbench_import_path(context[:workbench], object) }
-    end
+    instance_decorator.show_action_link
 
     instance_decorator.action_link secondary: :show do |l|
       l.content t('imports.actions.download')

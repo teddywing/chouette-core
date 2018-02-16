@@ -7,23 +7,11 @@ class StopAreaDecorator < AF83::Decorator
   end
 
   with_instance_decorator do |instance_decorator|
-    instance_decorator.show_action_link do |l|
-      l.href do
-        h.stop_area_referential_stop_area_path(
-          object.stop_area_referential,
-          object
-        )
-      end
-    end
+    set_scope { object.stop_area_referential }
+    instance_decorator.show_action_link
 
     instance_decorator.edit_action_link do |l|
       l.content h.t('stop_areas.actions.edit')
-      l.href do
-        h.edit_stop_area_referential_stop_area_path(
-          object.stop_area_referential,
-          object
-        )
-      end
     end
 
     instance_decorator.action_link policy: :deactivate, secondary: true do |l|
@@ -54,12 +42,6 @@ class StopAreaDecorator < AF83::Decorator
 
     instance_decorator.destroy_action_link do |l|
       l.content h.destroy_link_content('stop_areas.actions.destroy')
-      l.href do
-        h.stop_area_referential_stop_area_path(
-          object.stop_area_referential,
-          object
-        )
-      end
       l.data confirm: h.t('stop_areas.actions.destroy_confirm')
     end
   end

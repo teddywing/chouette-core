@@ -30,7 +30,8 @@ class AF83::Decorator::Link
       @options[name] = block
     elsif args.size == 0
       out = @options[name]
-      out = context.instance_exec(self, &out)  if out.is_a?(Proc)
+      out = context.instance_exec(self, &out) if out.is_a?(Proc)
+      out = out.flatten.compact if name.to_s == "href" && out.is_a?(Array)
       out
     else
       # we can use l.foo("bar") or l.foo = "bar"
@@ -129,7 +130,9 @@ class AF83::Decorator::Link
     out[:method] = link_method
     out[:class] = extra_class
     out.delete(:link_class)
+    out.delete(:link_method)
     out[:class] += " disabled" if disabled
+    out[:class].strip!
     out[:disabled] = !!disabled
     out
   end

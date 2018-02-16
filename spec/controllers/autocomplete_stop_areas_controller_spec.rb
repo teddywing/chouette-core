@@ -4,14 +4,22 @@ RSpec.describe AutocompleteStopAreasController, type: :controller do
   login_user
 
   let(:referential) { Referential.first }
-  let!(:stop_area) { create :stop_area, name: 'écolà militaire' }
-  let!(:zdep_stop_area) { create :stop_area, area_type: "zdep" }
-  let!(:not_zdep_stop_area) { create :stop_area, area_type: "lda" }
+  let(:other_referential) { create :referential }
+  let!(:stop_area) { create :stop_area, name: 'écolà militaire', referential: referential }
+  let!(:other_referential_stop_area) { create :stop_area, name: 'écolà militaire', referential: other_referential }
+  let!(:zdep_stop_area) { create :stop_area, area_type: "zdep", referential: referential }
+  let!(:not_zdep_stop_area) { create :stop_area, area_type: "lda", referential: referential }
 
   describe 'GET #index' do
     it 'should be successful' do
       get :index, referential_id: referential.id
       expect(response).to be_success
+    end
+
+    it "should filter stop areas based on referential" do
+      get :index, referential_id: referential.id
+      expect(assigns(:stop_areas)).to include(stop_area)
+      expect(assigns(:stop_areas)).to_not include(other_referential_stop_area)
     end
 
     context 'search by name' do

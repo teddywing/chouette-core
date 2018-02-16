@@ -111,11 +111,13 @@ ChouetteIhm::Application.routes.draw do
     resources :companies
     resources :networks
   end
-
-  resources :calendars do
-    get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
-    member do
-      get 'month', defaults: { format: :json }
+  
+  resources :workgroups do
+    resources :calendars do
+      get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+      member do
+        get 'month', defaults: { format: :json }
+      end
     end
   end
 
@@ -239,6 +241,10 @@ ChouetteIhm::Application.routes.draw do
 
   root :to => "dashboards#show"
 
+  if Rails.env.development? || Rails.env.test?
+    get "/snap" => "snapshots#show"
+  end
+
   get '/help/(*slug)' => 'help#show'
 
   if Rails.application.config.development_toolbar
@@ -249,5 +255,7 @@ ChouetteIhm::Application.routes.draw do
   match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden'
   match '/422', to: 'errors#server_error', via: :all, as: 'unprocessable_entity'
   match '/500', to: 'errors#server_error', via: :all, as: 'server_error'
+
+  match '/status', to: 'statuses#index', via: :get
 
 end

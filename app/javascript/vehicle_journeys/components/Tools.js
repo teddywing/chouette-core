@@ -44,8 +44,8 @@ export default class Tools extends Component {
           <DeleteVehicleJourneys disabled={!this.hasPolicy("destroy") || !editMode}/>
         </ul>
 
-        <span className='info-msg'>{actions.getSelected(vehicleJourneys).length} course(s) sélectionnée(s)</span>
-        <button className='btn btn-xs btn-link pull-right' onClick={onCancelSelection}>Annuler la sélection</button>
+        <span className='info-msg'>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.selected_journeys', {count: actions.getSelected(vehicleJourneys).length})}</span>
+        <button className='btn btn-xs btn-link pull-right' onClick={onCancelSelection}>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.cancel_selection')}</button>
       </div>
     )
   }

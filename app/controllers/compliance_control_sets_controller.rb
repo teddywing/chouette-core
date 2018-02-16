@@ -7,10 +7,8 @@ class ComplianceControlSetsController < ChouetteController
 
   def index
     index! do |format|
-      scope = self.ransack_period_range(scope: @compliance_control_sets, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
-      @q_for_form = scope.ransack(params[:q])
       format.html {
-        @compliance_control_sets = decorate_compliance_control_sets(@q_for_form.result.paginate(page: params[:page], per_page: 30))
+        @compliance_control_sets = decorate_compliance_control_sets(@compliance_control_sets)
       }
     end
   end
@@ -37,6 +35,14 @@ class ComplianceControlSetsController < ChouetteController
 
   private
 
+  def collection
+    scope = self.ransack_period_range(scope: ComplianceControlSet.all, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
+    @q_for_form = scope.ransack(params[:q])
+    compliance_control_sets = @q_for_form.result
+    compliance_control_sets = joins_with_associated_objects(compliance_control_sets).order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
+    @compliance_control_sets = compliance_control_sets.paginate(page: params[:page], per_page: 30)
+  end
+
   def decorate_compliance_control_sets(compliance_control_sets)
     ComplianceControlSetDecorator.decorate(compliance_control_sets)
   end
@@ -57,5 +63,33 @@ class ComplianceControlSetsController < ChouetteController
       .group_by(&:compliance_control_block)
     @direct_compliance_controls        = compliance_controls.delete nil
     @blocks_to_compliance_controls_map = compliance_controls
+  end
+
+  def sort_column
+    case params[:sort]
+      when 'name' then 'lower(compliance_control_sets.name)'
+      when 'owner_jdc' then 'lower(organisations.name)'
+      when 'control_numbers' then 'COUNT(compliance_controls.id)'
+      else
+        ComplianceControlSet.column_names.include?(params[:sort]) ? params[:sort] : 'lower(compliance_control_sets.name)'
+    end
+  end
+
+  def joins_with_associated_objects(collection)
+
+    # dont know if this is the right way to do it but since we need to join table deoending of the params
+    # it was to avoid loading associated objects if we don't need them
+    case params[:sort]
+      when 'owner_jdc'
+        collection.joins("LEFT JOIN organisations ON compliance_control_sets.organisation_id = organisations.id")
+      when 'control_numbers' 
+        collection.joins("LEFT JOIN compliance_controls ON compliance_controls.compliance_control_set_id = compliance_control_sets.id").group(:id)
+      else 
+        collection
+    end
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end
 end

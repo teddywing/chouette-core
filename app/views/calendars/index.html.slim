@@ -1,4 +1,4 @@
-- breadcrumb :calendars
+- breadcrumb :calendars, workgroup
 
 .page_content
   .container-fluid
@@ -16,7 +16,7 @@
                 key: :name, \
                 attribute: 'name', \
                 link_to: lambda do |calendar| \
-                  calendar_path(calendar) \
+                  workgroup_calendar_path(workgroup, calendar) \
                 end \
               ), \
               TableBuilderHelper::Column.new( \

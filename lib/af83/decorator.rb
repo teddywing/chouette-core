@@ -2,40 +2,49 @@ class AF83::Decorator < ModelDecorator
   include AF83::Decorator::EnhancedDecorator
   extend AF83::Decorator::EnhancedDecorator::ClassMethods
 
-  def self.decorates klass
-    instance_decorator.decorates klass
-  end
-
-  def self.instance_decorator
-    @instance_decorator ||= begin
-      klass = Class.new(AF83::Decorator::InstanceDecorator)
-      klass.delegate_all
-      klass
+  class << self
+    def decorates klass
+      instance_decorator.decorates klass
     end
-  end
 
-  def self.with_instance_decorator
-    @_with_instance_decorator = true
-    yield instance_decorator
-    @_with_instance_decorator = false
-  end
-
-  def self.decorate object, options = {}
-    if object.is_a?(ActiveRecord::Base)
-      return instance_decorator.decorate object, options
-    else
-      self.new object, options.update(with: instance_decorator)
+    def instance_decorator
+      @instance_decorator ||= begin
+        klass = Class.new(AF83::Decorator::InstanceDecorator)
+        klass.delegate_all
+        klass
+      end
     end
-  end
 
-  def self.define_instance_method method_name, &block
-    instance_decorator.send(:define_method, method_name, &block)
-  end
+    def with_instance_decorator
+      @_with_instance_decorator = true
+      yield instance_decorator
+      @_with_instance_decorator = false
+    end
 
-  # Defines a class method on the decorated object's class. These
-  # can be called like `object.class.my_method`.
-  def self.define_instance_class_method method_name, &block
-    instance_decorator.send(:define_singleton_method, method_name, &block)
+    def decorate object, options = {}
+      if object.is_a?(ActiveRecord::Base)
+        return instance_decorator.decorate object, options
+      else
+        self.new object, options.update(with: instance_decorator)
+      end
+    end
+
+    def define_instance_method method_name, &block
+      instance_decorator.send(:define_method, method_name, &block)
+    end
+
+    # Defines a class method on the decorated object's class. These
+    # can be called like `object.class.my_method`.
+    def define_instance_class_method method_name, &block
+      instance_decorator.send(:define_singleton_method, method_name, &block)
+    end
+
+    def set_scope_with_instance_decorator value=nil, &block
+      set_scope_without_instance_decorator value, &block
+      instance_decorator.set_scope value, &block
+    end
+
+    alias_method_chain :set_scope, :instance_decorator
   end
 
   class ActionLinks

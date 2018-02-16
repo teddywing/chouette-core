@@ -79,6 +79,7 @@ namespace :deploy do
   end
   after 'deploy:update_code', 'deploy:symlink_shared'
   before 'deploy:assets:precompile', 'deploy:symlink_shared'
+  after 'deploy:assets:precompile', "deploy:i18n_js_export"
 
   desc "Make group writable all deployed files"
   task :group_writable do
@@ -92,8 +93,13 @@ namespace :deploy do
   end
   after "deploy:restart", "deploy:sidekiq_restart"
 
+  desc "Run i18n:js:export"
+  task :i18n_js_export do
+    run "cd #{release_path} && RAILS_ENV=#{rails_env} #{rake} i18n:js:export"
+  end
+
   desc "Run db:seed"
   task :seed do
-    run "cd #{current_path} && #{rake} db:seed RAILS_ENV=#{rails_env}"
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} #{rake} db:seed"
   end
 end
