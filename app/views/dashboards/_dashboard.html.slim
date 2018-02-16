@@ -9,7 +9,7 @@
               span.badge.ml-xs = workbench.referentials.count if workbench.referentials.present?
 
             div
-              = link_to '', workbench_path(workbench), class: ' fa fa-chevron-right pull-right', title: t('.offers.see')
+              = link_to '', workbench_path(workbench), class: ' fa fa-chevron-right pull-right', title: t('workbenches.index.offers.see')
 
         - if workbench.referentials.present?
           .list-group
@@ -17,7 +17,7 @@
               = link_to referential.name, referential_path(referential, workbench_id: referential.workbench_id, current_workbench_id: workbench.id), class: 'list-group-item'
         - else
           .panel-body
-            em.small.text-muted = t('.offers.no_content')
+            em.small.text-muted = t('workbenches.index.offers.no_content')
 
     .panel.panel-default
       .panel-heading
@@ -51,4 +51,4 @@
         .list-group
             = link_to Chouette::Line.model_name.human.pluralize.capitalize, line_referential_lines_path(referential), class: 'list-group-item'
             = link_to Chouette::Company.model_name.human.pluralize.capitalize, line_referential_companies_path(referential), class: 'list-group-item'
-            = link_to "Réseaux", line_referential_networks_path(referential), class: 'list-group-item'
+            = link_to Chouette::Network.model_name.human.pluralize.capitalize, line_referential_networks_path(referential), class: 'list-group-item'
