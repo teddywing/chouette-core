@@ -15,6 +15,20 @@ module ImportsHelper
     end
   end
 
+  # Compliance check set messages
+  def bootstrap_class_for_message_criticity message_criticity
+    case message_criticity
+      when "error"
+        "alert alert-danger"
+      when "warning"
+        "alert alert-warning"
+      when "info"
+        "alert alert-info"
+      else
+        message_criticity.to_s
+    end
+  end
+
   ##############################
   #      TO CLEAN!!!
   ##############################

@@ -35,7 +35,8 @@ class ReferentialCompaniesController < ChouetteController
   def collection
     scope = referential.line_referential.companies
     if params[:line_id]
-      scope = referential.line_referential.lines.find(params[:line_id]).companies
+      line_scope = referential.line_referential.lines.find(params[:line_id]).companies
+      scope = line_scope if line_scope.exists?
     end
 
     @q = scope.search(params[:q])
@@ -68,10 +69,13 @@ class ReferentialCompaniesController < ChouetteController
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
   end
 
+  def collection_name
+    "companies"
+  end
+
   def decorate_companies(companies)
-    ModelDecorator.decorate(
+    CompanyDecorator.decorate(
       companies,
-      with: CompanyDecorator,
       context: {
         referential: referential
       }

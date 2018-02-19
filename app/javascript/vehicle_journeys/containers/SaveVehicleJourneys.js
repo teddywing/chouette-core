@@ -17,8 +17,15 @@ const mapDispatchToProps = (dispatch) => {
     onEnterEditMode: () => {
       dispatch(actions.enterEditMode())
     },
+    onExitEditMode: () => {
+      dispatch(actions.cancelSelection())
+      dispatch(actions.exitEditMode())
+    },
     onSubmitVehicleJourneys: (next, state) => {
       actions.submitVehicleJourneys(dispatch, state, next)
+    },
+    validate: (state) =>{
+      actions.validate(dispatch, state)
     }
   }
 }

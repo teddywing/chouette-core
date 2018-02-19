@@ -1,3 +1,4 @@
+# coding: utf-8
 module NewapplicationHelper
 
   # Table Builder
@@ -147,7 +148,7 @@ module NewapplicationHelper
             content_tag :li, link_to(t("actions.#{action}"), polymorph_url)
           end
         elsif action == :archive
-          unless item.archived?
+          unless item.referential_read_only?
             content_tag :li, link_to(t("actions.#{action}"), polymorph_url, method: :put)
           end
         elsif action == :unarchive

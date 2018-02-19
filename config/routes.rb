@@ -14,7 +14,11 @@ ChouetteIhm::Application.routes.draw do
     resources :compliance_check_sets, only: [:index, :show] do
       get :executed, on: :member
       resources :compliance_checks, only: [:show]
+      resources :compliance_check_messages, only: [:index]
     end
+
+    resource :output, controller: :workbench_outputs
+    resources :merges
   end
 
   devise_for :users, :controllers => {
@@ -86,27 +90,42 @@ ChouetteIhm::Application.routes.draw do
     resources :compliance_control_blocks, :except => [:show, :index]
   end
 
+  deactivable = Proc.new do
+    put :deactivate, on: :member
+    put :activate, on: :member
+  end
+
   resources :stop_area_referentials, :only => [:show] do
     post :sync, on: :member
-    resources :stop_areas
+    resources :stop_areas do
+      put :deactivate, on: :member
+      put :activate, on: :member
+      get :autocomplete, on: :collection
+    end
   end
 
   resources :line_referentials, :only => [:show, :edit, :update] do
     post :sync, on: :member
-    resources :lines
+    resources :lines, &deactivable
     resources :group_of_lines
     resources :companies
     resources :networks
   end
-
-  resources :calendars do
-    get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+  
+  resources :workgroups do
+    resources :calendars do
+      get :autocomplete, on: :collection, controller: 'autocomplete_calendars'
+      member do
+        get 'month', defaults: { format: :json }
+      end
+    end
   end
 
   resources :referentials, except: :index do
     resources :autocomplete_stop_areas, only: [:show, :index] do
       get 'around', on: :member
     end
+    resources :autocomplete_purchase_windows, only: [:index]
     get :select_compliance_control_set
     post :validate, on: :member
     resources :autocomplete_time_tables, only: [:index]
@@ -156,6 +175,8 @@ ChouetteIhm::Application.routes.draw do
       resources :routing_constraint_zones
     end
 
+    resources :vehicle_journeys, controller: 'referential_vehicle_journeys', only: [:index]
+
     resources :import_tasks, :only => [:new, :create]
     resources :export_tasks, :only => [:new, :create] do
       collection do
@@ -170,6 +191,8 @@ ChouetteIhm::Application.routes.draw do
     end
 
     resources :companies, controller: "referential_companies"
+
+    resources :purchase_windows
 
     resources :time_tables do
       collection do
@@ -218,11 +241,21 @@ ChouetteIhm::Application.routes.draw do
 
   root :to => "dashboards#show"
 
+  if Rails.env.development? || Rails.env.test?
+    get "/snap" => "snapshots#show"
+  end
+
   get '/help/(*slug)' => 'help#show'
+
+  if Rails.application.config.development_toolbar
+    post "/development_toolbar" => "development_toolbar#update_settings", as: :development_toolbar_update_settings
+  end
 
   match '/404', to: 'errors#not_found', via: :all, as: 'not_found'
   match '/403', to: 'errors#forbidden', via: :all, as: 'forbidden'
   match '/422', to: 'errors#server_error', via: :all, as: 'unprocessable_entity'
   match '/500', to: 'errors#server_error', via: :all, as: 'server_error'
+
+  match '/status', to: 'statuses#index', via: :get
 
 end

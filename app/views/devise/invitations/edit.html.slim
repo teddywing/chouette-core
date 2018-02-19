@@ -1,14 +1,19 @@
-.col-md-offset-2.col-md-8
-  .panel.panel-default
-    .panel-heading = t('devise.invitations.edit.header')
-    
-    .panel-body
-      = simple_form_for resource, as: resource_name, :url => invitation_path(resource_name), :html => { :method => :put, class: "form-horizontal" } do |form|
-        = form.hidden_field :invitation_token
+/ PageHeader
 
-        = form.input :name
-        = form.input :password, as: :password
-        = form.input :password_confirmation, as: :password
+- content_for :page_header_title, t('.title')
 
-        .submit
-          = form.button :submit, value: t('devise.invitations.edit.submit_button'), class: 'btn-info'
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        = simple_form_for resource, as: resource_name, :url => invitation_path(resource_name), :html => { :method => :put, class: "form-horizontal", id: 'invitation_form' } do |form|
+            .row
+              .col-lg-12
+                = form.hidden_field :invitation_token
+
+                = form.input :name
+                = form.input :password, as: :password
+                = form.input :password_confirmation, as: :password
+
+            = form.button :submit, value: t('devise.invitations.edit.submit_button'), class: 'btn-info btn-default formSubmitr', form: 'invitation_form'

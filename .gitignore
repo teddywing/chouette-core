@@ -15,6 +15,8 @@
 /tmp
 *~
 public/assets/
+public/javascripts/i18n.js
+public/javascripts/translations.js
 
 # for vim users
 *.swp
@@ -48,5 +50,5 @@ coverage
 /bin/rspec
 /bin/spring
 
-# FIXME Ignore ./spec/services/zip_service/regression_4273_spec.rb files
-/spec/fixtures/target_*.zip
+spec/fixtures/target_*
+config/development_toolbar.rb

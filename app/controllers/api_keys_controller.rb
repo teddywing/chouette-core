@@ -31,11 +31,4 @@ class ApiKeysController < ChouetteController
   def api_key_params
     params.require(:api_key).permit(:name, :referential_id)
   end
-
-  def decorate_api_keys(api_keys)
-    ModelDecorator.decorate(
-      api_keys,
-      with: ApiKeyDecorator,
-    )
-  end
 end

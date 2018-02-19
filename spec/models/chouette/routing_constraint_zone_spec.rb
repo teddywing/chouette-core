@@ -5,21 +5,16 @@ describe Chouette::RoutingConstraintZone, type: :model do
   subject { create(:routing_constraint_zone) }
 
   it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :route_id }
   # shoulda matcher to validate length of array ?
   xit { is_expected.to validate_length_of(:stop_point_ids).is_at_least(2) }
   it { is_expected.to be_versioned }
 
   describe 'checksum' do
-    it_behaves_like 'checksum support', :routing_constraint_zone
+    it_behaves_like 'checksum support'
   end
 
   describe 'validations' do
-    it 'validates the presence of route_id' do
-      expect {
-        subject.update!(route_id: nil)
-      }.to raise_error(NoMethodError)
-    end
-
     it 'validates the presence of stop_point_ids' do
       expect {
         subject.update!(stop_point_ids: [])

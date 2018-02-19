@@ -3,24 +3,42 @@ require_relative 'calendar/date_value'
 require_relative 'calendar/period'
 
 class Calendar < ActiveRecord::Base
-  has_paper_trail
-  belongs_to :organisation
-  has_many :time_tables
+  include DateSupport
+  include PeriodSupport
+  include ApplicationDaysSupport
+  include TimetableSupport
 
-  validates_presence_of :name, :short_name, :organisation
+  has_paper_trail class_name: 'PublicVersion'
+  belongs_to :organisation
+  belongs_to :workgroup
+
+  validates_presence_of :name, :short_name, :organisation, :workgroup
   validates_uniqueness_of :short_name
 
-  after_initialize :init_dates_and_date_ranges
+  has_many :time_tables
 
   scope :contains_date, ->(date) { where('date ? = any (dates) OR date ? <@ any (date_ranges)', date, date) }
 
-  def init_dates_and_date_ranges
-    self.dates ||= []
-    self.date_ranges ||= []
-  end
+  after_initialize :set_defaults
 
   def self.ransackable_scopes(auth_object = nil)
     [:contains_date]
+  end
+
+  def self.state_permited_attributes item
+    {name: item["comment"]}
+  end
+
+  def set_defaults
+    self.excluded_dates ||= []
+    self.int_day_types ||= EVERYDAY
+  end
+
+  def human_attribute_name(*args)
+    self.class.human_attribute_name(*args)
+  end
+
+  def shortcuts_update(date=nil)
   end
 
   def convert_to_time_table
@@ -31,148 +49,69 @@ class Calendar < ActiveRecord::Base
       self.periods.each do |p|
         tt.periods << Chouette::TimeTablePeriod.new(period_start: p.begin, period_end: p.end)
       end
-      tt.int_day_types = 508
+      tt.int_day_types = self.int_day_types
     end
   end
 
-
-  ### Calendar::Period
-  # Required by coocon
-  def build_period
-    Calendar::Period.new
+  def include_in_dates?(day)
+    self.dates.include? day
   end
 
-  def periods
-    @periods ||= init_periods
+  def excluded_date?(day)
+    self.excluded_dates.include? day
   end
 
-  def init_periods
-    (date_ranges || [])
-      .each_with_index
-      .map( &Calendar::Period.method(:from_range) )
-  end
-  private :init_periods
-
-  validate :validate_periods
-
-  def validate_periods
-    periods_are_valid = periods.all?(&:valid?)
-
-    periods.each do |period|
-      if period.intersect?(periods)
-        period.errors.add(:base, I18n.t('calendars.errors.overlapped_periods'))
-        periods_are_valid = false
-      end
-    end
-
-    unless periods_are_valid
-      errors.add(:periods, :invalid)
-    end
-  end
-
-  def flatten_date_array attributes, key
-    date_int = %w(1 2 3).map {|e| attributes["#{key}(#{e}i)"].to_i }
-    Date.new(*date_int)
-  end
-
-  def periods_attributes=(attributes = {})
-    @periods = []
-    attributes.each do |index, period_attribute|
-      # Convert date_select to date
-      ['begin', 'end'].map do |attr|
-        period_attribute[attr] = flatten_date_array(period_attribute, attr)
-      end
-      period = Calendar::Period.new(period_attribute.merge(id: index))
-      @periods << period unless period.marked_for_destruction?
-    end
-
-    date_ranges_will_change!
-  end
-
-  before_validation :fill_date_ranges
-
-  def fill_date_ranges
-    if @periods
-      self.date_ranges = @periods.map(&:range).compact.sort_by(&:begin)
-    end
-  end
-
-  after_save :clear_periods
-
-  def clear_periods
-    @periods = nil
-  end
-
-  private :clear_periods
-
-  ### Calendar::DateValue
-
-  # Required by coocon
-  def build_date_value
-    Calendar::DateValue.new
-  end
-
-  def date_values
-    @date_values ||= init_date_values
-  end
-
-  def init_date_values
-    if dates
-      dates.each_with_index.map { |d, index| Calendar::DateValue.from_date(index, d) }
+  def update_in_out date, in_out
+    if in_out
+      self.excluded_dates.delete date
+      self.dates << date unless include_in_dates?(date)
     else
-      []
+      self.dates.delete date
+      self.excluded_dates << date unless excluded_date?(date)
     end
+    date
   end
-  private :init_date_values
 
-  validate :validate_date_values
+  def included_days
+    dates
+  end
 
-  def validate_date_values
-    date_values_are_valid = date_values.all?(&:valid?)
+  def excluded_days
+    excluded_dates
+  end
 
-    date_values.each do |date_value|
-      if date_values.count { |d| d.value == date_value.value } > 1
-        date_value.errors.add(:base, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_dates'))
-        date_values_are_valid = false
-      end
-      date_ranges.each do |date_range|
-        if date_range.cover? date_value.value
-          date_value.errors.add(:base, I18n.t('activerecord.errors.models.calendar.attributes.dates.date_in_date_ranges'))
-          date_values_are_valid = false
-        end
-      end
-    end
+  def saved_dates
+    Hash[*self.dates.each_with_index.to_a.map(&:reverse).flatten]
+  end
 
-    unless date_values_are_valid
-      errors.add(:date_values, :invalid)
+  def all_dates
+    (dates + excluded_dates).sort.each_with_index.map do |d, i|
+      OpenStruct.new(id: i, date: d, in_out: include_in_dates?(d))
     end
   end
 
-  def date_values_attributes=(attributes = {})
-    @date_values = []
-    attributes.each do |index, date_value_attribute|
-      date_value_attribute['value'] = flatten_date_array(date_value_attribute, 'value')
-      date_value = Calendar::DateValue.new(date_value_attribute.merge(id: index))
-      @date_values << date_value unless date_value.marked_for_destruction?
-    end
-
-    dates_will_change!
+  def find_date_by_id id
+    self.dates[id]
   end
 
-  before_validation :fill_dates
-
-  def fill_dates
-    if @date_values
-      self.dates = @date_values.map(&:value).compact.sort
-    end
+  def destroy_date date
+    self.dates -= [date]
   end
 
-  after_save :clear_date_values
-
-  def clear_date_values
-    @date_values = nil
+  def create_date in_out:, date:
+    update_in_out date, in_out
   end
 
-  private :clear_date_values
+  def find_period_by_id id
+    self.periods.find{|p| p.id == id}
+  end
 
+  def build_period
+    self.periods << Calendar::Period.new(id: self.periods.count + 1)
+    self.periods.last
+  end
+
+  def destroy_period period
+    @periods = self.periods.select{|p| p.end != period.end || p.begin != period.begin}
+  end
 end

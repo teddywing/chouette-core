@@ -1,9 +1,10 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import mapKeys from 'lodash/mapKeys'
 import map from 'lodash/map'
 import filter from 'lodash/filter'
 import assign from 'lodash/assign'
-import Select2 from 'react-select2'
+import Select2 from 'react-select2-wrapper'
 
 // get JSON full path
 let origin = window.location.origin
@@ -39,7 +40,7 @@ export default class TagsSelect2 extends Component {
           allowClear: true,
           theme: 'bootstrap',
           width: '100%',
-          placeholder: this.context.I18n.time_tables.edit.select2.tag.placeholder,
+          placeholder: this.context.I18n.t('time_tables.edit.select2.tag.placeholder'),
           ajax: {
             url: origin + path + '/tags.json',
             dataType: 'json',

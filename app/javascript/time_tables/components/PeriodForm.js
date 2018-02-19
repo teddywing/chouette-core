@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import filter from 'lodash/filter'
 let monthsArray = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
 
@@ -44,7 +46,7 @@ export default function PeriodForm({modal, timetable, metas, onOpenAddPeriodForm
                     <div>
                       <div className="form-group">
                         <label htmlFor="" className="control-label required">
-                          {I18n.time_tables.edit.period_form.begin}
+                          {I18n.t('time_tables.edit.period_form.begin')}
                           <abbr title="requis">*</abbr>
                         </label>
                       </div>
@@ -52,7 +54,7 @@ export default function PeriodForm({modal, timetable, metas, onOpenAddPeriodForm
                     <div>
                       <div className="form-group">
                         <label htmlFor="" className="control-label required">
-                          {I18n.time_tables.edit.period_form.end}
+                          {I18n.t('time_tables.edit.period_form.end')}
                           <abbr title="requis">*</abbr>
                         </label>
                       </div>
@@ -103,14 +105,14 @@ export default function PeriodForm({modal, timetable, metas, onOpenAddPeriodForm
                     className='btn btn-link'
                     onClick={onClosePeriodForm}
                   >
-                    {I18n.cancel}
+                    {I18n.t('cancel')}
                   </button>
                   <button
                     type='button'
                     className='btn btn-outline-primary mr-sm'
                     onClick={() => onValidatePeriodForm(modal.modalProps, timetable.time_table_periods, metas, filter(timetable.time_table_dates, ['in_out', true]))}
                   >
-                    {I18n.actions.submit}
+                    {I18n.t('actions.submit')}
                   </button>
                 </div>
               </div>
@@ -122,7 +124,7 @@ export default function PeriodForm({modal, timetable, metas, onOpenAddPeriodForm
                   className='btn btn-outline-primary'
                   onClick={onOpenAddPeriodForm}
                 >
-                  {I18n.time_tables.actions.add_period}
+                  {I18n.t('time_tables.actions.add_period')}
                 </button>
               </div>
             }
@@ -130,7 +132,7 @@ export default function PeriodForm({modal, timetable, metas, onOpenAddPeriodForm
         </div>
       </div>
     </div>
-  ) 
+  )
 }
 
 PeriodForm.propTypes = {

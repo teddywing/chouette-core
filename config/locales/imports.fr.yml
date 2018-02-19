@@ -7,6 +7,7 @@ fr:
       error_period_filter: "La date de fin doit être supérieure ou égale à la date de début"
     actions:
       new: "Nouvel import"
+      create: "Nouvel import"
       show: "Rapport d'import"
       download: "Téléch. fichier source"
       destroy: "Supprimer cet import"
@@ -15,7 +16,9 @@ fr:
       title: "Imports"
       warning: ""
     new:
-      title: "Imports"
+      title: "Générer un import"
+    create:
+      title: "Générer un import"
     show:
       title: "Import %{name}"
       report: "Rapport"
@@ -74,3 +77,7 @@ fr:
         max_distance_for_connection_link: "Distance max pour créer les correspondances"
         ignore_last_word: "ignorer le dernier mot"
         ignore_end_chars: "ignorer les n derniers caractères"
+  flash:
+    imports:
+      create:
+        notice: "L'import est en cours, veuillez patienter. Actualiser votre page si vous voulez voir l'avancement de votre traitement."

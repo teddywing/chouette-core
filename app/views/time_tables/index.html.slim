@@ -1,7 +1,4 @@
 - breadcrumb :time_tables, @referential
-- content_for :page_header_actions do
-  - if (policy(Chouette::TimeTable).create? && @referential.organisation == current_organisation)
-    = link_to(t('actions.add'), new_referential_time_table_path(@referential), class: 'btn btn-default')
 
 .page_content
   .container-fluid
@@ -54,7 +51,6 @@
                 attribute: Proc.new { |tt| l(tt.updated_at, format: :short) } \
               ) \
             ],
-            links: [:show, :edit],
             cls: 'table has-search'
 
           = new_pagination @time_tables, 'pull-right'
@@ -65,6 +61,6 @@
           = replacement_msg t('time_tables.search_no_results')
 
 = javascript_tag do
-  | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
+  // | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
 
 = javascript_pack_tag 'date_filters'

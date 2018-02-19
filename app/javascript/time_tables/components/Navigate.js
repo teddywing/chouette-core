@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import map from 'lodash/map'
 import actions from '../actions'
 
@@ -23,7 +24,7 @@ export default function Navigate({ dispatch, metas, timetable, pagination, statu
                 aria-haspopup='true'
                 aria-expanded='true'
               >
-                {pagination.currentPage ? (actions.monthName(pagination.currentPage) + ' ' + new Date(pagination.currentPage).getFullYear()) : ''}
+                {pagination.currentPage ? (actions.monthName(pagination.currentPage) + ' ' + new Date(pagination.currentPage).getUTCFullYear()) : ''}
                 <span className='caret'></span>
               </div>
               <ul
@@ -40,7 +41,7 @@ export default function Navigate({ dispatch, metas, timetable, pagination, statu
                         dispatch(actions.checkConfirmModal(e, actions.changePage(dispatch, e.currentTarget.value), pagination.stateChanged, dispatch, metas, timetable))
                       }}
                     >
-                      {actions.monthName(month) + ' ' + new Date(month).getFullYear()}
+                      {actions.monthName(month) + ' ' + new Date(month).getUTCFullYear()}
                     </button>
                   </li>
                 ))}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<netex:PublicationDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.netex.org.uk/netex ../../xsd/NeTEx_publication.xsd" xmlns:netex="http://www.netex.org.uk/netex"
+ xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ifopt="http://www.ifopt.org.uk/ifopt" xmlns:gml="http://www.opengis.net/gml/3.2"
+ xmlns:core="http://www.govtalk.gov.uk/core" xmlns:siri="http://www.siri.org.uk/siri" version="1.0">
+    <netex:PublicationTimestamp>2017-02-14T09:13:51.0</netex:PublicationTimestamp>
+    <netex:ParticipantRef>CITYWAY</netex:ParticipantRef>
+    <netex:dataObjects>
+        <netex:GeneralFrame id="CITYWAY:GeneralFrame:NETEX_COMMUN-1_20170214090012:LOC" version="any">
+            <netex:TypeOfFrameRef ref="NETEX_COMMUN"/>
+            <netex:members>
+                    <netex:Notice id="CITYWAY:Notice:1:LOC" version="any">
+                        <netex:Text>note numéro 1</netex:Text>
+                        <netex:PublicCode>1</netex:PublicCode>
+                        <netex:TypeOfNoticeRef ref="ServiceJourneyNotice" />
+                    </netex:Notice>
+                    <netex:Notice id="CITYWAY:Notice:2:LOC" version="any">
+                        <netex:Text>note numéro 2</netex:Text>
+                        <netex:PublicCode>2</netex:PublicCode>
+                        <netex:TypeOfNoticeRef ref="ServiceJourneyNotice" />
+                    </netex:Notice>
+                    <netex:Notice id="CITYWAY:Notice:3:LOC" version="any">
+                        <netex:Text>note numéro 3</netex:Text>
+                        <netex:PublicCode>3</netex:PublicCode>
+                        <netex:TypeOfNoticeRef ref="ServiceJourneyNotice" />
+                    </netex:Notice>
+             </netex:members>
+        </netex:GeneralFrame>
+    </netex:dataObjects>
+</netex:PublicationDelivery>

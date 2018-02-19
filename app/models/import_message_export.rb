@@ -22,14 +22,14 @@ class ImportMessageExport
   end
 
   def column_names
-    ["criticity", "message key", "message"]
+    ["criticity", "message key", "message", "file name", "line", "column"]
   end
 
   def to_csv(options = {})
     CSV.generate(options) do |csv|
       csv << column_names
       import_messages.each do |import_message|
-        csv << [import_message.criticity, import_message.message_key, I18n.t("import_messages.compliance_check_messages.#{import_message.message_key}", import_message.message_attributes.deep_symbolize_keys) ]
+        csv << [import_message.criticity, import_message.message_key, I18n.t("import_messages.#{import_message.message_key}", import_message.message_attributes.deep_symbolize_keys), *import_message.resource_attributes.values_at("filename", "line_number", "column_number")  ]
       end
     end
   end

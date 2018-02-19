@@ -1,9 +1,11 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 
 export default function ToggleArrivals({filters, onToggleArrivals}) {
   return (
     <div className='has_switch form-group inline'>
-      <label htmlFor='toggleArrivals' className='control-label'>Afficher et éditer les horaires d'arrivée</label>
+      <label htmlFor='toggleArrivals' className='control-label'>{I18n.t('vehicle_journeys.form.show_arrival_time')}</label>
       <div className='form-group'>
         <div className='checkbox'>
           <label>

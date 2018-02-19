@@ -926,6 +926,7 @@ end
       end
     end
   end
+
   describe "#validity_out_between?" do
     let(:empty_tm) {build(:time_table)}
     it "should be false if empty calendar" do
@@ -1048,7 +1049,39 @@ end
   # it { is_expected.to validate_uniqueness_of :objectid }
 
   describe 'checksum' do
-    it_behaves_like 'checksum support', :time_table
+    it_behaves_like 'checksum support'
+
+    it "handles newly built dates and periods" do
+      time_table = build(:time_table)
+      time_table.periods.build period_start: Time.now, period_end: 1.month.from_now
+      time_table.dates.build date: Time.now
+      time_table.save!
+      expect{time_table.update_checksum!}.to_not change{time_table.checksum}
+      expect(time_table.dates.count).to eq 1
+      expect(time_table.periods.count).to eq 1
+    end
+
+    it "changes when a date is updated" do
+      time_table = create(:time_table)
+      expect{time_table.dates.last.update_attribute(:date, Time.now)}.to change{time_table.reload.checksum}
+    end
+
+    it "changes when a date is added" do
+      time_table = create(:time_table)
+      expect(time_table).to receive(:update_checksum_without_callbacks!).at_least(:once).and_call_original
+      expect{create(:time_table_date, time_table: time_table, date: 1.year.ago)}.to change{time_table.checksum}
+    end
+
+    it "changes when a period is updated" do
+      time_table = create(:time_table)
+      expect{time_table.periods.last.update_attribute(:period_start, Time.now)}.to change{time_table.reload.checksum}
+    end
+
+    it "changes when a period is added" do
+      time_table = create(:time_table)
+      expect(time_table).to receive(:update_checksum_without_callbacks!).at_least(:once).and_call_original
+      expect{create(:time_table_period, time_table: time_table)}.to change{time_table.checksum}
+    end
   end
 
   describe "#excluded_days" do
@@ -1067,8 +1100,6 @@ end
         expect(days[1]).to eq(Date.new(2014,7, 19))
       end
   end
-
-
 
   describe "#effective_days" do
       before do
@@ -1093,8 +1124,6 @@ end
         expect(days[4]).to eq(Date.new(2014, 7, 20))
       end
   end
-
-
 
   describe "#optimize_overlapping_periods" do
       before do
@@ -1187,4 +1216,99 @@ end
         expect(subject.tag_list.size).to eq(2)
       end
   end
+
+  describe "#intersect_periods!" do
+    let(:time_table) { Chouette::TimeTable.new }
+    let(:periods) do
+      [
+        Date.new(2018, 1, 1)..Date.new(2018, 2, 1),
+      ]
+    end
+
+    it "remove a date not included in given periods" do
+      time_table.dates.build date: Date.new(2017,12,31)
+      time_table.intersect_periods! periods
+      expect(time_table.dates).to be_empty
+    end
+
+    it "keep a date included in given periods" do
+      time_table.dates.build date: Date.new(2018,1,15)
+      expect{time_table.intersect_periods! periods}.to_not change(time_table, :dates)
+    end
+
+    it "remove a period not included in given periods" do
+      time_table.periods.build period_start: Date.new(2017,12,1), period_end: Date.new(2017,12,31)
+      time_table.intersect_periods! periods
+      expect(time_table.periods).to be_empty
+    end
+
+    it "modify a start period if not included in given periods" do
+      period = time_table.periods.build period_start: Date.new(2017,12,1), period_end: Date.new(2018,1,15)
+      time_table.intersect_periods! periods
+      expect(period.period_start).to eq(Date.new(2018, 1, 1))
+    end
+
+    it "modify a end period if not included in given periods" do
+      period = time_table.periods.build period_start: Date.new(2018,1,15), period_end: Date.new(2018,3,1)
+      time_table.intersect_periods! periods
+      expect(period.period_end).to eq(Date.new(2018, 2, 1))
+    end
+
+    it "keep a period included in given periods" do
+      time_table.periods.build period_start: Date.new(2018,1,10), period_end: Date.new(2018,1,20)
+      expect{time_table.intersect_periods! periods}.to_not change(time_table, :periods)
+    end
+
+  end
+
+  describe "#remove_periods!" do
+    let(:time_table) { Chouette::TimeTable.new }
+    let(:periods) do
+      [
+        Date.new(2018, 1, 1)..Date.new(2018, 2, 1),
+      ]
+    end
+
+    it "remove a date included in given periods" do
+      time_table.dates.build date: Date.new(2018,1,15)
+      time_table.remove_periods! periods
+      expect(time_table.dates).to be_empty
+    end
+
+    it "keep a date not included in given periods" do
+      time_table.dates.build date: Date.new(2017,12,31)
+      expect{time_table.remove_periods! periods}.to_not change(time_table, :dates)
+    end
+
+    it "modify a end period if included in given periods" do
+      period = time_table.periods.build period_start: Date.new(2017,12,1), period_end: Date.new(2018,1,15)
+      time_table.remove_periods! periods
+      expect(period.period_end).to eq(Date.new(2017, 12, 31))
+    end
+
+    it "modify a start period if included in given periods" do
+      period = time_table.periods.build period_start: Date.new(2018,1,15), period_end: Date.new(2018,3,1)
+      time_table.remove_periods! periods
+      expect(period.period_start).to eq(Date.new(2018, 2, 2))
+    end
+
+    it "remove a period included in given periods" do
+      time_table.periods.build period_start: Date.new(2018,1,10), period_end: Date.new(2018,1,20)
+      time_table.remove_periods! periods
+      expect(time_table.periods).to be_empty
+    end
+
+    it "split a period including a given period" do
+      time_table.periods.build period_start: Date.new(2017,12,1), period_end: Date.new(2018,3,1)
+      time_table.remove_periods! periods
+
+      expected_ranges = [
+        Date.new(2017,12,1)..Date.new(2017,12,31),
+        Date.new(2018,2,2)..Date.new(2018,3,1)
+      ]
+      expect(time_table.periods.map(&:range)).to eq(expected_ranges)
+    end
+
+  end
+
 end

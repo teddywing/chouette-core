@@ -22,11 +22,69 @@ RSpec.describe 'Workbenches', type: :feature do
       end
     end
 
+    it 'lists referentials in the current workgroup' do
+      other_workbench = create(
+        :workbench,
+        line_referential: line_ref,
+        workgroup: workbench.workgroup
+      )
+      other_referential = create(
+        :workbench_referential,
+        workbench: other_workbench,
+        organisation: other_workbench.organisation,
+        metadatas: [
+          create(
+            :referential_metadata,
+            lines: [create(:line, line_referential: line_ref)]
+          )
+        ]
+      )
+
+      hidden_referential = create(
+        :workbench_referential,
+        workbench: create(
+          :workbench,
+          line_referential: line_ref
+        ),
+        metadatas: [
+          create(
+            :referential_metadata,
+            lines: [create(:line, line_referential: line_ref)]
+          )
+        ]
+      )
+
+      visit workbench_path(workbench)
+
+      expect(page).to have_content(referential.name),
+        "Couldn't find `referential`: `#{referential.inspect}`"
+      expect(page).to have_content(other_referential.name),
+        "Couldn't find `other_referential`: `#{other_referential.inspect}`"
+      expect(page).to_not have_content(hidden_referential.name),
+        "Couldn't find `hidden_referential`: `#{hidden_referential.inspect}`"
+    end
+
     context 'filtering' do
       let!(:another_organisation) { create :organisation }
       let(:another_line) { create :line, line_referential: line_ref }
       let(:another_ref_metadata) { create(:referential_metadata, lines: [another_line]) }
-      let!(:other_referential) { create :workbench_referential, workbench: workbench, metadatas: [another_ref_metadata] }
+      let(:other_workbench) do
+        create(
+          :workbench,
+          line_referential: line_ref,
+          organisation: another_organisation,
+          workgroup: workbench.workgroup
+        )
+      end
+      let!(:other_referential) do
+        create(
+          :workbench_referential,
+          workbench: other_workbench,
+          metadatas: [another_ref_metadata],
+          organisation: other_workbench.organisation
+        )
+      end
+
 
       before(:each) do
         visit workbench_path(workbench)
@@ -63,6 +121,18 @@ RSpec.describe 'Workbenches', type: :feature do
           find(box).set(true)
           click_button I18n.t('actions.filter')
           expect(find(box)).to be_checked
+        end
+
+        it 'only lists organisations in the current workgroup' do
+          unaffiliated_workbench = workbench.dup
+          unaffiliated_workbench.update(organisation: create(:organisation))
+
+          expect(page).to have_selector(
+            "#q_organisation_name_eq_any_#{@user.organisation.name.parameterize.underscore}"
+          )
+          expect(page).to_not have_selector(
+            "#q_organisation_name_eq_any_#{unaffiliated_workbench.name.parameterize.underscore}"
+          )
         end
       end
 

@@ -1,5 +1,5 @@
-import range from 'lodash/range'
 import assign from 'lodash/assign'
+import range from 'lodash/range'
 import reject from 'lodash/reject'
 import some from 'lodash/some'
 import every from 'lodash/every'
@@ -8,7 +8,7 @@ const I18n = clone(window, "I18n")
 
 const actions = {
   weekDays: (index) => {
-    return range(1, 8).map(n => I18n.time_tables.edit.metas.days[n])
+    return range(1, 8).map(n => I18n.t('time_tables.edit.metas.days')[n])
   },
   strToArrayDayTypes: (str) =>{
     return actions.weekDays().map(day => str.indexOf(day) !== -1)
@@ -155,9 +155,9 @@ const actions = {
     type : 'CLOSE_MODAL'
   }),
   monthName(strDate) {
-    let monthList = range(1,13).map(n => I18n.calendars.months[n])
+    let monthList = range(1,13).map(n => I18n.t('calendars.months.'+ n ))
     let date = new Date(strDate)
-    return monthList[date.getMonth()]
+    return monthList[date.getUTCMonth()]
   },
   getHumanDate(strDate, mLimit) {
     let origin = strDate.split('-')
@@ -173,7 +173,7 @@ const actions = {
   },
   getLocaleDate(strDate) {
     let date = new Date(strDate)
-    return date.toLocaleDateString()
+    return date.toLocaleDateString(undefined, { timeZone: 'UTC' })
   },
   updateSynthesis: ({current_month, time_table_dates: dates, time_table_periods: periods}) => {
     let newPeriods = reject(periods, 'deleted')
@@ -194,7 +194,7 @@ const actions = {
 
     for (let period of periods) {
       let begin = new Date(period.period_start)
-      let end = new Date(period.period_end) 
+      let end = new Date(period.period_end)
       if (date >= begin && date <= end) return true
     }
 
@@ -225,7 +225,7 @@ const actions = {
       let period = periods[i]
       if (index !== i && !period.deleted) {
         if (new Date(period.period_start) <= end && new Date(period.period_end) >= start)  {
-          error = I18n.time_tables.edit.error_submit.periods_overlaps
+          error = I18n.t('time_tables.edit.error_submit.periods_overlaps')
           break
         }
       }
@@ -239,14 +239,15 @@ const actions = {
 
     for (let day of in_days) {
       if (start <= new Date(day.date) && end >= new Date(day.date)) {
-        error = I18n.time_tables.edit.error_submit.dates_overlaps
+        error = I18n.t('time_tables.edit.error_submit.dates_overlaps')
         break
       }
     }
     return error
   },
   fetchTimeTables: (dispatch, nextPage) => {
-    let urlJSON = window.location.pathname.split('/', 5).join('/')
+    let urlJSON = window.timetablesUrl || window.location.pathname.split('/', 5).join('/')
+
     if(nextPage) {
       urlJSON += "/month.json?date=" + nextPage
     }else{
@@ -277,7 +278,7 @@ const actions = {
     let strDayTypes = actions.arrayToStrDayTypes(metas.day_types)
     metas.day_types = strDayTypes
     let sentState = assign({}, timetable, metas)
-    let urlJSON = window.location.pathname.split('/', 5).join('/')
+    let urlJSON = window.timetablesUrl || window.location.pathname.split('/', 5).join('/')
     let hasError = false
     fetch(urlJSON + '.json', {
       credentials: 'same-origin',
@@ -315,9 +316,9 @@ const actions = {
   errorModalMessage: (errorKey) => {
     switch (errorKey) {
       case "withoutPeriodsWithDaysTypes":
-        return I18n.time_tables.edit.error_modal.withoutPeriodsWithDaysTypes
+        return I18n.t('time_tables.edit.error_modal.withoutPeriodsWithDaysTypes')
       case "withPeriodsWithoutDayTypes":
-        return I18n.time_tables.edit.error_modal.withPeriodsWithoutDayTypes
+        return I18n.t('time_tables.edit.error_modal.withPeriodsWithoutDayTypes')
       default:
         return errorKey
 

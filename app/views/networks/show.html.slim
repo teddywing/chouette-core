@@ -1,17 +1,13 @@
 - breadcrumb :network, @network
 - page_header_content_for @network
-- content_for :page_header_content do
-  .row
-    .col-lg-12.text-right.mb-sm
-      - @network.action_links.each do |link|
-        = link_to link.href,
-            method: link.method,
-            data: link.data,
-            class: 'btn btn-primary' do
-              = link.content
+
 .page_content
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { 'ID Codif' => @network.try(:get_objectid).try(:short_id) }
+          { @network.human_attribute_name(:id) => @network.get_objectid.try(:short_id), \
+            @network.human_attribute_name(:name) => @network.name, \
+            @network.human_attribute_name(:registration_number) => @network.registration_number, \
+            @network.human_attribute_name(:comment) => (@network.comment.presence || '-'), \
+           }

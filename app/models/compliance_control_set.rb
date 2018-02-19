@@ -1,5 +1,5 @@
 class ComplianceControlSet < ActiveRecord::Base
-  has_paper_trail
+  has_paper_trail class_name: 'PublicVersion'
   belongs_to :organisation
   has_many :compliance_control_blocks, dependent: :destroy
   has_many :compliance_controls, dependent: :destroy

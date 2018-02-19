@@ -71,6 +71,10 @@ class NetworksController < ChouetteController
   alias_method :current_referential, :line_referential
   helper_method :current_referential
 
+  def begin_of_association_chain
+    current_organisation
+  end
+
   def network_params
     params.require(:network).permit(:objectid, :object_version, :version_date, :description, :name, :registration_number, :source_name, :source_type_name, :source_identifier, :comment )
   end
@@ -85,9 +89,8 @@ class NetworksController < ChouetteController
   end
 
   def decorate_networks(networks)
-    ModelDecorator.decorate(
+    NetworkDecorator.decorate(
       networks,
-      with: NetworkDecorator,
       context: {
         line_referential: line_referential
       }

@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../actions'
 
 export default class EditModal extends Component {
@@ -36,7 +37,6 @@ export default class EditModal extends Component {
                 {this.renderModalTitle()}
                 <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
               </div>
-
               {(this.props.modal.type == 'edit') && (
                 <form>
                   <div className='modal-body'>
@@ -84,6 +84,16 @@ export default class EditModal extends Component {
                             />
                         </div>
                       </div>
+                    </div>
+                    <div>
+                      <label className='control-label'>Signature métier</label>
+                        <input
+                        type='text'
+                        ref='checksum'
+                        className='form-control'
+                        disabled='disabled'
+                        defaultValue={this.props.modal.modalProps.journeyPattern.checksum}
+                        />
                     </div>
                   </div>
                   {

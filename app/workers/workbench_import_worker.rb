@@ -3,27 +3,23 @@ class WorkbenchImportWorker
   include Rails.application.routes.url_helpers
   include Configurable
 
+  include ObjectStateUpdater
+
+  attr_reader :entries, :workbench_import
+
   # Workers
   # =======
 
   def perform(import_id)
-    @workbench_import = WorkbenchImport.find(import_id)
-    @response         = nil
-    @workbench_import.update(status: 'running', started_at: Time.now)
-    downloaded  = download
-    zip_service = ZipService.new(downloaded)
+    @entries = 0
+    @workbench_import ||= WorkbenchImport.find(import_id)
+
+    workbench_import.update(status: 'running', started_at: Time.now)
+    zip_service = ZipService.new(downloaded, allowed_lines)
     upload zip_service
-    @workbench_import.update(ended_at: Time.now)
+    workbench_import.update(ended_at: Time.now)
   rescue Zip::Error
     handle_corrupt_zip_file
-  end
-
-  def download
-    logger.info  "HTTP GET #{import_url}"
-    HTTPService.get_resource(
-      host: import_host,
-      path: import_path,
-      params: {token: @workbench_import.token_download}).body
   end
 
   def execute_post eg_name, eg_file
@@ -35,48 +31,43 @@ class WorkbenchImportWorker
   end
 
   def handle_corrupt_zip_file
-    @workbench_import.messages.create(criticity: :error, message_key: 'corrupt_zip_file', message_attributes: {source_filename: @workbench_import.file.file.file})
+    workbench_import.messages.create(criticity: :error, message_key: 'corrupt_zip_file', message_attributes: {source_filename: workbench_import.file.file.file})
   end
 
   def upload zip_service
     entry_group_streams = zip_service.subdirs
-    @workbench_import.update total_steps: entry_group_streams.size
     entry_group_streams.each_with_index(&method(:upload_entry_group))
+    workbench_import.update total_steps: @entries
   rescue Exception => e
     logger.error e.message
-    @workbench_import.update( current_step: entry_group_streams.size, status: 'failed' )
+    workbench_import.update( current_step: @entries, status: 'failed' )
     raise
   end
 
-  def update_object_state entry, count
-    @workbench_import.update( current_step: count )
-    unless entry.spurious.empty?
-      @workbench_import.messages.create(
-        criticity: :warning,
-        message_key: 'inconsistent_zip_file',
-        message_attributes: {
-          'source_filename' => @workbench_import.file.file.file,
-          'spurious_dirs'   => entry.spurious.join(', ')
-        }) 
-    end
-  end
 
   def upload_entry_group entry, element_count
     update_object_state entry, element_count.succ
+    return unless entry.ok?
     # status = retry_service.execute(&upload_entry_group_proc(entry))
-    eg_name = entry.name
-    eg_stream = entry.stream
+    upload_entry_group_stream entry.name, entry.stream
+  end
 
+  def upload_entry_group_stream eg_name, eg_stream
     FileUtils.mkdir_p(Rails.root.join('tmp', 'imports'))
 
-    eg_file = File.new(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"), 'wb').tap do |file|
+    File.open(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"), 'wb') do |file|
       eg_stream.rewind
       file.write eg_stream.read
     end
-    eg_file.close
-    eg_file = File.new(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"))
+
+    upload_entry_group_tmpfile eg_name, File.new(Rails.root.join('tmp', 'imports', "WorkbenchImport_#{eg_name}_#{$$}.zip"))
+  end
+    
+  def upload_entry_group_tmpfile eg_name, eg_file
     result = execute_post eg_name, eg_file
     if result && result.status < 400
+      @entries += 1
+      workbench_import.update( current_step: @entries )
       result
     else
       raise StopIteration, result.body
@@ -91,7 +82,7 @@ class WorkbenchImportWorker
   # =======
 
   def complete_entry_group_name entry_group_name
-    [@workbench_import.name, entry_group_name].join("--")
+    [workbench_import.name, entry_group_name].join("--")
   end
 
   # Constants
@@ -111,7 +102,7 @@ class WorkbenchImportWorker
     Rails.application.config.rails_host
   end
   def import_path
-    @__import_path__ ||= download_workbench_import_path(@workbench_import.workbench, @workbench_import)
+    @__import_path__ ||= download_workbench_import_path(workbench_import.workbench, workbench_import)
   end
   def import_url
     @__import_url__ ||= File.join(import_host, import_path)
@@ -119,10 +110,29 @@ class WorkbenchImportWorker
 
   def params file, name
     { netex_import:
-        { parent_id: @workbench_import.id,
-          parent_type: @workbench_import.class.name,
-          workbench_id: @workbench_import.workbench_id,
-          name: name,
-          file: HTTPService.upload(file, 'application/zip', "#{name}.zip") } }
+      { parent_id: workbench_import.id,
+        parent_type: workbench_import.class.name,
+        workbench_id: workbench_import.workbench_id,
+        name: name,
+        file: HTTPService.upload(file, 'application/zip', "#{name}.zip") } }
   end
+
+  # Lazy Values
+  # ===========
+
+  def allowed_lines
+    @__allowed_lines__ ||= workbench_import.workbench.organisation.lines_set
+  end
+  def downloaded
+    @__downloaded__ ||= download_response.body
+  end
+  def download_response
+    @__download_response__ ||= HTTPService.get_resource(
+      host: import_host,
+      path: import_path,
+      params: {token: workbench_import.token_download}).tap do
+        logger.info  "HTTP GET #{import_url}"
+      end
+  end
+
 end

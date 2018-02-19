@@ -23,6 +23,7 @@ var initialState = {
   filters: {
     selectedJourneyPatterns : selectedJP,
     policy: window.perms,
+    features: window.features,
     toggleArrivals: false,
     queryString: '',
     query: {
@@ -54,11 +55,12 @@ var initialState = {
 
   },
   status: {
-    fetchSuccess: true,
+    fetchSuccess: false,
     isFetching: false
   },
   vehicleJourneys: [],
   stopPointsList: window.stopPoints,
+  returnStopPointsList: window.returnStopPoints,
   pagination: {
     page : 1,
     totalCount: 0,
@@ -69,7 +71,9 @@ var initialState = {
     type: '',
     modalProps: {},
     confirmModal: {}
-  }
+  },
+  missions: window.all_missions,
+  custom_fields: window.custom_fields
 }
 
 if (window.jpOrigin){
@@ -96,7 +100,7 @@ let store = createStore(
 
 render(
   <Provider store={store}>
-    <App />
+    <App returnRouteUrl={window.returnRouteUrl} />
   </Provider>,
   document.getElementById('vehicle_journeys_wip')
 )

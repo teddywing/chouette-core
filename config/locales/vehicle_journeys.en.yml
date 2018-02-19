@@ -1,7 +1,14 @@
 en:
   vehicle_journeys:
     vehicle_journeys_matrix:
+      cancel_selection: "Cancel Selection"
+      fetching_error: "There has been a problem fetching the data. Please reload the page to try again."
       line_routes: "Line's routes"
+      modal_confirm: 'Do you want to save mofications before moving on to the next page ?'
+      pagination: "Schedules %{minVJ} to %{maxVJ} over %{total}"
+      selected_journeys: "%{count} selected journeys"
+      show_purchase_window: 'Show the purchase window'
+      show_timetable: 'Show calendar'
     vehicle_journey:
       title_stopless: "Vehicle journey %{name}"
       title: "Vehicle journey leaving from %{stop} at %{time}"
@@ -25,48 +32,61 @@ en:
       title_stopless: "Update vehicle journey %{name}"
       title: "Update vehicle journey %{name} leaving from %{stop} at %{time}"
     form:
-      stop_title: "Stop"
-      departure: "Departure"
+      arrival_at: "Arrival at"
       arrival: "Arrival"
-      to_arrivals: "Copy departures to arrivals"
-      to_departures: "Copy arrivals to departures"
-      time_tables: "Associated calendars to vehicle journey"
-      slide: "Shift"
-      slide_title: "Shift all vehicle passing times"
+      departure_at: "Departure at"
+      departure: "Departure"
+      departure_range:
+        label: Journey departure range
+        start: Start
+        end: End
+      infos: Informations
       set: "Set"
-      to: "at"
-      slide_departure: "departure time at first stop"
+      show_arrival_time: "Show and edit arrival times"
+      show_journeys_with_calendar: "Show journeys with calendar"
+      show_journeys_without_schedule: "Show journeys without schedule"
       slide_arrival: "arrival time at first stop"
-      submit_timed: "Create vehicle journey"
+      slide_departure: "departure time at first stop"
+      slide_title: "Shift all vehicle passing times"
+      slide: "Shift"
+      stop_title: "Stop"
+      submit_frequency_edit: "Edit frequency vehicle journey"
       submit_frequency: "Create frequency vehicle journey"
       submit_timed_edit: "Edit vehicle journey"
-      submit_frequency_edit: "Edit frequency vehicle journey"
+      submit_timed: "Create vehicle journey"
+      time_tables: "Associated calendars to vehicle journey"
+      to_arrivals: "Copy departures to arrivals"
+      to_departures: "Copy arrivals to departures"
+      to: "at"
     timeless:
       title: "Timeless vehicle journeys"
       vehicle_journeys: "Vehicle journeys with times at stop"
       vehicles_list: "Vehicle journeys list"
     show:
-      title: "Vehicle Journey %{vehicle journey}"
-      stop_title: "Stop"
-      departure: "Departure"
       arrival: "Arrival"
-      time_tables: "Calendars list"
       bounding: "From %{start} to %{end}"
-      translation_form: "Vehicle journey translations"
+      departure: "Departure"
       journey_frequencies: "Timeband"
+      stop_title: "Stop"
+      time_tables: "Calendars list"
+      title: "Vehicle Journey %{vehicle journey}"
+      translation_form: "Vehicle journey translations"
     index:
-      title: "Vehicle journeys on route %{route}"
-      vehicle_journeys: "Departure's times"
-      selection: "Filter on"
-      selection_all: "All"
+      advanced_search: "Advanced Search"
       select_journey_patterns: "Select journey pattern"
       select_time_tables: "Enter a timetable"
+      selection_all: "All"
+      selection: "Filter on"
       time_range: "Departure time threshold"
-      advanced_search: "Advanced Search"
+      title: "Vehicle journeys on route %{route}"
+      vehicle_journeys: "Departure's times"
     time_filter:
       time_range_filter: "Filter"
     sidebar:
       timeless: "Timeless vehicle journeys"
+    errors:
+      purchase_window: Invalid purchase window
+      time_table: Invalid dates
   activerecord:
     models:
       vehicle_journey:
@@ -75,37 +95,47 @@ en:
         other: "vehicle journeys"
     attributes:
       vehicle_journey:
-        line: "Line"
-        route: "Route"
-        journey_pattern: "Journey Pattern"
-        time_tables: "Calendars"
-        time_slot: "Time Slot"
-        company: "Company"
-        number: "Number"
-        comment: "Comments"
-        status_value: "Status Value"
-        transport_mode: "Transport Mode"
-        mobility_restricted_suitability: "PRM accessibility"
-        flexible_service: "On demond transportation"
-        unspecified_mrs: "Not specified"
         accessible: "Accessible"
-        not_accessible: "Not accessible"
-        unspecified_fs: "Not specified"
-        on_demand_fs: "On demand service"
-        regular_fs: "Regular service"
-        published_journey_name: "Published Name"
-        published_journey_identifier: "Published Identifier"
-        facility: "Facility"
-        vehicle_type_identifier: "Vehicle Type Identifier"
-        time_table_ids: "Calendar list"
-        vehicle_journey_at_stop_ids: "Time list"
-        journey_frequency_ids: "Timeband"
-        objectid: "Neptune identifier"
-        object_version: "Version"
+        arrival_time: "Arrival"
+        checksum: "Checksum"
+        comment: "Comments"
+        company: "Company"
         created_at: Created at
-        updated_at: Updated at
         creator_id: "Created by"
+        departure_time: "Departure"
+        facility: "Facility"
+        flexible_service: "On demond transportation"
         footnote_ids: "Footnotes"
+        id: "Journey ID"
+        journey_frequency_ids: "Timeband"
+        journey_name: "Name of the journey"
+        journey_pattern_id: "Pattern ID"
+        journey_pattern: "Journey Pattern"
+        line: "Line"
+        mobility_restricted_suitability: "PRM accessibility"
+        name: "Journey Name"
+        not_accessible: "Not accessible"
+        number: "Number"
+        object_version: "Version"
+        objectid: "Neptune identifier"
+        on_demand_fs: "On demand service"
+        published_journey_identifier: "Published Identifier"
+        published_journey_name: "Published Name"
+        purchase_window: "Purchase availability"
+        regular_fs: "Regular service"
+        route: "Route"
+        status_value: "Status Value"
+        time_slot: "Time Slot"
+        time_table_ids: "Calendar list"
+        time_tables: "Calendars"
+        train_number: "Train number"
+        transport_mode: "Transport Mode"
+        transport_submode: "Transport Submode"
+        unspecified_fs: "Not specified"
+        unspecified_mrs: "Not specified"
+        updated_at: Updated at
+        vehicle_journey_at_stop_ids: "Time list"
+        vehicle_type_identifier: "Vehicle Type Identifier"
     errors:
       models:
         vehicle_journey:
@@ -126,3 +156,9 @@ en:
       hub:
         vehicle_journey:
           objectid: "[prefix]:VehicleJourney:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character. Maximum length of the unique key = 8."
+  referential_vehicle_journeys:
+    index:
+      title: "Vehicle Journeys"
+      search_no_results: "No vehicle journey match your search"
+    filters:
+      published_journey_name_or_objectid: "Search by name or by ID..."

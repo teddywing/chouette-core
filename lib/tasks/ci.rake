@@ -3,7 +3,7 @@ namespace :ci do
   task :setup do
     cp "config/database/jenkins.yml", "config/database.yml"
     sh "RAILS_ENV=test rake db:drop db:create db:migrate"
-    sh "yarn --production --no-progress install"
+    sh "yarn --no-progress install"
   end
 
   def git_branch
@@ -31,18 +31,22 @@ namespace :ci do
     sh "bundle exec bundle-audit check --update"
   end
 
-  task :spec => ["ci:assets","spec"]
-
   task :assets do
     sh "RAILS_ENV=test bundle exec rake assets:precompile"
   end
 
-  task :jest => "ci:assets" do
-    sh "node_modules/.bin/jest"
+  task :i18n_js_export do
+    sh "RAILS_ENV=test bundle exec rake i18n:js:export"
+  end
+
+  task :jest do
+    sh "node_modules/.bin/jest" unless ENV["CHOUETTE_JEST_DISABLED"]
   end
 
   desc "Deploy after CI"
   task :deploy do
+    return if ENV["CHOUETTE_DEPLOY_DISABLED"]
+
     if deploy_env
       sh "cap #{deploy_env} deploy:migrations"
     else
@@ -58,4 +62,4 @@ namespace :ci do
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "ci:spec", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:setup", "ci:assets", "ci:i18n_js_export", "spec", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]

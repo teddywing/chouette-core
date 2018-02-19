@@ -17,6 +17,9 @@ $menuW: 300px
     line-height: $menuH
     padding-left: 10px
     opacity: 0.6
+    > a
+      color: rgba(#fff, 0.9)
+      text-decoration: none
 
   #menu_left
     position: absolute
@@ -240,6 +243,9 @@ $menuW: 300px
           left: 0
           top: 13px
 
+        & > .menu-item
+          max-width: 75%
+
         .menu-item
           padding: 0 10px
 
@@ -321,54 +327,45 @@ $menuW: 300px
       height: $menuH * 2
       transition: 0.1s
 
-    #menu_top > .menu-content > .menu-item-group
-      display: none
+    #menu_top > .menu-content
+      & > .menu-item
+        max-width: 90%
+      & > .menu-item-group
+        display: none
 
     .sticky-content
       height: $menuH
       padding: 0 50px 0 75px
       margin-top: -4px
+      display: flex
 
       > *
         display: inline-block
 
         &.sticky-ptitle
-          width: 60%
+          flex: 1 1
           height: $menuH
+          position: relative
 
           h1
-            position: relative
+            position: absolute
+            left: 0
+            right: 10px
+            top: 0
             line-height: 1.1
             white-space: nowrap
             max-height: 1.1em
             margin: 0 -1.4em 0 0
-            padding: 0 1.4em 0 0
+            padding: 0 1.4em 5px 0
             overflow: hidden
-
-            &:before
-              content: '[...]'
-              font-size: 0.65em
-              position: absolute
-              z-index: 5
-              right: 0
-              bottom: 4px
-
-            &:after
-              content: ''
-              position: absolute
-              z-index: 5
-              right: 0
-              width: 1.4em
-              height: 1em
-              margin-top: 0.2em
-              background-color: $blue
+            text-overflow: ellipsis
 
             .small.fa
               color: #fff
               margin-left: 0.5em
 
         &.sticky-paction
-          width: 40%
+          flex: 0 0 auto
           text-align: right
           vertical-align: top
 

@@ -1,5 +1,5 @@
 module VehicleJourneysHelper
-  
+
   def vehicle_name( vehicle)
     if !vehicle.published_journey_name.blank?
       vehicle.published_journey_name.first(8)
@@ -11,11 +11,11 @@ module VehicleJourneysHelper
       vehicle.id
     end
   end
-  
+
   def missing_time_check( is_present)
     return "missing" if (is_present && is_present.departure_time.nil?)
   end
-  
+
   def vehicle_departure(vehicle, departure_time=nil)
     unless departure_time
       first_vjas = vehicle.vehicle_journey_at_stops.first
@@ -24,7 +24,7 @@ module VehicleJourneysHelper
     end
     l(departure_time, :format => :hour).gsub( /  /, ' ')
   end
-  
+
   def vehicle_title(vehicle, journey_frequency=nil)
     return t("vehicle_journeys.vehicle_journey#{'_frequency' if vehicle.frequency?}.title_stopless", :name => vehicle_name( vehicle)) if vehicle.vehicle_journey_at_stops.empty?
     first_vjas = vehicle.vehicle_journey_at_stops.first
@@ -40,7 +40,7 @@ module VehicleJourneysHelper
             :time => vehicle_departure(vehicle, (journey_frequency ? journey_frequency.first_departure_time : nil )))
     end
   end
-  
+
   def route_journey_pattern_label_pairs route
     route
       .journey_patterns
@@ -50,7 +50,7 @@ module VehicleJourneysHelper
   def edit_vehicle_title( vehicle)
     return t('vehicle_journeys.edit.title_stopless', :name => vehicle_name( vehicle)) if vehicle.vehicle_journey_at_stops.empty?
     first_vjas = vehicle.vehicle_journey_at_stops.first
-    t('vehicle_journeys.edit.title', 
+    t('vehicle_journeys.edit.title',
           :name => vehicle_name( vehicle),
           :stop => first_vjas.stop_point.stop_area.name,
           :time => vehicle_departure(vehicle))
@@ -59,6 +59,14 @@ module VehicleJourneysHelper
   def exist_vehicle_journeys?(route)
     route.vehicle_journeys.count > 0
   end
-  
-end
 
+  def table_builder_column_for_stop_area stop_area
+    return nil unless stop_area
+    TableBuilderHelper::Column.new(
+      name: stop_area.name,
+      attribute: Proc.new {|v| v.vehicle_journey_at_stops.find{|vjas| vjas.stop_point.stop_area_id == stop_area.id}&.departure },
+      sortable: false
+    )
+  end
+
+end

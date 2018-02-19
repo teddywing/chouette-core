@@ -3,7 +3,15 @@ module RansackDateFilter
 
   included do
 
-    def set_date_time_params(param_name, klass)
+    def begin_range_var prefix
+      "@#{[prefix, "begin_range"].compact.join('_')}"
+    end
+
+    def end_range_var prefix
+      "@#{[prefix, "end_range"].compact.join('_')}"
+    end
+
+    def set_date_time_params(param_name, klass, prefix: nil)
       start_date = []
       end_date = []
 
@@ -16,23 +24,25 @@ module RansackDateFilter
         params[:q].delete([param_name])
 
         if klass == DateTime
-          @begin_range = klass.new(*start_date,0,0,0) rescue nil
-          @end_range = klass.new(*end_date,23,59,59) rescue nil
+          instance_variable_set begin_range_var(prefix), klass.new(*start_date,0,0,0) rescue nil
+          instance_variable_set end_range_var(prefix), klass.new(*end_date,23,59,59) rescue nil
         else
-          @begin_range = klass.new(*start_date) rescue nil
-          @end_range = klass.new(*end_date) rescue nil
+          instance_variable_set begin_range_var(prefix), klass.new(*start_date) rescue nil
+          instance_variable_set end_range_var(prefix), klass.new(*end_date) rescue nil
         end
       end
     end
 
     # Fake ransack filter
     def ransack_period_range **options
-      return options[:scope] unless !!@begin_range && !!@end_range
+      prefix = options[:prefix]
+      return options[:scope] unless !!instance_variable_get(begin_range_var(prefix)) && !!instance_variable_get(end_range_var(prefix))
 
-      if @begin_range > @end_range
+      scope = options[:scope]
+      if instance_variable_get(begin_range_var(prefix)) > instance_variable_get(end_range_var(prefix))
         flash.now[:error] = options[:error_message]
       else
-        scope = options[:scope].send options[:query], @begin_range..@end_range
+        scope = scope.send options[:query], instance_variable_get(begin_range_var(prefix))..instance_variable_get(end_range_var(prefix))
       end
       scope
     end

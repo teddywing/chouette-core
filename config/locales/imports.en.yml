@@ -7,6 +7,7 @@ en:
       error_period_filter: "End date must be greater or equal than begin date"
     actions:
       new: "New import"
+      create: "New import"
       show: "Import report"
       download: "Download original file"
       destroy: "Destroy"
@@ -15,7 +16,9 @@ en:
       title: "Imports"
       warning: ""
     new:
-      title: "Imports"
+      title: "Generate a new import"
+    create:
+      title: "Generate a new import"
     show:
       title: "Import %{name}"
       report: "Report"
@@ -74,3 +77,7 @@ en:
         max_distance_for_connection_link: "Max distance for connection link"
         ignore_last_word: "ignore last word"
         ignore_end_chars: "ignore last chars"
+  flash:
+    imports:
+      create:
+        notice: "The import is in progress. Please wait and refresh the page in a few moments."

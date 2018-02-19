@@ -47,6 +47,9 @@ class CompaniesController < ChouetteController
     end
   end
 
+  def resource
+    super.decorate(context: { referential: line_referential })
+  end
 
   def resource_url(company = nil)
     line_referential_company_path(line_referential, company || resource)
@@ -60,6 +63,10 @@ class CompaniesController < ChouetteController
 
   alias_method :current_referential, :line_referential
   helper_method :current_referential
+
+  def begin_of_association_chain
+    current_organisation
+  end
 
   def company_params
     params.require(:company).permit( :objectid, :object_version, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
@@ -75,9 +82,8 @@ class CompaniesController < ChouetteController
   end
 
   def decorate_companies(companies)
-    ModelDecorator.decorate(
+    CompanyDecorator.decorate(
       companies,
-      with: CompanyDecorator,
       context: {
         referential: line_referential
       }

@@ -1,7 +1,4 @@
-- breadcrumb :calendars
-- content_for :page_header_actions do
-  - if policy(Calendar).create?
-    = link_to(t('actions.add'), new_calendar_path, class: 'btn btn-default')
+- breadcrumb :calendars, workgroup
 
 .page_content
   .container-fluid
@@ -19,7 +16,7 @@
                 key: :name, \
                 attribute: 'name', \
                 link_to: lambda do |calendar| \
-                  calendar_path(calendar) \
+                  workgroup_calendar_path(workgroup, calendar) \
                 end \
               ), \
               TableBuilderHelper::Column.new( \
@@ -35,7 +32,6 @@
                 attribute: Proc.new { |c| t("#{c.try(:shared)}") } \
               ) \
             ],
-            links: [:show, :edit],
             cls: 'table has-filter'
 
           = new_pagination @calendars, 'pull-right'

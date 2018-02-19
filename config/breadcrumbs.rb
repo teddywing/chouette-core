@@ -6,8 +6,28 @@ crumb :workbench do |workbench|
   link workbench.name, workbench_path(workbench)
 end
 
+crumb :workbench_output do |workbench|
+  link I18n.t('workbench_outputs.show.title'), workbench_output_path(workbench)
+  parent :workbench, current_offer_workbench
+end
+
+crumb :merges do |workbench|
+  link I18n.t('merges.index.title'), workbench_output_path(workbench)
+  parent :workbench, workbench
+end
+
+crumb :merge do |merge|
+  link breadcrumb_name(merge), workbench_merge_path(merge.workbench, merge)
+  parent :merges, merge.workbench
+end
+
 crumb :referential do |referential|
   link breadcrumb_name(referential), referential_path(referential)
+  parent :workbench, current_offer_workbench
+end
+
+crumb :referentials do |referential|
+  link I18n.t('referentials.index.title'), referentials_path()
   parent :workbench, current_offer_workbench
 end
 
@@ -41,6 +61,11 @@ crumb :referential_group_of_line do |referential, group_of_line|
   parent :referential_group_of_lines, referential
 end
 
+crumb :referential_vehicle_journeys do |referential|
+  link I18n.t('referential_vehicle_journeys.index.title'), referential_vehicle_journeys_path(referential)
+  parent :referential, referential
+end
+
 crumb :time_tables do |referential|
   link I18n.t('time_tables.index.title'), referential_time_tables_path(referential)
   parent :referential, referential
@@ -68,6 +93,11 @@ end
 
 crumb :compliance_check_set do |workbench, compliance_check_set|
   link breadcrumb_name(compliance_check_set), workbench_compliance_check_set_path(workbench, compliance_check_set)
+  parent :compliance_check_sets, workbench
+end
+
+crumb :compliance_check_set_executed do |workbench, compliance_check_set|
+  link I18n.t('compliance_check_sets.executed.title', name: compliance_check_set.name), executed_workbench_compliance_check_set_path(workbench, compliance_check_set)
   parent :compliance_check_sets, workbench
 end
 
@@ -162,13 +192,23 @@ crumb :line do |line|
   parent :lines, line.line_referential
 end
 
-crumb :calendars do
-  link I18n.t('calendars.index.title'), calendars_path
+crumb :purchase_windows do |referential|
+  link I18n.t('purchase_windows.index.title'), referential_purchase_windows_path(referential)
+  parent :referential, referential
 end
 
-crumb :calendar do |calendar|
-  link breadcrumb_name(calendar), calendar_path(calendar)
-  parent :calendars
+crumb :purchase_window do |referential, purchase_window|
+  link breadcrumb_name(purchase_window), referential_purchase_window_path(referential, purchase_window)
+  parent :purchase_windows, referential
+end
+
+crumb :calendars do |workgroup|
+  link I18n.t('calendars.index.title'), workgroup_calendars_path(workgroup)
+end
+
+crumb :calendar do |workgroup, calendar|
+  link breadcrumb_name(calendar), workgroup_calendar_path(workgroup, calendar)
+  parent :calendars, workgroup
 end
 
 crumb :referential_line do |referential, line|

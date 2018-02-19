@@ -2,9 +2,10 @@ require 'spec_helper'
 
 describe Chouette::JourneyPattern, :type => :model do
   it { is_expected.to be_versioned }
+  subject { create(:journey_pattern) }
 
   describe 'checksum' do
-    it_behaves_like 'checksum support', :journey_pattern
+    it_behaves_like 'checksum support'
   end
 
   # context 'validate minimum stop_points size' do
@@ -32,6 +33,44 @@ describe Chouette::JourneyPattern, :type => :model do
   #   end
   # end
 
+  describe "full_schedule?" do
+    let(:journey_pattern) { create :journey_pattern }
+    subject{ journey_pattern.full_schedule? }
+    context "when no time is set" do
+      it { should be_falsy }
+    end
+
+    context "when the costs are incomplete" do
+      context "with a missing distance" do
+        before(:each){
+          journey_pattern.costs = generate_journey_pattern_costs(->(i){i == 1 ? nil : 10}, 10)
+        }
+        it { should be_falsy }
+      end
+
+      context "with a missing time" do
+        before(:each){
+          journey_pattern.costs = generate_journey_pattern_costs(10, ->(i){i == 1 ? nil : 10})
+        }
+        it { should be_falsy }
+      end
+    end
+
+    context "with a zeroed cost" do
+      before(:each){
+        journey_pattern.costs = generate_journey_pattern_costs(->(i){i == 1 ? 0 : 10}, 10)
+      }
+      it { should be_falsy }
+    end
+
+    context "when all the times are set" do
+      before(:each){
+        journey_pattern.costs = generate_journey_pattern_costs(10, 10)
+      }
+      it { should be_truthy }
+    end
+  end
+
   describe "state_update" do
     def journey_pattern_to_state jp
       jp.attributes.slice('name', 'published_name', 'registration_number').tap do |item|
@@ -39,6 +78,7 @@ describe Chouette::JourneyPattern, :type => :model do
         item['stop_points'] = jp.stop_points.map do |sp|
           { 'id' => sp.stop_area_id }
         end
+        item['costs'] = jp.costs
       end
     end
 
@@ -70,6 +110,14 @@ describe Chouette::JourneyPattern, :type => :model do
       Chouette::JourneyPattern.state_create_instance route, new_state
       expect(new_state['object_id']).to be_truthy
       expect(new_state['new_record']).to be_truthy
+    end
+
+    it 'should create journey_pattern with state_update' do
+      new_state = journey_pattern_to_state(build(:journey_pattern, objectid: nil, route: route))
+      collection = [new_state]
+      expect {
+        Chouette::JourneyPattern.state_update route, collection
+      }.to change{Chouette::JourneyPattern.count}.by(1)
     end
 
     it 'should delete journey_pattern' do

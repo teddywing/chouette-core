@@ -1,4 +1,5 @@
 const { environment } = require('@rails/webpacker')
+const coffee =  require('./loaders/coffee')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 let pathsToClean = [
@@ -13,7 +14,7 @@ let cleanOptions = {
 };
 
 
-environment.plugins.set(
+environment.plugins.append(
   'CleanWebpack',
   new CleanWebpackPlugin(pathsToClean, cleanOptions)
 )
@@ -24,4 +25,5 @@ environment.plugins.set(
 //   jquery: "jquery/src/jquery",
 // }
 
+environment.loaders.append('coffee', coffee)
 module.exports = environment

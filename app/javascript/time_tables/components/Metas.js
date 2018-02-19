@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 import actions from '../actions'
 import TagsSelect2 from './TagsSelect2'
 
@@ -11,7 +13,7 @@ export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdat
           {/* comment (name) */}
           <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4 required">
-              {I18n.time_tables.edit.metas.name} <abbr title="">*</abbr>
+              {I18n.t('time_tables.edit.metas.name')} <abbr title="">*</abbr>
             </label>
             <div className="col-sm-8">
               <input
@@ -25,8 +27,8 @@ export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdat
           </div>
 
           {/* color */}
-          <div className="form-group">
-            <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.color}</label>
+          {metas.color !== undefined && <div className="form-group">
+            <label htmlFor="" className="control-label col-sm-4">{I18n.attribute_name('time_table', 'color')}</label>
             <div className="col-sm-8">
               <div className="dropdown color_selector">
                 <button
@@ -67,11 +69,11 @@ export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdat
                 </div>
               </div>
             </div>
-          </div>
+          </div>}
 
           {/* tags */}
-          <div className="form-group">
-            <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.tag_list}</label>
+          {metas.tags !== undefined && <div className="form-group">
+            <label htmlFor="" className="control-label col-sm-4">{I18n.attribute_name('time_table', 'tag_list')}</label>
             <div className="col-sm-8">
               <TagsSelect2
                 initialTags={metas.initial_tags}
@@ -80,20 +82,20 @@ export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdat
                 onUnselect2Tags={(e) => onUnselect2Tags(e)}
               />
             </div>
-          </div>
+          </div>}
 
           {/* calendar */}
-          <div className="form-group">
-            <label htmlFor="" className="control-label col-sm-4">{I18n.activerecord.attributes.time_table.calendar}</label>
+          {metas.calendar !== null && <div className="form-group">
+            <label htmlFor="" className="control-label col-sm-4">{I18n.attribute_name('time_table', 'calendar')}</label>
             <div className="col-sm-8">
-              <span>{metas.calendar ? metas.calendar.name : I18n.time_tables.edit.metas.no_calendar}</span>
+              <span>{metas.calendar ? metas.calendar.name : I18n.t('time_tables.edit.metas.no_calendar')}</span>
             </div>
-          </div>
+          </div>}
 
           {/* day_types */}
           <div className="form-group">
             <label htmlFor="" className="control-label col-sm-4">
-              {I18n.time_tables.edit.metas.day_types}
+              {I18n.t('time_tables.edit.metas.day_types')}
             </label>
             <div className="col-sm-8">
               <div className="form-group labelled-checkbox-group">

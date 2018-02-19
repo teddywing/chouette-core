@@ -22,8 +22,6 @@ let json = {
   time_table_dates: time_table_dates
 }
 
-
-
 describe('timetable reducer with empty state', () => {
   beforeEach(() => {
     state = {
@@ -87,6 +85,7 @@ describe('timetable reducer with filled state', () => {
       periode_range: periode_range,
       currentPage: current_periode_range
     }
+    jsdom.reconfigure({url: "http://example.com/foo/bar"})
     expect(
       timetableReducer(state, {
         type: 'GO_TO_PREVIOUS_PAGE',

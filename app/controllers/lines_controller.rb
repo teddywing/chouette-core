@@ -1,6 +1,8 @@
 class LinesController < ChouetteController
   include ApplicationHelper
+  include Activatable
   include PolicyChecker
+
   defaults :resource_class => Chouette::Line
   respond_to :html
   respond_to :xml
@@ -13,9 +15,8 @@ class LinesController < ChouetteController
   def index
     @hide_group_of_line = line_referential.group_of_lines.empty?
     index! do |format|
-      @lines = ModelDecorator.decorate(
+      @lines = LineDecorator.decorate(
         @lines,
-        with: LineDecorator,
         context: {
           line_referential: @line_referential,
           current_organisation: current_organisation
@@ -67,7 +68,6 @@ class LinesController < ChouetteController
     respond_to do |format|
       format.json { render :json => filtered_lines_maps}
     end
-
   end
 
   protected
@@ -111,6 +111,10 @@ class LinesController < ChouetteController
 
   alias_method :current_referential, :line_referential
   helper_method :current_referential
+
+  def begin_of_association_chain
+    current_organisation
+  end
 
   def line_params
     params.require(:line).permit(

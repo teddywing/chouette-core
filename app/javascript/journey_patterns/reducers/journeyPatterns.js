@@ -17,6 +17,7 @@ const journeyPattern = (state = {}, action) =>{
         published_name: action.data.published_name.value,
         registration_number: action.data.registration_number.value,
         stop_points: stopPoints,
+        costs: {},
         deletable: false
       }
     case 'UPDATE_CHECKBOX_VALUE':
@@ -63,6 +64,19 @@ export default function journeyPatterns (state = [], action)  {
       return state.map((j, i) =>{
         if(i == action.index) {
           return _.assign({}, j, {deletable: true})
+        } else {
+          return j
+        }
+      })
+    case 'UPDATE_JOURNEYPATTERN_COSTS':
+      return state.map((j, i) =>{
+        if(i == action.index) {
+          const new_costs = Object.assign({}, j.costs)
+          Object.keys(action.costs).map((key) => {
+            let new_costs_for_key = Object.assign({}, j.costs[key] || {}, action.costs[key])
+            new_costs[key] = new_costs_for_key
+          })
+          return _.assign({}, j, {costs: new_costs})
         } else {
           return j
         }

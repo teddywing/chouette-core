@@ -1,4 +1,3 @@
-# coding: utf-8
 RSpec.describe CompanyPolicy, type: :policy do
 
   let( :record ){ build_stubbed :company }
@@ -11,10 +10,10 @@ RSpec.describe CompanyPolicy, type: :policy do
 
   context 'Non Destructive actions →' do
     permissions :index? do
-      it_behaves_like 'always allowed', 'anything', archived: true
+      it_behaves_like 'always allowed', 'anything', archived_and_finalised: true
     end
     permissions :show? do
-      it_behaves_like 'always allowed', 'anything', archived: true
+      it_behaves_like 'always allowed', 'anything', archived_and_finalised: true
     end
   end
 

@@ -17,6 +17,7 @@
   | window.stopPoints = #{(@stop_points_list.to_json).html_safe};
   | window.journeyPatternLength = #{@journey_patterns.total_entries()};
   | window.journeyPatternsPerPage = #{@ppage};
-  | window.perms = #{raw @perms}
+  | window.perms = #{raw @perms};
+  | window.features = #{raw @features};
 
 = javascript_pack_tag 'journey_patterns/index.js'

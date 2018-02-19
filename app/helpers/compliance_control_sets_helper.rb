@@ -100,7 +100,8 @@ module ComplianceControlSetsHelper
       ],
       sortable: true,
       cls: 'table has-filter has-search',
-      model: ComplianceControl
+      model: ComplianceControl,
+      action: :index
     end
     metas = content_tag :div, I18n.t('compliance_control_blocks.metas.control', count: compliance_controls.count), class: 'pull-right'
     table + metas

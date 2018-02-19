@@ -8,16 +8,21 @@ class ReferentialsController < ChouetteController
 
   def new
     new! do
-      build_referenial
+      build_referential
     end
   end
 
   def create
-    create! do |format|
-      build_referenial
-
-      if !!@referential.created_from_id
-        format.html { redirect_to workbench_path(@referential.workbench) }
+    create! do |success, failure|
+      success.html do
+        if @referential.created_from_id.present?
+          flash[:notice] = t('notice.referentials.duplicate')
+        end
+        redirect_to workbench_path(@referential.workbench)
+      end
+      failure.html do
+        Rails.logger.info "Can't create Referential : #{@referential.errors.inspect}"
+        render :new
       end
     end
   end
@@ -27,9 +32,8 @@ class ReferentialsController < ChouetteController
     show! do |format|
       @referential = @referential.decorate(context: { current_workbench_id: params[:current_workbench_id] } )
       @reflines = lines_collection.paginate(page: params[:page], per_page: 10)
-      @reflines = ModelDecorator.decorate(
+      @reflines = ReferentialLineDecorator.decorate(
         @reflines,
-        with: ReferentialLineDecorator,
         context: {
           referential: referential,
           current_organisation: current_organisation
@@ -60,8 +64,8 @@ class ReferentialsController < ChouetteController
 
   def validate
     ComplianceControlSetCopyWorker.perform_async(params[:compliance_control_set], params[:id])
-    flash[:notice] = I18n.t("referentials.operation_in_progress")
-    redirect_to(referential_path)
+    flash[:notice] = t('notice.referentials.validate')
+    redirect_to workbench_compliance_check_sets_path(referential.workbench_id)
   end
 
   def destroy
@@ -75,6 +79,7 @@ class ReferentialsController < ChouetteController
     referential.archive!
     redirect_to workbench_path(referential.workbench_id), notice: t('notice.referential.archived')
   end
+
   def unarchive
     if referential.unarchive!
       flash[:notice] = t('notice.referential.unarchived')
@@ -92,7 +97,7 @@ class ReferentialsController < ChouetteController
   helper_method :current_referential
 
   def resource
-    @referential ||= current_organisation.find_referential(params[:id])
+    @referential ||= current_organisation.find_referential(params[:id]).decorate
   end
 
   def collection
@@ -132,7 +137,7 @@ class ReferentialsController < ChouetteController
     super
   end
 
-  def build_referenial
+  def build_referential
     if params[:from]
       source_referential = Referential.find(params[:from])
       @referential = Referential.new_from(source_referential, current_functional_scope)

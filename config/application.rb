@@ -35,6 +35,12 @@ module ChouetteIhm
 
     config.active_job.queue_adapter = :sidekiq
 
+    config.action_dispatch.rescue_responses.merge!(
+      'FeatureChecker::NotAuthorizedError' => :unauthorized
+    )
+
+    config.development_toolbar = false
+
     unless Rails.env.production?
         # Work around sprockets+teaspoon mismatch:
         Rails.application.config.assets.precompile += %w(spec_helper.js)

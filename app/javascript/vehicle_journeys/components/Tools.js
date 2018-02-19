@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from '../actions'
 import AddVehicleJourney from '../containers/tools/AddVehicleJourney'
 import DeleteVehicleJourneys from '../containers/tools/DeleteVehicleJourneys'
@@ -7,6 +8,7 @@ import DuplicateVehicleJourney from '../containers/tools/DuplicateVehicleJourney
 import EditVehicleJourney from '../containers/tools/EditVehicleJourney'
 import NotesEditVehicleJourney from '../containers/tools/NotesEditVehicleJourney'
 import TimetablesEditVehicleJourney from '../containers/tools/TimetablesEditVehicleJourney'
+import PurchaseWindowsEditVehicleJourney from '../containers/tools/PurchaseWindowsEditVehicleJourney'
 
 
 export default class Tools extends Component {
@@ -17,7 +19,12 @@ export default class Tools extends Component {
 
   hasPolicy(key) {
     // Check if the user has the policy to disable or not the action
-    return this.props.filters.policy[`vehicle_journeys.${key}`] 
+    return this.props.filters.policy[`vehicle_journeys.${key}`]
+  }
+
+  hasFeature(key) {
+    // Check if the organisation has the given feature
+    return this.props.filters.features[key]
   }
 
   render() {
@@ -25,17 +32,20 @@ export default class Tools extends Component {
     return (
       <div className='select_toolbox'>
         <ul>
-          <AddVehicleJourney disabled={this.hasPolicy("create") && !editMode} />
-          <DuplicateVehicleJourney disabled={this.hasPolicy("create") && this.hasPolicy("update") && !editMode}/>
-          <ShiftVehicleJourney disabled={this.hasPolicy("update") && !editMode}/>
+          <AddVehicleJourney disabled={!this.hasPolicy("create") || !editMode} />
+          <DuplicateVehicleJourney disabled={!this.hasPolicy("create") || !this.hasPolicy("update") || !editMode}/>
+          <ShiftVehicleJourney disabled={!this.hasPolicy("update") || !editMode}/>
           <EditVehicleJourney disabled={!this.hasPolicy("update")}/>
           <TimetablesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
+          { this.hasFeature('purchase_windows') &&
+            <PurchaseWindowsEditVehicleJourney disabled={!this.hasPolicy("update")}/>
+          }
           <NotesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
-          <DeleteVehicleJourneys disabled={this.hasPolicy("destroy") && !editMode}/>
+          <DeleteVehicleJourneys disabled={!this.hasPolicy("destroy") || !editMode}/>
         </ul>
 
-        <span className='info-msg'>{actions.getSelected(vehicleJourneys).length} course(s) sélectionnée(s)</span>
-        <button className='btn btn-xs btn-link pull-right' onClick={onCancelSelection}>Annuler la sélection</button>
+        <span className='info-msg'>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.selected_journeys', {count: actions.getSelected(vehicleJourneys).length})}</span>
+        <button className='btn btn-xs btn-link pull-right' onClick={onCancelSelection}>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.cancel_selection')}</button>
       </div>
     )
   }

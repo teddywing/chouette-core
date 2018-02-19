@@ -1,3 +1,4 @@
+# coding: utf-8
 source 'https://rubygems.org'
 
 # Use https for github
@@ -15,7 +16,7 @@ gem 'uglifier', '~> 2.7.2'
 gem 'coffee-rails', '~> 4.0.0'
 
 # Webpacker
-gem 'webpacker', '~> 3.0'
+gem 'webpacker', '3.2.1'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails', '~> 3.1.4' # Update to v4 for Rails 4.2
@@ -65,6 +66,7 @@ end
 
 gem 'activerecord-postgis-adapter', "~> 3.0.0"
 gem 'polylines'
+gem 'activerecord-nulldb-adapter', require: false
 
 # Codifligne API
 gem 'codifligne', af83: 'stif-codifline-api'
@@ -99,6 +101,9 @@ gem 'simple_form', '~> 3.1.0'
 gem 'font-awesome-sass', '~> 4.7'
 gem 'will_paginate-bootstrap'
 gem 'gretel'
+gem 'country_select'
+gem 'flag-icons-rails'
+gem 'i18n-js'
 
 # Format Output
 gem 'json'
@@ -126,7 +131,6 @@ gem 'acts-as-taggable-on', '~> 4.0.0'
 
 gem 'acts_as_list', '~> 0.6.0'
 gem 'acts_as_tree', '~> 2.1.0', require: 'acts_as_tree'
-gem "hstore_accessor", "~> 1.1"
 
 gem 'rabl'
 gem 'carrierwave', '~> 1.0'
@@ -159,6 +163,7 @@ group :development do
   gem 'bundler-audit'
   gem 'spring-commands-rspec'
   gem 'dbshell-rails'
+  gem 'rack-livereload'
 
   platforms :ruby_20, :ruby_21, :ruby_22 do
     gem 'better_errors'
@@ -173,6 +178,7 @@ group :test do
   gem 'simplecov-rcov', :require => false
   gem 'htmlbeautifier'
   gem 'timecop'
+  gem 'rspec-snapshot'
 end
 
 group :test, :development, :dev do

@@ -1,8 +1,11 @@
 fr:
   stop_areas: &fr_stop_areas
+    waiting_time_format: "%{value} minutes"
     search_no_results: "Aucun arrêt ne correspond à votre recherche"
     errors:
       empty: Aucun stop_area_id
+      parent_area_type: ne peut être de type %{area_type}
+      incorrect_kind_area_type: Ce type d'arrêt est invalide pour cette catégorie
     default_geometry_success: "%{count} arrêts édités"
     stop_area:
       no_position: "Pas de position"
@@ -14,8 +17,14 @@ fr:
       accessibility: "Accessibilité"
     actions:
       new: "Ajouter un arrêt"
+      create: "Ajouter un arrêt"
       edit: "Editer cet arrêt"
-      destroy: "Supprimer cet arrêt"
+      update: "Editer cet arrêt"
+      destroy: "Supprimer"
+      activate: "Activer cet arrêt"
+      deactivate: "Désactiver cet arrêt"
+      activate_confirm: "Etes vous sûr d'activer cet arrêt ?"
+      deactivate_confirm: "Etes vous sûr de désactiver cet arrêt ?"
       deleted_at: "Activé"
       destroy_confirm: "Etes vous sûr de supprimer cet arrêt ainsi que tous ses fils?"
       select_parent: "Créer ou éditer la relation enfant -> parent"
@@ -37,13 +46,17 @@ fr:
       name_or_objectid: "Recherche par nom ou par objectid..."
       zip_code: Indiquez un code postal...
       city_name: Indiquez un nom de commune...
-      area_type: Indiquez un type d'arrêt...
+      area_type: "Indiquez un type d'arrêt..."
     new:
+      title: "Ajouter un arrêt"
+    create:
       title: "Ajouter un arrêt"
     form:
       address: "246 Boulevard Saint-Germain, 75007 Paris"
       geolocalize: "Géolocalisez "
     edit:
+      title: "Editer l'arrêt %{name}"
+    update:
       title: "Editer l'arrêt %{name}"
     show:
       title: "Arrêt %{name}"
@@ -89,6 +102,7 @@ fr:
     attributes:
       stop_area:
         name: "Nom"
+        kind: "Catégorie"
         registration_number: "Numéro d'enregistrement"
         published_name: "Nom public"
         deleted: "Supprimé"
@@ -98,7 +112,7 @@ fr:
         area_type: "Type d'arrêt"
         nearest_topic_name: "Point d'intérêt le plus proche"
         street_name: "Nom de la rue"
-        country_code: "Code INSEE"
+        country_code: "Pays"
         fare_code: "Zone tarifaire"
         mobility_restricted_suitability: "Accès pour voyageur à mobilité réduite"
         stairs_availability: "Escalator"
@@ -126,6 +140,7 @@ fr:
         city_name: "Commune"
         created_at: "Créé le"
         updated_at: "Edité le"
+        waiting_time: Temps de desserte (minutes)
   formtastic:
     titles:
       stop_area:

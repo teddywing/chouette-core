@@ -1,52 +1,22 @@
-class CompanyDecorator < Draper::Decorator
+class CompanyDecorator < AF83::Decorator
   decorates Chouette::Company
 
-  delegate_all
+  set_scope { context[:referential] }
 
-  def self.collection_decorator_class
-    PaginatingDecorator
+  create_action_link do |l|
+    l.content { h.t('companies.actions.new') }
   end
 
-  def linecount
-    object.lines.count
-  end
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link
 
-  # Requires:
-  #   context: {
-  #     referential:
-  #   }
-  def action_links
-    links = []
-
-    if h.policy(Chouette::Company).create?
-      links << Link.new(
-        content: h.t('companies.actions.new'),
-        href: h.new_line_referential_company_path(context[:referential])
-      )
+    instance_decorator.edit_action_link do |l|
+      l.content {|l| l.action == "show" ? h.t('actions.edit') : h.t('companies.actions.edit') }
     end
 
-    if h.policy(object).update?
-      links << Link.new(
-        content: h.t('companies.actions.edit'),
-        href: h.edit_line_referential_company_path(
-          context[:referential],
-          object
-        )
-      )
+    instance_decorator.destroy_action_link do |l|
+      l.content { h.destroy_link_content('companies.actions.destroy') }
+      l.data {{ confirm: h.t('companies.actions.destroy_confirm') }}
     end
-
-    if h.policy(object).destroy?
-      links << Link.new(
-        content: t('companies.actions.destroy'),
-        href: h.line_referential_company_path(
-          context[:referential],
-          object
-        ),
-        method: :delete,
-        data: { confirm: h.t('companies.actions.destroy_confirm') }
-      )
-    end
-
-    links
   end
 end

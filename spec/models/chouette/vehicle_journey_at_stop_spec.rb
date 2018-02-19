@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
+  subject { create(:vehicle_journey_at_stop) }
+
   describe 'checksum' do
     let(:at_stop) { build_stubbed(:vehicle_journey_at_stop) }
 
-    it_behaves_like 'checksum support', :vehicle_journey_at_stop
+    it_behaves_like 'checksum support'
 
     context '#checksum_attributes' do
       it 'should return attributes' do
@@ -37,6 +39,41 @@ RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
 
     it "forces a nil offset to 0" do
       expect(at_stop.day_offset_outside_range?(nil)).to be false
+    end
+  end
+
+  context "the different times" do
+    let (:at_stop) { build_stubbed(:vehicle_journey_at_stop) }
+
+    describe "without a TimeZone" do
+      it "should not offset times" do
+        expect(at_stop.departure).to eq at_stop.departure_local
+        expect(at_stop.arrival).to eq at_stop.arrival_local
+      end
+    end
+
+
+    describe "with a TimeZone" do
+      before(:each) do
+        stop = at_stop.stop_point.stop_area
+        stop.time_zone = "Mexico City"
+      end
+
+      it "should offset times" do
+        expect(at_stop.departure_local).to eq at_stop.send(:format_time, at_stop.departure_time - 6.hours)
+        expect(at_stop.arrival_local).to eq at_stop.send(:format_time, at_stop.arrival_time - 6.hours)
+      end
+
+      context "with a wrong Timezone" do
+        before do
+          at_stop.stop_point.stop_area.time_zone = "Gotham City"
+        end
+
+        it "should not offset times" do
+          expect(at_stop.departure_local).to eq at_stop.send(:format_time, at_stop.departure_time)
+          expect(at_stop.arrival_local).to eq at_stop.send(:format_time, at_stop.arrival_time)
+        end
+      end
     end
   end
 

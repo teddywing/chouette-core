@@ -1,55 +1,70 @@
-class LineDecorator < Draper::Decorator
+class LineDecorator < AF83::Decorator
   decorates Chouette::Line
 
-  delegate_all
+  set_scope { context[:line_referential] }
 
-  # Requires:
-  #   context: {
-  #     line_referential: ,
-  #     current_organisation:
-  #   }
-  def action_links
-    links = []
+  create_action_link do |l|
+    l.content t('lines.actions.new')
+  end
 
-    links << Link.new(
-      content: h.t('lines.actions.show_network'),
-      href: [context[:line_referential], object.network]
-    )
+  with_instance_decorator do |instance_decorator|
+    ### primary (and secondary) can be
+    ### - a single action
+    ### - an array of actions
+    ### - a boolean
 
-    links << Link.new(
-      content: h.t('lines.actions.show_company'),
-      href: [context[:line_referential], object.company]
-    )
-
-    if h.policy(Chouette::Line).create? &&
-      context[:line_referential].organisations.include?(
-        context[:current_organisation]
-      )
-      links << Link.new(
-        content: h.t('lines.actions.edit'),
-        href: h.edit_line_referential_line_path(context[:line_referential], object.id)
-      )
+    instance_decorator.show_action_link do |l|
+      l.content t('lines.actions.show')
     end
 
-    if h.policy(Chouette::Line).create? &&
-      context[:line_referential].organisations.include?(
-        context[:current_organisation]
-      )
-      links << Link.new(
-        content: h.t('lines.actions.new'),
-        href: h.new_line_referential_line_path(context[:line_referential])
-      )
+    instance_decorator.action_link secondary: :show do |l|
+      l.content t('lines.actions.show_network')
+      l.href   { [scope, object.network] }
+      l.disabled { object.network.nil? }
     end
 
-    if h.policy(object).destroy?
-      links << Link.new(
-        content: h.destroy_link_content('lines.actions.destroy'),
-        href: h.line_referential_line_path(context[:line_referential], object),
-        method: :delete,
-        data: {confirm: h.t('lines.actions.destroy_confirm')}
-      )
+    instance_decorator.action_link secondary: :show do |l|
+      l.content  t('lines.actions.show_company')
+      l.href     { [scope, object.company] }
+      l.disabled { object.company.nil? }
     end
 
-    links
+    can_edit_line = ->(){ h.policy(Chouette::Line).create? && context[:line_referential].organisations.include?(context[:current_organisation]) }
+
+    instance_decorator.with_condition can_edit_line do
+      edit_action_link do |l|
+        l.content {|l| l.primary? ? h.t('actions.edit') : h.t('lines.actions.edit') }
+      end
+
+      action_link on: :index, secondary: :index do |l|
+        l.content t('lines.actions.new')
+        l.href    { h.new_line_referential_line_path(context[:line_referential]) }
+      end
+    end
+
+    ### the option :policy will automatically check for the corresponding method
+    ### on the object's policy
+
+    instance_decorator.action_link policy: :deactivate, secondary: :show, footer: :index do |l|
+      l.content  { h.deactivate_link_content('lines.actions.deactivate') }
+      l.href     { h.deactivate_line_referential_line_path(context[:line_referential], object) }
+      l.method   :put
+      l.data     confirm: h.t('lines.actions.deactivate_confirm')
+      l.add_class "delete-action"
+    end
+
+    instance_decorator.action_link policy: :activate, secondary: :show, footer: :index do |l|
+      l.content  { h.activate_link_content('lines.actions.activate') }
+      l.href     { h.activate_line_referential_line_path(context[:line_referential], object) }
+      l.method   :put
+      l.data     confirm: h.t('lines.actions.activate_confirm')
+      l.add_class "delete-action"
+    end
+
+    instance_decorator.destroy_action_link do |l|
+      l.content  { h.destroy_link_content('lines.actions.destroy') }
+      l.data     confirm: h.t('lines.actions.destroy_confirm')
+      l.add_class "delete-action"
+    end
   end
 end

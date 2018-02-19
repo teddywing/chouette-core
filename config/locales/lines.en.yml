@@ -6,18 +6,27 @@ en:
       edit: "Edit this line"
       edit_footnotes: "Edit line footnotes"
       destroy: "Remove this line"
-      destroy_confirm: "Are you sure you want destroy this line?"
-      destroy_selection_confirm: "Are you sure you want destroy those lines?"
+      activate: "Activate this line"
+      deactivate: "Deactivate this line"
+      activate_confirm: "Are you sure you want to activate this line ?"
+      deactivate_confirm: "Are you sure you want tode activate this line ?"
+      destroy_confirm: "Are you sure you want to destroy this line ?"
+      destroy_selection_confirm: "Are you sure you want to destroy those lines ?"
       import: "Import lines"
       export_kml: "Export KML line"
       export_kml_all: "Export KML lines"
       export_hub: "Export HUB line"
       export_hub_all: "Export HUB lines"
+      show: 'Show'
       show_network: 'Show network'
       show_company: 'Show company'
     new:
       title: "Add a new line"
+    create:
+      title: "Add a new line"
     edit:
+      title: "Update line %{name}"
+    update:
       title: "Update line %{name}"
     show:
       title: "Line %{name}"
@@ -66,6 +75,7 @@ en:
         networks:
           name: "Network"
         company_id: "Company"
+        company: "Company"
         secondary_company: "Secondary company"
         companies:
           name: "Company"

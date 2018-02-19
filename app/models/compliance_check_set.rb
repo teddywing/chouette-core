@@ -1,6 +1,6 @@
 class ComplianceCheckSet < ActiveRecord::Base
   extend Enumerize
-  has_paper_trail
+  has_paper_trail class_name: 'PublicVersion'
 
   belongs_to :referential
   belongs_to :compliance_control_set
@@ -19,11 +19,33 @@ class ComplianceCheckSet < ActiveRecord::Base
     where('created_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)
   end
 
+  scope :blocked, -> { where('created_at < ? AND status = ?', 4.hours.ago, 'running') }
+
+  def self.finished_statuses
+    %w(successful failed warning aborted canceled)
+  end
+
+  def self.abort_old
+    where(
+      'created_at < ? AND status NOT IN (?)',
+      4.hours.ago,
+      finished_statuses
+    ).update_all(status: 'aborted')
+  end
+
   def notify_parent
     if parent
       # parent.child_change
       update(notified_parent_at: DateTime.now)
     end
+  end
+
+  def organisation
+    workbench.organisation
+  end
+
+  def human_attribute_name(*args)
+    self.class.human_attribute_name(*args)
   end
 
   def update_status

@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
+
 
 export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCancel, timetable, metas}, {I18n}) {
   return (
@@ -7,11 +9,11 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
         <div className='modal-dialog'>
           <div className='modal-content'>
             <div className='modal-header'>
-              <h4 className='modal-title'>{I18n.time_tables.edit.confirm_modal.title}</h4>
+              <h4 className='modal-title'>{I18n.t('time_tables.edit.confirm_modal.title')}</h4>
             </div>
             <div className='modal-body'>
               <div className='mt-md mb-md'>
-                <p>{I18n.time_tables.edit.confirm_modal.message}</p>
+                <p>{I18n.t('time_tables.edit.confirm_modal.message')}</p>
               </div>
             </div>
             <div className='modal-footer'>
@@ -21,7 +23,7 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
                 type='button'
                 onClick={() => { onModalCancel(modal.confirmModal.callback) }}
               >
-                {I18n.cancel}
+                {I18n.t('cancel')}
               </button>
               <button
                 className='btn btn-primary'
@@ -29,7 +31,7 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
                 type='button'
                 onClick={() => { onModalAccept(modal.confirmModal.callback, timetable, metas) }}
               >
-                {I18n.actions.submit}
+                {I18n.t('actions.submit')}
               </button>
             </div>
           </div>

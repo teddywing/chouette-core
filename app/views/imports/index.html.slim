@@ -1,6 +1,4 @@
 - breadcrumb :imports, @workbench
-- content_for :page_header_actions do
-  = link_to(t('imports.actions.new'), new_workbench_import_path(workbench_id: @workbench), class: 'btn btn-primary')
 
 .page_content
   .container-fluid
@@ -34,7 +32,6 @@
                 attribute: 'creator' \
               ) \
             ],
-            links: [],
             cls: 'table has-search'
 
           = new_pagination @imports, 'pull-right'

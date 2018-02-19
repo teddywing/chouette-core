@@ -6,6 +6,7 @@
       - if policy(Referential).create?
         = link_to t('actions.import'), workbench_imports_path(@workbench), class: 'btn btn-primary'
         = link_to t('actions.add'), new_referential_path(workbench_id: @workbench), class: 'btn btn-primary'
+      = link_to t('workbenches.actions.show_output'), workbench_output_path(@workbench), class: 'btn btn-primary'
 
 .page_content
   .container-fluid
@@ -29,7 +30,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :status, \
-                  attribute: Proc.new {|w| w.archived? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
+                  attribute: Proc.new {|w| w.referential_read_only? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :organisation, \
@@ -53,13 +54,13 @@
                   attribute: Proc.new {|w| l(w.updated_at, format: :short)} \
                 ), \
                 TableBuilderHelper::Column.new( \
-                  key: :published_at, \
-                  attribute: '' \
+                  key: :merged_at, \
+                  attribute: Proc.new {|w| w.merged_at ? l(w.merged_at, format: :short) : '-'} \
                 ) \
               ],
-              selectable: true,
-              links: [:show, :edit],
-              cls: 'table has-filter has-search'
+              selectable: ->(ref){ @workbench.referentials.include?(ref) },
+              cls: 'table has-filter has-search',
+              action: :index
 
             = multiple_selection_toolbox([:delete], collection_name: 'referentials')
 
@@ -71,6 +72,6 @@
           = replacement_msg t('referentials.search_no_results')
 
 = javascript_tag do
-  | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
+  // | window.I18n = #{(I18n.backend.send(:translations).to_json).html_safe};
 
 = javascript_pack_tag 'date_filters'

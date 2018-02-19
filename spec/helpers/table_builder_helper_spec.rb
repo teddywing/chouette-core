@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'htmlbeautifier'
 
 module TableBuilderHelper
@@ -5,6 +6,13 @@ module TableBuilderHelper
 end
 
 describe TableBuilderHelper, type: :helper do
+  let(:features){ [] }
+  before do
+    allow_any_instance_of(AF83::Decorator::Link).to receive(:check_feature){|f|
+      features.include?(f)
+    }
+  end
+
   describe "#table_builder_2" do
     it "builds a table" do
       referential = build_stubbed(:workbench_referential)
@@ -35,9 +43,8 @@ describe TableBuilderHelper, type: :helper do
         id: referentials[0].workbench.id
       })
 
-      referentials = ModelDecorator.decorate(
-        referentials,
-        with: ReferentialDecorator
+      referentials = ReferentialDecorator.decorate(
+        referentials
       )
 
       expected = <<-HTML
@@ -54,12 +61,12 @@ describe TableBuilderHelper, type: :helper do
             <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=lines">Lignes<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
             <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=created_at">Créé le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
             <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=updated_at">Edité le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
-            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=published_at">Intégré le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
+            <th><a href="/workbenches/#{workbench.id}?direction=desc&amp;sort=merged_at">Finalisé le<span class="orderers"><span class="fa fa-sort-asc active"></span><span class="fa fa-sort-desc "></span></span></a></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr class="referential-#{referential.id}">
             <td>
                 <div class="checkbox"><input type="checkbox" name="#{referential.id}" id="#{referential.id}" value="#{referential.id}" /><label for="#{referential.id}"></label></div>
             </td>
@@ -76,15 +83,21 @@ describe TableBuilderHelper, type: :helper do
             <td class="actions">
                 <div class="btn-group">
                     <div class="btn dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></div>
-                    <ul class="dropdown-menu">
-                        <li><a href="/referentials/#{referential.id}">Consulter</a></li>
-                        <li><a href="/referentials/#{referential.id}/edit">Editer</a></li>
-                        <li><a href="/referentials/#{referential.id}/time_tables">Calendriers</a></li>
-                        <li><a href="/referentials/new?from=#{referential.id}">Dupliquer</a></li>
-                        <li><a href="/referentials/#{referential.id}/select_compliance_control_set">Valider</a></li>
-                        <li><a rel="nofollow" data-method="put" href="/referentials/#{referential.id}/archive">Conserver</a></li>
-                        <li class="delete-action"><a data-confirm="Etes vous sûr de vouloir supprimer ce jeu de données ?" rel="nofollow" data-method="delete" href="/referentials/#{referential.id}"><span class="fa fa-trash mr-xs"></span>Supprimer</a></li>
-                    </ul>
+                    <div class="dropdown-menu">
+                        <ul class="primary">
+                            <li class=""><a href="/referentials/#{referential.id}">Consulter</a></li>
+                            <li class=""><a href="/referentials/#{referential.id}/edit">Editer</a></li>
+                        </ul>
+                        <ul class="other">
+                            <li class=""><a href="/referentials/#{referential.id}/time_tables">Calendriers</a></li>
+                            <li class=""><a href="/referentials/new?from=#{referential.id}">Dupliquer</a></li>
+                            <li class=""><a href="/referentials/#{referential.id}/select_compliance_control_set">Valider</a></li>
+                            <li class=""><a rel="nofollow" data-method="put" href="/referentials/#{referential.id}/archive">Conserver</a></li>
+                        </ul>
+                        <ul class="footer">
+                            <li class=" delete-action"><a data-confirm="Etes vous sûr de vouloir supprimer ce jeu de données ?" rel="nofollow" data-method="delete" href="/referentials/#{referential.id}"><span class="fa fa-trash mr-xs"></span>Supprimer</a></li>
+                        </ul>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -105,7 +118,7 @@ describe TableBuilderHelper, type: :helper do
           TableBuilderHelper::Column.new(
             key: :status,
             attribute: Proc.new do |w|
-              if w.archived?
+              if w.referential_read_only?
                 ("<div class='td-block'><span class='fa fa-archive'></span><span>Conservé</span></div>").html_safe
               else
                 ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>").html_safe
@@ -143,12 +156,12 @@ describe TableBuilderHelper, type: :helper do
             attribute: Proc.new {|w| l(w.updated_at, format: :short)}
           ),
           TableBuilderHelper::Column.new(
-            key: :published_at,
+            key: :merged_at,
             attribute: ''
           )
         ],
         selectable: true,
-        links: [:show, :edit],
+        action: :index,
         cls: 'table has-filter has-search'
       )
 
@@ -194,9 +207,9 @@ describe TableBuilderHelper, type: :helper do
         referential_id: referential.id
       })
 
-      companies = ModelDecorator.decorate(
+      companies = CompanyDecorator.decorate(
         companies,
-        with: CompanyDecorator
+        context: { referential: referential }
       )
       stub_policy_scope(company)
 
@@ -213,7 +226,7 @@ describe TableBuilderHelper, type: :helper do
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr class="company-#{company.id}">
             <td>#{company.get_objectid.local_id}</td>
             <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
             <td></td>
@@ -222,9 +235,11 @@ describe TableBuilderHelper, type: :helper do
             <td class="actions">
                 <div class="btn-group">
                     <div class="btn dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></div>
-                    <ul class="dropdown-menu">
-                        <li><a href="/referentials/#{referential.id}/companies/#{company.id}">Consulter</a></li>
-                    </ul>
+                    <div class="dropdown-menu">
+                        <ul class="primary">
+                            <li class=""><a href="/referentials/#{referential.id}/companies/#{company.id}">Consulter</a></li>
+                        </ul>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -306,9 +321,8 @@ describe TableBuilderHelper, type: :helper do
         referential_id: referential.id
       })
 
-      companies = ModelDecorator.decorate(
+      companies = CompanyDecorator.decorate(
         companies,
-        with: CompanyDecorator,
         context: { referential: line_referential }
       )
       stub_policy_scope(company)
@@ -326,7 +340,7 @@ describe TableBuilderHelper, type: :helper do
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr class="company-#{company.id}">
             <td>#{company.get_objectid.local_id}</td>
             <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
             <td></td>
@@ -335,9 +349,11 @@ describe TableBuilderHelper, type: :helper do
             <td class="actions">
                 <div class="btn-group">
                     <div class="btn dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></div>
-                    <ul class="dropdown-menu">
-                        <li><a href="/referentials/#{referential.id}/companies/#{company.id}">Consulter</a></li>
-                    </ul>
+                    <div class="dropdown-menu">
+                        <ul class="primary">
+                            <li class=""><a href="/line_referentials/#{line_referential.id}/companies/#{company.id}">Consulter</a></li>
+                        </ul>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -373,13 +389,93 @@ describe TableBuilderHelper, type: :helper do
           ),
         ],
         sortable: false,
-        links: [:show, :edit, :delete],
         cls: 'table has-search'
       )
 
       beautified_html = HtmlBeautifier.beautify(html_str, indent: '    ')
 
       expect(beautified_html).to eq(expected.chomp)
+    end
+
+    context "on a single row" do
+      let(:referential){ build_stubbed :referential }
+      let(:other_referential){ build_stubbed :referential }
+      let(:user_context){
+        UserContext.new(
+          build_stubbed(
+            :user,
+            organisation: referential.organisation,
+            permissions: [
+              'referentials.create',
+              'referentials.update',
+              'referentials.destroy',
+            ]
+          ),
+          referential: referential
+        )
+      }
+      let(:columns){
+        [
+          TableBuilderHelper::Column.new(
+            key: :name,
+            attribute: 'name'
+          ),
+        ]
+      }
+      let(:item){ referential.decorate }
+      let(:other_item){ other_referential.decorate }
+      let(:selectable){ false }
+      let(:links){ [:show] }
+      let(:overhead){ [] }
+      let(:model_name){ "referential" }
+      let(:other_tr){ helper.send(:tr, other_item, columns, selectable, links, overhead, model_name) }
+      let(:items){ [item, other_item] }
+
+      before(:each){
+        allow(helper).to receive(:current_user).and_return(user_context)
+      }
+
+      context "with all rows non-selectable" do
+        let(:selectable){ false }
+        it "sets all rows as non selectable" do
+          items.each do |i|
+            tr = helper.send(:tr, i, columns, selectable, links, overhead, model_name, :index)
+            klass = "#{TableBuilderHelper.item_row_class_name([referential])}-#{i.id}"
+            selector = "tr.#{klass} [type=checkbox]"
+            expect(tr).to_not have_selector selector
+          end
+        end
+      end
+
+      context "with all rows selectable" do
+        let(:selectable){ true }
+        it "adds a checkbox in all rows" do
+          items.each do |i|
+            tr = helper.send(:tr, i, columns, selectable, links, overhead, model_name, :index)
+            klass = "#{TableBuilderHelper.item_row_class_name([referential])}-#{i.id}"
+            selector = "tr.#{klass} [type=checkbox]"
+            expect(tr).to have_selector selector
+          end
+        end
+      end
+
+      context "with THIS row non selectable" do
+        let(:selectable){ ->(i){ i.id != item.id } }
+        it "adds a checkbox in all rows" do
+          items.each do |i|
+            tr = helper.send(:tr, i, columns, selectable, links, overhead, model_name, :index)
+            klass = "#{TableBuilderHelper.item_row_class_name([referential])}-#{i.id}"
+            selector = "tr.#{klass} [type=checkbox]"
+            expect(tr).to have_selector selector
+          end
+        end
+        it "disables this rows checkbox" do
+          tr = helper.send(:tr, item, columns, selectable, links, overhead, model_name, :index)
+          klass = "#{TableBuilderHelper.item_row_class_name([referential])}-#{item.id}"
+          selector = "tr.#{klass} [type=checkbox][disabled]"
+          expect(tr).to have_selector selector
+        end
+      end
     end
   end
 end

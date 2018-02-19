@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import actions from'../actions'
 
 export default function Navigate({ dispatch, vehicleJourneys, pagination, status, filters}) {
@@ -16,8 +17,7 @@ export default function Navigate({ dispatch, vehicleJourneys, pagination, status
   if(status.fetchSuccess == true) {
     return (
       <div className="pagination">
-        Liste des horaires {minVJ} à {maxVJ} sur {pagination.totalCount}
-
+        {I18n.t("vehicle_journeys.vehicle_journeys_matrix.pagination", {minVJ, maxVJ, total:pagination.totalCount})}
         <form className='page_links' onSubmit={e => {e.preventDefault()}}>
           <button
             onClick={e => {

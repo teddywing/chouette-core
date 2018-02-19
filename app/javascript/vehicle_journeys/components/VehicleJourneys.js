@@ -1,15 +1,51 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import VehicleJourney from './VehicleJourney'
-
+import StopAreaHeaderManager from '../../helpers/stop_area_header_manager'
 
 export default class VehicleJourneys extends Component {
   constructor(props){
     super(props)
-    this.previousCity = undefined
+    this.headerManager = new StopAreaHeaderManager(
+      _.map(this.stopPoints(), (sp)=>{return sp.object_id}),
+      this.stopPoints(),
+      this.props.filters.features
+    )
   }
+
+  isReturn() {
+    return this.props.routeUrl != undefined
+  }
+
+  vehicleJourneysList() {
+    if(this.isReturn()){
+      return this.props.returnVehicleJourneys
+    }
+    else{
+      return this.props.vehicleJourneys
+    }
+  }
+
+  stopPoints() {
+    if(this.isReturn()){
+      return this.props.returnStopPointsList
+    }
+    else{
+      return this.props.stopPointsList
+    }
+  }
+
   componentDidMount() {
-    this.props.onLoadFirstPage(this.props.filters)
+    this.props.onLoadFirstPage(this.props.filters, this.props.routeUrl)
+  }
+
+  hasFeature(key) {
+    return this.props.filters.features[key]
+  }
+
+  showHeader(object_id) {
+    return this.headerManager.showHeader(object_id)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -55,25 +91,8 @@ export default class VehicleJourneys extends Component {
     }
   }
 
-  cityNameChecker(sp) {
-    let bool = false
-    if(sp.city_name != this.previousCity){
-      bool = true
-      this.previousCity = sp.city_name
-    }
-    return (
-      <div
-        className={(bool) ? 'headlined' : ''}
-        data-headline={(bool) ? sp.city_name : ''}
-        title={sp.city_name + ' (' + sp.zip_code +')'}
-      >
-        <span><span>{sp.name}</span></span>
-      </div>
-    )
-  }
-
   render() {
-    this.previousCity = undefined
+    this.previousBreakpoint = undefined
 
     if(this.props.status.isFetching == true) {
       return (
@@ -87,15 +106,15 @@ export default class VehicleJourneys extends Component {
           <div className='col-lg-12'>
             {(this.props.status.fetchSuccess == false) && (
               <div className='alert alert-danger mt-sm'>
-                <strong>Erreur : </strong>
-                la récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème.
+                <strong>{I18n.tc("error")}</strong>
+                {I18n.t("vehicle_journeys.vehicle_journeys_matrix.fetching_error")}
               </div>
             )}
 
-            { _.some(this.props.vehicleJourneys, 'errors') && (
+            { this.vehicleJourneysList().errors && this.vehicleJourneysList().errors.length && _.some(this.vehicleJourneysList(), 'errors') && (
               <div className="alert alert-danger mt-sm">
-                <strong>Erreur : </strong>
-                {this.props.vehicleJourneys.map((vj, index) =>
+                <strong>{I18n.tc("error")}</strong>
+                {this.vehicleJourneysList().map((vj, index) =>
                   vj.errors && vj.errors.map((err, i) => {
                     return (
                       <ul key={i}>
@@ -107,17 +126,20 @@ export default class VehicleJourneys extends Component {
               </div>
             )}
 
-            <div className={'table table-2entries mt-sm mb-sm' + ((this.props.vehicleJourneys.length > 0) ? '' : ' no_result')}>
+            <div className={'table table-2entries mt-sm mb-sm' + ((this.vehicleJourneysList().length > 0) ? '' : ' no_result')}>
               <div className='t2e-head w20'>
                 <div className='th'>
-                  <div className='strong mb-xs'>ID course</div>
-                  <div>ID mission</div>
-                  <div>Calendriers</div>
+                  <div className='strong mb-xs'>{I18n.attribute_name("vehicle_journey", "id")}</div>
+                  <div>{I18n.attribute_name("vehicle_journey", "name")}</div>
+                  <div>{I18n.attribute_name("vehicle_journey", "journey_pattern_id")}</div>
+                  <div>{I18n.model_name("company")}</div>
+                  <div>{I18n.model_name("time_table", "plural": true)}</div>
+                  { this.hasFeature('purchase_windows') && <div>{I18n.model_name("purchase_window", "plural": true)}</div> }
                 </div>
-                {this.props.stopPointsList.map((sp, i) =>{
+                {this.stopPoints().map((sp, i) =>{
                   return (
                     <div key={i} className='td'>
-                      {this.cityNameChecker(sp)}
+                      {this.headerManager.stopPointHeader(sp.object_id)}
                     </div>
                   )
                 })}
@@ -125,15 +147,18 @@ export default class VehicleJourneys extends Component {
 
               <div className='t2e-item-list w80'>
                 <div>
-                  {this.props.vehicleJourneys.map((vj, index) =>
+                  {this.vehicleJourneysList().map((vj, index) =>
                     <VehicleJourney
                       value={vj}
                       key={index}
                       index={index}
-                      editMode={this.props.editMode}
+                      editMode={this.isReturn() ? false : this.props.editMode}
                       filters={this.props.filters}
+                      features={this.props.features}
                       onUpdateTime={this.props.onUpdateTime}
                       onSelectVehicleJourney={this.props.onSelectVehicleJourney}
+                      vehicleJourneys={this}
+                      disabled={this.isReturn()}
                       />
                   )}
                 </div>

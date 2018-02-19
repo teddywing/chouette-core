@@ -7,10 +7,14 @@ set :scm, :git
 set :repository,  "git@github.com:AF83/stif-boiv.git"
 set :deploy_to, "/var/www/stif-boiv"
 set :use_sudo, false
+set :ruby_version, "2.3.0"
 default_run_options[:pty] = true
 set :group_writable, true
-set :bundle_cmd, "/var/lib/gems/2.2.0/bin/bundle"
-set :rake, "#{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake"
+set :bundle_cmd, "/var/lib/gems/#{ruby_version}/bin/bundle"
+set :rake, "#{bundle_cmd} exec rake"
+set :default_environment, {
+  'PATH' => "/var/lib/gems/#{ruby_version}/bin:$PATH"
+}
 
 set :keep_releases, -> { fetch(:kept_releases, 5) }
 after "deploy:restart", "deploy:cleanup"
@@ -29,7 +33,7 @@ require 'whenever/capistrano'
 #after 'deploy:finalize_update', 'npm:install'
 
 # Whenever
-set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/2.2.0/bin'" } # invoke bin/bundle to use 'correct' ruby environment
+set :whenever_variables, ->{ "'environment=#{fetch :whenever_environment}&bundle_command=bin/bundle exec&additionnal_path=/var/lib/gems/#{ruby_version}/bin'" } # invoke bin/bundle to use 'correct' ruby environment
 
 set :whenever_command, "sudo /usr/local/sbin/whenever-sudo" # use sudo to change www-data crontab
 set :whenever_user, "www-data" # use www-data crontab
@@ -75,6 +79,7 @@ namespace :deploy do
   end
   after 'deploy:update_code', 'deploy:symlink_shared'
   before 'deploy:assets:precompile', 'deploy:symlink_shared'
+  after 'deploy:assets:precompile', "deploy:i18n_js_export"
 
   desc "Make group writable all deployed files"
   task :group_writable do
@@ -88,8 +93,13 @@ namespace :deploy do
   end
   after "deploy:restart", "deploy:sidekiq_restart"
 
+  desc "Run i18n:js:export"
+  task :i18n_js_export do
+    run "cd #{release_path} && RAILS_ENV=#{rails_env} #{rake} i18n:js:export"
+  end
+
   desc "Run db:seed"
   task :seed do
-    run "cd #{current_path} && #{bundle_cmd} exec /var/lib/gems/2.2.0/bin/rake db:seed RAILS_ENV=#{rails_env}"
+    run "cd #{current_path} && RAILS_ENV=#{rails_env} #{rake} db:seed"
   end
 end

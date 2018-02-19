@@ -86,18 +86,36 @@ module TableBuilderHelper
     overhead: [],
 
     # Possibility to override the result of collection.model
-    model: nil
+    model: nil,
+
+    #overrides the params[:action] value
+    action: nil
 
   )
     content_tag :table,
-      thead(collection, columns, sortable, selectable, links.any?, overhead, model || collection.model) +
-        tbody(collection, columns, selectable, links, overhead),
+      thead(collection, columns, sortable, selectable, links.any?, overhead, model || collection.model, action || params[:action]) +
+        tbody(collection, columns, selectable, links, overhead, model, action || params[:action]),
       class: cls
+  end
+
+  def self.item_row_class_name collection, model=nil
+    model_name = model&.name
+
+    model_name ||=
+      if collection.respond_to?(:model)
+        collection.model.name
+      elsif collection.respond_to?(:first)
+        collection.first.class.name
+      else
+        "item"
+      end
+
+    model_name.split("::").last.parameterize
   end
 
   private
 
-  def thead(collection, columns, sortable, selectable, has_links, overhead, model )
+  def thead(collection, columns, sortable, selectable, has_links, overhead, model, action)
     content_tag :thead do
       # Inserts overhead content if any specified
       over_head = ''
@@ -176,7 +194,9 @@ module TableBuilderHelper
         end
 
         # Inserts a blank column for the gear menu
-        if has_links || collection.last.try(:action_links).try(:any?)
+        last_item = collection.last
+        action_links = last_item && last_item.respond_to?(:action_links) && (last_item&.action_links&.is_a?(AF83::Decorator::ActionLinks) ? last_item.action_links(action) : last_item.action_links)
+        if has_links || action_links.try(:any?)
           hcont << content_tag(:th, '')
         end
 
@@ -187,86 +207,94 @@ module TableBuilderHelper
     end
   end
 
-  def tbody(collection, columns, selectable, links, overhead)
-    content_tag :tbody do
-      collection.map do |item|
+  def tr item, columns, selectable, links, overhead, model_name, action
+    klass = "#{model_name}-#{item.id}"
+    content_tag :tr, class: klass do
+      bcont = []
+      if selectable
+        disabled = selectable.respond_to?(:call) && !selectable.call(item)
+        bcont << content_tag(
+          :td,
+          checkbox(id_name: item.try(:id), value: item.try(:id), disabled: disabled)
+        )
+      end
 
-        content_tag :tr do
-          bcont = []
+      columns.each do |column|
+        value = column.value(item)
 
-          if selectable
-            bcont << content_tag(
-              :td,
-              checkbox(id_name: item.try(:id), value: item.try(:id))
-            )
-          end
+        if column.linkable?
+          path = column.link_to(item)
+          link = link_to(value, path)
 
-          columns.each do |column|
-            value = column.value(item)
+          if overhead.empty?
+            bcont << content_tag(:td, link, title: 'Voir')
 
-            if column.linkable?
-              path = column.link_to(item)
-              link = link_to(value, path)
+          else
+            i = columns.index(column)
 
-              if overhead.empty?
-                bcont << content_tag(:td, link, title: 'Voir')
+            if overhead[i].blank?
+              if (i > 0) && (overhead[i - 1][:width] > 1)
+                clsArrayAlt = overhead[i - 1][:cls].split
+
+                bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt))
 
               else
-                i = columns.index(column)
-
-                if overhead[i].blank?
-                  if (i > 0) && (overhead[i - 1][:width] > 1)
-                    clsArrayAlt = overhead[i - 1][:cls].split
-
-                    bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt))
-
-                  else
-                    bcont << content_tag(:td, link, title: 'Voir')
-                  end
-
-                else
-                  clsArray = overhead[columns.index(column)][:cls].split
-
-                  bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray))
-                end
+                bcont << content_tag(:td, link, title: 'Voir')
               end
 
             else
-              if overhead.empty?
-                bcont << content_tag(:td, value)
+              clsArray = overhead[columns.index(column)][:cls].split
 
-              else
-                i = columns.index(column)
-
-                if overhead[i].blank?
-                  if (i > 0) && (overhead[i - 1][:width] > 1)
-                    clsArrayAlt = overhead[i - 1][:cls].split
-
-                    bcont << content_tag(:td, value, class: td_cls(clsArrayAlt))
-
-                  else
-                    bcont << content_tag(:td, value)
-                  end
-
-                else
-                  clsArray = overhead[i][:cls].split
-
-                  bcont << content_tag(:td, value, class: td_cls(clsArray))
-                end
-              end
+              bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray))
             end
           end
 
-          if links.any? || item.try(:action_links).try(:any?)
-            bcont << content_tag(
-              :td,
-              build_links(item, links),
-              class: 'actions'
-            )
-          end
+        else
+          if overhead.empty?
+            bcont << content_tag(:td, value)
 
-          bcont.join.html_safe
+          else
+            i = columns.index(column)
+
+            if overhead[i].blank?
+              if (i > 0) && (overhead[i - 1][:width] > 1)
+                clsArrayAlt = overhead[i - 1][:cls].split
+
+                bcont << content_tag(:td, value, class: td_cls(clsArrayAlt))
+
+              else
+                bcont << content_tag(:td, value)
+              end
+
+            else
+              clsArray = overhead[i][:cls].split
+
+              bcont << content_tag(:td, value, class: td_cls(clsArray))
+            end
+          end
         end
+      end
+
+      action_links = item && item.respond_to?(:action_links) && (item.action_links.is_a?(AF83::Decorator::ActionLinks) ? item.action_links(action) : item.action_links)
+
+      if links.any? || action_links.try(:any?)
+        bcont << content_tag(
+          :td,
+          build_links(item, links, action),
+          class: 'actions'
+        )
+      end
+
+      bcont.join.html_safe
+    end
+  end
+
+  def tbody(collection, columns, selectable, links, overhead, model = nil, action)
+    model_name = TableBuilderHelper.item_row_class_name collection, model
+
+    content_tag :tbody do
+      collection.map do |item|
+        tr item, columns, selectable, links, overhead, model_name, action
       end.join.html_safe
     end
   end
@@ -279,7 +307,7 @@ module TableBuilderHelper
     end
   end
 
-  def build_links(item, links)
+  def build_links(item, links, action)
     trigger = content_tag(
       :div,
       class: 'btn dropdown-toggle',
@@ -288,13 +316,26 @@ module TableBuilderHelper
       content_tag :span, '', class: 'fa fa-cog'
     end
 
-    menu = content_tag :ul, class: 'dropdown-menu' do
-      (
-        CustomLinks.new(item, pundit_user, links, referential).links +
-        item.action_links.select { |link| link.is_a?(Link) }
-      ).map do |link|
-        gear_menu_link(link)
-      end.join.html_safe
+    action_links = item.action_links
+    if action_links.is_a?(AF83::Decorator::ActionLinks)
+      menu = content_tag :div, class: 'dropdown-menu' do
+        item.action_links(action).grouped_by(:primary, :secondary, :footer).map do |group, _links|
+          if _links.any?
+            content_tag :ul, class: group do
+              _links.map{|link| gear_menu_link(link)}.join.html_safe
+            end
+          end
+        end.join.html_safe
+      end
+    else
+      menu = content_tag :ul, class: 'dropdown-menu' do
+        (
+          CustomLinks.new(item, pundit_user, links, referential, workgroup).links +
+          action_links.select { |link| link.is_a?(Link) }
+        ).map do |link|
+          gear_menu_link(link)
+        end.join.html_safe
+      end
     end
 
     content_tag :div, trigger + menu, class: 'btn-group'
@@ -341,14 +382,19 @@ module TableBuilderHelper
     end
   end
 
-  def checkbox(id_name:, value:)
+  def checkbox(id_name:, value:, disabled: false)
     content_tag :div, '', class: 'checkbox' do
-      check_box_tag(id_name, value).concat(
+      check_box_tag(id_name, value, nil, disabled: disabled).concat(
         content_tag(:label, '', for: id_name)
       )
     end
   end
+
   def gear_menu_link(link)
+    klass = []
+    klass << link.extra_class if link.extra_class
+    klass << 'delete-action' if link.method == :delete
+    klass << 'disabled' if link.disabled
     content_tag(
       :li,
       link_to(
@@ -358,7 +404,7 @@ module TableBuilderHelper
       ) do
         link.content
       end,
-      class: ('delete-action' if link.method == :delete)
+      class: (klass.join(' ') if klass.present?)
     )
   end
 
@@ -366,5 +412,11 @@ module TableBuilderHelper
     # Certain controllers don't define a `#current_referential`. In these
     # cases, avoid a `NoMethodError`.
     @__referential__ ||= try(:current_referential)
+  end
+
+  def workgroup
+    # Certain controllers don't define a `#current_referential`. In these
+    # cases, avoid a `NoMethodError`.
+    @__workgroup__ ||= try(:current_workgroup)
   end
 end

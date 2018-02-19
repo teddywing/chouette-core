@@ -18,6 +18,7 @@ module Support
         calendars
         footnotes
         imports
+        merges
         journey_patterns
         referentials
         routes

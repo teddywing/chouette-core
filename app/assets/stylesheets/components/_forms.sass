@@ -85,9 +85,15 @@ input
 
 // BS horizontal form label positionning fix
 .form-horizontal
+  input[type="radio"].form-control
+    height: auto
+    width: auto
   .form-group
     position: relative
-
+    .radio-inline
+      padding-top: 4px
+      &:first-child
+        padding-left: 0
     > .control-label
       &[class*='col-sm-']
         float: none
@@ -229,6 +235,13 @@ $cbx-size-xs: 15px
     &[type='checkbox']:checked + label:before
       background-color: $blue
 
+    &[type='checkbox']:disabled + label
+      &:before
+        border-color: $grey
+        background-color: $lightgrey
+        cursor: not-allowed
+      &:after
+        display: none
 // Table adjustments
 table, .table
   .td, td, .th, th
@@ -243,8 +256,15 @@ table, .table
   &.table-2entries .t2e-item
     > .th
       position: relative
+      > .st_action
+        list-style-type: none
+        button
+          border-radius: 50%
+          background: $blue
+          color: white
+          border: none
 
-      > .checkbox
+      > .checkbox, > .st_action
         position: absolute
         right: 0
         top: 0
@@ -277,6 +297,7 @@ table, .table
   height: $cbx-size
   width: $cbx-size
   margin: 0 auto
+  transition: transform 0.2s, background-color 0.2s
 
   > input[type='checkbox']
     &:not(:checked), &:checked
@@ -436,6 +457,19 @@ table, .table
     margin: 0
     min-height: 41px
     padding: 5px 15px
+    &.active
+      &:after
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        height: 4px
+        background: $blue
+        content: ""
+    &.per-page-select
+      padding-top: 10px
+      .selected
+        font-weight: bold
 
     .control-label
       font-weight: 700
@@ -453,6 +487,20 @@ table, .table
 
     > .form-group.select2ed
       width: 300px
+
+    &.name-filter
+      .checkbox_list
+        .form-group
+          padding: 10px
+          width: 100px
+          &.to
+            width: 20px
+            color: $grey
+            text-align: center
+          input
+            width: 100%
+          & + .form-group
+            padding-left: 0px
 
   > .actions
     position: absolute

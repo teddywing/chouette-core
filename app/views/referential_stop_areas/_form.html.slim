@@ -7,7 +7,7 @@
       = form.inputs do
         = form.input :id, as: :hidden
         = form.input :name, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.name")}
-        = form.input :stop_area_type, as: :select, :input_html => { :disabled => !@stop_area.new_record? }, :collection => Chouette::StopArea.area_type.options, :include_blank => false }
+        = form.input :stop_area_type, as: :select, :input_html => { :disabled => !@stop_area.new_record? }, :collection => Chouette::StopArea.area_type.options, :include_blank => false
 
         .location_info
           h3 = t("stop_areas.stop_area.localisation")

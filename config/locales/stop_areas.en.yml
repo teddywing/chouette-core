@@ -1,8 +1,10 @@
 en:
   stop_areas: &en_stop_areas
+    waiting_time_format: "%{value} minutes"
     search_no_results: "No stop area matching your query"
     errors:
       empty: Aucun stop_area_id
+      parent_area_type: can not be of type %{area_type}
     default_geometry_success: "%{count} modified stop areas"
     stop_area:
       no_position: "No Position"
@@ -14,8 +16,14 @@ en:
       accessibility: "Accessibility"
     actions:
       new: "Add a new stop"
+      create: "Add a new stop"
       edit: "Edit this stop"
-      destroy: "Remove this stop"
+      update: "Edit this stop"
+      destroy: "Remove"
+      activate: "Activate this stop"
+      deactivate: "Deactivate this stop"
+      activate_confirm: "Are you sure you want to activate this stop ?"
+      deactivate_confirm: "Are you sure you want tode activate this stop ?"
       deleted_at: "Activated"
       destroy_confirm: "Are you sure you want destroy this stop and all of his children ?"
       select_parent: "Create or modify the relation child -> parent"
@@ -40,10 +48,14 @@ en:
       area_type: Type an area type...
     new:
       title: "Add a new stop"
+    update:
+      title: "Add a new stop"
     form:
       address: "246 Boulevard Saint-Germain, 75007 Paris"
       geolocalize: "Pinpoint "
     edit:
+      title: "Update stop %{stop_area}"
+    update:
       title: "Update stop %{stop_area}"
     show:
       title: "Stop %{stop_area}"
@@ -98,7 +110,7 @@ en:
         area_type: "Area type"
         nearest_topic_name: "Nearest point of interest"
         street_name: "Street name"
-        country_code: "INSEE code"
+        country_code: "Country"
         fare_code: "Fare code"
         mobility_restricted_suitability: "Mobility reduced passenger suitable"
         stairs_availability: "Escalator"
@@ -126,6 +138,7 @@ en:
         city_name: "City"
         created_at: Created at
         updated_at: Updated at
+        waiting_time: Waiting time (minutes)
   formtastic:
     titles:
       stop_area:

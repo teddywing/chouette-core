@@ -1,7 +1,4 @@
 - breadcrumb :referential_companies, @referential
-- content_for :page_header_actions do
-  - if policy(Chouette::Company).create?
-    = link_to(t('companies.actions.new'), new_referential_company_path(@referential), class: 'btn btn-default')
 
 .page_content
   .container-fluid
@@ -46,7 +43,6 @@
                 attribute: 'url' \
               ) \
             ],
-            links: [:show, :edit],
             cls: 'table has-search'
 
           = new_pagination @companies, 'pull-right'

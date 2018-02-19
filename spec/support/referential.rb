@@ -11,8 +11,8 @@ module ReferentialHelper
   def self.included(base)
     base.class_eval do
       extend ClassMethods
-      alias_method :referential, :first_referential
-      alias_method :organisation, :first_organisation
+      base.let(:referential){ first_referential }
+      base.let(:organisation){ first_organisation }
     end
   end
 
@@ -28,7 +28,6 @@ module ReferentialHelper
         assign :organisation, referential.organisation
       end
     end
-
 
   end
 
@@ -78,7 +77,7 @@ RSpec.configure do |config|
     first_referential.switch
   end
 
-  config.before(:each, :js => true) do
+  config.before(:each, truncation: true) do
     DatabaseCleaner.strategy = :truncation, { except: %w[spatial_ref_sys] }
   end
 

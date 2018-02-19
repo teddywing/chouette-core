@@ -2,7 +2,7 @@ RSpec.describe Chouette::Route do
 
   let!( :route ){ create :route }
 
-  context '#duplicate' do 
+  context '#duplicate' do
     describe 'properties' do
       it 'same attribute values' do
         route.duplicate
@@ -23,7 +23,12 @@ RSpec.describe Chouette::Route do
       it 'duplicates its stop points' do
         expect{ route.duplicate }.to change{Chouette::StopPoint.count}.by(route.stop_points.count)
       end
-      it 'does bot duplicate the stop areas' do
+
+      it 'duplicates its stop points in the same order' do
+        expect(route.duplicate.stop_points.order(:position).map(&:stop_area_id)).to eq route.stop_points.order(:position).map(&:stop_area_id)
+      end
+
+      it 'does not duplicate the stop areas' do
         expect{ route.duplicate }.not_to change{Chouette::StopArea.count}
       end
     end
@@ -34,7 +39,7 @@ RSpec.describe Chouette::Route do
 
       it 'the required attributes' do
         expect( values_for_create(first_duplicate, except: %w{objectid name checksum checksum_source}) ).to eq( values_for_create( second_duplicate, except: %w{objectid name checksum checksum_source} ) )
-      end 
+      end
 
       it 'the stop areas' do
         expect( first_duplicate.stop_areas.pluck(:id) ).to eq( route.stop_areas.pluck(:id) )

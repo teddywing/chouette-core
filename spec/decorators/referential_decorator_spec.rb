@@ -1,4 +1,5 @@
 RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
+  include Support::DecoratorHelpers
 
   let( :object ){ build_stubbed :referential }
   let( :referential ){ object }
@@ -20,8 +21,8 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
 
     context 'unarchived referential' do
       context 'no rights' do
-        it 'has only a Calendar action' do
-          expect_action_link_hrefs.to eq([referential_time_tables_path(object)])
+        it 'has only show and Calendar actions' do
+          expect_action_link_hrefs.to eq([[object], referential_time_tables_path(object)])
         end
       end
 
@@ -30,8 +31,9 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
         let( :user ){ build_stubbed :allmighty_user }
 
         it 'has only default actions' do
-          expect_action_link_elements.to be_empty
+          expect_action_link_elements.to eq ["Consulter", "Calendriers", "Dupliquer"]
           expect_action_link_hrefs.to eq([
+            [object],
             referential_time_tables_path(object),
             new_referential_path(from: object)
           ])
@@ -40,16 +42,36 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
       context 'all rights and same organisation' do
 
         let( :user ){ build_stubbed :allmighty_user, organisation: referential.organisation }
+        let( :action){ :index }
+        context "on index" do
+          it 'has corresponding actions' do
+            expect_action_link_elements(action).to eq ["Consulter", "Editer", "Calendriers", "Dupliquer", "Valider", "Conserver","<span class=\"fa fa-trash mr-xs\"></span>Supprimer"]
+            expect_action_link_hrefs(action).to eq([
+              [object],
+              [:edit, object],
+              referential_time_tables_path(object),
+              new_referential_path(from: object),
+              referential_select_compliance_control_set_path(object),
+              archive_referential_path(object),
+              referential_path(object)
+            ])
+          end
+        end
 
-        it 'has all actions' do
-          expect_action_link_elements.to eq(%w{Purger})
-          expect_action_link_hrefs.to eq([
-            referential_time_tables_path(object),
-            new_referential_path(from: object),
-            referential_select_compliance_control_set_path(object),
-            archive_referential_path(object),
-            referential_path(object)
-          ])
+        context "on show" do
+          let( :action){ :show }
+          it 'has corresponding actions' do
+            expect_action_link_elements(action).to eq ["Editer", "Calendriers", "Dupliquer", "Valider", "Conserver", "Purger", "<span class=\"fa fa-trash mr-xs\"></span>Supprimer"]
+            expect_action_link_hrefs(action).to eq([
+              [:edit, object],
+              referential_time_tables_path(object),
+              new_referential_path(from: object),
+              referential_select_compliance_control_set_path(object),
+              archive_referential_path(object),
+              "#",
+              referential_path(object)
+            ])
+          end
         end
       end
     end
@@ -57,17 +79,19 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
     context 'archived referential' do
       before { referential.archived_at = 42.seconds.ago }
       context 'no rights' do
-        it 'has only a Calendar action' do
-          expect_action_link_hrefs.to eq([referential_time_tables_path(object)])
+        it 'has only ahow and calendar actions' do
+          expect_action_link_hrefs.to eq([[object], referential_time_tables_path(object)])
         end
       end
 
       context 'all rights and different organisation' do
         let( :user ){ build_stubbed :allmighty_user }
         it 'has only default actions' do
-          expect_action_link_elements.to be_empty
+          expect_action_link_elements.to eq ["Consulter", "Calendriers", "Dupliquer"]
           expect_action_link_hrefs.to eq([
+            [object],
             referential_time_tables_path(object),
+            new_referential_path(from: object)
           ])
         end
       end

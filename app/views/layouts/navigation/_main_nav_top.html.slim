@@ -1,5 +1,5 @@
 .nav-menu#menu_top
-  .brandname = t('brandname')
+  .brandname = link_to t('brandname'), root_path
 
   .menu-content
     .menu-item
@@ -11,12 +11,16 @@
           span.fa.fa-lg.fa-tasks
 
         = link_to '#', class: 'menu-item', data: { panel: 'toggle', target: '#profile_panel' }, title: 'Profil' do
-          span = current_user.username
+          span = current_user.name
           span.fa.fa-lg.fa-user
 
+        - if Rails.application.config.development_toolbar
+          = link_to '#', data: { toggle: 'modal', target: '#development-toolbar' }, class: "toolbar-button menu-item" do
+            .fa.fa-cog
 
         = link_to destroy_user_session_path, method: :delete, class: 'menu-item', title: 'Se déconnecter' do
           span.fa.fa-lg.fa-sign-out
+
 
   = render 'layouts/navigation/nav_panel_operations'
   = render 'layouts/navigation/nav_panel_profile' if user_signed_in?

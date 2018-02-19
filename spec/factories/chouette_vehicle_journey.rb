@@ -30,6 +30,7 @@ FactoryGirl.define do
                    :arrival_time    => "2000-01-01 #{arrival_time} UTC",
                    :departure_time  => "2000-01-01 #{departure_time} UTC")
           end
+          vehicle_journey.update_checksum!
         end
 
         factory :vehicle_journey_odd do

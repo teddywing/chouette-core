@@ -1,9 +1,9 @@
-class ImportDecorator < Draper::Decorator
+class ImportDecorator < AF83::Decorator
   decorates Import
 
-  delegate_all
+  set_scope { context[:workbench] }
 
-  def import_status_css_class
+  define_instance_method :import_status_css_class do
     cls =''
     cls = 'overheaded-success' if object.status == 'successful'
     cls = 'overheaded-warning' if object.status == 'warning'
@@ -11,36 +11,16 @@ class ImportDecorator < Draper::Decorator
     cls
   end
 
-  def action_links
-    policy = h.policy(object)
-    links = []
-
-    links << Link.new(
-      content: h.t('imports.actions.show'),
-      href: h.workbench_import_path(
-        context[:workbench],
-        object
-      )
-    )
-
-    links << Link.new(
-      content: h.t('imports.actions.download'),
-      href: object.file.url
-    )
-
-    if policy.destroy?
-      links << Link.new(
-        content: h.destroy_link_content,
-        href: h.workbench_import_path(
-          context[:workbench],
-          object
-        ),
-        method: :delete,
-        data: { confirm: h.t('imports.actions.destroy_confirm') }
-      )
-    end
-
-    links
+  create_action_link do |l|
+    l.content t('imports.actions.new')
   end
 
+  with_instance_decorator do |instance_decorator|
+    instance_decorator.show_action_link
+
+    instance_decorator.action_link secondary: :show do |l|
+      l.content t('imports.actions.download')
+      l.href { object.file.url }
+    end
+  end
 end

@@ -10,6 +10,7 @@ RSpec.describe JourneyPatternsCollectionsController, :type => :controller do
 
     before do
       allow(controller).to receive(:pundit_user).and_return(user_context)
+      allow(controller).to receive(:current_organisation).and_return(@user.organisation)
     end
 
     it 'computes them correctly if not authorized' do
@@ -22,6 +23,22 @@ RSpec.describe JourneyPatternsCollectionsController, :type => :controller do
       expect( controller.user_permissions ).to eq({'journey_patterns.create'  => true,
                                                    'journey_patterns.destroy' => true,
                                                    'journey_patterns.update'  => true }.to_json)
+    end
+  end
+
+  context "get show" do
+    login_user
+
+    let( :referential ){ Referential.first }
+    let( :line ){ create(:line) }
+    let( :route ){ create(:route, line: line) }
+
+    let(:request){
+      get :show, referential_id: referential.id, line_id: line.id, route_id: route.id, format: :json
+    }
+    it 'should be successful' do
+      request
+      expect(response).to be_success
     end
   end
 end

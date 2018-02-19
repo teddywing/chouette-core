@@ -1,31 +1,40 @@
 # Installation Guide
 
-This guide is based on mac/OS with [Homebrew](https://brew.sh/) and [RVM](https://rvm.io/)
-
 ## Ruby
 
-Get a correct `.ruby-version` (Can we remove it from `.gitignore`?)
-and install that version.
+Example with [rvm](https://rvm.io/) (other solutions : rbenv, packages..):
 
-Example with [rvm](https://rvm.io/):
-
-        rvm install 2.3.1
-
-Add the bundler gem
-
-        gem install bundler
-
-Go into your local repro and install the gems
-
-        bundle
+```sh
+rvm install 2.3.1
+```
 
 ## Node and Yarn
 
-Yarn needs a node version ≥ 6, if you use Node Version Manager [NVM](https://github.com/creationix/nvm)  you can rely on the content of `.nvmrc`.
+Yarn needs node. If you use Node Version Manager [NVM](https://github.com/creationix/nvm)  you can rely on the content of `.nvmrc`. Otherwise please make sure to use a compatible version, still best to use the same as indicated by `.nvrmc`.
 
-Otherwise please make sure to use a compatible version, still best to use the same as indicated by `.nvrmc`.
+* Install node
 
-Then install yarn (`brew install yarn` does nicely on macOS).
+```sh
+nvm install 6.12.0
+```
+
+* Install [yarn](https://yarnpkg.com/lang/en/docs/install/)
+
+```sh
+// On macOS
+brew install yarn
+
+// On Debian/ubuntu
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update && sudo apt-get install yarn
+```
+
+* Install nodes packages
+
+```sh
+yarn install
+```
 
 ### Installation Caveats
 
@@ -33,13 +42,17 @@ Then install yarn (`brew install yarn` does nicely on macOS).
 
 `libv8` might cause you troubles, depending on your local configuration. If you have `libv8` installed (probably because of `node.js`) you might need to tell bundler/Rubygems to use the system version.
 
-
-        bundle config build.libv8 --with-system-v8
-        bundle
+```sh
+bundle config build.libv8 --with-system-v8
+bundle
+```
 
 or
-        gem install libv8 -v '<version>' -- --with-system-v8
-        bundle
+
+```sh
+gem install libv8 -v '<version>' -- --with-system-v8
+bundle
+```
 
 You will get the correct value of `<version>` from bundler's error message.
 
@@ -49,35 +62,18 @@ Even after `libv8` installation working, the gem `therubyracer` might not like t
 
 In that case however we can let the gem make its own choice:
 
-        gem uninstall libv8
-        gem install therubyracer -v '<version>'
+```sh
+gem uninstall libv8
+gem install therubyracer -v '<version>'
+```
 
 The version to be installed is indicated in the error message bundler gave us in the first place.
 
 This will install an appropriate `libv8` version and we can continue with `bundle`.
 
-## Rails
+## Postgres
 
-### Dependencies
-
-As documented [here](https://github.com/dryade/georuby-ext/issues/2) we need some more libs before we can start the `rake` setup tasks. On mac/OS the easiest way is just to install `postgis` now with `homebrew` as this will
-install all needed libraries.
-
-Also if on Linux you might discover a problem as late as when launching `rake`.
-In case of a stacktrace similar to this one
-
-```
-$ bundle exec rake --trace -T
-rake aborted!
-LoadError: library names list must not be empty
-```
-
-you need to install `libproj4-dev` on your system.
-
-
-### Postgres
-
-#### Create user
+### Create user
 
       createuser -s -U $USER -P chouette
                   ^    ^      ^
@@ -87,19 +83,20 @@ you need to install `libproj4-dev` on your system.
 
 When promted for the password enter the highly secure string `chouette`.
 
+## Rails
 
-#### Create database
+### Dependencies
 
-      bundle exec rake db:create
-      bundle exec rake db:migrate
+As documented [here](https://github.com/dryade/georuby-ext/issues/2) we need some more libs before we can start the `rake` setup tasks.
 
-      RAILS_ENV=test bundle exec rake db:create
-      RAILS_ENV=test bundle exec rake db:migrate
 
-#### Install node.js packages
+On mac/OS :
 
-      bundle exec rake npm:install
+```sh
+brew install postgis
+```
 
+<<<<<<< HEAD
 ### Authentication
 
 See `config.chouette_authentication_settings`.
@@ -138,46 +135,105 @@ If PG complains about illegal type `hstore` in your tests that is probably becau
 
       bundle exec rails server
 
+=======
+On debian/ubuntu system :
 
-#### Synchronize With STIF
+```sh
+sudo apt-get install libproj-dev postgis
+```
 
-If you have access to STIF CodifLigne and Reflex :
+### Install gems
 
-* Launch Sidekiq
+Add the bundler gem
 
-      bundle exec sidekiq
+```sh
+gem install bundler
+```
 
-* Execute the Synchronization Tasks
+Go into your local repository and install the gems
 
-      bundle exec rake codifligne:sync
-      bundle exec rake reflex:sync
+```sh
+bundle install
+```
 
-**N.B.** These are asynchronious tasks, you can observe the launched jobs in your [Sidekiq Console](http://localhost:3000/sidekiq)
+#### Nokogiri on macOS
 
-#### Data in various Apartments (Referentials)
-
-To create `Referential` objects with some data (`Route`, `JourneyPattern`, `VehicleJourney`, etc) :
-
-      bundle exec rake referential:create
-
-# Troubleshooting
-
-## Postgres
-
-If Postgres complains about illegal type `hstore` in your tests that is probably because the shared extension is not installed, here is what to do:
-
-      bundle exec rake db:test:purge
-
-Thanks to `lib/tasks/extensions.rake`.
-
-## macOS
-
-### Nokogiri
-
-http://www.nokogiri.org/tutorials/installing_nokogiri.html tells us that `xz` can cause troubles, here is what to do 
+http://www.nokogiri.org/tutorials/installing_nokogiri.html tells us that `xz` can cause troubles, here is what to do
 
 ```
 brew unlink xz
 gem install nokogiri # or bundle install
 brew link xz
 ```
+
+### Database
+
+#### Create database
+
+```sh
+bundle exec rake db:create db:migrate
+RAILS_ENV=test bundle exec rake db:create db:migrate
+```
+
+#### Load seed datas
+>>>>>>> master
+
+```sh
+bundle exec rake db:seed:stif
+```
+
+#### Synchronise datas with lines and stop areas referentials
+
+* Launch Sidekiq
+
+```sh
+bundle exec sidekiq
+```
+
+* Execute the Synchronization Tasks
+
+```sh
+bundle exec rake codifligne:sync
+bundle exec rake reflex:sync
+```
+
+**N.B.** These are asynchronious tasks, you can observe the launched jobs in your [Sidekiq Console](http://localhost:3000/sidekiq)
+
+#### Data in various Apartments (Referentials)
+
+To create `Referential` objects with some data (`Route`, `JourneyPattern`, `VehicleJourney`, etc), you need to wait codifligne and reflex jobs finished. And then you can launch :
+
+```sh
+bundle exec rake referential:create
+```
+
+### Check installation
+
+#### Run tests
+
+#### Rspec
+
+```sh
+bundle exec rake spec
+bundle exec rake teaspoon
+```
+
+If Postgres complains about illegal type `hstore` or `unaccent` in your tests that is probably because the shared extension is not installed, here is what to do:
+
+      bundle exec rake db:test:purge
+
+Thanks to `lib/tasks/extensions.rake`.
+
+#### Jest (React integration specs)
+
+`grunt jest` to run the whole specs.
+
+`grunt` to watch for changes and automatically run corresponding tests.
+
+#### Start local server
+
+```sh
+bin/webpack-dev-server // Launch webpack server to compile assets on the fly
+bundle exec rails server // Launch rails server
+```
+You need to have an account on [STIF Portail](http://stif-portail-dev.af83.priv/) to connect to the Rails application.

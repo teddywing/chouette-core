@@ -12,6 +12,7 @@ RSpec.describe Workbench, :type => :model do
   it { should belong_to(:organisation) }
   it { should belong_to(:line_referential) }
   it { should belong_to(:stop_area_referential) }
+  it { should belong_to(:workgroup) }
   it { should belong_to(:output).class_name('ReferentialSuite') }
 
   it { should have_many(:lines).through(:line_referential) }
@@ -36,7 +37,7 @@ RSpec.describe Workbench, :type => :model do
     let(:workbench) { create :workbench, organisation: organisation }
 
     it 'should filter lines based on my organisation functional_scope' do
-      ids.insert('STIF:CODIFLIGNE:Line:0000').each do |id|
+      (ids + ['STIF:CODIFLIGNE:Line:0000']).each do |id|
         create :line, objectid: id, line_referential: workbench.line_referential
       end
       lines = workbench.lines

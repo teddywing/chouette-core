@@ -13,6 +13,8 @@ html lang=I18n.locale
 
     = javascript_pack_tag 'application'
     = javascript_include_tag 'application'
+    = javascript_tag do
+      | I18n.locale = '#{I18n.locale}'
 
   body
     = render 'layouts/navigation/main_nav'
@@ -21,3 +23,6 @@ html lang=I18n.locale
     = yield
     #sidebar
       = yield :sidebar
+
+    = render 'shared/development_toolbar'
+    = yield :javascript

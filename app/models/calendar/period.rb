@@ -1,5 +1,5 @@
 class Calendar < ActiveRecord::Base
-  
+
   class Period
     include ActiveAttr::Model
 
@@ -9,6 +9,11 @@ class Calendar < ActiveRecord::Base
 
     validates_presence_of :begin, :end
     validate :check_end_greather_than_begin
+
+    alias_method :period_start, :begin
+    alias_method :period_end, :end
+    alias_method :period_start=, :begin=
+    alias_method :period_end=, :end=
 
     def check_end_greather_than_begin
       if self.begin && self.end && self.begin >= self.end

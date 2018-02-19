@@ -1,26 +1,26 @@
 - breadcrumb :stop_area, @stop_area_referential, @stop_area
 - page_header_content_for @stop_area
-- content_for :page_header_content do
-  .row
-    .col-lg-12.text-right.mb-sm
-      - @stop_area.action_links.each do |link|
-        = link_to link.href,
-            method: link.method,
-            data: link.data,
-            class: 'btn btn-primary' do
-              = link.content
 
 / PageContent
 .page_content
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
-        = definition_list t('metadatas'),
-          { t('id_reflex') => @stop_area.get_objectid.short_id,
-            @stop_area.human_attribute_name(:stop_area_type) => t("area_types.label.#{@stop_area.stop_area_type}"),
+        - attributes = { t('id_reflex') => @stop_area.get_objectid.short_id }
+
+        - if has_feature?(:stop_area_localized_names)
+          - @stop_area.localized_names.each do |k, v|
+            - attributes.merge!({label_for_country(k, @stop_area.human_attribute_name(:name)) => v }) if v.present?
+        - attributes.merge!({ @stop_area.human_attribute_name(:parent) => @stop_area.parent ? link_to(@stop_area.parent.name, stop_area_referential_stop_area_path(@stop_area_referential, @stop_area.parent)) : "-" }) if @stop_area.commercial?
+        - attributes.merge!({ @stop_area.human_attribute_name(:stop_area_type) => Chouette::AreaType.find(@stop_area.area_type).try(:label),
             @stop_area.human_attribute_name(:registration_number) => @stop_area.registration_number,
-            'Coordonnées' => geo_data(@stop_area, @stop_area_referential),
+            })
+        - attributes.merge!(@stop_area.human_attribute_name(:waiting_time) => @stop_area.waiting_time_text) if has_feature?(:stop_area_waiting_time)
+        - attributes.merge!({ "Coordonnées" => geo_data(@stop_area, @stop_area_referential),
             @stop_area.human_attribute_name(:zip_code) => @stop_area.zip_code,
             @stop_area.human_attribute_name(:city_name) => @stop_area.city_name,
+            @stop_area.human_attribute_name(:country_code) => @stop_area.country_code.presence || '-',
             'Etat' => (@stop_area.deleted_at ? 'Supprimé' : 'Actif'),
-            @stop_area.human_attribute_name(:comment) => @stop_area.try(:comment) }
+            @stop_area.human_attribute_name(:comment) => @stop_area.try(:comment),
+            })
+        = definition_list t('metadatas'), attributes

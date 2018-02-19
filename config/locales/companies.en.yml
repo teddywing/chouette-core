@@ -1,6 +1,7 @@
 en:
   companies: &en_companies
     search_no_results: "No company matching your query"
+    search_no_results_for_filter: "No company has been set for these journeys"
     actions:
       new: "Add a new company"
       edit: "Edit this company"

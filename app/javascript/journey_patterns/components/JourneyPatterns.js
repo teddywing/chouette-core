@@ -1,16 +1,23 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import JourneyPattern from './JourneyPattern'
-
+import StopAreaHeaderManager from '../../helpers/stop_area_header_manager'
 
 export default class JourneyPatterns extends Component {
   constructor(props){
     super(props)
-    this.previousCity = undefined
+    this.headerManager = new StopAreaHeaderManager(
+      _.map(this.props.stopPointsList, (sp, i)=>{return sp.stop_area_object_id + "-" + i}),
+      this.props.stopPointsList,
+      this.props.status.features
+    )
   }
+
   componentDidMount() {
     this.props.onLoadFirstPage()
   }
+
   componentDidUpdate(prevProps, prevState) {
     if(this.props.status.isFetching == false){
       $('.table-2entries').each(function() {
@@ -54,21 +61,12 @@ export default class JourneyPatterns extends Component {
     }
   }
 
-  cityNameChecker(sp) {
-    let bool = false
-    if(sp.city_name != this.previousCity){
-      bool = true
-      this.previousCity = sp.city_name
-    }
-    return (
-      <div
-        className={(bool) ? 'headlined' : ''}
-        data-headline={(bool) ? sp.city_name : ''}
-        title={sp.city_name + ' (' + sp.zip_code +')'}
-      >
-        <span><span>{sp.name}</span></span>
-      </div>
-    )
+  showHeader(object_id) {
+    return this.headerManager.showHeader(object_id)
+  }
+
+  hasFeature(key) {
+    return this.props.status.features[key]
   }
 
   render() {
@@ -115,8 +113,8 @@ export default class JourneyPatterns extends Component {
                 </div>
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (
-                    <div key={i} className='td'>
-                      {this.cityNameChecker(sp)}
+                    <div key={i} className={'td' + (this.hasFeature('costs_in_journey_patterns') ? ' with-costs' : '')}>
+                      {this.headerManager.stopPointHeader(sp.stop_area_object_id + "-" + i)}
                     </div>
                   )
                 })}
@@ -131,8 +129,10 @@ export default class JourneyPatterns extends Component {
                       onCheckboxChange= {(e) => this.props.onCheckboxChange(e, index)}
                       onOpenEditModal= {() => this.props.onOpenEditModal(index, journeyPattern)}
                       onDeleteJourneyPattern={() => this.props.onDeleteJourneyPattern(index)}
+                      onUpdateJourneyPatternCosts={(costs) => this.props.onUpdateJourneyPatternCosts(index, costs)}
                       status= {this.props.status}
                       editMode= {this.props.editMode}
+                      journeyPatterns= {this}
                       />
                   )}
                 </div>
