@@ -186,15 +186,9 @@ module Chouette
     end
 
     def full_journey_pattern
-      out = journey_patterns.find{|jp| jp.stop_points.count == self.stop_points.count }
-      unless out
-        out = journey_patterns.build name: self.name
-        self.stop_points.each do |sp|
-          out.stop_points.build stop_area: sp.stop_area, position: sp.position
-        end
-        out.save!
-      end
-      out
+      journey_pattern = journey_patterns.find_or_create_by registration_number: self.number, name: self.name
+      journey_pattern.stop_points = self.stop_points
+      journey_pattern
     end
 
     protected

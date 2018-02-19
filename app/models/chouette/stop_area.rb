@@ -112,7 +112,6 @@ module Chouette
         id.to_s
       end
     end
-    alias_method :local_id, :user_objectid
 
     alias_method :local_id, :user_objectid
 

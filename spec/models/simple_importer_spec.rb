@@ -27,7 +27,7 @@ RSpec.describe SimpleImporter do
 
   describe "#import" do
     let(:importer){ importer = SimpleImporter.new(configuration_name: :test, filepath: filepath) }
-    let(:filepath){ Rails.root + "spec/fixtures/simple_importer/#{filename}" }
+    let(:filepath){ fixtures_path 'simple_importer', filename }
     let(:filename){ "stop_area.csv" }
     let(:stop_area_referential){ create(:stop_area_referential, objectid_format: :stif_netex) }
 
@@ -47,7 +47,7 @@ RSpec.describe SimpleImporter do
     end
 
     it "should import the given file" do
-      expect{importer.import}.to change{Chouette::StopArea.count}.by 1
+      expect{importer.import verbose: false}.to change{Chouette::StopArea.count}.by 1
       expect(importer.status).to eq "success"
       stop = Chouette::StopArea.last
       expect(stop.name).to eq "Nom du Stop"
@@ -90,6 +90,21 @@ RSpec.describe SimpleImporter do
         expect(stop.area_type).to eq "zdep"
         expect(importer.reload.journal.last["event"]).to eq("update")
       end
+
+      context "in another scope" do
+        before(:each) do
+          ref = create(:stop_area_referential)
+          importer.configure do |config|
+            config.context = { stop_area_referential: ref }
+            config.scope = ->{ context[:stop_area_referential].stop_areas }
+          end
+        end
+
+        it "should create the record" do
+          expect{importer.import verbose: true}.to change{Chouette::StopArea.count}.by 1
+          expect(importer.status).to eq "success"
+        end
+      end
     end
 
     context "with a missing column" do
@@ -101,7 +116,7 @@ RSpec.describe SimpleImporter do
       end
     end
 
-    context "with a incomplete dataset" do
+    context "with an incomplete dataset" do
       let(:filename){ "stop_area_incomplete.csv" }
       it "should fail" do
         expect{importer.import}.to_not raise_error
@@ -116,7 +131,7 @@ RSpec.describe SimpleImporter do
 
     context "with a wrong filepath" do
       let(:filename){ "not_found.csv" }
-      it "should create a StopArea" do
+      it "should fail" do
         expect{importer.import}.to_not raise_error
         expect(importer.status).to eq "failed"
         expect(importer.reload.journal.first["message"]).to eq "File not found: #{importer.filepath}"
@@ -221,27 +236,42 @@ RSpec.describe SimpleImporter do
       let(:filename){ "stop_points_full.csv" }
 
       before(:each) do
-        create :line, name: "Paris centre - Bercy > Lille > Londres"
-        create :line, name: "Londres > Lille > Paris centre - Bercy"
+        create :line, name: "Paris <> Londres - OUIBUS"
 
         SimpleImporter.define :test do |config|
           config.model = Chouette::Route
           config.separator = ";"
           config.context = {stop_area_referential: stop_area_referential}
+
+          config.before do |importer|
+            mapping = {}
+            path = Rails.root + "spec/fixtures/simple_importer/lines_mapping.csv"
+            CSV.foreach(path, importer.configuration.csv_options) do |row|
+              if row["Ligne Chouette"].present?
+                mapping[row["timetable_route_id"]] ||= Chouette::Line.find_by(name: importer.encode_string(row["Ligne Chouette"]))
+              end
+            end
+            importer.context[:mapping] = mapping
+          end
+
           config.custom_handler do |row|
             line = nil
-            fail_with_error "MISSING LINE: #{row["route_name"]}" do
-              line = Chouette::Line.find_by! name: row["route_name"]
+            fail_with_error "MISSING LINE FOR ROUTE: #{encode_string row["route_name"]}" do
+              line = context[:mapping][row["timetable_route_id"]]
+              raise unless line
             end
             @current_record = Chouette::Route.find_or_initialize_by number: row["timetable_route_id"]
-            @current_record.name = row["route_name"]
-            @current_record.published_name = row["route_name"]
+            @current_record.name = encode_string row["route_name"]
+            @current_record.published_name = encode_string row["route_name"]
 
             @current_record.line = line
             if @prev_route != @current_record
-              if @prev_route
+              if @prev_route && @prev_route.valid?
                 journey_pattern = @prev_route.full_journey_pattern
-                journey_pattern.set_distances @distances
+                fail_with_error "WRONG DISTANCES FOR ROUTE #{@prev_route.name} (#{@prev_route.number}): #{@distances.count} distances for #{@prev_route.stop_points.count} stops" do
+                  journey_pattern.stop_points = @prev_route.stop_points
+                  journey_pattern.set_distances @distances
+                end
                 fail_with_error ->(){ journey_pattern.errors.messages } do
                   journey_pattern.save!
                 end
@@ -250,6 +280,7 @@ RSpec.describe SimpleImporter do
             end
             @distances.push row["stop_distance"]
             position = row["stop_sequence"].to_i - 1
+
             stop_area = context[:stop_area_referential].stop_areas.where(registration_number: row["station_code"]).last
             unless stop_area
               stop_area = Chouette::StopArea.new registration_number: row["station_code"]
@@ -257,7 +288,7 @@ RSpec.describe SimpleImporter do
               stop_area.kind = row["border"] == "f" ? :commercial : :non_commercial
               stop_area.area_type = row["border"] == "f" ? :zdep : :border
               stop_area.stop_area_referential = context[:stop_area_referential]
-              fail_with_error ->{ stop_area.errors.messages } do
+              fail_with_error ->{p stop_area; "UNABLE TO CREATE STOP_AREA: #{stop_area.errors.messages}" }, abort_row: true do
                 stop_area.save!
               end
             end
@@ -266,15 +297,32 @@ RSpec.describe SimpleImporter do
               stop_point.set_list_position position
             else
               stop_point = @current_record.stop_points.build(stop_area_id: stop_area.id, position: position)
+              stop_point.for_boarding = :normal
+              stop_point.for_alighting = :normal
             end
+
             @prev_route = @current_record
+          end
+
+          config.after(:each_save) do |importer, route|
+            opposite_route_name = route.name.split(" > ").reverse.join(' > ')
+            opposite_route = Chouette::Route.where(name: opposite_route_name).where('id < ?', route.id).last
+            if opposite_route && opposite_route.line == route.line
+              route.update_attribute :wayback, :inbound
+              opposite_route.update_attribute :wayback, :outbound
+              route.update_attribute :opposite_route_id, opposite_route.id
+              opposite_route.update_attribute :opposite_route_id, route.id
+            end
           end
 
           config.after do |importer|
             prev_route = importer.instance_variable_get "@prev_route"
-            if prev_route
+            if prev_route && prev_route.valid?
               journey_pattern = prev_route.full_journey_pattern
-              journey_pattern.set_distances importer.instance_variable_get("@distances")
+              importer.fail_with_error "WRONG DISTANCES FOR ROUTE #{prev_route.name}: #{importer.instance_variable_get("@distances").count} distances for #{prev_route.stop_points.count} stops" do
+                journey_pattern.set_distances importer.instance_variable_get("@distances")
+                journey_pattern.stop_points = prev_route.stop_points
+              end
               importer.fail_with_error ->(){ journey_pattern.errors.messages } do
                 journey_pattern.save!
               end
@@ -287,13 +335,15 @@ RSpec.describe SimpleImporter do
         routes_count = Chouette::Route.count
         journey_pattern_count = Chouette::JourneyPattern.count
         stop_areas_count = Chouette::StopArea.count
-        expect{importer.import(verbose: false)}.to change{Chouette::StopPoint.count}.by 20
+
+        expect{importer.import(verbose: true)}.to change{Chouette::StopPoint.count}.by 10
         expect(importer.status).to eq "success"
         expect(Chouette::Route.count).to eq routes_count + 2
         expect(Chouette::JourneyPattern.count).to eq journey_pattern_count + 2
         expect(Chouette::StopArea.count).to eq stop_areas_count + 5
         route = Chouette::Route.find_by number: 1136
         expect(route.stop_areas.count).to eq 5
+        expect(route.opposite_route).to eq Chouette::Route.find_by(number: 1137)
         journey_pattern = route.full_journey_pattern
         expect(journey_pattern.stop_areas.count).to eq 5
         start, stop = journey_pattern.stop_points[0..1]
@@ -306,6 +356,7 @@ RSpec.describe SimpleImporter do
         expect(journey_pattern.costs_between(start, stop)[:distance]).to eq 177
 
         route = Chouette::Route.find_by number: 1137
+        expect(route.opposite_route).to eq Chouette::Route.find_by(number: 1136)
         expect(route.stop_areas.count).to eq 5
         journey_pattern = route.full_journey_pattern
         expect(journey_pattern.stop_areas.count).to eq 5
