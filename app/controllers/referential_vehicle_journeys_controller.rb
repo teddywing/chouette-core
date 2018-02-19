@@ -43,7 +43,7 @@ class ReferentialVehicleJourneysController < ChouetteController
       when "arrival_time"
         scope.joins(:vehicle_journey_at_stops).group(attributes).select(attributes).order("MAX(vehicle_journey_at_stops.departure_time) #{direction}")
       else
-        scope.order "#{params[:sort]} "
+        scope.order "#{params[:sort]} #{direction}"
       end
   end
 end
