@@ -21,8 +21,16 @@ class ReferentialVehicleJourneysController < ChouetteController
     @q = ransack_period_range(scope: @q, error_message:  t('vehicle_journeys.errors.time_table'), query: :with_matching_timetable, prefix: :time_table)
     @starting_stop = params[:q] && params[:q][:stop_areas] && params[:q][:stop_areas][:start].present? ? Chouette::StopArea.find(params[:q][:stop_areas][:start]) : nil
     @ending_stop = params[:q] && params[:q][:stop_areas] && params[:q][:stop_areas][:end].present? ? Chouette::StopArea.find(params[:q][:stop_areas][:end]) : nil
-    @q = @q.starting_with(@starting_stop&.id)
-    @q = @q.ending_with(@ending_stop&.id)
+
+    if @starting_stop
+      @q =
+        unless @ending_stop
+          @q.with_stop_area_id(@starting_stop.id)
+        else
+          @q.with_ordered_stop_area_ids(@starting_stop.id, @ending_stop.id)
+        end
+    end
+
     @q = @q.ransack(params[:q])
     @vehicle_journeys ||= @q.result
     @vehicle_journeys = parse_order @vehicle_journeys
