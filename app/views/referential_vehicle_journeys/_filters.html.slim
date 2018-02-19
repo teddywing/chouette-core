@@ -48,10 +48,10 @@
           - opts = {as: :select, label: false, required: false, wrapper_html: { class: 'filter_menu-item select2ed' }, input_html: {style: "width: 100%", data: { 'select2-ajax': 'true', 'select2ed-placeholder': '', url: json_url, 'select2ed-allow-clear': true}}}
           - opts = opts.update({collection: [@starting_stop].compact, selected: @starting_stop&.id})
           - opts[:input_html][:data][:'select2ed-placeholder'] = I18n.t('vehicle_journeys.form.starting_stop')
-          = p.input :end, opts
+          = p.input :start, opts
           - opts = opts.update({collection: [@ending_stop].compact, selected: @ending_stop&.id})
           - opts[:input_html][:data][:'select2ed-placeholder'] = I18n.t('vehicle_journeys.form.ending_stop')
-          = p.input :start, opts
+          = p.input :end, opts
     .form-group.togglable class=filter_item_class(params[:q], :purchase_window)
       = f.label Chouette::VehicleJourney.human_attribute_name(:purchase_window), class: 'control-label'
       .filter_menu
