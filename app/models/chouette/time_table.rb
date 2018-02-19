@@ -44,10 +44,10 @@ module Chouette
         attrs << self.int_day_types
         dates = self.dates
         dates += TimeTableDate.where(time_table_id: self.id)
-        attrs << dates.map(&:checksum).map(&:to_s).sort
+        attrs << dates.map(&:checksum).map(&:to_s).uniq.sort
         periods = self.periods
         periods += TimeTablePeriod.where(time_table_id: self.id)
-        attrs << periods.map(&:checksum).map(&:to_s).sort
+        attrs << periods.map(&:checksum).map(&:to_s).uniq.sort
       end
     end
 
