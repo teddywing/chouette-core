@@ -11,7 +11,7 @@ class StopPointDecorator < AF83::Decorator
       end
     end
 
-    instance_decorator.edit_action_link do |l|
+    instance_decorator.edit_action_link if: ->{ h.policy(Chouette::StopArea).update? } do |l|
       l.content h.t('stop_points.actions.edit')
       l.href do
         h.edit_stop_area_referential_stop_area_path(
@@ -21,7 +21,7 @@ class StopPointDecorator < AF83::Decorator
       end
     end
 
-    instance_decorator.destroy_action_link do |l|
+    instance_decorator.destroy_action_link if: ->{ h.policy(Chouette::StopArea).destroy? } do |l|
       l.content h.destroy_link_content('stop_points.actions.destroy')
       l.href do
         h.referential_stop_area_path(
