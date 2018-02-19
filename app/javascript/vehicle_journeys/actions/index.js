@@ -348,21 +348,11 @@ const actions = {
             var purchaseWindows = []
             let tt
             for (tt of val.time_tables){
-              timeTables.push({
-                objectid: tt.objectid,
-                comment: tt.comment,
-                id: tt.id,
-                color: tt.color
-              })
+              timeTables.push(tt)
             }
             if(val.purchase_windows){
               for (tt of val.purchase_windows){
-                purchaseWindows.push({
-                  objectid: tt.objectid,
-                  name: tt.name,
-                  id: tt.id,
-                  color: tt.color
-                })
+                purchaseWindows.push(tt)
               }
             }
             let vjasWithDelta = val.vehicle_journey_at_stops.map((vjas, i) => {
