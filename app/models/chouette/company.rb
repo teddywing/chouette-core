@@ -15,7 +15,5 @@ module Chouette
       [:organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :url, :time_zone]
     end
 
-    def local_id; id end
-
   end
 end

@@ -49,8 +49,6 @@ module Chouette
       [:published_name, :number, :comment, :url, :color, :text_color, :stable_id]
     end
 
-    def local_id; registration_number || id end
-
     def geometry_presenter
       Chouette::Geometry::LinePresenter.new self
     end
