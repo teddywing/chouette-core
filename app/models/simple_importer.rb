@@ -311,7 +311,7 @@ class SimpleImporter < ActiveRecord::Base
       @after = opts[:after]
       @ignore_failures = opts[:ignore_failures]
       @context = opts[:context] || {}
-      @scope = opts[:scope] || {}
+      @scope = opts[:scope]
     end
 
     def duplicate
