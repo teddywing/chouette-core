@@ -37,9 +37,14 @@ namespace :import do
       end
     end
     puts "\e[33m***\e[0m Start importing"
-    importer.import(verbose: true)
-    puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + importer.status + "\e[0m"
-    importer_output_to_csv importer
+    begin
+      importer.import(verbose: true)
+    rescue Interrupt
+      raise
+    ensure
+      puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + (importer.status || "") + "\e[0m"
+      importer_output_to_csv importer
+    end
   end
 
   desc "import the given file with the corresponding importer in the given StopAreaReferential"
@@ -51,9 +56,14 @@ namespace :import do
       config.context = {stop_area_referential: referential}
     end
     puts "\e[33m***\e[0m Start importing"
-    importer.import(verbose: true)
-    puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + importer.status + "\e[0m"
-    importer_output_to_csv importer
+    begin
+      importer.import(verbose: true)
+    rescue Interrupt
+      raise
+    ensure
+      puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + (importer.status || "") + "\e[0m"
+      importer_output_to_csv importer
+    end
   end
 
   desc "import the given routes files"
@@ -67,9 +77,14 @@ namespace :import do
       config.context = {stop_area_referential: stop_area_referential, mapping_filepath: args[:mapping_filepath]}
     end
     puts "\e[33m***\e[0m Start importing"
-    importer.import(verbose: true)
-    puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + importer.status + "\e[0m"
-    importer_output_to_csv importer
+    begin
+      importer.import(verbose: true)
+    rescue Interrupt
+      raise
+    ensure
+      puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + (importer.status || "") + "\e[0m"
+      importer_output_to_csv importer
+    end
   end
 
   desc "import the given file with the corresponding importer in the given LineReferential"
@@ -81,8 +96,13 @@ namespace :import do
       config.context = {line_referential: referential}
     end
     puts "\e[33m***\e[0m Start importing"
-    importer.import(verbose: true)
-    puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + importer.status + "\e[0m"
-    importer_output_to_csv importer
+    begin
+      importer.import(verbose: true)
+    rescue Interrupt
+      raise
+    ensure
+      puts "\n\e[33m***\e[0m Import done, status: " + (importer.status == "success" ? "\e[32m" : "\e[31m" ) + (importer.status || "") + "\e[0m"
+      importer_output_to_csv importer
+    end
   end
 end
