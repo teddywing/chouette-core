@@ -256,7 +256,7 @@ class SimpleImporter < ActiveRecord::Base
 
     msg = "#{"%#{@padding}d" % (@current_line + 1)}/#{@number_of_lines}: #{full_status}"
 
-    lines_count = (@status_height / 2) - 3
+    lines_count = [(@status_height / 2) - 3, 1].max
 
     if @messages.any?
       msg += "\n\n"

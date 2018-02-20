@@ -101,7 +101,7 @@ RSpec.describe SimpleImporter do
         end
 
         it "should create the record" do
-          expect{importer.import verbose: true}.to change{Chouette::StopArea.count}.by 1
+          expect{importer.import verbose: false}.to change{Chouette::StopArea.count}.by 1
           expect(importer.status).to eq "success"
         end
       end
@@ -336,7 +336,7 @@ RSpec.describe SimpleImporter do
         journey_pattern_count = Chouette::JourneyPattern.count
         stop_areas_count = Chouette::StopArea.count
 
-        expect{importer.import(verbose: true)}.to change{Chouette::StopPoint.count}.by 10
+        expect{importer.import(verbose: false)}.to change{Chouette::StopPoint.count}.by 10
         expect(importer.status).to eq "success"
         expect(Chouette::Route.count).to eq routes_count + 2
         expect(Chouette::JourneyPattern.count).to eq journey_pattern_count + 2
