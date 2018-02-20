@@ -154,7 +154,7 @@ class VehicleJourneysController < ChouetteController
 
   private
   def load_custom_fields
-    @custom_fields = current_workgroup&.custom_fields_definitions || {}
+    @custom_fields = referential.workgroup&.custom_fields_definitions || {}
   end
 
   def map_stop_points points

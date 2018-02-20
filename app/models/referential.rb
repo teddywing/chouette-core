@@ -51,7 +51,9 @@ class Referential < ActiveRecord::Base
   belongs_to :stop_area_referential
   validates_presence_of :stop_area_referential
   has_many :stop_areas, through: :stop_area_referential
+
   belongs_to :workbench
+  delegate :workgroup, to: :workbench, allow_nil: true
 
   belongs_to :referential_suite
 
