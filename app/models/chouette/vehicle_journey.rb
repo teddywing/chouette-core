@@ -52,6 +52,44 @@ module Chouette
       end
     }
 
+    scope :with_stop_area_id, ->(id){
+      if id.present?
+        joins(journey_pattern: :stop_points).where('stop_points.stop_area_id = ?', id)
+      else
+        all
+      end
+    }
+
+    scope :with_ordered_stop_area_ids, ->(first, second){
+      if first.present? && second.present?
+        joins(journey_pattern: :stop_points).
+          joins('INNER JOIN "journey_patterns" ON "journey_patterns"."id" = "vehicle_journeys"."journey_pattern_id" INNER JOIN "journey_patterns_stop_points" ON "journey_patterns_stop_points"."journey_pattern_id" = "journey_patterns"."id" INNER JOIN "stop_points" as "second_stop_points" ON "stop_points"."id" = "journey_patterns_stop_points"."stop_point_id"').
+          where('stop_points.stop_area_id = ?', first).
+          where('second_stop_points.stop_area_id = ? and stop_points.position < second_stop_points.position', second)
+      else
+        all
+      end
+    }
+
+    scope :starting_with, ->(id){
+      if id.present?
+        joins(journey_pattern: :stop_points).where('stop_points.position = 0 AND stop_points.stop_area_id = ?', id)
+      else
+        all
+      end
+    }
+
+    scope :ending_with, ->(id){
+      if id.present?
+        pattern_ids = all.select(:journey_pattern_id).uniq.map(&:journey_pattern_id)
+        pattern_ids = Chouette::JourneyPattern.where(id: pattern_ids).to_a.select{|jp| p "ici: #{jp.stop_points.order(:position).last.stop_area_id}" ; jp.stop_points.order(:position).last.stop_area_id == id.to_i}.map &:id
+        where(journey_pattern_id: pattern_ids)
+      else
+        all
+      end
+    }
+
+
     scope :in_purchase_window, ->(range){
       purchase_windows = Chouette::PurchaseWindow.overlap_dates(range)
       sql = purchase_windows.joins(:vehicle_journeys).select('vehicle_journeys.id').uniq.to_sql
