@@ -17,6 +17,10 @@ module Chouette
       (column_names + ['tag_search']) + _ransackers.keys
     end
 
+    ransacker :unaccented_comment, formatter: ->(val){ val.parameterize } do
+      Arel.sql('unaccent(comment)')
+    end
+
     has_and_belongs_to_many :vehicle_journeys, :class_name => 'Chouette::VehicleJourney'
 
     has_many :dates, -> {order(:date)}, inverse_of: :time_table, :validate => :true, :class_name => "Chouette::TimeTableDate", :dependent => :destroy
