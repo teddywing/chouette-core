@@ -130,7 +130,7 @@ class SimpleImporter < ActiveRecord::Base
       begin
         handle_row row
         fail_with_error ->(){ @current_record.errors.messages } do
-          new_record = @current_record.new_record?
+          new_record = @current_record&.new_record?
           @new_status ||= new_record ? colorize("✓", :green) : colorize("-", :orange)
           @event = new_record ? :creation : :update
           self.configuration.before_actions(:each_save).each do |action|
@@ -139,13 +139,15 @@ class SimpleImporter < ActiveRecord::Base
           ### This could fail if the record has a mandatory relation which is not yet resolved
           ### TODO: do not attempt to save if the current record if waiting for resolution
           ###       and fail at the end if there remains unresolved relations
-          if self.configuration.ignore_failures
-            unless @current_record.save
-              @new_status = colorize("x", :red)
-              push_in_journal({message: "errors: #{@current_record.errors.messages}", error: "invalid record", event: :error, kind: :error})
+          if @current_record
+            if self.configuration.ignore_failures
+              unless @current_record.save
+                @new_status = colorize("x", :red)
+                push_in_journal({message: "errors: #{@current_record.errors.messages}", error: "invalid record", event: :error, kind: :error})
+              end
+            else
+              @current_record.save!
             end
-          else
-            @current_record.save!
           end
           self.configuration.after_actions(:each_save).each do |action|
             action.call self, @current_record
@@ -157,7 +159,7 @@ class SimpleImporter < ActiveRecord::Base
       push_in_journal({event: @event, kind: :log}) if @current_record&.valid?
       @statuses += @new_status
       self.configuration.columns.each do |col|
-      if col.name && @resolution_queue.any?
+      if @current_record && col.name && @resolution_queue.any?
         val = @current_record.send col[:attribute]
         (@resolution_queue.delete([col.name, val]) || []).each do |res|
           record = res[:record]
@@ -239,6 +241,14 @@ class SimpleImporter < ActiveRecord::Base
     rescue
       100
     end
+
+    @status_height ||= begin
+      term_height = %x(tput lines).to_i
+      term_height - 3
+    rescue
+      50
+    end
+
     full_status = @statuses || ""
     full_status = full_status.last(@status_width*10) || ""
     padding_size = [(@number_of_lines - @current_line - 1), (@status_width - full_status.size/10)].min
@@ -246,18 +256,21 @@ class SimpleImporter < ActiveRecord::Base
 
     msg = "#{"%#{@padding}d" % (@current_line + 1)}/#{@number_of_lines}: #{full_status}"
 
+    lines_count = (@status_height / 2) - 3
+
     if @messages.any?
       msg += "\n\n"
       msg += colorize "=== MESSAGES (#{@messages.count}) ===\n", :green
-      msg += "[...]\n" if @messages.count > 10
-      msg += @messages.last(10).join("\n")
+      msg += "[...]\n" if @messages.count > lines_count
+      msg += @messages.last(lines_count).join("\n")
+      msg += "\n"*[lines_count-@messages.count, 0].max
     end
 
     if @errors.any?
       msg += "\n\n"
       msg += colorize "=== ERRORS (#{@errors.count}) ===\n", :red
-      msg += "[...]\n" if @errors.count > 10
-      msg += @errors.last(10).map do |j|
+      msg += "[...]\n" if @errors.count > lines_count
+      msg += @errors.last(lines_count).map do |j|
         kind = j[:kind]
         kind = colorize(kind, kind == :error ? :red : :orange)
         encode_string "[#{kind}]\t\tL#{j[:line]}\t#{j[:error]}\t\t#{j[:message]}"
