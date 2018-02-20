@@ -13,7 +13,8 @@ set :group_writable, true
 set :bundle_cmd, "/var/lib/gems/#{ruby_version}/bin/bundle"
 set :rake, "#{bundle_cmd} exec rake"
 set :default_environment, {
-  'PATH' => "/var/lib/gems/#{ruby_version}/bin:$PATH"
+  'PATH' => "/var/lib/gems/#{ruby_version}/bin:$PATH",
+  'NODE_ENV' => "production"
 }
 
 set :keep_releases, -> { fetch(:kept_releases, 5) }
