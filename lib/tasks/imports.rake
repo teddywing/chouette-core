@@ -48,7 +48,7 @@ namespace :import do
   end
 
   desc "import the given file with the corresponding importer in the given StopAreaReferential"
-  task :import_stop_areas_in_referential, [:referential_id, :configuration_name, :filepath] => :environment do |t, args|
+  task :import_in_stop_area_referential, [:referential_id, :configuration_name, :filepath] => :environment do |t, args|
     referential = StopAreaReferential.find args[:referential_id]
     importer = SimpleImporter.create configuration_name: args[:configuration_name], filepath: args[:filepath]
     importer.configure do |config|
@@ -88,7 +88,7 @@ namespace :import do
   end
 
   desc "import the given file with the corresponding importer in the given LineReferential"
-  task :import_lines_in_referential, [:referential_id, :configuration_name, :filepath] => :environment do |t, args|
+  task :import_in_line_referential, [:referential_id, :configuration_name, :filepath] => :environment do |t, args|
     referential = LineReferential.find args[:referential_id]
     importer = SimpleImporter.create configuration_name: args[:configuration_name], filepath: args[:filepath]
     importer.configure do |config|
