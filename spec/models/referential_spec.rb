@@ -9,6 +9,23 @@ describe Referential, :type => :model do
     subject { build_stubbed(:referential) }
 
     it { should validate_presence_of(:objectid_format) }
+
+    it "shoul assign slug with a good format" do
+
+      names = %w(
+        2018-Hiver-Jezequel-MM-Lyon-Nice 
+        2018-Hiver-Jezequel-23293MM-Lyon-Nice
+        -Hiver-Jezequel-MM-Lyon-Nice
+        Hiver-Jezequel-MM-Lyon-Nice
+        20179282
+        )
+
+      names.each do |name|
+        ref = Referential.new name: name
+        ref.assign_slug
+        expect(ref.slug).to match(/([a-z][a-z-]+_\d{10}|\d{10})/)
+      end
+    end
   end
 
   context ".referential_ids_in_periode" do
@@ -60,7 +77,7 @@ describe Referential, :type => :model do
         {
           "organisation_id" => first_organisation.id,
           "name"=>"Test",
-          "slug"=>"test",
+          "slug"=>"test_#{Time.now.to_i}",
           "prefix"=>"test",
           "time_zone"=>"American Samoa",
           "upper_corner"=>"51.1,8.23",

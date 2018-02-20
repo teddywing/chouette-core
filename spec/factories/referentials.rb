@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :referential do
     sequence(:name) { |n| "Test #{n}" }
-    sequence(:slug) { |n| "test_#{n}" }
+    sequence(:slug) { |n| "test-#{n}_#{Time.now.to_i}" }
     sequence(:prefix) { |n| "test_#{n}" }
     association :line_referential
     association :stop_area_referential
