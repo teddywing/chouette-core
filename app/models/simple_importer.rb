@@ -262,7 +262,7 @@ class SimpleImporter < ActiveRecord::Base
       msg += "\n\n"
       msg += colorize "=== MESSAGES (#{@messages.count}) ===\n", :green
       msg += "[...]\n" if @messages.count > lines_count
-      msg += @messages.last(lines_count).join("\n")
+      msg += @messages.last(lines_count).map{|m| m.truncate(@status_width)}.join("\n")
       msg += "\n"*[lines_count-@messages.count, 0].max
     end
 
@@ -273,7 +273,9 @@ class SimpleImporter < ActiveRecord::Base
       msg += @errors.last(lines_count).map do |j|
         kind = j[:kind]
         kind = colorize(kind, kind == :error ? :red : :orange)
-        encode_string "[#{kind}]\t\tL#{j[:line]}\t#{j[:error]}\t\t#{j[:message]}"
+        kind = "[#{kind}]"
+        kind += " "*(25 - kind.size)
+        encode_string("#{kind}L#{j[:line]}\t#{j[:error]}\t\t#{j[:message]}").truncate(@status_width)
       end.join("\n")
     end
     custom_print msg, clear: true
