@@ -15,10 +15,9 @@ ActiveRecord::Schema.define(version: 20180202170009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
   enable_extension "postgis"
+  enable_extension "hstore"
   enable_extension "unaccent"
-  enable_extension "objectid"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -120,7 +119,6 @@ ActiveRecord::Schema.define(version: 20180202170009) do
     t.datetime "updated_at"
     t.date     "end_date"
     t.string   "date_type"
-    t.string   "mode"
   end
 
   add_index "clean_ups", ["referential_id"], name: "index_clean_ups_on_referential_id", using: :btree
@@ -422,9 +420,9 @@ ActiveRecord::Schema.define(version: 20180202170009) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
