@@ -95,7 +95,8 @@ class SimpleImporter < ActiveRecord::Base
   end
 
   def dump_csv_from_context
-    filepath = "./#{self.configuration_name}_#{Time.now.strftime "%y%m%d%H%M"}.csv"
+    dir = context[:output_dir] || "log/importers"
+    filepath = File.join dir, "#{self.configuration_name}_#{Time.now.strftime "%y%m%d%H%M"}.csv"
     # for some reason, context[:csv].to_csv does not work
     CSV.open(filepath, 'w') do |csv|
       header = true
