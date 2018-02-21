@@ -15,10 +15,15 @@ const vehicleJourney= (state = {}, action, keep) => {
         minute: 0
       }
       let computeSchedule = false
+      let userTZOffet = 0
       if(action.data["start_time.hour"] && action.data["start_time.hour"].value && action.data["start_time.hour"].value.length > 0 && action.data["start_time.minute"] && action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs){
         computeSchedule = true
-        current_time.hour = parseInt(action.data["start_time.hour"].value)
-        current_time.minute = parseInt(action.data["start_time.minute"].value) || 0
+        userTZOffet = action.data["tz_offset"] && parseInt(action.data["tz_offset"].value) || 0
+        current_time.hour = parseInt(action.data["start_time.hour"].value) + parseInt(userTZOffet / 60)
+        current_time.minute = 0
+        if(action.data["start_time.minute"].value){
+          current_time.minute = parseInt(action.data["start_time.minute"].value) + (userTZOffet - 60 * parseInt(userTZOffet / 60))
+        }
       }
       _.each(action.stopPointsList, (sp) =>{
         let inJourney = false
