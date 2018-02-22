@@ -422,8 +422,12 @@ class Referential < ActiveRecord::Base
     end
   end
 
-  def assign_slug
-    self.slug ||= "#{name.parameterize.gsub('-', '_')}_#{Time.now.to_i}" if name
+  def assign_slug(time_reference = Time)
+    self.slug ||= begin
+      prefix = name.parameterize.gsub('-','_').gsub(/[^a-zA-Z_]/,'').gsub(/^_/,'')
+      prefix = "referential" if prefix.blank?
+      "#{prefix}_#{time_reference.now.to_i}"
+    end if name
   end
 
   def assign_prefix
