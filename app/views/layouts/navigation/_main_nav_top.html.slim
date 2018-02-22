@@ -21,6 +21,17 @@
         = link_to destroy_user_session_path, method: :delete, class: 'menu-item', title: 'Se déconnecter' do
           span.fa.fa-lg.fa-sign-out
 
+    .menu-item-group.pull-right
+      .dropdown.languages
+        a href="#" class="dropdown-toggle" data-toggle="dropdown"
+          = image_tag("language_engine/#{selected_language}_flag.png", { :'data-locale' => "#{selected_language}" } )
+          b.caret
+
+        ul.dropdown-menu
+          - I18n.available_locales.each do |locale|
+            li= link_to_language locale, { :class => language_class( locale ) }
+
+
 
   = render 'layouts/navigation/nav_panel_operations'
   = render 'layouts/navigation/nav_panel_profile' if user_signed_in?
