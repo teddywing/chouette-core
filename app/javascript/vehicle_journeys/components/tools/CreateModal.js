@@ -117,6 +117,11 @@ export default class CreateModal extends Component {
                                     className='form-control'
                                     onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
                                     />
+                                  <input
+                                    type='hidden'
+                                    ref='tz_offset'
+                                    value={new Date().getTimezoneOffset()}
+                                    />
                                 </div>
                               </div>
                             </div>

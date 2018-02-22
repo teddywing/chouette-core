@@ -14,47 +14,73 @@ const vehicleJourney= (state = {}, action, keep) => {
         hour: 0,
         minute: 0
       }
-      if(action.data["start_time.hour"] && action.data["start_time.minute"] && action.selectedJourneyPattern.full_schedule){
-        current_time.hour = parseInt(action.data["start_time.hour"].value)
-        current_time.minute = parseInt(action.data["start_time.minute"].value) || 0
+      let computeSchedule = false
+      let userTZOffet = 0
+      if(action.data["start_time.hour"] && action.data["start_time.hour"].value && action.data["start_time.hour"].value.length > 0 && action.data["start_time.minute"] && action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs){
+        computeSchedule = true
+        userTZOffet = action.data["tz_offset"] && parseInt(action.data["tz_offset"].value) || 0
+        current_time.hour = parseInt(action.data["start_time.hour"].value) + parseInt(userTZOffet / 60)
+        current_time.minute = 0
+        if(action.data["start_time.minute"].value){
+          current_time.minute = parseInt(action.data["start_time.minute"].value) + (userTZOffet - 60 * parseInt(userTZOffet / 60))
+        }
       }
       _.each(action.stopPointsList, (sp) =>{
         let inJourney = false
-        if(action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs && action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
-          let delta = parseInt(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id].time)
-          current_time = actions.addMinutesToTime(current_time, delta)
-          prevSp = sp
-          inJourney = true
-        }
-        let offsetHours = sp.time_zone_offset / 3600
-        let offsetminutes = sp.time_zone_offset/60 - 60*offsetHours
-        let newVjas = {
-          delta: 0,
-          arrival_time:{
+        let newVjas
+        if(computeSchedule){
+          if(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
+            let delta = parseInt(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id].time)
+            current_time = actions.addMinutesToTime(current_time, delta)
+            prevSp = sp
+            inJourney = true
+          }
+          let offsetHours = sp.time_zone_offset / 3600
+          let offsetminutes = sp.time_zone_offset/60 - 60*offsetHours
+          newVjas = {
+            delta: 0,
+            arrival_time:{
+              hour: (24 + current_time.hour + offsetHours) % 24,
+              minute: current_time.minute + offsetminutes
+            },
+            stop_point_objectid: sp.object_id,
+            stop_area_cityname: sp.city_name,
+            dummy: true
+          }
+
+          if(sp.waiting_time && inJourney){
+            current_time = actions.addMinutesToTime(current_time, parseInt(sp.waiting_time))
+          }
+
+          newVjas.departure_time = {
             hour: (24 + current_time.hour + offsetHours) % 24,
             minute: current_time.minute + offsetminutes
-          },
-          stop_point_objectid: sp.object_id,
-          stop_area_cityname: sp.city_name,
-          dummy: true
-        }
+          }
 
-        if(sp.waiting_time && inJourney){
-          current_time = actions.addMinutesToTime(current_time, parseInt(sp.waiting_time))
+          if(current_time.hour + offsetHours > 24){
+            newVjas.departure_day_offset = 1
+            newVjas.arrival_day_offset = 1
+          }
+          if(current_time.hour + offsetHours < 0){
+            newVjas.departure_day_offset = -1
+            newVjas.arrival_day_offset = -1
+          }
         }
-
-        newVjas.departure_time = {
-          hour: (24 + current_time.hour + offsetHours) % 24,
-          minute: current_time.minute + offsetminutes
-        }
-
-        if(current_time.hour + offsetHours > 24){
-          newVjas.departure_day_offset = 1
-          newVjas.arrival_day_offset = 1
-        }
-        if(current_time.hour + offsetHours < 0){
-          newVjas.departure_day_offset = -1
-          newVjas.arrival_day_offset = -1
+        else{
+          newVjas = {
+            delta: 0,
+            arrival_time: {
+              hour: 0,
+              minute: 0
+            },
+            departure_time: {
+              hour: 0,
+              minute: 0
+            },
+            stop_point_objectid: sp.object_id,
+            stop_area_cityname: sp.city_name,
+            dummy: true
+          }
         }
 
         _.each(action.selectedJourneyPattern.stop_areas, (jp) =>{
