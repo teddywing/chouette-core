@@ -27,6 +27,8 @@ module FeatureChecker
   protected
 
   def has_feature?(*features)
+    return false unless current_organisation
+
     features.all? do |feature|
       current_organisation.has_feature? feature
     end
