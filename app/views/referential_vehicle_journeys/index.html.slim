@@ -40,14 +40,19 @@
                 TableBuilderHelper::Column.new( \
                   key: :departure_time, \
                   attribute: Proc.new {|v| v.vehicle_journey_at_stops.first&.departure }, \
-                  sortable: false, \
-                  name: @starting_stop&.name, \
+                  sortable: false \
                 ), \
+                [@starting_stop, @ending_stop].compact.map{|stop| \
+                  TableBuilderHelper::Column.new( \
+                    attribute: Proc.new {|v| v.vehicle_journey_at_stops.where("stop_points.stop_area_id" => stop.id).last.arrival }, \
+                    sortable: false, \
+                    name: stop.name \
+                  )\
+                }, \
                 TableBuilderHelper::Column.new( \
                   key: :arrival_time, \
                   attribute: Proc.new {|v| v.vehicle_journey_at_stops.last&.arrival }, \
                   sortable: false, \
-                  name: @ending_stop&.name, \
                 ), \
               ].flatten.compact,
               cls: 'table has-filter has-search'
