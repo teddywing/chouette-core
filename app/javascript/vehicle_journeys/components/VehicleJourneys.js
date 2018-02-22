@@ -187,7 +187,7 @@ export default class VehicleJourneys extends Component {
                           <p>
                             {this.timeTableURL(tt)}
                           </p>
-                          <p>{tt.bounding_dates}</p>
+                          <p>{tt.bounding_dates.split(' ').join(' > ')}</p>
                         </div>
                       )}
                     </div>

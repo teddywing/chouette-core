@@ -92,7 +92,9 @@ const actions = {
       id: selectedTT.id,
       comment: selectedTT.comment,
       objectid: selectedTT.objectid,
-      color: selectedTT.color
+      color: selectedTT.color,
+      bounding_dates: selectedTT.time_table_bounding,
+      days: selectedTT.day_types
     }
   }),
   addSelectedTimetable: () => ({
