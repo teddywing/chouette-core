@@ -408,6 +408,7 @@ class Referential < ActiveRecord::Base
       end
 
       check_migration_count(report)
+      # raise "Wrong migration count: #{migration_count}" if migration_count < 300
     end
   end
 
@@ -417,9 +418,12 @@ class Referential < ActiveRecord::Base
   end
 
   def migration_count
-    if self.class.connection.table_exists?("#{slug}.schema_migrations")
-      self.class.connection.select_value("select count(*) from #{slug}.schema_migrations;")
-    end
+    raw_value =
+      if self.class.connection.table_exists?("#{slug}.schema_migrations")
+        self.class.connection.select_value("select count(*) from #{slug}.schema_migrations;")
+      end
+
+    raw_value.to_i
   end
 
   def assign_slug(time_reference = Time)
