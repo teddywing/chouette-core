@@ -66,6 +66,7 @@ export default class VehicleJourney extends Component {
   render() {
     this.previousCity = undefined
     let detailed_calendars = this.hasFeature('detailed_calendars') && !this.disabled
+    let detailed_calendars_shown = $('.detailed-timetables-bt').hasClass('active')
     let {time_tables, purchase_windows} = this.props.value
 
     return (
@@ -110,7 +111,7 @@ export default class VehicleJourney extends Component {
           {this.props.disabled && <VehicleJourneyInfoButton vehicleJourney={this.props.value} />}
 
           { detailed_calendars &&
-            <div className="detailed-timetables hidden">
+            <div className={"detailed-timetables" + (detailed_calendars_shown ? "" : " hidden")}>
             {this.props.allTimeTables.map((tt, i) =>
               <div key={i} className={(this.hasTimeTable(time_tables, tt) ? "active" : "inactive")}></div>
             )}
