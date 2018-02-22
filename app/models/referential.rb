@@ -13,7 +13,7 @@ class Referential < ActiveRecord::Base
 
   validates_uniqueness_of :slug
 
-  validates_format_of :slug, with: %r{([a-z][a-z-]+_\d{10}|\d{10})}
+  validates_format_of :slug, with: %r{\A[a-z][0-9a-z_]+\Z}
   validates_format_of :prefix, with: %r{\A[0-9a-zA-Z_]+\Z}
   validates_format_of :upper_corner, with: %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
   validates_format_of :lower_corner, with: %r{\A-?[0-9]+\.?[0-9]*\,-?[0-9]+\.?[0-9]*\Z}
@@ -422,11 +422,11 @@ class Referential < ActiveRecord::Base
     end
   end
 
-  def assign_slug
+  def assign_slug(time_reference = Time)
     self.slug ||= begin
-      prefix = "#{name.parameterize}".scan(/[a-zA-Z-]/)
-      prefix.delete_at 0 if prefix[0] == '-'
-      prefix.empty? ? "#{Time.now.to_i}" : "#{prefix.join}_#{Time.now.to_i}"
+      prefix = name.parameterize.gsub('-','_').gsub(/[^a-zA-Z_]/,'').gsub(/^_/,'')
+      prefix = "referential" if prefix.blank?
+      "#{prefix}_#{time_reference.now.to_i}"
     end if name
   end
 

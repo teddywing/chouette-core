@@ -1,7 +1,7 @@
 module ReferentialHelper
 
   def first_referential
-    Referential.find_by!(:name => "first")
+    Referential.find_by!(:slug => "first")
   end
 
   def first_organisation
@@ -64,7 +64,7 @@ RSpec.configure do |config|
       :referential,
       prefix: "first",
       name: "first",
-      slug: "first_#{Time.now.to_i}",
+      slug: "first",
       organisation: organisation,
       workbench: workbench,
       objectid_format: "stif_netex"

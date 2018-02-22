@@ -10,20 +10,21 @@ describe Referential, :type => :model do
 
     it { should validate_presence_of(:objectid_format) }
 
-    it "shoul assign slug with a good format" do
+    it "assign slug with a good format" do
+      time_reference = double(now: 1234567890)
 
-      names = %w(
-        2018-Hiver-Jezequel-MM-Lyon-Nice 
-        2018-Hiver-Jezequel-23293MM-Lyon-Nice
-        -Hiver-Jezequel-MM-Lyon-Nice
-        Hiver-Jezequel-MM-Lyon-Nice
-        20179282
-        )
+      conditions = {
+        "2018-Hiver-Jezequel-MM-Lyon-Nice": "hiver_jezequel_mm_lyon_nice_1234567890",
+        "2018-Hiver-Jezequel-23293MM-Lyon-Nice": "hiver_jezequel_mm_lyon_nice_1234567890",
+        "-Hiver-Jezequel-MM-Lyon-Nice": "hiver_jezequel_mm_lyon_nice_1234567890",
+        "Hiver-Jezequel-MM-Lyon-Nice": "hiver_jezequel_mm_lyon_nice_1234567890",
+        "20179282": "referential_1234567890"
+      }
 
-      names.each do |name|
+      conditions.each do |name, expected_slug|
         ref = Referential.new name: name
-        ref.assign_slug
-        expect(ref.slug).to match(/([a-z][a-z-]+_\d{10}|\d{10})/)
+        ref.assign_slug time_reference
+        expect(ref.slug).to eq(expected_slug)
       end
     end
   end
@@ -77,7 +78,7 @@ describe Referential, :type => :model do
         {
           "organisation_id" => first_organisation.id,
           "name"=>"Test",
-          "slug"=>"test_#{Time.now.to_i}",
+          "slug"=>"test",
           "prefix"=>"test",
           "time_zone"=>"American Samoa",
           "upper_corner"=>"51.1,8.23",
