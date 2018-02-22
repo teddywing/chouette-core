@@ -66,7 +66,6 @@ end
 
 gem 'activerecord-postgis-adapter', "~> 3.0.0"
 gem 'polylines'
-gem 'activerecord-nulldb-adapter', require: false
 
 # Codifligne API
 gem 'codifligne', af83: 'stif-codifline-api'
@@ -142,7 +141,7 @@ gem 'rake'
 gem 'devise-async'
 gem 'apartment', '~> 1.0.0'
 gem 'aasm'
-gem 'activerecord-nulldb-adapter'
+gem 'activerecord-nulldb-adapter' if ENV['RAILS_DB_ADAPTER'] == 'nulldb'
 gem 'puma', '~> 3.10.0'
 
 gem 'newrelic_rpm'
