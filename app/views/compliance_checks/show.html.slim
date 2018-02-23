@@ -1,0 +1,13 @@
+- breadcrumb :compliance_check, @workbench, resource
+- page_header_content_for resource
+
+
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = render partial: "shared/controls/metadatas"
+        - if resource.compliance_check_block
+          = definition_list t('compliance_controls.show.metadatas.compliance_check_block'),
+            I18n.t('activerecord.attributes.compliance_control_blocks.transport_mode') => I18n.t("enumerize.transport_mode.#{resource.compliance_check_block.transport_mode}"),
+            I18n.t('activerecord.attributes.compliance_control_blocks.transport_submode') => I18n.t("enumerize.transport_submode.#{resource.compliance_check_block.transport_submode}")

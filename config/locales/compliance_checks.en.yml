@@ -8,3 +8,7 @@ en:
       subclass: Object
       criticity: Severity
       name: Name
+    show:
+      title: "Compliance check"
+      metadatas:
+        compliance_control_block: "Control block informations"

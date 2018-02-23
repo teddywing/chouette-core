@@ -11,4 +11,7 @@ fr:
       subclass: Objet
       criticity: Criticité
       name: Nom
-    
+    show:
+      title: "Consulter un contrôle"
+      metadatas:
+        compliance_control_block: "Informations sur le groupe de contrôle"

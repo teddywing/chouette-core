@@ -19,7 +19,7 @@ module ApplicationHelper
       return object.full_name
     end
 
-    local  = "#{object.model_name.name.underscore.pluralize}.#{params[:action]}.title"
+    local = "#{object.model_name.name.underscore.pluralize}.#{params[:action]}.title"
     if object.try(:name)
       t(local, name: object.name || object.id)
     else

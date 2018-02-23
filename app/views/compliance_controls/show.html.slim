@@ -6,22 +6,7 @@
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
-        /- @compliance_control.control_attributes.each_with_index do |(key,value), index|
-        = definition_list t('metadatas'),
-              { \
-                ComplianceControl.human_attribute_name(:name) => @compliance_control.name,
-                ComplianceControl.human_attribute_name(:code) => @compliance_control.code,
-                ComplianceControl.human_attribute_name(:criticity) => @compliance_control.criticity,
-                ComplianceControl.human_attribute_name(:comment) => @compliance_control.comment,
-                I18n.t('activerecord.attributes.compliance_control.predicate') => @compliance_control.predicate,
-                I18n.t('activerecord.attributes.compliance_control.prerequisite') => @compliance_control.prerequisite,
-              }.merge( \
-                {}.tap do |hash| \
-                  @compliance_control.class.dynamic_attributes.each do |attribute| \
-                    hash[ComplianceControl.human_attribute_name(attribute)] = @compliance_control.send(attribute) \
-                  end \
-                end \
-              )
+        = render partial: "shared/controls/metadatas"
         - if @compliance_control.compliance_control_block
           = definition_list t('compliance_controls.show.metadatas.compliance_control_block'),
             I18n.t('activerecord.attributes.compliance_control_blocks.transport_mode') => I18n.t("enumerize.transport_mode.#{@compliance_control.compliance_control_block.transport_mode}"),
