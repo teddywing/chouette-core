@@ -27,16 +27,11 @@ class ComplianceControlSetsController < ChouetteController
     redirect_to(compliance_control_sets_path)
   end
 
-  protected
-
-  def begin_of_association_chain
-    current_organisation
-  end
-
   private
 
   def collection
-    scope = self.ransack_period_range(scope: ComplianceControlSet.all, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
+    scope = ComplianceControlSet.joins(:organisation).where('organisation_id = ? OR organisations.code = ?', current_organisation.id, 'STIF')
+    scope = self.ransack_period_range(scope: scope, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
     @q_for_form = scope.ransack(params[:q])
     compliance_control_sets = @q_for_form.result
     compliance_control_sets = joins_with_associated_objects(compliance_control_sets).order(sort_column + ' ' + sort_direction) if sort_column && sort_direction

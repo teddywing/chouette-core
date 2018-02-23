@@ -96,6 +96,11 @@ class ApplicationPolicy
   end
 
 
+  def belongs_to_stif?
+    record.try(:organisation).try(:code) == "STIF"
+  end
+
+
   #
   #  Helpers
   #  -------
