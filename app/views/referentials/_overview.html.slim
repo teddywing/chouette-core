@@ -39,7 +39,7 @@
             a.number style="background-color: #{line.color.present? ? "##{line.color}" : 'whitesmoke'}" title=line.name
               = line.number
             .company= line.company&.name
-            .mode= t("enumerize.transport_mode.#{line.transport_mode}")
+            .mode= line.transport_mode.present? ? t("enumerize.transport_mode.#{line.transport_mode}") : ""
     .right
       .inner
         .head
