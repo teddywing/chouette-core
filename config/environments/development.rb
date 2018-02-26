@@ -1,3 +1,5 @@
+require Rails.root + 'config/middlewares/cachesettings'
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -96,6 +98,13 @@ Rails.application.configure do
 
   config.middleware.insert_after(ActionDispatch::Static, Rack::LiveReload) if ENV['LIVERELOAD']
   config.middleware.use I18n::JS::Middleware
+  config.middleware.use CacheSettings, {
+    /\/assets\/.*/ => {
+      cache_control: "max-age=86400, public",
+      expires: 86400
+    }
+  }
+
   config.development_toolbar = false
   if ENV['TOOLBAR'] && File.exists?("config/development_toolbar.rb")
     config.development_toolbar = OpenStruct.new
