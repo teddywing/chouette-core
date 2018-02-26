@@ -24,6 +24,82 @@ describe Chouette::StopArea, :type => :model do
     end
   end
 
+  describe "#registration_number" do
+    let(:registration_number){ nil }
+    let(:registration_number_format){ nil }
+    let(:stop_area_referential){ create :stop_area_referential, registration_number_format: registration_number_format}
+    let(:stop_area){ build :stop_area, stop_area_referential: stop_area_referential, registration_number: registration_number}
+    context "without registration_number_format on the StopAreaReferential" do
+      it "should not generate a registration_number" do
+        stop_area.save!
+        expect(stop_area.registration_number).to_not be_present
+      end
+
+      it "should not validate the registration_number format" do
+        stop_area.registration_number = "1234455"
+        expect(stop_area).to be_valid
+      end
+
+      it "should not validate the registration_number uniqueness" do
+        stop_area.registration_number = "1234455"
+        create :stop_area, stop_area_referential: stop_area_referential, registration_number: stop_area.registration_number
+        expect(stop_area).to be_valid
+      end
+    end
+
+    context "with a registration_number_format on the StopAreaReferential" do
+      let(:registration_number_format){ "XXX" }
+
+      it "should generate a registration_number" do
+        stop_area.save!
+        expect(stop_area.registration_number).to be_present
+        expect(stop_area.registration_number).to match /[A-Z]{3}/
+      end
+
+      context "with a previous stop_area" do
+        it "should generate a registration_number" do
+          create :stop_area, stop_area_referential: stop_area_referential, registration_number: "AAA"
+          stop_area.save!
+          expect(stop_area.registration_number).to be_present
+          expect(stop_area.registration_number).to eq "AAB"
+        end
+
+        it "should generate a registration_number" do
+          create :stop_area, stop_area_referential: stop_area_referential, registration_number: "ZZZ"
+          stop_area.save!
+          expect(stop_area.registration_number).to be_present
+          expect(stop_area.registration_number).to eq "AAA"
+        end
+
+        it "should generate a registration_number" do
+          create :stop_area, stop_area_referential: stop_area_referential, registration_number: "AAA"
+          create :stop_area, stop_area_referential: stop_area_referential, registration_number: "ZZZ"
+          stop_area.save!
+          expect(stop_area.registration_number).to be_present
+          expect(stop_area.registration_number).to eq "AAB"
+        end
+      end
+
+      it "should validate the registration_number format" do
+        stop_area.registration_number = "1234455"
+        expect(stop_area).to_not be_valid
+        stop_area.registration_number = "ABC"
+        expect(stop_area).to be_valid
+        expect{ stop_area.save! }.to_not raise_error
+      end
+
+      it "should validate the registration_number uniqueness" do
+        stop_area.registration_number = "ABC"
+        create :stop_area, stop_area_referential: stop_area_referential, registration_number: stop_area.registration_number
+        expect(stop_area).to_not be_valid
+
+        stop_area.registration_number = "ABD"
+        create :stop_area, registration_number: stop_area.registration_number
+        expect(stop_area).to be_valid
+      end
+    end
+  end
+
   # describe ".latitude" do
   #   it "should accept -90 value" do
   #     subject = create :stop_area, :area_type => "BoardingPosition"

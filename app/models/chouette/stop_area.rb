@@ -46,6 +46,11 @@ module Chouette
     validates_numericality_of :waiting_time, greater_than_or_equal_to: 0, only_integer: true, if: :waiting_time
     validate :parent_area_type_must_be_greater
     validate :area_type_of_right_kind
+    validate :registration_number_is_set
+
+    before_validation do
+      self.registration_number ||= self.stop_area_referential.generate_registration_number
+    end
 
     def self.nullable_attributes
       [:registration_number, :street_name, :country_code, :fare_code,
@@ -70,6 +75,22 @@ module Chouette
       return unless self.kind
       unless Chouette::AreaType.send(self.kind).map(&:to_s).include?(self.area_type)
         errors.add(:area_type, I18n.t('stop_areas.errors.incorrect_kind_area_type'))
+      end
+    end
+
+    def registration_number_is_set
+      return unless self.stop_area_referential.registration_number_format.present?
+      if self.stop_area_referential.stop_areas.where(registration_number: self.registration_number).\
+        where.not(id: self.id).exists?
+        errors.add(:registration_number, I18n.t('stop_areas.errors.registration_number.already_taken'))
+      end
+
+      unless self.registration_number.present?
+        errors.add(:registration_number, I18n.t('stop_areas.errors.registration_number.cannot_be_empty'))
+      end
+
+      unless self.stop_area_referential.validates_registration_number(self.registration_number)
+        errors.add(:registration_number, I18n.t('stop_areas.errors.registration_number.invalid'))
       end
     end
 

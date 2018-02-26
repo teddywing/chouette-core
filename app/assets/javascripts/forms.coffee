@@ -25,7 +25,7 @@ isEdge = !isIE && !!window.StyleMedia
   if $('.page-action').children('.formSubmitr').length > 0
     $('.page-action').children('.formSubmitr').remove()
 
-  $('.formSubmitr').appendTo('.page-action')
+  $('.formSubmitr').appendTo('.page-action').addClass('sticky-action')
 
   if isIE || isEdge
     $('.formSubmitr').off()
