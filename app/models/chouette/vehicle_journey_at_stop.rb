@@ -4,7 +4,7 @@ module Chouette
     include Chouette::ForAlightingEnumerations
     include ChecksumSupport
 
-    DAY_OFFSET_MAX = 1
+    DAY_OFFSET_MAX = 2
 
 
     belongs_to :stop_point
@@ -82,12 +82,12 @@ module Chouette
       format_time arrival_time.utc
     end
 
-    def departure_local_time
-      local_time departure_time
+    def departure_local_time offset=nil
+      local_time departure_time, offset
     end
 
-    def arrival_local_time
-      local_time arrival_time
+    def arrival_local_time offset=nil
+      local_time arrival_time, offset
     end
 
     def departure_local
@@ -98,12 +98,15 @@ module Chouette
       format_time arrival_local_time
     end
 
+    def time_zone_offset
+      return 0 unless stop_point&.stop_area&.time_zone.present?
+      ActiveSupport::TimeZone[stop_point.stop_area.time_zone]&.utc_offset || 0
+    end
+
     private
-    def local_time time
-      return unless time
-      return time unless stop_point&.stop_area&.time_zone.present?
-      return time unless ActiveSupport::TimeZone[stop_point.stop_area.time_zone].present?
-      time + ActiveSupport::TimeZone[stop_point.stop_area.time_zone].utc_offset
+    def local_time time, offset=nil
+      return nil unless time
+      time + (offset || time_zone_offset)
     end
 
     def format_time time
