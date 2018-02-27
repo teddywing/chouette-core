@@ -95,7 +95,6 @@ class ApplicationPolicy
     referential.try(:organisation_id) || record.try(:organisation_id)
   end
 
-
   #
   #  Helpers
   #  -------

@@ -5,6 +5,10 @@ class ComplianceControlSetPolicy < ApplicationPolicy
     end
   end
 
+  def show?
+    organisation_match?
+  end
+
   def destroy?
     user.has_permission?('compliance_control_sets.destroy')
   end

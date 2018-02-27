@@ -36,11 +36,15 @@ class ComplianceControlSetsController < ChouetteController
   private
 
   def collection
-    scope = self.ransack_period_range(scope: ComplianceControlSet.all, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
-    @q_for_form = scope.ransack(params[:q])
-    compliance_control_sets = @q_for_form.result
-    compliance_control_sets = joins_with_associated_objects(compliance_control_sets).order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
-    @compliance_control_sets = compliance_control_sets.paginate(page: params[:page], per_page: 30)
+    @compliance_control_sets ||= begin
+      scope = end_of_association_chain.all
+      scope = self.ransack_period_range(scope: scope, error_message: t('imports.filters.error_period_filter'), query: :where_updated_at_between)
+      @q_for_form = scope.ransack(params[:q])
+      compliance_control_sets = @q_for_form.result
+      compliance_control_sets = joins_with_associated_objects(compliance_control_sets).order(sort_column + ' ' + sort_direction) if sort_column && sort_direction
+      compliance_control_sets = compliance_control_sets.paginate(page: params[:page], per_page: 30)
+    end
+
   end
 
   def decorate_compliance_control_sets(compliance_control_sets)
@@ -82,9 +86,9 @@ class ComplianceControlSetsController < ChouetteController
     case params[:sort]
       when 'owner_jdc'
         collection.joins("LEFT JOIN organisations ON compliance_control_sets.organisation_id = organisations.id")
-      when 'control_numbers' 
+      when 'control_numbers'
         collection.joins("LEFT JOIN compliance_controls ON compliance_controls.compliance_control_set_id = compliance_control_sets.id").group(:id)
-      else 
+      else
         collection
     end
   end
