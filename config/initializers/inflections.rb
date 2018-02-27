@@ -9,7 +9,7 @@ ActiveSupport::Inflector.inflections(:fr) do |inflect|
 #   inflect.singular /^(ox)en/i, '\1'
 #   inflect.irregular 'person', 'people'
 #   inflect.uncountable %w( fish sheep )
-  inflect.plural /r(.)seau/i, 'r\1seaux'
+  inflect.plural 'réseau', 'réseaux'
   inflect.plural 'Zone de contrainte', 'Zones de contrainte'
 end
 
@@ -24,4 +24,11 @@ class String
     pluralize_without_i18n count, locale
   end
   alias_method_chain :pluralize, :i18n
+end
+
+class ActiveRecord::Base
+  def self.undecorated_table_name(class_name = base_class.name)
+    table_name = class_name.to_s.demodulize.underscore
+    pluralize_table_names ? table_name.pluralize(:en) : table_name
+  end
 end
