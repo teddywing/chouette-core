@@ -1,18 +1,16 @@
 class ComplianceControl < ActiveRecord::Base
+  include ComplianceItemSupport
 
   class << self
     def criticities; %i(warning error) end
     def default_code; "" end
-    def dynamic_attributes
-      stored_attributes[:control_attributes] || []
-    end
 
     def policy_class
       ComplianceControlPolicy
     end
 
     def subclass_patterns
-      { 
+      {
         generic: 'Generic',
         journey_pattern: 'JourneyPattern',
         line: 'Line',
@@ -30,6 +28,9 @@ class ComplianceControl < ActiveRecord::Base
       end
       super
     end
+
+    def predicate; I18n.t("compliance_controls.#{self.name.underscore}.description") end
+    def prerequisite; I18n.t("compliance_controls.#{self.name.underscore}.prerequisite") end
   end
 
   extend Enumerize
@@ -45,26 +46,25 @@ class ComplianceControl < ActiveRecord::Base
   validates :compliance_control_set, presence: true
 
   validate def coherent_control_set
-  return true if compliance_control_block_id.nil?
-  ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
-  return true if ids.first == ids.last
-  names = ids.map{|id| ComplianceControlSet.find(id).name}
-  errors.add(:coherent_control_set,
-             I18n.t('compliance_controls.errors.incoherent_control_sets',
-                    indirect_set_name: names.first,
-                    direct_set_name: names.last))
-end
+    return true if compliance_control_block_id.nil?
+    ids = [compliance_control_block.compliance_control_set_id, compliance_control_set_id]
+    return true if ids.first == ids.last
+    names = ids.map{|id| ComplianceControlSet.find(id).name}
+    errors.add(:coherent_control_set,
+               I18n.t('compliance_controls.errors.incoherent_control_sets',
+                      indirect_set_name: names.first,
+                      direct_set_name: names.last))
+  end
 
+  def initialize(attributes = {})
+    super
+    self.name ||= I18n.t("activerecord.models.#{self.class.name.underscore}.one")
+    self.code ||= self.class.default_code
+    self.origin_code ||= self.class.default_code
+  end
 
-def initialize(attributes = {})
-  super
-  self.name ||= I18n.t("activerecord.models.#{self.class.name.underscore}.one")
-  self.code ||= self.class.default_code
-  self.origin_code ||= self.class.default_code
-end
-
-def predicate; I18n.t("compliance_controls.#{self.class.name.underscore}.description") end
-def prerequisite; I18n.t('compliance_controls.metas.no_prerequisite'); end
+  def predicate; self.class.predicate end
+  def prerequisite; self.class.prerequisite end
 
 end
 

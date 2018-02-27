@@ -29,8 +29,6 @@ en:
       title: "Add a new compliance control"
     edit:
       title: "Update compliance control"
-    metas:
-      no_prerequisite: "None"
     actions:
       new: Add
       edit: Edit
@@ -41,6 +39,7 @@ en:
       messages:
         3_route_1: "The route with %{source_objectid} objectid connect the stop points %{target_0_label} (%{target_0_objectid}) and %{target_1_label} (%{target_1_objectid}) which belong to the same ZDL"
       description: "Two stop points which belong to the same ZDL cannot follow one another in a route"
+      prerequisite: "None"
     route_control/opposite_route:
       messages:
         3_route_2: "The route with %{source_objectid} objectid references an incoherent oppposite route %{target_0_objectid}"
@@ -53,10 +52,12 @@ en:
       messages:
         3_route_3: "The route with %{source_objectid} objectid doesn't have any journey pattern"
       description: "A route must have at least one journey pattern"
+      prerequisite: "None"
     route_control/duplicates:
       messages:
         3_route_4: "The route with %{source_objectid} objectid is identical with another route %{target_0_objectid}"
       description: "2 routes cannot connect the same stop points with the same order and the same boarding and alighting characteristics"
+      prerequisite: "None"
     route_control/opposite_route_terminus:
       messages:
         3_route_5: "The route with %{source_objectid} objectid has a first stop from the %{target_0_label} ZDL whereas its oppoite route's last stop is from the ZDL %{target_1_label}"
@@ -66,78 +67,95 @@ en:
       messages:
         3_route_6: "The route with %{source_objectid} objectid does not connect enough stop points (required 2 stop points)"
       description: "A route must have at least 2 stop points"
+      prerequisite: "None"
     route_control/stop_points_in_journey_pattern:
       messages:
         3_route_8: "The stop point %{target_0_label} (%{target_0_objectid}) of the route %{source_objectid} is not used by any journey pattern"
       description: "The stop points of a route must be used by at least one journey pattern"
+      prerequisite: "None"
     route_control/omnibus_journey_pattern:
       messages:
         3_route_9: "The route with %{source_objectid} objectid does not have a journey pattern that connect all of its stop points"
       description: "A journey pattern of a route should connect all of a route's stop points"
+      prerequisite: "None"
     route_control/unactivated_stop_point:
       messages:
         3_route_10: "L'itinéraire %{source_objectid} référence un arrêt (ZDEp) désactivé %{target_0_label} (%{target_0_objectid})"
       description: "Les arrêts d'un itinéraire ne doivent pas être désactivés"
+      prerequisite: "None"
     journey_pattern_control/duplicates:
       messages:
         3_journeypattern_1: "The journey pattern with objectid %{source_objectid} is identical with another one %{target_0_objectid}"
       description: "Two journey patterns belonging to the same line must not connect the same stop points in the same order"
+      prerequisite: "None"
     journey_pattern_control/vehicle_journey:
       messages:
         3_journeypattern_2: "The journey pattern with %{source_objectid} objectid doesn't have any vehicle journey"
       description: "A journey pattern must have at least one vehicle journey"
+      prerequisite: "None"
     vehicle_journey_control/waiting_time:
       messages:
         3_vehiclejourney_1: "On the following vehicle journey %{source_objectid}, the waiting time %{error_value} a this stop point %{target_0_label} (%{target_0_objectid}) is greater than the threshold (%{reference_value})"
       description: "The waiting time, in minutes, at a specific stop point cannot be too big"
+      prerequisite: "None"
     vehicle_journey_control/speed:
       messages:
         3_vehiclejourney_2_1: "On the following vehicle journey %{source_objectid}, the computed speed %{error_value} between the stop points %{target_0_label} (%{target_0_objectid}) and %{target_1_label} (%{target_1_objectid}) is greater than the threshold (%{reference_value})"
         3_vehiclejourney_2_2: "On the following vehicle journey %{source_objectid}, the computed speed %{error_value} between the stop points %{target_0_label} (%{target_0_objectid}) and %{target_1_label} (%{target_1_objectid}) is smaller than the threshold (%{reference_value})"
       description: "The speed between 2 stop points should be confined between thresholds"
+      prerequisite: "None"
     vehicle_journey_control/delta:
       messages:
         3_vehiclejourney_3: "The travel time on the vehicle journey with %{source_objectid} objectid between the stop points %{target_0_label} (%{target_0_objectid}) and %{target_1_label} (%{target_1_objectid}) is too far off %{error_value} the average waiting on the journey pattern"
       description: "The travel time between two following stop points must be close to all the vehicle journey of a journey pattern"
+      prerequisite: "None"
     vehicle_journey_control/time_table:
       messages:
         3_vehiclejourney_4: "The vehicle journey with %{source_objectid} objectid does not have a timetable"
       description: "A vehicle journey must have at least one timetable"
+      prerequisite: "None"
     vehicle_journey_control/vehicle_journey_at_stops:
       messages:
         3_vehiclejourney_5_1: "The vehicle journey with %{source_objectid} objectid has an arrival time %{error_value} greater than the departure time %{reference_value} at the stop point %{target_0_label} (%{target_0_objectid})"
         3_vehiclejourney_5_2: "The vehicle journey with %{source_objectid} objectid has an departure time %{error_value} at stop point %{target_0_label} (%{target_0_objectid}) greater than the arrival %{reference_value} at the next stop point"
       description: "The arrival time of a stop point must be smaller than the departure time of this stop point AND the departure time of the stop points must be in chronological order"
+      prerequisite: "None"
     routing_constraint_zone_control/vehicle_journey_at_stops:
       messages:
         3_routingconstraint_1: "The Routing Constraint Zone %{source_objectid} references an unactivated stop point (ZDEp) %{target_0_label} (%{target_0_objectid})"
       description: "The stop points of a Routing Constraint Zone must be activated"
+      prerequisite: "None"
     routing_constraint_zone_control/maximum_length:
       messages:
         3_routingconstraint_2: "The Routing Constraint Zone %{source_objectid} covers all the stop points of its related route : %{target_0_objectid}."
       description: "A Routing Constraint Zone cannot cover all the stop points of a route"
+      prerequisite: "None"
     routing_constraint_zone_control/minimum_length:
       messages:
         3_routingconstraint_3: "The Routing Constraint Zone %{source_objectid} has less than 2 stop points"
       description: "A Routing Constraint Zone must have at least 2 stop points"
+      prerequisite: "None"
     line_control/route:
       messages:
         3_line_1: "On line :%{source_label} (%{source_objectid}), no route has an opposite route"
       description: "The routes of a line must have an opposite route"
-      prerequisite: Lign has multiple routes
+      prerequisite: Line has multiple routes
     generic_attribute_control/pattern:
       messages:
         3_generic_1: "%{source_objectid} : the %{source_attribute} attribute value (%{error_value}) does not respect the following pattern : %{reference_value}"
       description: "The object attribute must respect a patten (regular expression)"
+      prerequisite: "None"
     generic_attribute_control/min_max:
       messages:
         3_generic_2_1: "%{source_objectid}  : the %{source_attribute} attributes's value (%{error_value}) is greater than the authorized maximum value : %{reference_value}"
         3_generic_2_2: "%{source_objectid}  : the %{source_attribute} attributes's value (%{error_value}) is smaller than the authorized minimum value %{reference_value}"
       description: "The numeric value of an attribute must be contained between 2 values"
+      prerequisite: "None"
     generic_attribute_control/uniqueness:
       messages:
         3_generic_3: "%{source_objectid}  : the %{source_attribute} attribute (%{error_value}) has a value shared with : %{target_0_objectid}"
       description: "The attribute's value must be unique compared to the other objects ofthe same type (related to the same line)"
+      prerequisite: "None"
     shape_control:
       3_shape_1: "Tracé %{source_objectid} : le tracé passe trop loin de l'arrêt %{target_0_label} (%{target_0_objectid}) : %{error_value} > %{reference_value}"
       3_shape_2: "Tracé %{source_objectid} : le tracé n'est pas défini entre les arrêts %{target_0_label} (%{target_0_objectid}) et %{target_1_label} (%{target_1_objectid})"

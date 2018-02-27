@@ -21,7 +21,7 @@ class ComplianceControlSetCopier
   # Workers
   # -------
   def check_organisation_coherence!
-    return true if cc_set.organisation_id == referential.organisation_id 
+    return true if cc_set.organisation_id == referential.organisation_id
     raise ArgumentError, "Incoherent organisation of referential"
   end
 
@@ -66,7 +66,8 @@ class ComplianceControlSetCopier
       name: name_with_refid(compliance_control.name),
       comment: compliance_control.comment,
       code: compliance_control.code,
-      origin_code: compliance_control.origin_code
+      origin_code: compliance_control.origin_code,
+      compliance_control_name: compliance_control.class.name
     ).tap do | compliance_check |
       control_id_to_check.update compliance_control.id => compliance_check
     end

@@ -135,7 +135,6 @@ gem 'rabl'
 gem 'carrierwave', '~> 1.0'
 
 gem 'sidekiq'
-gem 'sinatra'
 gem 'whenever', github: 'af83/whenever', require: false # '~> 0.9'
 gem 'rake'
 gem 'devise-async'
