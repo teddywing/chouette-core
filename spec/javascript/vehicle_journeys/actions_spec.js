@@ -194,7 +194,7 @@ describe('when toggling arrivals', () => {
 })
 describe('when updating vjas time', () => {
   it('should create an action to update time', () => {
-    const val = 33, subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true
+    const val = 33, subIndex = 0, index = 0, timeUnit = 'minute', isDeparture = true, isArrivalsToggled = true, enforceConsistency = false
     const expectedAction = {
       type: 'UPDATE_TIME',
       val,
@@ -202,7 +202,8 @@ describe('when updating vjas time', () => {
       index,
       timeUnit,
       isDeparture,
-      isArrivalsToggled
+      isArrivalsToggled,
+      enforceConsistency
     }
     expect(actions.updateTime(val, subIndex, index, timeUnit, isDeparture, isArrivalsToggled)).toEqual(expectedAction)
   })
@@ -640,7 +641,7 @@ describe('actions.adjustSchedule', () => {
         }
       })
       it('should do nothing', () => {
-        expect(actions.adjustSchedule(action, schedule)).toEqual(schedule)
+        expect(actions.adjustSchedule(action, schedule, true)).toEqual(schedule)
       })
     }),
     context('with a delta < 0', () => {
@@ -662,7 +663,7 @@ describe('actions.adjustSchedule', () => {
           arrival_time: departure_time,
           delta: 0
         }
-        expect(actions.adjustSchedule(action, schedule)).toEqual(expected)
+        expect(actions.adjustSchedule(action, schedule, true)).toEqual(expected)
       })
     })
   }),
@@ -676,7 +677,7 @@ describe('actions.adjustSchedule', () => {
         }
       })
       it('should do nothing', () => {
-        expect(actions.adjustSchedule(action, schedule)).toEqual(schedule)
+        expect(actions.adjustSchedule(action, schedule, true)).toEqual(schedule)
       })
     }),
     context('with a delta < 0', () => {
@@ -698,7 +699,7 @@ describe('actions.adjustSchedule', () => {
           arrival_time: arrival_time,
           delta: 0
         }
-        expect(actions.adjustSchedule(action, schedule)).toEqual(expected)
+        expect(actions.adjustSchedule(action, schedule, true)).toEqual(expected)
       })
     })
   })
