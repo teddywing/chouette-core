@@ -5,8 +5,8 @@
   class: 'form form-filter' do |f|
 
   .ffg-row
-    .input-group.search_bar class=filter_item_class(params[:q], :name_cont)
-      = f.search_field :name_cont,
+    .input-group.search_bar class=filter_item_class(params[:q], :name_or_code_cont)
+      = f.search_field :name_or_code_cont,
         class: 'form-control',
         placeholder: t('compliance_controls.filters.name')
       span.input-group-btn
