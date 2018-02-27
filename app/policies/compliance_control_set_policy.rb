@@ -6,7 +6,7 @@ class ComplianceControlSetPolicy < ApplicationPolicy
   end
 
   def show?
-    organisation_match? or belongs_to_stif?
+    organisation_match?
   end
 
   def destroy?

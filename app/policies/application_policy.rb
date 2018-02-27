@@ -95,12 +95,6 @@ class ApplicationPolicy
     referential.try(:organisation_id) || record.try(:organisation_id)
   end
 
-
-  def belongs_to_stif?
-    record.try(:organisation).try(:code) == "STIF"
-  end
-
-
   #
   #  Helpers
   #  -------
