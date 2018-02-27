@@ -1,6 +1,4 @@
 class ComplianceChecksController <  InheritedResources::Base
-  before_action do
-    @workbench = Workbench.find params[:workbench_id]
-  end
-
+  belongs_to :workbench
+  belongs_to :compliance_check_set
 end
