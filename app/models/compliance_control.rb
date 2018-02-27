@@ -28,6 +28,8 @@ class ComplianceControl < ActiveRecord::Base
       end
       super
     end
+
+    def predicate; I18n.t("compliance_controls.#{self.name.underscore}.description") end
   end
 
   extend Enumerize
@@ -60,7 +62,7 @@ class ComplianceControl < ActiveRecord::Base
     self.origin_code ||= self.class.default_code
   end
 
-  def predicate; I18n.t("compliance_controls.#{self.class.name.underscore}.description") end
+  def predicate; self.class.predicate end
 
 end
 

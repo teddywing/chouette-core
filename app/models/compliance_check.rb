@@ -13,10 +13,10 @@ class ComplianceCheck < ActiveRecord::Base
   validates :code, presence: true
   validates :origin_code, presence: true
 
-  def control
-    ComplianceControl.find_by! origin_code: origin_code
+  def control_class
+    compliance_control_name.present? ? compliance_control_name.constantize : nil
   end
 
-  delegate :predicate, to: :control
+  delegate :predicate, to: :control_class, allow_nil: true
 
 end

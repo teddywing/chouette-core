@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180202170009) do
+ActiveRecord::Schema.define(version: 20180227151937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
   enable_extension "postgis"
   enable_extension "unaccent"
+  enable_extension "objectid"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -90,9 +91,9 @@ ActiveRecord::Schema.define(version: 20180202170009) do
     t.integer   "organisation_id", limit: 8
     t.datetime  "created_at"
     t.datetime  "updated_at"
-    t.integer   "workgroup_id",    limit: 8
     t.integer   "int_day_types"
     t.date      "excluded_dates",                            array: true
+    t.integer   "workgroup_id",    limit: 8
   end
 
   add_index "calendars", ["organisation_id"], name: "index_calendars_on_organisation_id", using: :btree
@@ -221,6 +222,7 @@ ActiveRecord::Schema.define(version: 20180202170009) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "origin_code"
+    t.string   "compliance_control_name"
   end
 
   add_index "compliance_checks", ["compliance_check_block_id"], name: "index_compliance_checks_on_compliance_check_block_id", using: :btree
@@ -421,9 +423,9 @@ ActiveRecord::Schema.define(version: 20180202170009) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -765,6 +767,7 @@ ActiveRecord::Schema.define(version: 20180202170009) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "objectid_format"
+    t.string   "registration_number_format"
   end
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
