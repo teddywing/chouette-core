@@ -152,7 +152,7 @@ class Merge < ActiveRecord::Base
           route_stop_points = referential_stop_points_by_route[route.id]
 
           # Stop Points
-          route_stop_points.each do |stop_point|
+          route_stop_points.sort_by(&:position).each do |stop_point|
             objectid = Chouette::StopPoint.where(objectid: stop_point.objectid).exists? ? nil : stop_point.objectid
             attributes = stop_point.attributes.merge(
               id: nil,
@@ -166,7 +166,7 @@ class Merge < ActiveRecord::Base
           new_route.save!
 
           if new_route.checksum != route.checksum
-            raise "Checksum has changed: #{route.inspect} #{new_route.inspect}"
+            raise "Checksum has changed: \"#{route.checksum}\", \"#{route.checksum_source}\" -> \"#{new_route.checksum}\", \"#{new_route.checksum_source}\""
           end
         end
       end
@@ -221,7 +221,7 @@ class Merge < ActiveRecord::Base
 
           new_journey_pattern = new.journey_patterns.create! attributes
           if new_journey_pattern.checksum != journey_pattern.checksum
-            raise "Checksum has changed for #{journey_pattern.inspect}: #{journey_pattern.checksum_source} #{new_journey_pattern.checksum_source} "
+            raise "Checksum has changed for #{journey_pattern.inspect}: \"#{journey_pattern.checksum_source}\" -> \"#{new_journey_pattern.checksum_source}\""
           end
         end
       end
