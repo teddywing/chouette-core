@@ -18,5 +18,6 @@ class ComplianceCheck < ActiveRecord::Base
   end
 
   delegate :predicate, to: :control_class, allow_nil: true
+  delegate :prerequisite, to: :control_class, allow_nil: true
 
 end

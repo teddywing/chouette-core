@@ -30,6 +30,7 @@ class ComplianceControl < ActiveRecord::Base
     end
 
     def predicate; I18n.t("compliance_controls.#{self.name.underscore}.description") end
+    def prerequisite; I18n.t("compliance_controls.#{self.name.underscore}.prerequisite") end
   end
 
   extend Enumerize
@@ -63,6 +64,7 @@ class ComplianceControl < ActiveRecord::Base
   end
 
   def predicate; self.class.predicate end
+  def prerequisite; self.class.prerequisite end
 
 end
 

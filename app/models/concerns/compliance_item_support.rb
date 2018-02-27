@@ -10,6 +10,4 @@ module ComplianceItemSupport
     end
   end
 
-  def prerequisite; I18n.t('compliance_controls.metas.no_prerequisite'); end
-
 end

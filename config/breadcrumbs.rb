@@ -98,7 +98,7 @@ end
 
 crumb :compliance_check do |workbench, compliance_check|
   link breadcrumb_name(compliance_check), workbench_compliance_check_set_compliance_check_path(workbench, compliance_check.compliance_check_set, compliance_check)
-  parent :compliance_check_set, compliance_check.compliance_check_set, workbench
+  parent :compliance_check_set_executed, workbench, compliance_check.compliance_check_set
 end
 
 crumb :compliance_check_set_executed do |workbench, compliance_check_set|
