@@ -9,7 +9,7 @@ ActiveSupport::Inflector.inflections(:fr) do |inflect|
 #   inflect.singular /^(ox)en/i, '\1'
 #   inflect.irregular 'person', 'people'
 #   inflect.uncountable %w( fish sheep )
-  inflect.plural 'réseau', 'réseaux'
+  inflect.plural /r(.)seau/i, 'r\1seaux'
   inflect.plural 'Zone de contrainte', 'Zones de contrainte'
 end
 
@@ -17,3 +17,11 @@ end
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+
+class String
+  def pluralize_with_i18n count=nil, locale=nil
+    locale ||= I18n.locale
+    pluralize_without_i18n count, locale
+  end
+  alias_method_chain :pluralize, :i18n
+end
