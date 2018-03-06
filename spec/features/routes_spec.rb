@@ -6,6 +6,7 @@ describe "Routes", :type => :feature do
   let!(:route2) { create(:route, :line => line) }
   #let!(:stop_areas) { Array.new(4) { create(:stop_area) } }
   let!(:stop_points) { Array.new(4) { create(:stop_point, :route => route) } }
+  let(:stop_area_referential) {stop_points.first.stop_area.stop_area_referential}
   let!(:journey_pattern) { create(:journey_pattern, route: route) }
 
   before { @user.update(organisation: referential.organisation) }
@@ -86,6 +87,54 @@ describe "Routes", :type => :feature do
           @user.update_attribute(:permissions, [])
           visit referential_line_route_path(referential, line, route)
           expect(page).not_to have_link(I18n.t('actions.destroy'), href: referential_line_route_journey_pattern_path(referential, line, route, journey_pattern))
+        end
+      end
+
+      def click_on_stop_point_dropdown_btn(num)
+        find(:xpath, "(//div[contains(@class, 'btn') and contains(@class, 'dropdown-toggle')])[#{num}]").click
+      end
+
+      context 'user does not have permission to edit stop areas' do
+        it 'does not show edit links for stop areas' do
+          @user.update_attribute(:permissions, [])
+          
+          expect(page).not_to have_content(I18n.t('stop_points.actions.edit'), visible: false)
+          stop_points.each_with_index do |sp, i|
+            click_on_stop_point_dropdown_btn(i + 1)
+            expect(page).not_to have_link(I18n.t('stop_points.actions.edit'), href: edit_stop_area_referential_stop_area_path(stop_area_referential, sp))
+          end
+        end
+      end
+
+      context 'user has permission to edit stop areas' do
+        xit 'shows edit links for stop areas' do
+          @user.update_attribute(:permissions, ["stop_areas.update"])
+          visit referential_line_route_path(referential, line, route)
+          
+          stop_points.each_with_index do |sp, i|
+            click_on_stop_point_dropdown_btn(i + 1)
+            expect(page).to have_link(I18n.t('stop_points.actions.edit'), href: edit_stop_area_referential_stop_area_path(stop_area_referential, sp))
+          end
+        end
+      end
+
+      context 'user does not have permission to destroy stop areas' do
+        it 'does not show destroy links for stop areas' do
+          @user.update_attribute(:permissions, [])
+          stop_points.each_with_index do |sp, i|
+            click_on_stop_point_dropdown_btn(i + 1)
+            expect(page).not_to have_link(I18n.t('stop_points.actions.destroy'), href: stop_area_referential_stop_area_path(sp.referential, sp))
+          end
+        end
+      end
+
+      context 'user has permission to destroy journey patterns' do
+        xit 'shows destroy links for journey patterns' do
+          @user.update_attribute(:permissions, ["stop_areas.destroy"])
+          stop_points.each_with_index do |sp, i|
+            stop_point_action_links_btn(i + 1).click
+            expect(page).to have_link(I18n.t('stop_points.actions.destroy'), href: stop_area_referential_stop_area_path(sp.referential, sp))
+          end
         end
       end
     end
