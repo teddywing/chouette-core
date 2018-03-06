@@ -1,36 +1,36 @@
-class GtfsImport < ImportTask
+require 'net/http'
+class GtfsImport < Import
+  before_destroy :destroy_non_ready_referential
 
-  enumerize :references_type, in: %w( stop_area )
-  
-  attr_accessor :object_id_prefix, :max_distance_for_commercial, :ignore_last_word,  :ignore_end_chars, :max_distance_for_connection_link, :references_type
-  
-  validates_presence_of :object_id_prefix
-
-  def references_types
-    self.references_type.values
+  after_commit :launch_java_import, on: :create
+  before_save def abort_unless_referential
+    self.status = 'aborted' unless referential
   end
 
-  def action_params  
-    {
-      "gtfs-import" => {
-        "no_save" => no_save,
-        "user_name" => user_name,
-        "name" => name,
-        "organisation_name" => organisation.name,
-        "referential_name" => referential.name,
-        "object_id_prefix" => object_id_prefix,
-        "max_distance_for_commercial" => max_distance_for_commercial,
-        "ignore_last_word" => ignore_last_word,
-        "ignore_end_chars" => ignore_end_chars,
-        "max_distance_for_connection_link" => max_distance_for_connection_link,
-        "references_type" => references_type            
-      }
-    }
+  def launch_java_import
+    return if self.class.finished_statuses.include?(status)
+    threaded_call_boiv_iev
   end
-  
 
-  def data_format
-    "gtfs"
+  private
+
+  def destroy_non_ready_referential
+    if referential && !referential.ready
+      referential.destroy
+    end
+  end
+
+  def threaded_call_boiv_iev
+    Thread.new(&method(:call_boiv_iev))
+  end
+
+  def call_boiv_iev
+    Rails.logger.error("Begin IEV call for import")
+    Net::HTTP.get(URI("#{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{id}"))
+    Rails.logger.error("End IEV call for import")
+  rescue Exception => e
+    logger.error "IEV server error : #{e.message}"
+    logger.error e.backtrace.inspect
   end
 
 end
