@@ -16,13 +16,8 @@ class SimpleExporter < SimpleInterface
 
     @statuses = ""
 
-    if ENV["NO_TRANSACTION"]
-      process_collection
-    else
-      ActiveRecord::Base.transaction do
-        process_collection
-      end
-    end
+    process_collection
+
     self.status ||= :success
   rescue SimpleInterface::FailedOperation
     self.status = :failed
@@ -136,6 +131,10 @@ class SimpleExporter < SimpleInterface
       h.each_with_object({}) do |(k, v), h|
         if v.is_a? Hash
           flatten_hash(v).map do |h_k, h_v|
+            h["#{k}.#{h_k}".to_sym] = h_v
+          end
+        elsif v.is_a? ActiveRecord::Base
+          flatten_hash(v.attributes).map do |h_k, h_v|
             h["#{k}.#{h_k}".to_sym] = h_v
           end
         else

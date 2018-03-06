@@ -21,13 +21,7 @@ class SimpleJsonExporter < SimpleExporter
 
     @statuses = ""
 
-    if ENV["NO_TRANSACTION"]
-      process_collection
-    else
-      ActiveRecord::Base.transaction do
-        process_collection
-      end
-    end
+    process_collection
     self.status ||= :success
   rescue SimpleInterface::FailedOperation
     self.status = :failed
@@ -56,13 +50,15 @@ class SimpleJsonExporter < SimpleExporter
     log "Export will be written in #{filepath}"
 
     if collection.is_a?(ActiveRecord::Relation) && collection.model.column_names.include?("id")
+      log "Using paginated collection", color: :green
       ids = collection.pluck :id
       ids.in_groups_of(configuration.batch_size).each do |batch_ids|
-        collection.where(id: batch_ids).each do |item|
+        collection.where(id: batch_ids.compact).each do |item|
           handle_item item
         end
       end
     else
+      log "Using non-paginated collection", color: :orange
       collection.each{|item| handle_item item }
     end
     print_state true
@@ -98,7 +94,7 @@ class SimpleJsonExporter < SimpleExporter
     map_item_to_rows(item).each_with_index do |item, i|
       @number_of_lines = number_of_lines + i
       serialized_item = {}
-      @current_row = item.attributes
+      @current_row = item.attributes.symbolize_keys
       @current_row = @current_row.slice(*configuration.logged_attributes) if configuration.logged_attributes.present?
       @new_status = nil
 

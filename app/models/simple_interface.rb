@@ -81,11 +81,11 @@ class SimpleInterface < ActiveRecord::Base
     else
       @messages << [time, msg]
     end
-    print_state
+    print_state true
   end
 
   def output_filepath
-    File.join @output_dir, "#{self.configuration_name}_#{Time.now.strftime "%y%m%d%H%M"}_out.csv"
+    @output_filepath ||= File.join @output_dir, "#{self.configuration_name}_#{Time.now.strftime "%y%m%d%H%M"}_out.csv"
   end
 
   def write_output_to_csv
@@ -191,7 +191,7 @@ class SimpleInterface < ActiveRecord::Base
       msg += colorize "=== MESSAGES (#{@messages.count}) ===\n", :green
       msg += "[...]\n" if @messages.count > lines_count
       msg += @messages.last(lines_count).map do |m|
-        "[#{"%.5f" % m[0]}]\t" + m[1].truncate(@status_width)
+        "[#{"%.5f" % m[0]}]\t" + m[1].truncate(@status_width - 10)
       end.join("\n")
       msg += "\n"*[lines_count-@messages.count, 0].max
     end
