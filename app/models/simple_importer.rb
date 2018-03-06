@@ -32,7 +32,7 @@ class SimpleImporter < SimpleInterface
   rescue SimpleInterface::FailedOperation
     self.status = :failed
   ensure
-    self.save!
+    task_finished
   end
 
   def encode_string s

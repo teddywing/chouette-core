@@ -1,5 +1,5 @@
 class SimpleInterface < ActiveRecord::Base
-  attr_accessor :configuration
+  attr_accessor :configuration, :interfaces_group
 
   class << self
     def configuration_class
@@ -35,6 +35,8 @@ class SimpleInterface < ActiveRecord::Base
     @padding = 1
     @current_line = -1
     @padding = [1, Math.log([@number_of_lines, 1].max, 10).ceil()].max
+    @output_dir = opts[:output_dir] || Rails.root.join('tmp', self.class.name.tableize)
+    @start_time = Time.now
   end
 
   def configure
@@ -66,15 +68,54 @@ class SimpleInterface < ActiveRecord::Base
   def log msg, opts={}
     msg = msg.to_s
     msg = colorize msg, opts[:color] if opts[:color]
+    @start_time ||= Time.now
+    time = Time.now - @start_time
     if opts[:append]
-      @messages[-1] = (@messages[-1] || "") + msg
+      _time, _msg = @messages.pop || []
+      _time ||= time
+      _msg ||= ""
+      @messages.push [_time, _msg+msg]
+    elsif opts[:replace]
+      @messages.pop
+      @messages << [time, msg]
     else
-      @messages << msg
+      @messages << [time, msg]
     end
     print_state
   end
 
+  def output_filepath
+    File.join @output_dir, "#{self.configuration_name}_#{Time.now.strftime "%y%m%d%H%M"}_out.csv"
+  end
+
+  def write_output_to_csv
+    filepath =
+    cols = %i(line kind event message error)
+    if self.journal.size > 0 && self.journal.first[:row].present?
+      log "Writing output log"
+      FileUtils.mkdir_p @output_dir
+      keys = self.journal.first[:row].map(&:first)
+      CSV.open(output_filepath, "w") do |csv|
+        csv << cols + keys
+        self.journal.each do |j|
+          csv << cols.map{|c| j[c]} + j[:row].map(&:last)
+        end
+      end
+      log "Output written in #{filepath}", replace: true
+    end
+  end
+
   protected
+
+  def task_finished
+    log "Saving..."
+    self.save!
+    log "Saved", replace: true
+    write_output_to_csv
+    log "FINISHED, status: "
+    log status, color: SimpleInterface.status_color(status), append: true
+    print_state true
+  end
 
   def push_in_journal data
     line = (@current_line || 0) + 1
@@ -86,7 +127,7 @@ class SimpleInterface < ActiveRecord::Base
     end
   end
 
-  def colorize txt, color
+  def self.colorize txt, color
     color = {
       red: "31",
       green: "32",
@@ -95,12 +136,24 @@ class SimpleInterface < ActiveRecord::Base
     "\e[#{color}m#{txt}\e[0m"
   end
 
-  def print_state
+  def self.status_color status
+    color = :green
+    color = :orange if status.to_s == "success_with_warnings"
+    color = :red if status.to_s == "error"
+    color
+  end
+
+  def colorize txt, color
+    SimpleInterface.colorize txt, color
+  end
+
+  def print_state force=false
     return unless @verbose
+    return if !@last_repaint.nil? && (Time.now - @last_repaint < 0.5) && !force
 
     @status_width ||= begin
-      term_width = %x(tput cols).to_i
-      term_width - @padding - 10
+      @term_width = %x(tput cols).to_i
+      @term_width - @padding - 10
     rescue
       100
     end
@@ -112,12 +165,24 @@ class SimpleInterface < ActiveRecord::Base
       50
     end
 
+    msg = ""
+
+    if @banner.nil? && interfaces_group.present?
+      @banner = interfaces_group.banner @status_width
+      @status_height -= @banner.lines.count + 2
+    end
+
+    if @banner.present?
+      msg += @banner
+      msg += "\n" + "-"*@term_width + "\n"
+    end
+
     full_status = @statuses || ""
     full_status = full_status.last(@status_width*10) || ""
     padding_size = [(@number_of_lines - @current_line - 1), (@status_width - full_status.size/10)].min
     full_status = "#{full_status}#{"."*[padding_size, 0].max}"
 
-    msg = "#{"%#{@padding}d" % (@current_line + 1)}/#{@number_of_lines}: #{full_status}"
+    msg += "#{"%#{@padding}d" % (@current_line + 1)}/#{@number_of_lines}: #{full_status}"
 
     lines_count = [(@status_height / 2) - 3, 1].max
 
@@ -125,7 +190,9 @@ class SimpleInterface < ActiveRecord::Base
       msg += "\n\n"
       msg += colorize "=== MESSAGES (#{@messages.count}) ===\n", :green
       msg += "[...]\n" if @messages.count > lines_count
-      msg += @messages.last(lines_count).map{|m| m.truncate(@status_width)}.join("\n")
+      msg += @messages.last(lines_count).map do |m|
+        "[#{"%.5f" % m[0]}]\t" + m[1].truncate(@status_width)
+      end.join("\n")
       msg += "\n"*[lines_count-@messages.count, 0].max
     end
 
@@ -142,6 +209,7 @@ class SimpleInterface < ActiveRecord::Base
       end.join("\n")
     end
     custom_print msg, clear: true
+    @last_repaint = Time.now
   end
 
   def custom_print msg, opts={}

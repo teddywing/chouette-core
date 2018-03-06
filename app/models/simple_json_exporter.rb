@@ -33,10 +33,12 @@ class SimpleJsonExporter < SimpleExporter
     self.status = :failed
   ensure
     if @file
+      log "Writing to JSON file..."
       @file.write @out.to_json
+      log "JSON file written", replace: true
       @file.close
     end
-    self.save!
+    task_finished
   end
 
   protected
@@ -50,8 +52,8 @@ class SimpleJsonExporter < SimpleExporter
 
   def process_collection
     self.configuration.before_actions(:all).each do |action| action.call self end
-    log "Starting export ...", color: :green
-    log "Export will be written in #{filepath}", color: :green
+    log "Starting export ..."
+    log "Export will be written in #{filepath}"
 
     if collection.is_a?(ActiveRecord::Relation) && collection.model.column_names.include?("id")
       ids = collection.pluck :id
@@ -63,7 +65,7 @@ class SimpleJsonExporter < SimpleExporter
     else
       collection.each{|item| handle_item item }
     end
-    print_state
+    print_state true
   end
 
   def resolve_node item, node
