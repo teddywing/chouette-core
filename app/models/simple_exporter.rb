@@ -41,7 +41,6 @@ class SimpleExporter < SimpleInterface
   protected
   def init_env opts
     @number_of_lines = collection.size
-
     super opts
   end
 

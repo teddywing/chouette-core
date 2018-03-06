@@ -15,7 +15,7 @@ class SimpleInterfacesGroup
     @interfaces.each do |interface_def|
       interface = interface_def[:interface]
       interface.interfaces_group = self
-      interface.send interface_def[:action], interface_def[:opts].reverse_update(shared_options)
+      interface.send interface_def[:action], interface_def[:opts].reverse_update(shared_options || {})
       return if interface.status == :error
       @current_step += 1
     end
@@ -25,6 +25,7 @@ class SimpleInterfacesGroup
 
   def banner width=nil
     width ||= @width
+    width ||= 128
     @width = width
 
     name = "### #{self.name} ###"

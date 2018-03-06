@@ -70,6 +70,7 @@ class SimpleInterface < ActiveRecord::Base
     msg = colorize msg, opts[:color] if opts[:color]
     @start_time ||= Time.now
     time = Time.now - @start_time
+    @messages ||= []
     if opts[:append]
       _time, _msg = @messages.pop || []
       _time ||= time
