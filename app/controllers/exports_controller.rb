@@ -2,16 +2,8 @@ class ExportsController < ChouetteController
   include PolicyChecker
   include RansackDateFilter
   include IevInterfaces
-  skip_before_action :authenticate_user!, only: [:upload]
+  # skip_before_action :authenticate_user!, only: [:upload]
   defaults resource_class: Export::Base, collection_name: 'exports', instance_name: 'export'
-
-  def upload
-    if params[:token] == resource.token_download
-      send_file resource.file.path
-    else
-      user_not_authorized
-    end
-  end
 
   private
 

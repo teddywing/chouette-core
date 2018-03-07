@@ -17,6 +17,7 @@ module Support
         connection_links
         calendars
         footnotes
+        exports
         imports
         merges
         journey_patterns

@@ -1,4 +1,4 @@
-RSpec.describe Import::BasePolicy, type: :policy do
+RSpec.describe ImportPolicy, type: :policy do
 
   let( :record ){ build_stubbed :import }
   before { stub_policy_scope(record) }
