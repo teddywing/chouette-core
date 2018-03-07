@@ -1,6 +1,5 @@
 - action_links = resource.action_links(params[:action]) rescue nil
 - action_links ||= decorated_collection.action_links(params[:action]) rescue nil
-
 .page_header
   .container-fluid
     .row
@@ -13,7 +12,7 @@
             h1 = yield :page_header_title
           - else
             - if defined?(resource_class)
-              h1 = t("#{resource_class.model_name.name.underscore.pluralize}.#{params[:action]}.title")
+              h1 = t("#{resource_class.model_name.name.underscore.gsub('/', '.').pluralize}.#{params[:action]}.title")
 
       .col-lg-3.col-md-4.col-sm-5.col-xs-5.text-right
         .page-action

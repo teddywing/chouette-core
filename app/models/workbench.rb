@@ -14,6 +14,7 @@ class Workbench < ActiveRecord::Base
   has_many :group_of_lines, through: :line_referential
   has_many :stop_areas, through: :stop_area_referential
   has_many :imports, class_name: Import::Base
+  has_many :exports, class_name: Export::Base
   has_many :workbench_imports, class_name: Import::Workbench
   has_many :compliance_check_sets
   has_many :compliance_control_sets

@@ -1,5 +1,6 @@
 class Import::Base < ActiveRecord::Base
   self.table_name = "imports"
+  validates :file, presence: true
 
   def self.messages_class_name
     "Import::Message"
@@ -12,7 +13,7 @@ class Import::Base < ActiveRecord::Base
   include IevInterfaces::Task
 
   def self.model_name
-    ActiveModel::Name.new Import::Base, Import::Base, "Import::Base"
+    ActiveModel::Name.new Import::Base, Import::Base, "Import"
   end
 
   def child_change

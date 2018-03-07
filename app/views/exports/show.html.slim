@@ -1,26 +1,60 @@
-.title.row
-  .col-md-8
-    = title_tag job_status_title(@export)
+- breadcrumb :export, @workbench, @export
 
-  .col-md-4
-    = export_attributes_tag(@export)
+- page_header_content_for @export
 
-- if @export.report.failure_code?
-  .alert.alert-danger
-    = t("iev.failure.#{@export.report.failure_code}")
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        = definition_list t('metadatas'), { 'Récupération des données' => '-', "Nom de l'archive" => @export.try(:file_identifier)}
 
-.progress_bars
-  = progress_bar_tag(@export)
+    .row
+      .col-lg-12
+        .error_messages
+          = render 'shared/iev_interfaces/messages', messages: @export.messages
 
-.export_show
-  .links
-    = link_to( font_awesome_classic_tag("fa-file-#{@export.filename_extension}-o") + t("exports.show.exported_file"), exported_file_referential_export_path(@referential, @export.id) ) if @export.file_path
-  
-  = render partial: "shared/ie_report.html", locals: { job: @export, line_items: @line_items }
-
-- content_for :sidebar do
-  ul.actions
-    li
-      = link_to t('exports.actions.destroy'), referential_export_path(@referential, @export.id), :method => :delete, :data => {:confirm => t('exports.actions.destroy_confirm')}, class: 'remove'
-  
-  = history_tag(@export)
+    - if @export.children.any?
+      .row
+        .col-lg-12
+          = table_builder_2 @export.children,
+            [ \
+              TableBuilderHelper::Column.new( \
+                name: 'Nom du jeu de données', \
+                attribute: 'name', \
+                sortable: false, \
+                link_to: lambda do |export| \
+                  referential_path(export.referential) if export.referential.present? \
+                end \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :status, \
+                attribute: Proc.new { |n| export_status(n.status) }, \
+                sortable: false, \
+                link_to: lambda do |export| \
+                  workbench_export_export_resources_path(export.workbench_id, export) \
+                end \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: 'Contrôle STIF', \
+                attribute: '', \
+                sortable: false, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: 'Contrôle organisation', \
+                attribute: '', \
+                sortable: false, \
+              ) \
+            ],
+            cls: 'table',
+            overhead: [ \
+              {}, \
+              { \
+                title: "#{@export.children_succeedeed} jeu de données validé sur #{@export.children.count} présent(s) dans l'archive", \
+                width: 1, \
+                cls: "#{@export.export_status_css_class} full-border" \
+              }, { \
+                title: 'Bilan des jeux de contrôles d\'export <span title="Lorem ipsum..." class="fa fa-lg fa-info-circle text-info"></span>', \
+                width: 2, \
+                cls: 'overheaded-default colspan="2"' \
+              } \
+            ]

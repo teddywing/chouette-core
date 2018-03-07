@@ -1,5 +1,5 @@
 fr:
-  imports:
+  imports: &imports
     search_no_results: "Aucun import ne correspond à votre recherche"
     filters:
       referential: "Sélectionnez un jeu de données..."
@@ -34,6 +34,9 @@ fr:
       warning: "Alerte"
       error: "Erreur"
       fatal: "Fatal"
+  import:
+    base:
+      <<: *imports
   activerecord:
     models:
       import:
@@ -59,11 +62,12 @@ fr:
     errors:
       models:
         import:
-          attributes:
-            file:
-              wrong_file_extension: "Le fichier importé doit être au format zip"
+          base:
+            attributes:
+              file:
+                wrong_file_extension: "Le fichier importé doit être au format zip"
     attributes:
-      import:
+      attrs: &attrs
         resources: "Fichier à importer"
         created_at: "Créé le"
         started_at: Démarrage
@@ -77,6 +81,12 @@ fr:
         max_distance_for_connection_link: "Distance max pour créer les correspondances"
         ignore_last_word: "ignorer le dernier mot"
         ignore_end_chars: "ignorer les n derniers caractères"
+
+      import:
+        <<: *attrs
+        base:
+          <<: *attrs
+
   flash:
     imports:
       create:

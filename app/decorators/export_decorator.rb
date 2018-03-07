@@ -1,9 +1,9 @@
-class Import::BaseDecorator < AF83::Decorator
-  decorates Import::Base
+class ExportDecorator < AF83::Decorator
+  decorates Export::Base
 
   set_scope { context[:workbench] }
 
-  define_instance_method :import_status_css_class do
+  define_instance_method :export_status_css_class do
     cls =''
     cls = 'overheaded-success' if object.status == 'successful'
     cls = 'overheaded-warning' if object.status == 'warning'
@@ -12,15 +12,10 @@ class Import::BaseDecorator < AF83::Decorator
   end
 
   create_action_link do |l|
-    l.content t('imports.actions.new')
+    l.content t('exports.actions.new')
   end
 
   with_instance_decorator do |instance_decorator|
     instance_decorator.show_action_link
-
-    instance_decorator.action_link secondary: :show do |l|
-      l.content t('imports.actions.download')
-      l.href { object.file.url }
-    end
   end
 end

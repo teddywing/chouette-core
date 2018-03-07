@@ -111,9 +111,19 @@ crumb :imports do |workbench|
   parent :workbench, workbench
 end
 
+crumb :exports do |workbench|
+  link I18n.t('exports.index.title'), workbench_exports_path(workbench)
+  parent :workbench, workbench
+end
+
 crumb :import do |workbench, import|
   link breadcrumb_name(import), workbench_import_path(workbench, import)
   parent :imports, workbench
+end
+
+crumb :export do |workbench, export|
+  link breadcrumb_name(export), workbench_export_path(workbench, export)
+  parent :exports, workbench
 end
 
 crumb :import_resources do |import, import_resources|

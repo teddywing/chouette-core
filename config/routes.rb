@@ -11,6 +11,12 @@ ChouetteIhm::Application.routes.draw do
         resources :import_messages, only: [:index]
       end
     end
+    resources :exports do
+      post :upload, on: :member
+      resources :export_resources, only: [:index] do
+        resources :export_messages, only: [:index]
+      end
+    end
     resources :compliance_check_sets, only: [:index, :show] do
       get :executed, on: :member
       resources :compliance_checks, only: [:show]

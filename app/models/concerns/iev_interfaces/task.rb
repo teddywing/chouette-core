@@ -7,7 +7,6 @@ module IevInterfaces::Task
     belongs_to :referential
 
     mount_uploader :file, ImportUploader
-    validates :file, presence: true
 
     has_many :children, foreign_key: :parent_id, class_name: self.name, dependent: :destroy
 
@@ -17,8 +16,8 @@ module IevInterfaces::Task
     validates :name, presence: true
     validates_presence_of :workbench, :creator
 
-    has_many :messages, class_name: messages_class_name, dependent: :destroy, foreign_key: :import_id
-    has_many :resources, class_name: resources_class_name, dependent: :destroy, foreign_key: :import_id
+    has_many :messages, class_name: messages_class_name, dependent: :destroy, foreign_key: "#{messages_class_name.split('::').first.downcase}_id"
+    has_many :resources, class_name: resources_class_name, dependent: :destroy, foreign_key: "#{resources_class_name.split('::').first.downcase}_id"
 
     scope :where_started_at_in, ->(period_range) do
       where('started_at BETWEEN :begin AND :end', begin: period_range.begin, end: period_range.end)

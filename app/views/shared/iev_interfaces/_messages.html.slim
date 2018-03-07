@@ -1,0 +1,7 @@
+- if messages.any?
+  ul.list-unstyled.import_message-list
+    - messages.each do | message |
+      li
+        div(class="#{bootstrap_class_for_message_criticity message.criticity}")
+          = t( [message.class.name.underscore.gsub('/', '_').pluralize,
+            message.message_key].join('.'), message.message_attributes.symbolize_keys)

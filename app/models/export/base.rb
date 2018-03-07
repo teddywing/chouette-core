@@ -12,7 +12,7 @@ class Export::Base < ActiveRecord::Base
   include IevInterfaces::Task
 
   def self.model_name
-    ActiveModel::Name.new Export::Base, Export::Base, "Export::Base"
+    ActiveModel::Name.new Export::Base, Export::Base, "Export"
   end
 
   private
