@@ -11,49 +11,15 @@ class Import::Base < ActiveRecord::Base
 
   include IevInterfaces::Task
 
-  mount_uploader :file, ImportUploader
-
-  has_many :children, foreign_key: :parent_id, class_name: "Import::Base", dependent: :destroy
-
-  validates :file, presence: true
-
-  before_create :initialize_fields
-
   def self.model_name
     ActiveModel::Name.new Import::Base, Import::Base, "Import::Base"
-  end
-
-  def children_succeedeed
-    children.with_status(:successful, :warning).count
   end
 
   def child_change
     return if self.class.finished_statuses.include?(status)
 
-    update_status
+    super
     update_referentials
-  end
-
-  def update_status
-    status =
-      if children.where(status: self.class.failed_statuses).count > 0
-        'failed'
-      elsif children.where(status: "warning").count > 0
-        'warning'
-      elsif children.where(status: "successful").count == children.count
-        'successful'
-      end
-
-    attributes = {
-      current_step: children.count,
-      status: status
-    }
-
-    if self.class.finished_statuses.include?(status)
-      attributes[:ended_at] = Time.now
-    end
-
-    update attributes
   end
 
   def update_referentials
@@ -67,6 +33,7 @@ class Import::Base < ActiveRecord::Base
   private
 
   def initialize_fields
+    super
     self.token_download = SecureRandom.urlsafe_base64
   end
 
