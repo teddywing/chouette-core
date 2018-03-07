@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :import_resource do
+  factory :import_resource, class: Import::Resource do
     association :import
     status :WARNING
     sequence(:name) { |n| "Import resource #{n}" }

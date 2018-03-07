@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :import do
+  factory :import, class: Import::Base do
     sequence(:name) { |n| "Import #{n}" }
     current_step_id "MyString"
     current_step_progress 1.5
@@ -16,7 +16,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :bad_import do
+  factory :bad_import, class: Import::Base do
     sequence(:name) { |n| "Import #{n}" }
     current_step_id "MyString"
     current_step_progress 1.5

@@ -1,4 +1,4 @@
-RSpec.describe NetexImport, type: [:model, :with_commit] do
+RSpec.describe Import::Netex, type: [:model, :with_commit] do
 
   let( :boiv_iev_uri ){  URI("#{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{subject.id}")}
 
@@ -27,6 +27,44 @@ RSpec.describe NetexImport, type: [:model, :with_commit] do
         expect(subject.reload.status).to eq('aborted')
         expect(request).not_to have_been_requested
       end
+    end
+  end
+
+  describe "#destroy" do
+    it "must destroy its associated Referential if ready: false" do
+      workbench_import = create(:workbench_import)
+      referential_ready_false = create(:referential, ready: false)
+      referential_ready_true = create(:referential, ready: true)
+      create(
+        :netex_import,
+        parent: workbench_import,
+        referential: referential_ready_false
+      )
+      create(
+        :netex_import,
+        parent: workbench_import,
+        referential: referential_ready_true
+      )
+
+      workbench_import.destroy
+
+      expect(
+        Referential.where(id: referential_ready_false.id).exists?
+      ).to be false
+      expect(
+        Referential.where(id: referential_ready_true.id).exists?
+      ).to be true
+    end
+
+    it "doesn't try to destroy nil referentials" do
+      workbench_import = create(:workbench_import)
+      create(
+        :netex_import,
+        parent: workbench_import,
+        referential: nil
+      )
+
+      expect { workbench_import.destroy }.not_to raise_error
     end
   end
 

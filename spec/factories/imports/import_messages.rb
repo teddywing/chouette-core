@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :import_message do
+  factory :import_message, class: Import::Message do
     association :import
     association :resource, factory: :import_resource
     criticity :info

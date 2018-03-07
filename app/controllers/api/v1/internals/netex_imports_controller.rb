@@ -25,13 +25,13 @@ module Api
         private
 
         def find_netex_import
-          @netex_import = NetexImport.find(params[:id])
+          @netex_import = Import::Netex.find(params[:id])
         rescue ActiveRecord::RecordNotFound
           render json: {
-            status: "error", 
+            status: "error",
             message: "Record not found"
           }
-          finish_action!   
+          finish_action!
         end
 
         def find_workbench
@@ -52,7 +52,7 @@ module Api
 
           attributes = attributes.merge referential_id: @new_referential.id
 
-          @netex_import = NetexImport.new attributes
+          @netex_import = Import::Netex.new attributes
           @netex_import.save!
 
           unless @netex_import.referential

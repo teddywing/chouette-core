@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GtfsImport, :type => :model do
+describe Import::Gtfs, :type => :model do
 
  # describe "#object_id_prefix" do
 

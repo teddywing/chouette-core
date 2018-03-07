@@ -1,13 +1,11 @@
 require 'net/http'
-class NetexImport < Import
+class Import::Gtfs < Import::Base
   before_destroy :destroy_non_ready_referential
 
   after_commit :launch_java_import, on: :create
   before_save def abort_unless_referential
     self.status = 'aborted' unless referential
   end
-
-  validates_presence_of :parent
 
   def launch_java_import
     return if self.class.finished_statuses.include?(status)

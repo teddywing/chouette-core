@@ -34,7 +34,7 @@ module Api
 
         attributes = attributes.merge referential_id: @new_referential.id
 
-        @netex_import = NetexImport.new attributes
+        @netex_import = Import::Netex.new attributes
         @netex_import.save!
 
         unless @netex_import.referential

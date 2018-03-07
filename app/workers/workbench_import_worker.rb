@@ -12,7 +12,7 @@ class WorkbenchImportWorker
 
   def perform(import_id)
     @entries = 0
-    @workbench_import ||= WorkbenchImport.find(import_id)
+    @workbench_import ||= Import::Workbench.find(import_id)
 
     workbench_import.update(status: 'running', started_at: Time.now)
     zip_service = ZipService.new(downloaded, allowed_lines)
@@ -43,7 +43,6 @@ class WorkbenchImportWorker
     workbench_import.update( current_step: @entries, status: 'failed' )
     raise
   end
-
 
   def upload_entry_group entry, element_count
     update_object_state entry, element_count.succ
@@ -79,7 +78,6 @@ class WorkbenchImportWorker
     eg_file.close
     File.unlink(eg_file.path)
   end
-
 
   # Queries
   # =======

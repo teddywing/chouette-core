@@ -11,7 +11,7 @@
       = f.input :organisation_name_eq_any, collection: organisations_filters_values, as: :check_boxes, label: false, label_method: lambda {|w| ("<span>#{w.name}</span>").html_safe}, required: false, wrapper_html: {class: 'checkbox_list'}
 
     .form-group.togglable class=filter_item_class(params[:q], :updated_at)
-      = f.label Import.human_attribute_name(:updated_at), required: false, class: 'control-label'
+      = f.label Import::Base.human_attribute_name(:updated_at), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :updated_at do |p|
           = p.input :start_date, as: :date, label: false, wrapper_html: {class: 'date smart_date filter_menu-item'}, default: @begin_range, include_blank: @begin_range ? false : true

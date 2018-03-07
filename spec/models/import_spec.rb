@@ -1,4 +1,4 @@
-RSpec.describe Import, type: :model do
+RSpec.describe Import::Base, type: :model do
 
   it { should belong_to(:referential) }
   it { should belong_to(:workbench) }
@@ -39,7 +39,7 @@ RSpec.describe Import, type: :model do
         )
         current_import = create(:workbench_import, status: 'pending')
 
-        Import.abort_old
+        Import::Base.abort_old
 
         expect(current_import.reload.status).to eq('pending')
         expect(old_import.reload.status).to eq('aborted')
@@ -54,7 +54,7 @@ RSpec.describe Import, type: :model do
           created_at: 4.hours.ago - 1.minute
         )
 
-        Import.abort_old
+        Import::Base.abort_old
 
         expect(import.reload.status).to eq('successful')
       end
@@ -73,7 +73,7 @@ RSpec.describe Import, type: :model do
           created_at: 4.hours.ago - 1.minute
         )
 
-        NetexImport.abort_old
+        Import::Netex.abort_old
 
         expect(workbench_import.reload.status).to eq('pending')
         expect(netex_import.reload.status).to eq('aborted')
@@ -88,25 +88,25 @@ RSpec.describe Import, type: :model do
       netex_import.parent.destroy
 
       expect(netex_import.parent).to be_destroyed
-      expect(NetexImport.count).to eq(0)
+      expect(Import::Netex.count).to eq(0)
     end
 
-    it "must destroy all associated ImportMessages" do
+    it "must destroy all associated Import::Messages" do
       import = create(:import)
       create(:import_resource, import: import)
 
       import.destroy
 
-      expect(ImportResource.count).to eq(0)
+      expect(Import::Resource.count).to eq(0)
     end
 
-    it "must destroy all associated ImportResources" do
+    it "must destroy all associated Import::Resources" do
       import = create(:import)
       create(:import_message, import: import)
 
       import.destroy
 
-      expect(ImportMessage.count).to eq(0)
+      expect(Import::Message.count).to eq(0)
     end
   end
 

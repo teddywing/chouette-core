@@ -1,4 +1,4 @@
-RSpec.describe "NetexImport", type: :request do
+RSpec.describe "Import::Netex", type: :request do
 
   describe 'POST netex_imports' do
 
@@ -39,7 +39,7 @@ RSpec.describe "NetexImport", type: :request do
         post_request.(netex_import: legal_attributes)
         expect( response ).to be_success
         expect( json_response_body ).to eq(
-          'id'             => NetexImport.last.id,
+          'id'             => Import::Netex.last.id,
           'referential_id' => Referential.last.id,
           'workbench_id'   => workbench.id
         )
@@ -51,7 +51,7 @@ RSpec.describe "NetexImport", type: :request do
         create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00108', line_referential: workbench.line_referential)
         create(:line, objectid: 'STIF:CODIFLIGNE:Line:C00109', line_referential: workbench.line_referential)
 
-        expect{ post_request.(netex_import: legal_attributes) }.to change{NetexImport.count}.by(1)
+        expect{ post_request.(netex_import: legal_attributes) }.to change{Import::Netex.count}.by(1)
       end
 
       it 'creates a correct Referential', pending: 'see #5073' do
@@ -96,7 +96,7 @@ RSpec.describe "NetexImport", type: :request do
           end
 
           it 'does not create an Import object' do
-            expect{ post_request.(netex_import: illegal_attributes) }.not_to change{Import.count}
+            expect{ post_request.(netex_import: illegal_attributes) }.not_to change{Import::Base.count}
           end
 
           it 'might not create a referential' do

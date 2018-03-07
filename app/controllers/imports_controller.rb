@@ -3,7 +3,7 @@ class ImportsController < ChouetteController
   include RansackDateFilter
   before_action only: [:index] { set_date_time_params("started_at", DateTime) }
   skip_before_action :authenticate_user!, only: [:download]
-  defaults resource_class: Import, collection_name: 'imports', instance_name: 'import'
+  defaults resource_class: Import::Base, collection_name: 'imports', instance_name: 'import'
   before_action :ransack_status_params, only: [:index]
   respond_to :html
   belongs_to :workbench
@@ -37,7 +37,7 @@ class ImportsController < ChouetteController
 
   protected
   def collection
-    scope = parent.imports.where(type: "WorkbenchImport")
+    scope = parent.imports.where(type: "Import::Workbench")
 
     scope = self.ransack_period_range(scope: scope, error_message:  t('imports.filters.error_period_filter'), query: :where_started_at_in)
 
@@ -54,14 +54,14 @@ class ImportsController < ChouetteController
 
   def ransack_status_params
     if params[:q]
-      return params[:q].delete(:status_eq_any) if params[:q][:status_eq_any].empty? || ( (Import.status.values & params[:q][:status_eq_any]).length >= 4 )
+      return params[:q].delete(:status_eq_any) if params[:q][:status_eq_any].empty? || ( (Import::Base.status.values & params[:q][:status_eq_any]).length >= 4 )
       params[:q][:status_eq_any].push("new", "running") if params[:q][:status_eq_any].include?("pending")
       params[:q][:status_eq_any].push("aborted", "canceled") if params[:q][:status_eq_any].include?("failed")
     end
   end
 
   def build_resource
-    @import ||= WorkbenchImport.new(*resource_params) do |import|
+    @import ||= Import::Workbench.new(*resource_params) do |import|
       import.workbench = parent
       import.creator   = current_user.name
     end

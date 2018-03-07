@@ -7,10 +7,10 @@ class UpdateImportMessageCriticityTypeToString < ActiveRecord::Migration
       when 0 then "info"
       when 1 then "warning"
       when 2 then "error"
-      else 
+      else
         "info"
       end
     end
-    ImportMessage.all.each { |im| im.update_attribute(:criticity, change_criticity_value(im.criticity)) }
+    Import::Message.all.each { |im| im.update_attribute(:criticity, change_criticity_value(im.criticity)) }
   end
 end

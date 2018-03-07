@@ -1,4 +1,4 @@
-class ImportPolicy < ApplicationPolicy
+class Import::BasePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope
