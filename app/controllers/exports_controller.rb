@@ -8,18 +8,21 @@ class ExportsController < ChouetteController
   private
 
   def build_resource
-    @export ||= Export::Workbench.new(*resource_params) do |export|
+    Export::Base.force_load_descendants if Rails.env.development?
+    @export ||= Export::Base.new(*resource_params) do |export|
       export.workbench = parent
       export.creator   = current_user.name
     end
+    @export
   end
 
   def export_params
-    params.require(:export).permit(
-      :name,
-      :type,
-      :referential_id
-    )
+    permitted_keys = %i(name type referential_id)
+    export_class = params[:export] && params[:export][:type].safe_constantize
+    if export_class
+      permitted_keys += export_class.options.keys
+    end
+    params.require(:export).permit(permitted_keys)
   end
 
   def decorate_collection(exports)

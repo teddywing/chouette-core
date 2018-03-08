@@ -6,7 +6,9 @@
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
-        = definition_list t('metadatas'), { 'Récupération des données' => '-', "Nom de l'archive" => @export.try(:file_identifier)}
+        - metadatas = { I18n.t("activerecord.attributes.export.type") => @export.object.class.human_name }
+        - metadatas = metadatas.update Hash[*@export.options.map{|k, v| [t("activerecord.attributes.export.#{@export.object.class.name.demodulize.tableize.singularize}.#{k}"), v]}.flatten]
+        = definition_list t('metadatas'), metadatas
 
     .row
       .col-lg-12

@@ -83,8 +83,27 @@ module IevInterfaces::Task
 
   def child_change
     return if self.class.finished_statuses.include?(status)
-
     update_status
+  end
+
+  def call_iev_callback
+    return if self.class.finished_statuses.include?(status)
+    threaded_call_boiv_iev
+  end
+
+  private
+
+  def threaded_call_boiv_iev
+    Thread.new(&method(:call_boiv_iev))
+  end
+
+  def call_boiv_iev
+    Rails.logger.error("Begin IEV call for import")
+    Net::HTTP.get iev_callback_url
+    Rails.logger.error("End IEV call for import")
+  rescue Exception => e
+    logger.error "IEV server error : #{e.message}"
+    logger.error e.backtrace.inspect
   end
 
   private

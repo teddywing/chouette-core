@@ -2,7 +2,6 @@ RSpec.describe Import::Netex, type: [:model, :with_commit] do
 
   let( :boiv_iev_uri ){  URI("#{Rails.configuration.iev_url}/boiv_iev/referentials/importer/new?id=#{subject.id}")}
 
-
   before do
     allow(Thread).to receive(:new).and_yield
   end
