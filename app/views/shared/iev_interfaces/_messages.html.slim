@@ -2,6 +2,13 @@
   ul.list-unstyled.import_message-list
     - messages.each do | message |
       li
-        div(class="#{bootstrap_class_for_message_criticity message.criticity}")
-          = t( [message.class.name.underscore.gsub('/', '_').pluralize,
-            message.message_key].join('.'), message.message_attributes.symbolize_keys)
+        .row class=bootstrap_class_for_message_criticity(message.criticity)
+          - if message.message_attributes["line"]
+            .col-md-1= "L. #{message.message_attributes["line"]}"
+            .col-md-5= export_message_content message
+          - else
+            .col-md-6= export_message_content message
+          .col-md-6
+            - if message.criticity != "info"
+              pre
+                = JSON.pretty_generate message.resource_attributes

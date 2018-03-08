@@ -21,7 +21,7 @@ class Export::Base < ActiveRecord::Base
       Dir.chdir path do
         Dir['**/*.rb'].each do |src|
           next if src =~ /^base/
-          klass_name = "Export::#{src[0..-4].classify}"
+          klass_name = "Export::#{src[0..-4].camelize}"
           Rails.logger.info "Loading #{klass_name}"
           begin
             klass_name.constantize
@@ -44,7 +44,7 @@ class Export::Base < ActiveRecord::Base
   end
 
   def self.options
-    @options
+    @options ||= {}
   end
 
   include IevInterfaces::Task
@@ -59,6 +59,16 @@ class Export::Base < ActiveRecord::Base
 
   def self.user_visible?
     true
+  end
+
+  def display_option_value option_name, context
+    option = self.class.options[option_name.to_sym]
+    val = self.options[option_name.to_s]
+    if option[:display]
+      context.instance_exec(val, &option[:display])
+    else
+      val
+    end
   end
 
   private
