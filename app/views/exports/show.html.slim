@@ -8,7 +8,7 @@
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         - metadatas = { I18n.t("activerecord.attributes.export.type") => @export.object.class.human_name }
         - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.status") => @export.status})
-        - metadatas = metadatas.update Hash[*@export.options.map{|k, v| [t("activerecord.attributes.export.#{@export.object.class.name.demodulize.tableize.singularize}.#{k}"), @export.display_option_value(k, self)]}.flatten]
+        - metadatas = metadatas.update Hash[*@export.visible_options.map{|k, v| [t("activerecord.attributes.export.#{@export.object.class.name.demodulize.tableize.singularize}.#{k}"), @export.display_option_value(k, self)]}.flatten]
         - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.file") => link_to(t("actions.download"), @export.file.url)})
         = definition_list t('metadatas'), metadatas
 

@@ -61,6 +61,10 @@ class Export::Base < ActiveRecord::Base
     true
   end
 
+  def visible_options
+    options.select{|k, v| ! k.match  /^_/}
+  end
+
   def display_option_value option_name, context
     option = self.class.options[option_name.to_sym]
     val = self.options[option_name.to_s]

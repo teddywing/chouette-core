@@ -27,6 +27,10 @@ class SimpleInterface < ActiveRecord::Base
     self.journal ||= []
   end
 
+  def configuration
+    @configuration ||= self.class.find_configuration self.configuration_name
+  end
+
   def init_env opts
     @verbose = opts.delete :verbose
 
