@@ -81,14 +81,9 @@ RSpec.describe ComplianceCheckSet, type: :model do
 
       check_set.update_status
 
-      expect(check_set.status).to eq('successful')
+      expect(check_set.status).to eq('warning')
     end
 
-    it "returns true when the status did not get updated" do
-      check_set = create(:compliance_check_set)
-
-      expect(check_set.update_status).to be true
-    end
   end
 
   describe 'possibility to delete the associated compliance_control_set' do

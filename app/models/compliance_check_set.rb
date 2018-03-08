@@ -49,39 +49,25 @@ class ComplianceCheckSet < ActiveRecord::Base
   end
 
   def update_status
-    statuses = compliance_check_resources.map do |resource|
-      case resource.status
-      when 'ERROR'
-        return update(status: 'failed')
-      when 'WARNING'
-        return update(status: 'warning')
-      else
-        resource.status
+    status =
+      if compliance_check_resources.where(status: 'ERROR').count > 0
+        'failed'
+      elsif compliance_check_resources.where(status: ["WARNING", "IGNORED"]).count > 0
+        'warning'
+      elsif compliance_check_resources.where(status: "OK").count == compliance_check_resources.count
+        'successful'
       end
+
+    attributes = {
+      status: status
+    }
+
+    if self.class.finished_statuses.include?(status)
+      attributes[:ended_at] = Time.now
     end
 
-    if statuses_ok_or_ignored?(statuses)
-      return update(status: 'successful')
-    end
-
-    true
+    update attributes
   end
 
-  private
 
-  def statuses_ok_or_ignored?(statuses)
-    uniform_statuses = statuses.uniq
-
-    (
-      # All statuses OK
-      uniform_statuses.length == 1 &&
-        uniform_statuses.first == 'OK'
-    ) ||
-    (
-      # Statuses OK or IGNORED
-      uniform_statuses.length == 2 &&
-        uniform_statuses.include?('OK') &&
-        uniform_statuses.include?('IGNORED')
-    )
-  end
 end
