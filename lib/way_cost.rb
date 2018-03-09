@@ -2,9 +2,9 @@ class WayCost
   def initialize(
     departure:,
     arrival:,
-    distance:,
-    time:,
-    id:,
+    distance: nil,
+    time: nil,
+    id:,  # TODO: calculate ID automatically
   )
     @departure = departure
     @arrival = arrival
