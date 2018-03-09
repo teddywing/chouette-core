@@ -32,8 +32,8 @@
                 attribute: 'registration_number' \
               ), \
               TableBuilderHelper::Column.new( \
-                key: :deleted_at, \
-                attribute: Proc.new { |s| line_status(s.deleted_at) } \
+                name: t('activerecord.attributes.stop_area.state'), \
+                attribute: Proc.new { |s| stop_area_status(s) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :zip_code, \

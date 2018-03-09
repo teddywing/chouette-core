@@ -133,7 +133,9 @@ class StopAreasController < ChouetteController
   end
 
   def collection
-    @q = parent.present? ? parent.stop_areas.search(params[:q]) : referential.stop_areas.search(params[:q])
+    scope = parent.present? ? parent.stop_areas : referential.stop_areas
+    scope = ransack_status(scope)
+    @q = scope.search(params[:q])
 
     if sort_column && sort_direction
       @stop_areas ||=
@@ -204,6 +206,37 @@ class StopAreasController < ChouetteController
       :kind,
       localized_names: Chouette::StopArea::AVAILABLE_LOCALIZATIONS
     )
+  end
+
+   # Fake ransack filter
+  def ransack_status scope
+    return scope unless params[:q].try(:[], :status)
+    return scope if params[:q][:status].values.uniq.length == 1
+
+    @status = {
+      in_creation: params[:q][:status]['in_creation'] == 'true',
+      activated: params[:q][:status]['activated'] == 'true',
+      deactivated: params[:q][:status]['deactivated'] == 'true',
+    }
+
+    scope = Chouette::StopArea.where(
+      "confirmed_at #{@status[:activated] ? "IS NOT NULL" : "IS NULL"} 
+      AND deleted_at #{@status[:deactivated] ? "IS NOT NULL" : "IS NULL"}"
+      )
+
+    params[:q].delete :status
+    scope
+  end
+
+  # Ignore archived_at_not_null/archived_at_null managed by ransack_status scope
+  # We clone params[:q] so we can delete fake ransack filter arguments before calling search method,
+  # which will allow us to preserve params[:q] for sorting
+  def ransack_params
+    copy_params = params[:q].clone
+    copy_params.delete('associated_lines_id_eq')
+    copy_params.delete('archived_at_not_null')
+    copy_params.delete('archived_at_null')
+    copy_params
   end
 
 end
