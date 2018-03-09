@@ -8,4 +8,4 @@ test:
   postgis_schema: 'shared_extensions'
   database: <%= ENV.fetch 'RAILS_DB_NAME', 'stif_boiv_test' %>
   username: <%= ENV['RAILS_DB_USER'] || ENV['POSTGRESQL_ENV_POSTGRES_USER'] || 'jenkins' %>
-  password: <%= ENV.fetch 'RAILS_DB_PASSWORD' || ENV['POSTGRESQL_ENV_POSTGRES_PASSWORD'] %>
+  password: <%= ENV['RAILS_DB_PASSWORD'] || ENV['POSTGRESQL_ENV_POSTGRES_PASSWORD'] %>
