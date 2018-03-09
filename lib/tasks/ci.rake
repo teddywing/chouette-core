@@ -1,9 +1,18 @@
 namespace :ci do
+
+  def database_name
+    @database_name ||=
+      begin
+        config = YAML.load(ERB.new(File.read('config/database.yml')).result)
+        config["test"]["database"]
+      end
+  end
+
   desc "Prepare CI build"
   task :setup do
-    cp "config/database/jenkins.yml", "config/database.yml"
+    cp "config/database/ci.yml", "config/database.yml"
+    puts "Use #{database_name} database"
     sh "RAILS_ENV=test rake db:drop db:create db:migrate"
-    sh "yarn --no-progress install"
   end
 
   def git_branch
@@ -59,7 +68,18 @@ namespace :ci do
     sh "rm -rf log/test.log"
     sh "RAILS_ENV=test bundle exec rake assets:clobber"
   end
+
+  task :build => ["ci:setup", "ci:assets", "ci:i18n_js_export", "spec", "ci:jest", "cucumber", "ci:check_security"]
+
+  namespace :docker do
+    task :clean do
+      puts "Drop #{database_name} database"
+      sh "RAILS_ENV=test rake db:drop"
+    end
+  end
+
+  task :docker => ["ci:build"]
 end
 
 desc "Run continuous integration tasks (spec, ...)"
-task :ci => ["ci:setup", "ci:assets", "ci:i18n_js_export", "spec", "ci:jest", "cucumber", "ci:check_security", "ci:deploy", "ci:clean"]
+task :ci => ["ci:build", "ci:deploy", "ci:clean"]

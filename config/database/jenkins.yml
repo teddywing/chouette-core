@@ -1,8 +1,0 @@
-test:
-  adapter: postgis
-  encoding: unicode
-  schema_search_path: 'public,shared_extensions'
-  postgis_schema: 'shared_extensions'
-  username: <%= ENV['POSTGRESQL_ENV_POSTGRES_USER'] || 'jenkins' %>
-  password: <%= ENV['POSTGRESQL_ENV_POSTGRES_PASSWORD'] %>
-  database: stif_boiv_test
