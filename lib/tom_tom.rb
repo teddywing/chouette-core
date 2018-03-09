@@ -17,10 +17,7 @@ class TomTom
   def batch(way_costs)
     params = URI.encode_www_form({
       travelMode: 'bus',
-      routeType: 'shortest',
-      traffic: 'true',
-      departAt: 'now',
-      maxAlternatives: 0
+      routeType: 'shortest'
     })
     batch_items = convert_way_costs_for_batch(way_costs).map do |locations|
       {
