@@ -35,6 +35,9 @@ fr:
       error: "Erreur"
       fatal: "Fatal"
   export:
+    workgroup: Groupe de travail
+    netex:     Netex
+    referential_companies: Transporteurs
     base:
       <<: *exports
   activerecord:
@@ -83,12 +86,15 @@ fr:
         ignore_end_chars: "ignorer les n derniers caractères"
         type: "Type d'export"
         file: "Résultat"
+        parent: Parent
       export:
         <<: *attrs
         base:
           <<: *attrs
-        workbench:
-          timelapse: Durée
+        workgroup:
+          duration: Durée
+        referential_companies:
+          referential_id: Jeu de données
   flash:
     exports:
       create:

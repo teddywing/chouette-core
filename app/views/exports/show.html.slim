@@ -7,9 +7,10 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         - metadatas = { I18n.t("activerecord.attributes.export.type") => @export.object.class.human_name }
-        - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.status") => @export.status})
-        - metadatas = metadatas.update Hash[*@export.visible_options.map{|k, v| [t("activerecord.attributes.export.#{@export.object.class.name.demodulize.tableize.singularize}.#{k}"), @export.display_option_value(k, self)]}.flatten]
-        - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.file") => link_to(t("actions.download"), @export.file.url)})
+        - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.status") => export_status(@export.status)})
+        - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.parent") => link_to(@export.parent.name, [@export.parent.workbench, @export.parent])}) if @export.parent.present?
+        - metadatas = metadatas.update Hash[*@export.visible_options.map{|k, v| [t("activerecord.attributes.export.#{@export.object.class.name.demodulize.underscore}.#{k}"), @export.display_option_value(k, self)]}.flatten]
+        - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.file") => (@export.file.present? ? link_to(t("actions.download"), @export.file.url) : "-")})
         = definition_list t('metadatas'), metadatas
 
     .row
@@ -20,45 +21,29 @@
     - if @export.children.any?
       .row
         .col-lg-12
-          = table_builder_2 @export.children,
-            [ \
-              TableBuilderHelper::Column.new( \
-                name: 'Nom du jeu de données', \
-                attribute: 'name', \
-                sortable: false, \
-                link_to: lambda do |export| \
-                  referential_path(export.referential) if export.referential.present? \
-                end \
-              ), \
-              TableBuilderHelper::Column.new( \
-                key: :status, \
-                attribute: Proc.new { |n| export_status(n.status) }, \
-                sortable: false, \
-                link_to: lambda do |export| \
-                  workbench_export_export_resources_path(export.workbench_id, export) \
-                end \
-              ), \
-              TableBuilderHelper::Column.new( \
-                name: 'Contrôle STIF', \
-                attribute: '', \
-                sortable: false, \
-              ), \
-              TableBuilderHelper::Column.new( \
-                name: 'Contrôle organisation', \
-                attribute: '', \
-                sortable: false, \
-              ) \
-            ],
-            cls: 'table',
-            overhead: [ \
-              {}, \
-              { \
-                title: "#{@export.children_succeedeed} jeu de données validé sur #{@export.children.count} présent(s) dans l'archive", \
-                width: 1, \
-                cls: "#{@export.export_status_css_class} full-border" \
-              }, { \
-                title: 'Bilan des jeux de contrôles d\'export <span title="Lorem ipsum..." class="fa fa-lg fa-info-circle text-info"></span>', \
-                width: 2, \
-                cls: 'overheaded-default colspan="2"' \
-              } \
-            ]
+        - coll = @export.children.paginate(page: params[:page] || 1)
+        = table_builder_2 coll,
+          [ \
+            TableBuilderHelper::Column.new( \
+              key: :status, \
+              attribute: Proc.new { |n| export_status(n.status) }, \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :started_at, \
+              attribute: Proc.new { |n| l(n.started_at, format: :long) if n.started_at }, \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :name, \
+              attribute: 'name', \
+              link_to: lambda do |export| \
+                workbench_export_path(@workbench, export) \
+              end \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :creator, \
+              attribute: 'creator' \
+            ) \
+          ],
+          cls: 'table has-search'
+
+        = new_pagination coll, 'pull-right'

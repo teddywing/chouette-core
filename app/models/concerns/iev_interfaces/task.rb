@@ -26,6 +26,7 @@ module IevInterfaces::Task
     scope :blocked, -> { where('created_at < ? AND status = ?', 4.hours.ago, 'running') }
 
     before_create :initialize_fields
+    after_save :notify_parent
   end
 
   module ClassMethods
@@ -51,8 +52,11 @@ module IevInterfaces::Task
   end
 
   def notify_parent
+    return unless parent.present?
+    return unless status_changed?
     parent.child_change
-    update(notified_parent_at: DateTime.now)
+    self.notified_parent_at = DateTime.now
+    self.class.where(id: self.id).update_all notified_parent_at: DateTime.now
   end
 
   def children_succeedeed
@@ -67,6 +71,8 @@ module IevInterfaces::Task
         'warning'
       elsif children.where(status: "successful").count == children.count
         'successful'
+      else
+        'running'
       end
 
     attributes = {

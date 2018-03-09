@@ -28,8 +28,12 @@ module IevInterfaces
   end
 
   protected
+
   def collection
-    scope = parent.send(collection_name).where(type: "#{resource_class.parent.name}::Workbench")
+    scope = parent.send(collection_name).where(parent_id: nil)
+    if index_model.name.demodulize != "Base"
+      scope = scope.where(type: index_model.name)
+    end
 
     scope = self.ransack_period_range(scope: scope, error_message:  t("#{collection_name}.filters.error_period_filter"), query: :where_started_at_in)
 

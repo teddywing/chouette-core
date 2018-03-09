@@ -7,6 +7,10 @@ class ExportsController < ChouetteController
 
   private
 
+  def index_model
+    Export::Base
+  end
+
   def build_resource
     Export::Base.force_load_descendants if Rails.env.development?
     @export ||= Export::Base.new(*resource_params) do |export|

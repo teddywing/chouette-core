@@ -15,6 +15,10 @@ module ImportsHelper
     end
   end
 
+  def export_status status
+    import_status status
+  end
+
   # Compliance check set messages
   def bootstrap_class_for_message_criticity message_criticity
     case message_criticity

@@ -15,6 +15,10 @@ class ImportsController < ChouetteController
 
   private
 
+  def index_model
+    Import::Workbench
+  end
+  
   def build_resource
     @import ||= Import::Workbench.new(*resource_params) do |import|
       import.workbench = parent

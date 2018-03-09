@@ -1,5 +1,5 @@
 en:
-  exports:
+  exports: &exports
     search_no_results: "No export matching your query"
     filters:
       referential: "Select data space..."
@@ -34,6 +34,12 @@ en:
       warning: "Warning"
       error: "Error"
       fatal: "Fatal"
+  export:
+    workgroup: Workgroup
+    netex:     Netex
+    referential_companies: Companies
+    base:
+      <<: *exports
   activerecord:
     models:
       export:
@@ -78,10 +84,15 @@ en:
         max_distance_for_connection_link: "Max distance for connection link"
         ignore_last_word: "ignore last word"
         ignore_end_chars: "ignore last chars"
+        parent: Parent
       export:
         <<: *attrs
         base:
           <<: *attrs
+        workgroup:
+          duration: Duration
+        referential_companies:
+          referential_id: Referential
   flash:
     exports:
       create:

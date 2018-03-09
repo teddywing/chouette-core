@@ -12,7 +12,7 @@ class Export::Base < ActiveRecord::Base
   end
 
   def self.human_name
-    self.name.demodulize.humanize
+    I18n.t("export.#{self.name.demodulize.underscore}")
   end
 
   if Rails.env.development?
@@ -34,7 +34,7 @@ class Export::Base < ActiveRecord::Base
     end
   end
 
-  def self.option name, opts
+  def self.option name, opts={}
     store_accessor :options, name
     if !!opts[:required]
       validates name, presence: true
