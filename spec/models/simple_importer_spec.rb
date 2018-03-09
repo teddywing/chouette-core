@@ -6,7 +6,7 @@ RSpec.describe SimpleImporter do
         SimpleImporter.define :foo
         expect do
           SimpleImporter.new(configuration_name: :foo, filepath: "").import
-        end.to raise_error
+        end.to raise_error(RuntimeError)
       end
     end
     context "with a complete configuration" do
@@ -20,8 +20,8 @@ RSpec.describe SimpleImporter do
         expect{SimpleImporter.find_configuration(:foo)}.to_not raise_error
         expect{SimpleImporter.new(configuration_name: :foo, filepath: "")}.to_not raise_error
         expect{SimpleImporter.new(configuration_name: :foo, filepath: "").import}.to_not raise_error
-        expect{SimpleImporter.find_configuration(:bar)}.to raise_error
-        expect{SimpleImporter.new(configuration_name: :bar, filepath: "")}.to raise_error
+        expect{SimpleImporter.find_configuration(:bar)}.to raise_error(RuntimeError)
+        expect{SimpleImporter.new(configuration_name: :bar, filepath: "")}.to raise_error(RuntimeError)
         expect{SimpleImporter.create(configuration_name: :foo, filepath: "")}.to change{SimpleImporter.count}.by 1
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe SimpleImporter do
     end
 
     it "should import the given file" do
-      expect{importer.import verbose: true}.to change{Chouette::StopArea.count}.by 1
+      expect{importer.import verbose: false}.to change{Chouette::StopArea.count}.by 1
       expect(importer.status).to eq "success"
       stop = Chouette::StopArea.last
       expect(stop.name).to eq "Nom du Stop"

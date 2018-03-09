@@ -11,19 +11,19 @@ RSpec.describe Export::Base, type: :model do
 
   include ActionDispatch::TestProcess
   it { should allow_value(fixture_file_upload('OFFRE_TRANSDEV_2017030112251.zip')).for(:file) }
-  it { should_not allow_value(fixture_file_upload('users.json')).for(:file).with_message(I18n.t('errors.messages.extension_whitelist_error', extension: '"json"', allowed_types: "zip")) }
+  it { should_not allow_value(fixture_file_upload('reflex_updated.xml')).for(:file).with_message(I18n.t('errors.messages.extension_whitelist_error', extension: '"xml"', allowed_types: "zip, csv, json")) }
 
-  let(:workbench_export) {netex_export.parent}
-  let(:workbench_export_with_completed_steps) do
+  let(:workgroup_export) {netex_export.parent}
+  let(:workgroup_export_with_completed_steps) do
     build_stubbed(
-      :workbench_export,
+      :workgroup_export,
       total_steps: 2,
       current_step: 2
     )
   end
 
   let(:netex_export) do
-    build_stubbed(
+    create(
       :netex_export
     )
   end
@@ -32,11 +32,11 @@ RSpec.describe Export::Base, type: :model do
     it "changes exports older than 4 hours to aborted" do
       Timecop.freeze(Time.now) do
         old_export = create(
-          :workbench_export,
+          :workgroup_export,
           status: 'pending',
           created_at: 4.hours.ago - 1.minute
         )
-        current_export = create(:workbench_export, status: 'pending')
+        current_export = create(:workgroup_export, status: 'pending')
 
         Export::Base.abort_old
 
@@ -48,7 +48,7 @@ RSpec.describe Export::Base, type: :model do
     it "doesn't work on exports with a `finished_status`" do
       Timecop.freeze(Time.now) do
         export = create(
-          :workbench_export,
+          :workgroup_export,
           status: 'successful',
           created_at: 4.hours.ago - 1.minute
         )
@@ -61,8 +61,8 @@ RSpec.describe Export::Base, type: :model do
 
     it "only works on the caller type" do
       Timecop.freeze(Time.now) do
-        workbench_export = create(
-          :workbench_export,
+        workgroup_export = create(
+          :workgroup_export,
           status: 'pending',
           created_at: 4.hours.ago - 1.minute
         )
@@ -74,7 +74,7 @@ RSpec.describe Export::Base, type: :model do
 
         Export::Netex.abort_old
 
-        expect(workbench_export.reload.status).to eq('pending')
+        expect(workgroup_export.reload.status).to eq('pending')
         expect(netex_export.reload.status).to eq('aborted')
       end
     end
@@ -91,7 +91,7 @@ RSpec.describe Export::Base, type: :model do
     end
 
     it "must destroy all associated Export::Messages" do
-      export = create(:export)
+      export = create(:netex_export)
       create(:export_resource, export: export)
 
       export.destroy
@@ -100,7 +100,7 @@ RSpec.describe Export::Base, type: :model do
     end
 
     it "must destroy all associated Export::Resources" do
-      export = create(:export)
+      export = create(:netex_export)
       create(:export_message, export: export)
 
       export.destroy
@@ -113,30 +113,30 @@ RSpec.describe Export::Base, type: :model do
     it "must call #child_change on its parent" do
       allow(netex_export).to receive(:update)
 
-      expect(workbench_export).to receive(:child_change)
-
+      expect(workgroup_export).to receive(:child_change)
+      netex_export.status = :foo
       netex_export.notify_parent
     end
 
     it "must update the :notified_parent_at field of the child export" do
-      allow(workbench_export).to receive(:child_change)
+      allow(workgroup_export).to receive(:child_change)
 
-      Timecop.freeze(DateTime.now) do
-        expect(netex_export).to receive(:update).with(
-          notified_parent_at: DateTime.now
-        )
+      Timecop.freeze(Time.now) do
+        netex_export.status = :bar
 
         netex_export.notify_parent
+        expect(netex_export.notified_parent_at).to eq Time.now
+        expect(netex_export.reload.notified_parent_at).to eq Time.now
       end
     end
   end
 
   describe "#child_change" do
     it "calls #update_status" do
-      allow(workbench_export).to receive(:update)
+      allow(workgroup_export).to receive(:update)
 
-      expect(workbench_export).to receive(:update_status)
-      workbench_export.child_change
+      expect(workgroup_export).to receive(:update_status)
+      workgroup_export.child_change
     end
   end
 
@@ -145,16 +145,16 @@ RSpec.describe Export::Base, type: :model do
       "updates :status to failed when >=1 child has failing status"
     ) do |failure_status|
       it "updates :status to failed when >=1 child has failing status" do
-        workbench_export = create(:workbench_export)
+        workgroup_export = create(:workgroup_export)
         create(
           :netex_export,
-          parent: workbench_export,
+          parent: workgroup_export,
           status: failure_status
         )
 
-        workbench_export.update_status
+        workgroup_export.update_status
 
-        expect(workbench_export.status).to eq('failed')
+        expect(workgroup_export.status).to eq('failed')
       end
     end
 
@@ -172,67 +172,67 @@ RSpec.describe Export::Base, type: :model do
     )
 
     it "updates :status to successful when all children are successful" do
-      workbench_export = create(:workbench_export)
+      workgroup_export = create(:workgroup_export)
       exports = create_list(
         :netex_export,
         2,
-        parent: workbench_export,
+        parent: workgroup_export,
         status: 'successful'
       )
 
-      workbench_export.update_status
+      workgroup_export.update_status
 
-      expect(workbench_export.status).to eq('successful')
+      expect(workgroup_export.status).to eq('successful')
     end
 
     it "updates :status to failed when any child has failed" do
-      workbench_export = create(:workbench_export)
+      workgroup_export = create(:workgroup_export)
       [
         'failed',
         'successful'
       ].each do |status|
         create(
           :netex_export,
-          parent: workbench_export,
+          parent: workgroup_export,
           status: status
         )
       end
 
-      workbench_export.update_status
+      workgroup_export.update_status
 
-      expect(workbench_export.status).to eq('failed')
+      expect(workgroup_export.status).to eq('failed')
     end
 
     it "updates :status to warning when any child has warning or successful" do
-      workbench_export = create(:workbench_export)
+      workgroup_export = create(:workgroup_export)
       [
         'warning',
         'successful'
       ].each do |status|
         create(
           :netex_export,
-          parent: workbench_export,
+          parent: workgroup_export,
           status: status
         )
       end
 
-      workbench_export.update_status
+      workgroup_export.update_status
 
-      expect(workbench_export.status).to eq('warning')
+      expect(workgroup_export.status).to eq('warning')
     end
 
     it "updates :ended_at to now when status is finished" do
-      workbench_export = create(:workbench_export)
+      workgroup_export = create(:workgroup_export)
       create(
         :netex_export,
-        parent: workbench_export,
+        parent: workgroup_export,
         status: 'failed'
       )
 
       Timecop.freeze(Time.now) do
-        workbench_export.update_status
+        workgroup_export.update_status
 
-        expect(workbench_export.ended_at).to eq(Time.now)
+        expect(workgroup_export.ended_at).to eq(Time.now)
       end
     end
   end

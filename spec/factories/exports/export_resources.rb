@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :export_resource, class: Export::Resource do
-    association :export
-    status :WARNING
     sequence(:name) { |n| "Export resource #{n}" }
+    association :export, factory: :netex_export
+    status :WARNING
     resource_type 'type'
     reference 'reference'
   end

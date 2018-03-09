@@ -11,4 +11,4 @@
           .col-md-6
             - if message.criticity != "info"
               pre
-                = JSON.pretty_generate message.resource_attributes
+                = JSON.pretty_generate message.resource_attributes || {}

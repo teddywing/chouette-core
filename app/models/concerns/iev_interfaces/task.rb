@@ -55,8 +55,9 @@ module IevInterfaces::Task
     return unless parent.present?
     return unless status_changed?
     parent.child_change
-    self.notified_parent_at = DateTime.now
-    self.class.where(id: self.id).update_all notified_parent_at: DateTime.now
+    t = Time.now
+    self.notified_parent_at = t
+    self.class.where(id: self.id).update_all notified_parent_at: t
   end
 
   def children_succeedeed

@@ -5,7 +5,7 @@ RSpec.describe SimpleExporter do
         SimpleExporter.define :foo
         expect do
           SimpleExporter.new(configuration_name: :test).export
-        end.to raise_error
+        end.to raise_error(RuntimeError)
       end
     end
     context "with a complete configuration" do
@@ -18,9 +18,9 @@ RSpec.describe SimpleExporter do
       it "should define an exporter" do
         expect{SimpleExporter.find_configuration(:foo)}.to_not raise_error
         expect{SimpleExporter.new(configuration_name: :foo, filepath: "").export}.to_not raise_error
-        expect{SimpleExporter.find_configuration(:bar)}.to raise_error
-        expect{SimpleExporter.new(configuration_name: :bar, filepath: "")}.to raise_error
-        expect{SimpleExporter.new(configuration_name: :bar, filepath: "").export}.to raise_error
+        expect{SimpleExporter.find_configuration(:bar)}.to raise_error(RuntimeError)
+        expect{SimpleExporter.new(configuration_name: :bar, filepath: "")}.to raise_error(RuntimeError)
+        expect{SimpleExporter.new(configuration_name: :bar, filepath: "").export}.to raise_error(RuntimeError)
         expect{SimpleExporter.create(configuration_name: :foo, filepath: "")}.to change{SimpleExporter.count}.by 1
       end
     end
@@ -33,7 +33,7 @@ RSpec.describe SimpleExporter do
             config.add_column :name
             config.add_column :name
           end
-        end.to raise_error
+        end.to raise_error(RuntimeError)
       end
     end
   end

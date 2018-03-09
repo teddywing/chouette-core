@@ -32,7 +32,7 @@ class ExportsController < ChouetteController
 
   def export_params
     permitted_keys = %i(name type referential_id)
-    export_class = params[:export] && params[:export][:type].safe_constantize
+    export_class = params[:export] && params[:export][:type] && params[:export][:type].safe_constantize
     if export_class
       permitted_keys += export_class.options.keys
     end

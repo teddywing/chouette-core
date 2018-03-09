@@ -27,7 +27,9 @@ RSpec.describe ExportsController, :type => :controller do
     context "with full params" do
       let(:params){{
         name: "foo",
-        type: "Export::Netex"
+        type: "Export::Netex",
+        duration: 12,
+        export_type: :line
       }}
 
       it 'should be successful' do
@@ -45,7 +47,7 @@ RSpec.describe ExportsController, :type => :controller do
     context "with missing options" do
       let(:params){{
         name: "foo",
-        type: "Export::Workbench"
+        type: "Export::Workgroup"
       }}
 
       it 'should be unsuccessful' do
@@ -56,8 +58,8 @@ RSpec.describe ExportsController, :type => :controller do
     context "with all options" do
       let(:params){{
         name: "foo",
-        type: "Export::Workbench",
-        timelapse: 90
+        type: "Export::Workgroup",
+        duration: 90
       }}
 
       it 'should be successful' do

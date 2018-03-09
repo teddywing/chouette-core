@@ -12,7 +12,7 @@ RSpec.describe Import::Base, type: :model do
 
   include ActionDispatch::TestProcess
   it { should allow_value(fixture_file_upload('OFFRE_TRANSDEV_2017030112251.zip')).for(:file) }
-  it { should_not allow_value(fixture_file_upload('users.json')).for(:file).with_message(I18n.t('errors.messages.extension_whitelist_error', extension: '"json"', allowed_types: "zip")) }
+  it { should_not allow_value(fixture_file_upload('reflex_updated.xml')).for(:file).with_message(I18n.t('errors.messages.extension_whitelist_error', extension: '"xml"', allowed_types: "zip, csv, json")) }
 
   let(:workbench_import) {netex_import.parent}
   let(:workbench_import_with_completed_steps) do
@@ -24,7 +24,7 @@ RSpec.describe Import::Base, type: :model do
   end
 
   let(:netex_import) do
-    build_stubbed(
+    create(
       :netex_import
     )
   end
@@ -115,19 +115,18 @@ RSpec.describe Import::Base, type: :model do
       allow(netex_import).to receive(:update)
 
       expect(workbench_import).to receive(:child_change)
-
+      netex_import.status = :foo
       netex_import.notify_parent
     end
 
     it "must update the :notified_parent_at field of the child import" do
       allow(workbench_import).to receive(:child_change)
-
-      Timecop.freeze(DateTime.now) do
-        expect(netex_import).to receive(:update).with(
-          notified_parent_at: DateTime.now
-        )
+      Timecop.freeze(Time.now) do
+        netex_import.status = :bar
 
         netex_import.notify_parent
+        expect(netex_import.notified_parent_at).to eq Time.now
+        expect(netex_import.reload.notified_parent_at).to eq Time.now
       end
     end
   end

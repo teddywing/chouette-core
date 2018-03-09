@@ -46,6 +46,8 @@ RSpec.describe ParentNotifier do
         notified_parent_at: nil
       )
 
+      Import::Base.where(id: netex_import).update_all notified_parent_at: nil
+
       expect(
         ParentNotifier.new(Import::Base).objects_pending_notification
       ).to eq([netex_import])
