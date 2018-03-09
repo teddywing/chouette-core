@@ -1,4 +1,5 @@
 FactoryGirl.define do
-  factory :workbench_export, class: Export::Workgroup, parent: :export do
+  factory :workgroup_export, class: Export::Workgroup, parent: :export do
+    duration 90
   end
 end

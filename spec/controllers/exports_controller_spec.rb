@@ -2,7 +2,7 @@ RSpec.describe ExportsController, :type => :controller do
   login_user
 
   let(:workbench) { create :workbench }
-  let(:export)    { create :export, workbench: workbench }
+  let(:export)    { create(:netex_export, workbench: workbench) }
 
   describe 'GET #new' do
     it 'should be successful if authorized' do
@@ -73,6 +73,22 @@ RSpec.describe ExportsController, :type => :controller do
 
       it 'should be unsuccessful' do
         expect{request}.to raise_error ActiveRecord::SubclassNotFound
+      end
+    end
+  end
+
+  describe 'POST #upload' do
+    context "with the token" do
+      it 'should be successful' do
+        post :upload, workbench_id: workbench.id, id: export.id, token: export.token_upload
+        expect(response).to be_redirect
+      end
+    end
+
+    context "without the token" do
+      it 'should be unsuccessful' do
+        post :upload, workbench_id: workbench.id, id: export.id, token: "foo"
+        expect(response).to_not be_success
       end
     end
   end
