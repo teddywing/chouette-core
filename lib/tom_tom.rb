@@ -16,7 +16,7 @@ class TomTom
 
   def batch(way_costs)
     params = URI.encode_www_form({
-      travelMode: 'car',
+      travelMode: 'bus',
       routeType: 'shortest',
       traffic: 'true',
       departAt: 'now',
