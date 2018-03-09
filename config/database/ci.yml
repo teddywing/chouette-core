@@ -1,0 +1,11 @@
+test:
+  adapter: <%= ENV.fetch 'RAILS_DB_ADAPTER', 'postgis' %>
+  encoding: unicode
+  pool: <%= ENV.fetch 'RAILS_DB_POOLSIZE', '5' %>
+  host: <%= ENV.fetch 'RAILS_DB_HOST', 'localhost' %>
+  port: <%= ENV.fetch 'RAILS_DB_PORT', '5432' %>
+  schema_search_path: 'public,shared_extensions'
+  postgis_schema: 'shared_extensions'
+  database: <%= ENV.fetch 'RAILS_DB_NAME', 'stif_boiv_test' %>
+  username: <%= ENV['RAILS_DB_USER'] || ENV['POSTGRESQL_ENV_POSTGRES_USER'] || 'jenkins' %>
+  password: <%= ENV.fetch 'RAILS_DB_PASSWORD' || ENV['POSTGRESQL_ENV_POSTGRES_PASSWORD'] %>
