@@ -841,6 +841,7 @@ ActiveRecord::Schema.define(version: 20180308095116) do
     t.integer  "waiting_time"
     t.string   "kind"
     t.jsonb    "localized_names"
+    t.datetime "confirmed_at"
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree
