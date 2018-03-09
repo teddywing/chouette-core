@@ -39,6 +39,13 @@ module Chouette
       self.slice(*attrs).values + ranges_attrs
     end
 
+    def bounding_dates
+      [
+        date_ranges.map(&:first).min,
+        date_ranges.map(&:last).max,
+      ]
+    end
+
     # def checksum_attributes
     # end
 

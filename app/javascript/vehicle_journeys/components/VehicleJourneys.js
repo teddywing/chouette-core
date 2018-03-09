@@ -12,6 +12,7 @@ export default class VehicleJourneys extends Component {
       this.stopPoints(),
       this.props.filters.features
     )
+    this.togglePurchaseWindows = this.togglePurchaseWindows.bind(this)
     this.toggleTimetables = this.toggleTimetables.bind(this)
   }
 
@@ -49,26 +50,53 @@ export default class VehicleJourneys extends Component {
     return this.headerManager.showHeader(object_id)
   }
 
-  allTimeTables() {
-    if(this._allTimeTables){
-      return this._allTimeTables
-    }
-    let keys = []
+  getPurchaseWindowsAndTimeTables(){
+    let timetables_keys = []
+    let windows_keys = []
     this._allTimeTables = []
+    this._allPurchaseWindows = []
     this.vehicleJourneysList().map((vj, index) => {
       vj.time_tables.map((tt, _) => {
-        if(keys.indexOf(tt.id) < 0){
-            keys.push(tt.id)
+        if(timetables_keys.indexOf(tt.id) < 0){
+            timetables_keys.push(tt.id)
             this._allTimeTables.push(tt)
         }
       })
+      vj.purchase_windows.map((tt, _) => {
+        if(windows_keys.indexOf(tt.id) < 0){
+            windows_keys.push(tt.id)
+            this._allPurchaseWindows.push(tt)
+        }
+      })
     })
+  }
+
+  allTimeTables() {
+    if(! this._allTimeTables){
+      this.getPurchaseWindowsAndTimeTables()
+    }
     return this._allTimeTables
+  }
+
+  allPurchaseWindows() {
+    if(!this._allPurchaseWindows){
+      this.getPurchaseWindowsAndTimeTables()
+    }
+
+    return this._allPurchaseWindows
   }
 
   toggleTimetables(e) {
     $('.table-2entries .detailed-timetables').toggleClass('hidden')
     $('.table-2entries .detailed-timetables-bt').toggleClass('active')
+    this.componentDidUpdate()
+    e.preventDefault()
+    false
+  }
+
+  togglePurchaseWindows(e) {
+    $('.table-2entries .detailed-purchase-windows').toggleClass('hidden')
+    $('.table-2entries .detailed-purchase-windows-bt').toggleClass('active')
     this.componentDidUpdate()
     e.preventDefault()
     false
@@ -127,10 +155,20 @@ export default class VehicleJourneys extends Component {
     )
   }
 
+  purchaseWindowURL(tt) {
+    let refURL = window.location.pathname.split('/', 3).join('/')
+    let ttURL = refURL + '/purchase_windows/' + tt.id
+    return (
+      <a href={ttURL} title='Voir le calendrier commercial'><span className='fa fa-calendar' style={{color: (tt.color ? tt.color : '#4B4B4B')}}></span>{tt.name}</a>
+    )
+  }
+
   render() {
     this.previousBreakpoint = undefined
     this._allTimeTables = null
+    this._allPurchaseWindows = null
     let detailed_calendars = this.hasFeature('detailed_calendars') && !this.isReturn() && (this.allTimeTables().length > 0)
+    let detailed_purchase_windows = this.hasFeature('detailed_purchase_windows') && !this.isReturn() && (this.allPurchaseWindows().length > 0)
     if(this.props.status.isFetching == true) {
       return (
         <div className="isLoading" style={{marginTop: 80, marginBottom: 80}}>
@@ -170,17 +208,39 @@ export default class VehicleJourneys extends Component {
                   <div>{I18n.attribute_name("vehicle_journey", "name")}</div>
                   <div>{I18n.attribute_name("vehicle_journey", "journey_pattern_id")}</div>
                   <div>{I18n.model_name("company")}</div>
-                  { this.hasFeature('purchase_windows') && <div>{I18n.model_name("purchase_window", "plural": true)}</div> }
+                  { this.hasFeature('purchase_windows') &&
+                    <div>
+                      { detailed_purchase_windows &&
+                        <a href='#' onClick={this.togglePurchaseWindows} className='detailed-purchase-windows-bt'>
+                          <span className='fa fa-angle-up'></span>
+                          {I18n.model_name("purchase_window", {"plural": true})}
+                        </a>
+                      }
+                      { !detailed_purchase_windows && I18n.model_name("purchase_window", {"plural": true})}
+                    </div>
+                  }
+                  { detailed_purchase_windows &&
+                    <div className="detailed-purchase-windows hidden">
+                      {this.allPurchaseWindows().map((tt, i)=>
+                        <div key={i}>
+                          <p>
+                            {this.purchaseWindowURL(tt)}
+                          </p>
+                          <p>{tt.bounding_dates.join(' > ')}</p>
+                        </div>
+                      )}
+                    </div>
+                  }
                   <div>
                     { detailed_calendars &&
                       <a href='#' onClick={this.toggleTimetables} className='detailed-timetables-bt'>
                         <span className='fa fa-angle-up'></span>
-                        {I18n.model_name("time_table", "plural": true)}
+                        {I18n.model_name("time_table", {"plural": true})}
                       </a>
                     }
-                    { !detailed_calendars && I18n.model_name("time_table", "plural": true)}
+                    { !detailed_calendars && I18n.model_name("time_table", {"plural": true})}
                   </div>
-                  { !this.isReturn() &&
+                  { detailed_calendars &&
                     <div className="detailed-timetables hidden">
                       {this.allTimeTables().map((tt, i)=>
                         <div key={i}>
@@ -217,6 +277,7 @@ export default class VehicleJourneys extends Component {
                       vehicleJourneys={this}
                       disabled={this.isReturn()}
                       allTimeTables={this.allTimeTables()}
+                      allPurchaseWindows={this.allPurchaseWindows()}
                       />
                   )}
                 </div>

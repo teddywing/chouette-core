@@ -67,6 +67,10 @@ export default class VehicleJourney extends Component {
     return found
   }
 
+  hasPurchaseWindow(purchase_windows, window) {
+    return this.hasTimeTable(purchase_windows, window)
+  }
+
   isDisabled(bool1, bool2) {
     return (bool1 || bool2)
   }
@@ -75,6 +79,8 @@ export default class VehicleJourney extends Component {
     this.previousCity = undefined
     let detailed_calendars = this.hasFeature('detailed_calendars') && !this.disabled
     let detailed_calendars_shown = $('.detailed-timetables-bt').hasClass('active')
+    let detailed_purchase_windows = this.hasFeature('detailed_purchase_windows') && !this.disabled
+    let detailed_purchase_windows_shown = $('.detailed-purchase-windows-bt').hasClass('active')
     let {time_tables, purchase_windows} = this.props.value
 
     return (
@@ -95,6 +101,13 @@ export default class VehicleJourney extends Component {
               <span key={i} className='vj_tt'>{this.purchaseWindowURL(tt)}</span>
             )}
             {purchase_windows.length > 3 && <span className='vj_tt'> + {purchase_windows.length - 3}</span>}
+            </div>
+          }
+          { detailed_purchase_windows &&
+            <div className={"detailed-purchase-windows" + (detailed_purchase_windows_shown ? "" : " hidden")}>
+            {this.props.allPurchaseWindows.map((w, i) =>
+              <div key={i} className={(this.hasPurchaseWindow(purchase_windows, w) ? "active" : "inactive")}></div>
+            )}
             </div>
           }
           <div>
@@ -125,6 +138,8 @@ export default class VehicleJourney extends Component {
             )}
             </div>
           }
+
+
         </div>
         {this.props.value.vehicle_journey_at_stops.map((vj, i) =>
           <div key={i} className='td text-center'>
@@ -205,4 +220,5 @@ VehicleJourney.propTypes = {
   onSelectVehicleJourney: PropTypes.func.isRequired,
   vehicleJourneys: PropTypes.object.isRequired,
   allTimeTables: PropTypes.array.isRequired,
+  allPurchaseWindows: PropTypes.array.isRequired,
 }

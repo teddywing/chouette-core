@@ -36,7 +36,7 @@ end
 
 if has_feature? :purchase_windows
   child(:purchase_windows, :object_root => false) do |purchase_windows|
-    attributes :id, :objectid, :name, :color
+    attributes :id, :objectid, :name, :color, :bounding_dates
   end
 end
 
