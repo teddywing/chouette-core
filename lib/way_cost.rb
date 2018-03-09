@@ -1,10 +1,12 @@
 class WayCost
+  attr_reader :departure, :arrival
+
   def initialize(
     departure:,
     arrival:,
     distance: nil,
     time: nil,
-    id:,  # TODO: calculate ID automatically
+    id: nil  # TODO: calculate ID automatically
   )
     @departure = departure
     @arrival = arrival
