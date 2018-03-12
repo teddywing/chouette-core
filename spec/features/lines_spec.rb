@@ -46,6 +46,16 @@ describe "Lines", type: :feature do
           expect(page).to have_content(lines.first.name)
           expect(page).not_to have_content(lines.last.name)
         end
+
+        xit 'supports filtering by status' do
+          lines.first.update_attribute(:deactivated, true)
+          lines.last.update_attribute(:deactivated, false)
+
+          find('#q_status_activated').set(true)
+          click_button 'search-btn'
+          expect(page).to have_content(lines.first.name)
+          expect(page).not_to have_content(lines.last.name)
+        end
       end
     end
 

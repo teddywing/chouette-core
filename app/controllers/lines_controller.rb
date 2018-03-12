@@ -89,7 +89,9 @@ class LinesController < ChouetteController
         params[:q]["#{filter}_blank"] = '1'
       end
     end
-    @q = line_referential.lines.search(params[:q])
+
+    scope = ransack_status line_referential.lines
+    @q = scope.search(params[:q])
 
     if sort_column && sort_direction
       @lines ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page]).includes([:network, :company])
@@ -144,5 +146,21 @@ class LinesController < ChouetteController
       footnotes_attributes: [:code, :label, :_destroy, :id]
     )
   end
+
+   # Fake ransack filter
+  def ransack_status scope
+    return scope unless params[:q].try(:[], :status)
+    return scope if params[:q][:status].values.uniq.length == 1
+
+    @status = {
+      activated: params[:q][:status]['activated'] == 'true',
+      deactivated: params[:q][:status]['deactivated'] == 'true',
+    }
+
+    scope = Chouette::Line.where(deactivated: @status[@status.key(true)])
+
+    params[:q].delete :status
+    scope
+end
 
 end
