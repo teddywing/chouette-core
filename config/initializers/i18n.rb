@@ -1,6 +1,7 @@
 module I18n
   class << self
     def translate_with_fallback key, options={}, original=nil
+      options[:locale] ||= I18n.locale
       begin
         self.translate_without_fallback(key, {raise: true}.update(options))
       rescue => e
