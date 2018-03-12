@@ -1,5 +1,5 @@
 RSpec.describe TomTom::Batch do
-  let(:tomtom) { TomTom::Batch.new }
+  let(:batch) { TomTom::Batch.new(nil) }
 
   describe "#convert_way_costs_for_batch" do
     it "turns WayCost points into a collection of colon-separated strings" do
@@ -15,7 +15,7 @@ RSpec.describe TomTom::Batch do
       ]
 
       expect(
-        tomtom.convert_way_costs_for_batch(way_costs)
+        batch.convert_way_costs_for_batch(way_costs)
       ).to eq([
         '2,48:3,46',
         '-71,42:-71.5,42.9'
