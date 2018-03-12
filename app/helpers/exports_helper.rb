@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 module ExportsHelper
+  def export_status status
+    import_status status
+  end
+
   def export_option_input form, export, attr, option_def, type
     opts = { required: option_def[:required], input_html: {value: export.try(attr) || option_def[:default_value]}, as: option_def[:type], selected:  export.try(attr) || option_def[:default_value]}
     opts[:collection] = option_def[:collection] if option_def.has_key?(:collection)
