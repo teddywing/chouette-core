@@ -32,6 +32,21 @@ class TomTom
         batchItems: batch_items
       }.to_json
     end
+
+    response = JSON.parse(response.body)
+
+    calculated_routes = response['batchItems']
+    calculated_routes.each_with_index do |route, i|
+      next if route['statusCode'] != 200
+
+      distance = route['response']['routes'][0]['summary']['lengthInMeters']
+      time = route['response']['routes'][0]['summary']['travelTimeInSeconds']
+
+      way_costs[i].distance = distance
+      way_costs[i].time = time
+    end
+
+    way_costs
   end
 
   def convert_way_costs_for_batch(way_costs)

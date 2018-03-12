@@ -1,5 +1,6 @@
 class WayCost
   attr_reader :departure, :arrival
+  attr_writer :distance, :time
 
   def initialize(
     departure:,
