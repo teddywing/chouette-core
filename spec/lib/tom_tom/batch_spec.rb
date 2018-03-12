@@ -1,5 +1,5 @@
-RSpec.describe TomTom do
-  let(:tomtom) { TomTom.new }
+RSpec.describe TomTom::Batch do
+  let(:tomtom) { TomTom::Batch.new }
 
   describe "#convert_way_costs_for_batch" do
     it "turns WayCost points into a collection of colon-separated strings" do
