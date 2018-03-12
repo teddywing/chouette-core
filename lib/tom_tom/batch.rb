@@ -1,18 +1,7 @@
 module TomTom
   class Batch
-    BASE_URL = 'https://api.tomtom.com'
-    API_KEY = Rails.application.secrets.tomtom_api_key
-
-    def initialize
-      @connection = Faraday.new(
-        url: BASE_URL,
-        params: {
-          key: API_KEY
-        }
-      ) do |faraday|
-        faraday.use FaradayMiddleware::FollowRedirects, limit: 1
-        faraday.adapter Faraday.default_adapter
-      end
+    def initialize(connection)
+      @connection = connection
     end
 
     def batch(way_costs)
