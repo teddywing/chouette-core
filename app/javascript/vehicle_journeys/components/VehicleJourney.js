@@ -75,6 +75,21 @@ export default class VehicleJourney extends Component {
     return (bool1 || bool2)
   }
 
+  extraHeaderValue(header) {
+    if(header.type == "custom_field"){
+      let field = this.props.value.custom_fields[header["name"]]
+      if(field.field_type == "list"){
+        return field.options.list_values[field.value]
+      }
+      else{
+        return field.value
+      }
+    }
+    else{
+      return this.props.value[header["name"]]
+    }
+  }
+
   render() {
     this.previousCity = undefined
     let detailed_calendars = this.hasFeature('detailed_calendars') && !this.disabled
@@ -95,6 +110,11 @@ export default class VehicleJourney extends Component {
           <div>{this.props.value.published_journey_name && this.props.value.published_journey_name != I18n.t('undefined') ? this.props.value.published_journey_name : '-'}</div>
           <div>{this.props.value.journey_pattern.short_id || '-'}</div>
           <div>{this.props.value.company ? this.props.value.company.name : '-'}</div>
+          {
+            this.props.extraHeaders.map((header, i) =>
+              <div key={i}>{this.extraHeaderValue(header)}</div>
+            )
+          }
           { this.hasFeature('purchase_windows') &&
             <div>
             {purchase_windows.slice(0,3).map((tt, i)=>
@@ -222,4 +242,5 @@ VehicleJourney.propTypes = {
   vehicleJourneys: PropTypes.object.isRequired,
   allTimeTables: PropTypes.array.isRequired,
   allPurchaseWindows: PropTypes.array.isRequired,
+  extraHeaders: PropTypes.array.isRequired,
 }
