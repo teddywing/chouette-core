@@ -1,3 +1,5 @@
+require Rails.root + 'config/middlewares/cachesettings'
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -136,6 +138,12 @@ Rails.application.configure do
   config.iev_url = ENV.fetch('IEV_URL',"http://iev:8080")
   config.rails_host = ENV.fetch('RAILS_HOST','http://front:3000')
 
+  config.middleware.use CacheSettings, {
+    /\/assets\/.*/ => {
+      cache_control: "max-age=#{1.year.to_i}, public",
+      expires: 1.year.to_i
+    }
+  }
   # Set node env for browserify-rails
   # config.browserify_rails.node_env = "production"
 end
