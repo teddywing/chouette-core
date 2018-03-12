@@ -29,10 +29,10 @@ RoutesLayersControl = (routes, routes_map) ->
   element.className = 'ol-unselectable ol-routes-layers hidden'
   Object.keys(routes).forEach (id)=>
     route = routes[id]
-    route.active = true
+    route.active = false
     label = document.createElement('a')
     label.title = route.name
-    label.className = 'active'
+    label.className = ''
     label.innerHTML = route.name
     element.appendChild label
     label.addEventListener "click", =>
@@ -140,13 +140,13 @@ class RoutesMap
     @map.addLayer vectorEdgesLayer
     @map.addLayer vectorLnsLayer
 
-  lineStyle: (active=true)->
+  lineStyle: (active=false)->
     new ol.style.Style
       stroke: new ol.style.Stroke
         color: '#007fbb'
         width: if active then 3 else 0
 
-  edgeStyles: (active=true)->
+  edgeStyles: (active=false)->
     new ol.style.Style
       image: new ol.style.Circle
         radius: 5
@@ -157,7 +157,7 @@ class RoutesMap
           color: '#007fbb'
           width: if active then 3 else 0
 
-  defaultStyles: (active=true)->
+  defaultStyles: (active=false)->
     new ol.style.Style
       image: new ol.style.Circle
         radius: 4
