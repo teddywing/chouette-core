@@ -22,4 +22,23 @@ RSpec.describe TomTom do
       ])
     end
   end
+
+  describe "#convert_way_costs_for_calculate_route" do
+    it "turns WayCost points into a string of colon-separated coordinates" do
+      way_costs = [
+        WayCost.new(
+          departure: Geokit::LatLng.new(48, 2),
+          arrival: Geokit::LatLng.new(46, 3)
+        ),
+        WayCost.new(
+          departure: Geokit::LatLng.new(46, 3),
+          arrival: Geokit::LatLng.new(47.2, 3.9)
+        )
+      ]
+
+      expect(
+        tomtom.convert_way_costs_for_calculate_route(way_costs)
+      ).to eq('48,2:46,3:47.2,3.9')
+    end
+  end
 end
