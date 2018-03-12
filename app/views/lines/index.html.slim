@@ -29,8 +29,8 @@
                 end \
               ), \
               TableBuilderHelper::Column.new( \
-                key: :deactivated, \
-                attribute: Proc.new { |n| line_status(n.deactivated?) } \
+                name: t('activerecord.attributes.line.state'), \
+                attribute: Proc.new { |n| line_status(n.deactivated) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: 'networks.name', \

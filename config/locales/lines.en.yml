@@ -116,6 +116,9 @@ en:
         creator_id: "Created by"
         footnotes: "Footnotes"
         stable_id: External permanent idenifier"
+        state: State
+        activated: Activated
+        deactivated: Deactivated
   formtastic:
     titles:
       line:

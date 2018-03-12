@@ -23,6 +23,26 @@
       = f.label Chouette::Line.human_attribute_name(:transport_submode), required: false, class: 'control-label'
       = f.input :transport_submode_eq_any, collection: StifTransportSubmodeEnumerations.sorted_transport_submodes, as: :check_boxes, label: false, label_method: lambda{|l| ("<span>" + t("enumerize.transport_submode.#{l}") + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list'}
 
+    .form-group.togglable class=filter_item_class(params[:q], :status)
+      = f.label Chouette::Line.human_attribute_name(:state), required: false, class: 'control-label'
+      .form-group.checkbox_list
+        = f.simple_fields_for :status do |p|
+          = p.input :activated,
+            label: ("<span>#{t('activerecord.attributes.line.activated')}<span class='fa fa-check-circle text-success'></span></span>").html_safe,
+            as: :boolean,
+            wrapper_html: { class: 'checkbox-wrapper' },
+            checked_value: true,
+            unchecked_value: false,
+            input_html: { checked: @status.try(:[], :confirmed) }
+          = p.input :deactivated,
+            label: ("<span>#{t('activerecord.attributes.line.deactivated')}<span class='fa fa-exclamation-circle text-danger'></span></span>").html_safe,
+            as: :boolean,
+            wrapper_html: { class: 'checkbox-wrapper' },
+            checked_value: true,
+            unchecked_value: false,
+            input_html: { checked: @status.try(:[], :deactivated) }
+
+
   .actions
     = link_to 'Effacer', @workbench, class: 'btn btn-link'
     = f.submit 'Filtrer', class: 'btn btn-default'
