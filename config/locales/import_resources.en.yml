@@ -1,5 +1,5 @@
 en:
-  import_resources:
+  import_resources: &resources
     index:
       title: "NeTEx conformity"
       table_state: "%{lines_imported} line(s) imported on %{lines_in_zipfile} presents in zipfile"

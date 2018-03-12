@@ -1,9 +1,0 @@
-.page_info
-  span.search = t("will_paginate.page_entries_info.search")
-  = page_entries_info @exports
-
-.exports.paginated_content
-  = paginated_content @exports, "exports/export"
-
-.pagination
-  = will_paginate @exports, :container => false, renderer: RemoteBootstrapPaginationLinkRenderer

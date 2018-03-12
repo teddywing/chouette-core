@@ -21,6 +21,7 @@ module Stif
         calendars
         footnotes
         imports
+        exports
         merges
         journey_patterns
         referentials

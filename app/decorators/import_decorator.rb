@@ -1,5 +1,5 @@
 class ImportDecorator < AF83::Decorator
-  decorates Import
+  decorates Import::Base
 
   set_scope { context[:workbench] }
 

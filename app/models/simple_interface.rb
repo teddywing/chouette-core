@@ -16,7 +16,7 @@ class SimpleInterface < ActiveRecord::Base
     def find_configuration name
       @importers ||= {}
       configuration = @importers[name.to_sym]
-      raise "Importer not found: #{name}" unless configuration
+      raise "#{self.name} not found: #{name}" unless configuration
       configuration
     end
   end
@@ -25,6 +25,10 @@ class SimpleInterface < ActiveRecord::Base
     super *args
     self.configuration = self.class.find_configuration self.configuration_name
     self.journal ||= []
+  end
+
+  def configuration
+    @configuration ||= self.class.find_configuration self.configuration_name
   end
 
   def init_env opts

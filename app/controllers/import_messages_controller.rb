@@ -1,8 +1,8 @@
 class ImportMessagesController < ChouetteController
-  defaults resource_class: ImportMessage, collection_name: 'import_messages', instance_name: 'import_message'
+  defaults resource_class: Import::Message, collection_name: 'import_messages', instance_name: 'import_message'
   respond_to :csv
-  belongs_to :import, :parent_class => Import do
-    belongs_to :import_resource, :parent_class => ImportResource
+  belongs_to :import, :parent_class => Import::Base do
+    belongs_to :import_resource, :parent_class => Import::Resource
   end
 
 
@@ -20,7 +20,7 @@ class ImportMessagesController < ChouetteController
   end
 
   def parent
-    @import_resource ||= ImportResource.find(params[:import_resource_id])
+    @import_resource ||= Import::Resource.find(params[:import_resource_id])
   end
 
 end

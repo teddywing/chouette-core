@@ -1,10 +1,44 @@
-= title_tag t('.title')
+- breadcrumb :exports, @workbench
 
-.warning = t('.warning')
+.page_content
+  .container-fluid
+    - if params[:q].present? or collection.any?
+      .row
+        .col-lg-12
+          = render 'shared/iev_interfaces/filters'
 
-#exports = render 'exports'
+    - if collection.any?
+      .row
+        .col-lg-12
+          = table_builder_2 collection,
+            [ \
+              TableBuilderHelper::Column.new( \
+                key: :status, \
+                attribute: Proc.new { |n| export_status(n.status) }, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :started_at, \
+                attribute: Proc.new { |n| l(n.started_at, format: :long) if n.started_at }, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :name, \
+                attribute: 'name', \
+                link_to: lambda do |export| \
+                  workbench_export_path(@workbench, export) \
+                end \
+              ), \
+              TableBuilderHelper::Column.new( \
+                key: :creator, \
+                attribute: 'creator' \
+              ) \
+            ],
+            cls: 'table has-search'
 
-- content_for :sidebar do
-  ul.actions
-    li
-      = link_to t('exports.actions.new'), new_referential_export_task_path(@referential), class: 'add'
+          = new_pagination collection, 'pull-right'
+
+    - unless collection.any?
+      .row.mt-xs
+        .col-lg-12
+          = replacement_msg t('exports.search_no_results')
+
+= javascript_pack_tag 'date_filters'

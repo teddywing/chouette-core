@@ -1,33 +1,46 @@
 fr:
-  exports:
+  exports: &exports
+    search_no_results: "Aucun export ne correspond à votre recherche"
+    filters:
+      referential: "Sélectionnez un jeu de données..."
+      name_or_creator_cont: "Indiquez un nom d'export ou d'opérateur..."
+      error_period_filter: "La date de fin doit être supérieure ou égale à la date de début"
     actions:
       new: "Nouvel export"
+      create: "Nouvel export"
+      show: "Rapport d'export"
+      download: "Téléch. fichier source"
       destroy: "Supprimer cet export"
       destroy_confirm: "Etes vous sûr de supprimer cet export ?"
-    new:
-      title: "Nouvel export"
-      all: "Toutes"
-      flash: "La demande d'export est mise en file d'attente, veuillez rafraichir régulièrement la page pour en suivre la progression"
     index:
       title: "Exports"
       warning: ""
+    new:
+      title: "Générer un export"
+    create:
+      title: "Générer un export"
     show:
+      title: "Export %{name}"
       report: "Rapport"
-      exported_file: "Fichier exporté"
-    statuses:
-      started: "En file d'attente..."
-      scheduled: "En cours..."
-      terminated: "Achevé"
-      canceled: "Annulé"
-      aborted: "Echoué"
+      exported_file: "Fichier source"
+      compliance_check: "Test de conformité"
+      compliance_check_of: "Validation de l'export : "
+      export_of_validation: "L'export de la validation"
+    compliance_check_task: "Validation"
     severities:
       info: "Information"
-      uncheck: "Non disponible"
+      uncheck: "Non testé"
       ok: "Ok"
       warning: "Alerte"
       error: "Erreur"
       fatal: "Fatal"
-  activemodel:
+  export:
+    workgroup: Groupe de travail
+    netex:     Netex
+    referential_companies: Transporteurs
+    base:
+      <<: *exports
+  activerecord:
     models:
       export:
         zero:  "export"
@@ -35,7 +48,11 @@ fr:
         other: "exports"
       neptune_export:
         zero:  "export"
-        one:   "export neptune"
+        one:   "export Neptune"
+        other: "exports"
+      csv_export:
+        zero:  "export"
+        one:   "export CSV"
         other: "exports"
       gtfs_export:
         zero:  "export"
@@ -45,3 +62,40 @@ fr:
         zero:  "export"
         one:   "export NeTEx"
         other: "exports"
+    errors:
+      models:
+        export:
+          base:
+            attributes:
+              file:
+                wrong_file_extension: "Le fichier exporté doit être au format zip"
+    attributes:
+      attrs: &attrs
+        resources: "Fichier à exporter"
+        created_at: "Créé le"
+        started_at: Démarrage
+        name: "Nom de l'export"
+        status: "Etat"
+        creator: "Opérateur"
+        no_save: "Pas de sauvegarde"
+        references_type: "Données à exporter"
+        object_id_prefix: "Préfixe d'identifiants"
+        max_distance_for_commercial: "Distance max pour créer les zones"
+        max_distance_for_connection_link: "Distance max pour créer les correspondances"
+        ignore_last_word: "ignorer le dernier mot"
+        ignore_end_chars: "ignorer les n derniers caractères"
+        type: "Type d'export"
+        file: "Résultat"
+        parent: Parent
+      export:
+        <<: *attrs
+        base:
+          <<: *attrs
+        workgroup:
+          duration: Durée
+        referential_companies:
+          referential_id: Jeu de données
+  flash:
+    exports:
+      create:
+        notice: "L'export est en cours, veuillez patienter. Actualiser votre page si vous voulez voir l'avancement de votre traitement."

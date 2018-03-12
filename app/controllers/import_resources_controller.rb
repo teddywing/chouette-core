@@ -1,5 +1,5 @@
 class ImportResourcesController < ChouetteController
-  defaults resource_class: ImportResource, collection_name: 'import_resources', instance_name: 'import_resource'
+  defaults resource_class: Import::Resource, collection_name: 'import_resources', instance_name: 'import_resource'
   respond_to :html
   belongs_to :import
 

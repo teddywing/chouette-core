@@ -1,26 +1,49 @@
-.title.row
-  .col-md-8
-    = title_tag job_status_title(@export)
+- breadcrumb :export, @workbench, @export
 
-  .col-md-4
-    = export_attributes_tag(@export)
+- page_header_content_for @export
 
-- if @export.report.failure_code?
-  .alert.alert-danger
-    = t("iev.failure.#{@export.report.failure_code}")
+.page_content
+  .container-fluid
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        - metadatas = { I18n.t("activerecord.attributes.export.type") => @export.object.class.human_name }
+        - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.status") => export_status(@export.status)})
+        - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.parent") => link_to(@export.parent.name, [@export.parent.workbench, @export.parent])}) if @export.parent.present?
+        - metadatas = metadatas.update Hash[*@export.visible_options.map{|k, v| [t("activerecord.attributes.export.#{@export.object.class.name.demodulize.underscore}.#{k}"), @export.display_option_value(k, self)]}.flatten]
+        - metadatas = metadatas.update({I18n.t("activerecord.attributes.export.file") => (@export.file.present? ? link_to(t("actions.download"), @export.file.url) : "-")})
+        = definition_list t('metadatas'), metadatas
 
-.progress_bars
-  = progress_bar_tag(@export)
+    .row
+      .col-lg-12
+        .error_messages
+          = render 'shared/iev_interfaces/messages', messages: @export.messages
 
-.export_show
-  .links
-    = link_to( font_awesome_classic_tag("fa-file-#{@export.filename_extension}-o") + t("exports.show.exported_file"), exported_file_referential_export_path(@referential, @export.id) ) if @export.file_path
-  
-  = render partial: "shared/ie_report.html", locals: { job: @export, line_items: @line_items }
+    - if @export.children.any?
+      .row
+        .col-lg-12
+        - coll = @export.children.paginate(page: params[:page] || 1)
+        = table_builder_2 coll,
+          [ \
+            TableBuilderHelper::Column.new( \
+              key: :status, \
+              attribute: Proc.new { |n| export_status(n.status) }, \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :started_at, \
+              attribute: Proc.new { |n| l(n.started_at, format: :long) if n.started_at }, \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :name, \
+              attribute: 'name', \
+              link_to: lambda do |export| \
+                workbench_export_path(@workbench, export) \
+              end \
+            ), \
+            TableBuilderHelper::Column.new( \
+              key: :creator, \
+              attribute: 'creator' \
+            ) \
+          ],
+          cls: 'table has-search'
 
-- content_for :sidebar do
-  ul.actions
-    li
-      = link_to t('exports.actions.destroy'), referential_export_path(@referential, @export.id), :method => :delete, :data => {:confirm => t('exports.actions.destroy_confirm')}, class: 'remove'
-  
-  = history_tag(@export)
+        = new_pagination coll, 'pull-right'

@@ -28,7 +28,9 @@ module TableBuilderHelper
       return @name if @name.present?
 
       # Transform `Chouette::Line` into "line"
-      model_key = model.to_s.demodulize.underscore
+      model_key = model.to_s.underscore
+      model_key.gsub! 'chouette/', ''
+      model_key.gsub! '/', '.'
 
       I18n.t("activerecord.attributes.#{model_key}.#{@key}")
     end

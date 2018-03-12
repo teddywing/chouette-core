@@ -5,7 +5,7 @@ class StatusesController < ChouetteController
 
     status = {
       referentials_blocked: Referential.blocked.count,
-      imports_blocked: Import.blocked.count,
+      imports_blocked: Import::Base.blocked.count,
       compliance_check_sets_blocked: ComplianceCheckSet.blocked.count
     }
     status[:status] = global_status status

@@ -20,7 +20,7 @@ RSpec.describe ParentNotifier do
         expect(netex_import).to receive(:notify_parent)
       end
 
-      ParentNotifier.new(Import).notify_when_finished(netex_imports)
+      ParentNotifier.new(Import::Base).notify_when_finished(netex_imports)
     end
 
     it "doesn't call #notify_parent if its `notified_parent_at` is set" do
@@ -33,7 +33,7 @@ RSpec.describe ParentNotifier do
 
       expect(netex_import).not_to receive(:notify_parent)
 
-      ParentNotifier.new(Import).notify_when_finished
+      ParentNotifier.new(Import::Base).notify_when_finished
     end
   end
 
@@ -46,8 +46,10 @@ RSpec.describe ParentNotifier do
         notified_parent_at: nil
       )
 
+      Import::Base.where(id: netex_import).update_all notified_parent_at: nil
+
       expect(
-        ParentNotifier.new(Import).objects_pending_notification
+        ParentNotifier.new(Import::Base).objects_pending_notification
       ).to eq([netex_import])
     end
 
@@ -55,7 +57,7 @@ RSpec.describe ParentNotifier do
       create(:import, parent: nil)
 
       expect(
-        ParentNotifier.new(Import).objects_pending_notification
+        ParentNotifier.new(Import::Base).objects_pending_notification
       ).to be_empty
     end
 
@@ -70,7 +72,7 @@ RSpec.describe ParentNotifier do
       end
 
       expect(
-        ParentNotifier.new(Import).objects_pending_notification
+        ParentNotifier.new(Import::Base).objects_pending_notification
       ).to be_empty
     end
 
@@ -83,7 +85,7 @@ RSpec.describe ParentNotifier do
       )
 
       expect(
-        ParentNotifier.new(Import).objects_pending_notification
+        ParentNotifier.new(Import::Base).objects_pending_notification
       ).to be_empty
     end
   end

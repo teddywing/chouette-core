@@ -59,11 +59,12 @@ en:
     errors:
       models:
         import:
-          attributes:
-            file:
-              wrong_file_extension: "The imported file must be a zip file"
+          base:
+            attributes:
+              file:
+                wrong_file_extension: "The imported file must be a zip file"
     attributes:
-      import:
+      attrs: &attrs
         resources: "File to import"
         created_at: "Created on"
         started_at: "Started at"
@@ -77,6 +78,10 @@ en:
         max_distance_for_connection_link: "Max distance for connection link"
         ignore_last_word: "ignore last word"
         ignore_end_chars: "ignore last chars"
+      import:
+        <<: *attrs
+        base:
+          <<: *attrs
   flash:
     imports:
       create:

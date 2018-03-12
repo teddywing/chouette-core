@@ -29,6 +29,8 @@
             span Jeux de données
           = link_to workbench_imports_path(current_workbench), class: "list-group-item #{(params[:controller] == 'imports') ? 'active' : ''}" do
             span Import
+          = link_to workbench_exports_path(current_workbench), class: "list-group-item #{(params[:controller] == 'exports') ? 'active' : ''}" do
+            span Export
           = link_to workgroup_calendars_path(current_workbench.workgroup), class: 'list-group-item' do
             span Modèles de calendrier
           = link_to workbench_compliance_check_sets_path(current_workbench), class: 'list-group-item' do

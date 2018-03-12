@@ -1,5 +1,5 @@
 en:
-  import_messages:
+  import_message:
     corrupt_zip_file: "The zip file %{source_filename} is corrupted and cannot be read"
     inconsistent_zip_file: "The zip file %{source_filename} contains unexpected directories: %{spurious_dirs}, which are ignored"
     referential_creation: "Le référentiel n'a pas pu être créé car un référentiel existe déjà sur les mêmes périodes et lignes"
