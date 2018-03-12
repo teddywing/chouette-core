@@ -23,9 +23,14 @@ module TomTom
         }.to_json
       end
 
-      response = JSON.parse(response.body)
+      extract_costs_to_way_costs!(
+        way_costs,
+        JSON.parse(response.body)
+      )
+    end
 
-      calculated_routes = response['batchItems']
+    def extract_costs_to_way_costs!(way_costs, batch_json)
+      calculated_routes = batch_json['batchItems']
       calculated_routes.each_with_index do |route, i|
         next if route['statusCode'] != 200
 
