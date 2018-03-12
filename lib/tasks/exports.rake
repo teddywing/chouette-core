@@ -51,6 +51,9 @@ namespace :export do
     if journeys.count == 0
       puts "No maching journeys were found".red
     else
+      exports_group = SimpleInterfacesGroup.new "Export Complet \"#{referential.name}\" du #{Time.now.to_date} au #{args[:timelapse].to_i.days.from_now.to_date}"
+      exports_group.shared_options = {verbose: true}
+
       exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_companies", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_companies.json"
       ids = journeys.pluck :company_id
       ids += journeys.joins(route: :line).pluck :"lines.company_id"
@@ -59,39 +62,37 @@ namespace :export do
         config.collection = Chouette::Company.where(id: ids.uniq).order('name')
       end
 
-      SimpleInterfacesHelper.run_interface_controlling_interruption exporter, :export, args
-      break if exporter.status == :error
+      exports_group.add_interface exporter, "Services Types", :export
 
       exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_schedules", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_schedules.json"
       exporter.configure do |config|
         config.collection = journeys
       end
 
-      SimpleInterfacesHelper.run_interface_controlling_interruption exporter, :export, args
-      break if exporter.status == :error
+      exports_group.add_interface exporter, "Schedules", :export
 
       exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_routes", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_routes.json"
       exporter.configure do |config|
         config.collection = Chouette::JourneyPattern.where(id: journeys.pluck(:journey_pattern_id).uniq)
       end
 
-      SimpleInterfacesHelper.run_interface_controlling_interruption exporter, :export, args
-      break if exporter.status == :error
+      exports_group.add_interface exporter, "Routes", :export
 
       exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_stops", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_stops.json"
       exporter.configure do |config|
         config.collection = Chouette::StopArea.where(id: journeys.joins(:stop_points).pluck(:"stop_points.stop_area_id").uniq).order('parent_id ASC NULLS FIRST')
       end
 
-      SimpleInterfacesHelper.run_interface_controlling_interruption exporter, :export, args
-      break if exporter.status == :error
+      exports_group.add_interface exporter, "Stops", :export
 
       exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_journeys", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_journeys.json"
       exporter.configure do |config|
         config.collection = journeys
       end
 
-      SimpleInterfacesHelper.run_interface_controlling_interruption exporter, :export, args
+      exports_group.add_interface exporter, "Services", :export
+
+      exports_group.run
     end
   end
 end

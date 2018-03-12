@@ -16,19 +16,14 @@ class SimpleExporter < SimpleInterface
 
     @statuses = ""
 
-    if ENV["NO_TRANSACTION"]
-      process_collection
-    else
-      ActiveRecord::Base.transaction do
-        process_collection
-      end
-    end
+    process_collection
+
     self.status ||= :success
   rescue SimpleInterface::FailedOperation
     self.status = :failed
   ensure
     @csv&.close
-    self.save!
+    task_finished
   end
 
   def collection
@@ -46,14 +41,13 @@ class SimpleExporter < SimpleInterface
   protected
   def init_env opts
     @number_of_lines = collection.size
-
     super opts
   end
 
   def process_collection
     self.configuration.before_actions(:all).each do |action| action.call self end
-    log "Starting export ...", color: :green
-    log "Export will be written in #{filepath}", color: :green
+    log "Starting export ..."
+    log "Export will be written in #{filepath}"
     @csv << self.configuration.columns.map(&:name)
     if collection.is_a?(ActiveRecord::Relation) && collection.model.column_names.include?("id")
       ids = collection.pluck :id
@@ -87,6 +81,7 @@ class SimpleExporter < SimpleInterface
     if val.nil? && !col.omit_nil?
       push_in_journal({event: :attribute_not_found, message: "Value missing for: #{[col.scope, col.attribute].flatten.join('.')}", kind: :warning})
       self.status ||= :success_with_warnings
+      @new_status ||= colorize("✓", :orange)
     end
 
     if val.nil? && col.required?
@@ -135,6 +130,10 @@ class SimpleExporter < SimpleInterface
       h.each_with_object({}) do |(k, v), h|
         if v.is_a? Hash
           flatten_hash(v).map do |h_k, h_v|
+            h["#{k}.#{h_k}".to_sym] = h_v
+          end
+        elsif v.is_a? ActiveRecord::Base
+          flatten_hash(v.attributes).map do |h_k, h_v|
             h["#{k}.#{h_k}".to_sym] = h_v
           end
         else
