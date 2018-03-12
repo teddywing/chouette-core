@@ -12,7 +12,7 @@ RSpec.describe Import::Base, type: :model do
 
   include ActionDispatch::TestProcess
   it { should allow_value(fixture_file_upload('OFFRE_TRANSDEV_2017030112251.zip')).for(:file) }
-  it { should_not allow_value(fixture_file_upload('reflex_updated.xml')).for(:file).with_message(I18n.t('errors.messages.extension_whitelist_error', extension: '"xml"', allowed_types: "zip, csv, json")) }
+  it { should_not allow_value(fixture_file_upload('users.json')).for(:file).with_message(I18n.t('errors.messages.extension_whitelist_error', extension: '"json"', allowed_types: "zip")) }
 
   let(:workbench_import) {netex_import.parent}
   let(:workbench_import_with_completed_steps) do

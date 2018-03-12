@@ -15,6 +15,10 @@ class Export::Base < ActiveRecord::Base
     I18n.t("export.#{self.name.demodulize.underscore}")
   end
 
+  def self.file_extension_whitelist
+    %w(zip csv json)
+  end
+
   if Rails.env.development?
     def self.force_load_descendants
       path = Rails.root.join 'app/models/export'

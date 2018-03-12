@@ -10,6 +10,10 @@ class Import::Base < ActiveRecord::Base
     "Import::Resource"
   end
 
+  def self.file_extension_whitelist
+    %w(zip)
+  end
+
   include IevInterfaces::Task
 
   def self.model_name
