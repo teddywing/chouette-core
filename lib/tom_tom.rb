@@ -1,6 +1,6 @@
 class TomTom
   BASE_URL = 'https://api.tomtom.com'
-  API_KEY = ''
+  API_KEY = Rails.application.secrets.tomtom_api_key
 
   def initialize
     @connection = Faraday.new(
