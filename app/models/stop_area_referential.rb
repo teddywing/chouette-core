@@ -28,7 +28,7 @@ class StopAreaReferential < ActiveRecord::Base
     return "A" * self.registration_number_format.size unless last
 
     if last == "Z" * self.registration_number_format.size
-      val = "AAA"
+      val = "A" * self.registration_number_format.size
       while self.stop_areas.where(registration_number: val).exists?
         val = val.next
       end
