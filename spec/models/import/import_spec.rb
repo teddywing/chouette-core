@@ -125,8 +125,8 @@ RSpec.describe Import::Base, type: :model do
         netex_import.status = :bar
 
         netex_import.notify_parent
-        expect(netex_import.notified_parent_at).to eq Time.now
-        expect(netex_import.reload.notified_parent_at).to eq Time.now
+        expect(netex_import.notified_parent_at.to_datetime).to eq Time.now.to_datetime
+        expect(netex_import.reload.notified_parent_at.to_datetime).to eq Time.now.to_datetime
       end
     end
   end
