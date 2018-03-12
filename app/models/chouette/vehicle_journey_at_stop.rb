@@ -6,6 +6,8 @@ module Chouette
 
     DAY_OFFSET_MAX = 2
 
+    @@day_offset_max = DAY_OFFSET_MAX
+    mattr_accessor :day_offset_max
 
     belongs_to :stop_point
     belongs_to :vehicle_journey
@@ -40,7 +42,7 @@ module Chouette
           I18n.t(
             'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
             short_id: vehicle_journey&.get_objectid&.short_id,
-            max: DAY_OFFSET_MAX + 1
+            max: Chouette::VehicleJourneyAtStop.day_offset_max + 1
           )
         )
       end
@@ -51,7 +53,7 @@ module Chouette
           I18n.t(
             'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
             short_id: vehicle_journey&.get_objectid&.short_id,
-            max: DAY_OFFSET_MAX + 1
+            max: Chouette::VehicleJourneyAtStop.day_offset_max + 1
           )
         )
       end
@@ -62,7 +64,7 @@ module Chouette
       # nil offsets. Handle these gracefully by forcing them to a 0 offset.
       offset ||= 0
 
-      offset < 0 || offset > DAY_OFFSET_MAX
+      offset < 0 || offset > Chouette::VehicleJourneyAtStop.day_offset_max
     end
 
     def checksum_attributes
