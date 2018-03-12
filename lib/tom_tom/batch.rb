@@ -9,7 +9,7 @@ module TomTom
         travelMode: 'bus',
         routeType: 'shortest'
       })
-      batch_items = convert_way_costs_for_batch(way_costs).map do |locations|
+      batch_items = convert_way_costs(way_costs).map do |locations|
         {
           query: "/calculateRoute/#{locations}/json?#{params}"
         }
@@ -39,7 +39,7 @@ module TomTom
       way_costs
     end
 
-    def convert_way_costs_for_batch(way_costs)
+    def convert_way_costs(way_costs)
       way_costs.map do |way_cost|
         "#{way_cost.departure.lat},#{way_cost.departure.lng}" \
         ":#{way_cost.arrival.lat},#{way_cost.arrival.lng}"
