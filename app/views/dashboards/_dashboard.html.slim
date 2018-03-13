@@ -28,7 +28,7 @@
         - if workbench.calendars.present?
           .list-group
             - workbench.calendars.order("updated_at desc").limit(5).each do |calendar|
-              = link_to calendar.name, workgroup_calendars_path(workbench.workgroup, calendar), class: 'list-group-item'
+              = link_to calendar.name, workgroup_calendar_path(@dashboard.workbench.workgroup, calendar), class: 'list-group-item'
         - else
           .panel-body
             em.small.text-muted
