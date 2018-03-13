@@ -191,7 +191,7 @@ fr:
       vehicle_journey_control/speed:
         one: "La vitesse entre deux arrêts doit être dans une fourchette paramétrable"
       vehicle_journey_control/delta:
-        one: "Les vitesses entre 2 arrêts doivent être similaires pour toutes les courses d’une même mission"
+        one: "Les temps de parcours entre 2 arrêts doivent être similaires pour toutes les courses d’une même mission"
       vehicle_journey_control/time_table:
         one: "Une course doit avoir au moins un calendrier d’application"
       vehicle_journey_control/vehicle_journey_at_stops:
