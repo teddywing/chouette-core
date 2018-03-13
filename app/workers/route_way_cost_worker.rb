@@ -5,6 +5,8 @@ class RouteWayCostWorker
     Referential.find(referential_id).switch
     route = Chouette::Route.find(route_id)
 
+    # Prevent recursive worker spawning since this call updates the
+    # `costs` field of the route.
     Chouette::Route.skip_callback(:save, :after, :calculate_costs!)
 
     RouteWayCostCalculator.new(route).calculate!
