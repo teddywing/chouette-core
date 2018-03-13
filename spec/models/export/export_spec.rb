@@ -125,8 +125,8 @@ RSpec.describe Export::Base, type: :model do
         netex_export.status = :bar
 
         netex_export.notify_parent
-        expect(netex_export.notified_parent_at.to_datetime).to eq Time.now.to_datetime
-        expect(netex_export.reload.notified_parent_at.to_datetime).to eq Time.now.to_datetime
+        expect(netex_export.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
+        expect(netex_export.reload.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
       end
     end
   end
