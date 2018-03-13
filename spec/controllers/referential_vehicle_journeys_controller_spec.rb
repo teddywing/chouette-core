@@ -80,6 +80,18 @@ RSpec.describe ReferentialVehicleJourneysController, type: :controller do
           expect(assigns[:vehicle_journeys]).to_not include(vehicle_journey_2)
         end
       end
+
+      context "with both stops one being unused" do
+        let(:from_area_id){ vehicle_journey_1.stop_areas.first.id }
+        let(:to_area_id){
+          stop_area = create :stop_area
+          create :stop_point, stop_area: stop_area, route: vehicle_journey_1.route
+          stop_area
+        }
+        it "should apply filters" do
+          expect(assigns[:vehicle_journeys]).to eq []
+        end
+      end
     end
   end
 
