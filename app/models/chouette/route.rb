@@ -75,6 +75,8 @@ module Chouette
 
     validates :wayback, inclusion: { in: self.wayback.values }
 
+    after_save :calculate_costs!
+
     def duplicate
       overrides = {
         'opposite_route_id' => nil,
