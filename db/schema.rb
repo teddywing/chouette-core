@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180308095116) do
+ActiveRecord::Schema.define(version: 20180313110900) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -702,6 +703,7 @@ ActiveRecord::Schema.define(version: 20180308095116) do
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
+    t.json     "costs"
   end
 
   add_index "routes", ["objectid"], name: "routes_objectid_key", unique: true, using: :btree
