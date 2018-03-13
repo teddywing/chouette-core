@@ -191,7 +191,7 @@ module Chouette
     end
 
     def calculate_costs!
-      RouteWayCostWorker.perform_async(id)
+      RouteWayCostWorker.perform_async(referential.id, id)
     end
 
     protected
