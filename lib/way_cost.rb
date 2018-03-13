@@ -1,5 +1,5 @@
 class WayCost
-  attr_reader :departure, :arrival
+  attr_reader :departure, :arrival, :id
   attr_accessor :distance, :time
 
   def initialize(
@@ -7,7 +7,7 @@ class WayCost
     arrival:,
     distance: nil,
     time: nil,
-    id: nil  # TODO: calculate ID automatically
+    id: nil
   )
     @departure = departure
     @arrival = arrival
@@ -21,6 +21,7 @@ class WayCost
       @departure == other.departure &&
       @arrival == other.arrival &&
       @distance == other.distance &&
-      @time == other.time
+      @time == other.time &&
+      @id == other.id
   end
 end
