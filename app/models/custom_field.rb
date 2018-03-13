@@ -9,6 +9,8 @@ class CustomField < ActiveRecord::Base
 
   scope :for_workgroup, ->(workgroup){ where workgroup_id: workgroup.id }
 
+  scope :for_workgroup, ->(workgroup){ where workgroup_id: workgroup.id }
+
   class Collection < HashWithIndifferentAccess
     def initialize object, workgroup=nil
       vals = object.class.custom_fields(workgroup).map do |v|
