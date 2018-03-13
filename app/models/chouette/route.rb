@@ -188,6 +188,10 @@ module Chouette
       journey_pattern
     end
 
+    def calculate_costs!
+      RouteWayCostWorker.perform_async(id)
+    end
+
     protected
 
     def self.vehicle_journeys_timeless(stop_point_id)
