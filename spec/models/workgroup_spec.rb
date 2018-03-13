@@ -6,6 +6,8 @@ RSpec.describe Workgroup, type: :model do
 
     it{ should have_many(:workbenches) }
     it{ should validate_uniqueness_of(:name) }
+    it{ should validate_uniqueness_of(:stop_area_referential_id) }
+    it{ should validate_uniqueness_of(:line_referential_id) }
 
     it 'is not valid without a stop_area_referential' do
       workgroup.stop_area_referential_id = nil
