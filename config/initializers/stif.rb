@@ -27,8 +27,6 @@ Rails.application.config.to_prepare do
   Organisation.before_validation(on: :create) do |organisation|
     organisation.custom_view = "stif"
   end
-end
-
-Rails.application.config.to_prepare do
   Dashboard.default_class = Stif::Dashboard
+  Chouette::VehicleJourneyAtStop.day_offset_max = 1
 end
