@@ -212,14 +212,15 @@ const actions = {
   toggleArrivals : () => ({
     type: 'TOGGLE_ARRIVALS',
   }),
-  updateTime : (val, subIndex, index, timeUnit, isDeparture, isArrivalsToggled) => ({
+  updateTime : (val, subIndex, index, timeUnit, isDeparture, isArrivalsToggled, enforceConsistency=false) => ({
     type: 'UPDATE_TIME',
     val,
     subIndex,
     index,
     timeUnit,
     isDeparture,
-    isArrivalsToggled
+    isArrivalsToggled,
+    enforceConsistency
   }),
   resetStateFilters: () => ({
     type: 'RESET_FILTERS'
@@ -486,10 +487,10 @@ const actions = {
     vjas.delta = delta
     return vjas
   },
-  adjustSchedule: (action, schedule) => {
+  adjustSchedule: (action, schedule, enforceConsistency=false) => {
     // we enforce that the departure time remains after the arrival time
     actions.getDelta(schedule)
-    if(schedule.delta < 0){
+    if(enforceConsistency && schedule.delta < 0){
       if(action.isDeparture){
         schedule.arrival_time = schedule.departure_time
       }

@@ -20,8 +20,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.fetchingApi())
       actions.fetchVehicleJourneys(dispatch, undefined, undefined, filters.queryString, routeUrl)
     },
-    onUpdateTime: (e, subIndex, index, timeUnit, isDeparture, isArrivalsToggled) => {
-      dispatch(actions.updateTime(e.target.value, subIndex, index, timeUnit, isDeparture, isArrivalsToggled))
+    onUpdateTime: (e, subIndex, index, timeUnit, isDeparture, isArrivalsToggled, enforceConsistency=false) => {
+      dispatch(actions.updateTime(e.target.value, subIndex, index, timeUnit, isDeparture, isArrivalsToggled, enforceConsistency))
     },
     onSelectVehicleJourney: (index) => {
       dispatch(actions.selectVehicleJourney(index))
