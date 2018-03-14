@@ -30,6 +30,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 name: t('activerecord.attributes.line.state'), \
+                class: :state, \
                 attribute: Proc.new { |n| line_status(n.deactivated) } \
               ), \
               TableBuilderHelper::Column.new( \

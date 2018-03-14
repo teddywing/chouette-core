@@ -208,7 +208,7 @@ module TableBuilderHelper
   end
 
   def tr item, columns, selectable, links, overhead, model_name, action
-    klass = "#{model_name}-#{item.id}"
+    klass = "#{model_name} #{model_name}-#{item.id}"
     content_tag :tr, class: klass do
       bcont = []
       if selectable
@@ -221,13 +221,14 @@ module TableBuilderHelper
 
       columns.each do |column|
         value = column.value(item)
+        extra_class = column.td_class(item)
 
         if column.linkable?
           path = column.link_to(item)
           link = value.present? && path.present? ? link_to(value, path) : ""
 
           if overhead.empty?
-            bcont << content_tag(:td, link, title: 'Voir')
+            bcont << content_tag(:td, link, title: 'Voir', class: extra_class)
 
           else
             i = columns.index(column)
@@ -236,22 +237,22 @@ module TableBuilderHelper
               if (i > 0) && (overhead[i - 1][:width] > 1)
                 clsArrayAlt = overhead[i - 1][:cls].split
 
-                bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt))
+                bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt, extra_class))
 
               else
-                bcont << content_tag(:td, link, title: 'Voir')
+                bcont << content_tag(:td, link, title: 'Voir', class: extra_class)
               end
 
             else
               clsArray = overhead[columns.index(column)][:cls].split
 
-              bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray))
+              bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArray, extra_class))
             end
           end
 
         else
           if overhead.empty?
-            bcont << content_tag(:td, value)
+            bcont << content_tag(:td, value, class: extra_class)
 
           else
             i = columns.index(column)
@@ -260,10 +261,10 @@ module TableBuilderHelper
               if (i > 0) && (overhead[i - 1][:width] > 1)
                 clsArrayAlt = overhead[i - 1][:cls].split
 
-                bcont << content_tag(:td, value, class: td_cls(clsArrayAlt))
+                bcont << content_tag(:td, value, class: td_cls(clsArrayAlt, extra_class))
 
               else
-                bcont << content_tag(:td, value)
+                bcont << content_tag(:td, value, class: extra_class)
               end
 
             else
@@ -299,12 +300,15 @@ module TableBuilderHelper
     end
   end
 
-  def td_cls(a)
+  def td_cls(a, extra_class="")
+    out = [extra_class]
     if a.include? 'full-border'
       a.slice!(a.index('full-border'))
 
-      return a.join(' ')
+      out += a
     end
+    out = out.select(&:present?).join(' ')
+    out.present? ? out : nil
   end
 
   def build_links(item, links, action)
