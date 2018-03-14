@@ -203,11 +203,8 @@ export default class VehicleJourney extends Component {
                       onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, "minute", true,  this.props.filters.toggleArrivals, true)}}
                       value={vj.departure_time['minute']}
                       />
-                  </span>
-                </div>
-                {vj.errors && <div className="errors">
-                  {vj.errors}
-                </div>}
+                </span>
+              </div>
             </div>
           </div>
         )}
