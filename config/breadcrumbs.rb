@@ -127,7 +127,7 @@ crumb :export do |workbench, export|
 end
 
 crumb :import_resources do |import, import_resources|
-  link I18n.t('import_resources.index.title'), workbench_import_import_resources_path(import.workbench, import.parent)
+  link I18n.t('import.resources.index.title'), workbench_import_import_resources_path(import.workbench, import.parent)
   parent :import, import.workbench, import.parent
 end
 

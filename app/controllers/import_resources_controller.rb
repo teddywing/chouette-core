@@ -1,7 +1,7 @@
 class ImportResourcesController < ChouetteController
   defaults resource_class: Import::Resource, collection_name: 'import_resources', instance_name: 'import_resource'
   respond_to :html
-  belongs_to :import
+  belongs_to :import, :parent_class => Import::Base
 
   def index
     index! do |format|
