@@ -27,13 +27,13 @@ RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
 
     it "disallows offsets greater than DAY_OFFSET_MAX" do
       expect(at_stop.day_offset_outside_range?(
-        Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX + 1
+        Chouette::VehicleJourneyAtStop.day_offset_max + 1
       )).to be true
     end
 
     it "allows offsets between 0 and DAY_OFFSET_MAX inclusive" do
       expect(at_stop.day_offset_outside_range?(
-        Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX
+        Chouette::VehicleJourneyAtStop.day_offset_max
       )).to be false
     end
 
@@ -79,7 +79,7 @@ RSpec.describe Chouette::VehicleJourneyAtStop, type: :model do
 
   describe "#validate" do
     it "displays the proper error message when day offset exceeds the max" do
-      bad_offset = Chouette::VehicleJourneyAtStop::DAY_OFFSET_MAX + 1
+      bad_offset = Chouette::VehicleJourneyAtStop.day_offset_max + 1
 
       at_stop = build_stubbed(
         :vehicle_journey_at_stop,

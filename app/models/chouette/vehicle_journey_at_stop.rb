@@ -4,8 +4,10 @@ module Chouette
     include Chouette::ForAlightingEnumerations
     include ChecksumSupport
 
-    DAY_OFFSET_MAX = 1
+    DAY_OFFSET_MAX = 2
 
+    @@day_offset_max = DAY_OFFSET_MAX
+    mattr_accessor :day_offset_max
 
     belongs_to :stop_point
     belongs_to :vehicle_journey
@@ -40,7 +42,7 @@ module Chouette
           I18n.t(
             'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
             short_id: vehicle_journey&.get_objectid&.short_id,
-            max: DAY_OFFSET_MAX + 1
+            max: Chouette::VehicleJourneyAtStop.day_offset_max + 1
           )
         )
       end
@@ -51,7 +53,7 @@ module Chouette
           I18n.t(
             'vehicle_journey_at_stops.errors.day_offset_must_not_exceed_max',
             short_id: vehicle_journey&.get_objectid&.short_id,
-            max: DAY_OFFSET_MAX + 1
+            max: Chouette::VehicleJourneyAtStop.day_offset_max + 1
           )
         )
       end
@@ -62,7 +64,7 @@ module Chouette
       # nil offsets. Handle these gracefully by forcing them to a 0 offset.
       offset ||= 0
 
-      offset < 0 || offset > DAY_OFFSET_MAX
+      offset < 0 || offset > Chouette::VehicleJourneyAtStop.day_offset_max
     end
 
     def checksum_attributes
@@ -82,12 +84,12 @@ module Chouette
       format_time arrival_time.utc
     end
 
-    def departure_local_time
-      local_time departure_time
+    def departure_local_time offset=nil
+      local_time departure_time, offset
     end
 
-    def arrival_local_time
-      local_time arrival_time
+    def arrival_local_time offset=nil
+      local_time arrival_time, offset
     end
 
     def departure_local
@@ -98,12 +100,15 @@ module Chouette
       format_time arrival_local_time
     end
 
+    def time_zone_offset
+      return 0 unless stop_point&.stop_area&.time_zone.present?
+      ActiveSupport::TimeZone[stop_point.stop_area.time_zone]&.utc_offset || 0
+    end
+
     private
-    def local_time time
-      return unless time
-      return time unless stop_point&.stop_area&.time_zone.present?
-      return time unless ActiveSupport::TimeZone[stop_point.stop_area.time_zone].present?
-      time + ActiveSupport::TimeZone[stop_point.stop_area.time_zone].utc_offset
+    def local_time time, offset=nil
+      return nil unless time
+      time + (offset || time_zone_offset)
     end
 
     def format_time time

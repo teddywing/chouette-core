@@ -4,31 +4,32 @@ module Chouette
       @at_stops = at_stops
     end
 
-    def calculate!
-      arrival_offset = 0
-      departure_offset = 0
+    def time_from_fake_date fake_date
+      fake_date - fake_date.to_date.to_time
+    end
 
+    def calculate!
+      offset = 0
+      tz_offset = @at_stops.first&.time_zone_offset
       @at_stops.inject(nil) do |prior_stop, stop|
         next stop if prior_stop.nil?
 
         # we only compare time of the day, not actual times
-        stop_arrival_time = stop.arrival_time - stop.arrival_time.to_date.to_time
-        stop_departure_time = stop.departure_time - stop.departure_time.to_date.to_time
-        prior_stop_arrival_time = prior_stop.arrival_time - prior_stop.arrival_time.to_date.to_time
-        prior_stop_departure_time = prior_stop.departure_time - prior_stop.departure_time.to_date.to_time
+        stop_arrival_time = time_from_fake_date stop.arrival_local_time(tz_offset)
+        stop_departure_time = time_from_fake_date stop.departure_local_time(tz_offset)
+        prior_stop_departure_time = time_from_fake_date prior_stop.departure_local_time(tz_offset)
 
-        if stop_arrival_time < prior_stop_departure_time ||
-            stop_arrival_time < prior_stop_arrival_time
-          arrival_offset += 1
+        if stop_arrival_time < prior_stop_departure_time
+          offset += 1
         end
 
-        if stop_departure_time < stop_arrival_time ||
-            stop_departure_time < prior_stop_departure_time
-          departure_offset += 1
+        stop.arrival_day_offset = offset
+
+        if stop_departure_time < stop_arrival_time
+          offset += 1
         end
 
-        stop.arrival_day_offset = arrival_offset
-        stop.departure_day_offset = departure_offset
+        stop.departure_day_offset = offset
 
         stop
       end
