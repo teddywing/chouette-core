@@ -5,6 +5,10 @@ en:
     errors:
       empty: Aucun stop_area_id
       parent_area_type: can not be of type %{area_type}
+      registration_number:
+        already_taken: Already taken
+        cannot_be_empty: This field is mandatory
+        invalid: Incorrect value
     default_geometry_success: "%{count} modified stop areas"
     stop_area:
       no_position: "No Position"
@@ -148,6 +152,7 @@ en:
       stop_area:
         name: ""
         registration_number: "only alphanumerical or underscore characters"
+        registration_number_format: "authorized format : %{registration_number_format}"
         objectid: "[prefix]:StopArea:[unique_key] : prefix contains only alphanumerical or underscore characters, unique_key accepts also minus character"
         nearest_topic_name: ""
         city_name: ""

@@ -12,7 +12,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20180308095116) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -806,6 +805,7 @@ ActiveRecord::Schema.define(version: 20180308095116) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "objectid_format"
+    t.string   "registration_number_format"
   end
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
