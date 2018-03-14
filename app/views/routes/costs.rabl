@@ -1,0 +1,2 @@
+object @route
+attributes :costs
