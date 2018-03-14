@@ -13,6 +13,7 @@ module TableBuilderHelper
       @sortable = sortable
       @link_to = link_to
       @condition = opts[:if]
+      @extra_class = opts[:class]
     end
 
     def value(obj)
@@ -51,6 +52,14 @@ module TableBuilderHelper
         condition_val = condition_val.call(obj) if condition_val.is_a?(Proc)
       end
       !!condition_val
+    end
+
+    def td_class(obj)
+      out = []
+      out << @attribute if @attribute.is_a?(String) || @attribute.is_a?(Symbol)
+      out << @extra_class
+      out = out.compact.join ' '
+      out.present? ? out : nil
     end
   end
 

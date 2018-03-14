@@ -68,11 +68,11 @@ describe TableBuilderHelper, type: :helper do
         </tr>
     </thead>
     <tbody>
-        <tr class="referential-#{referential.id}">
+        <tr class="referential referential-#{referential.id}">
             <td>
                 <div class="checkbox"><input type="checkbox" name="#{referential.id}" id="#{referential.id}" value="#{referential.id}" /><label for="#{referential.id}"></label></div>
             </td>
-            <td title="Voir"><a href="/referentials/#{referential.id}">#{referential.name}</a></td>
+            <td title="Voir" class="name"><a href="/referentials/#{referential.id}">#{referential.name}</a></td>
             <td>
                 <div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>En préparation</span></div>
             </td>
@@ -229,12 +229,12 @@ describe TableBuilderHelper, type: :helper do
         </tr>
     </thead>
     <tbody>
-        <tr class="company-#{company.id}">
+        <tr class="company company-#{company.id}">
             <td>#{company.get_objectid.local_id}</td>
-            <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td title="Voir" class="name"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
+            <td class="phone"></td>
+            <td class="email"></td>
+            <td class="url"></td>
             <td class="actions">
                 <div class="btn-group">
                     <div class="btn dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></div>
@@ -344,12 +344,12 @@ describe TableBuilderHelper, type: :helper do
         </tr>
     </thead>
     <tbody>
-        <tr class="company-#{company.id}">
+        <tr class="company company-#{company.id}">
             <td>#{company.get_objectid.local_id}</td>
-            <td title="Voir"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td title="Voir" class="name"><a href="/referentials/#{referential.id}/companies/#{company.id}">#{company.name}</a></td>
+            <td class="phone"></td>
+            <td class="email"></td>
+            <td class="url"></td>
             <td class="actions">
                 <div class="btn-group">
                     <div class="btn dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></div>
