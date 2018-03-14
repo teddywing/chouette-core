@@ -83,20 +83,23 @@ class LinesController < ChouetteController
   end
 
   def collection
-    %w(network_id company_id group_of_lines_id comment_id transport_mode).each do |filter|
-      if params[:q] && params[:q]["#{filter}_eq"] == '-1'
-        params[:q]["#{filter}_eq"] = ''
-        params[:q]["#{filter}_blank"] = '1'
+    @lines ||= begin
+      %w(network_id company_id group_of_lines_id comment_id transport_mode).each do |filter|
+        if params[:q] && params[:q]["#{filter}_eq"] == '-1'
+          params[:q]["#{filter}_eq"] = ''
+          params[:q]["#{filter}_blank"] = '1'
+        end
       end
-    end
 
-    scope = ransack_status line_referential.lines
-    @q = scope.search(params[:q])
+      scope = ransack_status line_referential.lines
+      @q = scope.search(params[:q])
 
-    if sort_column && sort_direction
-      @lines ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page]).includes([:network, :company])
-    else
-      @lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+      if sort_column && sort_direction
+        lines ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page]).includes([:network, :company])
+      else
+        lines ||= @q.result(:distinct => true).order(:number).paginate(:page => params[:page]).includes([:network, :company])
+      end
+      lines
     end
   end
 
@@ -157,10 +160,7 @@ class LinesController < ChouetteController
       deactivated: params[:q][:status]['deactivated'] == 'true',
     }
 
-    scope = Chouette::Line.where(deactivated: @status[@status.key(true)])
-
-    params[:q].delete :status
-    scope
+    scope.where(deactivated: @status[:deactivated])
 end
 
 end
