@@ -17,5 +17,6 @@ en:
         other: "netex conformities"
     attributes:
       import:
-        name: "Filename"
-        status: "Status"
+        resource:
+          name: "Filename"
+          status: "Status"

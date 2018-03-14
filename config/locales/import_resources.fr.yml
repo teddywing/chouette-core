@@ -16,6 +16,7 @@ fr:
         one:   "rapport de conformité Netex"
         other: "rapports de conformité Netex"
     attributes:
-      import_resource:
-        name: "Fichier"
-        status: "Etat"
+      import:
+        resource:
+          name: "Fichier"
+          status: "Etat"
