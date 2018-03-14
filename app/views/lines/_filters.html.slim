@@ -33,7 +33,7 @@
             wrapper_html: { class: 'checkbox-wrapper' },
             checked_value: true,
             unchecked_value: false,
-            input_html: { checked: @status.try(:[], :confirmed) }
+            input_html: { checked: @status.try(:[], :activated) }
           = p.input :deactivated,
             label: ("<span>#{t('activerecord.attributes.line.deactivated')}<span class='fa fa-exclamation-circle text-danger'></span></span>").html_safe,
             as: :boolean,
