@@ -70,6 +70,10 @@ class RoutesController < ChouetteController
     redirect_to referential_line_path(@referential, route.line)
   end
 
+  def costs
+    @route = resource
+  end
+
   protected
 
   alias_method :route, :resource
