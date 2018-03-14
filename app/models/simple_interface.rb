@@ -34,10 +34,11 @@ class SimpleInterface < ActiveRecord::Base
   def init_env opts
     @verbose = opts.delete :verbose
 
-    @errors = []
+    @_errors = []
     @messages = []
     @padding = 1
     @current_line = -1
+    @number_of_lines ||= 1
     @padding = [1, Math.log([@number_of_lines, 1].max, 10).ceil()].max
     @output_dir = opts[:output_dir] || Rails.root.join('tmp', self.class.name.tableize)
     @start_time = Time.now
@@ -61,6 +62,7 @@ class SimpleInterface < ActiveRecord::Base
       custom_print "\nFAILED: \n errors: #{msg}\n exception: #{e.message}\n#{e.backtrace.join("\n")}", color: :red unless self.configuration.ignore_failures
       push_in_journal({message: msg, error: e.message, event: :error, kind: :error})
       @new_status = colorize("x", :red)
+      self.status = :success_with_errors
       if self.configuration.ignore_failures
         raise SimpleInterface::FailedRow if opts[:abort_row]
       else
@@ -94,7 +96,6 @@ class SimpleInterface < ActiveRecord::Base
   end
 
   def write_output_to_csv
-    filepath =
     cols = %i(line kind event message error)
     if self.journal.size > 0 && self.journal.first[:row].present?
       log "Writing output log"
@@ -106,7 +107,7 @@ class SimpleInterface < ActiveRecord::Base
           csv << cols.map{|c| j[c]} + j[:row].map(&:last)
         end
       end
-      log "Output written in #{filepath}", replace: true
+      log "Output written in #{output_filepath}", replace: true
     end
   end
 
@@ -125,10 +126,10 @@ class SimpleInterface < ActiveRecord::Base
   def push_in_journal data
     line = (@current_line || 0) + 1
     line += 1 if configuration.headers
-    @errors ||= []
+    @_errors ||= []
     self.journal.push data.update(line: line, row: @current_row)
     if data[:kind] == :error || data[:kind] == :warning
-      @errors.push data
+      @_errors.push data
     end
   end
 
@@ -144,6 +145,7 @@ class SimpleInterface < ActiveRecord::Base
   def self.status_color status
     color = :green
     color = :orange if status.to_s == "success_with_warnings"
+    color = :red if status.to_s == "success_with_errors"
     color = :red if status.to_s == "error"
     color
   end
@@ -154,7 +156,7 @@ class SimpleInterface < ActiveRecord::Base
 
   def print_state force=false
     return unless @verbose
-    return if !@last_repaint.nil? && (Time.now - @last_repaint < 0.5) && !force
+    return if !@last_repaint.nil? && (Time.now - @last_repaint < 0.1) && !force
 
     @status_width ||= begin
       @term_width = %x(tput cols).to_i
@@ -201,11 +203,11 @@ class SimpleInterface < ActiveRecord::Base
       msg += "\n"*[lines_count-@messages.count, 0].max
     end
 
-    if @errors.any?
+    if @_errors.any?
       msg += "\n\n"
-      msg += colorize "=== ERRORS (#{@errors.count}) ===\n", :red
-      msg += "[...]\n" if @errors.count > lines_count
-      msg += @errors.last(lines_count).map do |j|
+      msg += colorize "=== ERRORS (#{@_errors.count}) ===\n", :red
+      msg += "[...]\n" if @_errors.count > lines_count
+      msg += @_errors.last(lines_count).map do |j|
         kind = j[:kind]
         kind = colorize(kind, kind == :error ? :red : :orange)
         kind = "[#{kind}]"

@@ -37,6 +37,7 @@ class SimpleImporter < SimpleInterface
   end
 
   def encode_string s
+    return if s.nil?
     s.encode("utf-8").force_encoding("utf-8")
   end
 
@@ -80,6 +81,7 @@ class SimpleImporter < SimpleInterface
             if self.configuration.ignore_failures
               unless @current_record.save
                 @new_status = colorize("x", :red)
+                self.status = :success_with_errors
                 push_in_journal({message: "errors: #{@current_record.errors.messages}", error: "invalid record", event: :error, kind: :error})
               end
             else
