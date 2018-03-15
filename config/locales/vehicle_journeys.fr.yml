@@ -122,7 +122,7 @@ fr:
         object_version: "Version"
         objectid: "Identifiant Neptune"
         on_demand_fs: "Service à la demande"
-        published_journey_identifier: "Identifiant public"
+        published_journey_identifier: "Numéro de train"
         published_journey_name: "Nom public"
         purchase_window: "Disponibilité commerciale"
         regular_fs: "Service régulier"

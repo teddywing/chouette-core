@@ -15,6 +15,6 @@ fr:
         other: "notes"
     attributes:
       footnote:
-        code: "numéro"
+        code: "titre"
         checksum: Signature métier
-        label: "ligne de texte"
+        label: "texte"

@@ -42,7 +42,7 @@ fr:
         published_name: "Nom public"
         section_status: "Status section"
         comment: "Commentaire"
-        registration_number: "Numéro d'enregistrement"
+        registration_number: "Code mission"
         stop_point_ids: "Sélection des arrêts desservis"
         objectid: "Identifiant Neptune"
         object_version: "Version"

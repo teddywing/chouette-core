@@ -2,9 +2,9 @@ fr:
   activerecord:
     models:
       routing_constraint_zone:
-        zero: zone de contrainte
-        one: zone de contrainte
-        other: zone de contraintes
+        zero: ITL
+        one: ITL
+        other: ITLs
     attributes:
       routing_constraint_zone:
         checksum: Signature métier

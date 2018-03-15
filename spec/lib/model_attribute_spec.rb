@@ -22,12 +22,10 @@ RSpec.describe ModelAttribute do
     it "returns the list of classes of ModelAttributes in .all" do
       ModelAttribute.define(:route, :name, :string)
       ModelAttribute.define(:journey_pattern, :name, :string)
-      ModelAttribute.define(:time_table, :start_date, :date)
 
       expect(ModelAttribute.classes).to match_array([
         'Route',
         'JourneyPattern',
-        'TimeTable'
       ])
     end
   end
@@ -68,13 +66,13 @@ RSpec.describe ModelAttribute do
     it "returns all ModelAttributes for a given class" do
       ModelAttribute.define(:route, :name, :string)
       ModelAttribute.define(:route, :published_name, :string)
-      ModelAttribute.define(:route, :direction, :string)
+      ModelAttribute.define(:route, :wayback, :string)
       ModelAttribute.define(:journey_pattern, :name, :string)
 
       expect(ModelAttribute.methods_by_class(:route)).to match_array([
         ModelAttribute.new(:route, :name, :string),
         ModelAttribute.new(:route, :published_name, :string),
-        ModelAttribute.new(:route, :direction, :string)
+        ModelAttribute.new(:route, :wayback, :string)
       ])
     end
   end
