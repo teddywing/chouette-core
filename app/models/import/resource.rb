@@ -4,5 +4,5 @@ class Import::Resource < ActiveRecord::Base
   include IevInterfaces::Resource
 
   belongs_to :import, class_name: Import::Base
-  has_many :messages, class_name: "ImportMessage", foreign_key: :resource_id
+  has_many :messages, class_name: "Import::Message", foreign_key: :resource_id
 end
