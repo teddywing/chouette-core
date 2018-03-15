@@ -1,2 +1,4 @@
 object @route
-attributes :costs
+node :costs do
+  RouteWayCostJSONSerializer.dump(@route.costs)
+end
