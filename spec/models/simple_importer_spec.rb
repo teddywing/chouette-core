@@ -1,3 +1,4 @@
+# coding: utf-8
 RSpec.describe SimpleImporter do
   describe "#define" do
     context "with an incomplete configuration" do
@@ -45,6 +46,7 @@ RSpec.describe SimpleImporter do
         config.add_column :street_name
         config.add_column :stop_area_referential, value: stop_area_referential
         config.add_value  :kind, :commercial
+        config.add_value  :status, :confirmed
       end
     end
 
@@ -141,8 +143,8 @@ RSpec.describe SimpleImporter do
     end
 
     context "with a custom behaviour" do
-      let!(:present){ create :stop_area, name: "Nom du Stop", stop_area_referential: stop_area_referential }
-      let!(:missing){ create :stop_area, name: "Another", stop_area_referential: stop_area_referential }
+      let!(:present){ create :stop_area, name: "Nom du Stop", stop_area_referential: stop_area_referential, status: :confirmed }
+      let!(:missing){ create :stop_area, name: "Another", stop_area_referential: stop_area_referential, status: :confirmed }
       before(:each){
         importer.configure do |config|
           config.before do |importer|
