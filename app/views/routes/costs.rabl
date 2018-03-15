@@ -1,4 +1,4 @@
 object @route
 node :costs do
-  RouteWayCostJSONSerializer.dump(@route.costs)
+  RouteWayCostUnitConverter.convert(@route.costs)
 end
