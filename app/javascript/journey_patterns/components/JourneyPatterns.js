@@ -110,6 +110,8 @@ export default class JourneyPatterns extends Component {
                   <div className='strong mb-xs'>ID Mission</div>
                   <div>Code mission</div>
                   <div>Nb arrêts</div>
+                  <div>{I18n.attribute_name('journey_pattern', 'full_journey_time')}</div>
+                  <div>{I18n.attribute_name('journey_pattern', 'commercial_journey_time')}</div>
                 </div>
                 {this.props.stopPointsList.map((sp, i) =>{
                   return (

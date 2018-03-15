@@ -74,17 +74,22 @@ export default class JourneyPattern extends Component{
     return !this.props.status.policy[`journey_patterns.${action}`]
   }
 
-  totals(){
+  totals(onlyCommercial=false){
     let totalTime = 0
     let totalDistance = 0
     let from = null
     this.props.value.stop_points.map((stopPoint, i) =>{
-      if(from && stopPoint.checked){
+      let usePoint = stopPoint.checked
+      console.log(stopPoint)
+      if(onlyCommercial && (i == 0 || i == this.props.value.stop_points.length - 1) && stopPoint.kind == "non_commercial"){
+        usePoint = false
+      }
+      if(from && usePoint){
         let [costsKey, costs, time, distance] = this.getTimeAndDistanceBetweenStops(from, stopPoint.id)
         totalTime += time
         totalDistance += distance
       }
-      if(stopPoint.checked){
+      if(usePoint){
         from = stopPoint.id
       }
     })
@@ -109,13 +114,15 @@ export default class JourneyPattern extends Component{
     }
     else{
       let hours = parseInt(time/60)
-      return hours + " h " + (time - 60*hours)
+      let minutes = (time - 60*hours)
+      return hours + " h " + (minutes > 0 ? minutes : '')
     }
   }
 
   render() {
     this.previousSpId = undefined
-    let [totalTime, totalDistance] = this.totals()
+    let [totalTime, totalDistance] = this.totals(false)
+    let [commercialTotalTime, commercialTotalDistance] = this.totals(true)
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.object_id ? '' : ' to_record') + (this.props.value.errors ? ' has-error': '') + (this.hasFeature('costs_in_journey_patterns') ? ' with-costs' : '')}>
         <div className='th'>
@@ -126,6 +133,12 @@ export default class JourneyPattern extends Component{
             <div className="small row totals">
               <span className="col-md-6"><i className="fa fa-arrows-h"></i>{totalDistance}</span>
               <span className="col-md-6"><i className="fa fa-clock-o"></i>{totalTime}</span>
+            </div>
+          }
+          {this.hasFeature('costs_in_journey_patterns') &&
+            <div className="small row totals commercial">
+              <span className="col-md-6"><i className="fa fa-arrows-h"></i>{commercialTotalDistance}</span>
+              <span className="col-md-6"><i className="fa fa-clock-o"></i>{commercialTotalTime}</span>
             </div>
           }
           <div className={this.props.value.deletable ? 'btn-group disabled' : 'btn-group'}>

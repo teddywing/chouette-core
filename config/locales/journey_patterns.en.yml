@@ -49,6 +49,9 @@ en:
         created_at: Created at
         updated_at: Updated at
         creator_id: "Created by"
+        full_journey_time: Full journey
+        commercial_journey_time: Commercial journey
+
   formtastic:
     titles:
       journey_pattern:
