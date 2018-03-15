@@ -70,12 +70,10 @@ class ModelAttribute
   define :journey_pattern, :name, :string
   define :journey_pattern, :published_name, :string
   define :journey_pattern, :registration_number, :string
-  define :journey_pattern, :section_status, :integer
 
   # Chouette::VehicleJourney
   define :vehicle_journey, :published_journey_name, :string
   define :vehicle_journey, :published_journey_identifier, :string
-  define :vehicle_journey, :number, :integer
   define :vehicle_journey, :mobility_restricted_suitability, :boolean
   define :vehicle_journey, :flexible_service, :boolean
 
