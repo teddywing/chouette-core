@@ -40,6 +40,17 @@ export default function journeyPatterns (state = [], action)  {
       return [...action.json]
     case 'RECEIVE_ERRORS':
       return [...action.json]
+    case 'RECEIVE_ROUTE_COSTS':
+      return state.map((j, i) =>{
+        if(i == action.index) {
+          const new_costs = Object.assign({}, j.costs)
+          new_costs[action.key] = action.costs[action.key] ||
+            {distance: 0, time: 0}
+          return _.assign({}, j, {costs: new_costs})
+        } else {
+          return j
+        }
+      })
     case 'GO_TO_PREVIOUS_PAGE':
       $('#ConfirmModal').modal('hide')
       if(action.pagination.page > 1){

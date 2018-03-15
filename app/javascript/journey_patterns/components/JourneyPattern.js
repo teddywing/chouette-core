@@ -98,10 +98,22 @@ export default class JourneyPattern extends Component{
 
   getTimeAndDistanceBetweenStops(from, to){
     let costsKey = from + "-" + to
-    let costs = this.props.value.costs[costsKey] || {distance: 0, time: 0}
+    let costs = this.getCosts(costsKey)
     let time = costs['time'] || 0
     let distance = costs['distance'] || 0
     return [costsKey, costs, time, distance]
+  }
+
+  getCosts(costsKey) {
+    let cost = this.props.value.costs[costsKey]
+
+    if (cost) {
+      return cost
+    }
+
+    this.props.fetchRouteCosts(costsKey)
+
+    return { distance: 0, time: 0 }
   }
 
   formatDistance(distance){
@@ -119,9 +131,12 @@ export default class JourneyPattern extends Component{
     }
   }
 
+  componentWillUpdate() {
+    [this.totalTime, this.totalDistance] = this.totals(false)
+  }
+
   render() {
     this.previousSpId = undefined
-    let [totalTime, totalDistance] = this.totals(false)
     let [commercialTotalTime, commercialTotalDistance] = this.totals(true)
     return (
       <div className={'t2e-item' + (this.props.value.deletable ? ' disabled' : '') + (this.props.value.object_id ? '' : ' to_record') + (this.props.value.errors ? ' has-error': '') + (this.hasFeature('costs_in_journey_patterns') ? ' with-costs' : '')}>
@@ -131,8 +146,8 @@ export default class JourneyPattern extends Component{
           <div>{actions.getChecked(this.props.value.stop_points).length} arrêt(s)</div>
           {this.hasFeature('costs_in_journey_patterns') &&
             <div className="small row totals">
-              <span className="col-md-6"><i className="fa fa-arrows-h"></i>{totalDistance}</span>
-              <span className="col-md-6"><i className="fa fa-clock-o"></i>{totalTime}</span>
+              <span className="col-md-6"><i className="fa fa-arrows-h"></i>{this.totalDistance}</span>
+              <span className="col-md-6"><i className="fa fa-clock-o"></i>{this.totalTime}</span>
             </div>
           }
           {this.hasFeature('costs_in_journey_patterns') &&
@@ -228,5 +243,6 @@ JourneyPattern.propTypes = {
   onCheckboxChange: PropTypes.func.isRequired,
   onOpenEditModal: PropTypes.func.isRequired,
   onDeleteJourneyPattern: PropTypes.func.isRequired,
-  journeyPatterns: PropTypes.object.isRequired
+  journeyPatterns: PropTypes.object.isRequired,
+  fetchRouteCosts: PropTypes.func.isRequired
 }

@@ -19,5 +19,6 @@
   | window.journeyPatternsPerPage = #{@ppage};
   | window.perms = #{raw @perms};
   | window.features = #{raw @features};
+  | window.routeCostsUrl = "#{costs_referential_line_route_url(@referential, @route.line, @route, format: :json).html_safe}";
 
 = javascript_pack_tag 'journey_patterns/index.js'
