@@ -53,6 +53,7 @@ class StopAreasController < ChouetteController
 
     index! do |format|
       format.html {
+        # binding.pry
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
@@ -215,28 +216,16 @@ class StopAreasController < ChouetteController
 
     @status = {
       in_creation: params[:q][:status]['in_creation'] == 'true',
-      activated: params[:q][:status]['activated'] == 'true',
+      confirmed: params[:q][:status]['confirmed'] == 'true',
       deactivated: params[:q][:status]['deactivated'] == 'true',
     }
 
     scope = Chouette::StopArea.where(
-      "confirmed_at #{@status[:activated] ? "IS NOT NULL" : "IS NULL"} 
+      "confirmed_at #{@status[:confirmed] ? "IS NOT NULL" : "IS NULL"} 
       AND deleted_at #{@status[:deactivated] ? "IS NOT NULL" : "IS NULL"}"
       )
 
     params[:q].delete :status
     scope
   end
-
-  # Ignore archived_at_not_null/archived_at_null managed by ransack_status scope
-  # We clone params[:q] so we can delete fake ransack filter arguments before calling search method,
-  # which will allow us to preserve params[:q] for sorting
-  def ransack_params
-    copy_params = params[:q].clone
-    copy_params.delete('associated_lines_id_eq')
-    copy_params.delete('archived_at_not_null')
-    copy_params.delete('archived_at_null')
-    copy_params
-  end
-
 end

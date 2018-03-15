@@ -36,26 +36,38 @@ describe "StopAreas", :type => :feature do
           stop_areas.first.activate!
           stop_areas.last.deactivate!
         end
-        
-        xit 'should filter stop areas in creation' do
-          find("#q_status_in_creation").set(true)
-          click_button 'search-btn'
-          expect(page).not_to have_content(stop_areas.first.name)
-          expect(page).not_to have_content(stop_areas.last.name)
-        end
 
-        xit 'should filter confirmed stop areas' do
-          find("#q_status_confirmed").set(true)
-          click_button 'search-btn'
-          expect(page).to have_content(stop_areas.first.name)
-          expect(page).not_to have_content(stop_areas.last.name)
-        end
+        describe 'updated stop areas in before block' do
 
-        xit 'should filter deactivated stop areas' do
-          find("#q_status_deactivated").set(true)
-          click_button 'search-btn'
-          expect(page).not_to have_content(stop_areas.first.name)
-          expect(page).to have_content(stop_areas.last.name)
+          it 'supports displaying only stop areas in creation' do
+            find("#q_status_in_creation").set(true)
+            click_button 'search-btn'
+            expect(page).not_to have_content(stop_areas.first.name)
+            expect(page).not_to have_content(stop_areas.last.name)
+          end
+
+          it 'supports displaying only confirmed stop areas' do
+            find("#q_status_confirmed").set(true)
+            click_button 'search-btn'
+            expect(page).to have_content(stop_areas.first.name)
+            expect(page).not_to have_content(stop_areas.last.name)
+          end
+
+          it 'supports displaying only deactivated stop areas' do
+            find("#q_status_deactivated").set(true)
+            click_button 'search-btn'
+            expect(page).not_to have_content(stop_areas.first.name)
+            expect(page).to have_content(stop_areas.last.name)
+          end
+
+          it 'should display all stop areas if all filters are checked' do
+            find("#q_status_in_creation").set(true)
+            find("#q_status_confirmed").set(true)
+            find("#q_status_deactivated").set(true)
+            click_button 'search-btn'
+            expect(page).to have_content(stop_areas.first.name)
+            expect(page).to have_content(stop_areas.last.name)
+          end
         end
       end
     end
