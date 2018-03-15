@@ -116,6 +116,7 @@ fr:
         confirmed: "Actif"
         confirmed_at: "Activé le"
         deleted: "Désactivé"
+        deactivated: "Désactivé"
         deleted_at: "Désactivé le"
         comment: "Commentaire"
         stop_area_type: "Type d'arrêt"
