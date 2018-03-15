@@ -800,6 +800,7 @@ ActiveRecord::Schema.define(version: 20180308095116) do
     t.integer  "waiting_time"
     t.string   "kind"
     t.jsonb    "localized_names"
+
     t.datetime "confirmed_at"
   end
 
