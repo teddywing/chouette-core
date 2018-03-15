@@ -217,6 +217,11 @@ export default class VehicleJourneys extends Component {
                   <div>{I18n.attribute_name("vehicle_journey", "name")}</div>
                   <div>{I18n.attribute_name("vehicle_journey", "journey_pattern_id")}</div>
                   <div>{I18n.model_name("company")}</div>
+                  {
+                    this.props.extraHeaders.map((header, i) =>
+                      <div key={i}>{this.extraHeaderLabel(header)}</div>
+                    )
+                  }
                   { this.hasFeature('purchase_windows') &&
                     <div>
                       { detailed_purchase_windows &&
@@ -239,11 +244,6 @@ export default class VehicleJourneys extends Component {
                         </div>
                       )}
                     </div>
-                  }
-                  {
-                    this.props.extraHeaders.map((header, i) =>
-                      <div key={i}>{this.extraHeaderLabel(header)}</div>
-                    )
                   }
                   <div>
                     { detailed_calendars &&
