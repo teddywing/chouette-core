@@ -1,13 +1,11 @@
-class RouteWayCostJSONSerializer
-  def self.dump(way_costs)
+class RouteWayCostUnitConverter
+  def self.convert(way_costs)
     return if way_costs.nil?
 
     way_costs.each do |_, costs|
       costs['distance'] = self.meters_to_kilometers(costs['distance'])
       costs['time'] = self.seconds_to_minutes(costs['time'])
     end
-
-    JSON.dump(way_costs)
   end
 
   private
