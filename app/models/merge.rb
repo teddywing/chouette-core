@@ -159,7 +159,6 @@ class Merge < ActiveRecord::Base
               route_id: nil,
               objectid: objectid,
             )
-
             new_route.stop_points.build attributes
           end
 

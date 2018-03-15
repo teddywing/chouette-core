@@ -20,6 +20,7 @@ RSpec.describe Merge do
                                       metadatas: [referential_metadata]
 
     factor = 1
+    stop_points_positions = {}
 
     referential.switch do
       line_referential.lines.each do |line|
@@ -30,12 +31,17 @@ RSpec.describe Merge do
       end
 
       referential.routes.each do |route|
+        route.stop_points.each do |sp|
+          sp.set_list_position 0
+        end
+        route.reload.update_checksum!
         factor.times do
           FactoryGirl.create :journey_pattern, route: route, stop_points: route.stop_points.sample(3)
         end
       end
 
       referential.journey_patterns.each do |journey_pattern|
+        stop_points_positions[journey_pattern.name] = Hash[*journey_pattern.stop_points.map{|sp| [sp.stop_area_id, sp.position]}.flatten]
         factor.times do
           FactoryGirl.create :vehicle_journey, journey_pattern: journey_pattern, company: company
         end
@@ -53,6 +59,18 @@ RSpec.describe Merge do
 
     merge = Merge.create!(workbench: referential.workbench, referentials: [referential, referential])
     merge.merge!
+
+    output = merge.output.current
+    output.switch
+
+    # Let's check stop_point positions are respected
+    # This should be enforced by the checksum preservation though
+    output.journey_patterns.each do |journey_pattern|
+      journey_pattern.stop_points.each do |sp|
+        expect(sp.position).to eq stop_points_positions[journey_pattern.name][sp.stop_area_id]
+      end
+    end
+
   end
 
 end
