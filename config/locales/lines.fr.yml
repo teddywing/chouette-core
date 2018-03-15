@@ -81,7 +81,6 @@ fr:
         companies:
           name: "Transporteur principal"
         registration_number: "Nom court"
-        deactivated: "Activé"
         name: "Nom de la ligne"
         published_name: "Nom public"
         number: "Numéro"
@@ -116,6 +115,9 @@ fr:
         creator_id: "Créé par"
         footnotes: "Notes de bas de page"
         stable_id: "Identifiant externe pérenne"
+        state: État
+        activated: Activée
+        deactivated: Désactivée
   formtastic:
     titles:
       line:

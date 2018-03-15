@@ -46,6 +46,50 @@ describe "Lines", type: :feature do
           expect(page).to have_content(lines.first.name)
           expect(page).not_to have_content(lines.last.name)
         end
+
+        context "when filtered by status" do
+          it 'supports displaying only activated lines' do
+            lines.first.update_attribute(:deactivated, true)
+            lines.last.update_attribute(:deactivated, false)
+
+            find('#q_status_activated').set(true)
+            click_button 'search-btn'
+            expect(page).to_not have_content(lines.first.name)
+            expect(page).to have_content(lines.last.name)
+          end
+
+          it 'supports displaying only deactivated lines' do
+            lines.first.update_attribute(:deactivated, true)
+            lines.last.update_attribute(:deactivated, false)
+
+            find('#q_status_deactivated').set(true)
+            click_button 'search-btn'
+            expect(page).to have_content(lines.first.name)
+            expect(page).to_not have_content(lines.last.name)
+          end
+
+          it 'supports displaying all lines' do
+            lines.first.update_attribute(:deactivated, true)
+            lines.last.update_attribute(:deactivated, false)
+
+            find('#q_status_activated').set(true)
+            find('#q_status_deactivated').set(true)
+            click_button 'search-btn'
+            expect(page).to have_content(lines.first.name)
+            expect(page).to have_content(lines.last.name)
+          end
+
+          it 'supports displaying all lines (with all filters disabled)' do
+            lines.first.update_attribute(:deactivated, true)
+            lines.last.update_attribute(:deactivated, false)
+
+            find('#q_status_activated').set(false)
+            find('#q_status_deactivated').set(false)
+            click_button 'search-btn'
+            expect(page).to have_content(lines.first.name)
+            expect(page).to have_content(lines.last.name)
+          end
+        end
       end
     end
 
