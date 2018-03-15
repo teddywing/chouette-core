@@ -61,4 +61,22 @@ RSpec.describe Chouette::Route, :type => :model do
       end
     end
   end
+
+  context "callbacks" do
+    it "calls #calculate_costs! after_save when TomTom is enabled" do
+      allow(TomTom).to receive(:enabled?).and_return(true)
+      route = create(:route)
+
+      expect(route).to receive(:calculate_costs!)
+      route.save
+    end
+
+    it "doesn't call #calculate_costs! after_save if TomTom is disabled" do
+      allow(TomTom).to receive(:enabled?).and_return(false)
+      route = create(:route)
+
+      expect(route).not_to receive(:calculate_costs!)
+      route.save
+    end
+  end
 end

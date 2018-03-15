@@ -1,4 +1,3 @@
-
 module Chouette
   class Route < Chouette::TridentActiveRecord
     has_paper_trail
@@ -76,19 +75,20 @@ module Chouette
 
     validates :wayback, inclusion: { in: self.wayback.values }
 
-  def duplicate
-    overrides = {
-      'opposite_route_id' => nil,
-      'name' => I18n.t('activerecord.copy', name: self.name)
-    }
-    keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
-    atts_for_create = attributes
-      .slice(*keys_for_create)
-      .merge(overrides)
-    new_route = self.class.create!(atts_for_create)
-    duplicate_stop_points(for_route: new_route)
-    new_route
-  end
+    after_save :calculate_costs!, if: ->() { TomTom.enabled? }
+
+    def duplicate
+      overrides = {
+        'opposite_route_id' => nil,
+        'name' => I18n.t('activerecord.copy', name: self.name)
+      }
+      atts_for_create = attributes
+        .slice!(*%w{id objectid created_at updated_at})
+        .merge(overrides)
+      new_route = self.class.create!(atts_for_create)
+      duplicate_stop_points(for_route: new_route)
+      new_route
+    end
 
     def duplicate_stop_points(for_route:)
       stop_points.each(&duplicate_stop_point(for_route: for_route))
@@ -187,6 +187,10 @@ module Chouette
       journey_pattern = journey_patterns.find_or_create_by registration_number: self.number, name: self.name
       journey_pattern.stop_points = self.stop_points
       journey_pattern
+    end
+
+    def calculate_costs!
+      RouteWayCostWorker.perform_async(referential.id, id)
     end
 
     protected
