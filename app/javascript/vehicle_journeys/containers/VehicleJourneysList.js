@@ -10,7 +10,9 @@ const mapStateToProps = (state) => {
     status: state.status,
     filters: state.filters,
     stopPointsList: state.stopPointsList,
-    returnStopPointsList: state.returnStopPointsList
+    returnStopPointsList: state.returnStopPointsList,
+    extraHeaders: window.extra_headers,
+    customFields: window.custom_fields,
   }
 }
 

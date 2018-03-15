@@ -163,6 +163,15 @@ export default class VehicleJourneys extends Component {
     )
   }
 
+	extraHeaderLabel(header) {
+    if(header["type"] == "custom_field"){
+      return this.props.customFields[header["name"]]["name"]
+    }
+    else{
+      return I18n.attribute_name("vehicle_journey", header)
+    }
+  }
+
   render() {
     this.previousBreakpoint = undefined
     this._allTimeTables = null
@@ -208,6 +217,11 @@ export default class VehicleJourneys extends Component {
                   <div>{I18n.attribute_name("vehicle_journey", "name")}</div>
                   <div>{I18n.attribute_name("vehicle_journey", "journey_pattern_id")}</div>
                   <div>{I18n.model_name("company")}</div>
+                  {
+                    this.props.extraHeaders.map((header, i) =>
+                      <div key={i}>{this.extraHeaderLabel(header)}</div>
+                    )
+                  }
                   { this.hasFeature('purchase_windows') &&
                     <div>
                       { detailed_purchase_windows &&
@@ -278,6 +292,7 @@ export default class VehicleJourneys extends Component {
                       disabled={this.isReturn()}
                       allTimeTables={this.allTimeTables()}
                       allPurchaseWindows={this.allPurchaseWindows()}
+                      extraHeaders={this.props.extraHeaders}
                       />
                   )}
                 </div>
@@ -293,6 +308,8 @@ export default class VehicleJourneys extends Component {
 VehicleJourneys.propTypes = {
   status: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
+  extraHeaders: PropTypes.array.isRequired,
+  customFields: PropTypes.object.isRequired,
   stopPointsList: PropTypes.array.isRequired,
   onLoadFirstPage: PropTypes.func.isRequired,
   onUpdateTime: PropTypes.func.isRequired,
