@@ -40,7 +40,7 @@
                 end \
               ), \
               TableBuilderHelper::Column.new( \
-                key: :deactivated, \
+                key: :state, \
                 attribute: Proc.new { |n| line_status(n.deactivated?) } \
               ), \
               TableBuilderHelper::Column.new( \

@@ -81,7 +81,6 @@ fr:
         companies:
           name: "Transporteur principal"
         registration_number: "Nom court"
-        deactivated: "Activé"
         name: "Nom de la ligne"
         published_name: "Nom public"
         number: "Numéro"
