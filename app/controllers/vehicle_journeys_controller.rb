@@ -155,6 +155,10 @@ class VehicleJourneysController < ChouetteController
   private
   def load_custom_fields
     @custom_fields = referential.workgroup&.custom_fields_definitions || {}
+
+    @extra_headers = Rails.application.config.vehicle_journeys_extra_headers.dup.delete_if do |header|
+      header[:type] == :custom_field and not @custom_fields.has_key?(header[:name].to_s)
+    end
   end
 
   def map_stop_points points
