@@ -205,6 +205,7 @@ class StopAreasController < ChouetteController
       :waiting_time,
       :zip_code,
       :kind,
+      :status,
       localized_names: Chouette::StopArea::AVAILABLE_LOCALIZATIONS
     )
   end
@@ -221,7 +222,7 @@ class StopAreasController < ChouetteController
     }
 
     scope = Chouette::StopArea.where(
-      "confirmed_at #{@status[:confirmed] ? "IS NOT NULL" : "IS NULL"} 
+      "confirmed_at #{@status[:confirmed] ? "IS NOT NULL" : "IS NULL"}
       AND deleted_at #{@status[:deactivated] ? "IS NOT NULL" : "IS NULL"}"
       )
 

@@ -410,6 +410,28 @@ module Chouette
       update_attribute :deleted_at, Time.now
     end
 
+    def status
+      return :deleted if deleted_at
+      return :confirmed if confirmed_at
+
+      :in_creation
+    end
+
+    def status=(status)
+      case status&.to_sym
+      when :deleted
+        deactivate
+      when :confirmed
+        activate
+      when :in_creation
+        self.confirmed_at = self.deleted_at = nil
+      end
+    end
+
+    def self.statuses
+      %i{in_creation confirmed deleted}
+    end
+
     def time_zone_offset
       return 0 unless time_zone.present?
       ActiveSupport::TimeZone[time_zone]&.utc_offset

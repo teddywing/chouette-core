@@ -84,4 +84,10 @@ module StopAreasHelper
     end
   end
 
+  def stop_area_status_options
+    Chouette::StopArea.statuses.map do |status|
+      [ t(status, scope: 'activerecord.attributes.stop_area'), status ]
+    end
+  end
+
 end
