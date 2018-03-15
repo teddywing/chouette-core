@@ -132,6 +132,70 @@ describe('journeyPatterns reducer', () => {
     ).toEqual([state[0], new_state])
   })
 
+  it('should handle RECEIVE_ROUTE_COSTS', () => {
+    const costs = {
+      "1-2": {
+        distance: 1,
+        time: 9,
+      },
+      "2-3": {
+        distance: 23,
+        time: 10
+      }
+    }
+    const new_costs = {
+      "1-2": {
+        distance: 0,
+        time: 10,
+      },
+      "2-3": {
+        distance: 23,
+        time: 10
+      }
+    }
+    const new_state = Object.assign({}, state[1], {costs: new_costs})
+    expect(
+      jpReducer(state, {
+        type: 'RECEIVE_ROUTE_COSTS',
+        costs,
+        key: '2-3',
+        index: 1
+      })
+    ).toEqual([state[0], new_state])
+  })
+
+  it('should handle RECEIVE_ROUTE_COSTS when cost key is missing', () => {
+    const costs = {
+      "1-2": {
+        distance: 1,
+        time: 9,
+      },
+      "2-3": {
+        distance: 23,
+        time: 10
+      }
+    }
+    const new_costs = {
+      "1-2": {
+        distance: 0,
+        time: 10,
+      },
+      "3-4": {
+        distance: 0,
+        time: 0
+      }
+    }
+    const new_state = Object.assign({}, state[1], {costs: new_costs})
+    expect(
+      jpReducer(state, {
+        type: 'RECEIVE_ROUTE_COSTS',
+        costs,
+        key: '3-4',
+        index: 1
+      })
+    ).toEqual([state[0], new_state])
+  })
+
   it('should handle DELETE_JOURNEYPATTERN', () => {
     expect(
       jpReducer(state, {

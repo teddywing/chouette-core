@@ -29,6 +29,9 @@ const mapDispatchToProps = (dispatch) => {
     onUpdateJourneyPatternCosts: (index, costs) =>{
       dispatch(actions.updateJourneyPatternCosts(index, costs))
     },
+    fetchRouteCosts: (key, index) => {
+      actions.fetchRouteCosts(dispatch, key, index)
+    },
   }
 }
 

@@ -20,6 +20,12 @@ const actions = {
     type: "RECEIVE_ERRORS",
     json
   }),
+  receiveRouteCosts: (costs, key, index) => ({
+    type: "RECEIVE_ROUTE_COSTS",
+    costs,
+    key,
+    index
+  }),
   unavailableServer : () => ({
     type: 'UNAVAILABLE_SERVER'
   }),
@@ -212,6 +218,30 @@ const actions = {
           dispatch(actions.receiveJourneyPatterns(journeyPatterns))
         }
       })
+  },
+  fetchRouteCosts: (dispatch, key, index) => {
+    if (actions.routeCostsCache) {
+      // Dispatch asynchronously to prevent warning when
+      // this executes during `render()`
+      requestAnimationFrame(() => {
+        dispatch(actions.receiveRouteCosts(
+          actions.routeCostsCache,
+          key,
+          index
+        ))
+      })
+    } else {
+      fetch(window.routeCostsUrl, {
+        credentials: 'same-origin',
+      }).then(response => {
+        return response.json()
+      }).then(json => {
+        let costs = json.costs ? json.costs : {}
+        actions.routeCostsCache = costs
+
+        dispatch(actions.receiveRouteCosts(costs, key, index))
+      })
+    }
   },
   getChecked : (jp) => {
     return jp.filter((obj) => {
