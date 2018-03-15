@@ -62,7 +62,7 @@ module Chouette
     scope :with_ordered_stop_area_ids, ->(first, second){
       if first.present? && second.present?
         joins(journey_pattern: :stop_points).
-          joins('INNER JOIN "journey_patterns" ON "journey_patterns"."id" = "vehicle_journeys"."journey_pattern_id" INNER JOIN "journey_patterns_stop_points" ON "journey_patterns_stop_points"."journey_pattern_id" = "journey_patterns"."id" INNER JOIN "stop_points" as "second_stop_points" ON "stop_points"."id" = "journey_patterns_stop_points"."stop_point_id"').
+          joins('INNER JOIN "journey_patterns" ON "journey_patterns"."id" = "vehicle_journeys"."journey_pattern_id" INNER JOIN "journey_patterns_stop_points" ON "journey_patterns_stop_points"."journey_pattern_id" = "journey_patterns"."id" INNER JOIN "stop_points" as "second_stop_points" ON "second_stop_points"."id" = "journey_patterns_stop_points"."stop_point_id"').
           where('stop_points.stop_area_id = ?', first).
           where('second_stop_points.stop_area_id = ? and stop_points.position < second_stop_points.position', second)
       else
