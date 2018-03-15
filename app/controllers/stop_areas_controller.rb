@@ -53,6 +53,7 @@ class StopAreasController < ChouetteController
 
     index! do |format|
       format.html {
+        # binding.pry
         if collection.out_of_bounds?
           redirect_to params.merge(:page => 1)
         end
@@ -133,7 +134,9 @@ class StopAreasController < ChouetteController
   end
 
   def collection
-    @q = parent.present? ? parent.stop_areas.search(params[:q]) : referential.stop_areas.search(params[:q])
+    scope = parent.present? ? parent.stop_areas : referential.stop_areas
+    scope = ransack_status(scope)
+    @q = scope.search(params[:q])
 
     if sort_column && sort_direction
       @stop_areas ||=
@@ -202,8 +205,28 @@ class StopAreasController < ChouetteController
       :waiting_time,
       :zip_code,
       :kind,
+      :status,
       localized_names: Chouette::StopArea::AVAILABLE_LOCALIZATIONS
     )
   end
 
+   # Fake ransack filter
+  def ransack_status scope
+    return scope unless params[:q].try(:[], :status)
+    return scope if params[:q][:status].values.uniq.length == 1
+
+    @status = {
+      in_creation: params[:q][:status]['in_creation'] == 'true',
+      confirmed: params[:q][:status]['confirmed'] == 'true',
+      deactivated: params[:q][:status]['deactivated'] == 'true',
+    }
+
+    scope = Chouette::StopArea.where(
+      "confirmed_at #{@status[:confirmed] ? "IS NOT NULL" : "IS NULL"}
+      AND deleted_at #{@status[:deactivated] ? "IS NOT NULL" : "IS NULL"}"
+      )
+
+    params[:q].delete :status
+    scope
+  end
 end

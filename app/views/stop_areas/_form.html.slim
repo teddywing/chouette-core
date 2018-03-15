@@ -27,6 +27,8 @@
           .slave data-master="[name='stop_area[kind]']" data-value=kind
             = f.input :area_type, as: :select, :input_html => {id: kind, :disabled => !@stop_area.new_record?}, :collection => Chouette::AreaType.options(kind), :include_blank => false, disabled: !@stop_area.new_record?
 
+        = f.input :status, as: :select, :collection => stop_area_status_options, :include_blank => false
+
         .location_info
           h3 = t("stop_areas.stop_area.localisation")
 

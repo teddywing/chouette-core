@@ -112,8 +112,12 @@ fr:
         kind: "Catégorie"
         registration_number: "Numéro d'enregistrement"
         published_name: "Nom public"
-        deleted: "Supprimé"
-        deleted_at: "Activé"
+        in_creation: "En création"
+        confirmed: "Actif"
+        confirmed_at: "Activé le"
+        deleted: "Désactivé"
+        deactivated: "Désactivé"
+        deleted_at: "Désactivé le"
         comment: "Commentaire"
         stop_area_type: "Type d'arrêt"
         area_type: "Type d'arrêt"
@@ -145,8 +149,6 @@ fr:
         coordinates: "Coordonnées (lat,lng) WGS84"
         zip_code: "Code postal"
         city_name: "Commune"
-        created_at: "Créé le"
-        updated_at: "Edité le"
         waiting_time: Temps de desserte (minutes)
         state: État
   formtastic:

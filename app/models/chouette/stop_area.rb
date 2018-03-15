@@ -383,27 +383,53 @@ module Chouette
     end
 
     def activated?
-      deleted_at.nil?
+      deleted_at.nil? && confirmed_at
     end
 
     def deactivated?
-      !activated?
+      deleted_at && confirmed_at.nil?
     end
 
     def activate
+      self.confirmed_at = Time.now
       self.deleted_at = nil
     end
 
     def deactivate
+      self.confirmed_at = nil
       self.deleted_at = Time.now
     end
 
     def activate!
+      update_attribute :confirmed_at, Time.now
       update_attribute :deleted_at, nil
     end
 
     def deactivate!
+      update_attribute :confirmed_at, nil
       update_attribute :deleted_at, Time.now
+    end
+
+    def status
+      return :deleted if deleted_at
+      return :confirmed if confirmed_at
+
+      :in_creation
+    end
+
+    def status=(status)
+      case status&.to_sym
+      when :deleted
+        deactivate
+      when :confirmed
+        activate
+      when :in_creation
+        self.confirmed_at = self.deleted_at = nil
+      end
+    end
+
+    def self.statuses
+      %i{in_creation confirmed deleted}
     end
 
     def time_zone_offset
