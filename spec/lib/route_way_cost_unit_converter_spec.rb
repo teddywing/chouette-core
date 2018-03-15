@@ -10,6 +10,10 @@ RSpec.describe RouteWayCostUnitConverter do
         '94435-97513' => {
           'distance' => 35919,
           'time' => 6174
+        },
+        '2-3' => {
+          'distance' => nil,
+          'time' => nil
         }
       }
 
@@ -17,12 +21,16 @@ RSpec.describe RouteWayCostUnitConverter do
         RouteWayCostUnitConverter.convert(costs)
       ).to eq({
         '1-2' => {
-          'distance' => 35.22,
+          'distance' => 35,
           'time' => 93
         },
         '94435-97513' => {
-          'distance' => 35.92,
+          'distance' => 35,
           'time' => 102
+        },
+        '2-3' => {
+          'distance' => 0,
+          'time' => 0
         }
       })
     end

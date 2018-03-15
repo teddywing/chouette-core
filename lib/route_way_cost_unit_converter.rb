@@ -12,10 +12,14 @@ class RouteWayCostUnitConverter
 
   # Round to 2 decimal places to appease JavaScript validation
   def self.meters_to_kilometers(num)
-    (num / 1000.0).round(2)
+    return 0 unless num
+
+    (num / 1000.0).to_i
   end
 
   def self.seconds_to_minutes(num)
+    return 0 unless num
+
     num / 60
   end
 end
