@@ -75,7 +75,7 @@ module Chouette
 
     validates :wayback, inclusion: { in: self.wayback.values }
 
-    after_save :calculate_costs!
+    after_save :calculate_costs!, if: ->() { TomTom.enabled? }
 
     def duplicate
       overrides = {
