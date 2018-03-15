@@ -138,6 +138,7 @@ export default class JourneyPatterns extends Component {
                       status= {this.props.status}
                       editMode= {this.props.editMode}
                       journeyPatterns= {this}
+                      fetchRouteCosts={(costsKey) => this.props.fetchRouteCosts(costsKey, index)}
                       />
                   )}
                 </div>
@@ -156,5 +157,6 @@ JourneyPatterns.propTypes = {
   status: PropTypes.object.isRequired,
   onCheckboxChange: PropTypes.func.isRequired,
   onLoadFirstPage: PropTypes.func.isRequired,
-  onOpenEditModal: PropTypes.func.isRequired
+  onOpenEditModal: PropTypes.func.isRequired,
+  fetchRouteCosts: PropTypes.func.isRequired
 }

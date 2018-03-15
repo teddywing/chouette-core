@@ -26,7 +26,8 @@ describe('the edit button', () => {
         stop_points: []
       },
       index: 0,
-      editMode: editMode
+      editMode: editMode,
+      fetchRouteCosts: () => {}
     }
     let list = renderer.create(
       <JourneyPattern
@@ -38,6 +39,7 @@ describe('the edit button', () => {
         onDeleteJourneyPattern={props.onDeleteJourneyPattern}
         onOpenEditModal={props.onOpenEditModal}
         editMode={props.editMode}
+        fetchRouteCosts={props.fetchRouteCosts}
       />
     )
 
