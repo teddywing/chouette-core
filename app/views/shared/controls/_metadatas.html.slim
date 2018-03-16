@@ -7,9 +7,5 @@
     I18n.t('activerecord.attributes.compliance_control.predicate') => resource.predicate,
     I18n.t('activerecord.attributes.compliance_control.prerequisite') => resource.prerequisite,
   }.merge( \
-    {}.tap do |hash| \
-      resource.class.dynamic_attributes.each do |attribute| \
-        hash[ComplianceControl.human_attribute_name(attribute)] = resource.send(attribute) \
-      end \
-    end \
+    compliance_control_metadatas(resource) \
   )
