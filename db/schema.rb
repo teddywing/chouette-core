@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20180319043333) do
   enable_extension "hstore"
   enable_extension "postgis"
   enable_extension "unaccent"
+  enable_extension "objectid"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -140,6 +141,7 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.json     "custom_field_values"
   end
 
   add_index "companies", ["line_referential_id"], name: "index_companies_on_line_referential_id", using: :btree

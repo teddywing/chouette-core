@@ -5,12 +5,14 @@ module CustomFieldsSupport
     validate :custom_fields_values_are_valid
     after_initialize :initialize_custom_fields
 
-    def self.custom_fields
-      CustomField.where(resource_type: self.name.split("::").last)
+    def self.custom_fields workgroup=nil
+      fields = CustomField.where(resource_type: self.name.split("::").last)
+      fields = fields.where(workgroup_id: workgroup.id) if workgroup.present?
+      fields
     end
 
-    def custom_fields
-      CustomField::Collection.new self
+    def custom_fields workgroup=nil
+      CustomField::Collection.new self, workgroup
     end
 
     def custom_field_values= vals
@@ -18,7 +20,7 @@ module CustomFieldsSupport
       custom_fields.each do |code, field|
         out[code] = field.preprocess_value_for_assignment(vals.symbolize_keys[code.to_sym])
       end
-      self.write_attribute :custom_field_values, out
+      write_attribute :custom_field_values, out
     end
 
     def initialize_custom_fields

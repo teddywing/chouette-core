@@ -5,13 +5,13 @@ class CustomField < ActiveRecord::Base
   enumerize :field_type, in: %i{list integer string attachment}
 
   validates :name, uniqueness: {scope: [:resource_type, :workgroup_id]}
-  validates :code, uniqueness: {scope: [:resource_type, :workgroup_id], case_sensitive: false}
+  validates :code, uniqueness: {scope: [:resource_type, :workgroup_id], case_sensitive: false}, presence: true
 
   scope :for_workgroup, ->(workgroup){ where workgroup_id: workgroup.id }
 
   class Collection < HashWithIndifferentAccess
-    def initialize object
-      vals = object.class.custom_fields.map do |v|
+    def initialize object, workgroup=nil
+      vals = object.class.custom_fields(workgroup).map do |v|
         [v.code, CustomField::Instance.new(object, v, object.custom_field_value(v.code))]
       end
       super Hash[*vals.flatten]
@@ -166,14 +166,19 @@ class CustomField < ActiveRecord::Base
       end
 
       def display_value
-        options["list_values"][value.to_i]
+        return unless value
+        k = options["list_values"].is_a?(Hash) ? value.to_s : value.to_i
+        options["list_values"][k]
       end
 
       class Input < Base::Input
         def form_input_options
+          collection = options["list_values"]
+          collection = collection.map(&:reverse) if collection.is_a?(Hash)
+          collection = collection.each_with_index.to_a if collection.is_a?(Array)
           super.update({
             selected: value,
-            collection: options["list_values"].map(&:reverse)
+            collection: collection
           })
         end
       end

@@ -40,11 +40,12 @@ class ReferentialCompaniesController < ChouetteController
     end
 
     @q = scope.search(params[:q])
-
+    ids = @q.result(:distinct => true).pluck(:id)
+    scope = scope.where(id: ids)
     if sort_column && sort_direction
-      @companies ||= @q.result(:distinct => true).order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])
+      @companies ||= scope.order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])
     else
-      @companies ||= @q.result(:distinct => true).order(:name).paginate(:page => params[:page])
+      @companies ||= scope.order(:name).paginate(:page => params[:page])
     end
   end
 
@@ -57,7 +58,9 @@ class ReferentialCompaniesController < ChouetteController
   end
 
   def company_params
-    params.require(:company).permit( :objectid, :object_version, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone )
+    fields = [:objectid, :object_version, :name, :short_name, :organizational_unit, :operating_department_name, :code, :phone, :fax, :email, :registration_number, :url, :time_zone]
+    fields += permitted_custom_fields_params(Chouette::Company.custom_fields(@referential.workgroup))
+    params.require(:company).permit( fields )
   end
 
   private
