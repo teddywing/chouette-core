@@ -86,6 +86,7 @@ fr:
         ignore_end_chars: "ignorer les n derniers caractères"
         type: "Type d'export"
         file: "Résultat"
+        files: "Résultats"
         parent: Parent
       export:
         <<: *attrs

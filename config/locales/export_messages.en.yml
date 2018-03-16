@@ -1,3 +1,4 @@
 en:
   export_messages:
     success: Success
+    no_matching_journey: No matching journey found

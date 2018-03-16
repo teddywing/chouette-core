@@ -5,6 +5,7 @@ fr:
     deactivate: 'Désactiver'
     destroy: 'Supprimer'
     delete: 'Supprimer'
+    download: 'Télécharger'
     search: "Chercher"
     submit: "Valider"
     processing: "En cours…"
