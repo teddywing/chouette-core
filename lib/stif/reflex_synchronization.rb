@@ -51,7 +51,7 @@ module Stif
           stop_areas = results[:Quay] | results[:StopPlace]
 
           time = Benchmark.measure do
-            stop_areas.each do |entry|
+            stop_areas.in_batches.each do |entry|
               next unless is_valid_type_of_place_ref?(method, entry)
               entry['TypeOfPlaceRef'] = self.stop_area_area_type entry, method
               self.create_or_update_stop_area entry
@@ -151,23 +151,25 @@ module Stif
 
       def create_or_update_stop_area entry
         stop = Chouette::StopArea.find_or_create_by(objectid: entry['id'], stop_area_referential: self.defaut_referential )
-        stop.kind = :commercial
-        stop.deleted_at            = nil
         {
-          :comment        => 'Description',
-          :name           => 'Name',
-          :area_type      => 'TypeOfPlaceRef',
-          :object_version => 'version',
-          :zip_code       => 'PostalRegion',
-          :city_name      => 'Town',
-          :stif_type      => 'OBJECT_STATUS'
+          kind:          :commercial,
+          deleted_at:    nil,
+          comment:       'Description',
+          :name          'Name',
+          :area_type     'TypeOfPlaceRef',
+          :object_version 'version',
+          :zip_code       'PostalRegion',
+          :city_name      'Town',
+          :stif_type      'OBJECT_STATUS',
+          longitude: (entry['gml:pos'][:lng] && entry['gml:pos'][:lng]) ? entry['gml:pos'][:lng] : nil,
+          latitude: (entry['gml:pos'][:lat] && entry['gml:pos'][:lat]) ? entry['gml:pos'][:lat] : nil
         }.each do |k, v| stop[k] = entry[v] end
-        # TODO: use stop.update_attributes instead of the above
 
-        if entry['gml:pos']
-          stop['longitude'] = entry['gml:pos'][:lng]
-          stop['latitude']  = entry['gml:pos'][:lat]
-        end
+        # if entry['gml:pos']
+        #   stop['longitude'] = entry['gml:pos'][:lng]
+        #   stop['latitude']  = entry['gml:pos'][:lat]
+        # end
+        stop.confirmed_at = Time.now if stop.new_record?
 
         if stop.changed?
           stop.created_at = entry[:created]

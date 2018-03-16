@@ -383,11 +383,11 @@ module Chouette
     end
 
     def activated?
-      !!(deleted_at.nil? && confirmed_at)
+      deleted_at.nil? && confirmed_at
     end
 
     def deactivated?
-      !!(deleted_at && confirmed_at.nil?)
+      deleted_at.present?
     end
 
     def activate
@@ -396,7 +396,6 @@ module Chouette
     end
 
     def deactivate
-      self.confirmed_at = nil
       self.deleted_at = Time.now
     end
 
@@ -406,7 +405,6 @@ module Chouette
     end
 
     def deactivate!
-      update_attribute :confirmed_at, nil
       update_attribute :deleted_at, Time.now
     end
 
