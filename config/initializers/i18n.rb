@@ -136,10 +136,19 @@ class ActiveRecord::Base
 
   # Translate the given action on the model, with default
   def self.t_action(action, params={})
+    key = case action.to_sym
+    when :create
+      :new
+    when :update
+      :edit
+    else
+      action
+    end
+
     begin
-      I18n.translate_without_fallback "#{i18n_key.pluralize}.actions.#{action}", ({raise: true}.update(params))
+      I18n.translate_without_fallback "#{i18n_key.pluralize}.actions.#{key}", ({raise: true}.update(params))
     rescue
-      I18n.translate_without_fallback "actions.#{action}", params
+      I18n.translate_without_fallback "actions.#{key}", params
     end
   end
 
