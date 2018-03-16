@@ -32,8 +32,9 @@ describe "StopAreas", :type => :feature do
       end
 
       context 'filtering by status' do
-        before do
+        before(:each) do
           stop_areas.first.activate!
+          stop_areas.last.activate!
           stop_areas.last.deactivate!
         end
 
