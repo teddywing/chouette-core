@@ -233,7 +233,6 @@ class VehicleJourneysController < ChouetteController
       :transport_mode,
       :mobility_restricted_suitability,
       :flexible_service,
-      :status_value,
       :facility,
       :vehicle_type_identifier,
       :objectid,

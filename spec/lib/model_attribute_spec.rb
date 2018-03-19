@@ -82,7 +82,6 @@ RSpec.describe ModelAttribute do
       ModelAttribute.define(:route, :name, :string)
       ModelAttribute.define(:route, :checked_at, :date)
       ModelAttribute.define(:journey_pattern, :name, :string)
-      ModelAttribute.define(:journey_pattern, :section_status, :integer)
 
       expect(ModelAttribute.methods_by_class_and_type(:route, :string)).to match_array([
         ModelAttribute.new(:route, :name, :string)

@@ -126,7 +126,6 @@ en:
         purchase_window: "Purchase availability"
         regular_fs: "Regular service"
         route: "Route"
-        status_value: "Status Value"
         time_slot: "Time Slot"
         time_table_ids: "Calendar list"
         time_tables: "Calendars"

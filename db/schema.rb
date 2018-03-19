@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313110900) do
+ActiveRecord::Schema.define(version: 20180319043333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -446,7 +446,7 @@ ActiveRecord::Schema.define(version: 20180313110900) do
 
   create_table "journey_patterns", id: :bigserial, force: :cascade do |t|
     t.integer  "route_id",                limit: 8
-    t.string   "objectid",                                      null: false
+    t.string   "objectid",                          null: false
     t.integer  "object_version",          limit: 8
     t.string   "name"
     t.string   "comment"
@@ -454,7 +454,6 @@ ActiveRecord::Schema.define(version: 20180313110900) do
     t.string   "published_name"
     t.integer  "departure_stop_point_id", limit: 8
     t.integer  "arrival_stop_point_id",   limit: 8
-    t.integer  "section_status",                    default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
@@ -976,7 +975,6 @@ ActiveRecord::Schema.define(version: 20180313110900) do
     t.string   "objectid",                                               null: false
     t.integer  "object_version",                  limit: 8
     t.string   "comment"
-    t.string   "status_value"
     t.string   "transport_mode"
     t.string   "published_journey_name"
     t.string   "published_journey_identifier"
