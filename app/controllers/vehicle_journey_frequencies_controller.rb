@@ -13,7 +13,7 @@ class VehicleJourneyFrequenciesController < VehicleJourneysController
   def vehicle_journey_frequency_params
     params.require(:vehicle_journey_frequency).permit( { footnote_ids: [] } , :journey_pattern_id, :number, :published_journey_name,
                                              :published_journey_identifier, :comment, :transport_mode,
-                                             :mobility_restricted_suitability, :flexible_service, :status_value,
+                                             :mobility_restricted_suitability, :flexible_service,
                                              :facility, :vehicle_type_identifier, :objectid, :time_table_tokens,
                                              { date: [ :hour, :minute ] }, :button, :referential_id, :line_id,
                                              :route_id, :id, { vehicle_journey_at_stops_attributes: [ :arrival_time,

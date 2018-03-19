@@ -10,7 +10,6 @@
     = form.input :transport_mode, include_blank: false
     = form.input :mobility_restricted_suitability, as: :select, :collection => [[vehicle_journey.human_attribute_name("accessible"), true], [vehicle_journey.human_attribute_name("not_accessible"), false]], :include_blank => true
     = form.input :flexible_service, as: :select, :collection => [[vehicle_journey.human_attribute_name("on_demand_fs"), true], [vehicle_journey.human_attribute_name("regular_fs"), false]], :include_blank => true
-    = form.input :status_value
     = form.input :facility
     = form.input :vehicle_type_identifier
     = form.input :objectid, :required => !vehicle_journey.new_record?, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.vehicle_journey.objectid")}
