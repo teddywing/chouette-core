@@ -3,13 +3,13 @@ require 'tasks/helpers/simple_interfaces'
 
 namespace :import do
   desc "Notify parent imports when children finish"
-  task notify_parent: :environment do
-    ParentNotifier.new(Import).notify_when_finished
+    task notify_parent: :environment do
+    ParentNotifier.new(Import::Base).notify_when_finished
   end
 
   desc "Mark old unfinished Netex imports as 'aborted'"
   task netex_abort_old: :environment do
-    NetexImport.abort_old
+    Import::Netex.abort_old
   end
 
   desc "import the given file with the corresponding importer"
