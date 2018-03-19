@@ -11,7 +11,7 @@
       = f.label t('activerecord.attributes.compliance_check_set.assigned_to'), required: false, class: 'control-label'
       = f.input :parent_type_eq_any, collection: ComplianceCheckSet.order('parent_type'), as: :check_boxes, label: false, label_method: lambda {|w| ("<span>#{w}</span>").html_safe}, required: false, wrapper_html: {class: 'checkbox_list'}
     .form-group.togglable class=filter_item_class(params[:q], :created_at)
-      = f.label Import.human_attribute_name(:created_at), required: false, class: 'control-label'
+      = f.label ComplianceCheckSet.human_attribute_name(:created_at), required: false, class: 'control-label'
       .filter_menu
         = f.simple_fields_for :created_at do |p|
           = p.input :start_date, as: :date, label: false, wrapper_html: {class: 'date smart_date filter_menu-item'}, default: @begin_range, include_blank: @begin_range ? false : true
