@@ -159,9 +159,12 @@ module Stif
           zip_code:       'PostalRegion',
           city_name:      'Town',
           stif_type:      'OBJECT_STATUS',
-          longitude: (entry['gml:pos'] && entry['gml:pos'][:lng]) ? entry['gml:pos'][:lng] : nil,
-          latitude: (entry['gml:pos'] && entry['gml:pos'][:lat]) ? entry['gml:pos'][:lat] : nil
         }.each do |k, v| stop[k] = entry[v] end
+
+        if entry['gml:pos']
+          stop['longitude'] = entry['gml:pos'][:lng]
+          stop['latitude']  = entry['gml:pos'][:lat]
+        end
 
         stop.kind = :commercial
         stop.deleted_at            = nil
