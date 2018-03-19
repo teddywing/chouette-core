@@ -127,7 +127,6 @@ fr:
         purchase_window: "Disponibilité commerciale"
         regular_fs: "Service régulier"
         route: "Itinéraire"
-        status_value: "Etat de trafic"
         time_slot: "Fréquence"
         time_table_ids: "Liste des calendriers"
         time_tables: "Calendriers"

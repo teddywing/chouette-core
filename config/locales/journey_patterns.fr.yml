@@ -40,7 +40,6 @@ fr:
         route: "Séquence d'arrêts"
         name: "Nom"
         published_name: "Nom public"
-        section_status: "Status section"
         comment: "Commentaire"
         registration_number: "Code mission"
         stop_point_ids: "Sélection des arrêts desservis"
