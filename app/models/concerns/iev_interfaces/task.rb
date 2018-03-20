@@ -64,6 +64,7 @@ module IevInterfaces::Task
   end
 
   def update_status
+    Rails.logger.info "update_status for #{inspect}"
     status =
       if children.where(status: self.class.failed_statuses).count > 0
         'failed'
