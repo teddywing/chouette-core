@@ -115,14 +115,14 @@ RSpec.describe Import::Base, type: :model do
       allow(netex_import).to receive(:update)
 
       expect(workbench_import).to receive(:child_change)
-      netex_import.status = :foo
+      netex_import.notified_parent_at = nil
       netex_import.notify_parent
     end
 
     it "must update the :notified_parent_at field of the child import" do
       allow(workbench_import).to receive(:child_change)
       Timecop.freeze(Time.now) do
-        netex_import.status = :bar
+        netex_import.notified_parent_at = nil
 
         netex_import.notify_parent
         expect(netex_import.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
