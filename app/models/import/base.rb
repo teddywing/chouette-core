@@ -21,6 +21,7 @@ class Import::Base < ActiveRecord::Base
   end
 
   def child_change
+    Rails.logger.info "child_change for #{inspect}"
     return if self.class.finished_statuses.include?(status)
 
     super
@@ -28,6 +29,7 @@ class Import::Base < ActiveRecord::Base
   end
 
   def update_referentials
+    Rails.logger.info "update_referentials for #{inspect}"
     return unless self.class.finished_statuses.include?(status)
 
     children.each do |import|
