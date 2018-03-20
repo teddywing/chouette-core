@@ -114,7 +114,7 @@ RSpec.describe Export::Base, type: :model do
       allow(netex_export).to receive(:update)
 
       expect(workgroup_export).to receive(:child_change)
-      netex_export.status = :foo
+      netex_export.notified_parent_at = nil
       netex_export.notify_parent
     end
 
@@ -122,7 +122,7 @@ RSpec.describe Export::Base, type: :model do
       allow(workgroup_export).to receive(:child_change)
 
       Timecop.freeze(Time.now) do
-        netex_export.status = :bar
+        netex_export.notified_parent_at = nil
 
         netex_export.notify_parent
         expect(netex_export.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')

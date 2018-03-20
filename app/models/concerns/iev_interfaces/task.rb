@@ -53,11 +53,10 @@ module IevInterfaces::Task
 
   def notify_parent
     return unless parent.present?
-    return unless status_changed?
+    return if notified_parent_at
     parent.child_change
-    t = Time.now
-    self.notified_parent_at = t
-    self.class.where(id: self.id).update_all notified_parent_at: t
+
+    update_column :notified_parent_at, Time.now
   end
 
   def children_succeedeed
