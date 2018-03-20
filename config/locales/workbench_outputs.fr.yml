@@ -1,7 +1,7 @@
 fr:
   workbench_outputs:
     show:
-      title: "Finalisations de l'offre"
+      title: "Offres de mon organisation"
       see_current_output: "Voir l'Offre actuelle"
       table_headers:
-        ended_at: "Date et heure de création de l'offre"
+        ended_at: "Date et heure de création"

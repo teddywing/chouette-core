@@ -1,5 +1,6 @@
 fr:
   dashboards:
+    main_nav_left: Tableau de bord
     show:
       title: "Tableau de bord %{organisation}"
     workbench:
