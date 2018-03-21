@@ -111,23 +111,47 @@ RSpec.describe Import::Base, type: :model do
   end
 
   describe "#notify_parent" do
-    it "must call #child_change on its parent" do
-      allow(netex_import).to receive(:update)
+    context "when import is finished" do
+      before do
+        netex_import.status = "successful"
+        netex_import.notified_parent_at = nil
+      end
 
-      expect(workbench_import).to receive(:child_change)
-      netex_import.notified_parent_at = nil
-      netex_import.notify_parent
+      it "must call #child_change on its parent" do
+        allow(netex_import).to receive(:update)
+
+        expect(workbench_import).to receive(:child_change)
+        netex_import.notify_parent
+      end
+
+      it "must update the :notified_parent_at field of the child import" do
+        allow(workbench_import).to receive(:child_change)
+        Timecop.freeze(Time.now) do
+          netex_import.notify_parent
+          expect(netex_import.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
+          expect(netex_import.reload.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
+        end
+      end
     end
 
-    it "must update the :notified_parent_at field of the child import" do
-      allow(workbench_import).to receive(:child_change)
-      Timecop.freeze(Time.now) do
+    context "when import is not finished" do
+      before do
+        netex_import.status = "running"
         netex_import.notified_parent_at = nil
-
-        netex_import.notify_parent
-        expect(netex_import.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
-        expect(netex_import.reload.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
       end
+
+      it "must not call #child_change on its parent" do
+        allow(netex_import).to receive(:update)
+
+        expect(workbench_import).to_not receive(:child_change)
+        netex_import.notify_parent
+      end
+
+      it "must keep nil the :notified_parent_at field of the child import" do
+        netex_import.notify_parent
+        expect(netex_import.notified_parent_at).to be_nil
+      end
+
     end
   end
 

@@ -110,24 +110,49 @@ RSpec.describe Export::Base, type: :model do
   end
 
   describe "#notify_parent" do
-    it "must call #child_change on its parent" do
-      allow(netex_export).to receive(:update)
+    context "when export is finished" do
+      before do
+        netex_export.status = "successful"
+        netex_export.notified_parent_at = nil
+      end
 
-      expect(workgroup_export).to receive(:child_change)
-      netex_export.notified_parent_at = nil
-      netex_export.notify_parent
+      it "must call #child_change on its parent" do
+        allow(netex_export).to receive(:update)
+
+        expect(workgroup_export).to receive(:child_change)
+        netex_export.notified_parent_at = nil
+        netex_export.notify_parent
+      end
+
+      it "must update the :notified_parent_at field of the child export" do
+        allow(workgroup_export).to receive(:child_change)
+
+        Timecop.freeze(Time.now) do
+          netex_export.notify_parent
+          expect(netex_export.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
+          expect(netex_export.reload.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
+        end
+      end
     end
 
-    it "must update the :notified_parent_at field of the child export" do
-      allow(workgroup_export).to receive(:child_change)
-
-      Timecop.freeze(Time.now) do
+    context "when export is not finished" do
+      before do
+        netex_export.status = "running"
         netex_export.notified_parent_at = nil
-
-        netex_export.notify_parent
-        expect(netex_export.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
-        expect(netex_export.reload.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
       end
+
+      it "must not call #child_change on its parent" do
+        allow(netex_export).to receive(:update)
+
+        expect(workgroup_export).to_not receive(:child_change)
+        netex_export.notify_parent
+      end
+
+      it "must keep nil the :notified_parent_at field of the child export" do
+        netex_export.notify_parent
+        expect(netex_export.notified_parent_at).to be_nil
+      end
+
     end
   end
 
