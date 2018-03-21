@@ -1,6 +1,6 @@
 RSpec.describe Api::V1::Internals::NetexImportsController, type: :controller do
   let(:import_1) { create :netex_import }
-  let(:import_2) { create :netex_import }
+  let(:import_2) { create :netex_import, status: "successful" }
 
   describe "GET #notify_parent" do
     context 'unauthenticated' do
@@ -17,14 +17,14 @@ RSpec.describe Api::V1::Internals::NetexImportsController, type: :controller do
 
       describe "with existing record" do
 
-        before(:each) do 
+        before(:each) do
           get :notify_parent, id: import_2.id, format: :json
         end
 
         it 'should be successful' do
           expect(response).to have_http_status 200
         end
-        
+
         it "calls #notify_parent on the import" do
           expect(import_2.reload.notified_parent_at).not_to be_nil
         end
@@ -39,4 +39,3 @@ RSpec.describe Api::V1::Internals::NetexImportsController, type: :controller do
     end
   end
 end
-
