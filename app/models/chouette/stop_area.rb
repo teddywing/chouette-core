@@ -387,7 +387,7 @@ module Chouette
     end
 
     def deactivated?
-      deleted_at
+      deleted_at.present?
     end
 
     def activate
