@@ -113,29 +113,29 @@ class Date
   include EnhancedTimeI18n
 end
 
-class ActiveRecord::Base
+module EnhancedModelI18n
   # Human name of the class (plural)
-  def self.t opts={}
+  def t opts={}
     "activerecord.models.#{i18n_key}".t({count: 2}.update(opts))
   end
 
   # Human name of the class (singular)
-  def self.ts opts={}
+  def ts opts={}
     self.t({count: 1}.update(opts))
   end
 
   # Human name of the class (with comma)
-  def self.tc(params={})
+  def tc(params={})
     I18n.tc(i18n_key, params)
   end
 
   # Human name of the attribute
-  def self.tmf(attribute, params={})
+  def tmf(attribute, params={})
     I18n.tmf "#{i18n_key}.#{attribute}", params
   end
 
   # Translate the given action on the model, with default
-  def self.t_action(action, params={})
+  def t_action(action, params={})
     key = case action.to_sym
     when :create
       :new
@@ -153,7 +153,12 @@ class ActiveRecord::Base
   end
 
   private
-  def self.i18n_key
+  def i18n_key
     model_name.to_s.underscore.gsub('/', '_')
   end
+
+end
+
+class ActiveRecord::Base
+  extend EnhancedModelI18n
 end
