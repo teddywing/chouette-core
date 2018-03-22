@@ -1,8 +1,6 @@
 = title_tag t('access_links.show.title', access_link: @access_link.name )
 
 .access_link_show
-  = @map.to_html
-
   .summary
     p
       label = "#{@access_link.human_attribute_name('access_link_type')} : "

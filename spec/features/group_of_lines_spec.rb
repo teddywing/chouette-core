@@ -40,12 +40,6 @@ describe "Group of lines", :type => :feature do
       click_link subject.name
       expect(page).to have_content(subject.name)
     end
-
-    it "display map" do
-      visit line_referential_group_of_lines_path(line_referential)
-      click_link "#{subject.name}"
-      expect(page).to have_selector("#map.group_of_line")
-    end
   end
 
   # Fixme #1780

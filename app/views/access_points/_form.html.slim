@@ -1,6 +1,4 @@
 .container-fluid
-  = @map.to_html if @map
-
   = semantic_form_for [@referential, @stop_area, @access_point] do |form|
     = form.inputs do
       = form.input :id, as: :hidden

@@ -11,8 +11,6 @@ class NetworksController < ChouetteController
   belongs_to :line_referential
 
   def show
-    @map = NetworkMap.new(resource).with_helpers(self)
-
     show! do
       @network = @network.decorate(context: {
         line_referential: line_referential

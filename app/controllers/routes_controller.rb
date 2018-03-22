@@ -32,8 +32,6 @@ class RoutesController < ChouetteController
   end
 
   def show
-    @map = RouteMap.new(route).with_helpers(self)
-
     @route_sp = route.stop_points
     if sort_sp_column && sort_sp_direction
       @route_sp = @route_sp.order(sort_sp_column + ' ' + sort_sp_direction)

@@ -24,7 +24,6 @@ class ConnectionLinksController < ChouetteController
   end
 
   def show
-    @map = ConnectionLinkMap.new(resource).with_helpers(self)
     show!
   end
 

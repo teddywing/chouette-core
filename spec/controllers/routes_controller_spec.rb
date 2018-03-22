@@ -68,13 +68,7 @@ RSpec.describe RoutesController, type: :controller do
     end
 
     it_behaves_like "route, line and referential linked"
-
-    it "assigns RouteMap.new(route) as @map" do
-      expect(assigns[:map]).to be_an_instance_of(RouteMap)
-      expect(assigns[:map].route).to eq(route)
-    end
   end
-
 
   describe "POST /duplicate" do
     let!( :route_prime ){ route }

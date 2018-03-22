@@ -22,7 +22,6 @@ class AccessPointsController < ChouetteController
   end
 
   def show
-    map.editable = false
     @generic_access_links = @access_point.generic_access_link_matrix
     @detail_access_links = @access_point.detail_access_link_matrix
     show! do |format|
@@ -38,7 +37,6 @@ class AccessPointsController < ChouetteController
 
   def edit
     access_point.position ||= access_point.default_position
-    map.editable = true
     edit!
   end
 
@@ -46,10 +44,6 @@ class AccessPointsController < ChouetteController
   protected
 
   alias_method :access_point, :resource
-
-  def map
-    @map = AccessPointMap.new(access_point).with_helpers(self)
-  end
 
   def collection
     @q = parent.access_points.search(params[:q])

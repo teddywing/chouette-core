@@ -29,7 +29,6 @@ class JourneyPatternsController < ChouetteController
   end
 
   def show
-    @map = JourneyPatternMap.new(journey_pattern).with_helpers(self)
     @stop_points = journey_pattern.stop_points.paginate(:page => params[:page])
     show!
   end
