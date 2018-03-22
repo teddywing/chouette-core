@@ -10,8 +10,6 @@ class ReferentialNetworksController < ChouetteController
   belongs_to :referential, :parent_class => Referential
 
   def show
-    @map = NetworkMap.new(resource).with_helpers(self)
-
     show! do
       @network = ReferentialNetworkDecorator.decorate(
         @network,

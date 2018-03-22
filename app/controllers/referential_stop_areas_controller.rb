@@ -50,22 +50,14 @@ class ReferentialStopAreasController  < ChouetteController
   end
 
   def new
-    @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
-    @map.editable = true
     new!
   end
 
   def create
-    @map = StopAreaMap.new(Chouette::StopArea.new).with_helpers(self)
-    @map.editable = true
-
     create!
   end
 
   def show
-    map.editable = false
-    @access_points = @stop_area.access_points
-
     show! do |format|
       unless stop_area.position or params[:default] or params[:routing]
         format.kml {
@@ -80,13 +72,11 @@ class ReferentialStopAreasController  < ChouetteController
   def edit
     edit! do
       stop_area.position ||= stop_area.default_position
-      map.editable = true
    end
   end
 
   def update
     stop_area.position ||= stop_area.default_position
-    map.editable = true
 
     update!
   end
@@ -106,10 +96,6 @@ class ReferentialStopAreasController  < ChouetteController
   protected
 
   alias_method :stop_area, :resource
-
-  def map
-    @map = StopAreaMap.new(stop_area).with_helpers(self)
-  end
 
   def collection
     @q = parent.present? ? parent.stop_areas.search(params[:q]) : referential.stop_areas.search(params[:q])

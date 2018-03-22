@@ -65,22 +65,15 @@ class StopAreasController < ChouetteController
 
   def new
     authorize resource_class
-    # @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
-    # @map.editable = true
     new!
   end
 
   def create
     authorize resource_class
-    # @map = StopAreaMap.new( Chouette::StopArea.new).with_helpers(self)
-    # @map.editable = true
-
     create!
   end
 
   def show
-    # map.editable = false
-    # @access_points = @stop_area.access_points
     show! do |format|
       unless stop_area.position or params[:default] or params[:routing]
         format.kml {
@@ -95,9 +88,7 @@ class StopAreasController < ChouetteController
 
   def edit
     authorize stop_area
-    edit! do
-      map.editable = true
-    end
+    super
   end
 
   def destroy
@@ -107,8 +98,6 @@ class StopAreasController < ChouetteController
 
   def update
     authorize stop_area
-    map.editable = true
-
     update!
   end
 
@@ -128,10 +117,6 @@ class StopAreasController < ChouetteController
 
   alias_method :stop_area, :resource
   alias_method :stop_area_referential, :parent
-
-  def map
-    @map = StopAreaMap.new(stop_area).with_helpers(self)
-  end
 
   def collection
     scope = parent.present? ? parent.stop_areas : referential.stop_areas

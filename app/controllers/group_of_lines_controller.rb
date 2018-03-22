@@ -11,7 +11,6 @@ class GroupOfLinesController < ChouetteController
   belongs_to :line_referential
 
   def show
-    @map = GroupOfLineMap.new(resource).with_helpers(self)
     @lines = resource.lines.order(:name)
     show!
   end

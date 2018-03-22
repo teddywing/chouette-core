@@ -18,7 +18,6 @@ class AccessLinksController < ChouetteController
   end
 
   def show
-    @map = AccessLinkMap.new(resource).with_helpers(self)
     @access_point = Chouette::AccessPoint.find(params[:access_point_id])
     #@access_link = Chouette::AccessLink.find(params[:id])
     @stop_area = @access_link.stop_area

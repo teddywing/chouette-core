@@ -1,8 +1,6 @@
 = title_tag t('journey_patterns.show.title', journey_pattern: journey_name( @journey_pattern), route: @route.name )
 
 .journey_pattern_show
-  = @map.to_html
-
   .summary
     p
       label = "#{@journey_pattern.human_attribute_name(:name)} : "
