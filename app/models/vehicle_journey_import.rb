@@ -3,6 +3,8 @@ class VehicleJourneyImport
   include ActiveModel::Conversion
   extend  ActiveModel::Naming
 
+  extend EnhancedModelI18n
+
   attr_accessor :file, :route
   attr_accessor :created_vehicle_journey_count,:updated_vehicle_journey_count,:deleted_vehicle_journey_count
   attr_accessor :created_journey_pattern_count,:error_count
