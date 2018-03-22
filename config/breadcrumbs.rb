@@ -145,7 +145,7 @@ crumb :compliance_control_set do |compliance_control_set|
 end
 
 crumb :compliance_control do |compliance_control|
-  link breadcrumb_name(compliance_control), compliance_control_set_compliance_control_path(compliance_control.compliance_control_set, compliance_control)
+  link breadcrumb_name(compliance_control, 'code'), compliance_control_set_compliance_control_path(compliance_control.compliance_control_set, compliance_control)
   parent :compliance_control_set, compliance_control.compliance_control_set
 end
 
