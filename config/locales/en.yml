@@ -2,6 +2,7 @@ en:
   "true": "Yes"
   "false": "No"
   "unknown": "Unknown"
+  label_with_colon: "%{label}: "
 
 
   time:

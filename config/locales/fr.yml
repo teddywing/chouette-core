@@ -2,6 +2,7 @@ fr:
   "true": "Oui"
   "false": "Non"
   "unknown": "Non précisé"
+  label_with_colon: "%{label} : "
 
   time:
     formats:
