@@ -52,11 +52,11 @@ module TomTom
     end
 
     def points_as_params(points)
-      points.map do |latlng|
+      points.map do |point|
         {
           point: {
-            latitude: latlng.lat,
-            longitude: latlng.lng
+            latitude: point.coordinates.lat,
+            longitude: point.coordinates.lng
           }
         }
       end

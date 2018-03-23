@@ -38,9 +38,18 @@ RSpec.describe TomTom::Matrix do
   describe "#points_as_params" do
     it "transforms a set of LatLng points into a hash for use by TomTom Matrix" do
       points = Set.new([
-        Geokit::LatLng.new(48.85086, 2.36143),
-        Geokit::LatLng.new(47.91231, 1.87606),
-        Geokit::LatLng.new(52.50867, 13.42879)
+        TomTom::Matrix::Point.new(
+          Geokit::LatLng.new(48.85086, 2.36143),
+          '44'
+        ),
+        TomTom::Matrix::Point.new(
+          Geokit::LatLng.new(47.91231, 1.87606),
+          '77'
+        ),
+        TomTom::Matrix::Point.new(
+          Geokit::LatLng.new(52.50867, 13.42879),
+          '88'
+        )
       ])
 
       expect(
