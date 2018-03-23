@@ -38,8 +38,28 @@ class Export::Base < ActiveRecord::Base
     end
   end
 
+  def self.user_visible?
+    false
+  end
+
+  def self.inherited child
+    super child
+    child.instance_eval do
+      def self.user_visible?
+        true
+      end
+    end
+  end
+
   def self.option name, opts={}
     store_accessor :options, name
+
+    if opts[:serialize]
+      define_method name do
+        JSON.parse(options[name.to_s]) rescue opts[:serialize].new
+      end
+    end
+
     if !!opts[:required]
       validates name, presence: true
     end
@@ -49,6 +69,10 @@ class Export::Base < ActiveRecord::Base
 
   def self.options
     @options ||= {}
+  end
+
+  def self.options= options
+    @options = options
   end
 
   include IevInterfaces::Task

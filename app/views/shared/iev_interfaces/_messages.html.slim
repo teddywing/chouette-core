@@ -3,7 +3,7 @@
     - messages.order(:created_at).each do | message |
       li
         .row class=bootstrap_class_for_message_criticity(message.criticity)
-          - if message.message_attributes["line"]
+          - if message.message_attributes && message.message_attributes["line"]
             .col-md-1= "L. #{message.message_attributes["line"]}"
             .col-md-5= export_message_content message
           - else

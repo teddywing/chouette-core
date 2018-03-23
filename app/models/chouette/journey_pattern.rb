@@ -176,7 +176,7 @@ module Chouette
         i += 1
         _start = _end
         _end = stop_points[i]
-        val += costs_between(_start, _end)[:distance]
+        val += costs_between(_start, _end)[:distance] || 0
       end
       val
     end

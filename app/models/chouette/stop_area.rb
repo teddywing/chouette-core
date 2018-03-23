@@ -383,7 +383,7 @@ module Chouette
     end
 
     def activated?
-      deleted_at.nil? && confirmed_at
+      !!(deleted_at.nil? && confirmed_at)
     end
 
     def deactivated?
