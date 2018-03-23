@@ -96,7 +96,7 @@ export default class EditVehicleJourney extends Component {
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'company')}</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'published_journey_identifier')}</label>
                               <input
                                 type='text'
                                 ref='published_journey_identifier'
