@@ -32,8 +32,20 @@ module TomTom
       points = Set.new
 
       way_costs.each do |way_cost|
-        points.add(way_cost.departure)
-        points.add(way_cost.arrival)
+        ids = way_cost.id.split('-')
+
+        points.add(
+          TomTom::Matrix::Point.new(
+            way_cost.departure,
+            ids[0]
+          )
+        )
+        points.add(
+          TomTom::Matrix::Point.new(
+            way_cost.arrival,
+            ids[1]
+          )
+        )
       end
 
       points
