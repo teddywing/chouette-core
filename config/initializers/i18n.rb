@@ -146,9 +146,9 @@ module EnhancedModelI18n
     end
 
     begin
-      I18n.translate_without_fallback "#{i18n_key.pluralize}.actions.#{key}", ({raise: true}.update(params))
+      I18n.translate_without_fallback "#{i18n_key.pluralize}.#{key}.title", ({raise: true}.update(params))
     rescue
-      I18n.translate_without_fallback "actions.#{key}", params
+      I18n.translate_without_fallback "#{key}.title", params
     end
   end
 
