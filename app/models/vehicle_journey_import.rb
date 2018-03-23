@@ -1,7 +1,5 @@
 class VehicleJourneyImport
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend  ActiveModel::Naming
+  include ActiveModel::Model
 
   extend EnhancedModelI18n
 

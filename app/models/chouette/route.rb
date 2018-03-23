@@ -4,9 +4,7 @@ module Chouette
     include RouteRestrictions
     include ChecksumSupport
     include ObjectidSupport
-
     extend Enumerize
-    extend ActiveModel::Naming
 
     enumerize :direction, in: %i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)
     enumerize :wayback, in: %i(outbound inbound), default: :outbound
@@ -69,10 +67,6 @@ module Chouette
     validates_presence_of :name
     validates_presence_of :published_name
     validates_presence_of :line
-
-    # validates_presence_of :direction
-    # validates_presence_of :wayback
-
     validates :wayback, inclusion: { in: self.wayback.values }
 
     after_save :calculate_costs!, if: ->() { TomTom.enabled? }

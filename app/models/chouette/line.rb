@@ -6,8 +6,6 @@ module Chouette
     include ObjectidSupport
     include StifTransportModeEnumerations
     include StifTransportSubmodeEnumerations
-    extend ActiveModel::Naming
-
 
     belongs_to :company
     belongs_to :network
