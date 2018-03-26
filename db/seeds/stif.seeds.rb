@@ -8,6 +8,7 @@ line_referential = LineReferential.find_or_create_by!(name: "CodifLigne", object
 workgroup = Workgroup.find_or_create_by!(name: "Gestion de l'offre théorique IDFm") do |w|
   w.line_referential      = line_referential
   w.stop_area_referential = stop_area_referential
+  w.export_types = ["Export::Netex"]
 end
 
 Workbench.update_all workgroup_id: workgroup
