@@ -88,6 +88,7 @@ en:
         file: "Output"
         files: "Outputs"
         parent: Parent
+        referential_id: Referential
       export:
         <<: *attrs
         base:

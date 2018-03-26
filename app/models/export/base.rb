@@ -1,7 +1,9 @@
 class Export::Base < ActiveRecord::Base
   self.table_name = "exports"
 
-  validates :type, presence: true
+  belongs_to :referential
+
+  validates :type, :referential_id, presence: true
 
   def self.messages_class_name
     "Export::Message"
