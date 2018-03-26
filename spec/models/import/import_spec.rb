@@ -128,8 +128,8 @@ RSpec.describe Import::Base, type: :model do
         allow(workbench_import).to receive(:child_change)
         Timecop.freeze(Time.now) do
           netex_import.notify_parent
-          expect(netex_import.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
-          expect(netex_import.reload.notified_parent_at.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.strftime('%Y-%m-%d %H:%M:%S.%3N')
+          expect(netex_import.notified_parent_at.utc.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.utc.strftime('%Y-%m-%d %H:%M:%S.%3N')
+          expect(netex_import.reload.notified_parent_at.utc.strftime('%Y-%m-%d %H:%M:%S.%3N')).to eq Time.now.utc.strftime('%Y-%m-%d %H:%M:%S.%3N')
         end
       end
     end
