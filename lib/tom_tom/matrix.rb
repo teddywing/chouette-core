@@ -69,7 +69,6 @@ module TomTom
       end
     end
 
-    # TODO: We actually need to create new WayCost objects to hold the new dot connections given to us by the matrix API.
     def extract_costs_to_way_costs!(way_costs, points, matrix_json)
       way_costs = []
 
