@@ -53,4 +53,7 @@ module ExportsHelper
     end
   end
 
+  def workgroup_exports workgroup
+    Export::Base.user_visible_descendants.select{|e| workgroup.has_export? e.name}
+  end
 end

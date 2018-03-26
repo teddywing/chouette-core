@@ -27,6 +27,7 @@ class WorkgroupExportWorker
         netex_export.workbench = workbench_export.workbench
         netex_export.creator = workbench_export.creator
         netex_export.export_type = :line
+        netex_export.referential = workbench_export.referential
         netex_export.duration = workbench_export.duration
         netex_export.line_code = line.objectid
         netex_export.parent = workbench_export
