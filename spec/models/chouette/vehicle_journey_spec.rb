@@ -867,13 +867,62 @@ describe Chouette::VehicleJourney, :type => :model do
       let!( :footnote_first) {create( :footnote, :code => "1", :label => "dummy 1", :line => route.line)}
       let!( :footnote_second) {create( :footnote, :code => "2", :label => "dummy 2", :line => route.line)}
 
-
       it "should update vehicle's footnotes" do
         expect(Chouette::VehicleJourney.find(subject.id).footnotes).to be_empty
         subject.footnote_ids = [ footnote_first.id ]
         subject.save
         expect(Chouette::VehicleJourney.find(subject.id).footnotes.count).to eq(1)
       end
+    end
+  end
+
+  describe "#fill_passing_time_at_borders" do
+    before do
+      start = create :stop_area
+      border = create :stop_area, kind: :non_commercial, area_type: :border
+      border_2 = create :stop_area, kind: :non_commercial, area_type: :border
+      middle = create :stop_area
+      border_3 = create :stop_area, kind: :non_commercial, area_type: :border
+      border_4 = create :stop_area, kind: :non_commercial, area_type: :border
+      _end = create :stop_area
+      journey_pattern = create :journey_pattern
+      journey_pattern.stop_points.destroy_all
+      journey_pattern.stop_points << start_point = create(:stop_point, stop_area: start, position: 0)
+      journey_pattern.stop_points << border_point = create(:stop_point, stop_area: border, position: 1)
+      journey_pattern.stop_points << border_point_2 = create(:stop_point, stop_area: border_2, position: 2)
+      journey_pattern.stop_points << middle_point = create(:stop_point, stop_area: middle, position: 3)
+      journey_pattern.stop_points << border_point_3 = create(:stop_point, stop_area: border_3, position: 4)
+      journey_pattern.stop_points << border_point_4 = create(:stop_point, stop_area: border_4, position: 5)
+      journey_pattern.stop_points << end_point = create(:stop_point, stop_area: _end, position: 6)
+      journey_pattern.update_attribute :costs, {
+        "#{start_point.stop_area_id}-#{border_point.stop_area_id}" => {distance: 50},
+        "#{border_point.stop_area_id}-#{border_point_2.stop_area_id}" => {distance: 0},
+        "#{border_point_2.stop_area_id}-#{middle_point.stop_area_id}" => {distance: 100},
+        "#{middle_point.stop_area_id}-#{border_point_3.stop_area_id}" => {distance: 100},
+        "#{border_point_3.stop_area_id}-#{border_point_4.stop_area_id}" => {distance: 0},
+        "#{border_point_4.stop_area_id}-#{end_point.stop_area_id}" => {distance: 100}
+      }
+      @journey = create :vehicle_journey, journey_pattern: journey_pattern
+      @journey.vehicle_journey_at_stops.destroy_all
+      @start = create :vehicle_journey_at_stop, stop_point: start_point, vehicle_journey: @journey
+      @target = create :vehicle_journey_at_stop, stop_point: border_point, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
+      @target_2 = create :vehicle_journey_at_stop, stop_point: border_point_2, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
+      @middle = create :vehicle_journey_at_stop, stop_point: middle_point, vehicle_journey: @journey, arrival_time: @start.arrival_time + 4.hours, departure_time: @start.departure_time + 4.hours
+      @target_3 = create :vehicle_journey_at_stop, stop_point: border_point_3, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
+      @target_4 = create :vehicle_journey_at_stop, stop_point: border_point_4, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
+      @end = create :vehicle_journey_at_stop, stop_point: end_point, vehicle_journey: @journey, arrival_time: @middle.arrival_time + 4.hours, departure_time: @middle.departure_time + 4.hours
+    end
+
+    it "should compute passing time" do
+      @journey.reload.fill_passing_time_at_borders
+      expect(@target.reload.arrival_time.to_i).to eq (@start.reload.departure_time + 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
+      expect(@target_2.reload.arrival_time).to eq @target.arrival_time
+      expect(@target.departure_time).to eq @target.arrival_time
+      expect(@target_2.departure_time).to eq @target.arrival_time
+      expect(@target_3.reload.arrival_time.to_i).to eq (@middle.reload.departure_time + 0.5 * (@end.reload.arrival_time - @middle.departure_time)).to_i
+      expect(@target_4.reload.arrival_time).to eq @target_3.arrival_time
+      expect(@target_3.departure_time).to eq @target_3.arrival_time
+      expect(@target_4.departure_time).to eq @target_3.arrival_time
     end
   end
 end
