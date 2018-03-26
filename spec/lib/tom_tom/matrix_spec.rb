@@ -18,26 +18,7 @@ RSpec.describe TomTom::Matrix do
 
       expect(
         matrix.points_from_way_costs(way_costs)
-      ).to eq(Set.new([
-        TomTom::Matrix::Point.new(
-          Geokit::LatLng.new(48.85086, 2.36143),
-          '44'
-        ),
-        TomTom::Matrix::Point.new(
-          Geokit::LatLng.new(47.91231, 1.87606),
-          '77'
-        ),
-        TomTom::Matrix::Point.new(
-          Geokit::LatLng.new(52.50867, 13.42879),
-          '88'
-        )
-      ]))
-    end
-  end
-
-  describe "#points_as_params" do
-    it "transforms a set of LatLng points into a hash for use by TomTom Matrix" do
-      points = Set.new([
+      ).to eq([
         TomTom::Matrix::Point.new(
           Geokit::LatLng.new(48.85086, 2.36143),
           '44'
@@ -51,6 +32,25 @@ RSpec.describe TomTom::Matrix do
           '88'
         )
       ])
+    end
+  end
+
+  describe "#points_as_params" do
+    it "transforms a set of LatLng points into a hash for use by TomTom Matrix" do
+      points = [
+        TomTom::Matrix::Point.new(
+          Geokit::LatLng.new(48.85086, 2.36143),
+          '44'
+        ),
+        TomTom::Matrix::Point.new(
+          Geokit::LatLng.new(47.91231, 1.87606),
+          '77'
+        ),
+        TomTom::Matrix::Point.new(
+          Geokit::LatLng.new(52.50867, 13.42879),
+          '88'
+        )
+      ]
 
       expect(
         matrix.points_as_params(points)

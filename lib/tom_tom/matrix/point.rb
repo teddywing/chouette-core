@@ -13,12 +13,6 @@ module TomTom
           @coordinates == other.coordinates &&
           @id == other.id
       end
-
-      alias :eql? :==
-
-      def hash
-        @coordinates.hash + @id.hash
-      end
     end
   end
 end

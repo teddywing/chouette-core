@@ -29,23 +29,30 @@ module TomTom
     end
 
     def points_from_way_costs(way_costs)
-      points = Set.new
+      points = []
 
       way_costs.each do |way_cost|
         departure_id, arrival_id = way_cost.id.split('-')
 
-        points.add(
-          TomTom::Matrix::Point.new(
-            way_cost.departure,
-            departure_id
-          )
+        departure = TomTom::Matrix::Point.new(
+          way_cost.departure,
+          departure_id
         )
-        points.add(
-          TomTom::Matrix::Point.new(
-            way_cost.arrival,
-            arrival_id
-          )
+        arrival = TomTom::Matrix::Point.new(
+          way_cost.arrival,
+          arrival_id
         )
+
+        # Don't add duplicate coordinates. This assumes that
+        # `way_costs` consists of an ordered route of points where
+        # each departure coordinate is the same as the preceding
+        # arrival coordinate.
+        if points.empty? ||
+            points.last.coordinates != departure.coordinates
+          points << departure
+        end
+
+        points << arrival
       end
 
       points
