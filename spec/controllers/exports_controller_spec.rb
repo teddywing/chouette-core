@@ -2,7 +2,7 @@ RSpec.describe ExportsController, :type => :controller do
   login_user
 
   let(:workbench) { create :workbench }
-  let(:export)    { create(:netex_export, workbench: workbench) }
+  let(:export)    { create(:netex_export, workbench: workbench, referential: first_referential) }
 
   describe 'GET #new' do
     it 'should be successful if authorized' do
@@ -21,7 +21,7 @@ RSpec.describe ExportsController, :type => :controller do
     let(:params){ {name: "foo"} }
     let(:request){ post :create, workbench_id: workbench.id, export: params  }
     it 'should create no objects' do
-      expect{request}.to_not change{Export::Base.count}
+      expect{request}.to_not change{Export::Netex.count}
     end
 
     context "with full params" do
@@ -29,11 +29,12 @@ RSpec.describe ExportsController, :type => :controller do
         name: "foo",
         type: "Export::Netex",
         duration: 12,
-        export_type: :line
+        export_type: :line,
+        referential_id: first_referential.id
       }}
 
       it 'should be successful' do
-        expect{request}.to change{Export::Base.count}.by(1)
+        expect{request}.to change{Export::Netex.count}.by(1)
       end
 
       it "displays a flash message" do
@@ -51,7 +52,7 @@ RSpec.describe ExportsController, :type => :controller do
       }}
 
       it 'should be unsuccessful' do
-        expect{request}.to change{Export::Base.count}.by(0)
+        expect{request}.to change{Export::Netex.count}.by(0)
       end
     end
 
@@ -59,11 +60,12 @@ RSpec.describe ExportsController, :type => :controller do
       let(:params){{
         name: "foo",
         type: "Export::Workgroup",
-        duration: 90
+        duration: 90,
+        referential_id: first_referential.id
       }}
 
       it 'should be successful' do
-        expect{request}.to change{Export::Base.count}.by(1)
+        expect{request}.to change{Export::Workgroup.count}.by(1)
       end
     end
 
