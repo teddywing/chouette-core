@@ -19,4 +19,8 @@ class Workgroup < ActiveRecord::Base
   def custom_fields_definitions
     Hash[*custom_fields.map{|cf| [cf.code, cf]}.flatten]
   end
+
+  def has_export? export_name
+    export_types.include? export_name
+  end
 end

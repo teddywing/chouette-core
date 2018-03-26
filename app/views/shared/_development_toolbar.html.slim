@@ -20,6 +20,20 @@
                   - if Rails.application.config.development_toolbar.features_doc_url
                     = link_to "#{Rails.application.config.development_toolbar.features_doc_url}##{feature}", target: :blank do
                       .fa.fa-question-circle
+
+            - if @workbench
+              h4
+                = "Exports"
+                .toggles
+                  = link_to 'all', '#', data: {mask: 'export_types', val: true}
+                  = link_to 'none', '#', data: {mask: 'export_types', val: false}
+              ul
+                - Export::Base.user_visible_descendants.each do |export|
+                  li
+                    = hidden_field_tag "export_types[#{@workbench.workgroup_id}][#{export.name}]", false, id: ""
+                    = check_box_tag "export_types[#{@workbench.workgroup_id}][#{export.name}]", true, @workbench.workgroup.has_export?(export.name)
+                    = label :export_types, export.human_name
+
           .col.permissions
             h4
               = "Permissions"
