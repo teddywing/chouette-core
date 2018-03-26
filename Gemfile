@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 
 # Use https for github
 git_source(:github) { |name| "https://github.com/#{name}.git" }
-git_source(:af83) { |name| "git@github.com:af83/#{name}.git" }
+git_source(:af83) { |name| "https://github.com/af83/#{name}.git" }
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.2.8'
@@ -90,7 +90,7 @@ gem 'georuby', '2.3.0' # Fix version for georuby-ext because api has changed
 gem 'mimemagic'
 
 # User interface
-gem 'language_engine', github: 'af83/language_engine'
+gem 'language_engine', af83: 'language_engine'
 gem 'calendar_helper', '0.2.5'
 gem 'cocoon'
 gem 'slim-rails', '~> 3.1'

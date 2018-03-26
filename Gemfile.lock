@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:af83/has_array_of.git
+  remote: https://github.com/af83/has_array_of.git
   revision: a6439d93291c7a1ca224ea95a8d39ed101e2f05f
   specs:
     has_array_of (0.0.1)
@@ -8,26 +8,26 @@ GIT
       railties (>= 4.0)
 
 GIT
-  remote: git@github.com:af83/stif-codifline-api.git
-  revision: c0efb26bf202e0770348bdac060b14c28e575ac2
-  specs:
-    codifligne (0.0.2)
-      nokogiri (>= 1.7.2)
-
-GIT
-  remote: git@github.com:af83/stif-reflex-api.git
-  revision: 7edaeddd971a1ed366bf6def1513bf8808ab2d1d
-  specs:
-    reflex (0.0.2)
-      nokogiri (>= 1.7.2)
-      ruby-filemagic
-
-GIT
   remote: https://github.com/af83/language_engine.git
   revision: c4d7d5af781b55c1df4806c3960caf3c22f1ee96
   specs:
     language_engine (0.0.7)
       rails (~> 4.2)
+
+GIT
+  remote: https://github.com/af83/stif-codifline-api.git
+  revision: a02384e2e50e7530b31ff28ad6c6cc925edf11e1
+  specs:
+    codifligne (0.0.2)
+      nokogiri (>= 1.8.2)
+
+GIT
+  remote: https://github.com/af83/stif-reflex-api.git
+  revision: 102a1d9e04dc65cbd3e61d9d485032a7529b4cd2
+  specs:
+    reflex (0.0.2)
+      nokogiri (>= 1.7.2)
+      ruby-filemagic
 
 GIT
   remote: https://github.com/af83/whenever.git
