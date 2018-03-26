@@ -5,8 +5,8 @@ module TomTom
     end
 
     def matrix(way_costs)
-      points = points_from_way_costs(way_costs)
-      points = points_as_params(points)
+      points_with_ids = points_from_way_costs(way_costs)
+      points = points_as_params(points_with_ids)
 
       response = @connection.post do |req|
         req.url '/routing/1/matrix/json'
@@ -23,7 +23,7 @@ module TomTom
 
       extract_costs_to_way_costs!(
         way_costs,
-        points,
+        points_with_ids,
         JSON.parse(response.body)
       )
     end
@@ -81,16 +81,16 @@ module TomTom
 
           way_costs << WayCost.new(
             departure: Geokit::LatLng.new(
-              departure[:point][:latitude],
-              departure[:point][:longitude]
+              departure.coordinates.lat,
+              departure.coordinates.lng
             ),
             arrival: Geokit::LatLng.new(
-              arrival[:point][:latitude],
-              arrival[:point][:longitude]
+              arrival.coordinates.lat,
+              arrival.coordinates.lng
             ),
             distance: distance,
-            time: column['response']['routeSummary']['travelTimeInSeconds']
-            # id: 'TODO: figure out how to add combined stop IDs'
+            time: column['response']['routeSummary']['travelTimeInSeconds'],
+            id: "#{departure.id}-#{arrival.id}"
           )
         end
       end
