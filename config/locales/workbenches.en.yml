@@ -29,3 +29,8 @@ en:
         zero: "workbench"
         one: "workbench"
         other: "workbenches"
+    attributes:
+      workbench:
+        import_compliance_control_set_id: Space data before import
+        merge_compliance_control_set_id: Space data before merge
+

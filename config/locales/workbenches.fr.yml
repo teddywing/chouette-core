@@ -29,3 +29,7 @@ fr:
         zero: "espace de travail"
         one: "espace de travail"
         other: "espaces de travail"
+    attributes:
+      workbench:
+        import_compliance_control_set_id: Jeu de données après import
+        merge_compliance_control_set_id: Jeu de Données avant intégration
