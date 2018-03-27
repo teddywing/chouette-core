@@ -77,6 +77,78 @@ RSpec.describe TomTom::Matrix do
     end
   end
 
+  describe "#build_request_body" do
+    it "serializes BigDecimal coordinates to floats" do
+      points = [
+        {
+          point: {
+            latitude: 48.85086.to_d,
+            longitude: 2.36143.to_d
+          },
+        },
+        {
+          point: {
+            latitude: 47.91231.to_d,
+            longitude: 1.87606.to_d
+          },
+        },
+        {
+          point: {
+            latitude: 52.50867.to_d,
+            longitude: 13.42879.to_d
+          },
+        }
+      ]
+
+      expect(
+        matrix.build_request_body(points)
+      ).to eq(<<-JSON.delete(" \n"))
+        {
+          "origins": [
+            {
+              "point": {
+                "latitude": 48.85086,
+                "longitude": 2.36143
+              }
+            },
+            {
+              "point": {
+                "latitude": 47.91231,
+                "longitude": 1.87606
+              }
+            },
+            {
+              "point": {
+                "latitude": 52.50867,
+                "longitude": 13.42879
+              }
+            }
+          ],
+          "destinations": [
+            {
+              "point": {
+                "latitude": 48.85086,
+                "longitude": 2.36143
+              }
+            },
+            {
+              "point": {
+                "latitude": 47.91231,
+                "longitude": 1.87606
+              }
+            },
+            {
+              "point": {
+                "latitude": 52.50867,
+                "longitude": 13.42879
+              }
+            }
+          ]
+        }
+      JSON
+    end
+  end
+
   describe "#extract_costs_to_way_costs!" do
     it "puts distance & time costs in way_costs" do
       way_costs = [

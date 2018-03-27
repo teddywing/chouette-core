@@ -15,10 +15,7 @@ module TomTom
         req.params[:routeType] = 'shortest'
         req.params[:travelMode] = 'bus'
 
-        req.body = {
-          origins: points,
-          destinations: points
-        }.to_json
+        req.body = build_request_body(points)
       end
 
       extract_costs_to_way_costs!(
@@ -67,6 +64,13 @@ module TomTom
           }
         }
       end
+    end
+
+    def build_request_body(points)
+      RequestJSONSerializer.dump({
+        origins: points,
+        destinations: points
+      })
     end
 
     def extract_costs_to_way_costs!(way_costs, points, matrix_json)
