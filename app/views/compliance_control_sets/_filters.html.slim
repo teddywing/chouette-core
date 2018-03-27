@@ -8,7 +8,7 @@
   .ffg-row
     .form-group.togglable class=filter_item_class(params[:q], :organisation_name_eq_any)
       = f.label t('activerecord.models.organisation.one'), required: false, class: 'control-label'
-      = f.input :organisation_name_eq_any, collection: organisations_filters_values, as: :check_boxes, label: false, label_method: lambda {|w| ("<span>#{w.name}</span>").html_safe}, required: false, wrapper_html: {class: 'checkbox_list'}
+      = f.input :organisation_name_eq_any, collection: organisations_filters_values, as: :check_boxes, value_method: :name, label: false, label_method: lambda {|w| ("<span>#{w.name}</span>").html_safe}, required: false, wrapper_html: {class: 'checkbox_list'}
 
     .form-group.togglable class=filter_item_class(params[:q], :updated_at)
       = f.label Import::Base.human_attribute_name(:updated_at), required: false, class: 'control-label'
