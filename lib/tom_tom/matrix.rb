@@ -67,6 +67,7 @@ module TomTom
     end
 
     def build_request_body(points)
+      # Serialize `BigDecimal` values as floats to please the TomTom API
       RequestJSONSerializer.dump({
         origins: points,
         destinations: points
