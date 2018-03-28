@@ -2,6 +2,8 @@ en:
   dashboards:
     show:
       title: "Dashboard %{organisation}"
+    workbench:
+      title: Transport offer %{organisation}
     calendars:
       title: Calendars
       none: No calendar created
