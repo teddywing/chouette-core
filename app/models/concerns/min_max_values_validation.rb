@@ -9,7 +9,7 @@ module MinMaxValuesValidation
   end
 
   def min_max_values_validation
-    return true if (maximum && maximum) && (minimum.to_f < maximum.to_f)
+    return true if (minimum && maximum) && (minimum.to_f < maximum.to_f)
     errors.add(:minimum, I18n.t('compliance_controls.min_max_values', min: minimum, max: maximum))
   end
 end
