@@ -4,9 +4,9 @@ class ComplianceControlBlocksController < ChouetteController
   belongs_to :compliance_control_set
   actions :all, :except => [:show, :index]
 
-  after_action :check_duplicate, only: [:create, :update]
+  after_action :display_errors, only: [:create, :update]
 
-  def check_duplicate
+  def display_errors
     unless @compliance_control_block.errors[:condition_attributes].empty?
       flash[:error] = @compliance_control_block.errors[:condition_attributes].join(', ')
     end
