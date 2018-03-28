@@ -16,7 +16,7 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
               type='button'
               onClick={() => { onModalCancel(modal.confirmModal.callback) }}
             >
-              Ne pas valider
+              {I18n.t('cancel')}
           </button>
             <button
               className='btn btn-danger'
@@ -24,7 +24,7 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
               type='button'
               onClick={() => { onModalAccept(modal.confirmModal.callback, vehicleJourneys) }}
             >
-              Valider
+              {I18n.t('actions.submit')}
           </button>
           </div>
         </div>

@@ -25,7 +25,7 @@ export default class BSelect4b extends Component {
         options={{
           allowClear: false,
           theme: 'bootstrap',
-          placeholder: 'Filtrer par ID course...',
+          placeholder: I18n.t('vehicle_journeys.vehicle_journeys_matrix.filters.id'),
           width: '100%',
           language: require('./fr'),
           ajax: {

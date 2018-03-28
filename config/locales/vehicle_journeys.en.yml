@@ -1,14 +1,29 @@
 en:
   vehicle_journeys:
     vehicle_journeys_matrix:
+      filters:
+        id: Filter by ID...
+        timetable: Filter by journey pattern...
+        timetable: Filter by timetable...
       cancel_selection: "Cancel Selection"
       fetching_error: "There has been a problem fetching the data. Please reload the page to try again."
       line_routes: "Line's routes"
       modal_confirm: 'Do you want to save mofications before moving on to the next page ?'
-      pagination: "Schedules %{minVJ} to %{maxVJ} over %{total}"
       selected_journeys: "%{count} selected journeys"
       show_purchase_window: 'Show the purchase window'
       show_timetable: 'Show calendar'
+      no_associated_timetables: No associated timetables
+      no_associated_purchase_windows: No associated purchase windows
+      no_associated_footnotes: No associated footnotes
+      duplicate:
+        one: Clone %{count} vehicle journey
+        other: Clone %{count} vehicle journeys
+        start_time: Indicateive start time
+        number: Number of vehicle journeys to create and clone
+        delta: Delta from which vehicle journeys are created
+      affect_company: Affect company
+      no_line_footnotes: The line doesn't have any footnotes
+      select_footnotes: Select footnotes to associate with the vehicle journey
     vehicle_journey:
       title_stopless: "Vehicle journey %{name}"
       title: "Vehicle journey leaving from %{stop} at %{time}"
@@ -17,10 +32,10 @@ en:
       title: "Vehicle journey frequency leaving from %{stop} at %{time}"
       title_frequency: "Vehicle journey frequency with %{interval}min leaving from %{stop} at %{time_first} to %{time_last}"
     actions:
-      index: "Vehicle time's board"
-      new: "Add a new timed vehicle journey"
+      index: "Vehicle journeys"
+      new: "Add a new vehicle journey"
       new_frequency: "Add a new frequency vehicle journey"
-      edit: "Edit this timed vehicle journey"
+      edit: "Edit this vehicle journey"
       edit_frequency: "Edit this frequency vehicle journey"
       destroy: "Remove this vehicle journey"
       destroy_confirm: "Are you sure you want destroy this vehicle journey?"
@@ -48,15 +63,18 @@ en:
       show_journeys_without_schedule: "Show journeys without schedule"
       slide_arrival: "arrival time at first stop"
       slide_departure: "departure time at first stop"
-      slide_title: "Shift all vehicle passing times"
+      slide_title: "Shift all the vehicle journey passing times : %{id}"
       slide: "Shift"
+      slide_delta: "Shift of"
       starting_stop: "Departure"
       stop_title: "Stop"
       submit_frequency_edit: "Edit frequency vehicle journey"
       submit_frequency: "Create frequency vehicle journey"
       submit_timed_edit: "Edit vehicle journey"
       submit_timed: "Create vehicle journey"
-      time_tables: "Associated calendars to vehicle journey"
+      time_tables: "Associated timetables"
+      purchase_windows: Associated purchase windows
+      footnotes: Associated footnotes
       to_arrivals: "Copy departures to arrivals"
       to_departures: "Copy arrivals to departures"
       to: "at"
@@ -102,6 +120,7 @@ en:
         checksum: "Checksum"
         comment: "Comments"
         company: "Company"
+        company_name: "Company name"
         created_at: Created at
         creator_id: "Created by"
         departure_time: "Departure"
@@ -110,9 +129,10 @@ en:
         footnote_ids: "Footnotes"
         id: "Journey ID"
         journey_frequency_ids: "Timeband"
-        journey_name: "Name of the journey"
+        journey_name: "Name of the vehicle journey"
         journey_pattern_id: "Pattern ID"
         journey_pattern: "Journey Pattern"
+        journey_pattern_published_name: "Journey Pattern published name"
         line: "Line"
         mobility_restricted_suitability: "PRM accessibility"
         name: "Journey Name"
@@ -137,6 +157,7 @@ en:
         updated_at: Updated at
         vehicle_journey_at_stop_ids: "Time list"
         vehicle_type_identifier: "Vehicle Type Identifier"
+        start_time: Start time
     errors:
       models:
         vehicle_journey:

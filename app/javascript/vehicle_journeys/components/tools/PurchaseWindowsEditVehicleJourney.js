@@ -44,7 +44,7 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Calendriers commerciaux associés</h4>
+                    <h4 className='modal-title'>{I18n.t('vehicle_journeys.form.purchase_windows')}s</h4>
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
@@ -58,7 +58,7 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
                                 <div className='wrapper'>
                                   <div>
                                     <div className='form-group'>
-                                      <label className='control-label'>{this.props.modal.modalProps.purchase_windows.length == 0 ? "Aucun calendrier commercial associé" : "Calendriers commerciaux associés"}</label>
+                                      <label className='control-label'>{this.props.modal.modalProps.purchase_windows.length == 0 ? I18n.t('vehicle_journeys.vehicle_journeys_matrix.no_associated_purchase_windows') : I18n.t('vehicle_journeys.form.purchase_windows')}</label>
                                     </div>
                                   </div>
                                   <div></div>
@@ -117,14 +117,14 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
                             type='button'
                             onClick={this.props.onModalClose}
                           >
-                            Annuler
+                            {I18n.t('cancel')}
                           </button>
                           <button
                             className='btn btn-primary'
                             type='button'
                             onClick={this.handleSubmit}
                           >
-                            Valider
+                            {I18n.t('actions.submit')}
                           </button>
                         </div>
                       }

@@ -47,7 +47,7 @@ export default class CreateModal extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Ajouter une course</h4>
+                    <h4 className='modal-title'>{I18n.t('vehicle_journeys.actions.new')}</h4>
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
@@ -57,7 +57,7 @@ export default class CreateModal extends Component {
                         <div className='row'>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label'>Nom de la course</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'journey_name')}</label>
                               <input
                                 type='text'
                                 ref='published_journey_name'
@@ -68,7 +68,7 @@ export default class CreateModal extends Component {
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label'>Nom du transporteur</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'company_name')}</label>
                               <CompanySelect2
                                 company = {this.props.modal.modalProps.vehicleJourney && this.props.modal.modalProps.vehicleJourney.company || undefined}
                                 onSelect2Company = {(e) => this.props.onSelect2Company(e)}
@@ -78,7 +78,7 @@ export default class CreateModal extends Component {
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label is-required'>Nom public de la mission</label>
+                              <label className='control-label is-required'>{I18n.attribute_name('vehicle_journey', 'journey_pattern_published_name')}</label>
                               <MissionSelect2
                                 selection={this.props.modal.modalProps}
                                 onSelect2JourneyPattern={this.props.onSelect2JourneyPattern}
@@ -89,7 +89,7 @@ export default class CreateModal extends Component {
                           </div>
                           <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label'>Numéro de train</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'published_journey_identifier')}</label>
                               <input
                                 type='text'
                                 ref='published_journey_identifier'
@@ -105,7 +105,7 @@ export default class CreateModal extends Component {
                           />
                           { this.props.modal.modalProps.selectedJPModal && this.props.modal.modalProps.selectedJPModal.full_schedule && <div className='col-lg-6 col-md-6 col-sm-6 col-xs-12'>
                               <div className='form-group'>
-                                <label className='control-label'>Heure de départ</label>
+                              <label className='control-label'>{I18n.attribute_name('vehicle_journey', 'start_time')}</label>
                                 <div className='input-group time'>
                                   <input
                                     type='number'
@@ -142,14 +142,14 @@ export default class CreateModal extends Component {
                           type='button'
                           onClick={this.props.onModalClose}
                           >
-                          Annuler
+                          {I18n.t('cancel')}
                         </button>
                         <button
                           className='btn btn-primary'
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >
-                          Valider
+                          {I18n.t('actions.submit')}
                         </button>
                       </div>
                     </form>

@@ -26,7 +26,7 @@ export default class BSelect4 extends Component {
           allowClear: false,
           theme: 'bootstrap',
           width: '100%',
-          placeholder: 'Filtrer par calendrier...',
+          placeholder: I18n.t('vehicle_journeys.vehicle_journeys_matrix.filters.timetable'),
           language: require('./fr'),
           ajax: {
             url: origin + path + this.props.chunkURL,

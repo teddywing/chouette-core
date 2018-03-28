@@ -43,11 +43,11 @@ export default class NotesEditVehicleJourney extends Component {
 
   renderAssociatedFN() {
     if (this.footnotes().associated.length == 0) {
-      return <h3>Aucune note associée</h3>
+      return <h3>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.no_associated_purchase_windows')}</h3>
     } else {
       return (
         <div>
-          <h3>Notes associées :</h3>
+          <h3>{I18n.t('vehicle_journeys.form.purchase_windows')} :</h3>
           {this.footnotes().associated.map((lf, i) =>
             <div
               key={i}
@@ -68,13 +68,13 @@ export default class NotesEditVehicleJourney extends Component {
   }
 
   renderToAssociateFN() {
-    if (window.line_footnotes.length == 0) return <h3>La ligne ne possède pas de notes</h3>
+    if (window.line_footnotes.length == 0) return <h3>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.no_line_footnotes')}</h3>
 
     if (this.footnotes().to_associate.length == 0) return false
     
     return (
       <div>
-        <h3 className='mt-lg'>Sélectionnez les notes à associer à cette course :</h3>
+        <h3 className='mt-lg'>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.select_footnotes')} :</h3>
         {this.footnotes().to_associate.map((lf, i) =>
           <div key={i} className='panel panel-default'>
             <div className='panel-heading'>
@@ -111,7 +111,7 @@ export default class NotesEditVehicleJourney extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Notes</h4>
+                    <h4 className='modal-title'>{I18n.t('vehicle_journeys.form.footnotes')}</h4>
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
@@ -130,14 +130,14 @@ export default class NotesEditVehicleJourney extends Component {
                             type='button'
                             onClick={this.props.onModalClose}
                           >
-                            Annuler
+                            {I18n.t('cancel')}
                         </button>
                           <button
                             className='btn btn-primary'
                             type='button'
                             onClick={this.handleSubmit.bind(this)}
                           >
-                            Valider
+                            {I18n.t('actions.submit')}
                         </button>
                         </div>
                       }

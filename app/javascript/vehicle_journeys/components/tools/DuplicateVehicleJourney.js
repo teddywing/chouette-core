@@ -93,7 +93,7 @@ export default class DuplicateVehicleJourney extends Component {
                 <div className='modal-content'>
                   <div className='modal-header'>
                     <h4 className='modal-title'>
-                      Dupliquer { actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'plusieurs courses' : 'une course' }
+                      {I18n.t('vehicle_journeys.vehicle_journeys_matrix.duplicate', { count: actions.getSelected(this.props.vehicleJourneys).length })}
                     </h4>
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
@@ -102,7 +102,7 @@ export default class DuplicateVehicleJourney extends Component {
                     <form className='form-horizontal'>
                       <div className='modal-body'>
                         <div className={'form-group ' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? 'hidden' : '' )}>
-                          <label className='control-label is-required col-sm-8'>Horaire de départ indicatif</label>
+                          <label className='control-label is-required col-sm-8'>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.duplicate.start_time')}</label>
                           <span className="col-sm-4">
                             <span className={'input-group time' + (actions.getSelected(this.props.vehicleJourneys).length > 1 ? ' disabled' : '')}>
                               <input
@@ -133,7 +133,7 @@ export default class DuplicateVehicleJourney extends Component {
                         </div>
 
                         <div className='form-group'>
-                          <label className='control-label is-required col-sm-8'>Nombre de courses à créer et dupliquer</label>
+                          <label className='control-label is-required col-sm-8'>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.duplicate.number')}</label>
                           <div className="col-sm-4">
                             <input
                               type='number'
@@ -152,7 +152,7 @@ export default class DuplicateVehicleJourney extends Component {
                         </div>
 
                         <div className='form-group'>
-                          <label className='control-label is-required col-sm-8'>Décalage à partir duquel on créé les courses</label>
+                          <label className='control-label is-required col-sm-8'>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.duplicate.delta')}</label>
                           <span className="col-sm-4">
                             <input
                               type='number'
@@ -178,7 +178,7 @@ export default class DuplicateVehicleJourney extends Component {
                           type='button'
                           onClick={this.props.onModalClose}
                           >
-                          Annuler
+                          {I18n.t('cancel')}
                         </button>
                         <button
                           className={'btn btn-primary ' + (this.state.additional_time == 0 && this.state.originalDT.hour == this.state.duplicate_time_hh && this.state.originalDT.minute == this.state.duplicate_time_mm ? 'disabled' : '')}
@@ -186,7 +186,7 @@ export default class DuplicateVehicleJourney extends Component {
                           onClick={this.handleSubmit}
                           disabled={this.disableValidateButton()}
                           >
-                          Valider
+                          {I18n.t('actions.submit')}
                         </button>
                       </div>
                     </form>

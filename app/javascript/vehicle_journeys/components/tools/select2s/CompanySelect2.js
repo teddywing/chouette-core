@@ -16,6 +16,7 @@ export default class BSelect4 extends Component {
   }
 
   render() {
+    let placeHolder = I18n.t('')
     return (
       <Select2
         data={(this.props.company) ? [this.props.company.name] : undefined}
@@ -29,7 +30,7 @@ export default class BSelect4 extends Component {
           allowClear: true,
           theme: 'bootstrap',
           width: '100%',
-          placeholder: 'Filtrer par transporteur...',
+          placeholder: I18n.t('vehicle_journeys.vehicle_journeys_matrix.affect_company'),
           language: require('./fr'),
           ajax: {
             url: origin + path + '/companies.json' + '?line_id=' + line,

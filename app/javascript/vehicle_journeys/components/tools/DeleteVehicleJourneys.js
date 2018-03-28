@@ -13,7 +13,7 @@ export default function DeleteVehicleJourneys({onDeleteVehicleJourneys, vehicleJ
           e.preventDefault()
           onDeleteVehicleJourneys()
         }}
-        title='Supprimer'
+        title={ I18n.t('actions.delete') }
       >
         <span className='fa fa-trash'></span>
       </button>

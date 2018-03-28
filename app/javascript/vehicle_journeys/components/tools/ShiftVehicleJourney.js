@@ -27,6 +27,7 @@ export default class ShiftVehicleJourney extends Component {
   }
 
   render() {
+    let id = this.props.modal.type == 'shift' && actions.getSelected(this.props.vehicleJourneys)[0].short_id
     if(this.props.status.isFetching == true) {
       return false
     }
@@ -48,10 +49,7 @@ export default class ShiftVehicleJourney extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Mettre à jour une course</h4>
-                    {(this.props.modal.type == 'shift') && (
-                      <em>Mettre à jour les horaires de la course {actions.getSelected(this.props.vehicleJourneys)[0].short_id}</em>
-                    )}
+                    <h4 className='modal-title'>{I18n.t('vehicle_journeys.form.slide_title', {id: id})}</h4>
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
@@ -61,7 +59,7 @@ export default class ShiftVehicleJourney extends Component {
                         <div className='row'>
                           <div className='col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-12'>
                             <div className='form-group'>
-                              <label className='control-label is-required'>Avec un décalage de</label>
+                              <label className='control-label is-required'>{I18n.t('vehicle_journeys.form.slide_delta')}</label>
                               <input
                                 type='number'
                                 style={{'width': 104}}
@@ -85,14 +83,14 @@ export default class ShiftVehicleJourney extends Component {
                           type='button'
                           onClick={this.props.onModalClose}
                           >
-                          Annuler
+                          {I18n.t('cancel')}
                         </button>
                         <button
                           className={'btn btn-primary ' + (this.state.additional_time == 0 ? 'disabled' : '')}
                           type='button'
                           onClick={this.handleSubmit.bind(this)}
                           >
-                          Valider
+                          {I18n.t('actions.submit')}
                         </button>
                       </div>
                     </form>
