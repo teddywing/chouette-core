@@ -5,7 +5,7 @@
         .panel-heading
           h3.panel-title.with_actions
             div
-              = link_to workbench.name, workbench_path(workbench)
+              = link_to t('dashboards.workbench.title', organisation: workbench.organisation.name), workbench_path(workbench)
               span.badge.ml-xs = workbench.referentials.count if workbench.referentials.present?
 
             div
@@ -23,6 +23,7 @@
         .panel-heading
           h3.panel-title.with_actions
             = link_to I18n.t("activerecord.models.calendar", count: workbench.calendars.size), workgroup_calendars_path(workbench.workgroup)
+            span.badge.ml-xs = workbench.calendars.count if workbench.calendars.present?
             div
               = link_to '', workgroup_calendars_path(workbench.workgroup), class: ' fa fa-chevron-right pull-right'
         - if workbench.calendars.present?
@@ -39,7 +40,7 @@
       - @dashboard.current_organisation.stop_area_referentials.each do |referential|
         .panel-heading
           h3.panel-title
-            = referential.name
+            = t('dashboards.stop_area_referentials.title')
         .list-group
           = link_to Chouette::StopArea.model_name.human.pluralize.capitalize, stop_area_referential_stop_areas_path(referential), class: 'list-group-item'
 
@@ -47,7 +48,7 @@
       - @dashboard.current_organisation.line_referentials.all.each do |referential|
         .panel-heading
           h3.panel-title
-            = referential.name
+            = t('dashboards.line_referentials.title')
         .list-group
             = link_to Chouette::Line.model_name.human.pluralize.capitalize, line_referential_lines_path(referential), class: 'list-group-item'
             = link_to Chouette::Company.model_name.human.pluralize.capitalize, line_referential_companies_path(referential), class: 'list-group-item'
