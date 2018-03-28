@@ -28,9 +28,9 @@ module PaginationHelper
         will_paginate collection, container: false, page_links: false, previous_label: '', next_label: '', param_name: (collection.try(:pagination_param_name) || "page")
       end
 
-      content_tag :div, pinfos.concat(links).html_safe, class: "pagination #{cls}"
+      content_tag :div, pinfos.capitalize.concat(links).html_safe, class: "pagination #{cls}"
     else
-      content_tag :div, pinfos, class: "pagination #{cls}"
+      content_tag :div, pinfos.capitalize, class: "pagination #{cls}"
     end
   end
 

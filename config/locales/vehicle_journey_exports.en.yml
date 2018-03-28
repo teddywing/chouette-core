@@ -1,7 +1,7 @@
 en:
   vehicle_journey_exports:
     new:
-      title: "Export existing vehicle journey at stops"
+      title: Vehicle journeys export
       basename: "vehicle_journeys"
     label:
       vehicle_journey_id: "vj id (empty for new vj)"

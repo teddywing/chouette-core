@@ -44,7 +44,7 @@ export default class TimetablesEditVehicleJourney extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>Calendriers associés</h4>
+                    <h4 className='modal-title'>{I18n.t('vehicle_journeys.form.time_tables')}</h4>
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
@@ -58,7 +58,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                                 <div className='wrapper'>
                                   <div>
                                     <div className='form-group'>
-                                      <label className='control-label'>{this.props.modal.modalProps.timetables.length == 0 ? "Aucun calendrier associé" : "Calendriers associés"}</label>
+                                      <label className='control-label'>{this.props.modal.modalProps.timetables.length == 0 ? I18n.t('vehicle_journeys.vehicle_journeys_matrix.no_associated_timetables'): I18n.t('vehicle_journeys.form.timetables')}</label>
                                     </div>
                                   </div>
                                   <div></div>
@@ -119,14 +119,14 @@ export default class TimetablesEditVehicleJourney extends Component {
                             type='button'
                             onClick={this.props.onModalClose}
                           >
-                            Annuler
+                            {I18n.t('cancel')}
                           </button>
                           <button
                             className='btn btn-primary'
                             type='button'
                             onClick={this.handleSubmit}
                           >
-                            Valider
+                            {I18n.t('actions.submit')}
                           </button>
                         </div>
                       }

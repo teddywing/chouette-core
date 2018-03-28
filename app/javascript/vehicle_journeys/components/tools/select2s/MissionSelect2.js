@@ -74,7 +74,7 @@ export default class BSelect4 extends Component {
       width: '100%',
       escapeMarkup: function (markup) { return markup; },
       templateResult: formatRepo,
-      placeholder: 'Filtrer par code, nom ou OID de mission...',
+      placeholder: I18n.t('vehicle_journeys.vehicle_journeys_matrix.filters.journey_pattern'),
       language: require('./fr'),
       allowClear: false,
       escapeMarkup: function (markup) { return markup; },

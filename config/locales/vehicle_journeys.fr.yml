@@ -1,14 +1,28 @@
 fr:
   vehicle_journeys:
     vehicle_journeys_matrix:
+      filters:
+        id: Filtrer par ID course...
+        journey_pattern: 'Filtrer par code, nom ou OID de mission...'
+        timetable: Filter by timetable...
       cancel_selection: "Annuler la sélection"
       fetching_error: "La récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème."
       line_routes: "Séquences d'arrêts de la ligne"
       modal_confirm: 'Voulez-vous valider vos modifications avant de changer de page?'
-      pagination: "Liste des horaires %{minVJ} à %{maxVJ} sur %{total}"
       selected_journeys: "%{count} course(s) sélectionnée(s)"
       show_purchase_window: 'Voir le calendrier commercial'
       show_timetable: 'Voir le calendrier'
+      no_associated_timetables: Aucun calendrier associé
+      no_associated_purchase_windows: Aucun calendrier commercial associé
+      duplicate:
+        one: Dupliquer %{count} course
+        other: Dupliquer %{count} courses
+        start_time: Horaire de départ indicatif
+        number: Nombre de courses à créer et dupliquer
+        delta: Décalage à partir duquel on créé les courses
+      affect_company: Indiquez un nom de transporteur...
+      no_line_footnotes: La ligne ne possède pas de notes
+      select_footnotes: Sélectionnez les notes à associer à cette course
     vehicle_journey:
       title_stopless: "Course %{name}"
       title: "Course partant de %{stop} à %{time}"
@@ -48,8 +62,9 @@ fr:
       show_journeys_without_schedule: "Afficher les courses sans horaires"
       slide_arrival: "horaire d'arrivée au 1° arrêt à"
       slide_departure: "horaire de départ au 1° arrêt à"
-      slide_title: "Décaler l'ensemble des horaires de course"
+      slide_title: "Décaler l'ensemble des horaires de la course : %{id}"
       slide: "Décaler"
+      slide_delta: "Avec un décalage de"
       starting_stop: "Origine"
       stop_title: "Arrêt"
       submit_frequency_edit: "Editer course en fréquence"
@@ -57,6 +72,8 @@ fr:
       submit_timed_edit: "Editer course"
       submit_timed: "Créer course"
       time_tables: "Calendriers associés à la course"
+      purchase_windows: "Calendriers commerciaux associés à la course"
+      footnotes: "Notes associés à la course"
       to_arrivals: "Copie départs vers arrivées"
       to_arrivals: "Copie départs vers arrivées"
       to_departures: "Copie arrivées vers départs"
@@ -103,6 +120,7 @@ fr:
         checksum: "Signature métier"
         comment: "Commentaires"
         company: "Transporteur"
+        company|_name: "Nom du transporteur"
         created_at: "Créé le"
         creator_id: "Créé par"
         departure_time: "Départ"
@@ -114,6 +132,7 @@ fr:
         journey_name: "Nom de la course"
         journey_pattern_id: "ID Mission"
         journey_pattern: "Mission"
+        journey_pattern_published_name: "Nom public de la mission"
         line: "Ligne"
         mobility_restricted_suitability: "Accessibilité PMR"
         name: "Nom Course"
@@ -129,7 +148,7 @@ fr:
         route: "Itinéraire"
         time_slot: "Fréquence"
         time_table_ids: "Liste des calendriers"
-        time_tables: "Calendriers"
+        time_tables: "Calendriers associés"
         train_number: "Numéro de train"
         transport_mode: "Mode de transport"
         transport_submode: "Sous-mode de transport"
@@ -138,6 +157,7 @@ fr:
         updated_at: "Edité le"
         vehicle_journey_at_stop_ids: "Liste des horaires"
         vehicle_type_identifier: "Type d'identifiant du véhicule"
+        start_time: Heure de départ
     errors:
       models:
         vehicle_journey:

@@ -173,14 +173,14 @@ export default class EditVehicleJourney extends Component {
                             type='button'
                             onClick={this.props.onModalClose}
                           >
-                            Annuler
+                            {I18n.t('cancel')}
                         </button>
                           <button
                             className='btn btn-primary'
                             type='button'
                             onClick={this.handleSubmit.bind(this)}
                           >
-                            Valider
+                            {I18n.t('actions.submit')}
                         </button>
                         </div>
                       }
