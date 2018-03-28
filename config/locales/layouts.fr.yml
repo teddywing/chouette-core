@@ -3,6 +3,7 @@ fr:
     back_to_dashboard: "Retour au Tableau de Bord"
     help: "Aide"
     home: "Accueil"
+    operations: Opérations
     user:
       profile: "Mon Profil"
       sign_out: "Déconnexion"

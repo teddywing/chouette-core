@@ -3,6 +3,7 @@ en:
     back_to_dashboard: "Back to Dashboard"
     help: "Help"
     home: "Home"
+    operations: Operations
     user:
       profile: "My Profile"
       sign_out: "Sign out"
