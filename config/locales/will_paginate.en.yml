@@ -32,11 +32,11 @@ en:
       single_page:
         zero:  "No item found"
         one:   "1 %{model} shown"
-        other: "%{model} 1 to %{count} of %{count}"
+        other: "%{model} 1 to %{count} out of %{count}"
       single_page_html:
         zero:  "No item found"
         one:   "1 %{model} shown"
-        other: "%{model} 1 to %{count} of %{count}"
+        other: "%{model} 1 to %{count} out of %{count}"
 
-      multi_page: "%{model} %{from} to %{to} of %{count}"
-      multi_page_html: "%{model} %{from} to %{to} of %{count}"
+      multi_page: "%{model} list %{from} to %{to} out of %{count}"
+      multi_page_html: "%{model} list %{from} to %{to} out of %{count}"
