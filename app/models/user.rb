@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
 
   scope :with_organisation, -> { where.not(organisation_id: nil) }
 
+  scope :from_workgroup, ->(workgroup_id) { joins(:workbenches).where(workbenches: {workgroup_id: workgroup_id}) }
+
 
   # Callback invoked by DeviseCasAuthenticable::Model#authernticate_with_cas_ticket
   def cas_extra_attributes=(extra_attributes)
