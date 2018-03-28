@@ -9,11 +9,11 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
         <div className='modal-dialog'>
           <div className='modal-content'>
             <div className='modal-header'>
-              <h4 className='modal-title'>Confirmation</h4>
+              <h4 className='modal-title'>{I18n.t('journey_patterns.show.confirmation')}</h4>
             </div>
             <div className='modal-body'>
               <div className='mt-md mb-md'>
-                <p>Vous vous apprêtez à changer de page. Voulez-vous valider vos modifications avant cela ?</p>
+                <p>{I18n.t('journey_patterns.show.confirm_page_change')}</p>
               </div>
             </div>
             <div className='modal-footer'>
@@ -23,7 +23,7 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
                 type='button'
                 onClick={() => { onModalCancel(modal.confirmModal.callback) }}
               >
-                Ne pas valider
+                {I18n.t('cancel')}
             </button>
               <button
                 className='btn btn-primary'
@@ -31,7 +31,7 @@ export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCan
                 type='button'
                 onClick={() => { onModalAccept(modal.confirmModal.callback, journeyPatterns) }}
               >
-                Valider
+                {I18n.t('actions.submit')}
             </button>
             </div>
           </div>

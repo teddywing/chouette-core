@@ -38,14 +38,14 @@ export default class CreateModal extends Component {
                   <div className='modal-dialog'>
                     <div className='modal-content'>
                       <div className='modal-header'>
-                        <h4 className='modal-title'>Ajouter une mission</h4>
+                        <h4 className='modal-title'>{I18n.t('journey_patterns.actions.new')}</h4>
                       </div>
 
                       {(this.props.modal.type == 'create') && (
                         <form>
                           <div className='modal-body'>
                             <div className='form-group'>
-                              <label className='control-label is-required'>Nom</label>
+                              <label className='control-label is-required'>{I18n.attribute_name('journey_pattern', 'name')}</label>
                               <input
                                 type='text'
                                 ref='name'
@@ -57,7 +57,7 @@ export default class CreateModal extends Component {
                             <div className='row'>
                               <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                                 <div className='form-group'>
-                                  <label className='control-label is-required'>Nom public</label>
+                                  <label className='control-label is-required'>{I18n.attribute_name('journey_pattern', 'published_name')}c</label>
                                   <input
                                     type='text'
                                     ref='published_name'
@@ -69,7 +69,7 @@ export default class CreateModal extends Component {
                               </div>
                               <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                                 <div className='form-group'>
-                                  <label className='control-label'>Code mission</label>
+                                  <label className='control-label'>{I18n.attribute_name('journey_pattern', 'registration_number')}</label>
                                   <input
                                     type='text'
                                     ref='registration_number'
@@ -87,14 +87,14 @@ export default class CreateModal extends Component {
                               type='button'
                               onClick={this.props.onModalClose}
                               >
-                              Annuler
+                              {I18n.t('cancel')}
                             </button>
                             <button
                               className='btn btn-primary'
                               type='button'
                               onClick={this.handleSubmit.bind(this)}
                               >
-                              Valider
+                              {I18n.t('actions.submit')}
                             </button>
                           </div>
                         </form>

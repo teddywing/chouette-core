@@ -23,7 +23,7 @@ export default class JourneyPattern extends Component{
     let vjURL = routeURL + '/vehicle_journeys?jp=' + jpOid
 
     return (
-      <a href={vjURL}>Horaires des courses</a>
+      <a href={vjURL}>{I18n.t('journey_patterns.journey_pattern.vehicle_journey_at_stops')}</a>
     )
   }
 
@@ -143,7 +143,7 @@ export default class JourneyPattern extends Component{
         <div className='th'>
           <div className='strong mb-xs'>{this.props.value.object_id ? this.props.value.short_id : '-'}</div>
           <div>{this.props.value.registration_number}</div>
-          <div>{actions.getChecked(this.props.value.stop_points).length} arrêt(s)</div>
+          <div>{I18n.t('journey_patterns.show.stop_points_count', {count: actions.getChecked(this.props.value.stop_points).length})}</div>
           {this.hasFeature('costs_in_journey_patterns') &&
             <div className="small row totals">
               <span className="col-md-6"><i className="fa fa-arrows-h"></i>{this.totalDistance}</span>
@@ -171,7 +171,7 @@ export default class JourneyPattern extends Component{
                   data-toggle='modal'
                   data-target='#JourneyPatternModal'
                   >
-                  {this.props.editMode ? 'Editer' : 'Consulter'}
+                  {this.props.editMode ? I18n.t('actions.edit') : I18n.t('actions.show')}
                 </button>
               </li>
               <li className={this.props.value.object_id ? '' : 'disabled'}>
@@ -187,7 +187,7 @@ export default class JourneyPattern extends Component{
                     this.props.onDeleteJourneyPattern(this.props.index)}
                   }
                   >
-                    <span className='fa fa-trash'></span>Supprimer
+                    <span className='fa fa-trash'></span>{I18n.t('actions.destroy')}
                   </button>
                 </li>
               </ul>

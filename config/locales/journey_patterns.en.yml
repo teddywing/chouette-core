@@ -1,6 +1,7 @@
 en:
   journey_patterns:
     journey_pattern:
+      fetching_error: "There has been a problem fetching the data. Please reload the page to try again."
       from_to: "From '%{departure}' to '%{arrival}'"
       stop_count: "%{count}/%{route_count} stops"
       vehicle_journeys_count: "Vehicle journeys: %{count}"
@@ -19,6 +20,13 @@ en:
     show:
       title: "Journey Pattern %{journey_pattern}"
       stop_points: "Stop point on journey pattern list"
+      stop_points_count: 
+        none: '%{count} stop areas'
+        one: '%{count} stop area'
+        other: '%{count} stop areas'
+      informations: Informations
+      confirmation: Confimation
+      confirm_page_change: You are about to change page. Would you like to save your work before that ?
     index:
       title: "Journey Patterns of %{route}"
     form:
@@ -50,7 +58,8 @@ en:
         creator_id: "Created by"
         full_journey_time: Full journey
         commercial_journey_time: Commercial journey
-
+        stop_points: Nb stop areas
+        checksum: Checksum
   formtastic:
     titles:
       journey_pattern:

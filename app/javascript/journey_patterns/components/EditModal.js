@@ -18,12 +18,12 @@ export default class EditModal extends Component {
     if (this.props.editMode) {
       return (
         <h4 className='modal-title'>
-          Editer la mission
+          {I18n.t('journey_patterns.actions.edit')}
           {this.props.modal.type == 'edit' && <em> "{this.props.modal.modalProps.journeyPattern.name}"</em>}
         </h4>
       )
     } else {
-      return <h4 className='modal-title'> Informations </h4>
+      return <h4 className='modal-title'> {I18n.t('journey_patterns.show.informations')} </h4>
     }
   }
 
@@ -41,7 +41,7 @@ export default class EditModal extends Component {
                 <form>
                   <div className='modal-body'>
                     <div className='form-group'>
-                      <label className='control-label is-required'>Nom</label>
+                      <label className='control-label is-required'>{I18n.attribute_name('journey_pattern', 'name')}</label>
                       <input
                         type='text'
                         ref='name'
@@ -57,7 +57,7 @@ export default class EditModal extends Component {
                     <div className='row'>
                       <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                         <div className='form-group'>
-                          <label className='control-label is-required'>Nom public</label>
+                          <label className='control-label is-required'>{I18n.attribute_name('journey_pattern', 'published_name')}</label>
                           <input
                             type='text'
                             ref='published_name'
@@ -72,7 +72,7 @@ export default class EditModal extends Component {
                       </div>
                       <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                         <div className='form-group'>
-                          <label className='control-label'>Code mission</label>
+                          <label className='control-label'>{I18n.attribute_name('journey_pattern', 'registration_number')}</label>
                           <input
                             type='text'
                             ref='registration_number'
@@ -86,7 +86,7 @@ export default class EditModal extends Component {
                       </div>
                     </div>
                     <div>
-                      <label className='control-label'>Signature métier</label>
+                      <label className='control-label'>{I18n.attribute_name('journey_pattern', 'checksum')}</label>
                         <input
                         type='text'
                         ref='checksum'
@@ -105,14 +105,14 @@ export default class EditModal extends Component {
                         type='button'
                         onClick={this.props.onModalClose}
                       >
-                        Annuler
+                        {I18n.t('cancel')}
                       </button>
                       <button
                         className='btn btn-primary'
                         type='button'
                         onClick={this.handleSubmit.bind(this)}
                       >
-                        Valider
+                        {I18n.t('actions.submit')}
                       </button>
                     </div>
                   }
