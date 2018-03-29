@@ -139,6 +139,11 @@ fr:
         3_line_1: "Sur la ligne %{source_label} (%{source_objectid}), aucun itinéraire n'a d'itinéraire inverse"
       description: "Les itinéraires d'une ligne doivent être associés en aller/retour"
       prerequisite: Ligne disposant de plusieurs itinéraires
+    line_control/lines_scope:
+      messages:
+        3_line_2: "La ligne %{source_label} (%{source_objectid}) ne fait pas partie du périmètre de lignes de l'organisation %{reference_value}"
+      description: "Les lignes doivent appartenir au périmètre de lignes de l'organisation"
+      prerequisite: "Aucun"
     generic_attribute_control/pattern:
       messages:
         3_generic_1: "%{source_objectid} : l'attribut %{source_attribute} a une valeur %{error_value} qui ne respecte pas le motif %{reference_value}"
@@ -206,6 +211,8 @@ fr:
         one: "ITL & arret désactivé"
       line_control/route:
         one: "Appariement des itinéraires"
+      line_control/lines_scope:
+        one: "Les lignes doivent appartenir au périmètre de lignes de l'organisation"
       generic_attribute_control/pattern:
         one: "Contrôle du contenu selon un pattern"
       generic_attribute_control/min_max:

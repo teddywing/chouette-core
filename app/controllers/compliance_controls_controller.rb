@@ -5,7 +5,7 @@ class ComplianceControlsController < ChouetteController
   actions :all, :except => [:index]
 
   def select_type
-    @sti_subclasses = ComplianceControl.subclasses
+    @sti_subclasses = ComplianceControl.subclasses.sort_by {|compliance_control| compliance_control.default_code}
   end
 
   def show

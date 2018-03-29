@@ -142,6 +142,11 @@ en:
         3_line_1: "On line :%{source_label} (%{source_objectid}), no route has an opposite route"
       description: "The routes of a line must have an opposite route"
       prerequisite: Line has multiple routes
+    line_control/lines_scope:
+      messages:
+        3_line_2: "The line %{source_label} (%{source_objectid}) is not in the lines scope of the organization %{reference_value}"
+      description: "The line must be included in the lines scope of the organization"
+      prerequisite: "None"
     generic_attribute_control/pattern:
       messages:
         3_generic_1: "%{source_objectid} : the %{source_attribute} attribute value (%{error_value}) does not respect the following pattern : %{reference_value}"
@@ -209,6 +214,8 @@ en:
         one: "Unactivated stop points"
       line_control/route:
         one: "The routes of a line must have an opposite route"
+      line_control/lines_scope:
+        one: "Lines must be included in the lines scope of the organization"
       generic_attribute_control/pattern:
         one: "Attribute pattern of an object in a line"
       generic_attribute_control/min_max:
