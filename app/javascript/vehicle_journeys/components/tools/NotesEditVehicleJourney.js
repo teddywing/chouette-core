@@ -43,7 +43,7 @@ export default class NotesEditVehicleJourney extends Component {
 
   renderAssociatedFN() {
     if (this.footnotes().associated.length == 0) {
-      return <h3>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.no_associated_purchase_windows')}</h3>
+      return <h3>{I18n.t('vehicle_journeys.vehicle_journeys_matrix.no_associated_footnotes')}</h3>
     } else {
       return (
         <div>
