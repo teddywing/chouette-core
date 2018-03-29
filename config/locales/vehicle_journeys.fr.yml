@@ -14,6 +14,7 @@ fr:
       show_timetable: 'Voir le calendrier'
       no_associated_timetables: Aucun calendrier associé
       no_associated_purchase_windows: Aucun calendrier commercial associé
+      no_associated_footnotes: Aucune note associée
       duplicate:
         one: Dupliquer %{count} course
         other: Dupliquer %{count} courses
