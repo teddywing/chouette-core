@@ -4,7 +4,7 @@ module MinMaxValuesValidation
   included do
     validates_presence_of :minimum, :maximum
     validates_numericality_of :minimum, :maximum, allow_nil: true, greater_than_or_equal_to: 0
-    validates_format_of :minimum, :maximum, with: %r{\A\d+\.\d{2}\Z}
+    validates_format_of :minimum, :maximum, with: %r{\A\d+(\.\d+)?\Z}
     validate :min_max_values_validation
   end
 

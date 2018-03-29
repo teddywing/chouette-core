@@ -12,7 +12,25 @@ RSpec.shared_examples_for 'has min_max_values' do
     end
   end
 
+  context "is valid" do
+    it 'if minimum is well formatted' do
+      subject.minimum = "12"
+      expect_it.to be_valid
+      subject.minimum = "12.0"
+      expect_it.to be_valid
+      subject.minimum = "12.01"
+      expect_it.to be_valid
+    end
+  end
+
   context "is invalid" do
+    it 'if minimum is not well formatted' do
+      subject.minimum = "AA"
+      expect_it.not_to be_valid
+      subject.minimum = "12."
+      expect_it.not_to be_valid
+    end
+
     it 'if no value is provided' do
       subject.minimum = nil
       subject.maximum = nil
