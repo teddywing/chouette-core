@@ -12,14 +12,19 @@ RSpec.describe ReferentialMetadata, :type => :model do
   describe ".new_from" do
 
     let(:referential_metadata) { create :referential_metadata, referential_source: create(:referential) }
-    let(:new_referential_metadata) { ReferentialMetadata.new_from(referential_metadata, []) }
+    let(:new_referential_metadata) { ReferentialMetadata.new_from(referential_metadata, nil) }
+    before do
+      referential_metadata.line_ids.each do |id|
+        Chouette::Line.find(id).update_attribute :line_referential_id, referential_metadata.referential.line_referential_id
+      end
+    end
 
     it "should not have an associated referential" do
       expect(new_referential_metadata).to be_a_new(ReferentialMetadata)
     end
 
-    xit "should have the same lines" do
-      expect(new_referential_metadata.lines).to eq(referential_metadata.lines)
+    it "should have the same lines" do
+      expect(new_referential_metadata.line_ids.sort).to eq(referential_metadata.line_ids.sort)
     end
 
     it "should have the same periods" do
@@ -34,6 +39,14 @@ RSpec.describe ReferentialMetadata, :type => :model do
       expect(new_referential_metadata.referential_source).to eq(referential_metadata.referential)
     end
 
+    context "with a functional scope" do
+      let(:organisation){ create :organisation, sso_attributes: {"functional_scope" => [referential_metadata.referential.lines.first.objectid]} }
+      let(:new_referential_metadata) { ReferentialMetadata.new_from(referential_metadata, organisation) }
+
+      it "should scope the lines" do
+        expect(new_referential_metadata.line_ids).to eq [referential_metadata.referential.lines.first.id]
+      end
+    end
   end
 
   describe "Period" do

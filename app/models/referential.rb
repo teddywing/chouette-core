@@ -233,7 +233,7 @@ class Referential < ActiveRecord::Base
     end
   end
 
-  def self.new_from(from, functional_scope)
+  def self.new_from(from, organisation)
     Referential.new(
       name: I18n.t("activerecord.copy", name: from.name),
       slug: "#{from.slug}_clone",
@@ -244,7 +244,7 @@ class Referential < ActiveRecord::Base
       stop_area_referential: from.stop_area_referential,
       created_from: from,
       objectid_format: from.objectid_format,
-      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, functional_scope) }
+      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, organisation) }
     )
   end
 
