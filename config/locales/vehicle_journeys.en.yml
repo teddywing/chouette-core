@@ -18,7 +18,7 @@ en:
       duplicate:
         one: Clone %{count} vehicle journey
         other: Clone %{count} vehicle journeys
-        start_time: Indicateive start time
+        start_time: Indicative start time
         number: Number of vehicle journeys to create and clone
         delta: Delta from which vehicle journeys are created
       affect_company: Affect company
