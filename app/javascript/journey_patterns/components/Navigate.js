@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import capitalize from 'lodash/capitalize'
 import actions from '../actions'
 
 export default function Navigate({ dispatch, journeyPatterns, pagination, status }) {
@@ -17,7 +18,7 @@ export default function Navigate({ dispatch, journeyPatterns, pagination, status
       <div className='row'>
         <div className='col-lg-12 text-right'>
           <div className='pagination'>
-            Liste des missions {firstItemOnPage} à {(lastItemOnPage < pagination.totalCount) ? lastItemOnPage : pagination.totalCount} sur {pagination.totalCount}
+            {I18n.t('will_paginate.page_entries_info.multi_page', { model: capitalize(I18n.model_name('journey_pattern', { plural: true })), from: firstItemOnPage, to: lastItemOnPage, count: pagination.totalCount})}
             <form className='page_links' onSubmit={e => {
                 e.preventDefault()
               }}>
