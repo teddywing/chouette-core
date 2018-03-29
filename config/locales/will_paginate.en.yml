@@ -39,8 +39,4 @@ en:
         other: "%{model} 1 to %{count} out of %{count}"
 
       multi_page: "%{model} list %{from} to %{to} out of %{count}"
-<<<<<<< Updated upstream
       multi_page_html: "%{model} list %{from} to %{to} out of %{count}"
-=======
-      multi_page_html: "%{model} list %{from} to %{to} out of %{count}"
->>>>>>> Stashed changes
