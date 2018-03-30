@@ -184,6 +184,10 @@ class Referential < ActiveRecord::Base
     Chouette::VehicleJourneyFrequency.all
   end
 
+  def vehicle_journey_at_stops
+    Chouette::VehicleJourneyAtStop.all
+  end
+
   def routing_constraint_zones
     Chouette::RoutingConstraintZone.all
   end
