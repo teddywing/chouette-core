@@ -13,7 +13,7 @@ describe Chouette::StopArea, :type => :model do
   it { should validate_presence_of :kind }
   it { should validate_numericality_of :latitude }
   it { should validate_numericality_of :longitude }
-  it { is_expected.to be_versioned }
+  
 
   describe "#area_type" do
     it "should validate the value is correct regarding to the kind" do

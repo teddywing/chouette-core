@@ -1,4 +1,4 @@
-class SimpleInterface < ActiveRecord::Base
+class SimpleInterface < ApplicationModel
   attr_accessor :configuration, :interfaces_group
 
   class << self

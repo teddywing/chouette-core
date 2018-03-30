@@ -1,5 +1,7 @@
-class ComplianceControlSet < ActiveRecord::Base
-  has_paper_trail class_name: 'PublicVersion'
+class ComplianceControlSet < ApplicationModel
+  include MetadataSupport
+  
+  has_metadata
   belongs_to :organisation
   has_many :compliance_control_blocks, dependent: :destroy
   has_many :compliance_controls, dependent: :destroy

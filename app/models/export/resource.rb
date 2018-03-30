@@ -1,4 +1,4 @@
-class Export::Resource < ActiveRecord::Base
+class Export::Resource < ApplicationModel
   self.table_name = :export_resources
 
   include IevInterfaces::Resource

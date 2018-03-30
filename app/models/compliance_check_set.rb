@@ -1,6 +1,8 @@
-class ComplianceCheckSet < ActiveRecord::Base
+class ComplianceCheckSet < ApplicationModel
   extend Enumerize
-  has_paper_trail class_name: 'PublicVersion'
+  include MetadataSupport
+  
+  has_metadata
 
   belongs_to :referential
   belongs_to :compliance_control_set

@@ -1,4 +1,4 @@
-class ReferentialSuite < ActiveRecord::Base
+class ReferentialSuite < ApplicationModel
   belongs_to :new, class_name: 'Referential'
   validate def validate_consistent_new
     return true if new_id.nil? || new.nil?

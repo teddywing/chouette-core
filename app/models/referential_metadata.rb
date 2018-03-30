@@ -1,7 +1,7 @@
 require 'activeattr_ext.rb'
 require 'range_ext'
 
-class ReferentialMetadata < ActiveRecord::Base
+class ReferentialMetadata < ApplicationModel
   belongs_to :referential, touch: true
   belongs_to :referential_source, class_name: 'Referential'
   has_array_of :lines, class_name: 'Chouette::Line'

@@ -41,7 +41,7 @@ module MetadataSupport
 
     def method_missing(mid, *args)
       out = super(mid, *args)
-      owner.write_attribute attribute_name, @table
+      owner.send :write_attribute, attribute_name, @table
       out = out&.to_time if args.length == 0 && is_timestamp_attr?(mid)
       out
     end
@@ -64,7 +64,7 @@ module MetadataSupport
         define_singleton_method("#{name}=") do |x|
           modifiable[timestamp_attr_name] = Time.now if timestamp_attr_name
           modifiable[name] = x
-          owner.write_attribute attribute_name, @table
+          owner.send :write_attribute, attribute_name, @table
         end
         modifiable[timestamp_attr_name] = Time.now if timestamp_attr_name
       end

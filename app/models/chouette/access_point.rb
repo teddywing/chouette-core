@@ -4,7 +4,7 @@ require 'geo_ruby'
 
 module Chouette
   class AccessPoint < Chouette::ActiveRecord
-    has_paper_trail
+    has_metadata
 
     include Geokit::Mappable
     include ProjectionFields

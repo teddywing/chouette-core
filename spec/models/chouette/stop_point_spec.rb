@@ -4,7 +4,7 @@ describe Chouette::StopPoint, :type => :model do
 
   it { is_expected.to validate_uniqueness_of :objectid }
   it { is_expected.to validate_presence_of :stop_area }
-  it { is_expected.to be_versioned }
+  
 
   describe '#objectid' do
     subject { super().get_objectid }

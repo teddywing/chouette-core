@@ -1,11 +1,11 @@
 module Chouette
   class Company < Chouette::ActiveRecord
+    has_metadata
+
     include CompanyRestrictions
     include LineReferentialSupport
     include ObjectidSupport
     include CustomFieldsSupport
-
-    has_paper_trail class_name: 'PublicVersion'
 
     has_many :lines
 

@@ -1,4 +1,4 @@
-class ComplianceCheckResource < ActiveRecord::Base
+class ComplianceCheckResource < ApplicationModel
   extend Enumerize
 
   belongs_to :compliance_check_set

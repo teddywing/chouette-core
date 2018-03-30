@@ -1,4 +1,4 @@
-class CustomField < ActiveRecord::Base
+class CustomField < ApplicationModel
 
   extend Enumerize
   belongs_to :workgroup

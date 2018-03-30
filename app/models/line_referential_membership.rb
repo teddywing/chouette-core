@@ -1,4 +1,4 @@
-class LineReferentialMembership < ActiveRecord::Base
+class LineReferentialMembership < ApplicationModel
   belongs_to :organisation
   belongs_to :line_referential
 

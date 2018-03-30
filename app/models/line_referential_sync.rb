@@ -1,4 +1,4 @@
-class LineReferentialSync < ActiveRecord::Base
+class LineReferentialSync < ApplicationModel
   include AASM
   belongs_to :line_referential
   has_many :line_referential_sync_messages, :dependent => :destroy

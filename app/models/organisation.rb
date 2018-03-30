@@ -1,5 +1,5 @@
 # coding: utf-8
-class Organisation < ActiveRecord::Base
+class Organisation < ApplicationModel
   include DataFormatEnumerations
 
   has_many :users, :dependent => :destroy

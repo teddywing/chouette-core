@@ -1,4 +1,4 @@
-class ReferentialCloning < ActiveRecord::Base
+class ReferentialCloning < ApplicationModel
   include AASM
   belongs_to :source_referential, class_name: 'Referential'
   belongs_to :target_referential, class_name: 'Referential'

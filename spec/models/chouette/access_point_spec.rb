@@ -12,7 +12,7 @@ describe Chouette::AccessPoint, :type => :model do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_numericality_of :latitude }
   it { is_expected.to validate_numericality_of :longitude }
-  it { is_expected.to be_versioned }
+  
 
   describe ".latitude" do
     it "should accept -90 value" do

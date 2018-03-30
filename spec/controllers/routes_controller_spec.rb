@@ -42,11 +42,14 @@ RSpec.describe RoutesController, type: :controller do
     before(:each) do
       post :create, line_id: route.line_id,
           referential_id: referential.id,
-          route: { name: "changed"}
+          route: { name: "changed", published_name: "published_name"}
 
     end
     it_behaves_like "line and referential linked"
     it_behaves_like "redirected to referential_line_path(referential,line)"
+    it "sets metadata" do
+      expect(Chouette::Route.last.metadata.creator_username).to eq @user.username
+    end
   end
 
   describe "PUT /update" do
@@ -58,6 +61,9 @@ RSpec.describe RoutesController, type: :controller do
 
     it_behaves_like "route, line and referential linked"
     it_behaves_like "redirected to referential_line_path(referential,line)"
+    it "sets metadata" do
+      expect(Chouette::Route.last.metadata.modifier_username).to eq @user.username
+    end
   end
 
   describe "GET /show" do

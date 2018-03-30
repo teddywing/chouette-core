@@ -11,7 +11,7 @@ module Chouette
 
     enumerize :color, in: %w(#9B9B9B #FFA070 #C67300 #7F551B #41CCE3 #09B09C #3655D7 #6321A0 #E796C6 #DD2DAA)
 
-    has_paper_trail
+    has_metadata
     belongs_to :referential
     has_and_belongs_to_many :vehicle_journeys, :class_name => 'Chouette::VehicleJourney'
 

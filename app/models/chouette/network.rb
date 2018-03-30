@@ -1,6 +1,6 @@
 module Chouette
   class Network < Chouette::ActiveRecord
-    has_paper_trail class_name: 'PublicVersion'
+    has_metadata
     include NetworkRestrictions
     include LineReferentialSupport
     include ObjectidSupport

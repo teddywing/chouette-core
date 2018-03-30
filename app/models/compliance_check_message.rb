@@ -1,4 +1,4 @@
-class ComplianceCheckMessage < ActiveRecord::Base
+class ComplianceCheckMessage < ApplicationModel
   extend Enumerize
 
   belongs_to :compliance_check_set

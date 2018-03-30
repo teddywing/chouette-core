@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  include PaperTrailSupport
   include MetadataControllerSupport
   include Pundit
   include FeatureChecker

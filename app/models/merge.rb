@@ -1,4 +1,4 @@
-class Merge < ActiveRecord::Base
+class Merge < ApplicationModel
   extend Enumerize
 
   belongs_to :workbench

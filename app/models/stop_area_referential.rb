@@ -1,4 +1,4 @@
-class StopAreaReferential < ActiveRecord::Base
+class StopAreaReferential < ApplicationModel
   validates :registration_number_format, format: { with: /\AX*\z/ }
 
   include ObjectidFormatterSupport
