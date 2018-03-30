@@ -12,7 +12,7 @@ class StopAreaReferential < ActiveRecord::Base
 
   def add_member(organisation, options = {})
     attributes = options.merge organisation: organisation
-    stop_area_referential_memberships.build attributes
+    stop_area_referential_memberships.build attributes unless organisations.include?(organisation)
   end
 
   def last_sync

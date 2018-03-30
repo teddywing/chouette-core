@@ -1,7 +1,7 @@
 class LineReferential < ActiveRecord::Base
   include ObjectidFormatterSupport
   extend StifTransportModeEnumerations
-  
+
   has_many :line_referential_memberships
   has_many :organisations, through: :line_referential_memberships
   has_many :lines, class_name: 'Chouette::Line'
@@ -14,7 +14,7 @@ class LineReferential < ActiveRecord::Base
 
   def add_member(organisation, options = {})
     attributes = options.merge organisation: organisation
-    line_referential_memberships.build attributes
+    line_referential_memberships.build attributes unless organisations.include?(organisation)
   end
 
   validates :name, presence: true
