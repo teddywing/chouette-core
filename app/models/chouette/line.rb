@@ -51,6 +51,14 @@ module Chouette
         )
     }
 
+    scope :for_organisation, ->(organisation){
+      if objectids = organisation&.lines_scope
+        where(objectid: objectids)
+      else
+        all
+      end
+    }
+
     def self.nullable_attributes
       [:published_name, :number, :comment, :url, :color, :text_color, :stable_id]
     end

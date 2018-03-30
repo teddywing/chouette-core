@@ -86,4 +86,8 @@ class Organisation < ActiveRecord::Base
     workbenches.default
   end
 
+  def lines_scope
+    functional_scope = sso_attributes.try(:[], "functional_scope")
+    JSON.parse(functional_scope) if functional_scope
+  end
 end
