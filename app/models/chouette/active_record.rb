@@ -2,6 +2,8 @@
 require 'deep_cloneable'
 module Chouette
   class ActiveRecord < ::ActiveRecord::Base
+    include MetadataSupport
+    
     self.abstract_class = true
     before_save :nil_if_blank, :set_data_source_ref
 

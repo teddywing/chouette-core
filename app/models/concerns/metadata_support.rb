@@ -1,0 +1,74 @@
+module MetadataSupport
+  extend ActiveSupport::Concern
+
+  included do
+    class << self
+      def has_metadata?
+        !!@has_metadata
+      end
+
+      def has_metadata opts={}
+        @has_metadata = true
+
+        define_method :metadata do
+          attr_name = opts[:attr_name] || :metadata
+          @wrapped_metadata ||= begin
+            wrapped = MetadataSupport::MetadataWrapper.new self.read_attribute(attr_name)
+            wrapped.attribute_name = attr_name
+            wrapped.owner = self
+            wrapped
+          end
+        end
+
+        define_method :set_metadata! do |name, value|
+          self.metadata.send "#{name}=", value
+          self.save!
+        end
+      end
+    end
+  end
+
+  def has_metadata?
+    self.class.has_metadata?
+  end
+
+  class MetadataWrapper < OpenStruct
+    attr_accessor :attribute_name, :owner
+
+    def is_timestamp_attr? name
+      name =~ /_updated_at$/
+    end
+
+    def method_missing(mid, *args)
+      out = super(mid, *args)
+      owner.write_attribute attribute_name, @table
+      out = out&.to_time if args.length == 0 && is_timestamp_attr?(mid)
+      out
+    end
+
+    def new_ostruct_member name
+      unless is_timestamp_attr?(name)
+        timestamp_attr_name = "#{name}_updated_at".to_sym
+      end
+
+      name = name.to_sym
+      unless respond_to?(name)
+        if timestamp_attr_name
+          define_singleton_method(timestamp_attr_name) { @table[timestamp_attr_name]&.to_time }
+          define_singleton_method(name) { @table[name] }
+        else
+          # we are defining an accessor for a timestamp
+          define_singleton_method(name) { @table[name]&.to_time }
+        end
+
+        define_singleton_method("#{name}=") do |x|
+          modifiable[timestamp_attr_name] = Time.now if timestamp_attr_name
+          modifiable[name] = x
+          owner.write_attribute attribute_name, @table
+        end
+        modifiable[timestamp_attr_name] = Time.now if timestamp_attr_name
+      end
+      name
+    end
+  end
+end

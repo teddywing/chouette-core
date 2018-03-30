@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include PaperTrailSupport
+  include MetadataControllerSupport
   include Pundit
   include FeatureChecker
 
@@ -9,7 +10,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery unless: -> { request.get? && (request.format.json? || request.format.js?) }
   before_action :authenticate_user!
   before_action :set_locale
-
 
   # Load helpers in rails engine
   helper LanguageEngine::Engine.helpers
