@@ -1,8 +1,8 @@
 RSpec.describe 'Calendars', type: :feature do
   login_user
 
-  let(:calendar) { create :calendar, organisation_id: 1 }
-  let(:workgroup) { calendar.workgroup }
+  let(:calendar) { create :calendar, organisation: first_organisation, workgroup: first_workgroup }
+  let(:workgroup) { first_workgroup }
 
   describe 'permissions' do
     before do

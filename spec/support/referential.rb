@@ -8,6 +8,10 @@ module ReferentialHelper
     Organisation.find_by!(code: "first")
   end
 
+  def first_workgroup
+    Workgroup.find_by_name('IDFM')
+  end
+
   def self.included(base)
     base.class_eval do
       extend ClassMethods
@@ -53,10 +57,18 @@ RSpec.configure do |config|
       referential.add_member organisation, owner: true
     end
 
+    workgroup = FactoryGirl.create(
+      :workgroup,
+      name: "IDFM",
+      line_referential: line_referential,
+      stop_area_referential: stop_area_referential
+    )
+
     workbench = FactoryGirl.create(
       :workbench,
       name: "Gestion de l'offre",
       organisation: organisation,
+      workgroup: workgroup,
       line_referential: line_referential,
       stop_area_referential: stop_area_referential
     )
