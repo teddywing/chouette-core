@@ -16,16 +16,45 @@ class Import::Gtfs < Import::Base
   end
 
   attr_accessor :local_file
+  def local_file
+    @local_file ||= download_local_file
+  end
 
-  # TODO download the imported file
-  # def local_file
-  #   @local_file
-  # end
+  attr_accessor :download_host
+  def download_host
+    @download_host ||= Rails.application.config.rails_host.gsub("http://","")
+  end
 
-  # TODO create referential with metadatas
-  # def referential
-  # ...
-  # end
+  def local_temp_directory
+    Rails.application.config.try(:import_temporary_directory) ||
+      Rails.root.join('tmp', 'imports')
+  end
+
+  def local_temp_file(&block)
+    Tempfile.open "chouette-import", local_temp_directory, &block
+  end
+
+  def download_path
+    Rails.application.routes.url_helpers.download_workbench_import_path(workbench, id, token: token_download)
+  end
+
+  def download_local_file
+    local_temp_file do |file|
+      begin
+        Net::HTTP.start(download_host) do |http|
+          http.request_get(download_path) do |response|
+            response.read_body do |segment|
+              file.write segment
+            end
+          end
+        end
+      ensure
+        file.close
+      end
+
+      file.path
+    end
+  end
 
   def source
     @source ||= ::GTFS::Source.build local_file
@@ -38,6 +67,8 @@ class Import::Gtfs < Import::Base
 
     import_agencies
     import_stops
+    import_calandars
+
     import_routes
     import_trips
     import_stop_times
@@ -48,7 +79,7 @@ class Import::Gtfs < Import::Base
       company = line_referential.companies.find_or_initialize_by(registration_number: agency.id)
       company.attributes = { name: agency.name }
 
-      save company
+      save_model company
     end
   end
 
@@ -64,7 +95,7 @@ class Import::Gtfs < Import::Base
 
       # TODO correct default timezone
 
-      save stop_area
+      save_model stop_area
     end
   end
 
@@ -85,7 +116,7 @@ class Import::Gtfs < Import::Base
 
       line.url = route.url
 
-      save line
+      save_model line
     end
   end
 
@@ -102,14 +133,14 @@ class Import::Gtfs < Import::Base
       # TODO better name ?
       name = route.published_name = trip.short_name.presence || trip.headsign.presence || route.wayback.to_s.capitalize
       route.name = name
-      save route
+      save_model route
 
       journey_pattern = route.journey_patterns.build name: name
-      save journey_pattern
+      save_model journey_pattern
 
       vehicle_journey = journey_pattern.vehicle_journeys.build route: route
       vehicle_journey.published_journey_name = trip.headsign.presence || trip.id
-      save vehicle_journey
+      save_model vehicle_journey
 
       vehicle_journey.time_tables << referential.time_tables.find(time_tables_by_service_id[trip.service_id])
 
@@ -129,7 +160,7 @@ class Import::Gtfs < Import::Base
         stop_area = stop_area_referential.stop_areas.find_by(registration_number: stop_time.stop_id)
 
         stop_point = route.stop_points.build stop_area: stop_area
-        save stop_point
+        save_model stop_point
 
         journey_pattern.stop_points << stop_point
 
@@ -140,7 +171,7 @@ class Import::Gtfs < Import::Base
 
         # TODO offset
 
-        save vehicle_journey_at_stop
+        save_model vehicle_journey_at_stop
       end
     end
   end
@@ -157,13 +188,13 @@ class Import::Gtfs < Import::Base
       end
       time_table.periods.build period_start: calendar.start_date, period_end: calendar.end_date
 
-      save time_table
+      save_model time_table
 
       time_tables_by_service_id[calendar.service_id] = time_table.id
     end
   end
 
-  def save(model)
+  def save_model(model)
     unless model.save
       Rails.logger.info "Can't save #{model.class.name} : #{model.errors.inspect}"
       raise ActiveRecord::RecordNotSaved.new("Invalid #{model.class.name}")

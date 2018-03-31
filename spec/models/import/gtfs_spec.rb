@@ -216,4 +216,33 @@ RSpec.describe Import::Gtfs do
     end
   end
 
+  describe "#download_local_file" do
+
+    let(:file) { "google-sample-feed.zip" }
+    let(:referential) { create :workbench_referential }
+    let(:import) do
+      Import::Gtfs.create! name: "GTFS test", creator: "Test", workbench: referential.workbench, referential: referential, file: open_fixture(file), download_host: "rails_host"
+    end
+
+    let(:download_url) { "#{import.download_host}/workbenches/#{import.workbench_id}/imports/#{import.id}/download?token=#{import.token_download}" }
+
+    before do
+      stub_request(:get, download_url).to_return(status: 200, body: read_fixture(file))
+    end
+
+    it "should download local_file" do
+      expect(File.read(import.download_local_file)).to eq(read_fixture(file))
+    end
+
+  end
+
+  describe "#download_host" do
+    it "should return host defined by Rails.application.config.rails_host (without http:// schema)" do
+      allow(Rails.application.config).to receive(:rails_host).and_return("http://download_host")
+
+      expect(Import::Gtfs.new.download_host).to eq("download_host")
+    end
+
+  end
+
 end
