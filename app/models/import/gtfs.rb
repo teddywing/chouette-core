@@ -111,6 +111,8 @@ class Import::Gtfs < Import::Base
       vehicle_journey.published_journey_name = trip.headsign.presence || trip.id
       save vehicle_journey
 
+      vehicle_journey.time_tables << referential.time_tables.find(time_tables_by_service_id[trip.service_id])
+
       vehicle_journey_by_trip_id[trip.id] = vehicle_journey.id
     end
   end
@@ -140,6 +142,24 @@ class Import::Gtfs < Import::Base
 
         save vehicle_journey_at_stop
       end
+    end
+  end
+
+  def time_tables_by_service_id
+    @time_tables_by_service_id ||= {}
+  end
+
+  def import_calendars
+    source.calendars.each do |calendar|
+      time_table = referential.time_tables.build comment: "Calendar #{calendar.service_id}"
+      Chouette::TimeTable.all_days.each do |day|
+        time_table.send("#{day}=", calendar.send(day))
+      end
+      time_table.periods.build period_start: calendar.start_date, period_end: calendar.end_date
+
+      save time_table
+
+      time_tables_by_service_id[calendar.service_id] = time_table.id
     end
   end
 

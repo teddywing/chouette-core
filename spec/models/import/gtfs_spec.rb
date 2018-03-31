@@ -116,17 +116,28 @@ RSpec.describe Import::Gtfs do
     it "should create a VehicleJourney for each trip" do
       referential.switch
 
+      import.import_calendars
       import.import_routes
       import.import_trips
 
-      defined_attributes = [
-        :published_journey_name
-      ]
+      defined_attributes = ->(v) {
+        [v.published_journey_name, v.time_tables.first&.comment]
+      }
       expected_attributes = [
-        "to Bullfrog", "to Airport", "Shuttle", "CITY1", "CITY2", "to Furnace Creek Resort", "to Bullfrog", "to Amargosa Valley", "to Airport", "to Amargosa Valley", "to Airport"
+        ["to Bullfrog", "Calendar FULLW"],
+        ["to Airport", "Calendar FULLW"],
+        ["Shuttle", "Calendar FULLW"],
+        ["CITY1", "Calendar FULLW"],
+        ["CITY2", "Calendar FULLW"],
+        ["to Furnace Creek Resort", "Calendar FULLW"],
+        ["to Bullfrog", "Calendar FULLW"],
+        ["to Amargosa Valley", "Calendar WE"],
+        ["to Airport", "Calendar WE"],
+        ["to Amargosa Valley", "Calendar WE"],
+        ["to Airport", "Calendar WE"]
       ]
 
-      expect(referential.vehicle_journeys.pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(referential.vehicle_journeys.map(&defined_attributes)).to eq(expected_attributes)
     end
   end
 
@@ -179,6 +190,29 @@ RSpec.describe Import::Gtfs do
         ["BEATTY_AIRPORT", 1, t("2000-01-01 16:00:00 UTC"), t("2000-01-01 16:00:00 UTC")]
       ]
       expect(referential.vehicle_journey_at_stops.includes(stop_point: :stop_area).pluck(*defined_attributes)).to eq(expected_attributes)
+    end
+  end
+
+  describe "#import_calendars" do
+    let(:import) { create_import "google-sample-feed.zip" }
+
+    it "should create a Timetable for each calendar" do
+      referential.switch
+
+      import.import_calendars
+
+      def d(value)
+        Date.parse(value)
+      end
+
+      defined_attributes = ->(t) {
+        [t.comment, t.valid_days, t.periods.first.period_start, t.periods.first.period_end]
+      }
+      expected_attributes = [
+        ["Calendar FULLW", [1, 2, 3, 4, 5, 6, 7], d("Mon, 01 Jan 2007"), d("Fri, 31 Dec 2010")],
+        ["Calendar WE", [6, 7], d("Mon, 01 Jan 2007"), d("Fri, 31 Dec 2010")]
+      ]
+      expect(referential.time_tables.map(&defined_attributes)).to eq(expected_attributes)
     end
   end
 
