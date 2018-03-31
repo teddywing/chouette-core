@@ -73,9 +73,9 @@ RSpec.describe Import::Gtfs do
     it "should create a Route for each trip" do
       referential.switch
 
+      import.import_calendars
       import.import_routes
       import.import_trips
-
 
       defined_attributes = [
         "lines.registration_number", :wayback, :name, :published_name
@@ -100,6 +100,7 @@ RSpec.describe Import::Gtfs do
     it "should create a JourneyPattern for each trip" do
       referential.switch
 
+      import.import_calendars
       import.import_routes
       import.import_trips
 
@@ -149,6 +150,7 @@ RSpec.describe Import::Gtfs do
 
       import.import_stops
       import.import_routes
+      import.import_calendars
       import.import_trips
       import.import_stop_times
 
