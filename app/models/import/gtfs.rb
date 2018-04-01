@@ -6,13 +6,47 @@ class Import::Gtfs < Import::Base
   end
 
   def import
-    workbench_import.update(status: 'running', started_at: Time.now)
+    update status: 'running', started_at: Time.now
 
     import_without_status
-    workbench_import.update(status: 'successful', ended_at: Time.now)
+    update status: 'successful', ended_at: Time.now
   rescue Exception => e
-    workbench_import.update(status: 'failed', ended_at: Time.now)
-    raise e
+    update status: 'failed', ended_at: Time.now
+    Rails.logger.error "Error in GTFS import: #{e} #{e.backtrace.join('\n')}"
+  ensure
+    notify_parent
+    referential&.update ready: true
+  end
+
+  def self.accept_file?(file)
+    Zip::File.open(file) do |zip_file|
+      zip_file.glob('agency.txt').size == 1
+    end
+  rescue Exception => e
+    Rails.logger.debug "Error in testing GTFS file: #{e}"
+    return false
+  end
+
+  def create_referential
+    self.referential ||= Referential.create!(
+      name: "GTFS Import",
+      organisation_id: workbench.organisation_id,
+      workbench_id: workbench.id,
+      metadatas: [referential_metadata]
+    )
+  end
+
+  def referential_metadata
+    registration_numbers = source.routes.map(&:id)
+    line_ids = line_referential.lines.where(registration_number: registration_numbers).pluck(:id)
+
+    start_dates, end_dates = source.calendars.map { |c| [c.start_date, c.end_date ] }.transpose
+    excluded_dates = source.calendar_dates.select { |d| d.exception_type == "2" }.map(&:date)
+
+    min_date = Date.parse (start_dates + [excluded_dates.min]).compact.min
+    max_date = Date.parse (end_dates + [excluded_dates.max]).compact.max
+
+    ReferentialMetadata.new line_ids: line_ids, periodes: [min_date..max_date]
   end
 
   attr_accessor :local_file
@@ -31,7 +65,10 @@ class Import::Gtfs < Import::Base
   end
 
   def local_temp_file(&block)
-    Tempfile.open "chouette-import", local_temp_directory, &block
+    Tempfile.open("chouette-import", local_temp_directory) do |file|
+      file.binmode
+      yield file
+    end
   end
 
   def download_path
@@ -60,16 +97,21 @@ class Import::Gtfs < Import::Base
     @source ||= ::GTFS::Source.build local_file
   end
 
-  delegate :line_referential, :stop_area_referential, to: :referential
+  delegate :line_referential, :stop_area_referential, to: :workbench
 
-  def import_without_status
-    referential.switch
-
+  def prepare_referential
     import_agencies
     import_stops
-    import_calandars
-
     import_routes
+
+    create_referential
+    referential.switch
+  end
+
+  def import_without_status
+    prepare_referential
+
+    import_calendars
     import_trips
     import_stop_times
   end
@@ -197,9 +239,16 @@ class Import::Gtfs < Import::Base
   def save_model(model)
     unless model.save
       Rails.logger.info "Can't save #{model.class.name} : #{model.errors.inspect}"
-      raise ActiveRecord::RecordNotSaved.new("Invalid #{model.class.name}")
+      raise ActiveRecord::RecordNotSaved.new("Invalid #{model.class.name} : #{model.errors.inspect}")
     end
     Rails.logger.debug "Created #{model.inspect}"
+  end
+
+  def notify_parent
+    return unless parent.present?
+    return if notified_parent_at
+    parent.child_change
+    update_column :notified_parent_at, Time.now
   end
 
 end

@@ -9,8 +9,15 @@ RSpec.describe Import::Gtfs do
     end
   end
 
+  let(:workbench) do
+    create :workbench do |workbench|
+      workbench.line_referential.objectid_format = "netex"
+      workbench.stop_area_referential.objectid_format = "netex"
+    end
+  end
+
   def create_import(file)
-    Import::Gtfs.new referential: referential, local_file: fixtures_path(file)
+    Import::Gtfs.new workbench: workbench, local_file: fixtures_path(file)
   end
 
   describe "#import_agencies" do
@@ -18,7 +25,7 @@ RSpec.describe Import::Gtfs do
     it "should create a company for each agency" do
       import.import_agencies
 
-      expect(referential.line_referential.companies.pluck(:registration_number, :name)).to eq([["DTA","Demo Transit Authority"]])
+      expect(workbench.line_referential.companies.pluck(:registration_number, :name)).to eq([["DTA","Demo Transit Authority"]])
     end
   end
 
@@ -42,7 +49,7 @@ RSpec.describe Import::Gtfs do
         ["FUR_CREEK_RES", "Furnace Creek Resort (Demo)", nil, 36.425288, -117.133162]
       ]
 
-      expect(referential.stop_area_referential.stop_areas.pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(workbench.stop_area_referential.stop_areas.pluck(*defined_attributes)).to eq(expected_attributes)
     end
   end
 
@@ -64,17 +71,18 @@ RSpec.describe Import::Gtfs do
         ["AB", "Airport - Bullfrog", "10", "Airport - Bullfrog", nil, nil, nil]
       ]
 
-      expect(referential.line_referential.lines.includes(:company).pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(workbench.line_referential.lines.includes(:company).pluck(*defined_attributes)).to eq(expected_attributes)
     end
   end
 
   describe "#import_trips" do
     let(:import) { create_import "google-sample-feed.zip" }
-    it "should create a Route for each trip" do
-      referential.switch
-
+    before do
+      import.prepare_referential
       import.import_calendars
-      import.import_routes
+    end
+
+    it "should create a Route for each trip" do
       import.import_trips
 
       defined_attributes = [
@@ -94,14 +102,10 @@ RSpec.describe Import::Gtfs do
         ["AAMV", "inbound", "to Airport", "to Airport"]
       ]
 
-      expect(referential.routes.includes(:line).pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(import.referential.routes.includes(:line).pluck(*defined_attributes)).to eq(expected_attributes)
     end
 
     it "should create a JourneyPattern for each trip" do
-      referential.switch
-
-      import.import_calendars
-      import.import_routes
       import.import_trips
 
       defined_attributes = [
@@ -111,14 +115,10 @@ RSpec.describe Import::Gtfs do
         "to Bullfrog", "to Airport", "Shuttle", "Outbound", "Inbound", "to Furnace Creek Resort", "to Bullfrog", "to Amargosa Valley", "to Airport", "to Amargosa Valley", "to Airport"
       ]
 
-      expect(referential.journey_patterns.pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(import.referential.journey_patterns.pluck(*defined_attributes)).to eq(expected_attributes)
     end
 
     it "should create a VehicleJourney for each trip" do
-      referential.switch
-
-      import.import_calendars
-      import.import_routes
       import.import_trips
 
       defined_attributes = ->(v) {
@@ -138,20 +138,20 @@ RSpec.describe Import::Gtfs do
         ["to Airport", "Calendar WE"]
       ]
 
-      expect(referential.vehicle_journeys.map(&defined_attributes)).to eq(expected_attributes)
+      expect(import.referential.vehicle_journeys.map(&defined_attributes)).to eq(expected_attributes)
     end
   end
 
   describe "#import_stop_times" do
     let(:import) { create_import "google-sample-feed.zip" }
 
-    it "should create a VehicleJourneyAtStop for each stop_time" do
-      referential.switch
-
-      import.import_stops
-      import.import_routes
+    before do
+      import.prepare_referential
       import.import_calendars
       import.import_trips
+    end
+
+    it "should create a VehicleJourneyAtStop for each stop_time" do
       import.import_stop_times
 
       def t(value)
@@ -198,9 +198,11 @@ RSpec.describe Import::Gtfs do
   describe "#import_calendars" do
     let(:import) { create_import "google-sample-feed.zip" }
 
-    it "should create a Timetable for each calendar" do
-      referential.switch
+    before do
+      import.prepare_referential
+    end
 
+    it "should create a Timetable for each calendar" do
       import.import_calendars
 
       def d(value)
@@ -221,9 +223,8 @@ RSpec.describe Import::Gtfs do
   describe "#download_local_file" do
 
     let(:file) { "google-sample-feed.zip" }
-    let(:referential) { create :workbench_referential }
     let(:import) do
-      Import::Gtfs.create! name: "GTFS test", creator: "Test", workbench: referential.workbench, referential: referential, file: open_fixture(file), download_host: "rails_host"
+      Import::Gtfs.create! name: "GTFS test", creator: "Test", workbench: workbench, file: open_fixture(file), download_host: "rails_host"
     end
 
     let(:download_url) { "#{import.download_host}/workbenches/#{import.workbench_id}/imports/#{import.id}/download?token=#{import.token_download}" }

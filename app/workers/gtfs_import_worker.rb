@@ -1,4 +1,4 @@
-class WorkbenchImportWorker
+class GtfsImportWorker
   include Sidekiq::Worker
 
   def perform(import_id)
