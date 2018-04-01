@@ -131,7 +131,7 @@ class Import::Gtfs < Import::Base
 
       stop_area.name = stop.name
       stop_area.area_type = stop.location_type == "1" ? "zdlp" : "zdep"
-      stop_area.parent = stop_referential.stop_areas.find_by!(registration_number: stop.parent_station) if stop.parent_station.present?
+      stop_area.parent = stop_area_referential.stop_areas.find_by!(registration_number: stop.parent_station) if stop.parent_station.present?
       stop_area.latitude, stop_area.longitude = stop.lat, stop.lon
       stop_area.kind = "commercial"
 
