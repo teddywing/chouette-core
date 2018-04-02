@@ -254,6 +254,19 @@ class Import::Gtfs < Import::Base
     end
   end
 
+  def import_calendar_dates
+    source.calendar_dates.each_slice(500) do |slice|
+      Chouette::TimeTable.transaction do
+        slice.each do |calendar_date|
+          time_table = referential.time_tables.find time_tables_by_service_id[calendar_date.service_id]
+          date = time_table.dates.build date: Date.parse(calendar_date.date), in_out: calendar_date.exception_type == "1"
+
+          save_model date
+        end
+      end
+    end
+  end
+
   def save_model(model)
     unless model.save
       Rails.logger.info "Can't save #{model.class.name} : #{model.errors.inspect}"

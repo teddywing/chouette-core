@@ -220,6 +220,31 @@ RSpec.describe Import::Gtfs do
     end
   end
 
+  describe "#import_calendar_dates" do
+    let(:import) { create_import "google-sample-feed.zip" }
+
+    before do
+      import.prepare_referential
+      import.import_calendars
+    end
+
+    it "should create a Timetable::Date for each calendar date" do
+      import.import_calendar_dates
+
+      def d(value)
+        Date.parse(value)
+      end
+
+      defined_attributes = ->(d) {
+        [d.time_table.comment, d.date, d.in_out]
+      }
+      expected_attributes = [
+        ["Calendar FULLW", d("Mon, 04 Jun 2007"), false]
+      ]
+      expect(referential.time_table_dates.map(&defined_attributes)).to eq(expected_attributes)
+    end
+  end
+
   describe "#download_local_file" do
 
     let(:file) { "google-sample-feed.zip" }

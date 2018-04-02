@@ -168,6 +168,10 @@ class Referential < ActiveRecord::Base
     Chouette::TimeTable.all
   end
 
+  def time_table_dates
+    Chouette::TimeTableDate.all
+  end
+
   def timebands
     Chouette::Timeband.all
   end
