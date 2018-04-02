@@ -117,48 +117,54 @@ class Import::Gtfs < Import::Base
   end
 
   def import_agencies
-    source.agencies.each do |agency|
-      company = line_referential.companies.find_or_initialize_by(registration_number: agency.id)
-      company.attributes = { name: agency.name }
+    Chouette::Company.transaction do
+      source.agencies.each do |agency|
+        company = line_referential.companies.find_or_initialize_by(registration_number: agency.id)
+        company.attributes = { name: agency.name }
 
-      save_model company
+        save_model company
+      end
     end
   end
 
   def import_stops
-    source.stops.each do |stop|
-      stop_area = stop_area_referential.stop_areas.find_or_initialize_by(registration_number: stop.id)
+    Chouette::StopArea.transaction do
+      source.stops.each do |stop|
+        stop_area = stop_area_referential.stop_areas.find_or_initialize_by(registration_number: stop.id)
 
-      stop_area.name = stop.name
-      stop_area.area_type = stop.location_type == "1" ? "zdlp" : "zdep"
-      stop_area.parent = stop_area_referential.stop_areas.find_by!(registration_number: stop.parent_station) if stop.parent_station.present?
-      stop_area.latitude, stop_area.longitude = stop.lat, stop.lon
-      stop_area.kind = "commercial"
+        stop_area.name = stop.name
+        stop_area.area_type = stop.location_type == "1" ? "zdlp" : "zdep"
+        stop_area.parent = stop_area_referential.stop_areas.find_by!(registration_number: stop.parent_station) if stop.parent_station.present?
+        stop_area.latitude, stop_area.longitude = stop.lat, stop.lon
+        stop_area.kind = "commercial"
 
-      # TODO correct default timezone
+        # TODO correct default timezone
 
-      save_model stop_area
+        save_model stop_area
+      end
     end
   end
 
   def import_routes
-    source.routes.each do |route|
-      line = line_referential.lines.find_or_initialize_by(registration_number: route.id)
-      line.name = route.long_name.presence || route.short_name
-      line.number = route.short_name
-      line.published_name = route.long_name
+    Chouette::Line.transaction do
+      source.routes.each do |route|
+        line = line_referential.lines.find_or_initialize_by(registration_number: route.id)
+        line.name = route.long_name.presence || route.short_name
+        line.number = route.short_name
+        line.published_name = route.long_name
 
-      line.company = line_referential.companies.find_by(registration_number: route.agency_id) if route.agency_id.present?
+        line.company = line_referential.companies.find_by(registration_number: route.agency_id) if route.agency_id.present?
 
-      # TODO transport mode
+        # TODO transport mode
 
-      line.comment = route.desc
+        line.comment = route.desc
 
-      # TODO colors
+        # TODO colors
 
-      line.url = route.url
+        line.url = route.url
 
-      save_model line
+        save_model line
+      end
     end
   end
 
@@ -167,53 +173,61 @@ class Import::Gtfs < Import::Base
   end
 
   def import_trips
-    source.trips.each do |trip|
-      line = line_referential.lines.find_by registration_number: trip.route_id
+    source.trips.each_slice(100) do |slice|
+      slice.each do |trip|
+        Chouette::Route.transaction do
+          line = line_referential.lines.find_by registration_number: trip.route_id
 
-      route = referential.routes.build line: line
-      route.wayback = (trip.direction_id == "0" ? :outbound : :inbound)
-      # TODO better name ?
-      name = route.published_name = trip.short_name.presence || trip.headsign.presence || route.wayback.to_s.capitalize
-      route.name = name
-      save_model route
+          route = referential.routes.build line: line
+          route.wayback = (trip.direction_id == "0" ? :outbound : :inbound)
+          # TODO better name ?
+          name = route.published_name = trip.short_name.presence || trip.headsign.presence || route.wayback.to_s.capitalize
+          route.name = name
+          save_model route
 
-      journey_pattern = route.journey_patterns.build name: name
-      save_model journey_pattern
+          journey_pattern = route.journey_patterns.build name: name
+          save_model journey_pattern
 
-      vehicle_journey = journey_pattern.vehicle_journeys.build route: route
-      vehicle_journey.published_journey_name = trip.headsign.presence || trip.id
-      save_model vehicle_journey
+          vehicle_journey = journey_pattern.vehicle_journeys.build route: route
+          vehicle_journey.published_journey_name = trip.headsign.presence || trip.id
+          save_model vehicle_journey
 
-      vehicle_journey.time_tables << referential.time_tables.find(time_tables_by_service_id[trip.service_id])
+          vehicle_journey.time_tables << referential.time_tables.find(time_tables_by_service_id[trip.service_id])
 
-      vehicle_journey_by_trip_id[trip.id] = vehicle_journey.id
+          vehicle_journey_by_trip_id[trip.id] = vehicle_journey.id
+        end
+      end
     end
   end
 
   def import_stop_times
-    source.stop_times.group_by(&:trip_id).each do |trip_id, stop_times|
-      vehicle_journey = referential.vehicle_journeys.find vehicle_journey_by_trip_id[trip_id]
-      journey_pattern = vehicle_journey.journey_pattern
-      route = journey_pattern.route
+    source.stop_times.group_by(&:trip_id).each_slice(50) do |slice|
+      slice.each do |trip_id, stop_times|
+        Chouette::VehicleJourneyAtStop.transaction do
+          vehicle_journey = referential.vehicle_journeys.find vehicle_journey_by_trip_id[trip_id]
+          journey_pattern = vehicle_journey.journey_pattern
+          route = journey_pattern.route
 
-      stop_times.sort_by!(&:stop_sequence)
+          stop_times.sort_by! { |s| s.stop_sequence.to_i }
 
-      stop_times.each do |stop_time|
-        stop_area = stop_area_referential.stop_areas.find_by(registration_number: stop_time.stop_id)
+          stop_times.each do |stop_time|
+            stop_area = stop_area_referential.stop_areas.find_by(registration_number: stop_time.stop_id)
 
-        stop_point = route.stop_points.build stop_area: stop_area
-        save_model stop_point
+            stop_point = route.stop_points.build stop_area: stop_area
+            save_model stop_point
 
-        journey_pattern.stop_points << stop_point
+            journey_pattern.stop_points << stop_point
 
-        # JourneyPattern#vjas_add creates automaticaly VehicleJourneyAtStop
-        vehicle_journey_at_stop = journey_pattern.vehicle_journey_at_stops.find_by(stop_point_id: stop_point.id)
-        vehicle_journey_at_stop.departure_time = stop_time.departure_time
-        vehicle_journey_at_stop.arrival_time = stop_time.arrival_time
+            # JourneyPattern#vjas_add creates automaticaly VehicleJourneyAtStop
+            vehicle_journey_at_stop = journey_pattern.vehicle_journey_at_stops.find_by(stop_point_id: stop_point.id)
+            vehicle_journey_at_stop.departure_time = stop_time.departure_time
+            vehicle_journey_at_stop.arrival_time = stop_time.arrival_time
 
-        # TODO offset
+            # TODO offset
 
-        save_model vehicle_journey_at_stop
+            save_model vehicle_journey_at_stop
+          end
+        end
       end
     end
   end
@@ -223,16 +237,20 @@ class Import::Gtfs < Import::Base
   end
 
   def import_calendars
-    source.calendars.each do |calendar|
-      time_table = referential.time_tables.build comment: "Calendar #{calendar.service_id}"
-      Chouette::TimeTable.all_days.each do |day|
-        time_table.send("#{day}=", calendar.send(day))
+    source.calendars.each_slice(500) do |slice|
+      Chouette::TimeTable.transaction do
+        slice.each do |calendar|
+          time_table = referential.time_tables.build comment: "Calendar #{calendar.service_id}"
+          Chouette::TimeTable.all_days.each do |day|
+            time_table.send("#{day}=", calendar.send(day))
+          end
+          time_table.periods.build period_start: calendar.start_date, period_end: calendar.end_date
+
+          save_model time_table
+
+          time_tables_by_service_id[calendar.service_id] = time_table.id
+        end
       end
-      time_table.periods.build period_start: calendar.start_date, period_end: calendar.end_date
-
-      save_model time_table
-
-      time_tables_by_service_id[calendar.service_id] = time_table.id
     end
   end
 
