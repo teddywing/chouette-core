@@ -192,7 +192,12 @@ class Import::Gtfs < Import::Base
           vehicle_journey.published_journey_name = trip.headsign.presence || trip.id
           save_model vehicle_journey
 
-          vehicle_journey.time_tables << referential.time_tables.find(time_tables_by_service_id[trip.service_id])
+          time_table = referential.time_tables.find_by(id: time_tables_by_service_id[trip.service_id]) if time_tables_by_service_id[trip.service_id]
+          if time_table
+            vehicle_journey.time_tables << time_table
+          else
+            messages.create! criticity: "warning", message_key: "gtfs.trips.unkown_service_id", message_attributes: {service_id: trip.service_id}
+          end
 
           vehicle_journey_by_trip_id[trip.id] = vehicle_journey.id
         end
