@@ -49,7 +49,7 @@ RSpec.describe Import::Gtfs do
         ["FUR_CREEK_RES", "Furnace Creek Resort (Demo)", nil, 36.425288, -117.133162]
       ]
 
-      expect(workbench.stop_area_referential.stop_areas.pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(workbench.stop_area_referential.stop_areas.pluck(*defined_attributes)).to match_array(expected_attributes)
     end
   end
 
@@ -71,7 +71,7 @@ RSpec.describe Import::Gtfs do
         ["AB", "Airport - Bullfrog", "10", "Airport - Bullfrog", nil, nil, nil]
       ]
 
-      expect(workbench.line_referential.lines.includes(:company).pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(workbench.line_referential.lines.includes(:company).pluck(*defined_attributes)).to match_array(expected_attributes)
     end
   end
 
@@ -102,7 +102,7 @@ RSpec.describe Import::Gtfs do
         ["AAMV", "inbound", "to Airport", "to Airport"]
       ]
 
-      expect(import.referential.routes.includes(:line).pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(import.referential.routes.includes(:line).pluck(*defined_attributes)).to match_array(expected_attributes)
     end
 
     it "should create a JourneyPattern for each trip" do
@@ -115,7 +115,7 @@ RSpec.describe Import::Gtfs do
         "to Bullfrog", "to Airport", "Shuttle", "Outbound", "Inbound", "to Furnace Creek Resort", "to Bullfrog", "to Amargosa Valley", "to Airport", "to Amargosa Valley", "to Airport"
       ]
 
-      expect(import.referential.journey_patterns.pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(import.referential.journey_patterns.pluck(*defined_attributes)).to match_array(expected_attributes)
     end
 
     it "should create a VehicleJourney for each trip" do
@@ -138,7 +138,7 @@ RSpec.describe Import::Gtfs do
         ["to Airport", "Calendar WE"]
       ]
 
-      expect(import.referential.vehicle_journeys.map(&defined_attributes)).to eq(expected_attributes)
+      expect(import.referential.vehicle_journeys.map(&defined_attributes)).to match_array(expected_attributes)
     end
   end
 
@@ -191,7 +191,7 @@ RSpec.describe Import::Gtfs do
         ["AMV", 0, t("2000-01-01 15:00:00 UTC"), t("2000-01-01 15:00:00 UTC")],
         ["BEATTY_AIRPORT", 1, t("2000-01-01 16:00:00 UTC"), t("2000-01-01 16:00:00 UTC")]
       ]
-      expect(referential.vehicle_journey_at_stops.includes(stop_point: :stop_area).pluck(*defined_attributes)).to eq(expected_attributes)
+      expect(referential.vehicle_journey_at_stops.includes(stop_point: :stop_area).pluck(*defined_attributes)).to match_array(expected_attributes)
     end
   end
 
@@ -216,7 +216,7 @@ RSpec.describe Import::Gtfs do
         ["Calendar FULLW", [1, 2, 3, 4, 5, 6, 7], d("Mon, 01 Jan 2007"), d("Fri, 31 Dec 2010")],
         ["Calendar WE", [6, 7], d("Mon, 01 Jan 2007"), d("Fri, 31 Dec 2010")]
       ]
-      expect(referential.time_tables.map(&defined_attributes)).to eq(expected_attributes)
+      expect(referential.time_tables.map(&defined_attributes)).to match_array(expected_attributes)
     end
   end
 
@@ -241,7 +241,7 @@ RSpec.describe Import::Gtfs do
       expected_attributes = [
         ["Calendar FULLW", d("Mon, 04 Jun 2007"), false]
       ]
-      expect(referential.time_table_dates.map(&defined_attributes)).to eq(expected_attributes)
+      expect(referential.time_table_dates.map(&defined_attributes)).to match_array(expected_attributes)
     end
   end
 
