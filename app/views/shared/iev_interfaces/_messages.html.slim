@@ -9,6 +9,6 @@
           - else
             .col-md-6= export_message_content message
           .col-md-6
-            - if message.criticity != "info"
+            - if message.resource_attributes
               pre
                 = JSON.pretty_generate message.resource_attributes || {}

@@ -3,13 +3,14 @@ class ExportsController < ChouetteController
   include RansackDateFilter
   include IevInterfaces
   skip_before_action :authenticate_user!, only: [:upload]
+  skip_before_action :verify_authenticity_token, only: [:upload]
   defaults resource_class: Export::Base, collection_name: 'exports', instance_name: 'export'
 
   def upload
     if params[:token] == resource.token_upload
       resource.file = params[:file]
       resource.save!
-      redirect_to [resource.workbench, resource]
+      render json: {status: :ok}
     else
       user_not_authorized
     end

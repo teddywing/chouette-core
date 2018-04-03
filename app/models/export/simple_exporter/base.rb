@@ -48,15 +48,15 @@ class Export::SimpleExporter::Base < Export::Base
     exporter.export
     set_status_from_exporter
     convert_exporter_journal_to_messages
-    self.file = tmp
     self.save!
+    upload_file tmp
   end
 
   def set_status_from_exporter
     if exporter.status.to_s == "error"
       self.status = :failed
     elsif exporter.status.to_s == "success"
-        self.status = :successful
+      self.status = :successful
     else
       self.status = :warning
     end
