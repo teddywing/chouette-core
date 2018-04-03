@@ -225,8 +225,14 @@ class Import::Gtfs < Import::Base
 
             # JourneyPattern#vjas_add creates automaticaly VehicleJourneyAtStop
             vehicle_journey_at_stop = journey_pattern.vehicle_journey_at_stops.find_by(stop_point_id: stop_point.id)
-            vehicle_journey_at_stop.departure_time = stop_time.departure_time
-            vehicle_journey_at_stop.arrival_time = stop_time.arrival_time
+
+            departure_time = GTFS::Time.parse(stop_time.departure_time)
+            arrival_time = GTFS::Time.parse(stop_time.arrival_time)
+
+            vehicle_journey_at_stop.departure_time = departure_time.time
+            vehicle_journey_at_stop.arrival_time = arrival_time.time
+            vehicle_journey_at_stop.departure_day_offset = departure_time.day_offset
+            vehicle_journey_at_stop.arrival_day_offset = arrival_time.day_offset
 
             # TODO offset
 
