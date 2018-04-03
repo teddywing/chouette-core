@@ -10,7 +10,6 @@ import SaveTimetable from './SaveTimetable'
 import ConfirmModal from './ConfirmModal'
 import ErrorModal from './ErrorModal'
 import clone from '../../helpers/clone'
-const I18n = clone(window, "I18n", true)
 
 class App extends Component {
   componentDidMount(){

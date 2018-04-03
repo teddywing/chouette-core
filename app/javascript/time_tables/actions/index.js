@@ -4,7 +4,6 @@ import reject from 'lodash/reject'
 import some from 'lodash/some'
 import every from 'lodash/every'
 import clone from '../../helpers/clone'
-const I18n = clone(window, "I18n")
 
 const actions = {
   weekDays: (index) => {
