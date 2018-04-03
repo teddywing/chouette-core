@@ -121,7 +121,7 @@ fr:
         checksum: "Signature métier"
         comment: "Commentaires"
         company: "Transporteur"
-        company|_name: "Nom du transporteur"
+        company_name: "Nom du transporteur"
         created_at: "Créé le"
         creator_id: "Créé par"
         departure_time: "Départ"
