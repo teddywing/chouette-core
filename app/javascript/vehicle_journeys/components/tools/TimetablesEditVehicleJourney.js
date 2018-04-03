@@ -58,7 +58,7 @@ export default class TimetablesEditVehicleJourney extends Component {
                                 <div className='wrapper'>
                                   <div>
                                     <div className='form-group'>
-                                      <label className='control-label'>{this.props.modal.modalProps.timetables.length == 0 ? I18n.t('vehicle_journeys.vehicle_journeys_matrix.no_associated_timetables'): I18n.t('vehicle_journeys.form.timetables')}</label>
+                                      <label className='control-label'>{this.props.modal.modalProps.timetables.length == 0 ? I18n.t('vehicle_journeys.vehicle_journeys_matrix.no_associated_timetables'): I18n.t('vehicle_journeys.form.time_tables')}</label>
                                     </div>
                                   </div>
                                   <div></div>
