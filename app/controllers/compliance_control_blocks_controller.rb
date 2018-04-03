@@ -18,4 +18,9 @@ class ComplianceControlBlocksController < ChouetteController
     params.require(:compliance_control_block).permit(:transport_mode, :transport_submode)
   end
 
+  protected
+
+  alias_method :compliance_control_set, :parent
+  helper_method :compliance_control_set
+
 end
