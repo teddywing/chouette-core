@@ -138,7 +138,9 @@ class Merge < ApplicationModel
     new.switch do
       referential_routes.each do |route|
         existing_route = new.routes.find_by line_id: route.line_id, checksum: route.checksum
-        unless existing_route
+        if existing_route
+          existing_route.merge_metadata_from route
+        else
           objectid = Chouette::Route.where(objectid: route.objectid).exists? ? nil : route.objectid
           attributes = route.attributes.merge(
             id: nil,
@@ -196,7 +198,9 @@ class Merge < ApplicationModel
 
         existing_journey_pattern = new.journey_patterns.find_by route_id: existing_associated_route.id, checksum: journey_pattern.checksum
 
-        unless existing_journey_pattern
+        if existing_journey_pattern
+          existing_journey_pattern.merge_metadata_from journey_pattern
+        else
           objectid = Chouette::JourneyPattern.where(objectid: journey_pattern.objectid).exists? ? nil : journey_pattern.objectid
           attributes = journey_pattern.attributes.merge(
             id: nil,
@@ -241,7 +245,9 @@ class Merge < ApplicationModel
 
         existing_vehicle_journey = new.vehicle_journeys.find_by journey_pattern_id: existing_associated_journey_pattern.id, checksum: vehicle_journey.checksum
 
-        unless existing_vehicle_journey
+        if existing_vehicle_journey
+          existing_vehicle_journey.merge_metadata_from vehicle_journey
+        else
           objectid = Chouette::VehicleJourney.where(objectid: vehicle_journey.objectid).exists? ? nil : vehicle_journey.objectid
           attributes = vehicle_journey.attributes.merge(
             id: nil,
@@ -338,7 +344,9 @@ class Merge < ApplicationModel
 
           existing_time_table = line.time_tables.find_by checksum: candidate_time_table.checksum
 
-          unless existing_time_table
+          if existing_time_table
+            existing_time_table.merge_metadata_from candidate_time_table
+          else
             objectid = Chouette::TimeTable.where(objectid: time_table.objectid).exists? ? nil : time_table.objectid
             candidate_time_table.objectid = objectid
 
