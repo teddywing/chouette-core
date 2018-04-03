@@ -22,6 +22,7 @@ const getInitialState = () => {
     let fancyText = v.name.replace("&#39;", "\'")
     if(v.zip_code && v.city_name)
       fancyText += ", " + v.zip_code + " " + v.city_name.replace("&#39;", "\'")
+      forAlightingAndBoarding = v.stoparea_kind === 'commercial' ? 'normal' : 'forbidden'
 
     state.push({
       stoppoint_id: v.stoppoint_id,
@@ -37,8 +38,8 @@ const getInitialState = () => {
       name: v.name ? v.name.replace("&#39;", "\'") : '',
       registration_number: v.registration_number,
       text: fancyText,
-      for_boarding: v.for_boarding || '',
-      for_alighting: v.for_alighting || '',
+      for_boarding: v.for_boarding || forAlightingAndBoarding,
+      for_alighting: v.for_alighting || forAlightingAndBoarding,
       longitude: v.longitude || 0,
       latitude: v.latitude || 0,
       comment: v.comment ? v.comment.replace("&#39;", "\'") : '',
