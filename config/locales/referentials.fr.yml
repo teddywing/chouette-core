@@ -102,7 +102,9 @@ fr:
         created_at: "Créé le"
         merged_at: "Finalisé le"
         archived_at: "Conservé"
-        archived_at_null: "En préparation"
+        archived_at_null: "En édition"
+        in_creation: "En création"
+        creation_failed: "Echec de la création"
         created_from: 'Créé à partir de'
         organisation: 'Organisation'
         number_of_lines: 'Nb lignes'

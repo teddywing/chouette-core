@@ -18,7 +18,7 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def clone?
-    !record.in_referential_suite? && create?
+    !record.in_referential_suite? && record.ready && create?
   end
 
   def validate?
@@ -33,9 +33,15 @@ class ReferentialPolicy < ApplicationPolicy
     record.archived? && !record.merged? && organisation_match? && user.has_permission?('referentials.update')
   end
 
-  def common_lines?
-    # TODO: Replace with correct BL ASA available, c.f. https://projects.af83.io/issues/2692
-    true
+  def vehicle_journeys?
+    record.ready
   end
 
+  def time_tables?
+    record.ready
+  end
+
+  def purchase_windows?
+    record.ready
+  end
 end

@@ -300,7 +300,7 @@ class Referential < ActiveRecord::Base
   before_destroy :destroy_jobs
 
   def referential_read_only?
-    in_referential_suite? || archived?
+    in_referential_suite? || archived? || !ready
   end
 
   def in_referential_suite?

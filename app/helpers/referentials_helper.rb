@@ -16,6 +16,26 @@ module ReferentialsHelper
     render partial: "referentials/overview", locals: {referential: referential, overview: service}
   end
 
+  def referential_status referential
+    if !referential.ready
+      if Import::Base.failed_statuses.include?(referential_creation_status(referential)&.status)
+        "<div class='td-block'><span class='fa fa-times'></span><span>#{t('activerecord.attributes.referential.creation_failed')}</span></div>".html_safe
+      else
+        "<div class='td-block'><span class='fa fa-spinner fa-spin'></span><span>#{t('activerecord.attributes.referential.in_creation')}</span></div>".html_safe
+      end
+    elsif referential.referential_read_only?
+      "<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>".html_safe
+    else
+      "<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>".html_safe
+    end
+  end
+
+  def referential_creation_status referential
+    import = Import::Base.find_by_referential_id referential.id
+    clone = ReferentialCloning.find_by_target_referential_id  referential.id
+    operation = import || clone
+  end
+
   def mutual_workbench workbench
     current_user.organisation.workbenches.where(workgroup_id: workbench.workgroup_id).last
   end

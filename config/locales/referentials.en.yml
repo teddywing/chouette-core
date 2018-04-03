@@ -101,7 +101,9 @@ en:
         updated_at: "Updated"
         merged_at: "Finalized"
         archived_at: "Archived"
-        archived_at_null: "Unarchived"
+        archived_at_null: "In edition"
+        in_creation: "In creation"
+        creation_failed: "Creation failed"
         created_from: 'Created from'
         updated_at: "Updated"
         created_at: "Created"

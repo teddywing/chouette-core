@@ -3,7 +3,7 @@ class ReferentialsController < ChouetteController
   before_action :load_workbench
   include PolicyChecker
 
-  respond_to :html
+  respond_to :html, :except => :index
   respond_to :json, :only => :show
   respond_to :js, :only => :show
 
