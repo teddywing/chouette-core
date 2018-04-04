@@ -68,28 +68,34 @@ module Chouette
     validates_presence_of :published_name
     validates_presence_of :line
     validates :wayback, inclusion: { in: self.wayback.values }
-
     after_save :calculate_costs!, if: ->() { TomTom.enabled? }
-
-    def duplicate
+    
+    def duplicate opposite=false
       overrides = {
         'opposite_route_id' => nil,
         'name' => I18n.t('activerecord.copy', name: self.name)
       }
+      keys_for_create = attributes.keys - %w{id objectid created_at updated_at}
       atts_for_create = attributes
-        .slice!(*%w{id objectid created_at updated_at})
+        .slice(*keys_for_create)
         .merge(overrides)
+      if opposite
+        atts_for_create[:wayback] = self.opposite_wayback
+        atts_for_create[:name] = I18n.t('routes.opposite', name: self.name)
+        atts_for_create[:published_name] = atts_for_create[:name]
+        atts_for_create[:opposite_route_id] = self.id
+      end
       new_route = self.class.create!(atts_for_create)
-      duplicate_stop_points(for_route: new_route)
+      duplicate_stop_points(for_route: new_route, opposite: opposite)
       new_route
     end
 
-    def duplicate_stop_points(for_route:)
-      stop_points.each(&duplicate_stop_point(for_route: for_route))
+    def duplicate_stop_points(for_route:, opposite: false)
+      stop_points.each(&duplicate_stop_point(for_route: for_route, opposite: opposite))
     end
-    def duplicate_stop_point(for_route:)
+    def duplicate_stop_point(for_route:, opposite: false)
       -> stop_point do
-        stop_point.duplicate(for_route: for_route)
+        stop_point.duplicate(for_route: for_route, opposite: opposite)
       end
     end
 

@@ -83,6 +83,42 @@ RSpec.describe RoutesController, type: :controller do
 
       expect(Chouette::Route.last.name).to eq(I18n.t('activerecord.copy', name: route.name))
       expect(Chouette::Route.last.published_name).to eq(route.published_name)
+      expect(Chouette::Route.last.stop_area_ids).to eq route.stop_area_ids
+    end
+
+    context "when opposite = true" do
+      it "creates a new route on the opposite way " do
+        expect do
+          post :duplicate,
+            referential_id: route.line.line_referential_id,
+            line_id: route.line_id,
+            id: route.id,
+            opposite: TRUE
+        end.to change { Chouette::Route.count }.by(1)
+
+        expect(Chouette::Route.last.name).to eq(I18n.t('routes.opposite', name: route.name))
+        expect(Chouette::Route.last.published_name).to eq(Chouette::Route.last.name)
+        expect(Chouette::Route.last.opposite_route).to eq(route)
+        expect(Chouette::Route.last.stop_area_ids).to eq route.stop_area_ids.reverse
+      end
+    end
+
+    context "on a duplicated route" do
+      let!(:duplicated){ route.duplicate }
+      it "creates a new route on the opposite way " do
+        expect do
+          post :duplicate,
+            referential_id: duplicated.line.line_referential_id,
+            line_id: duplicated.line_id,
+            id: duplicated.id,
+            opposite: TRUE
+        end.to change { Chouette::Route.count }.by(1)
+
+        expect(Chouette::Route.last.name).to eq(I18n.t('routes.opposite', name: duplicated.name))
+        expect(Chouette::Route.last.published_name).to eq(Chouette::Route.last.name)
+        expect(Chouette::Route.last.opposite_route).to eq(duplicated)
+        expect(Chouette::Route.last.stop_area_ids).to eq duplicated.stop_area_ids.reverse
+      end
     end
   end
 end
