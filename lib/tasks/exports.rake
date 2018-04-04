@@ -52,9 +52,9 @@ namespace :export do
       puts "No maching journeys were found".red
     else
       exports_group = SimpleInterfacesGroup.new "Export Complet \"#{referential.name}\" du #{Time.now.to_date} au #{args[:timelapse].to_i.days.from_now.to_date}"
-      exports_group.shared_options = {verbose: true}
+      exports_group.shared_options = {verbose: true, output_dir: args[:output_dir]}
 
-      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_companies", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_companies.json"
+      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_companies", filepath: "#{args[:output_dir]}/service_type.json"
       ids = journeys.pluck :company_id
       ids += journeys.joins(route: :line).pluck :"lines.company_id"
 
@@ -64,28 +64,28 @@ namespace :export do
 
       exports_group.add_interface exporter, "Services Types", :export
 
-      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_schedules", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_schedules.json"
+      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_schedules", filepath: "#{args[:output_dir]}/schedule.json"
       exporter.configure do |config|
-        config.collection = journeys
+        config.collection = journeys.where("custom_field_values->>'capacity' IS NOT NULL")
       end
 
       exports_group.add_interface exporter, "Schedules", :export
 
-      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_routes", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_routes.json"
+      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_routes", filepath: "#{args[:output_dir]}/route.json"
       exporter.configure do |config|
         config.collection = Chouette::JourneyPattern.where(id: journeys.pluck(:journey_pattern_id).uniq)
       end
 
       exports_group.add_interface exporter, "Routes", :export
 
-      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_stops", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_stops.json"
+      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_stops", filepath: "#{args[:output_dir]}/station.json"
       exporter.configure do |config|
         config.collection = Chouette::StopArea.where(id: journeys.joins(:stop_points).pluck(:"stop_points.stop_area_id").uniq).order('parent_id ASC NULLS FIRST')
       end
 
       exports_group.add_interface exporter, "Stops", :export
 
-      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_journeys", filepath: "#{args[:output_dir]}/#{args[:configuration_name]}_journeys.json"
+      exporter = SimpleJsonExporter.create configuration_name: "#{args[:configuration_name]}_journeys", filepath: "#{args[:output_dir]}/service.json"
       exporter.configure do |config|
         config.collection = journeys
       end

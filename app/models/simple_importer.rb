@@ -42,8 +42,10 @@ class SimpleImporter < SimpleInterface
   end
 
   def dump_csv_from_context
-    dir = context[:logs_output_dir] || "log/importers"
-    filepath = File.join dir, "#{self.configuration_name}_#{Time.now.strftime "%y%m%d%H%M"}.csv"
+    dir = @output_dir
+    FileUtils.mkdir_p dir
+
+    filepath = File.join dir, "#{self.configuration_name}_#{Time.now.strftime "%y%m%d%H%M"}_dump.csv"
     # for some reason, context[:csv].to_csv does not work
     CSV.open(filepath, 'w') do |csv|
       header = true
@@ -131,14 +133,16 @@ class SimpleImporter < SimpleInterface
           @current_attribute = col[:attribute]
           val = col[:value]
           if val.nil? || val.is_a?(Proc)
-            if row.has_key? col.name
-              if val.is_a?(Proc)
+            if val.is_a?(Proc)
+              if row.has_key? col.name
                 val = instance_exec(row[col.name], &val)
               else
-                val = row[col.name]
+                val = instance_exec(&val)
               end
+            elsif row.has_key? col.name
+              val = row[col.name]
             else
-              push_in_journal({event: :column_not_found, message: "Column not found: #{col.name}", kind: :warning})
+              push_in_journal({event: :column_not_found, message: "Column not found: #{col.name || col.attribute}", kind: :warning})
               self.status ||= :success_with_warnings
             end
           end

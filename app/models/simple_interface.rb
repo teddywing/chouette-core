@@ -97,13 +97,14 @@ class SimpleInterface < ActiveRecord::Base
 
   def write_output_to_csv
     cols = %i(line kind event message error)
-    if self.journal.size > 0 && self.journal.first[:row].present?
+    journal = self.journal && self.journal.map(&:symbolize_keys)
+    if journal && journal.size > 0 && journal.first[:row].present?
       log "Writing output log"
       FileUtils.mkdir_p @output_dir
-      keys = self.journal.first[:row].map(&:first)
+      keys = journal.first[:row].map(&:first)
       CSV.open(output_filepath, "w") do |csv|
         csv << cols + keys
-        self.journal.each do |j|
+        journal.each do |j|
           csv << cols.map{|c| j[c]} + j[:row].map(&:last)
         end
       end
