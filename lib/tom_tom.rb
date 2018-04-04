@@ -19,4 +19,8 @@ module TomTom
   def self.batch(way_costs)
     TomTom::Batch.new(@connection).batch(way_costs)
   end
+
+  def self.matrix(way_costs)
+    TomTom::Matrix.new(@connection).matrix(way_costs)
+  end
 end

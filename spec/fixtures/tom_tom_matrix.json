@@ -1,0 +1,123 @@
+{
+  "formatVersion": "0.0.1",
+  "matrix": [
+    [
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 0,
+            "travelTimeInSeconds": 0,
+            "trafficDelayInSeconds": 0,
+            "departureTime": "2018-03-23T11:20:17+01:00",
+            "arrivalTime": "2018-03-23T11:20:17+01:00"
+          }
+        }
+      },
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 117947,
+            "travelTimeInSeconds": 8356,
+            "trafficDelayInSeconds": 0,
+            "departureTime": "2018-03-23T11:20:17+01:00",
+            "arrivalTime": "2018-03-23T13:39:32+01:00"
+          }
+        }
+      },
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 999088,
+            "travelTimeInSeconds": 62653,
+            "trafficDelayInSeconds": 298,
+            "departureTime": "2018-03-23T11:20:17+01:00",
+            "arrivalTime": "2018-03-24T04:44:30+01:00"
+          }
+        }
+      }
+    ],
+    [
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 117231,
+            "travelTimeInSeconds": 9729,
+            "trafficDelayInSeconds": 0,
+            "departureTime": "2018-03-23T11:20:17+01:00",
+            "arrivalTime": "2018-03-23T14:02:25+01:00"
+          }
+        }
+      },
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 0,
+            "travelTimeInSeconds": 0,
+            "trafficDelayInSeconds": 0,
+            "departureTime": "2018-03-23T11:20:17+01:00",
+            "arrivalTime": "2018-03-23T11:20:17+01:00"
+          }
+        }
+      },
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 1114635,
+            "travelTimeInSeconds": 72079,
+            "trafficDelayInSeconds": 298,
+            "departureTime": "2018-03-23T11:20:18+01:00",
+            "arrivalTime": "2018-03-24T07:21:36+01:00"
+          }
+        }
+      }
+    ],
+    [
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 997232,
+            "travelTimeInSeconds": 63245,
+            "trafficDelayInSeconds": 179,
+            "departureTime": "2018-03-23T11:20:18+01:00",
+            "arrivalTime": "2018-03-24T04:54:23+01:00"
+          }
+        }
+      },
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 1113108,
+            "travelTimeInSeconds": 68485,
+            "trafficDelayInSeconds": 52,
+            "departureTime": "2018-03-23T11:20:18+01:00",
+            "arrivalTime": "2018-03-24T06:21:43+01:00"
+          }
+        }
+      },
+      {
+        "statusCode": 200,
+        "response": {
+          "routeSummary": {
+            "lengthInMeters": 344,
+            "travelTimeInSeconds": 109,
+            "trafficDelayInSeconds": 0,
+            "departureTime": "2018-03-23T11:20:18+01:00",
+            "arrivalTime": "2018-03-23T11:22:07+01:00"
+          }
+        }
+      }
+    ]
+  ],
+  "summary": {
+    "successfulRoutes": 9,
+    "totalRoutes": 9
+  }
+}
