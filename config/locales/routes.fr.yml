@@ -15,7 +15,7 @@ fr:
       export_hub_all: "Export HUB des itinéraires"
       add_stop_point: "Ajouter un arrêt"
       new_stop_point: "Créer un arrêt pour l'ajouter"
-      opposite_route_timetable: "Horaires retour"
+      reversed_vehicle_journey: "Horaires retour"
     new:
       title: "Ajouter un itinéraire"
     edit:

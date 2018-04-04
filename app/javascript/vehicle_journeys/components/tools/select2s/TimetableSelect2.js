@@ -27,7 +27,7 @@ export default class BSelect4 extends Component {
           theme: 'bootstrap',
           width: '100%',
           placeholder: I18n.t('vehicle_journeys.vehicle_journeys_matrix.filters.timetable'),
-          language: require('./fr'),
+          language: require('./language'),
           ajax: {
             url: origin + path + this.props.chunkURL,
             dataType: 'json',

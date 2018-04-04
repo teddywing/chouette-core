@@ -1,0 +1,15 @@
+fr:
+  select2:
+    error_loading: Les résultats ne peuvent pas être chargés.
+    input_too_long:
+      one: Supprimez %{count} caractère
+      other: Supprimez %{count} caractères
+    input_too_short:
+      one: Saisissez %{count} caractère
+      other: Saisissez %{count} caractères
+    loading_more: Chargement de résultats supplémentaires…
+    maximum_selected:
+      one: Vous pouvez sélectionner %{count} élément
+      other: Vous pouvez sélectionner %{count} élément
+    no_results: Aucun résultat trouvé
+    searching: Recherche en cours...

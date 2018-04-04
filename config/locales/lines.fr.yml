@@ -1,6 +1,5 @@
 fr:
   lines: &fr_lines
-    search_no_results: "Aucune ligne ne correspond à votre recherche"
     actions:
       new: "Ajouter une ligne"
       edit: "Editer cette ligne"
@@ -20,6 +19,8 @@ fr:
       show: 'Consulter'
       show_network: 'Voir le réseau'
       show_company: 'Voir le transporteur principal'
+    filters:
+      name_or_objectid_cont: "Indiquez un nom d'itinéraire ou un ID..."
     new:
       title: "Ajouter une ligne"
     create:
@@ -34,6 +35,7 @@ fr:
         title: "Liste des Itinéraires"
       itineraries: "Liste des séquences d'arrêts de la ligne"
       group_of_lines: "Groupes de lignes"
+      search_no_results: "Aucune ligne ne correspond à votre recherche"
     index:
       deactivated: "Ligne désactivée"
       title: "Lignes"

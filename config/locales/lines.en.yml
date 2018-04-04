@@ -1,6 +1,5 @@
 en:
   lines: &en_lines
-    search_no_results: "No line matching your query"
     actions:
       new: "Add a new line"
       edit: "Edit this line"
@@ -20,6 +19,8 @@ en:
       show: 'Show'
       show_network: 'Show network'
       show_company: 'Show company'
+    filters:
+      name_or_objectid_cont: "Search by name or objectid"
     new:
       title: "Add a new line"
     create:
@@ -33,11 +34,12 @@ en:
       routes:
         title: "Routes list"
       group_of_lines: "Groups of lines"
+      search_no_results: "No line matching your query"
     index:
       deactivated: "Disabled line"
       title: "Lines"
       line: "Line %{line}"
-      name_or_number_or_objectid: "Search by name, short name or ID Codif..."
+      name_or_number_or_objectid: "Search by name, short name or ID..."
       no_networks: "No networks"
       no_companies: "No companies"
       no_group_of_lines: "No group of lines"
@@ -115,7 +117,7 @@ en:
         creator_id: "Created by"
         footnotes: "Footnotes"
         stable_id: External permanent idenifier"
-        state: State
+        state: Status
         activated: Activated
         deactivated: Deactivated
   formtastic:

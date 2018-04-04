@@ -48,9 +48,9 @@ en:
       export_hub_physical: "Export HUB physical"
     filters:
       name_or_objectid: "Search by name or by objectid..."
-      zip_code: Type a zip code...
-      city_name: Type a city name...
-      area_type: Type an area type...
+      zip_code: Enter a zip code...
+      city_name: Enter a city name...
+      area_type: Enter an area type...
     new:
       title: "Add a new stop"
     update:
@@ -70,7 +70,7 @@ en:
       stop_managment: "Parent-child relations"
       access_managment: "Access Points and Links managment"
       access_points: "Access Points"
-      not_editable: "Le type d'arrêt est non modifiable"
+      not_editable: "The area type is not editable"
       state:
         active: Active
         deactivated: Deactivated
@@ -148,7 +148,7 @@ en:
         zip_code: "Zip code"
         city_name: "City"
         waiting_time: Waiting time (minutes)
-        state: State
+        state: Status
   formtastic:
     titles:
       stop_area:
