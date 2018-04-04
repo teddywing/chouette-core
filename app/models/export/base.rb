@@ -1,4 +1,8 @@
+require 'net/http/post/multipart'
+
 class Export::Base < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   self.table_name = "exports"
 
   belongs_to :referential
@@ -19,6 +23,22 @@ class Export::Base < ActiveRecord::Base
 
   def self.file_extension_whitelist
     %w(zip csv json)
+  end
+
+  def upload_file file
+    url = URI.parse upload_workbench_export_url(self.workbench_id, self.id, host: Rails.application.config.rails_host)
+    res = nil
+    filename = File.basename(file.path)
+    content_type = MIME::Types.type_for(filename).first&.content_type
+    File.open(file.path) do |file_content|
+      req = Net::HTTP::Post::Multipart.new url.path,
+        file: UploadIO.new(file_content, content_type, filename),
+        token: self.token_upload
+      res = Net::HTTP.start(url.host, url.port) do |http|
+        http.request(req)
+      end
+    end
+    res
   end
 
   if Rails.env.development?
