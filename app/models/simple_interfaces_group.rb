@@ -30,7 +30,9 @@ class SimpleInterfacesGroup
 
     name = "### #{self.name} ###"
     centered_name = " " * ([width - name.size, 0].max / 2) + name
-    banner = [centered_name, ""]
+    banner = [centered_name]
+    banner << "Output to: #{shared_options[:output_dir]}" if shared_options[:output_dir]
+    banner << ""
     banner << @interfaces.each_with_index.map do |interface, i|
       if interface[:interface].status.present?
         SimpleInterface.colorize interface[:name], SimpleInterface.status_color(interface[:interface].status)
