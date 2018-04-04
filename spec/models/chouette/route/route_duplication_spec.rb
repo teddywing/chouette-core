@@ -8,9 +8,6 @@ RSpec.describe Chouette::Route do
         route.duplicate
         expect( values_for_create(Chouette::Route.last, except: %w{objectid name checksum checksum_source}) ).to eq( values_for_create( route, except: %w{objectid name checksum checksum_source} ) )
       end
-      it 'and others cannot' do
-        expect{ route.duplicate name: 'YAN', line_id: 42  }.to raise_error(ArgumentError)
-      end
       it 'same associated stop_areeas' do
         expect( route.duplicate.stop_areas.pluck(:id) ).to eq(route.stop_areas.pluck(:id))
       end
