@@ -6,8 +6,7 @@
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
-          { Calendar.tmf('short_name') => resource.try(:short_name),
-            Calendar.tmf('shared') => t("#{resource.shared}"),
+          { Calendar.tmf('shared') => t("#{resource.shared}"),
             Calendar.tmf('organisation') => resource.organisation.name,
             Calendar.tmf('dates') =>  resource.dates.collect{|d| l(d, format: :short)}.join(', ').html_safe,
             Calendar.tmf('date_ranges') => resource.periods.map{|d| t('validity_range', debut: l(d.begin, format: :short), end: l(d.end, format: :short))}.join('<br>').html_safe }
