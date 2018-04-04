@@ -8,6 +8,8 @@ module TomTom
       points_with_ids = points_from_way_costs(way_costs)
       points = points_as_params(points_with_ids)
 
+      Rails.logger.info "Invoke TomTom for #{points.size} points"
+
       response = @connection.post do |req|
         req.url '/routing/1/matrix/json'
         req.headers['Content-Type'] = 'application/json'
