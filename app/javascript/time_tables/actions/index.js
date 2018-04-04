@@ -306,10 +306,11 @@ const actions = {
       })
   },
   errorModalKey: (periods, dayTypes) => {
-    const withoutPeriodsWithDaysTypes = reject(periods, 'deleted').length == 0 && some(dayTypes) && "withoutPeriodsWithDaysTypes"
+    // const withoutPeriodsWithDaysTypes = reject(periods, 'deleted').length == 0 && some(dayTypes) && "withoutPeriodsWithDaysTypes"
     const withPeriodsWithoutDayTypes = reject(periods, 'deleted').length > 0 &&  every(dayTypes, dt => dt == false) && "withPeriodsWithoutDayTypes"
 
-    return (withoutPeriodsWithDaysTypes || withPeriodsWithoutDayTypes) && (withoutPeriodsWithDaysTypes ? "withoutPeriodsWithDaysTypes" : "withPeriodsWithoutDayTypes")
+    // return (withoutPeriodsWithDaysTypes || withPeriodsWithoutDayTypes) && (withoutPeriodsWithDaysTypes ? "withoutPeriodsWithDaysTypes" : "withPeriodsWithoutDayTypes")
+    return withPeriodsWithoutDayTypes
 
   },
   errorModalMessage: (errorKey) => {

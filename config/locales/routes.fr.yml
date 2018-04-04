@@ -16,6 +16,7 @@ fr:
       add_stop_point: "Ajouter un arrêt"
       new_stop_point: "Créer un arrêt pour l'ajouter"
       reversed_vehicle_journey: "Horaires retour"
+    opposite: "%{name} (retour)"
     new:
       title: "Ajouter un itinéraire"
     edit:
@@ -56,6 +57,9 @@ fr:
       stop_area_name: "Nom de l'arrêt"
       for_boarding: "Montée"
       for_alighting: "Descente"
+    create_opposite:
+      title: "Créer retour"
+      success: "itinéraire créé avec succès"
     duplicate:
       title: "Dupliquer l'itinéraire"
       success: "itinéraire dupliqué avec succès"

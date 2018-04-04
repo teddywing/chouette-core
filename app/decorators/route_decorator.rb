@@ -71,6 +71,23 @@ class RouteDecorator < AF83::Decorator
       end
     end
 
+    instance_decorator.action_link(
+      secondary: :show,
+      policy: :create_opposite,
+      if: ->{h.has_feature?(:create_opposite_routes) && object.opposite_route.nil?}
+    ) do |l|
+      l.content h.t('routes.create_opposite.title')
+      l.method :post
+      l.href do
+        h.duplicate_referential_line_route_path(
+          context[:referential],
+          context[:line],
+          object,
+          opposite: true
+        )
+      end
+    end
+
     instance_decorator.destroy_action_link do |l|
       l.data confirm: h.t('routes.actions.destroy_confirm')
     end
