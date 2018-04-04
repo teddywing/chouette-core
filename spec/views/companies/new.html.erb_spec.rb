@@ -4,7 +4,10 @@ describe "/companies/new", :type => :view do
 
   let!(:company) { assign(:company, build(:company)) }
   let!(:line_referential) { assign :line_referential, company.line_referential }
-
+  before do
+    allow(view).to receive(:resource){company}
+    allow(view).to receive(:current_referential){ first_referential }
+  end
   describe "form" do
 
     it "should render input for name" do
