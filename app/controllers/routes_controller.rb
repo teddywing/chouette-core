@@ -63,7 +63,8 @@ class RoutesController < ChouetteController
   end
 
   def duplicate
-    route = Chouette::Route.find(params[:id]).duplicate
+    source = Chouette::Route.find(params[:id])
+    route = source.duplicate params[:opposite]
     flash[:notice] = t('routes.duplicate.success')
     redirect_to referential_line_path(@referential, route.line)
   end

@@ -20,4 +20,8 @@ class RoutePolicy < ApplicationPolicy
   def duplicate?
     create?
   end
+
+  def create_opposite?
+    create?
+  end
 end
