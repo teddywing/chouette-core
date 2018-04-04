@@ -43,7 +43,7 @@ const actions = {
   }),
   updateCheckboxValue : (e, index) => ({
     type : 'UPDATE_CHECKBOX_VALUE',
-    id : e.currentTarget.id,
+    position : e.currentTarget.id,
     index
   }),
   checkConfirmModal : (event, callback, stateChanged,dispatch) => {

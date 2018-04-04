@@ -45,7 +45,7 @@ export default class JourneyPattern extends Component{
           <input
             onChange = {(e) => this.props.onCheckboxChange(e)}
             type='checkbox'
-            id={sp.id}
+            id={sp.position}
             checked={sp.checked}
             disabled={(this.props.value.deletable || this.props.status.policy['journey_patterns.update'] == false || this.props.editMode == false) ? 'disabled' : ''}
             >
