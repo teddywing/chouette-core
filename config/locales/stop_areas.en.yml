@@ -18,6 +18,7 @@ en:
       general: "General"
       localisation: "Localisation"
       accessibility: "Accessibility"
+      custom_fields: "Custom fields"
     actions:
       new: "Add a new stop area"
       create: "Add a new stop area"
