@@ -85,7 +85,7 @@ RSpec.describe ExportsController, :type => :controller do
     context "with the token" do
       it 'should be successful' do
         post :upload, workbench_id: workbench.id, id: export.id, token: export.token_upload
-        expect(response).to be_redirect
+        expect(response).to be_success
       end
     end
 
