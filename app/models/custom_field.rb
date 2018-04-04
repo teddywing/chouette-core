@@ -12,7 +12,7 @@ class CustomField < ActiveRecord::Base
   scope :for_workgroup, ->(workgroup){ where workgroup_id: workgroup.id }
 
   class Collection < HashWithIndifferentAccess
-    def initialize object, workgroup=nil
+    def initialize object, workgroup=:all
       vals = object.class.custom_fields(workgroup).map do |v|
         [v.code, CustomField::Instance.new(object, v, object.custom_field_value(v.code))]
       end
@@ -176,8 +176,8 @@ class CustomField < ActiveRecord::Base
       class Input < Base::Input
         def form_input_options
           collection = options["list_values"]
-          collection = collection.map(&:reverse) if collection.is_a?(Hash)
           collection = collection.each_with_index.to_a if collection.is_a?(Array)
+          collection = collection.map(&:reverse) if collection.is_a?(Hash)
           super.update({
             selected: value,
             collection: collection

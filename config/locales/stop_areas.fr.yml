@@ -19,6 +19,7 @@ fr:
       general: "General"
       localisation: "Localisation"
       accessibility: "Accessibilité"
+      custom_fields: "Champs personnalisés"
     actions:
       new: "Ajouter un arrêt"
       create: "Ajouter un arrêt"

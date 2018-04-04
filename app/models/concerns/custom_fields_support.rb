@@ -5,13 +5,22 @@ module CustomFieldsSupport
     validate :custom_fields_values_are_valid
     after_initialize :initialize_custom_fields
 
-    def self.custom_fields workgroup=nil
+    def self.custom_fields workgroup=:all
       fields = CustomField.where(resource_type: self.name.split("::").last)
-      fields = fields.where(workgroup_id: workgroup.id) if workgroup.present?
+      fields = fields.where(workgroup_id: workgroup&.id) if workgroup != :all
       fields
     end
 
-    def custom_fields workgroup=nil
+    def method_missing method_name, *args
+      if method_name =~ /custom_field_*/ && !@custom_fields_initialized
+        initialize_custom_fields
+        send method_name, *args
+      else
+        super method_name, *args
+      end
+    end
+
+    def custom_fields workgroup=:all
       CustomField::Collection.new self, workgroup
     end
 
@@ -25,10 +34,11 @@ module CustomFieldsSupport
 
     def initialize_custom_fields
       self.custom_field_values ||= {}
-      custom_fields.values.each &:initialize_custom_field
-      custom_fields.each do |k, v|
+      custom_fields(:all).values.each &:initialize_custom_field
+      custom_fields(:all).each do |k, v|
         custom_field_values[k] ||= v.default_value
       end
+      @custom_fields_initialized = true
     end
 
     def custom_field_value key
@@ -37,7 +47,7 @@ module CustomFieldsSupport
 
     private
     def custom_fields_values_are_valid
-      custom_fields.values.all?{|cf| cf.valid?}
+      custom_fields(:all).values.all?{|cf| cf.valid?}
     end
   end
 end
