@@ -1,6 +1,12 @@
 = simple_form_for [@compliance_control_set, @compliance_control_block], html: { class: 'form-horizontal', id: 'compliance_control_block_form' }, wrapper: :horizontal_form do |f|
   .row
     .col-lg-12
+      - if @compliance_control_block.errors.has_key? :condition_attributes
+        .row.condition-attributes-errors
+          .col-lg-12
+            .alert.alert-danger
+              - @compliance_control_block.errors[:condition_attributes].each do |msg|
+                p.small = "- #{msg}"
       .form-group
         = f.input :transport_mode, as: :select, collection: ComplianceControlBlock.sorted_transport_modes, label: t('activerecord.attributes.compliance_control_blocks.transport_mode'), label_method: lambda {|t| ("<span>" + t("enumerize.transport_mode.#{t}") + "</span>").html_safe }
         = f.input :transport_submode, as: :select, collection: ComplianceControlBlock.sorted_transport_submodes, label: t('activerecord.attributes.compliance_control_blocks.transport_submode'), label_method: lambda {|t| ("<span>" + t("enumerize.transport_submode.#{t}") + "</span>").html_safe }
