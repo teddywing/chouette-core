@@ -35,4 +35,32 @@ RSpec.describe RouteWayCostUnitConverter do
       })
     end
   end
+
+  describe ".meters_to_kilometers" do
+    it "converts meters to integer kilometres" do
+      expect(
+        RouteWayCostUnitConverter.meters_to_kilometers(6350)
+      ).to eq(6)
+    end
+
+    it "snaps values between 0 and 1 to 1" do
+      expect(
+        RouteWayCostUnitConverter.meters_to_kilometers(50)
+      ).to eq(1)
+    end
+  end
+
+  describe ".seconds_to_minutes" do
+    it "converts seconds to minutes" do
+      expect(
+        RouteWayCostUnitConverter.seconds_to_minutes(300)
+      ).to eq(5)
+    end
+
+    it "snaps values between 0 and 1 to 1" do
+      expect(
+        RouteWayCostUnitConverter.seconds_to_minutes(3)
+      ).to eq(1)
+    end
+  end
 end
