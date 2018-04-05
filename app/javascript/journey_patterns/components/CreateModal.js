@@ -57,7 +57,7 @@ export default class CreateModal extends Component {
                             <div className='row'>
                               <div className='col-lg-6 col-md-6 col-sm-6 col-xs-6'>
                                 <div className='form-group'>
-                                  <label className='control-label is-required'>{I18n.attribute_name('journey_pattern', 'published_name')}c</label>
+                                  <label className='control-label is-required'>{I18n.attribute_name('journey_pattern', 'published_name')}</label>
                                   <input
                                     type='text'
                                     ref='published_name'
