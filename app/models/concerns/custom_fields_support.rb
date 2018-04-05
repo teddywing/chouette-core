@@ -12,7 +12,7 @@ module CustomFieldsSupport
     end
 
     def method_missing method_name, *args
-      if method_name =~ /custom_field_*/ && !@custom_fields_initialized
+      if method_name =~ /custom_field_*/ && method_name.to_sym != :custom_field_values && !@custom_fields_initialized
         initialize_custom_fields
         send method_name, *args
       else
