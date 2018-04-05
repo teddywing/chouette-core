@@ -11,14 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180319043333) do
+ActiveRecord::Schema.define(version: 20180405133659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
   enable_extension "postgis"
+  enable_extension "hstore"
   enable_extension "unaccent"
-  enable_extension "objectid"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -118,13 +117,12 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.datetime "updated_at"
     t.date     "end_date"
     t.string   "date_type"
-    t.string   "mode"
   end
 
   add_index "clean_ups", ["referential_id"], name: "index_clean_ups_on_referential_id", using: :btree
 
   create_table "companies", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                            null: false
+    t.string   "objectid",                                         null: false
     t.integer  "object_version",            limit: 8
     t.string   "name"
     t.string   "short_name"
@@ -141,7 +139,7 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "custom_field_values"
+    t.jsonb    "custom_field_values",                 default: {}
   end
 
   add_index "companies", ["line_referential_id"], name: "index_companies_on_line_referential_id", using: :btree
@@ -462,9 +460,9 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.string   "type"
     t.integer  "parent_id",             limit: 8
     t.string   "parent_type"
+    t.datetime "notified_parent_at"
     t.integer  "current_step",                    default: 0
     t.integer  "total_steps",                     default: 0
-    t.datetime "notified_parent_at"
     t.string   "creator"
   end
 
@@ -1074,8 +1072,10 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.string   "name"
     t.integer  "line_referential_id",      limit: 8
     t.integer  "stop_area_referential_id", limit: 8
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "import_types",                       default: [],              array: true
+    t.string   "export_types",                       default: [],              array: true
   end
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"

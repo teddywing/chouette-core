@@ -1,5 +1,8 @@
 class ChangeCompaniesCustomFieldsValuesType < ActiveRecord::Migration
   def change
-     change_column :companies, :custom_field_values, :jsonb
+    reversible do |dir|
+      dir.up { change_column :companies, :custom_field_values, 'jsonb USING CAST(custom_field_values AS jsonb)', :default => {} }
+      dir.down { change_column :companies, :custom_field_values, 'json USING CAST(custom_field_values AS json)', :default => {} }
+    end
   end
 end
