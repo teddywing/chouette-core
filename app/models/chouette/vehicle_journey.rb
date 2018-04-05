@@ -346,6 +346,33 @@ module Chouette
       end
     end
 
+    def fill_passing_time_at_borders
+      encountered_borders = []
+      previous_stop = nil
+      vehicle_journey_at_stops.each do |vjas|
+        sp = vjas.stop_point
+        if sp.stop_area.area_type == "border"
+          encountered_borders << vjas
+        else
+          if encountered_borders.any?
+            before_cost = journey_pattern.costs_between previous_stop.stop_point, encountered_borders.first.stop_point
+            after_cost = journey_pattern.costs_between encountered_borders.last.stop_point, sp
+            if before_cost && before_cost[:distance] && after_cost && after_cost[:distance]
+              before_distance = before_cost[:distance].to_f
+              after_distance = after_cost[:distance].to_f
+              time = previous_stop.departure_time + before_distance / (before_distance+after_distance) * (vjas.arrival_time - previous_stop.departure_time)
+              encountered_borders.each do |b|
+                b.update_attribute :arrival_time, time
+                b.update_attribute :departure_time, time
+              end
+            end
+            encountered_borders = []
+          end
+          previous_stop = vjas
+        end
+      end
+    end
+
     def self.matrix(vehicle_journeys)
       Hash[*VehicleJourneyAtStop.where(vehicle_journey_id: vehicle_journeys.pluck(:id)).map do |vjas|
         [ "#{vjas.vehicle_journey_id}-#{vjas.stop_point_id}", vjas]
