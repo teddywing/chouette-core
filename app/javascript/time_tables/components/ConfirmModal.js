@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 
-export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCancel, timetable, metas}, {I18n}) {
+export default function ConfirmModal({dispatch, modal, onModalAccept, onModalCancel, timetable, metas}) {
   return (
     <div className={'modal fade ' + ((modal.type == 'confirm') ? 'in' : '')} id='ConfirmModal'>
       <div className='modal-container'>
@@ -45,8 +45,4 @@ ConfirmModal.propTypes = {
   modal: PropTypes.object.isRequired,
   onModalAccept: PropTypes.func.isRequired,
   onModalCancel: PropTypes.func.isRequired
-}
-
-ConfirmModal.contextTypes = {
-  I18n: PropTypes.object
 }

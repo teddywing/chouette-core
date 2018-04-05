@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import actions from '../actions'
 import TagsSelect2 from './TagsSelect2'
 
-export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelect2Tags, onUnselect2Tags}, {I18n}) {
+export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdateColor, onSelect2Tags, onUnselect2Tags}) {
   let colorList = ["", "#9B9B9B", "#FFA070", "#C67300", "#7F551B", "#41CCE3", "#09B09C", "#3655D7",   "#6321A0", "#E796C6", "#DD2DAA"]
   return (
     <div className='form-horizontal'>
@@ -134,8 +134,4 @@ Metas.propTypes = {
   onUpdateColor: PropTypes.func.isRequired,
   onSelect2Tags: PropTypes.func.isRequired,
   onUnselect2Tags: PropTypes.func.isRequired
-}
-
-Metas.contextTypes = {
-  I18n: PropTypes.object
 }
