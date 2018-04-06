@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import BSelect2 from './BSelect2'
 import OlMap from './OlMap'
 
-import { defaultAttribute } from '../actions' 
+import { defaultAttribute } from '../actions'
 
 export default function StopPoint(props, {I18n}) {
   return (
@@ -42,13 +42,13 @@ export default function StopPoint(props, {I18n}) {
 
           <div
             className={'btn btn-link' + (props.first ? ' disabled' : '')}
-            onClick={props.onMoveUpClick}
+            onClick={props.first ? null : props.onMoveUpClick}
           >
             <span className='fa fa-arrow-up'></span>
           </div>
           <div
             className={'btn btn-link' + (props.last ? ' disabled' : '')}
-            onClick={props.onMoveDownClick}
+            onClick={props.last ? null : props.onMoveDownClick}
           >
             <span className='fa fa-arrow-down'></span>
           </div>
