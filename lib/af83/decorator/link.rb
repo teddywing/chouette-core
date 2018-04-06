@@ -85,6 +85,10 @@ class AF83::Decorator::Link
     in_group_for_action? :secondary
   end
 
+  def disabled?
+    !!disabled
+  end
+
   def enabled?
     enabled = false
     if @options[:_if].nil?
@@ -131,9 +135,9 @@ class AF83::Decorator::Link
     out[:class] = extra_class
     out.delete(:link_class)
     out.delete(:link_method)
-    out[:class] += " disabled" if disabled
+    out[:class] += " disabled" if disabled?
     out[:class].strip!
-    out[:disabled] = !!disabled
+    out[:disabled] = disabled?
     out
   end
 
@@ -150,7 +154,7 @@ class AF83::Decorator::Link
         html_options
       ).to_html
     else
-      context.h.link_to content, href, html_options
+      context.h.link_to content, (disabled? ? "#" : href), html_options
     end
   end
 end

@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :async, authentication_type
 
   # FIXME https://github.com/nbudin/devise_cas_authenticatable/issues/53
-  # Work around :validatable, when database_authenticatable is diabled.
+  # Work around :validatable, when database_authenticatable is disabled.
   attr_accessor :password unless authentication_type == :database_authenticatable
 
   # Setup accessible (or protected) attributes for your model

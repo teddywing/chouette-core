@@ -74,10 +74,11 @@ class RouteDecorator < AF83::Decorator
     instance_decorator.action_link(
       secondary: :show,
       policy: :create_opposite,
-      if: ->{h.has_feature?(:create_opposite_routes) && object.opposite_route.nil?}
+      if: ->{h.has_feature?(:create_opposite_routes)}
     ) do |l|
       l.content h.t('routes.create_opposite.title')
       l.method :post
+      l.disabled { object.opposite_route.present? }
       l.href do
         h.duplicate_referential_line_route_path(
           context[:referential],
