@@ -128,12 +128,43 @@ class TimeTablesController < ChouetteController
     scope = self.ransack_period_range(scope: scope, error_message: t('referentials.errors.validity_period'), query: :overlapping)
     @q = scope.search(params[:q])
 
-    if sort_column && sort_direction
-      @time_tables ||= @q.result(:distinct => true).order("#{sort_column} #{sort_direction}")
-    else
-      @time_tables ||= @q.result(:distinct => true).order(:comment)
+    @time_tables ||= begin
+      time_tables = @q.result(:distinct => true)
+      if sort_column == "bounding_dates"
+        time_tables = @q.result(:distinct => false).paginate(page: params[:page], per_page: 10)
+        ids = time_tables.pluck(:id).uniq
+        query = """
+        WITH time_tables_dates AS(
+        SELECT time_tables.id, time_table_dates.date FROM time_tables
+        LEFT JOIN time_table_dates ON time_table_dates.time_table_id = time_tables.id
+        WHERE time_table_dates.in_out IS NULL OR time_table_dates.in_out = 't'
+        UNION
+        SELECT time_tables.id, time_table_periods.period_start FROM time_tables
+        LEFT JOIN time_table_periods ON time_table_periods.time_table_id = time_tables.id
+        )
+        SELECT time_tables.id, MIN(time_tables_dates.date) AS min_date FROM time_tables
+        INNER JOIN time_tables_dates ON time_tables_dates.id = time_tables.id
+        WHERE time_tables.id IN (#{ids.map(&:to_s).join(',')})
+        GROUP BY time_tables.id
+        ORDER BY min_date #{sort_direction}
+  """
+
+        ordered_ids =  ActiveRecord::Base.connection.exec_query(query).map {|r| r["id"]}
+        order_by = ["CASE"]
+        ordered_ids.each_with_index do |id, index|
+          order_by << "WHEN id='#{id}' THEN #{index}"
+        end
+        order_by << "END"
+        time_tables = time_tables.order(order_by.join(" "))
+      elsif sort_column == "vehicle_journeys_count"
+        time_tables = time_tables.joins("LEFT JOIN time_tables_vehicle_journeys ON time_tables_vehicle_journeys.time_table_id = time_tables.id LEFT JOIN vehicle_journeys ON vehicle_journeys.id = time_tables_vehicle_journeys.vehicle_journey_id")\
+          .group("time_tables.id").select('time_tables.*, COUNT(vehicle_journeys.id) as vehicle_journeys_count').order("#{sort_column} #{sort_direction}")
+      else
+        time_tables = time_tables.order("#{sort_column} #{sort_direction}")
+      end
+      time_tables = time_tables.paginate(page: params[:page], per_page: 10)
+      time_tables
     end
-    @time_tables = @time_tables.paginate(page: params[:page], per_page: 10)
   end
 
   def select_time_tables
@@ -155,7 +186,10 @@ class TimeTablesController < ChouetteController
   private
 
   def sort_column
-    referential.time_tables.column_names.include?(params[:sort]) ? params[:sort] : 'comment'
+    valid_cols = referential.time_tables.column_names
+    valid_cols << "bounding_dates"
+    valid_cols << "vehicle_journeys_count"
+    valid_cols.include?(params[:sort]) ? params[:sort] : 'comment'
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
