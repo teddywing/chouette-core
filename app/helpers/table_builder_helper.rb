@@ -402,9 +402,10 @@ module TableBuilderHelper
     content_tag(
       :li,
       link_to(
-        link.href,
-        method: link.method,
-        data: link.data
+        link.disabled ? '#' : link.href,
+        method: link.disabled ? nil : link.method,
+        data: link.data,
+        disabled: link.disabled
       ) do
         link.content
       end,

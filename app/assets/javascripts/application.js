@@ -25,3 +25,9 @@
 //= require "i18n"
 //= require "i18n/extended"
 //= require "i18n/translations"
+
+$(document).ready(function() {
+    $('a[disabled=disabled]').click(function(event){
+        event.preventDefault(); // Prevent link from following its href
+    });
+});
