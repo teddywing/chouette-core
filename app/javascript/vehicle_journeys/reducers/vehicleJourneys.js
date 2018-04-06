@@ -9,31 +9,34 @@ const vehicleJourney= (state = {}, action, keep) => {
       return _.assign({}, state, {selected: false})
     case 'ADD_VEHICLEJOURNEY':
       let pristineVjasList = []
-      let prevSp = action.stopPointsList[0]
+      let prevSp
       let current_time = {
         hour: 0,
         minute: 0
       }
       let computeSchedule = false
-      let userTZOffet = 0
+      let initTZOffet = 0
       if(action.data["start_time.hour"] && action.data["start_time.hour"].value && action.data["start_time.hour"].value.length > 0 && action.data["start_time.minute"] && action.selectedJourneyPattern.full_schedule && action.selectedJourneyPattern.costs){
         computeSchedule = true
-        userTZOffet = action.data["tz_offset"] && parseInt(action.data["tz_offset"].value) || 0
-        current_time.hour = parseInt(action.data["start_time.hour"].value) + parseInt(userTZOffet / 60)
+        initTZOffet = - action.stopPointsList[0].time_zone_offset / 60 || 0
+        current_time.hour = parseInt(action.data["start_time.hour"].value) + parseInt(initTZOffet / 60)
         current_time.minute = 0
         if(action.data["start_time.minute"].value){
-          current_time.minute = parseInt(action.data["start_time.minute"].value) + (userTZOffet - 60 * parseInt(userTZOffet / 60))
+          current_time.minute = parseInt(action.data["start_time.minute"].value) + (initTZOffet - 60 * parseInt(initTZOffet / 60))
         }
       }
       _.each(action.stopPointsList, (sp) =>{
         let inJourney = false
         let newVjas
         if(computeSchedule){
-          if(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
+          if(prevSp && action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id]){
             let delta = parseInt(action.selectedJourneyPattern.costs[prevSp.stop_area_id + "-" + sp.stop_area_id].time)
             current_time = actions.addMinutesToTime(current_time, delta)
             prevSp = sp
             inJourney = true
+          }
+          if(!prevSp){
+            prevSp = sp
           }
           let offsetHours = sp.time_zone_offset / 3600
           let offsetminutes = sp.time_zone_offset/60 - 60*offsetHours
