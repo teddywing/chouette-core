@@ -32,7 +32,8 @@
                   end \
                 ), \
                 TableBuilderHelper::Column.new( \
-                  key: :status, \
+                  key: :archived_at, \
+                  name: Referential.tmf('status'), \
                   attribute: Proc.new {|w| w.referential_read_only? ? ("<div class='td-block'><span class='fa fa-archive'></span><span>#{t('activerecord.attributes.referential.archived_at')}</span></div>").html_safe : ("<div class='td-block'><span class='sb sb-lg sb-preparing'></span><span>#{t('activerecord.attributes.referential.archived_at_null')}</span></div>").html_safe} \
                 ), \
                 TableBuilderHelper::Column.new( \
@@ -45,7 +46,7 @@
                 ), \
                 TableBuilderHelper::Column.new( \
                   key: :lines, \
-                  name: t('activerecord.attributes.referential.number_of_lines'), \
+                  name: Referential.tmf('number_of_lines'), \
                   attribute: Proc.new {|w| w.lines.count} \
                 ), \
                 TableBuilderHelper::Column.new( \
