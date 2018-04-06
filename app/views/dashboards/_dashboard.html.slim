@@ -6,7 +6,7 @@
           h3.panel-title.with_actions
             div
               = link_to t('dashboards.workbench.title', organisation: workbench.organisation.name), workbench_path(workbench)
-              span.badge.ml-xs = workbench.referentials.count if workbench.referentials.present?
+              span.badge.ml-xs = workbench.all_referentials.uniq.count if workbench.all_referentials.present?
 
             div
               = link_to '', workbench_path(workbench), class: ' fa fa-chevron-right pull-right', title: t('workbenches.index.offers.see')
