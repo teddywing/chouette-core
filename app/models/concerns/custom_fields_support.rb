@@ -33,6 +33,7 @@ module CustomFieldsSupport
     end
 
     def initialize_custom_fields
+      return unless self.attributes.has_key?("custom_field_values")
       self.custom_field_values ||= {}
       custom_fields(:all).values.each &:initialize_custom_field
       custom_fields(:all).each do |k, v|
