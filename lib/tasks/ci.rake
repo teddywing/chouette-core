@@ -28,6 +28,7 @@ namespace :ci do
   end
 
   def deploy_env
+    return ENV["DEPLOY_ENV"] if ENV["DEPLOY_ENV"]
     if git_branch == "master"
       "dev"
     elsif git_branch.in?(deploy_envs)
@@ -54,12 +55,12 @@ namespace :ci do
 
   desc "Deploy after CI"
   task :deploy do
-    return if ENV["CHOUETTE_DEPLOY_DISABLED"]
-
-    if deploy_env
-      sh "cap #{deploy_env} deploy:migrations"
-    else
-      puts "No deploy for branch #{git_branch}"
+    unless ENV["CHOUETTE_DEPLOY_DISABLED"]
+      if deploy_env
+        sh "cap #{deploy_env} deploy:migrations deploy:seed"
+      else
+        puts "No deploy for branch #{git_branch}"
+      end
     end
   end
 
