@@ -11,7 +11,7 @@ module ComplianceControlsHelper
 
   def compliance_control_metadatas(compliance_control)
     attributes = resource.class.dynamic_attributes
-    attributes.push(*resource.control_attributes.keys) if resource.respond_to? :control_attributes
+    attributes.push(*resource.control_attributes.keys) if resource&.control_attributes&.keys
 
     {}.tap do |hash|
       attributes.each do |attribute|
@@ -19,4 +19,4 @@ module ComplianceControlsHelper
       end
     end
   end
-end 
+end
