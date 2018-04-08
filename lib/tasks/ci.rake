@@ -10,6 +10,7 @@ namespace :ci do
 
   desc "Prepare CI build"
   task :setup do
+    cp "config/database.yml", "config/database.yml.orig"
     cp "config/database/ci.yml", "config/database.yml"
     puts "Use #{database_name} database"
     sh "RAILS_ENV=test rake db:drop db:create db:migrate"
@@ -76,6 +77,9 @@ namespace :ci do
     task :clean do
       puts "Drop #{database_name} database"
       sh "RAILS_ENV=test rake db:drop"
+
+      # Restore projet config/database.yml
+      cp "config/database.yml.orig", "config/database.yml" if File.exists?("config/database.yml.orig")
     end
   end
 
