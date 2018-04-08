@@ -32,7 +32,7 @@ fr:
         title: 'Dupliquer un jeu de données'
       submit: "Valider"
     select_compliance_control_set:
-      title: "Sélection du jeu de contôles"
+      title: "Sélection du jeu de contrôles"
     actions:
       new: "Créer un jeu de données"
       destroy_confirm: "Etes vous sûr de vouloir supprimer ce jeu de données ?"
