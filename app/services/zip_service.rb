@@ -1,8 +1,8 @@
 class ZipService
 
-  class Subdir < Struct.new(:name, :stream, :spurious, :foreign_lines)
+  class Subdir < Struct.new(:name, :stream, :spurious, :foreign_lines, :missing_calendar, :wrong_calendar)
     def ok?
-      foreign_lines.empty? && spurious.empty?
+      foreign_lines.empty? && spurious.empty? && !missing_calendar && !wrong_calendar
     end
   end
 
@@ -38,8 +38,23 @@ class ZipService
     add_to_current_output entry
   end
 
+  def validate entry
+    if is_calendar_file?(entry.name)
+      @current_calendar_is_missing = false
+      if wrong_calendar_data?(entry)
+        @current_calendar_is_wrong = true
+        return false
+      end
+    end
+    return false if is_spurious?(entry.name)
+    return false if is_foreign_line?(entry.name)
+    true
+  end
+
   def add_to_current_output entry
-    return if is_spurious!(entry.name) || is_foreign_line!(entry.name)
+    p "entry.name: #{entry.name}"
+    return unless validate(entry)
+    p "Adding"
 
     current_output.put_next_entry entry.name
     write_to_current_output entry.get_input_stream
@@ -48,7 +63,7 @@ class ZipService
   def write_to_current_output input_stream
     # the condition below is true for directory entries
     return if Zip::NullInputStream == input_stream
-    current_output.write input_stream.read 
+    current_output.write input_stream.read
   end
 
   def finish_current_output
@@ -58,7 +73,9 @@ class ZipService
         # Second part of the solution, yield the closed stream
         current_output.close_buffer,
         current_spurious.to_a,
-        foreign_lines)
+        foreign_lines,
+        @current_calendar_is_missing,
+        @current_calendar_is_wrong)
     end
   end
 
@@ -68,6 +85,8 @@ class ZipService
     @current_output   = Zip::OutputStream.new(StringIO.new(''), true, nil)
     @current_spurious = Set.new
     @foreign_lines    = []
+    @current_calendar_is_missing = true
+    @current_calendar_is_wrong = false
   end
 
   def entry_key entry
@@ -75,7 +94,7 @@ class ZipService
     entry.name.split('/').first
   end
 
-  def is_spurious! entry_name
+  def is_spurious? entry_name
     segments = entry_name.split('/', 3)
     return false if segments.size < 3
 
@@ -83,11 +102,25 @@ class ZipService
     return true
   end
 
-  def is_foreign_line! entry_name
+  def is_foreign_line? entry_name
     STIF::NetexFile::Frame.get_short_id(entry_name).tap do | line_object_id |
       return nil unless line_object_id
       return nil if line_object_id.in? allowed_lines
       foreign_lines << line_object_id
     end
+  end
+
+  def is_calendar_file? entry_name
+    entry_name =~ /calendriers.xml$/
+  end
+
+  def wrong_calendar_data? entry
+    content = entry.get_input_stream.read
+    period = STIF::NetexFile::Frame.parse_calendars content.to_s
+    return true unless period
+    return true unless period.first
+    return true unless period.end
+    return true unless period.first <= period.end
+    false
   end
 end

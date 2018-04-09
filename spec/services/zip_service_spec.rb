@@ -42,6 +42,24 @@ RSpec.describe ZipService, type: :zip do
     end
   end
 
+  context 'one referential without calendar' do
+    let( :zip_name ){ 'one_referential_no_calendar.zip' }
+    let( :zip_content ){ first_referential_no_calendar_data }
+
+    it 'returns a not ok object' do
+      expect_incorrect_subdir subject.first, expected_missing_calendar: true
+    end
+  end
+
+  context 'one referential with an unparsable calendar' do
+    let( :zip_name ){ 'one_referential_unparsable_calendar.zip' }
+    let( :zip_content ){ first_referential_unparsable_calendar_data }
+
+    it 'returns a not ok object' do
+      expect_incorrect_subdir subject.first, expected_wrong_calendar: true
+    end
+  end
+
   context 'one referential with a foreign line' do
     let( :zip_name ){ 'one_referential_foreign.zip' }
     let( :zip_content ){ first_referential_foreign_data }
@@ -109,17 +127,29 @@ RSpec.describe ZipService, type: :zip do
     end
   end
 
-  def expect_incorrect_subdir subdir, expected_spurious: [], expected_foreign_lines: []
+  def expect_incorrect_subdir subdir, expected_spurious: [], expected_foreign_lines: [], expected_missing_calendar: false, expected_wrong_calendar: false
     expect( subdir ).not_to be_ok
     expect( subdir.foreign_lines ).to eq(expected_foreign_lines)
     expect( subdir.spurious ).to eq(expected_spurious)
+    expect( subdir.missing_calendar ).to eq(expected_missing_calendar)
+    expect( subdir.wrong_calendar ).to eq(expected_wrong_calendar)
   end
 
   # Data
   # ----
+  let :valid_calendar do
+    """
+    <netex:PublicationDelivery xmlns:netex=\"http://www.netex.org.uk/netex\">
+      <netex:ValidBetween>
+        <netex:FromDate>2017-03-01</netex:FromDate>
+        <netex:ToDate>2017-03-31</netex:ToDate>
+      </netex:ValidBetween>
+    </netex:PublicationDelivery>
+    """
+  end
   let :first_referential_ok_data do
     {
-       'Referential1/calendriers.xml'     => 'calendriers',
+       'Referential1/calendriers.xml'     => valid_calendar,
        'Referential1/commun.xml'          => 'common',
        'Referential1/offre_C00108_9.xml'  => 'line 108 ref 1',
        'Referential1/offre_C00109_10.xml' => 'line 109 ref 1'
@@ -127,7 +157,7 @@ RSpec.describe ZipService, type: :zip do
   end
   let :first_referential_foreign_data do
     {
-       'Referential2/calendriers.xml'     => 'calendriers',
+       'Referential2/calendriers.xml'     => valid_calendar,
        'Referential2/commun.xml'          => 'common',
        'Referential2/offre_C00110_11.xml' => 'foreign line ref 1',
        'Referential2/offre_C00108_9.xml'  => 'line 108 ref 1',
@@ -136,7 +166,7 @@ RSpec.describe ZipService, type: :zip do
   end
   let :first_referential_spurious_data do
     {
-       'Referential3/calendriers.xml'     => 'calendriers',
+       'Referential3/calendriers.xml'     => valid_calendar,
        'Referential3/commun.xml'          => 'common',
        'Referential3/SPURIOUS/commun.xml' => 'common',
        'Referential3/offre_C00108_9.xml'  => 'line 108 ref 1',
@@ -145,7 +175,7 @@ RSpec.describe ZipService, type: :zip do
   end
   let :second_referential_ok_data do
     {
-       'Referential4/calendriers.xml'     => 'calendriers',
+       'Referential4/calendriers.xml'     => valid_calendar,
        'Referential4/commun.xml'          => 'common',
        'Referential4/offre_C00108_9.xml'  => 'line 108 ref 2',
        'Referential4/offre_C00109_10.xml' => 'line 109 ref 2'
@@ -153,7 +183,7 @@ RSpec.describe ZipService, type: :zip do
   end
   let :messed_up_referential_data do
     {
-       'Referential5/calendriers.xml'      => 'calendriers',
+       'Referential5/calendriers.xml'      => valid_calendar,
        'Referential5/commun.xml'           => 'common',
        'Referential5/SPURIOUS1/commun.xml' => 'common',
        'Referential5/SPURIOUS2/commun.xml' => 'common',
@@ -163,5 +193,21 @@ RSpec.describe ZipService, type: :zip do
        'Referential5/offre_C00109_10.xml'  => 'line 109 ref 1'
     }
   end
+  let :first_referential_no_calendar_data do
+    {
+       'Referential6/commun.xml'          => 'common',
+       'Referential6/offre_C00108_9.xml'  => 'line 108 ref 1',
+       'Referential6/offre_C00109_10.xml' => 'line 109 ref 1'
+    }
+  end
+  let :first_referential_unparsable_calendar_data do
+    {
+       'Referential7/calendriers.xml'     => 'calendriers',
+       'Referential7/commun.xml'          => 'common',
+       'Referential7/offre_C00108_9.xml'  => 'line 108 ref 1',
+       'Referential7/offre_C00109_10.xml' => 'line 109 ref 1'
+    }
+  end
+
 
 end

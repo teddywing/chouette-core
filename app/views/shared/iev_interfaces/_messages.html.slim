@@ -1,14 +1,15 @@
 - if messages.any?
   ul.list-unstyled.import_message-list
     - messages.order(:created_at).each do | message |
+      - width = message.resource_attributes.present? ? 6 : 12
       li
         .row class=bootstrap_class_for_message_criticity(message.criticity)
           - if message.message_attributes && message.message_attributes["line"]
             .col-md-1= "L. #{message.message_attributes["line"]}"
-            .col-md-5= export_message_content message
+            div class="col-md-#{width-1}"= export_message_content message
           - else
-            .col-md-6= export_message_content message
+            div class="col-md-#{width}"= export_message_content message
           .col-md-6
-            - if message.resource_attributes
+            - if message.resource_attributes.present?
               pre
                 = JSON.pretty_generate message.resource_attributes || {}
