@@ -27,7 +27,7 @@ export default class TagsSelect2 extends Component {
     return (
       <Select2
         value={(this.props.tags.length) ? map(this.props.tags, 'id') : undefined}
-        data={(this.props.initialTags.length) ? this.mapKeys(this.props.initialTags) : undefined}
+        data={(this.props.tags.length) ? this.mapKeys(this.props.tags) : undefined}
         onSelect={(e) => this.props.onSelect2Tags(e)}
         onUnselect={(e) => setTimeout( () => this.props.onUnselect2Tags(e, 150))}
         multiple={true}

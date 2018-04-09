@@ -31,7 +31,9 @@ export default function metas(state = {}, action) {
       return assign({}, state, {color: action.color})
     case 'UPDATE_SELECT_TAG':
       let tags = [...state.tags]
-      tags.push(action.selectedItem)
+      if(tags[tags.length-1].name != action.selectedItem.name){
+        tags.push(action.selectedItem)
+      }
       return assign({}, state, {tags: tags})
     case 'UPDATE_UNSELECT_TAG':
       return assign({}, state, {tags: filter(state.tags, (t) => (t.id != action.selectedItem.id))})
