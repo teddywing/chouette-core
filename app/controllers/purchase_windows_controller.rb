@@ -63,7 +63,9 @@ class PurchaseWindowsController < ChouetteController
 
   def ransack_contains_date
     date =[]
-    if params[:q] && params[:q]['contains_date(1i)'].present?
+    if params[:q] && params[:q]['contains_date'].present?
+      params[:q]['contains_date'] = @date = params[:q]['contains_date'].to_date
+    elsif params[:q] && params[:q]['contains_date(1i)'].present?
       ['contains_date(1i)', 'contains_date(2i)', 'contains_date(3i)'].each do |key|
         date << params[:q][key].to_i
         params[:q].delete(key)
