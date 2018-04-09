@@ -76,7 +76,6 @@ export default function Metas({metas, onUpdateDayTypes, onUpdateComment, onUpdat
             <label htmlFor="" className="control-label col-sm-4">{I18n.attribute_name('time_table', 'tag_list')}</label>
             <div className="col-sm-8">
               <TagsSelect2
-                initialTags={metas.initial_tags}
                 tags={metas.tags}
                 onSelect2Tags={(e) => onSelect2Tags(e)}
                 onUnselect2Tags={(e) => onUnselect2Tags(e)}
