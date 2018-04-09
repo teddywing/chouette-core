@@ -52,9 +52,7 @@ class ZipService
   end
 
   def add_to_current_output entry
-    p "entry.name: #{entry.name}"
     return unless validate(entry)
-    p "Adding"
 
     current_output.put_next_entry entry.name
     write_to_current_output entry.get_input_stream
