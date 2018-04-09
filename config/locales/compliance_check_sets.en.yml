@@ -23,7 +23,7 @@ en:
       table_state: "%{lines_status} lines imported out of %{lines_in_compliance_check_set} in the archive"
       table_explanation: "These controls apply to all imported data and condition the construction of your organization's offer."
       table_title: Analysed lines state
-      metrics: "%{ok_count} ok, %{error_count} errors, %{warning_count} warnings, %{uncheck_count} n/a"
+      metrics: "%{error_count} errors, %{warning_count} warnings"
       metadatas:
         referential: "Object analysed"
         referential_type: "Apply to"

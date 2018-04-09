@@ -19,7 +19,7 @@ fr:
       table_state: "%{lines_status} lignes valides sur %{lines_in_compliance_check_set} présentes dans l'offre de transport"
       table_explanation: Ces contrôles s’appliquent pour toutes les données importées et conditionnent la construction de l’offre de votre organisation
       table_title: État des lignes analysées
-      metrics: "%{ok_count} ok, %{error_count} errors, %{warning_count} warnings, %{uncheck_count} n/a"
+      metrics: "%{error_count} errors, %{warning_count} warnings"
       metadatas:
         referential: "Objet analysé"
         referential_type: "Appliqué à"
