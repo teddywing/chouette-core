@@ -10,6 +10,25 @@ class Import::Netex < Import::Base
 
   validates_presence_of :parent
 
+  def create_referential
+    self.referential =
+      Referential.new(
+        name: self.name,
+        organisation_id: workbench.organisation_id,
+        workbench_id: workbench.id,
+        metadatas: [referential_metadata]
+      )
+    self.referential.save
+    unless self.referential.valid?
+      Rails.logger.info "Can't create referential for import #{self.id}: #{referential.inspect} #{referential.metadatas.inspect} #{referential.errors.messages}"
+      if referential.metadatas.all?{|m| m.line_ids.empty?}
+        parent.messages.create criticity: :error, message_key: "referential_creation_missing_lines", message_attributes: {referential_name: referential.name}
+      else
+        parent.messages.create criticity: :error, message_key: "referential_creation", message_attributes: {referential_name: referential.name}
+      end
+    end
+  end
+
   private
 
   def iev_callback_url
@@ -20,5 +39,23 @@ class Import::Netex < Import::Base
     if referential && !referential.ready
       referential.destroy
     end
+  end
+
+  def referential_metadata
+    metadata = ReferentialMetadata.new
+
+    if self.file
+      netex_file = STIF::NetexFile.new(self.file.path)
+      frame = netex_file.frames.first
+
+      if frame
+        metadata.periodes = frame.periods
+
+        line_objectids = frame.line_refs.map { |ref| "STIF:CODIFLIGNE:Line:#{ref}" }
+        metadata.line_ids = workbench.lines.where(objectid: line_objectids).pluck(:id)
+      end
+    end
+
+    metadata
   end
 end
