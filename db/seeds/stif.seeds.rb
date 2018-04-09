@@ -12,7 +12,7 @@ stop_area_referential = StopAreaReferential.seed_by(name: "Reflex") do |r|
 end
 
 line_referential = LineReferential.seed_by(name: "CodifLigne") do |r|
-  r.objectid_format = "stif_netex"
+  r.objectid_format = "stif_codifligne"
   r.add_member stif, owner: true
 end
 
