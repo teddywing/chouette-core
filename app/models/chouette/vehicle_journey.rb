@@ -346,7 +346,7 @@ module Chouette
       end
     end
 
-    def fill_passing_times
+    def fill_passing_times!
       encountered_empty_vjas = []
       previous_stop = nil
       vehicle_journey_at_stops.each do |vjas|
@@ -355,6 +355,7 @@ module Chouette
           encountered_empty_vjas << vjas
         else
           if encountered_empty_vjas.any?
+            raise "Cannot extrapolate passing times without an initial time" if previous_stop.nil?
             distance_between_known = 0
             distance_from_last_known = 0
             cost = journey_pattern.costs_between previous_stop.stop_point, encountered_empty_vjas.first.stop_point
@@ -384,6 +385,13 @@ module Chouette
           previous_stop = vjas
         end
       end
+    end
+
+    def fill_passing_times
+      fill_passing_times!
+      nil
+    rescue => e
+      e.message
     end
 
     def self.matrix(vehicle_journeys)
