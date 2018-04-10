@@ -8,18 +8,24 @@ class RouteWayCostUnitConverter
     end
   end
 
-  private
-
   # Round to 2 decimal places to appease JavaScript validation
   def self.meters_to_kilometers(num)
     return 0 unless num
 
-    (num / 1000.0).to_i
+    snap_to_one(num / 1000.0).to_i
   end
 
   def self.seconds_to_minutes(num)
     return 0 unless num
 
-    num / 60
+    snap_to_one(num / 60.0).to_i
+  end
+
+  private
+
+  def self.snap_to_one(decimal)
+    return 1 if decimal > 0 && decimal <= 1
+
+    decimal
   end
 end
