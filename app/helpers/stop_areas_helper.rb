@@ -75,16 +75,17 @@ module StopAreasHelper
     t "formtastic.hints.stop_area.registration_number"
   end
 
-  def stop_area_status(stop_area)
-    if stop_area.activated?
-      content_tag(:span, nil, class: 'fa fa-check-circle fa-lg text-success') +
-      t('activerecord.attributes.stop_area.confirmed')
-    elsif stop_area.deactivated?
-      content_tag(:span, nil, class: 'fa fa-exclamation-circle fa-lg text-danger') +
-      t('activerecord.attributes.stop_area.deactivated')
-    else
-      content_tag(:span, nil, class: 'fa fa-pencil fa-lg text-info') +
-      t('activerecord.attributes.stop_area.in_creation')
+  def stop_area_status(status)
+    case status
+      when :confirmed
+        content_tag(:span, nil, class: 'fa fa-check-circle fa-lg text-success') +
+        t('activerecord.attributes.stop_area.confirmed')
+      when :deactivated
+        content_tag(:span, nil, class: 'fa fa-exclamation-circle fa-lg text-danger') +
+        t('activerecord.attributes.stop_area.deactivated')
+      else
+        content_tag(:span, nil, class: 'fa fa-pencil fa-lg text-info') +
+        t('activerecord.attributes.stop_area.in_creation')
     end
   end
 

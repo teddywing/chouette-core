@@ -120,7 +120,7 @@ class StopAreasController < ChouetteController
 
   def collection
     scope = parent.present? ? parent.stop_areas : referential.stop_areas
-    scope = ransack_status(scope)
+    scope = ransack_status(scope) if params[:q] && params[:q][:status_eq_any]
     @q = scope.search(params[:q])
 
     if sort_column && sort_direction
@@ -209,21 +209,26 @@ class StopAreasController < ChouetteController
 
    # Fake ransack filter
   def ransack_status scope
-    return scope unless params[:q].try(:[], :status)
-    return scope if params[:q][:status].values.uniq.length == 1
+    status_param = params[:q][:status_eq_any].reject(&:blank?)
+    params[:q].delete :status_eq_any
 
-    @status = {
-      in_creation: params[:q][:status]['in_creation'] == 'true',
-      confirmed: params[:q][:status]['confirmed'] == 'true',
-      deactivated: params[:q][:status]['deactivated'] == 'true',
-    }
+    return scope unless status_param
+    return scope if status_param.empty? || status_param.length == 3
 
+
+    @status = Hash.new do |hash|
+      hash[:status_eq_any] = {
+        in_creation: status_param.include?('in_creation'),
+        confirmed: status_param.include?('confirmed'),
+        deactivated: status_param.include?('deactivated'),
+      }
+    end
+      
     scope = Chouette::StopArea.where(
-      "confirmed_at #{(@status[:confirmed] || @status[:deactivated]) ? "IS NOT NULL" : "IS NULL"}
-      AND deleted_at #{@status[:deactivated] ? "IS NOT NULL" : "IS NULL"}"
+      "confirmed_at #{(@status[:status_eq_any][:confirmed] || @status[:status_eq_any][:deactivated]) ? "IS NOT NULL" : "IS NULL"}
+      AND deleted_at #{@status[:status_eq_any][:deactivated] ? "IS NOT NULL" : "IS NULL"}"
       )
 
-    params[:q].delete :status
     scope
   end
 end
