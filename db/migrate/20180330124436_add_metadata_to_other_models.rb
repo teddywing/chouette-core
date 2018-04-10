@@ -22,7 +22,7 @@ class AddMetadataToOtherModels < ActiveRecord::Migration
       ComplianceCheckSet,
       ComplianceControlSet,
     ].each do |model|
-      add_column model.table_name, :metadata, :jsonb, default: {}
+      add_column model.table_name.split(".").last, :metadata, :jsonb, default: {}
     end
   end
 end
