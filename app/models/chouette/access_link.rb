@@ -1,6 +1,6 @@
 module Chouette
   class AccessLink < Chouette::TridentActiveRecord
-    has_paper_trail
+    has_metadata
     include ObjectidSupport
 
     attr_accessor :access_link_type, :link_orientation_type, :link_key

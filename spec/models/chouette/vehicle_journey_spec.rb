@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Chouette::VehicleJourney, :type => :model do
   subject { create(:vehicle_journey) }
 
-  it { is_expected.to be_versioned }
+  
   it { should have_and_belong_to_many(:purchase_windows) }
 
   it "must be valid with an at-stop day offset of 1" do

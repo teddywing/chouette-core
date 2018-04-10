@@ -1,5 +1,5 @@
 # coding: utf-8
-class Referential < ActiveRecord::Base
+class Referential < ApplicationModel
   include DataFormatEnumerations
   include ObjectidFormatterSupport
 

@@ -1,4 +1,4 @@
-class StopAreaReferentialSyncMessage < ActiveRecord::Base
+class StopAreaReferentialSyncMessage < ApplicationModel
   belongs_to :stop_area_referential_sync
   enum criticity: [:info, :warning, :error]
 

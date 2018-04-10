@@ -2,13 +2,13 @@ require 'range_ext'
 require_relative 'calendar/date_value'
 require_relative 'calendar/period'
 
-class Calendar < ActiveRecord::Base
+class Calendar < ApplicationModel
   include DateSupport
   include PeriodSupport
   include ApplicationDaysSupport
   include TimetableSupport
 
-  has_paper_trail class_name: 'PublicVersion'
+  has_metadata
   belongs_to :organisation
   belongs_to :workgroup
 

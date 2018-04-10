@@ -1,4 +1,4 @@
-class Import::Base < ActiveRecord::Base
+class Import::Base < ApplicationModel
   self.table_name = "imports"
   validates :file, presence: true
 

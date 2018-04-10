@@ -8,7 +8,7 @@ describe Chouette::RoutingConstraintZone, type: :model do
   it { is_expected.to validate_presence_of :route_id }
   # shoulda matcher to validate length of array ?
   xit { is_expected.to validate_length_of(:stop_point_ids).is_at_least(2) }
-  it { is_expected.to be_versioned }
+  
 
   describe 'checksum' do
     it_behaves_like 'checksum support'

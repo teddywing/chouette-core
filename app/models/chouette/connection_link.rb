@@ -1,6 +1,6 @@
 module Chouette
   class ConnectionLink < Chouette::TridentActiveRecord
-    has_paper_trail
+    has_metadata
     include ObjectidSupport
     include ConnectionLinkRestrictions
 

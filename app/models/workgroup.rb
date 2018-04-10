@@ -1,4 +1,4 @@
-class Workgroup < ActiveRecord::Base
+class Workgroup < ApplicationModel
   belongs_to :line_referential
   belongs_to :stop_area_referential
 

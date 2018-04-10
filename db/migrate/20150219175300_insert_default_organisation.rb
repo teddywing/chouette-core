@@ -1,5 +1,5 @@
 class InsertDefaultOrganisation < ActiveRecord::Migration
-  class Organisation  < ActiveRecord::Base
+  class Organisation  < ApplicationModel
     attr_accessor :name
   end
 

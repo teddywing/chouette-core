@@ -74,6 +74,7 @@ class JourneyPatternsCollectionsController < ChouetteController
   def update
     state  = JSON.parse request.raw_post
     Chouette::JourneyPattern.state_update route, state
+    @resources = route.journey_patterns
     errors = state.any? {|item| item['errors']}
 
     respond_to do |format|

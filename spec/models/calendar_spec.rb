@@ -4,7 +4,7 @@ RSpec.describe Calendar, :type => :model do
 
   it { is_expected.to validate_presence_of(:organisation) }
   it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to be_versioned }
+  
 
   describe '#to_time_table' do
     let(:calendar) { create(:calendar, int_day_types: Calendar::MONDAY | Calendar::SUNDAY, date_ranges: [Date.today...(Date.today + 1.month)]) }

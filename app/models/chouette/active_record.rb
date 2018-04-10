@@ -1,7 +1,8 @@
 #require "active_record"
 require 'deep_cloneable'
 module Chouette
-  class ActiveRecord < ::ActiveRecord::Base
+  class ActiveRecord < ::ApplicationModel
+
     self.abstract_class = true
     before_save :nil_if_blank, :set_data_source_ref
 

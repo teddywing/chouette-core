@@ -1,4 +1,4 @@
-class Workbench < ActiveRecord::Base
+class Workbench < ApplicationModel
   DEFAULT_WORKBENCH_NAME = "Gestion de l'offre"
 
   include ObjectidFormatterSupport

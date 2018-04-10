@@ -14,7 +14,7 @@ module ApplicationHelper
   def page_header_title(object)
     # Unwrap from decorator, we want to know the object model name
     object = object.object if object.try(:object)
-    
+
     if Referential === object
       return object.full_name
     end
@@ -36,8 +36,8 @@ module ApplicationHelper
     display = policy(object).synchronize? if policy(object).respond_to?(:synchronize?) rescue false
     if display
       info = t('last_update', time: l(object.updated_at, format: :short))
-      if object.try(:versions)
-        author = object.versions.try(:last).try(:whodunnit) || t('default_whodunnit')
+      if object.has_metadata?
+        author = object.metadata.modifier_username || t('default_whodunnit')
         info   = "#{info} <br/> #{t('whodunnit', author: author)}"
       end
       out += content_tag :div, info.html_safe, class: 'small last-update'

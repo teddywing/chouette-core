@@ -1,4 +1,4 @@
-class ComplianceCheckBlock < ActiveRecord::Base
+class ComplianceCheckBlock < ApplicationModel
   include StifTransportModeEnumerations
   include StifTransportSubmodeEnumerations
 

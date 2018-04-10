@@ -4,7 +4,7 @@ describe Chouette::AccessLink, :type => :model do
   subject { create(:access_link) }
 
   it { is_expected.to validate_uniqueness_of :objectid }
-  it { is_expected.to be_versioned }
+  
 
    describe '#get_objectid' do
     subject { super().get_objectid }

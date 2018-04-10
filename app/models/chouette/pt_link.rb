@@ -2,7 +2,7 @@ require 'geokit'
 
 module Chouette
   class PtLink < Chouette::ActiveRecord
-    has_paper_trail
+    has_metadata
     include Geokit::Mappable
 
     def geometry

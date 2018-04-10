@@ -12,7 +12,7 @@ RSpec.describe ComplianceCheckSet, type: :model do
 
   it { should have_many :compliance_checks }
   it { should have_many :compliance_check_blocks }
-  it { is_expected.to be_versioned }
+  
 
   describe "#update_status" do
     it "updates :status to successful when all resources are OK" do

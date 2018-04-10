@@ -1,4 +1,4 @@
-class Export::Message < ActiveRecord::Base
+class Export::Message < ApplicationModel
   self.table_name = :export_messages
 
   include IevInterfaces::Message

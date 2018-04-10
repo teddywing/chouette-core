@@ -1,4 +1,4 @@
-class Import::Resource < ActiveRecord::Base
+class Import::Resource < ApplicationModel
   self.table_name = :import_resources
 
   include IevInterfaces::Resource

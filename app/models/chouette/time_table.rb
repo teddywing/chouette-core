@@ -1,6 +1,6 @@
 module Chouette
   class TimeTable < Chouette::TridentActiveRecord
-    has_paper_trail
+    has_metadata
     include ChecksumSupport
     include TimeTableRestrictions
     include ObjectidSupport

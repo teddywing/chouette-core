@@ -1,4 +1,4 @@
-class ComplianceControl < ActiveRecord::Base
+class ComplianceControl < ApplicationModel
   include ComplianceItemSupport
 
   class << self

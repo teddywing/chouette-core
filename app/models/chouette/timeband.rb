@@ -9,7 +9,7 @@ module Chouette
 
   class Timeband < Chouette::TridentActiveRecord
     include ObjectidSupport
-    has_paper_trail
+    has_metadata
 
     validates :start_time, :end_time, presence: true
     validates_with Chouette::TimebandValidator

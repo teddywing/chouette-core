@@ -1,4 +1,4 @@
-class StopAreaReferentialMembership < ActiveRecord::Base
+class StopAreaReferentialMembership < ApplicationModel
   belongs_to :organisation
   belongs_to :stop_area_referential
 

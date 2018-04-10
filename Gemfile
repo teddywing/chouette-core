@@ -33,9 +33,6 @@ gem 'spring', group: :development
 # ActiveRecord associations on top of PostgreSQL arrays
 gem 'has_array_of', af83: 'has_array_of'
 
-# Track changes to your models' data. Good for auditing or versioning.
-gem 'paper_trail'
-
 gem 'rails-observers'
 
 # Use SeedBank for spliting seeds

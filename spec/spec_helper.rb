@@ -34,7 +34,6 @@ require 'webmock/rspec'
 require 'simplecov'
 require 'sidekiq/testing'
 Sidekiq::Testing.fake!
-require 'paper_trail/frameworks/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

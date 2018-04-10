@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180405133659) do
+ActiveRecord::Schema.define(version: 20180319043333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
     t.integer  "stop_area_id",                           limit: 8
-    t.string   "objectid",                                                                  null: false
+    t.string   "objectid",                                                                               null: false
     t.integer  "object_version",                         limit: 8
     t.string   "name"
     t.string   "comment"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.string   "link_orientation"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb    "metadata",                                                                  default: {}
   end
 
   add_index "access_links", ["objectid"], name: "access_links_objectid_key", unique: true, using: :btree
@@ -66,6 +67,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb    "metadata",                                                            default: {}
   end
 
   add_index "access_points", ["objectid"], name: "access_points_objectid_key", unique: true, using: :btree
@@ -77,6 +79,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "organisation_id", limit: 8
+    t.jsonb    "metadata",                  default: {}
   end
 
   add_index "api_keys", ["organisation_id"], name: "index_api_keys_on_organisation_id", using: :btree
@@ -89,9 +92,10 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.integer   "organisation_id", limit: 8
     t.datetime  "created_at"
     t.datetime  "updated_at"
+    t.integer   "workgroup_id",    limit: 8
     t.integer   "int_day_types"
     t.date      "excluded_dates",                            array: true
-    t.integer   "workgroup_id",    limit: 8
+    t.jsonb     "metadata",                  default: {}
   end
 
   add_index "calendars", ["organisation_id"], name: "index_calendars_on_organisation_id", using: :btree
@@ -139,7 +143,8 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.jsonb    "custom_field_values",                 default: {}
+    t.jsonb    "custom_field_values"
+    t.jsonb    "metadata",                            default: {}
   end
 
   add_index "companies", ["line_referential_id"], name: "index_companies_on_line_referential_id", using: :btree
@@ -192,14 +197,15 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.string   "status"
     t.integer  "parent_id",                 limit: 8
     t.string   "parent_type"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.string   "current_step_id"
     t.float    "current_step_progress"
     t.string   "name"
     t.datetime "started_at"
     t.datetime "ended_at"
     t.datetime "notified_parent_at"
+    t.jsonb    "metadata",                            default: {}
   end
 
   add_index "compliance_check_sets", ["compliance_control_set_id"], name: "index_compliance_check_sets_on_compliance_control_set_id", using: :btree
@@ -238,8 +244,9 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   create_table "compliance_control_sets", id: :bigserial, force: :cascade do |t|
     t.string   "name"
     t.integer  "organisation_id", limit: 8
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.jsonb    "metadata",                  default: {}
   end
 
   add_index "compliance_control_sets", ["organisation_id"], name: "index_compliance_control_sets_on_organisation_id", using: :btree
@@ -265,7 +272,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   create_table "connection_links", id: :bigserial, force: :cascade do |t|
     t.integer  "departure_id",                           limit: 8
     t.integer  "arrival_id",                             limit: 8
-    t.string   "objectid",                                                                  null: false
+    t.string   "objectid",                                                                               null: false
     t.integer  "object_version",                         limit: 8
     t.string   "name"
     t.string   "comment"
@@ -281,6 +288,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.integer  "int_user_needs"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb    "metadata",                                                                  default: {}
   end
 
   add_index "connection_links", ["objectid"], name: "connection_links_objectid_key", unique: true, using: :btree
@@ -398,7 +406,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   end
 
   create_table "group_of_lines", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                      null: false
+    t.string   "objectid",                                   null: false
     t.integer  "object_version",      limit: 8
     t.string   "name"
     t.string   "comment"
@@ -407,6 +415,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb    "metadata",                      default: {}
   end
 
   add_index "group_of_lines", ["line_referential_id"], name: "index_group_of_lines_on_line_referential_id", using: :btree
@@ -485,7 +494,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
 
   create_table "journey_patterns", id: :bigserial, force: :cascade do |t|
     t.integer  "route_id",                limit: 8
-    t.string   "objectid",                          null: false
+    t.string   "objectid",                                       null: false
     t.integer  "object_version",          limit: 8
     t.string   "name"
     t.string   "comment"
@@ -499,6 +508,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.text     "checksum_source"
     t.string   "data_source_ref"
     t.json     "costs"
+    t.jsonb    "metadata",                          default: {}
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree
@@ -572,6 +582,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "seasonal"
+    t.jsonb    "metadata",                                  default: {}
   end
 
   add_index "lines", ["line_referential_id"], name: "index_lines_on_line_referential_id", using: :btree
@@ -593,7 +604,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   add_index "merges", ["workbench_id"], name: "index_merges_on_workbench_id", using: :btree
 
   create_table "networks", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                      null: false
+    t.string   "objectid",                                   null: false
     t.integer  "object_version",      limit: 8
     t.date     "version_date"
     t.string   "description"
@@ -607,6 +618,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.integer  "line_referential_id", limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb    "metadata",                      default: {}
   end
 
   add_index "networks", ["line_referential_id"], name: "index_networks_on_line_referential_id", using: :btree
@@ -631,13 +643,14 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.integer  "start_of_link_id", limit: 8
     t.integer  "end_of_link_id",   limit: 8
     t.integer  "route_id",         limit: 8
-    t.string   "objectid",                                            null: false
+    t.string   "objectid",                                                         null: false
     t.integer  "object_version",   limit: 8
     t.string   "name"
     t.string   "comment"
     t.decimal  "link_distance",              precision: 19, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb    "metadata",                                            default: {}
   end
 
   add_index "pt_links", ["objectid"], name: "pt_links_objectid_key", unique: true, using: :btree
@@ -645,13 +658,14 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   create_table "purchase_windows", id: :bigserial, force: :cascade do |t|
     t.string    "name"
     t.string    "color"
-    t.daterange "date_ranges",                            array: true
-    t.datetime  "created_at",                null: false
-    t.datetime  "updated_at",                null: false
+    t.daterange "date_ranges",                                         array: true
+    t.datetime  "created_at",                             null: false
+    t.datetime  "updated_at",                             null: false
     t.string    "objectid"
     t.string    "checksum"
     t.text      "checksum_source"
     t.integer   "referential_id",  limit: 8
+    t.jsonb     "metadata",                  default: {}
   end
 
   add_index "purchase_windows", ["referential_id"], name: "index_purchase_windows_on_referential_id", using: :btree
@@ -742,6 +756,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.text     "checksum_source"
     t.string   "data_source_ref"
     t.json     "costs"
+    t.jsonb    "metadata"
   end
 
   add_index "routes", ["objectid"], name: "routes_objectid_key", unique: true, using: :btree
@@ -750,13 +765,14 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "objectid",                  null: false
+    t.string   "objectid",                               null: false
     t.integer  "object_version",  limit: 8
     t.integer  "route_id",        limit: 8
-    t.integer  "stop_point_ids",  limit: 8,              array: true
+    t.integer  "stop_point_ids",  limit: 8,                           array: true
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
+    t.jsonb    "metadata",                  default: {}
   end
 
   create_table "routing_constraints_lines", id: false, force: :cascade do |t|
@@ -810,7 +826,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
 
   create_table "stop_areas", id: :bigserial, force: :cascade do |t|
     t.integer  "parent_id",                       limit: 8
-    t.string   "objectid",                                                            null: false
+    t.string   "objectid",                                                                         null: false
     t.integer  "object_version",                  limit: 8
     t.string   "name"
     t.string   "comment"
@@ -843,6 +859,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.jsonb    "localized_names"
     t.datetime "confirmed_at"
     t.jsonb    "custom_field_values"
+    t.jsonb    "metadata",                                                            default: {}
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree
@@ -858,13 +875,14 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   create_table "stop_points", id: :bigserial, force: :cascade do |t|
     t.integer  "route_id",       limit: 8
     t.integer  "stop_area_id",   limit: 8
-    t.string   "objectid",                 null: false
+    t.string   "objectid",                              null: false
     t.integer  "object_version", limit: 8
     t.integer  "position"
     t.string   "for_boarding"
     t.string   "for_alighting"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb    "metadata",                 default: {}
   end
 
   add_index "stop_points", ["objectid"], name: "stop_points_objectid_key", unique: true, using: :btree
@@ -912,7 +930,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   add_index "time_table_periods", ["time_table_id"], name: "index_time_table_periods_on_time_table_id", using: :btree
 
   create_table "time_tables", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                              null: false
+    t.string   "objectid",                               null: false
     t.integer  "object_version",  limit: 8, default: 1
     t.string   "version"
     t.string   "comment"
@@ -927,6 +945,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
+    t.jsonb    "metadata",                  default: {}
   end
 
   add_index "time_tables", ["calendar_id"], name: "index_time_tables_on_calendar_id", using: :btree
@@ -942,13 +961,14 @@ ActiveRecord::Schema.define(version: 20180405133659) do
   add_index "time_tables_vehicle_journeys", ["vehicle_journey_id"], name: "index_time_tables_vehicle_journeys_on_vehicle_journey_id", using: :btree
 
   create_table "timebands", id: :bigserial, force: :cascade do |t|
-    t.string   "objectid",                 null: false
+    t.string   "objectid",                              null: false
     t.integer  "object_version", limit: 8
     t.string   "name"
-    t.time     "start_time",               null: false
-    t.time     "end_time",                 null: false
+    t.time     "start_time",                            null: false
+    t.time     "end_time",                              null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.jsonb    "metadata",                 default: {}
   end
 
   create_table "users", id: :bigserial, force: :cascade do |t|
@@ -1031,6 +1051,7 @@ ActiveRecord::Schema.define(version: 20180405133659) do
     t.text     "checksum_source"
     t.string   "data_source_ref"
     t.jsonb    "custom_field_values",                       default: {}
+    t.jsonb    "metadata",                                  default: {}
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree

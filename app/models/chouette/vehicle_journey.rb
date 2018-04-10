@@ -1,7 +1,7 @@
 # coding: utf-8
 module Chouette
   class VehicleJourney < Chouette::TridentActiveRecord
-    has_paper_trail
+    has_metadata
     include ChecksumSupport
     include CustomFieldsSupport
     include VehicleJourneyRestrictions

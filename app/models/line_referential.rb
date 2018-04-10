@@ -1,4 +1,4 @@
-class LineReferential < ActiveRecord::Base
+class LineReferential < ApplicationModel
   include ObjectidFormatterSupport
   extend StifTransportModeEnumerations
 

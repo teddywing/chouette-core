@@ -1,4 +1,4 @@
-class StopAreaReferentialSync < ActiveRecord::Base
+class StopAreaReferentialSync < ApplicationModel
   include AASM
   belongs_to :stop_area_referential
   has_many :stop_area_referential_sync_messages, :dependent => :destroy

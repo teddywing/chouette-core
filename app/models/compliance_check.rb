@@ -1,4 +1,4 @@
-class ComplianceCheck < ActiveRecord::Base
+class ComplianceCheck < ApplicationModel
   include ComplianceItemSupport
 
   self.inheritance_column = nil
