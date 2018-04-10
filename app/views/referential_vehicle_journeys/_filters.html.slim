@@ -68,5 +68,5 @@
 
 
   .actions
-    = link_to 'Effacer', referential_vehicle_journeys_path(@referential), class: 'btn btn-link'
-    = f.submit 'Filtrer', class: 'btn btn-default'
+    = link_to t('actions.erase'), referential_vehicle_journeys_path(@referential), class: 'btn btn-link'
+    = f.submit t('actions.filter'), class: 'btn btn-default'

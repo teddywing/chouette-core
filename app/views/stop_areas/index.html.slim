@@ -32,7 +32,7 @@
                 attribute: 'registration_number' \
               ), \
               TableBuilderHelper::Column.new( \
-                name: t('activerecord.attributes.stop_area.state'), \
+                name: Chouette::StopArea.tmf('state'), \
                 attribute: Proc.new { |s| stop_area_status(s) } \
               ), \
               TableBuilderHelper::Column.new( \

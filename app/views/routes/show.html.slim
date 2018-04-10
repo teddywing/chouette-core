@@ -34,7 +34,7 @@
                 end \
               ), \
               TableBuilderHelper::Column.new( \
-                key: :deleted_at, \
+                name: Chouette::Line.tmf('activated'), \
                 attribute: Proc.new { |s| line_status(s.try(:stop_area).deleted_at) } \
               ), \
               TableBuilderHelper::Column.new( \

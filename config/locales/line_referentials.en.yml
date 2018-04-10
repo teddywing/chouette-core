@@ -7,7 +7,7 @@ en:
     edit:
       title: "Edit %{name} referential"
     show:
-      title: "iLICO synchronization"
+      title: Line referential
       synchronized: Synchronized
       status: Status
       message: Message

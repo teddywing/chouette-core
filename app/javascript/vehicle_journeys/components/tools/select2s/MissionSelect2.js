@@ -75,7 +75,7 @@ export default class BSelect4 extends Component {
       escapeMarkup: function (markup) { return markup; },
       templateResult: formatRepo,
       placeholder: I18n.t('vehicle_journeys.vehicle_journeys_matrix.filters.journey_pattern'),
-      language: require('./fr'),
+      language: require('./language'),
       allowClear: false,
       escapeMarkup: function (markup) { return markup; },
     }

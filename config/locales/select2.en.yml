@@ -1,0 +1,15 @@
+en:
+  select2:
+    error_loading: The results cannot be loaded.
+    input_too_long:
+      one: Remove %{count} letter
+      other: Remove %{count} letters
+    input_too_short:
+      one: Type %{count} letter
+      other: Type %{count} letters
+    loading_more: Loading more…
+    maximum_selected:
+      one: You can select %{count} element
+      other: You can select %{count} elements
+    no_results: No Results
+    searching: Searching...

@@ -15,7 +15,7 @@ en:
       export_hub_all: "Export HUB routes"
       add_stop_point: "Add stop point"
       new_stop_point: "Create new stop"
-      opposite_route_timetable: "Timetable back"
+      reversed_vehicle_journey: "Reversed vehicle journeys"
     new:
       title: "Add a new route"
     edit:

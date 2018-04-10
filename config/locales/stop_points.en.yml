@@ -43,8 +43,8 @@ en:
         created_at: Created
         updated_at: Updated
         deleted_at: "Activated"
-        for_boarding: "For boarding"
-        for_alighting: "For alighting"
+        for_boarding: "Boarding"
+        for_alighting: "Alighting"
         area_type: "Area type"
         city_name: "City name"
         zip_code: "Zip code"
