@@ -40,7 +40,7 @@ export default class TagsSelect2 extends Component {
           allowClear: true,
           theme: 'bootstrap',
           width: '100%',
-          placeholder: this.context.I18n.t('time_tables.edit.select2.tag.placeholder'),
+          placeholder: I18n.t('time_tables.edit.select2.tag.placeholder'),
           ajax: {
             url: origin + path + '/tags.json',
             dataType: 'json',
@@ -74,8 +74,4 @@ export default class TagsSelect2 extends Component {
 
 const formatRepo = (props) => {
   if(props.name) return props.name
-}
-
-TagsSelect2.contextTypes = {
-  I18n: PropTypes.object
 }

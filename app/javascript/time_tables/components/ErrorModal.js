@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import actions from '../actions'
 
-export default function ErrorModal({dispatch, modal, onModalClose}, {I18n}) {
+export default function ErrorModal({dispatch, modal, onModalClose}) {
   return (
     <div className={'modal fade ' + ((modal.type == 'error') ? 'in' : '')} id='ErrorModal'>
       <div className='modal-container'>
@@ -37,8 +37,4 @@ export default function ErrorModal({dispatch, modal, onModalClose}, {I18n}) {
 ErrorModal.propTypes = {
   modal: PropTypes.object.isRequired,
   onModalClose: PropTypes.func.isRequired
-}
-
-ErrorModal.contextTypes = {
-  I18n: PropTypes.object
 }

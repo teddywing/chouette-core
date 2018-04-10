@@ -55,7 +55,7 @@ export default class PeriodManager extends Component {
                 type='button'
                 onClick={() => this.props.onOpenEditPeriodForm(this.props.value, this.props.index)}
               >
-                Modifier
+                {I18n.t('actions.edit')}
               </button>
             </li>
             <li className='delete-action'>
@@ -64,7 +64,7 @@ export default class PeriodManager extends Component {
                 onClick={() => this.props.onDeletePeriod(this.props.index, this.props.metas.day_types)}
               >
                 <span className='fa fa-trash'></span>
-                Supprimer
+                {I18n.t('actions.destroy')}
               </button>
             </li>
           </ul>
@@ -79,8 +79,4 @@ PeriodManager.propTypes = {
   currentDate: PropTypes.object.isRequired,
   onDeletePeriod: PropTypes.func.isRequired,
   onOpenEditPeriodForm: PropTypes.func.isRequired
-}
-
-PeriodManager.contextTypes = {
-  I18n: PropTypes.object
 }

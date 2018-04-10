@@ -33,7 +33,7 @@ const makeYearsOptions = (yearSelected) => {
   return arr
 }
 
-export default function PeriodForm({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriodForm, onUpdatePeriodForm, onValidatePeriodForm}, {I18n}) {
+export default function PeriodForm({modal, timetable, metas, onOpenAddPeriodForm, onClosePeriodForm, onUpdatePeriodForm, onValidatePeriodForm}) {
   return (
     <div className="container-fluid">
       <div className="row">
@@ -143,8 +143,4 @@ PeriodForm.propTypes = {
   onUpdatePeriodForm: PropTypes.func.isRequired,
   onValidatePeriodForm: PropTypes.func.isRequired,
   timetable: PropTypes.object.isRequired
-}
-
-PeriodForm.contextTypes = {
-  I18n: PropTypes.object
 }
