@@ -79,7 +79,7 @@ namespace :ci do
       sh "RAILS_ENV=test rake db:drop"
 
       # Restore projet config/database.yml
-      cp "config/database.yml.orig", "config/database.yml" if File.exists?("config/database.yml.orig")
+      # cp "config/database.yml.orig", "config/database.yml" if File.exists?("config/database.yml.orig")
     end
   end
 
