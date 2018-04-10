@@ -15,7 +15,7 @@
       = f.input :area_type_eq_any, checked: params[:q] && params[:q][:area_type_eq_any], collection: Chouette::AreaType.options, as: :check_boxes, label: false, label_method: lambda{|w| ("<span>" + w[0] + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
       
     .form-group.togglable class=filter_item_class(params[:q], :status)
-      = f.label Chouette::StopArea.human_attribute_name(:state), required: false, class: 'control-label'
+      = f.label Chouette::StopArea.tmf('status'), required: false, class: 'control-label'
       .form-group.checkbox_list
         = f.simple_fields_for :status do |p|
           = p.input :in_creation,

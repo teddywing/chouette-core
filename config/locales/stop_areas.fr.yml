@@ -72,7 +72,7 @@ fr:
       access_managment: "Gestion des accès et liens associés"
       access_points: "Points d'accès"
       not_editable: "Le type d'arrêt est non modifiable"
-      state:
+      status:
         active: Actif
         deactivated: Désactivé
     genealogical:
@@ -151,7 +151,7 @@ fr:
         zip_code: "Code postal"
         city_name: "Commune"
         waiting_time: Temps de desserte (minutes)
-        state: État
+        status: État
   formtastic:
     titles:
       stop_area:

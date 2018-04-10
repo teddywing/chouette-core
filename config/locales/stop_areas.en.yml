@@ -71,7 +71,7 @@ en:
       access_managment: "Access Points and Links managment"
       access_points: "Access Points"
       not_editable: "The area type is not editable"
-      state:
+      status:
         active: Active
         deactivated: Deactivated
     genealogical:
@@ -148,7 +148,7 @@ en:
         zip_code: "Zip code"
         city_name: "City"
         waiting_time: Waiting time (minutes)
-        state: Status
+        status: Status
   formtastic:
     titles:
       stop_area:
