@@ -1,7 +1,6 @@
 class ComplianceCheckSet < ApplicationModel
   extend Enumerize
-  include MetadataSupport
-  
+
   has_metadata
 
   belongs_to :referential

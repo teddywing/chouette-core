@@ -7,7 +7,6 @@ class Calendar < ApplicationModel
   include PeriodSupport
   include ApplicationDaysSupport
   include TimetableSupport
-  include MetadataSupport
 
   has_metadata
   belongs_to :organisation
