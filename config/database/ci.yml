@@ -9,3 +9,7 @@ test:
   database: <%= ENV.fetch 'RAILS_DB_NAME', 'stif_boiv_test' %>
   username: <%= ENV['RAILS_DB_USER'] || ENV['POSTGRESQL_ENV_POSTGRES_USER'] || 'jenkins' %>
   password: <%= ENV['RAILS_DB_PASSWORD'] || ENV['POSTGRESQL_ENV_POSTGRES_PASSWORD'] %>
+
+# Only used to build assets
+production:
+  <<: *default
