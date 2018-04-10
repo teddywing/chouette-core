@@ -11,6 +11,10 @@ module CustomFieldsSupport
       fields
     end
 
+    def self.custom_fields_definitions workgroup=:all
+      Hash[*custom_fields(workgroup).map{|cf| [cf.code, cf]}.flatten]
+    end
+
     def method_missing method_name, *args
       if method_name =~ /custom_field_*/ && method_name.to_sym != :custom_field_values && !@custom_fields_initialized
         initialize_custom_fields
