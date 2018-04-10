@@ -47,6 +47,23 @@ module STIF
           base_name = File.basename(file_name)
           STIF::NetexFile::LINE_FILE_FORMAT.match(base_name).try(:[], 'line_object_id')
         end
+
+        def parse_calendars calendars
+          # <netex:ValidBetween>
+          #  <netex:FromDate>2017-03-01</netex:FromDate>
+          #  <netex:ToDate>2017-03-31</netex:ToDate>
+          # </netex:ValidBetween>
+          xml = Nokogiri::XML(calendars)
+          from_date = nil
+          to_date = nil
+          xml.xpath("//netex:ValidBetween", "netex" => NetexFile::XML_NAME_SPACE).each do |valid_between|
+            from_date = valid_between.xpath("netex:FromDate").try :text
+            to_date = valid_between.xpath("netex:ToDate").try :text
+          end
+          from_date = from_date && Date.parse(from_date)
+          to_date = to_date && Date.parse(to_date)
+          Range.new from_date, to_date
+        end
       end
 
       attr_accessor :name
@@ -56,16 +73,7 @@ module STIF
       end
 
       def parse_calendars(calendars)
-        # <netex:ValidBetween>
-        #  <netex:FromDate>2017-03-01</netex:FromDate>
-        #  <netex:ToDate>2017-03-31</netex:ToDate>
-        # </netex:ValidBetween>
-        xml = Nokogiri::XML(calendars)
-        xml.xpath("//netex:ValidBetween", "netex" => NetexFile::XML_NAME_SPACE).each do |valid_between|
-          from_date = valid_between.xpath("netex:FromDate").try :text
-          to_date = valid_between.xpath("netex:ToDate").try :text
-          periods << Range.new(Date.parse(from_date), Date.parse(to_date))
-        end
+        periods << self.class.parse_calendars(calendars)
       end
 
       def add_offer_file(line_object_id)

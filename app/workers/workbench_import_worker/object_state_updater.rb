@@ -6,8 +6,9 @@ class WorkbenchImportWorker
       workbench_import.update( total_steps: count )
       update_spurious entry
       update_foreign_lines entry
+      update_missing_calendar entry
+      update_wrong_calendar entry
     end
-
 
     private
 
@@ -19,7 +20,7 @@ class WorkbenchImportWorker
         message_attributes: {
           'source_filename' => workbench_import.file.file.file,
           'foreign_lines'   => entry.foreign_lines.join(', ')
-        }) 
+        })
     end
 
     def update_spurious entry
@@ -30,7 +31,27 @@ class WorkbenchImportWorker
         message_attributes: {
           'source_filename' => workbench_import.file.file.file,
           'spurious_dirs'   => entry.spurious.join(', ')
-        }) 
+        })
+    end
+
+    def update_missing_calendar entry
+      return unless entry.missing_calendar
+      workbench_import.messages.create(
+        criticity: :error,
+        message_key: 'missing_calendar_in_zip_file',
+        message_attributes: {
+          'source_filename' => entry.name
+        })
+    end
+
+    def update_wrong_calendar entry
+      return unless entry.wrong_calendar
+      workbench_import.messages.create(
+        criticity: :error,
+        message_key: 'wrong_calendar_in_zip_file',
+        message_attributes: {
+          'source_filename' => entry.name
+        })
     end
   end
 end
