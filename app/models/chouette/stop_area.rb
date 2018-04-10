@@ -33,7 +33,7 @@ module Chouette
     after_update :journey_patterns_control_route_sections,
                 if: Proc.new { |stop_area| ['boarding_position', 'quay'].include? stop_area.stop_area_type }
 
-    validates_format_of :registration_number, :with => %r{\A[\d\w_\-]+\Z}, :allow_blank => true
+    # validates_format_of :registration_number, :with => %r{\A[\d\w_:\-]+\Z}, :allow_blank => true
     validates_presence_of :name
     validates_presence_of :kind
     validates_presence_of :latitude, :if => :longitude

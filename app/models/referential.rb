@@ -168,6 +168,10 @@ class Referential < ApplicationModel
     Chouette::TimeTable.all
   end
 
+  def time_table_dates
+    Chouette::TimeTableDate.all
+  end
+
   def timebands
     Chouette::Timeband.all
   end
@@ -182,6 +186,10 @@ class Referential < ApplicationModel
 
   def vehicle_journey_frequencies
     Chouette::VehicleJourneyFrequency.all
+  end
+
+  def vehicle_journey_at_stops
+    Chouette::VehicleJourneyAtStop.all
   end
 
   def routing_constraint_zones

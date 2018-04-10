@@ -143,6 +143,8 @@ gem 'puma', '~> 3.10.0'
 gem 'newrelic_rpm'
 gem 'letter_opener'
 
+gem 'gtfs'
+
 group :development do
   gem 'capistrano', '2.13.5'
   gem 'capistrano-ext'

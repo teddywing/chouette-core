@@ -10,8 +10,10 @@ module ApplicationDaysSupport
   SUNDAY    = 256
   EVERYDAY  = MONDAY | TUESDAY | WEDNESDAY | THURSDAY | FRIDAY | SATURDAY | SUNDAY
 
+  ALL_DAYS = %w(monday tuesday wednesday thursday friday saturday sunday).freeze
+
   def display_day_types
-    %w(monday tuesday wednesday thursday friday saturday sunday).select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join(', ')
+    ALL_DAYS.select{ |d| self.send(d) }.map{ |d| self.human_attribute_name(d).first(2)}.join(', ')
   end
 
   def day_by_mask(flag)
@@ -38,6 +40,10 @@ module ApplicationDaysSupport
 
     def self.day_by_mask(int_day_types,flag)
       int_day_types & flag == flag
+    end
+
+    def self.all_days
+      ALL_DAYS
     end
   end
 
