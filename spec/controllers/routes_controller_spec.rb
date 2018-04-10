@@ -87,6 +87,9 @@ RSpec.describe RoutesController, type: :controller do
     end
 
     context "when opposite = true" do
+      before do
+        @positions = Hash[*route.stop_points.map{|sp| [sp.id, sp.position]}.flatten]
+      end
       it "creates a new route on the opposite way " do
         expect do
           post :duplicate,
@@ -100,6 +103,9 @@ RSpec.describe RoutesController, type: :controller do
         expect(Chouette::Route.last.published_name).to eq(Chouette::Route.last.name)
         expect(Chouette::Route.last.opposite_route).to eq(route)
         expect(Chouette::Route.last.stop_area_ids).to eq route.stop_area_ids.reverse
+        route.reload.stop_points.each do |sp|
+          expect(sp.position).to eq @positions[sp.id]
+        end
       end
     end
 
