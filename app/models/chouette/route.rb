@@ -7,6 +7,15 @@ module Chouette
     include ObjectidSupport
     extend Enumerize
 
+    if Rails.env.development?
+      after_commit do
+        positions = stop_points.pluck(:position)
+        if positions.size != positions.uniq.size
+          raise "DUPLICATED stop_points positions: #{positions}"
+        end
+      end
+    end
+
     enumerize :direction, in: %i(straight_forward backward clockwise counter_clockwise north north_west west south_west south south_east east north_east)
     enumerize :wayback, in: %i(outbound inbound), default: :outbound
 
@@ -69,7 +78,7 @@ module Chouette
     validates_presence_of :line
     validates :wayback, inclusion: { in: self.wayback.values }
     after_save :calculate_costs!, if: ->() { TomTom.enabled? }
-    
+
     def duplicate opposite=false
       overrides = {
         'opposite_route_id' => nil,
