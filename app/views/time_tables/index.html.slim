@@ -30,7 +30,7 @@
               TableBuilderHelper::Column.new( \
                 key: :bounding_dates, \
                 name: "Période englobante", \
-                attribute: Proc.new { |tt| p tt; tt.object.bounding_dates.empty? ? '-' : t('bounding_dates', debut: l(tt.object.bounding_dates.min), end: l(tt.object.bounding_dates.max)) }, \
+                attribute: Proc.new { |tt| tt.object.bounding_dates.empty? ? '-' : t('bounding_dates', debut: l(tt.object.bounding_dates.min), end: l(tt.object.bounding_dates.max)) }, \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :vehicle_journeys_count, \
