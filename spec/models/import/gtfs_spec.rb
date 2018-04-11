@@ -246,7 +246,6 @@ RSpec.describe Import::Gtfs do
   end
 
   describe "#download_local_file" do
-
     let(:file) { "google-sample-feed.zip" }
     let(:import) do
       Import::Gtfs.create! name: "GTFS test", creator: "Test", workbench: workbench, file: open_fixture(file), download_host: "rails_host"
@@ -261,7 +260,6 @@ RSpec.describe Import::Gtfs do
     it "should download local_file" do
       expect(File.read(import.download_local_file)).to eq(read_fixture(file))
     end
-
   end
 
   describe "#download_host" do
@@ -270,7 +268,16 @@ RSpec.describe Import::Gtfs do
 
       expect(Import::Gtfs.new.download_host).to eq("download_host")
     end
-
   end
 
+  describe "#download_path" do
+    let(:file) { "google-sample-feed.zip" }
+    let(:import) do
+      Import::Gtfs.create! name: "GTFS test", creator: "Test", workbench: workbench, file: open_fixture(file), download_host: "rails_host"
+    end
+
+    it "should return the pathwith the token" do
+      expect(import.download_path).to eq("/workbenches/#{import.workbench_id}/imports/#{import.id}/download?token=#{import.token_download}")
+    end
+  end
 end

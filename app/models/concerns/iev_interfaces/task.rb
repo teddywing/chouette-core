@@ -25,7 +25,7 @@ module IevInterfaces::Task
 
     scope :blocked, -> { where('created_at < ? AND status = ?', 4.hours.ago, 'running') }
 
-    before_create :initialize_fields
+    before_save :initialize_fields, on: :create
     after_save :notify_parent
   end
 

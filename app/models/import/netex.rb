@@ -10,7 +10,7 @@ class Import::Netex < Import::Base
 
   validates_presence_of :parent
 
-  def create_referential
+  def create_referential!
     self.referential =
       Referential.new(
         name: self.name,
@@ -27,6 +27,7 @@ class Import::Netex < Import::Base
         parent.messages.create criticity: :error, message_key: "referential_creation", message_attributes: {referential_name: referential.name}
       end
     end
+    save!
   end
 
   private

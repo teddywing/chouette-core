@@ -32,7 +32,7 @@ module Api
         attributes = netex_import_params.merge creator: "Webservice"
         @netex_import = Import::Netex.new attributes
         @netex_import.save!
-        @netex_import.create_referential
+        @netex_import.create_referential!
       rescue ActiveRecord::RecordInvalid
         render json: {errors: @netex_import.errors}, status: 406
         finish_action!
