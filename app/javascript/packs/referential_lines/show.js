@@ -1,3 +1,5 @@
+import '../../helpers/polyfills'
+
 import clone from '../../helpers/clone'
 import RoutesMap from '../../helpers/routes_map'
 

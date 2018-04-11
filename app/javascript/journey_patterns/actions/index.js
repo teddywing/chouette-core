@@ -1,10 +1,3 @@
-import Promise from 'promise-polyfill'
-
-// To add to window
-if (!window.Promise) {
-  window.Promise = Promise;
-}
-
 const actions = {
   enterEditMode: () => ({
     type: "ENTER_EDIT_MODE"
@@ -195,15 +188,19 @@ const actions = {
           dispatch(actions.unavailableServer())
         } else {
           if(json.length != 0){
-            let val
-            for (val of json){
-              for (let stop_point of val.route_short_description.stop_points){
+            let j = 0
+            while(j < json.length){
+              let val = json[j]
+              let i = 0
+              while(i < val.route_short_description.stop_points.length){
+                let stop_point = val.route_short_description.stop_points[i]
                 stop_point.checked = false
                 val.stop_area_short_descriptions.map((element) => {
                   if(element.stop_area_short_description.id === stop_point.id){
                     stop_point.checked = true
                   }
                 })
+                i ++
               }
               journeyPatterns.push(
                 _.assign({}, val, {
@@ -212,6 +209,7 @@ const actions = {
                   deletable: false
                 })
               )
+              j ++
             }
           }
           window.currentItemsLength = journeyPatterns.length

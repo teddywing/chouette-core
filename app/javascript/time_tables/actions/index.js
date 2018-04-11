@@ -191,10 +191,13 @@ const actions = {
   isInPeriod: (periods, date) => {
     date = new Date(date)
 
-    for (let period of periods) {
+    let i = 0;
+    while(i < periods.length){
+      let period = periods[i]
       let begin = new Date(period.period_start)
       let end = new Date(period.period_end)
       if (date >= begin && date <= end) return true
+      i++
     }
 
     return false
@@ -235,12 +238,14 @@ const actions = {
     let error = ''
     start = new Date(start)
     end = new Date(end)
-
-    for (let day of in_days) {
+    let i = 0;
+    while(i < in_days){
+      let day = in_days[i]
       if (start <= new Date(day.date) && end >= new Date(day.date)) {
         error = I18n.t('time_tables.edit.error_submit.dates_overlaps')
         break
       }
+      i ++
     }
     return error
   },
