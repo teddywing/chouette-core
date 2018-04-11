@@ -41,7 +41,7 @@ class Import::Base < ApplicationModel
 
   def initialize_fields
     super
-    self.token_download = SecureRandom.urlsafe_base64
+    self.token_download ||= SecureRandom.urlsafe_base64
   end
 
 end
