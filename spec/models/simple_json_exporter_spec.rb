@@ -5,7 +5,7 @@ RSpec.describe SimpleJsonExporter do
         SimpleJsonExporter.define :foo
         expect do
           SimpleJsonExporter.new(configuration_name: :test).export
-        end.to raise_error
+        end.to raise_error(RuntimeError)
       end
     end
     context "with a complete configuration" do
@@ -18,9 +18,9 @@ RSpec.describe SimpleJsonExporter do
       it "should define an exporter" do
         expect{SimpleJsonExporter.find_configuration(:foo)}.to_not raise_error
         expect{SimpleJsonExporter.new(configuration_name: :foo, filepath: "").export}.to_not raise_error
-        expect{SimpleJsonExporter.find_configuration(:bar)}.to raise_error
-        expect{SimpleJsonExporter.new(configuration_name: :bar, filepath: "")}.to raise_error
-        expect{SimpleJsonExporter.new(configuration_name: :bar, filepath: "").export}.to raise_error
+        expect{SimpleJsonExporter.find_configuration(:bar)}.to raise_error(RuntimeError)
+        expect{SimpleJsonExporter.new(configuration_name: :bar, filepath: "")}.to raise_error(RuntimeError)
+        expect{SimpleJsonExporter.new(configuration_name: :bar, filepath: "").export}.to raise_error(RuntimeError)
         expect{SimpleJsonExporter.create(configuration_name: :foo, filepath: "")}.to change{SimpleJsonExporter.count}.by 1
       end
     end
@@ -33,7 +33,7 @@ RSpec.describe SimpleJsonExporter do
             config.add_field :name
             config.add_field :name
           end
-        end.to raise_error
+        end.to raise_error(RuntimeError)
       end
     end
   end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Chouette::JourneyPattern, :type => :model do
-  
+
   subject { create(:journey_pattern) }
 
   describe 'checksum' do
@@ -92,7 +92,7 @@ describe Chouette::JourneyPattern, :type => :model do
     let(:journey_pattern) { create :journey_pattern }
     let(:distances){ [] }
     it "should raise an error" do
-      expect{journey_pattern.set_distances(distances)}.to raise_error
+      expect{journey_pattern.set_distances(distances)}.to raise_error(RuntimeError)
     end
 
     context "with consistent data" do

@@ -52,7 +52,7 @@ RSpec.describe CustomField, type: :model do
     end
 
     it "should not break initailizartion if the model does not have the :custom_field_values attribute" do
-      expect{Chouette::VehicleJourney.where(id: vj.id).select(:id).last}.to_not raise_error(ActiveModel::MissingAttributeError)
+      expect{Chouette::VehicleJourney.where(id: vj.id).select(:id).last}.to_not raise_error
     end
 
     it "should validate the value" do
