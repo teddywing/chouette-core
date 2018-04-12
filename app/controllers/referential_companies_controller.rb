@@ -18,6 +18,10 @@ class ReferentialCompaniesController < ChouetteController
         @companies = decorate_companies(@companies)
       }
 
+      format.json {
+        render json: companies_maps
+      }
+
       format.js {
         @companies = decorate_companies(@companies)
       }
@@ -83,6 +87,15 @@ class ReferentialCompaniesController < ChouetteController
         referential: referential
       }
     )
+  end
+
+  def companies_maps
+    @companies.collect do |company|
+      { :id => company.id.to_s,
+        :objectid => company.raw_objectid,
+        :name => company.name,  
+      }
+    end
   end
 
 end
