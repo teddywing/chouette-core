@@ -244,11 +244,13 @@ module Chouette
     end
 
     def self.state_update route, state
+      objects = []
       transaction do
         state.each do |item|
           item.delete('errors')
           vj = find_by(objectid: item['objectid']) || state_create_instance(route, item)
           next if item['deletable'] && vj.persisted? && vj.destroy
+          objects << vj
 
           if vj.state_update_vjas?(item['vehicle_journey_at_stops'])
             vj.update_vjas_from_state(item['vehicle_journey_at_stops'])
@@ -276,6 +278,7 @@ module Chouette
         item['vehicle_journey_at_stops'].map {|vjas| vjas.delete('new_record') }
       end
       state.delete_if {|item| item['deletable']}
+      objects
     end
 
     def self.state_create_instance route, item
