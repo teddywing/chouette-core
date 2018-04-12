@@ -31,13 +31,13 @@ export default class NotesEditVehicleJourney extends Component {
         type='button'
         className='btn btn-outline-danger btn-xs'
         onClick={() => this.props.onToggleFootnoteModal(lf, false)}
-      ><span className="fa fa-trash"></span> Retirer</button>
+      ><span className="fa fa-trash"></span>{I18n.t('actions.remove')}</button>
     } else {
       return <button
         type='button'
         className='btn btn-outline-primary btn-xs'
         onClick={() => this.props.onToggleFootnoteModal(lf, true)}
-      ><span className="fa fa-plus"></span> Ajouter</button>
+      ><span className="fa fa-plus"></span>{I18n.t('actions.add')}</button>
     }
   }
 

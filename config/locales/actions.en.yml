@@ -9,7 +9,8 @@ en:
     search: "Search"
     submit: "Submit"
     processing: "Processing…"
-    add: "Add new"
+    add: "Add"
+    remove: Remove
     new: "Add new"
     show: "See"
     archive: "Archive"

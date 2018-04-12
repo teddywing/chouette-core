@@ -10,8 +10,8 @@ var path = window.location.pathname.split('/', 3).join('/')
 
 
 export default class BSelect3 extends Component {
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props)
   }
   onChange(e) {
     this.props.onChange(this.props.index, {
@@ -86,7 +86,7 @@ class BSelect2 extends Component{
         onSelect={ this.props.onSelect }
         ref='newSelect'
         options={{
-          placeholder: this.context.I18n.t("routes.edit.select2.placeholder"),
+          placeholder: I18n.t("routes.edit.select2.placeholder"),
           allowClear: true,
           language: 'fr', /* Doesn't seem to work... :( */
           theme: 'bootstrap',
@@ -129,8 +129,4 @@ class BSelect2 extends Component{
       />
     )
   }
-}
-
-BSelect2.contextTypes = {
-  I18n: PropTypes.object
 }

@@ -33,6 +33,7 @@ export default function Filters({filters, pagination, missions, onFilter, onRese
             {/* Calendriers */}
             <div className='form-group w33'>
               <TimetableSelect2
+                placeholder={I18n.t('vehicle_journeys.vehicle_journeys_matrix.filters.timetable')}
                 onSelect2Timetable={onSelect2Timetable}
                 hasRoute={true}
                 chunkURL={("/autocomplete_time_tables.json?route_id=" + String(window.route_id))}

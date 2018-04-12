@@ -11,7 +11,7 @@ let AddStopPoint = ({ dispatch }) => {
         dispatch(actions.addStop())
       }}>
         <button type="submit" className="btn btn-outline-primary">
-          Ajouter un arrêt
+          {I18n.t('stop_areas.actions.new')}
         </button>
       </form>
     </div>

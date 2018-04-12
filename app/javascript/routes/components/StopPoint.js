@@ -6,7 +6,7 @@ import OlMap from './OlMap'
 
 import { defaultAttribute } from '../actions'
 
-export default function StopPoint(props, {I18n}) {
+export default function StopPoint(props) {
   return (
     <div className='nested-fields'>
       <div className='wrapper'>
@@ -91,8 +91,4 @@ StopPoint.propTypes = {
   last: PropTypes.bool,
   index: PropTypes.number,
   value: PropTypes.object
-}
-
-StopPoint.contextTypes = {
-  I18n: PropTypes.object
 }

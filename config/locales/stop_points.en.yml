@@ -52,7 +52,7 @@ en:
   simple_form:
     labels:
       stop_point:
-        name: Stop Point
-        for_boarding: "Pickup"
-        for_alighting: "Drop off"
+        name: Stop Area
+        for_boarding: Boarding
+        for_alighting: Alighting
         reflex_id: ID
