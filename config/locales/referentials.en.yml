@@ -47,7 +47,7 @@ en:
       user_excluded: "%{user} is a reserved value"
       overlapped_referential: "%{referential} cover the same perimeter"
       overlapped_period: "Another period is on the same period"
-      short_period: Min period length is two days
+      invalid_period: The begin date must be before end date
     overview:
       head:
         dates: Dates

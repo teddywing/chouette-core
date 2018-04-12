@@ -44,8 +44,8 @@ class ReferentialMetadata < ApplicationModel
     validate :check_end_greather_than_begin
 
     def check_end_greather_than_begin
-      if self.begin and self.end and self.begin >= self.end
-        errors.add(:base, I18n.t('referentials.errors.short_period'))
+      if self.begin and self.end and self.begin > self.end
+        errors.add(:base, I18n.t('referentials.errors.invalid_period'))
       end
     end
 
