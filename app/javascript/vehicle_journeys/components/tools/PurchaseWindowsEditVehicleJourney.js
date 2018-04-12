@@ -44,7 +44,7 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
               <div className='modal-dialog'>
                 <div className='modal-content'>
                   <div className='modal-header'>
-                    <h4 className='modal-title'>{I18n.t('vehicle_journeys.form.purchase_windows')}s</h4>
+                    <h4 className='modal-title'>{I18n.t('vehicle_journeys.form.purchase_windows')}</h4>
                     <span type="button" className="close modal-close" data-dismiss="modal">&times;</span>
                   </div>
 
@@ -95,6 +95,7 @@ export default class PurchaseWindowsEditVehicleJourney extends Component {
                                   <div className='wrapper'>
                                     <div>
                                       <TimetableSelect2
+                                        placeholder={I18n.t('vehicle_journeys.vehicle_journeys_matrix.filters.purchase_window')}
                                         onSelect2Timetable={this.props.onSelect2Timetable}
                                         chunkURL={'/autocomplete_purchase_windows.json'}
                                         searchKey={"name_or_objectid_cont_any"}

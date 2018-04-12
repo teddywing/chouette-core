@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import StopPoint from './StopPoint'
 
-export default function StopPointList({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onToggleEdit, onSelectMarker, onUnselectMarker, onUpdateViaOlMap }, {I18n}) {
+export default function StopPointList({ stopPoints, onDeleteClick, onMoveUpClick, onMoveDownClick, onChange, onSelectChange, onToggleMap, onToggleEdit, onSelectMarker, onUnselectMarker, onUpdateViaOlMap }) {
   return (
     <div className='subform'>
       <div className='nested-head'>

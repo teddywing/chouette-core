@@ -4,7 +4,7 @@ en:
       placeholder: Search by name or ID
       no_results: "No route matching your query"
     actions:
-      new: "Add a new route"
+      new: "Add a route"
       edit: "Edit this route"
       edit_boarding_alighting: "Stop alighting and boarding"
       destroy: "Remove this route"
@@ -17,7 +17,7 @@ en:
       new_stop_point: "Create new stop"
       reversed_vehicle_journey: "Reversed vehicle journeys"
     new:
-      title: "Add a new route"
+      title: "Add a route"
     edit:
       title: "Update route %{name}"
       select2:

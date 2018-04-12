@@ -9,7 +9,8 @@ fr:
     search: "Chercher"
     submit: "Valider"
     processing: "En cours…"
-    add: 'Créer'
+    add: 'Ajouter'
+    remove: Retirer
     new: 'Créer'
     show: 'Consulter'
     archive: 'Conserver'

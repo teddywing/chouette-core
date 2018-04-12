@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default class OlMap extends Component{
-  constructor(props, context){
-    super(props, context)
+  constructor(props){
+    super(props)
   }
 
   fetchApiURL(id){
@@ -115,40 +115,40 @@ export default class OlMap extends Component{
               <strong>{this.props.value.olMap.json.name}</strong>
             </p>
             <p>
-              <strong>{this.context.I18n.t('routes.edit.map.stop_point_type')} : </strong>
+              <strong>{I18n.t('routes.edit.map.stop_point_type')} : </strong>
               {this.props.value.olMap.json.area_type}
             </p>
             <p>
-              <strong>{this.context.I18n.t('routes.edit.map.short_name')} : </strong>
+              <strong>{I18n.t('routes.edit.map.short_name')} : </strong>
               {this.props.value.olMap.json.short_name}
             </p>
             <p>
-              <strong>{this.context.I18n.t('id_reflex')} : </strong>
+              <strong>{I18n.t('id_reflex')} : </strong>
               {this.props.value.olMap.json.user_objectid}
             </p>
 
-            <p><strong>{this.context.I18n.t('routes.edit.map.coordinates')} : </strong></p>
+            <p><strong>{I18n.t('routes.edit.map.coordinates')} : </strong></p>
             <p style={{paddingLeft: 10, marginTop: 0}}>
-              <em>{this.context.I18n.t('routes.edit.map.proj')}.: </em>WSG84<br/>
-              <em>{this.context.I18n.t('routes.edit.map.lat')}.: </em>{this.props.value.olMap.json.latitude} <br/>
-              <em>{this.context.I18n.t('routes.edit.map.lon')}.: </em>{this.props.value.olMap.json.longitude}
+              <em>{I18n.t('routes.edit.map.proj')}.: </em>WSG84<br/>
+              <em>{I18n.t('routes.edit.map.lat')}.: </em>{this.props.value.olMap.json.latitude} <br/>
+              <em>{I18n.t('routes.edit.map.lon')}.: </em>{this.props.value.olMap.json.longitude}
             </p>
             <p>
-              <strong>{this.context.I18n.t('routes.edit.map.postal_code')} : </strong>
+              <strong>{I18n.t('routes.edit.map.postal_code')} : </strong>
               {this.props.value.olMap.json.zip_code}
             </p>
             <p>
-              <strong>{this.context.I18n.t('routes.edit.map.city')} : </strong>
+              <strong>{I18n.t('routes.edit.map.city')} : </strong>
               {this.props.value.olMap.json.city_name}
             </p>
             <p>
-              <strong>{this.context.I18n.t('routes.edit.map.comment')} : </strong>
+              <strong>{I18n.t('routes.edit.map.comment')} : </strong>
               {this.props.value.olMap.json.comment}
             </p>
             {(this.props.value.stoparea_id != this.props.value.olMap.json.stoparea_id) &&(
               <div className='btn btn-outline-primary btn-sm'
                 onClick= {() => {this.props.onUpdateViaOlMap(this.props.index, this.props.value.olMap.json)}}
-              >{this.context.I18n.t('actions.select')}</div>
+              >{I18n.t('actions.select')}</div>
             )}
           </div>
             <div className='map_content'>
@@ -163,8 +163,4 @@ export default class OlMap extends Component{
 }
 
 OlMap.propTypes = {
-}
-
-OlMap.contextTypes = {
-  I18n: PropTypes.object
 }
