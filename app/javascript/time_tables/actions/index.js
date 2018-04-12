@@ -3,7 +3,6 @@ import range from 'lodash/range'
 import reject from 'lodash/reject'
 import some from 'lodash/some'
 import every from 'lodash/every'
-import clone from '../../helpers/clone'
 
 const actions = {
   weekDays: (index) => {
