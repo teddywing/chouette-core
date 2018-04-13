@@ -87,16 +87,18 @@ export default class VehicleJourneys extends Component {
   }
 
   toggleTimetables(e) {
-    $('.table-2entries .detailed-timetables').toggleClass('hidden')
-    $('.table-2entries .detailed-timetables-bt').toggleClass('active')
+    let root = $(this.refs['vehicleJourneys'])
+    root.find('.table-2entries .detailed-timetables').toggleClass('hidden')
+    root.find('.table-2entries .detailed-timetables-bt').toggleClass('active')
     this.componentDidUpdate()
     e.preventDefault()
     false
   }
 
   togglePurchaseWindows(e) {
-    $('.table-2entries .detailed-purchase-windows').toggleClass('hidden')
-    $('.table-2entries .detailed-purchase-windows-bt').toggleClass('active')
+    let root = $(this.refs['vehicleJourneys'])
+    root.find('.table-2entries .detailed-purchase-windows').toggleClass('hidden')
+    root.find('.table-2entries .detailed-purchase-windows-bt').toggleClass('active')
     this.componentDidUpdate()
     e.preventDefault()
     false
@@ -186,7 +188,7 @@ export default class VehicleJourneys extends Component {
       )
     } else {
       return (
-        <div className='row'>
+        <div className='row' ref='vehicleJourneys'>
           <div className='col-lg-12'>
             {(this.props.status.fetchSuccess == false) && (
               <div className='alert alert-danger mt-sm'>
