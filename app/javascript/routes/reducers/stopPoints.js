@@ -8,8 +8,8 @@ const stopPoint = (state = {}, action, length) => {
         text: '',
         index: length,
         edit: true,
-        for_boarding: '',
-        for_alighting: '',
+        for_boarding: 'normal',
+        for_alighting: 'normal',
         olMap: {
           isOpened: false,
           json: {}
@@ -61,6 +61,7 @@ const stopPoints = (state = [], action) => {
     case 'UPDATE_INPUT_VALUE':
       return state.map( (t, i) => {
         if (i === action.index) {
+          let forAlightingAndBoarding = action.text.stoparea_kind === 'commercial' ? 'normal' : 'forbidden'
           return _.assign(
             {},
             t,
@@ -77,7 +78,9 @@ const stopPoints = (state = [], action) => {
               area_type: action.text.area_type,
               city_name: action.text.city_name,
               comment: action.text.comment,
-              registration_number: action.text.registration_number
+              registration_number: action.text.registration_number,
+              for_alighting: forAlightingAndBoarding,
+              for_boarding: forAlightingAndBoarding
             }
           )
         } else {
