@@ -46,8 +46,9 @@ module Chouette
       ]
     end
 
-    # def checksum_attributes
-    # end
-
+    def color
+      _color = read_attribute(:color)
+      _color.present? ? _color : nil
+    end
   end
 end

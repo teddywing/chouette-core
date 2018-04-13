@@ -81,6 +81,11 @@ module Chouette
       chunk.values.delete_if {|dates| dates.count < 2}
     end
 
+    def color
+      _color = read_attribute(:color)
+      _color.present? ? _color : nil
+    end
+
     def convert_continuous_dates_to_periods
       chunks = self.continuous_dates
 
