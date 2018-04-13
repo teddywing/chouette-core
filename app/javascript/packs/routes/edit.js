@@ -1,3 +1,5 @@
+import '../../helpers/polyfills'
+
 import React from 'react'
 import PropTypes from 'prop-types'
 
@@ -56,12 +58,25 @@ const getInitialState = () => {
 }
 
 var initialState = { stopPoints: getInitialState() }
-const loggerMiddleware = createLogger()
-let store = createStore(
-  reducers,
-  initialState,
-  applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
-)
+let store = null
+
+if(Object.assign){
+  const loggerMiddleware = createLogger()
+  store = createStore(
+   reducers,
+   initialState,
+   applyMiddleware(thunkMiddleware, promise, loggerMiddleware)
+ )
+}
+else{
+  // IE
+  store = createStore(
+   reducers,
+   initialState,
+   applyMiddleware(thunkMiddleware, promise)
+ )
+}
+
 
 render(
   <Provider store={store}>

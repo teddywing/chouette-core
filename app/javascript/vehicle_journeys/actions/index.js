@@ -1,9 +1,3 @@
-import Promise from 'promise-polyfill'
-
-// To add to window
-if (!window.Promise) {
-  window.Promise = Promise;
-}
 import { batchActions } from '../batch'
 
 const actions = {
@@ -339,16 +333,23 @@ const actions = {
         if(hasError == true) {
           dispatch(actions.unavailableServer())
         } else {
-          let val
-          for (val of json.vehicle_journeys){
+          let i = 0
+          while(i < json.vehicle_journeys.length){
+            let val = json.vehicle_journeys[i]
+            i++
             var timeTables = []
             var purchaseWindows = []
-            let tt
-            for (tt of val.time_tables){
+            let k = 0
+            while(k < val.time_tables.length){
+              let tt = val.time_tables[k]
+              k++
               timeTables.push(tt)
             }
             if(val.purchase_windows){
-              for (tt of val.purchase_windows){
+              k = 0
+              while(k < val.purchase_windows.length){
+                let tt = val.purchase_windows[k]
+                k++
                 purchaseWindows.push(tt)
               }
             }
