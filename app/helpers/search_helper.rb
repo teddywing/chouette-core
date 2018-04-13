@@ -15,7 +15,7 @@ module SearchHelper
       if val.is_a?(Array)
         active = val.any? &:present?
       elsif val.is_a?(Hash)
-        active = val.values.any? &:present?
+        active = val.values.any? {|v| v.present? && v != "false" }
       else
         active = true
       end
