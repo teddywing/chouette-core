@@ -1,5 +1,6 @@
 en:
   dashboards:
+    main_nav_left: Dashboard 
     show:
       title: "Dashboard %{organisation}"
     workbench:

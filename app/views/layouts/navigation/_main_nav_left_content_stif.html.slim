@@ -5,44 +5,44 @@
     .panel-heading
       h4.panel-title
         = link_to '#miOne', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-          |Offres courantes
+          = t('layouts.navbar.current_offer.other')
 
     #miOne.panel-collapse.collapse
       .list-group
         = link_to root_path, class: "list-group-item #{(@localizationUrl == 'workbenches#index') ? 'active' : ''}" do
-          span Tableau de bord
+          span = t('layouts.navbar.dashboard')
+        = link_to workbench_output_path(current_user.workbenches.first), class: 'list-group-item' do
+          span = t('layouts.navbar.workbench_outputs.organisation')
         = link_to '#', class: 'list-group-item' do
-          span Offre de mon organisation
-        = link_to '#', class: 'list-group-item' do
-          span Offre IDF
+          span = t('layouts.navbar.workbench_outputs.idf')
 
   .menu-item.panel
     .panel-heading
       h4.panel-title
         = link_to '#miTwo', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-          |Espace de travail
+          - t('activerecord.models.workbench.one').capitalize
 
     #miTwo.panel-collapse.collapse
       .list-group
         - current_user.workbenches.each do |current_workbench|
           = link_to workbench_path(current_workbench), class: "list-group-item #{params[:controller] == 'workbenches' ? 'active' : ''}" do
-            span Jeux de données
+            span = t('activerecord.models.referential.other').capitalize
           = link_to workbench_imports_path(current_workbench), class: "list-group-item #{(params[:controller] == 'imports') ? 'active' : ''}" do
-            span Import
+            span = t('activerecord.models.import.other').capitalize
           = link_to workbench_exports_path(current_workbench), class: "list-group-item #{(params[:controller] == 'exports') ? 'active' : ''}" do
-            span Export
+            span = t('activerecord.models.export.other').capitalize
           = link_to workgroup_calendars_path(current_workbench.workgroup), class: 'list-group-item' do
-            span Modèles de calendrier
+            span = t('activerecord.models.calendar.other').capitalize
           = link_to workbench_compliance_check_sets_path(current_workbench), class: 'list-group-item' do
-            span Rapport de contrôle
+            span = t('activerecord.models.compliance_check_set.other').capitalize
           = link_to compliance_control_sets_path, class: 'list-group-item' do
-            span Jeux de contrôle
+            span = t('activerecord.models.compliance_control_set.other').capitalize
 
   .menu-item.panel
     .panel-heading
       h4.panel-title
         = link_to '#miThree', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-          |Données
+          = t('layouts.navbar.referential_datas')
 
     #miThree.panel-collapse.collapse
       - if @referential.try(:id) && respond_to?(:current_referential)
@@ -57,7 +57,7 @@
                 span = t('companies.index.title')
 
               = link_to '#', class: 'list-group-item disabled' do
-                span Tracés
+                span = t('layouts.navbar.shapes')
 
               = link_to referential_time_tables_path(current_referential), class: 'list-group-item' do
                 span = t('time_tables.index.title')
@@ -65,45 +65,45 @@
       - else
         .panel-body
           em.text-muted
-            = "Sélectionnez un jeu de données pour accéder à plus de fonctionnalités"
+            = t('layouts.navbar.select_referential_for_more_features')
 
   .menu-item.panel
     .panel-heading
       h4.panel-title
         = link_to '#miFour', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-          |Synchronisation
+          = t('layouts.navbar.sync')
 
     #miFour.panel-collapse.collapse
       .list-group
         = link_to line_referential_path(1), class: "list-group-item #{(@localizationUrl == 'line_referentials#show') ? 'active' : ''}" do
-          span Synchronisation iLICO
+          span = t('layouts.navbar.sync_ilico')
         = link_to stop_area_referential_path(1), class: "list-group-item #{(@localizationUrl == 'stop_area_referentials#show') ? 'active' : ''}" do
-          span Synchronisation iCAR
+          span = t('layouts.navbar.sync_icar')
 
   .menu-item.panel
     .panel-heading
       h4.panel-title
         = link_to '#miFive', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-          |Outils
+          = t('layouts.navbar.tools')
 
     #miFive.panel-collapse.collapse
       .list-group
         = link_to Rails.application.config.try(:portal_url), target: '_blank', class: 'list-group-item' do
           span
             span.fa.fa-2x.fa-circle
-            |Portail (POSTIF)
+            = t('layouts.navbar.portal')
 
         = link_to Rails.application.config.try(:codifligne_url), target: '_blank', class: 'list-group-item' do
           span
             span.fa.fa-2x.fa-circle
-            |iLICO
+            = t('layouts.navbar.ilico')
 
         = link_to Rails.application.config.try(:reflex_url), target: '_blank', class: 'list-group-item' do
           span
             span.fa.fa-2x.fa-circle
-            |iCAR
+            = t('layouts.navbar.icar')
 
         = link_to '#', target: '_blank', class: 'list-group-item' do
           span
             span.fa.fa-2x.fa-circle
-            |Support
+            = t('layouts.navbar.support')

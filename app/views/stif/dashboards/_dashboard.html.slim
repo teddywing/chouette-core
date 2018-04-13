@@ -5,8 +5,13 @@
         h3.panel-title
           = t('.organisation')
 
-      .panel-body
-        em.small.text-muted = t('.no_content')
+      - if @dashboard.workbench.output.referentials.present?
+        - @dashboard.workbench.output.referentials.first(5).each do |referential|
+          .list-group
+            = link_to referential.name, referential_path(referential), class: 'list-group-item'
+      - else
+        .panel-body
+          em.small.text-muted = t('.no_content')
 
     .panel.panel-default
       .panel-heading

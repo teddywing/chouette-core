@@ -8,7 +8,7 @@ fr:
     show:
       title: "Finalisation de l'offre %{name}"
     actions:
-      create: "Finaliser des Jeux de Données"
+      create: Finaliser des Jeux de Données
   activerecord:
     models:
       merge: "Finalisation de l'offre"

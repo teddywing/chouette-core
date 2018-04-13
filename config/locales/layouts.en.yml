@@ -10,9 +10,26 @@ en:
     navbar:
       return_to_referentials: "Return to data spaces"
       select_referential: "Select data space"
+      select_referential_for_more_features: "Select data space for more foeatures"
       select_referential_datas: "Select datas"
       return_to_dashboard: "Return to Dashboard"
+      dashboard: Dashboard
       referential_datas: "Datas"
+      current_offer: 
+        one: Current offer
+        other: Current offers
+      workbench_output:
+        organisation: Organisation offers
+        idf: IDF offers
+      tools: Tools
+      sync: Synchronization
+      sync_icar: iCAR synchronization
+      sync_ilico: iLICO synchronization
+      icar: iCAR
+      ilico: iLICO
+      portal: Portal (POSTIF)
+      support: Support
+      shapes: Shapes
     history_tag:
       title: "Metadatas"
       created_at: "Created at"

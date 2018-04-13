@@ -10,9 +10,26 @@ fr:
     navbar:
       return_to_referentials: "Retour à la liste des espaces de données"
       select_referential: "Sélection de l'espace de données"
+      select_referential_for_more_features: "Sélectionnez un jeu de données pour accéder à plus de fonctionnalités"
       select_referential_datas: "Sélection des données"
       return_to_dashboard: "Retour au Tableau de Bord"
+      dashboard: Tableau de bord
       referential_datas: "Données"
+      current_offer: 
+        one: Offres courante
+        other: Offres courantes
+      workbench_outputs:
+        organisation: Offres de mon organisation
+        idf: Offres IDF
+      tools: Outils
+      sync: Synchronisation
+      sync_icar: Synchronisation iCAR
+      sync_ilico: Synchronisation iLICO
+      icar: iCAR
+      ilico: iLICO
+      portal: Portail (POSTIF)
+      support: Support
+      shapes: Tracés
     history_tag:
       title: "Métadonnées"
       created_at: "Créé le"

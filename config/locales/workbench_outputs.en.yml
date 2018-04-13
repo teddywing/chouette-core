@@ -1,7 +1,7 @@
 en:
   workbench_outputs:
     show:
-      title: "Finalisations de l'offre"
-      see_current_output: "Voir l'Offre actuelle"
+      title: Current offers
+      see_current_output: See the current offer
       table_headers:
-        ended_at: "Offer created date"
+        ended_at: "Ended at"
