@@ -14,11 +14,16 @@ window.isLeapYear = (year) ->
 
 window.smartCorrectDate = ->
   allSelectors = $(@).parent().children('select')
-  allVals      = allSelectors.map (index, sel) ->
-    parseInt($(sel).val())
+
+  yearSelect = allSelectors.filter("[name$='(1i)]']")
+  monthSelect = allSelectors.filter("[name$='(2i)]']")
+  daySelect = allSelectors.filter("[name$='(3i)]']")
+  # We expect [day, month, year], so french
+  allVals      = [daySelect, monthSelect, yearSelect].map (sel, index) ->
+    parseInt(sel.val())
+
   correctedDay = correctDay allVals
-  daySelector  = allSelectors.first()
-  $(daySelector).val(correctedDay)
+  daySelect.val(correctedDay)
 
 $ ->
   $(document).on 'change', '.smart_date select', smartCorrectDate
