@@ -8,6 +8,11 @@ RSpec.describe AutocompleteTimeTablesController, type: :controller do
   let!(:time_table) { create :time_table, comment: 'écolà militaire' }
   let!(:blargh) { create :time_table, comment: 'écolàë militaire' }
   let!(:other_time_table) { create :time_table, comment: 'foo bar baz' }
+  let(:route){ create :route }
+
+  before do
+    create :vehicle_journey, time_tables: [time_table, blargh, other_time_table], journey_pattern: route.full_journey_pattern
+  end
 
   describe 'GET #index' do
     it 'should be successful' do
@@ -17,7 +22,7 @@ RSpec.describe AutocompleteTimeTablesController, type: :controller do
 
     context 'search by name' do
       it 'should be successful' do
-        get :index, referential_id: referential.id, q: {unaccented_comment_or_objectid_cont_any: 'écolà'}, :format => :json
+        get :index, referential_id: referential.id, q: {unaccented_comment_or_objectid_cont_any: 'écolà'}, format: :json
         expect(response).to be_success
         expect(assigns(:time_tables)).to include(time_table)
         expect(assigns(:time_tables)).to include(blargh)
@@ -25,11 +30,31 @@ RSpec.describe AutocompleteTimeTablesController, type: :controller do
       end
 
       it 'should be accent insensitive' do
-        get :index, referential_id: referential.id, q: {unaccented_comment_or_objectid_cont_any: 'ecola'}, :format => :json
+        get :index, referential_id: referential.id, q: {unaccented_comment_or_objectid_cont_any: 'ecola'}, format: :json
         expect(response).to be_success
         expect(assigns(:time_tables)).to include(time_table)
         expect(assigns(:time_tables)).to include(blargh)
         expect(assigns(:time_tables)).to_not include(other_time_table)
+      end
+    end
+
+    context "within a route" do
+      context 'search by name' do
+        it 'should be successful' do
+          get :index, referential_id: referential.id, q: {unaccented_comment_or_objectid_cont_any: 'écolà'}, route_id: route.id, format: :json
+          expect(response).to be_success
+          expect(assigns(:time_tables)).to include(time_table)
+          expect(assigns(:time_tables)).to include(blargh)
+          expect(assigns(:time_tables)).to_not include(other_time_table)
+        end
+
+        it 'should be accent insensitive' do
+          get :index, referential_id: referential.id, q: {unaccented_comment_or_objectid_cont_any: 'ecola'}, route_id: route.id, format: :json
+          expect(response).to be_success
+          expect(assigns(:time_tables)).to include(time_table)
+          expect(assigns(:time_tables)).to include(blargh)
+          expect(assigns(:time_tables)).to_not include(other_time_table)
+        end
       end
     end
   end

@@ -16,7 +16,7 @@ module Chouette
     end
 
     ransacker :unaccented_comment, formatter: ->(val){ val.parameterize } do
-      Arel.sql('unaccent(comment)')
+      Arel.sql('unaccent(time_tables.comment)')
     end
 
     has_and_belongs_to_many :vehicle_journeys, :class_name => 'Chouette::VehicleJourney'
