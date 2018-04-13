@@ -122,7 +122,7 @@ class LinesController < ChouetteController
   end
 
   def line_params
-    params.require(:line).permit(
+    out = params.require(:line).permit(
       :transport_mode,
       :network_id,
       :company_id,
@@ -148,6 +148,8 @@ class LinesController < ChouetteController
       :secondary_company_ids => [],
       footnotes_attributes: [:code, :label, :_destroy, :id]
     )
+    out[:secondary_company_ids] = (out[:secondary_company_ids] || []).select(&:present?)
+    out
   end
 
    # Fake ransack filter
