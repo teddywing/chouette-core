@@ -436,6 +436,12 @@ module Chouette
       ActiveSupport::TimeZone[time_zone]&.utc_offset
     end
 
+    def full_time_zone_name
+      return unless time_zone.present?
+      return unless ActiveSupport::TimeZone[time_zone].present?
+      ActiveSupport::TimeZone[time_zone].tzinfo.name
+    end
+    
     def country
       return unless country_code
       country = ISO3166::Country[country_code]
