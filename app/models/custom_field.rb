@@ -7,10 +7,6 @@ class CustomField < ApplicationModel
   validates :name, uniqueness: {scope: [:resource_type, :workgroup_id]}
   validates :code, uniqueness: {scope: [:resource_type, :workgroup_id], case_sensitive: false}, presence: true
 
-  scope :for_workgroup, ->(workgroup){ where workgroup_id: workgroup.id }
-
-  scope :for_workgroup, ->(workgroup){ where workgroup_id: workgroup.id }
-
   class Collection < HashWithIndifferentAccess
     def initialize object, workgroup=:all
       vals = object.class.custom_fields(workgroup).map do |v|
