@@ -1,4 +1,6 @@
 fr:
+  line_referential_syncs:
+    search_no_results: "Aucun synchronisation de référentiel de lignes ne correspond à votre recherche"
   activerecord:
     errors:
       models:

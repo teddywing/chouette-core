@@ -15,7 +15,9 @@ fr:
       return_to_dashboard: "Retour au Tableau de Bord"
       dashboard: Tableau de bord
       referential_datas: "Données"
-      current_offer: 
+      line_referential: "Référentiel de lignes"
+      stop_area_referential: "Référentiel d'arrêts"
+      current_offer:
         one: Offres courante
         other: Offres courantes
       workbench_outputs:

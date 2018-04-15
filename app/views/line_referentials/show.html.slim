@@ -4,44 +4,29 @@
   - content_for :page_header_actions do
     = link_to(t('actions.sync'), sync_line_referential_path(@line_referential), method: :post, class: 'btn btn-default')
 
-- content_for :page_header_content do
-  .row.mb-md
-    .col-lg-12.text-right
-      = link_to line_referential_companies_path(@line_referential), class: 'btn btn-primary' do
-        = Referential.human_attribute_name(:companies)
-        em.small = " (#{@line_referential.companies.size})"
-      = link_to line_referential_networks_path(@line_referential), class: 'btn btn-primary' do
-        = Referential.human_attribute_name(:networks)
-        em.small = " (#{@line_referential.networks.size})"
-      = link_to line_referential_lines_path(@line_referential), class: 'btn btn-primary' do
-        = Referential.human_attribute_name(:lines)
-        em.small = " (#{@line_referential.lines.size})"
-
 .page_content
   .container-fluid
     .row
       .col-lg-12
-        - unless @line_referential.line_referential_syncs.empty?
-          table.table
-            thead
-              tr
-                th = t('.synchronized')
-                th = t('.status')
-                th = t('.message')
+          = table_builder_2 @line_referential.line_referential_syncs,
+            [ \
+              TableBuilderHelper::Column.new( \
+                name: t('.synchronized'), \
+                attribute: Proc.new { |sync| line_referential_sync_created_at(sync) }, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: t('.status'), \
+                attribute: Proc.new { |sync| line_referential_sync_status(sync) }, \
+              ), \
+              TableBuilderHelper::Column.new( \
+                name: t('.message'), \
+                attribute: Proc.new { |sync| line_referential_sync_message(sync) }, \
+              ), \
+            ],
+            sortable: false,
+            cls: 'table'
 
-            tbody
-              - @line_referential.line_referential_syncs.each_with_index do |sync, i|
-                / Display only 10 msgs
-                - if i < 10
-                  - unless sync.line_referential_sync_messages.empty?
-                    - sync.line_referential_sync_messages.last.tap do |log|
-                      - if log.criticity = log.criticity
-                        tr
-                          td style='width: 150px'
-                            = l(log.created_at, format: :short_with_time)
-                          td.text-center
-                            .fa.fa-circle class="text-#{criticity_class(log.criticity)}"
-                          td
-                            - data = log.message_attributes.symbolize_keys!
-                            - data[:processing_time] = distance_of_time_in_words(data[:processing_time].to_i)
-                            = t("line_referential_sync.message.#{log.message_key}", log.message_attributes.symbolize_keys!).html_safe
+    - unless @line_referential.line_referential_syncs.any?
+      .row.mt-xs
+        .col-lg-12
+          = replacement_msg t('line_referential_syncs.search_no_results')
