@@ -371,7 +371,7 @@ class Merge < ApplicationModel
 
   def save_current
     output.update current: new, new: nil
-    output.current.update referential_suite: output
+    output.current.update referential_suite: output, ready: true
 
     referentials.update_all merged_at: created_at, archived_at: created_at
   end
