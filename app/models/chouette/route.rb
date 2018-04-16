@@ -7,11 +7,12 @@ module Chouette
     include ObjectidSupport
     extend Enumerize
 
-    if Rails.env.development?
+    if ENV["CHOUETTE_ROUTE_POSITION_CHECK"] == "true" || !Rails.env.production?
       after_commit do
         positions = stop_points.pluck(:position)
+        Rails.logger.debug "Check positions in Route #{id} : #{positions.inspect}"
         if positions.size != positions.uniq.size
-          raise "DUPLICATED stop_points positions: #{positions}"
+          raise "DUPLICATED stop_points positions in Route #{id} : #{positions.inspect}"
         end
       end
     end
