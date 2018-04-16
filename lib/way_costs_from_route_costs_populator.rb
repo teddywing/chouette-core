@@ -8,8 +8,10 @@ class WayCostsFromRouteCostsPopulator
     @way_costs.map do |way_cost|
       route_cost = @route_costs[way_cost.id]
 
-      way_cost.distance = route_cost['distance']
-      way_cost.time = route_cost['time']
+      if route_cost
+        way_cost.distance = route_cost['distance']
+        way_cost.time = route_cost['time']
+      end
 
       way_cost
     end
