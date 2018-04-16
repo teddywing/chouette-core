@@ -86,7 +86,7 @@ GEM
       tzinfo (~> 1.1)
     acts-as-taggable-on (4.0.0)
       activerecord (>= 4.0)
-    acts_as_list (0.6.0)
+    acts_as_list (0.9.11)
       activerecord (>= 3.0)
     acts_as_tree (2.1.0)
       activerecord (>= 3.0.0)
@@ -593,7 +593,7 @@ DEPENDENCIES
   active_attr
   activerecord-postgis-adapter (~> 3.0.0)
   acts-as-taggable-on (~> 4.0.0)
-  acts_as_list (~> 0.6.0)
+  acts_as_list (~> 0.9.11)
   acts_as_tree (~> 2.1.0)
   apartment (~> 1.0.0)
   awesome_print

@@ -65,4 +65,39 @@ RSpec.describe Chouette::Route, :type => :model do
       end
     end
   end
+
+  context "when creating stop_points" do
+    # Here we tests that acts_as_list does not mess with the positions
+    let(:stop_areas){
+      4.times.map{create :stop_area}
+    }
+
+    it "should set a correct order to the stop_points" do
+
+      order = [0, 3, 2, 1]
+      new = Referential.new
+      new.name = "mkmkm"
+      new.organisation = create(:organisation)
+      new.line_referential = create(:line_referential)
+      create(:line, line_referential: new.line_referential)
+      new.stop_area_referential = create(:stop_area_referential)
+      new.objectid_format = :netex
+      new.save!
+      new.switch
+      route = new.routes.new
+
+      route.published_name = route.name = "Route"
+      route.line = new.line_referential.lines.last
+      order.each_with_index do |position, i|
+        _attributes = {
+          stop_area: stop_areas[i],
+          position: position
+        }
+        route.stop_points.build _attributes
+      end
+      route.save
+      expect(route).to be_valid
+      expect{route.run_callbacks(:commit)}.to_not raise_error
+    end
+  end
 end
