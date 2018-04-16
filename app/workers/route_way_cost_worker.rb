@@ -7,10 +7,11 @@ class RouteWayCostWorker
 
     # Prevent recursive worker spawning since this call updates the
     # `costs` field of the route.
-    Chouette::Route.skip_callback(:save, :after, :calculate_costs!)
-
-    RouteWayCostCalculator.new(route).calculate!
-
-    Chouette::Route.set_callback(:save, :after, :calculate_costs!)
+    begin
+      Chouette::Route.skip_callback(:commit, :after, :calculate_costs!)
+      RouteWayCostCalculator.new(route).calculate!
+    ensure
+      Chouette::Route.set_callback(:commit, :after, :calculate_costs!)
+    end
   end
 end
