@@ -40,6 +40,7 @@ module ChecksumSupport
 
   def current_checksum_source
     source = checksum_replace_nil_or_empty_values(self.checksum_attributes)
+    source += self.custom_fields_checksum if self.respond_to?(:custom_fields_checksum)
     source.map{ |item|
       if item.kind_of?(Array)
         item.map{ |x| x.kind_of?(Array) ? "(#{x.join(',')})" : x }.join(',')

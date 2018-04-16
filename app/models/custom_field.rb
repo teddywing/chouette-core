@@ -63,6 +63,10 @@ class CustomField < ApplicationModel
         @raw_value
       end
 
+      def checksum
+        @raw_value
+      end
+
       def input form_helper
         @input ||= begin
           klass_name = field_type && "CustomField::Instance::#{field_type.classify}::Input"
@@ -187,9 +191,10 @@ class CustomField < ApplicationModel
         custom_field_code = self.code
         _attr_name = attr_name
         _uploader_name = uploader_name
+        _digest_name = digest_name
         owner.send :define_singleton_method, "read_uploader" do |attr|
           if attr.to_s == _attr_name
-            custom_field_values[custom_field_code]
+            custom_field_values[custom_field_code] && custom_field_values[custom_field_code]["path"]
           else
             read_attribute attr
           end
@@ -197,14 +202,26 @@ class CustomField < ApplicationModel
 
         owner.send :define_singleton_method, "write_uploader" do |attr, val|
           if attr.to_s == _attr_name
-            custom_field_values[custom_field_code] = val
+            self.custom_field_values[custom_field_code] ||= {}
+            self.custom_field_values[custom_field_code]["path"] = val
+            self.custom_field_values[custom_field_code]["digest"] = self.send _digest_name
           else
             write_attribute attr, val
           end
         end
 
         owner.send :define_singleton_method, "#{_attr_name}_will_change!" do
+          self.send "#{_digest_name}=", nil
           custom_field_values_will_change!
+        end
+
+        owner.send :define_singleton_method, _digest_name do
+          val = instance_variable_get "@#{_digest_name}"
+          if val.nil? && (file = send(_uploader_name)).present?
+            val = CustomField::Instance::Attachment.digest(file)
+            instance_variable_set "@#{_digest_name}", val
+          end
+          val
         end
 
         _extension_whitelist = options["extension_whitelist"]
@@ -215,7 +232,15 @@ class CustomField < ApplicationModel
 
         unless owner.class.uploaders.has_key? _uploader_name.to_sym
           owner.class.mount_uploader _uploader_name, CustomFieldAttachmentUploader, mount_on: "custom_field_#{code}_raw_value"
+          owner.class.send :attr_accessor, _digest_name
         end
+
+        digest = @raw_value && @raw_value["digest"]
+        owner.send "#{_digest_name}=", digest
+      end
+
+      def self.digest file
+        Digest::SHA256.file(file.path).hexdigest
       end
 
       def preprocess_value_for_assignment val
@@ -224,6 +249,10 @@ class CustomField < ApplicationModel
         else
           @raw_value
         end
+      end
+
+      def checksum
+        owner.send digest_name
       end
 
       def value
@@ -240,6 +269,10 @@ class CustomField < ApplicationModel
 
       def uploader_name
         "custom_field_#{code}"
+      end
+
+      def digest_name
+        "#{uploader_name}_digest"
       end
 
       def display_value

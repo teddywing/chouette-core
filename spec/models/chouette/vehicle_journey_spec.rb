@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Chouette::VehicleJourney, :type => :model do
   subject { create(:vehicle_journey) }
 
-  
+
   it { should have_and_belong_to_many(:purchase_windows) }
 
   it "must be valid with an at-stop day offset of 1" do
@@ -33,6 +33,46 @@ describe Chouette::VehicleJourney, :type => :model do
       vehicle_journey = create(:vehicle_journey)
       expect(vehicle_journey).to receive(:update_checksum_without_callbacks!).at_least(:once).and_call_original
       expect{create(:vehicle_journey_at_stop, vehicle_journey: vehicle_journey)}.to change{vehicle_journey.checksum}
+    end
+
+    context "when custom_field_values change" do
+      let(:vehicle_journey){ create(:vehicle_journey, custom_field_values: {custom_field.code.to_s => former_value}) }
+      let(:custom_field){ create :custom_field, field_type: :string, code: :energy, name: :energy, resource_type: "VehicleJourney" }
+      let(:former_value){ "foo" }
+      let(:value){ "bar" }
+      before do
+        @checksum_source = vehicle_journey.checksum_source
+      end
+
+      it "should update the checksum" do
+        vehicle_journey.custom_field_values = {custom_field.code.to_s => value}
+        vehicle_journey.save
+        expect(vehicle_journey.checksum_source).to_not eq @checksum_source
+      end
+
+      context "with an attachment custom_field" do
+        let(:vehicle_journey) do
+          custom_field
+          vj = create(:vehicle_journey)
+          vj.custom_field_energy = File.open(fixtures_path("test_1/file.txt"))
+          vj.save
+          vj
+        end
+        let(:custom_field){ create :custom_field, field_type: :attachment, code: :energy, name: :energy, resource_type: "VehicleJourney" }
+
+        it "should update the checksum" do
+          expect(CustomField::Instance::Attachment).to receive(:digest).and_call_original
+          vehicle_journey.custom_field_energy = File.open(fixtures_path("test_2/file.txt"))
+          vehicle_journey.save
+          expect(vehicle_journey.checksum_source).to_not eq @checksum_source
+        end
+
+        it "should not calculate the digest if the vale does not change" do
+          expect(CustomField::Instance::Attachment).to_not receive(:digest).and_call_original
+          vehicle_journey.reload.save
+          expect(vehicle_journey.checksum_source).to eq @checksum_source
+        end
+      end
     end
   end
 
