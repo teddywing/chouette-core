@@ -77,7 +77,9 @@ module Chouette
     validates_presence_of :published_name
     validates_presence_of :line
     validates :wayback, inclusion: { in: self.wayback.values }
-    after_save :calculate_costs!, if: ->() { TomTom.enabled? }
+    after_commit :calculate_costs!,
+      on: [:create, :update],
+      if: ->() { TomTom.enabled? }
 
     def duplicate opposite=false
       overrides = {
