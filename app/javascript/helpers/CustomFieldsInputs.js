@@ -34,8 +34,21 @@ export default class CustomFieldsInputs extends Component {
         ref={'custom_fields.' + cf.code}
         className='form-control'
         disabled={this.props.disabled}
-        defaultValue={cf.value}
-        onChange={(e) => this.props.onUpdate(cf.code, e.target.value) }
+        value={cf.value}
+        onChange={(e) => {this.props.onUpdate(cf.code, e.target.value); this.forceUpdate()} }
+        />
+    )
+  }
+
+  integerInput(cf){
+    return(
+      <input
+        type='number'
+        ref={'custom_fields.' + cf.code}
+        className='form-control'
+        disabled={this.props.disabled}
+        value={cf.value}
+        onChange={(e) => {this.props.onUpdate(cf.code, e.target.value); this.forceUpdate()} }
         />
     )
   }

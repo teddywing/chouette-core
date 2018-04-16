@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import actions from '../../actions'
 import CompanySelect2 from './select2s/CompanySelect2'
-import CustomFieldsInputs from './CustomFieldsInputs'
+import CustomFieldsInputs from '../../../helpers/CustomFieldsInputs'
 
 export default class EditVehicleJourney extends Component {
   constructor(props) {

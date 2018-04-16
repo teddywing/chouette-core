@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import actions from '../actions'
+import CustomFieldsInputs from '../../helpers/CustomFieldsInputs'
 
 export default class CreateModal extends Component {
   constructor(props) {
     super(props)
+    this.custom_fields = _.assign({}, this.props.custom_fields)
   }
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
-      this.props.onAddJourneyPattern(this.refs)
+      this.props.onAddJourneyPattern(_.assign({}, this.refs, {custom_fields: this.custom_fields}))
       this.props.onModalClose()
       $('#NewJourneyPatternModal').modal('hide')
     }
@@ -78,8 +80,14 @@ export default class CreateModal extends Component {
                                     />
                                 </div>
                               </div>
+                              <CustomFieldsInputs
+                                values={this.props.custom_fields}
+                                onUpdate={(code, value) => this.custom_fields[code]["value"] = value}
+                                disabled={false}
+                              />
                             </div>
                           </div>
+
                           <div className='modal-footer'>
                             <button
                               className='btn btn-link'

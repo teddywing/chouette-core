@@ -2,6 +2,7 @@ module Chouette
   class JourneyPattern < Chouette::TridentActiveRecord
     has_metadata
     include ChecksumSupport
+    include CustomFieldsSupport
     include JourneyPatternRestrictions
     include ObjectidSupport
 
@@ -52,12 +53,19 @@ module Chouette
     end
 
     def self.state_permited_attributes item
-      {
+      attrs = {
         name: item['name'],
         published_name: item['published_name'],
         registration_number: item['registration_number'],
         costs: item['costs']
       }
+      attrs["custom_field_values"] = Hash[
+        *(item["custom_fields"] || {})
+          .map { |k, v| [k, v["value"]] }
+          .flatten
+      ]
+
+      attrs
     end
 
     def self.state_create_instance route, item

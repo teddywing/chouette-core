@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import actions from '../../actions'
 import MissionSelect2 from './select2s/MissionSelect2'
 import CompanySelect2 from './select2s/CompanySelect2'
-import CustomFieldsInputs from './CustomFieldsInputs'
+import CustomFieldsInputs from '../../../helpers/CustomFieldsInputs'
 
 export default class CreateModal extends Component {
   constructor(props) {
