@@ -103,7 +103,8 @@ export default function journeyPatterns (state = [], action)  {
           return _.assign({}, j, {
             name: action.data.name.value,
             published_name: action.data.published_name.value,
-            registration_number: action.data.registration_number.value
+            registration_number: action.data.registration_number.value,
+            custom_fields: action.data.custom_fields,
           })
         } else {
           return j

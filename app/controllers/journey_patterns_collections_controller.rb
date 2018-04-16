@@ -25,6 +25,8 @@ class JourneyPatternsCollectionsController < ChouetteController
     @q = @q.includes(:stop_points)
     @ppage = 10
     @journey_patterns ||= @q.paginate(page: params[:page], per_page: @ppage).order(:name)
+    @custom_fields = Chouette::JourneyPattern.custom_fields_definitions(referential.workgroup)
+
     respond_to do |format|
       format.json do
         @journey_patterns = @journey_patterns.includes(stop_points: {stop_area: :stop_area_referential})

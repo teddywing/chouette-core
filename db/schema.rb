@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180319043333) do
+ActiveRecord::Schema.define(version: 20180416065012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "postgis"
   enable_extension "hstore"
+  enable_extension "postgis"
   enable_extension "unaccent"
+  enable_extension "objectid"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -92,9 +93,9 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.integer   "organisation_id", limit: 8
     t.datetime  "created_at"
     t.datetime  "updated_at"
-    t.integer   "workgroup_id",    limit: 8
     t.integer   "int_day_types"
     t.date      "excluded_dates",                            array: true
+    t.integer   "workgroup_id",    limit: 8
     t.jsonb     "metadata",                  default: {}
   end
 
@@ -121,6 +122,7 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.datetime "updated_at"
     t.date     "end_date"
     t.string   "date_type"
+    t.string   "mode"
   end
 
   add_index "clean_ups", ["referential_id"], name: "index_clean_ups_on_referential_id", using: :btree
@@ -143,10 +145,11 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.text     "import_xml"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.jsonb    "custom_field_values"
+    t.jsonb    "custom_field_values",                 default: {}
     t.jsonb    "metadata",                            default: {}
   end
 
+  add_index "companies", ["line_referential_id", "registration_number"], name: "index_companies_on_referential_id_and_registration_number", using: :btree
   add_index "companies", ["line_referential_id"], name: "index_companies_on_line_referential_id", using: :btree
   add_index "companies", ["objectid"], name: "companies_objectid_key", unique: true, using: :btree
   add_index "companies", ["registration_number"], name: "companies_registration_number_key", using: :btree
@@ -441,7 +444,7 @@ ActiveRecord::Schema.define(version: 20180319043333) do
   add_index "import_messages", ["resource_id"], name: "index_import_messages_on_resource_id", using: :btree
 
   create_table "import_resources", id: :bigserial, force: :cascade do |t|
-    t.integer  "import_id",     limit: 8
+    t.integer  "import_id",      limit: 8
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -449,9 +452,13 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.string   "reference"
     t.string   "name"
     t.hstore   "metrics"
+    t.integer  "referential_id"
+    t.integer  "parent_id"
   end
 
   add_index "import_resources", ["import_id"], name: "index_import_resources_on_import_id", using: :btree
+  add_index "import_resources", ["parent_id"], name: "index_import_resources_on_parent_id", using: :btree
+  add_index "import_resources", ["referential_id"], name: "index_import_resources_on_referential_id", using: :btree
 
   create_table "imports", id: :bigserial, force: :cascade do |t|
     t.string   "status"
@@ -509,6 +516,7 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.string   "data_source_ref"
     t.json     "costs"
     t.jsonb    "metadata",                          default: {}
+    t.jsonb    "custom_field_values"
   end
 
   add_index "journey_patterns", ["objectid"], name: "journey_patterns_objectid_key", unique: true, using: :btree
@@ -585,6 +593,7 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.jsonb    "metadata",                                  default: {}
   end
 
+  add_index "lines", ["line_referential_id", "registration_number"], name: "index_lines_on_referential_id_and_registration_number", using: :btree
   add_index "lines", ["line_referential_id"], name: "index_lines_on_line_referential_id", using: :btree
   add_index "lines", ["objectid"], name: "lines_objectid_key", unique: true, using: :btree
   add_index "lines", ["registration_number"], name: "lines_registration_number_key", using: :btree
@@ -857,14 +866,15 @@ ActiveRecord::Schema.define(version: 20180319043333) do
     t.integer  "waiting_time"
     t.string   "kind"
     t.jsonb    "localized_names"
+    t.json     "custom_field_values"
     t.datetime "confirmed_at"
-    t.jsonb    "custom_field_values"
     t.jsonb    "metadata",                                                            default: {}
   end
 
   add_index "stop_areas", ["name"], name: "index_stop_areas_on_name", using: :btree
   add_index "stop_areas", ["objectid"], name: "stop_areas_objectid_key", unique: true, using: :btree
   add_index "stop_areas", ["parent_id"], name: "index_stop_areas_on_parent_id", using: :btree
+  add_index "stop_areas", ["stop_area_referential_id", "registration_number"], name: "index_stop_areas_on_referential_id_and_registration_number", using: :btree
   add_index "stop_areas", ["stop_area_referential_id"], name: "index_stop_areas_on_stop_area_referential_id", using: :btree
 
   create_table "stop_areas_stop_areas", id: false, force: :cascade do |t|
@@ -1058,9 +1068,9 @@ ActiveRecord::Schema.define(version: 20180319043333) do
   add_index "vehicle_journeys", ["route_id"], name: "index_vehicle_journeys_on_route_id", using: :btree
 
   create_table "versions", id: :bigserial, force: :cascade do |t|
-    t.string   "item_type",            null: false
-    t.integer  "item_id",    limit: 8, null: false
-    t.string   "event",                null: false
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
     t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
@@ -1114,6 +1124,7 @@ ActiveRecord::Schema.define(version: 20180319043333) do
   add_foreign_key "compliance_controls", "compliance_control_blocks"
   add_foreign_key "compliance_controls", "compliance_control_sets"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
+  add_foreign_key "import_resources", "referentials"
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify
   add_foreign_key "journey_patterns", "routes", name: "jp_route_fkey", on_delete: :cascade

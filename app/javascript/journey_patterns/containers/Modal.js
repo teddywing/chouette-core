@@ -7,7 +7,8 @@ const mapStateToProps = (state) => {
   return {
     editMode: state.editMode,
     modal: state.modal,
-    journeyPattern: state.journeyPattern
+    journeyPattern: state.journeyPattern,
+    custom_fields: state.custom_fields,
   }
 }
 

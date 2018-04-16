@@ -34,7 +34,8 @@ var initialState = {
     type: '',
     modalProps: {},
     confirmModal: {}
-  }
+  },
+  custom_fields: window.custom_fields
 }
 // const loggerMiddleware = createLogger()
 

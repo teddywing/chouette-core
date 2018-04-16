@@ -1,17 +1,25 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import actions from '../actions'
+import CustomFieldsInputs from '../../helpers/CustomFieldsInputs'
 
 export default class EditModal extends Component {
   constructor(props) {
     super(props)
+    this.updateValue = this.updateValue.bind(this)
   }
 
   handleSubmit() {
     if(actions.validateFields(this.refs) == true) {
-      this.props.saveModal(this.props.modal.modalProps.index, this.refs)
+      this.props.saveModal(this.props.modal.modalProps.index, _.assign({}, this.refs, {custom_fields: this.custom_fields}))
       $('#JourneyPatternModal').modal('hide')
     }
+  }
+
+  updateValue(attribute, e) {
+    actions.resetValidation(e.currentTarget)
+    this.props.modal.modalProps.journeyPattern[attribute] = e.target.value
+    this.forceUpdate()
   }
 
   renderModalTitle() {
@@ -28,6 +36,9 @@ export default class EditModal extends Component {
   }
 
   render() {
+    if(this.props.modal.modalProps.journeyPattern){
+      this.custom_fields = _.assign({}, this.props.modal.modalProps.journeyPattern.custom_fields)
+    }
     return (
       <div className={ 'modal fade ' + ((this.props.modal.type == 'edit') ? 'in' : '') } id='JourneyPatternModal'>
         <div className='modal-container'>
@@ -48,8 +59,8 @@ export default class EditModal extends Component {
                         className='form-control'
                         disabled={!this.props.editMode}
                         id={this.props.modal.modalProps.index}
-                        defaultValue={this.props.modal.modalProps.journeyPattern.name}
-                        onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                        value={this.props.modal.modalProps.journeyPattern.name}
+                        onChange={(e) => this.updateValue('name', e)}
                         required
                         />
                     </div>
@@ -64,8 +75,8 @@ export default class EditModal extends Component {
                             className='form-control'
                             disabled={!this.props.editMode}
                             id={this.props.modal.modalProps.index}
-                            defaultValue={this.props.modal.modalProps.journeyPattern.published_name}
-                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                            value={this.props.modal.modalProps.journeyPattern.published_name}
+                            onChange={(e) => this.updateValue('published_name', e)}
                             required
                             />
                         </div>
@@ -79,11 +90,18 @@ export default class EditModal extends Component {
                             className='form-control'
                             disabled={!this.props.editMode}
                             id={this.props.modal.modalProps.index}
-                            defaultValue={this.props.modal.modalProps.journeyPattern.registration_number}
-                            onKeyDown={(e) => actions.resetValidation(e.currentTarget)}
+                            value={this.props.modal.modalProps.journeyPattern.registration_number}
+                            onChange={(e) => this.updateValue('registration_number', e)}
                             />
                         </div>
                       </div>
+                    </div>
+                    <div className='row'>
+                      <CustomFieldsInputs
+                        values={this.props.modal.modalProps.journeyPattern.custom_fields}
+                        onUpdate={(code, value) => this.custom_fields[code]["value"] = value}
+                        disabled={!this.props.editMode}
+                      />
                     </div>
                     <div>
                       <label className='control-label'>{I18n.attribute_name('journey_pattern', 'checksum')}</label>
@@ -92,7 +110,7 @@ export default class EditModal extends Component {
                         ref='checksum'
                         className='form-control'
                         disabled='disabled'
-                        defaultValue={this.props.modal.modalProps.journeyPattern.checksum}
+                        value={this.props.modal.modalProps.journeyPattern.checksum}
                         />
                     </div>
                   </div>
