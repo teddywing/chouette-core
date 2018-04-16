@@ -24,4 +24,12 @@ class WayCost
       @time == other.time &&
       @id == other.id
   end
+
+  def cache_key
+    raise NullIDError if !id
+
+    "way_cost/#{id}"
+  end
+
+  class NullIDError < RuntimeError; end
 end
