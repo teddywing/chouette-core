@@ -80,7 +80,11 @@ module Chouette
     validates :wayback, inclusion: { in: self.wayback.values }
     after_commit :calculate_costs!,
       on: [:create, :update],
-      if: ->() { TomTom.enabled? }
+      if: ->() {
+        # Ensure the call back doesn't run during a referential merge
+        !referential.in_referential_suite? &&
+          TomTom.enabled?
+      }
 
     def duplicate opposite=false
       overrides = {
