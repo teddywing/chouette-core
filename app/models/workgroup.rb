@@ -16,11 +16,18 @@ class Workgroup < ApplicationModel
 
   has_many :custom_fields
 
+  @@workbench_scopes_class = Stif::WorkbenchScopes
+  mattr_accessor :workbench_scopes_class
+
   def custom_fields_definitions
     Hash[*custom_fields.map{|cf| [cf.code, cf]}.flatten]
   end
 
   def has_export? export_name
     export_types.include? export_name
+  end
+
+  def workbench_scopes workbench
+    self.class.workbench_scopes_class.new(workbench)
   end
 end
