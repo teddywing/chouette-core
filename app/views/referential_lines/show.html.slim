@@ -10,7 +10,7 @@
              Chouette::Line.tmf('state') => line_status(@line.deactivated),
              Chouette::Line.tmf('network_id') => (@line.network.nil? ? t('lines.index.unset') : link_to(@line.network.name, [@referential, @line.network]) ),
              Chouette::Line.tmf('company') => (@line.company.nil? ? t('lines.index.unset') : link_to(@line.company.name, [@referential, @line.company]) ),
-             Chouette::Line.tmf('secondary_company') => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.collect(&:name).join(', ')),
+             Chouette::Line.tmf('secondary_companies') => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.collect(&:name).join(', ')),
              Chouette::Line.tmf('registration_number') => @line.number,
              Chouette::Line.tmf('published_name') => (@line.registration_number ? @line.registration_number : '-'),
              Chouette::Line.tmf('transport_mode') => (@line.transport_mode.present? ? t("enumerize.transport_mode.#{@line.transport_mode}") : '-'),

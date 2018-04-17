@@ -79,7 +79,7 @@ fr:
           name: "Réseau"
         company_id: "Transporteur principal"
         company: "Transporteur principal"
-        secondary_company: "Transporteurs secondaires"
+        secondary_companies: "Transporteurs secondaires"
         companies:
           name: "Transporteur principal"
         registration_number: "Nom court"
