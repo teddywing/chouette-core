@@ -4,7 +4,7 @@ module MultipleSelectionToolboxHelper
   # #5206 method too long
   def multiple_selection_toolbox(actions, collection_name:)
     links = content_tag :ul do
-      
+
       # #5206 `if params[:controller]` mieux passer comme parametre si besoin
       delete_path = nil
 
@@ -19,8 +19,7 @@ module MultipleSelectionToolboxHelper
             method: :delete,
             data: {
               path: delete_path,
-              # #5206 Missing Translations
-              confirm: t('actions.are_you_sure')
+              confirm: t('are_you_sure')
             },
             title: t("actions.#{action}")
           ) do
@@ -38,7 +37,7 @@ module MultipleSelectionToolboxHelper
       class: 'info-msg'
     )
 
-    content_tag :div, '', 
+    content_tag :div, '',
       class: 'select_toolbox noselect',
       id: "selected-#{collection_name}-action-box" do
       links + label
