@@ -241,7 +241,7 @@ class Referential < ApplicationModel
     end
   end
 
-  def self.new_from(from, organisation)
+  def self.new_from(from, workbench)
     Referential.new(
       name: I18n.t("activerecord.copy", name: from.name),
       slug: "#{from.slug}_clone",
@@ -252,7 +252,7 @@ class Referential < ApplicationModel
       stop_area_referential: from.stop_area_referential,
       created_from: from,
       objectid_format: from.objectid_format,
-      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, organisation) }
+      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, workbench) }
     )
   end
 
