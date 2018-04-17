@@ -138,7 +138,7 @@ Rails.application.configure do
   config.iev_url = ENV.fetch('IEV_URL',"http://iev:8080")
   config.rails_host = ENV.fetch('RAILS_HOST','http://front:3000')
 
-  config.middleware.use CacheSettings, {
+  config.middleware.insert_before ActionDispatch::Static, CacheSettings, {
     /\/assets\/.*/ => {
       cache_control: "max-age=#{1.year.to_i}, public",
       expires: 1.year.to_i
