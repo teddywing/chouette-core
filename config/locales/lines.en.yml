@@ -78,7 +78,7 @@ en:
           name: "Network"
         company_id: "Company"
         company: "Company"
-        secondary_company: "Secondary company"
+        secondary_companies: "Secondary companies"
         companies:
           name: "Company"
         registration_number: "Registration number"
