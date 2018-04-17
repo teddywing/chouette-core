@@ -74,9 +74,31 @@ module Chouette
 
     def area_type_of_right_kind
       return unless self.kind
-      unless Chouette::AreaType.send(self.kind).map(&:to_s).include?(self.area_type)
+      unless Chouette::AreaType.send(self.kind).map(&:to_s).include?(self.area_type&.to_s)
         errors.add(:area_type, I18n.t('stop_areas.errors.incorrect_kind_area_type'))
       end
+    end
+
+    def area_type_attribute
+      self.kind.to_s == "commercial" ? :area_type : :non_commercial_area_type
+    end
+
+    def area_type_other_attribute
+      self.kind.to_s == "commercial" ? :non_commercial_area_type : :area_type
+    end
+
+    def area_type_kind type
+       Chouette::AreaType.commercial.include?(type.to_sym) ? :commercial : :non_commercial
+    end
+
+    def area_type
+      read_attribute area_type_attribute
+    end
+
+    def area_type= val
+      self.kind = area_type_kind(val) if val
+      write_attribute area_type_other_attribute, nil
+      write_attribute area_type_attribute, val
     end
 
     def registration_number_is_set
@@ -441,7 +463,7 @@ module Chouette
       return unless ActiveSupport::TimeZone[time_zone].present?
       ActiveSupport::TimeZone[time_zone].tzinfo.name
     end
-    
+
     def country
       return unless country_code
       country = ISO3166::Country[country_code]

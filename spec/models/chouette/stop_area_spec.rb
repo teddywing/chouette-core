@@ -13,7 +13,7 @@ describe Chouette::StopArea, :type => :model do
   it { should validate_presence_of :kind }
   it { should validate_numericality_of :latitude }
   it { should validate_numericality_of :longitude }
-  
+
 
   describe "#area_type" do
     it "should validate the value is correct regarding to the kind" do
@@ -21,6 +21,41 @@ describe Chouette::StopArea, :type => :model do
       expect(build(:stop_area, kind: :non_commercial, area_type: :relief)).to be_valid
       expect(build(:stop_area, kind: :commercial, area_type: :relief)).to_not be_valid
       expect(build(:stop_area, kind: :non_commercial, area_type: :gdl)).to_not be_valid
+    end
+
+    it "should use the right col in the db" do
+      stop = create(:stop_area, kind: :commercial, area_type: :gdl)
+      expect(stop.read_attribute(:area_type)).to eq "gdl"
+      expect(stop.read_attribute(:non_commercial_area_type)).to be_nil
+      stop = create(:stop_area, kind: :non_commercial, area_type: :relief)
+      expect(stop.read_attribute(:area_type)).to be_nil
+      expect(stop.read_attribute(:non_commercial_area_type)).to eq "relief"
+    end
+
+    it "should read the data transparently" do
+      stop = create(:stop_area, kind: :commercial, area_type: :gdl)
+      expect(stop.area_type).to eq "gdl"
+      Chouette::StopArea.where(id: stop.id).update_all kind: :non_commercial, area_type: nil, non_commercial_area_type: :border
+      expect(stop.reload.area_type).to eq "border"
+    end
+
+    it "should behave normally" do
+      stop = build :stop_area, area_type: nil, kind: nil
+      expect(stop.area_type).to be_nil
+      stop.area_type = :gdl
+      expect(stop.area_type).to eq :gdl
+      expect(stop.non_commercial_area_type).to be_nil
+      expect(stop.kind).to eq :commercial
+      stop.save
+      expect(stop.reload.area_type).to eq "gdl"
+      expect(stop.kind).to eq "commercial"
+      stop.area_type = :border
+      expect(stop.area_type).to eq "border"
+      expect(stop.non_commercial_area_type).to eq "border"
+      expect(stop.kind).to eq :non_commercial
+      stop.save
+      expect(stop.reload.area_type).to eq "border"
+      expect(stop.kind).to eq "non_commercial"
     end
   end
 
