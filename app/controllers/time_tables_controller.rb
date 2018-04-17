@@ -77,7 +77,7 @@ class TimeTablesController < ChouetteController
   end
 
   def index
-    request.format.kml? ? @per_page = nil : @per_page = 12
+    # request.format.kml? ? @per_page = nil : @per_page = 12
 
     index! do |format|
       format.html {
@@ -130,6 +130,7 @@ class TimeTablesController < ChouetteController
 
     @time_tables ||= begin
       time_tables = @q.result(:distinct => true)
+      sort_column
       if sort_column == "bounding_dates"
         time_tables = @q.result(:distinct => false).paginate(page: params[:page], per_page: 10)
         ids = time_tables.pluck(:id).uniq
@@ -186,10 +187,13 @@ class TimeTablesController < ChouetteController
   private
 
   def sort_column
-    valid_cols = referential.time_tables.column_names
-    valid_cols << "bounding_dates"
-    valid_cols << "vehicle_journeys_count"
-    valid_cols.include?(params[:sort]) ? params[:sort] : 'comment'
+    @@valid_cols ||= begin
+      valid_cols = %w(id color comment)
+      valid_cols << "bounding_dates"
+      valid_cols << "vehicle_journeys_count"
+      valid_cols
+    end
+    @@valid_cols.include?(params[:sort]) ? params[:sort] : 'comment'
   end
   def sort_direction
     %w[asc desc].include?(params[:direction]) ?  params[:direction] : 'asc'
