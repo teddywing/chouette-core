@@ -7,7 +7,7 @@
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
           {  t('id_codif') => @line.get_objectid.short_id,
-             Chouette::Line.tmf('activated') => (@line.deactivated? ? t('false') : t('true')),
+             Chouette::Line.tmf('state') => line_status(@line.deactivated),
              Chouette::Line.tmf('network_id') => (@line.network.nil? ? t('lines.index.unset') : link_to(@line.network.name, [@referential, @line.network]) ),
              Chouette::Line.tmf('company') => (@line.company.nil? ? t('lines.index.unset') : link_to(@line.company.name, [@referential, @line.company]) ),
              Chouette::Line.tmf('secondary_company') => (@line.secondary_companies.nil? ? t('lines.index.unset') : @line.secondary_companies.collect(&:name).join(', ')),
