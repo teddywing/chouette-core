@@ -9,14 +9,12 @@ module Chouette
     include ForAlightingEnumerations
     include ObjectidSupport
 
-
     belongs_to :stop_area
     belongs_to :route, inverse_of: :stop_points
     has_many :vehicle_journey_at_stops, :dependent => :destroy
     has_many :vehicle_journeys, -> {uniq}, :through => :vehicle_journey_at_stops
 
     acts_as_list :scope => :route, top_of_list: 0
-
 
     validates_presence_of :stop_area
     validate :stop_area_id_validation
@@ -28,7 +26,7 @@ module Chouette
 
     scope :default_order, -> { order("position") }
 
-    delegate :name, to: :stop_area
+    delegate :name, :kind, :area_type, to: :stop_area
 
     before_destroy :remove_dependent_journey_pattern_stop_points
     def remove_dependent_journey_pattern_stop_points

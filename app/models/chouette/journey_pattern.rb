@@ -86,10 +86,8 @@ module Chouette
 
     def state_stop_points_update item
       item['stop_points'].each do |sp|
-        exist = stop_area_ids.include?(sp['id'])
-        next if exist && sp['checked']
-
-        stop_point = route.stop_points.find_by(stop_area_id: sp['id'])
+        stop_point = route.stop_points.find_by(stop_area_id: sp['id'], position: sp['position'])
+        exist = stop_points.include?(stop_point)
         if !exist && sp['checked']
           stop_points << stop_point
         end
@@ -176,17 +174,40 @@ module Chouette
       full
     end
 
-    def distance_to stop
+    def distance_between start, stop
+      return 0 unless start.position < stop.position
       val = 0
-      i = 0
-      _end = stop_points.first
-      while _end != stop
+      i = stop_points.index(start)
+      _end = start
+      while _end && _end != stop
         i += 1
         _start = _end
         _end = stop_points[i]
         val += costs_between(_start, _end)[:distance] || 0
       end
       val
+    end
+
+    def distance_to stop
+      distance_between stop_points.first, stop
+    end
+
+    def journey_length
+      i = 0
+      j = stop_points.length - 1
+      start = stop_points[i]
+      stop = stop_points[j]
+      while i < j && start.kind == "non_commercial"
+        i+= 1
+        start = stop_points[i]
+      end
+
+      while i < j && stop.kind == "non_commercial"
+        j-= 1
+        stop = stop_points[j]
+      end
+      return 0 unless start && stop
+      distance_between start, stop
     end
 
     def set_distances distances
