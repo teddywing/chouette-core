@@ -169,7 +169,6 @@ end
 
 crumb :companies do |line_referential|
   link I18n.t('companies.index.title'), line_referential_companies_path(line_referential)
-  parent :line_referential, line_referential
 end
 
 crumb :company do |company|
@@ -179,7 +178,6 @@ end
 
 crumb :networks do |line_referential|
   link I18n.t('networks.index.title'), line_referential_networks_path(line_referential)
-  parent :line_referential, line_referential
 end
 
 crumb :network do |network|
@@ -189,7 +187,6 @@ end
 
 crumb :group_of_lines do |line_referential|
   link I18n.t('group_of_lines.index.title'), line_referential_group_of_lines_path(line_referential)
-  parent :line_referential, line_referential
 end
 
 crumb :group_of_line do |group_of_line|
@@ -199,7 +196,6 @@ end
 
 crumb :lines do |line_referential|
   link I18n.t('lines.index.title'), line_referential_lines_path
-  parent :line_referential, line_referential
 end
 
 crumb :line do |line|

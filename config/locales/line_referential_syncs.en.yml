@@ -1,4 +1,6 @@
 en:
+  line_referential_syncs:
+    search_no_results: "No line referential synchronisation matching your query"  
   activerecord:
     errors:
       models:
