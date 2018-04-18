@@ -262,10 +262,53 @@ RSpec.describe Import::Gtfs do
     end
   end
 
-  describe "#download_host" do
-    it "should return host defined by Rails.application.config.rails_host (without http:// schema)" do
-      allow(Rails.application.config).to receive(:rails_host).and_return("http://download_host")
+  describe "#download_uri" do
+    let(:import) { Import::Gtfs.new }
 
+    before do
+      allow(import).to receive(:download_path).and_return("/download_path")
+    end
+
+    context "when download_host is 'front'" do
+      before { allow(import).to receive(:download_host).and_return("front") }
+      it "returns http://front/download_path" do
+        expect(import.download_uri.to_s).to eq('http://front/download_path')
+      end
+    end
+
+    context "when download_host is 'front:3000'" do
+      before { allow(import).to receive(:download_host).and_return("front:3000") }
+      it "returns http://front:3000/download_path" do
+        expect(import.download_uri.to_s).to eq('http://front:3000/download_path')
+      end
+    end
+
+    context "when download_host is 'http://front:3000'" do
+      before { allow(import).to receive(:download_host).and_return("http://front:3000") }
+      it "returns http://front:3000/download_path" do
+        expect(import.download_uri.to_s).to eq('http://front:3000/download_path')
+      end
+    end
+
+    context "when download_host is 'https://front:3000'" do
+      before { allow(import).to receive(:download_host).and_return("https://front:3000") }
+      it "returns https://front:3000/download_path" do
+        expect(import.download_uri.to_s).to eq('https://front:3000/download_path')
+      end
+    end
+
+    context "when download_host is 'http://front'" do
+      before { allow(import).to receive(:download_host).and_return("http://front") }
+      it "returns http://front/download_path" do
+        expect(import.download_uri.to_s).to eq('http://front/download_path')
+      end
+    end
+
+  end
+
+  describe "#download_host" do
+    it "should return host defined by Rails.application.config.rails_host" do
+      allow(Rails.application.config).to receive(:rails_host).and_return("download_host")
       expect(Import::Gtfs.new.download_host).to eq("download_host")
     end
   end

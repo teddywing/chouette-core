@@ -56,7 +56,7 @@ class Import::Gtfs < Import::Base
 
   attr_accessor :download_host
   def download_host
-    @download_host ||= Rails.application.config.rails_host.gsub("http://","")
+    @download_host ||= Rails.application.config.rails_host
   end
 
   def local_temp_directory
@@ -79,11 +79,20 @@ class Import::Gtfs < Import::Base
     Rails.application.routes.url_helpers.download_workbench_import_path(workbench, id, token: token_download)
   end
 
+  def download_uri
+    @download_uri ||=
+      begin
+        host = download_host
+        host = "http://#{host}" unless host =~ %r{https?://}
+        URI.join(host, download_path)
+      end
+  end
+
   def download_local_file
     local_temp_file do |file|
       begin
-        Net::HTTP.start(download_host) do |http|
-          http.request_get(download_path) do |response|
+        Net::HTTP.start(download_uri.host, download_uri.port) do |http|
+          http.request_get(download_uri.request_uri) do |response|
             response.read_body do |segment|
               file.write segment
             end
