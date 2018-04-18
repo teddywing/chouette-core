@@ -8,8 +8,4 @@ class MergePolicy < ApplicationPolicy
   def create?
     user.has_permission?('merges.create')
   end
-
-  def update?
-    user.has_permission?('merges.update')
-  end
 end

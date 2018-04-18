@@ -1,5 +1,5 @@
 class MergesController < ChouetteController
-  # include PolicyChecker
+  include PolicyChecker
 
   defaults resource_class: Merge
   belongs_to :workbench
