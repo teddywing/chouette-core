@@ -21,8 +21,8 @@ fr:
         one: Offres courante
         other: Offres courantes
       workbench_outputs:
-        organisation: Offres de mon organisation
-        idf: Offres IDF
+        organisation: Offre de mon organisation
+        workgroup: Offre du groupe de travail
       tools: Outils
       sync: Synchronisation
       sync_icar: Synchronisation iCAR
