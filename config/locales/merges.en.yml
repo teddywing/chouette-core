@@ -1,0 +1,23 @@
+fr:
+  merges:
+    referential_name: "Merged offer %{date}"
+    index:
+      title: "Merged offers"
+    new:
+      title: "New merged offer"
+    show:
+      title: "Merged offer %{name}"
+    actions:
+      create: Merge data spaces
+  activerecord:
+    models:
+      merge: "Merged offer"
+    attributes:
+      merge:
+        created_at: "Created at"
+        started_at: Started at
+        name: Name
+        ended_at: Ended at
+        status: "Status"
+        creator: "Creator"
+        referentials: "Data spaces"

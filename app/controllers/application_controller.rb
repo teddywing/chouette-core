@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
 
   # Load helpers in rails engine
   helper LanguageEngine::Engine.helpers
+  layout :layout_by_resource
 
   def set_locale
     # I18n.locale = session[:language] || I18n.default_locale
@@ -56,4 +57,15 @@ class ApplicationController < ActionController::Base
   def after_sign_out_path_for(resource_or_scope)
     new_user_session_path
   end
+
+  private
+
+  def layout_by_resource
+    if devise_controller?
+      "devise"
+    else
+      "application"
+    end
+  end
+
 end
