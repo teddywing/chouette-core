@@ -77,5 +77,24 @@ RSpec.describe Chouette::Route, :type => :model do
       expect(route).not_to receive(:calculate_costs!)
       route.save
     end
+
+    it "doesn't call #calculate_costs! after_commit if in a ReferentialSuite",
+        truncation: true do
+      begin
+        allow(TomTom).to receive(:enabled?).and_return(true)
+
+        referential_suite = create(:referential_suite)
+        referential = create(:referential, referential_suite: referential_suite)
+
+        referential.switch do
+          route = build(:route)
+
+          expect(route).not_to receive(:calculate_costs!)
+          route.save
+        end
+      ensure
+        referential.destroy
+      end
+    end
   end
 end
