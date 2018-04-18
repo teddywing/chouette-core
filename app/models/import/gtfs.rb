@@ -60,8 +60,12 @@ class Import::Gtfs < Import::Base
   end
 
   def local_temp_directory
-    Rails.application.config.try(:import_temporary_directory) ||
-      Rails.root.join('tmp', 'imports')
+    @local_temp_directory ||=
+      begin
+        directory = Rails.application.config.try(:import_temporary_directory) || Rails.root.join('tmp', 'imports')
+        FileUtils.mkdir_p directory
+        directory
+      end
   end
 
   def local_temp_file(&block)
