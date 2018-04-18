@@ -13,8 +13,8 @@
               span = t('layouts.navbar.dashboard')
             = link_to workbench_output_path(workbench), class: 'list-group-item' do
               span = t('layouts.navbar.workbench_outputs.organisation')
-            = link_to '#', class: 'list-group-item' do
-              span = t('layouts.navbar.workbench_outputs.idf')
+            = link_to '#', class: 'list-group-item disabled' do
+              span = t('layouts.navbar.workbench_outputs.workgroup')
 
       .menu-item.panel
         .panel-heading
@@ -49,17 +49,11 @@
               .list-group-item
                 = (current_referential.name).upcase
                 .list-group
-                  = link_to referential_networks_path(current_referential), class: 'list-group-item' do
-                    span = t('networks.index.title')
-
-                  = link_to referential_companies_path(current_referential), class: 'list-group-item' do
-                    span = t('companies.index.title')
-
-                  = link_to '#', class: 'list-group-item disabled' do
-                    span = t('layouts.navbar.shapes')
-
                   = link_to referential_time_tables_path(current_referential), class: 'list-group-item' do
-                    span = t('time_tables.index.title')
+                    span = t('time_tables.index.title').capitalize
+                  - if has_feature?(:purchase_windows)
+                    = link_to referential_purchase_windows_path(current_referential), class: 'list-group-item' do
+                      span = t('purchase_windows.index.title').capitalize
 
           - else
             .panel-body
@@ -75,11 +69,11 @@
         #miFour.panel-collapse.collapse
           .list-group
             = link_to line_referential_lines_path(workbench.line_referential), class: "list-group-item" do
-              span = Chouette::Line.t
+              span = Chouette::Line.t.capitalize
             = link_to line_referential_networks_path(workbench.line_referential), class: "list-group-item" do
-              span = Chouette::Network.t
+              span = Chouette::Network.t.capitalize
             = link_to line_referential_companies_path(workbench.line_referential), class: "list-group-item" do
-              span = Chouette::Company.t
+              span = Chouette::Company.t.capitalize
 
       .menu-item.panel
         .panel-heading
@@ -90,4 +84,4 @@
         #miFive.panel-collapse.collapse
           .list-group
             = link_to stop_area_referential_stop_areas_path(workbench.stop_area_referential), class: "list-group-item" do
-              span = Chouette::StopArea.t
+              span = Chouette::StopArea.t.capitalize
