@@ -4,7 +4,7 @@ en:
       filters:
         id: Filter by ID...
         journey_pattern: Filter by journey pattern...
-        timetable: Filter by timetable...          
+        timetable: Filter by timetable...
       cancel_selection: "Cancel Selection"
       fetching_error: "There has been a problem fetching the data. Please reload the page to try again."
       line_routes: "Line's routes"
@@ -133,6 +133,7 @@ en:
         journey_pattern_id: "Pattern ID"
         journey_pattern: "Journey Pattern"
         journey_pattern_published_name: "Journey Pattern published name"
+        journey_length: "Journey length"
         line: "Line"
         mobility_restricted_suitability: "PRM accessibility"
         name: "Journey Name"

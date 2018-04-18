@@ -134,6 +134,7 @@ fr:
         journey_pattern_id: "ID Mission"
         journey_pattern: "Mission"
         journey_pattern_published_name: "Nom public de la mission"
+        journey_length: "Parcours commercial"
         line: "Ligne"
         mobility_restricted_suitability: "Accessibilité PMR"
         name: "Nom Course"

@@ -10,6 +10,10 @@ export default class VehicleJourney extends Component {
     this.previousCity = undefined
   }
 
+  journey_length() {
+    return this.props.value.journey_pattern.journey_length + "km"
+  }
+
   cityNameChecker(sp) {
     return this.props.vehicleJourneys.showHeader(sp.stop_point_objectid)
   }
@@ -114,6 +118,11 @@ export default class VehicleJourney extends Component {
             this.props.extraHeaders.map((header, i) =>
               <div key={i}>{this.extraHeaderValue(header)}</div>
             )
+          }
+          { this.hasFeature('journey_length_in_vehicle_journeys') &&
+            <div>
+              {this.journey_length()}
+            </div>
           }
           { this.hasFeature('purchase_windows') &&
             <div>

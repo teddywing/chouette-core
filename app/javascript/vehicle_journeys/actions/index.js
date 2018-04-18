@@ -48,16 +48,10 @@ const actions = {
   }),
   selectJPCreateModal : (selectedJP) => ({
     type : 'SELECT_JP_CREATE_MODAL',
-    selectedItem: {
-      id: selectedJP.id,
+    selectedItem: _.assign({}, selectedJP, {
       objectid: selectedJP.object_id,
-      short_id: selectedJP.short_id,
-      name: selectedJP.name,
-      published_name: selectedJP.published_name,
-      stop_areas: selectedJP.stop_area_short_descriptions,
-      costs: selectedJP.costs,
-      full_schedule: selectedJP.full_schedule
-    }
+      stop_areas: selectedJP.stop_area_short_descriptions
+    })
   }),
   openEditModal : (vehicleJourney) => ({
     type : 'EDIT_VEHICLEJOURNEY_MODAL',

@@ -224,6 +224,11 @@ export default class VehicleJourneys extends Component {
                       <div key={i}>{this.extraHeaderLabel(header)}</div>
                     )
                   }
+                  { this.hasFeature('journey_length_in_vehicle_journeys') &&
+                    <div>
+                    {I18n.attribute_name("vehicle_journey", "journey_length")}
+                    </div>
+                  }
                   { this.hasFeature('purchase_windows') &&
                     <div>
                       { detailed_purchase_windows &&

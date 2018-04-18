@@ -17,7 +17,7 @@ child(:route) do |route|
 end
 
 child(:journey_pattern) do |journey_pattern|
-  attributes :id, :objectid, :name, :published_name
+  attributes :id, :objectid, :name, :published_name, :journey_length
   node(:short_id) {journey_pattern.get_objectid.short_id}
 end
 
