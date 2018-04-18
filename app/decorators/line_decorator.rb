@@ -35,11 +35,6 @@ class LineDecorator < AF83::Decorator
       edit_action_link do |l|
         l.content {|l| l.primary? ? h.t('actions.edit') : h.t('lines.actions.edit') }
       end
-
-      action_link on: :index, secondary: :index do |l|
-        l.content t('lines.actions.new')
-        l.href    { h.new_line_referential_line_path(context[:line_referential]) }
-      end
     end
 
     ### the option :policy will automatically check for the corresponding method
