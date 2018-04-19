@@ -1,125 +1,95 @@
-- if current_organisation
-  - current_organisation.workbenches.each do |workbench|
-    #menu-items.panel-group
-      .menu-item.panel
-        .panel-heading
-          h4.panel-title
-            = link_to '#miOne', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-              = t('layouts.navbar.current_offer.other')
+- current_organisation.workbenches.each do |workbench|
+  #menu-items.panel-group
+    .menu-item.panel
+      .panel-heading
+        h4.panel-title
+          = link_to '#miOne', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
+            = t('layouts.navbar.current_offer.other')
 
-        #miOne.panel-collapse.collapse
-          .list-group
-            = link_to root_path, class: "list-group-item" do
-              span = t('layouts.navbar.dashboard')
-            = link_to workbench_output_path(workbench), class: 'list-group-item' do
-              span = t('layouts.navbar.workbench_outputs.organisation')
-            = link_to '#', class: 'list-group-item disabled' do
-              span = t('layouts.navbar.workbench_outputs.workgroup')
+      #miOne.panel-collapse.collapse
+        .list-group
+          = link_to root_path, class: "list-group-item" do
+            span = t('layouts.navbar.dashboard')
+          = link_to workbench_output_path(workbench), class: 'list-group-item' do
+            span = t('layouts.navbar.workbench_outputs.organisation')
+          = link_to '#', class: 'list-group-item disabled' do
+            span = t('layouts.navbar.workbench_outputs.workgroup')
 
-      .menu-item.panel
-        .panel-heading
-          h4.panel-title
-            = link_to '#miTwo', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-              - t('activerecord.models.workbench.one').capitalize
+    .menu-item.panel
+      .panel-heading
+        h4.panel-title
+          = link_to '#miTwo', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
+            - t('activerecord.models.workbench.one').capitalize
 
-        #miTwo.panel-collapse.collapse
-          .list-group
-            = link_to workbench_path(workbench), class: "list-group-item" do
-              span = t('activerecord.models.referential.other').capitalize
-            = link_to workbench_imports_path(workbench), class: "list-group-item" do
-              span = t('activerecord.models.import.other').capitalize
-            = link_to workbench_exports_path(workbench), class: "list-group-item" do
-              span = t('activerecord.models.export.other').capitalize
-            = link_to workgroup_calendars_path(workbench.workgroup), class: 'list-group-item' do
-              span = t('activerecord.models.calendar.other').capitalize
-            = link_to workbench_compliance_check_sets_path(workbench), class: 'list-group-item' do
-              span = t('activerecord.models.compliance_check_set.other').capitalize
-            = link_to compliance_control_sets_path, class: 'list-group-item' do
-              span = t('activerecord.models.compliance_control_set.other').capitalize
+      #miTwo.panel-collapse.collapse
+        .list-group
+          = link_to workbench_path(workbench), class: "list-group-item" do
+            span = t('activerecord.models.referential.other').capitalize
+          = link_to workbench_imports_path(workbench), class: "list-group-item" do
+            span = t('activerecord.models.import.other').capitalize
+          = link_to workbench_exports_path(workbench), class: "list-group-item" do
+            span = t('activerecord.models.export.other').capitalize
+          = link_to workgroup_calendars_path(workbench.workgroup), class: 'list-group-item' do
+            span = t('activerecord.models.calendar.other').capitalize
+          = link_to workbench_compliance_check_sets_path(workbench), class: 'list-group-item' do
+            span = t('activerecord.models.compliance_check_set.other').capitalize
+          = link_to compliance_control_sets_path, class: 'list-group-item' do
+            span = t('activerecord.models.compliance_control_set.other').capitalize
 
-      .menu-item.panel
-        .panel-heading
-          h4.panel-title
-            = link_to '#miThree', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-              = Referential.ts.capitalize
+    .menu-item.panel
+      .panel-heading
+        h4.panel-title
+          = link_to '#miFour', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
+            = t('layouts.navbar.line_referential')
 
-        #miThree.panel-collapse.collapse
-          - if @referential.try(:id) && respond_to?(:current_referential)
-            .list-group
-              .list-group-item
-                = (current_referential.name).upcase
-                .list-group
-                  = link_to referential_networks_path(current_referential), class: 'list-group-item' do
-                    span = t('networks.index.title')
+      #miFour.panel-collapse.collapse
+        .list-group
+          = link_to line_referential_path(workbench.line_referential), class: "list-group-item" do
+            span = t('layouts.navbar.sync_ilico')
+          = link_to line_referential_lines_path(workbench.line_referential), class: "list-group-item" do
+            span = Chouette::Line.t.capitalize
+          = link_to line_referential_networks_path(workbench.line_referential), class: "list-group-item" do
+            span = Chouette::Network.t.capitalize
+          = link_to line_referential_companies_path(workbench.line_referential), class: "list-group-item" do
+            span = Chouette::Company.t.capitalize
 
-                  = link_to referential_companies_path(current_referential), class: 'list-group-item' do
-                    span = t('companies.index.title')
+    .menu-item.panel
+      .panel-heading
+        h4.panel-title
+          = link_to '#miFive', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
+            = t('layouts.navbar.stop_area_referential')
 
-                  = link_to '#', class: 'list-group-item disabled' do
-                    span = t('layouts.navbar.shapes')
+      #miFive.panel-collapse.collapse
+        .list-group
+          = link_to stop_area_referential_path(workbench.stop_area_referential), class: "list-group-item" do
+            span = t('layouts.navbar.sync_icar')
+          = link_to stop_area_referential_stop_areas_path(workbench.stop_area_referential), class: "list-group-item" do
+            span = Chouette::StopArea.t.capitalize
 
-                  = link_to referential_time_tables_path(current_referential), class: 'list-group-item' do
-                    span = t('time_tables.index.title')
+    .menu-item.panel
+      .panel-heading
+        h4.panel-title
+          = link_to '#miSix', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
+            = t('layouts.navbar.tools')
 
-          - else
-            .panel-body
-              em.text-muted
-                = t('layouts.navbar.select_referential_for_more_features')
+      #miSix.panel-collapse.collapse
+        .list-group
+          = link_to Rails.application.config.try(:portal_url), target: '_blank', class: 'list-group-item' do
+            span
+              span.fa.fa-2x.fa-circle
+              = t('layouts.navbar.portal')
 
-      .menu-item.panel
-        .panel-heading
-          h4.panel-title
-            = link_to '#miFour', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-              = t('layouts.navbar.line_referential')
+          = link_to Rails.application.config.try(:codifligne_url), target: '_blank', class: 'list-group-item' do
+            span
+              span.fa.fa-2x.fa-circle
+              = t('layouts.navbar.ilico')
 
-        #miFour.panel-collapse.collapse
-          .list-group
-            = link_to line_referential_path(workbench.line_referential), class: "list-group-item" do
-              span = t('layouts.navbar.sync_ilico')
-            = link_to line_referential_lines_path(workbench.line_referential), class: "list-group-item" do
-              span = Chouette::Line.t.capitalize
-            = link_to line_referential_networks_path(workbench.line_referential), class: "list-group-item" do
-              span = Chouette::Network.t.capitalize
-            = link_to line_referential_companies_path(workbench.line_referential), class: "list-group-item" do
-              span = Chouette::Company.t.capitalize
+          = link_to Rails.application.config.try(:reflex_url), target: '_blank', class: 'list-group-item' do
+            span
+              span.fa.fa-2x.fa-circle
+              = t('layouts.navbar.icar')
 
-      .menu-item.panel
-        .panel-heading
-          h4.panel-title
-            = link_to '#miFive', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-              = t('layouts.navbar.stop_area_referential')
-
-        #miFive.panel-collapse.collapse
-          .list-group
-            = link_to stop_area_referential_path(workbench.stop_area_referential), class: "list-group-item" do
-              span = t('layouts.navbar.sync_icar')
-            = link_to stop_area_referential_stop_areas_path(workbench.stop_area_referential), class: "list-group-item" do
-              span = Chouette::StopArea.t.capitalize
-
-      .menu-item.panel
-        .panel-heading
-          h4.panel-title
-            = link_to '#miSix', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-              = t('layouts.navbar.tools')
-
-        #miSix.panel-collapse.collapse
-          .list-group
-            = link_to Rails.application.config.try(:portal_url), target: '_blank', class: 'list-group-item' do
-              span
-                span.fa.fa-2x.fa-circle
-                = t('layouts.navbar.portal')
-
-            = link_to Rails.application.config.try(:codifligne_url), target: '_blank', class: 'list-group-item' do
-              span
-                span.fa.fa-2x.fa-circle
-                = t('layouts.navbar.ilico')
-
-            = link_to Rails.application.config.try(:reflex_url), target: '_blank', class: 'list-group-item' do
-              span
-                span.fa.fa-2x.fa-circle
-                = t('layouts.navbar.icar')
-
-            = link_to '#', target: '_blank', class: 'list-group-item' do
-              span
-                span.fa.fa-2x.fa-circle
-                = t('layouts.navbar.support')
+          = link_to '#', target: '_blank', class: 'list-group-item' do
+            span
+              span.fa.fa-2x.fa-circle
+              = t('layouts.navbar.support')

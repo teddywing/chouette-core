@@ -4,7 +4,10 @@ en:
       sync: "Launch a new reflex synchronization"
       cancel_sync: "Cancel reflex synchronization"
     show:
-      title: 'Stop area referential'
+      title: 'Synchronization iCAR'
+      synchronized: Synchronized
+      status: status
+      message: Message
   activerecord:
     models:
       stop_area_referential:

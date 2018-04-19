@@ -18,15 +18,11 @@ html lang=I18n.locale
 
   body
     nav#main_nav
-      // Left menu content
-      = render 'layouts/navigation/main_nav_left'
       // Top menu content
       = render 'layouts/navigation/main_nav_top'
     = render 'layouts/flash_messages', flash: flash
     = render 'layouts/navigation/page_header'
     = yield
-    #sidebar
-      = yield :sidebar
 
     = render 'shared/development_toolbar'
     = yield :javascript

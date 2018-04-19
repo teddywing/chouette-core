@@ -22,7 +22,7 @@ en:
         other: Current offers
       workbench_output:
         organisation: Organisation offers
-        idf: IDF offers
+        workgroup: Workgroup offers
       tools: Tools
       sync: Synchronization
       sync_icar: iCAR synchronization
