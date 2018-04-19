@@ -19,6 +19,7 @@ en:
       show: 'Show'
       show_network: 'Show network'
       show_company: 'Show company'
+    search_no_results: "No results found"
     filters:
       name_or_objectid_cont: "Search by name or objectid"
     new:
