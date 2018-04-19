@@ -9,7 +9,7 @@ en:
     show:
       title: Line referential
       synchronized: Synchronized
-      status: Status
+      state: Status
       message: Message
   activerecord:
     models:

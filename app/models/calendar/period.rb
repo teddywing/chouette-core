@@ -16,7 +16,7 @@ class Calendar < ApplicationModel
     alias_method :period_end=, :end=
 
     def check_end_greather_than_begin
-      if self.begin && self.end && self.begin >= self.end
+      if self.begin && self.end && self.begin > self.end
         errors.add(:base, I18n.t('calendars.errors.short_period'))
       end
     end
