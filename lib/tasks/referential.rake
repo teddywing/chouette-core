@@ -70,7 +70,7 @@ namespace :referential do
 
   def update_checksums_for_referential referential
     thing = %w(\\ | / —)
-    Referential.force_register_models_with_checksum if Rails.env.development? && Referential.models_with_checksum.empty?
+    Referential.force_register_models_with_checksum
     puts "\n \e[33m***\e[0m Referential #{referential.name}"
     referential.switch do
       Referential.models_with_checksum.each do |klass|
