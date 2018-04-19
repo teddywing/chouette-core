@@ -1,6 +1,13 @@
 class StopAreaReferentialsController < ChouetteController
 
   defaults :resource_class => StopAreaReferential
+
+  def show
+    show! do
+      @stop_area_referential = StopAreaReferentialDecorator.decorate(@stop_area_referential)
+    end
+  end
+
   def sync
     authorize resource, :synchronize?
     @sync = resource.stop_area_referential_syncs.build

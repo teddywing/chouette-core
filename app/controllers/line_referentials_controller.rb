@@ -2,6 +2,12 @@ class LineReferentialsController < ChouetteController
 
   defaults :resource_class => LineReferential
 
+  def show
+    show! do
+      @line_referential = LineReferentialDecorator.decorate(@line_referential)
+    end
+  end
+
   def sync
     authorize resource, :synchronize?
     @sync = resource.line_referential_syncs.build
