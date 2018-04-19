@@ -78,31 +78,29 @@ class Referential < ApplicationModel
 
   alias_method_chain :save, :table_lock_timeout
 
-  if Rails.env.development?
-    def self.force_register_models_with_checksum
-      paths = Rails.application.paths['app/models'].to_a
-      Rails.application.railties.each do |tie|
-        next unless tie.respond_to? :paths
-        paths += tie.paths['app/models'].to_a
-      end
+  def self.force_register_models_with_checksum
+    paths = Rails.application.paths['app/models'].to_a
+    Rails.application.railties.each do |tie|
+      next unless tie.respond_to? :paths
+      paths += tie.paths['app/models'].to_a
+    end
 
-      paths.each do |path|
-        next unless File.directory?(path)
-        Dir.chdir path do
-          Dir['**/*.rb'].each do |src|
-            next if src =~ /^concerns/
-            # thanks for inconsistent naming ...
-            if src == "route_control/zdl_stop_area.rb"
-              RouteControl::ZDLStopArea
-              next
-            end
-            Rails.logger.info "Loading #{src}"
-            begin
-              src[0..-4].classify.safe_constantize
-            rescue => e
-              Rails.logger.info "Failed: #{e.message}"
-              nil
-            end
+    paths.each do |path|
+      next unless File.directory?(path)
+      Dir.chdir path do
+        Dir['**/*.rb'].each do |src|
+          next if src =~ /^concerns/
+          # thanks for inconsistent naming ...
+          if src == "route_control/zdl_stop_area.rb"
+            RouteControl::ZDLStopArea
+            next
+          end
+          Rails.logger.info "Loading #{src}"
+          begin
+            src[0..-4].classify.safe_constantize
+          rescue => e
+            Rails.logger.info "Failed: #{e.message}"
+            nil
           end
         end
       end
