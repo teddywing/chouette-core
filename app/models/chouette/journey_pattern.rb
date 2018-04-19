@@ -169,7 +169,6 @@ module Chouette
         next finish unless start.present?
         costs = costs_between(start, finish)
         full = false unless costs.present?
-        full = false unless costs[:distance] && costs[:distance] > 0
         full = false unless costs[:time] && costs[:time] > 0
         finish
       end
