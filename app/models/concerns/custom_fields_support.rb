@@ -28,6 +28,10 @@ module CustomFieldsSupport
       CustomField::Collection.new self, workgroup
     end
 
+    def custom_fields_checksum
+      custom_fields.values.map(&:checksum)
+    end
+
     def custom_field_values= vals
       out = {}
       custom_fields.each do |code, field|
