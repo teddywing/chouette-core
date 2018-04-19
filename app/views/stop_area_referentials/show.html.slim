@@ -1,8 +1,9 @@
 - breadcrumb :stop_area_referential, @stop_area_referential
+- page_header_content_for @stop_area_referential
 - if policy(@stop_area_referential).synchronize?
   - content_for :page_header_actions do
     = link_to(t('actions.sync'), sync_stop_area_referential_path(@stop_area_referential), method: :post, class: 'btn btn-default')
-    
+
 .page_content
   .container-fluid
     .row
