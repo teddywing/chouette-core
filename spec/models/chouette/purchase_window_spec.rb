@@ -8,7 +8,7 @@ RSpec.describe Chouette::PurchaseWindow, :type => :model do
   describe 'validations' do
     it 'validates and date_ranges do not overlap' do
       expect(build(:purchase_window, referential: referential,date_ranges: [Date.today..Date.today + 10.day, Date.yesterday..Date.tomorrow])).to_not be_valid
-      # expect(build(periods: [Date.today..Date.today + 10.day, Date.yesterday..Date.tomorrow ])).to_not be_valid
+      expect(build(:purchase_window, referential: referential,date_ranges: [Date.today..Date.today])).to be_valid
     end
   end
 
