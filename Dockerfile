@@ -19,6 +19,7 @@ RUN mkdir /app && apt-get update &&\
     apt-get clean && apt-get -y autoremove && rm -rf /var/lib/apt/lists/* && \
     cd /app && rm config/database.yml && mv config/database.yml.docker config/database.yml && \
     cd /app && rm config/secrets.yml && mv config/secrets.yml.docker config/secrets.yml && \
+    mkdir -p /app/tmp/imports && \
     mv script/launch-cron /app && \
     bundle exec whenever --output '/proc/1/fd/1' --update-crontab stif-boiv --set 'environment=production&bundle_command=bundle exec' --roles=app,db,web
 
