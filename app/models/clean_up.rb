@@ -1,4 +1,4 @@
-class CleanUp < ApplicationModel
+class CleanUp < ::ActiveRecord::Base
   extend Enumerize
   include AASM
   belongs_to :referential

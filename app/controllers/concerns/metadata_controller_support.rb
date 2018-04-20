@@ -2,7 +2,7 @@ module MetadataControllerSupport
   extend ActiveSupport::Concern
 
   included do
-    after_action :set_creator_metadata, only: :create
+    after_action :set_creator_metadata, only: :create, unless: Proc.new {|c| c.is_a? CleanUpsController } 
     after_action :set_modifier_metadata, only: :update
   end
 
