@@ -3,6 +3,9 @@ en:
     attributes:
       compliance_check:
         code: Code
+        name: Name
+        comment: Comment
+        criticity: Criticity
   compliance_checks:
     filters:
       subclass: Object

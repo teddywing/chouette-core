@@ -1,5 +1,5 @@
 en:
-  import_message:
+  import_messages:
     corrupt_zip_file: "The zip file %{source_filename} is corrupted and cannot be read"
     inconsistent_zip_file: "The zip file %{source_filename} contains unexpected directories: %{spurious_dirs}, which are ignored"
     missing_calendar_in_zip_file: "The folder %{source_filename} lacks a calendar file"
@@ -54,3 +54,12 @@ en:
     2_netexstif_servicejourneypattern_3_1: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet ServiceJourneyPattern d'identifiant %{source_objectid} n'a pas de valeur pour l'attribut ServiceJourneyPatternType"
     2_netexstif_servicejourneypattern_3_2: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet ServiceJourneyPattern d'identifiant %{source_objectid} a une valeur interdite %{error_value} pour l'attribut ServiceJourneyPatternType différente de 'passenger'"
     2_netexstif_servicejourneypattern_4: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number}, objet ServiceJourneyPattern d'identifiant %{source_objectid} : les attributs 'order' des StopPointInJourneyPattern ne sont pas croissants."
+  activerecord:
+    attributes:
+      import_message:
+        criticity: Criticity
+        message_key: Message key
+        message: Message
+        filename: Filename
+        line: Line
+        column: Column
