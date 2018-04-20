@@ -126,7 +126,18 @@ class StopAreasController < ChouetteController
     if sort_column && sort_direction
       @stop_areas ||=
         begin
-          stop_areas = @q.result.order(sort_column + ' ' + sort_direction)
+          if sort_column == "area_type"
+            sorted_area_type_labels = Chouette::AreaType.options(:all, I18n.locale).sort.transpose.last
+            sorted_area_type_labels = sorted_area_type_labels.reverse if sort_direction != 'asc'
+            order_by = ["CASE"]
+            sorted_area_type_labels.each_with_index do |area_type, index|
+              order_by << "WHEN area_type='#{area_type}' THEN #{index}"
+            end
+            order_by << "END"
+            stop_areas = @q.result.order(order_by.join(" "))
+          else
+            stop_areas = @q.result.order(sort_column + ' ' + sort_direction)
+          end
           stop_areas = stop_areas.paginate(:page => params[:page], :per_page => @per_page) if @per_page.present?
           stop_areas
         end
