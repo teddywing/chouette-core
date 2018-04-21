@@ -4,12 +4,12 @@ class CleanUpsController < ChouetteController
   belongs_to :referential
 
   def create
-    clean_up = CleanUp.new(clean_up_params)
-    clean_up.referential = @referential
-    if clean_up.valid?
-      clean_up.save
+    @clean_up = CleanUp.new(clean_up_params)
+    @clean_up.referential = @referential
+    if @clean_up.valid?
+      @clean_up.save
     else
-      flash[:alert] = clean_up.errors.full_messages.join("<br/>")
+      flash[:alert] = @clean_up.errors.full_messages.join("<br/>")
     end
     redirect_to referential_path(@referential)
   end
