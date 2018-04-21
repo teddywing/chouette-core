@@ -62,4 +62,4 @@ fr:
         message: Message
         filename: Nom du fichier
         line: Ligne
-        column: Colomne
+        column: Colonne
