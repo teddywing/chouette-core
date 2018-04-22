@@ -105,7 +105,6 @@ RSpec.describe "Import::Netex", type: :request do
         end
       end
 
-      it_behaves_like 'illegal attributes', :file
       it_behaves_like 'illegal attributes', :workbench_id
 
       # TODO Create a specific test when referential is not created
