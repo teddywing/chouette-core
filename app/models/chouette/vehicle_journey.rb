@@ -140,9 +140,12 @@ module Chouette
         attrs << self.published_journey_identifier
         attrs << self.try(:company).try(:get_objectid).try(:local_id)
         attrs << self.footnotes.map(&:checksum).sort
+
         vjas =  self.vehicle_journey_at_stops
         vjas += VehicleJourneyAtStop.where(vehicle_journey_id: self.id) unless self.new_record?
         attrs << vjas.uniq.sort_by { |s| s.stop_point&.position }.map(&:checksum).sort
+
+        attrs << self.purchase_windows.map(&:checksum).sort if purchase_windows.present?
       end
     end
 
