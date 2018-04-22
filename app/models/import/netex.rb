@@ -46,7 +46,7 @@ class Import::Netex < Import::Base
   def referential_metadata
     metadata = ReferentialMetadata.new
 
-    if self.file
+    if self.file && self.file.path
       netex_file = STIF::NetexFile.new(self.file.path)
       frame = netex_file.frames.first
 
