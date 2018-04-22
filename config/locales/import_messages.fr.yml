@@ -54,3 +54,12 @@ fr:
     2_netexstif_servicejourneypattern_3_1: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet ServiceJourneyPattern d'identifiant %{source_objectid} n'a pas de valeur pour l'attribut ServiceJourneyPatternType"
     2_netexstif_servicejourneypattern_3_2: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet ServiceJourneyPattern d'identifiant %{source_objectid} a une valeur interdite %{error_value} pour l'attribut ServiceJourneyPatternType différente de 'passenger'"
     2_netexstif_servicejourneypattern_4: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number}, objet ServiceJourneyPattern d'identifiant %{source_objectid} : les attributs 'order' des StopPointInJourneyPattern ne sont pas croissants."
+  activerecord:
+    attributes:
+      import_message:
+        criticity: Criticité
+        message_key: Clé du message
+        message: Message
+        filename: Nom du fichier
+        line: Ligne
+        column: Colonne

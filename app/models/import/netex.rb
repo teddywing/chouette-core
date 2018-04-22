@@ -10,7 +10,7 @@ class Import::Netex < Import::Base
 
   validates_presence_of :parent
 
-  def create_referential!
+  def create_with_referential!
     self.referential =
       Referential.new(
         name: self.name,
@@ -19,15 +19,16 @@ class Import::Netex < Import::Base
         metadatas: [referential_metadata]
       )
     self.referential.save
-    unless self.referential.valid?
+    if self.referential.invalid?
       Rails.logger.info "Can't create referential for import #{self.id}: #{referential.inspect} #{referential.metadatas.inspect} #{referential.errors.messages}"
       if referential.metadatas.all?{|m| m.line_ids.empty?}
         parent.messages.create criticity: :error, message_key: "referential_creation_missing_lines", message_attributes: {referential_name: referential.name}
       else
         parent.messages.create criticity: :error, message_key: "referential_creation", message_attributes: {referential_name: referential.name}
       end
+    else
+      save!
     end
-    save!
   end
 
   private
@@ -45,7 +46,7 @@ class Import::Netex < Import::Base
   def referential_metadata
     metadata = ReferentialMetadata.new
 
-    if self.file
+    if self.file && self.file.path
       netex_file = STIF::NetexFile.new(self.file.path)
       frame = netex_file.frames.first
 

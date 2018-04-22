@@ -4,8 +4,8 @@ fr:
       compliance_check:
         code: Code
         name: Nom
-        criticity: Criticité
         comment: Commentaire
+        criticity: Criticité
   compliance_checks:
     filters:
       subclass: Objet

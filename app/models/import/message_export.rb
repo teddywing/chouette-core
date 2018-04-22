@@ -22,7 +22,7 @@ class Import::MessageExport
   end
 
   def column_names
-    ["criticity", "message key", "message", "file name", "line", "column"]
+    ["criticity", "message_key", "message", "filename", "line", "column"].map {|c| Import::Message.tmf(c)}
   end
 
   def to_csv(options = {})

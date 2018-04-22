@@ -22,7 +22,7 @@ class ComplianceCheckMessageExport
   end
 
   def column_names
-    ["criticity", "message key", "resource objectid", "link", "message"]
+    ["criticity", "message_key", "resource_objectid", "link", "message"].map {|c| ComplianceCheckMessage.tmf(c)}
   end
 
   def to_csv(options = {})
