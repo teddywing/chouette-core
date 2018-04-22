@@ -224,7 +224,7 @@ class Merge < ApplicationModel
 
           new_journey_pattern = new.journey_patterns.create! attributes
           if new_journey_pattern.checksum != journey_pattern.checksum
-            raise "Checksum has changed for #{journey_pattern.inspect}: \"#{journey_pattern.checksum_source}\" -> \"#{new_journey_pattern.checksum_source}\""
+            raise "Checksum has changed for #{journey_pattern.inspect} (to #{new_journey_pattern.inspect}): \"#{journey_pattern.checksum_source}\" -> \"#{new_journey_pattern.checksum_source}\""
           end
         end
       end
@@ -234,6 +234,19 @@ class Merge < ApplicationModel
 
     referential_vehicle_journeys = referential.switch do
       referential.vehicle_journeys.includes(:vehicle_journey_at_stops).all.to_a
+    end
+
+    referential_purchase_windows_by_checksum, referential_vehicle_journey_purchase_window_checksums = referential.switch do
+      purchase_windows_by_checksum = referential.purchase_windows.each_with_object({}) do |purchase_window, hash|
+        hash[purchase_window.checksum] = purchase_window
+      end
+
+      vehicle_journey_purchase_window_checksums = Hash.new { |h,k| h[k] = [] }
+      referential.purchase_windows.joins(:vehicle_journeys).pluck("vehicle_journeys.id", :checksum).each do |vehicle_journey_id, checksum|
+        vehicle_journey_purchase_window_checksums[vehicle_journey_id] << checksum
+      end
+
+      [purchase_windows_by_checksum, vehicle_journey_purchase_window_checksums]
     end
 
     new.switch do
@@ -267,6 +280,32 @@ class Merge < ApplicationModel
               stop_point_id: existing_associated_journey_pattern.stop_points[index].id
             )
             new_vehicle_journey.vehicle_journey_at_stops.build at_stop_attributes
+          end
+
+          # Associate (and create if needed) PurchaseWindows
+
+          referential_vehicle_journey_purchase_window_checksums[vehicle_journey.id].each do |purchase_window_checksum|
+            associated_purchase_window = new.purchase_windows.find_by(checksum: purchase_window_checksum)
+
+            unless associated_purchase_window
+              purchase_window = referential_purchase_windows_by_checksum[purchase_window_checksum]
+
+              objectid = new.purchase_windows.where(objectid: purchase_window.objectid).exists? ? nil : purchase_window.objectid
+              attributes = purchase_window.attributes.merge(
+                id: nil,
+                objectid: objectid
+              )
+              new_purchase_window = new.purchase_windows.build attributes
+              new_purchase_window.save!
+
+              if new_purchase_window.checksum != purchase_window.checksum
+                raise "Checksum has changed: #{purchase_window.checksum_source} #{new_purchase_window.checksum_source}"
+              end
+
+              associated_purchase_window = new_purchase_window
+            end
+
+            new_vehicle_journey.purchase_windows << associated_purchase_window
           end
 
           new_vehicle_journey.save!
