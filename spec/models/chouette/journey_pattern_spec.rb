@@ -41,13 +41,6 @@ describe Chouette::JourneyPattern, :type => :model do
     end
 
     context "when the costs are incomplete" do
-      context "with a missing distance" do
-        before(:each){
-          journey_pattern.costs = generate_journey_pattern_costs(->(i){i == 1 ? nil : 10}, 10)
-        }
-        it { should be_falsy }
-      end
-
       context "with a missing time" do
         before(:each){
           journey_pattern.costs = generate_journey_pattern_costs(10, ->(i){i == 1 ? nil : 10})
@@ -56,19 +49,27 @@ describe Chouette::JourneyPattern, :type => :model do
       end
     end
 
-    context "with a zeroed cost" do
-      before(:each){
-        journey_pattern.costs = generate_journey_pattern_costs(->(i){i == 1 ? 0 : 10}, 10)
-      }
-      it { should be_falsy }
-    end
-
     context "when all the times are set" do
       before(:each){
         journey_pattern.costs = generate_journey_pattern_costs(10, 10)
       }
       it { should be_truthy }
     end
+
+    context "with a missing distance" do
+      before(:each){
+        journey_pattern.costs = generate_journey_pattern_costs(->(i){i == 1 ? nil : 10}, 10)
+      }
+      it { should be_truthy }
+    end
+
+    context "with a zeroed distance" do
+      before(:each){
+        journey_pattern.costs = generate_journey_pattern_costs(->(i){i == 1 ? 0 : 10}, 10)
+      }
+      it { should be_truthy }
+    end
+
   end
 
   describe "distance_to" do
