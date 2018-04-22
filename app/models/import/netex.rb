@@ -21,7 +21,7 @@ class Import::Netex < Import::Base
     self.referential.save
     if self.referential.invalid?
       Rails.logger.info "Can't create referential for import #{self.id}: #{referential.inspect} #{referential.metadatas.inspect} #{referential.errors.messages}"
-      if referential.metadatas.all?{|m| m.line_ids.empty?}
+      if referential.metadatas.all?{|m| m.line_ids.present? && m.line_ids.empty?}
         parent.messages.create criticity: :error, message_key: "referential_creation_missing_lines", message_attributes: {referential_name: referential.name}
       else
         parent.messages.create criticity: :error, message_key: "referential_creation", message_attributes: {referential_name: referential.name}
