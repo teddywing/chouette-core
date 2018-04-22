@@ -5,7 +5,7 @@ RSpec.describe Calendar::Period, type: :model do
 
   def period(attributes = {})
     @__period__ ||= {}
-    @__period__.fetch(attributes){ 
+    @__period__.fetch(attributes){
       @__period__[attributes] = Calendar::Period.new(attributes)
     }
   end
@@ -36,10 +36,13 @@ RSpec.describe Calendar::Period, type: :model do
   it { is_expected.to validate_presence_of(:begin) }
   it { is_expected.to validate_presence_of(:end) }
 
-  it 'should validate that end is greather than or equlals to begin' do
+  it 'should validate that end is greather than to begin' do
     expect(period(begin: '2016-11-21', end: '2016-11-22')).to be_valid
-    expect(period(begin: '2016-11-21', end: '2016-11-21')).to_not be_valid
     expect(period(begin: '2016-11-22', end: '2016-11-21')).to_not be_valid
+  end
+
+  it 'should accept a 1-day period' do
+    expect(period(begin: '2016-11-21', end: '2016-11-21')).to be_valid
   end
 
   describe 'intersect?' do
