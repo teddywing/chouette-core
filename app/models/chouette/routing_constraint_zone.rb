@@ -1,6 +1,6 @@
 module Chouette
   class RoutingConstraintZone < Chouette::TridentActiveRecord
-    has_metadata
+    # has_metadata
     include ChecksumSupport
     include ObjectidSupport
 
@@ -29,6 +29,11 @@ module Chouette
         self.stop_points.map(&:stop_area).map(&:user_objectid)
       ]
     end
+
+    def update_route_checksum
+      route.update_checksum!
+    end
+    after_commit :update_route_checksum
 
     def stop_points_belong_to_route
       return unless route

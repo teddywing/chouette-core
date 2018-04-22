@@ -148,7 +148,7 @@ module Chouette
       values = self.slice(*['name', 'published_name', 'wayback']).values
       values.tap do |attrs|
         attrs << self.stop_points.sort_by(&:position).map{|sp| [sp.stop_area.user_objectid, sp.for_boarding, sp.for_alighting]}
-        attrs << self.routing_constraint_zones.map(&:checksum)
+        attrs << self.routing_constraint_zones.map(&:checksum).sort
       end
     end
 

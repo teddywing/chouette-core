@@ -135,6 +135,12 @@ class Merge < ApplicationModel
 
     referential_stop_points_by_route = referential_stop_points.group_by(&:route_id)
 
+    referential_routes_constraint_zones = referential.switch do
+      referential.routing_constraint_zones.each_with_object(Hash.new { |h,k| h[k] = [] }) do |routing_constraint_zone, hash|
+        hash[routing_constraint_zone.route_id] << routing_constraint_zone
+      end
+    end
+
     new.switch do
       referential_routes.each do |route|
         existing_route = new.routes.find_by line_id: route.line_id, checksum: route.checksum
@@ -162,6 +168,36 @@ class Merge < ApplicationModel
               objectid: objectid,
             )
             new_route.stop_points.build attributes
+          end
+
+          # We need to create StopPoints to known new primary keys
+          new_route.save!
+
+          old_stop_point_ids = route_stop_points.sort_by(&:position).map(&:id)
+          new_stop_point_ids = new_route.stop_points.sort_by(&:position).map(&:id)
+
+          stop_point_ids_mapping = Hash[[old_stop_point_ids, new_stop_point_ids].transpose]
+
+          # RoutingConstraintZones
+          routes_constraint_zones = referential_routes_constraint_zones[route.id]
+
+          routes_constraint_zones.each do |routing_constraint_zone|
+            objectid = new.routing_constraint_zones.where(objectid: routing_constraint_zone.objectid).exists? ? nil : routing_constraint_zone.objectid
+            stop_point_ids = routing_constraint_zone.stop_point_ids.map { |id| stop_point_ids_mapping[id] }.compact
+
+            if stop_point_ids.size != routing_constraint_zone.stop_point_ids.size
+              raise "Can't find all required StopPoints for RoutingConstraintZone #{routing_constraint_zone.inspect}"
+            end
+
+            attributes = routing_constraint_zone.attributes.merge(
+              id: nil,
+              route_id: nil,
+              objectid: objectid,
+              stop_point_ids: stop_point_ids,
+            )
+            new_route.routing_constraint_zones.build attributes
+
+            # No checksum check. RoutingConstraintZones are always recreated
           end
 
           new_route.save!
