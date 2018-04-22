@@ -118,7 +118,7 @@ describe Chouette::JourneyPattern, :type => :model do
       jp.attributes.slice('name', 'published_name', 'registration_number').tap do |item|
         item['object_id']   = jp.objectid
         item['stop_points'] = jp.stop_points.map do |sp|
-          { 'id' => sp.stop_area_id }
+          { 'id' => sp.stop_area_id, 'position' => sp.position }
         end
         item['costs'] = jp.costs
       end
