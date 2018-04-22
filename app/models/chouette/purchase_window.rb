@@ -42,7 +42,7 @@ module Chouette
 
     def checksum_attributes
       attrs = ['name', 'color', 'referential_id']
-      ranges_attrs = date_ranges.map{|r| [r.first, r.last]}.flatten.sort
+      ranges_attrs = date_ranges.map{|r| [r.min, r.max]}.flatten.sort
       self.slice(*attrs).values + ranges_attrs
     end
 
