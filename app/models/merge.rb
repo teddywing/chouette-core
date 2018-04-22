@@ -285,6 +285,8 @@ class Merge < ApplicationModel
       [purchase_windows_by_checksum, vehicle_journey_purchase_window_checksums]
     end
 
+    new_vehicle_journey_ids = {}
+
     new.switch do
       referential_vehicle_journeys.each do |vehicle_journey|
         # find parent journey pattern by checksum
@@ -299,6 +301,7 @@ class Merge < ApplicationModel
 
         if existing_vehicle_journey
           existing_vehicle_journey.merge_metadata_from vehicle_journey
+          new_vehicle_journey_ids[vehicle_journey.id] = existing_vehicle_journey.id
         else
           objectid = Chouette::VehicleJourney.where(objectid: vehicle_journey.objectid).exists? ? nil : vehicle_journey.objectid
           attributes = vehicle_journey.attributes.merge(
@@ -352,6 +355,8 @@ class Merge < ApplicationModel
           if new_vehicle_journey.checksum != vehicle_journey.checksum
             raise "Checksum has changed: #{vehicle_journey.checksum_source} #{new_vehicle_journey.checksum_source}"
           end
+
+          new_vehicle_journey_ids[vehicle_journey.id] = new_vehicle_journey.id
         end
 
       end
@@ -363,14 +368,14 @@ class Merge < ApplicationModel
       time_tables_by_id = Hash[referential.time_tables.includes(:dates, :periods).all.to_a.map { |t| [t.id, t] }]
 
       time_tables_with_associated_lines =
-        referential.time_tables.joins(vehicle_journeys: {route: :line}).pluck("lines.id", :id, "vehicle_journeys.checksum")
+        referential.time_tables.joins(vehicle_journeys: {route: :line}).pluck("lines.id", :id, "vehicle_journeys.id")
 
       # Because TimeTables will be modified according metadata periods
       # we're loading timetables per line (line is associated to a period list)
       #
       # line_id: [ { time_table.id, vehicle_journey.checksum } ]
       time_tables_by_lines = time_tables_with_associated_lines.inject(Hash.new { |h,k| h[k] = [] }) do |hash, row|
-        hash[row.shift] << {id: row.first, vehicle_journey_checksum: row.second}
+        hash[row.shift] << {id: row.first, vehicle_journey_id: row.second}
         hash
       end
 
@@ -440,7 +445,12 @@ class Merge < ApplicationModel
 
           # associate VehicleJourney
 
-          associated_vehicle_journey = line.vehicle_journeys.find_by!(checksum: properties[:vehicle_journey_checksum])
+          new_vehicle_journey_id = new_vehicle_journey_ids[properties[:vehicle_journey_id]]
+          unless new_vehicle_journey_id
+            raise "TimeTable #{existing_time_table.inspect} associated to a not-merged VehicleJourney: #{properties[:vehicle_journey_id]}"
+          end
+
+          associated_vehicle_journey = line.vehicle_journeys.find(new_vehicle_journey_id)
           associated_vehicle_journey.time_tables << existing_time_table
         end
       end
