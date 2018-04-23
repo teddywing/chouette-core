@@ -14,7 +14,8 @@ export default class CreateModal extends Component {
   handleSubmit() {
     if(!this.props.modal.modalProps.selectedJPModal){
       let field = $('#NewVehicleJourneyModal').find(".vjCreateSelectJP")
-      field.parent().parent().addClass('has-error').children('.help-block').remove()
+      field.parent().parent().addClass('has-error')
+      field.parent().children('.help-block').remove()
       field.parent().append("<span class='small help-block'>" + I18n.t("simple_form.required.text") + "</span>")
       return
     }
