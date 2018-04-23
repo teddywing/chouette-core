@@ -40,6 +40,7 @@ const vehicleJourney= (state = {}, action, keep) => {
           }
           let offsetHours = sp.time_zone_offset / 3600
           let offsetminutes = sp.time_zone_offset/60 - 60*offsetHours
+
           newVjas = {
             delta: 0,
             arrival_time:{
@@ -53,6 +54,7 @@ const vehicleJourney= (state = {}, action, keep) => {
 
           if(sp.waiting_time && inJourney){
             current_time = actions.addMinutesToTime(current_time, parseInt(sp.waiting_time))
+            newVjas.delta = parseInt(sp.waiting_time)
           }
 
           newVjas.departure_time = {
