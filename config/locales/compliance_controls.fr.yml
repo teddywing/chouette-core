@@ -214,7 +214,7 @@ fr:
       line_control/lines_scope:
         one: "Les lignes doivent appartenir au périmètre de lignes de l'organisation"
       generic_attribute_control/pattern:
-        one: "Contrôle du contenu selon un pattern"
+        one: "Contrôle du contenu selon une expression régulière"
       generic_attribute_control/min_max:
         one: "Valeur min, max de champs numériques"
       generic_attribute_control/uniqueness:
@@ -232,3 +232,4 @@ fr:
         target: "Cible"
         prerequisite: "Prérequis"
         predicate: "Prédicat"
+        pattern: Expression régulière
