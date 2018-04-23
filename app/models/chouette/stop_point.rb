@@ -26,7 +26,7 @@ module Chouette
 
     scope :default_order, -> { order("position") }
 
-    delegate :name, :kind, :area_type, to: :stop_area
+    delegate :name, :registration_number, :kind, :area_type, to: :stop_area
 
     before_destroy :remove_dependent_journey_pattern_stop_points
     def remove_dependent_journey_pattern_stop_points
