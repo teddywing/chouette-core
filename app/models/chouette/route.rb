@@ -152,6 +152,8 @@ module Chouette
       end
     end
 
+    has_checksum_children StopPoint
+
     def geometry
       points = stop_areas.map(&:to_lat_lng).compact.map do |loc|
         [loc.lng, loc.lat]
