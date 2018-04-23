@@ -1,6 +1,6 @@
 module Chouette
   class RoutingConstraintZone < Chouette::TridentActiveRecord
-    # has_metadata
+    has_metadata
     include ChecksumSupport
     include ObjectidSupport
 
