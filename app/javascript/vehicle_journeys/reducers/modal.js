@@ -164,7 +164,9 @@ export default function modal(state = {}, action) {
         confirmModal: {}
       }
     case 'SELECT_JP_CREATE_MODAL':
-      newModalProps = _.assign({}, state.modalProps, {selectedJPModal : action.selectedItem})
+      let selected = action.selectedItem
+      delete selected["element"]
+      newModalProps = _.assign({}, state.modalProps, {selectedJPModal : selected})
       return _.assign({}, state, {modalProps: newModalProps})
     case 'SHIFT_VEHICLEJOURNEY_MODAL':
       return {
