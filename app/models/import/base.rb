@@ -39,6 +39,14 @@ class Import::Base < ApplicationModel
 
   private
 
+  def failed!
+    update status: :failed
+  end
+
+  def aborted!
+    update status: :aborted
+  end
+
   def initialize_fields
     super
     self.token_download ||= SecureRandom.urlsafe_base64

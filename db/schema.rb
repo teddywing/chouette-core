@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20180425160730) do
   enable_extension "postgis"
   enable_extension "hstore"
   enable_extension "unaccent"
+  enable_extension "objectid"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
