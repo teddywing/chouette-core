@@ -217,7 +217,7 @@ en:
       line_control/lines_scope:
         one: "Lines must be included in the lines scope of the organization"
       generic_attribute_control/pattern:
-        one: "Attribute pattern of an object in a line"
+        one: "Attribute regular expression of an object in a line"
       generic_attribute_control/min_max:
         one: "Min, max values of numeric fields"
       generic_attribute_control/uniqueness:
@@ -235,3 +235,4 @@ en:
         target: "Target"
         prerequisite: "Prerequisite"
         predicate: "Predicate"
+        pattern: Regular expression
