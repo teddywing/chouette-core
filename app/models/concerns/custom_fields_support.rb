@@ -5,13 +5,15 @@ module CustomFieldsSupport
     validate :custom_fields_values_are_valid
     after_initialize :initialize_custom_fields
 
-    def self.custom_fields workgroup=:all
+    def self.custom_fields _workgroup=nil
+      _workgroup ||= self.workgroup
+      return [] unless _workgroup
       fields = CustomField.where(resource_type: self.name.split("::").last)
-      fields = fields.where(workgroup_id: workgroup&.id) if workgroup != :all
+      fields = fields.where(workgroup_id: _workgroup.id)
       fields
     end
 
-    def self.custom_fields_definitions workgroup=:all
+    def self.custom_fields_definitions workgroup=nil
       Hash[*custom_fields(workgroup).map{|cf| [cf.code, cf]}.flatten]
     end
 
@@ -24,7 +26,7 @@ module CustomFieldsSupport
       end
     end
 
-    def custom_fields workgroup=:all
+    def custom_fields workgroup=nil
       CustomField::Collection.new self, workgroup
     end
 
@@ -43,8 +45,8 @@ module CustomFieldsSupport
     def initialize_custom_fields
       return unless self.attributes.has_key?("custom_field_values")
       self.custom_field_values ||= {}
-      custom_fields(:all).values.each &:initialize_custom_field
-      custom_fields(:all).each do |k, v|
+      custom_fields.values.each &:initialize_custom_field
+      custom_fields.each do |k, v|
         custom_field_values[k] ||= v.default_value
       end
       @custom_fields_initialized = true
@@ -56,7 +58,7 @@ module CustomFieldsSupport
 
     private
     def custom_fields_values_are_valid
-      custom_fields(:all).values.all?{|cf| cf.valid?}
+      custom_fields.values.all?{|cf| cf.valid?}
     end
   end
 end

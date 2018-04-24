@@ -3,6 +3,11 @@ require 'rails_helper'
 RSpec.describe CustomField, type: :model do
 
   let( :vj ){ create :vehicle_journey, custom_field_values: {energy: 99} }
+  let(:referential){ create :workbench_referential }
+  let(:workgroup){ referential.workgroup }
+  before do
+    referential.switch
+  end
 
   context "validates" do
     it { should validate_uniqueness_of(:name).scoped_to(:resource_type, :workgroup_id) }
@@ -18,7 +23,7 @@ RSpec.describe CustomField, type: :model do
   end
 
   context "custom fields for a resource" do
-    let!( :fields ){ [create(:custom_field), create(:custom_field, code: :energy)] }
+    let!( :fields ){ [create(:custom_field, workgroup: workgroup), create(:custom_field, code: :energy, workgroup: workgroup)] }
     let!( :instance_fields ){
       {
         fields[0].code => fields[0].slice(:code, :name, :field_type, :options).update(value: nil),
@@ -37,14 +42,31 @@ RSpec.describe CustomField, type: :model do
 
   context "custom field_values for a resource" do
     before do
-      create :custom_field, field_type: :integer, code: :energy, name: :energy
+      create :custom_field, field_type: :integer, code: :energy, name: :energy, workgroup: workgroup
     end
 
     it { expect(vj.custom_field_value("energy")).to eq(99) }
+
+    context "given different workgroups" do
+      let(:ref1){ create :workbench_referential }
+      let(:ref2){ create :workbench_referential }
+      before do
+        create :custom_field, field_type: :integer, code: :ref1_energy, name: :energy, workgroup: ref1.workgroup, options: {default: 12}
+        create :custom_field, field_type: :integer, code: :ref2_energy, name: :energy, workgroup: ref2.workgroup
+      end
+      it "should only initialize fields from the right workgroup" do
+        ref1.switch
+        expect(Chouette::VehicleJourney.new.custom_fields.keys).to eq ["ref1_energy"]
+        expect(Chouette::VehicleJourney.new.custom_field_values["ref1_energy"]).to eq 12
+        ref2.switch
+        expect(Chouette::VehicleJourney.new.custom_fields.keys).to eq ["ref2_energy"]
+        expect(Chouette::VehicleJourney.new.custom_field_values).to_not have_key "ref1_energy"
+      end
+    end
   end
 
   context "with a 'list' field_type" do
-    let!(:field){ [create(:custom_field, code: :energy, field_type: 'list', options: {list_values: %w(foo bar baz)})] }
+    let!(:field){ [create(:custom_field, code: :energy, field_type: 'list', options: {list_values: %w(foo bar baz)}, workgroup: workgroup)] }
     let!( :vj ){ create :vehicle_journey, custom_field_values: {energy: "1"} }
     it "should cast the value" do
       expect(vj.custom_fields[:energy].value).to eq 1
@@ -75,7 +97,7 @@ RSpec.describe CustomField, type: :model do
   end
 
   context "with an 'integer' field_type" do
-    let!(:field){ [create(:custom_field, code: :energy, field_type: 'integer')] }
+    let!(:field){ [create(:custom_field, code: :energy, field_type: 'integer', workgroup: workgroup)] }
     let!( :vj ){ create :vehicle_journey, custom_field_values: {energy: "99"} }
     it "should cast the value" do
       expect(vj.custom_fields[:energy].value).to eq 99
@@ -101,7 +123,7 @@ RSpec.describe CustomField, type: :model do
   end
 
   context "with a 'string' field_type" do
-    let!(:field){ [create(:custom_field, code: :energy, field_type: 'string')] }
+    let!(:field){ [create(:custom_field, code: :energy, field_type: 'string', workgroup: workgroup)] }
     let!( :vj ){ create :vehicle_journey, custom_field_values: {energy: 99} }
     it "should cast the value" do
       expect(vj.custom_fields[:energy].value).to eq '99'
@@ -109,7 +131,7 @@ RSpec.describe CustomField, type: :model do
   end
 
   context "with a 'attachment' field_type" do
-    let!(:field){ [create(:custom_field, code: :energy, field_type: 'attachment')] }
+    let!(:field){ [create(:custom_field, code: :energy, field_type: 'attachment', workgroup: workgroup)] }
     let( :vj ){ create :vehicle_journey, custom_field_values: {energy: File.open(Rails.root.join('spec', 'fixtures', 'users.json'))} }
     it "should cast the value" do
       expect(vj.custom_fields[:energy].value.class).to be CustomFieldAttachmentUploader
@@ -129,7 +151,7 @@ RSpec.describe CustomField, type: :model do
     end
 
     context "with a whitelist" do
-      let!(:field){ [create(:custom_field, code: :energy, field_type: 'attachment', options: {extension_whitelist: %w(zip)})] }
+      let!(:field){ [create(:custom_field, code: :energy, field_type: 'attachment', options: {extension_whitelist: %w(zip)}, workgroup: workgroup)] }
       it "should validate extension" do
         expect(build(:vehicle_journey, custom_field_values: {energy: File.open(Rails.root.join('spec', 'fixtures', 'users.json'))})).to_not be_valid
         expect(build(:vehicle_journey, custom_field_values: {energy: File.open(Rails.root.join('spec', 'fixtures', 'nozip.zip'))})).to be_valid
