@@ -34,8 +34,9 @@
                 end \
               ), \
               TableBuilderHelper::Column.new( \
-                name: Chouette::Line.tmf('activated'), \
-                attribute: Proc.new { |s| line_status(s.try(:stop_area).deleted_at) } \
+                key: :status, \
+                name: Chouette::StopArea.tmf('status'), \
+                attribute: Proc.new { |s| stop_area_status(s.try(:stop_area)) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :zip_code, \

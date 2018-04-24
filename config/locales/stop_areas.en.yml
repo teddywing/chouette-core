@@ -71,9 +71,6 @@ en:
       access_managment: "Access Points and Links managment"
       access_points: "Access Points"
       not_editable: "The area type is not editable"
-      status:
-        active: Active
-        deactivated: Deactivated
     genealogical:
       genealogical: "Links between stop area"
       genealogical_routing: "Routing constraint's links"
@@ -115,6 +112,7 @@ en:
         confirmed: "Activated"
         confirmed_at: "Activated at"
         deleted: "Deactivated"
+        deactivated: "Deactivated"
         deleted_at: "Deactivated at"
         comment: "Description"
         stop_area_type: "Area type"
