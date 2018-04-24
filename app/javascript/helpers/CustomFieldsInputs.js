@@ -16,7 +16,7 @@ export default class CustomFieldsInputs extends Component {
         })}
         ref={'custom_fields.' + cf.code}
         className='form-control'
-        defaultValue={cf.value}
+        defaultValue={cf.value || cf.options.default}
         disabled={this.props.disabled}
         options={{
           theme: 'bootstrap',
@@ -34,7 +34,7 @@ export default class CustomFieldsInputs extends Component {
         ref={'custom_fields.' + cf.code}
         className='form-control'
         disabled={this.props.disabled}
-        value={cf.value}
+        value={cf.value || cf.options.default}
         onChange={(e) => {this.props.onUpdate(cf.code, e.target.value); this.forceUpdate()} }
         />
     )
@@ -47,7 +47,7 @@ export default class CustomFieldsInputs extends Component {
         ref={'custom_fields.' + cf.code}
         className='form-control'
         disabled={this.props.disabled}
-        value={cf.value}
+        value={cf.value || cf.options.default}
         onChange={(e) => {this.props.onUpdate(cf.code, e.target.value); this.forceUpdate()} }
         />
     )
