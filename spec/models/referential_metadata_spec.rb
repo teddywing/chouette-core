@@ -100,7 +100,7 @@ RSpec.describe ReferentialMetadata, :type => :model do
 
     it "should validate that end is greather than or equlals to begin" do
       expect(period(begin: "2016-11-21", end: "2016-11-22")).to be_valid
-      expect(period(begin: "2016-11-21", end: "2016-11-21")).to_not be_valid
+      expect(period(begin: "2016-11-21", end: "2016-11-21")).to be_valid
       expect(period(begin: "2016-11-22", end: "2016-11-21")).to_not be_valid
     end
 
