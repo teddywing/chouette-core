@@ -23,17 +23,29 @@ class CleanUp < ApplicationModel
   end
 
   def clean
+    referential.switch
+
     {}.tap do |result|
-      processed = send("destroy_time_tables_#{self.date_type}")
-      if processed
-        result['time_table']      = processed[:time_tables].try(:count)
-        result['vehicle_journey'] = processed[:vehicle_journeys].try(:count)
+      if date_type
+        processed = send("destroy_time_tables_#{self.date_type}")
+        if processed
+          result['time_table']      = processed[:time_tables].try(:count)
+          result['vehicle_journey'] = processed[:vehicle_journeys].try(:count)
+        end
+        result['time_table_date']   = send("destroy_time_tables_dates_#{self.date_type}").try(:count)
+        result['time_table_period'] = send("destroy_time_tables_periods_#{self.date_type}").try(:count)
+        self.overlapping_periods.each do |period|
+          exclude_dates_in_overlapping_period(period)
+        end
       end
-      result['time_table_date']   = send("destroy_time_tables_dates_#{self.date_type}").try(:count)
-      result['time_table_period'] = send("destroy_time_tables_periods_#{self.date_type}").try(:count)
-      self.overlapping_periods.each do |period|
-        exclude_dates_in_overlapping_period(period)
-      end
+
+      destroy_vehicle_journeys_outside_referential
+      # Disabled for the moment. See #5372
+      # destroy_time_tables_outside_referential
+
+      destroy_vehicle_journeys
+      destroy_journey_patterns
+      destroy_routes
     end
   end
 
@@ -74,6 +86,30 @@ class CleanUp < ApplicationModel
 
   def destroy_time_tables_periods_between
     Chouette::TimeTablePeriod.where('period_start > ? AND period_end < ?', self.begin_date, self.end_date).destroy_all
+  end
+
+  def destroy_time_tables_outside_referential
+    # For the moment, only timetable outside of metadatas min/max dates are removed
+    metadatas_period = referential.metadatas_period
+    time_tables = Chouette::TimeTable.where('end_date < ? or start_date > ?', metadatas_period.min, metadatas_period.max)
+    destroy_time_tables(time_tables)
+  end
+
+  def destroy_vehicle_journeys_outside_referential
+    line_ids = referential.metadatas.pluck(:line_ids).flatten.uniq
+    Chouette::VehicleJourney.joins(:route).where(["routes.line_id not in (?)", line_ids]).destroy_all
+  end
+
+  def destroy_vehicle_journeys
+    Chouette::VehicleJourney.where("id not in (select distinct vehicle_journey_id from time_tables_vehicle_journeys)").destroy_all
+  end
+
+  def destroy_journey_patterns
+    Chouette::JourneyPattern.where("id not in (select distinct journey_pattern_id from vehicle_journeys)").destroy_all
+  end
+
+  def destroy_routes
+    Chouette::Route.where("id not in (select distinct route_id from journey_patterns)").destroy_all
   end
 
   def overlapping_periods
