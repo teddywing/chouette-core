@@ -57,14 +57,14 @@ RSpec.describe 'Calendars', type: :feature do
       context 'if present → ' do
         let( :permission ){ true }
         it 'index shows an edit button' do
-          expect(page).to have_css('a.btn.btn-default', text: 'Créer')
+          expect(page).to have_css('a.btn.btn-default', text: I18n.t('actions.add'))
         end
       end
 
       context 'if absent → ' do
         let( :permission ){ false }
         it 'index does not show any edit button' do
-          expect(page).not_to have_css('a.btn.btn-default', text: 'Créer')
+          expect(page).not_to have_css('a.btn.btn-default', text: I18n.t('actions.add'))
         end
       end
     end
