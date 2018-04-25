@@ -4,6 +4,31 @@ RSpec.describe StopAreasController, :type => :controller do
   let(:stop_area_referential) { create :stop_area_referential, member: @user.organisation }
   let(:stop_area) { create :stop_area, stop_area_referential: stop_area_referential }
 
+  describe "GET index" do
+    it "filters by registration number" do
+      registration_number = 'E34'
+
+      matched = create(
+        :stop_area,
+        stop_area_referential: stop_area_referential,
+        registration_number: registration_number
+      )
+      create(
+        :stop_area,
+        stop_area_referential: stop_area_referential,
+        registration_number: "doesn't match"
+      )
+
+      get :index,
+        stop_area_referential_id: stop_area_referential.id,
+        q: {
+          name_or_objectid_or_registration_number_cont: registration_number
+        }
+
+      expect(assigns(:stop_areas)).to eq([matched])
+    end
+  end
+
   describe 'PUT deactivate' do
     let(:request){ put :deactivate, id: stop_area.id, stop_area_referential_id: stop_area_referential.id }
 
