@@ -52,12 +52,17 @@ RSpec.describe CustomField, type: :model do
       let(:ref2){ create :workbench_referential }
       before do
         create :custom_field, field_type: :integer, code: :ref1_energy, name: :energy, workgroup: ref1.workgroup, options: {default: 12}
+        create :custom_field, field_type: :integer, code: :ref1_energy, name: :energy, workgroup: ref1.workgroup, options: {default: 12}, resource_type: "Company"
         create :custom_field, field_type: :integer, code: :ref2_energy, name: :energy, workgroup: ref2.workgroup
       end
       it "should only initialize fields from the right workgroup" do
         ref1.switch
         expect(Chouette::VehicleJourney.new.custom_fields.keys).to eq ["ref1_energy"]
         expect(Chouette::VehicleJourney.new.custom_field_values["ref1_energy"]).to eq 12
+        expect(Chouette::VehicleJourney.new(custom_field_values: {ref1_energy: 13}).custom_field_values["ref1_energy"]).to eq 13
+        line_referential = create(:line_referential, workgroup: ref1.workgroup)
+        expect(line_referential.companies.build(custom_field_values: {ref1_energy: "13"}).custom_field_values["ref1_energy"]).to eq 13
+
         ref2.switch
         expect(Chouette::VehicleJourney.new.custom_fields.keys).to eq ["ref2_energy"]
         expect(Chouette::VehicleJourney.new.custom_field_values).to_not have_key "ref1_energy"
