@@ -66,6 +66,10 @@ module MetadataSupport
       "#{name}_updated_at".to_sym
     end
 
+    def as_json
+      @table.as_json
+    end
+
     def method_missing(mid, *args)
       out = super(mid, *args)
       owner.send :write_attribute, attribute_name, @table
