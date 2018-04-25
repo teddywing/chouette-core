@@ -7,6 +7,11 @@ module Chouette
       @referential ||= Referential.where(:slug => Apartment::Tenant.current).first!
     end
 
+    def workgroup
+      referential&.workgroup
+    end
+
+
     def hub_restricted?
       referential.data_format == "hub"
     end

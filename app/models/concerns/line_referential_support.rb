@@ -7,6 +7,10 @@ module LineReferentialSupport
     alias_method :referential, :line_referential
   end
 
+  def workgroup
+    line_referential&.workgroup
+  end
+
   def hub_restricted?
     false
   end

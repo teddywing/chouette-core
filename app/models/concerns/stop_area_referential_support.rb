@@ -7,6 +7,10 @@ module StopAreaReferentialSupport
     alias_method :referential, :stop_area_referential
   end
 
+  def workgroup
+    stop_area_referential&.workgroup
+  end
+
   def hub_restricted?
     false
   end
