@@ -62,10 +62,10 @@
             = f.input :stairs_availability, as: :select, :collection => [[t("true"), true], [t("false"), false]], :include_blank => true
             = f.input :lift_availability, as: :select, :collection => [[t("true"), true], [t("false"), false]], :include_blank => true
 
-        - if resource.custom_fields(resource.stop_area_referential.workgroup).any?
+        - if resource.custom_fields.present?
           .custom_fields
             h3 = t("stop_areas.stop_area.custom_fields")
-            - resource.custom_fields(resource.stop_area_referential.workgroup).each do |code, field|
+            - resource.custom_fields.each do |code, field|
               = field.input(f).to_s
 
   .separator
