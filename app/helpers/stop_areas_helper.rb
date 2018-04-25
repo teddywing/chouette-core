@@ -49,7 +49,7 @@ module StopAreasHelper
         content_tag :span, "#{sa.projection_x}, #{sa.projection_y}"
 
       elsif !sa.long_lat_type.nil?
-        content_tag :span, "#{sa.long_lat_type} : #{sa.longitude}, #{sa.latitude}"
+        content_tag :span, "#{sa.long_lat_type} : #{sa.latitude}, #{sa.longitude}"
       end
     end
   end
