@@ -25,7 +25,10 @@ class ReferentialCloning < ApplicationModel
         .clone_schema
     end
     target_referential.check_migration_count(report)
+    clean
+  end
 
+  def clean
     CleanUp.new(referential: target_referential).clean
   end
 
