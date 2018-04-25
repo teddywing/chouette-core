@@ -212,7 +212,7 @@ class Merge < ApplicationModel
           end
 
           new_route.routing_constraint_zones.each do |new_routing_constraint_zone|
-            routing_constraint_zone = routing_constraint_zones.find { |c| c.checksum = new_routing_constraint_zone.checksum }
+            routing_constraint_zone = routing_constraint_zones.find { |c| c.checksum == new_routing_constraint_zone.checksum }
             if routing_constraint_zone
               referential_routing_constraint_zones_new_ids[routing_constraint_zone.id] = new_routing_constraint_zone.id
             else
