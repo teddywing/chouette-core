@@ -27,7 +27,10 @@ const mapDispatchToProps = (dispatch) => {
     },
     onSelectVehicleJourney: (index) => {
       dispatch(actions.selectVehicleJourney(index))
-    }
+    },
+    onOpenInfoModal: (vj) =>{
+      dispatch(actions.openInfoModal(vj))
+    },
   }
 }
 
