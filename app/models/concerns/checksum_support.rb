@@ -79,7 +79,7 @@ module ChecksumSupport
     Rails.logger.debug("Compute checksum for #{self.class.name}:#{id} checksum_source:'#{checksum_source}' checksum: #{_checksum}")
     if _checksum != self.checksum
       self.checksum = _checksum
-      self.class.where(id: self.id).update_all(checksum: _checksum) unless self.new_record?
+      self.class.where(id: self.id).update_all(checksum: _checksum, checksum_source: checksum_source) unless self.new_record?
       Rails.logger.debug("Updated #{self.class.name}:#{id} checksum: #{self.checksum}")
     end
   end
