@@ -7,11 +7,7 @@ module Chouette
     belongs_to :route
     has_array_of :stop_points, class_name: 'Chouette::StopPoint'
 
-    # FIXME has_array_of doesn't support module in class_name
-    # belongs_to_array_in_many :vehicle_journeys, class_name: 'Chouette::VehicleJourney'
-    def vehicle_journeys
-      referential.vehicle_journeys.with_ignored_routing_contraint_zones_containing self
-    end
+    belongs_to_array_in_many :vehicle_journeys, class_name: 'Chouette::VehicleJourney', array_name: :ignored_routing_contraint_zones
 
     def update_vehicle_journey_checksums
       vehicle_journeys.each(&:update_checksum!)
