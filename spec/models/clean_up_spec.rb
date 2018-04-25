@@ -98,7 +98,13 @@ RSpec.describe CleanUp, :type => :model do
   end
 
   context '#clean' do
-    let(:cleaner) { create(:clean_up, date_type: :before) }
+    let(:referential) { Referential.new }
+    let(:cleaner) { create(:clean_up, date_type: :before, referential: referential) }
+
+    before do
+      allow(referential).to receive(:switch)
+    end
+
 
     it 'should call destroy_time_tables_before' do
       cleaner.date_type = :before
