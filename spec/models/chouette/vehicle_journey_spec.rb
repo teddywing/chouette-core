@@ -35,6 +35,15 @@ describe Chouette::VehicleJourney, :type => :model do
       expect{create(:vehicle_journey_at_stop, vehicle_journey: vehicle_journey)}.to change{vehicle_journey.checksum}
     end
 
+    it "changes when a stop_point is updated" do
+      vehicle_journey = create(:vehicle_journey)
+      stop_point = vehicle_journey.vehicle_journey_at_stops.first.stop_point
+      expect(stop_point.vehicle_journeys).to include vehicle_journey
+      expect do
+        stop_point.update position: stop_point.route.stop_points.size
+      end.to change{vehicle_journey.reload.checksum}
+    end
+
     context "when custom_field_values change" do
       let(:vehicle_journey){ create(:vehicle_journey, custom_field_values: {custom_field.code.to_s => former_value}) }
       let(:custom_field){ create :custom_field, field_type: :string, code: :energy, name: :energy, resource_type: "VehicleJourney" }

@@ -12,10 +12,13 @@ module ChecksumSupport
   module ClassMethods
     def has_checksum_children klass, opts={}
       parent_class = self
-      relation = opts[:relation] || self.model_name.singular
+      belongs_to = opts[:relation] || self.model_name.singular
+      has_many = opts[:relation] || self.model_name.plural
       klass.after_save do
-        parent = self.send(relation)
-        parent&.update_checksum_without_callbacks!
+        parents = []
+        parents << self.send(belongs_to) if klass.reflections[belongs_to].present?
+        parents += self.send(has_many) if klass.reflections[has_many].present?
+        parents.each &:update_checksum_without_callbacks!
       end
     end
   end

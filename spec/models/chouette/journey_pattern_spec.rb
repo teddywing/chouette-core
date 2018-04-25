@@ -6,6 +6,14 @@ describe Chouette::JourneyPattern, :type => :model do
 
   describe 'checksum' do
     it_behaves_like 'checksum support'
+
+    context "when a stop_point is updated" do
+      it "should update checksum" do
+        expect do
+          subject.stop_points.first.update position: subject.stop_points.size
+        end.to change{subject.reload.checksum}
+      end
+    end
   end
 
   # context 'validate minimum stop_points size' do
