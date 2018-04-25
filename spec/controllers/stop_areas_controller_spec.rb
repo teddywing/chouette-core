@@ -27,6 +27,16 @@ RSpec.describe StopAreasController, :type => :controller do
 
       expect(assigns(:stop_areas)).to eq([matched])
     end
+
+    it "doesn't filter when the name filter is empty" do
+      get :index,
+        stop_area_referential_id: stop_area_referential.id,
+        q: {
+          name_or_objectid_or_registration_number_cont: ''
+        }
+
+      expect(assigns(:stop_areas)).to eq([stop_area])
+    end
   end
 
   describe 'PUT deactivate' do
