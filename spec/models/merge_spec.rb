@@ -40,12 +40,15 @@ RSpec.describe Merge do
         checksum = route.checksum
         routing_constraint_zones[route.id] = {}
         2.times do |i|
-          constraint_zone = create(:routing_constraint_zone, route: route)
+          constraint_zone = create(:routing_constraint_zone, route_id: route.id)
           if i > 0
             constraint_zone.update stop_points: constraint_zone.stop_points[0...-1]
           end
           routing_constraint_zones[route.id][constraint_zone.checksum] = constraint_zone
         end
+
+        route.reload.update_checksum!
+
         expect(route.reload.checksum).to_not eq checksum
         factor.times do
           FactoryGirl.create :journey_pattern, route: route, stop_points: route.stop_points.sample(3)
