@@ -26,8 +26,9 @@ module CustomFieldsSupport
       end
     end
 
-    def custom_fields workgroup=nil
-      CustomField::Collection.new self, workgroup
+    def custom_fields deprecated_workgroup=nil
+      _workgroup = deprecated_workgroup || self.workgroup
+      CustomField::Collection.new self, _workgroup
     end
 
     def custom_fields_checksum
