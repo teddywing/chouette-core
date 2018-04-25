@@ -29,6 +29,8 @@ module Chouette
       values.flatten
     end
 
+    has_checksum_children StopPoint
+
     def self.state_update route, state
       transaction do
         state.each do |item|

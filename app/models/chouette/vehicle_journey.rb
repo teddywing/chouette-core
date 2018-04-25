@@ -144,7 +144,7 @@ module Chouette
 
         vjas =  self.vehicle_journey_at_stops
         vjas += VehicleJourneyAtStop.where(vehicle_journey_id: self.id) unless self.new_record?
-        attrs << vjas.uniq.sort_by { |s| s.stop_point&.position }.map(&:checksum).sort
+        attrs << vjas.uniq.sort_by { |s| s.stop_point&.position }.map(&:checksum)
 
         attrs << self.purchase_windows.map(&:checksum).sort if purchase_windows.present?
         attrs << ignored_routing_contraint_zones.map(&:checksum).sort if ignored_routing_contraint_zones.present?

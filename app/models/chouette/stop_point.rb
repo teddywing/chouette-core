@@ -11,6 +11,7 @@ module Chouette
 
     belongs_to :stop_area
     belongs_to :route, inverse_of: :stop_points
+    has_many :journey_patterns, through: :route
     has_many :vehicle_journey_at_stops, :dependent => :destroy
     has_many :vehicle_journeys, -> {uniq}, :through => :vehicle_journey_at_stops
 

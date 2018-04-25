@@ -12,10 +12,16 @@ module ChecksumSupport
   module ClassMethods
     def has_checksum_children klass, opts={}
       parent_class = self
-      relation = opts[:relation] || self.model_name.singular
+      belongs_to = opts[:relation] || self.model_name.singular
+      has_many = opts[:relation] || self.model_name.plural
+
+      Rails.logger.debug "Define callback in #{klass} to update checksums #{self.model_name} (via #{has_many}/#{belongs_to})"
       klass.after_save do
-        parent = self.send(relation)
-        parent&.update_checksum_without_callbacks!
+        parents = []
+        parents << self.send(belongs_to) if klass.reflections[belongs_to].present?
+        parents += self.send(has_many) if klass.reflections[has_many].present?
+        Rails.logger.debug "Request from #{klass.name} checksum updates for #{parents.count} #{parent_class} parent(s)"
+        parents.compact.each &:update_checksum_without_callbacks!
       end
     end
   end
@@ -57,22 +63,24 @@ module ChecksumSupport
   def update_checksum
     if self.checksum_source_changed?
       self.checksum = Digest::SHA256.new.hexdigest(self.checksum_source)
+      Rails.logger.debug("Changed #{self.class.name}:#{id} checksum: #{self.checksum}")
     end
   end
 
   def update_checksum!
-    set_current_checksum_source
-    if checksum_source_changed?
-      update checksum: Digest::SHA256.new.hexdigest(checksum_source)
-    end
+    _checksum_source = current_checksum_source
+    update checksum_source: _checksum_source, checksum: Digest::SHA256.new.hexdigest(_checksum_source)
+    Rails.logger.debug("Updated #{self.class.name}:#{id} checksum: #{self.checksum}")
   end
 
   def update_checksum_without_callbacks!
     set_current_checksum_source
     _checksum = Digest::SHA256.new.hexdigest(checksum_source)
+    Rails.logger.debug("Compute checksum for #{self.class.name}:#{id} checksum_source:'#{checksum_source}' checksum: #{_checksum}")
     if _checksum != self.checksum
       self.checksum = _checksum
       self.class.where(id: self.id).update_all(checksum: _checksum) unless self.new_record?
+      Rails.logger.debug("Updated #{self.class.name}:#{id} checksum: #{self.checksum}")
     end
   end
 end
