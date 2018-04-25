@@ -30,7 +30,7 @@ RSpec.describe CustomField, type: :model do
         "energy" => fields[1].slice(:code, :name, :field_type, :options).update(value: 99)
       }
     }
-    it { expect(Chouette::VehicleJourney.custom_fields).to eq(fields) }
+    it { expect(Chouette::VehicleJourney.custom_fields(workgroup)).to eq(fields) }
     it {
       instance_fields.each do |code, cf|
         cf.each do |k, v|

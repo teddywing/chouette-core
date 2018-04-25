@@ -11,7 +11,6 @@ module Chouette
       referential&.workgroup
     end
 
-
     def hub_restricted?
       referential.data_format == "hub"
     end
