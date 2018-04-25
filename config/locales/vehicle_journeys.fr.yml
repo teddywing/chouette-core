@@ -6,6 +6,7 @@ fr:
         journey_pattern: 'Filtrer par code, nom ou OID de mission...'
         timetable: Filtrer par calendrier...
         purchase_windows: Filtrer par calendrier commercial...
+        constraint_zone: Choisir une ITL
       cancel_selection: "Annuler la sélection"
       fetching_error: "La récupération des missions a rencontré un problème. Rechargez la page pour tenter de corriger le problème."
       line_routes: "Séquences d'arrêts de la ligne"
@@ -16,6 +17,7 @@ fr:
       no_associated_timetables: Aucun calendrier associé
       no_associated_purchase_windows: Aucun calendrier commercial associé
       no_associated_footnotes: Aucune note associée
+      no_excluded_constraint_zones: Aucune ITL exclue
       duplicate:
         one: Dupliquer %{count} course
         other: Dupliquer %{count} courses
@@ -57,6 +59,7 @@ fr:
         start: Début
         end: Fin
       ending_stop: "Arrivée"
+      excluded_constraint_zones: Exclusions d'ITL
       infos: Informations
       set: "Fixer"
       show_arrival_time: "Afficher et éditer les horaires d'arrivée"
@@ -161,6 +164,7 @@ fr:
         vehicle_journey_at_stop_ids: "Liste des horaires"
         vehicle_type_identifier: "Type d'identifiant du véhicule"
         start_time: Heure de départ
+        constraint_exclusions: Exclusions d'ITL
     errors:
       models:
         vehicle_journey:

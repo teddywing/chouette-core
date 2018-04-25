@@ -9,6 +9,7 @@ import EditVehicleJourney from '../containers/tools/EditVehicleJourney'
 import NotesEditVehicleJourney from '../containers/tools/NotesEditVehicleJourney'
 import TimetablesEditVehicleJourney from '../containers/tools/TimetablesEditVehicleJourney'
 import PurchaseWindowsEditVehicleJourney from '../containers/tools/PurchaseWindowsEditVehicleJourney'
+import ConstraintExclusionEditVehicleJourney from '../containers/tools/ConstraintExclusionEditVehicleJourney'
 
 
 export default class Tools extends Component {
@@ -36,10 +37,12 @@ export default class Tools extends Component {
           <DuplicateVehicleJourney disabled={!this.hasPolicy("create") || !this.hasPolicy("update") || !editMode}/>
           <ShiftVehicleJourney disabled={!this.hasPolicy("update") || !editMode}/>
           <EditVehicleJourney disabled={!this.hasPolicy("update")}/>
+
           <TimetablesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
           { this.hasFeature('purchase_windows') &&
             <PurchaseWindowsEditVehicleJourney disabled={!this.hasPolicy("update")}/>
           }
+          <ConstraintExclusionEditVehicleJourney disabled={!this.hasPolicy("update")}/>
           <NotesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
           <DeleteVehicleJourneys disabled={!this.hasPolicy("destroy") || !editMode}/>
         </ul>

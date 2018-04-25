@@ -97,9 +97,29 @@ const actions = {
     vehicleJourneys,
     timetables
   }),
+  editVehicleJourneyConstraintZones : (vehicleJourneys, zones) => ({
+    type: 'EDIT_VEHICLEJOURNEYS_CONSTRAINT_ZONES',
+    vehicleJourneys,
+    zones
+  }),
   openPurchaseWindowsEditModal : (vehicleJourneys) => ({
     type : 'EDIT_PURCHASE_WINDOWS_VEHICLEJOURNEY_MODAL',
     vehicleJourneys
+  }),
+  openConstraintExclusionEditModal : (vehicleJourneys) => ({
+    type : 'EDIT_CONSTRAINT_EXCLUSIONS_VEHICLEJOURNEY_MODAL',
+    vehicleJourneys
+  }),
+  selectConstraintZone: (selectedZone) =>({
+    type: 'SELECT_CONSTRAINT_ZONE_MODAL',
+    selectedZone: {
+      id: selectedZone.id,
+      name: selectedZone.text
+    }
+  }),
+  deleteConstraintZone : (constraintZone) => ({
+    type : 'DELETE_CONSTRAINT_ZONE_MODAL',
+    constraintZone
   }),
   selectPurchaseWindowsModal: (selectedItem) =>({
     type: 'SELECT_PURCHASE_WINDOW_MODAL',
