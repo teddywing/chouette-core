@@ -135,11 +135,13 @@ class Merge < ApplicationModel
 
     referential_stop_points_by_route = referential_stop_points.group_by(&:route_id)
 
-    referential_routes_constraint_zones = referential.switch do
-      referential.routing_constraint_zones.each_with_object(Hash.new { |h,k| h[k] = [] }) do |routing_constraint_zone, hash|
-        hash[routing_constraint_zone.route_id] << routing_constraint_zone
+    referential_routing_constraint_zones = referential.switch do
+      referential.routing_constraint_zones.each_with_object(Hash.new { |h,k| h[k] = {}}) do |routing_constraint_zone, hash|
+        hash[routing_constraint_zone.route_id][routing_constraint_zone.checksum] = routing_constraint_zone
       end
     end
+
+    referential_routing_constraint_zones_new_ids = {}
 
     new.switch do
       referential_routes.each do |route|
@@ -179,9 +181,9 @@ class Merge < ApplicationModel
           stop_point_ids_mapping = Hash[[old_stop_point_ids, new_stop_point_ids].transpose]
 
           # RoutingConstraintZones
-          routes_constraint_zones = referential_routes_constraint_zones[route.id]
+          routing_constraint_zones = referential_routing_constraint_zones[route.id]
 
-          routes_constraint_zones.each do |routing_constraint_zone|
+          routing_constraint_zones.values.each do |routing_constraint_zone|
             objectid = new.routing_constraint_zones.where(objectid: routing_constraint_zone.objectid).exists? ? nil : routing_constraint_zone.objectid
             stop_point_ids = routing_constraint_zone.stop_point_ids.map { |id| stop_point_ids_mapping[id] }.compact
 
@@ -197,13 +199,25 @@ class Merge < ApplicationModel
             )
             new_route.routing_constraint_zones.build attributes
 
-            # No checksum check. RoutingConstraintZones are always recreated
           end
 
           new_route.save!
 
           if new_route.checksum != route.checksum
             raise "Checksum has changed: \"#{route.checksum}\", \"#{route.checksum_source}\" -> \"#{new_route.checksum}\", \"#{new_route.checksum_source}\""
+          end
+
+          if new_route.routing_constraint_zones.map(&:checksum).sort != routing_constraint_zones.keys.sort
+            raise "Checksum has changed in RoutingConstraintZones: \"#{new_route.routing_constraint_zones.map(&:checksum).sort}\" -> \"#{route.routing_constraint_zones.map(&:checksum).sort}\""
+          end
+
+          new_route.routing_constraint_zones.each do |new_routing_constraint_zone|
+            routing_constraint_zone = routing_constraint_zones[new_routing_constraint_zone.checksum]
+            if routing_constraint_zone
+              referential_routing_constraint_zones_new_ids[routing_constraint_zone.id] = new_routing_constraint_zone.id
+            else
+              raise "Can't find RoutingConstraintZone for checksum #{new_routing_constraint_zone.checksum} into #{routing_constraint_zones.inspect}"
+            end
           end
         end
       end
@@ -311,6 +325,7 @@ class Merge < ApplicationModel
             # all other primary must be changed
             route_id: existing_associated_journey_pattern.route_id,
             journey_pattern_id: existing_associated_journey_pattern.id,
+            ignored_routing_contraint_zone_ids: []
           )
           new_vehicle_journey = new.vehicle_journeys.build attributes
 
@@ -350,10 +365,12 @@ class Merge < ApplicationModel
             new_vehicle_journey.purchase_windows << associated_purchase_window
           end
 
+          # Rewrite ignored_routing_contraint_zone_ids
+          new_vehicle_journey.ignored_routing_contraint_zone_ids = referential_routing_constraint_zones_new_ids.values_at(*vehicle_journey.ignored_routing_contraint_zone_ids).compact
           new_vehicle_journey.save!
 
           if new_vehicle_journey.checksum != vehicle_journey.checksum
-            raise "Checksum has changed: #{vehicle_journey.checksum_source} #{new_vehicle_journey.checksum_source}"
+            raise "Checksum has changed: \"#{vehicle_journey.checksum_source}\" \"#{vehicle_journey.checksum}\" -> \"#{new_vehicle_journey.checksum_source}\" \"#{new_vehicle_journey.checksum}\""
           end
 
           new_vehicle_journey_ids[vehicle_journey.id] = new_vehicle_journey.id
