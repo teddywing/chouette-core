@@ -25,6 +25,7 @@ module Chouette
 
     has_and_belongs_to_many :footnotes, :class_name => 'Chouette::Footnote'
     has_and_belongs_to_many :purchase_windows, :class_name => 'Chouette::PurchaseWindow'
+    has_array_of :ignored_routing_contraint_zones, class_name: 'Chouette::RoutingConstraintZone'
 
     validates_presence_of :route
     validates_presence_of :journey_pattern
@@ -146,6 +147,7 @@ module Chouette
         attrs << vjas.uniq.sort_by { |s| s.stop_point&.position }.map(&:checksum).sort
 
         attrs << self.purchase_windows.map(&:checksum).sort if purchase_windows.present?
+        attrs << ignored_routing_contraint_zones.map(&:checksum).sort if ignored_routing_contraint_zones.present?
       end
     end
 
