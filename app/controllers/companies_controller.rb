@@ -37,6 +37,14 @@ class CompaniesController < ChouetteController
 
 
   protected
+
+  # Workaround to CustomField initialization order. See #6669
+  def build_resource
+    @company ||= end_of_association_chain.build do |r|
+      r.attributes = resource_params.first
+    end
+  end
+
   def collection
     scope = line_referential.companies
     @q = scope.search(params[:q])
