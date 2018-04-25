@@ -21,7 +21,7 @@ module ChecksumSupport
         parents << self.send(belongs_to) if klass.reflections[belongs_to].present?
         parents += self.send(has_many) if klass.reflections[has_many].present?
         Rails.logger.debug "Request from #{klass.name} checksum updates for #{parents.count} #{parent_class} parent(s)"
-        parents.each &:update_checksum_without_callbacks!
+        parents.compact.each &:update_checksum_without_callbacks!
       end
     end
   end
