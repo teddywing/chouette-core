@@ -17,7 +17,7 @@ module CustomFieldsSupport
     end
 
     def method_missing method_name, *args
-      if method_name =~ /custom_field_*/ && method_name.to_sym != :custom_field_values && !@custom_fields_initialized
+      if !@custom_fields_initialized && method_name =~ /custom_field_*/ && method_name.to_sym != :custom_field_values
         initialize_custom_fields
         send method_name, *args
       else
@@ -35,21 +35,37 @@ module CustomFieldsSupport
     end
 
     def custom_field_values= vals
-      out = {}
-      custom_fields.each do |code, field|
-        out[code] = field.preprocess_value_for_assignment(vals.symbolize_keys[code.to_sym])
+      if custom_fields_initialized?
+        out = {}
+        custom_fields.each do |code, field|
+          out[code] = field.preprocess_value_for_assignment(vals.symbolize_keys[code.to_sym])
+        end
+        @custom_fields_values_initialized = true
+      else
+        out = vals
       end
       write_attribute :custom_field_values, out
     end
 
+    def custom_fields_initialized?
+      !!@custom_fields_initialized
+    end
+
+    def custom_fields_values_initialized?
+      !!@custom_fields_values_initialized
+    end
+
     def initialize_custom_fields
+      return if custom_fields_initialized?
       return unless self.attributes.has_key?("custom_field_values")
+      return unless self.workgroup.present?
       self.custom_field_values ||= {}
       custom_fields.values.each &:initialize_custom_field
       custom_fields.each do |k, v|
         custom_field_values[k] ||= v.default_value
       end
       @custom_fields_initialized = true
+      self.custom_field_values = self.custom_field_values unless custom_fields_values_initialized?
     end
 
     def custom_field_value key
