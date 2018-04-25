@@ -12,7 +12,7 @@
       = f.input :time_zone, include_blank: true
       = f.input :url
       = f.input :registration_number, :input_html => {:title => t("formtastic.titles#{format_restriction_for_locales(@line_referential)}.company.registration_number")}
-      - if resource.custom_fields(current_referential.workgroup).any?
+      - if resource.custom_fields.present?
         - resource.custom_fields.each do |code, field|
           = field.input(f).to_s
   .separator
