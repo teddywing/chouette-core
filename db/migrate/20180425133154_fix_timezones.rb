@@ -8,11 +8,11 @@ class FixTimezones < ActiveRecord::Migration
   def change
     if Apartment::Tenant.current == "public"
       Chouette::StopArea.where.not("time_zone LIKE '%/%'").find_each do |s|
-        s.update time_zone: convert(s.time_zone)
+        s.update_column :time_zone, convert(s.time_zone)
       end
 
       Chouette::Company.where.not("time_zone LIKE '%/%'").find_each do |c|
-        c.update time_zone: convert(c.time_zone)
+        c.update_column :time_zone, convert(c.time_zone)
       end
     end
   end
