@@ -111,7 +111,21 @@ export default class VehicleJourney extends Component {
           }
           >
           <div className='strong mb-xs'>{this.props.value.short_id || '-'}</div>
-          <div>{this.props.value.published_journey_name && this.props.value.published_journey_name != I18n.t('undefined') ? this.props.value.published_journey_name : '-'}</div>
+          <div>
+            <a href="#"
+              onClick={(e) => {
+                if(this.props.disabled){ return }
+                e.stopPropagation(true)
+                e.preventDefault()
+                this.props.onOpenInfoModal(this.props.value)
+                $('#EditVehicleJourneyModal').modal('show')
+                false
+                }
+              }
+            >
+              {this.props.value.published_journey_name && this.props.value.published_journey_name != I18n.t('undefined') ? this.props.value.published_journey_name : '-'}
+            </a>
+          </div>
           <div>{this.props.value.journey_pattern.short_id || '-'}</div>
           <div>{this.props.value.company ? this.props.value.company.name : '-'}</div>
           {

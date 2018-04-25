@@ -295,6 +295,7 @@ export default class VehicleJourneys extends Component {
                       features={this.props.features}
                       onUpdateTime={this.props.onUpdateTime}
                       onSelectVehicleJourney={this.props.onSelectVehicleJourney}
+                      onOpenInfoModal={this.props.onOpenInfoModal}
                       vehicleJourneys={this}
                       disabled={this.isReturn()}
                       allTimeTables={this.allTimeTables()}

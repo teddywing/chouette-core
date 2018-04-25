@@ -36,13 +36,13 @@ export default class Tools extends Component {
           <AddVehicleJourney disabled={!this.hasPolicy("create") || !editMode} />
           <DuplicateVehicleJourney disabled={!this.hasPolicy("create") || !this.hasPolicy("update") || !editMode}/>
           <ShiftVehicleJourney disabled={!this.hasPolicy("update") || !editMode}/>
-          <EditVehicleJourney disabled={!this.hasPolicy("update")}/>
+          <EditVehicleJourney disabled={false}/>
 
-          <TimetablesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
+          <TimetablesEditVehicleJourney disabled={false}/>
           { this.hasFeature('purchase_windows') &&
-            <PurchaseWindowsEditVehicleJourney disabled={!this.hasPolicy("update")}/>
+            <PurchaseWindowsEditVehicleJourney disabled={false}/>
           }
-          <ConstraintExclusionEditVehicleJourney disabled={!this.hasPolicy("update")}/>
+          <ConstraintExclusionEditVehicleJourney disabled={false}/>
           <NotesEditVehicleJourney disabled={!this.hasPolicy("update")}/>
           <DeleteVehicleJourneys disabled={!this.hasPolicy("destroy") || !editMode}/>
         </ul>
