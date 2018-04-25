@@ -33,6 +33,7 @@
   | window.all_missions = #{(@all_missions.to_json).html_safe};
   | window.custom_fields = #{(@custom_fields.to_json).html_safe};
   | window.extra_headers = #{(@extra_headers.to_json).html_safe};
+  | window.constraint_zones_routes = "#{url_for([@referential, @route.line, :routing_constraint_zones]).html_safe}";
 
 - if has_feature?(:vehicle_journeys_return_route)
   = javascript_tag do
