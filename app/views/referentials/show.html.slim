@@ -40,8 +40,8 @@
                 end \
               ), \
               TableBuilderHelper::Column.new( \
-                key: :state, \
-                attribute: Proc.new { |n| line_status(n.deactivated?) } \
+                key: :status, \
+                attribute: Proc.new { |n| line_status(n.status) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :transport_mode, \

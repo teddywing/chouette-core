@@ -114,5 +114,9 @@ module Chouette
     def activated?
       !deactivated
     end
+
+    def status
+      activated? ? :activated : :deactivated
+    end
   end
 end

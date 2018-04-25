@@ -118,7 +118,7 @@ fr:
         creator_id: "Créé par"
         footnotes: "Notes de bas de page"
         stable_id: "Identifiant externe pérenne"
-        state: État
+        status: État
         activated: Activée
         deactivated: Désactivée
   formtastic:

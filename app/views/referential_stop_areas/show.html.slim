@@ -7,10 +7,10 @@
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
         = definition_list t('metadatas'),
           { t('id_reflex') => @stop_area.try(:user_objectid),
-            'Activé' => (@stop_area.deleted_at ? t('false') : t('true')),
-            @stop_area.human_attribute_name(:comment) => @stop_area.try(:comment),
-            @stop_area.human_attribute_name(:stop_area_type) => t("area_types.label.#{@stop_area.stop_area_type}"),
-            @stop_area.human_attribute_name(:registration_number) => @stop_area.registration_number,
-            'Coordonnées' => geo_data(@stop_area, @stop_area_referential),
-            @stop_area.human_attribute_name(:zip_code) => @stop_area.zip_code,
-            @stop_area.human_attribute_name(:city_name) => @stop_area.city_name }
+            Chouette::StopArea.tmf(:status) => stop_area_status(@stop_area),
+            Chouette::StopArea.tmf(:comment) => @stop_area.try(:comment),
+            Chouette::StopArea.tmf(:stop_area_type) => t("area_types.label.#{@stop_area.stop_area_type}"),
+            Chouette::StopArea.tmf(:registration_number) => @stop_area.registration_number,
+            Chouette::StopArea.tmf(:coordinates) => geo_data(@stop_area, @stop_area_referential),
+            Chouette::StopArea.tmf(:zip_code) => @stop_area.zip_code,
+            Chouette::StopArea.tmf(:city_name) => @stop_area.city_name }

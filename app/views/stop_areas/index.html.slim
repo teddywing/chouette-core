@@ -32,7 +32,7 @@
                 attribute: 'registration_number' \
               ), \
               TableBuilderHelper::Column.new( \
-                name: Chouette::StopArea.tmf('state'), \
+                key: :status, \
                 attribute: Proc.new { |s| stop_area_status(s) } \
               ), \
               TableBuilderHelper::Column.new( \

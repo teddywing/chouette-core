@@ -10,18 +10,18 @@
 
         - if has_feature?(:stop_area_localized_names)
           - @stop_area.localized_names.each do |k, v|
-            - attributes.merge!({label_for_country(k, @stop_area.human_attribute_name(:name)) => v }) if v.present?
-        - attributes.merge!({ @stop_area.human_attribute_name(:parent) => @stop_area.parent ? link_to(@stop_area.parent.name, stop_area_referential_stop_area_path(@stop_area_referential, @stop_area.parent)) : "-" }) if @stop_area.commercial?
-        - attributes.merge!({ @stop_area.human_attribute_name(:stop_area_type) => Chouette::AreaType.find(@stop_area.area_type).try(:label),
-            @stop_area.human_attribute_name(:registration_number) => @stop_area.registration_number,
+            - attributes.merge!({label_for_country(k, Chouette::StopArea.tmf('name')) => v }) if v.present?
+        - attributes.merge!({ Chouette::StopArea.tmf('parent') => @stop_area.parent ? link_to(@stop_area.parent.name, stop_area_referential_stop_area_path(@stop_area_referential, @stop_area.parent)) : "-" }) if @stop_area.commercial?
+        - attributes.merge!({ Chouette::StopArea.tmf('stop_area_type') => Chouette::AreaType.find(@stop_area.area_type).try(:label),
+            Chouette::StopArea.tmf('registration_number') => @stop_area.registration_number,
             })
-        - attributes.merge!(@stop_area.human_attribute_name(:waiting_time) => @stop_area.waiting_time_text) if has_feature?(:stop_area_waiting_time)
+        - attributes.merge!(Chouette::StopArea.tmf('waiting_time') => @stop_area.waiting_time_text) if has_feature?(:stop_area_waiting_time)
         - attributes.merge!({ "Coordonnées" => geo_data(@stop_area, @stop_area_referential),
-            @stop_area.human_attribute_name(:zip_code) => @stop_area.zip_code,
-            @stop_area.human_attribute_name(:city_name) => @stop_area.city_name,
-            @stop_area.human_attribute_name(:country_code) => @stop_area.country_code.presence || '-',
-            t('activerecord.attributes.stop_area.state') => stop_area_status(@stop_area),
-            @stop_area.human_attribute_name(:comment) => @stop_area.try(:comment),
+            Chouette::StopArea.tmf('zip_code') => @stop_area.zip_code,
+            Chouette::StopArea.tmf('city_name') => @stop_area.city_name,
+            Chouette::StopArea.tmf('country_code') => @stop_area.country_code.presence || '-',
+            Chouette::StopArea.tmf('status') => stop_area_status(@stop_area),
+            Chouette::StopArea.tmf('comment') => @stop_area.try(:comment),
             })
         - @stop_area.custom_fields.each do |code, field|
           - attributes.merge!(field.name => field.display_value)

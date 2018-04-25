@@ -72,9 +72,6 @@ fr:
       access_managment: "Gestion des accès et liens associés"
       access_points: "Points d'accès"
       not_editable: "Le type d'arrêt est non modifiable"
-      state:
-        active: Actif
-        deactivated: Désactivé
     genealogical:
       genealogical: "Lien entre arrêts"
       genealogical_routing: "Liens de l'ITL"
@@ -114,7 +111,7 @@ fr:
         registration_number: "Numéro d'enregistrement"
         published_name: "Nom public"
         in_creation: "En création"
-        confirmed: "Actif"
+        confirmed: "Activé"
         confirmed_at: "Activé le"
         deleted: "Désactivé"
         deactivated: "Désactivé"
@@ -151,7 +148,7 @@ fr:
         zip_code: "Code postal"
         city_name: "Commune"
         waiting_time: Temps de desserte (minutes)
-        state: État
+        status: État
   formtastic:
     titles:
       stop_area:
