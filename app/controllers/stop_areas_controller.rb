@@ -157,6 +157,13 @@ class StopAreasController < ChouetteController
 
   private
 
+  # Workaround to CustomField initialization order. See #6669
+  def build_resource
+    @stop_area ||= end_of_association_chain.build do |r|
+      r.attributes = resource_params.first
+    end
+  end
+
   def sort_column
     if parent.present?
       parent.stop_areas.column_names.include?(params[:sort]) ? params[:sort] : 'name'
