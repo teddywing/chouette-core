@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'spec_helper'
 
 describe Chouette::VehicleJourney, :type => :model do
@@ -33,15 +34,6 @@ describe Chouette::VehicleJourney, :type => :model do
       vehicle_journey = create(:vehicle_journey)
       expect(vehicle_journey).to receive(:update_checksum_without_callbacks!).at_least(:once).and_call_original
       expect{create(:vehicle_journey_at_stop, vehicle_journey: vehicle_journey)}.to change{vehicle_journey.checksum}
-    end
-
-    it "changes when a stop_point is updated" do
-      vehicle_journey = create(:vehicle_journey)
-      stop_point = vehicle_journey.vehicle_journey_at_stops.first.stop_point
-      expect(stop_point.vehicle_journeys).to include vehicle_journey
-      expect do
-        stop_point.update position: stop_point.route.stop_points.size
-      end.to change{vehicle_journey.reload.checksum}
     end
 
     context "when custom_field_values change" do
