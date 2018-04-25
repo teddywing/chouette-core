@@ -30,7 +30,7 @@
       = form.input :fare_code, as: :number
       = form.input :nearest_topic_name, :input_html => { :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.nearest_topic_name")}
       = form.input :comment, as: :text, :input_html => { :rows => 5, :title => t("formtastic.titles#{format_restriction_for_locales(@referential)}.stop_area.comment") }
-      = form.input :time_zone, :include_blank => true
+      = form.input :time_zone, as: :full_time_zone, :include_blank => true
       = form.input :url
 
   .pmr_info

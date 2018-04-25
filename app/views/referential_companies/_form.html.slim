@@ -9,7 +9,7 @@
       = f.input :phone
       = f.input :fax
       = f.input :email, as: :email
-      = f.input :time_zone, include_blank: true
+      = f.input :time_zone, as: :full_time_zone, include_blank: true
       = f.input :url
       = f.input :registration_number, :input_html => {:title => t("formtastic.titles#{format_restriction_for_locales(@line_referential)}.company.registration_number")}
       - if resource.custom_fields(@referential.workgroup).any?
