@@ -5,15 +5,14 @@ module CustomFieldsSupport
     validate :custom_fields_values_are_valid
     after_initialize :initialize_custom_fields
 
-    def self.custom_fields _workgroup=nil
-      _workgroup ||= self.workgroup
-      return [] unless _workgroup
+    def self.custom_fields workgroup
+      return [] unless workgroup
       fields = CustomField.where(resource_type: self.name.split("::").last)
-      fields = fields.where(workgroup_id: _workgroup.id)
+      fields = fields.where(workgroup_id: workgroup.id)
       fields
     end
 
-    def self.custom_fields_definitions workgroup=nil
+    def self.custom_fields_definitions workgroup
       Hash[*custom_fields(workgroup).map{|cf| [cf.code, cf]}.flatten]
     end
 
