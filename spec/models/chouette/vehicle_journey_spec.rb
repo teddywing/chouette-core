@@ -966,5 +966,25 @@ describe Chouette::VehicleJourney, :type => :model do
       expect(@target_3.departure_time).to eq @target_3.arrival_time
       expect(@target_4.departure_time).to eq @target_3.arrival_time
     end
+
+    context "with a day offset" do
+      before do
+        @end.update arrival_time: @middle.departure_time - 4.hours, departure_time: @middle.departure_time - 4.hours, departure_day_offset: 1, arrival_day_offset: 1
+      end
+
+      it "should compute passing time" do
+        @journey.reload.fill_passing_time_at_borders
+        expect(@target.reload.arrival_time.to_i).to eq (@start.reload.departure_time + 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
+        expect(@target_2.reload.arrival_time).to eq @target.arrival_time
+        expect(@target.departure_time).to eq @target.arrival_time
+        expect(@target_2.departure_time).to eq @target.arrival_time
+        expect(@target_3.reload.arrival_time.to_i).to eq (@middle.reload.departure_time - 14.hours).to_i
+        expect(@target_3.arrival_day_offset).to eq 1
+        expect(@target_3.departure_day_offset).to eq 1
+        expect(@target_4.reload.arrival_time).to eq @target_3.arrival_time
+        expect(@target_3.departure_time).to eq @target_3.arrival_time
+        expect(@target_4.departure_time).to eq @target_3.arrival_time
+      end
+    end
   end
 end

@@ -369,10 +369,15 @@ module Chouette
             if before_cost && before_cost[:distance] && after_cost && after_cost[:distance]
               before_distance = before_cost[:distance].to_f
               after_distance = after_cost[:distance].to_f
-              time = previous_stop.departure_time + before_distance / (before_distance+after_distance) * (vjas.arrival_time - previous_stop.departure_time)
+              arrival_time = vjas.arrival_time + (vjas.arrival_day_offset - previous_stop.departure_day_offset)*24.hours
+              time = previous_stop.departure_time + before_distance / (before_distance+after_distance) * (arrival_time - previous_stop.departure_time)
+              day_offset = time.day - 1
+              time -= day_offset*24.hours
               encountered_borders.each do |b|
                 b.update_attribute :arrival_time, time
+                b.update_attribute :arrival_day_offset, previous_stop.arrival_day_offset + day_offset
                 b.update_attribute :departure_time, time
+                b.update_attribute :departure_day_offset, previous_stop.departure_day_offset + day_offset
               end
             end
             encountered_borders = []
