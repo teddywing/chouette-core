@@ -66,8 +66,8 @@ module MetadataSupport
       "#{name}_updated_at".to_sym
     end
 
-    def as_json
-      @table.as_json
+    def as_json *args
+      @table.as_json *args
     end
 
     def method_missing(mid, *args)
