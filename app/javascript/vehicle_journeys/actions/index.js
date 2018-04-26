@@ -332,7 +332,7 @@ const actions = {
       sep = '&'
     }
     let urlJSON = url + str
-    if (queryString){
+    if (!returnJourneys && queryString){
       urlJSON = urlJSON + sep + queryString
     }
     let hasError = false
