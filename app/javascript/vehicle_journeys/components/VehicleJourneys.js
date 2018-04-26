@@ -112,13 +112,14 @@ export default class VehicleJourneys extends Component {
         var refCol = []
 
         $(this).find('.t2e-head').children('div').each(function() {
-          var h = $(this).outerHeight();
+          var h = this.getBoundingClientRect().height;
+          console.log(h)
           refH.push(h)
         });
 
         var i = 0
         $(this).find('.t2e-item').children('div').each(function() {
-          var h = $(this).outerHeight();
+          var h = this.getBoundingClientRect().height;
           if(refCol.length < refH.length){
             refCol.push(h)
           } else {
