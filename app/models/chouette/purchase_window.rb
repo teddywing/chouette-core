@@ -49,7 +49,7 @@ module Chouette
     def bounding_dates
       [
         date_ranges.map(&:first).min,
-        date_ranges.map(&:last).max,
+        date_ranges.map(&:max).max,
       ]
     end
 
