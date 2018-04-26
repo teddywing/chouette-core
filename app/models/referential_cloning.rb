@@ -20,12 +20,49 @@ class ReferentialCloning < ApplicationModel
 
   def clone!
     report = Benchmark.measure do
-      AF83::SchemaCloner
-        .new(source_referential.slug, target_referential.slug)
-        .clone_schema
+      command = "#{dump_command} | #{sed_command} | #{restore_command}"
+      unless system command
+        raise "Copy of #{source_schema} to #{target_schema} failed"
+      end
     end
     target_referential.check_migration_count(report)
     clean
+  end
+
+  def source_schema
+    source_referential.slug
+  end
+
+  def target_schema
+    target_referential.slug
+  end
+
+  def host
+    ActiveRecord::Base.connection_config[:host]
+  end
+
+  def username
+    ActiveRecord::Base.connection_config[:username]
+  end
+
+  def password
+    ActiveRecord::Base.connection_config[:password]
+  end
+
+  def database
+    ActiveRecord::Base.connection_config[:database]
+  end
+
+  def dump_command
+    "PGPASSWORD=#{password} pg_dump --host #{host} --username #{username} --schema=#{source_schema} #{database}"
+  end
+
+  def sed_command
+    "sed -e 's@SCHEMA #{source_schema}@SCHEMA #{target_schema}@' -e 's@SET search_path = #{source_schema}@SET search_path = #{target_schema}@'"
+  end
+
+  def restore_command
+    "PGPASSWORD=#{password} psql -q --host #{host} --username #{username} #{database}"
   end
 
   def clean
