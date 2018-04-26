@@ -52,7 +52,17 @@ RSpec.describe CustomField, type: :model do
       let(:ref2){ create :workbench_referential }
       before do
         create :custom_field, field_type: :integer, code: :ref1_energy, name: :energy, workgroup: ref1.workgroup, options: {default: 12}
-        create :custom_field, field_type: :integer, code: :ref1_energy, name: :energy, workgroup: ref1.workgroup, options: {default: 12}, resource_type: "Company"
+        class CustomField
+          enumerize :field_type, in: %i{list integer string attachment float_test}
+          class Instance
+            class FloatTest < Integer
+              def preprocess_value_for_assignment val
+                val&.to_f
+              end
+            end
+          end
+        end
+        create :custom_field, field_type: :float_test, code: :ref1_energy, name: :energy, workgroup: ref1.workgroup, options: {default: 12}, resource_type: "Company"
         create :custom_field, field_type: :integer, code: :ref2_energy, name: :energy, workgroup: ref2.workgroup
       end
       it "should only initialize fields from the right workgroup" do
@@ -61,7 +71,7 @@ RSpec.describe CustomField, type: :model do
         expect(Chouette::VehicleJourney.new.custom_field_values["ref1_energy"]).to eq 12
         expect(Chouette::VehicleJourney.new(custom_field_values: {ref1_energy: 13}).custom_field_values["ref1_energy"]).to eq 13
         line_referential = create(:line_referential, workgroup: ref1.workgroup)
-        expect(line_referential.companies.build(custom_field_values: {ref1_energy: "13"}).custom_field_values["ref1_energy"]).to eq 13
+        expect(line_referential.companies.build(custom_field_values: {ref1_energy: "13"}).custom_field_values["ref1_energy"]).to eq 13.0
 
         ref2.switch
         expect(Chouette::VehicleJourney.new.custom_fields.keys).to eq ["ref2_energy"]
@@ -120,7 +130,7 @@ RSpec.describe CustomField, type: :model do
         if valid
           expect(vj.validate).to be_truthy
         else
-          expect(vj.validate).to be_falsy
+          expect(vj.validate).to be_falsy, "#{val} should not ba a valid value"
           expect(vj.errors.messages[:"custom_fields.energy"]).to be_present
         end
       end

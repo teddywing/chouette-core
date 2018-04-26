@@ -147,10 +147,6 @@ class CustomField < ApplicationModel
         @raw_value&.to_i
       end
 
-      def preprocess_value_for_assignment val
-        val&.to_i
-      end
-
       def validate
         @valid = true
         return if @raw_value.is_a?(Fixnum) || @raw_value.is_a?(Float)
@@ -169,10 +165,6 @@ class CustomField < ApplicationModel
           @owner.errors.add errors_key, "'#{@raw_value}' is not a valid value"
           @valid = false
         end
-      end
-
-      def preprocess_value_for_assignment val
-        val
       end
 
       def display_value
