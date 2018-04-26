@@ -37,9 +37,12 @@ RSpec.describe ReferentialCloning, :type => :model do
     let(:cloner) { double }
 
     it 'creates a schema cloner with source and target schemas and clone schema' do
-      expect(AF83::SchemaCloner).to receive(:new).with(source_referential.slug, target_referential.slug).and_return(cloner)
-      expect(cloner).to receive(:clone_schema)
+      %w{dump_command sed_command restore_command}.each do |command|
+        allow(referential_cloning).to receive(command).and_return(command)
+      end
       allow(referential_cloning).to receive(:clean)
+
+      expect(referential_cloning).to receive(:system).with("dump_command | sed_command | restore_command").and_return(true)
 
       referential_cloning.clone!
     end
