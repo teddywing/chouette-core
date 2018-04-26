@@ -5,5 +5,6 @@ FactoryGirl.define do
     sequence(:name){|n| "custom field ##{n}"}
     field_type "integer"
     options( { capacity: "0" } )
+    workgroup { Referential.find_by!(name: "first").workgroup }
   end
 end
