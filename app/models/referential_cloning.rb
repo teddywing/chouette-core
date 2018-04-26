@@ -58,7 +58,7 @@ class ReferentialCloning < ApplicationModel
   end
 
   def sed_command
-    "sed -e 's@SCHEMA #{source_schema}@SCHEMA #{target_schema}@' -e 's@SET search_path = #{source_schema}@SET search_path = #{target_schema}@'"
+    "sed -e 's@#{source_schema}@#{target_schema}@'"
   end
 
   def restore_command
