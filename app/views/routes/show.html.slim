@@ -36,7 +36,7 @@
               TableBuilderHelper::Column.new( \
                 key: :status, \
                 name: Chouette::StopArea.tmf('status'), \
-                attribute: Proc.new { |s| stop_area_status(s.try(:stop_area)) } \
+                attribute: Proc.new { |s| stop_area_status(s.try(:stop_area).try(:status) ) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :zip_code, \

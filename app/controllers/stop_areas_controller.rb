@@ -120,7 +120,6 @@ class StopAreasController < ChouetteController
 
   def collection
     scope = parent.present? ? parent.stop_areas : referential.stop_areas
-    scope = ransack_status(scope) if params[:q] && params[:q][:status_eq_any]
     @q = scope.search(params[:q])
 
     if sort_column && sort_direction
@@ -205,30 +204,5 @@ class StopAreasController < ChouetteController
       localized_names: Chouette::StopArea::AVAILABLE_LOCALIZATIONS
     ] + permitted_custom_fields_params(Chouette::StopArea.custom_fields(stop_area_referential.workgroup))
     params.require(:stop_area).permit(fields)
-  end
-
-   # Fake ransack filter
-  def ransack_status scope
-    status_param = params[:q][:status_eq_any].reject(&:blank?)
-    params[:q].delete :status_eq_any
-
-    return scope unless status_param
-    return scope if status_param.empty? || status_param.length == 3
-
-
-    @status = Hash.new do |hash|
-      hash[:status_eq_any] = {
-        in_creation: status_param.include?('in_creation'),
-        confirmed: status_param.include?('confirmed'),
-        deactivated: status_param.include?('deactivated'),
-      }
-    end
-      
-    scope = Chouette::StopArea.where(
-      "confirmed_at #{(@status[:status_eq_any][:confirmed] || @status[:status_eq_any][:deactivated]) ? "IS NOT NULL" : "IS NULL"}
-      AND deleted_at #{@status[:status_eq_any][:deactivated] ? "IS NOT NULL" : "IS NULL"}"
-      )
-
-    scope
   end
 end
