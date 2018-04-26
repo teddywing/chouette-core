@@ -17,7 +17,7 @@ RSpec.describe ReferentialCloningWorker do
   end
 
   context 'with existing Referential' do
-    it "preserve existing data" do
+    it "preserve existing data", truncation: true do
       source_referential = create :referential
 
       source_referential.switch
