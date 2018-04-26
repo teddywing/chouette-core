@@ -8,15 +8,24 @@ export default class CustomFieldsInputs extends Component {
     super(props)
   }
 
+  options(cf){
+    if(cf.options){
+      return cf.options
+    }
+    return {
+      default: ""
+    }
+  }
+
   listInput(cf){
     return(
       <Select2
-        data={_.map(cf.options.list_values, (v, k) => {
+        data={_.map(this.options(cf).list_values, (v, k) => {
           return {id: k, text: (v.length > 0 ? v : '\u00A0')}
         })}
         ref={'custom_fields.' + cf.code}
         className='form-control'
-        defaultValue={cf.value || cf.options.default}
+        defaultValue={cf.value || this.options(cf).default}
         disabled={this.props.disabled}
         options={{
           theme: 'bootstrap',
@@ -34,7 +43,7 @@ export default class CustomFieldsInputs extends Component {
         ref={'custom_fields.' + cf.code}
         className='form-control'
         disabled={this.props.disabled}
-        value={cf.value || cf.options.default}
+        value={cf.value || this.options(cf).default}
         onChange={(e) => {this.props.onUpdate(cf.code, e.target.value); this.forceUpdate()} }
         />
     )
@@ -47,7 +56,7 @@ export default class CustomFieldsInputs extends Component {
         ref={'custom_fields.' + cf.code}
         className='form-control'
         disabled={this.props.disabled}
-        value={cf.value || cf.options.default}
+        value={cf.value || this.options(cf).default}
         onChange={(e) => {this.props.onUpdate(cf.code, e.target.value); this.forceUpdate()} }
         />
     )
