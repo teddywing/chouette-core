@@ -9,6 +9,11 @@ export default class CreateModal extends Component {
   constructor(props) {
     super(props)
     this.custom_fields = _.assign({}, this.props.custom_fields)
+    _.map(this.custom_fields, (cf, k)=>{
+      if(cf.options && cf.options.default){
+        this.custom_fields[k]["value"] = cf.options.default
+      }
+    })
   }
 
   handleSubmit() {
