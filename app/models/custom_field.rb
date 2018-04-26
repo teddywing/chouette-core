@@ -244,7 +244,7 @@ class CustomField < ApplicationModel
       end
 
       def preprocess_value_for_assignment val
-        if val.present?
+        if val.present? && !val.is_a?(Hash)
           owner.send "#{uploader_name}=", val
         else
           @raw_value

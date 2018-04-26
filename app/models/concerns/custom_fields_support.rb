@@ -42,6 +42,7 @@ module CustomFieldsSupport
         end
         @custom_fields_values_initialized = true
       else
+        @raw_custom_fields_values = vals
         out = vals
       end
       write_attribute :custom_field_values, out
@@ -65,7 +66,7 @@ module CustomFieldsSupport
         custom_field_values[k] ||= v.default_value
       end
       @custom_fields_initialized = true
-      self.custom_field_values = self.custom_field_values unless custom_fields_values_initialized?
+      self.custom_field_values = (@raw_custom_fields_values || self.custom_field_values) unless custom_fields_values_initialized?
     end
 
     def custom_field_value key
