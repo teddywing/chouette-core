@@ -152,7 +152,7 @@ export default class EditVehicleJourney extends Component {
                             ref='checksum'
                             className='form-control'
                             disabled='disabled'
-                            defaultValue={this.props.modal.modalProps.vehicleJourney.checksum}
+                            value={this.props.modal.modalProps.vehicleJourney.checksum}
                             />
                         </div>
                         <div className='row'>
