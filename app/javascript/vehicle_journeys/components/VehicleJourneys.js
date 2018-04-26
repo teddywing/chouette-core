@@ -113,7 +113,6 @@ export default class VehicleJourneys extends Component {
 
         $(this).find('.t2e-head').children('div').each(function() {
           var h = this.getBoundingClientRect().height;
-          console.log(h)
           refH.push(h)
         });
 
