@@ -383,6 +383,26 @@ module Chouette
       end
     end
 
+    def self.ransackable_scopes(auth_object = nil)
+      [:by_status]
+    end
+
+
+    def self.by_status(*statuses)
+      return Chouette::StopArea.all if statuses.reject(&:blank?).length == 3 || statuses.reject(&:blank?).empty?
+
+      status = {
+        in_creation: statuses.include?('in_creation'),
+        confirmed: statuses.include?('confirmed'),
+        deactivated: statuses.include?('deactivated'),
+      }
+      
+    Chouette::StopArea.where(
+      "confirmed_at #{status[:confirmed] ? "IS NOT NULL" : "IS NULL"}
+      AND deleted_at #{status[:deactivated] ? "IS NOT NULL" : "IS NULL"}"
+      )
+    end
+
     def activated?
       !!(deleted_at.nil? && confirmed_at)
     end

@@ -16,9 +16,9 @@
       = f.label Chouette::StopArea.tmf('area_type'), required: false, class: 'control-label'
       = f.input :area_type_eq_any, checked: params[:q] && params[:q][:area_type_eq_any], collection: Chouette::AreaType.options, as: :check_boxes, label: false, label_method: lambda{|w| ("<span>" + w[0] + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
-    .form-group.togglable class=filter_item_class(@status, :status_eq_any)
-      = f.label Chouette::StopArea.tmf('state'), required: false, class: 'control-label'
-      = f.input :status_eq_any, checked: lambda { |w| @status.try(:[], :status_eq_any).try(:[], w)}, collection: [:in_creation, :confirmed, :deactivated], as: :check_boxes, label: false, label_method: lambda{|w| ("<span>" + stop_area_status(w) + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
+    .form-group.togglable class=filter_item_class(params[:q], :by_status)
+      = f.label Chouette::StopArea.tmf('status'), required: false, class: 'control-label'
+      = f.input :by_status, checked: params[:q] && params[:q][:by_status], collection: [:in_creation, :confirmed, :deactivated], as: :check_boxes, label: false, label_method: lambda{|w| ("<span>" + stop_area_status(w) + "</span>").html_safe}, required: false, wrapper_html: { class: 'checkbox_list' }
 
   .actions
     = link_to t('actions.erase'), @workbench, class: 'btn btn-link'

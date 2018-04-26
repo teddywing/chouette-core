@@ -21,7 +21,7 @@
             Chouette::StopArea.tmf('city_name') => @stop_area.city_name,
             Chouette::StopArea.tmf('country_code') => @stop_area.country_code.presence || '-',
             Chouette::StopArea.tmf('time_zone') => @stop_area.time_zone.presence || '-',
-            Chouette::StopArea.tmf('status') => stop_area_status(@stop_area),
+            Chouette::StopArea.tmf('status') => stop_area_status(@stop_area.status),
             Chouette::StopArea.tmf('comment') => @stop_area.try(:comment),
             })
         - @stop_area.custom_fields.each do |code, field|

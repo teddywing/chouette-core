@@ -33,7 +33,7 @@
               ), \
               TableBuilderHelper::Column.new( \
                 key: :status, \
-                attribute: Proc.new { |s| stop_area_status(s) } \
+                attribute: Proc.new { |s| stop_area_status(s.status) } \
               ), \
               TableBuilderHelper::Column.new( \
                 key: :zip_code, \
