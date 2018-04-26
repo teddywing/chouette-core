@@ -18,6 +18,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     onModalCancel: (next) =>{
       dispatch(actions.fetchingApi())
+      actions.fetchTimeTables(dispatch)
       dispatch(next)
     },
     onModalClose: () =>{
