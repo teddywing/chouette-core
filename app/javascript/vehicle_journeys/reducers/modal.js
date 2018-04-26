@@ -117,6 +117,9 @@ export default function modal(state = {}, action) {
     case 'SELECT_TT_CALENDAR_MODAL':
       newModalProps = _.assign({}, state.modalProps, {selectedTimetable : action.selectedItem})
       return _.assign({}, state, {modalProps: newModalProps})
+    case 'SELECT_PURCHASE_WINDOW_MODAL':
+      newModalProps = _.assign({}, state.modalProps, {selectedPurchaseWindow : action.selectedItem})
+      return _.assign({}, state, {modalProps: newModalProps})
     case 'SELECT_CONSTRAINT_ZONE_MODAL':
       let selectedConstraintZones = state.modalProps.selectedConstraintZones
       let already_present = false
