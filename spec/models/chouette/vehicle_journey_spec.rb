@@ -918,6 +918,11 @@ describe Chouette::VehicleJourney, :type => :model do
     end
   end
 
+  def offset_passing_time time, offset
+    new_time = time + offset
+    "2000-01-01 #{new_time.hour}:#{new_time.min}:#{new_time.sec} UTC".to_time
+  end
+
   describe "#fill_passing_time_at_borders" do
     before do
       start = create :stop_area
@@ -946,22 +951,23 @@ describe Chouette::VehicleJourney, :type => :model do
       }
       @journey = create :vehicle_journey, journey_pattern: journey_pattern
       @journey.vehicle_journey_at_stops.destroy_all
-      @start = create :vehicle_journey_at_stop, stop_point: start_point, vehicle_journey: @journey
+      departure_time = Time.now.noon
+      @start = create :vehicle_journey_at_stop, stop_point: start_point, vehicle_journey: @journey, departure_time: departure_time
       @target = create :vehicle_journey_at_stop, stop_point: border_point, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
       @target_2 = create :vehicle_journey_at_stop, stop_point: border_point_2, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
       @middle = create :vehicle_journey_at_stop, stop_point: middle_point, vehicle_journey: @journey, arrival_time: @start.arrival_time + 4.hours, departure_time: @start.departure_time + 4.hours
       @target_3 = create :vehicle_journey_at_stop, stop_point: border_point_3, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
       @target_4 = create :vehicle_journey_at_stop, stop_point: border_point_4, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
-      @end = create :vehicle_journey_at_stop, stop_point: end_point, vehicle_journey: @journey, arrival_time: @middle.arrival_time + 4.hours, departure_time: @middle.departure_time + 4.hours
+      @end = create :vehicle_journey_at_stop, stop_point: end_point, vehicle_journey: @journey, arrival_time: offset_passing_time(@middle.arrival_time, 4.hours), departure_time: offset_passing_time(@middle.departure_time, 4.hours)
     end
 
     it "should compute passing time" do
       @journey.reload.fill_passing_time_at_borders
-      expect(@target.reload.arrival_time.to_i).to eq (@start.reload.departure_time + 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
+      expect(@target.reload.arrival_time.to_i).to eq offset_passing_time(@start.reload.departure_time, 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
       expect(@target_2.reload.arrival_time).to eq @target.arrival_time
       expect(@target.departure_time).to eq @target.arrival_time
       expect(@target_2.departure_time).to eq @target.arrival_time
-      expect(@target_3.reload.arrival_time.to_i).to eq (@middle.reload.departure_time + 0.5 * (@end.reload.arrival_time - @middle.departure_time)).to_i
+      expect(@target_3.reload.arrival_time.to_i).to eq offset_passing_time(@middle.reload.departure_time, 0.5 * (@end.reload.arrival_time - @middle.departure_time)).to_i
       expect(@target_4.reload.arrival_time).to eq @target_3.arrival_time
       expect(@target_3.departure_time).to eq @target_3.arrival_time
       expect(@target_4.departure_time).to eq @target_3.arrival_time
@@ -969,16 +975,16 @@ describe Chouette::VehicleJourney, :type => :model do
 
     context "with a day offset" do
       before do
-        @end.update arrival_time: @middle.departure_time - 4.hours, departure_time: @middle.departure_time - 4.hours, departure_day_offset: 1, arrival_day_offset: 1
+        @end.update arrival_time: offset_passing_time(@middle.departure_time, - 4.hours), departure_time: offset_passing_time(@middle.departure_time, - 4.hours), departure_day_offset: 1, arrival_day_offset: 1
       end
 
-      it "should compute passing time", pending: true do
+      it "should compute passing time" do
         @journey.reload.fill_passing_time_at_borders
-        expect(@target.reload.arrival_time.to_i).to eq (@start.reload.departure_time + 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
+        expect(@target.reload.arrival_time.to_i).to eq offset_passing_time(@start.reload.departure_time, 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
         expect(@target_2.reload.arrival_time).to eq @target.arrival_time
         expect(@target.departure_time).to eq @target.arrival_time
         expect(@target_2.departure_time).to eq @target.arrival_time
-        expect(@target_3.reload.arrival_time.to_i).to eq (@middle.reload.departure_time - 14.hours).to_i
+        expect(@target_3.reload.arrival_time.to_i).to eq offset_passing_time(@middle.reload.departure_time, 10.hours).to_i
         expect(@target_3.arrival_day_offset).to eq 1
         expect(@target_3.departure_day_offset).to eq 1
         expect(@target_4.reload.arrival_time).to eq @target_3.arrival_time
