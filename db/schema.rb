@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180418070400) do
+ActiveRecord::Schema.define(version: 20180425160730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,8 +103,8 @@ ActiveRecord::Schema.define(version: 20180418070400) do
 
   create_table "clean_up_results", id: :bigserial, force: :cascade do |t|
     t.string   "message_key"
-    t.hstore   "message_attributs"
-    t.integer  "clean_up_id",       limit: 8
+    t.hstore   "message_attributes"
+    t.integer  "clean_up_id",        limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -772,7 +772,7 @@ ActiveRecord::Schema.define(version: 20180418070400) do
     t.string   "objectid",                               null: false
     t.integer  "object_version",  limit: 8
     t.integer  "route_id",        limit: 8
-    t.integer  "stop_point_ids",  limit: 8,                           array: true
+    t.integer  "stop_point_ids",                                      array: true
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
@@ -1035,28 +1035,29 @@ ActiveRecord::Schema.define(version: 20180418070400) do
   add_index "vehicle_journey_at_stops", ["vehicle_journey_id"], name: "index_vehicle_journey_at_stops_on_vehicle_journey_id", using: :btree
 
   create_table "vehicle_journeys", id: :bigserial, force: :cascade do |t|
-    t.integer  "route_id",                        limit: 8
-    t.integer  "journey_pattern_id",              limit: 8
-    t.integer  "company_id",                      limit: 8
-    t.string   "objectid",                                               null: false
-    t.integer  "object_version",                  limit: 8
+    t.integer  "route_id",                           limit: 8
+    t.integer  "journey_pattern_id",                 limit: 8
+    t.integer  "company_id",                         limit: 8
+    t.string   "objectid",                                                  null: false
+    t.integer  "object_version",                     limit: 8
     t.string   "comment"
     t.string   "transport_mode"
     t.string   "published_journey_name"
     t.string   "published_journey_identifier"
     t.string   "facility"
     t.string   "vehicle_type_identifier"
-    t.integer  "number",                          limit: 8
+    t.integer  "number",                             limit: 8
     t.boolean  "mobility_restricted_suitability"
     t.boolean  "flexible_service"
-    t.integer  "journey_category",                          default: 0,  null: false
+    t.integer  "journey_category",                             default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
-    t.jsonb    "custom_field_values",                       default: {}
-    t.jsonb    "metadata",                                  default: {}
+    t.jsonb    "custom_field_values",                          default: {}
+    t.jsonb    "metadata",                                     default: {}
+    t.integer  "ignored_routing_contraint_zone_ids",           default: [],              array: true
   end
 
   add_index "vehicle_journeys", ["objectid"], name: "vehicle_journeys_objectid_key", unique: true, using: :btree

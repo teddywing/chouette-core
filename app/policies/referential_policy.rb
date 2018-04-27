@@ -41,4 +41,8 @@ class ReferentialPolicy < ApplicationPolicy
     # TODO: Replace with correct BL ASA available, c.f. https://projects.af83.io/issues/2692
     true
   end
+
+  def referential_read_only?
+    record.referential_read_only?
+  end
 end

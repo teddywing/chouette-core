@@ -94,7 +94,7 @@ describe TableBuilderHelper, type: :helper do
                             <li class=""><a href="/referentials/#{referential.id}/time_tables">Calendriers</a></li>
                             <li class=""><a href="/workbenches/#{workbench.id}/referentials/new?from=#{referential.id}">Dupliquer</a></li>
                             <li class=""><a href="/referentials/#{referential.id}/select_compliance_control_set">Valider</a></li>
-                            <li class=""><a rel="nofollow" data-method="put" href="/referentials/#{referential.id}/archive">Conserver</a></li>
+                            <li class=""><a rel="nofollow" data-method="put" href="/referentials/#{referential.id}/archive">Archiver</a></li>
                         </ul>
                         <ul class="footer">
                             <li class=" delete-action"><a data-confirm="Etes vous sûr de vouloir supprimer ce jeu de données ?" rel="nofollow" data-method="delete" href="/referentials/#{referential.id}"><span class="fa fa-trash mr-xs"></span>Supprimer</a></li>
