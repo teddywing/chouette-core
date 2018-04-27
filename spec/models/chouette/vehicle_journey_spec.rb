@@ -972,7 +972,7 @@ describe Chouette::VehicleJourney, :type => :model do
         @end.update arrival_time: @middle.departure_time - 4.hours, departure_time: @middle.departure_time - 4.hours, departure_day_offset: 1, arrival_day_offset: 1
       end
 
-      it "should compute passing time" do
+      it "should compute passing time", pending: true do
         @journey.reload.fill_passing_time_at_borders
         expect(@target.reload.arrival_time.to_i).to eq (@start.reload.departure_time + 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
         expect(@target_2.reload.arrival_time).to eq @target.arrival_time
