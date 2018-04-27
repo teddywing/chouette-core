@@ -42,7 +42,6 @@ describe "referentials/show", type: :view do
     context "with a readonly referential" do
       let(:readonly){ true }
       it "should not present edit button" do
-        p "HERE"
         expect(rendered).to_not have_selector("a[href=\"#{view.edit_referential_path(referential)}\"]")
       end
     end
