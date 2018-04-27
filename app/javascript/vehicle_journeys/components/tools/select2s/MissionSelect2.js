@@ -58,7 +58,8 @@ export default class BSelect4 extends Component {
       this.props.onSelect2JourneyPattern(e)
     }
     else{
-      let data = JSON.parse(e.currentTarget.selectedOptions[0].dataset.item)
+      let option = e.currentTarget.options[e.currentTarget.selectedIndex]
+      let data = JSON.parse(option.dataset.item)
 
       this.props.onSelect2JourneyPattern({params:
         {
