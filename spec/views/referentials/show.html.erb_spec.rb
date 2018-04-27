@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "referentials/show", type: :view do
 
-  let!(:referential) do
+  let(:referential) do
     referential = create(:workbench_referential)
     assign :referential, referential.decorate(context: {
       current_organisation: referential.organisation
@@ -15,6 +15,8 @@ describe "referentials/show", type: :view do
   let(:readonly){ false }
 
   before :each do
+    allow(referential.object).to receive(:referential_read_only?){ readonly }
+
     assign :reflines, []
     allow(view).to receive(:current_organisation).and_return(current_organisation)
     allow(view).to receive(:current_user).and_return(current_user)
@@ -25,7 +27,6 @@ describe "referentials/show", type: :view do
     controller.request.path_parameters[:id] = referential.id
     allow(view).to receive(:params).and_return({action: :show})
 
-    allow(referential).to receive(:referential_read_only?){ readonly }
     render template: "referentials/show", layout: "layouts/application"
   end
 
@@ -41,6 +42,7 @@ describe "referentials/show", type: :view do
     context "with a readonly referential" do
       let(:readonly){ true }
       it "should not present edit button" do
+        p "HERE"
         expect(rendered).to_not have_selector("a[href=\"#{view.edit_referential_path(referential)}\"]")
       end
     end

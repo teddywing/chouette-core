@@ -88,8 +88,8 @@ describe Referential, :type => :model do
         cleanup
       end
 
-      it "should return the cleanup" do
-        expect(operation).to eq cleanup
+      it "should return nothing" do
+        expect(operation).to be_nil
       end
     end
   end

@@ -15,10 +15,10 @@ RSpec.describe 'Workbenches', type: :feature do
         expect(page).to have_content(referential.name)
       end
 
-      it 'should not show unready referentials' do
+      it 'should show unready referentials' do
         referential.update_attribute(:ready, false)
         visit workbench_path(workbench)
-        expect(page).to_not have_content(referential.name)
+        expect(page).to have_content(referential.name)
       end
     end
 
@@ -138,37 +138,33 @@ RSpec.describe 'Workbenches', type: :feature do
 
       context 'filter by status' do
         it 'should display archived referentials' do
-          other_referential.update_attribute(:archived_at, Date.today)
-          find("#q_archived_at_not_null").set(true)
-
-          click_button I18n.t('actions.filter')
-          expect(page).to have_content(other_referential.name)
-          expect(page).to_not have_content(referential.name)
-        end
-
-        it 'should display both archived and unarchived referentials' do
-          other_referential.update_attribute(:archived_at, Date.today)
-          find("#q_archived_at_not_null").set(true)
-          find("#q_archived_at_null").set(true)
-
-          click_button I18n.t('actions.filter')
-          expect(page).to have_content(referential.name)
-          expect(page).to have_content(other_referential.name)
-        end
-
-        it 'should display unarchived referentials' do
-          other_referential.update_attribute(:archived_at, Date.today)
-          find("#q_archived_at_null").set(true)
+          other_referential.failed!
+          referential.archived!
+          find("input[type=checkbox][name='q[state[archived]]']").set(true)
 
           click_button I18n.t('actions.filter')
           expect(page).to have_content(referential.name)
           expect(page).to_not have_content(other_referential.name)
         end
 
-        it 'should keep filter value on submit' do
-          find("#q_archived_at_null").set(true)
+        it 'should display failed referentials' do
+          referential.failed!
+          other_referential.active!
+          find("input[type=checkbox][name='q[state[failed]]']").set(true)
+
           click_button I18n.t('actions.filter')
-          expect(find("#q_archived_at_null")).to be_checked
+          expect(page).to have_content(referential.name)
+          expect(page).to_not have_content(other_referential.name)
+        end
+
+        it 'should display active referentials' do
+          referential.active!
+          other_referential.failed!
+          find("input[type=checkbox][name='q[state[active]]']").set(true)
+
+          click_button I18n.t('actions.filter')
+          expect(page).to have_content(referential.name)
+          expect(page).to_not have_content(other_referential.name)
         end
       end
 
