@@ -2,9 +2,9 @@ FROM debian:stable-slim
 
 ENV RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true RAILS_LOG_TO_STDOUT=true SIDEKIQ_REDIS_URL=redis://redis:6379/12
 
-RUN apt-get update && \
+RUN apt-get update && mkdir -p /usr/share/man/man1 /usr/share/man/man7 && \
     apt-get install -y --no-install-recommends ruby2.3 && \
-    apt-get install -y --no-install-recommends libpq5 libxml2 zlib1g imagemagick libproj12 && \
+    apt-get install -y --no-install-recommends libpq5 libxml2 zlib1g imagemagick libproj12 postgresql-client-common postgresql-client-9.6 && \
     apt-get install -y --no-install-recommends cron && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     gem2.3 install bundler
