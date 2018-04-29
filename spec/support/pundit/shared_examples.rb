@@ -111,10 +111,8 @@ RSpec.shared_examples 'permitted policy and same organisation' do
     if archived_and_finalised
       it 'removes the permission for archived referentials' do
         user.organisation_id = referential.organisation_id
-        record.archived_at = 42.seconds.ago
-        record.ready = true
-        expect(record).to be_archived
-        expect(record).to be_referential_read_only
+        referential.archived_at = 42.seconds.ago
+        referential.ready = true
         expect_it.not_to permit(user_context, record)
       end
 

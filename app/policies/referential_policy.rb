@@ -34,7 +34,7 @@ class ReferentialPolicy < ApplicationPolicy
   end
 
   def unarchive?
-    !referential_read_only? && record.archived? && !record.merged? && organisation_match? && user.has_permission?('referentials.update')
+    record.ready? && record.archived? && !record.merged? && organisation_match? && user.has_permission?('referentials.update')
   end
 
   def common_lines?
