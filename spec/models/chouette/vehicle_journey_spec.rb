@@ -952,7 +952,7 @@ describe Chouette::VehicleJourney, :type => :model do
       @journey = create :vehicle_journey, journey_pattern: journey_pattern
       @journey.vehicle_journey_at_stops.destroy_all
       departure_time = Time.now.noon
-      @start = create :vehicle_journey_at_stop, stop_point: start_point, vehicle_journey: @journey, departure_time: departure_time
+      @start = create :vehicle_journey_at_stop, stop_point: start_point, vehicle_journey: @journey, departure_time: departure_time, arrival_time: departure_time
       @target = create :vehicle_journey_at_stop, stop_point: border_point, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
       @target_2 = create :vehicle_journey_at_stop, stop_point: border_point_2, vehicle_journey: @journey, arrival_time: nil, departure_time: nil
       @middle = create :vehicle_journey_at_stop, stop_point: middle_point, vehicle_journey: @journey, arrival_time: @start.arrival_time + 4.hours, departure_time: @start.departure_time + 4.hours
