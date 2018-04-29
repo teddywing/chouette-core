@@ -54,7 +54,7 @@ class ReferentialCloning < ApplicationModel
   end
 
   def dump_command
-    "PGPASSWORD=#{password} pg_dump --host #{host} --username #{username} --schema=#{source_schema} #{database}"
+    "PGPASSWORD='#{password}' pg_dump --host #{host} --username #{username} --schema=#{source_schema} #{database}"
   end
 
   def sed_command
@@ -62,7 +62,7 @@ class ReferentialCloning < ApplicationModel
   end
 
   def restore_command
-    "PGPASSWORD=#{password} psql -q --host #{host} --username #{username} #{database}"
+    "PGPASSWORD='#{password}' psql -q --host #{host} --username #{username} #{database}"
   end
 
   def clean
