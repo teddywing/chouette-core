@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 20180425160730) do
   enable_extension "postgis"
   enable_extension "hstore"
   enable_extension "unaccent"
-  enable_extension "objectid"
 
   create_table "access_links", id: :bigserial, force: :cascade do |t|
     t.integer  "access_point_id",                        limit: 8
@@ -443,7 +442,7 @@ ActiveRecord::Schema.define(version: 20180425160730) do
   add_index "import_messages", ["resource_id"], name: "index_import_messages_on_resource_id", using: :btree
 
   create_table "import_resources", id: :bigserial, force: :cascade do |t|
-    t.integer  "import_id",     limit: 8
+    t.integer  "import_id",      limit: 8
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -451,9 +450,11 @@ ActiveRecord::Schema.define(version: 20180425160730) do
     t.string   "reference"
     t.string   "name"
     t.hstore   "metrics"
+    t.integer  "referential_id"
   end
 
   add_index "import_resources", ["import_id"], name: "index_import_resources_on_import_id", using: :btree
+  add_index "import_resources", ["referential_id"], name: "index_import_resources_on_referential_id", using: :btree
 
   create_table "imports", id: :bigserial, force: :cascade do |t|
     t.string   "status"
@@ -1110,6 +1111,7 @@ ActiveRecord::Schema.define(version: 20180425160730) do
   add_foreign_key "compliance_controls", "compliance_control_blocks"
   add_foreign_key "compliance_controls", "compliance_control_sets"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
+  add_foreign_key "import_resources", "referentials"
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify
   add_foreign_key "journey_patterns", "routes", name: "jp_route_fkey", on_delete: :cascade

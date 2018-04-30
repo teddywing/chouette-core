@@ -18,7 +18,7 @@ fr:
       trips:
         imported: "%{count} course(s) importé(s)"
       calendars:
-        imported: "%{count} calndrier(s) importé(s)"
+        imported: "%{count} calendrier(s) importé(s)"
     1_netexstif_2: "Le fichier %{source_filename} ne respecte pas la syntaxe XML ou la XSD NeTEx : erreur '%{error_value}' rencontré"
     1_netexstif_5: "%{source_filename}-Ligne %{source_line_number}-Colonne %{source_column_number} : l'objet %{source_label} d'identifiant %{source_objectid} a une date de mise à jour dans le futur"
     2_netexstif_1_1: "Le fichier commun.xml ne contient pas de frame nommée NTEX_COMMUN"
