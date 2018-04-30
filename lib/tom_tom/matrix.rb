@@ -20,11 +20,19 @@ module TomTom
         req.body = build_request_body(points)
       end
 
+      matrix_json = JSON.parse(response.body)
+
+      check_for_error_response(matrix_json)
+
       extract_costs_to_way_costs!(
         way_costs,
         points_with_ids,
-        JSON.parse(response.body)
+        matrix_json
       )
+    rescue RemoteError => e
+      Rails.logger.error "TomTom::Matrix server error: #{e}"
+
+      []
     end
 
     def points_from_way_costs(way_costs)
@@ -76,6 +84,12 @@ module TomTom
       })
     end
 
+    def check_for_error_response(matrix_json)
+      if matrix_json.has_key?('error')
+        raise RemoteError, matrix_json['error']['description']
+      end
+    end
+
     def extract_costs_to_way_costs!(way_costs, points, matrix_json)
       way_costs = []
 
@@ -110,5 +124,8 @@ module TomTom
 
       way_costs
     end
+
+
+    class RemoteError < RuntimeError; end
   end
 end

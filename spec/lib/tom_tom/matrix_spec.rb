@@ -149,6 +149,35 @@ RSpec.describe TomTom::Matrix do
     end
   end
 
+  describe "#check_for_error_response" do
+    it "raises an RemoteError when an 'error' key is present in the response" do
+      response_body = {
+        'formatVersion' => '0.0.1',
+        'error' => {
+          'description' => 'Output format: csv is unsupported.'
+        }
+      }
+
+      expect {
+        matrix.check_for_error_response(response_body)
+      }.to raise_error(
+        TomTom::Matrix::RemoteError,
+        'Output format: csv is unsupported.'
+      )
+    end
+
+    it "doesn't raise errors with a normal response" do
+      response_body = {
+        'formatVersion' => '0.0.1',
+        'matrix' => []
+      }
+
+      expect {
+        matrix.check_for_error_response(response_body)
+      }.to_not raise_error
+    end
+  end
+
   describe "#extract_costs_to_way_costs!" do
     it "puts distance & time costs in way_costs" do
       way_costs = [
