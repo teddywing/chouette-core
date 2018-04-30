@@ -52,7 +52,7 @@ class Workbench < ApplicationModel
   end
 
   def import_compliance_control_set
-    ComplianceControlSet.find(import_compliance_control_set_id)
+    import_compliance_control_set_id && ComplianceControlSet.find(import_compliance_control_set_id)
   end
 
   private

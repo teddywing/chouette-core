@@ -2,8 +2,9 @@
 module ImportsHelper
 
   # Import statuses helper
-  def import_status(status, verbose: false)
-    return "" unless status
+  def import_status(status, verbose: false, default_status: nil)
+    status ||= default_status
+    return unless status
     status = status.to_s.downcase
     out = if %w[new running pending].include? status
       content_tag :span, '', class: "fa fa-clock-o"
