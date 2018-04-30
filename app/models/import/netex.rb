@@ -2,15 +2,12 @@ require 'net/http'
 class Import::Netex < Import::Base
   before_destroy :destroy_non_ready_referential
 
-  after_commit :call_iev_callback, on: :create
-
   after_commit do
     main_resource.update_status_from_importer self.status
     true
   end
 
   before_save do
-    self.status = 'aborted' unless referential
     self.referential&.failed! if self.status == 'aborted' || self.status == 'failed'
   end
 
@@ -47,7 +44,7 @@ class Import::Netex < Import::Base
       save!
     else
       Rails.logger.info "Can't create referential for import #{self.id}: #{referential.inspect} #{referential.metadatas.inspect} #{referential.errors.messages}"
-      aborted!
+
       if referential.metadatas.all?{|m| m.line_ids.empty? && m.line_ids.empty?}
         create_message criticity: :error, message_key: "referential_creation_missing_lines", message_attributes: {referential_name: referential.name}
       elsif (overlapped_referential_ids = referential.overlapped_referential_ids).any?
@@ -69,6 +66,8 @@ class Import::Netex < Import::Base
           resource_attributes: referential.errors.messages
         )
       end
+      self.referential = nil
+      aborted!
     end
   end
 

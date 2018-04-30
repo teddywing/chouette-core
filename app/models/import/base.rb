@@ -44,6 +44,7 @@ class Import::Base < ApplicationModel
   end
 
   def aborted!
+    Rails.logger.info "=== aborted ==="
     update status: :aborted
   end
 

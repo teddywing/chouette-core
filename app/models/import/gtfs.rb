@@ -28,10 +28,11 @@ class Import::Gtfs < Import::Base
 
     import_without_status
     update status: 'successful', ended_at: Time.now
-    referential&.ready!
+    referential&.active!
   rescue Exception => e
     update status: 'failed', ended_at: Time.now
     Rails.logger.error "Error in GTFS import: #{e} #{e.backtrace.join('\n')}"
+    create_message criticity: :error, message_key: :full_text, message_attributes: {text: e.message}
     referential&.failed!
   ensure
     notify_parent
