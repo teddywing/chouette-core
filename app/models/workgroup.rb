@@ -23,4 +23,9 @@ class Workgroup < ApplicationModel
   def has_export? export_name
     export_types.include? export_name
   end
+
+  def import_compliance_control_set_id
+    # XXX
+    1
+  end
 end

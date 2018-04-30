@@ -30,13 +30,19 @@
         ), \
         TableBuilderHelper::Column.new( \
           name: t('.stif_control'), \
-          attribute: '', \
+          attribute: Proc.new { |n| import_status(n.workbench_import_control_set&.status) }, \
           sortable: false, \
+          link_to: lambda do |item| \
+            item.workbench_import_control_set.present? && [@import.workbench, item.workbench_import_control_set] \
+          end \
         ), \
         TableBuilderHelper::Column.new( \
           name: t('.organisation_control'), \
-          attribute: '', \
+          attribute: Proc.new { |n| import_status(n.workgroup_import_control_set&.status) }, \
           sortable: false, \
+          link_to: lambda do |item| \
+            item.workgroup_import_control_set.present? && [@import.workbench, item.workgroup_import_control_set] \
+          end \
         ) \
       ],
       cls: 'table',
