@@ -12,20 +12,22 @@ ruby:
  controls = []
  controls << TableBuilderHelper::Column.new(
    name: t('.stif_control'),
-   attribute: Proc.new { |n| import_status(n.workbench_import_control_set&.status, verbose: true, default_status: :pending) },
+   attribute: Proc.new { |n| import_status(n.workbench_import_check_set&.status, verbose: true, default_status: :pending) },
    sortable: false,
    link_to: lambda do |item|
-     item.workbench_import_control_set.present? && [@import.workbench, item.workbench_import_control_set]
+     item.workbench_import_check_set.present? && [@import.workbench, item.workbench_import_check_set]
    end
  ) if @workbench.import_compliance_control_set.present?
- controls << TableBuilderHelper::Column.new(
-   name: t('.stif_control'),
-   attribute: Proc.new { |n| import_status(n.workgroup_import_control_set&.status, verbose: true, default_status: :pending) },
-   sortable: false,
-   link_to: lambda do |item|
-     item.workbench_import_control_set.present? && [@import.workbench, item.workgroup_import_control_set]
-   end
- ) if @workbench.workgroup.import_compliance_control_set.present?
+ controls += @workbench.workgroup.import_compliance_control_sets.each_with_index.map do |cs, i|
+   TableBuilderHelper::Column.new(
+     name: t('.organisation_control'),
+     attribute: Proc.new { |n| import_status(n.workgroup_import_check_set(i)&.status, verbose: true, default_status: :pending) },
+     sortable: false,
+     link_to: lambda do |item|
+       item.workgroup_import_check_set(i).present? && [@import.workbench, item.workgroup_import_check_set(i)]
+    end
+    )
+  end
 
 - if @import.resources.any?
   .col-lg-12

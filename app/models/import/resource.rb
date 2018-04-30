@@ -20,15 +20,18 @@ class Import::Resource < ApplicationModel
 
       return unless netex_import&.successful?
 
-      if workbench.import_compliance_control_set_id.present? && workbench_import_control_set.nil?
+      if workbench.import_compliance_control_set_id.present? && workbench_import_check_set.nil?
         ComplianceControlSetCopyWorker.perform_async workbench.import_compliance_control_set_id, referential_id
         return
       end
 
-      return if workbench_import_control_set && !workbench_import_control_set.successful?
-
-      if workgroup.import_compliance_control_set_id.present? && workgroup_import_control_set.nil?
-        ComplianceControlSetCopyWorker.perform_async workgroup.import_compliance_control_set_id, referential_id
+      return if workbench_import_check_set && !workbench_import_control_set.successful?
+      workgroup.import_compliance_control_set_ids.each_with_index do |id, index|
+        compliance_check_set = workgroup_import_check_set[index]
+        return if compliance_check_set && !compliance_check_set.successful?
+        if compliance_check_set.nil?
+          ComplianceControlSetCopyWorker.perform_async id, referential_id
+        end
       end
     end
   end
@@ -46,15 +49,17 @@ class Import::Resource < ApplicationModel
     import.children.where(name: self.reference).last
   end
 
-  def workbench_import_control_set
+  def workbench_import_check_set
     return unless referential.present?
     return unless referential.workbench.import_compliance_control_set_id.present?
     referential.compliance_check_sets.where(compliance_control_set_id: referential.workbench.import_compliance_control_set_id, referential_id: referential_id).last
   end
 
-  def workgroup_import_control_set
+  def workgroup_import_check_set(index)
     return unless referential.present?
-    return unless referential.workbench.workgroup.import_compliance_control_set_id.present?
-    referential.compliance_check_sets.where(compliance_control_set_id: referential.workbench.workgroup.import_compliance_control_set_id, referential_id: referential_id).last
+    return unless referential.workbench.workgroup.import_compliance_control_set_ids.present?
+    cs = referential.workbench.workgroup.import_compliance_control_sets[index]
+    return unless cs
+    referential.compliance_check_sets.where(compliance_control_set_id: cs.id, referential_id: referential_id).last
   end
 end
