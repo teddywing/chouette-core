@@ -18,16 +18,14 @@ class Import::Resource < ApplicationModel
   def next_step
     if root_import.class == Import::Workbench
 
-      # XXX
-      # return unless netex_import&.successful?
+      return unless netex_import&.successful?
 
       if workbench.import_compliance_control_set_id.present? && workbench_import_control_set.nil?
         ComplianceControlSetCopyWorker.perform_async workbench.import_compliance_control_set_id, referential_id
         return
       end
 
-      # XXX
-      # return if workbench_import_control_set && !workbench_import_control_set.successful?
+      return if workbench_import_control_set && !workbench_import_control_set.successful?
 
       if workgroup.import_compliance_control_set_id.present? && workgroup_import_control_set.nil?
         ComplianceControlSetCopyWorker.perform_async workgroup.import_compliance_control_set_id, referential_id

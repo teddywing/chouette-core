@@ -8,6 +8,25 @@
   .error_messages
     = render 'shared/iev_interfaces/messages', messages: @import.messages
 
+ruby:
+ controls = []
+ controls << TableBuilderHelper::Column.new(
+   name: t('.stif_control'),
+   attribute: Proc.new { |n| import_status(n.workbench_import_control_set&.status, verbose: true, default_status: :pending) },
+   sortable: false,
+   link_to: lambda do |item|
+     item.workbench_import_control_set.present? && [@import.workbench, item.workbench_import_control_set]
+   end
+ ) if @workbench.import_compliance_control_set.present?
+ controls << TableBuilderHelper::Column.new(
+   name: t('.stif_control'),
+   attribute: Proc.new { |n| import_status(n.workgroup_import_control_set&.status, verbose: true, default_status: :pending) },
+   sortable: false,
+   link_to: lambda do |item|
+     item.workbench_import_control_set.present? && [@import.workbench, item.workgroup_import_control_set]
+   end
+ ) if @workbench.workgroup.import_compliance_control_set.present?
+
 - if @import.resources.any?
   .col-lg-12
     = table_builder_2 @import.resources,
@@ -22,28 +41,12 @@
         ), \
         TableBuilderHelper::Column.new( \
           key: :status, \
-          attribute: Proc.new { |n| import_status(n.status) }, \
+          attribute: Proc.new { |n| import_status(n.status, verbose: true, default_status: :pending) }, \
           sortable: false, \
           link_to: lambda do |item| \
             item.netex_import.present? ? [@import.workbench, item.netex_import] : [@import.workbench, @import, item] \
           end \
-        ), \
-        TableBuilderHelper::Column.new( \
-          name: t('.stif_control'), \
-          attribute: Proc.new { |n| import_status(n.workbench_import_control_set&.status) }, \
-          sortable: false, \
-          link_to: lambda do |item| \
-            item.workbench_import_control_set.present? && [@import.workbench, item.workbench_import_control_set] \
-          end \
-        ), \
-        TableBuilderHelper::Column.new( \
-          name: t('.organisation_control'), \
-          attribute: Proc.new { |n| import_status(n.workgroup_import_control_set&.status) }, \
-          sortable: false, \
-          link_to: lambda do |item| \
-            item.workgroup_import_control_set.present? && [@import.workbench, item.workgroup_import_control_set] \
-          end \
-        ) \
+        ), *controls \
       ],
       cls: 'table',
       overhead: [ \
@@ -51,7 +54,7 @@
         {}, \
         { \
           title: I18n.t('imports.show.summary').html_safe, \
-          width: 2, \
+          width: controls.size, \
           cls: 'overheaded-default colspan="2"' \
         } \
       ]

@@ -26,6 +26,10 @@ class Workgroup < ApplicationModel
 
   def import_compliance_control_set_id
     # XXX
-    1
+    nil
+  end
+
+  def import_compliance_control_set
+    import_compliance_control_set_id && ComplianceControlSet.find(import_compliance_control_set_id)
   end
 end
