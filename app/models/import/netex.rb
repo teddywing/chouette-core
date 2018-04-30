@@ -18,8 +18,14 @@ class Import::Netex < Import::Base
   end
 
   def notify_parent
-    super
-    main_resource.update_status_from_importer self.status
+    if super
+      main_resource.update_status_from_importer self.status
+      next_step
+    end
+  end
+
+  def next_step
+    main_resource.next_step
   end
 
   def create_message args
