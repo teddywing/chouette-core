@@ -923,7 +923,7 @@ describe Chouette::VehicleJourney, :type => :model do
     "2000-01-01 #{new_time.hour}:#{new_time.min}:#{new_time.sec} UTC".to_time
   end
 
-  describe "#fill_passing_time_at_borders" do
+  describe "#fill_passing_times!" do
     before do
       start = create :stop_area
       border = create :stop_area, kind: :non_commercial, area_type: :border
@@ -962,7 +962,7 @@ describe Chouette::VehicleJourney, :type => :model do
     end
 
     it "should compute passing time" do
-      @journey.reload.fill_passing_time_at_borders
+      @journey.reload.fill_passing_times!
       expect(@target.reload.arrival_time.to_i).to eq offset_passing_time(@start.reload.departure_time, 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
       expect(@target_2.reload.arrival_time).to eq @target.arrival_time
       expect(@target.departure_time).to eq @target.arrival_time
@@ -979,7 +979,7 @@ describe Chouette::VehicleJourney, :type => :model do
       end
 
       it "should compute passing time" do
-        @journey.reload.fill_passing_time_at_borders
+        @journey.reload.fill_passing_times!
         expect(@target.reload.arrival_time.to_i).to eq offset_passing_time(@start.reload.departure_time, 1.0/3 * (@middle.reload.arrival_time - @start.departure_time)).to_i
         expect(@target_2.reload.arrival_time).to eq @target.arrival_time
         expect(@target.departure_time).to eq @target.arrival_time
