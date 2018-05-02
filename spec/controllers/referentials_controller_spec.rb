@@ -119,6 +119,7 @@ describe ReferentialsController, :type => :controller do
       it "creates the new referential" do
         expect{request}.to change{Referential.count}.by 1
         expect(Referential.last.name).to eq "Duplicated"
+        expect(Referential.last.state).to eq :pending
       end
 
       it "displays a flash message" do

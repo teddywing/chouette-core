@@ -59,7 +59,6 @@ class Referential < ApplicationModel
 
   belongs_to :referential_suite
 
-
   scope :pending, -> { where(ready: false, failed_at: nil, archived_at: nil) }
   scope :active, -> { where(ready: true, failed_at: nil, archived_at: nil) }
   scope :failed, -> { where.not(failed_at: nil) }
@@ -271,7 +270,8 @@ class Referential < ApplicationModel
       stop_area_referential: from.stop_area_referential,
       created_from: from,
       objectid_format: from.objectid_format,
-      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, organisation) }
+      metadatas: from.metadatas.map { |m| ReferentialMetadata.new_from(m, organisation) },
+      ready: false
     )
   end
 
@@ -471,6 +471,7 @@ class Referential < ApplicationModel
   end
 
   def destroy_schema
+    return unless ActiveRecord::Base.connection.schema_names.include?(slug)
     Apartment::Tenant.drop slug
   end
 
