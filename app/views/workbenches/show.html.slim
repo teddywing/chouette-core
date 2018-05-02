@@ -62,7 +62,10 @@
                   attribute: Proc.new {|w| w.merged_at ? l(w.merged_at, format: :short) : '-'} \
                 ) \
               ],
-              selectable: ->(ref){ @workbench.referentials.include?(ref) },
+              selectable: ->(ref) { \
+                @workbench.referentials.include?(ref) && \
+                  !ref.pending? \
+              },
               cls: 'table has-filter has-search',
               action: :index
 

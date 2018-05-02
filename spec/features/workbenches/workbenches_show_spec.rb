@@ -64,6 +64,27 @@ RSpec.describe 'Workbenches', type: :feature do
         "Couldn't find `hidden_referential`: `#{hidden_referential.inspect}`"
     end
 
+    it "prevents pending referentials from being selected" do
+      line = create(:line, line_referential: line_ref)
+      metadata = create(:referential_metadata, lines: [line])
+      pending_referential = create(
+        :workbench_referential,
+        workbench: workbench,
+        metadatas: [metadata],
+        organisation: @user.organisation,
+        ready: false
+      )
+
+      visit workbench_path(workbench)
+
+      expect(
+        find("input[type='checkbox'][value='#{referential.id}']")
+      ).not_to be_disabled
+      expect(
+        find("input[type='checkbox'][value='#{pending_referential.id}']")
+      ).to be_disabled
+    end
+
     context 'filtering' do
       let!(:another_organisation) { create :organisation }
       let(:another_line) { create :line, line_referential: line_ref }
