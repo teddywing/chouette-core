@@ -4,6 +4,10 @@ module TomTom
       @connection = connection
     end
 
+    # Exceptions:
+    #
+    # * This raises a `TomTom::Matrix::RemoteError` when the API responds with
+    #   an error.
     def matrix(way_costs)
       points_with_ids = points_from_way_costs(way_costs)
       points = points_as_params(points_with_ids)
@@ -29,10 +33,6 @@ module TomTom
         points_with_ids,
         matrix_json
       )
-    rescue RemoteError => e
-      Rails.logger.error "TomTom::Matrix server error: #{e}"
-
-      []
     end
 
     def points_from_way_costs(way_costs)
