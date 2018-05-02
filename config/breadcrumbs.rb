@@ -3,7 +3,7 @@ crumb :root do
 end
 
 crumb :workbench do |workbench|
-  link workbench.name, workbench_path(workbench)
+  link I18n.t('workbenches.show.title', name: workbench.organisation.name), workbench_path(workbench)
 end
 
 crumb :workbench_output do |workbench|
