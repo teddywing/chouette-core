@@ -136,7 +136,6 @@ class ReferentialsController < ChouetteController
 
   def create_resource(referential)
     referential.organisation = current_organisation
-    referential.ready = true
     super
   end
 

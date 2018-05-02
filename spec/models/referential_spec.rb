@@ -203,6 +203,7 @@ describe Referential, :type => :model do
     it 'should create a Referential' do
       ref
       expect { saved_clone }.to change{Referential.count}.by(1)
+      expect(saved_clone.state).to eq :pending
     end
 
     xit 'should create a ReferentialCloning' do
