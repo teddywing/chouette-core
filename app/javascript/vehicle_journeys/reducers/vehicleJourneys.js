@@ -150,6 +150,16 @@ const vehicleJourney= (state = {}, action, keep) => {
       return _.assign({}, state, {vehicle_journey_at_stops: shiftedArray})
     case 'UPDATE_TIME':
       let vj, vjas, vjasArray, newSchedule
+      let val = action.val
+      if(val != ''){
+        val = parseInt(val)
+        if(action.timeUnit == "minute"){
+          val = (val + 60) % 60
+        }
+        else{
+          val = (val + 24) % 24
+        }
+      }
       vjasArray = state.vehicle_journey_at_stops.map((vjas, i) =>{
         if(i == action.subIndex){
           newSchedule = {
@@ -157,13 +167,13 @@ const vehicleJourney= (state = {}, action, keep) => {
             arrival_time: _.assign({}, vjas.arrival_time)
           }
           if (action.isDeparture){
-            newSchedule.departure_time[action.timeUnit] = actions.pad(action.val, action.timeUnit)
+            newSchedule.departure_time[action.timeUnit] = actions.pad(val, action.timeUnit)
             if(!action.isArrivalsToggled)
               newSchedule.arrival_time[action.timeUnit] = newSchedule.departure_time[action.timeUnit]
             newSchedule = actions.adjustSchedule(action, newSchedule, action.enforceConsistency)
             return _.assign({}, state.vehicle_journey_at_stops[action.subIndex], {arrival_time: newSchedule.arrival_time, departure_time: newSchedule.departure_time, delta: newSchedule.delta})
           }else{
-            newSchedule.arrival_time[action.timeUnit] = actions.pad(action.val, action.timeUnit)
+            newSchedule.arrival_time[action.timeUnit] = actions.pad(val, action.timeUnit)
             newSchedule = actions.adjustSchedule(action, newSchedule, action.enforceConsistency)
             return _.assign({}, state.vehicle_journey_at_stops[action.subIndex],  {arrival_time: newSchedule.arrival_time, departure_time: newSchedule.departure_time, delta: newSchedule.delta})
           }

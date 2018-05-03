@@ -489,23 +489,28 @@ const actions = {
     }
     return 0
   },
-  getDelta: (vjas) => {
+  getDelta: (vjas, allowNegative=false) => {
     let delta = 0
     if (vjas.departure_time.hour != '' && vjas.departure_time.minute != '' && vjas.arrival_time.hour != '' && vjas.departure_time.minute != ''){
       delta = (parseInt(vjas.departure_time.hour) - parseInt(vjas.arrival_time.hour)) * 60 + (parseInt(vjas.departure_time.minute) - parseInt(vjas.arrival_time.minute))
+    }
+    if(!true && delta < 0){
+      delta += 24*60
     }
     vjas.delta = delta
     return vjas
   },
   adjustSchedule: (action, schedule, enforceConsistency=false) => {
     // we enforce that the departure time remains after the arrival time
-    actions.getDelta(schedule)
+    actions.getDelta(schedule, true)
     if(enforceConsistency && schedule.delta < 0){
-      if(action.isDeparture){
-        schedule.arrival_time = schedule.departure_time
-      }
-      else{
-        schedule.departure_time = schedule.arrival_time
+      if(schedule.arrival_time.hour < 23 || schedule.departure_time.hour > 0){
+        if(action.isDeparture){
+          schedule.arrival_time = schedule.departure_time
+        }
+        else{
+          schedule.departure_time = schedule.arrival_time
+        }
       }
       actions.getDelta(schedule)
     }
