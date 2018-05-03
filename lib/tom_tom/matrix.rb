@@ -124,8 +124,5 @@ module TomTom
 
       way_costs
     end
-
-
-    class RemoteError < RuntimeError; end
   end
 end
