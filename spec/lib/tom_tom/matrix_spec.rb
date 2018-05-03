@@ -151,29 +151,67 @@ RSpec.describe TomTom::Matrix do
 
   describe "#check_for_error_response" do
     it "raises a RemoteError when an 'error' key is present in the response" do
-      response_body = {
-        'formatVersion' => '0.0.1',
-        'error' => {
-          'description' => 'Output format: csv is unsupported.'
-        }
-      }
+      response = double(
+        'response',
+        status: 200,
+        body: JSON.dump({
+          'formatVersion' => '0.0.1',
+          'error' => {
+            'description' => 'Output format: csv is unsupported.'
+          }
+        })
+      )
 
       expect {
-        matrix.check_for_error_response(response_body)
+        matrix.check_for_error_response(response)
       }.to raise_error(
         TomTom::Matrix::RemoteError,
-        'Output format: csv is unsupported.'
+        "status: #{response.status}, message: Output format: csv is unsupported."
       )
     end
 
-    it "doesn't raise errors with a normal response" do
-      response_body = {
-        'formatVersion' => '0.0.1',
-        'matrix' => []
-      }
+    it "raises a RemoteError when response status is not 200" do
+      response = double(
+        'response',
+        status: 403,
+        body: '<h1>Developer Inactive</h1>'
+      )
 
       expect {
-        matrix.check_for_error_response(response_body)
+        matrix.check_for_error_response(response)
+      }.to raise_error(
+        TomTom::Matrix::RemoteError,
+        "status: #{response.status}, body: <h1>Developer Inactive</h1>"
+      )
+    end
+
+    it "doesn't raise an error when response status is 200" do
+      response = double(
+        'response',
+        status: 200,
+        body: JSON.dump({
+          'formatVersion' => '0.0.1',
+          'matrix' => []
+        })
+      )
+
+      expect {
+        matrix.check_for_error_response(response)
+      }.not_to raise_error
+    end
+
+    it "doesn't raise errors with a normal response" do
+      response = double(
+        'response',
+        status: 200,
+        body: JSON.dump({
+          'formatVersion' => '0.0.1',
+          'matrix' => []
+        })
+      )
+
+      expect {
+        matrix.check_for_error_response(response)
       }.to_not raise_error
     end
   end

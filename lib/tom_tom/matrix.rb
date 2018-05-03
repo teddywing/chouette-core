@@ -24,14 +24,12 @@ module TomTom
         req.body = build_request_body(points)
       end
 
-      matrix_json = JSON.parse(response.body)
-
-      check_for_error_response(matrix_json)
+      check_for_error_response(response)
 
       extract_costs_to_way_costs!(
         way_costs,
         points_with_ids,
-        matrix_json
+        JSON.parse(response.body)
       )
     end
 
@@ -84,9 +82,16 @@ module TomTom
       })
     end
 
-    def check_for_error_response(matrix_json)
-      if matrix_json.has_key?('error')
-        raise RemoteError, matrix_json['error']['description']
+    def check_for_error_response(response)
+      if response.status != 200
+        raise RemoteError, "status: #{response.status}, body: #{response.body}"
+      end
+
+      json = JSON.parse(response.body)
+
+      if json.has_key?('error')
+        raise RemoteError,
+          "status: #{response.status}, message: #{json['error']['description']}"
       end
     end
 
