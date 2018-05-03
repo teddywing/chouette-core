@@ -150,7 +150,7 @@ RSpec.describe TomTom::Matrix do
   end
 
   describe "#check_for_error_response" do
-    it "raises an RemoteError when an 'error' key is present in the response" do
+    it "raises a RemoteError when an 'error' key is present in the response" do
       response_body = {
         'formatVersion' => '0.0.1',
         'error' => {
