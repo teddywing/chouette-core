@@ -322,6 +322,7 @@ class Referential < ApplicationModel
 
   before_create :create_schema
   after_create :clone_schema, if: :created_from
+  after_create :active!, unles: :created_from
 
   before_destroy :destroy_schema
   before_destroy :destroy_jobs
