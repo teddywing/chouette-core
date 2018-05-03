@@ -2,11 +2,18 @@ class FullTimeZoneInput < SimpleForm::Inputs::CollectionSelectInput
   def collection
     @collection ||= begin
       collection = options.delete(:collection) || begin
-        coll = ActiveSupport::TimeZone::MAPPING.invert
-        coll.sort_by do |k, v|
-          tz = ActiveSupport::TimeZone[k]
-          "(#{tz.formatted_offset}) #{tz.name}"
+        coll = {}
+
+        TZInfo::Timezone.all_data_zones.map do |tzinfo|
+          # v = ActiveSupport::TimeZone.zones_map[k]
+        # coll.sort_by do |v|
+        #   "(#{v.formatted_offset}) #{v.name}"
+        # end
+          next if tzinfo.friendly_identifier =~ /^etc/i
+          tz = ActiveSupport::TimeZone.new tzinfo.name#, nil, tzinfo
+          coll[[tz.utc_offset, tzinfo.friendly_identifier(true)]] = ["(#{tz.formatted_offset}) #{tzinfo.friendly_identifier(true)}", tz.name]
         end
+        coll.sort.map(&:last)
       end
       collection.respond_to?(:call) ? collection.call : collection.to_a
     end
@@ -15,12 +22,8 @@ class FullTimeZoneInput < SimpleForm::Inputs::CollectionSelectInput
   def detect_collection_methods
     label, value = options.delete(:label_method), options.delete(:value_method)
 
-    label ||= ->(tz) do
-      tz = ActiveSupport::TimeZone[tz.first]
-      "(#{tz.formatted_offset}) #{tz.name}"
-    end
-    value ||= :first
-
+    label ||= :first
+    value ||= :last
     [label, value]
   end
 
