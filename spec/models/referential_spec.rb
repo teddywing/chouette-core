@@ -29,6 +29,14 @@ describe Referential, :type => :model do
     end
   end
 
+  context "creation" do
+    subject(:referential) { Referential.create name: "test", objectid_format: :netex, organisation: create(:organisation), line_referential: create(:line_referential), stop_area_referential: create(:stop_area_referential) }
+    it "should activate by default" do
+      expect(referential).to be_valid
+      expect(referential.state).to eq :active
+    end
+  end
+
   context ".last_operation" do
     subject(:operation){ referential.last_operation }
     it "should return nothing" do
@@ -110,7 +118,8 @@ describe Referential, :type => :model do
 
     context "the scopes" do
       it "should filter the referentials" do
-        referential = create :referential, ready: false
+        referential = create :referential
+        referential.pending!
         expect(Referential.pending).to include referential
         expect(Referential.failed).to_not include referential
         expect(Referential.active).to_not include referential
