@@ -100,7 +100,10 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
     end
 
     context 'archived referential' do
-      before { referential.archived_at = 42.seconds.ago }
+      before {
+        referential.ready = true
+        referential.archived_at = 42.seconds.ago
+      }
       context 'no rights' do
         it 'has only show and calendar actions' do
           expect_action_link_hrefs.to eq([[object], referential_time_tables_path(object)])
@@ -115,6 +118,19 @@ RSpec.describe ReferentialDecorator, type: [:helper, :decorator] do
             [object],
             referential_time_tables_path(object),
             new_workbench_referential_path(referential.workbench, from: object.id)
+          ])
+        end
+      end
+
+      context 'all rights and same organisation' do
+        let( :user ){ build_stubbed :allmighty_user, organisation: referential.organisation }
+        it 'has only default actions' do
+          expect_action_link_elements.to eq ["Consulter", "Calendriers", "Dupliquer", "Désarchiver"]
+          expect_action_link_hrefs.to eq([
+            [object],
+            referential_time_tables_path(object),
+            new_workbench_referential_path(referential.workbench, from: object.id),
+            unarchive_referential_path(object),
           ])
         end
       end
