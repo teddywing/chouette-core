@@ -9,6 +9,13 @@ FactoryGirl.define do
     time_zone "Europe/Paris"
     ready { true }
     objectid_format "stif_netex"
+    transient do
+      status :active
+    end
+
+    after(:create) do |referential, evaluator|
+      referential.send "#{evaluator.status}!"
+    end
 
     factory :workbench_referential do
       association :workbench

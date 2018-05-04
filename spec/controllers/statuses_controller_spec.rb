@@ -31,7 +31,7 @@ RSpec.describe StatusesController, :type => :controller do
 
     context "with a blocked object" do
       before do
-        create :referential, created_at: 5.hours.ago, ready: false
+        r = create :referential, created_at: 5.hours.ago, status: :pending
         create :import
         create :compliance_check_set
         request

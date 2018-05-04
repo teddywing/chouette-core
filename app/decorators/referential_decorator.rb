@@ -36,7 +36,7 @@ class ReferentialDecorator < AF83::Decorator
       l.method :put
     end
 
-    instance_decorator.action_link policy: :unarchive, secondary: :show, on: :show do |l|
+    instance_decorator.action_link policy: :unarchive, secondary: :show do |l|
       l.content t('actions.unarchive')
       l.href { h.unarchive_referential_path(object.id) }
       l.method :put
