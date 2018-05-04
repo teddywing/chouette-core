@@ -18,6 +18,7 @@ const journeyPattern = (state = {}, action) =>{
         registration_number: action.data.registration_number.value,
         stop_points: stopPoints,
         costs: {},
+        custom_fields: action.data.custom_fields,
         deletable: false
       }
     case 'UPDATE_CHECKBOX_VALUE':
