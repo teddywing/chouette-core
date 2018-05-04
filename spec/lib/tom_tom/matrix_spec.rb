@@ -150,7 +150,7 @@ RSpec.describe TomTom::Matrix do
   end
 
   describe "#check_for_error_response" do
-    it "raises a RemoteError when an 'error' key is present in the response" do
+    it "raises a MatrixRemoteError when an 'error' key is present in the response" do
       response = double(
         'response',
         status: 200,
@@ -165,12 +165,12 @@ RSpec.describe TomTom::Matrix do
       expect {
         matrix.check_for_error_response(response)
       }.to raise_error(
-        TomTom::Matrix::RemoteError,
+        TomTom::Errors::MatrixRemoteError,
         "status: #{response.status}, message: Output format: csv is unsupported."
       )
     end
 
-    it "raises a RemoteError when response status is not 200" do
+    it "raises a MatrixRemoteError when response status is not 200" do
       response = double(
         'response',
         status: 403,
@@ -180,7 +180,7 @@ RSpec.describe TomTom::Matrix do
       expect {
         matrix.check_for_error_response(response)
       }.to raise_error(
-        TomTom::Matrix::RemoteError,
+        TomTom::Errors::MatrixRemoteError,
         "status: #{response.status}, body: <h1>Developer Inactive</h1>"
       )
     end

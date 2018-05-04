@@ -8,7 +8,7 @@ class RouteWayCostCalculator
     way_costs = TomTom.matrix(way_costs)
     way_costs = WayCostCollectionJSONSerializer.dump(way_costs)
     @route.update(costs: way_costs)
-  rescue TomTom::Matrix::RemoteError => e
+  rescue TomTom::Errors::MatrixRemoteError => e
     Rails.logger.error "TomTom::Matrix server error: #{e}"
   end
 end
