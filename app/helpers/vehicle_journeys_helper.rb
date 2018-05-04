@@ -69,4 +69,16 @@ module VehicleJourneysHelper
     )
   end
 
+  def vehicle_journey_stop_headline prev_sp, sp
+    if has_feature?(:long_distance_routes)
+      headline = prev_sp && prev_sp.stop_area.country_code
+      headline = sp.stop_area.country_code != headline
+      headline && sp.stop_area.country_name
+    else
+      headline = prev_sp && prev_sp.stop_area.city_name
+      headline = sp.stop_area.city_name != headline
+      headline && sp.stop_area.city_name
+    end
+  end
+
 end

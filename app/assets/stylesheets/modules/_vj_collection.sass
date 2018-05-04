@@ -2,7 +2,7 @@
 //  VJ Collection  //
 //-----------------//
 
-#vehicle_journeys_wip
+#vehicle_journeys_wip, .consolidated-view
   .table-2entries
     .t2e-head
       > .td
@@ -218,3 +218,62 @@
         // Reset default behaviour
         .form-control
           border-color: #ccc
+
+
+.consolidated-view
+  $highlighted: #d4ba32
+  .line
+    & > .head
+      font-size: 2em
+      text-transform: capitalize
+      border-top: 3px solid black
+      border-bottom: 3px solid black
+      padding-left: 10px
+      margin-top: 10px
+    .routes
+      .route
+        background: #F9F9F9
+        & > .head
+          padding: 15px
+          &.highlighted
+            .pull-right, span.fa
+              color: $highlighted !important
+          a
+            color: black
+            font-size: 1.2em
+            text-transform: capitalize
+            .fa
+              color: $red
+              transition: transform 0.1s
+            &.active .fa
+              transform: rotate(180deg)
+            .pull-right
+              font-size: 0.9em
+              text-transform: lowercase
+        .vehicle-journeys
+          margin-bottom: 40px
+
+          .highlighted
+            background-color: lighten($highlighted, 20%) !important
+          .disabled
+            background-color: #ccc
+            color: #777
+          .t2e-item-list .t2e-item
+            .th
+              max-width: 100px
+              & > div
+                text-overflow: ellipsis
+                overflow: hidden
+                white-space: nowrap
+            .td
+              text-align: center
+
+
+  .table-2entries > .t2e-head > .td > div > span::after
+    bottom: -6px !important
+
+  .table.table-2entries .t2e-item-list .t2e-item
+    background-color: #F9F9F9
+
+  .table.table-2entries .td > div.headlined::before
+    border-right-color: #F9F9F9

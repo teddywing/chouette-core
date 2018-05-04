@@ -72,6 +72,9 @@ module Chouette
       end
     end
 
+    has_many :time_tables, :through => :vehicle_journeys
+    has_many :purchase_windows, :through => :vehicle_journeys
+
     accepts_nested_attributes_for :stop_points, :allow_destroy => :true
 
     validates_presence_of :name
