@@ -15,6 +15,7 @@ module TomTom
         req.headers['Content-Type'] = 'application/json'
 
         req.params[:routeType] = 'shortest'
+        req.params[:traffic] = 'false'
         req.params[:travelMode] = 'bus'
 
         req.body = build_request_body(points)
