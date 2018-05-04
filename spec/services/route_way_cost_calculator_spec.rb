@@ -9,7 +9,7 @@ RSpec.describe RouteWayCostCalculator do
       # anything given in the response.
       stub_request(
         :post,
-        "https://api.tomtom.com/routing/1/matrix/json?key&routeType=shortest&travelMode=bus"
+        "https://api.tomtom.com/routing/1/matrix/json?key&routeType=shortest&traffic=false&travelMode=bus"
       )
         .with(
           headers: {
