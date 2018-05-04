@@ -74,6 +74,7 @@ RSpec.describe 'Workbenches', type: :feature do
         organisation: @user.organisation,
         ready: false
       )
+      pending_referential.pending!
 
       visit workbench_path(workbench)
 
