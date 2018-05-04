@@ -192,20 +192,16 @@ export default class VehicleJourney extends Component {
                   <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
-                      min='00'
-                      max='23'
                       className='form-control'
                       disabled={!this.props.editMode || this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false}
                       readOnly={!this.props.editMode && !vj.dummy}
                       onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false)}}
-                      onChange={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false, true)}}
+                      onBlur={(e) => {this.props.onUpdateTime(e, i, this.props.index, 'hour', false, false, true)}}
                       value={vj.arrival_time['hour']}
                       />
                     <span>:</span>
                     <input
                       type='number'
-                      min='00'
-                      max='59'
                       className='form-control'
                       disabled={!this.props.editMode || this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false}
                       readOnly={!this.props.editMode && !vj.dummy}
@@ -225,8 +221,6 @@ export default class VehicleJourney extends Component {
                   <span className={((this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false) ? 'disabled ' : '') + 'input-group time'}>
                     <input
                       type='number'
-                      min='00'
-                      max='23'
                       className='form-control'
                       disabled={!this.props.editMode || this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false}
                       readOnly={!this.props.editMode && !vj.dummy}
@@ -237,8 +231,6 @@ export default class VehicleJourney extends Component {
                     <span>:</span>
                     <input
                       type='number'
-                      min='00'
-                      max='59'
                       className='form-control'
                       disabled={!this.props.editMode || this.isDisabled(this.props.value.deletable, vj.dummy) || this.props.filters.policy['vehicle_journeys.update'] == false}
                       readOnly={!this.props.editMode && !vj.dummy}
