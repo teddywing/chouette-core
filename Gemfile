@@ -178,7 +178,7 @@ group :test do
   gem 'rspec-snapshot'
 end
 
-group :test, :development, :dev do
+group :test, :development do
   gem 'fabrication', '~> 2.14.1'
   gem 'ffaker', '~> 2.1.0'
   gem 'faker'
@@ -202,6 +202,7 @@ group :test, :development do
   gem 'shoulda-matchers', '~> 3.1'
   gem "teaspoon-jasmine"
   gem "phantomjs"
+  gem 'parallel_tests'
 end
 
 group :production do
