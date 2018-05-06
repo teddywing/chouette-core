@@ -1,51 +1,38 @@
-# Chouette2 [![Build Status](https://travis-ci.org/afimb/chouette2.svg?branch=master)](https://travis-ci.org/afimb/chouette2) [![Dependency Status](https://gemnasium.com/afimb/chouette2.png)](https://gemnasium.com/afimb/chouette2) [![Code Climate](https://codeclimate.com/github/afimb/chouette2.png)](https://codeclimate.com/github/afimb/chouette2)
+# Chouette
 
-Chouette2 is an open source web project in Ruby/Rails to edit and view transport offer data. It is designed as an [SaaS](http://en.wikipedia.org/wiki/Software_as_a_service) platform and can :
+Chouette is a Ruby/Rails & Java project to manage transport offer data. It is designed as an [SaaS](http://en.wikipedia.org/wiki/Software_as_a_service) platform and can :
 * Exchange transport data
  * [Neptune](http://www.normes-donnees-tc.org/format-dechange/donnees-theoriques/neptune/),
  * [GTFS](https://developers.google.com/transit/gtfs/reference?hl=fr),
  * [NeTEx](http://www.normes-donnees-tc.org/format-dechange/donnees-theoriques/netex/)
-* Edit transport data
+* Create and edit transport data with a collaborative team workflow
 * Be requested via a read-only [Restful API](https://en.wikipedia.org/wiki/Representational_state_transfer)
 * [Import, Export and Validate transport data asynchronously](http://github.com/afimb/chouette)
 * Use a [multi-tenancy database](http://en.wikipedia.org/wiki/Multitenancy)
 
-Release Notes
--------------
+Chouette Core
+------------
 
-The release notes (in French) can be found in the [CHANGELOG](./CHANGELOG.md) file
+Chouette Core is the developer version of Chouette open source project. Use this projet to fork and maintain your own Chouette project.
+
+**Chouette Core is under construction**, contact [af83 Choutte team](mailto:chouette-dev@af83.com) if you have any question.
 
 Requirements
 ------------
 
-* [Import, Export and Validation Operations](https://github.com/af83/stif-boiv-iev) are in another project in Java
-
-Install
--------
-
-See [installation manual](./INSTALL.md)
+* [Import, Export and Validation Operations](https://github.com/af83/chouette-core-iev) are in the Java part of the project
 
 More Information
 ----------------
 
 Some technical articles are available [on the wiki](../../wiki) too.
 
-API Documentation
------------------
-
-TODO
-
 License
 -------
 
 This project is licensed under the CeCILL-B license, a copy of which can be found in the [LICENSE](./LICENSE.md) file.
 
-Release Notes
--------------
-
-The release notes (in French) can be found in [CHANGELOG](./CHANGELOG.md) file
-
 Support
 -------
 
-Users looking for support should file an issue on the GitHub [issue tracking page](../../issues), or file a [pull request](../../pulls) if you have a fix available.
+Contact [af83 Choutte team](mailto:chouette-dev@af83.com) to know how to contribute to the Chouette project
