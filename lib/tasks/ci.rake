@@ -8,12 +8,21 @@ namespace :ci do
       end
   end
 
+  def parallel_tests?
+    ENV["PARALLEL_TESTS"] == "true"
+  end
+
   desc "Prepare CI build"
   task :setup do
     cp "config/database.yml", "config/database.yml.orig"
     cp "config/database/ci.yml", "config/database.yml"
     puts "Use #{database_name} database"
-    sh "RAILS_ENV=test rake db:drop db:create db:migrate"
+
+    if parallel_tests?
+      sh "RAILS_ENV=test rake parallel:drop parallel:create parallel:migrate"
+    else
+      sh "RAILS_ENV=test rake db:drop db:create db:migrate"
+    end
   end
 
   def git_branch
@@ -43,11 +52,7 @@ namespace :ci do
   end
 
   task :assets do
-    sh "RAILS_ENV=test bundle exec rake assets:precompile"
-  end
-
-  task :i18n_js_export do
-    sh "RAILS_ENV=test bundle exec rake i18n:js:export"
+    sh "RAILS_ENV=test bundle exec rake assets:precompile i18n:js:export"
   end
 
   task :jest do
@@ -71,12 +76,28 @@ namespace :ci do
     sh "RAILS_ENV=test bundle exec rake assets:clobber"
   end
 
-  task :build => ["ci:setup", "ci:assets", "ci:i18n_js_export", "spec", "ci:jest", "cucumber", "ci:check_security"]
+  task :spec do
+    if parallel_tests?
+      # parallel tasks invokes this task ..
+      # but development db isn't available during ci tasks
+      Rake::Task["db:abort_if_pending_migrations"].clear
+
+      Rake::Task["parallel:spec"].invoke
+    else
+      Rake::Task["spec"].invoke
+    end
+  end
+
+  task :build => ["ci:setup", "ci:assets", "ci:spec", "ci:jest", "cucumber", "ci:check_security"]
 
   namespace :docker do
     task :clean do
       puts "Drop #{database_name} database"
-      sh "RAILS_ENV=test rake db:drop"
+      if parallel_tests?
+        sh "RAILS_ENV=test rake parallel:drop"
+      else
+        sh "RAILS_ENV=test rake db:drop"
+      end
 
       # Restore projet config/database.yml
       # cp "config/database.yml.orig", "config/database.yml" if File.exists?("config/database.yml.orig")
