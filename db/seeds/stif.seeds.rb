@@ -20,6 +20,7 @@ workgroup = Workgroup.seed_by(name: "Gestion de l'offre théorique IDFm") do |w|
   w.line_referential      = line_referential
   w.stop_area_referential = stop_area_referential
   w.export_types          = ["Export::Netex"]
+  w.owner                 = stif
 end
 
 Workbench.update_all workgroup_id: workgroup

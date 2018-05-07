@@ -1,0 +1,10 @@
+en:
+  workgroups:
+    edit:
+      title: "Paramétrages de l'application"
+    available_compliance_control_sets:
+      import_id: 
+      merge_id: 
+      automatic_id: 
+      workgroup_id: 
+      workbench_id: 

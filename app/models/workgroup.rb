@@ -17,6 +17,8 @@ class Workgroup < ApplicationModel
 
   has_many :custom_fields
 
+  accepts_nested_attributes_for :workbenches
+
   def custom_fields_definitions
     Hash[*custom_fields.map{|cf| [cf.code, cf]}.flatten]
   end
@@ -25,7 +27,21 @@ class Workgroup < ApplicationModel
     export_types.include? export_name
   end
 
-  def import_compliance_control_sets
-    @import_compliance_control_sets ||= import_compliance_control_set_ids.map{|id| ComplianceControlSet.find(id)}
+  def available_compliance_control_sets
+    %i(
+      import
+      merge
+      automatic
+      workgroup
+      workbench
+    ).inject({}) do |h, k|
+      h[k] = "workgroups.available_compliance_control_sets.#{k}".t.capitalize
+      h
+    end
   end
+
+  # XXX
+  # def import_compliance_control_sets
+  #   @import_compliance_control_sets ||= import_compliance_control_set_ids.map{|id| ComplianceControlSet.find(id)}
+  # end
 end

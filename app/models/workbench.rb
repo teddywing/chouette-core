@@ -51,8 +51,14 @@ class Workbench < ApplicationModel
     where(name: DEFAULT_WORKBENCH_NAME).last
   end
 
-  def import_compliance_control_set
-    import_compliance_control_set_id && ComplianceControlSet.find(import_compliance_control_set_id)
+  # XXX
+  # def import_compliance_control_set
+  #   import_compliance_control_set_id && ComplianceControlSet.find(import_compliance_control_set_id)
+  # end
+
+  def compliance_control_set key
+    id = (owner_compliance_control_set_ids || {})[key.to_s]
+    id.present? && ComplianceControlSet.find(id)
   end
 
   private

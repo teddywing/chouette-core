@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180430122530) do
+ActiveRecord::Schema.define(version: 20180507130455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -774,7 +774,7 @@ ActiveRecord::Schema.define(version: 20180430122530) do
     t.string   "objectid",                               null: false
     t.integer  "object_version",  limit: 8
     t.integer  "route_id",        limit: 8
-    t.integer  "stop_point_ids",                                      array: true
+    t.integer  "stop_point_ids",  limit: 8,                           array: true
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
@@ -1077,6 +1077,7 @@ ActiveRecord::Schema.define(version: 20180430122530) do
     t.integer  "workgroup_id",                     limit: 8
     t.integer  "import_compliance_control_set_id", limit: 8
     t.integer  "merge_compliance_control_set_id",  limit: 8
+    t.hstore   "owner_compliance_control_set_ids"
   end
 
   add_index "workbenches", ["import_compliance_control_set_id"], name: "index_workbenches_on_import_compliance_control_set_id", using: :btree
@@ -1088,13 +1089,13 @@ ActiveRecord::Schema.define(version: 20180430122530) do
 
   create_table "workgroups", id: :bigserial, force: :cascade do |t|
     t.string   "name"
-    t.integer  "line_referential_id",               limit: 8
-    t.integer  "stop_area_referential_id",          limit: 8
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
-    t.string   "import_types",                                default: [],              array: true
-    t.string   "export_types",                                default: [],              array: true
-    t.integer  "import_compliance_control_set_ids",           default: [],              array: true
+    t.integer  "line_referential_id",      limit: 8
+    t.integer  "stop_area_referential_id", limit: 8
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "import_types",                       default: [],              array: true
+    t.string   "export_types",                       default: [],              array: true
+    t.integer  "owner_id",                 limit: 8
   end
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"

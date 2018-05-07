@@ -272,6 +272,10 @@ crumb :vehicle_journeys do |referential, route|
   parent :route, referential, route
 end
 
+crumb :workgroup do |w|
+  link I18n.t('layouts.navbar.workbench_outputs.edit_workgroup')
+end
+
 # crumb :compliance_controls do|compliance_control_sets|
 #   link
 #   parent :compliance_control_sets, compliance_control_sets
