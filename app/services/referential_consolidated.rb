@@ -89,7 +89,7 @@ class ReferentialConsolidated
     end
 
     def highlighted?
-      matching_stop_areas = params[:q]["stop_areas"] && (params[:q]["stop_areas"].values & self.stop_area_ids.map(&:to_s)).present?
+      matching_stop_areas = params[:q] && params[:q]["stop_areas"] && (params[:q]["stop_areas"].values & self.stop_area_ids.map(&:to_s)).present?
       (should_highlight? || matching_stop_areas) && highlighted_journeys.exists?
     end
 
@@ -118,7 +118,7 @@ class ReferentialConsolidated
     def_delegators :ar_model, :id, :arrival_time, :departure_time, :name, :stop_area, :stop_area_id
 
     def highlighted?
-      params[:q]["stop_areas"] && params[:q]["stop_areas"].values.any?{|v| v.to_s == stop_area_id.to_s}
+      params[:q] && params[:q]["stop_areas"] && params[:q]["stop_areas"].values.any?{|v| v.to_s == stop_area_id.to_s}
     end
   end
 end

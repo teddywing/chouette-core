@@ -75,8 +75,10 @@
                 .t2e-item class="#{journey.highlighted? ? 'highlighted' : ''}"
                   .th
                     div
-                      strong= link_to journey.id, [@referential, journey.route.line, journey.route]
-                    div= journey.published_journey_name
+                      strong= link_to journey.id, [@referential, journey.route.line, journey.route, :vehicle_journeys]
+                    div
+                      a title=journey.published_journey_name
+                        = journey.published_journey_name
                     div= journey.journey_pattern.get_objectid.short_id
                     div
                       - journey.purchase_windows[0..3].each do |tt|

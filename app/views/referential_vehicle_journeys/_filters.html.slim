@@ -82,5 +82,5 @@
 
 
   .actions
-    = link_to t('actions.erase'), referential_vehicle_journeys_path(@referential), class: 'btn btn-link'
+    = link_to t('actions.erase'), referential_vehicle_journeys_path(@referential, display: params[:display]), class: 'btn btn-link'
     = f.submit t('actions.filter'), class: 'btn btn-default'
