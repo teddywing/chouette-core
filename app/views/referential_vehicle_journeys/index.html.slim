@@ -9,7 +9,7 @@
           = render 'filters'
 
     - if @vehicle_journeys.present?
-      - if params[:display] == "consolidated"
+      - if params[:display] == "consolidated" && has_feature?(:consolidated_offers)
         = render partial: "consolidated"
       - else
         = render partial: "list"
