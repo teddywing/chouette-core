@@ -1,6 +1,7 @@
 class Workgroup < ApplicationModel
   belongs_to :line_referential
   belongs_to :stop_area_referential
+  belongs_to :owner, class_name: "Organisation"
 
   has_many :workbenches
   has_many :calendars
