@@ -106,7 +106,7 @@
                       headline = vehicle_journey_stop_headline prev_sp, sp
                       prev_sp = sp
                       vjas = journey.vehicle_journey_at_stops.where(stop_point_id: sp.id).last
-                    .td class="#{vjas && sp.highlighted? ? 'highlighted' : ''} #{vjas.nil? ? 'disabled' : ''}"
+                    .td class="#{vjas && sp.highlighted? ? 'highlighted' : ''} #{vjas.nil? ? 'disabled' : ''} #{headline.present? ? 'headlined' : ''}"
                       div title="#{sp.stop_area.city_name ? "#{sp.stop_area.city_name} (#{sp.stop_area.zip_code})" : ''}" data-headline=headline class=(headline.present? ? 'headlined' : '')
                         - if vjas.present?
                           - if vjas.departure_time == vjas.arrival_time

@@ -261,13 +261,16 @@
           margin-bottom: 0px
           & > *
             display: inline-block
+            & > *
+              overflow: hidden
+              min-width: 0
           &.open
             margin-bottom: 40px
 
           .highlighted
             background-color: lighten($highlighted, 20%) !important
           .disabled
-            background-color: #ccc
+            background-color: #dedede
             color: #777
           .t2e-item-list .t2e-item
             .th
@@ -279,6 +282,18 @@
                 white-space: nowrap
             .td
               text-align: center
+              &:hover:after
+                position: absolute
+                height: 100%
+                bottom: 0
+                left: -10000px
+                right: -10000px
+                content: ""
+                background-color: $red
+                opacity: 0.1
+                z-index: 10
+              &.headlined:hover:after
+                height: 50%
 
 
   .table-2entries > .t2e-head > .td > div > span::after
@@ -288,4 +303,7 @@
     background-color: #F9F9F9
 
   .table.table-2entries .td > div.headlined::before
-    border-right-color: #F9F9F9
+    border-right: none
+
+  // .table.table-2entries .highlighted .td > div.headlined::before
+  //   border-right-color: lighten($highlighted, 20%)
