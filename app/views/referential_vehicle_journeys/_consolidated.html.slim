@@ -15,7 +15,19 @@ coffee:
     $(e.target).toggleClass 'active'
     $(e.target).parents('.table').find('.detailed-purchase-windows').toggleClass 'hidden'
 
+  $('.route').find('.vehicle-journeys').each (i, e)->
+    $e = $(e)
+    $e.removeClass 'hidden'
+    e.setAttribute 'data-original-height', $e.height()
+    $e.height 0
+
   $('a.toggle-route').click (e)->
     e.preventDefault()
     $(e.currentTarget).toggleClass 'active'
-    $(e.currentTarget).parents('.route').find('.vehicle-journeys').toggleClass 'hidden'
+    tab = $(e.currentTarget).parents('.route').find('.vehicle-journeys')
+    if tab.hasClass 'open'
+      tab.removeClass 'open'
+      tab.height 0
+    else
+      tab.addClass 'open'
+      tab.height tab.attr('data-original-height')

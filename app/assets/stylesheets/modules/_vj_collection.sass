@@ -234,14 +234,18 @@
       .route
         background: #F9F9F9
         & > .head
-          padding: 15px
           &.highlighted
             .pull-right, span.fa
               color: $highlighted !important
           a
+            padding: 15px
             color: black
             font-size: 1.2em
             text-transform: capitalize
+            display: block
+            text-decoration: none
+            &:hover
+              background-color: #F0F0F0
             .fa
               color: $red
               transition: transform 0.1s
@@ -251,7 +255,14 @@
               font-size: 0.9em
               text-transform: lowercase
         .vehicle-journeys
-          margin-bottom: 40px
+          display: block
+          overflow: hidden
+          transition: height 0.5s, margin-bottom 0.5s
+          margin-bottom: 0px
+          & > *
+            display: inline-block
+          &.open
+            margin-bottom: 40px
 
           .highlighted
             background-color: lighten($highlighted, 20%) !important
