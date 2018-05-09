@@ -4,6 +4,7 @@ RSpec.describe WorkgroupsController, :type => :controller do
   let(:workgroup) { create :workgroup }
   let(:workbench) { create :workbench, workgroup: workgroup }
   let(:compliance_control_set) { create :compliance_control_set, organisation: @user.organisation }
+  let(:merge_id) { 2**64/2 - 1 } # Let's check we support Bigint
 
   describe 'PATCH update' do
     let(:params){
@@ -13,9 +14,9 @@ RSpec.describe WorkgroupsController, :type => :controller do
           workbenches_attributes: {
             "0" => {
               id: workbench.id,
-              owner_compliance_control_set_ids: {
-                import: compliance_control_set.id,
-                merge: 2**64/2 - 1
+              compliance_control_set_ids: {
+                after_import_by_workgroup: compliance_control_set.id,
+                after_merge_by_workgroup: merge_id
               }
             }
           }
@@ -34,9 +35,8 @@ RSpec.describe WorkgroupsController, :type => :controller do
       end
       it 'returns HTTP success' do
         expect(request).to be_redirect
-        expect(workbench.reload.compliance_control_set(:import)).to eq compliance_control_set
-        # Let's check we support Bigint
-        expect(workbench.reload.owner_compliance_control_set_ids["merge"]).to eq (2**64/2 - 1).to_s
+        expect(workbench.reload.compliance_control_set(:after_import_by_workgroup)).to eq compliance_control_set
+        expect(workbench.reload.owner_compliance_control_set_ids['after_merge_by_workgroup']).to eq merge_id.to_s
       end
     end
   end
