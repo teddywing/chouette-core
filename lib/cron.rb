@@ -2,18 +2,26 @@ module Cron
   class << self
 
     def sync_organizations
-      Organisation.portail_sync
+      begin
+        Organisation.portail_sync
+      rescue => e
+        Rails.logger.error(e.inspect)
+      end
     end
 
     def sync_users
-      User.portail_sync
+      begin
+        User.portail_sync
+      rescue => e
+        Rails.logger.error(e.inspect)
+      end
     end
 
     def sync_reflex
       begin
         sync = StopAreaReferential.find_by(name: 'Reflex').stop_area_referential_syncs.build
         raise "reflex:sync aborted - There is already an synchronisation in progress" unless sync.valid?
-        sync.save if sync.valid?
+        sync.save
       rescue => e
         Rails.logger.warn(e.message)
       end
@@ -23,7 +31,7 @@ module Cron
       begin
         sync = LineReferential.find_by(name: 'CodifLigne').line_referential_syncs.build
         raise "Codifligne:sync aborted - There is already an synchronisation in progress" unless sync.valid?
-        sync.save if sync.valid? 
+        sync.save 
       rescue => e
         Rails.logger.warn(e.message)
       end
