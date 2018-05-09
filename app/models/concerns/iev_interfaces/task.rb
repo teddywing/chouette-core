@@ -127,7 +127,10 @@ module IevInterfaces::Task
 
   def call_boiv_iev
     Rails.logger.error("Begin IEV call for import")
-    running!
+
+    # Java code expects tasks in NEW status
+    # Don't change status before calling iev
+
     Net::HTTP.get iev_callback_url
     Rails.logger.error("End IEV call for import")
   rescue Exception => e
