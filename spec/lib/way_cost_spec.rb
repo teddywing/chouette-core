@@ -9,10 +9,9 @@ RSpec.describe WayCost do
         id: '1-2'
       )
 
-      departure = RGeoExt.geographic_factory.point(2.36143, 48.85086)
-      arrival = RGeoExt.geographic_factory.point(1.87606, 47.91231)
-
-      expect(way_cost.calculate_distance).to eq(departure.distance(arrival))
+      expect(way_cost.calculate_distance).to eq(
+        way_cost.departure.distance_to(way_cost.arrival, units: :kms) * 1000
+      )
     end
   end
 end

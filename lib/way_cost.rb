@@ -28,9 +28,7 @@ class WayCost
   end
 
   def calculate_distance
-    departure = RGeoExt.geographic_factory.point(@departure.lng, @departure.lat)
-    arrival = RGeoExt.geographic_factory.point(@arrival.lng, @arrival.lat)
-
-    departure.distance(arrival)
+    distance_meters = departure.distance_to(arrival, units: :kms) * 1000
+    distance_meters
   end
 end
