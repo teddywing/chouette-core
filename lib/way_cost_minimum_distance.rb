@@ -1,6 +1,7 @@
 class WayCostMinimumDistance
   MINIMUM_DISTANCE_METERS = 500
   SNAP_TO_METERS = 1000
+  SNAP_TO_SECONDS = 60
 
   def initialize(way_costs)
     @way_costs = way_costs
@@ -12,6 +13,7 @@ class WayCostMinimumDistance
 
       if distance < MINIMUM_DISTANCE_METERS
         way_cost.distance = SNAP_TO_METERS
+        way_cost.time = SNAP_TO_SECONDS
       end
 
       way_cost
