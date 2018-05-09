@@ -6,6 +6,6 @@ class WorkbenchPolicy < ApplicationPolicy
   end
 
   def update?
-    true
+    user.has_permission?('workbenches.update')
   end
 end

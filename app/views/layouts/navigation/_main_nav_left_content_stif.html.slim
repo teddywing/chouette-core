@@ -38,6 +38,9 @@
             span = t('activerecord.models.compliance_check_set.other').capitalize
           = link_to compliance_control_sets_path, class: 'list-group-item' do
             span = t('activerecord.models.compliance_control_set.other').capitalize
+          - if policy(workbench).edit?
+            = link_to [:edit, workbench], class: 'list-group-item' do
+              span = t('workbenches.edit.link')
 
     .menu-item.panel
       .panel-heading
