@@ -1,4 +1,4 @@
-- if Rails.application.config.development_toolbar
+- if Rails.application.config.development_toolbar && current_user
   = modalbox 'development-toolbar' do
     = form_tag development_toolbar_update_settings_path, authenticity_token: true do
       .modal-header
