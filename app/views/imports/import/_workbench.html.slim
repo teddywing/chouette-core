@@ -9,7 +9,7 @@
     = render 'shared/iev_interfaces/messages', messages: @import.messages
 
 ruby:
- controls = @workbench.workgroup.available_compliance_control_sets.map do |key, label|
+ controls = @workbench.workgroup.import_compliance_control_sets.map do |key, label|
    TableBuilderHelper::Column.new(
      name: label,
      attribute: Proc.new { |n| n.workbench.compliance_control_set(key).present? ? import_status(n.workbench_import_check_set(key)&.status, verbose: true, default_status: (n.status == "ERROR" ? :aborted : :pending)) : '-' },

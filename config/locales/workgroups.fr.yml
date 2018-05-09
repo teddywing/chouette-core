@@ -2,10 +2,11 @@ fr:
   workgroups:
     edit:
       title: "Paramétrages de l'application"
-
-    available_compliance_control_sets:
-      import: jeu de données après import
-      merge: jeu de données avant intégration
-      automatic: offre transporteur
-      workgroup: offre idf
-      workbench: automatique
+    compliance_control_sets:
+      after_import: après import
+      after_import_by_workgroup: après import (groupe)
+      before_merge: avant finalisation
+      before_merge_by_workgroup: avant finalisation (groupe)
+      after_merge: après finalisation
+      after_merge_by_workgroup: après finalisation (groupe)
+      automatic_by_workgroup: automatique

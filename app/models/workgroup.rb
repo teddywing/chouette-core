@@ -27,30 +27,34 @@ class Workgroup < ApplicationModel
     export_types.include? export_name
   end
 
-  def available_compliance_control_sets
-    %i(
-      import
-      merge
-      automatic
-      workgroup
-      workbench
-    ).inject({}) do |h, k|
-      h[k] = "workgroups.available_compliance_control_sets.#{k}".t.capitalize
-      h
-    end
-  end
-  def import_compliance_control_sets
-    %i(
-      import
-      workbench
-    ).inject({}) do |h, k|
-      h[k] = "workgroups.available_compliance_control_sets.#{k}".t.capitalize
-      h
-    end
+  def all_compliance_control_sets
+    %i(after_import
+      after_import_by_workgroup
+      before_merge
+      before_merge_by_workgroup
+      after_merge
+      after_merge_by_workgroup
+      automatic_by_workgroup
+    )
   end
 
-  # XXX
-  # def import_compliance_control_sets
-  #   @import_compliance_control_sets ||= import_compliance_control_set_ids.map{|id| ComplianceControlSet.find(id)}
-  # end
+  def compliance_control_sets_by_workgroup
+    compliance_control_sets_labels all_compliance_control_sets.grep(/by_workgroup$/)
+  end
+
+  def compliance_control_sets_by_workbench
+    compliance_control_sets_labels all_compliance_control_sets.grep_v(/by_workgroup$/)
+  end
+
+  def import_compliance_control_sets
+    compliance_control_sets_labels all_compliance_control_sets.grep(/^after_import/)
+  end
+
+  private
+  def compliance_control_sets_labels(keys)
+    keys.inject({}) do |h, k|
+      h[k] = "workgroups.compliance_control_sets.#{k}".t.capitalize
+      h
+    end
+  end
 end

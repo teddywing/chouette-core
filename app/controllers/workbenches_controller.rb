@@ -42,7 +42,7 @@ class WorkbenchesController < ChouetteController
   private
 
   def workbench_params
-    params.require(:workbench).permit(owner_compliance_control_set_ids: @workbench.workgroup.available_compliance_control_sets.keys)
+    params.require(:workbench).permit(owner_compliance_control_set_ids: @workbench.workgroup.compliance_control_sets_by_workbench.keys)
   end
 
   def resource
