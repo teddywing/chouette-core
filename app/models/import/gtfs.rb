@@ -14,9 +14,8 @@ class Import::Gtfs < Import::Base
     @resource ||= parent.resources.find_or_create_by(name: self.name, resource_type: "referential", reference: self.name)
   end
 
-  def notify_parent
-    super
-    main_resource.update_status_from_importer self.status
+  def next_step
+    main_resource.next_step
   end
 
   def create_message args
@@ -336,10 +335,10 @@ class Import::Gtfs < Import::Base
   end
 
   def notify_parent
-    return unless parent.present?
-    return if notified_parent_at
-    parent.child_change
-    update_column :notified_parent_at, Time.now
+    if super
+      main_resource.update_status_from_importer self.status
+      next_step
+    end
   end
 
 end

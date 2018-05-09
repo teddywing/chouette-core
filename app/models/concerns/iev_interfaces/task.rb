@@ -31,6 +31,16 @@ module IevInterfaces::Task
 
     before_save :initialize_fields, on: :create
     after_save :notify_parent
+
+    status.values.each do |s|
+      define_method "#{s}!" do
+        update status: s
+      end
+
+      define_method "#{s}?" do
+        status&.to_s == s
+      end
+    end
   end
 
   module ClassMethods
@@ -117,9 +127,11 @@ module IevInterfaces::Task
 
   def call_boiv_iev
     Rails.logger.error("Begin IEV call for import")
+    running!
     Net::HTTP.get iev_callback_url
     Rails.logger.error("End IEV call for import")
   rescue Exception => e
+    aborted!
     logger.error "IEV server error : #{e.message}"
     logger.error e.backtrace.inspect
   end

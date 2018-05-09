@@ -39,6 +39,15 @@ class Workgroup < ApplicationModel
       h
     end
   end
+  def import_compliance_control_sets
+    %i(
+      import
+      workbench
+    ).inject({}) do |h, k|
+      h[k] = "workgroups.available_compliance_control_sets.#{k}".t.capitalize
+      h
+    end
+  end
 
   # XXX
   # def import_compliance_control_sets

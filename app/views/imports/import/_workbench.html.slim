@@ -9,22 +9,13 @@
     = render 'shared/iev_interfaces/messages', messages: @import.messages
 
 ruby:
- controls = []
- controls << TableBuilderHelper::Column.new(
-   name: t('.stif_control'),
-   attribute: Proc.new { |n| import_status(n.workbench_import_check_set&.status, verbose: true, default_status: :pending) },
-   sortable: false,
-   link_to: lambda do |item|
-     item.workbench_import_check_set.present? && [@import.workbench, item.workbench_import_check_set]
-   end
- ) if @workbench.import_compliance_control_set.present?
- controls += @workbench.workgroup.import_compliance_control_sets.each_with_index.map do |cs, i|
+ controls = @workbench.workgroup.available_compliance_control_sets.map do |key, label|
    TableBuilderHelper::Column.new(
-     name: t('.organisation_control'),
-     attribute: Proc.new { |n| import_status(n.workgroup_import_check_set(i)&.status, verbose: true, default_status: :pending) },
+     name: label,
+     attribute: Proc.new { |n| n.workbench.compliance_control_set(key).present? ? import_status(n.workbench_import_check_set(key)&.status, verbose: true, default_status: (n.status == "ERROR" ? :aborted : :pending)) : '-' },
      sortable: false,
      link_to: lambda do |item|
-       item.workgroup_import_check_set(i).present? && [@import.workbench, item.workgroup_import_check_set(i)]
+       item.workbench_import_check_set(key).present? && [@import.workbench, item.workbench_import_check_set(key)]
     end
     )
   end
@@ -43,7 +34,7 @@ ruby:
         ), \
         TableBuilderHelper::Column.new( \
           key: :status, \
-          attribute: Proc.new { |n| import_status(n.status, verbose: true, default_status: :pending) }, \
+          attribute: Proc.new { |n| import_status(n.netex_import&.status || n.status, verbose: true, default_status: :pending) }, \
           sortable: false, \
           link_to: lambda do |item| \
             item.netex_import.present? ? [@import.workbench, item.netex_import] : [@import.workbench, @import, item] \
@@ -57,6 +48,6 @@ ruby:
         controls.present? ? { \
           title: I18n.t('imports.show.summary').html_safe, \
           width: controls.size, \
-          cls: 'overheaded-default colspan="2"' \
+          cls: "overheaded-default colspan='#{controls.size}'" \
         } : nil \
       ].compact

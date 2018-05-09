@@ -3,8 +3,8 @@ en:
     edit:
       title: "Paramétrages de l'application"
     available_compliance_control_sets:
-      import_id: 
-      merge_id: 
-      automatic_id: 
-      workgroup_id: 
-      workbench_id: 
+      import: after import
+      merge: after merge
+      automatic: automatic
+      workgroup: workgroup
+      workbench: workbench

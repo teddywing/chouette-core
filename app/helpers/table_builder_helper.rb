@@ -153,7 +153,17 @@ module TableBuilderHelper
             i = columns.index(column)
 
             if overhead[i].blank?
-              if (i > 0) && overhead[i - 1][:width] && (overhead[i - 1][:width] > 1)
+              prev = nil
+              if i > 0
+                (i-1..0).each do |j|
+                  o = overhead[j]
+                  if (j + o[:width].to_i) >= i
+                    prev = o
+                    break
+                  end
+                end
+              end
+              if prev
                 clsArrayH = overhead[i - 1][:cls].split
 
                 hcont << content_tag(:th, build_column_header(
@@ -234,7 +244,17 @@ module TableBuilderHelper
             i = columns.index(column)
 
             if overhead[i].blank?
-              if (i > 0) && overhead[i - 1][:width] && (overhead[i - 1][:width] > 1)
+              prev = nil
+              if i > 0
+                (i-1..0).each do |j|
+                  o = overhead[j]
+                  if (j + o[:width].to_i) >= i
+                    prev = o
+                    break
+                  end
+                end
+              end
+              if prev
                 clsArrayAlt = overhead[i - 1][:cls].split
 
                 bcont << content_tag(:td, link, title: 'Voir', class: td_cls(clsArrayAlt, extra_class))

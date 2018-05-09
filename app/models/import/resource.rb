@@ -20,17 +20,11 @@ class Import::Resource < ApplicationModel
 
       return unless netex_import&.successful?
 
-      if workbench.import_compliance_control_set_id.present? && workbench_import_check_set.nil?
-        ComplianceControlSetCopyWorker.perform_async workbench.import_compliance_control_set_id, referential_id
-        return
-      end
-
-      return if workbench_import_check_set && !workbench_import_control_set.successful?
-      workgroup.import_compliance_control_set_ids.each_with_index do |id, index|
-        compliance_check_set = workgroup_import_check_set[index]
-        return if compliance_check_set && !compliance_check_set.successful?
+      workbench.workgroup.import_compliance_control_sets.map do |key, label|
+        next unless (control_set = workbench.compliance_control_set(key)).present?
+        compliance_check_set = workbench_import_check_set key
         if compliance_check_set.nil?
-          ComplianceControlSetCopyWorker.perform_async id, referential_id
+          ComplianceControlSetCopyWorker.perform_async control_set.id, referential_id
         end
       end
     end
@@ -49,17 +43,10 @@ class Import::Resource < ApplicationModel
     import.children.where(name: self.reference).last
   end
 
-  def workbench_import_check_set
+  def workbench_import_check_set key
     return unless referential.present?
-    return unless referential.workbench.import_compliance_control_set_id.present?
-    referential.compliance_check_sets.where(compliance_control_set_id: referential.workbench.import_compliance_control_set_id, referential_id: referential_id).last
-  end
-
-  def workgroup_import_check_set(index)
-    return unless referential.present?
-    return unless referential.workbench.workgroup.import_compliance_control_set_ids.present?
-    cs = referential.workbench.workgroup.import_compliance_control_sets[index]
-    return unless cs
-    referential.compliance_check_sets.where(compliance_control_set_id: cs.id, referential_id: referential_id).last
+    control_set = referential.workbench.compliance_control_set(key)
+    return unless control_set.present?
+    referential.compliance_check_sets.where(compliance_control_set_id: control_set.id, referential_id: referential_id).last
   end
 end

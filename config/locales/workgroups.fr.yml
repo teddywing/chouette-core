@@ -4,8 +4,8 @@ fr:
       title: "Paramétrages de l'application"
 
     available_compliance_control_sets:
-      import_id: jeu de données après import
-      merge_id: jeu de données avant intégration
-      automatic_id: offre transporteur
-      workgroup_id: offre idf
-      workbench_id: automatique
+      import: jeu de données après import
+      merge: jeu de données avant intégration
+      automatic: offre transporteur
+      workgroup: offre idf
+      workbench: automatique

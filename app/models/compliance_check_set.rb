@@ -26,6 +26,10 @@ class ComplianceCheckSet < ApplicationModel
     %w(successful failed warning aborted canceled)
   end
 
+  def successful?
+    status.to_s == "successful"
+  end
+
   def self.abort_old
     where(
       'created_at < ? AND status NOT IN (?)',
