@@ -61,6 +61,10 @@ class Workbench < ApplicationModel
     id.present? && ComplianceControlSet.find(id)
   end
 
+  def compliance_control_set_ids=(compliance_control_set_ids)
+    self.owner_compliance_control_set_ids = (owner_compliance_control_set_ids || {}).merge compliance_control_set_ids
+  end
+
   private
 
   def initialize_output
