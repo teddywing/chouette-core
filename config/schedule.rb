@@ -28,25 +28,23 @@ set :NEW_RELIC_LOG, 'stdout'
 set :job_template, "/bin/bash -c ':job'"
 
 every :hour do
-  rake "organisations:sync"
-  rake "users:sync"
+  Cron.sync_organizations
+  Cron.sync_users
 end
 
 every :day, :at => '3:00am' do
-  rake "reflex:sync"
+  Cron.sync_reflex
 end
 every :day, :at => '4:00 am' do
-  rake "codifligne:sync"
+  Cron.sync_codifligne
 end
 
 every 5.minutes do
-  rake "import:netex_abort_old"
-  rake "import:notify_parent"
+  Cron.check_import_operations
 end
 
 every 5.minutes do
-  rake "compliance_check_sets:abort_old"
-  rake "compliance_check_sets:notify_parent"
+  Cron.check_ccset_operations
 end
 
 every 1.minute do
