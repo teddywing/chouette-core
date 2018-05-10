@@ -1,8 +1,8 @@
 # coding: utf-8
 
-unless ENV.fetch("SEED", false) || Rails.env.test?
-  Rails.application.config.to_prepare do
-    Organisation.after_create do |organisation|
+Rails.application.config.to_prepare do
+  Organisation.after_create do |organisation|
+    unless organisation.code == "STIF" # seed is in action
       line_referential      = LineReferential.find_by(name: "CodifLigne")
       stop_area_referential = StopAreaReferential.find_by(name: "Reflex")
 
@@ -14,7 +14,7 @@ unless ENV.fetch("SEED", false) || Rails.env.test?
         w.stop_area_referential = stop_area_referential
       end
 
-      workbench = organisation.workbenches.find_or_create_by(name: "Gestion de l'offre") do |w|
+      organisation.workbenches.find_or_create_by(name: "Gestion de l'offre") do |w|
         w.line_referential      = line_referential
         w.stop_area_referential = stop_area_referential
         w.objectid_format       = Workbench.objectid_format.stif_netex

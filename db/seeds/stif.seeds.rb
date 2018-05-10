@@ -23,4 +23,9 @@ workgroup = Workgroup.seed_by(name: "Gestion de l'offre théorique IDFm") do |w|
   w.owner                 = stif
 end
 
-Workbench.update_all workgroup_id: workgroup
+stif.workbenches.seed_by(name: "Gestion de l'offre") do |w|
+  w.line_referential      = line_referential
+  w.stop_area_referential = stop_area_referential
+  w.objectid_format       = Workbench.objectid_format.stif_netex
+  w.workgroup             = workgroup
+end
