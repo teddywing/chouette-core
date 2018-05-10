@@ -25,8 +25,10 @@ RSpec.describe WorkbenchesController, :type => :controller do
     }
     let(:request){ patch :update, id: workbench.id, workbench: workbench_params }
 
-    it 'should respond with 403' do
-      expect(request).to have_http_status 403
+    without_permission "workbenches.update" do
+      it 'should respond with 403' do
+        expect(request).to have_http_status 403
+      end
     end
 
     with_permission "workbenches.update" do
