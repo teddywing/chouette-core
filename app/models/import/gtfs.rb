@@ -11,15 +11,15 @@ class Import::Gtfs < Import::Base
   end
 
   def main_resource
-    @resource ||= parent.resources.find_or_create_by(name: self.name, resource_type: "referential", reference: self.name)
+    @resource ||= parent.resources.find_or_create_by(name: self.name, resource_type: "referential", reference: self.name) if parent
   end
 
   def next_step
-    main_resource.next_step
+    main_resource&.next_step
   end
 
   def create_message args
-    main_resource.messages.create args
+    (main_resource || self).messages.build args
   end
 
   def import
@@ -53,7 +53,7 @@ class Import::Gtfs < Import::Base
       workbench_id: workbench.id,
       metadatas: [referential_metadata]
     )
-    main_resource.update referential: referential
+    main_resource.update referential: referential if main_resource
   end
 
   def referential_metadata

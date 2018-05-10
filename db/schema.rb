@@ -450,7 +450,7 @@ ActiveRecord::Schema.define(version: 20180509071833) do
     t.string   "reference"
     t.string   "name"
     t.hstore   "metrics"
-    t.integer  "referential_id"
+    t.integer  "referential_id",  limit: 8
   end
 
   add_index "import_resources", ["import_id"], name: "index_import_resources_on_import_id", using: :btree
