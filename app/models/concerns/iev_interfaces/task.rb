@@ -31,6 +31,16 @@ module IevInterfaces::Task
 
     before_save :initialize_fields, on: :create
     after_save :notify_parent
+
+    status.values.each do |s|
+      define_method "#{s}!" do
+        update status: s
+      end
+
+      define_method "#{s}?" do
+        status&.to_s == s
+      end
+    end
   end
 
   module ClassMethods
@@ -56,13 +66,14 @@ module IevInterfaces::Task
   end
 
   def notify_parent
-    return unless self.class.finished_statuses.include?(status)
+    return false unless self.class.finished_statuses.include?(status)
 
-    return unless parent.present?
-    return if notified_parent_at
+    return false unless parent.present?
+    return false if notified_parent_at
     parent.child_change
 
     update_column :notified_parent_at, Time.now
+    true
   end
 
   def children_succeedeed
@@ -94,6 +105,10 @@ module IevInterfaces::Task
     update attributes
   end
 
+  def successful?
+    status.to_s == "successful"
+  end
+
   def child_change
     return if self.class.finished_statuses.include?(status)
     update_status
@@ -112,9 +127,14 @@ module IevInterfaces::Task
 
   def call_boiv_iev
     Rails.logger.error("Begin IEV call for import")
+
+    # Java code expects tasks in NEW status
+    # Don't change status before calling iev
+
     Net::HTTP.get iev_callback_url
     Rails.logger.error("End IEV call for import")
   rescue Exception => e
+    aborted!
     logger.error "IEV server error : #{e.message}"
     logger.error e.backtrace.inspect
   end

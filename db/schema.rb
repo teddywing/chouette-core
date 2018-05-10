@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180425160730) do
+ActiveRecord::Schema.define(version: 20180509071833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -442,7 +442,7 @@ ActiveRecord::Schema.define(version: 20180425160730) do
   add_index "import_messages", ["resource_id"], name: "index_import_messages_on_resource_id", using: :btree
 
   create_table "import_resources", id: :bigserial, force: :cascade do |t|
-    t.integer  "import_id",     limit: 8
+    t.integer  "import_id",      limit: 8
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -450,9 +450,11 @@ ActiveRecord::Schema.define(version: 20180425160730) do
     t.string   "reference"
     t.string   "name"
     t.hstore   "metrics"
+    t.integer  "referential_id",  limit: 8
   end
 
   add_index "import_resources", ["import_id"], name: "index_import_resources_on_import_id", using: :btree
+  add_index "import_resources", ["referential_id"], name: "index_import_resources_on_referential_id", using: :btree
 
   create_table "imports", id: :bigserial, force: :cascade do |t|
     t.string   "status"
@@ -772,7 +774,7 @@ ActiveRecord::Schema.define(version: 20180425160730) do
     t.string   "objectid",                               null: false
     t.integer  "object_version",  limit: 8
     t.integer  "route_id",        limit: 8
-    t.integer  "stop_point_ids",                                      array: true
+    t.integer  "stop_point_ids",  limit: 8,                           array: true
     t.string   "checksum"
     t.text     "checksum_source"
     t.string   "data_source_ref"
@@ -1073,13 +1075,10 @@ ActiveRecord::Schema.define(version: 20180425160730) do
     t.integer  "output_id",                        limit: 8
     t.string   "objectid_format"
     t.integer  "workgroup_id",                     limit: 8
-    t.integer  "import_compliance_control_set_id", limit: 8
-    t.integer  "merge_compliance_control_set_id",  limit: 8
+    t.hstore   "owner_compliance_control_set_ids"
   end
 
-  add_index "workbenches", ["import_compliance_control_set_id"], name: "index_workbenches_on_import_compliance_control_set_id", using: :btree
   add_index "workbenches", ["line_referential_id"], name: "index_workbenches_on_line_referential_id", using: :btree
-  add_index "workbenches", ["merge_compliance_control_set_id"], name: "index_workbenches_on_merge_compliance_control_set_id", using: :btree
   add_index "workbenches", ["organisation_id"], name: "index_workbenches_on_organisation_id", using: :btree
   add_index "workbenches", ["stop_area_referential_id"], name: "index_workbenches_on_stop_area_referential_id", using: :btree
   add_index "workbenches", ["workgroup_id"], name: "index_workbenches_on_workgroup_id", using: :btree
@@ -1092,6 +1091,7 @@ ActiveRecord::Schema.define(version: 20180425160730) do
     t.datetime "updated_at",                                      null: false
     t.string   "import_types",                       default: [],              array: true
     t.string   "export_types",                       default: [],              array: true
+    t.integer  "owner_id",                 limit: 8
   end
 
   add_foreign_key "access_links", "access_points", name: "aclk_acpt_fkey"
@@ -1109,6 +1109,7 @@ ActiveRecord::Schema.define(version: 20180425160730) do
   add_foreign_key "compliance_controls", "compliance_control_blocks"
   add_foreign_key "compliance_controls", "compliance_control_sets"
   add_foreign_key "group_of_lines_lines", "group_of_lines", name: "groupofline_group_fkey", on_delete: :cascade
+  add_foreign_key "import_resources", "referentials"
   add_foreign_key "journey_frequencies", "timebands", on_delete: :nullify
   add_foreign_key "journey_frequencies", "vehicle_journeys", on_delete: :nullify
   add_foreign_key "journey_patterns", "routes", name: "jp_route_fkey", on_delete: :cascade

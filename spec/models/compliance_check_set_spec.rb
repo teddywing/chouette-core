@@ -12,7 +12,6 @@ RSpec.describe ComplianceCheckSet, type: :model do
 
   it { should have_many :compliance_checks }
   it { should have_many :compliance_check_blocks }
-  
 
   describe "#update_status" do
     it "updates :status to successful when all resources are OK" do
@@ -42,10 +41,8 @@ RSpec.describe ComplianceCheckSet, type: :model do
         status: 'OK'
       )
 
-      updated = check_set.update_status
-
-      expect(updated).to be true
-      expect(check_set.status).to eq('failed')
+      check_set.update_status
+      expect(check_set.reload.status).to eq('failed')
     end
 
     it "updates :status to warning when one resource is WARNING" do
@@ -63,7 +60,7 @@ RSpec.describe ComplianceCheckSet, type: :model do
 
       check_set.update_status
 
-      expect(check_set.status).to eq('warning')
+      expect(check_set.reload.status).to eq('warning')
     end
 
     it "updates :status to successful when resources are IGNORED" do

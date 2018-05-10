@@ -280,36 +280,15 @@ RSpec.describe Import::Base, type: :model do
       expect(netex_import.referential.ready).to be false
     end
 
-    shared_examples(
-      "makes child referentials `ready` when status is finished"
-    ) do |finished_status|
-      it "makes child referentials `ready` when status is finished" do
-        workbench_import = create(:workbench_import, status: finished_status)
-        netex_import = create(:netex_import, parent: workbench_import)
-        netex_import.referential.update(ready: false)
+    it "makes child referentials `ready` when status is successful" do
+      workbench_import = create(:workbench_import, status: 'successful')
+      netex_import = create(:netex_import, parent: workbench_import)
+      netex_import.referential.update(ready: false)
 
-        workbench_import.update_referentials
-        netex_import.referential.reload
+      workbench_import.update_referentials
+      netex_import.referential.reload
 
-        expect(netex_import.referential.ready).to be true
-      end
+      expect(netex_import.referential.ready).to be true
     end
-
-    include_examples(
-      "makes child referentials `ready` when status is finished",
-      "successful"
-    )
-    include_examples(
-      "makes child referentials `ready` when status is finished",
-      "failed"
-    )
-    include_examples(
-      "makes child referentials `ready` when status is finished",
-      "aborted"
-    )
-    include_examples(
-      "makes child referentials `ready` when status is finished",
-      "canceled"
-    )
   end
 end

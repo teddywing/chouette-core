@@ -1,0 +1,53 @@
+.row
+  .col-lg-6.col-md-6.col-sm-12.col-xs-12
+    - metadata = { t('.data_recovery') => '-', t('.filename') => @import.try(:file_identifier)}
+    - metadata = metadata.update({t('.status') => import_status(@import.status, verbose: true) })
+    = definition_list t('metadatas'), metadata
+
+.col-lg-12
+  .error_messages
+    = render 'shared/iev_interfaces/messages', messages: @import.messages
+
+ruby:
+ controls = @workbench.workgroup.import_compliance_control_sets.map do |key, label|
+   TableBuilderHelper::Column.new(
+     name: label,
+     attribute: Proc.new { |n| n.workbench.compliance_control_set(key).present? ? import_status(n.workbench_import_check_set(key)&.status, verbose: true, default_status: (n.status == "ERROR" ? :aborted : :pending)) : '-' },
+     sortable: false,
+     link_to: lambda do |item|
+       item.workbench_import_check_set(key).present? && [@import.workbench, item.workbench_import_check_set(key)]
+    end
+    )
+  end
+
+- if @import.resources.any?
+  .col-lg-12
+    = table_builder_2 @import.resources,
+      [ \
+        TableBuilderHelper::Column.new( \
+          name: t('.referential_name'), \
+          attribute: 'name', \
+          sortable: false, \
+          link_to: lambda do |item| \
+            referential_path(item.referential) if item.referential.present? \
+          end \
+        ), \
+        TableBuilderHelper::Column.new( \
+          key: :status, \
+          attribute: Proc.new { |n| import_status(n.netex_import&.status || n.status, verbose: true, default_status: :pending) }, \
+          sortable: false, \
+          link_to: lambda do |item| \
+            item.netex_import.present? ? [@import.workbench, item.netex_import] : [@import.workbench, @import, item] \
+          end \
+        ), *controls \
+      ],
+      cls: 'table',
+      overhead: [ \
+        {}, \
+        {}, \
+        controls.present? ? { \
+          title: I18n.t('imports.show.summary').html_safe, \
+          width: controls.size, \
+          cls: "overheaded-default colspan='#{controls.size}'" \
+        } : nil \
+      ].compact

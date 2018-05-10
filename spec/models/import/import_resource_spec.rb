@@ -7,7 +7,6 @@ RSpec.describe Import::Resource, :type => :model do
 
   it { should validate_presence_of(:name) }
   it { should validate_presence_of(:resource_type) }
-  it { should validate_presence_of(:reference) }
 
   describe 'states' do
     let(:import_resource) { create(:import_resource) }

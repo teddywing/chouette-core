@@ -4,6 +4,7 @@ fr:
       title: "Offre de transport %{name}"
     edit:
       title: "Configurer l'espace de travail"
+      link:  "Paramétrages"
     update:
       title: "Configurer l'espace de travail"
     referential_count:

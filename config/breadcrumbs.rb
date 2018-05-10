@@ -131,6 +131,11 @@ crumb :import_resources do |import, import_resources|
   parent :import, import.workbench, import.parent
 end
 
+crumb :import_resource do |import_resource|
+  link I18n.t('import.resources.index.title'), workbench_import_import_resource_path(import_resource.root_import.workbench, import_resource.root_import, import_resource)
+  parent :import, import_resource.root_import.workbench, import_resource.root_import
+end
+
 crumb :organisation do |organisation|
   link breadcrumb_name(organisation), organisation_path(organisation)
 end
@@ -265,6 +270,10 @@ end
 crumb :vehicle_journeys do |referential, route|
   link I18n.t('vehicle_journeys.index.title', route: route.name), referential_line_route_vehicle_journeys_path(referential, route.line, route)
   parent :route, referential, route
+end
+
+crumb :workgroup do |w|
+  link I18n.t('layouts.navbar.workbench_outputs.edit_workgroup')
 end
 
 # crumb :compliance_controls do|compliance_control_sets|

@@ -11,6 +11,18 @@ module ControllerSpecHelper
     end
   end
 
+  def without_permission permission, &block
+    context "without permission #{permission}" do
+      login_user
+      before(:each) do
+        @user.permissions.delete permission
+        @user.save!
+        sign_in @user
+      end
+      context('', &block) if block_given?
+    end
+  end
+
   def with_feature feature, &block
     context "with feature #{feature}" do
       login_user
