@@ -1,10 +1,20 @@
 = search_form_for @q, url: referential_vehicle_journeys_path(@referential), html: {method: :get}, class: 'form form-filter' do |f|
-  .ffg-row
+  input type="hidden" name="display" value=params[:display]
+  .ffg-row.w85
     .input-group.search_bar
       = f.search_field :published_journey_name_or_objectid_cont, placeholder: t('.published_journey_name_or_objectid'), class: 'form-control'
       span.input-group-btn
         button.btn.btn-default#search-btn type='submit'
           span.fa.fa-search
+  .ffg-row.w15
+    - if has_feature?(:consolidated_offers)
+      .form-group
+        .btn-group
+          = link_to referential_vehicle_journeys_path(@referential, q: params[:q], display: :list), class: 'btn btn-default ' + (params[:display] != "consolidated" ? 'active' : '') do
+            span.fa.fa-align-justify
+          = link_to referential_vehicle_journeys_path(@referential, q: params[:q], display: :consolidated), class: 'btn btn-default ' + (params[:display] == "consolidated" ? 'active' : '') do
+            span.fa.fa-th-large
+
   .ffg-row
     .form-group.per-page-select
       = I18n.t("simple_form.per_page")
@@ -73,5 +83,5 @@
 
 
   .actions
-    = link_to t('actions.erase'), referential_vehicle_journeys_path(@referential), class: 'btn btn-link'
+    = link_to t('actions.erase'), referential_vehicle_journeys_path(@referential, display: params[:display]), class: 'btn btn-link'
     = f.submit t('actions.filter'), class: 'btn btn-default'

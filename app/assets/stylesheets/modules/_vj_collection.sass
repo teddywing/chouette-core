@@ -2,7 +2,7 @@
 //  VJ Collection  //
 //-----------------//
 
-#vehicle_journeys_wip
+#vehicle_journeys_wip, .consolidated-view
   .table-2entries
     .t2e-head
       > .td
@@ -218,3 +218,89 @@
         // Reset default behaviour
         .form-control
           border-color: #ccc
+
+
+.consolidated-view
+  $highlighted: #d4ba32
+  .line
+    & > .head
+      font-size: 2em
+      text-transform: capitalize
+      border-top: 3px solid black
+      border-bottom: 3px solid black
+      padding-left: 10px
+      margin-top: 10px
+    .routes
+      .route
+        background: #F9F9F9
+        & > .head
+          &.highlighted
+            .pull-right, span.fa
+              color: $highlighted !important
+          a
+            padding: 15px
+            color: black
+            font-size: 1.2em
+            text-transform: capitalize
+            display: block
+            text-decoration: none
+            &:hover
+              background-color: #F0F0F0
+            .fa
+              color: $red
+              transition: transform 0.1s
+            &.active .fa
+              transform: rotate(180deg)
+            .pull-right
+              font-size: 0.9em
+              text-transform: lowercase
+        .vehicle-journeys
+          display: block
+          overflow: hidden
+          transition: height 0.5s, margin-bottom 0.5s
+          margin-bottom: 0px
+          & > *
+            display: inline-block
+            & > *
+              overflow: hidden
+              min-width: 0
+          &.open
+            margin-bottom: 40px
+
+          .highlighted
+            background-color: lighten($highlighted, 20%) !important
+          .disabled
+            background-color: #dedede
+            color: #777
+          .t2e-item-list .t2e-item
+            .th
+              min-width: 100px
+              max-width: 150px
+              & > div
+                text-overflow: ellipsis
+                overflow: hidden
+                white-space: nowrap
+            .td
+              text-align: center
+              &:hover:after
+                position: absolute
+                height: 100%
+                bottom: 0
+                left: -10000px
+                right: -10000px
+                content: ""
+                background-color: $red
+                opacity: 0.1
+                z-index: 10
+              &.headlined:hover:after
+                height: 50%
+
+
+  .table-2entries > .t2e-head > .td > div > span::after
+    bottom: -6px !important
+
+  .table.table-2entries .t2e-item-list .t2e-item
+    background-color: #F9F9F9
+
+  .table.table-2entries .td > div.headlined::before
+    border-right: none
