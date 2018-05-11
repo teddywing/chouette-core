@@ -104,7 +104,7 @@ RSpec.describe CustomField, type: :model do
         if valid
           expect(vj.validate).to be_truthy
         else
-          expect(vj.validate).to be_falsy
+          expect(vj.validate).to be_falsy, "'#{val}' should not be  valid value"
           expect(vj.errors.messages[:"custom_fields.energy"]).to be_present
         end
       end
