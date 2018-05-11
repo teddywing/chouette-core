@@ -90,8 +90,8 @@ RSpec.describe User, :type => :model do
 
       expect(user.name).to eq('Alban Peignier')
       expect(user.email).to eq('alban.peignier@af83.com')
-      expect(user.updated_at.utc).to be_within(1.second).of Time.now
-      expect(user.synced_at.utc).to be_within(1.second).of Time.now
+      expect(user.updated_at.utc).to be_within(3.second).of Time.now
+      expect(user.synced_at.utc).to be_within(3.second).of Time.now
     end
 
     it 'should update organisation assignement' do
