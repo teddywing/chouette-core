@@ -6,7 +6,7 @@ module CustomFieldsSupport
     after_initialize :initialize_custom_fields
 
     def self.custom_fields workgroup
-      return [] unless workgroup
+      return CustomField.none unless workgroup
       fields = CustomField.where(resource_type: self.name.split("::").last)
       fields = fields.where(workgroup_id: workgroup.id)
       fields
