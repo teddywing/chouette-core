@@ -7,6 +7,7 @@ git_source(:af83) { |name| "https://github.com/af83/#{name}.git" }
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.2.8'
+gem 'rack-protection', '~> 1.5.5'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
