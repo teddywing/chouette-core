@@ -219,9 +219,17 @@
         .form-control
           border-color: #ccc
 
-
 .consolidated-view
   $highlighted: #d4ba32
+  .togglable
+    &.ready
+      transition: all 0.5s
+      &:not(.open)
+        min-height: 0 !important
+        padding: 0 !important
+        margin: 0 !important
+        border: none
+
   .line
     & > .head
       font-size: 2em
@@ -257,7 +265,6 @@
         .vehicle-journeys
           display: block
           overflow: hidden
-          transition: height 0.5s, margin-bottom 0.5s
           margin-bottom: 0px
           & > *
             display: inline-block
