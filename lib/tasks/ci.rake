@@ -14,8 +14,14 @@ namespace :ci do
 
   desc "Prepare CI build"
   task :setup do
-    # FIXME remove this specific behavior
+    unless ENV["IGNORE_YARN_INSTALL"]
+      # FIXME remove this specific behavior
+      # Managed by Dockerfile.build
+      sh "yarn --frozen-lockfile install"
+    end
+
     unless ENV["KEEP_DATABASE_CONFIG"]
+      # FIXME remove this specific behavior
       cp "config/database.yml", "config/database.yml.orig"
       cp "config/database/ci.yml", "config/database.yml"
     end
@@ -25,6 +31,15 @@ namespace :ci do
       sh "RAILS_ENV=test rake parallel:drop parallel:create parallel:migrate"
     else
       sh "RAILS_ENV=test rake db:drop db:create db:migrate"
+    end
+  end
+
+  task :fix_webpacker do
+    # Redefine webpacker:yarn_install to avoid --production
+    # in CI process
+    Rake::Task["webpacker:yarn_install"].clear
+    Rake::Task.define_task "webpacker:yarn_install" do
+      puts "Don't run yarn"
     end
   end
 
@@ -55,7 +70,7 @@ namespace :ci do
   end
 
   task :assets do
-    sh "RAILS_ENV=test bundle exec rake assets:precompile i18n:js:export"
+    sh "RAILS_ENV=test bundle exec rake ci:fix_webpacker assets:precompile i18n:js:export"
   end
 
   task :jest do
