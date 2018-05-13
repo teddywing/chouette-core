@@ -14,10 +14,13 @@ namespace :ci do
 
   desc "Prepare CI build"
   task :setup do
-    cp "config/database.yml", "config/database.yml.orig"
-    cp "config/database/ci.yml", "config/database.yml"
-    puts "Use #{database_name} database"
+    # FIXME remove this specific behavior
+    unless ENV["KEEP_DATABASE_CONFIG"]
+      cp "config/database.yml", "config/database.yml.orig"
+      cp "config/database/ci.yml", "config/database.yml"
+    end
 
+    puts "Use #{database_name} database"
     if parallel_tests?
       sh "RAILS_ENV=test rake parallel:drop parallel:create parallel:migrate"
     else
