@@ -17,7 +17,7 @@ module TomTom
   end
 
   def self.enabled?
-    api_key.present?
+    api_key.present? && /[a-zA-Z0-9]{32}/ === api_key
   end
 
   def self.batch(way_costs)
