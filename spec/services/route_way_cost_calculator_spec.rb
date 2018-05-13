@@ -3,13 +3,15 @@ RSpec.describe RouteWayCostCalculator do
     it "calculates and stores WayCosts in the given route's #cost field" do
       route = create(:route)
 
+      allow(TomTom).to receive(:api_key).and_return('dummy')
+
       # Fake the request to the TomTom API, but don't actually send the right
       # things in the request or response. This is just to fake the request so
       # we don't actually call their API in tests. The test doesn't test
       # anything given in the response.
       stub_request(
         :post,
-        "https://api.tomtom.com/routing/1/matrix/json?key&routeType=shortest&traffic=false&travelMode=bus"
+        "https://api.tomtom.com/routing/1/matrix/json?key=dummy&routeType=shortest&traffic=false&travelMode=bus"
       )
         .with(
           headers: {
