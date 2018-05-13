@@ -1,0 +1,37 @@
+FROM debian:stable-slim
+
+ENV RAILS_ENV test
+ENV KEEP_DATABASE_CONFIG true
+ENV IGNORE_YARN_INSTALL true
+
+# Prepare nodejs 6.x and yarn package installation
+RUN apt-get update && apt-get install -y --no-install-recommends curl gnupg ca-certificates apt-transport-https && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
+    curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
+    echo "deb https://deb.nodesource.com/node_6.x stretch main" > /etc/apt/sources.list.d/nodesource.list
+
+# Install ruby, native dependencies, bundler and yarn
+RUN apt-get update && mkdir -p /usr/share/man/man1 /usr/share/man/man7 && \
+    apt-get install -y --no-install-recommends ruby2.3 && \
+    apt-get install -y --no-install-recommends libpq5 libxml2 zlib1g imagemagick libproj12 postgresql-client-common postgresql-client-9.6 yarn nodejs && \
+    gem2.3 install --no-ri --no-rdoc bundler
+
+# Install bundler packages
+COPY Gemfile Gemfile.lock /app/
+RUN apt-get -y install --no-install-recommends build-essential ruby2.3-dev libpq-dev libxml2-dev zlib1g-dev libproj-dev libmagic1 libmagic-dev git-core&& \
+    cd /app && bundle install --deployment
+
+# Install yarn packages
+COPY package.json yarn.lock /app/
+RUN cd /app && yarn --frozen-lockfile install
+
+# Install application file
+COPY . /app/
+
+# Override database.yml and secrets.yml files
+COPY config/database.yml.docker app/config/database.yml
+COPY config/secrets.yml.docker app/config/secrets.yml
+
+WORKDIR /app
+CMD ["sh", "-c", "bundle exec rake ci:docker"]
