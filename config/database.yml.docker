@@ -6,6 +6,6 @@
   port: <%= ENV.fetch 'RAILS_DB_PORT', '5432' %>
   schema_search_path: 'public,shared_extensions'
   postgis_schema: 'shared_extensions'
-  database: <%= ENV.fetch 'RAILS_DB_NAME', 'chouette' %>
+  database: <%= ENV.fetch 'RAILS_DB_NAME', 'chouette' %><%= ENV['TEST_ENV_NUMBER'] %>
   username: <%= ENV.fetch 'RAILS_DB_USER', 'chouette' %>
   password: <%= ENV.fetch 'RAILS_DB_PASSWORD' %>
