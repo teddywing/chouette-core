@@ -43,7 +43,7 @@ class CleanUp < ApplicationModel
           end
         end
 
-        destroy_vehicle_journeys_outside_referential
+        destroy_routes_outside_referential
         # Disabled for the moment. See #5372
         # destroy_time_tables_outside_referential
 
@@ -98,11 +98,6 @@ class CleanUp < ApplicationModel
     metadatas_period = referential.metadatas_period
     time_tables = Chouette::TimeTable.where('end_date < ? or start_date > ?', metadatas_period.min, metadatas_period.max)
     destroy_time_tables(time_tables)
-  end
-
-  def destroy_vehicle_journeys_outside_referential
-    line_ids = referential.metadatas.pluck(:line_ids).flatten.uniq
-    Chouette::VehicleJourney.joins(:route).where(["routes.line_id not in (?)", line_ids]).destroy_all
   end
 
   def destroy_routes_outside_referential
