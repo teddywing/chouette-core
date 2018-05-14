@@ -32,6 +32,7 @@ let stop_point = (opts) => {
       edit: false,
       for_boarding: 'normal',
       for_alighting: 'normal',
+      stoparea_kind: undefined,
       olMap: { isOpened: false, json: {} }
     },
     opts
@@ -100,12 +101,38 @@ describe('stops reducer', () => {
     city_name: 'city',
     area_type: 'area',
     short_name: 'new',
+    stoparea_kind: 'commercial',
     comment: 'newcomment'
   }
   it_should_handle(
     {type: 'UPDATE_INPUT_VALUE', index: 0, text: text},
     [
       update_stop_point(stop_point_1, text),
+      stop_point_2,
+      stop_point_3
+    ]
+  )
+
+  text = {
+    text: "new value",
+    name: 'new',
+    stoparea_id: 1,
+    user_objectid: "1234",
+    longitude: 123,
+    latitude: 123,
+    registration_number: '0',
+    city_name: 'city',
+    area_type: 'area',
+    short_name: 'new',
+    stoparea_kind: 'non_commercial',
+    comment: 'newcomment'
+  }
+  let res = update_stop_point(stop_point_1, text)
+  res  = update_stop_point(res, {for_boarding: "forbidden", for_alighting: "forbidden"})
+  it_should_handle(
+    {type: 'UPDATE_INPUT_VALUE', index: 0, text: text},
+    [
+      res,
       stop_point_2,
       stop_point_3
     ]

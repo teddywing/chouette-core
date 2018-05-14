@@ -20,7 +20,7 @@ module.exports = (grunt) =>
 
     watchchange:
       javascript:
-        match: ['app/javascript/**/*', 'spec/javascript/**/*']
+        match: ['app/javascript/**/*', 'spec/javascript/**/*_spec.*']
         setConfig: ['jest.run.src']
         preprocess: javascriptSpecPath
         tasks: ['jest:run']

@@ -58,7 +58,7 @@ describe('when clicking on a journey pattern checkbox', () => {
     const index = 1
     const expectedAction = {
       type: 'UPDATE_CHECKBOX_VALUE',
-      id: event.currentTarget.id,
+      position: event.currentTarget.id,
       index,
     }
     expect(actions.updateCheckboxValue(event, index)).toEqual(expectedAction)

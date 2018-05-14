@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import I18n from '../../support/jest-i18n'
+
 import JourneyPatterns from '../../../../app/javascript/journey_patterns/components/JourneyPatterns'
 import renderer from 'react-test-renderer'
 
