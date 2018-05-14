@@ -291,9 +291,9 @@ RSpec.describe CleanUp, :type => :model do
 
       expect(Chouette::Route.exists?(vehicle_journey.route.id)).to be false
       expect(
-        Chouette::JourneyPattern.exists?(vehicle_journey.journey_pattern)
+        Chouette::JourneyPattern.exists?(vehicle_journey.journey_pattern.id)
       ).to be false
-      expect(Chouette::VehicleJourney.exists?(vehicle_journey)).to be false
+      expect(Chouette::VehicleJourney.exists?(vehicle_journey.id)).to be false
     end
   end
 end
