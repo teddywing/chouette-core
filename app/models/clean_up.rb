@@ -16,6 +16,8 @@ class CleanUp < ApplicationModel
     where(referential_id: referential.id)
   end
 
+  attr_accessor :methods
+
   def end_date_must_be_greater_that_begin_date
     if self.end_date && self.date_type == 'between' && self.begin_date >= self.end_date
       errors.add(:base, I18n.t('activerecord.errors.models.clean_up.invalid_period'))
@@ -52,6 +54,12 @@ class CleanUp < ApplicationModel
         destroy_routes
       end
     end
+  end
+
+  def run_methods
+    return if methods.nil?
+
+    methods.each { |method| send(method) }
   end
 
   def destroy_time_tables_between

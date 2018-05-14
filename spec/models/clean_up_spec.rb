@@ -296,4 +296,24 @@ RSpec.describe CleanUp, :type => :model do
       expect(Chouette::VehicleJourney.exists?(vehicle_journey.id)).to be false
     end
   end
+
+  describe "#run_methods" do
+    let(:cleaner) { create(:clean_up) }
+
+    it "calls methods in the :methods attribute" do
+      cleaner = create(
+        :clean_up,
+        methods: [:destroy_routes_outside_referential]
+      )
+
+      expect(cleaner).to receive(:destroy_routes_outside_referential)
+      cleaner.run_methods
+    end
+
+    it "doesn't do anything if :methods is nil" do
+      cleaner = create(:clean_up)
+
+      expect { cleaner.run_methods }.not_to raise_error
+    end
+  end
 end
