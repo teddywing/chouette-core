@@ -30,6 +30,13 @@ RSpec.describe Merge do
           stop_areas = stop_area_referential.stop_areas.order("random()").limit(5)
           FactoryGirl.create :route, line: line, stop_areas: stop_areas, stop_points_count: 0
         end
+        # Loop
+        stop_areas = stop_area_referential.stop_areas.order("random()").limit(5)
+        route = FactoryGirl.create :route, line: line, stop_areas: stop_areas, stop_points_count: 0
+        route.stop_points.create stop_area: stop_areas.first, position: route.stop_points.size
+        jp = route.full_journey_pattern
+        expect(route.stop_points.uniq.count).to eq route.stop_areas.uniq.count + 1
+        expect(jp.stop_points.uniq.count).to eq jp.stop_areas.uniq.count + 1
       end
 
       referential.routes.each do |route|
@@ -56,7 +63,7 @@ RSpec.describe Merge do
       end
 
       referential.journey_patterns.each do |journey_pattern|
-        stop_points_positions[journey_pattern.name] = Hash[*journey_pattern.stop_points.map{|sp| [sp.stop_area_id, sp.position]}.flatten]
+        stop_points_positions[journey_pattern.name] = Hash[*journey_pattern.stop_points.map{|sp| [sp.position, sp.stop_area_id]}.flatten]
         factor.times do
           FactoryGirl.create :vehicle_journey, journey_pattern: journey_pattern, company: company
         end
@@ -105,7 +112,7 @@ RSpec.describe Merge do
     # This should be enforced by the checksum preservation though
     output.journey_patterns.each do |journey_pattern|
       journey_pattern.stop_points.each do |sp|
-        expect(sp.position).to eq stop_points_positions[journey_pattern.name][sp.stop_area_id]
+        expect(sp.stop_area_id).to eq stop_points_positions[journey_pattern.name][sp.position]
       end
     end
 
