@@ -283,5 +283,17 @@ RSpec.describe CleanUp, :type => :model do
         expect(route).not_to be_destroyed
       end
     end
+
+    it "cascades destruction of vehicle journeys and journey patterns" do
+      vehicle_journey = create(:vehicle_journey)
+
+      cleaner.destroy_routes_outside_referential
+
+      expect(Chouette::Route.exists?(vehicle_journey.route.id)).to be false
+      expect(
+        Chouette::JourneyPattern.exists?(vehicle_journey.journey_pattern)
+      ).to be false
+      expect(Chouette::VehicleJourney.exists?(vehicle_journey)).to be false
+    end
   end
 end
