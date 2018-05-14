@@ -105,6 +105,11 @@ class CleanUp < ApplicationModel
     Chouette::VehicleJourney.joins(:route).where(["routes.line_id not in (?)", line_ids]).destroy_all
   end
 
+  def destroy_routes_outside_referential
+    line_ids = referential.metadatas.pluck(:line_ids).flatten.uniq
+    Chouette::Route.where(['line_id not in (?)', line_ids]).destroy_all
+  end
+
   def destroy_vehicle_journeys
     Chouette::VehicleJourney.where("id not in (select distinct vehicle_journey_id from time_tables_vehicle_journeys)").destroy_all
   end
