@@ -49,9 +49,8 @@ class CleanUp < ApplicationModel
         # Disabled for the moment. See #5372
         # destroy_time_tables_outside_referential
 
-        destroy_vehicle_journeys
-        destroy_journey_patterns
-        destroy_routes
+        # Run caller-specified cleanup methods
+        run_methods
       end
     end
   end
