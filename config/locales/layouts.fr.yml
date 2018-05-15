@@ -71,6 +71,7 @@ fr:
   yesterday: "Hier"
   edit_periods: "Editer Périodes"
   delete_periods: "Supprimer Périodes"
+  warning: Avertissement
   attributes:
     author: "Edité par"
     created_at: "Créé le"

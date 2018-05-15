@@ -8,7 +8,7 @@ en:
       activate: "Activate this line"
       deactivate: "Deactivate this line"
       activate_confirm: "Are you sure you want to activate this line ?"
-      deactivate_confirm: "Are you sure you want tode activate this line ?"
+      deactivate_confirm: "Are you sure you want to deactivate this line ?"
       destroy_confirm: "Are you sure you want to destroy this line ?"
       destroy_selection_confirm: "Are you sure you want to destroy those lines ?"
       import: "Import lines"
@@ -117,7 +117,7 @@ en:
         updated_at: Updated at
         creator_id: "Created by"
         footnotes: "Footnotes"
-        stable_id: External permanent idenifier"
+        stable_id: External permanent identifier
         status: Status
         activated: Activated
         deactivated: Deactivated

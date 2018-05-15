@@ -39,6 +39,8 @@ fr:
       title: "Editer l'ITL : %{name}"
     show:
       title: "Zone de contrainte %{name}"
+      route_stop_points: Arrêts de l'itinéraire
+      stop_points: Arrêts inclus dans l'ITL
     index:
       title: "Interdictions de trafic local"
       search_no_results: "Aucune ITL ne correspond à votre recherche"

@@ -28,7 +28,7 @@ en:
       activate: "Activate this stop"
       deactivate: "Deactivate this stop"
       activate_confirm: "Are you sure you want to activate this stop ?"
-      deactivate_confirm: "Are you sure you want tode activate this stop ?"
+      deactivate_confirm: "Are you sure you want to deactivate this stop ?"
       deleted_at: "Activated"
       destroy_confirm: "Are you sure you want destroy this stop and all of his children ?"
       select_parent: "Create or modify the relation child -> parent"
