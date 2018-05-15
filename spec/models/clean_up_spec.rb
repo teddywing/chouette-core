@@ -297,6 +297,18 @@ RSpec.describe CleanUp, :type => :model do
     end
   end
 
+  describe "#destroy_empty" do
+    it "calls the appropriate destroy methods" do
+      cleaner = create(:clean_up)
+
+      expect(cleaner).to receive(:destroy_vehicle_journeys)
+      expect(cleaner).to receive(:destroy_journey_patterns)
+      expect(cleaner).to receive(:destroy_routes)
+
+      cleaner.destroy_empty
+    end
+  end
+
   describe "#run_methods" do
     let(:cleaner) { create(:clean_up) }
 

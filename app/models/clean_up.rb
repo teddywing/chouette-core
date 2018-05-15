@@ -124,6 +124,12 @@ class CleanUp < ApplicationModel
     Chouette::Route.where("id not in (select distinct route_id from journey_patterns)").destroy_all
   end
 
+  def destroy_empty
+    destroy_vehicle_journeys
+    destroy_journey_patterns
+    destroy_routes
+  end
+
   def overlapping_periods
     self.end_date = self.begin_date if self.date_type != 'between'
     Chouette::TimeTablePeriod.where('(period_start, period_end) OVERLAPS (?, ?)', self.begin_date, self.end_date)
