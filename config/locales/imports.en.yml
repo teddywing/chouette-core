@@ -33,6 +33,13 @@ en:
       organisation_control: Organization control
       results: "%{count} validated referential(s) out of %{total} in the file"
       summary: Summay of import compliance check sets <span title="Lorem ipsum..." class="fa fa-lg fa-info-circle text-info"></span>
+      parent: Parent
+      netex:
+        table_title: "Satus of anlyzed files"
+        table_explanation: "When calendriers.xml and/or commun.xml are not imported, then all lines file are not processed."
+      table:
+        test_results: Test results
+        download: Download
     compliance_check_task: "Validate Report"
     severities:
       info: "Information"
@@ -95,6 +102,7 @@ en:
         max_distance_for_connection_link: "Max distance for connection link"
         ignore_last_word: "ignore last word"
         ignore_end_chars: "ignore last chars"
+        referential: Referential
       import:
         <<: *attrs
         base:
