@@ -379,11 +379,11 @@ const actions = {
                 vehicle_journey_at_stops: vjasWithDelta,
                 deletable: false,
                 selected: false,
-                published_journey_name: val.published_journey_name || 'non renseigné',
-                published_journey_identifier: val.published_journey_identifier || 'non renseigné',
-                company: val.company || {name: 'non renseigné'},
-                transport_mode: val.route.line.transport_mode || 'undefined',
-                transport_submode: val.route.line.transport_submode || 'undefined'
+                published_journey_name: val.published_journey_name || '',
+                published_journey_identifier: val.published_journey_identifier || '',
+                company: val.company || {name: ''},
+                transport_mode: val.route.line.transport_mode || '',
+                transport_submode: val.route.line.transport_submode || ''
               })
             )
           }

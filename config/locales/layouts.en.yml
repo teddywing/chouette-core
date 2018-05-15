@@ -68,6 +68,7 @@ en:
   yesterday: "Yestersday"
   edit_periods: "Edit periods"
   delete_periods: "Delete periods"
+  warning: Warning
   attributes:
     author: "Edited by"
     created_at: "Created at"

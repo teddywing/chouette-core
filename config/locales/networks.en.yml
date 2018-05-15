@@ -5,7 +5,7 @@ en:
       new: "Add a new network"
       edit: "Edit this network"
       destroy: "Remove this network"
-      destroy_confirm: "Are you sure you want destroy this network?"
+      destroy_confirm: "Are you sure you want to destroy this network ?"
     new:
       title: "Add a new network"
     edit:

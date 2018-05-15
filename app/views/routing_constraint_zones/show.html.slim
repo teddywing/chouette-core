@@ -16,15 +16,15 @@
         = table_builder_2 @routing_constraint_zone.route.stop_points,
           [ \
             TableBuilderHelper::Column.new( \
-              name: "Arrêts de l'itinéraire", \
+              name: t('.route_stop_points'), \
               attribute: 'name', \
               link_to: lambda do |stop_point| \
                 referential_stop_area_path(@referential, stop_point.stop_area) \
               end \
             ),
             TableBuilderHelper::Column.new( \
-              name: "Arrêts inclus dans l'ITL", \
-              attribute: Proc.new{ |rsp| (@routing_constraint_zone.stop_point_ids.include? rsp.id) ? 'Oui' : 'Non' } \
+              name: t('.stop_points'), \
+              attribute: Proc.new{ |rsp| (@routing_constraint_zone.stop_point_ids.include? rsp.id) ? t('yes') : t('no') } \
             ) \
           ],
           sortable: false,

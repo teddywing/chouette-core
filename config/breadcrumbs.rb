@@ -3,7 +3,7 @@ crumb :root do
 end
 
 crumb :workbench do |workbench|
-  link workbench.name, workbench_path(workbench)
+  link I18n.t('workbenches.index.offers.title'), workbench_path(workbench)
 end
 
 crumb :workbench_output do |workbench|
@@ -160,7 +160,6 @@ end
 
 crumb :stop_areas do |stop_area_referential|
   link I18n.t('stop_areas.index.title'), stop_area_referential_stop_areas_path(stop_area_referential)
-  parent :stop_area_referential, stop_area_referential
 end
 
 crumb :stop_area do |stop_area_referential, stop_area|
