@@ -7,7 +7,7 @@ class ComplianceCheckMessagesController < ChouetteController
   def index
     index! do |format|
       format.csv {
-        send_data ComplianceCheckMessageExport.new(compliance_check_messages: collection).to_csv(:col_sep => "\;", :quote_char=>'"', force_quotes: true, server_url: request.base_url) , :filename => "compliance_check_set_errors_#{line_code}_#{Date.today.to_s}.csv"
+        send_data ComplianceCheckMessageExport.new(compliance_check_messages: collection).to_csv(:col_sep => "\;", :quote_char=>'"', force_quotes: true, server_url: request.base_url) , :filename => "#{t('compliance_check_messages.compliance_check_set_errors')}_#{line_code}_#{Time.now.strftime('%d_%m_%Y_%H_%M')}.csv"
       }
     end
   end
@@ -22,10 +22,10 @@ class ComplianceCheckMessagesController < ChouetteController
   end
 
   def compliance_check_resource
-    ComplianceCheckResource.find(params[:compliance_check_resource_id]) 
+    ComplianceCheckResource.find(params[:compliance_check_resource_id])
   end
 
-  private 
+  private
 
   def line_code
     Chouette::Line.find_by_objectid("#{compliance_check_resource.reference}").get_objectid.local_id
