@@ -105,7 +105,8 @@ describe('journeyPatterns reducer', () => {
       jpReducer(state, {
         type: 'UPDATE_CHECKBOX_VALUE',
         id: 45289,
-        index: 0
+        index: 0,
+        position: "0"
       })
     ).toEqual([newState, state[1]])
   })

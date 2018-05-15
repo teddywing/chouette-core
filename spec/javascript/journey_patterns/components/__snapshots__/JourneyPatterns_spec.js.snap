@@ -19,7 +19,7 @@ exports[`stopPointHeader should display the city name 1`] = `
           <div
             className="strong mb-xs"
           >
-            ID Mission
+            ID
           </div>
           <div>
             Code mission
@@ -103,7 +103,7 @@ exports[`stopPointHeader with the "long_distance_routes" feature should display 
           <div
             className="strong mb-xs"
           >
-            ID Mission
+            ID
           </div>
           <div>
             Code mission

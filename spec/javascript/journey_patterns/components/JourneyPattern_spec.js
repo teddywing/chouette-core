@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+
+import I18n from '../../support/jest-i18n'
+
 import JourneyPattern from '../../../../app/javascript/journey_patterns/components/JourneyPattern'
+
 import renderer from 'react-test-renderer'
 
 describe('the edit button', () => {

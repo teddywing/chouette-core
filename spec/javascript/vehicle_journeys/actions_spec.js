@@ -1,4 +1,6 @@
 import actions from '../../../app/javascript/vehicle_journeys/actions/index'
+import _ from 'lodash'
+window._  = _
 
 const dispatch = function(){}
 window.fetch = function(){return Promise.resolve()}
@@ -94,10 +96,12 @@ describe('when using select2 to pick a journey pattern', () => {
       selectedItem:{
         id: selectedJP.id,
         objectid: selectedJP.object_id,
+        object_id: selectedJP.object_id,
         short_id: selectedJP.object_id,
         name: selectedJP.name,
         published_name: selectedJP.published_name,
-        stop_areas: selectedJP.stop_area_short_descriptions
+        stop_areas: selectedJP.stop_area_short_descriptions,
+        stop_area_short_descriptions: selectedJP.stop_area_short_descriptions
       }
     }
     expect(actions.selectJPCreateModal(selectedJP)).toEqual(expectedAction)

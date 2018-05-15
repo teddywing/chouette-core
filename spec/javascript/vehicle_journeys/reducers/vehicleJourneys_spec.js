@@ -107,6 +107,7 @@ describe('vehicleJourneys reducer', () => {
         selectedCompany: fakeSelectedCompany
       })
     ).toEqual([{
+      ignored_routing_contraint_zone_ids: [],
       journey_pattern: fakeSelectedJourneyPattern,
       company: fakeSelectedCompany,
       published_journey_name: 'test',
@@ -145,7 +146,7 @@ describe('vehicleJourneys reducer', () => {
       dummy: false
     },
     {
-      delta : 0,
+      delta : 10,
       arrival_time : {
         hour: 23,
         minute: 2
@@ -154,8 +155,6 @@ describe('vehicleJourneys reducer', () => {
         hour: 23,
         minute: 12
       },
-      departure_day_offset: -1,
-      arrival_day_offset: -1,
       stop_point_objectid: 'test-2',
       stop_area_cityname: 'city',
       dummy: false
@@ -223,6 +222,7 @@ describe('vehicleJourneys reducer', () => {
         selectedCompany: fakeSelectedCompany
       })
     ).toEqual([{
+      ignored_routing_contraint_zone_ids: [],
       journey_pattern: fakeSelectedJourneyPattern,
       company: fakeSelectedCompany,
       published_journey_name: 'test',
@@ -245,26 +245,26 @@ describe('vehicleJourneys reducer', () => {
     let pristineVjasList = [{
       delta : 0,
       arrival_time : {
-        hour: 21,
-        minute: 54
+        hour: 22,
+        minute: 59
       },
       departure_time : {
-        hour: 21,
-        minute: 54
+        hour: 22,
+        minute: 59
       },
       stop_point_objectid: 'test-1',
       stop_area_cityname: 'city',
       dummy: false
     },
     {
-      delta : 0,
+      delta : 10,
       arrival_time : {
-        hour: 21,
-        minute: 57
+        hour: 23,
+        minute: 2
       },
       departure_time : {
-        hour: 22,
-        minute: 7
+        hour: 23,
+        minute: 12
       },
       stop_point_objectid: 'test-2',
       stop_area_cityname: 'city',
@@ -287,12 +287,12 @@ describe('vehicleJourneys reducer', () => {
     {
       delta : 0,
       arrival_time : {
-        hour: 23,
-        minute: 37
+        hour: 0,
+        minute: 42
       },
       departure_time : {
-        hour: 23,
-        minute: 37
+        hour: 0,
+        minute: 42
       },
       stop_point_objectid: 'test-4',
       stop_area_cityname: 'city',
@@ -334,6 +334,7 @@ describe('vehicleJourneys reducer', () => {
         selectedCompany: fakeSelectedCompany
       })
     ).toEqual([{
+      ignored_routing_contraint_zone_ids: [],
       journey_pattern: fakeSelectedJourneyPattern,
       company: fakeSelectedCompany,
       published_journey_name: 'test',
@@ -418,6 +419,7 @@ describe('vehicleJourneys reducer', () => {
       short_id: '',
       objectid: '',
       footnotes: [],
+      ignored_routing_contraint_zone_ids: [],
       time_tables: [],
       purchase_windows: [],
       vehicle_journey_at_stops: pristineVjasList,
@@ -495,6 +497,7 @@ describe('vehicleJourneys reducer', () => {
       short_id: '',
       objectid: '',
       footnotes: [],
+      ignored_routing_contraint_zone_ids: [],
       time_tables: [],
       purchase_windows: [],
       vehicle_journey_at_stops: pristineVjasList,

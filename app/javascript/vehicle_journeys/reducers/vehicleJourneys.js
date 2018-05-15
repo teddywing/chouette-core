@@ -66,10 +66,6 @@ const vehicleJourney= (state = {}, action, keep) => {
             newVjas.departure_day_offset = 1
             newVjas.arrival_day_offset = 1
           }
-          if(current_time.hour + offsetHours < 0){
-            newVjas.departure_day_offset = -1
-            newVjas.arrival_day_offset = -1
-          }
         }
         else{
           newVjas = {

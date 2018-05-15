@@ -14,8 +14,7 @@ exports[`the edit button in edit mode should display the edit link 1`] = `
     </div>
     <div />
     <div>
-      0
-       arrêt(s)
+      0 arrêts
     </div>
     <div
       className="btn-group"
@@ -85,8 +84,7 @@ exports[`the edit button should display the show link 1`] = `
     </div>
     <div />
     <div>
-      0
-       arrêt(s)
+      0 arrêts
     </div>
     <div
       className="btn-group"

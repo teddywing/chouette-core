@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
 import VehicleJourneys from '../../../../app/javascript/vehicle_journeys/components/VehicleJourneys'
 import renderer from 'react-test-renderer'
-import fs from 'fs'
 
-import I18n from '../../../../public/javascripts/i18n'
-import decorateI18n from '../../../../app/assets/javascripts/i18n/extended.coffee'
-window.I18n = decorateI18n(I18n)
-I18n.locale = "fr"
-eval(fs.readFileSync('./public/javascripts/translations.js')+'')
+import I18n from '../../support/jest-i18n'
 
 describe('stopPointHeader', () => {
   set('features', () => {
