@@ -26,7 +26,9 @@
     "redux-promise": "0.5.3",
     "redux-thunk": "2.2.0",
     "uglify-js": "3.3.2",
-    "whatwg-fetch": "^2.0.4"
+    "whatwg-fetch": "^2.0.4",
+    "ssri": "~> 5.2.2",
+    "hoek": "~> 4.2.1"
   },
   "license": "MIT",
   "engines": {
