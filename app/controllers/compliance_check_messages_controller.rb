@@ -7,7 +7,7 @@ class ComplianceCheckMessagesController < ChouetteController
   def index
     index! do |format|
       format.csv {
-        send_data ComplianceCheckMessageExport.new(compliance_check_messages: collection).to_csv(:col_sep => "\;", :quote_char=>'"', force_quotes: true, server_url: request.base_url) , :filename => "#{t('compliance_check_messages.compliance_check_set_errors')}_#{line_code}_#{Time.now.strftime('%d_%m_%Y_%H_%M')}.csv"
+        send_data ComplianceCheckMessageExport.new(compliance_check_messages: collection).to_csv(:col_sep => "\;", :quote_char=>'"', force_quotes: true, server_url: request.base_url) , :filename => "#{t('compliance_check_messages.compliance_check_set_errors')}_#{line_code}_#{Time.now.strftime('%d-%m-%Y_%H-%M')}.csv"
       }
     end
   end
