@@ -8,26 +8,42 @@ coffee:
   $('a.toggle-timetables').click (e)->
     e.preventDefault()
     $(e.target).toggleClass 'active'
-    $(e.target).parents('.table').find('.detailed-timetables').toggleClass 'hidden'
+    $(e.target).parents('.table').find('.detailed-timetables').customToggle()
 
   $('a.toggle-purchase-windows').click (e)->
     e.preventDefault()
     $(e.target).toggleClass 'active'
-    $(e.target).parents('.table').find('.detailed-purchase-windows').toggleClass 'hidden'
+    $(e.target).parents('.table').find('.detailed-purchase-windows').customToggle()
 
-  $('.route').find('.vehicle-journeys').each (i, e)->
+  $('.route').find('.togglable.hidden').each (i, e)->
     $e = $(e)
     $e.removeClass 'hidden'
-    e.setAttribute 'data-original-height', $e.height()
-    $e.height 0
+    e.setAttribute 'data-original-height', $e.innerHeight()
+    e.setAttribute 'data-original-full-height', $e.outerHeight(true)
+    $e.css height: 0
+    $e.addClass 'ready'
 
   $('a.toggle-route').click (e)->
     e.preventDefault()
     $(e.currentTarget).toggleClass 'active'
     tab = $(e.currentTarget).parents('.route').find('.vehicle-journeys')
-    if tab.hasClass 'open'
-      tab.removeClass 'open'
-      tab.height 0
-    else
-      tab.addClass 'open'
-      tab.height tab.attr('data-original-height')
+    tab.customToggle()
+
+  $.fn.extend
+    customToggle: (propagate=true)->
+      height = parseFloat this.attr('data-original-height')
+      fullHeight = parseFloat this.attr('data-original-full-height')
+      if this.hasClass 'open'
+        this.css height: 0
+        this.removeClass 'open'
+        this.find('.togglable.open').customToggle(false)
+        this.find('a.active').removeClass 'active'
+        if propagate
+          for parent in this.parents(".togglable.open")
+            $(parent).height $(parent).height() - fullHeight
+      else
+        this.addClass 'open'
+        this.height height
+        if propagate
+          for parent in this.parents(".togglable.open")
+            $(parent).height $(parent).height() + fullHeight

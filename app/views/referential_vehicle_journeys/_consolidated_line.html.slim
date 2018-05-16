@@ -20,7 +20,7 @@
               = Chouette::VehicleJourney.t
               | &nbsp;
               span.fa.fa-angle-up
-        .table.table-2entries.vehicle-journeys.hidden
+        .table.table-2entries.vehicle-journeys.hidden.togglable
           .t2e-head.w20
             .th
               div
@@ -31,7 +31,7 @@
                 = link_to '#', class: 'toggle-purchase-windows detailed-timetables-bt' do
                   span.fa.fa-angle-up
                   = Chouette::PurchaseWindow.t
-              .detailed-purchase-windows.hidden
+              .detailed-purchase-windows.hidden.togglable
                 - route.purchase_windows.uniq.each do |tt|
                   div
                     p
@@ -46,7 +46,7 @@
                   span.fa.fa-angle-up
                   = Chouette::TimeTable.t
 
-              .detailed-timetables.hidden
+              .detailed-timetables.hidden.togglable
                 - route.time_tables.uniq.each do |tt|
                   div
                     p
@@ -86,7 +86,7 @@
                             span.fa.fa-calendar style="color: #{tt.color ? tt.color : '#4B4B4B'}"
                       - if journey.purchase_windows.size > 3
                         span.vj_tt = "+ #{journey.purchase_windows.size - 3}"
-                    .detailed-purchase-windows.hidden
+                    .detailed-purchase-windows.hidden.togglable
                       - route.purchase_windows.uniq.each do |tt|
                         div class=(journey.has_purchase_window?(tt) ? 'active' : 'inactive')
                     div
@@ -96,7 +96,7 @@
                             span.fa.fa-calendar style="color: #{tt.color ? tt.color : '#4B4B4B'}"
                       - if journey.time_tables.size > 3
                         span.vj_tt = "+ #{journey.time_tables.size - 3}"
-                    .detailed-timetables.hidden
+                    .detailed-timetables.hidden.togglable
                       - route.time_tables.uniq.each do |tt|
                         div class=(journey.has_time_table?(tt) ? 'active' : 'inactive')
 
