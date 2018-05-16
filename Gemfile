@@ -52,9 +52,9 @@ gem 'seedbank'
 # gem 'debugger', group: [:development, :test]
 
 # API Rest
-gem 'sawyer', '~> 0.6.0'
-gem 'faraday_middleware', '~> 0.9.1'
-gem 'faraday', '~> 0.9.1'
+gem 'sawyer', '~> 0.8.1'
+gem 'faraday_middleware'
+gem 'faraday', '~> 0.11'
 
 platforms :ruby do
   gem 'therubyracer', '~> 0.12'
