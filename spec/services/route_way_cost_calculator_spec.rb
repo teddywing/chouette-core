@@ -31,5 +31,30 @@ RSpec.describe RouteWayCostCalculator do
       expect(route.costs).not_to be_nil
       expect { JSON.parse(JSON.dump(route.costs)) }.not_to raise_error
     end
+
+    it "doesn't update route costs when there is a server error" do
+      route = create(:route)
+
+      stub_request(
+        :post,
+        "https://api.tomtom.com/routing/1/matrix/json?key&routeType=shortest&travelMode=bus"
+      )
+        .with(
+          headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Content-Type'=>'application/json',
+            'User-Agent'=>'Faraday v0.9.2'
+          })
+        .to_return(
+          status: 200,
+          body: "{\"formatVersion\":\"0.0.1\",\"error\":{\"description\":\"Outputformat:csvisunsupported.\"}}",
+          headers: {}
+        )
+
+      RouteWayCostCalculator.new(route).calculate!
+
+      expect(route.costs).to be_nil
+    end
   end
 end

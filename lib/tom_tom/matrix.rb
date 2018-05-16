@@ -4,6 +4,10 @@ module TomTom
       @connection = connection
     end
 
+    # Exceptions:
+    #
+    # * This raises a `TomTom::Errors::MatrixRemoteError` when the API responds
+    #   with an error.
     def matrix(way_costs)
       points_with_ids = points_from_way_costs(way_costs)
       points = points_as_params(points_with_ids)
@@ -20,6 +24,8 @@ module TomTom
 
         req.body = build_request_body(points)
       end
+
+      check_for_error_response(response)
 
       extract_costs_to_way_costs!(
         way_costs,
@@ -75,6 +81,20 @@ module TomTom
         origins: points,
         destinations: points
       })
+    end
+
+    def check_for_error_response(response)
+      if response.status != 200
+        raise TomTom::Errors::MatrixRemoteError,
+          "status: #{response.status}, body: #{response.body}"
+      end
+
+      json = JSON.parse(response.body)
+
+      if json.has_key?('error')
+        raise TomTom::Errors::MatrixRemoteError,
+          "status: #{response.status}, message: #{json['error']['description']}"
+      end
     end
 
     def extract_costs_to_way_costs!(way_costs, points, matrix_json)
