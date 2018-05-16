@@ -15,8 +15,9 @@
         = render '/compliance_controls/filters'
 
   / compliance controls without block
-  = render_compliance_control_block
-  = render_compliance_controls(@direct_compliance_controls)
+  - unless params[:q].present? && @direct_compliance_controls.nil?
+    = render_compliance_control_block
+    = render_compliance_controls(@direct_compliance_controls)
 
   / compliance controls with block
   - if params[:q] && params[:q][:compliance_control_block_id_eq_any].try(:present?)
