@@ -8,7 +8,7 @@ RSpec.describe Merge do
 
     line_referential = FactoryGirl.create :line_referential
     company = FactoryGirl.create :company, line_referential: line_referential
-    10.times { FactoryGirl.create :line, line_referential: line_referential, company: company, network: nil }
+    4.times { FactoryGirl.create :line, line_referential: line_referential, company: company, network: nil }
 
     workbench = FactoryGirl.create :workbench, line_referential: line_referential, stop_area_referential: stop_area_referential
 
@@ -19,7 +19,7 @@ RSpec.describe Merge do
                                       organisation: workbench.organisation,
                                       metadatas: [referential_metadata]
 
-    factor = 1
+    factor = 2
     stop_points_positions = {}
 
     routing_constraint_zones = {}
@@ -32,7 +32,7 @@ RSpec.describe Merge do
         end
       end
 
-      referential.routes.each do |route|
+      referential.routes.each_with_index do |route, index|
         route.stop_points.each do |sp|
           sp.set_list_position 0
         end
@@ -47,9 +47,18 @@ RSpec.describe Merge do
           routing_constraint_zones[route.id][constraint_zone.checksum] = constraint_zone
         end
 
-        route.reload.update_checksum!
+        if index.even?
+          route.wayback = :outbound
+        else
+          route.update_column :wayback, :inbound
+          route.opposite_route = route.opposite_route_candidates.sample
+        end
 
+        route.save!
+
+        route.reload.update_checksum!
         expect(route.reload.checksum).to_not eq checksum
+
         factor.times do
           FactoryGirl.create :journey_pattern, route: route, stop_points: route.stop_points.sample(3)
         end

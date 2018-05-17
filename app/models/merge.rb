@@ -145,12 +145,19 @@ class Merge < ApplicationModel
       end
     end
 
+    referential_route_opposite_route_ids = referential.switch do
+      Hash[referential.routes.where('opposite_route_id is not null').pluck(:id, :opposite_route_id)]
+    end
+
     referential_routing_constraint_zones_new_ids = {}
 
     new.switch do
+      route_ids_mapping = {}
+
       referential_routes.each do |route|
         existing_route = new.routes.find_by line_id: route.line_id, checksum: route.checksum
         if existing_route
+          route_ids_mapping[route.id] = existing_route.id
           existing_route.merge_metadata_from route
         else
           objectid = Chouette::Route.where(objectid: route.objectid).exists? ? nil : route.objectid
@@ -178,6 +185,8 @@ class Merge < ApplicationModel
 
           # We need to create StopPoints to known new primary keys
           new_route.save!
+
+          route_ids_mapping[route.id] = new_route.id
 
           old_stop_point_ids = route_stop_points.sort_by(&:position).map(&:id)
           new_stop_point_ids = new_route.stop_points.sort_by(&:position).map(&:id)
@@ -224,6 +233,20 @@ class Merge < ApplicationModel
             end
           end
         end
+      end
+
+      referential_route_opposite_route_ids.each do |route_id, opposite_route_id|
+        new_route_id = route_ids_mapping[route_id]
+        new_opposite_route_id = route_ids_mapping[opposite_route_id]
+
+        new_route = nil
+        if new_route_id && new_opposite_route_id
+          if new_route = new.routes.find_by(id: new_route_id)
+            new_route.update_column :opposite_route_id, new_opposite_route_id
+          end
+        end
+
+        Rails.logger.warn "Can't merge opposite route for Route #{route_id}" unless new_route
       end
     end
 
