@@ -10,19 +10,24 @@ module ChecksumSupport
   end
 
   module ClassMethods
+
     def has_checksum_children klass, opts={}
       parent_class = self
       belongs_to = opts[:relation] || self.model_name.singular
       has_many = opts[:relation] || self.model_name.plural
 
       Rails.logger.debug "Define callback in #{klass} to update checksums #{self.model_name} (via #{has_many}/#{belongs_to})"
-      klass.after_save do
+
+      child_update_parent = Proc.new do
         parents = []
         parents << self.send(belongs_to) if klass.reflections[belongs_to].present?
         parents += self.send(has_many) if klass.reflections[has_many].present?
         Rails.logger.debug "Request from #{klass.name} checksum updates for #{parents.count} #{parent_class} parent(s)"
         parents.compact.each &:update_checksum_without_callbacks!
       end
+
+      klass.after_save &child_update_parent
+      klass.after_destroy &child_update_parent
     end
   end
 
