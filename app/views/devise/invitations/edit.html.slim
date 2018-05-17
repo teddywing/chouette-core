@@ -1,6 +1,5 @@
 / PageHeader
-
-- content_for :page_header_title, t('.title')
+- content_for :page_header_title, t('devise.registrations.edit.title')
 
 / PageContent
 .page_content
@@ -16,4 +15,4 @@
                 = form.input :password, as: :password
                 = form.input :password_confirmation, as: :password
 
-            = form.button :submit, value: t('devise.invitations.edit.submit_button'), class: 'btn-info btn-default formSubmitr', form: 'invitation_form'
+            = form.button :submit, value: t('actions.submit'), class: 'btn-info btn-default formSubmitr', form: 'invitation_form'
