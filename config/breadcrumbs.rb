@@ -283,7 +283,7 @@ crumb :vehicle_journeys do |referential, route|
 end
 
 crumb :workgroup do |w|
-  link I18n.t('layouts.navbar.workbench_outputs.edit_workgroup')
+  link I18n.t('workgroups.edit.title')
 end
 
 # crumb :compliance_controls do|compliance_control_sets|
