@@ -1,10 +1,15 @@
-h2 = t('devise.invitations.new.header')
+- content_for :page_header_title, t('devise.registrations.new.title')
 
-= simple_form_for resource, as: resource_name, :url => invitation_path(resource_name), :html => {:method => :post, class: "form-horizontal"} do |form|
-  = form.input :organisation_id, :as => :hidden, input_html: { :value => current_organisation.id }
+/ PageContent
+.page_content
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1
+        = simple_form_for resource, as: resource_name, :url => invitation_path(resource_name), :html => {:method => :post, class: "form-horizontal", id: "new_user_form"} do |form|
+          = form.input :organisation_id, :as => :hidden, input_html: { :value => current_organisation.id }
 
-  - resource.class.invite_key_fields.each do |field|
-    = form.input field
+          - resource.class.invite_key_fields.each do |field|
+            = form.input field
 
-  .form-actions
-    = form.button :submit, value: t('devise.invitations.new.submit_button'), class: 'btn-info'
+          .form-actions
+            = form.button :submit, value: t('actions.submit'), class: 'btn btn-default formSubmitr', form: 'new_user_form'

@@ -40,8 +40,8 @@ feature 'User edit', :devise do
     other = FactoryGirl.create(:user, email: 'other@example.com')
     login_as(me, :scope => :user)
     visit edit_user_registration_path(other)
-    expect(page).to have_content 'Votre Profil'
-    expect(page).to have_field('Email', with: me.email)
+    expect(page).to have_content I18n.t('devise.registrations.edit.title')
+    expect(page).to have_field(I18n.t('simple_form.labels.user.email'), with: me.email)
   end
 
 end
