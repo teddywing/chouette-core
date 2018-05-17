@@ -121,6 +121,16 @@ crumb :import do |workbench, import|
   parent :imports, workbench
 end
 
+crumb :netex_import do |workbench, netex_import|
+  link breadcrumb_name(netex_import), workbench_import_path(workbench, netex_import)
+  parent :import, workbench, netex_import.parent
+end
+
+crumb :gtfs_import do |workbench, gtfs_import|
+  link breadcrumb_name(gtfs_import), workbench_import_path(workbench, gtfs_import)
+  parent :import, workbench, gtfs_import.parent
+end
+
 crumb :export do |workbench, export|
   link breadcrumb_name(export), workbench_export_path(workbench, export)
   parent :exports, workbench

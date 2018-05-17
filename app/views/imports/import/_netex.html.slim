@@ -1,7 +1,8 @@
+- breadcrumb :netex_import, @workbench, @import
+
 .row
   .col-lg-6.col-md-6.col-sm-12.col-xs-12
-    - metadata = { t('imports.show.parent') => link_to(@import.parent.name, [@import.parent.workbench, @import.parent]) }
-    - metadata = metadata.update({Import::Base.tmf(:status) => import_status(@import.status, verbose: true) })
+    - metadata = {Import::Base.tmf(:status) => import_status(@import.status, verbose: true) }
     - metadata = metadata.update({Import::Base.tmf(:referential) => @import.referential ? link_to(@import.referential.name, [@import.referential]) : "-" })
     = definition_list t('metadatas'), metadata
 
