@@ -23,7 +23,9 @@ en:
       workbench_output:
         organisation: Organisation offers
         workgroup: Workgroup offers
-        edit_workgroup: Application settings
+      configuration: Settings
+      workgroup_configuration:  Application
+      workbench_configuration: Workbench
       tools: Tools
       sync: Synchronization
       sync_icar: iCAR synchronization

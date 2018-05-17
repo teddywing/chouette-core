@@ -23,7 +23,9 @@ fr:
       workbench_outputs:
         organisation: Offre de mon organisation
         workgroup: Offre du groupe de travail
-        edit_workgroup: Paramétrages de l'application
+      configuration: Paramétrages
+      workgroup_configuration:  Application
+      workbench_configuration: Espace de travail
       tools: Outils
       sync: Synchronisation
       sync_icar: Synchronisation iCAR

@@ -14,9 +14,6 @@
             span = t('layouts.navbar.workbench_outputs.organisation')
           = link_to '#', class: 'list-group-item disabled' do
             span = t('layouts.navbar.workbench_outputs.workgroup')
-          - if policy(workbench.workgroup).edit?
-            = link_to [:edit, workbench.workgroup], class: 'list-group-item' do
-              span = t('layouts.navbar.workbench_outputs.edit_workgroup')
 
     .menu-item.panel
       .panel-heading
@@ -38,9 +35,6 @@
             span = t('activerecord.models.compliance_check_set.other').capitalize
           = link_to compliance_control_sets_path, class: 'list-group-item' do
             span = t('activerecord.models.compliance_control_set.other').capitalize
-          - if policy(workbench).edit?
-            = link_to [:edit, workbench], class: 'list-group-item' do
-              span = t('workbenches.edit.link')
 
     .menu-item.panel
       .panel-heading
@@ -76,9 +70,24 @@
       .panel-heading
         h4.panel-title
           = link_to '#miSix', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-            = t('layouts.navbar.tools')
+            = t('layouts.navbar.configuration')
 
       #miSix.panel-collapse.collapse
+        .list-group
+          - if policy(workbench).edit?
+            = link_to [:edit, workbench], class: 'list-group-item' do
+              span = t('layouts.navbar.workbench_configuration')
+          - if policy(workbench.workgroup).edit?
+            = link_to [:edit, workbench.workgroup], class: 'list-group-item' do
+              span = t('layouts.navbar.workgroup_configuration')
+
+    .menu-item.panel
+      .panel-heading
+        h4.panel-title
+          = link_to '#miSeven', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
+            = t('layouts.navbar.tools')
+
+      #miSeven.panel-collapse.collapse
         .list-group
           = link_to Rails.application.config.try(:portal_url), target: '_blank', class: 'list-group-item' do
             span
