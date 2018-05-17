@@ -63,6 +63,9 @@ module Chouette
         where(" position between ? and ? ", between_positions.first, between_positions.last)
       end
     end
+
+    has_many :vehicle_journey_at_stops, through: :vehicle_journeys
+
     has_many :stop_areas, -> { order('stop_points.position ASC') }, :through => :stop_points do
       def between(departure, arrival)
         departure, arrival = [departure, arrival].map do |endpoint|
