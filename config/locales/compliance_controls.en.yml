@@ -8,11 +8,11 @@ en:
       subclass: Object
       subclasses:
         generic: 'Generic'
-        journey_pattern: 'JourneyPattern'
+        journey_pattern: 'Journey Pattern'
         line: 'Line'
         route: 'Route'
-        routing_constraint_zone: 'RoutingConstraint'
-        vehicle_journey: 'VehicleJourney'
+        routing_constraint_zone: 'Routing Constraint Zone'
+        vehicle_journey: 'Vehicle Journey'
     search_no_results: 'No compliance controls matching your query'
     min_max_values: "the minimum (%{min}) is not supposed to be greater than the maximum (%{max})"
     errors:
@@ -236,3 +236,4 @@ en:
         prerequisite: "Prerequisite"
         predicate: "Predicate"
         pattern: Regular expression
+        subclass: Object

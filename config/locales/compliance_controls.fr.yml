@@ -233,3 +233,4 @@ fr:
         prerequisite: "Prérequis"
         predicate: "Prédicat"
         pattern: Expression régulière
+        subclass: Objet

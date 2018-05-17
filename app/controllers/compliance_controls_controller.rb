@@ -5,7 +5,11 @@ class ComplianceControlsController < ChouetteController
   actions :all, :except => [:index]
 
   def select_type
-    @sti_subclasses = ComplianceControl.subclasses.sort_by {|compliance_control| compliance_control.default_code}
+    @sti_subclasses = Hash.new 
+    
+    ComplianceControl.subclass_patterns.each do |key, value|
+      @sti_subclasses[key] = ComplianceControl.subclasses.select {|klass| klass.object_type == value}
+    end
   end
 
   def show

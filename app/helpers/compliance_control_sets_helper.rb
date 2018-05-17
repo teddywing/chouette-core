@@ -83,6 +83,13 @@ module ComplianceControlSetsHelper
             attribute: 'code'
           ),
           TableBuilderHelper::Column.new(
+            key: :subclass,
+            attribute: Proc.new do |compliance_control|
+              key = ComplianceControl.subclass_patterns.key(compliance_control.object.class.object_type)
+              I18n.t("compliance_controls.filters.subclasses.#{key}")
+            end
+          ),
+          TableBuilderHelper::Column.new(
             key: :name,
             attribute: 'name',
             link_to: lambda do |compliance_control|
@@ -98,7 +105,7 @@ module ComplianceControlSetsHelper
             attribute: 'comment'
           ),
       ],
-      sortable: true,
+      sortable: false,
       cls: 'table has-filter has-search',
       model: ComplianceControl,
       action: :index
