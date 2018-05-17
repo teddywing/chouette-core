@@ -264,4 +264,68 @@ RSpec.describe CleanUp, :type => :model do
       }
     end
   end
+
+  describe "#destroy_routes_outside_referential" do
+    let(:line_referential) { create(:line_referential) }
+    let(:line) { create(:line, line_referential: line_referential) }
+    let(:metadata) { create(:referential_metadata, lines: [line]) }
+    let(:referential) { create(:workbench_referential, metadatas: [metadata]) }
+    let(:cleaner) { create(:clean_up, referential: referential) }
+
+    it "destroys routes not in the the referential" do
+      route = create(:route)
+
+      cleaner.destroy_routes_outside_referential
+
+      expect(Chouette::Route.exists?(route.id)).to be false
+
+      line.routes.each do |route|
+        expect(route).not_to be_destroyed
+      end
+    end
+
+    it "cascades destruction of vehicle journeys and journey patterns" do
+      vehicle_journey = create(:vehicle_journey)
+
+      cleaner.destroy_routes_outside_referential
+
+      expect(Chouette::Route.exists?(vehicle_journey.route.id)).to be false
+      expect(
+        Chouette::JourneyPattern.exists?(vehicle_journey.journey_pattern.id)
+      ).to be false
+      expect(Chouette::VehicleJourney.exists?(vehicle_journey.id)).to be false
+    end
+  end
+
+  describe "#destroy_empty" do
+    it "calls the appropriate destroy methods" do
+      cleaner = create(:clean_up)
+
+      expect(cleaner).to receive(:destroy_vehicle_journeys)
+      expect(cleaner).to receive(:destroy_journey_patterns)
+      expect(cleaner).to receive(:destroy_routes)
+
+      cleaner.destroy_empty
+    end
+  end
+
+  describe "#run_methods" do
+    let(:cleaner) { create(:clean_up) }
+
+    it "calls methods in the :methods attribute" do
+      cleaner = create(
+        :clean_up,
+        methods: [:destroy_routes_outside_referential]
+      )
+
+      expect(cleaner).to receive(:destroy_routes_outside_referential)
+      cleaner.run_methods
+    end
+
+    it "doesn't do anything if :methods is nil" do
+      cleaner = create(:clean_up)
+
+      expect { cleaner.run_methods }.not_to raise_error
+    end
+  end
 end
