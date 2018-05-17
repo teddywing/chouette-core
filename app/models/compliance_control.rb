@@ -20,6 +20,10 @@ class ComplianceControl < ApplicationModel
       }
     end
 
+    def object_type
+      self.default_code.match(/^\d+-(?'object_type'\w+)-\d+$/)[:object_type]
+    end
+
     def inherited(child)
       child.instance_eval do
         def model_name
