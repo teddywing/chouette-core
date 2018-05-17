@@ -166,7 +166,7 @@ class Merge < ApplicationModel
             objectid: objectid,
             # line_id is the same
             # all other primary must be changed
-            opposite_route_id: nil #FIXME
+            opposite_route_id: nil # merged after
           )
           new_route = new.routes.build attributes
 

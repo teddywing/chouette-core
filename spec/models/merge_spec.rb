@@ -92,12 +92,14 @@ RSpec.describe Merge do
     output.routes.each do |route|
       stop_points = nil
       old_route = nil
+      old_opposite_route = nil
       referential.switch do
         old_route = Chouette::Route.find_by(checksum: route.checksum)
         stop_points = {}
         old_route.routing_constraint_zones.each do |constraint_zone|
           stop_points[constraint_zone.checksum] = constraint_zone.stop_points.map(&:registration_number)
         end
+        old_opposite_route = old_route.opposite_route
       end
       routing_constraint_zones[old_route.id].each do |checksum, constraint_zone|
         new_constraint_zone = route.routing_constraint_zones.where(checksum: checksum).last
@@ -108,6 +110,8 @@ RSpec.describe Merge do
       route.vehicle_journeys.each do |vehicle_journey|
         expect(vehicle_journey.ignored_routing_contraint_zones.size).to eq vehicle_journey.ignored_routing_contraint_zone_ids.size
       end
+
+      expect(route.opposite_route&.checksum).to eq(old_opposite_route&.checksum)
     end
 
     # Let's check stop_point positions are respected
