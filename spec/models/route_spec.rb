@@ -2,6 +2,11 @@ require 'spec_helper'
 
 RSpec.describe Chouette::Route, :type => :model do
   subject(:route){ create :route }
+  context "the checksum" do
+    it "should change when a stop is removed" do
+      expect{route.stop_points.last.destroy}.to change {route.reload.checksum}
+    end
+  end
   context "metadatas" do
     it "should be empty at first" do
       expect(Chouette::Route.has_metadata?).to be_truthy
