@@ -33,6 +33,13 @@ fr:
       organisation_control: Contrôle organisation
       results: "%{count} jeu(x) de données validé(s) sur %{total}"
       summary: Bilan des jeux de contrôles d'import <span title="Lorem ipsum..." class="fa fa-lg fa-info-circle text-info"></span>
+      parent: Parent
+      netex:
+        table_title: "Etat des fichiers analysés"
+        table_explanation: "Dans le cas ou le(s) fichiers calendriers.xml et/ou commun.xml sont dans un état non importé, alors tous les fichiers lignes sont automatiquement dans un état non traité."
+      table:
+        test_results: Résultats des tests
+        download: Téléchargement
     compliance_check_task: "Validation"
     severities:
       info: "Information"
@@ -99,7 +106,7 @@ fr:
         max_distance_for_connection_link: "Distance max pour créer les correspondances"
         ignore_last_word: "ignorer le dernier mot"
         ignore_end_chars: "ignorer les n derniers caractères"
-
+        referential: Jeu de données
       import:
         <<: *attrs
         base:

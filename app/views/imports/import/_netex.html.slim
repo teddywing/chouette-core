@@ -1,8 +1,8 @@
 .row
   .col-lg-6.col-md-6.col-sm-12.col-xs-12
-    - metadata = { t('.parent') => link_to(@import.parent.name, [@import.parent.workbench, @import.parent]) }
-    - metadata = metadata.update({t('.status') => import_status(@import.status, verbose: true) })
-    - metadata = metadata.update({t('.referential') => @import.referential ? link_to(@import.referential.name, [@import.referential]) : "-" })
+    - metadata = { t('imports.show.parent') => link_to(@import.parent.name, [@import.parent.workbench, @import.parent]) }
+    - metadata = metadata.update({Import::Base.tmf(:status) => import_status(@import.status, verbose: true) })
+    - metadata = metadata.update({Import::Base.tmf(:referential) => @import.referential ? link_to(@import.referential.name, [@import.referential]) : "-" })
     = definition_list t('metadatas'), metadata
 
 .col-lg-12
@@ -11,9 +11,9 @@
 
 - if @import.resources.present?
   .col-lg-12
-    h2 = t('.table_title')
+    h2 = t('imports.show.netex.table_title')
   .col-lg-12
-    = t('.table_explanation')
+    = t('imports.show.netex.table_explanation')
   .col-lg-12
     = table_builder_2 @import.resources.where(resource_type: :file),
       [ \
@@ -28,12 +28,12 @@
           sortable: false, \
         ), \
         TableBuilderHelper::Column.new( \
-          name: 'Résultat des tests' , \
+          name: t('imports.show.table.test_results') , \
           attribute: Proc.new { |n| I18n.t('import_resources.index.metrics', n.metrics.deep_symbolize_keys) }, \
           sortable: false, \
         ), \
         TableBuilderHelper::Column.new( \
-          name: 'Téléchargement' , \
+          name: t('imports.show.table.download') , \
           attribute: Proc.new { |n| '<i class="fa fa-download" aria-hidden="true"></i>'.html_safe }, \
           sortable: false, \
           link_to: lambda do |import_resource| \

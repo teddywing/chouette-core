@@ -1,7 +1,7 @@
 .row
   .col-lg-6.col-md-6.col-sm-12.col-xs-12
-    - metadata = { t('.data_recovery') => '-', t('.filename') => @import.try(:file_identifier)}
-    - metadata = metadata.update({t('.status') => import_status(@import.status, verbose: true) })
+    - metadata = { t('.data_recovery') => '-', t('imports.show.filename') => @import.try(:file_identifier)}
+    - metadata = metadata.update({Import::Base.tmf(:status) => import_status(@import.status, verbose: true) })
     = definition_list t('metadatas'), metadata
 
 .col-lg-12
@@ -25,7 +25,7 @@ ruby:
     = table_builder_2 @import.resources,
       [ \
         TableBuilderHelper::Column.new( \
-          name: t('.referential_name'), \
+          name: t('imports.show.referential_name'), \
           attribute: 'name', \
           sortable: false, \
           link_to: lambda do |item| \
