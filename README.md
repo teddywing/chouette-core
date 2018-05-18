@@ -1,5 +1,5 @@
 # Chouette
-[![Maintainability](https://api.codeclimate.com/v1/badges/f9680a36dcfd25d4f2cf/maintainability)](https://codeclimate.com/github/af83/chouette-core/maintainability) <a href="https://codeclimate.com/github/af83/chouette-core/test_coverage"><img src="https://api.codeclimate.com/v1/badges/f9680a36dcfd25d4f2cf/test_coverage" /></a>
+[![Maintainability](https://api.codeclimate.com/v1/badges/f9680a36dcfd25d4f2cf/maintainability)](https://codeclimate.com/github/af83/chouette-core/maintainability)
 
 
 Chouette is a Ruby/Rails & Java project to manage transport offer data. It is designed as an [SaaS](http://en.wikipedia.org/wiki/Software_as_a_service) platform and can :
@@ -22,6 +22,11 @@ Requirements
 ------------
 
 * [Import, Export and Validation Operations](https://github.com/af83/chouette-core-iev) are in the Java part of the project
+
+Install
+----------------
+
+Install steps are available [here](../INSTALL.md)
 
 More Information
 ----------------

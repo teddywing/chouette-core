@@ -5,7 +5,7 @@
 Example with [rvm](https://rvm.io/) (other solutions : rbenv, packages..):
 
 ```sh
-rvm install 2.3.1
+rvm install 2.3.5
 ```
 
 Nokogiri on macOS
@@ -104,41 +104,7 @@ bundle exec rake db:create db:migrate
 Run :
 
 ```sh
-bundle exec rake db:seed:stif
-```
-
-Two users are created : stif-boiv@af83.com/secret and stif-boiv+transporteur@af83.com/secret
-
-#### Synchronize with STIF CODIFLIGNE (Line) and REFLEX (StopArea)
-
-```sh
-bundle exec rake codifligne:sync
-bundle exec rake reflex:sync
-```
-
-**N.B.** These are asynchronous tasks, you can observe the launched jobs in your [Sidekiq Console](http://localhost:3000/sidekiq)
-
-#### Create Referential
-
-To create `Referential` objects with some data (`Route`, `JourneyPattern`, `VehicleJourney`, etc), you need to wait codifligne and reflex jobs finished. And then you can launch :
-
-```sh
-bundle exec rake referential:create
-```
-
-### Run tests
-
-* Rspec (Rails test)
-
-```sh
-bundle exec rake spec
-```
-
-* Jest (JavaScript tests)
-
-```sh
-grunt jest #to run the whole specs.
-grunt #to watch for changes and automatically run corresponding tests.
+bundle exec rake db:seed
 ```
 
 ### Run
@@ -153,5 +119,3 @@ bundle exec sidekiq
 bin/webpack-dev-server // Launch webpack server to compile assets on the fly
 bundle exec rails server // Launch rails server
 ```
-
-You need to have an account on [STIF Portail](http://stif-portail-dev.af83.priv/) to connect to the Rails application.
