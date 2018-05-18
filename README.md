@@ -26,7 +26,7 @@ Requirements
 Install
 ----------------
 
-Install steps are available [here](../INSTALL.md)
+Install steps are available [here](https://github.com/af83/chouette-core/blob/master/INSTALL.md)
 
 More Information
 ----------------
