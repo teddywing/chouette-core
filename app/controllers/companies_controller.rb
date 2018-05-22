@@ -44,9 +44,9 @@ class CompaniesController < ChouetteController
     ids = @q.result(:distinct => true).pluck(:id)
     scope = scope.where(id: ids)
     if sort_column && sort_direction
-      @companies ||= scope.order(sort_column + ' ' + sort_direction).paginate(:page => params[:page])
+      @companies ||= scope.order("lower(#{sort_column})" + ' ' + sort_direction).paginate(:page => params[:page])
     else
-      @companies ||= scope.order(:name).paginate(:page => params[:page])
+      @companies ||= scope.order('lower(name)').paginate(:page => params[:page])
     end
   end
 
