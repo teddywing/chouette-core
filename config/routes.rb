@@ -159,7 +159,8 @@ ChouetteIhm::Application.routes.draw do
   end
 
   devise_for :users, :controllers => {
-    invitations: 'users/invitations'
+    invitations: 'users/invitations',
+    registrations: 'devise/sessions'
   }
 
   devise_scope :user do
