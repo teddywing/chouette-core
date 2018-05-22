@@ -2,84 +2,54 @@
 - current_organisation.workbenches.each do |workbench|
   #menu-items.panel-group
     .menu-item.panel
-      .panel-heading
-        h4.panel-title
-          = link_to '#miOne', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-            = t('layouts.navbar.current_offer.other')
-
-      #miOne.panel-collapse.collapse
-        .list-group
-          = link_to root_path, class: "list-group-item" do
-            span = t('layouts.navbar.dashboard')
-          = link_to workbench_output_path(workbench), class: 'list-group-item' do
-            span = t('layouts.navbar.workbench_outputs.organisation')
-          = link_to '#', class: 'list-group-item disabled' do
-            span = t('layouts.navbar.workbench_outputs.workgroup')
-          - if policy(workbench.workgroup).edit?
-            = link_to [:edit, workbench.workgroup], class: 'list-group-item' do
-              span = t('layouts.navbar.workbench_outputs.edit_workgroup')
+      = main_nav_menu_item 'layouts.navbar.current_offer.other'.t do
+        = link_to root_path, class: "list-group-item" do
+          span = 'layouts.navbar.dashboard'.t
+        = link_to workbench_output_path(workbench), class: 'list-group-item' do
+          span = 'layouts.navbar.workbench_outputs.organisation'.t
+        = link_to '#', class: 'list-group-item disabled' do
+          span = 'layouts.navbar.workbench_outputs.workgroup'.t
+        - if policy(workbench.workgroup).edit?
+          = link_to [:edit, workbench.workgroup], class: 'list-group-item' do
+            span = 'layouts.navbar.workbench_outputs.edit_workgroup'.t
 
     .menu-item.panel
-      .panel-heading
-        h4.panel-title
-          = link_to '#miTwo', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-            - t('activerecord.models.workbench.one').capitalize
-
-      #miTwo.panel-collapse.collapse
-        .list-group
-          = link_to workbench_path(workbench), class: "list-group-item" do
-            span = t('activerecord.models.referential.other').capitalize
-          = link_to workbench_imports_path(workbench), class: "list-group-item" do
-            span = t('activerecord.models.import.other').capitalize
-          = link_to workbench_exports_path(workbench), class: "list-group-item" do
-            span = t('activerecord.models.export.other').capitalize
-          = link_to workgroup_calendars_path(workbench.workgroup), class: 'list-group-item' do
-            span = t('activerecord.models.calendar.other').capitalize
-          = link_to workbench_compliance_check_sets_path(workbench), class: 'list-group-item' do
-            span = t('activerecord.models.compliance_check_set.other').capitalize
-          = link_to compliance_control_sets_path, class: 'list-group-item' do
-            span = t('activerecord.models.compliance_control_set.other').capitalize
-          - if policy(workbench).edit?
-            = link_to [:edit, workbench], class: 'list-group-item' do
-              span = t('workbenches.edit.link')
+      = main_nav_menu_item 'activerecord.models.workbench.one'.t.capitalize do
+        = link_to workbench_path(workbench), class: "list-group-item" do
+          span = 'activerecord.models.referential.other'.t.capitalize
+        = link_to workbench_imports_path(workbench), class: "list-group-item" do
+          span = 'activerecord.models.import.other'.t.capitalize
+        = link_to workbench_exports_path(workbench), class: "list-group-item" do
+          span = 'activerecord.models.export.other'.t.capitalize
+        = link_to workgroup_calendars_path(workbench.workgroup), class: 'list-group-item' do
+          span = 'activerecord.models.calendar.other'.t.capitalize
+        = link_to workbench_compliance_check_sets_path(workbench), class: 'list-group-item' do
+          span = 'activerecord.models.compliance_check_set.other'.t.capitalize
+        = link_to compliance_control_sets_path, class: 'list-group-item' do
+          span = 'activerecord.models.compliance_control_set.other'.t.capitalize
+        - if policy(workbench).edit?
+          = link_to [:edit, workbench], class: 'list-group-item' do
+            span = 'workbenches.edit.link'.t
 
     .menu-item.panel
-      .panel-heading
-        h4.panel-title
-          = link_to '#miFour', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-            = t('layouts.navbar.line_referential')
-
-      #miFour.panel-collapse.collapse
-        .list-group
-          = link_to line_referential_lines_path(workbench.line_referential), class: "list-group-item" do
-            span = Chouette::Line.t.capitalize
-          = link_to line_referential_networks_path(workbench.line_referential), class: "list-group-item" do
-            span = Chouette::Network.t.capitalize
-          = link_to line_referential_companies_path(workbench.line_referential), class: "list-group-item" do
-            span = Chouette::Company.t.capitalize
+      = main_nav_menu_item 'layouts.navbar.line_referential'.t do
+        = link_to line_referential_lines_path(workbench.line_referential), class: "list-group-item" do
+          span = Chouette::Line.t.capitalize
+        = link_to line_referential_networks_path(workbench.line_referential), class: "list-group-item" do
+          span = Chouette::Network.t.capitalize
+        = link_to line_referential_companies_path(workbench.line_referential), class: "list-group-item" do
+          span = Chouette::Company.t.capitalize
 
     .menu-item.panel
-      .panel-heading
-        h4.panel-title
-          = link_to '#miFive', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-            = t('layouts.navbar.stop_area_referential')
-
-      #miFive.panel-collapse.collapse
-        .list-group
-          = link_to stop_area_referential_stop_areas_path(workbench.stop_area_referential), class: "list-group-item" do
-            span = Chouette::StopArea.t.capitalize
+      = main_nav_menu_item 'layouts.navbar.stop_area_referential'.t do
+        = link_to stop_area_referential_stop_areas_path(workbench.stop_area_referential), class: "list-group-item" do
+          span = Chouette::StopArea.t.capitalize
 
     .menu-item.panel
-      .panel-heading
-        h4.panel-title
-          = link_to '#miSix', data: {toggle: 'collapse', parent: '#menu-items'}, 'aria-expanded' => 'false' do
-            = t('layouts.navbar.configuration')
-
-      #miSix.panel-collapse.collapse
-        .list-group
-          - if policy(workbench).edit?
-            = link_to [:edit, workbench], class: 'list-group-item' do
-              span = t('layouts.navbar.workbench_configuration')
-          - if policy(workbench.workgroup).edit?
-            = link_to [:edit, workbench.workgroup], class: 'list-group-item' do
-              span = t('layouts.navbar.workgroup_configuration')
+      = main_nav_menu_item 'layouts.navbar.configuration'.t do
+        - if policy(workbench).edit?
+          = link_to [:edit, workbench], class: 'list-group-item' do
+            span = 'layouts.navbar.workbench_configuration'.t
+        - if policy(workbench.workgroup).edit?
+          = link_to [:edit, workbench.workgroup], class: 'list-group-item' do
+            span = 'layouts.navbar.workgroup_configuration'.t
