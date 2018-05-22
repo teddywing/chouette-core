@@ -6,7 +6,7 @@
   .container-fluid
     .row
       .col-lg-6.col-md-6.col-sm-12.col-xs-12
-        - attributes = { t('id_codif') => @company.try(:objectid).try(:local_id),
+        - attributes = { t('id_codif') => @company.get_objectid.try(:short_id),
           Chouette::Company.human_attribute_name(:phone) => @company.phone,
           Chouette::Company.human_attribute_name(:email) => @company.email,
           Chouette::Company.human_attribute_name(:url) => @company.url }
