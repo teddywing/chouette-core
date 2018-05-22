@@ -23,6 +23,7 @@ en:
       workbench_output:
         organisation: Organisation offers
         workgroup: Workgroup offers
+        edit_workgroup: App configuration
       configuration: Settings
       workgroup_configuration:  Application
       workbench_configuration: Workbench
