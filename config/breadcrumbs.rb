@@ -6,6 +6,11 @@ crumb :workbench do |workbench|
   link workbench.name, workbench_path(workbench)
 end
 
+crumb :workbench_configure do |workbench|
+  link I18n.t('workbenches.edit.title'), edit_workbench_path(workbench)
+  parent :workbench, workbench
+end
+
 crumb :workbench_output do |workbench|
   link I18n.t('workbench_outputs.show.title'), workbench_output_path(workbench)
   parent :workbench, mutual_workbench(workbench)
