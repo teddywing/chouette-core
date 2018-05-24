@@ -9,7 +9,7 @@ describe 'ReferentialStopAreas', type: :feature do
   let!(:stop_areas) { Array.new(2) { create :stop_area, stop_area_referential: stop_area_referential } }
 
   describe 'index' do
-    before(:each) { visit referential_stop_areas_path(referential) }
+    before(:each) { visit stop_area_referential_stop_areas_path(referential.workbench.stop_area_referential) }
 
     it 'displays referential stop_areas' do
       expect(page).to have_content(stop_areas.first.name)
@@ -18,14 +18,14 @@ describe 'ReferentialStopAreas', type: :feature do
 
     context 'filtering' do
       it 'supports filtering by name' do
-        fill_in 'q[name_or_objectid_cont]', with: stop_areas.first.name
+        fill_in 'q[name_or_objectid_or_registration_number_cont]', with: stop_areas.first.name
         click_button 'search-btn'
         expect(page).to have_content(stop_areas.first.name)
         expect(page).not_to have_content(stop_areas.last.name)
       end
 
       it 'supports filtering by objectid' do
-        fill_in 'q[name_or_objectid_cont]', with: stop_areas.first.objectid
+        fill_in 'q[name_or_objectid_or_registration_number_cont]', with: stop_areas.first.objectid
         click_button 'search-btn'
         expect(page).to have_content(stop_areas.first.name)
         expect(page).not_to have_content(stop_areas.last.name)
@@ -35,7 +35,7 @@ describe 'ReferentialStopAreas', type: :feature do
 
   describe 'show' do
     it 'displays referential stop area' do
-      visit referential_stop_area_path(referential, stop_areas.first)
+      visit stop_area_referential_stop_area_path(stop_areas.first.stop_area_referential, stop_areas.first)
       expect(page).to have_content(stop_areas.first.name)
     end
   end

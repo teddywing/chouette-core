@@ -67,7 +67,7 @@ nav.navbar.navbar-default.navbar-fixed-top role="navigation"
                   = Referential.human_attribute_name("lines")
 
               li
-                = link_to referential_stop_areas_path(@referential) do
+                = link_to stop_area_referential_stop_areas_path(@referential.workbench.stop_area_referential) do
                   span.badge.pull-right = @referential.stop_areas.size
                   = Referential.human_attribute_name("stop_areas")
 

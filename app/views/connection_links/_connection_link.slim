@@ -20,14 +20,14 @@
       = t('.from')
 
       - if connection_link.departure.present?
-        = link_to_if connection_link.departure, truncate(connection_link.departure.name, :length => 15) , referential_stop_area_path(@referential, connection_link.departure), :title => "#{connection_link.human_attribute_name('departure')} #{connection_link.departure.name}"
+        = link_to_if connection_link.departure, truncate(connection_link.departure.name, :length => 15) , stop_area_referential_stop_area_path(connection_link.departure.stop_area_referential, connection_link.departure), :title => "#{connection_link.human_attribute_name('departure')} #{connection_link.departure.name}"
       - else
     	 = connection_link.human_attribute_name('undefined')
 
       = t('.to')
 
       - if connection_link.arrival.present?
-        = link_to_if( connection_link.arrival, truncate(connection_link.arrival.name, :length => 15), referential_stop_area_path(@referential, connection_link.arrival), :title => "#{connection_link.human_attribute_name('arrival')} #{connection_link.arrival.name}" )
+        = link_to_if( connection_link.arrival, truncate(connection_link.arrival.name, :length => 15), stop_area_referential_stop_area_path(connection_link.arrival.stop_area_referential, connection_link.arrival), :title => "#{connection_link.human_attribute_name('arrival')} #{connection_link.arrival.name}" )
       - else
         = connection_link.human_attribute_name("undefined")
     p

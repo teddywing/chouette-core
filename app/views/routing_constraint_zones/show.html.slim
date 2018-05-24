@@ -19,7 +19,7 @@
               name: "Arrêts de l'itinéraire", \
               attribute: 'name', \
               link_to: lambda do |stop_point| \
-                referential_stop_area_path(@referential, stop_point.stop_area) \
+                stop_area_referential_stop_area_path(stop_point.stop_area.stop_area_referential, stop_point.stop_area) \
               end \
             ),
             TableBuilderHelper::Column.new( \
