@@ -1,6 +1,6 @@
-- breadcrumb :referential_stop_areas, @referential
+- breadcrumb :stop_areas, @referential.workbench.stop_area_referential
 
-= search_form_for @q, :url => referential_stop_areas_path(@referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
+= search_form_for @q, :url => stop_area_referential_stop_areas_path(@referential.workbench.stop_area_referential), remote: true, :html => {:method => :get, class: "form-inline", :id => "search", role: "form"} do |f|
   .panel.panel-default
     .panel-heading
       .input-group.col-md-9.col-sm-9
@@ -29,6 +29,6 @@
   ul.actions
     - if policy(Chouette::StopArea).create?
       li
-        = link_to t('stop_areas.actions.new'), new_referential_stop_area_path(@referential), class: 'add'
+        = link_to t('stop_areas.actions.new'), new_stop_area_referential_stop_area_path(@referential.workbench.stop_area_referential), class: 'add'
     li
       / = link_to t('stop_areas.actions.default_geometry'), default_geometry_referential_stop_areas_path(@referential), :method => :put, :class => "calculator"

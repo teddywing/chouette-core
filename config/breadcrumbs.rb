@@ -271,16 +271,6 @@ crumb :journey_patterns do |referential, route|
   parent :route, referential, route
 end
 
-crumb :referential_stop_areas do |referential|
-  link I18n.t('stop_areas.index.title'), referential_stop_areas_path(referential)
-  parent :referential, referential
-end
-
-crumb :referential_stop_area do |referential, stop_area|
-  link breadcrumb_name(stop_area), referential_stop_area_path(referential, stop_area)
-  parent :referential_stop_areas, referential
-end
-
 crumb :vehicle_journeys do |referential, route|
   link I18n.t('vehicle_journeys.index.title', route: route.name), referential_line_route_vehicle_journeys_path(referential, route.line, route)
   parent :route, referential, route
