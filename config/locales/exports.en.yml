@@ -93,6 +93,14 @@ en:
         <<: *attrs
         base:
           <<: *attrs
+        netex:
+          <<: *attrs
+          duration: Duration
+          line_code: Line
+          export_subtype: Export subtype
+          export_subtype_collection:
+            line: By line
+            full: Full
         workgroup:
           duration: Duration
         referential_companies:
