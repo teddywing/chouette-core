@@ -3,10 +3,7 @@ class AddMetadataToOtherModels < ActiveRecord::Migration
     [
       Api::V1::ApiKey,
       Calendar,
-      Chouette::AccessLink,
-      Chouette::AccessPoint,
       Chouette::Company,
-      Chouette::ConnectionLink,
       Chouette::GroupOfLine,
       Chouette::JourneyPattern,
       Chouette::Line,
