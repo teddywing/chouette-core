@@ -169,7 +169,8 @@ module Chouette
     end
 
     def time_tables
-      vehicle_journeys.joins(:time_tables).map(&:"time_tables").flatten.uniq
+      ids = vehicle_journeys.joins(:time_tables).pluck('time_tables.id').uniq
+      Chouette::TimeTable.where(id: ids)
     end
 
     def sorted_vehicle_journeys(journey_category_model)

@@ -81,6 +81,7 @@ class ReferentialConsolidated
         ar_model.vehicle_journey_at_stops.each do |vjas|
           out[vjas.vehicle_journey_id][vjas.stop_point_id] = vjas
         end
+        out
       end
     end
 
@@ -103,8 +104,18 @@ class ReferentialConsolidated
       (should_highlight? || matching_stop_areas) && highlighted_journeys.exists?
     end
 
+    def stop_areas
+      @stop_areas ||= begin
+        out = {}
+        ar_model.stop_areas.select(:id, :name, :city_name, :zip_code, :time_zone).each do |sp|
+          out[sp.id] = sp
+        end
+        out
+      end
+    end
+
     def stop_points
-      @stop_points ||= ar_model.stop_points.map {|sp| StopPoint.new(self, sp, @all_vehicle_journeys, params) }
+      @stop_points ||= ar_model.stop_points.map {|sp| StopPoint.new(self, sp, @all_vehicle_journeys, params, stop_area: stop_areas[sp.stop_area_id]) }
     end
   end
 
@@ -116,7 +127,7 @@ class ReferentialConsolidated
     end
 
     def vehicle_journey_at_stops
-      @opts[:vehicle_journey_at_stops]
+      @opts[:vehicle_journey_at_stops] || {}
     end
 
     def has_purchase_window? purchase_window
@@ -132,7 +143,7 @@ class ReferentialConsolidated
     def_delegators :ar_model, :id, :arrival_time, :departure_time, :stop_area_id
 
     def stop_area
-      ar_model.stop_area_light
+      @opts[:stop_area]
     end
 
     def name
