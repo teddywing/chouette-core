@@ -20,7 +20,7 @@ class ComplianceControlSetDecorator < AF83::Decorator
     instance_decorator.destroy_action_link do |l|
       l.content h.destroy_link_content
       l.href { h.compliance_control_set_path(object.id) }
-      l.data confirm: h.t('compliance_control_sets.actions.destroy_confirm')
+      l.data confirm: t('compliance_control_sets.actions.destroy_confirm')
     end
   end
 end

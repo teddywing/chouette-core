@@ -18,7 +18,7 @@ class RouteDecorator < AF83::Decorator
       if: ->() { object.stop_points.any? },
       secondary: :show
     ) do |l|
-      l.content h.t('journey_patterns.actions.index')
+      l.content t('journey_patterns.actions.index')
       l.href do
         [
           context[:referential],
@@ -33,7 +33,7 @@ class RouteDecorator < AF83::Decorator
       if: ->() { object.journey_patterns.present? },
       secondary: :show
     ) do |l|
-      l.content h.t('vehicle_journeys.actions.index')
+      l.content t('vehicle_journeys.actions.index')
       l.href do
         [
           context[:referential],
@@ -45,7 +45,7 @@ class RouteDecorator < AF83::Decorator
     end
 
     instance_decorator.action_link secondary: :show do |l|
-      l.content h.t('vehicle_journey_exports.new.title')
+      l.content t('vehicle_journey_exports.new.title')
       l.href do
         h.referential_line_route_vehicle_journey_exports_path(
           context[:referential],
@@ -60,7 +60,7 @@ class RouteDecorator < AF83::Decorator
       secondary: :show,
       policy: :duplicate
     ) do |l|
-      l.content h.t('routes.duplicate.title')
+      l.content t('routes.duplicate.title')
       l.method :post
       l.href do
         h.duplicate_referential_line_route_path(
@@ -76,7 +76,7 @@ class RouteDecorator < AF83::Decorator
       policy: :create_opposite,
       if: ->{h.has_feature?(:create_opposite_routes)}
     ) do |l|
-      l.content h.t('routes.create_opposite.title')
+      l.content t('routes.create_opposite.title')
       l.method :post
       l.disabled { object.opposite_route.present? }
       l.href do
@@ -90,7 +90,7 @@ class RouteDecorator < AF83::Decorator
     end
 
     instance_decorator.destroy_action_link do |l|
-      l.data confirm: h.t('routes.actions.destroy_confirm')
+      l.data confirm: t('routes.actions.destroy_confirm')
     end
   end
 end
