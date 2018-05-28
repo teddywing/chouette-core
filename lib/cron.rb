@@ -1,6 +1,26 @@
 module Cron
   class << self
 
+    def every_day_at_3AM
+      sync_reflex
+    end
+
+    def every_day_at_4AM
+      sync_codifligne
+    end
+
+    def every_hour
+      sync_organizations
+      sync_users
+    end
+
+    def every_5_minutes
+      check_import_operations
+      check_ccset_operations
+    end
+
+    private
+
     def sync_organizations
       begin
         Organisation.portail_sync
@@ -37,7 +57,7 @@ module Cron
       end
     end
 
-    def check_import_operations
+    def check_ccset_operations
       begin
         ParentNotifier.new(ComplianceCheckSet).notify_when_finished
         ComplianceCheckSet.abort_old
@@ -46,7 +66,7 @@ module Cron
       end
     end
 
-    def check_ccset_operations
+    def check_import_operations
       begin
         ParentNotifier.new(Import::Base).notify_when_finished
         Import::Netex.abort_old

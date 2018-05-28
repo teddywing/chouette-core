@@ -28,23 +28,19 @@ set :NEW_RELIC_LOG, 'stdout'
 set :job_template, "/bin/bash -c ':job'"
 
 every :hour do
-  Cron.sync_organizations
-  Cron.sync_users
+  runner "Cron.every_hour"
 end
 
 every :day, :at => '3:00am' do
-  Cron.sync_reflex
+  runner "Cron.every_day_at_3AM"
 end
+
 every :day, :at => '4:00 am' do
-  Cron.sync_codifligne
+ runner "Cron.every_day_at_4AM"
 end
 
 every 5.minutes do
-  Cron.check_import_operations
-end
-
-every 5.minutes do
-  Cron.check_ccset_operations
+  runner "Cron.every_5_minutes"
 end
 
 every 1.minute do

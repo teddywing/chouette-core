@@ -2,16 +2,6 @@ require 'csv'
 require 'tasks/helpers/simple_interfaces'
 
 namespace :import do
-  desc "Notify parent imports when children finish"
-    task notify_parent: :environment do
-    ParentNotifier.new(Import::Base).notify_when_finished
-  end
-
-  desc "Mark old unfinished Netex imports as 'aborted'"
-  task netex_abort_old: :environment do
-    Import::Netex.abort_old
-  end
-
   desc "import the given file with the corresponding importer"
   task :import, [:configuration_name, :filepath, :referential_id, :logs_output_dir] => :environment do |t, args|
     args.with_defaults(logs_output_dir: "./log/importers/")
