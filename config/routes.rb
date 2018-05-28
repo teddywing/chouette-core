@@ -123,8 +123,6 @@ ChouetteIhm::Application.routes.draw do
     end
 
     resources :stop_areas, controller: "referential_stop_areas" do
-      resources :access_points
-      resources :stop_area_copies
       resources :stop_area_routing_lines
       member do
         get 'add_children'
