@@ -63,6 +63,9 @@ module Chouette
         where(" position between ? and ? ", between_positions.first, between_positions.last)
       end
     end
+
+    has_many :vehicle_journey_at_stops, through: :vehicle_journeys
+
     has_many :stop_areas, -> { order('stop_points.position ASC') }, :through => :stop_points do
       def between(departure, arrival)
         departure, arrival = [departure, arrival].map do |endpoint|
@@ -166,7 +169,8 @@ module Chouette
     end
 
     def time_tables
-      vehicle_journeys.joins(:time_tables).map(&:"time_tables").flatten.uniq
+      ids = vehicle_journeys.joins(:time_tables).pluck('time_tables.id').uniq
+      Chouette::TimeTable.where(id: ids)
     end
 
     def sorted_vehicle_journeys(journey_category_model)

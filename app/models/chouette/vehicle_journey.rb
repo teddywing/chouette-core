@@ -21,6 +21,7 @@ module Chouette
     belongs_to :company
     belongs_to :route
     belongs_to :journey_pattern
+    belongs_to :journey_pattern_only_objectid, -> {select("journey_patterns.objectid")}, class_name: "Chouette::JourneyPattern", foreign_key: :journey_pattern_id
     has_many :stop_areas, through: :journey_pattern
 
     has_and_belongs_to_many :footnotes, :class_name => 'Chouette::Footnote'

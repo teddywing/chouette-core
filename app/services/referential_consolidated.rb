@@ -48,11 +48,12 @@ class ReferentialConsolidated
     attr_reader :parent
     attr_reader :ar_model
 
-    def initialize parent, ar_model, vehicle_journeys, params
+    def initialize parent, ar_model, vehicle_journeys, params, opts={}
       @parent = parent
       @ar_model = ar_model
       @all_vehicle_journeys = vehicle_journeys
       @params = params
+      @opts = opts
     end
 
     def should_highlight?
@@ -74,9 +75,19 @@ class ReferentialConsolidated
   class Route < Base
     def_delegators :ar_model, :name, :id, :time_tables, :purchase_windows, :stop_area_ids
 
+    def vehicle_journey_at_stops
+      @vehicle_journey_at_stops ||= begin
+        out = Hash.new{|h, k| h[k] = {}}
+        ar_model.vehicle_journey_at_stops.each do |vjas|
+          out[vjas.vehicle_journey_id][vjas.stop_point_id] = vjas
+        end
+        out
+      end
+    end
+
     def vehicle_journeys
       @vehicle_journeys ||= begin
-        ar_model.vehicle_journeys.map {|vj| VehicleJourney.new(self, vj, @all_vehicle_journeys, params) }
+        ar_model.vehicle_journeys.select(:id, :published_journey_name, :route_id, :journey_pattern_id).map {|vj| VehicleJourney.new(self, vj, @all_vehicle_journeys, params, vehicle_journey_at_stops: vehicle_journey_at_stops[vj.id]) }
       end
     end
 
@@ -85,7 +96,7 @@ class ReferentialConsolidated
     end
 
     def highlighted_count
-      highlighted_journeys.count
+      highlighted_journeys.except(:select).count
     end
 
     def highlighted?
@@ -93,16 +104,30 @@ class ReferentialConsolidated
       (should_highlight? || matching_stop_areas) && highlighted_journeys.exists?
     end
 
+    def stop_areas
+      @stop_areas ||= begin
+        out = {}
+        ar_model.stop_areas.select(:id, :name, :city_name, :zip_code, :time_zone).each do |sp|
+          out[sp.id] = sp
+        end
+        out
+      end
+    end
+
     def stop_points
-      @stop_points ||= ar_model.stop_points.map {|sp| StopPoint.new(self, sp, @all_vehicle_journeys, params) }
+      @stop_points ||= ar_model.stop_points.map {|sp| StopPoint.new(self, sp, @all_vehicle_journeys, params, stop_area: stop_areas[sp.stop_area_id]) }
     end
   end
 
   class VehicleJourney < Base
-    def_delegators :ar_model, :id, :published_journey_name, :journey_pattern, :time_tables, :purchase_windows, :vehicle_journey_at_stops, :time_table_ids, :purchase_window_ids, :route
+    def_delegators :ar_model, :id, :published_journey_name, :journey_pattern, :time_tables, :purchase_windows, :time_table_ids, :purchase_window_ids, :route, :journey_pattern_only_objectid
 
     def highlighted?
       should_highlight? && @all_vehicle_journeys.where(id: self.id).exists?
+    end
+
+    def vehicle_journey_at_stops
+      @opts[:vehicle_journey_at_stops] || {}
     end
 
     def has_purchase_window? purchase_window
@@ -115,7 +140,15 @@ class ReferentialConsolidated
   end
 
   class StopPoint < Base
-    def_delegators :ar_model, :id, :arrival_time, :departure_time, :name, :stop_area, :stop_area_id
+    def_delegators :ar_model, :id, :arrival_time, :departure_time, :stop_area_id
+
+    def stop_area
+      @opts[:stop_area]
+    end
+
+    def name
+      stop_area.name
+    end
 
     def highlighted?
       params[:q] && params[:q]["stop_areas"] && params[:q]["stop_areas"].values.any?{|v| v.to_s == stop_area_id.to_s}

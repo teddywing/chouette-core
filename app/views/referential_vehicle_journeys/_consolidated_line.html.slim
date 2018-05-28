@@ -78,7 +78,7 @@
                       strong= link_to journey.id, [@referential, journey.route.line, journey.route, :vehicle_journeys]
                     div
                       = link_to journey.published_journey_name, [@referential, journey.route.line, journey.route, :vehicle_journeys], title: journey.published_journey_name
-                    div= journey.journey_pattern.get_objectid.short_id
+                    div= journey.journey_pattern_only_objectid.get_objectid.short_id
                     div
                       - journey.purchase_windows[0..3].each do |tt|
                         span.vj_tt
@@ -105,7 +105,7 @@
                     ruby:
                       headline = vehicle_journey_stop_headline prev_sp, sp
                       prev_sp = sp
-                      vjas = journey.vehicle_journey_at_stops.where(stop_point_id: sp.id).last
+                      vjas = journey.vehicle_journey_at_stops[sp.id]
                     .td class="#{vjas && sp.highlighted? ? 'highlighted' : ''} #{vjas.nil? ? 'disabled' : ''} #{headline.present? ? 'headlined' : ''}"
                       div title="#{sp.stop_area.city_name ? "#{sp.stop_area.city_name} (#{sp.stop_area.zip_code})" : ''}" data-headline=headline class=(headline.present? ? 'headlined' : '')
                         - if vjas.present?
