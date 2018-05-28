@@ -90,6 +90,9 @@ class ReferentialCloning < ApplicationModel
 
     event :failed, after: :update_ended_at do
       transitions :from => :pending, :to => :failed
+      after do
+        target_referential.failed!
+      end
     end
   end
 
