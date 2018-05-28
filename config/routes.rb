@@ -94,13 +94,6 @@ ChouetteIhm::Application.routes.draw do
 
     resources :vehicle_journeys, controller: 'referential_vehicle_journeys', only: [:index]
 
-    resources :import_tasks, :only => [:new, :create]
-    resources :export_tasks, :only => [:new, :create] do
-      collection do
-        get 'references'
-      end
-    end
-
     resources :exports, :only => [:index, :show, :destroy]  do
       member do
         get "exported_file"
