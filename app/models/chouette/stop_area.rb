@@ -396,11 +396,13 @@ module Chouette
         confirmed: statuses.include?('confirmed'),
         deactivated: statuses.include?('deactivated'),
       }
-      
-    Chouette::StopArea.where(
-      "confirmed_at #{status[:confirmed] ? "IS NOT NULL" : "IS NULL"}
-      AND deleted_at #{status[:deactivated] ? "IS NOT NULL" : "IS NULL"}"
-      )
+
+      query = []
+      query << "deleted_at IS NOT NULL" if statuses.include?('deactivated')
+      query << "(confirmed_at IS NULL AND deleted_at IS NULL)" if statuses.include?('in_creation')
+      query << "(confirmed_at IS NOT NULL AND deleted_at IS NULL)" if statuses.include?('confirmed')
+
+      Chouette::StopArea.where(query.join(' OR '))
     end
 
     def activated?
@@ -430,7 +432,7 @@ module Chouette
     end
 
     def status
-      return :deleted if deleted_at
+      return :deactivated if deleted_at
       return :confirmed if confirmed_at
 
       :in_creation
@@ -438,7 +440,7 @@ module Chouette
 
     def status=(status)
       case status&.to_sym
-      when :deleted
+      when :deactivated
         deactivate
       when :confirmed
         activate
@@ -448,7 +450,7 @@ module Chouette
     end
 
     def self.statuses
-      %i{in_creation confirmed deleted}
+      %i{in_creation confirmed deactivated}
     end
 
     def time_zone_offset
@@ -461,7 +463,7 @@ module Chouette
       return unless ActiveSupport::TimeZone[time_zone].present?
       ActiveSupport::TimeZone[time_zone].tzinfo.name
     end
-    
+
     def country
       return unless country_code
       country = ISO3166::Country[country_code]
