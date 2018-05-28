@@ -3,7 +3,11 @@ class RouteWayCostWorker
 
   def perform(referential_id, route_id)
     Referential.find(referential_id).switch
-    route = Chouette::Route.find(route_id)
+    route = Chouette::Route.where(id: route_id).last
+    unless route.present?
+      Rails.logger.warn "RouteWayCost called on missing route ##{route_id}".red
+      return
+    end
 
     # Prevent recursive worker spawning since this call updates the
     # `costs` field of the route.
