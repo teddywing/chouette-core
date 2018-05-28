@@ -18,7 +18,7 @@ class ReferentialLineDecorator < AF83::Decorator
     end
 
     instance_decorator.action_link secondary: true do |l|
-      l.content h.t('routing_constraint_zones.index.title')
+      l.content t('routing_constraint_zones.index.title')
       l.href do
         h.referential_line_routing_constraint_zones_path(
           scope,
@@ -36,7 +36,7 @@ class ReferentialLineDecorator < AF83::Decorator
       },
       secondary: true
     ) do |l|
-      l.content h.t('routes.actions.new')
+      l.content t('routes.actions.new')
       l.href { h.new_referential_line_route_path(scope, object) }
     end
   end

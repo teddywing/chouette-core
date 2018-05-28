@@ -11,11 +11,11 @@ class StopAreaDecorator < AF83::Decorator
     instance_decorator.show_action_link
 
     instance_decorator.edit_action_link do |l|
-      l.content h.t('stop_areas.actions.edit')
+      l.content t('stop_areas.actions.edit')
     end
 
     instance_decorator.action_link policy: :deactivate, secondary: true do |l|
-      l.content h.deactivate_link_content('stop_areas.actions.deactivate')
+      l.content { h.deactivate_link_content('stop_areas.actions.deactivate') }
       l.href do
         h.deactivate_stop_area_referential_stop_area_path(
           object.stop_area_referential,
@@ -23,12 +23,12 @@ class StopAreaDecorator < AF83::Decorator
         )
       end
       l.method :put
-      l.data confirm: h.t('stop_areas.actions.deactivate_confirm')
+      l.data confirm: t('stop_areas.actions.deactivate_confirm')
       l.add_class 'delete-action'
     end
 
     instance_decorator.action_link policy: :activate, secondary: true do |l|
-      l.content h.activate_link_content('stop_areas.actions.activate')
+      l.content { h.activate_link_content('stop_areas.actions.activate') }
       l.href do
         h.activate_stop_area_referential_stop_area_path(
           object.stop_area_referential,
@@ -36,13 +36,13 @@ class StopAreaDecorator < AF83::Decorator
         )
       end
       l.method :put
-      l.data confirm: h.t('stop_areas.actions.activate_confirm')
+      l.data confirm: t('stop_areas.actions.activate_confirm')
       l.add_class 'delete-action'
     end
 
     instance_decorator.destroy_action_link do |l|
-      l.content h.destroy_link_content('stop_areas.actions.destroy')
-      l.data confirm: h.t('stop_areas.actions.destroy_confirm')
+      l.content { h.destroy_link_content('stop_areas.actions.destroy') }
+      l.data confirm: t('stop_areas.actions.destroy_confirm')
     end
   end
 

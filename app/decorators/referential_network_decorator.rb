@@ -20,8 +20,8 @@ class ReferentialNetworkDecorator < AF83::Decorator
     end
 
     instance_decorator.destroy_action_link do |l|
-      l.content h.destroy_link_content('networks.actions.destroy')
-      l.data confirm: h.t('networks.actions.destroy_confirm')
+      l.content { h.destroy_link_content('networks.actions.destroy') }
+      l.data confirm: t('networks.actions.destroy_confirm')
     end
   end
 end
