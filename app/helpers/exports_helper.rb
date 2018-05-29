@@ -18,7 +18,7 @@ module ExportsHelper
       opts = { required: option_def[:required], input_html: {value: export.try(attr) || option_def[:default_value]}, as: option_def[:type], selected:  export.try(attr) || option_def[:default_value]}
 
       if option_def.has_key?(:collection)
-        if option_def[:collection].is_a? Array
+        if option_def[:collection].is_a?(Array) && !option_def[:collection].first.is_a?(Array)
           opts[:collection] = option_def[:collection].map{|k| [export.class.tmf("#{type.name.demodulize.underscore}.#{attr}_collection.#{k}"), k]}
         else
           opts[:collection] = option_def[:collection]

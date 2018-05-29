@@ -29,7 +29,7 @@ RSpec.describe ExportsController, :type => :controller do
         name: "foo",
         type: "Export::Netex",
         duration: 12,
-        export_subtype: :full,
+        export_type: :full,
         referential_id: first_referential.id
       }}
 

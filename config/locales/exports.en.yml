@@ -97,8 +97,8 @@ en:
           <<: *attrs
           duration: Duration (in days)
           line_code: Line
-          export_subtype: Export subtype
-          export_subtype_collection:
+          export_type: Export subtype
+          export_type_collection:
             line: By line
             full: Full
         workgroup:
