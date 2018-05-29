@@ -95,7 +95,7 @@ en:
           <<: *attrs
         netex:
           <<: *attrs
-          duration: Duration
+          duration: Duration (in days)
           line_code: Line
           export_subtype: Export subtype
           export_subtype_collection:
