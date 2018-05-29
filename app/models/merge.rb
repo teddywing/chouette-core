@@ -184,7 +184,7 @@ class Merge < ApplicationModel
           end
 
           # We need to create StopPoints to known new primary keys
-          new_route.save!
+          save_model! new_route
 
           route_ids_mapping[route.id] = new_route.id
 
@@ -211,10 +211,9 @@ class Merge < ApplicationModel
               stop_point_ids: stop_point_ids,
             )
             new_route.routing_constraint_zones.build attributes
-
           end
 
-          new_route.save!
+          save_model! new_route
 
           if new_route.checksum != route.checksum
             raise "Checksum has changed: \"#{route.checksum}\", \"#{route.checksum_source}\" -> \"#{new_route.checksum}\", \"#{new_route.checksum_source}\""
@@ -394,7 +393,7 @@ class Merge < ApplicationModel
 
           # Rewrite ignored_routing_contraint_zone_ids
           new_vehicle_journey.ignored_routing_contraint_zone_ids = referential_routing_constraint_zones_new_ids.values_at(*vehicle_journey.ignored_routing_contraint_zone_ids).compact
-          new_vehicle_journey.save!
+          save_model! new_vehicle_journey
 
           if new_vehicle_journey.checksum != vehicle_journey.checksum
             raise "Checksum has changed: \"#{vehicle_journey.checksum_source}\" \"#{vehicle_journey.checksum}\" -> \"#{new_vehicle_journey.checksum_source}\" \"#{new_vehicle_journey.checksum}\""
@@ -516,6 +515,14 @@ class Merge < ApplicationModel
 
   def child_change
 
+  end
+
+  def save_model!(model)
+    unless model.save
+      Rails.logger.info "Can't save #{model.class.name} : #{model.errors.inspect}"
+      raise ActiveRecord::RecordNotSaved.new("Invalid #{model.class.name} : #{model.errors.inspect}")
+    end
+    Rails.logger.debug { "Created #{model.inspect}" }
   end
 
   class MetadatasMerger
