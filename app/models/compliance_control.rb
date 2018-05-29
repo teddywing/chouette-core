@@ -20,6 +20,17 @@ class ComplianceControl < ApplicationModel
       }
     end
 
+    def subclasses_to_hash
+      ComplianceControl.subclasses.inject(Hash.new{ |h, k| h[k] = [] } ) do |h, klass|
+        h[ComplianceControl.subclass_patterns.key(klass.object_type)] << klass
+        h 
+      end
+    end
+
+    def translated_subclass
+      I18n.t("compliance_controls.filters.subclasses.#{subclass_patterns.key(self.object_type)}")
+    end
+
     def object_type
       self.default_code.match(/^\d+-(?'object_type'\w+)-\d+$/)[:object_type]
     end

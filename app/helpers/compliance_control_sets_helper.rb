@@ -84,10 +84,7 @@ module ComplianceControlSetsHelper
           ),
           TableBuilderHelper::Column.new(
             key: :subclass,
-            attribute: Proc.new do |compliance_control|
-              key = ComplianceControl.subclass_patterns.key(compliance_control.object.class.object_type)
-              I18n.t("compliance_controls.filters.subclasses.#{key}")
-            end
+            attribute: Proc.new { |compliance_control| compliance_control.object.class.translated_subclass }
           ),
           TableBuilderHelper::Column.new(
             key: :name,

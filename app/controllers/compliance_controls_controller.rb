@@ -5,11 +5,7 @@ class ComplianceControlsController < ChouetteController
   actions :all, :except => [:index]
 
   def select_type
-    @sti_subclasses = Hash.new 
-    
-    ComplianceControl.subclass_patterns.each do |key, value|
-      @sti_subclasses[key] = ComplianceControl.subclasses.select {|klass| klass.object_type == value}
-    end
+    @sti_subclasses ||= ComplianceControl.subclasses_to_hash 
   end
 
   def show
