@@ -31,7 +31,7 @@ module CustomFieldsSupport
     end
 
     def custom_fields_checksum
-      custom_fields.values.map(&:checksum)
+      custom_fields.values.sort_by(&:code).map(&:checksum)
     end
 
     def custom_field_values= vals
