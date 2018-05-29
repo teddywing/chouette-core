@@ -14,6 +14,7 @@ class Import::Base < ApplicationModel
   end
 
   include IevInterfaces::Task
+  validates_presence_of :file, unless: Proc.new {|import| import.errors[:file].present? }
 
   def self.model_name
     ActiveModel::Name.new Import::Base, Import::Base, "Import"
