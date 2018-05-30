@@ -109,7 +109,7 @@ class CleanUp < ApplicationModel
 
   def destroy_routes_outside_referential
     line_ids = referential.metadatas.pluck(:line_ids).flatten.uniq
-    Chouette::Route.where(['line_id not in (?)', line_ids]).destroy_all
+    Chouette::Route.where(['line_id not in (?)', line_ids]).find_each &:clean!
   end
 
   def destroy_vehicle_journeys

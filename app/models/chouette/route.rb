@@ -34,6 +34,7 @@ module Chouette
         Chouette::Route.vehicle_journeys_timeless(proxy_association.owner.journey_patterns.pluck( :departure_stop_point_id))
       end
     end
+    has_many :vehicle_journey_at_stops, through: :vehicle_journeys
     has_many :vehicle_journey_frequencies, :dependent => :destroy do
       # Todo : I think there is a better way to do this.
       def timeless
@@ -91,6 +92,17 @@ module Chouette
         !referential.in_referential_suite? &&
           TomTom.enabled?
       }
+
+    def clean!
+      vehicle_journeys.find_each do |vj|
+        vj.vehicle_journey_at_stops.delete_all
+      end
+      vehicle_journeys.delete_all
+      journey_patterns.delete_all
+      stop_points.delete_all
+      routing_constraint_zones.delete_all
+      self.delete
+    end
 
     def duplicate opposite=false
       overrides = {
