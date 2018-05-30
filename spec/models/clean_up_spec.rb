@@ -273,8 +273,9 @@ RSpec.describe CleanUp, :type => :model do
     let(:cleaner) { create(:clean_up, referential: referential) }
 
     it "destroys routes not in the the referential" do
-      route = create(:route)
-
+      route = create :route
+      opposite = create :route, line: route.line, opposite_route: route, wayback: route.opposite_wayback
+      
       cleaner.destroy_routes_outside_referential
 
       expect(Chouette::Route.exists?(route.id)).to be false
