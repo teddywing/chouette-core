@@ -92,6 +92,14 @@ en:
         <<: *attrs
         base:
           <<: *attrs
+        netex:
+          <<: *attrs
+          duration: Duration (in days)
+          line_code: Line
+          export_type: Export subtype
+          export_type_collection:
+            line: By line
+            full: Full
         workgroup:
           duration: Duration
         referential_companies:

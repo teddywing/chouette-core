@@ -3,14 +3,21 @@ class MasterSlave
     $(selector).find('[data-master]').each (i, slave)->
       $slave = $(slave)
       master = $($slave.data().master)
-      $slave.find("input:disabled, select:disabled").attr "data-slave-force-disabled", "true"
-      toggle = ->
+      if $slave.find('[data-master]').length == 0
+        $slave.find("input:disabled, select:disabled").attr "data-slave-force-disabled", "true"
+      toggle = (disableInputs=true)->
         val = master.filter(":checked").val() if master.filter("[type=radio]").length > 0
         val ||= master.val()
-        selected = val == $slave.data().value
+        selected = "#{val}" == "#{$slave.data().value}"
         $slave.toggle selected
-        $slave.find("input, select").filter(":not([data-slave-force-disabled])").attr "disabled", !selected
+        $slave.toggleClass "active", selected
+        if disableInputs
+          disabled = !selected
+          disabled = disabled || $slave.parents("[data-master]:not(.active)").length > 0
+          $slave.find("input, select").filter(":not([data-slave-force-disabled])").attr "disabled", disabled
+        if selected
+          $("[data-select2ed='true']").select2()
       master.change toggle
-      toggle()
+      toggle($slave.find('[data-master]').length == 0)
 
 export default MasterSlave

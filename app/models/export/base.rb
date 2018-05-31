@@ -52,7 +52,7 @@ class Export::Base < ActiveRecord::Base
           begin
             klass_name.constantize
           rescue => e
-            Rails.logger.info "Failed: #{e.message}"
+            Rails.logger.info "Failed: #{e.message}".red
             nil
           end
         end
@@ -83,10 +83,18 @@ class Export::Base < ActiveRecord::Base
     end
 
     if !!opts[:required]
-      validates name, presence: true
+      if opts[:depends]
+        validates name, presence: true, if: ->(record){ record.send(opts[:depends][:option]) == opts[:depends][:value]}
+      else
+        validates name, presence: true
+      end
     end
     @options ||= {}
     @options[name] = opts
+
+    if block_given?
+      yield Export::OptionProxy.new(self, opts.update(name: name))
+    end
   end
 
   def self.options
