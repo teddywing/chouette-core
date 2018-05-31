@@ -107,7 +107,7 @@ class ReferentialConsolidated
     def stop_areas
       @stop_areas ||= begin
         out = {}
-        ar_model.stop_areas.select(:id, :name, :city_name, :zip_code, :time_zone).each do |sp|
+        ar_model.stop_areas.select(:id, :name, :city_name, :zip_code, :time_zone, :country_code).each do |sp|
           out[sp.id] = sp
         end
         out
