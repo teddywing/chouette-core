@@ -98,14 +98,15 @@ class SimpleInterface < ApplicationModel
   def write_output_to_csv
     cols = %i(line kind event message error)
     journal = self.journal && self.journal.map(&:symbolize_keys)
-    if journal && journal.size > 0 && journal.first[:row].present?
+    first_row = journal.find{|r| r[:row].present? }
+    if first_row.present?
       log "Writing output log"
       FileUtils.mkdir_p @output_dir
-      keys = journal.first[:row].map(&:first)
+      keys = first_row[:row].map(&:first)
       CSV.open(output_filepath, "w") do |csv|
         csv << cols + keys
         journal.each do |j|
-          csv << cols.map{|c| j[c]} + j[:row].map(&:last)
+          csv << cols.map{|c| j[c]} + (j[:row] || {}).map(&:last)
         end
       end
       log "Output written in #{output_filepath}", replace: true
