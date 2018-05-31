@@ -74,6 +74,7 @@ RSpec.describe ReferentialCloning, :type => :model do
         expect(referential_cloning).to receive(:clone!).and_raise("#fail")
         referential_cloning.clone_with_status!
         expect(referential_cloning.status).to eq("failed")
+        expect(referential_cloning.target_referential.state).to eq(:failed)
       end
     end
 
