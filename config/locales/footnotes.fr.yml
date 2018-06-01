@@ -5,6 +5,7 @@ fr:
   footnotes:
     actions:
       add_footnote: "Ajouter une note"
+      destroy_confirm: Etes vous sûr de supprimer cette note ?
     index:
       title: "Notes"
   activerecord:
@@ -15,6 +16,6 @@ fr:
         other: "notes"
     attributes:
       footnote:
-        code: "titre"
+        code: "Titre"
         checksum: Signature métier
-        label: "texte"
+        label: "Texte"
